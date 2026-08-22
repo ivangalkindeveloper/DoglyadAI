@@ -68,7 +68,7 @@ final class ScanViewModel: DViewModel {
 
     @Published var usExaminationType: USExaminationType
     @Published var photos: [USExaminationScanPhoto] = []
-    @NestedObservableObject var cameraController = DCameraController()
+    @NestedObservableObject var cameraController: DCameraControllerFactory.Controller = DCameraControllerFactory.make()
     @NestedObservableObject var sheetController = ScanSheetController()
     //
     @Published var focus: Focus? = nil
@@ -345,31 +345,12 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapFill() {
-        patientComplaintController.text = """
-        The patient reports intermittent pressure and discomfort in the anterior neck, \
-        occurring mainly in the morning and during physical activity. \
-        They report difficulty swallowing solid food that began about three weeks ago. \
-        During the last month, the patient has experienced marked general weakness, \
-        increased fatigue, and reduced performance later in the day. \
-        They occasionally record a low-grade temperature of up to 37.2 °C. \
-        They report no weight loss and no previous similar complaints. \
-        The family history is negative for thyroid disease.
-        """
-        examinationDescriptionController.text = """
-        A thyroid ultrasound was performed with a linear transducer \
-        in standard longitudinal and transverse planes, assessing both lobes and the isthmus. \
-        Right lobe: 52×18×16 mm, volume 7.4 mL. Left lobe: 50×17×15 mm, volume 6.3 mL. \
-        Total gland volume is 13.7 mL, at the upper limit of normal. \
-        The lobe contours are smooth and well defined; the capsule is not thickened. \
-        The parenchyma has medium echogenicity and homogeneous structure, with no focal changes. \
-        The isthmus measures 4 mm and is unremarkable. \
-        Color Doppler flow is symmetrical and not increased. \
-        Regional cervical lymph nodes are not enlarged and have normal morphology. \
-        The examination was performed on an expert-class stationary ultrasound system \
-        using a 7.5–12 MHz multifrequency linear transducer. \
-        Visualization quality was good throughout the examination. \
-        Key images were archived in DICOM format.
-        """
+        patientComplaintController.text = container.mockFactory.fillPatientComplaint(
+            for: Locale.current
+        )
+        examinationDescriptionController.text = container.mockFactory.fillExaminationDescription(
+            for: Locale.current
+        )
     }
 
     var isSpeechButtonVisible: Bool {

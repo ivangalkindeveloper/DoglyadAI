@@ -16,14 +16,19 @@ class PromptFactoryEn(PromptFactory):
             "If the provided data is insufficient to assess a specific structure, state that it was not adequately visualized rather than speculating.\n"
         )
 
+        if settings.maxTokens is not None:
+            prompt += (
+                f"Keep the answer within {settings.maxTokens} tokens and finish the conclusion "
+                "before reaching this limit so that it is not truncated.\n"
+            )
+
         if not settings.isMarkdown:
-            prompt += f"Provide your answer in plain text and without Markdown.\n"
+            prompt += f"Provide your answer in plain text and without Markdown tags.\n"
 
         return prompt
 
     def build_prompt(
         self,
-        settings: NeuralModelSettings,
         examination: USExaminationData,
         examination_title: str,
         template: str | None = None,
@@ -41,8 +46,5 @@ class PromptFactoryEn(PromptFactory):
 
         if template:
             prompt += f"Response template: {template}\n"
-
-        if not settings.isMarkdown:
-            prompt += f"Provide your answer in plain text and without Markdown.\n"
 
         return prompt

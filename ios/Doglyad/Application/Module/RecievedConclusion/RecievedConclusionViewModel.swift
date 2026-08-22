@@ -30,11 +30,14 @@ final class RecievedConclusionViewModel: DViewModel {
         self.arguments = arguments
         _subscription = NestedObservableObject(wrappedValue: subscription)
         self.userEmail = userEmail
+        markdownViewModel = RecievedConclusionMarkdownViewModel(
+            response: arguments.conclusion.actualModelConclusion.response
+        )
     }
 
-    @Published var displayedResponse = ""
     @Published var isLoading = false
-    private var typewriterTask: Task<Void, Never>?
+    // A plain reference keeps per-word updates scoped to RecievedConclusionMarkdownView.
+    let markdownViewModel: RecievedConclusionMarkdownViewModel
 
     var model: USExaminationModelConclusion {
         arguments.conclusion.actualModelConclusion
@@ -70,24 +73,6 @@ final class RecievedConclusionViewModel: DViewModel {
             )
         case .available, .unavailable:
             return nil
-        }
-    }
-
-    override func onInit() {
-        startTypewriterAnimation()
-    }
-
-    private func startTypewriterAnimation() {
-        typewriterTask?.cancel()
-
-        let words = response.components(separatedBy: " ")
-        typewriterTask = Task {
-            for (index, word) in words.enumerated() {
-                if Task.isCancelled { return }
-                let separator = index == 0 ? "" : " "
-                displayedResponse.append(separator + word)
-                try? await Task.sleep(nanoseconds: 60000000)
-            }
         }
     }
 

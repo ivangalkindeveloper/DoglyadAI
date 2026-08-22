@@ -3,11 +3,6 @@ import SwiftUI
 
 @MainActor
 final class ApplicationViewModel: DViewModel {
-    // Reproduce the native launch screen geometry exactly (`LaunchScreen.storyboard`):
-    // a white background and a `scaleAspectFill` image stretched to every screen edge
-    // and centred on it. Without an explicit full-screen container SwiftUI centres the
-    // image on the safe area (whose centre sits below the screen centre because the top
-    // inset is larger), which made the SwiftUI splash drift down from the native one.
     @Published var root: any View = Color.white
         .overlay {
             Image(.splash)
@@ -17,6 +12,7 @@ final class ApplicationViewModel: DViewModel {
         .ignoresSafeArea()
     @Published var rootID = UUID()
     @Published var isLoading = false
+    private var isFirebaseConfigured = false
 
     @MainActor
     func initialize() {
@@ -25,7 +21,14 @@ final class ApplicationViewModel: DViewModel {
             await DependencyInitializer<InitializationProcess, DependencyContainer>(
                 createProcess: { InitializationProcess() },
                 stepSets: [
-                    InitializationProcess.stepsTier1,
+                    InitializationProcess.stepsTier1(
+                        getIsFirebaseConfigured: { [weak self] in
+                            self?.isFirebaseConfigured ?? false
+                        },
+                        onFirebaseConfigured: { [weak self] in
+                            self?.isFirebaseConfigured = true
+                        }
+                    ),
                     InitializationProcess.stepsTier2,
                     InitializationProcess.stepsTier3,
                     InitializationProcess.stepsTier4,

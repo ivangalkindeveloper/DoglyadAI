@@ -46,7 +46,7 @@ public struct DMarkdown: View {
                     family: .custom(DFontFamily.MontserratRegular.rawValue),
                     style: .normal,
                     weight: .regular,
-                    size: 14
+                    size: 16
                 )
                 ForegroundColor(primaryText)
             }
@@ -54,7 +54,7 @@ public struct DMarkdown: View {
                 FontProperties(
                     family: .custom(DFontFamily.MontserratSemiBold.rawValue),
                     weight: .regular,
-                    size: 12
+                    size: 14
                 )
                 ForegroundColor(primaryText)
             }
@@ -63,7 +63,7 @@ public struct DMarkdown: View {
                     family: .custom(DFontFamily.MontserratRegular.rawValue),
                     style: .italic,
                     weight: .regular,
-                    size: 12
+                    size: 14
                 )
                 ForegroundColor(primaryText)
             }
@@ -75,7 +75,7 @@ public struct DMarkdown: View {
                 FontProperties(
                     family: .custom(DFontFamily.MontserratSemiBold.rawValue),
                     weight: .regular,
-                    size: 14
+                    size: 16
                 )
                 ForegroundColor(color.primaryDefaultWeak)
             }

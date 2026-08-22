@@ -13,7 +13,7 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Догляд AI"
           }
         }
@@ -31,7 +31,7 @@
         },
         "ru" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "DoglyadAI"
           }
         }
@@ -62,6 +62,12 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Local network access is required to connect to a local development server."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для подключения к локальному серверу разработки требуется доступ к локальной сети."
           }
         }
       }

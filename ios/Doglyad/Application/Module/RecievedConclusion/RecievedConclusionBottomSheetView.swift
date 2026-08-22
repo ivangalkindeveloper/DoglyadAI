@@ -1,9 +1,7 @@
 import DoglyadUI
-import Foundation
 import SwiftUI
 
 struct RecievedConclusionBottomSheetView: View {
-    @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var theme: DTheme
     private var color: DColor { theme.color }
     private var size: DSize { theme.size }
@@ -20,8 +18,8 @@ struct RecievedConclusionBottomSheetView: View {
                     spacing: .zero
                 ) {
                     ScrollView {
-                        DMarkdown(
-                            content: viewModel.displayedResponse,
+                        RecievedConclusionMarkdownView(
+                            viewModel: viewModel.markdownViewModel,
                             textColor: color.grayscaleBackgroundWeak
                         )
                         .padding(.top, toolbarHeight)

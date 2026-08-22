@@ -13,7 +13,6 @@ class PromptFactory(ABC):
     @abstractmethod
     def build_prompt(
         self,
-        settings: NeuralModelSettings,
         examination: USExaminationData,
         examination_title: str,
         template: str | None = None,

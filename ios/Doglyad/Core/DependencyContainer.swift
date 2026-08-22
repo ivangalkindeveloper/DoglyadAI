@@ -9,6 +9,7 @@ final class DependencyContainer: ObservableObject {
     let environment: EnvironmentProtocol
     let connectionManager: ConnectionManagerProtocol
     let permissionManager: PermissionManagerProtocol
+    let mockFactory: MockFactory
     let sharedRepository: SharedRepositoryProtocol
     let userSettingsRepository: UserSettingsRepositoryProtocol
     let ultrasoundModelRepository: UltrasoundModelRepositoryProtocol
@@ -33,6 +34,7 @@ final class DependencyContainer: ObservableObject {
         environment: EnvironmentProtocol,
         connectionManager: ConnectionManagerProtocol,
         permissionManager: PermissionManagerProtocol,
+        mockFactory: MockFactory,
         sharedRepository: SharedRepositoryProtocol,
         userSettingsRepository: UserSettingsRepositoryProtocol,
         ultrasoundModelRepository: UltrasoundModelRepositoryProtocol,
@@ -56,6 +58,7 @@ final class DependencyContainer: ObservableObject {
         self.environment = environment
         self.connectionManager = connectionManager
         self.permissionManager = permissionManager
+        self.mockFactory = mockFactory
         self.sharedRepository = sharedRepository
         self.userSettingsRepository = userSettingsRepository
         self.ultrasoundModelRepository = ultrasoundModelRepository
@@ -141,6 +144,7 @@ extension DependencyContainer {
             environment: environment,
             connectionManager: ConnectionManager(),
             permissionManager: PermissionManager(),
+            mockFactory: DefaultMockFactory(),
             sharedRepository: sharedRepository,
             userSettingsRepository: userSettingsRepository,
             ultrasoundModelRepository: ultrasoundModelRepository,

@@ -1,11 +1,13 @@
-.PHONY:
+.PHONY: \
 	venv \
 	pip-install \
 	pip-install-dev \
 	format \
-	init-ios-development \
-	build-ios-development \
-	build-ios-production \
+	init-ios-local \
+	build-ios-debug-local \
+	build-ios-debug-development \
+	build-ios-release-development \
+	build-ios-release-production \
 	start-backend-main-development \
 	start-backend-main-production \
 	start-backend-main-logs \
@@ -48,15 +50,29 @@ init-ios-local:
 	IP="$$(ipconfig getifaddr en0)"; \
 	sed -i '' 's|^BASE_URL = .*|BASE_URL = http:/$$()/'''"$${IP}:8000"'|' ios/Config/Config.Local.xcconfig; \
 	cat ios/Config/Config.Local.xcconfig
-build-ios-development:
+
+build-ios-debug-local:
 	cd ios && xcodebuild build \
 		-project Doglyad.xcodeproj \
-		-scheme Doglyad-Development \
+		-scheme Doglyad-Debug-Local \
 		-destination '$(IOS_DEST)'
-build-ios-production:
+
+build-ios-debug-development:
 	cd ios && xcodebuild build \
 		-project Doglyad.xcodeproj \
-		-scheme Doglyad-Production \
+		-scheme Doglyad-Debug-Development \
+		-destination '$(IOS_DEST)'
+
+build-ios-release-development:
+	cd ios && xcodebuild build \
+		-project Doglyad.xcodeproj \
+		-scheme Doglyad-Release-Development \
+		-destination '$(IOS_DEST)'
+
+build-ios-release-production:
+	cd ios && xcodebuild build \
+		-project Doglyad.xcodeproj \
+		-scheme Doglyad-Release-Production \
 		-destination '$(IOS_DEST)'
 
 start-backend-main-development:

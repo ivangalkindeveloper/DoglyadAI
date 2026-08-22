@@ -2,18 +2,18 @@ import AVFoundation
 import Combine
 import CoreImage
 import ImageIO
-import SwiftUI
+import UIKit
 
 @MainActor
-public final class DCameraController: ObservableObject {
-    @Published public var isLoading = true
-    @Published public var isRunning = false
-    @Published public var isCapturing = false
+public final class DeviceCameraController: DCameraController {
+    @Published public private(set) var isLoading = true
+    @Published public private(set) var isRunning = false
+    @Published public private(set) var isCapturing = false
 
     private nonisolated let session = AVCaptureSession()
-    var previewLayer = AVCaptureVideoPreviewLayer()
+    private let previewLayer = AVCaptureVideoPreviewLayer()
     private nonisolated let output = AVCapturePhotoOutput()
-    private nonisolated let delegate = PhotoCaptureDelegate()
+    private nonisolated let delegate = DevicePhotoCaptureDelegate()
 
     private var capturePhotoCompletion: ((UIImage) -> Void)?
 
@@ -22,7 +22,7 @@ public final class DCameraController: ObservableObject {
         qos: .userInitiated
     )
 
-    public init() {
+    init() {
         previewLayer.session = session
         previewLayer.videoGravity = .resizeAspectFill
         delegate.controller = self
@@ -32,6 +32,7 @@ public final class DCameraController: ObservableObject {
     public func startSession() {
         guard !isRunning else { return }
         isRunning = true
+
         sessionQueue.async { [weak self] in
             guard let self = self else { return }
 
@@ -87,7 +88,23 @@ public final class DCameraController: ObservableObject {
         }
     }
 
-    fileprivate func handlePhotoCaptured(image: UIImage) {
+    public func makePreviewView() -> UIView {
+        let view = UIView(frame: .zero)
+        previewLayer.frame = UIScreen.main.bounds
+        view.layer.addSublayer(previewLayer)
+        return view
+    }
+
+    public func updatePreviewView(
+        _ view: UIView
+    ) {
+        guard !view.bounds.isEmpty else { return }
+        previewLayer.frame = view.bounds
+    }
+
+    fileprivate func handlePhotoCaptured(
+        image: UIImage
+    ) {
         isCapturing = false
         let completion = capturePhotoCompletion
         capturePhotoCompletion = nil
@@ -100,7 +117,7 @@ public final class DCameraController: ObservableObject {
     }
 }
 
-private extension DCameraController {
+private extension DeviceCameraController {
     func configureSession() {
         sessionQueue.async { [weak self] in
             guard let self = self else { return }
@@ -191,8 +208,8 @@ private extension DCameraController {
     }
 }
 
-private final class PhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureDelegate {
-    weak var controller: DCameraController?
+private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureDelegate {
+    weak var controller: DeviceCameraController?
 
     // AVFoundation callbacks arrive on a single serial internal queue,
     // so lazy initialization is safe here.

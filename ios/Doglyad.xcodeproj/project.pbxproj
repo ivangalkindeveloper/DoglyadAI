@@ -26,7 +26,6 @@
 		777D76583014CFC9004E81FE /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 777D76573014CFC9004E81FE /* FirebaseAppCheck */; };
 		777D765A3014D00C004E81FE /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 777D76593014D00C004E81FE /* FirebaseCore */; };
 		777D765C3014D00C004E81FE /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 777D765B3014D00C004E81FE /* FirebaseCrashlytics */; };
-		777D79323014DBB9004E81FE /* Doglyad.entitlements in Resources */ = {isa = PBXBuildFile; fileRef = 777D79313014DBB9004E81FE /* Doglyad.entitlements */; };
 		77A895C02F09E7EE006E6E41 /* NestedObservableObject in Frameworks */ = {isa = PBXBuildFile; productRef = 77A895BF2F09E7EE006E6E41 /* NestedObservableObject */; };
 		77A896C32F0AD5EF006E6E41 /* Handler in Frameworks */ = {isa = PBXBuildFile; productRef = 77A896C22F0AD5EF006E6E41 /* Handler */; };
 		77A896D02F0C82B1006E6E41 /* DoglyadNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 77A896C92F0C82B0006E6E41 /* DoglyadNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -153,7 +152,6 @@
 		770AEB562F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "mlx-Qwen2.5-1.5B-Instruct-4bit"; path = "DoglyadNeuralModel/Resources/mlx-Qwen2.5-1.5B-Instruct-4bit"; sourceTree = "<group>"; };
 		771F41A82EA430B400C4945A /* DoglyadDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DoglyadDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7720FEE52E9ACE42002EA89E /* DoglyadUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DoglyadUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		777D79313014DBB9004E81FE /* Doglyad.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Doglyad.entitlements; sourceTree = "<group>"; };
 		77A896C92F0C82B0006E6E41 /* DoglyadNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DoglyadNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		77AC58B22E929E7E0028250A /* Doglyad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doglyad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77AC58C12E929E800028250A /* DoglyadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DoglyadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -170,7 +168,8 @@
 			membershipExceptions = (
 				"Debug-Development/GoogleService-Info.plist",
 				"Debug-Local/GoogleService-Info.plist",
-				"Production/GoogleService-Info.plist",
+				"Release-Development/GoogleService-Info.plist",
+				"Release-Production/GoogleService-Info.plist",
 			);
 			target = 77AC58B12E929E7E0028250A /* Doglyad */;
 		};
@@ -275,6 +274,35 @@
 			);
 			target = 77AC58B12E929E7E0028250A /* Doglyad */;
 		};
+		77D084093003E9830027BF40 /* Exceptions for "DoglyadNeuralModel" folder in "DoglyadNeuralModel" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/.gitignore",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/.gitattributes.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/added_tokens.json.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/config.json.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/merges.txt.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/model.safetensors.index.json.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/model.safetensors.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/README.md.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/special_tokens_map.json.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/tokenizer_config.json.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/tokenizer.json.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/vocab.json.metadata",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.gitattributes",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/added_tokens.json",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/config.json",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/merges.txt",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/model.safetensors",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/model.safetensors.index.json",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/README.md",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/special_tokens_map.json",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/tokenizer_config.json",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/tokenizer.json",
+				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/vocab.json",
+			);
+			target = 77CB95222EB90C8500489F3E /* DoglyadNeuralModel */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -343,6 +371,9 @@
 		};
 		77CB95242EB90C8500489F3E /* DoglyadNeuralModel */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				77D084093003E9830027BF40 /* Exceptions for "DoglyadNeuralModel" folder in "DoglyadNeuralModel" target */,
+			);
 			path = DoglyadNeuralModel;
 			sourceTree = "<group>";
 		};
@@ -470,7 +501,6 @@
 		77AC58A92E929E7E0028250A = {
 			isa = PBXGroup;
 			children = (
-				777D79313014DBB9004E81FE /* Doglyad.entitlements */,
 				77C3EE2C2FD617FF00DC4D6A /* Config */,
 				7730C19B30168F0000E0BE55 /* Firebase */,
 				770AEB562F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit */,
@@ -914,7 +944,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				770AEB572F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit in Resources */,
-				777D79323014DBB9004E81FE /* Doglyad.entitlements in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -970,11 +999,11 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "set -e\n\nSOURCE=\"${SRCROOT}/Firebase/${CONFIGURATION}/GoogleService-Info.plist\"\n\nif [ ! -f \"${SOURCE}\" ]; then\n    echo \"error: GoogleService-Info.plist for configuration '${CONFIGURATION}' not found at ${SOURCE}\"\n    exit 1\nfi\n\ncp \"${SOURCE}\" \"${BUILT_PRODUCTS_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist\"\n";
+			shellScript = "set -e\n\nSOURCE=\"${SRCROOT}/Firebase/${CONFIGURATION}/GoogleService-Info.plist\"\nDESTINATION=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist\"\n\nif [ ! -f \"${SOURCE}\" ]; then\n    echo \"error: GoogleService-Info.plist for configuration '${CONFIGURATION}' not found at ${SOURCE}\"\n    exit 1\nfi\n\ncp \"${SOURCE}\" \"${DESTINATION}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1134,7 +1163,7 @@
 			};
 			name = "Debug-Local";
 		};
-		771F41B22EA430B400C4945A /* Production */ = {
+		771F41B22EA430B400C4945A /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
@@ -1173,7 +1202,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 		7720FEEE2E9ACE43002EA89E /* Debug-Local */ = {
 			isa = XCBuildConfiguration;
@@ -1216,7 +1245,7 @@
 			};
 			name = "Debug-Local";
 		};
-		7720FEEF2E9ACE43002EA89E /* Production */ = {
+		7720FEEF2E9ACE43002EA89E /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
@@ -1255,7 +1284,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 		773BC613302BCA6700D33D02 /* Debug-Development */ = {
 			isa = XCBuildConfiguration;
@@ -1333,9 +1362,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDevelopment;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1690,6 +1720,433 @@
 			};
 			name = "Debug-Development";
 		};
+		775A70F430390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
+			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release-Production";
+		};
+		775A70F530390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
+			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				DEVELOPMENT_TEAM = XZY97QPQG8;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_PREVIEWS = YES;
+				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = YES;
+				ENABLE_RESOURCE_ACCESS_CAMERA = YES;
+				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Doglyad/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Doglyad;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.medical";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Need for examination pictures capture";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Local network access is required to connect to a local development server.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Need for voice reconginition examination data";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Need for adding examination pictures from the gallery";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Need for voice reconginition examination data";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = "Release-Production";
+		};
+		775A70F630390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
+			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZY97QPQG8;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Doglyad.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Doglyad";
+			};
+			name = "Release-Production";
+		};
+		775A70F730390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
+			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZY97QPQG8;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.uitests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_TARGET_NAME = Doglyad;
+			};
+			name = "Release-Production";
+		};
+		775A70F830390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZY97QPQG8;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.camera;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Production";
+		};
+		775A70F930390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZY97QPQG8;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.database;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Production";
+		};
+		775A70FA30390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZY97QPQG8;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.neuralmodel;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				REGISTER_APP_GROUPS = YES;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Production";
+		};
+		775A70FB30390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZY97QPQG8;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.speech;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Production";
+		};
+		775A70FC30390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZY97QPQG8;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.ui;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Production";
+		};
+		775A70FD30390EFC00D24CF4 /* Release-Production */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = XZY97QPQG8;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.network;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_INSTALL_MODULE = YES;
+				SWIFT_INSTALL_OBJC_HEADER = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = "Release-Production";
+		};
 		77A896D22F0C82B1006E6E41 /* Debug-Local */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1734,7 +2191,7 @@
 			};
 			name = "Debug-Local";
 		};
-		77A896D32F0C82B1006E6E41 /* Production */ = {
+		77A896D32F0C82B1006E6E41 /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
@@ -1776,7 +2233,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 		77AC58D32E929E800028250A /* Debug-Local */ = {
 			isa = XCBuildConfiguration;
@@ -1846,10 +2303,10 @@
 			};
 			name = "Debug-Local";
 		};
-		77AC58D42E929E800028250A /* Production */ = {
+		77AC58D42E929E800028250A /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
-			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
+			baseConfigurationReferenceRelativePath = Config.Development.xcconfig;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
@@ -1889,6 +2346,7 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = s;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -1903,9 +2361,10 @@
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 		77AC58D62E929E800028250A /* Debug-Local */ = {
 			isa = XCBuildConfiguration;
@@ -1915,9 +2374,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconLocal;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1961,16 +2421,17 @@
 			};
 			name = "Debug-Local";
 		};
-		77AC58D72E929E800028250A /* Production */ = {
+		77AC58D72E929E800028250A /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
-			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
+			baseConfigurationReferenceRelativePath = Config.Development.xcconfig;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDevelopment;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
+				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -2000,7 +2461,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 0.0.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.development;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -2011,7 +2472,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 		77AC58D92E929E800028250A /* Debug-Local */ = {
 			isa = XCBuildConfiguration;
@@ -2038,10 +2499,10 @@
 			};
 			name = "Debug-Local";
 		};
-		77AC58DA2E929E800028250A /* Production */ = {
+		77AC58DA2E929E800028250A /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
-			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
+			baseConfigurationReferenceRelativePath = Config.Development.xcconfig;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
@@ -2061,7 +2522,7 @@
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Doglyad.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Doglyad";
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 		77AC58DC2E929E800028250A /* Debug-Local */ = {
 			isa = XCBuildConfiguration;
@@ -2087,10 +2548,10 @@
 			};
 			name = "Debug-Local";
 		};
-		77AC58DD2E929E800028250A /* Production */ = {
+		77AC58DD2E929E800028250A /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
-			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
+			baseConfigurationReferenceRelativePath = Config.Development.xcconfig;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2109,7 +2570,7 @@
 				TARGETED_DEVICE_FAMILY = 1;
 				TEST_TARGET_NAME = Doglyad;
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 		77CB94FB2EB8FED100489F3E /* Debug-Local */ = {
 			isa = XCBuildConfiguration;
@@ -2155,7 +2616,7 @@
 			};
 			name = "Debug-Local";
 		};
-		77CB94FC2EB8FED100489F3E /* Production */ = {
+		77CB94FC2EB8FED100489F3E /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
@@ -2197,7 +2658,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 		77CB951C2EB90C4600489F3E /* Debug-Local */ = {
 			isa = XCBuildConfiguration;
@@ -2243,7 +2704,7 @@
 			};
 			name = "Debug-Local";
 		};
-		77CB951D2EB90C4600489F3E /* Production */ = {
+		77CB951D2EB90C4600489F3E /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
@@ -2285,7 +2746,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 		77CB952C2EB90C8500489F3E /* Debug-Local */ = {
 			isa = XCBuildConfiguration;
@@ -2335,7 +2796,7 @@
 			};
 			name = "Debug-Local";
 		};
-		77CB952D2EB90C8500489F3E /* Production */ = {
+		77CB952D2EB90C8500489F3E /* Release-Development */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
@@ -2381,7 +2842,7 @@
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Production;
+			name = "Release-Development";
 		};
 /* End XCBuildConfiguration section */
 
@@ -2391,100 +2852,110 @@
 			buildConfigurations = (
 				771F41B12EA430B400C4945A /* Debug-Local */,
 				773BC618302BCA6700D33D02 /* Debug-Development */,
-				771F41B22EA430B400C4945A /* Production */,
+				771F41B22EA430B400C4945A /* Release-Development */,
+				775A70F930390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 		7720FEF02E9ACE43002EA89E /* Build configuration list for PBXNativeTarget "DoglyadUI" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				7720FEEE2E9ACE43002EA89E /* Debug-Local */,
 				773BC61B302BCA6700D33D02 /* Debug-Development */,
-				7720FEEF2E9ACE43002EA89E /* Production */,
+				7720FEEF2E9ACE43002EA89E /* Release-Development */,
+				775A70FC30390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 		77A896D12F0C82B1006E6E41 /* Build configuration list for PBXNativeTarget "DoglyadNetwork" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				77A896D22F0C82B1006E6E41 /* Debug-Local */,
 				773BC61C302BCA6700D33D02 /* Debug-Development */,
-				77A896D32F0C82B1006E6E41 /* Production */,
+				77A896D32F0C82B1006E6E41 /* Release-Development */,
+				775A70FD30390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 		77AC58AD2E929E7E0028250A /* Build configuration list for PBXProject "Doglyad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				77AC58D32E929E800028250A /* Debug-Local */,
 				773BC613302BCA6700D33D02 /* Debug-Development */,
-				77AC58D42E929E800028250A /* Production */,
+				77AC58D42E929E800028250A /* Release-Development */,
+				775A70F430390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 		77AC58D52E929E800028250A /* Build configuration list for PBXNativeTarget "Doglyad" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				77AC58D62E929E800028250A /* Debug-Local */,
 				773BC614302BCA6700D33D02 /* Debug-Development */,
-				77AC58D72E929E800028250A /* Production */,
+				77AC58D72E929E800028250A /* Release-Development */,
+				775A70F530390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 		77AC58D82E929E800028250A /* Build configuration list for PBXNativeTarget "DoglyadTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				77AC58D92E929E800028250A /* Debug-Local */,
 				773BC615302BCA6700D33D02 /* Debug-Development */,
-				77AC58DA2E929E800028250A /* Production */,
+				77AC58DA2E929E800028250A /* Release-Development */,
+				775A70F630390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 		77AC58DB2E929E800028250A /* Build configuration list for PBXNativeTarget "DoglyadUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				77AC58DC2E929E800028250A /* Debug-Local */,
 				773BC616302BCA6700D33D02 /* Debug-Development */,
-				77AC58DD2E929E800028250A /* Production */,
+				77AC58DD2E929E800028250A /* Release-Development */,
+				775A70F730390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 		77CB94FA2EB8FED100489F3E /* Build configuration list for PBXNativeTarget "DoglyadCamera" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				77CB94FB2EB8FED100489F3E /* Debug-Local */,
 				773BC617302BCA6700D33D02 /* Debug-Development */,
-				77CB94FC2EB8FED100489F3E /* Production */,
+				77CB94FC2EB8FED100489F3E /* Release-Development */,
+				775A70F830390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 		77CB951B2EB90C4600489F3E /* Build configuration list for PBXNativeTarget "DoglyadSpeech" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				77CB951C2EB90C4600489F3E /* Debug-Local */,
 				773BC61A302BCA6700D33D02 /* Debug-Development */,
-				77CB951D2EB90C4600489F3E /* Production */,
+				77CB951D2EB90C4600489F3E /* Release-Development */,
+				775A70FB30390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 		77CB952B2EB90C8500489F3E /* Build configuration list for PBXNativeTarget "DoglyadNeuralModel" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				77CB952C2EB90C8500489F3E /* Debug-Local */,
 				773BC619302BCA6700D33D02 /* Debug-Development */,
-				77CB952D2EB90C8500489F3E /* Production */,
+				77CB952D2EB90C8500489F3E /* Release-Development */,
+				775A70FA30390EFC00D24CF4 /* Release-Production */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Production;
+			defaultConfigurationName = "Release-Production";
 		};
 /* End XCConfigurationList section */
 

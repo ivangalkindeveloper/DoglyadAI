@@ -47,7 +47,7 @@ struct ScanCaptureView: View {
             }
         }
         .padding(size.s8)
-        .padding(.bottom, viewModel.sheetController.isSheetVisible ? size.s136 : .zero)
+        .padding(.bottom, viewModel.sheetController.isSheetVisible ? size.s128 : .zero)
         .animation(
             theme.animation,
             value: viewModel.cameraController.isRunning

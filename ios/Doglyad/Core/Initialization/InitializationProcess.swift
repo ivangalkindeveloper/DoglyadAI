@@ -11,6 +11,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var environment: EnvironmentProtocol?
     var connectionManager: ConnectionManagerProtocol?
     var permissionManager: PermissionManagerProtocol?
+    var mockFactory: MockFactory?
     var database: DDatabase?
     var securityDatabase: DSecurityDatabaseProtocol?
     var httpClient: DHttpClientProtocol?
@@ -40,6 +41,7 @@ final class InitializationProcess: DependencyInitializationProcess {
             environment: environment!,
             connectionManager: connectionManager!,
             permissionManager: permissionManager!,
+            mockFactory: mockFactory!,
             sharedRepository: sharedRepository!,
             userSettingsRepository: userSettingsRepository!,
             ultrasoundModelRepository: ultrasoundModelRepository!,

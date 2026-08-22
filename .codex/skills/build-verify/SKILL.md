@@ -10,7 +10,7 @@ Close the loop from implementation to a verified result. Run checks after change
 ## Select the scope
 
 1. Identify whether changes affect iOS, the main backend, inference, or a shared contract. Run only relevant checks.
-2. Use `iPhone 17` through `IOS_DEST` by default. If unavailable, select an installed simulator with `make build-ios-development IOS_DEST='platform=iOS Simulator,name=<name>'`.
+2. Use `iPhone 17` through `IOS_DEST` by default. If unavailable, select an installed simulator with `make build-ios-debug-development IOS_DEST='platform=iOS Simulator,name=<name>'`.
 3. Verify Development by default. Verify Production when release behavior or production configuration is affected.
 
 ## Backend checks
@@ -37,8 +37,8 @@ Install main development dependencies with `make pip-install-dev` and inference 
 
 ```bash
 make format
-make build-ios-development
-make build-ios-production
+make build-ios-debug-development
+make build-ios-release-production
 ```
 
 Run tests directly:
@@ -47,7 +47,7 @@ Run tests directly:
 cd ios
 xcodebuild test \
   -project Doglyad.xcodeproj \
-  -scheme Doglyad-Development \
+  -scheme Doglyad-Debug-Development \
   -destination 'platform=iOS Simulator,name=iPhone 17'
 ```
 

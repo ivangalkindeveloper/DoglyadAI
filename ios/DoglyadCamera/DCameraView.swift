@@ -1,24 +1,22 @@
-import AVFoundation
 import SwiftUI
 
-public struct DCameraView: UIViewRepresentable {
-    var controller: DCameraController
+public struct DCameraView<Controller: DCameraController>: UIViewRepresentable {
+    private let controller: Controller
 
     public init(
-        controller: DCameraController
+        controller: Controller
     ) {
         self.controller = controller
     }
 
     public func makeUIView(context _: Context) -> UIView {
-        let view = UIView(frame: .zero)
-        controller.previewLayer.frame = UIScreen.main.bounds
-        view.layer.addSublayer(controller.previewLayer)
-        return view
+        controller.makePreviewView()
     }
 
     public func updateUIView(
-        _: UIView,
+        _ view: UIView,
         context _: Context
-    ) {}
+    ) {
+        controller.updatePreviewView(view)
+    }
 }

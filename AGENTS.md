@@ -141,7 +141,7 @@ The `Makefile` contains all project commands. Common targets:
 - `make venv` / `make pip-install` — create a Python 3.11 environment and install `backend/main/requirements.txt`.
 - `make format` — run SwiftFormat for iOS and Ruff format for both backends.
 - `make init-ios-local` — update the local iOS `BASE_URL` with the `en0` address.
-- `make build-ios-development` / `make build-ios-production` — build the matching Xcode scheme; override `IOS_DEST` to select another simulator.
+- `make build-ios-debug-local` / `make build-ios-debug-development` / `make build-ios-release-development` / `make build-ios-release-production` — build the matching Xcode scheme; override `IOS_DEST` to select another simulator.
 - `make download-ios-examination-model` — download `mlx-community/Qwen2.5-1.5B-Instruct-4bit` into `DoglyadNeuralModel/Resources/`.
 - `make start-backend-main-development` / `make start-backend-main-production` — run the main backend with the matching environment profile.
 - `make start-backend-main-logs` / `make stop-backend-main` — follow logs or stop the main backend.
