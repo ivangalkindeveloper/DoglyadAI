@@ -58,7 +58,6 @@ async def ultrasound_conclusion(
             language_code=language_code,
             system_prompt=prompt_factory.system_prompt(settings),
             prompt=prompt_factory.build_prompt(
-                settings,
                 examination,
                 examination_title,
                 body.template,
