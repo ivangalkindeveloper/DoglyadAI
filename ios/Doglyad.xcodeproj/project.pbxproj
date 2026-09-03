@@ -26,6 +26,7 @@
 		777D76583014CFC9004E81FE /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 777D76573014CFC9004E81FE /* FirebaseAppCheck */; };
 		777D765A3014D00C004E81FE /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 777D76593014D00C004E81FE /* FirebaseCore */; };
 		777D765C3014D00C004E81FE /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 777D765B3014D00C004E81FE /* FirebaseCrashlytics */; };
+		77828EA0304A380500847071 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77828E9F304A380500847071 /* StoreKit.framework */; };
 		77A895C02F09E7EE006E6E41 /* NestedObservableObject in Frameworks */ = {isa = PBXBuildFile; productRef = 77A895BF2F09E7EE006E6E41 /* NestedObservableObject */; };
 		77A896C32F0AD5EF006E6E41 /* Handler in Frameworks */ = {isa = PBXBuildFile; productRef = 77A896C22F0AD5EF006E6E41 /* Handler */; };
 		77A896D02F0C82B1006E6E41 /* DoglyadNetwork.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 77A896C92F0C82B0006E6E41 /* DoglyadNetwork.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -152,6 +153,7 @@
 		770AEB562F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "mlx-Qwen2.5-1.5B-Instruct-4bit"; path = "DoglyadNeuralModel/Resources/mlx-Qwen2.5-1.5B-Instruct-4bit"; sourceTree = "<group>"; };
 		771F41A82EA430B400C4945A /* DoglyadDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DoglyadDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7720FEE52E9ACE42002EA89E /* DoglyadUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DoglyadUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		77828E9F304A380500847071 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		77A896C92F0C82B0006E6E41 /* DoglyadNetwork.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DoglyadNetwork.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		77AC58B22E929E7E0028250A /* Doglyad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Doglyad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		77AC58C12E929E800028250A /* DoglyadTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DoglyadTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -425,6 +427,7 @@
 				7720FEEB2E9ACE43002EA89E /* DoglyadUI.framework in Frameworks */,
 				77A896C32F0AD5EF006E6E41 /* Handler in Frameworks */,
 				77BB12242E92A87700B9FFC5 /* DependencyInitializer in Frameworks */,
+				77828EA0304A380500847071 /* StoreKit.framework in Frameworks */,
 				776175282EF8A04D006A2B5A /* MLXLMCommon in Frameworks */,
 				770AEB602F1DA67D00C09C76 /* FirebaseAnalyticsCore in Frameworks */,
 				770AEB622F1DA67D00C09C76 /* FirebaseAnalyticsIdentitySupport in Frameworks */,
@@ -486,6 +489,7 @@
 		77A896BE2F0AC7DC006E6E41 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				77828E9F304A380500847071 /* StoreKit.framework */,
 				771F41A92EA430B400C4945A /* DoglyadDatabase */,
 				77AC58C42E929E800028250A /* DoglyadTests */,
 				77AC58CE2E929E800028250A /* DoglyadUITests */,
@@ -1394,7 +1398,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.development;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1822,7 +1826,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
@@ -2406,7 +2410,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.development;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -2460,7 +2464,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.0.1;
+				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.development;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;

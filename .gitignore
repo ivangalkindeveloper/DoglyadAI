@@ -20,6 +20,8 @@
 /deploy/secrets/
 /deploy/logs/
 
+/secrets/
+
 /ios/Config/
 /ios/Firebase/
 /ios/DoglyadNeuralModel/Resources/mlx-Qwen2.5-1.5B-Instruct-4bit
