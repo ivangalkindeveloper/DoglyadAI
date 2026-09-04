@@ -52,7 +52,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../Doglyad.storekit">
+         identifier = "../../Doglyad/Doglyad.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
