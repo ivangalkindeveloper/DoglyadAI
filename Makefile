@@ -8,6 +8,8 @@
 	build-ios-debug-development \
 	build-ios-release-development \
 	build-ios-release-production \
+	upload-ios-release-development \
+	upload-ios-release-production \
 	start-backend-main-development \
 	start-backend-main-production \
 	start-backend-main-logs \
@@ -26,6 +28,9 @@
 .SILENT:
 
 IOS_DEST ?= platform=iOS Simulator,name=iPhone 17
+IOS_ARCHIVE_DIR ?= $(CURDIR)/build/ios-archives
+IOS_EXPORT_OPTIONS_PLIST := $(CURDIR)/ios/ExportOptions.plist
+IOS_ARCHIVE_TIMESTAMP := $(shell date +%Y%m%d-%H%M%S)
 
 # Prefer the project venv so `make format` works without activating it first.
 RUFF ?= $(shell if [ -x "$(CURDIR)/.venv311/bin/ruff" ]; then echo "$(CURDIR)/.venv311/bin/ruff"; else echo ruff; fi)
@@ -74,6 +79,34 @@ build-ios-release-production:
 		-project Doglyad.xcodeproj \
 		-scheme Doglyad-Release-Production \
 		-destination '$(IOS_DEST)'
+
+upload-ios-release-development:
+	mkdir -p "$(IOS_ARCHIVE_DIR)"
+	xcodebuild archive \
+		-project ios/Doglyad.xcodeproj \
+		-scheme Doglyad-Release-Development \
+		-configuration Release-Development \
+		-destination 'generic/platform=iOS' \
+		-archivePath "$(IOS_ARCHIVE_DIR)/Doglyad-Release-Development-$(IOS_ARCHIVE_TIMESTAMP).xcarchive" \
+		-allowProvisioningUpdates
+	xcodebuild -exportArchive \
+		-archivePath "$(IOS_ARCHIVE_DIR)/Doglyad-Release-Development-$(IOS_ARCHIVE_TIMESTAMP).xcarchive" \
+		-exportOptionsPlist "$(IOS_EXPORT_OPTIONS_PLIST)" \
+		-allowProvisioningUpdates
+
+upload-ios-release-production:
+	mkdir -p "$(IOS_ARCHIVE_DIR)"
+	xcodebuild archive \
+		-project ios/Doglyad.xcodeproj \
+		-scheme Doglyad-Release-Production \
+		-configuration Release-Production \
+		-destination 'generic/platform=iOS' \
+		-archivePath "$(IOS_ARCHIVE_DIR)/Doglyad-Release-Production-$(IOS_ARCHIVE_TIMESTAMP).xcarchive" \
+		-allowProvisioningUpdates
+	xcodebuild -exportArchive \
+		-archivePath "$(IOS_ARCHIVE_DIR)/Doglyad-Release-Production-$(IOS_ARCHIVE_TIMESTAMP).xcarchive" \
+		-exportOptionsPlist "$(IOS_EXPORT_OPTIONS_PLIST)" \
+		-allowProvisioningUpdates
 
 start-backend-main-development:
 	ENV_FILE=secrets/.env.development \

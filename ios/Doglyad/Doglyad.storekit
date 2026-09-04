@@ -1,0 +1,412 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "F7AEA035",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6794941559",
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_developerTeamID" : "XZY97QPQG8",
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 810214247.56502604,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+    {
+      "id" : "22355031",
+      "localizations" : [
+        {
+          "description" : "",
+          "displayName" : "Base & Pro Subscriptions",
+          "locale" : "en_US"
+        },
+        {
+          "description" : "",
+          "displayName" : "Base & Pro Подписки",
+          "locale" : "ru"
+        }
+      ],
+      "name" : "Base & Pro Subscriptions",
+      "subscriptions" : [
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "99.99",
+              "displayPrice" : "99.99",
+              "internalID" : "6808330300_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "99.99",
+          "familyShareable" : false,
+          "groupNumber" : 5,
+          "internalID" : "6808330300",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "Base Annual Access. Unlock base features.",
+              "displayName" : "Base - Annual access",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Base Годовой доступ. Разблокируйте базовые возможности.",
+              "displayName" : "Base - Годовой доступ",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "base_annual",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Base Annual",
+          "subscriptionGroupID" : "22355031",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "9.99",
+              "displayPrice" : "9.99",
+              "internalID" : "6808338183_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "9.99",
+          "familyShareable" : false,
+          "groupNumber" : 7,
+          "internalID" : "6808338183",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "Base Monthly Access. Unlock base features.",
+              "displayName" : "Base - Monthly access",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Base Месячный. Разблокируйте базовые возможности.",
+              "displayName" : "Base - Месячный доступ",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "base_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Base Monthly",
+          "subscriptionGroupID" : "22355031",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "55.99",
+              "displayPrice" : "55.99",
+              "internalID" : "6808331179_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "55.99",
+          "familyShareable" : false,
+          "groupNumber" : 6,
+          "internalID" : "6808331179",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "Base Six Months Access. Unlock base features.",
+              "displayName" : "Base - Six months access",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Base Полугодовой. Разблокируйте базовые возможности.",
+              "displayName" : "Base - Полугодовой доступ",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "base_six_months",
+          "recurringSubscriptionPeriod" : "P6M",
+          "referenceName" : "Base Six Months",
+          "subscriptionGroupID" : "22355031",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "2.99",
+              "displayPrice" : "2.99",
+              "internalID" : "6808340593_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "2.99",
+          "familyShareable" : false,
+          "groupNumber" : 8,
+          "internalID" : "6808340593",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "Base Weekly Access. Unlock base features.",
+              "displayName" : "Base - Weekly access",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Base Недельный. Разблокируйте базовые возможности.",
+              "displayName" : "Base - Недельный доступ",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "base_weekly",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Base Weekly",
+          "subscriptionGroupID" : "22355031",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "199.99",
+              "displayPrice" : "199.99",
+              "internalID" : "6807994194_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "199.99",
+          "familyShareable" : false,
+          "groupNumber" : 1,
+          "internalID" : "6807994194",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "Pro Annual Access. Unlock all features.",
+              "displayName" : "Pro - Annual access",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Pro Годовой доступ. Разблокируйте все возможности.",
+              "displayName" : "Pro - Годовой доступ",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "pro_annual",
+          "recurringSubscriptionPeriod" : "P1Y",
+          "referenceName" : "Pro Annual",
+          "subscriptionGroupID" : "22355031",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "19.99",
+              "displayPrice" : "19.99",
+              "internalID" : "6808322837_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "19.99",
+          "familyShareable" : false,
+          "groupNumber" : 3,
+          "internalID" : "6808322837",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "Pro Monthly Access. Unlock all features.",
+              "displayName" : "Pro - Monthly access",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Pro Месячный доступ. Разблокируйте все возможности.",
+              "displayName" : "Pro - Месячный доступ",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "pro_monthly",
+          "recurringSubscriptionPeriod" : "P1M",
+          "referenceName" : "Pro Monthly",
+          "subscriptionGroupID" : "22355031",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "112.99",
+              "displayPrice" : "112.99",
+              "internalID" : "6808321060_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "112.99",
+          "familyShareable" : false,
+          "groupNumber" : 2,
+          "internalID" : "6808321060",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "Pro Six Months Access. Unlock all features.",
+              "displayName" : "Pro - Six months access",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Pro Полугодовой доступ. Разблокируйте все возможности.",
+              "displayName" : "Pro - Полугодовой доступ",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "pro_six_months",
+          "recurringSubscriptionPeriod" : "P6M",
+          "referenceName" : "Pro Six Months",
+          "subscriptionGroupID" : "22355031",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        },
+        {
+          "adHocOffers" : [
+
+          ],
+          "billingPlans" : [
+            {
+              "billingPlanType" : "BILLED_UPFRONT",
+              "commitmentDisplayPrice" : "5.99",
+              "displayPrice" : "5.99",
+              "internalID" : "6808324886_BILLED_UPFRONT",
+              "isEnabled" : true
+            }
+          ],
+          "codeOffers" : [
+
+          ],
+          "displayPrice" : "5.99",
+          "familyShareable" : false,
+          "groupNumber" : 4,
+          "internalID" : "6808324886",
+          "introductoryOffers" : [
+
+          ],
+          "localizations" : [
+            {
+              "description" : "Pro Weekly Access. Unlock all features.",
+              "displayName" : "Pro - Weekly access",
+              "locale" : "en_US"
+            },
+            {
+              "description" : "Pro Недельный доступ. Разблокируйте все возможности.",
+              "displayName" : "Pro - Недельный доступ",
+              "locale" : "ru"
+            }
+          ],
+          "productID" : "pro_weekly",
+          "recurringSubscriptionPeriod" : "P1W",
+          "referenceName" : "Pro Weekly",
+          "subscriptionGroupID" : "22355031",
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
+        }
+      ]
+    }
+  ],
+  "version" : {
+    "major" : 5,
+    "minor" : 0
+  }
+}
