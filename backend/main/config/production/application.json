@@ -1,7 +1,7 @@
 {
     "isServiceAvailable": true,
-    "androidPackage": "",
-    "appStoreId": "",
+    "androidPackage": "com.medical.doglyad",
+    "appStoreId": "6794941559",
     "actualVersion": {
         "major": 0,
         "minor": 0,
