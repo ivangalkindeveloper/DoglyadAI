@@ -31,6 +31,7 @@ IOS_DEST ?= platform=iOS Simulator,name=iPhone 17
 IOS_ARCHIVE_DIR ?= $(CURDIR)/build/ios-archives
 IOS_EXPORT_OPTIONS_PLIST := $(CURDIR)/ios/ExportOptions.plist
 IOS_ARCHIVE_TIMESTAMP := $(shell date +%Y%m%d-%H%M%S)
+IOS_XCODE_PATH := /usr/bin:/bin:/usr/sbin:/sbin:$(PATH)
 
 # Prefer the project venv so `make format` works without activating it first.
 RUFF ?= $(shell if [ -x "$(CURDIR)/.venv311/bin/ruff" ]; then echo "$(CURDIR)/.venv311/bin/ruff"; else echo ruff; fi)
@@ -82,28 +83,28 @@ build-ios-release-production:
 
 upload-ios-release-development:
 	mkdir -p "$(IOS_ARCHIVE_DIR)"
-	xcodebuild archive \
+	PATH="$(IOS_XCODE_PATH)" xcodebuild archive \
 		-project ios/Doglyad.xcodeproj \
 		-scheme Doglyad-Release-Development \
 		-configuration Release-Development \
 		-destination 'generic/platform=iOS' \
 		-archivePath "$(IOS_ARCHIVE_DIR)/Doglyad-Release-Development-$(IOS_ARCHIVE_TIMESTAMP).xcarchive" \
 		-allowProvisioningUpdates
-	xcodebuild -exportArchive \
+	PATH="$(IOS_XCODE_PATH)" xcodebuild -exportArchive \
 		-archivePath "$(IOS_ARCHIVE_DIR)/Doglyad-Release-Development-$(IOS_ARCHIVE_TIMESTAMP).xcarchive" \
 		-exportOptionsPlist "$(IOS_EXPORT_OPTIONS_PLIST)" \
 		-allowProvisioningUpdates
 
 upload-ios-release-production:
 	mkdir -p "$(IOS_ARCHIVE_DIR)"
-	xcodebuild archive \
+	PATH="$(IOS_XCODE_PATH)" xcodebuild archive \
 		-project ios/Doglyad.xcodeproj \
 		-scheme Doglyad-Release-Production \
 		-configuration Release-Production \
 		-destination 'generic/platform=iOS' \
 		-archivePath "$(IOS_ARCHIVE_DIR)/Doglyad-Release-Production-$(IOS_ARCHIVE_TIMESTAMP).xcarchive" \
 		-allowProvisioningUpdates
-	xcodebuild -exportArchive \
+	PATH="$(IOS_XCODE_PATH)" xcodebuild -exportArchive \
 		-archivePath "$(IOS_ARCHIVE_DIR)/Doglyad-Release-Production-$(IOS_ARCHIVE_TIMESTAMP).xcarchive" \
 		-exportOptionsPlist "$(IOS_EXPORT_OPTIONS_PLIST)" \
 		-allowProvisioningUpdates
@@ -119,10 +120,6 @@ start-backend-main-logs:
 stop-backend-main:
 	docker compose -f backend/main/docker-compose.yml down
 
-# Inference service. Run this ON a GPU VM, not on a developer machine:
-# it starts vLLM with SERVED_MODEL_ID and the adjacent backend/inference service.
-# --env-file is required because Compose substitutes ${VAR} in docker-compose.yml
-# only from its own environment file, not from a service's env_file section.
 start-backend-inference:
 	docker compose --env-file backend/inference/secrets/.env -f backend/inference/docker-compose.yml up --build -d
 start-backend-inference-logs:
@@ -130,9 +127,6 @@ start-backend-inference-logs:
 stop-backend-inference:
 	docker compose --env-file backend/inference/secrets/.env -f backend/inference/docker-compose.yml down
 
-# Initialize a clean VM from a local machine: bootstrap, reboot, verification,
-# and Tailscale connection without manually entering an interactive SSH session.
-# Example: make init-vm-inference TARGET=root@203.0.113.10
 init-vm-main:
 	test -n "$(TARGET)" || { echo "TARGET is required: make init-vm-main TARGET=USER@HOST" >&2; exit 1; }
 	deploy/init-vm.sh main "$(TARGET)"
@@ -140,9 +134,6 @@ init-vm-inference:
 	test -n "$(TARGET)" || { echo "TARGET is required: make init-vm-inference TARGET=USER@HOST" >&2; exit 1; }
 	deploy/init-vm.sh inference "$(TARGET)"
 
-# Transfer local secrets and apply them on an already initialized VM.
-# The main deployment profile remains controlled by /opt/doglyad/.env on the VM;
-# separate targets make the intended environment explicit at the call site.
 sync-secrets-main-development sync-secrets-main-production:
 	test -n "$(TARGET)" || { echo "TARGET is required: make $@ TARGET=USER@HOST" >&2; exit 1; }
 	deploy/sync-secrets.sh main "$(TARGET)"
@@ -150,8 +141,6 @@ sync-secrets-inference:
 	test -n "$(TARGET)" || { echo "TARGET is required: make sync-secrets-inference TARGET=USER@HOST" >&2; exit 1; }
 	deploy/sync-secrets.sh inference "$(TARGET)"
 
-# Deploy an image that has already been published by the GitHub Actions build.
-# Example: make update-main-development TARGET=USER@HOST TAG=$$(git rev-parse HEAD)
 update-main-development:
 	test -n "$(TARGET)" || { echo "TARGET is required: make update-main-development TARGET=USER@HOST TAG=IMAGE_TAG" >&2; exit 1; }
 	test -n "$(TAG)" || { echo "TAG is required: make update-main-development TARGET=USER@HOST TAG=IMAGE_TAG" >&2; exit 1; }
