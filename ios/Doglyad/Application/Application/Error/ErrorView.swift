@@ -59,7 +59,7 @@ struct ErrorView<Description: View>: View {
         ) {
             Spacer()
 
-            Image(.onBoarding4)
+            Image(.doglyadQuestion)
                 .resizable()
                 .scaledToFit()
                 .frame(

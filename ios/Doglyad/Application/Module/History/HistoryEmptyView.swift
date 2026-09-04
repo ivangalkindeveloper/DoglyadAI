@@ -11,7 +11,7 @@ struct HistoryEmptyView: View {
         VStack(
             spacing: .zero
         ) {
-            Image(.emptyHistory)
+            Image(.doglyadMagnifier)
                 .resizable()
                 .scaledToFit()
                 .frame(

@@ -18,13 +18,13 @@
     },
     "entitlements": {
         "base": {
-            "requestCountPerDay": 10,
+            "requestCountPerDay": 15,
             "formCompletionViaMicrophone": "Offered",
             "sendingConclusionByEmail": "Offered",
             "neuralModelSettings": "Offered"
         },
         "pro": {
-            "requestCountPerDay": 100,
+            "requestCountPerDay": 40,
             "formCompletionViaMicrophone": "Available",
             "sendingConclusionByEmail": "Available",
             "neuralModelSettings": "Available"

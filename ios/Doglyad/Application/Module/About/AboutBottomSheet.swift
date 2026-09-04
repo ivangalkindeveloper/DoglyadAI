@@ -39,7 +39,7 @@ struct AboutBottomSheet: View {
             VStack(
                 spacing: .zero
             ) {
-                Image(.about)
+                Image(.doglyadAbout)
                     .resizable()
                     .scaledToFit()
                     .frame(

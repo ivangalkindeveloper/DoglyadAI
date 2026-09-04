@@ -24,7 +24,7 @@ struct LegalUpdateScreenView: View {
 
                     Spacer()
 
-                    Image(.onBoarding3)
+                    Image(.doglyadQuiet)
                         .resizable()
                         .scaledToFit()
                         .frame(

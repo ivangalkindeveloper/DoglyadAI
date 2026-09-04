@@ -11,7 +11,7 @@ struct TemplateListEmptyView: View {
         VStack(
             spacing: .zero
         ) {
-            Image(.emptyTemplates)
+            Image(.doglyadFile)
                 .resizable()
                 .scaledToFit()
                 .frame(

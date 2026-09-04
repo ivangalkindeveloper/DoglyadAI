@@ -69,21 +69,21 @@ struct OnBoardingScreenView: View {
             OnBoardingPageView(
                 tag: .first,
                 title: .onBoardingTitleFirst,
-                image: .onBoarding1,
+                image: .doglyad,
                 description: .onBoardingDescriptionFirst
             )
         case .second:
             OnBoardingPageView(
                 tag: .second,
                 title: .onBoardingTitleSecond,
-                image: .onBoarding2,
+                image: .doglyadUSMachine,
                 description: .onBoardingDescriptionSecond
             )
         case .third:
             OnBoardingPageView(
                 tag: .third,
                 title: .onBoardingTitleThird,
-                image: .onBoarding3,
+                image: .doglyadQuiet,
                 description: .onBoardingDescriptionThird
             ) {
                 HStack(
@@ -109,14 +109,14 @@ struct OnBoardingScreenView: View {
             OnBoardingPageView(
                 tag: .fourth,
                 title: .onBoardingTitleFourth,
-                image: .onBoarding4,
+                image: .doglyadQuestion,
                 description: .onBoardingDescriptionFourth
             )
         case .fifth:
             OnBoardingPageView(
                 tag: .fifth,
                 title: .onBoardingTitleFifth,
-                image: .onBoarding5,
+                image: .doglyadTable,
                 description: .onBoardingDescriptionFifth
             )
         }
