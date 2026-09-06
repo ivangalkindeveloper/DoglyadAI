@@ -4,13 +4,26 @@ import SwiftData
 @ModelActor
 public actor DExaminationConclusionsStore {
     public func fetchExaminationConclusions<T: Sendable>(
+        limit: Int,
+        offset: Int,
         _ transform: @Sendable ([USExaminationConclusionDB]) -> T
     ) -> T {
-        let descriptor = FetchDescriptor<USExaminationConclusionDB>(
-            sortBy: [SortDescriptor(\.date, order: .forward)]
+        guard limit > 0 else {
+            return transform([])
+        }
+
+        var descriptor = FetchDescriptor<USExaminationConclusionDB>(
+            sortBy: [SortDescriptor(\.date, order: .reverse)]
         )
+        descriptor.fetchLimit = limit
+        descriptor.fetchOffset = max(offset, 0)
         let models = (try? modelContext.fetch(descriptor)) ?? []
         return transform(models)
+    }
+
+    public func fetchExaminationConclusionsCount() -> Int {
+        let descriptor = FetchDescriptor<USExaminationConclusionDB>()
+        return (try? modelContext.fetchCount(descriptor)) ?? 0
     }
 
     public func setExaminationConclusion(value: USExaminationConclusionDB) throws {

@@ -41,7 +41,7 @@ struct ErrorView<Description: View>: View {
                     isLoading: applicationViewModel.isLoading
                 )
                 .dStyle(.primaryButton)
-                .padding(.horizontal, size.s16)
+                .padding(size.s16)
             }
         } else {
             DScreen { _, _ in

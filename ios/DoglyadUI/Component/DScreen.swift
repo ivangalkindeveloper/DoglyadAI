@@ -81,68 +81,65 @@ public struct DScreen<Leading: View, Title: View, Trailing: View, Content: View,
             let safeAreaInsetTop = proxy.safeAreaInsets.top
             let safeAreaInsetBottom = proxy.safeAreaInsets.bottom
 
-            NavigationView {
-                ZStack(
-                    alignment: .top
+            ZStack(
+                alignment: .top
+            ) {
+                bodyView(toolbarHeight - safeAreaInsetTop, bottomHeight - safeAreaInsetBottom)
+
+                VStack(
+                    spacing: .zero
                 ) {
-                    bodyView(toolbarHeight - safeAreaInsetTop, bottomHeight - safeAreaInsetBottom)
-
-                    VStack(
-                        spacing: .zero
-                    ) {
-                        Spacer()
-                        if let bottom = self.bottom?() {
-                            bottom
-                                .padding(.vertical, size.adaptiveCornerRadius / 6)
-                                .frame(maxWidth: .infinity)
-                                .safeAreaPadding(.bottom)
-                                .background(
-                                    Rectangle()
-                                        .fill(.ultraThinMaterial)
-                                        .clipShape(
-                                            DRoundedCorner(
-                                                radius: size.adaptiveCornerRadius,
-                                                corners: [.topLeft, .topRight]
-                                            )
+                    Spacer()
+                    if let bottom = self.bottom?() {
+                        bottom
+                            .padding(.vertical, size.adaptiveCornerRadius / 6)
+                            .frame(maxWidth: .infinity)
+                            .safeAreaPadding(.bottom)
+                            .background(
+                                Rectangle()
+                                    .fill(.ultraThinMaterial)
+                                    .clipShape(
+                                        DRoundedCorner(
+                                            radius: size.adaptiveCornerRadius,
+                                            corners: [.topLeft, .topRight]
                                         )
-                                )
-                                .overlay {
-                                    GeometryReader { proxy in
-                                        Color.clear
-                                            .preference(
-                                                key: BottomHeightPreferenceKey.self,
-                                                value: proxy.size.height
-                                            )
-                                    }
-                                }
-                                .onPreferenceChange(BottomHeightPreferenceKey.self) { value in
-                                    guard bottomHeight != value else { return }
-                                    bottomHeight = value
-                                }
-                                .transition(.move(edge: .bottom))
-                        }
-                    }
-                    .edgesIgnoringSafeArea(.bottom)
-
-                    if isShowsToolbar {
-                        toolbarView(safeAreaInsetTop)
-                            .onPreferenceChange(ToolbarHeightPreferenceKey.self) { value in
-                                guard toolbarHeight != value else { return }
-                                toolbarHeight = value
-                            }
-                            .onChange(of: isShowsToolbar) { _, value in
-                                if !value {
-                                    toolbarHeight = 0
+                                    )
+                            )
+                            .overlay {
+                                GeometryReader { proxy in
+                                    Color.clear
+                                        .preference(
+                                            key: BottomHeightPreferenceKey.self,
+                                            value: proxy.size.height
+                                        )
                                 }
                             }
-                            .ignoresSafeArea(.container, edges: [.top])
+                            .onPreferenceChange(BottomHeightPreferenceKey.self) { value in
+                                guard bottomHeight != value else { return }
+                                bottomHeight = value
+                            }
+                            .transition(.move(edge: .bottom))
                     }
                 }
-                .background(backgroundColor ?? color.grayscaleBackgroundWeak)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.bottom)
+
+                if isShowsToolbar {
+                    toolbarView(safeAreaInsetTop)
+                        .onPreferenceChange(ToolbarHeightPreferenceKey.self) { value in
+                            guard toolbarHeight != value else { return }
+                            toolbarHeight = value
+                        }
+                        .onChange(of: isShowsToolbar) { _, value in
+                            if !value {
+                                toolbarHeight = 0
+                            }
+                        }
+                        .ignoresSafeArea(.container, edges: [.top])
+                }
             }
-            .navigationViewStyle(.stack)
-            .navigationBarBackButtonHidden(true)
+            .background(backgroundColor ?? color.grayscaleBackgroundWeak)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(DInteractivePopGestureView())
             .toolbar(.hidden, for: .navigationBar)
             .toolbarBackground(.hidden, for: .navigationBar)
         }

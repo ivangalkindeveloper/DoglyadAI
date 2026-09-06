@@ -30,7 +30,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var usExaminationNeuralModelDefault: USExaminationNeuralModel?
     var usExaminationContextualStrings: USExaminationContextualStrings?
     var examinationNeuralModelFactory: DExaminationNeuralModelFactory?
-    var initialUltraSoundConclusions: [USExaminationConclusion]?
+    var initialUltraSoundConclusionsCount: Int?
     var initialSubscriptionStatus: SubscriptionStatus?
     var initialScreen: ScreenType?
     var initialScreenArguments: RouteArgumentsProtocol?

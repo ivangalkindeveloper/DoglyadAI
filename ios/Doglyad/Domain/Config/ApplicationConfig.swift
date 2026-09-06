@@ -14,6 +14,31 @@ struct ApplicationConfig: Codable {
     let network: NetworkConfig
     let entitlements: [SubscriptionType: SubscriptionEntitlement]
     let ultrasound: UltrasoundConfig
+    let history: HistoryConfig
+}
+
+extension ApplicationConfig {
+    static let `default` = ApplicationConfig(
+        isServiceAvailable: false,
+        appStoreId: "",
+        actualVersion: .default,
+        contactEmail: "doglyadapp@gmail.com",
+        appleUpdateUrl: URL(string: "https://apps.apple.com/app/id")!,
+        legalDate: .distantPast,
+        privacyPolicyUrl: URL(string: "https://ivangalkindeveloper.github.io/DoglyadAI/legal/privacy-policy")!,
+        termsAndConditionsUrl: URL(string: "https://ivangalkindeveloper.github.io/DoglyadAI/legal/terms-and-conditions")!,
+        network: .default,
+        entitlements: [
+            .base: SubscriptionEntitlement(
+                requestCountPerDay: 10,
+                formCompletionViaMicrophone: .unavailable,
+                sendingConclusionByEmail: .unavailable,
+                neuralModelSettings: .unavailable
+            ),
+        ],
+        ultrasound: .default,
+        history: .default
+    )
 }
 
 extension ApplicationConfig {
@@ -29,23 +54,36 @@ extension ApplicationConfig {
         case network
         case entitlements
         case ultrasound
+        case history
     }
 
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        isServiceAvailable = try container.decodeIfPresent(Bool.self, forKey: .isServiceAvailable) ?? false
+        isServiceAvailable = try container.decodeIfPresent(
+            Bool.self,
+            forKey: .isServiceAvailable
+        ) ?? Self.default.isServiceAvailable
         appStoreId = try container.decode(String.self, forKey: .appStoreId)
-        actualVersion = try container.decode(Version.self, forKey: .actualVersion)
+        actualVersion = try container.decodeIfPresent(
+            Version.self,
+            forKey: .actualVersion
+        ) ?? .default
         contactEmail = try container.decode(String.self, forKey: .contactEmail)
         appleUpdateUrl = try container.decode(URL.self, forKey: .appleUpdateUrl)
-        legalDate = try container.decodeIfPresent(Date.self, forKey: .legalDate) ?? .distantPast
+        legalDate = try container.decodeIfPresent(
+            Date.self,
+            forKey: .legalDate
+        ) ?? Self.default.legalDate
         privacyPolicyUrl = try container.decode(URL.self, forKey: .privacyPolicyUrl)
         termsAndConditionsUrl = try container.decode(URL.self, forKey: .termsAndConditionsUrl)
-        // Optional so a config published before this field existed still decodes; the
-        // client then keeps its built-in timeouts instead of failing to start.
-        network = try container.decodeIfPresent(NetworkConfig.self, forKey: .network) ?? .default
-        ultrasound = try container.decode(UltrasoundConfig.self, forKey: .ultrasound)
-
+        network = try container.decodeIfPresent(
+            NetworkConfig.self,
+            forKey: .network
+        ) ?? .default
+        ultrasound = try container.decodeIfPresent(
+            UltrasoundConfig.self,
+            forKey: .ultrasound
+        ) ?? .default
         let rawEntitlements = try container.decode(
             [String: SubscriptionEntitlement].self,
             forKey: .entitlements
@@ -55,6 +93,10 @@ extension ApplicationConfig {
                 SubscriptionType(rawValue: rawType).map { ($0, entitlement) }
             }
         )
+        history = try container.decodeIfPresent(
+            HistoryConfig.self,
+            forKey: .history
+        ) ?? .default
     }
 
     func encode(to encoder: Encoder) throws {
@@ -69,6 +111,7 @@ extension ApplicationConfig {
         try container.encode(termsAndConditionsUrl, forKey: .termsAndConditionsUrl)
         try container.encode(network, forKey: .network)
         try container.encode(ultrasound, forKey: .ultrasound)
+        try container.encode(history, forKey: .history)
 
         let rawEntitlements = Dictionary(
             uniqueKeysWithValues: entitlements.map { type, entitlement in

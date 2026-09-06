@@ -151,47 +151,7 @@ extension DependencyContainer {
             ultrasoundConclusionRepository: ultrasoundConclusionRepository,
             templateRepository: templateRepository,
             subscriptionRepository: subscriptionRepository,
-            applicationConfig: ApplicationConfig(
-                isServiceAvailable: false,
-                appStoreId: "",
-                actualVersion: Version(
-                    major: 1,
-                    minor: 0,
-                    patch: 0
-                ),
-                contactEmail: "doglyadapp@gmail.com",
-                appleUpdateUrl: URL(string: "https://apps.apple.com/app/id")!,
-                legalDate: .distantPast,
-                privacyPolicyUrl: URL(string: "https://ivangalkindeveloper.github.io/DoglyadAI/legal/privacy-policy")!,
-                termsAndConditionsUrl: URL(string: "https://ivangalkindeveloper.github.io/DoglyadAI/legal/terms-and-conditions")!,
-                network: .default,
-                entitlements: [
-                    .base: SubscriptionEntitlement(
-                        requestCountPerDay: 10,
-                        formCompletionViaMicrophone: .unavailable,
-                        sendingConclusionByEmail: .unavailable,
-                        neuralModelSettings: .unavailable
-                    ),
-                ],
-                ultrasound: UltrasoundConfig(
-                    neuralModel: UltrasoundNeuralModelConfig(
-                        temperature: 0.2,
-                        maxTokens: 512
-                    ),
-                    examinationNeuralModel: UltrasoundExaminationNeuralModelConfig(
-                        temperature: 0,
-                        maxTokens: 0,
-                        maxContextTokens: 0,
-                        prompt: [:]
-                    ),
-                    scanPhotoMaxNumber: 0,
-                    scanPhotoResizeMaxDimension: 0,
-                    scanPhotoCompressionQuality: 0,
-                    defaultPatientDateOfBirthGap: 0,
-                    defaultPatientHeightCM: 0,
-                    defaultPatientWeightKG: 0
-                )
-            ),
+            applicationConfig: .default,
             usExaminationTypes: [],
             usExaminationTypesById: [:],
             usExaminationTypeDefault: .init(

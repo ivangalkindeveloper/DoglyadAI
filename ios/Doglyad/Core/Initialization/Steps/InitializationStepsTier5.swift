@@ -120,7 +120,7 @@ extension InitializationProcess {
                         return process.initialScreen = .legalUpdate
                     }
 
-                    if process.initialUltraSoundConclusions!.isEmpty, process.initialSubscriptionStatus == nil {
+                    if process.initialUltraSoundConclusionsCount == 0, process.initialSubscriptionStatus == nil {
                         return process.initialScreen = .subscriptionPaywall
                     }
 

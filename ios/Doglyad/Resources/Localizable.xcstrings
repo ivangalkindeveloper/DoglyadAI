@@ -836,6 +836,23 @@
         }
       }
     },
+    "dateTodayLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Today"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сегодня"
+          }
+        }
+      }
+    },
     "historyTitle": {
       "extractionState": "manual",
       "localizations": {
@@ -849,6 +866,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "История исследований"
+          }
+        }
+      }
+    },
+    "dateYesterdayLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yesterday"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вчера"
           }
         }
       }

@@ -53,10 +53,20 @@ extension UltrasoundConclusionRepository {
         )
     }
 
-    func getConclusions() async -> [USExaminationConclusion] {
-        await database.examinationConclusions.fetchExaminationConclusions { models in
+    func getConclusions(
+        limit: Int,
+        offset: Int
+    ) async -> [USExaminationConclusion] {
+        await database.examinationConclusions.fetchExaminationConclusions(
+            limit: limit,
+            offset: offset
+        ) { models in
             models.map { USExaminationConclusion.fromDB($0) }
         }
+    }
+
+    func getConclusionsCount() async -> Int {
+        await database.examinationConclusions.fetchExaminationConclusionsCount()
     }
 
     func setConclusion(

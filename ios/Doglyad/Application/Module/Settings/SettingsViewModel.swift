@@ -27,14 +27,14 @@ final class SettingsViewModel: DViewModel {
         super.init()
     }
 
-    @Published var conclusions: [USExaminationConclusion] = []
+    @Published var conclusionsCount = 0
     @Published var neuralModel: USExaminationNeuralModel
 
     override func onInit() {
         handle {
-            await self.container.ultrasoundConclusionRepository.getConclusions()
-        } onMainSuccess: { conclusions in
-            self.conclusions = conclusions
+            await self.container.ultrasoundConclusionRepository.getConclusionsCount()
+        } onMainSuccess: { conclusionsCount in
+            self.conclusionsCount = conclusionsCount
         }
     }
 
@@ -43,7 +43,7 @@ final class SettingsViewModel: DViewModel {
     }
 
     func historyDescription() -> LocalizedStringResource {
-        conclusions.isEmpty ? .settingsHistoryEmptyDescription : .settingsHistoryDescription(count: conclusions.count)
+        conclusionsCount == 0 ? .settingsHistoryEmptyDescription : .settingsHistoryDescription(count: conclusionsCount)
     }
 
     func onTapHistory() {

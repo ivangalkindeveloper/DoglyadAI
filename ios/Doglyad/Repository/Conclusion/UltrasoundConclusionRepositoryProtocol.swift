@@ -18,7 +18,12 @@ protocol UltrasoundConclusionRepositoryProtocol: AnyObject {
         scanPhotoEncodingOptions: ScanPhotoEncodingOptions
     ) async throws -> USExaminationModelConclusion
 
-    func getConclusions() async -> [USExaminationConclusion]
+    func getConclusions(
+        limit: Int,
+        offset: Int
+    ) async -> [USExaminationConclusion]
+
+    func getConclusionsCount() async -> Int
 
     func setConclusion(
         conclusion: USExaminationConclusion

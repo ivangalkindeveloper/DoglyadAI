@@ -50,5 +50,8 @@
         "defaultPatientDateOfBirthGap": 25,
         "defaultPatientHeightCM": 180,
         "defaultPatientWeightKG": 60
+    },
+    "history": {
+        "pageSize": 20
     }
 }

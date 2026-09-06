@@ -90,7 +90,7 @@ final class ScanViewModel: DViewModel {
             self.usExaminationType = usExaminationType
         }
         handle {
-            await self.container.ultrasoundConclusionRepository.getConclusions().count
+            await self.container.ultrasoundConclusionRepository.getConclusionsCount()
         } onMainSuccess: { patientCount in
             self.patientNameController.text = String(localized: .scanPatientDefaultNameLabel(count: patientCount))
         }
@@ -530,7 +530,7 @@ final class ScanViewModel: DViewModel {
     private func reset() async {
         sheetController.setHidden()
         photos.removeAll()
-        let patientCount = await container.ultrasoundConclusionRepository.getConclusions().count
+        let patientCount = await container.ultrasoundConclusionRepository.getConclusionsCount()
         patientNameController.text = String(localized: .scanPatientDefaultNameLabel(count: patientCount))
         patientGender = .male
         patientDateOfBirth = defaultPatientDateOfBirth

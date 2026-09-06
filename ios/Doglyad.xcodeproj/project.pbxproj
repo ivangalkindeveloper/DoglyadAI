@@ -213,6 +213,8 @@
 				Message/DMessageView.swift,
 				Theme/DTheme.swift,
 				Theme/DThemeWrapperModifier.swift,
+				Utility/DInteractivePopGestureController.swift,
+				Utility/DInteractivePopGestureView.swift,
 				Utility/DRoundedCorner.swift,
 				Utility/Extension/Color.swift,
 				Utility/Extension/Font.swift,
@@ -258,6 +260,8 @@
 				"Resources/Montserrat-SemiBold.ttf",
 				Theme/DTheme.swift,
 				Theme/DThemeWrapperModifier.swift,
+				Utility/DInteractivePopGestureController.swift,
+				Utility/DInteractivePopGestureView.swift,
 				Utility/DRoundedCorner.swift,
 				Utility/Extension/Color.swift,
 				Utility/Extension/Font.swift,
@@ -1369,7 +1373,7 @@
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1797,7 +1801,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -2381,7 +2385,7 @@
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -2411,7 +2415,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.development;
+				PRODUCT_BUNDLE_IDENTIFIER = com.medical.doglyad.local;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				REGISTER_APP_GROUPS = YES;
@@ -2435,7 +2439,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;

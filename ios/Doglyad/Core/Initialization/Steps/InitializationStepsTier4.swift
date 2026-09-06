@@ -95,9 +95,9 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Initial ultrasound conclusions",
                 run: { (process: InitializationProcess) async in
-                    let conclusions = await process.ultrasoundConclusionRepository!.getConclusions()
+                    let count = await process.ultrasoundConclusionRepository!.getConclusionsCount()
                     await MainActor.run {
-                        process.initialUltraSoundConclusions = conclusions
+                        process.initialUltraSoundConclusionsCount = count
                     }
                 }
             ),
