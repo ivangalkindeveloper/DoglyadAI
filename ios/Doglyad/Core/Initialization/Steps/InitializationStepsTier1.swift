@@ -27,6 +27,7 @@ extension InitializationProcess {
                 SyncInitializationStep<InitializationProcess>(
                     title: "Manager",
                     run: { (process: InitializationProcess) in
+                        process.analytics = AnalyticsManager()
                         process.connectionManager = ConnectionManager()
                         process.connectionManager?.start()
                         process.permissionManager = PermissionManager()
@@ -74,12 +75,17 @@ extension InitializationProcess {
                 ),
                 SyncInitializationStep<InitializationProcess>(
                     title: "Firebase",
-                    run: { (_: InitializationProcess) in
-                        guard !getIsFirebaseConfigured() else { return }
+                    run: { (process: InitializationProcess) in
+                        if !getIsFirebaseConfigured() {
+                            AppCheck.setAppCheckProviderFactory(DAppCheckProviderFactory())
+                            FirebaseApp.configure()
+                            onFirebaseConfigured()
+                        }
 
-                        AppCheck.setAppCheckProviderFactory(DAppCheckProviderFactory())
-                        FirebaseApp.configure()
-                        onFirebaseConfigured()
+                        process.analytics!.applicationOpened(
+                            environment: process.environment!.type,
+                            appVersion: Bundle.dictionaryString(.CFBundleShortVersionString)
+                        )
                     }
                 ),
                 SyncInitializationStep<InitializationProcess>(

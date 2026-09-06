@@ -6,19 +6,18 @@ struct WebDocumentBottomSheetView: View {
     private var color: DColor { theme.color }
     private var size: DSize { theme.size }
 
-    let url: URL
-    let title: LocalizedStringResource
+    @StateObject var viewModel: WebDocumentViewModel
 
     @State private var isLoading = true
 
     var body: some View {
         DBottomSheet(
-            title: title,
+            title: viewModel.title,
             fraction: 0.8
         ) { toolbarHeight, bottomHeight in
             ZStack {
                 WebDocumentBottomSheetWebView(
-                    url: url,
+                    url: viewModel.url,
                     topInset: toolbarHeight,
                     bottomInset: bottomHeight,
                     isLoading: $isLoading
@@ -36,5 +35,6 @@ struct WebDocumentBottomSheetView: View {
             theme.animation,
             value: isLoading
         )
+        .onAppear(perform: viewModel.onAppear)
     }
 }

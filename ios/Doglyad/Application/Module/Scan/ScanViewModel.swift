@@ -40,7 +40,8 @@ final class ScanViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.scan)
         )
     }
 
@@ -110,6 +111,7 @@ final class ScanViewModel: DViewModel {
     }
 
     func onSubmit() {
+        analytics.buttonTapped(.scanSubmit)
         switch focus {
         case .patientName:
             focus = .patientHeightCM
@@ -150,10 +152,12 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapSettings() {
+        analytics.buttonTapped(.scanSettings)
         coordinator.screen(.settings)
     }
 
     func onTapUSExaminationType() {
+        analytics.buttonTapped(.scanUSExaminationType)
         coordinator.sheet(
             .selectUSExaminationType,
             arguments: SelectUSExaminationTypeArguments(
@@ -175,7 +179,18 @@ final class ScanViewModel: DViewModel {
         photos.count == photoMaxCount ? .down : .camera
     }
 
+    func onTapCameraTurnOn() {
+        analytics.buttonTapped(.scanCameraTurnOn)
+        cameraController.startSession()
+    }
+
     func onTapCapture() {
+        analytics.buttonTapped(
+            .scanCapture,
+            parameters: AnalyticsParameters([
+                .itemCount: .int(photos.count),
+            ])
+        )
         if photos.count == photoMaxCount {
             return sheetController.setTop()
         }
@@ -208,6 +223,12 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapGallery() {
+        analytics.buttonTapped(
+            .scanGallery,
+            parameters: AnalyticsParameters([
+                .selectionLimit: .int(gallerySelectionLimit),
+            ])
+        )
         handle {
             await self.container.permissionManager.isGranted(.photoLibrary)
         } onMainSuccess: { isGranted in
@@ -255,18 +276,26 @@ final class ScanViewModel: DViewModel {
     func onTapDeletePhoto(
         photo: USExaminationScanPhoto
     ) {
+        analytics.buttonTapped(
+            .scanDeletePhoto,
+            parameters: AnalyticsParameters([
+                .itemCount: .int(photos.count),
+            ])
+        )
         photos.remove(at: photos.firstIndex(of: photo)!)
     }
 
     func onTapPatientGender(
         value: PatientGender
     ) {
+        analytics.buttonTapped(.scanPatientGender)
         guard patientGender != value else { return }
 
         patientGender = value
     }
 
     func onTapPatientDateOfBirth() {
+        analytics.buttonTapped(.scanPatientDateOfBirth)
         coordinator.sheet(
             .selectDateOfBirth,
             arguments: SelectDateOfBirthArguments(
@@ -286,6 +315,12 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapSelectedTemplate() {
+        analytics.buttonTapped(
+            .scanSelectedTemplate,
+            parameters: AnalyticsParameters([
+                .hasCurrentValue: .bool(getTemplate() != nil),
+            ])
+        )
         if let template = getTemplate() {
             return coordinator.screen(
                 .templateEdit,
@@ -299,6 +334,12 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapNeuralModelSelection() {
+        analytics.buttonTapped(
+            .scanNeuralModelSelection,
+            parameters: AnalyticsParameters([
+                .modelId: .string(getNeuralModel().id),
+            ])
+        )
         coordinator.sheet(
             .selectNeuralModel,
             arguments: SelectNeuralModelArguments(
@@ -311,12 +352,14 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapNeuralModelSettings() {
+        analytics.buttonTapped(.scanNeuralModelSettings)
         coordinator.run(.neuralModelSettings) {
             self.coordinator.screen(.neuralModelSettings)
         }
     }
 
     func onTapFill() {
+        analytics.buttonTapped(.scanFill)
         patientComplaintController.text = container.mockFactory.fillPatientComplaint(
             for: Locale.current
         )
@@ -337,6 +380,7 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapSpeech() {
+        analytics.buttonTapped(.scanSpeech)
         coordinator.run(.formCompletionViaMicrophone) {
             self.startSpeechFlow()
         }
@@ -385,6 +429,13 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapScan() {
+        analytics.buttonTapped(
+            .scanGenerate,
+            parameters: AnalyticsParameters([
+                .itemCount: .int(photos.count),
+                .modelId: .string(getNeuralModel().id),
+            ])
+        )
         let isPatientNameValid = patientNameController.validate()
         let isPatientHeightCMValid = patientHeightCMController.validate()
         let isPatientWeightKGValid = patientWeightKGController.validate()

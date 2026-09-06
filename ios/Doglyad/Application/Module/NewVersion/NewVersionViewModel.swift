@@ -3,7 +3,7 @@ import UIKit
 
 @MainActor
 final class NewVersionViewModel: DViewModel {
-    override init(
+    init(
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel
@@ -11,11 +11,13 @@ final class NewVersionViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.newVersion)
         )
     }
 
     func onTapUpdate() {
+        analytics.buttonTapped(.newVersionUpdate)
         let id = container.applicationConfig.appStoreId
         UIApplication.openAppStore(
             appleUpdateUrl: container.applicationConfig.appleUpdateUrl,

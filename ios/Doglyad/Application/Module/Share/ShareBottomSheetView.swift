@@ -83,6 +83,7 @@ struct ShareBottomSheetView: View {
             .padding(.top, toolbarHeight + size.s16)
             .padding(.horizontal, size.s16)
         }
+        .onAppear(perform: viewModel.onAppear)
     }
 
     private func row(

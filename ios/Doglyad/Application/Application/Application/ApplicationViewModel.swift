@@ -19,7 +19,7 @@ final class ApplicationViewModel: ObservableObject {
         isLoading = true
         Task {
             await DependencyInitializer<InitializationProcess, DependencyContainer>(
-                createProcess: { InitializationProcess() },
+                createProcess: InitializationProcess.init,
                 stepSets: [
                     InitializationProcess.stepsTier1(
                         getIsFirebaseConfigured: { [weak self] in
@@ -43,17 +43,22 @@ final class ApplicationViewModel: ObservableObject {
                     )
                     self.rootID = UUID()
                 },
-                onError: { [weak self] error, _, _, _ in
+                onError: { [weak self] error, process, _, _ in
                     guard let self = self else { return }
 
                     self.isLoading = false
                     self.root = ErrorRootView(
-                        error: error
+                        error: error,
+                        analytics: process.analytics
                     )
                     self.rootID = UUID()
                 }
             ).run()
         }
+    }
+
+    func retryInitialization() {
+        initialize()
     }
 
     func openSettings() {

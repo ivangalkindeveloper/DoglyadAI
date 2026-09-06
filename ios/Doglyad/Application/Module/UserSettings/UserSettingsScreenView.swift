@@ -58,6 +58,7 @@ struct UserSettingsScreenView: View {
                 .padding(size.s16)
             }
         )
+        .onAppear(perform: viewModel.onAppear)
         .scrollDismissesKeyboard(.interactively)
         .onSubmit {
             viewModel.onSubmit()

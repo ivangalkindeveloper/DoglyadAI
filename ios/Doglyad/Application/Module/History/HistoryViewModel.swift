@@ -24,7 +24,8 @@ final class HistoryViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.history)
         )
     }
 
@@ -45,12 +46,14 @@ final class HistoryViewModel: DViewModel {
     }
 
     func onTapBack() {
+        analytics.buttonTapped(.historyBack)
         coordinator.pop()
     }
 
     func onTapConclusion(
         value: USExaminationConclusion
     ) {
+        analytics.buttonTapped(.historyConclusion)
         coordinator.screen(
             .conclusion,
             arguments: ConclusionScreenArguments(

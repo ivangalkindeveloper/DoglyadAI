@@ -10,11 +10,20 @@ struct SubscriptionPaywallScreenView: View {
             fonts: DPaywallFontProvider(),
             displayCloseButton: !router.path.isEmpty
         )
+        .onAppear(perform: viewModel.onAppear)
+        .onPurchaseStarted { package in
+            viewModel.onPurchaseStarted(
+                productId: package.storeProduct.productIdentifier
+            )
+        }
         .onPurchaseCompleted { _ in
-            viewModel.onCompleted()
+            viewModel.onPurchaseCompleted()
+        }
+        .onRestoreStarted {
+            viewModel.onRestoreStarted()
         }
         .onRestoreCompleted { _ in
-            viewModel.onCompleted()
+            viewModel.onRestoreCompleted()
         }
         .onRequestedDismissal {
             viewModel.onRequestedDismissal()

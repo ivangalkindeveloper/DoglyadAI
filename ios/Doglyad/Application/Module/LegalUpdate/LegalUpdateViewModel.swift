@@ -5,7 +5,7 @@ import SwiftUI
 
 @MainActor
 final class LegalUpdateViewModel: DViewModel {
-    override init(
+    init(
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel
@@ -13,7 +13,8 @@ final class LegalUpdateViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.legalUpdate)
         )
     }
 
@@ -23,7 +24,20 @@ final class LegalUpdateViewModel: DViewModel {
         isLegalAccepted == false
     }
 
+    func onLegalAcceptedChanged(
+        _ value: Bool
+    ) {
+        analytics.buttonTapped(
+            .legalUpdateLegalToggle,
+            parameters: AnalyticsParameters([
+                .result: .bool(value),
+            ])
+        )
+        isLegalAccepted = value
+    }
+
     func onTapPrivacyPolicy() {
+        analytics.buttonTapped(.legalUpdatePrivacyPolicy)
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
@@ -34,6 +48,7 @@ final class LegalUpdateViewModel: DViewModel {
     }
 
     func onTapTermsAndConditions() {
+        analytics.buttonTapped(.legalUpdateTermsAndConditions)
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
@@ -44,6 +59,7 @@ final class LegalUpdateViewModel: DViewModel {
     }
 
     func onTapAccept() {
+        analytics.buttonTapped(.legalUpdateAccept)
         container.sharedRepository.acceptLegal(
             documentDate: container.applicationConfig.legalDate
         )

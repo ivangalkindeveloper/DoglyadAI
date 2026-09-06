@@ -43,10 +43,9 @@ struct ScanCameraView: View {
 
                             if !viewModel.isPhotoFilling {
                                 DButton(
-                                    title: .buttonCameraTurnOn
-                                ) {
-                                    viewModel.cameraController.startSession()
-                                }
+                                    title: .buttonCameraTurnOn,
+                                    action: viewModel.onTapCameraTurnOn
+                                )
                                 .dStyle(.chip)
                             }
                         }

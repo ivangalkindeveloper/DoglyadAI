@@ -6,7 +6,7 @@ import SwiftUI
 
 @MainActor
 final class TemplateListViewModel: DViewModel {
-    override init(
+    init(
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel
@@ -14,7 +14,8 @@ final class TemplateListViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.templateList)
         )
     }
 
@@ -31,16 +32,19 @@ final class TemplateListViewModel: DViewModel {
     @Published var templates: [USExaminationTemplate] = []
 
     func onTapBack() {
+        analytics.buttonTapped(.templateListBack)
         coordinator.pop()
     }
 
     func onTapAdd() {
+        analytics.buttonTapped(.templateListAdd)
         coordinator.screen(.templateAdd)
     }
 
     func onTapTemplate(
         _ template: USExaminationTemplate
     ) {
+        analytics.buttonTapped(.templateListTemplate)
         coordinator.screen(
             .templateEdit,
             arguments: TemplateEditScreenArguments(

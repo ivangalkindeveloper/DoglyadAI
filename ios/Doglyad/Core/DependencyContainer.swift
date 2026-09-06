@@ -6,6 +6,7 @@ import SwiftData
 import SwiftUI
 
 final class DependencyContainer: ObservableObject {
+    let analytics: AnalyticsManager
     let environment: EnvironmentProtocol
     let connectionManager: ConnectionManagerProtocol
     let permissionManager: PermissionManagerProtocol
@@ -30,6 +31,7 @@ final class DependencyContainer: ObservableObject {
     let version: String
 
     init(
+        analytics: AnalyticsManager,
         environment: EnvironmentProtocol,
         connectionManager: ConnectionManagerProtocol,
         permissionManager: PermissionManagerProtocol,
@@ -53,6 +55,7 @@ final class DependencyContainer: ObservableObject {
         initialRoute: RouteScreen<ScreenType>,
         version: String
     ) {
+        self.analytics = analytics
         self.environment = environment
         self.connectionManager = connectionManager
         self.permissionManager = permissionManager
@@ -138,6 +141,7 @@ extension DependencyContainer {
         )
 
         return DependencyContainer(
+            analytics: AnalyticsManager(isEnabled: false),
             environment: environment,
             connectionManager: ConnectionManager(),
             permissionManager: PermissionManager(),

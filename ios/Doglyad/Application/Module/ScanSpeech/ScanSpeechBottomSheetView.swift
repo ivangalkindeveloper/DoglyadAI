@@ -93,5 +93,6 @@ struct ScanSpeechBottomSheetView: View {
             theme.animation,
             value: viewModel.isSpeechTextVisible
         )
+        .onAppear(perform: viewModel.onAppear)
     }
 }

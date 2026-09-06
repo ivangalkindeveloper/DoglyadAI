@@ -41,7 +41,10 @@ struct LegalUpdateScreenView: View {
                         alignment: .center
                     ) {
                         DCheckbox(
-                            isChecked: $viewModel.isLegalAccepted
+                            isChecked: Binding(
+                                get: { viewModel.isLegalAccepted },
+                                set: viewModel.onLegalAcceptedChanged
+                            )
                         )
                         .padding(.trailing, size.s8)
 
@@ -69,5 +72,6 @@ struct LegalUpdateScreenView: View {
                 .padding(size.s16)
             }
         )
+        .onAppear(perform: viewModel.onAppear)
     }
 }

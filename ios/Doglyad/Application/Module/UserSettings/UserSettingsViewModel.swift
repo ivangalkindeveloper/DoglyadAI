@@ -26,7 +26,8 @@ final class UserSettingsViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.userSettings)
         )
         emailController.text = initialEmail ?? ""
     }
@@ -35,6 +36,7 @@ final class UserSettingsViewModel: DViewModel {
     @NestedObservableObject var emailController = DTextFieldController()
 
     func onTapBack() {
+        analytics.buttonTapped(.userSettingsBack)
         coordinator.pop()
     }
 
@@ -43,6 +45,7 @@ final class UserSettingsViewModel: DViewModel {
     }
 
     func onSubmit() {
+        analytics.buttonTapped(.userSettingsSubmit)
         switch focus {
         case .email, .none:
             focus = nil
@@ -50,6 +53,12 @@ final class UserSettingsViewModel: DViewModel {
     }
 
     func onTapSave() {
+        analytics.buttonTapped(
+            .userSettingsSave,
+            parameters: AnalyticsParameters([
+                .hasCurrentValue: .bool(!emailController.text.isEmpty),
+            ])
+        )
         unfocus()
 
         let email = emailController.text.trimmingCharacters(in: .whitespacesAndNewlines)

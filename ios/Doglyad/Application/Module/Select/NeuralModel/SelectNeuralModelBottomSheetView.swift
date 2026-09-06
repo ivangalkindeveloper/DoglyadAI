@@ -67,5 +67,6 @@ struct SelectNeuralModelBottomSheetView: View {
             .padding(.top, size.s16)
             .padding(.horizontal, size.s16)
         }
+        .onAppear(perform: viewModel.onAppear)
     }
 }

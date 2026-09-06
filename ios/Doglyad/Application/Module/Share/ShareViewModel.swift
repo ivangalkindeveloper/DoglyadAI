@@ -25,7 +25,8 @@ final class ShareViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .bottomSheet(.share)
         )
     }
 
@@ -59,6 +60,12 @@ final class ShareViewModel: DViewModel {
     }
 
     func onTapUserEmail() {
+        analytics.buttonTapped(
+            .shareUserEmail,
+            parameters: AnalyticsParameters([
+                .hasCurrentValue: .bool(userEmail != nil),
+            ])
+        )
         guard let userEmail = userEmail else { return }
         coordinator.run(.sendingConclusionByEmail, dismissesSheetOnPaywall: true) {
             self.sendConclusionEmail(to: userEmail)
@@ -90,6 +97,7 @@ final class ShareViewModel: DViewModel {
     }
 
     func onTapEmail() {
+        analytics.buttonTapped(.shareCustomEmail)
         coordinator.run(.sendingConclusionByEmail, dismissesSheetOnPaywall: true) {
             self.coordinator.dismissSheet()
             UIApplication.openMail(
@@ -100,6 +108,7 @@ final class ShareViewModel: DViewModel {
     }
 
     func onTapCopy() {
+        analytics.buttonTapped(.shareCopy)
         coordinator.dismissSheet()
         UIApplication.pasteboard(shareMessage)
         messager.show(

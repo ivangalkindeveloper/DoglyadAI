@@ -28,7 +28,8 @@ final class ScanSpeechViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .bottomSheet(.scanSpeech)
         )
         observeSpeechController()
 
@@ -57,6 +58,7 @@ final class ScanSpeechViewModel: DViewModel {
     let columns = [GridItem(.adaptive(minimum: 100))]
 
     func onTapBack() {
+        analytics.buttonTapped(.speechBack)
         coordinator.dismissSheet()
     }
 
@@ -125,6 +127,13 @@ final class ScanSpeechViewModel: DViewModel {
     func onTapSpeech() {
         guard !isLoading else { return }
 
+        analytics.buttonTapped(
+            .speechToggle,
+            parameters: AnalyticsParameters([
+                .source: .string(speechStatusAnalyticsValue),
+            ])
+        )
+
         switch speechController.status {
         case .preparing:
             return
@@ -135,6 +144,19 @@ final class ScanSpeechViewModel: DViewModel {
             container.examinationNeuralModelFactory?.prewarm()
         @unknown default:
             fatalError()
+        }
+    }
+
+    private var speechStatusAnalyticsValue: String {
+        switch speechController.status {
+        case .preparing:
+            "preparing"
+        case .recording:
+            "recording"
+        case .stopped:
+            "stopped"
+        @unknown default:
+            "unknown"
         }
     }
 

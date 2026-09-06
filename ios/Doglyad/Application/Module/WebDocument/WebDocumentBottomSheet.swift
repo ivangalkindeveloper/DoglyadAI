@@ -1,14 +1,21 @@
-import DoglyadUI
 import Router
 import SwiftUI
 
 struct WebDocumentBottomSheet: View {
+    @EnvironmentObject private var container: DependencyContainer
+    @EnvironmentObject private var router: DRouter
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
+
     let arguments: WebDocumentBottomSheetArguments
 
     var body: some View {
         WebDocumentBottomSheetView(
-            url: arguments.url,
-            title: arguments.title
+            viewModel: WebDocumentViewModel(
+                container: container,
+                router: router,
+                subscription: subscriptionViewModel,
+                arguments: arguments
+            )
         )
     }
 }

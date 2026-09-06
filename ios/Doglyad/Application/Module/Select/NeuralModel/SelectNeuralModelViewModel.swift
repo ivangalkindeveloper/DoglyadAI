@@ -15,7 +15,9 @@ final class SelectNeuralModelViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .bottomSheet(.selectNeuralModel),
+            analyticsParameters: Self.analyticsParameters(arguments: arguments)
         )
     }
 
@@ -60,8 +62,26 @@ final class SelectNeuralModelViewModel: DViewModel {
     }
 
     func onModelTap(_ model: USExaminationNeuralModel) {
+        analytics.buttonTapped(
+            .selectNeuralModel,
+            parameters: AnalyticsParameters([
+                .modelId: .string(model.id),
+            ])
+        )
         coordinator.selectNeuralModel(model) { [weak self] model in
             self?.arguments?.onSelected(model)
         }
+    }
+
+    private static func analyticsParameters(
+        arguments: SelectNeuralModelArguments?
+    ) -> AnalyticsParameters {
+        var values: [AnalyticsParameter: AnalyticsValue] = [
+            .hasCurrentValue: .bool(arguments?.currentValue != nil),
+        ]
+        if let modelId = arguments?.currentValue?.id {
+            values[.modelId] = .string(modelId)
+        }
+        return AnalyticsParameters(values)
     }
 }

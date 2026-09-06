@@ -29,7 +29,8 @@ final class RecievedConclusionViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .bottomSheet(.recievedConclusion)
         )
     }
 
@@ -75,6 +76,7 @@ final class RecievedConclusionViewModel: DViewModel {
     }
 
     func onTapConclusion() {
+        analytics.buttonTapped(.recievedConclusionOpen)
         coordinator.dismissSheet()
         coordinator.screen(
             .conclusion,
@@ -85,6 +87,12 @@ final class RecievedConclusionViewModel: DViewModel {
     }
 
     func onTapUserEmail() {
+        analytics.buttonTapped(
+            .recievedConclusionEmail,
+            parameters: AnalyticsParameters([
+                .hasCurrentValue: .bool(userEmail != nil),
+            ])
+        )
         guard let userEmail: String = userEmail else { return }
         coordinator.run(
             .sendingConclusionByEmail,
@@ -123,6 +131,7 @@ final class RecievedConclusionViewModel: DViewModel {
     }
 
     func onTapCopy() {
+        analytics.buttonTapped(.recievedConclusionCopy)
         UIApplication.pasteboard(response)
         messager.show(
             type: .success,

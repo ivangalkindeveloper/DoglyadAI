@@ -20,7 +20,8 @@ final class SettingsViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.settings)
         )
     }
 
@@ -36,6 +37,7 @@ final class SettingsViewModel: DViewModel {
     }
 
     func onTapBack() {
+        analytics.buttonTapped(.settingsBack)
         coordinator.pop()
     }
 
@@ -44,22 +46,42 @@ final class SettingsViewModel: DViewModel {
     }
 
     func onTapHistory() {
+        analytics.buttonTapped(
+            .settingsHistory,
+            parameters: AnalyticsParameters([
+                .itemCount: .int(conclusionsCount),
+            ])
+        )
         coordinator.screen(.history)
     }
 
     func onTapTemplates() {
+        analytics.buttonTapped(.settingsTemplates)
         coordinator.screen(.templateList)
     }
 
     func onTapUserSettings() {
+        analytics.buttonTapped(.settingsUserSettings)
         coordinator.screen(.userSettings)
     }
 
     func onTapSubscription() {
+        analytics.buttonTapped(
+            .settingsSubscription,
+            parameters: AnalyticsParameters([
+                .subscriptionType: .string(subscription.status?.type.rawValue ?? "none"),
+            ])
+        )
         coordinator.screen(.subscription)
     }
 
     func onTapNeuralModelSelection() {
+        analytics.buttonTapped(
+            .settingsNeuralModelSelection,
+            parameters: AnalyticsParameters([
+                .modelId: .string(neuralModel.id),
+            ])
+        )
         coordinator.sheet(
             .selectNeuralModel,
             arguments: SelectNeuralModelArguments(
@@ -76,16 +98,19 @@ final class SettingsViewModel: DViewModel {
     }
 
     func onTapNeuralModelSettings() {
+        analytics.buttonTapped(.settingsNeuralModelSettings)
         coordinator.run(.neuralModelSettings) {
             self.coordinator.screen(.neuralModelSettings)
         }
     }
 
     func onTapStorage() {
+        analytics.buttonTapped(.settingsStorage)
         coordinator.screen(.storage)
     }
 
     func onTapPrivacyPolicy() {
+        analytics.buttonTapped(.settingsPrivacyPolicy)
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
@@ -96,6 +121,7 @@ final class SettingsViewModel: DViewModel {
     }
 
     func onTapTermsAndConditions() {
+        analytics.buttonTapped(.settingsTermsAndConditions)
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
@@ -106,6 +132,7 @@ final class SettingsViewModel: DViewModel {
     }
 
     func onTapAboutApp() {
+        analytics.buttonTapped(.settingsAbout)
         coordinator.sheet(.about)
     }
 }

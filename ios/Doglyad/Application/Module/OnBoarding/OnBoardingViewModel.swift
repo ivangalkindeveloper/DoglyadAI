@@ -13,7 +13,7 @@ final class OnBoardingViewModel: DViewModel {
         }
     }
 
-    override init(
+    init(
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel
@@ -21,7 +21,8 @@ final class OnBoardingViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.onBoarding)
         )
     }
 
@@ -32,7 +33,20 @@ final class OnBoardingViewModel: DViewModel {
         page == .third && isLegalAccepted == false
     }
 
+    func onLegalAcceptedChanged(
+        _ value: Bool
+    ) {
+        analytics.buttonTapped(
+            .onboardingLegalToggle,
+            parameters: AnalyticsParameters([
+                .result: .bool(value),
+            ])
+        )
+        isLegalAccepted = value
+    }
+
     func onTapPrivacyPolicy() {
+        analytics.buttonTapped(.onboardingPrivacyPolicy)
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
@@ -43,6 +57,7 @@ final class OnBoardingViewModel: DViewModel {
     }
 
     func onTapTermsAndConditions() {
+        analytics.buttonTapped(.onboardingTermsAndConditions)
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
@@ -68,6 +83,12 @@ final class OnBoardingViewModel: DViewModel {
     }
 
     func onPressedNext() {
+        analytics.buttonTapped(
+            .onboardingPrimary,
+            parameters: AnalyticsParameters([
+                .source: .string(String(page.index + 1)),
+            ])
+        )
         switch page {
         case .first:
             page = .second

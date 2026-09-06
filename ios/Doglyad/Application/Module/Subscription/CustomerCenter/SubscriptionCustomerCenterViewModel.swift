@@ -15,13 +15,19 @@ final class SubscriptionCustomerCenterViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .bottomSheet(.subscriptionCustomerCenter)
         )
     }
 
     func onRestoreCompleted() {
+        analytics.actionCompleted(.subscriptionCustomerCenterRestoreCompleted)
         Task {
             await onRefreshStatus()
         }
+    }
+
+    func onRestoreStarted() {
+        analytics.buttonTapped(.subscriptionCustomerCenterRestoreStarted)
     }
 }

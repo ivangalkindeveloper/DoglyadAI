@@ -34,7 +34,8 @@ final class TemplateEditViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.templateEdit)
         )
     }
 
@@ -56,6 +57,7 @@ final class TemplateEditViewModel: DViewModel {
     @NestedObservableObject var templateController = DTextFieldController()
 
     func onTapBack() {
+        analytics.buttonTapped(.templateEditBack)
         coordinator.pop()
     }
 
@@ -64,6 +66,7 @@ final class TemplateEditViewModel: DViewModel {
     }
 
     func onSubmit() {
+        analytics.buttonTapped(.templateEditSubmit)
         switch focus {
         case .content, .none:
             focus = nil
@@ -71,6 +74,7 @@ final class TemplateEditViewModel: DViewModel {
     }
 
     func onTapExaminationType() {
+        analytics.buttonTapped(.templateEditExaminationType)
         coordinator.sheet(
             .selectUSExaminationType,
             arguments: SelectUSExaminationTypeArguments(
@@ -83,6 +87,7 @@ final class TemplateEditViewModel: DViewModel {
     }
 
     func onTapSave() {
+        analytics.buttonTapped(.templateEditSave)
         let isContentValid = templateController.validate()
         guard isContentValid else {
             templateController.showError(
@@ -109,6 +114,7 @@ final class TemplateEditViewModel: DViewModel {
     }
 
     func onTapDelete() {
+        analytics.buttonTapped(.templateEditDelete)
         onDeleteTemplate(arguments.templateId)
         messager.show(
             type: .success,

@@ -113,6 +113,7 @@ struct NeuralModelSettingsScreenView: View {
         .onTapGesture {
             viewModel.unfocus()
         }
+        .onAppear(perform: viewModel.onAppear)
         .onSubmit {
             viewModel.onSubmit()
         }

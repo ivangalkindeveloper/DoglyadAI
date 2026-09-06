@@ -12,95 +12,35 @@ final class RouterBuilder: RouterBuilderProtocol {
     ) -> AnyView {
         switch route.type {
         case .newVersion:
-            AnyView(
-                NewVersionScreen(
-                    arguments: route.arguments as? NewVersionScreenArguments
-                )
-            )
+            AnyView(NewVersionScreen(arguments: route.arguments as? NewVersionScreenArguments))
         case .onBoarding:
-            AnyView(
-                OnBoardingScreen(
-                    arguments: route.arguments as? OnBoardingScreenArguments
-                )
-            )
+            AnyView(OnBoardingScreen(arguments: route.arguments as? OnBoardingScreenArguments))
         case .legalUpdate:
-            AnyView(
-                LegalUpdateScreen(
-                    arguments: route.arguments as? LegalUpdateScreenArguments
-                )
-            )
+            AnyView(LegalUpdateScreen(arguments: route.arguments as? LegalUpdateScreenArguments))
         case .scan:
-            AnyView(
-                ScanScreen(
-                    arguments: route.arguments as? ScanScreenArguments
-                )
-            )
+            AnyView(ScanScreen(arguments: route.arguments as? ScanScreenArguments))
         case .history:
-            AnyView(
-                HistoryScreen(
-                    arguments: route.arguments as? HistoryScreenArguments
-                )
-            )
+            AnyView(HistoryScreen(arguments: route.arguments as? HistoryScreenArguments))
         case .conclusion:
-            AnyView(
-                ConclusionScreen(
-                    arguments: route.arguments as! ConclusionScreenArguments
-                )
-            )
+            AnyView(ConclusionScreen(arguments: route.arguments as! ConclusionScreenArguments))
         case .settings:
-            AnyView(
-                SettingsScreen(
-                    arguments: route.arguments as? SettingsScreenArguments
-                )
-            )
+            AnyView(SettingsScreen(arguments: route.arguments as? SettingsScreenArguments))
         case .neuralModelSettings:
-            AnyView(
-                NeuralModelSettingsScreen(
-                    arguments: route.arguments as? NeuralModelSettingsScreenArguments
-                )
-            )
+            AnyView(NeuralModelSettingsScreen(arguments: route.arguments as? NeuralModelSettingsScreenArguments))
         case .templateList:
-            AnyView(
-                TemplateListScreen(
-                    arguments: route.arguments as? TemplateListScreenArguments
-                )
-            )
+            AnyView(TemplateListScreen(arguments: route.arguments as? TemplateListScreenArguments))
         case .templateAdd:
-            AnyView(
-                TemplateAddScreen(
-                    arguments: route.arguments as? TemplateAddScreenArguments
-                )
-            )
+            AnyView(TemplateAddScreen(arguments: route.arguments as? TemplateAddScreenArguments))
         case .templateEdit:
-            AnyView(
-                TemplateEditScreen(
-                    arguments: route.arguments as! TemplateEditScreenArguments
-                )
-            )
+            AnyView(TemplateEditScreen(arguments: route.arguments as! TemplateEditScreenArguments))
         case .storage:
-            AnyView(
-                StorageScreen(
-                    arguments: route.arguments as? StorageScreenArguments
-                )
-            )
+            AnyView(StorageScreen(arguments: route.arguments as? StorageScreenArguments))
         case .userSettings:
-            AnyView(
-                UserSettingsScreen(
-                    arguments: route.arguments as? UserSettingsScreenArguments
-                )
-            )
+            AnyView(UserSettingsScreen(arguments: route.arguments as? UserSettingsScreenArguments))
         case .subscription:
-            AnyView(
-                SubscriptionScreen(
-                    arguments: route.arguments as? SubscriptionScreenArguments
-                )
-            )
+            AnyView(SubscriptionScreen(arguments: route.arguments as? SubscriptionScreenArguments))
         case .subscriptionPaywall:
-            AnyView(
-                SubscriptionPaywallScreen(
-                    arguments: route.arguments as? SubscriptionPaywallArguments
-                )
-            )
+            AnyView(SubscriptionPaywallScreen(arguments: route.arguments as? SubscriptionPaywallArguments))
         }
     }
 
@@ -109,87 +49,45 @@ final class RouterBuilder: RouterBuilderProtocol {
     ) -> AnyView {
         switch route.type {
         case .selectUSExaminationType:
-            AnyView(
-                SelectUSExaminationTypeBottomSheet(
-                    arguments: route.arguments as? SelectUSExaminationTypeArguments
-                )
-            )
+            AnyView(SelectUSExaminationTypeBottomSheet(
+                arguments: route.arguments as? SelectUSExaminationTypeArguments
+            ))
         case .selectNeuralModel:
-            AnyView(
-                SelectNeuralModelBottomSheet(
-                    arguments: route.arguments as? SelectNeuralModelArguments
-                )
-            )
+            AnyView(SelectNeuralModelBottomSheet(arguments: route.arguments as? SelectNeuralModelArguments))
         case .selectDateOfBirth:
-            AnyView(
-                SelectDateOfBirthBottomSheet(
-                    arguments: route.arguments as? SelectDateOfBirthArguments
-                )
-            )
+            AnyView(SelectDateOfBirthBottomSheet(arguments: route.arguments as? SelectDateOfBirthArguments))
         case .scanSpeech:
-            AnyView(
-                ScanSpeechBottomSheet(
-                    arguments: route.arguments as! ScanSpeechBottomSheetArguments
-                )
-            )
+            AnyView(ScanSpeechBottomSheet(arguments: route.arguments as! ScanSpeechBottomSheetArguments))
         case .permissionSpeech:
-            AnyView(
-                PermissionSpeechBottomSheet()
-            )
+            AnyView(PermissionSpeechBottomSheet())
         case .permissionPhotoLibrary:
-            AnyView(
-                PermissionPhotoLibraryBottomSheet()
-            )
+            AnyView(PermissionPhotoLibraryBottomSheet())
         case .photoLibraryPicker:
-            AnyView(
-                PhotoLibraryPicker(
-                    arguments: route.arguments as! PhotoLibraryPickerArguments
-                )
-            )
+            AnyView(PhotoLibraryPicker(arguments: route.arguments as! PhotoLibraryPickerArguments))
         case .recievedConclusion:
-            AnyView(
-                RecievedConclusionBottomSheet(
-                    arguments: route.arguments as! RecievedConclusionBottomSheetArguments
-                )
-            )
+            AnyView(RecievedConclusionBottomSheet(
+                arguments: route.arguments as! RecievedConclusionBottomSheetArguments
+            ))
         case .webDocument:
-            AnyView(
-                WebDocumentBottomSheet(
-                    arguments: route.arguments as! WebDocumentBottomSheetArguments
-                )
-            )
+            AnyView(WebDocumentBottomSheet(arguments: route.arguments as! WebDocumentBottomSheetArguments))
         case .storageClearConclusions:
-            AnyView(
-                StorageClearConclusionsBottomSheet(
-                    arguments: route.arguments as? StorageClearConclusionsArguments
-                )
-            )
+            AnyView(StorageClearConclusionsBottomSheet(
+                arguments: route.arguments as? StorageClearConclusionsArguments
+            ))
         case .storageClearAll:
-            AnyView(
-                StorageClearAllBottomSheet(
-                    arguments: route.arguments as? StorageClearAllArguments
-                )
-            )
+            AnyView(StorageClearAllBottomSheet(arguments: route.arguments as? StorageClearAllArguments))
         case .about:
             AnyView(AboutBottomSheet())
         case .share:
-            AnyView(
-                ShareBottomSheet(
-                    arguments: route.arguments as! ShareArguments
-                )
-            )
+            AnyView(ShareBottomSheet(arguments: route.arguments as! ShareArguments))
         case .requestLimitExceeded:
-            AnyView(
-                RequestLimitExceededBottomSheet(
-                    arguments: route.arguments as? RequestLimitExceededArguments
-                )
-            )
+            AnyView(RequestLimitExceededBottomSheet(
+                arguments: route.arguments as? RequestLimitExceededArguments
+            ))
         case .subscriptionCustomerCenter:
-            AnyView(
-                SubscriptionCustomerCenterSheet(
-                    arguments: route.arguments as? SubscriptionCustomerCenterArguments
-                )
-            )
+            AnyView(SubscriptionCustomerCenterSheet(
+                arguments: route.arguments as? SubscriptionCustomerCenterArguments
+            ))
         }
     }
 

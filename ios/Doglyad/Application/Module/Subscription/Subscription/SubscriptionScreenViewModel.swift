@@ -14,19 +14,28 @@ final class SubscriptionScreenViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.subscription)
         )
     }
 
     func onTapBack() {
+        analytics.buttonTapped(.subscriptionBack)
         coordinator.pop()
     }
 
     func onTapChangeType() {
+        analytics.buttonTapped(
+            .subscriptionChangeType,
+            parameters: AnalyticsParameters([
+                .subscriptionType: .string(subscription.status?.type.rawValue ?? "none"),
+            ])
+        )
         coordinator.screen(.subscriptionPaywall)
     }
 
     func onTapSupportCenter() {
+        analytics.buttonTapped(.subscriptionCustomerCenter)
         coordinator.sheet(.subscriptionCustomerCenter)
     }
 }

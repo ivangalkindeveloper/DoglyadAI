@@ -11,15 +11,22 @@ class DViewModel: Handler<DHttpApiError, DHttpConnectionError>, ObservableObject
     let router: DRouter
     @NestedObservableObject var subscription: SubscriptionViewModel
     let coordinator: Coordinator
+    var analytics: AnalyticsManager { container.analytics }
+    private let analyticsDestination: AnalyticsRouteDestination
+    private let analyticsParameters: AnalyticsParameters
 
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel
+        subscription: SubscriptionViewModel,
+        analyticsDestination: AnalyticsRouteDestination,
+        analyticsParameters: AnalyticsParameters = .empty
     ) {
         self.container = container
         self.router = router
         _subscription = NestedObservableObject(wrappedValue: subscription)
+        self.analyticsDestination = analyticsDestination
+        self.analyticsParameters = analyticsParameters
         coordinator = Coordinator(
             container: container,
             router: router,
@@ -30,6 +37,13 @@ class DViewModel: Handler<DHttpApiError, DHttpConnectionError>, ObservableObject
     }
 
     final func onAppear() {
+        switch analyticsDestination {
+        case let .screen(screen):
+            analytics.screenViewed(screen, parameters: analyticsParameters)
+        case let .bottomSheet(bottomSheet):
+            analytics.bottomSheetViewed(bottomSheet, parameters: analyticsParameters)
+        }
+
         guard !isInitialized else { return }
         isInitialized = true
         onInit()

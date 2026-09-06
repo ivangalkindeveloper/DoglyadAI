@@ -192,6 +192,7 @@ struct ConclusionScreenView: View {
                 }
             }
         }
+        .onAppear(perform: viewModel.onAppear)
         .environmentObject(viewModel)
     }
 }

@@ -28,7 +28,8 @@ final class TemplateAddViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.templateAdd)
         )
     }
 
@@ -37,6 +38,7 @@ final class TemplateAddViewModel: DViewModel {
     @NestedObservableObject var templateController = DTextFieldController()
 
     func onTapBack() {
+        analytics.buttonTapped(.templateAddBack)
         coordinator.pop()
     }
 
@@ -45,6 +47,7 @@ final class TemplateAddViewModel: DViewModel {
     }
 
     func onSubmit() {
+        analytics.buttonTapped(.templateAddSubmit)
         switch focus {
         case .content, .none:
             focus = nil
@@ -52,6 +55,7 @@ final class TemplateAddViewModel: DViewModel {
     }
 
     func onTapExaminationType() {
+        analytics.buttonTapped(.templateAddExaminationType)
         coordinator.sheet(
             .selectUSExaminationType,
             arguments: SelectUSExaminationTypeArguments(
@@ -64,6 +68,7 @@ final class TemplateAddViewModel: DViewModel {
     }
 
     func onTapSave() {
+        analytics.buttonTapped(.templateAddSave)
         let isContentValid = templateController.validate()
         guard isContentValid else {
             templateController.showError(

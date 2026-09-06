@@ -45,5 +45,6 @@ struct RequestLimitExceededBottomSheetView: View {
             }
             .padding(.horizontal, size.s16)
         }
+        .onAppear(perform: viewModel.onAppear)
     }
 }

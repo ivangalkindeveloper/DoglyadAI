@@ -30,7 +30,8 @@ final class ConclusionViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.conclusion)
         )
     }
 
@@ -38,10 +39,12 @@ final class ConclusionViewModel: DViewModel {
     @Published var isLoading = false
 
     func onTapBack() {
+        analytics.buttonTapped(.conclusionBack)
         coordinator.pop()
     }
 
     func onTapShare() {
+        analytics.buttonTapped(.conclusionShare)
         coordinator.sheet(
             .share,
             arguments: ShareArguments(
@@ -53,6 +56,7 @@ final class ConclusionViewModel: DViewModel {
     func onTapCopy(
         conclusion: USExaminationModelConclusion
     ) {
+        analytics.buttonTapped(.conclusionCopy)
         UIApplication.pasteboard(conclusion.response)
         messager.show(
             type: .success,
@@ -62,6 +66,12 @@ final class ConclusionViewModel: DViewModel {
     }
 
     func onTapNeuralModelSelection() {
+        analytics.buttonTapped(
+            .conclusionNeuralModelSelection,
+            parameters: AnalyticsParameters([
+                .modelId: .string(getNeuralModel().id),
+            ])
+        )
         coordinator.sheet(
             .selectNeuralModel,
             arguments: SelectNeuralModelArguments(
@@ -74,6 +84,7 @@ final class ConclusionViewModel: DViewModel {
     }
 
     func onTapNeuralModelSettings() {
+        analytics.buttonTapped(.conclusionNeuralModelSettings)
         coordinator.run(.neuralModelSettings) {
             self.coordinator.screen(.neuralModelSettings)
         }
@@ -82,6 +93,12 @@ final class ConclusionViewModel: DViewModel {
     func onTapRepeatScan(
         proxy: ScrollViewProxy
     ) {
+        analytics.buttonTapped(
+            .conclusionRepeatScan,
+            parameters: AnalyticsParameters([
+                .modelId: .string(getNeuralModel().id),
+            ])
+        )
         handle {
             try await self.coordinator.prepareConclusionGeneration()
         } onMainSuccess: { resolution in

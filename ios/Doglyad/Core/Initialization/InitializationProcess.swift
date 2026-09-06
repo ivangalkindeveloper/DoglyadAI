@@ -8,6 +8,7 @@ import Router
 final class InitializationProcess: DependencyInitializationProcess {
     typealias T = DependencyContainer
 
+    var analytics: AnalyticsManager?
     var environment: EnvironmentProtocol?
     var connectionManager: ConnectionManagerProtocol?
     var permissionManager: PermissionManagerProtocol?
@@ -37,6 +38,7 @@ final class InitializationProcess: DependencyInitializationProcess {
 
     var toContainer: DependencyContainer {
         DependencyContainer(
+            analytics: analytics!,
             environment: environment!,
             connectionManager: connectionManager!,
             permissionManager: permissionManager!,

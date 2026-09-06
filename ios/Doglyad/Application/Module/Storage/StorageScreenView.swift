@@ -36,6 +36,7 @@ struct StorageScreenView: View {
                 .padding(.bottom, size.s32)
             }
         }
+        .onAppear(perform: viewModel.onAppear)
         .environmentObject(viewModel)
     }
 }

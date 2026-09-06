@@ -19,15 +19,18 @@ final class StorageViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.storage)
         )
     }
 
     func onTapBack() {
+        analytics.buttonTapped(.storageBack)
         coordinator.pop()
     }
 
     func onTapClearConclusions() {
+        analytics.buttonTapped(.storageClearConclusions)
         coordinator.sheet(
             .storageClearConclusions,
             arguments: StorageClearConclusionsArguments(
@@ -50,6 +53,7 @@ final class StorageViewModel: DViewModel {
     }
 
     func onTapClearAll() {
+        analytics.buttonTapped(.storageClearAll)
         coordinator.sheet(
             .storageClearAll,
             arguments: StorageClearAllArguments(

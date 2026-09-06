@@ -1,64 +1,22 @@
-import DoglyadUI
 import Router
 import SwiftUI
 
 struct SelectDateOfBirthBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
 
     let arguments: SelectDateOfBirthArguments?
-    @State private var date: Date
-    private let fromDate: Date
-    private let toDate: Date = .init()
-
-    init(
-        arguments: SelectDateOfBirthArguments?
-    ) {
-        self.arguments = arguments
-        date = arguments?.currentValue ?? Date()
-        fromDate = Calendar.current.date(byAdding: .year, value: -100, to: toDate)!
-    }
 
     var body: some View {
-        DBottomSheet(
-            title: .selectDateOfBirthTitle,
-            fraction: 0.5
-        ) { toolbarHeight, _ in
-            VStack(
-                spacing: .zero
-            ) {
-                DatePicker(
-                    .selectDateOfBirthTitle,
-                    selection: Binding<Date>(
-                        get: { date },
-                        set: { date = $0 }
-                    ),
-                    in: fromDate ... toDate,
-                    displayedComponents: [.date]
-                )
-                .labelsHidden()
-                .datePickerStyle(.wheel)
-                .colorScheme(.light)
-                .padding(.bottom, size.s16)
-
-                Spacer()
-            }
-            .padding(size.s16)
-            .padding(.top, toolbarHeight)
-        } bottom: {
-            DButton(
-                title: .buttonSelect
-            ) {
-                router.dismissSheet()
-                arguments?.onSelected(date)
-            }
-            .dStyle(.primaryButton)
-            .padding(.horizontal, size.s16)
-        }
+        SelectDateOfBirthBottomSheetView(
+            viewModel: SelectDateOfBirthViewModel(
+                container: container,
+                router: router,
+                subscription: subscriptionViewModel,
+                arguments: arguments
+            )
+        )
     }
 }
 

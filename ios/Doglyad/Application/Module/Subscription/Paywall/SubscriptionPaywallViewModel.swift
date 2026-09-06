@@ -18,17 +18,42 @@ final class SubscriptionPaywallViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.subscriptionPaywall)
         )
     }
 
-    func onCompleted() {
+    func onPurchaseStarted(
+        productId: String
+    ) {
+        analytics.buttonTapped(
+            .subscriptionPaywallPurchaseStarted,
+            parameters: AnalyticsParameters([
+                .productId: .string(productId),
+            ])
+        )
+    }
+
+    func onPurchaseCompleted() {
+        analytics.actionCompleted(.subscriptionPurchaseCompleted)
+        handle {
+            await self.onRefreshStatus()
+        }
+    }
+
+    func onRestoreStarted() {
+        analytics.buttonTapped(.subscriptionPaywallRestoreStarted)
+    }
+
+    func onRestoreCompleted() {
+        analytics.actionCompleted(.subscriptionRestoreCompleted)
         handle {
             await self.onRefreshStatus()
         }
     }
 
     func onRequestedDismissal() {
+        analytics.buttonTapped(.subscriptionPaywallCancel)
         coordinator.dismissPaywall()
     }
 }

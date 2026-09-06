@@ -29,7 +29,8 @@ final class NeuralModelSettingsViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription
+            subscription: subscription,
+            analyticsDestination: .screen(.neuralModelSettings)
         )
         isMarkdown = initialIsMarkdown
         temperatureController.text = String(initialTemperature)
@@ -46,10 +47,17 @@ final class NeuralModelSettingsViewModel: DViewModel {
     }
 
     func toggleIsMarkdown() {
+        analytics.buttonTapped(
+            .neuralModelSettingsMarkdown,
+            parameters: AnalyticsParameters([
+                .result: .bool(!isMarkdown),
+            ])
+        )
         isMarkdown.toggle()
     }
 
     func onSubmit() {
+        analytics.buttonTapped(.neuralModelSettingsSubmit)
         switch focus {
         case .temperature:
             focus = .length
@@ -59,10 +67,17 @@ final class NeuralModelSettingsViewModel: DViewModel {
     }
 
     func onTapBack() {
+        analytics.buttonTapped(.neuralModelSettingsBack)
         coordinator.pop()
     }
 
     func onTapSave() {
+        analytics.buttonTapped(
+            .neuralModelSettingsSave,
+            parameters: AnalyticsParameters([
+                .result: .bool(isMarkdown),
+            ])
+        )
         onSettingsSaved(
             isMarkdown,
             Double(temperatureController.text),

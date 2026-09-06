@@ -6,6 +6,10 @@ struct SubscriptionCustomerCenterSheetView: View {
 
     var body: some View {
         CustomerCenterView()
+            .onAppear(perform: viewModel.onAppear)
+            .onCustomerCenterRestoreStarted {
+                viewModel.onRestoreStarted()
+            }
             .onCustomerCenterRestoreCompleted { _ in
                 viewModel.onRestoreCompleted()
             }
