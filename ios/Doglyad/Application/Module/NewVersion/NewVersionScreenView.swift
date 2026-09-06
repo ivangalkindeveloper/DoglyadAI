@@ -12,31 +12,23 @@ struct NewVersionScreenView: View {
     var body: some View {
         DScreen(
             title: .newVersionTitle,
-            onTapBack: nil
-        ) { toolbarInset, _ in
-            VStack(
-                spacing: .zero
-            ) {
-                Spacer()
-
+            onTapBack: nil,
+            content: { toolbarHeight, bottomHeight in
                 VStack(
-                    spacing: size.s16
+                    spacing: .zero
                 ) {
-                    ZStack {
-                        Circle()
-                            .fill(color.gradientPrimaryWeak)
-                        DIcon(
-                            .alertInfo,
-                            color: color.grayscaleBackground
-                        )
-                    }
-                    .frame(width: size.s64, height: size.s64)
+                    Spacer()
+
+                    Image(.doglyadAbout)
+                        .resizable()
+                        .scaledToFit()
 
                     DText(.newVersionDescription0)
                         .dStyle(
                             font: typography.linkSmall,
                             alignment: .center
                         )
+                        .padding(.bottom, size.s16)
 
                     DText(.newVersionDescription1)
                         .dStyle(
@@ -44,19 +36,21 @@ struct NewVersionScreenView: View {
                             color: color.grayscalePlacehold,
                             alignment: .center
                         )
+
+                    Spacer()
                 }
-                .padding(.bottom, size.s14)
-
-                Spacer()
-
+                .padding(.top, toolbarHeight)
+                .padding(size.s16)
+                .padding(.bottom, bottomHeight)
+            },
+            bottom: {
                 DButton(
                     title: .buttonUpdate,
                     action: viewModel.onTapUpdate
                 )
                 .dStyle(.primaryButton)
+                .padding(size.s16)
             }
-            .padding(size.s16)
-            .padding(.top, toolbarInset)
-        }
+        )
     }
 }

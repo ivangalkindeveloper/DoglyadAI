@@ -12,16 +12,12 @@ struct LegalUpdateScreenView: View {
 
     var body: some View {
         DScreen(
-            content: { _, bottomHeight in
+            title: .legalUpdateTitle,
+            content: { toolbarHeight, bottomHeight in
                 VStack(
                     alignment: .leading,
                     spacing: size.s16
                 ) {
-                    DText(.legalUpdateTitle)
-                        .dStyle(
-                            font: typography.displayLargeBold
-                        )
-
                     Spacer()
 
                     Image(.doglyadQuiet)
@@ -59,6 +55,7 @@ struct LegalUpdateScreenView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, size.s8)
                 }
+                .padding(.top, toolbarHeight)
                 .padding(size.s16)
                 .padding(.bottom, bottomHeight)
             },
