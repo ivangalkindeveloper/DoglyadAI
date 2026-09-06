@@ -3,12 +3,16 @@ import UIKit
 
 @MainActor
 final class NewVersionViewModel: DViewModel {
-    private let container: DependencyContainer
-
-    init(
-        container: DependencyContainer
+    override init(
+        container: DependencyContainer,
+        router: DRouter,
+        subscription: SubscriptionViewModel
     ) {
-        self.container = container
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     func onTapUpdate() {

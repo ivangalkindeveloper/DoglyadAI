@@ -5,6 +5,7 @@ import SwiftUI
 struct LegalUpdateScreen: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
 
     let arguments: LegalUpdateScreenArguments?
 
@@ -12,7 +13,8 @@ struct LegalUpdateScreen: View {
         LegalUpdateScreenView(
             viewModel: LegalUpdateViewModel(
                 container: container,
-                router: router
+                router: router,
+                subscription: subscriptionViewModel
             )
         )
     }

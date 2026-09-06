@@ -12,21 +12,25 @@ final class NeuralModelSettingsViewModel: DViewModel {
     }
 
     private let messager: DMessager
-    private let router: DRouter
     private let onSettingsSaved: (Bool, Double?, Int?) -> Void
 
     init(
+        container: DependencyContainer,
         initialIsMarkdown: Bool,
         initialTemperature: Double,
         initialMaxTokens: Int,
         messager: DMessager,
         router: DRouter,
+        subscription: SubscriptionViewModel,
         onSettingsSaved: @escaping (Bool, Double?, Int?) -> Void
     ) {
         self.messager = messager
-        self.router = router
         self.onSettingsSaved = onSettingsSaved
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
         isMarkdown = initialIsMarkdown
         temperatureController.text = String(initialTemperature)
         maxTokensController.text = String(initialMaxTokens)
@@ -55,7 +59,7 @@ final class NeuralModelSettingsViewModel: DViewModel {
     }
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func onTapSave() {
@@ -69,6 +73,6 @@ final class NeuralModelSettingsViewModel: DViewModel {
             title: .neuralModelSettingsSavedSuccessMessageTitle,
             description: .neuralModelSettingsSavedSuccessMessageDescription
         )
-        router.pop()
+        coordinator.pop()
     }
 }

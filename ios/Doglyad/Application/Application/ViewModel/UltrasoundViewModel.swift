@@ -3,7 +3,8 @@ import Foundation
 import Handler
 
 @MainActor
-final class UltrasoundViewModel: DViewModel {
+final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, ObservableObject {
+    private var isInitialized = false
     private let container: DependencyContainer
 
     init(
@@ -39,7 +40,10 @@ final class UltrasoundViewModel: DViewModel {
         super.init()
     }
 
-    override func onInit() {
+    func onAppear() {
+        guard !isInitialized else { return }
+        isInitialized = true
+
         handle {
             self.templateIdByUSExaminationTypeId = await self.container.templateRepository
                 .getTemplatesByUSExaminationId(

@@ -2,7 +2,7 @@ import DependencyInitializer
 import SwiftUI
 
 @MainActor
-final class ApplicationViewModel: DViewModel {
+final class ApplicationViewModel: ObservableObject {
     @Published var root: any View = Color.white
         .overlay {
             Image(.splash)

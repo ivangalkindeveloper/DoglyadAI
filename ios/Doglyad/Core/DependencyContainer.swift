@@ -26,8 +26,7 @@ final class DependencyContainer: ObservableObject {
     let usExaminationNeuralModelDefault: USExaminationNeuralModel
     let usExaminationContextualStrings: USExaminationContextualStrings
     let initialSubscriptionStatus: SubscriptionStatus?
-    let initialScreen: ScreenType
-    let initialScreenArguments: RouteArgumentsProtocol?
+    let initialRoute: RouteScreen<ScreenType>
     let version: String
 
     init(
@@ -51,8 +50,7 @@ final class DependencyContainer: ObservableObject {
         usExaminationContextualStrings: USExaminationContextualStrings,
         examinationNeuralModelFactory: DExaminationNeuralModelFactory?,
         initialSubscriptionStatus: SubscriptionStatus?,
-        initialScreen: ScreenType,
-        initialScreenArguments: RouteArgumentsProtocol?,
+        initialRoute: RouteScreen<ScreenType>,
         version: String
     ) {
         self.environment = environment
@@ -75,8 +73,7 @@ final class DependencyContainer: ObservableObject {
         self.usExaminationContextualStrings = usExaminationContextualStrings
         self.examinationNeuralModelFactory = examinationNeuralModelFactory
         self.initialSubscriptionStatus = initialSubscriptionStatus
-        self.initialScreen = initialScreen
-        self.initialScreenArguments = initialScreenArguments
+        self.initialRoute = initialRoute
         self.version = version
     }
 }
@@ -171,8 +168,7 @@ extension DependencyContainer {
             usExaminationContextualStrings: .init(strings: [:]),
             examinationNeuralModelFactory: nil,
             initialSubscriptionStatus: nil,
-            initialScreen: .onBoarding,
-            initialScreenArguments: nil,
+            initialRoute: RouteScreen(type: .onBoarding),
             version: "1.0.0"
         )
     }

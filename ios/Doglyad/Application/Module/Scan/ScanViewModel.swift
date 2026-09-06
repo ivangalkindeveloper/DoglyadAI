@@ -18,13 +18,10 @@ final class ScanViewModel: DViewModel {
         case examinationDescription
     }
 
-    private let container: DependencyContainer
     private let messager: DMessager
-    private let router: DRouter
     private let getTemplateForType: (String) -> USExaminationTemplate?
     private let getNeuralModel: () -> USExaminationNeuralModel
     private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
-    @NestedObservableObject private var subscription: SubscriptionViewModel
 
     init(
         container: DependencyContainer,
@@ -35,15 +32,16 @@ final class ScanViewModel: DViewModel {
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void
     ) {
-        self.container = container
         self.messager = messager
-        self.router = router
-        _subscription = NestedObservableObject(wrappedValue: subscription)
         self.getTemplateForType = getTemplateForType
         self.getNeuralModel = getNeuralModel
         self.onNeuralModelSelected = onNeuralModelSelected
         usExaminationType = container.usExaminationTypeDefault
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     private var ultrasoundConfig: UltrasoundConfig {
@@ -152,29 +150,23 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapSettings() {
-        router.push(
-            route: RouteScreen(
-                type: .settings
-            )
-        )
+        coordinator.screen(.settings)
     }
 
     func onTapUSExaminationType() {
-        router.push(
-            route: RouteSheet(
-                type: .selectUSExaminationType,
-                arguments: SelectUSExaminationTypeArguments(
-                    currentValue: usExaminationType,
-                    onSelected: { [weak self] usExaminationType in
-                        guard let self = self else { return }
-                        guard self.usExaminationType != usExaminationType else { return }
+        coordinator.sheet(
+            .selectUSExaminationType,
+            arguments: SelectUSExaminationTypeArguments(
+                currentValue: usExaminationType,
+                onSelected: { [weak self] usExaminationType in
+                    guard let self = self else { return }
+                    guard self.usExaminationType != usExaminationType else { return }
 
-                        self.usExaminationType = usExaminationType
-                        self.container.ultrasoundConclusionRepository.setSelectedExaminationTypeId(
-                            id: usExaminationType.id
-                        )
-                    }
-                )
+                    self.usExaminationType = usExaminationType
+                    self.container.ultrasoundConclusionRepository.setSelectedExaminationTypeId(
+                        id: usExaminationType.id
+                    )
+                }
             )
         )
     }
@@ -220,24 +212,18 @@ final class ScanViewModel: DViewModel {
             await self.container.permissionManager.isGranted(.photoLibrary)
         } onMainSuccess: { isGranted in
             guard isGranted else {
-                return self.router.push(
-                    route: RouteSheet(
-                        type: .permissionPhotoLibrary
-                    )
-                )
+                return self.coordinator.sheet(.permissionPhotoLibrary)
             }
 
-            self.router.push(
-                route: RouteSheet(
-                    type: .photoLibraryPicker,
-                    arguments: PhotoLibraryPickerArguments(
-                        selectionLimit: self.gallerySelectionLimit,
-                        onComplete: { [weak self] images in
-                            guard let self = self else { return }
+            self.coordinator.sheet(
+                .photoLibraryPicker,
+                arguments: PhotoLibraryPickerArguments(
+                    selectionLimit: self.gallerySelectionLimit,
+                    onComplete: { [weak self] images in
+                        guard let self = self else { return }
 
-                            self.onSelectGalleryImages(images)
-                        }
-                    )
+                        self.onSelectGalleryImages(images)
+                    }
                 )
             )
         }
@@ -281,18 +267,16 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapPatientDateOfBirth() {
-        router.push(
-            route: RouteSheet(
-                type: .selectDateOfBirth,
-                arguments: SelectDateOfBirthArguments(
-                    currentValue: patientDateOfBirth,
-                    onSelected: { [weak self] date in
-                        guard let self = self else { return }
-                        guard self.patientDateOfBirth != date else { return }
+        coordinator.sheet(
+            .selectDateOfBirth,
+            arguments: SelectDateOfBirthArguments(
+                currentValue: patientDateOfBirth,
+                onSelected: { [weak self] date in
+                    guard let self = self else { return }
+                    guard self.patientDateOfBirth != date else { return }
 
-                        self.patientDateOfBirth = date
-                    }
-                )
+                    self.patientDateOfBirth = date
+                }
             )
         )
     }
@@ -303,44 +287,32 @@ final class ScanViewModel: DViewModel {
 
     func onTapSelectedTemplate() {
         if let template = getTemplate() {
-            return router.push(
-                route: RouteScreen(
-                    type: .templateEdit,
-                    arguments: TemplateEditScreenArguments(
-                        templateId: template.id
-                    )
+            return coordinator.screen(
+                .templateEdit,
+                arguments: TemplateEditScreenArguments(
+                    templateId: template.id
                 )
             )
         }
 
-        router.push(
-            route: RouteScreen(
-                type: .templateList
-            )
-        )
+        coordinator.screen(.templateList)
     }
 
     func onTapNeuralModelSelection() {
-        router.push(
-            route: RouteSheet(
-                type: .selectNeuralModel,
-                arguments: SelectNeuralModelArguments(
-                    currentValue: getNeuralModel(),
-                    onSelected: { [weak self] model in
-                        self?.onNeuralModelSelected(model)
-                    }
-                )
+        coordinator.sheet(
+            .selectNeuralModel,
+            arguments: SelectNeuralModelArguments(
+                currentValue: getNeuralModel(),
+                onSelected: { [weak self] model in
+                    self?.onNeuralModelSelected(model)
+                }
             )
         )
     }
 
     func onTapNeuralModelSettings() {
-        subscription.run(.neuralModelSettings, router: router) {
-            self.router.push(
-                route: RouteScreen(
-                    type: .neuralModelSettings
-                )
-            )
+        coordinator.run(.neuralModelSettings) {
+            self.coordinator.screen(.neuralModelSettings)
         }
     }
 
@@ -365,10 +337,7 @@ final class ScanViewModel: DViewModel {
     }
 
     func onTapSpeech() {
-        subscription.run(
-            .formCompletionViaMicrophone,
-            router: router
-        ) {
+        coordinator.run(.formCompletionViaMicrophone) {
             self.startSpeechFlow()
         }
     }
@@ -378,44 +347,38 @@ final class ScanViewModel: DViewModel {
             await self.container.permissionManager.isGranted(.speech)
         } onMainSuccess: { isGranted in
             if !isGranted {
-                return self.router.push(
-                    route: RouteSheet(
-                        type: .permissionSpeech
-                    )
-                )
+                return self.coordinator.sheet(.permissionSpeech)
             }
 
             self.cameraController.stopSession()
-            self.router.push(
-                route: RouteSheet(
-                    type: .scanSpeech,
-                    arguments: ScanSpeechBottomSheetArguments(
-                        onComplete: { [weak self] response in
-                            guard let self = self else { return }
+            self.coordinator.sheet(
+                .scanSpeech,
+                arguments: ScanSpeechBottomSheetArguments(
+                    onComplete: { [weak self] response in
+                        guard let self = self else { return }
 
-                            if let patientName = response.patientName {
-                                self.patientNameController.text = patientName
-                            }
-                            if let patientGender = PatientGender.fromUSExaminationNeuralModelResponse(response.patientGender) {
-                                self.patientGender = patientGender
-                            }
-                            if let patientDateOfBirth = response.patientDateOfBirth {
-                                self.patientDateOfBirth = patientDateOfBirth
-                            }
-                            if let patientHeightCM = response.patientHeightCM {
-                                self.patientHeightCMController.text = "\(patientHeightCM)"
-                            }
-                            if let patientWeightKG = response.patientWeightKG {
-                                self.patientWeightKGController.text = "\(patientWeightKG)"
-                            }
-                            if let patientComplaint = response.patientComplaint {
-                                self.patientComplaintController.text = patientComplaint
-                            }
-                            if let examinationDescription = response.examinationDescription {
-                                self.examinationDescriptionController.text = examinationDescription
-                            }
+                        if let patientName = response.patientName {
+                            self.patientNameController.text = patientName
                         }
-                    )
+                        if let patientGender = PatientGender.fromUSExaminationNeuralModelResponse(response.patientGender) {
+                            self.patientGender = patientGender
+                        }
+                        if let patientDateOfBirth = response.patientDateOfBirth {
+                            self.patientDateOfBirth = patientDateOfBirth
+                        }
+                        if let patientHeightCM = response.patientHeightCM {
+                            self.patientHeightCMController.text = "\(patientHeightCM)"
+                        }
+                        if let patientWeightKG = response.patientWeightKG {
+                            self.patientWeightKGController.text = "\(patientWeightKG)"
+                        }
+                        if let patientComplaint = response.patientComplaint {
+                            self.patientComplaintController.text = patientComplaint
+                        }
+                        if let examinationDescription = response.examinationDescription {
+                            self.examinationDescriptionController.text = examinationDescription
+                        }
+                    }
                 )
             )
         }
@@ -446,24 +409,14 @@ final class ScanViewModel: DViewModel {
         unfocus()
 
         handle {
-            await self.subscription.refreshStatus()
-        } onMainSuccess: { _ in
-            guard self.subscription.isActive else {
-                return self.router.push(
-                    route: RouteScreen(
-                        type: .subscriptionPaywall
-                    )
-                )
+            try await self.coordinator.prepareConclusionGeneration()
+        } onMainSuccess: { resolution in
+            switch resolution {
+            case .proceed:
+                self.performScan()
+            case .routed:
+                break
             }
-            guard self.subscription.availableRequestCount > 0 else {
-                return self.router.push(
-                    route: RouteSheet(
-                        type: .requestLimitExceeded,
-                        arguments: RequestLimitExceededArguments()
-                    )
-                )
-            }
-            self.performScan()
         }
     }
 
@@ -514,12 +467,10 @@ final class ScanViewModel: DViewModel {
         } onDefer: {
             self.isLoading = false
         } onMainSuccess: { conclusion in
-            self.router.push(
-                route: RouteSheet(
-                    type: .recievedConclusion,
-                    arguments: RecievedConclusionBottomSheetArguments(
-                        conclusion: conclusion
-                    )
+            self.coordinator.sheet(
+                .recievedConclusion,
+                arguments: RecievedConclusionBottomSheetArguments(
+                    conclusion: conclusion
                 )
             )
         } onUnknownError: { _ in

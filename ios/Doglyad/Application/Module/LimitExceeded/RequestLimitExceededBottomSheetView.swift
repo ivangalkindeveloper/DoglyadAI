@@ -7,7 +7,7 @@ struct RequestLimitExceededBottomSheetView: View {
     private var size: DSize { theme.size }
     private var typography: DTypography { theme.typography }
 
-    @StateObject var viewModel: RequestViewModel
+    @StateObject var viewModel: RequestLimitViewModel
 
     var body: some View {
         DBottomSheet(

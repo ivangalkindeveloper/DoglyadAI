@@ -6,19 +6,8 @@ import SwiftUI
 
 @MainActor
 final class ScanSpeechViewModel: DViewModel {
-    private let container: DependencyContainer
     private let messager: DMessager
-    private let router: DRouter
     private let arguments: ScanSpeechBottomSheetArguments
-
-    // The controller implementation is chosen by the factory based on system
-    // support and locale, so it is held as an existential. `NestedObservableObject`
-    // requires a concrete type, so changes are re-published manually through
-    // `objectWillChange`.
-    //
-    // Picking the best implementation is asynchronous (locale support in
-    // `SpeechTranscriber` is read via `await`), so we start with the synchronous
-    // `SFSpeechRecognizer` and upgrade to `SpeechAnalyzer` if system and locale allow.
     private(set) var speechController: any DSpeechControllerProtocol
     private var speechCancellable: AnyCancellable?
 
@@ -26,18 +15,21 @@ final class ScanSpeechViewModel: DViewModel {
         container: DependencyContainer,
         messager: DMessager,
         router: DRouter,
+        subscription: SubscriptionViewModel,
         arguments: ScanSpeechBottomSheetArguments
     ) {
-        self.container = container
         self.messager = messager
-        self.router = router
         self.arguments = arguments
         let contextualStrings = container.getContextualStrings(for: Locale.current)
         speechController = DSpeechFactory.makeDefault(
             locale: Locale.current,
             contextualStrings: contextualStrings
         )
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
         observeSpeechController()
 
         Task { [weak self] in
@@ -46,8 +38,6 @@ final class ScanSpeechViewModel: DViewModel {
                 contextualStrings: contextualStrings
             )
             guard let self else { return }
-            // Do not swap while recording, and only when the implementation actually
-            // changed (otherwise the factory returned the same `SFSpeechRecognizer`).
             guard self.speechController.status == .stopped,
                   type(of: controller) != type(of: self.speechController) else { return }
 
@@ -67,7 +57,7 @@ final class ScanSpeechViewModel: DViewModel {
     let columns = [GridItem(.adaptive(minimum: 100))]
 
     func onTapBack() {
-        router.dismissSheet()
+        coordinator.dismissSheet()
     }
 
     var speechIcon: ImageResource {
@@ -82,8 +72,6 @@ final class ScanSpeechViewModel: DViewModel {
         }
     }
 
-    /// Spinner on the button: both while the recognition session is starting up and
-    /// while the dictation is being parsed — there is nothing to tap in either case.
     var isSpeechButtonLoading: Bool {
         guard !isLoading else { return true }
 
@@ -110,9 +98,6 @@ final class ScanSpeechViewModel: DViewModel {
         }
     }
 
-    /// While the session starts up (on the new speech stack a language model may
-    /// still be downloading) the microphone is not recording yet — ask the physician
-    /// to wait rather than dictate.
     var isPreparingDescriptionVisible: Bool {
         switch speechController.status {
         case .preparing:
@@ -129,9 +114,6 @@ final class ScanSpeechViewModel: DViewModel {
         isAudioMeterVisible ? speechController.text : nil
     }
 
-    /// A separate flag for the transcript appearance animation. Binding the animation
-    /// to the string itself is not an option: draft results arrive several times per
-    /// second, and the whole sheet would replay the animation on every word.
     var isSpeechTextVisible: Bool {
         speechText != nil
     }
@@ -145,15 +127,11 @@ final class ScanSpeechViewModel: DViewModel {
 
         switch speechController.status {
         case .preparing:
-            // The session is still starting up — there is nothing to stop.
             return
         case .recording:
             onStopSpeech()
         case .stopped:
             speechController.start()
-            // The parsing model weighs hundreds of megabytes and loads lazily. While the
-            // physician dictates there is time to bring it up and warm it in the
-            // background — otherwise they wait for the load after they finish speaking.
             container.examinationNeuralModelFactory?.prewarm()
         @unknown default:
             fatalError()
@@ -165,11 +143,8 @@ final class ScanSpeechViewModel: DViewModel {
 
         Task { [weak self] in
             guard let self else { return }
-            // The tail of the dictation is recognized asynchronously after the microphone
-            // stops, so the final text is taken from `stop()` rather than from `text`
-            // right after it — otherwise the last phrase is lost.
-            let speech = await self.speechController.stop()
 
+            let speech = await self.speechController.stop()
             guard let speech, !speech.isEmpty,
                   self.container.examinationNeuralModelFactory != nil
             else {
@@ -187,7 +162,6 @@ final class ScanSpeechViewModel: DViewModel {
         guard let factory = container.examinationNeuralModelFactory else { return }
 
         handle {
-            // The first parse additionally waits for the model to load — it is lazy.
             try await factory.model().parseSpeech(
                 speech: speech
             )
@@ -195,7 +169,7 @@ final class ScanSpeechViewModel: DViewModel {
             self.isLoading = false
         } onMainSuccess: { response in
             self.arguments.onComplete?(response)
-            self.router.dismissSheet()
+            self.coordinator.dismissSheet()
         } onUnknownError: { _ in
             self.messager.showUnknownError()
         }

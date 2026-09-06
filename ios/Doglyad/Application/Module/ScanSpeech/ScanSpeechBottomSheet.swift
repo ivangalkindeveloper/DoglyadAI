@@ -6,6 +6,7 @@ struct ScanSpeechBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var router: DRouter
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     let arguments: ScanSpeechBottomSheetArguments
 
     var body: some View {
@@ -14,6 +15,7 @@ struct ScanSpeechBottomSheet: View {
                 container: container,
                 messager: messager,
                 router: router,
+                subscription: subscriptionViewModel,
                 arguments: arguments
             )
         )

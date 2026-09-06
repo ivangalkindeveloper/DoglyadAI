@@ -7,75 +7,66 @@ import SwiftUI
 
 @MainActor
 final class StorageViewModel: DViewModel {
-    private let container: DependencyContainer
     private let messager: DMessager
-    private let router: DRouter
 
     init(
         container: DependencyContainer,
         messager: DMessager,
-        router: DRouter
+        router: DRouter,
+        subscription: SubscriptionViewModel
     ) {
-        self.container = container
         self.messager = messager
-        self.router = router
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func onTapClearConclusions() {
-        router.push(
-            route: RouteSheet(
-                type: .storageClearConclusions,
-                arguments: StorageClearConclusionsArguments(
-                    onConfirm: { [weak self] in
-                        guard let self = self else { return }
+        coordinator.sheet(
+            .storageClearConclusions,
+            arguments: StorageClearConclusionsArguments(
+                onConfirm: { [weak self] in
+                    guard let self = self else { return }
 
-                        handle {
-                            await self.container.ultrasoundConclusionRepository.clearAllConclusions()
-                        } onMainSuccess: { _ in
-                            self.messager.show(
-                                type: .success,
-                                title: .storageClearConclusionsSuccessMessageTitle,
-                                description: .storageClearConclusionsSuccessMessageDescription
-                            )
-                            self.router.pop()
-                        }
+                    handle {
+                        await self.container.ultrasoundConclusionRepository.clearAllConclusions()
+                    } onMainSuccess: { _ in
+                        self.messager.show(
+                            type: .success,
+                            title: .storageClearConclusionsSuccessMessageTitle,
+                            description: .storageClearConclusionsSuccessMessageDescription
+                        )
+                        self.coordinator.pop()
                     }
-                )
+                }
             )
         )
     }
 
     func onTapClearAll() {
-        router.push(
-            route: RouteSheet(
-                type: .storageClearAll,
-                arguments: StorageClearAllArguments(
-                    onConfirm: { [weak self] in
-                        guard let self = self else { return }
+        coordinator.sheet(
+            .storageClearAll,
+            arguments: StorageClearAllArguments(
+                onConfirm: { [weak self] in
+                    guard let self = self else { return }
 
-                        handle {
-                            await self.container.ultrasoundConclusionRepository.clearAll()
-                        } onMainSuccess: { _ in
-                            self.messager.show(
-                                type: .success,
-                                title: .storageClearAllSuccessMessageTitle,
-                                description: .storageClearAllSuccessMessageDescription
-                            )
-                            self.router.popRoot()
-                            withAnimation {
-                                self.router.root(
-                                    route: RouteScreen(
-                                        type: .onBoarding
-                                    )
-                                )
-                            }
-                        }
+                    handle {
+                        await self.container.ultrasoundConclusionRepository.clearAll()
+                    } onMainSuccess: { _ in
+                        self.messager.show(
+                            type: .success,
+                            title: .storageClearAllSuccessMessageTitle,
+                            description: .storageClearAllSuccessMessageDescription
+                        )
+                        self.coordinator.resetToOnBoarding()
                     }
-                )
+                }
             )
         )
     }

@@ -7,6 +7,7 @@ struct TemplateAddScreen: View {
     @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     let arguments: TemplateAddScreenArguments?
 
     var body: some View {
@@ -14,6 +15,7 @@ struct TemplateAddScreen: View {
             viewModel: TemplateAddViewModel(
                 container: container,
                 router: router,
+                subscription: subscriptionViewModel,
                 messager: messager,
                 onSaveTemplate: { [ultrasoundViewModel] template in
                     ultrasoundViewModel.saveTemplate(template)

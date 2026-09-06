@@ -7,6 +7,17 @@ struct SubscriptionStatus: Equatable {
 }
 
 extension SubscriptionStatus {
+    func availability(of feature: PaidFeature) -> SubscriptionFeatureAvailability {
+        switch feature {
+        case .neuralModelSettings:
+            neuralModelSettings
+        case .formCompletionViaMicrophone:
+            formCompletionViaMicrophone
+        case .sendingConclusionByEmail:
+            sendingConclusionByEmail
+        }
+    }
+
     var requestCountPerDay: Int {
         entitlement.requestCountPerDay
     }

@@ -2,35 +2,31 @@ import Router
 
 @MainActor
 final class SubscriptionScreenViewModel: DViewModel {
-    private let router: DRouter
     private let arguments: SubscriptionScreenArguments?
 
     init(
+        container: DependencyContainer,
         router: DRouter,
+        subscription: SubscriptionViewModel,
         arguments: SubscriptionScreenArguments?
     ) {
-        self.router = router
         self.arguments = arguments
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func onTapChangeType() {
-        router.push(
-            route: RouteScreen(
-                type: .subscriptionPaywall
-            )
-        )
+        coordinator.screen(.subscriptionPaywall)
     }
 
     func onTapSupportCenter() {
-        router.push(
-            route: RouteSheet(
-                type: .subscriptionCustomerCenter
-            )
-        )
+        coordinator.sheet(.subscriptionCustomerCenter)
     }
 }

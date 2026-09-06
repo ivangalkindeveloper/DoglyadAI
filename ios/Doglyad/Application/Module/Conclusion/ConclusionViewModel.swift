@@ -2,7 +2,6 @@ import DoglyadNetwork
 import DoglyadUI
 import Foundation
 import Handler
-import NestedObservableObject
 import Router
 import SwiftUI
 import UIKit
@@ -11,12 +10,9 @@ import UIKit
 final class ConclusionViewModel: DViewModel {
     static let actualModelConclusionCardScrollId = "actualModelConclusionCard"
 
-    private let container: DependencyContainer
     private let messager: DMessager
-    private let router: DRouter
     private let getNeuralModel: () -> USExaminationNeuralModel
     private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
-    @NestedObservableObject private var subscription: SubscriptionViewModel
 
     init(
         container: DependencyContainer,
@@ -27,29 +23,29 @@ final class ConclusionViewModel: DViewModel {
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void
     ) {
-        self.container = container
         self.messager = messager
-        self.router = router
-        _subscription = NestedObservableObject(wrappedValue: subscription)
         self.getNeuralModel = getNeuralModel
         self.onNeuralModelSelected = onNeuralModelSelected
         conclusion = initialConclusion
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     @Published var conclusion: USExaminationConclusion
     @Published var isLoading = false
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func onTapShare() {
-        router.push(
-            route: RouteSheet(
-                type: .share,
-                arguments: ShareArguments(
-                    conclusion: conclusion
-                )
+        coordinator.sheet(
+            .share,
+            arguments: ShareArguments(
+                conclusion: conclusion
             )
         )
     }
@@ -66,26 +62,20 @@ final class ConclusionViewModel: DViewModel {
     }
 
     func onTapNeuralModelSelection() {
-        router.push(
-            route: RouteSheet(
-                type: .selectNeuralModel,
-                arguments: SelectNeuralModelArguments(
-                    currentValue: getNeuralModel(),
-                    onSelected: { [weak self] model in
-                        self?.onNeuralModelSelected(model)
-                    }
-                )
+        coordinator.sheet(
+            .selectNeuralModel,
+            arguments: SelectNeuralModelArguments(
+                currentValue: getNeuralModel(),
+                onSelected: { [weak self] model in
+                    self?.onNeuralModelSelected(model)
+                }
             )
         )
     }
 
     func onTapNeuralModelSettings() {
-        subscription.run(.neuralModelSettings, router: router) {
-            self.router.push(
-                route: RouteScreen(
-                    type: .neuralModelSettings
-                )
-            )
+        coordinator.run(.neuralModelSettings) {
+            self.coordinator.screen(.neuralModelSettings)
         }
     }
 
@@ -93,24 +83,14 @@ final class ConclusionViewModel: DViewModel {
         proxy: ScrollViewProxy
     ) {
         handle {
-            await self.subscription.refreshStatus()
-        } onMainSuccess: { _ in
-            guard self.subscription.isActive else {
-                return self.router.push(
-                    route: RouteScreen(
-                        type: .subscriptionPaywall
-                    )
-                )
+            try await self.coordinator.prepareConclusionGeneration()
+        } onMainSuccess: { resolution in
+            switch resolution {
+            case .proceed:
+                self.performRepeatScan(proxy: proxy)
+            case .routed:
+                break
             }
-            guard self.subscription.availableRequestCount > 0 else {
-                return self.router.push(
-                    route: RouteSheet(
-                        type: .requestLimitExceeded,
-                        arguments: RequestLimitExceededArguments()
-                    )
-                )
-            }
-            self.performRepeatScan(proxy: proxy)
         }
     }
 

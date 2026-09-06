@@ -3,20 +3,18 @@ import Foundation
 import Router
 import SwiftUI
 
-/// Shown when `legalDate` in the configuration is newer than the one the user accepted.
-/// Records that a specific revision of the documents was presented to the user.
 @MainActor
 final class LegalUpdateViewModel: DViewModel {
-    private let container: DependencyContainer
-    private let router: DRouter
-
-    init(
+    override init(
         container: DependencyContainer,
-        router: DRouter
+        router: DRouter,
+        subscription: SubscriptionViewModel
     ) {
-        self.container = container
-        self.router = router
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     @Published var isLegalAccepted: Bool = false
@@ -26,25 +24,21 @@ final class LegalUpdateViewModel: DViewModel {
     }
 
     func onTapPrivacyPolicy() {
-        router.push(
-            route: RouteSheet(
-                type: .webDocument,
-                arguments: WebDocumentBottomSheetArguments(
-                    url: container.applicationConfig.privacyPolicyUrl,
-                    title: .privacyPolicyTitle
-                )
+        coordinator.sheet(
+            .webDocument,
+            arguments: WebDocumentBottomSheetArguments(
+                url: container.applicationConfig.privacyPolicyUrl,
+                title: .privacyPolicyTitle
             )
         )
     }
 
     func onTapTermsAndConditions() {
-        router.push(
-            route: RouteSheet(
-                type: .webDocument,
-                arguments: WebDocumentBottomSheetArguments(
-                    url: container.applicationConfig.termsAndConditionsUrl,
-                    title: .termsAndConditionsTitle
-                )
+        coordinator.sheet(
+            .webDocument,
+            arguments: WebDocumentBottomSheetArguments(
+                url: container.applicationConfig.termsAndConditionsUrl,
+                title: .termsAndConditionsTitle
             )
         )
     }
@@ -53,13 +47,10 @@ final class LegalUpdateViewModel: DViewModel {
         container.sharedRepository.acceptLegal(
             documentDate: container.applicationConfig.legalDate
         )
-        withAnimation {
-            router.root(
-                route: RouteScreen(
-                    type: .scan
-                )
-            )
-        }
+        coordinator.root(
+            .scan,
+            animated: true
+        )
     }
 }
 

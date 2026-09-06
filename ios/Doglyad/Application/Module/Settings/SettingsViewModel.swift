@@ -1,16 +1,12 @@
 import DoglyadNetwork
 import Foundation
 import Handler
-import NestedObservableObject
 import Router
 import SwiftUI
 
 @MainActor
 final class SettingsViewModel: DViewModel {
-    private let container: DependencyContainer
-    private let router: DRouter
     private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
-    @NestedObservableObject private var subscription: SubscriptionViewModel
 
     init(
         container: DependencyContainer,
@@ -19,12 +15,13 @@ final class SettingsViewModel: DViewModel {
         subscription: SubscriptionViewModel,
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void
     ) {
-        self.container = container
-        self.router = router
-        _subscription = NestedObservableObject(wrappedValue: subscription)
         self.onNeuralModelSelected = onNeuralModelSelected
         neuralModel = initialNeuralModel
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     @Published var conclusionsCount = 0
@@ -39,7 +36,7 @@ final class SettingsViewModel: DViewModel {
     }
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func historyDescription() -> LocalizedStringResource {
@@ -47,105 +44,68 @@ final class SettingsViewModel: DViewModel {
     }
 
     func onTapHistory() {
-        router.push(
-            route: RouteScreen(
-                type: .history
-            )
-        )
+        coordinator.screen(.history)
     }
 
     func onTapTemplates() {
-        router.push(
-            route: RouteScreen(
-                type: .templateList
-            )
-        )
+        coordinator.screen(.templateList)
     }
 
     func onTapUserSettings() {
-        router.push(
-            route: RouteScreen(
-                type: .userSettings
-            )
-        )
+        coordinator.screen(.userSettings)
     }
 
     func onTapSubscription() {
-        router.push(
-            route: RouteScreen(
-                type: .subscription
-            )
-        )
+        coordinator.screen(.subscription)
     }
 
     func onTapNeuralModelSelection() {
-        router.push(
-            route: RouteSheet(
-                type: .selectNeuralModel,
-                arguments: SelectNeuralModelArguments(
-                    currentValue: neuralModel,
-                    onSelected: { [weak self] model in
-                        guard let self = self else { return }
-                        guard self.neuralModel != model else { return }
+        coordinator.sheet(
+            .selectNeuralModel,
+            arguments: SelectNeuralModelArguments(
+                currentValue: neuralModel,
+                onSelected: { [weak self] model in
+                    guard let self = self else { return }
+                    guard self.neuralModel != model else { return }
 
-                        self.neuralModel = model
-                        self.onNeuralModelSelected(model)
-                    }
-                )
+                    self.neuralModel = model
+                    self.onNeuralModelSelected(model)
+                }
             )
         )
     }
 
     func onTapNeuralModelSettings() {
-        subscription.run(
-            .neuralModelSettings,
-            router: router
-        ) {
-            self.router.push(
-                route: RouteScreen(
-                    type: .neuralModelSettings
-                )
-            )
+        coordinator.run(.neuralModelSettings) {
+            self.coordinator.screen(.neuralModelSettings)
         }
     }
 
     func onTapStorage() {
-        router.push(
-            route: RouteScreen(
-                type: .storage
-            )
-        )
+        coordinator.screen(.storage)
     }
 
     func onTapPrivacyPolicy() {
-        router.push(
-            route: RouteSheet(
-                type: .webDocument,
-                arguments: WebDocumentBottomSheetArguments(
-                    url: container.applicationConfig.privacyPolicyUrl,
-                    title: .privacyPolicyTitle
-                )
+        coordinator.sheet(
+            .webDocument,
+            arguments: WebDocumentBottomSheetArguments(
+                url: container.applicationConfig.privacyPolicyUrl,
+                title: .privacyPolicyTitle
             )
         )
     }
 
     func onTapTermsAndConditions() {
-        router.push(
-            route: RouteSheet(
-                type: .webDocument,
-                arguments: WebDocumentBottomSheetArguments(
-                    url: container.applicationConfig.termsAndConditionsUrl,
-                    title: .termsAndConditionsTitle
-                )
+        coordinator.sheet(
+            .webDocument,
+            arguments: WebDocumentBottomSheetArguments(
+                url: container.applicationConfig.termsAndConditionsUrl,
+                title: .termsAndConditionsTitle
             )
         )
     }
 
     func onTapAboutApp() {
-        router.push(
-            route: RouteSheet(
-                type: .about
-            )
-        )
+        coordinator.sheet(.about)
     }
 }

@@ -11,19 +11,23 @@ final class UserSettingsViewModel: DViewModel {
     }
 
     private let messager: DMessager
-    private let router: DRouter
     private let onEmailSaved: (String) -> Void
 
     init(
+        container: DependencyContainer,
         messager: DMessager,
         router: DRouter,
+        subscription: SubscriptionViewModel,
         initialEmail: String?,
         onEmailSaved: @escaping (String) -> Void
     ) {
         self.messager = messager
-        self.router = router
         self.onEmailSaved = onEmailSaved
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
         emailController.text = initialEmail ?? ""
     }
 
@@ -31,7 +35,7 @@ final class UserSettingsViewModel: DViewModel {
     @NestedObservableObject var emailController = DTextFieldController()
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func unfocus() {
@@ -55,6 +59,6 @@ final class UserSettingsViewModel: DViewModel {
             title: .userSettingsSavedSuccessMessageTitle,
             description: .userSettingsSavedSuccessMessageDescription
         )
-        router.pop()
+        coordinator.pop()
     }
 }

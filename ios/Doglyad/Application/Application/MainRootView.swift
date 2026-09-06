@@ -23,10 +23,7 @@ struct MainRootView: View {
     var body: some View {
         RouterView<ScreenType, SheetType, FullScreenCoverType, RouterBuilder>(
             builder: RouterBuilder(),
-            initialRouteScreen: RouteScreen<ScreenType>(
-                type: dependencyContainer.initialScreen,
-                arguments: dependencyContainer.initialScreenArguments
-            )
+            initialRouteScreen: dependencyContainer.initialRoute
         )
         .dMessage()
         .environmentObject(dependencyContainer)
@@ -34,7 +31,6 @@ struct MainRootView: View {
         .environmentObject(subscriptionViewModel)
         .onAppear {
             ultrasoundViewModel.onAppear()
-            subscriptionViewModel.onAppear()
         }
     }
 }

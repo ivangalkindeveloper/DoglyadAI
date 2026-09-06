@@ -2,18 +2,14 @@ import DoglyadNetwork
 import DoglyadUI
 import Foundation
 import Handler
-import NestedObservableObject
 import Router
 import SwiftUI
 import UIKit
 
 @MainActor
 final class RecievedConclusionViewModel: DViewModel {
-    private let container: DependencyContainer
     private let messager: DMessager
-    private let router: DRouter
     private let arguments: RecievedConclusionBottomSheetArguments
-    @NestedObservableObject private var subscription: SubscriptionViewModel
     let userEmail: String?
 
     init(
@@ -24,14 +20,16 @@ final class RecievedConclusionViewModel: DViewModel {
         subscription: SubscriptionViewModel,
         userEmail: String?
     ) {
-        self.container = container
         self.messager = messager
-        self.router = router
         self.arguments = arguments
-        _subscription = NestedObservableObject(wrappedValue: subscription)
         self.userEmail = userEmail
         markdownViewModel = RecievedConclusionMarkdownViewModel(
             response: arguments.conclusion.actualModelConclusion.response
+        )
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
         )
     }
 
@@ -77,22 +75,19 @@ final class RecievedConclusionViewModel: DViewModel {
     }
 
     func onTapConclusion() {
-        router.dismissSheet()
-        router.push(
-            route: RouteScreen(
-                type: .conclusion,
-                arguments: ConclusionScreenArguments(
-                    conclusion: arguments.conclusion
-                )
+        coordinator.dismissSheet()
+        coordinator.screen(
+            .conclusion,
+            arguments: ConclusionScreenArguments(
+                conclusion: arguments.conclusion
             )
         )
     }
 
     func onTapUserEmail() {
         guard let userEmail: String = userEmail else { return }
-        subscription.run(
+        coordinator.run(
             .sendingConclusionByEmail,
-            router: router,
             dismissesSheetOnPaywall: true
         ) {
             self.sendConclusionEmail(to: userEmail)

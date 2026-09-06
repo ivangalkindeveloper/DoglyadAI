@@ -6,16 +6,16 @@ import SwiftUI
 
 @MainActor
 final class TemplateListViewModel: DViewModel {
-    private let container: DependencyContainer
-    private let router: DRouter
-
-    init(
+    override init(
         container: DependencyContainer,
-        router: DRouter
+        router: DRouter,
+        subscription: SubscriptionViewModel
     ) {
-        self.container = container
-        self.router = router
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     override func onInit() {
@@ -31,26 +31,20 @@ final class TemplateListViewModel: DViewModel {
     @Published var templates: [USExaminationTemplate] = []
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func onTapAdd() {
-        router.push(
-            route: RouteScreen(
-                type: .templateAdd
-            )
-        )
+        coordinator.screen(.templateAdd)
     }
 
     func onTapTemplate(
         _ template: USExaminationTemplate
     ) {
-        router.push(
-            route: RouteScreen(
-                type: .templateEdit,
-                arguments: TemplateEditScreenArguments(
-                    templateId: template.id
-                )
+        coordinator.screen(
+            .templateEdit,
+            arguments: TemplateEditScreenArguments(
+                templateId: template.id
             )
         )
     }

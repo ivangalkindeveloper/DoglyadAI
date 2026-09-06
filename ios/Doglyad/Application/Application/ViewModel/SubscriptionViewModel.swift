@@ -1,9 +1,9 @@
+import DoglyadNetwork
 import Foundation
 import Handler
-import Router
 
 @MainActor
-final class SubscriptionViewModel: DViewModel {
+final class SubscriptionViewModel: Handler<DHttpApiError, DHttpConnectionError>, ObservableObject {
     private let container: DependencyContainer
 
     init(
@@ -37,37 +37,7 @@ final class SubscriptionViewModel: DViewModel {
     }
 
     func availability(of feature: PaidFeature) -> SubscriptionFeatureAvailability {
-        switch feature {
-        case .neuralModelSettings:
-            return neuralModelSettingsAvailability
-        case .formCompletionViaMicrophone:
-            return formCompletionViaMicrophoneAvailability
-        case .sendingConclusionByEmail:
-            return sendingConclusionByEmailAvailability
-        }
-    }
-
-    func run(
-        _ feature: PaidFeature,
-        router: DRouter,
-        dismissesSheetOnPaywall: Bool = false,
-        onAvailable: () -> Void
-    ) {
-        switch availability(of: feature) {
-        case .available:
-            onAvailable()
-        case .offered:
-            if dismissesSheetOnPaywall {
-                router.dismissSheet()
-            }
-            router.push(
-                route: RouteScreen(
-                    type: .subscriptionPaywall
-                )
-            )
-        case .unavailable:
-            break
-        }
+        status?.availability(of: feature) ?? .unavailable
     }
 
     var neuralModelSettings: NeuralModelSettings {
@@ -109,5 +79,9 @@ final class SubscriptionViewModel: DViewModel {
         } onMainSuccess: { status in
             self.status = status
         }
+    }
+
+    func update(status: SubscriptionStatus?) {
+        self.status = status
     }
 }

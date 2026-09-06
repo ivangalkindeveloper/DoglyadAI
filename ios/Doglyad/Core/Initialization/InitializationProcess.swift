@@ -32,8 +32,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var examinationNeuralModelFactory: DExaminationNeuralModelFactory?
     var initialUltraSoundConclusionsCount: Int?
     var initialSubscriptionStatus: SubscriptionStatus?
-    var initialScreen: ScreenType?
-    var initialScreenArguments: RouteArgumentsProtocol?
+    var initialRoute: RouteScreen<ScreenType>?
     var version: String?
 
     var toContainer: DependencyContainer {
@@ -58,8 +57,7 @@ final class InitializationProcess: DependencyInitializationProcess {
             usExaminationContextualStrings: usExaminationContextualStrings!,
             examinationNeuralModelFactory: examinationNeuralModelFactory,
             initialSubscriptionStatus: initialSubscriptionStatus,
-            initialScreen: initialScreen!,
-            initialScreenArguments: initialScreenArguments,
+            initialRoute: initialRoute!,
             version: version!
         )
     }

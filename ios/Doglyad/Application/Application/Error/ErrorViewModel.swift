@@ -2,14 +2,13 @@ import Foundation
 import UIKit
 
 @MainActor
-final class ErrorViewModel: DViewModel {
+final class ErrorViewModel: ObservableObject {
     let email: String?
 
     init(
         email: String?
     ) {
         self.email = email
-        super.init()
     }
 
     func onTapEmail() {

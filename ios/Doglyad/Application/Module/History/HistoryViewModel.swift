@@ -6,8 +6,6 @@ import SwiftUI
 
 @MainActor
 final class HistoryViewModel: DViewModel {
-    private let container: DependencyContainer
-    private let router: DRouter
     private let sectionBuilder: HistoryDaySectionBuilder
     private let historyConfig: HistoryConfig
 
@@ -18,12 +16,16 @@ final class HistoryViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
+        subscription: SubscriptionViewModel,
         sectionBuilder: HistoryDaySectionBuilder = HistoryDaySectionBuilder()
     ) {
-        self.container = container
-        self.router = router
         self.sectionBuilder = sectionBuilder
         historyConfig = container.applicationConfig.history
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     override func onInit() {
@@ -43,18 +45,16 @@ final class HistoryViewModel: DViewModel {
     }
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func onTapConclusion(
         value: USExaminationConclusion
     ) {
-        router.push(
-            route: RouteScreen(
-                type: .conclusion,
-                arguments: ConclusionScreenArguments(
-                    conclusion: value
-                )
+        coordinator.screen(
+            .conclusion,
+            arguments: ConclusionScreenArguments(
+                conclusion: value
             )
         )
     }

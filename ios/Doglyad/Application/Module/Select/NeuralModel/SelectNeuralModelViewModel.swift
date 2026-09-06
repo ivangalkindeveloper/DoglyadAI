@@ -1,13 +1,9 @@
 import Foundation
-import NestedObservableObject
 import Router
 
 @MainActor
 final class SelectNeuralModelViewModel: DViewModel {
-    private let container: DependencyContainer
-    private let router: DRouter
     private let arguments: SelectNeuralModelArguments?
-    @NestedObservableObject private var subscription: SubscriptionViewModel
 
     init(
         container: DependencyContainer,
@@ -15,11 +11,12 @@ final class SelectNeuralModelViewModel: DViewModel {
         arguments: SelectNeuralModelArguments?,
         subscription: SubscriptionViewModel
     ) {
-        self.container = container
-        self.router = router
         self.arguments = arguments
-        _subscription = NestedObservableObject(wrappedValue: subscription)
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     var models: [USExaminationNeuralModel] {
@@ -63,23 +60,8 @@ final class SelectNeuralModelViewModel: DViewModel {
     }
 
     func onModelTap(_ model: USExaminationNeuralModel) {
-        guard isSelectionEnabled(for: model) else { return }
-
-        if isPaywallRequired(for: model) {
-            router.dismissSheet()
-            router.push(
-                route: RouteScreen(
-                    type: .subscriptionPaywall
-                )
-            )
-            return
+        coordinator.selectNeuralModel(model) { [weak self] model in
+            self?.arguments?.onSelected(model)
         }
-
-        router.dismissSheet()
-        arguments?.onSelected(model)
-    }
-
-    private func isPaywallRequired(for model: USExaminationNeuralModel) -> Bool {
-        isProBadgeVisible(for: model)
     }
 }

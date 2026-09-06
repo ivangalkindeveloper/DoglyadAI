@@ -12,22 +12,24 @@ final class TemplateAddViewModel: DViewModel {
         case content
     }
 
-    private let container: DependencyContainer
-    private let router: DRouter
     private let messager: DMessager
     private let onSaveTemplate: (USExaminationTemplate) -> Void
 
     init(
         container: DependencyContainer,
         router: DRouter,
+        subscription: SubscriptionViewModel,
         messager: DMessager,
         onSaveTemplate: @escaping (USExaminationTemplate) -> Void
     ) {
-        self.container = container
-        self.router = router
         self.messager = messager
         self.onSaveTemplate = onSaveTemplate
         usExaminationType = container.usExaminationTypeDefault
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     @Published var focus: Focus?
@@ -35,7 +37,7 @@ final class TemplateAddViewModel: DViewModel {
     @NestedObservableObject var templateController = DTextFieldController()
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func unfocus() {
@@ -50,15 +52,13 @@ final class TemplateAddViewModel: DViewModel {
     }
 
     func onTapExaminationType() {
-        router.push(
-            route: RouteSheet(
-                type: .selectUSExaminationType,
-                arguments: SelectUSExaminationTypeArguments(
-                    currentValue: usExaminationType,
-                    onSelected: { [weak self] type in
-                        self?.usExaminationType = type
-                    }
-                )
+        coordinator.sheet(
+            .selectUSExaminationType,
+            arguments: SelectUSExaminationTypeArguments(
+                currentValue: usExaminationType,
+                onSelected: { [weak self] type in
+                    self?.usExaminationType = type
+                }
             )
         )
     }
@@ -102,7 +102,7 @@ final class TemplateAddViewModel: DViewModel {
                 title: .templateSavedSuccessTitle,
                 description: .templateSavedSuccessDescription
             )
-            self.router.pop()
+            self.coordinator.pop()
         }
     }
 }

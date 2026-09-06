@@ -12,8 +12,6 @@ final class TemplateEditViewModel: DViewModel {
         case content
     }
 
-    private let container: DependencyContainer
-    private let router: DRouter
     private let messager: DMessager
     private let arguments: TemplateEditScreenArguments
     private let onSaveTemplate: (USExaminationTemplate) -> Void
@@ -22,18 +20,22 @@ final class TemplateEditViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
+        subscription: SubscriptionViewModel,
         messager: DMessager,
         arguments: TemplateEditScreenArguments,
         onSaveTemplate: @escaping (USExaminationTemplate) -> Void,
         onDeleteTemplate: @escaping (UUID) -> Void
     ) {
-        self.container = container
-        self.router = router
         self.messager = messager
         self.arguments = arguments
         self.onSaveTemplate = onSaveTemplate
         self.onDeleteTemplate = onDeleteTemplate
         usExaminationType = container.usExaminationTypeDefault
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     override func onInit() {
@@ -54,7 +56,7 @@ final class TemplateEditViewModel: DViewModel {
     @NestedObservableObject var templateController = DTextFieldController()
 
     func onTapBack() {
-        router.pop()
+        coordinator.pop()
     }
 
     func unfocus() {
@@ -69,15 +71,13 @@ final class TemplateEditViewModel: DViewModel {
     }
 
     func onTapExaminationType() {
-        router.push(
-            route: RouteSheet(
-                type: .selectUSExaminationType,
-                arguments: SelectUSExaminationTypeArguments(
-                    currentValue: usExaminationType,
-                    onSelected: { [weak self] type in
-                        self?.usExaminationType = type
-                    }
-                )
+        coordinator.sheet(
+            .selectUSExaminationType,
+            arguments: SelectUSExaminationTypeArguments(
+                currentValue: usExaminationType,
+                onSelected: { [weak self] type in
+                    self?.usExaminationType = type
+                }
             )
         )
     }
@@ -105,7 +105,7 @@ final class TemplateEditViewModel: DViewModel {
             title: .templateSavedSuccessTitle,
             description: .templateSavedSuccessDescription
         )
-        router.pop()
+        coordinator.pop()
     }
 
     func onTapDelete() {
@@ -115,6 +115,6 @@ final class TemplateEditViewModel: DViewModel {
             title: .templateDeletedSuccessTitle,
             description: .templateDeletedSuccessDescription
         )
-        router.pop()
+        coordinator.pop()
     }
 }

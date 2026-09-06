@@ -96,35 +96,16 @@ extension InitializationProcess {
             SyncInitializationStep<InitializationProcess>(
                 title: "Initial screen",
                 run: { (process: InitializationProcess) in
-                    if !process.applicationConfig!.isServiceAvailable {
-                        throw InitializationError.serviceUnavailable(
-                            email: process.applicationConfig!.contactEmail
-                        )
-                    }
-
-                    if Bundle.shortVersion.major < process.applicationConfig!.actualVersion.major, process.applicationConfig?.appStoreId != nil {
-                        return process.initialScreen = .newVersion
-                    }
-
-                    let isOnBoardingCompleted = process.database!.getOnBoardingCompleted()
-                    let selectedUSExaminationTypeId = process.database!.getSelectedUSExaminationTypeId()
-                    if !isOnBoardingCompleted || selectedUSExaminationTypeId == nil {
-                        return process.initialScreen = .onBoarding
-                    }
-
-                    // The documents changed since the last acceptance — consent has to be
-                    // taken again, otherwise there is no evidence that the new revision
-                    // was accepted.
-                    let acceptedLegalDate = process.database!.getAcceptedLegalDocumentDate() ?? .distantPast
-                    if acceptedLegalDate < process.applicationConfig!.legalDate {
-                        return process.initialScreen = .legalUpdate
-                    }
-
-                    if process.initialUltraSoundConclusionsCount == 0, process.initialSubscriptionStatus == nil {
-                        return process.initialScreen = .subscriptionPaywall
-                    }
-
-                    process.initialScreen = .scan
+                    let context = InitialNavigationContext(
+                        applicationConfig: process.applicationConfig!,
+                        applicationVersion: Bundle.shortVersion,
+                        isOnBoardingCompleted: process.sharedRepository!.isOnBoardingCompleted(),
+                        selectedUSExaminationTypeId: process.ultrasoundConclusionRepository!.getSelectedExaminationTypeId(),
+                        acceptedLegalDocumentDate: process.sharedRepository!.getAcceptedLegalDocumentDate(),
+                        conclusionsCount: process.initialUltraSoundConclusionsCount!,
+                        subscriptionStatus: process.initialSubscriptionStatus
+                    )
+                    process.initialRoute = try Coordinator.initialRoute(for: context)
                 }
             ),
             SyncInitializationStep<InitializationProcess>(

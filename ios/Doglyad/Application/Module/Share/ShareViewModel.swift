@@ -2,17 +2,13 @@ import DoglyadNetwork
 import DoglyadUI
 import Foundation
 import Handler
-import NestedObservableObject
 import Router
 import UIKit
 
 @MainActor
 final class ShareViewModel: DViewModel {
-    private let container: DependencyContainer
     private let messager: DMessager
-    private let router: DRouter
     private let arguments: ShareArguments
-    @NestedObservableObject private var subscription: SubscriptionViewModel
     let userEmail: String?
 
     init(
@@ -23,13 +19,14 @@ final class ShareViewModel: DViewModel {
         subscription: SubscriptionViewModel,
         userEmail: String?
     ) {
-        self.container = container
         self.messager = messager
-        self.router = router
         self.arguments = arguments
-        _subscription = NestedObservableObject(wrappedValue: subscription)
         self.userEmail = userEmail
-        super.init()
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     @Published var isLoading = false
@@ -63,7 +60,7 @@ final class ShareViewModel: DViewModel {
 
     func onTapUserEmail() {
         guard let userEmail = userEmail else { return }
-        subscription.run(.sendingConclusionByEmail, router: router, dismissesSheetOnPaywall: true) {
+        coordinator.run(.sendingConclusionByEmail, dismissesSheetOnPaywall: true) {
             self.sendConclusionEmail(to: userEmail)
         }
     }
@@ -81,7 +78,7 @@ final class ShareViewModel: DViewModel {
         } onDefer: {
             self.isLoading = false
         } onMainSuccess: { _ in
-            self.router.dismissSheet()
+            self.coordinator.dismissSheet()
             self.messager.show(
                 type: .success,
                 title: .shareUserEmailSuccessMessageTitle,
@@ -93,8 +90,8 @@ final class ShareViewModel: DViewModel {
     }
 
     func onTapEmail() {
-        subscription.run(.sendingConclusionByEmail, router: router, dismissesSheetOnPaywall: true) {
-            self.router.dismissSheet()
+        coordinator.run(.sendingConclusionByEmail, dismissesSheetOnPaywall: true) {
+            self.coordinator.dismissSheet()
             UIApplication.openMail(
                 subject: self.subject,
                 body: self.shareMessage
@@ -103,7 +100,7 @@ final class ShareViewModel: DViewModel {
     }
 
     func onTapCopy() {
-        router.dismissSheet()
+        coordinator.dismissSheet()
         UIApplication.pasteboard(shareMessage)
         messager.show(
             type: .success,

@@ -1,6 +1,5 @@
 import DoglyadUI
 import Foundation
-import NestedObservableObject
 import Router
 import SwiftUI
 
@@ -14,18 +13,16 @@ final class OnBoardingViewModel: DViewModel {
         }
     }
 
-    private let container: DependencyContainer
-    private let router: DRouter
-    @NestedObservableObject private var subscription: SubscriptionViewModel
-
-    init(
+    override init(
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel
     ) {
-        self.container = container
-        self.router = router
-        _subscription = NestedObservableObject(wrappedValue: subscription)
+        super.init(
+            container: container,
+            router: router,
+            subscription: subscription
+        )
     }
 
     @Published var page: Page = .first
@@ -36,25 +33,21 @@ final class OnBoardingViewModel: DViewModel {
     }
 
     func onTapPrivacyPolicy() {
-        router.push(
-            route: RouteSheet(
-                type: .webDocument,
-                arguments: WebDocumentBottomSheetArguments(
-                    url: container.applicationConfig.privacyPolicyUrl,
-                    title: .privacyPolicyTitle
-                )
+        coordinator.sheet(
+            .webDocument,
+            arguments: WebDocumentBottomSheetArguments(
+                url: container.applicationConfig.privacyPolicyUrl,
+                title: .privacyPolicyTitle
             )
         )
     }
 
     func onTapTermsAndConditions() {
-        router.push(
-            route: RouteSheet(
-                type: .webDocument,
-                arguments: WebDocumentBottomSheetArguments(
-                    url: container.applicationConfig.termsAndConditionsUrl,
-                    title: .termsAndConditionsTitle
-                )
+        coordinator.sheet(
+            .webDocument,
+            arguments: WebDocumentBottomSheetArguments(
+                url: container.applicationConfig.termsAndConditionsUrl,
+                title: .termsAndConditionsTitle
             )
         )
     }
@@ -78,30 +71,24 @@ final class OnBoardingViewModel: DViewModel {
         switch page {
         case .first:
             page = .second
-
         case .second:
             page = .third
-
         case .third:
             page = .fourth
-
         case .fourth:
-            router.push(
-                route: RouteSheet(
-                    type: .selectUSExaminationType,
-                    arguments: SelectUSExaminationTypeArguments(
-                        onSelected: { [weak self] type in
-                            guard let self = self else { return }
+            coordinator.sheet(
+                .selectUSExaminationType,
+                arguments: SelectUSExaminationTypeArguments(
+                    onSelected: { [weak self] type in
+                        guard let self = self else { return }
 
-                            self.page = .fifth
-                            self.container.ultrasoundConclusionRepository.setSelectedExaminationTypeId(
-                                id: type.id
-                            )
-                        }
-                    )
+                        self.page = .fifth
+                        self.container.ultrasoundConclusionRepository.setSelectedExaminationTypeId(
+                            id: type.id
+                        )
+                    }
                 )
             )
-
         case .fifth:
             container.sharedRepository.setOnBoardingCompleted(
                 value: true
@@ -111,23 +98,7 @@ final class OnBoardingViewModel: DViewModel {
                 documentDate: container.applicationConfig.legalDate
             )
             handle {
-                await self.subscription.refreshStatus()
-            } onMainSuccess: { _ in
-                withAnimation {
-                    if self.subscription.isActive {
-                        self.router.root(
-                            route: RouteScreen(
-                                type: .scan
-                            )
-                        )
-                    } else {
-                        self.router.root(
-                            route: RouteScreen(
-                                type: .subscriptionPaywall
-                            )
-                        )
-                    }
-                }
+                try await self.coordinator.navigateAfterOnBoarding()
             }
         }
     }

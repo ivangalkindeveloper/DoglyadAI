@@ -6,6 +6,7 @@ struct StorageScreen: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var router: DRouter
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
     let arguments: StorageScreenArguments?
 
     var body: some View {
@@ -13,7 +14,8 @@ struct StorageScreen: View {
             viewModel: StorageViewModel(
                 container: container,
                 messager: messager,
-                router: router
+                router: router,
+                subscription: subscriptionViewModel
             )
         )
     }
