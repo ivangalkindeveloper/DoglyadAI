@@ -4,7 +4,6 @@ import Handler
 
 @MainActor
 final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, ObservableObject {
-    private var isInitialized = false
     private let container: DependencyContainer
 
     init(
@@ -37,13 +36,11 @@ final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, O
 
         templateIdByUSExaminationTypeId = [:]
         userEmail = container.userSettingsRepository.getUserEmail()
+        includeRecommendations = container.userSettingsRepository.getIncludeRecommendations()
         super.init()
     }
 
     func onAppear() {
-        guard !isInitialized else { return }
-        isInitialized = true
-
         handle {
             self.templateIdByUSExaminationTypeId = await self.container.templateRepository
                 .getTemplatesByUSExaminationId(
@@ -58,12 +55,16 @@ final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, O
     @Published var maxTokens: Int
     @Published var templateIdByUSExaminationTypeId: [String: USExaminationTemplate]
     @Published var userEmail: String?
+    @Published var includeRecommendations: Bool
 
-    func saveUserEmail(
-        userEmail: String
+    func saveUserSettings(
+        userEmail: String,
+        includeRecommendations: Bool
     ) {
         self.userEmail = userEmail
+        self.includeRecommendations = includeRecommendations
         container.userSettingsRepository.setUserEmail(userEmail)
+        container.userSettingsRepository.setIncludeRecommendations(includeRecommendations)
     }
 
     func saveNeuralModel(

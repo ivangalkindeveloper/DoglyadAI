@@ -32,7 +32,7 @@ extension ApplicationConfig {
             .base: SubscriptionEntitlement(
                 requestCountPerDay: 10,
                 formCompletionViaMicrophone: .unavailable,
-                sendingConclusionByEmail: .unavailable,
+                sendingReportByEmail: .unavailable,
                 neuralModelSettings: .unavailable
             ),
         ],

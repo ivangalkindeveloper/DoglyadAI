@@ -1,5 +1,5 @@
 extension Coordinator {
-    func prepareConclusionGeneration() async throws -> NavigationResolution {
+    func prepareReportGeneration() async throws -> NavigationResolution {
         let status = try await refreshSubscriptionStatus()
         guard let status else {
             screen(.subscriptionPaywall)

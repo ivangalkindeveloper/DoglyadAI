@@ -12,7 +12,7 @@ _FORMAT = "%(asctime)s %(levelname)s %(name)s: %(message)s"
 def setup_logging() -> None:
     """Configures stdout output and, when LOG_DIR is set, daily file rotation.
 
-    Logs never contain patient data — only technical metadata, so long
+    Logs contain only technical metadata and never request payloads, so long
     retention is safe.
     """
     handlers: list[logging.Handler] = [logging.StreamHandler(sys.stdout)]

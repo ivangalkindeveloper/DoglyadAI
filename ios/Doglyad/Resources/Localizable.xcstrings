@@ -77,13 +77,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Doglyad is an AI assistant for generating medical reports of ultrasound examinations based on collected patient data."
+            "value": "Doglyad is an AI assistant for generating ultrasound reports based on collected patient data."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Догляд - ИИ-ассистент для генерации медицинских заключений ультра-звуковых исследований на основе собранных данных о пациенте."
+            "value": "Догляд — ИИ-ассистент для генерации протоколов ультразвуковых исследований на основе собранных данных о пациенте."
           }
         }
       }
@@ -275,6 +275,23 @@
         }
       }
     },
+    "buttonGenerate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generate"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сгенерировать"
+          }
+        }
+      }
+    },
     "buttonNext": {
       "extractionState": "manual",
       "localizations": {
@@ -309,19 +326,19 @@
         }
       }
     },
-    "buttonRepeatScan": {
+    "buttonRepeatGenerate": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Repeat scanning"
+            "value": "Repeat generation"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Повторить сканирование"
+            "value": "Повторить генерацию"
           }
         }
       }
@@ -339,23 +356,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Сохранить"
-          }
-        }
-      }
-    },
-    "buttonScan": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scan"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Сканировать"
           }
         }
       }
@@ -479,19 +479,19 @@
         }
       }
     },
-    "buttonToConclusion": {
+    "buttonToReport": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "To conclusion"
+            "value": "To report"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "К заключению"
+            "value": "К протоколу"
           }
         }
       }
@@ -513,155 +513,36 @@
         }
       }
     },
-    "conclusionActualModelResponseTitle": {
+    "dateTodayLabel": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Actual response"
+            "value": "Today"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Актуальный ответ"
+            "value": "Сегодня"
           }
         }
       }
     },
-    "conclusionModelCopyMessageDescription": {
+    "dateYesterdayLabel": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The model's has been copied to the clipboard"
+            "value": "Yesterday"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ответ модели скопирован в буфер обмена"
-          }
-        }
-      }
-    },
-    "conclusionModelCopyMessageTitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Response copied"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ответ скопирован"
-          }
-        }
-      }
-    },
-    "conclusionModelResponseUpdatedMessageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The response from the neural model was successfully updated"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ответ от нейронной модели был успешно обновлен"
-          }
-        }
-      }
-    },
-    "conclusionModelResponseUpdatedMessageTitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Response updated"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ответ обновлен"
-          }
-        }
-      }
-    },
-    "conclusionPreviosModelResponsesTitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Previous responses"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Предыдущие ответы"
-          }
-        }
-      }
-    },
-    "conclusionResponseDateLabel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Response date:"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Дата ответа:"
-          }
-        }
-      }
-    },
-    "conclusionResponseModelLabel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Model:"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Модель:"
-          }
-        }
-      }
-    },
-    "conclusionTitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Conclusion"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Заключение"
+            "value": "Вчера"
           }
         }
       }
@@ -825,30 +706,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The list of recent findings is empty.\nPlease scan at least one study to view the responses history."
+            "value": "The list of recent reports is empty.\nPlease generate at least one examination to view the report history."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Список последних заключений пуст.\nПожалуйста, просканируйте хотя бы одно исследование чтобы смотреть историю запросов."
-          }
-        }
-      }
-    },
-    "dateTodayLabel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Today"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Сегодня"
+            "value": "Список последних протоколов пуст.\nПожалуйста, сгенерируйте хотя бы одно исследование, чтобы посмотреть историю протоколов."
           }
         }
       }
@@ -866,23 +730,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "История исследований"
-          }
-        }
-      }
-    },
-    "dateYesterdayLabel": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yesterday"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Вчера"
           }
         }
       }
@@ -944,13 +791,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "If you have not found the necessary neural models for generating ultrasound examination reports, please contact support to add them"
+            "value": "If you have not found the necessary neural models for generating ultrasound reports, please contact support to add them"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Если Вы не обнаружили необходимые нейронные модели для генерации заключений УЗИ исследований, пожалуйста, обратитесь в поддержку для их добавления"
+            "value": "Если Вы не обнаружили необходимые нейронные модели для генерации УЗИ-протоколов, пожалуйста, обратитесь в поддержку для их добавления"
           }
         }
       }
@@ -1035,7 +882,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Максимум токенов ограничивает объём текста, который нейромодель может сгенерировать за один ответ, в единицах токенизатора, а не в символах или целых словах.\nБольший верхний предел допускает более развернутые заключения."
+            "value": "Максимум токенов ограничивает объём текста, который нейромодель может сгенерировать за один ответ, в единицах токенизатора, а не в символах или целых словах.\nБольший верхний предел допускает более развёрнутые протоколы."
           }
         }
       }
@@ -1188,7 +1035,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Шаблон используется нейронной моделью для формирования медицинского заключения.\nПример:"
+            "value": "Шаблон используется нейронной моделью для формирования протокола исследования.\nПример:"
           }
         }
       }
@@ -1284,13 +1131,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Next, scan the patient: take a photo of the examination, fill in the patient data, describe the examination, and submit it to see the model's response."
+            "value": "Next, scan the patient: take a photo of the examination, fill in the patient data, describe the examination, and submit it to generate medical protocol."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Далее сканируйте пациента: делайте фото исследования, заполняйте данные пациента, описывайте проведенное исследования и отправляйте, чтобы увидеть ответ генерации модели."
+            "value": "Далее, сканируйте пациента: делайте фото исследования, заполняйте данные пациента, описывайте проведенное исследование и отправляйте, чтобы сгенерировать медицинский протокол."
           }
         }
       }
@@ -1301,13 +1148,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Doglyad - an AI assistant that generates ultrasound conclusions based on patient data.\nThe conclusions are generated by a specialized neural network model trained on large-scale medical research data."
+            "value": "Doglyad is an AI assistant that generates ultrasound reports based on patient data.\nThe reports are generated by a specialized neural network model trained on large-scale medical research data."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Догляд - ИИ-ассистент, который генерирует заключения УЗИ-исследований на основе данных пациента.\nЗаключения генерируется специальной нейронной моделью, обученной на больших данных медицинских исследований."
+            "value": "Догляд — ИИ-ассистент, который генерирует УЗИ-протоколы на основе данных пациента.\nПротоколы генерируются специальной нейронной моделью, обученной на большом объёме данных медицинских исследований."
           }
         }
       }
@@ -1324,7 +1171,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Для того чтобы начать работу сначала выберите тип ультразвукового исследования."
+            "value": "Для того, чтобы начать работу, сначала выберите тип ультразвукового исследования."
           }
         }
       }
@@ -1358,7 +1205,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Приложение использует модели искусственного интеллекта для генерации медицинских заключений.\nРезультаты генерации носят исключительно рекомендательный и вспомогательный характер.\nПожалуйста ознакомьтесь и примите условия использования приложением."
+            "value": "Приложение использует модели искусственного интеллекта для генерации протоколов исследований.\nРезультаты генерации носят исключительно рекомендательный и вспомогательный характер.\nПожалуйста, ознакомьтесь и примите условия использования приложения."
           }
         }
       }
@@ -1437,13 +1284,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Start scanning!"
+            "value": "Start generating!"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Начинайте сканировать!"
+            "value": "Начинайте генерировать!"
           }
         }
       }
@@ -1601,6 +1448,244 @@
         }
       }
     },
+    "receivedReportCopyMessageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The model report has been copied to the clipboard"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Протокол модели скопирован в буфер обмена"
+          }
+        }
+      }
+    },
+    "receivedReportCopyMessageTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report copied"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Протокол скопирован"
+          }
+        }
+      }
+    },
+    "reportActualModelResponseTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current report"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Актуальный протокол"
+          }
+        }
+      }
+    },
+    "reportConclusionTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conclusion"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Заключение"
+          }
+        }
+      }
+    },
+    "reportDescriptionTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Description"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Описание"
+          }
+        }
+      }
+    },
+    "reportDetailModelCopyMessageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The model report has been copied to the clipboard"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Протокол модели скопирован в буфер обмена"
+          }
+        }
+      }
+    },
+    "reportDetailModelCopyMessageTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report copied"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Протокол скопирован"
+          }
+        }
+      }
+    },
+    "reportDetailModelResponseUpdatedMessageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The report from the neural model was successfully updated"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Протокол от нейронной модели был успешно обновлён"
+          }
+        }
+      }
+    },
+    "reportDetailModelResponseUpdatedMessageTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report updated"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Протокол обновлён"
+          }
+        }
+      }
+    },
+    "reportPreviousModelResponsesTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Previous reports"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Предыдущие протоколы"
+          }
+        }
+      }
+    },
+    "reportRecommendationsTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recommendations"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Рекомендации"
+          }
+        }
+      }
+    },
+    "reportResponseDateLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report date:"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Дата протокола:"
+          }
+        }
+      }
+    },
+    "reportResponseModelLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Model:"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Модель:"
+          }
+        }
+      }
+    },
+    "reportTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Протокол"
+          }
+        }
+      }
+    },
     "requestLimitExceededDescription": {
       "extractionState": "manual",
       "localizations": {
@@ -1647,7 +1732,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Поместите снимок УЗИ-исследования в рамку и сфотографируйте для дальнейшей обработки"
+            "value": "Поместите снимок УЗИ в рамку и сфотографируйте для дальнейшей обработки"
           }
         }
       }
@@ -2083,13 +2168,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conclusion template:"
+            "value": "Report template:"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Шаблон заключения:"
+            "value": "Шаблон протокола:"
           }
         }
       }
@@ -2128,23 +2213,6 @@
         }
       }
     },
-    "serviceUnavailableTitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The service is currently unavailable"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Сервис сейчас недоступен"
-          }
-        }
-      }
-    },
     "serviceUnavailableDescription": {
       "extractionState": "manual",
       "localizations": {
@@ -2158,6 +2226,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "В скором времени мы продолжим работу.\nВ случае возникновения вопросов, пожалуйста, свяжитесь с нами:"
+          }
+        }
+      }
+    },
+    "serviceUnavailableTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The service is currently unavailable"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сервис сейчас недоступен"
           }
         }
       }
@@ -2321,13 +2406,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Storage management: conclusion history, model settings, and general application data"
+            "value": "Storage management: report history, model settings, and general application data"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Управление хранилищем: история заключений, настройки модели и общих данных приложения"
+            "value": "Управление хранилищем: история протоколов, настройки модели и общие данные приложения"
           }
         }
       }
@@ -2389,13 +2474,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Custom conclusion templates for different ultrasound examination types"
+            "value": "Custom report templates for different types of ultrasound"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Пользовательские шаблоны заключений для разных типов УЗИ-исследований"
+            "value": "Пользовательские шаблоны протоколов для разных видов УЗИ"
           }
         }
       }
@@ -2406,13 +2491,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conclusion templates"
+            "value": "Report templates"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Шаблоны заключений"
+            "value": "Шаблоны протоколов"
           }
         }
       }
@@ -2474,13 +2559,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Work email for receiving generated conclusions"
+            "value": "Work email and report recommendation settings"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Рабочая почта для получения сгенерированных заключений"
+            "value": "Рабочая почта и настройка рекомендаций в протоколе"
           }
         }
       }
@@ -2508,7 +2593,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The ultrasound examination has been copied to the clipboard"
+            "value": "The ultrasound results have been copied to the clipboard"
           }
         },
         "ru": {
@@ -2559,13 +2644,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The conclusion has been sent to your work email"
+            "value": "The report has been sent to your work email"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Заключение отправлено на рабочую почту"
+            "value": "Протокол отправлен на рабочую почту"
           }
         }
       }
@@ -2576,13 +2661,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conclusion sent"
+            "value": "Report sent"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Заключение отправлено"
+            "value": "Протокол отправлен"
           }
         }
       }
@@ -2627,13 +2712,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "\"Patient ... , male, date of birth ... , height ... centimeters, weight ... kilograms, complaints ... , examination performed: ...\""
+            "value": "\"Patient: ...; gender: male/female; date of birth: ...; height: ... centimeters; weight: ... kilograms; complaints: ...; examination description: ...\""
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "\"Пациент ... , мужчина, дата рождения ... , рост ... сантиметров, вес ... килограмм, жалобы ... , проведено исследование: ...\""
+            "value": "«Пациент: …; пол: мужчина/женщина; дата рождения: …; рост: … сантиметров; вес: … килограммов; жалобы: …; описание исследования: …»"
           }
         }
       }
@@ -2650,7 +2735,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Запись голосом"
+            "value": "Запись голоса"
           }
         }
       }
@@ -2661,13 +2746,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Delete all application data: conclusions, model settings, and general settings"
+            "value": "Delete all application data: reports, model settings, and general settings"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Удалить все данные приложения: заключения, настройки модели и общие настройки"
+            "value": "Удалить все данные приложения: протоколы, настройки модели и общие настройки"
           }
         }
       }
@@ -2729,13 +2814,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "All app data will be permanently deleted: conclusion history, model settings, and general settings. This action cannot be undone. Are you sure?"
+            "value": "All app data will be permanently deleted: report history, model settings, and general settings. This action cannot be undone. Are you sure?"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Все данные приложения будут безвозвратно удалены: история заключений, настройки модели и общие настройки. Это действие нельзя отменить, Вы уверены?"
+            "value": "Все данные приложения будут безвозвратно удалены: история протоколов, настройки модели и общие настройки. Это действие нельзя отменить. Вы уверены?"
           }
         }
       }
@@ -2763,13 +2848,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Delete all saved examination conclusions"
+            "value": "Delete all saved examination reports"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Удалить все сохранённые заключения исследований"
+            "value": "Удалить все сохранённые протоколы исследований"
           }
         }
       }
@@ -2780,13 +2865,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "All conclusion history has been successfully deleted"
+            "value": "All report history has been successfully deleted"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Вся история заключений успешно удалена"
+            "value": "Вся история протоколов успешно удалена"
           }
         }
       }
@@ -2814,13 +2899,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Remove conclusion history"
+            "value": "Remove report history"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Удалить историю заключений"
+            "value": "Удалить историю протоколов"
           }
         }
       }
@@ -2837,7 +2922,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Все сохранённые заключения исследований будут безвозвратно удалены. Это действие нельзя будет отменить. Вы уверены?"
+            "value": "Все сохранённые протоколы исследований будут безвозвратно удалены. Это действие нельзя будет отменить. Вы уверены?"
           }
         }
       }
@@ -2848,13 +2933,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Clear conclusion history"
+            "value": "Clear report history"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Очистить историю заключений"
+            "value": "Очистить историю протоколов"
           }
         }
       }
@@ -3069,13 +3154,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The model will use this text as a structure or style guide when generating the conclusion.\nTemplate example:"
+            "value": "The model will use this text as a structure or style guide when generating the report.\nTemplate example:"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Модель будет опираться на этот текст как на структуру или стиль при генерации заключения.\nПример шаблона:"
+            "value": "Модель будет опираться на этот текст как на структуру или стиль при генерации протокола.\nПример шаблона:"
           }
         }
       }
@@ -3103,13 +3188,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conclusion structure, headings, required sections…"
+            "value": "Report structure, headings, required sections…"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Структура заключения, заголовки, обязательные разделы…"
+            "value": "Структура протокола, заголовки, обязательные разделы…"
           }
         }
       }
@@ -3211,7 +3296,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "На основании представленных данных УЗИ-исследования:\n\nОрган(ы) исследования: {{organ}}\nПоложение и контуры: {{position_and_contours}}\nРазмеры: {{sizes}}\nЭхоструктура: {{echogenicity}}\nОчаговые образования: {{lesions}}\n\nЗаключение:\nУЗ-признаки {{diagnostic_findings}}.\n\nРекомендации:\n{{recommendations}}"
+            "value": "На основании представленных данных УЗИ:\n\nОрган(ы) исследования: {{organ}}\nПоложение и контуры: {{position_and_contours}}\nРазмеры: {{sizes}}\nЭхоструктура: {{echogenicity}}\nОчаговые образования: {{lesions}}\n\nЗаключение:\nУЗ-признаки {{diagnostic_findings}}.\n\nРекомендации:\n{{recommendations}}"
           }
         }
       }
@@ -3256,13 +3341,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conclusion templates"
+            "value": "Report templates"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Шаблоны заключений"
+            "value": "Шаблоны протоколов"
           }
         }
       }
@@ -3324,13 +3409,30 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "If you have not found the required types of ultrasound examinations, please contact support to add them"
+            "value": "If you have not found the required types of ultrasound, please contact support to add them"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Если Вы не обнаружили необходимые типы УЗИ исследований, пожалуйста, обратитесь в поддержку для их добавления"
+            "value": "Если Вы не обнаружили необходимые виды УЗИ, пожалуйста, обратитесь в поддержку для их добавления"
+          }
+        }
+      }
+    },
+    "usExaminationTypeRecentGroupTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recent"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Недавние"
           }
         }
       }
@@ -3358,13 +3460,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Generated conclusions will be sent to this work email"
+            "value": "Generated reports will be sent to this work email"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "На данную рабочую почту будут приходить сгенерированные заключения"
+            "value": "На данную рабочую почту будут приходить сгенерированные протоколы"
           }
         }
       }
@@ -3403,19 +3505,53 @@
         }
       }
     },
+    "userSettingsRecommendationsDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Include treatment or follow-up recommendations in generated reports"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Добавлять рекомендации по лечению или дальнейшим действиям в сгенерированные протоколы"
+          }
+        }
+      }
+    },
+    "userSettingsRecommendationsLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recommendations"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Рекомендации"
+          }
+        }
+      }
+    },
     "userSettingsSavedSuccessMessageDescription": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Work email saved successfully"
+            "value": "Work settings saved successfully"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Рабочий e-mail успешно сохранён"
+            "value": "Рабочие настройки успешно сохранены"
           }
         }
       }

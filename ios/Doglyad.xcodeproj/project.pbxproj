@@ -22,6 +22,7 @@
 		7761752A2EF8A04D006A2B5A /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = 776175292EF8A04D006A2B5A /* MLXVLM */; };
 		77759AFB2E932B78007CC90C /* DependencyInitializer in Frameworks */ = {isa = PBXBuildFile; productRef = 77759AFA2E932B78007CC90C /* DependencyInitializer */; };
 		77783DC32F0E873800FFC217 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 77783DC22F0E873800FFC217 /* Alamofire */; };
+		7779215A3056008800CA3814 /* MLXGuidedGeneration in Frameworks */ = {isa = PBXBuildFile; productRef = 777921593056008800CA3814 /* MLXGuidedGeneration */; };
 		777B8DE52EB0020D007F5678 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 777B8DE42EB0020D007F5678 /* BottomSheet */; };
 		777D76583014CFC9004E81FE /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 777D76573014CFC9004E81FE /* FirebaseAppCheck */; };
 		777D765A3014D00C004E81FE /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 777D76593014D00C004E81FE /* FirebaseCore */; };
@@ -483,6 +484,7 @@
 				77FEE73C2F01DEF900607F3F /* MLXLMCommon in Frameworks */,
 				77FEE73E2F01DEF900607F3F /* MLXVLM in Frameworks */,
 				77FEE7382F01DEF900607F3F /* MLXEmbedders in Frameworks */,
+				7779215A3056008800CA3814 /* MLXGuidedGeneration in Frameworks */,
 				7700AAAA000000000000C002 /* Tokenizers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -830,6 +832,7 @@
 				77FEE73B2F01DEF900607F3F /* MLXLMCommon */,
 				77FEE73D2F01DEF900607F3F /* MLXVLM */,
 				7700AAAA000000000000B002 /* Tokenizers */,
+				777921593056008800CA3814 /* MLXGuidedGeneration */,
 			);
 			productName = DoglyadML;
 			productReference = 77CB95232EB90C8500489F3E /* DoglyadNeuralModel.framework */;
@@ -1373,7 +1376,7 @@
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -1801,7 +1804,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -2385,7 +2388,7 @@
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -2439,7 +2442,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = XZY97QPQG8;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -3070,8 +3073,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ml-explore/mlx-swift-lm";
 			requirement = {
-				kind = exactVersion;
-				version = 3.31.3;
+				kind = revision;
+				revision = 604fae710a4e3324346fc59e3845952350acd4b7;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -3122,6 +3125,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 77783DC12F0E873800FFC217 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
+		};
+		777921593056008800CA3814 /* MLXGuidedGeneration */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
+			productName = MLXGuidedGeneration;
 		};
 		777B8DE42EB0020D007F5678 /* BottomSheet */ = {
 			isa = XCSwiftPackageProductDependency;

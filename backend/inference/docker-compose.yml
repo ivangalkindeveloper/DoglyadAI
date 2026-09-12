@@ -67,7 +67,7 @@ services:
     environment:
       VLLM_BASE_URL: http://vllm:8000
       # Application logs are written to ./logs with daily rotation, kept for a year.
-      # They contain no patient data — only technical metadata.
+      # They contain no request payloads — only technical metadata.
       LOG_DIR: /app/logs
       LOG_RETENTION_DAYS: 365
     depends_on:

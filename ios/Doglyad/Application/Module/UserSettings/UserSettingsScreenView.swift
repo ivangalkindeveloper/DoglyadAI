@@ -15,7 +15,7 @@ struct UserSettingsScreenView: View {
             title: .userSettingsTitle,
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
-            content: { toolbarInset, _ in
+            content: { toolbarInset, bottomInset in
                 ScrollView(
                     showsIndicators: false
                 ) {
@@ -43,10 +43,43 @@ struct UserSettingsScreenView: View {
                                 color: color.grayscalePlacehold
                             )
                             .padding(.horizontal, size.s8)
+                            .padding(.bottom, size.s16)
+
+                        DButtonCard(
+                            action: viewModel.toggleIncludeRecommendations
+                        ) {
+                            HStack(alignment: .center) {
+                                DText(.userSettingsRecommendationsLabel)
+                                    .dStyle(font: typography.linkSmall)
+
+                                Spacer(minLength: size.s16)
+
+                                Toggle(
+                                    "",
+                                    isOn: $viewModel.includeRecommendations
+                                )
+                                .labelsHidden()
+                                .toggleStyle(.switch)
+                                .allowsHitTesting(false)
+                            }
+                            .frame(
+                                maxWidth: .infinity,
+                                alignment: .leading
+                            )
+                            .foregroundStyle(color.grayscaleHeader)
+                        }
+                        .padding(.bottom, size.s4)
+
+                        DText(.userSettingsRecommendationsDescription)
+                            .dStyle(
+                                font: typography.textXSmall,
+                                color: color.grayscalePlacehold
+                            )
+                            .padding(.horizontal, size.s8)
                     }
-                    .padding(size.s16)
                     .padding(.top, toolbarInset)
-                    .padding(.bottom, size.s64)
+                    .padding(size.s16)
+                    .padding(.bottom, bottomInset)
                 }
             },
             bottom: {

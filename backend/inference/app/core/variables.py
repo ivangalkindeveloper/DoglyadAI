@@ -29,7 +29,6 @@ class Variables(BaseSettings):
     # Local vLLM OpenAI-compatible server, reachable only from inside the VM's
     # Docker network — it is never exposed publicly.
     vllm_base_url: str = "http://vllm:8000"
-    vllm_api_key: str | None = None
     # The innermost timeout of the chain, so it has to stay under the backend's
     # INFERENCE_REQUEST_TIMEOUT_SECONDS (130). Set it higher and the backend hangs
     # up on a generation this service is still running: the GPU time is spent and

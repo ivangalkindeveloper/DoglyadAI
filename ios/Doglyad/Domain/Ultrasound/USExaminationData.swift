@@ -9,7 +9,7 @@ struct USExaminationData: Codable {
     let patientDateOfBirth: Date
     let patientHeight: Double
     let patientWeight: Double
-    let patientComplaint: String
+    let patientComplaint: String?
     let examinationDescription: String
 }
 

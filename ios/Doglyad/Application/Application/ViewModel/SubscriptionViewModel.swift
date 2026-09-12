@@ -28,8 +28,8 @@ final class SubscriptionViewModel: Handler<DHttpApiError, DHttpConnectionError>,
         status?.formCompletionViaMicrophone ?? .unavailable
     }
 
-    var sendingConclusionByEmailAvailability: SubscriptionFeatureAvailability {
-        status?.sendingConclusionByEmail ?? .unavailable
+    var sendingReportByEmailAvailability: SubscriptionFeatureAvailability {
+        status?.sendingReportByEmail ?? .unavailable
     }
 
     var neuralModelSettingsAvailability: SubscriptionFeatureAvailability {

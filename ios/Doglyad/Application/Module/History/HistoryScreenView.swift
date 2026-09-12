@@ -13,7 +13,7 @@ struct HistoryScreenView: View {
         DScreen(
             title: .historyTitle,
             onTapBack: viewModel.onTapBack,
-            content: { toolbarInset, _ in
+            content: { toolbarInset, bottomHeight in
                 ScrollView(
                     showsIndicators: false
                 ) {
@@ -31,19 +31,22 @@ struct HistoryScreenView: View {
                         } else {
                             ForEach(viewModel.sections) { section in
                                 Section {
-                                    ForEach(section.conclusions) { conclusion in
-                                        HistoryCard(
-                                            conclusion: conclusion,
-                                            action: {
-                                                viewModel.onTapConclusion(value: conclusion)
+                                    ForEach(section.reports) { report in
+                                        HistoryCardView(
+                                            report: report,
+                                            onTap: {
+                                                viewModel.onTapReport(value: report)
                                             }
                                         )
                                         .padding(.bottom, size.s4)
                                     }
                                 } header: {
-                                    HistoryDayHeaderView(
+                                    SectionHeaderView(
                                         title: section.title
                                     )
+                                } footer: {
+                                    Color.clear
+                                        .frame(height: size.s12)
                                 }
                             }
 
@@ -55,11 +58,11 @@ struct HistoryScreenView: View {
                             }
                         }
                     }
-                    .padding(.horizontal, size.s16)
                     .padding(.top, size.s16)
-                    .padding(.bottom, size.s64)
+                    .padding(.horizontal, size.s16)
+                    .padding(.bottom, bottomHeight + size.s16)
                 }
-                .padding(.top, toolbarInset)
+                .contentMargins(.top, toolbarInset, for: .scrollContent)
             },
             bottom: {
                 if viewModel.isEmpty {
@@ -72,9 +75,7 @@ struct HistoryScreenView: View {
                 }
             }
         )
-        .onAppear {
-            viewModel.onAppear()
-        }
+        .onAppear(perform: viewModel.onAppear)
         .environmentObject(viewModel)
     }
 }

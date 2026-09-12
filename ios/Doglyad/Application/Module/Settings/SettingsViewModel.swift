@@ -25,14 +25,14 @@ final class SettingsViewModel: DViewModel {
         )
     }
 
-    @Published var conclusionsCount = 0
+    @Published var reportsCount = 0
     @Published var neuralModel: USExaminationNeuralModel
 
     override func onInit() {
         handle {
-            await self.container.ultrasoundConclusionRepository.getConclusionsCount()
-        } onMainSuccess: { conclusionsCount in
-            self.conclusionsCount = conclusionsCount
+            await self.container.ultrasoundReportRepository.getReportsCount()
+        } onMainSuccess: { reportsCount in
+            self.reportsCount = reportsCount
         }
     }
 
@@ -42,14 +42,14 @@ final class SettingsViewModel: DViewModel {
     }
 
     func historyDescription() -> LocalizedStringResource {
-        conclusionsCount == 0 ? .settingsHistoryEmptyDescription : .settingsHistoryDescription(count: conclusionsCount)
+        reportsCount == 0 ? .settingsHistoryEmptyDescription : .settingsHistoryDescription(count: reportsCount)
     }
 
     func onTapHistory() {
         analytics.buttonTapped(
             .settingsHistory,
             parameters: AnalyticsParameters([
-                .itemCount: .int(conclusionsCount),
+                .itemCount: .int(reportsCount),
             ])
         )
         coordinator.screen(.history)

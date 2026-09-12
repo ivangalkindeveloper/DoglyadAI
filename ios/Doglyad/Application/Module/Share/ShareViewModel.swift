@@ -37,7 +37,7 @@ final class ShareViewModel: DViewModel {
     }
 
     var isUserEmailButtonVisible: Bool {
-        switch subscription.availability(of: .sendingConclusionByEmail) {
+        switch subscription.availability(of: .sendingReportByEmail) {
         case .offered, .available:
             return true
         case .unavailable:
@@ -50,13 +50,13 @@ final class ShareViewModel: DViewModel {
     }
 
     var subject: String {
-        arguments.conclusion.shareSubject(
+        arguments.report.shareSubject(
             examinationTypesById: container.usExaminationTypesById
         )
     }
 
     var shareMessage: String {
-        arguments.conclusion.shareMessage
+        arguments.report.shareMessage
     }
 
     func onTapUserEmail() {
@@ -67,19 +67,23 @@ final class ShareViewModel: DViewModel {
             ])
         )
         guard let userEmail = userEmail else { return }
-        coordinator.run(.sendingConclusionByEmail, dismissesSheetOnPaywall: true) {
-            self.sendConclusionEmail(to: userEmail)
+        coordinator.run(.sendingReportByEmail, dismissesSheetOnPaywall: true) {
+            self.sendReportEmail(to: userEmail)
         }
     }
 
-    private func sendConclusionEmail(to userEmail: String) {
+    private func sendReportEmail(to userEmail: String) {
+        let ultrasoundConfig = container.applicationConfig.ultrasound
         handle {
             self.isLoading = true
             try await self.container.userSettingsRepository.sendEmail(
-                email: USExaminationEmail(
+                email: self.arguments.report.makeEmail(
                     recipientEmail: userEmail,
-                    subject: self.subject,
-                    body: self.shareMessage
+                    examinationTypesById: self.container.usExaminationTypesById,
+                    scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
+                        resizeMaxDimension: ultrasoundConfig.scanPhotoResizeMaxDimension,
+                        compressionQuality: ultrasoundConfig.scanPhotoCompressionQuality
+                    )
                 )
             )
         } onDefer: {
@@ -98,7 +102,7 @@ final class ShareViewModel: DViewModel {
 
     func onTapEmail() {
         analytics.buttonTapped(.shareCustomEmail)
-        coordinator.run(.sendingConclusionByEmail, dismissesSheetOnPaywall: true) {
+        coordinator.run(.sendingReportByEmail, dismissesSheetOnPaywall: true) {
             self.coordinator.dismissSheet()
             UIApplication.openMail(
                 subject: self.subject,

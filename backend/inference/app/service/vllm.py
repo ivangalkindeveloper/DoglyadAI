@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import logging
 from typing import Any
 
@@ -8,8 +9,8 @@ from fastapi import HTTPException
 from pydantic import ValidationError
 
 from app.core.variables import variables
-from app.model.conclusion_generation_request import ConclusionGenerationRequest
-from app.model.vllm_response import VLLMChatCompletion
+from app.model.generation_request import GenerationRequest
+from app.model.vllm_chat_completion import VLLMChatCompletion
 
 logger = logging.getLogger(__name__)
 
@@ -32,9 +33,8 @@ class VLLMService:
     def model_id(self) -> str:
         return self._model_id
 
-    async def generate(self, request: ConclusionGenerationRequest) -> str:
-        # One VM per model: answering for a different id would silently return a
-        # conclusion from a model the doctor did not choose.
+    async def generate(self, request: GenerationRequest) -> str:
+        # One VM per model: accepting another id would silently use the wrong model.
         if request.modelId != self._model_id:
             logger.error(
                 "Model mismatch: requested=%s, served=%s",
@@ -46,49 +46,54 @@ class VLLMService:
                 detail=f"This service serves {self._model_id}, not {request.modelId}",
             )
 
-        user_content: list[dict[str, Any]] = [{"type": "text", "text": request.prompt}]
-        for photo in request.photos:
-            user_content.append(
-                {
-                    "type": "image_url",
-                    "image_url": {"url": f"data:image/jpeg;base64,{photo.data}"},
-                }
-            )
-        payload: dict[str, Any] = {
-            "model": self._model_id,
-            "messages": [
+        messages: list[dict[str, Any]] = []
+        if request.systemPrompt is not None:
+            messages.append(
                 {
                     "role": "system",
                     "content": [{"type": "text", "text": request.systemPrompt}],
-                },
+                }
+            )
+        user_content: list[dict[str, Any]] = [{"type": "text", "text": request.prompt}]
+        for generation_image in request.images or []:
+            user_content.append(
                 {
-                    "role": "user",
-                    "content": user_content,
-                },
-            ],
+                    "type": "image_url",
+                    "image_url": {"url": f"data:image/jpeg;base64,{generation_image.data}"},
+                }
+            )
+        messages.append({"role": "user", "content": user_content})
+        payload: dict[str, Any] = {
+            "model": self._model_id,
+            "messages": messages,
         }
+        structured_output_schema = request.structured_output_schema()
+        if structured_output_schema is not None:
+            payload["response_format"] = {
+                "type": "json_schema",
+                "json_schema": {
+                    "name": "structured_response",
+                    "schema": structured_output_schema,
+                },
+            }
         # Omit rather than send nulls: unset means "use the engine default".
         if request.temperature is not None:
             payload["temperature"] = request.temperature
         if request.maxTokens is not None:
             payload["max_tokens"] = request.maxTokens
 
-        headers = {"Content-Type": "application/json"}
-        if variables.vllm_api_key:
-            headers["Authorization"] = f"Bearer {variables.vllm_api_key}"
-
-        # Never log the payload contents: it holds patient data and scan images.
+        # Never log payload contents because prompts and images may be sensitive.
         logger.info(
-            "vLLM request: model=%s, photos=%d, prompt_chars=%d",
+            "vLLM request: model=%s, images=%d, prompt_chars=%d, schema_chars=%d",
             self._model_id,
-            len(request.photos),
+            len(request.images or []),
             len(request.prompt),
+            len(request.structuredOutput or ""),
         )
 
         try:
             response = await self._http_client.post(
                 f"{self._base_url}/v1/chat/completions",
-                headers=headers,
                 json=payload,
                 timeout=self._timeout,
             )
@@ -105,6 +110,8 @@ class VLLMService:
         try:
             parsed = VLLMChatCompletion.model_validate(response.json())
             value = parsed.value()
+            if request.structuredOutput is not None:
+                json.loads(value)
         except (ValueError, ValidationError) as error:
             logger.exception("Failed to parse vLLM response: %s", error)
             raise HTTPException(status_code=502, detail="Invalid response from local model engine") from error

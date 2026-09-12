@@ -101,7 +101,7 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
     ) async throws -> DExaminationNeuralModelResponse {
         let session = takeSession()
         let response = try await session.respond(
-            to: speech,
+            to: DExaminationGenerationConfig.userPrompt(for: speech),
             generating: Response.self,
             options: generationOptions
         )

@@ -14,7 +14,7 @@
 #   SERVED_MODEL_ID=<hf model id>       the model this VM serves
 #   VLLM_IMAGE=<image:tag@digest>       pin the exact image you have booted here
 #   VLLM_MAX_MODEL_LEN=<tokens>         also caps the startup profiling run
-#   VLLM_LIMIT_MM_PER_PROMPT=<n>        at least application.json's scanPhotoMaxNumber
+#   VLLM_LIMIT_MM_PER_PROMPT=<n>        maximum images accepted per request
 #   VLLM_MAX_NUM_SEQS=<n>
 #   VLLM_GPU_MEMORY_UTILIZATION=<0..1>
 #   VLLM_TENSOR_PARALLEL_SIZE=<gpus>    must equal the number of cards
@@ -94,7 +94,7 @@ services:
       SERVED_MODEL_ID: ${SERVED_MODEL_ID}
       VLLM_REQUEST_TIMEOUT_SECONDS: ${VLLM_REQUEST_TIMEOUT_SECONDS:-120}
       # Application logs are written to ./logs with daily rotation, kept for a year.
-      # They contain no patient data — only technical metadata.
+      # They contain no request payloads — only technical metadata.
       LOG_DIR: /app/logs
       LOG_RETENTION_DAYS: 365
     depends_on:

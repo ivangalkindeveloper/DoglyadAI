@@ -52,7 +52,7 @@ struct ScanSheetBodyView: View {
                 )
                 .padding(.bottom, size.s4)
 
-                DateOfBirthCard(
+                DateOfBirthCardView(
                     date: viewModel.patientDateOfBirth,
                     action: viewModel.onTapPatientDateOfBirth
                 )
@@ -113,12 +113,12 @@ struct ScanSheetBodyView: View {
                 ScanSheetTemplateCardView()
                     .padding(.bottom, size.s16)
 
-                NeuralModelCard(
+                NeuralModelCardView(
                     onTap: viewModel.onTapNeuralModelSelection
                 )
                 .padding(.bottom, size.s16)
 
-                NeuralModelSettingsCard(
+                NeuralModelSettingsCardView(
                     feature: .neuralModelSettings,
                     onTap: viewModel.onTapNeuralModelSettings
                 )

@@ -8,26 +8,36 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Ultrasound examination types",
                 run: { (process: InitializationProcess) async throws in
-                    let url = await process.environment!.baseUrl.appendingPathComponent("ultrasound_examination_types")
-                    let usExaminationTypes: [USExaminationType] = try await process.httpClient!.get(url: url)
-                    if usExaminationTypes.isEmpty {
+                    let usExaminationTypeGroups: [USExaminationTypeGroup] = try await process.httpClient!.get(
+                        endPoint: "/ultrasound/examination_types",
+                        headers: nil
+                    )
+                    guard let usExaminationTypeDefault = usExaminationTypeGroups.lazy
+                        .compactMap(\.examinationTypes.first)
+                        .first
+                    else {
                         throw InitializationError.usExaminationTypesEmpty
                     }
+                    let usExaminationTypesById = Dictionary(
+                        uniqueKeysWithValues: usExaminationTypeGroups
+                            .flatMap(\.examinationTypes)
+                            .map { ($0.id, $0) }
+                    )
 
                     await MainActor.run {
-                        process.usExaminationTypes = usExaminationTypes
-                        process.usExaminationTypesById = Dictionary(
-                            uniqueKeysWithValues: usExaminationTypes.map { ($0.id, $0) }
-                        )
-                        process.usExaminationTypeDefault = usExaminationTypes.first!
+                        process.usExaminationTypeGroups = usExaminationTypeGroups
+                        process.usExaminationTypesById = usExaminationTypesById
+                        process.usExaminationTypeDefault = usExaminationTypeDefault
                     }
                 }
             ),
             AsyncInitializationStep<InitializationProcess>(
                 title: "Ultrasound examination neural models",
                 run: { (process: InitializationProcess) async throws in
-                    let url = await process.environment!.baseUrl.appendingPathComponent("ultrasound_examination_neural_models")
-                    let usExaminationNeuralModels: [USExaminationNeuralModel] = try await process.httpClient!.get(url: url)
+                    let usExaminationNeuralModels: [USExaminationNeuralModel] = try await process.httpClient!.get(
+                        endPoint: "/ultrasound/examination_neural_models",
+                        headers: nil
+                    )
                     if usExaminationNeuralModels.isEmpty {
                         throw InitializationError.usExaminationNeuralModelsEmpty
                     }
@@ -44,10 +54,10 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Ultrasound examination contextual strings",
                 run: { (process: InitializationProcess) async throws in
-                    let url = await process.environment!.baseUrl.appendingPathComponent("ultrasound_examination_contextual_strings")
-                    // Strings may be empty — that is a valid state, so unlike types and
-                    // models we do not check them for emptiness.
-                    let usExaminationContextualStrings: USExaminationContextualStrings = try await process.httpClient!.get(url: url)
+                    let usExaminationContextualStrings: USExaminationContextualStrings = try await process.httpClient!.get(
+                        endPoint: "/ultrasound/examination_contextual_strings",
+                        headers: nil
+                    )
 
                     await MainActor.run {
                         process.usExaminationContextualStrings = usExaminationContextualStrings
@@ -58,8 +68,6 @@ extension InitializationProcess {
                 title: "Local ultrasound examination neural model",
                 run: { (process: InitializationProcess) in
                     let config = await process.applicationConfig!.ultrasound.examinationNeuralModel
-                    // The locale is needed for more than the prompt: the factory uses it to
-                    // decide whether the system model knows the dictation language.
                     let locale = Locale.current
                     guard let prompt = config.getPrompt(for: locale) else {
                         throw InitializationError.examinationNeuralModelPromptEmpty
@@ -95,9 +103,9 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Initial ultrasound conclusions",
                 run: { (process: InitializationProcess) async in
-                    let count = await process.ultrasoundConclusionRepository!.getConclusionsCount()
+                    let count = await process.ultrasoundReportRepository!.getReportsCount()
                     await MainActor.run {
-                        process.initialUltraSoundConclusionsCount = count
+                        process.initialUltrasoundReportsCount = count
                     }
                 }
             ),

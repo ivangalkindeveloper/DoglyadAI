@@ -104,7 +104,7 @@ final class OnBoardingViewModel: DViewModel {
                         guard let self = self else { return }
 
                         self.page = .fifth
-                        self.container.ultrasoundConclusionRepository.setSelectedExaminationTypeId(
+                        self.container.ultrasoundReportRepository.setSelectedExaminationTypeId(
                             id: type.id
                         )
                     }

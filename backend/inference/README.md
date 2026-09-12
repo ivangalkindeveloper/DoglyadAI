@@ -1,6 +1,6 @@
 # backend/inference — GPU inference service
 
-This standalone service is deployed **on a GPU VM** beside the model runtime. It runs a local vLLM instance, accepts ready-to-use prompts and images from the main backend, generates a report, and returns it.
+This standalone service is deployed **on a GPU VM** beside the model runtime. It runs a local vLLM instance, accepts ready-to-use prompts, images, and a JSON Schema from the coordinating backend, and returns structured generated content.
 
 ## Architecture
 
@@ -9,7 +9,7 @@ This standalone service is deployed **on a GPU VM** beside the model runtime. It
                               │ GPU VM (one VM per model)                  │
                               │                                            │
 iOS ──► backend/main ────────►│ backend/inference ──► vLLM (localhost)     │
-        (non-GPU VM)          │ App Check             google/medgemma-4b-it│
+        (non-GPU VM)          │ App Check             configured model    │
                               └─────────────────────────────────────────────┘
 ```
 
@@ -24,7 +24,7 @@ The main backend selects a VM by model ID through `backend/main/secrets/inferenc
 
 The token is verified twice: once at the system entry point (`backend/main`) and once here. `backend/main` reads `X-Firebase-AppCheck` from the incoming request and forwards it **unchanged**, so both services validate the same token.
 
-The second check protects the VM that hosts the model. Network access to its port must not be enough to obtain a report. The first check protects the public system entry point; the second prevents callers from bypassing the main backend and reaching inference directly.
+The second check protects the VM that hosts the model. Network access to its port must not be enough to run generation. The first check protects the public system entry point; the second prevents callers from bypassing the main backend and reaching inference directly.
 
 Validation is **unconditional**. There is no bypass flag, and the service cannot start without `secrets/firebase_credentials.json`. Consequently, the service has no unauthenticated endpoints. A fresh VM cannot be tested with an anonymous `curl`; use a valid token from a running app. Observe model readiness in the logs with `make start-backend-inference-logs`.
 
@@ -32,7 +32,7 @@ Validation is **unconditional**. There is no bypass flag, and the service cannot
 
 | Method | Path | App Check | Description |
 |---|---|---:|---|
-| `POST` | `/v1/conclusion_generation` | Yes | Generate one report |
+| `POST` | `/v1/generation` | Yes | Generate one response |
 
 This is the service's only endpoint, and it is protected by App Check. Nothing is exposed anonymously: reaching the model VM's port alone must not grant model access.
 
@@ -40,24 +40,22 @@ Request:
 
 ```json
 {
-  "modelId": "google/medgemma-4b-it",
-  "systemPrompt": "...",
-  "prompt": "...",
-  "photos": [{ "data": "<base64 JPEG>" }],
-  "temperature": 0.3,
-  "maxTokens": 2048
+  "modelId": "example/model",
+  "prompt": "..."
 }
 ```
+
+Only `modelId` and `prompt` are required. `systemPrompt`, `structuredOutput`, `images`, `temperature`, and `maxTokens` are optional. Non-null optional values are forwarded to vLLM; `structuredOutput` must contain a JSON Schema object when supplied.
 
 Response:
 
 ```json
-{ "modelId": "google/medgemma-4b-it", "response": "## Ultrasound examination report ..." }
+{ "modelId": "example/model", "response": "..." }
 ```
 
-`modelId` is compared with `SERVED_MODEL_ID`. A mismatch returns `400` instead of silently generating with a model different from the one selected by the physician.
+`modelId` is compared with `SERVED_MODEL_ID`. A mismatch returns `400` instead of silently generating with a different model.
 
-A rate limiter is unnecessary here because the only client is the main backend, which already limits requests by client address. A limiter at this layer would group every physician under the main backend's single IP address.
+A rate limiter is unnecessary here because the only client is the main backend, which already limits requests by client address. A limiter at this layer would group every caller under the main backend's single IP address.
 
 ## Deployment
 
@@ -86,8 +84,8 @@ The key values account for model parameters and available GPU memory:
 
 | Variable | Value | Reason |
 |---|---|---|
-| `VLLM_MAX_MODEL_LEN` | `16384` | Limits both request length and the encoder profiling run at startup. With the model default (131072 for Gemma 3 / MedGemma), the 4B model can run out of memory even on a 40 GB GPU. |
-| `VLLM_LIMIT_MM_PER_PROMPT` | `10` | Maximum images per request. It must be at least `ultrasound.scanPhotoMaxNumber` from `application.json` (currently 6). Compose converts the value to the JSON accepted by vLLM. The default one-image limit rejects requests containing multiple scans. |
+| `VLLM_MAX_MODEL_LEN` | `16384` | Limits both request length and the encoder profiling run at startup. Very large model defaults can exhaust GPU memory during profiling. |
+| `VLLM_LIMIT_MM_PER_PROMPT` | `10` | Maximum images per request. Compose converts the value to the JSON accepted by vLLM. The default one-image limit rejects requests containing multiple images. |
 | `VLLM_MAX_NUM_SEQS` | `16` | Maximum concurrent sequences. The default 256 is excessive for this workload and increases profiling memory use. |
 | `VLLM_GPU_MEMORY_UTILIZATION` | `0.90` | Leaves headroom for activations and fragmentation. Startup OOM errors are addressed with `VLLM_MAX_MODEL_LEN`, not this value alone. |
 | `VLLM_TENSOR_PARALLEL_SIZE` | `1` | Must equal the number of GPUs in the VM. |

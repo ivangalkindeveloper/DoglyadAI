@@ -10,7 +10,7 @@ final class HistoryViewModel: DViewModel {
     private let historyConfig: HistoryConfig
 
     private var offset = 0
-    private var loadedConclusionIds = Set<UUID>()
+    private var loadedReportIds = Set<UUID>()
     private var offsetLoadingTask: Task<Void, Never>?
 
     init(
@@ -50,14 +50,14 @@ final class HistoryViewModel: DViewModel {
         coordinator.pop()
     }
 
-    func onTapConclusion(
-        value: USExaminationConclusion
+    func onTapReport(
+        value: USExaminationReport
     ) {
-        analytics.buttonTapped(.historyConclusion)
+        analytics.buttonTapped(.historyReport)
         coordinator.screen(
-            .conclusion,
-            arguments: ConclusionScreenArguments(
-                conclusion: value
+            .reportDetail,
+            arguments: ReportDetailScreenArguments(
+                report: value
             )
         )
     }
@@ -68,14 +68,14 @@ final class HistoryViewModel: DViewModel {
 
     private func loadInitialPage() {
         handle {
-            await self.container.ultrasoundConclusionRepository.getConclusions(
+            await self.container.ultrasoundReportRepository.getReports(
                 limit: self.pageSize,
                 offset: 0
             )
         } onDefer: {
             self.isLoading = false
-        } onMainSuccess: { conclusions in
-            self.append(conclusions)
+        } onMainSuccess: { reports in
+            self.append(reports)
         }
     }
 
@@ -84,26 +84,26 @@ final class HistoryViewModel: DViewModel {
 
         let requestedOffset = offset
         offsetLoadingTask = handle {
-            await self.container.ultrasoundConclusionRepository.getConclusions(
+            await self.container.ultrasoundReportRepository.getReports(
                 limit: self.pageSize,
                 offset: requestedOffset
             )
         } onDefer: {
             self.offsetLoadingTask = nil
-        } onMainSuccess: { conclusions in
-            self.append(conclusions)
+        } onMainSuccess: { reports in
+            self.append(reports)
         }
     }
 
-    private func append(_ conclusions: [USExaminationConclusion]) {
-        offset += conclusions.count
-        hasMoreOffset = conclusions.count == pageSize
+    private func append(_ reports: [USExaminationReport]) {
+        offset += reports.count
+        hasMoreOffset = reports.count == pageSize
 
-        let uniqueConclusions = conclusions.filter {
-            loadedConclusionIds.insert($0.id).inserted
+        let uniqueReports = reports.filter {
+            loadedReportIds.insert($0.id).inserted
         }
         sections = sectionBuilder.appending(
-            uniqueConclusions,
+            uniqueReports,
             to: sections
         )
     }

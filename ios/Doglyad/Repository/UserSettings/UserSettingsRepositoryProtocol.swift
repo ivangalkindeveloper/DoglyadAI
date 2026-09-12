@@ -5,7 +5,11 @@ protocol UserSettingsRepositoryProtocol: AnyObject {
 
     func setUserEmail(_ email: String)
 
+    func getIncludeRecommendations() -> Bool
+
+    func setIncludeRecommendations(_ value: Bool)
+
     func sendEmail(
-        email: USExaminationEmail
+        email: ReportEmail
     ) async throws
 }

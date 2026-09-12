@@ -18,8 +18,12 @@ struct UserSettingsScreen: View {
                 router: router,
                 subscription: subscriptionViewModel,
                 initialEmail: ultrasoundViewModel.userEmail,
-                onEmailSaved: { [ultrasoundViewModel] email in
-                    ultrasoundViewModel.saveUserEmail(userEmail: email)
+                initialIncludeRecommendations: ultrasoundViewModel.includeRecommendations,
+                onSaved: { [ultrasoundViewModel] email, includeRecommendations in
+                    ultrasoundViewModel.saveUserSettings(
+                        userEmail: email,
+                        includeRecommendations: includeRecommendations
+                    )
                 }
             )
         )

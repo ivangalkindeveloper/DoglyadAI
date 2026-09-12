@@ -1,11 +1,5 @@
 import Foundation
 
-/// Contextual strings for speech recognition, grouped by locale code
-/// (`en`, `ru`). They hint the recognizer at examination-specific vocabulary —
-/// terms, abbreviations, names — so it mishears them less often.
-///
-/// Delivered by the backend as an `{"en": [...], "ru": [...]}` object, so they are
-/// decoded straight from a dictionary without a wrapper key.
 struct USExaminationContextualStrings: Codable, Equatable {
     let strings: [String: [String]]
 

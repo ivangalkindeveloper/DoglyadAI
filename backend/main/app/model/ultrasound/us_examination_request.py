@@ -1,4 +1,4 @@
-from typing import Optional
+from __future__ import annotations
 
 from pydantic import BaseModel
 
@@ -9,4 +9,5 @@ from app.model.ultrasound.us_examination_data import USExaminationData
 class USExaminationRequest(BaseModel):
     neuralModelSettings: NeuralModelSettings
     examinationData: USExaminationData
-    template: Optional[str] = None
+    template: str | None = None
+    includeRecommendations: bool = True

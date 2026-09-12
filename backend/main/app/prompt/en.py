@@ -6,26 +6,40 @@ from app.prompt.base import PromptFactory
 
 
 class PromptFactoryEn(PromptFactory):
-    def system_prompt(self, settings: NeuralModelSettings) -> str:
-        prompt = (
+    def system_prompt(
+        self,
+        settings: NeuralModelSettings,
+        include_recommendations: bool,
+    ) -> str:
+        system_prompt = (
             "You are an AI assistant specialized in generating medical ultrasound examination reports.\n"
-            "Your task is to write the conclusion of the report — the interpretive summary that physicians rely on for diagnosis and treatment planning.\n"
-            "Base it strictly on the provided examination data and images, and output nothing else.\n"
+            "Produce a report with description — detailed observed structures and findings — and conclusion — "
+            "a concise clinical interpretation.\n"
+            "Fill the required fields and base them strictly on the provided examination data and images.\n"
             "Do not infer, assume, or fabricate any findings that are not supported by the input.\n"
             "Use precise medical terminology appropriate for a formal radiology report.\n"
-            "If the provided data is insufficient to assess a specific structure, state that it was not adequately visualized rather than speculating.\n"
+            "If the provided data is insufficient to assess a specific structure, state that it was not adequately "
+            "visualized rather than speculating.\n"
         )
 
+        if include_recommendations:
+            system_prompt += (
+                "Also generate recommendations with justified treatment or follow-up actions. "
+                "Do not propose actions that are not supported by the provided data.\n"
+            )
+        else:
+            system_prompt += "Do not generate or include recommendations.\n"
+
         if settings.maxTokens is not None:
-            prompt += (
-                f"Keep the answer within {settings.maxTokens} tokens and finish the conclusion "
+            system_prompt += (
+                f"Keep the answer within {settings.maxTokens} tokens and finish the report "
                 "before reaching this limit so that it is not truncated.\n"
             )
 
         if not settings.isMarkdown:
-            prompt += f"Provide your answer in plain text and without Markdown tags.\n"
+            system_prompt += "Fill the string fields with plain text and without Markdown tags.\n"
 
-        return prompt
+        return system_prompt
 
     def build_prompt(
         self,
@@ -40,11 +54,14 @@ class PromptFactoryEn(PromptFactory):
             f"Patient date of birth: {examination.patientDateOfBirth.date().isoformat()}\n"
             f"Patient height: {examination.patientHeight}\n"
             f"Patient weight: {examination.patientWeight}\n"
-            f"Patient complaint: {examination.patientComplaint}\n"
-            f"Ultrasound examination description: {examination.examinationDescription}\n"
         )
 
+        if examination.patientComplaint:
+            prompt += f"Patient complaint: {examination.patientComplaint}\n"
+
+        prompt += f"Ultrasound examination description: {examination.examinationDescription}\n"
+
         if template:
-            prompt += f"Response template: {template}\n"
+            prompt += f"Report template: {template}\n"
 
         return prompt

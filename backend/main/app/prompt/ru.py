@@ -9,25 +9,37 @@ class PromptFactoryRu(PromptFactory):
     def system_prompt(
         self,
         settings: NeuralModelSettings,
+        include_recommendations: bool,
     ) -> str:
-        prompt = (
+        system_prompt = (
             "Ты — AI-ассистент, специализирующийся на создании протоколов ультразвуковых исследований.\n"
-            "Твоя задача — формировать подробные клинические заключения, на которые врачи опираются при диагностике и планировании лечения.\n"
-            "Заключение должно быть максимально подробным и полным, основываясь на предоставленных данных исследования и изображениях.\n"
-            "Используй медицинскую терминологию, принятую для официального УЗИ-заключения.\n"
-            "Если предоставленных данных недостаточно для оценки определённой структуры, укажи, что она не была адекватно визуализирована, не строй предположения.\n"
+            "Сформируй протокол исследования: description — подробное описание наблюдаемых структур и признаков; "
+            "conclusion — краткое клиническое заключение.\n"
+            "Заполни обязательные поля максимально полно, основываясь только на предоставленных данных "
+            "исследования и изображениях.\n"
+            "Используй медицинскую терминологию, принятую для официального протокола УЗИ.\n"
+            "Если предоставленных данных недостаточно для оценки определённой структуры, укажи, что она не была "
+            "адекватно визуализирована, не строй предположения.\n"
         )
 
+        if include_recommendations:
+            system_prompt += (
+                "Также сформируй recommendations — обоснованные рекомендации по лечению или дальнейшим действиям. "
+                "Не предлагай действия, не подтверждённые предоставленными данными.\n"  # noqa: RUF001
+            )
+        else:
+            system_prompt += "Не формируй и не включай рекомендации.\n"  # noqa: RUF001
+
         if settings.maxTokens is not None:
-            prompt += (
-                f"Уложи ответ максимум в {settings.maxTokens} токенов и заверши заключение "
-                "до достижения этого лимита, чтобы оно не оборвалось.\n"
+            system_prompt += (
+                f"Уложи ответ максимум в {settings.maxTokens} токенов и заверши протокол "
+                "до достижения этого лимита, чтобы он не оборвался.\n"
             )
 
         if not settings.isMarkdown:
-            prompt += f"Дай ответ сплошным текстом и без Markdown тегов.\n"
+            system_prompt += "Заполняй строковые поля обычным текстом без Markdown-тегов.\n"
 
-        return prompt
+        return system_prompt
 
     def build_prompt(
         self,
@@ -41,12 +53,15 @@ class PromptFactoryRu(PromptFactory):
             f"Пол пациента: {examination.patientGender}\n"
             f"Дата рождения пациента: {examination.patientDateOfBirth.date().isoformat()}\n"
             f"Рост пациента: {examination.patientHeight}\n"
-            f"Вес пациента: {examination.patientWeight}\n"
-            f"Жалобы пациента: {examination.patientComplaint}\n"
-            f"Описание ультразвукового исследования: {examination.examinationDescription}\n"
+            f"Вес пациента: {examination.patientWeight}\n"  # noqa: RUF001
         )
 
+        if examination.patientComplaint:
+            prompt += f"Жалобы пациента: {examination.patientComplaint}\n"
+
+        prompt += f"Описание ультразвукового исследования: {examination.examinationDescription}\n"
+
         if template:
-            prompt += f"Шаблон ответа: {template}\n"
+            prompt += f"Шаблон протокола: {template}\n"
 
         return prompt

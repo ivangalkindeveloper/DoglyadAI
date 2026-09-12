@@ -29,7 +29,7 @@ struct TemplateListScreenView: View {
                                 TemplateListEmptyView()
                             } else {
                                 ForEach(viewModel.templates) { template in
-                                    TemplateListItemCard(
+                                    TemplateListItemCardView(
                                         examinationTypeTitle: template.usExaminationType.getLocalizedTitle(
                                             for: Locale.current
                                         ),

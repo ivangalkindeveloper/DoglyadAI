@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Iterator
 
 import pytest
 from fastapi.testclient import TestClient
@@ -12,22 +13,30 @@ from app.model.ultrasound.us_examination_neural_model_accessibility import (
 
 # Endpoint -> the document in the image it must serve, byte for byte.
 _ENDPOINTS = {
-    "/application_config": "application.json",
-    "/ultrasound_examination_types": "ultrasound_examination_types.json",
-    "/ultrasound_examination_neural_models": "ultrasound_examination_neural_models.json",
-    "/ultrasound_examination_contextual_strings": "ultrasound_examination_contextual_strings.json",
+    "/v1/application_config": "application.json",
+    "/v1/ultrasound/examination_types": "ultrasound_examination_types.json",
+    "/v1/ultrasound/examination_neural_models": "ultrasound_examination_neural_models.json",
+    "/v1/ultrasound/examination_contextual_strings": "ultrasound_examination_contextual_strings.json",
 }
 
 
 @pytest.fixture(scope="module")
-def client() -> TestClient:
+def client() -> Iterator[TestClient]:
     # The documents are read once at startup, so they have to be loaded before the
     # routes are exercised. TestClient runs without the lifespan on purpose: the
     # lifespan also initializes App Check, which needs Firebase credentials.
     load_configs()
+    from app.core.app_check import verify_app_check
     from app.main import app
 
-    return TestClient(app)
+    async def allow_app_check() -> None:
+        return None
+
+    app.dependency_overrides[verify_app_check] = allow_app_check
+    test_client = TestClient(app)
+    yield test_client
+    test_client.close()
+    app.dependency_overrides.pop(verify_app_check, None)
 
 
 @pytest.mark.parametrize("path", _ENDPOINTS)
@@ -47,20 +56,23 @@ def test_served_bytes_match_the_file_in_the_image(client: TestClient, path: str,
 
 
 @pytest.mark.parametrize("path", _ENDPOINTS)
-def test_config_is_reachable_without_app_check(client: TestClient, path: str) -> None:
-    # The app reads these before it has a token to send, and their contents are
-    # public anyway. A regression that moves them under /v1 would lock the app out
-    # of starting.
+def test_config_is_protected_by_app_check(client: TestClient, path: str) -> None:
     from app.core.app_check import verify_app_check
 
     route = next(r for r in client.app.routes if getattr(r, "path", None) == path)
     dependencies = [call.call for call in route.dependant.dependencies]  # type: ignore[attr-defined]
-    assert verify_app_check not in dependencies
+    assert verify_app_check in dependencies
 
 
 def test_only_the_app_facing_documents_are_exposed(client: TestClient) -> None:
     served = {str(getattr(r, "path", "")) for r in client.app.routes}
     assert set(_ENDPOINTS) <= served
+    assert "/application_config" not in served
+    assert "/ultrasound/application_config" not in served
+    assert "/ultrasound/examination_types" not in served
+    assert "/ultrasound/examination_neural_models" not in served
+    assert "/ultrasound/examination_contextual_strings" not in served
+    assert "/ultrasound_examination_types" not in served
 
 
 @pytest.mark.parametrize("environment", ("development", "production"))
@@ -81,3 +93,14 @@ def test_neural_model_accessibility_is_valid_and_the_default_is_available(enviro
 
     assert accessibility
     assert accessibility[0] is USExaminationNeuralModelAccessibility.AVAILABLE
+
+
+@pytest.mark.parametrize("environment", ("development", "production"))
+def test_examination_types_are_grouped_and_unique(environment: str) -> None:
+    path = _CONFIG_DIR.parent / environment / "ultrasound_examination_types.json"
+    groups = json.loads(path.read_text(encoding="utf-8"))
+
+    assert groups
+    assert all(group["id"] and group["title"] and group["examinationTypes"] for group in groups)
+    type_ids = [item["id"] for group in groups for item in group["examinationTypes"]]
+    assert len(type_ids) == len(set(type_ids))

@@ -24,7 +24,7 @@ struct ScanSheetHeaderView: View {
                         spacing: .zero
                     ) {
                         ForEach(viewModel.photos) { photo in
-                            PhotoCard(
+                            PhotoCardView(
                                 image: photo.thumbnail,
                                 actionDelete: {
                                     viewModel.onTapDeletePhoto(photo: photo)

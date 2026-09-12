@@ -14,12 +14,12 @@ final class DependencyContainer: ObservableObject {
     let sharedRepository: SharedRepositoryProtocol
     let userSettingsRepository: UserSettingsRepositoryProtocol
     let ultrasoundModelRepository: UltrasoundModelRepositoryProtocol
-    let ultrasoundConclusionRepository: UltrasoundConclusionRepositoryProtocol
+    let ultrasoundReportRepository: UltrasoundReportRepositoryProtocol
     let templateRepository: TemplateRepositoryProtocol
     let subscriptionRepository: RevenueCatSubscriptionRepository
     let applicationConfig: ApplicationConfig
     let examinationNeuralModelFactory: DExaminationNeuralModelFactory?
-    let usExaminationTypes: [USExaminationType]
+    let usExaminationTypeGroups: [USExaminationTypeGroup]
     let usExaminationTypesById: [String: USExaminationType]
     let usExaminationTypeDefault: USExaminationType
     let usExaminationNeuralModels: [USExaminationNeuralModel]
@@ -39,11 +39,11 @@ final class DependencyContainer: ObservableObject {
         sharedRepository: SharedRepositoryProtocol,
         userSettingsRepository: UserSettingsRepositoryProtocol,
         ultrasoundModelRepository: UltrasoundModelRepositoryProtocol,
-        ultrasoundConclusionRepository: UltrasoundConclusionRepositoryProtocol,
+        ultrasoundReportRepository: UltrasoundReportRepositoryProtocol,
         templateRepository: TemplateRepositoryProtocol,
         subscriptionRepository: RevenueCatSubscriptionRepository,
         applicationConfig: ApplicationConfig,
-        usExaminationTypes: [USExaminationType],
+        usExaminationTypeGroups: [USExaminationTypeGroup],
         usExaminationTypesById: [String: USExaminationType],
         usExaminationTypeDefault: USExaminationType,
         usExaminationNeuralModels: [USExaminationNeuralModel],
@@ -63,11 +63,11 @@ final class DependencyContainer: ObservableObject {
         self.sharedRepository = sharedRepository
         self.userSettingsRepository = userSettingsRepository
         self.ultrasoundModelRepository = ultrasoundModelRepository
-        self.ultrasoundConclusionRepository = ultrasoundConclusionRepository
+        self.ultrasoundReportRepository = ultrasoundReportRepository
         self.templateRepository = templateRepository
         self.subscriptionRepository = subscriptionRepository
         self.applicationConfig = applicationConfig
-        self.usExaminationTypes = usExaminationTypes
+        self.usExaminationTypeGroups = usExaminationTypeGroups
         self.usExaminationTypesById = usExaminationTypesById
         self.usExaminationTypeDefault = usExaminationTypeDefault
         self.usExaminationNeuralModels = usExaminationNeuralModels
@@ -127,7 +127,7 @@ extension DependencyContainer {
         let ultrasoundModelRepository = UltrasoundModelRepository(
             database: database
         )
-        let ultrasoundConclusionRepository = UltrasoundConclusionRepository(
+        let ultrasoundReportRepository = UltrasoundReportRepository(
             database: database,
             httpClient: httpClient
         )
@@ -149,11 +149,11 @@ extension DependencyContainer {
             sharedRepository: sharedRepository,
             userSettingsRepository: userSettingsRepository,
             ultrasoundModelRepository: ultrasoundModelRepository,
-            ultrasoundConclusionRepository: ultrasoundConclusionRepository,
+            ultrasoundReportRepository: ultrasoundReportRepository,
             templateRepository: templateRepository,
             subscriptionRepository: subscriptionRepository,
             applicationConfig: .default,
-            usExaminationTypes: [],
+            usExaminationTypeGroups: [],
             usExaminationTypesById: [:],
             usExaminationTypeDefault: .init(
                 id: "",

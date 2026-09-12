@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-from typing import Any
 
 import httpx
 from fastapi import HTTPException
@@ -9,7 +8,9 @@ from pydantic import ValidationError
 
 from app.core.app_check import APP_CHECK_HEADER
 from app.core.variables import variables
-from app.model.inference_response import InferenceConclusionResponse
+from app.model.inference.inference_generation_image import InferenceGenerationImage
+from app.model.inference.inference_generation_request import InferenceGenerationRequest
+from app.model.inference.inference_response import InferenceGenerationResponse
 from app.service.base import InferenceRequest, ModelService
 
 logger = logging.getLogger(__name__)
@@ -23,11 +24,13 @@ class InferenceService(ModelService):
     it builds the prompts and picks the VM by model id.
     """
 
-    def __init__(self, http_client: httpx.AsyncClient) -> None:
+    def __init__(
+        self,
+        http_client: httpx.AsyncClient,
+        generation_endpoints: dict[str, str],
+    ) -> None:
         self._http_client = http_client
-        if not variables.inference_endpoints_path:
-            raise RuntimeError("INFERENCE_ENDPOINTS_PATH is not set")
-        self._urls = self._load_urls(variables.inference_endpoints_path)
+        self._urls = generation_endpoints
         self._timeout = variables.inference_request_timeout_seconds
         logger.info("Inference service configured for models: %s", ", ".join(sorted(self._urls)) or "none")
 
@@ -45,14 +48,15 @@ class InferenceService(ModelService):
             # its address.
             headers[APP_CHECK_HEADER] = request.app_check_token
 
-        payload: dict[str, Any] = {
-            "modelId": model_id,
-            "systemPrompt": request.system_prompt,
-            "prompt": request.prompt,
-            "photos": [{"data": photo.data} for photo in request.photos],
-            "temperature": request.settings.temperature,
-            "maxTokens": request.settings.maxTokens,
-        }
+        payload = InferenceGenerationRequest(
+            modelId=model_id,
+            systemPrompt=request.system_prompt,
+            prompt=request.prompt,
+            structuredOutput=request.structured_output,
+            images=[InferenceGenerationImage(data=photo.data) for photo in request.photos] or None,
+            temperature=request.settings.temperature,
+            maxTokens=request.settings.maxTokens,
+        )
         # Never log the payload contents: it holds patient data and scan images.
         logger.info(
             "Inference request: model=%s, photos=%d, prompt_chars=%d",
@@ -62,7 +66,12 @@ class InferenceService(ModelService):
         )
 
         try:
-            response = await self._http_client.post(url, headers=headers, json=payload, timeout=self._timeout)
+            response = await self._http_client.post(
+                url,
+                headers=headers,
+                json=payload.model_dump(exclude_none=True),
+                timeout=self._timeout,
+            )
         except httpx.HTTPError as error:
             logger.exception("Inference request failed: %s", error)
             raise HTTPException(status_code=502, detail="Inference service is unavailable") from error
@@ -78,7 +87,7 @@ class InferenceService(ModelService):
             raise HTTPException(status_code=502, detail="Inference service returned an error")
 
         try:
-            parsed = InferenceConclusionResponse.model_validate(response.json())
+            parsed = InferenceGenerationResponse.model_validate(response.json())
             value = parsed.value()
             logger.info("Inference value: model=%s, chars=%d", model_id, len(value))
             return value

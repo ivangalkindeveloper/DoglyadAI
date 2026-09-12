@@ -1,7 +1,8 @@
 import Foundation
-internal import MLXLMCommon
 internal import MLX
+internal import MLXGuidedGeneration
 internal import MLXLLM
+internal import MLXLMCommon
 internal import Tokenizers
 
 public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
@@ -41,9 +42,10 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
         numKeyValueHeads: 2,
         headDimension: 128
     )
-    private let model: MLXLMCommon.ModelContext
+    private let model: MLXLMCommon.ModelContainer
+    private let grammarTokenizer: MLXGuidedGeneration.GrammarTokenizer
     private let systemPrompt: String
-    private let generateParameters: MLXLMCommon.GenerateParameters
+    private let maxTokens: Int
 
     public init(
         systemPrompt: String,
@@ -57,15 +59,34 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
         // phone turns into hundreds of megabytes of extra resident memory.
         MLX.Memory.cacheLimit = Self.gpuCacheLimitBytes
 
-        model = try await MLXLMCommon.loadModel(
+        let model = try await MLXLMCommon.loadModelContainer(
             from: directory,
             using: DTransformersTokenizerLoader()
         )
+        let grammarTokenizer = try await model.perform { context in
+            let grammarVocab = MLXGuidedGeneration.TokenizerVocabExtractor.extractForGrammar(
+                from: context.tokenizer
+            )
+            return try MLXGuidedGeneration.GrammarTokenizer(
+                vocab: grammarVocab.vocab,
+                vocabType: grammarVocab.vocabType,
+                eosTokenId: Int32(context.tokenizer.eosTokenId ?? 0)
+            )
+        }
+
+        // Compile the schema while the model is loading. XGrammar caches the
+        // compilation, so a request only needs a fresh matcher state.
+        _ = try await Task.detached(priority: .userInitiated) {
+            try MLXGuidedGeneration.GrammarConstraint(
+                tokenizer: grammarTokenizer,
+                jsonSchema: DExaminationGenerationConfig.responseJSONSchema
+            )
+        }.value
+
+        self.model = model
+        self.grammarTokenizer = grammarTokenizer
         self.systemPrompt = systemPrompt
-        generateParameters = MLXLMCommon.GenerateParameters(
-            maxTokens: parameters.maxTokens,
-            temperature: Float(parameters.temperature)
-        )
+        maxTokens = parameters.maxTokens
     }
 
     private static let gpuCacheLimitBytes = 32 * 1024 * 1024
@@ -76,27 +97,54 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
         MLX.Memory.clearCache()
     }
 
-    /// For MLX, warming up is exactly the weight loading the factory already did when
-    /// creating the instance. There is nothing else to do.
+    /// Weight loading, vocabulary preparation, and schema compilation happen when
+    /// the factory creates this instance, so there is no deferred work left here.
     public func prewarm() {}
 
     public func parseSpeech(
         speech: String
     ) async throws -> DExaminationNeuralModelResponse {
-        let session = MLXLMCommon.ChatSession(
-            model,
-            instructions: systemPrompt,
-            generateParameters: generateParameters
-        )
-        let response = try await session.respond(
-            to: speech
-        )
-
-        guard let json = DExaminationJSONSanitizer.extractJSONObject(from: response) else {
-            throw DExaminationNeuralModelError.responseIsNotJSON
+        let model = model
+        let grammarTokenizer = grammarTokenizer
+        let systemPrompt = systemPrompt
+        let maxTokens = maxTokens
+        let generationTask = Task.detached(priority: .userInitiated) {
+            try await model.perform { context in
+                let constraint = try MLXGuidedGeneration.GrammarConstraint(
+                    tokenizer: grammarTokenizer,
+                    jsonSchema: DExaminationGenerationConfig.responseJSONSchema,
+                    fastForward: true,
+                    hostTokenizer: context.tokenizer
+                )
+                let input = try await context.processor.prepare(
+                    input: MLXLMCommon.UserInput(
+                        chat: [
+                            .system(systemPrompt),
+                            .user(DExaminationGenerationConfig.userPrompt(for: speech)),
+                        ]
+                    )
+                )
+                var response = ""
+                try MLXGuidedGeneration.GuidedGenerationLoop.run(
+                    input: input,
+                    context: context,
+                    constraint: constraint,
+                    maxTokens: maxTokens,
+                    vocabSize: grammarTokenizer.vocabSize
+                ) { chunk in
+                    response += chunk
+                    return true
+                }
+                return response
+            }
+        }
+        let response = try await withTaskCancellationHandler {
+            try await generationTask.value
+        } onCancel: {
+            generationTask.cancel()
         }
 
-        let data = Data(json.utf8)
+        let data = Data(response.utf8)
         let decoded = try DExaminationGenerationConfig.jsonDecoder.decode(
             DExaminationNeuralModelResponse.self,
             from: data

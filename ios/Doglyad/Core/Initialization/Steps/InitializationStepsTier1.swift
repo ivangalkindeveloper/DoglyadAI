@@ -60,7 +60,7 @@ extension InitializationProcess {
                         process.ultrasoundModelRepository = UltrasoundModelRepository(
                             database: process.database!
                         )
-                        process.ultrasoundConclusionRepository = UltrasoundConclusionRepository(
+                        process.ultrasoundReportRepository = UltrasoundReportRepository(
                             database: process.database!,
                             httpClient: process.httpClient!
                         )

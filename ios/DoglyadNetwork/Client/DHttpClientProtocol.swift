@@ -20,6 +20,11 @@ public protocol DHttpClientProtocol {
         url: URL
     ) async throws -> Response
 
+    func get<Response: Decodable>(
+        endPoint: String,
+        headers: [String: String]?
+    ) async throws -> Response
+
     func get<Body: Encodable & Sendable, Response: Decodable>(
         endPoint: String,
         body: Body?,

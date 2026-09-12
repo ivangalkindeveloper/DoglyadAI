@@ -14,7 +14,7 @@ struct NeuralModelSettingsScreenView: View {
         DScreen(
             title: .neuralModelSettingsTitle,
             onTapBack: viewModel.onTapBack,
-            content: { toolbarInset, _ in
+            content: { toolbarInset, bottomInset in
                 ScrollView(
                     showsIndicators: false
                 ) {
@@ -30,7 +30,9 @@ struct NeuralModelSettingsScreenView: View {
                                     .dStyle(
                                         font: typography.linkSmall
                                     )
+
                                 Spacer(minLength: size.s16)
+
                                 Toggle(
                                     "",
                                     isOn: $viewModel.isMarkdown
@@ -96,9 +98,9 @@ struct NeuralModelSettingsScreenView: View {
                             )
                             .padding(.horizontal, size.s8)
                     }
-                    .padding(size.s16)
                     .padding(.top, toolbarInset)
-                    .padding(.bottom, size.s64)
+                    .padding(size.s16)
+                    .padding(.bottom, bottomInset)
                 }
             },
             bottom: {

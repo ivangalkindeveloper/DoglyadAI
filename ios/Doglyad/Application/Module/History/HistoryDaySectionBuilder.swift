@@ -13,17 +13,17 @@ struct HistoryDaySectionBuilder {
     }
 
     func appending(
-        _ conclusions: [USExaminationConclusion],
+        _ reports: [USExaminationReport],
         to existingSections: [HistoryDaySection],
         relativeTo now: Date = Date()
     ) -> [HistoryDaySection] {
         var sections = existingSections
 
-        for conclusion in conclusions {
-            let day = calendar.startOfDay(for: conclusion.date)
+        for report in reports {
+            let day = calendar.startOfDay(for: report.date)
 
             if sections.last?.day == day {
-                sections[sections.count - 1].conclusions.append(conclusion)
+                sections[sections.count - 1].reports.append(report)
             } else {
                 sections.append(
                     HistoryDaySection(
@@ -33,7 +33,7 @@ struct HistoryDaySectionBuilder {
                             calendar: calendar,
                             locale: locale
                         ),
-                        conclusions: [conclusion]
+                        reports: [report]
                     )
                 )
             }

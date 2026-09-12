@@ -35,13 +35,13 @@ public extension DTypography {
         displaySmallBold: .custom(.MontserratBold, 20),
 
         textLarge: .custom(.MontserratRegular, 20),
-        textMedium: .custom(.MontserratRegular, 17),
+        textMedium: .custom(.MontserratRegular, 16),
         textSmall: .custom(.MontserratRegular, 14),
-        textXSmall: .custom(.MontserratMedium, 13),
+        textXSmall: .custom(.MontserratMedium, 12),
 
         linkLarge: .custom(.MontserratSemiBold, 20),
-        linkMedium: .custom(.MontserratSemiBold, 17),
+        linkMedium: .custom(.MontserratSemiBold, 16),
         linkSmall: .custom(.MontserratSemiBold, 14),
-        linkXSmall: .custom(.MontserratSemiBold, 13)
+        linkXSmall: .custom(.MontserratSemiBold, 12)
     )
 }

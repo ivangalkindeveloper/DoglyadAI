@@ -146,9 +146,9 @@ The backend is deliberately split into two independently deployable services:
 
 ## Security and patient data
 
-- Every `/v1` endpoint is protected by Firebase App Check in all environments; there is no development bypass flag.
+- Every application endpoint is versioned under `/v1` and protected by Firebase App Check in all environments; there is no development bypass flag.
 - The same App Check token is verified independently by the main backend and the inference backend.
-- Only four public configuration endpoints live outside `/v1`. Their documents are intentionally public and contain application configuration rather than patient records.
+- Configuration is downloaded through the same protected, versioned API after the iOS client configures Firebase and its App Check interceptor.
 - The main backend applies client-aware rate limits before forwarding generation requests.
 - Caddy terminates public HTTPS traffic; inference services are reached over the private Tailscale network.
 - Patient payloads and images are not written to backend logs. Logs contain only operational metadata such as status, model ID, image count, and text lengths.

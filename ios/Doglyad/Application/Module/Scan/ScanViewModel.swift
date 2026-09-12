@@ -76,20 +76,20 @@ final class ScanViewModel: DViewModel {
     @Published var patientDateOfBirth: Date = .init()
     @NestedObservableObject var patientHeightCMController = DTextFieldController(isRequired: true)
     @NestedObservableObject var patientWeightKGController = DTextFieldController(isRequired: true)
-    @NestedObservableObject var patientComplaintController = DTextFieldController(isRequired: true)
+    @NestedObservableObject var patientComplaintController = DTextFieldController()
     @NestedObservableObject var examinationDescriptionController = DTextFieldController(isRequired: true)
     //
     @Published var isLoading = false
 
     override func onInit() {
         cameraController.startSession()
-        if let usExaminationTypeId = container.ultrasoundConclusionRepository.getSelectedExaminationTypeId(),
+        if let usExaminationTypeId = container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
            let usExaminationType = container.usExaminationTypesById[usExaminationTypeId]
         {
             self.usExaminationType = usExaminationType
         }
         handle {
-            await self.container.ultrasoundConclusionRepository.getConclusionsCount()
+            await self.container.ultrasoundReportRepository.getReportsCount()
         } onMainSuccess: { patientCount in
             self.patientNameController.text = String(localized: .scanPatientDefaultNameLabel(count: patientCount))
         }
@@ -167,7 +167,7 @@ final class ScanViewModel: DViewModel {
                     guard self.usExaminationType != usExaminationType else { return }
 
                     self.usExaminationType = usExaminationType
-                    self.container.ultrasoundConclusionRepository.setSelectedExaminationTypeId(
+                    self.container.ultrasoundReportRepository.setSelectedExaminationTypeId(
                         id: usExaminationType.id
                     )
                 }
@@ -209,8 +209,6 @@ final class ScanViewModel: DViewModel {
     ) {
         guard !isPhotoFilling else { return }
 
-        // The thumbnail is prepared off the main thread, otherwise the full-size
-        // frame gets decoded on the first PhotoCard render.
         Task {
             let photo = await USExaminationScanPhoto.make(image: image)
             guard !self.isPhotoFilling else { return }
@@ -439,7 +437,6 @@ final class ScanViewModel: DViewModel {
         let isPatientNameValid = patientNameController.validate()
         let isPatientHeightCMValid = patientHeightCMController.validate()
         let isPatientWeightKGValid = patientWeightKGController.validate()
-        let isPatientComplaintValid = patientComplaintController.validate()
         let isExaminationDescriptionValid = examinationDescriptionController.validate()
         guard !photos.isEmpty else {
             return messager.show(
@@ -451,7 +448,6 @@ final class ScanViewModel: DViewModel {
         guard isPatientNameValid,
               isPatientHeightCMValid,
               isPatientWeightKGValid,
-              isPatientComplaintValid,
               isExaminationDescriptionValid
         else {
             return
@@ -460,7 +456,7 @@ final class ScanViewModel: DViewModel {
         unfocus()
 
         handle {
-            try await self.coordinator.prepareConclusionGeneration()
+            try await self.coordinator.prepareReportGeneration()
         } onMainSuccess: { resolution in
             switch resolution {
             case .proceed:
@@ -476,6 +472,8 @@ final class ScanViewModel: DViewModel {
             self.isLoading = true
 
             let neuralModelSettings = self.subscription.neuralModelSettings
+            let patientComplaint = self.patientComplaintController.text
+                .trimmingCharacters(in: .whitespacesAndNewlines)
             let examinationData = USExaminationData(
                 usExaminationTypeId: self.usExaminationType.id,
                 photos: self.photos,
@@ -484,16 +482,17 @@ final class ScanViewModel: DViewModel {
                 patientDateOfBirth: self.patientDateOfBirth,
                 patientHeight: Double(self.patientHeightCMController.text) ?? self.defaultPatientHeightCM,
                 patientWeight: Double(self.patientWeightKGController.text) ?? self.defaultPatientWeightKG,
-                patientComplaint: self.patientComplaintController.text,
+                patientComplaint: patientComplaint.isEmpty ? nil : patientComplaint,
                 examinationDescription: self.examinationDescriptionController.text
             )
             let template = self.getTemplate()
             let request = USExaminationRequest(
                 neuralModelSettings: neuralModelSettings,
                 examinationData: examinationData,
-                template: template?.content
+                template: template?.content,
+                includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations()
             )
-            let modelConclusion = try await self.container.ultrasoundConclusionRepository.generateConclusion(
+            let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
                 locale: Locale.current,
                 request: request,
                 scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
@@ -501,27 +500,27 @@ final class ScanViewModel: DViewModel {
                     compressionQuality: self.ultrasoundConfig.scanPhotoCompressionQuality
                 )
             )
-            let conclusion = USExaminationConclusion(
+            let report = USExaminationReport(
                 date: Date(),
                 neuralModelSettings: neuralModelSettings,
                 examinationData: examinationData,
-                actualModelConclusion: modelConclusion,
-                previosModelConclusions: []
+                actualModelReport: modelReport,
+                previousModelReports: []
             )
-            await self.container.ultrasoundConclusionRepository.setConclusion(
-                conclusion: conclusion
+            await self.container.ultrasoundReportRepository.setReport(
+                report: report
             )
             self.subscription.incrementRequestCount()
             await self.reset()
 
-            return conclusion
+            return report
         } onDefer: {
             self.isLoading = false
-        } onMainSuccess: { conclusion in
+        } onMainSuccess: { report in
             self.coordinator.sheet(
-                .recievedConclusion,
-                arguments: RecievedConclusionBottomSheetArguments(
-                    conclusion: conclusion
+                .receivedReport,
+                arguments: ReceivedReportBottomSheetArguments(
+                    report: report
                 )
             )
         } onUnknownError: { _ in
@@ -532,7 +531,7 @@ final class ScanViewModel: DViewModel {
     private func reset() async {
         sheetController.setHidden()
         photos.removeAll()
-        let patientCount = await container.ultrasoundConclusionRepository.getConclusionsCount()
+        let patientCount = await container.ultrasoundReportRepository.getReportsCount()
         patientNameController.text = String(localized: .scanPatientDefaultNameLabel(count: patientCount))
         patientGender = .male
         patientDateOfBirth = defaultPatientDateOfBirth

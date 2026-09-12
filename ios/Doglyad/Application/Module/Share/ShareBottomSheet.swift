@@ -27,7 +27,7 @@ struct ShareBottomSheet: View {
 #Preview {
     ShareBottomSheet(
         arguments: ShareArguments(
-            conclusion: USExaminationConclusion(
+            report: USExaminationReport(
                 date: Date(),
                 neuralModelSettings: NeuralModelSettings(
                     selectedNeuralModelId: "google/medgemma-1.5-4b-it",
@@ -46,12 +46,14 @@ struct ShareBottomSheet: View {
                     patientComplaint: "Patient complaints",
                     examinationDescription: "Examination description"
                 ),
-                actualModelConclusion: USExaminationModelConclusion(
+                actualModelReport: USExaminationModelReport(
                     date: Date(),
                     modelId: "google/medgemma-1.5-4b-it",
-                    response: "The ultrasound findings are within normal limits."
+                    description: "The thyroid has homogeneous echogenicity and smooth contours.",
+                    conclusion: "The ultrasound findings are within normal limits.",
+                    recommendations: "Routine follow-up when clinically indicated."
                 ),
-                previosModelConclusions: []
+                previousModelReports: []
             )
         )
     )

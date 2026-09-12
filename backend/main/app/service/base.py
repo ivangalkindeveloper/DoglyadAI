@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-import json
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from pathlib import Path
 
 from app.model.neural_model_settings import NeuralModelSettings
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
@@ -12,7 +10,7 @@ from app.model.ultrasound.us_examination_scan_photo import USExaminationScanPhot
 
 @dataclass(frozen=True)
 class InferenceRequest:
-    """Everything a `ModelService` needs to produce one conclusion.
+    """Everything a `ModelService` needs to produce one structured response.
 
     Grouped into an object rather than passed as positional arguments so the route
     remains independent of the concrete service implementation.
@@ -25,6 +23,7 @@ class InferenceRequest:
     language_code: str
     system_prompt: str
     prompt: str
+    structured_output: str
     photos: list[USExaminationScanPhoto] = field(default_factory=list)
     # The caller's App Check token, already verified at the edge and relayed
     # unchanged to the GPU VM, which verifies it again.
@@ -34,20 +33,5 @@ class InferenceRequest:
 class ModelService(ABC):
     @abstractmethod
     async def call(self, request: InferenceRequest) -> str:
-        """Runs one generation and returns the conclusion text."""
+        """Runs one generation and returns structured content as JSON text."""
         ...
-
-    @staticmethod
-    def _load_urls(path: Path) -> dict[str, str]:
-        # A JSON object of modelId -> URL, maintained by hand with one entry per
-        # GPU VM.
-        if not path.exists():
-            raise RuntimeError(f"Model URLs file not found: {path}")
-        try:
-            with open(path, encoding="utf-8-sig") as file:
-                data = json.load(file)
-        except (OSError, json.JSONDecodeError) as error:
-            raise RuntimeError(f"Failed to read model URLs from {path}: {error}") from error
-        if not isinstance(data, dict):
-            raise RuntimeError(f"Model URLs file {path} must contain a JSON object of modelId -> url")
-        return {str(k): str(v) for k, v in data.items() if isinstance(v, str) and v.strip()}

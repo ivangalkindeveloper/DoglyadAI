@@ -1,198 +1,291 @@
 [
-    {
-        "id": "abdominalCavity",
+        {
+        "id": "cardiovascularSystem",
         "title": {
-            "en": "Abdominal cavity",
-            "ru": "Брюшная полость"
-        }
+            "en": "Cardiovascular system",
+            "ru": "Сердечно-сосудистая система"
+        },
+        "examinationTypes": [
+            {
+                "id": "echocardiography",
+                "title": {
+                    "en": "Echocardiography",
+                    "ru": "Эхокардиография"
+                }
+            },
+            {
+                "id": "abdominalVessels",
+                "title": {
+                    "en": "Abdominal vessels",
+                    "ru": "Сосуды брюшной полости"
+                }
+            },
+            {
+                "id": "brachiocephalicVessels",
+                "title": {
+                    "en": "Brachiocephalic vessels",
+                    "ru": "Брахиоцефальные сосуды"
+                }
+            },
+            {
+                "id": "intracanialArteries",
+                "title": {
+                    "en": "Intracranial arteries",
+                    "ru": "Интракраниальные артерии"
+                }
+            },
+            {
+                "id": "renalArteries",
+                "title": {
+                    "en": "Renal arteries",
+                    "ru": "Почечные артерии"
+                }
+            },
+            {
+                "id": "arteriesOfTheUpperExtremities",
+                "title": {
+                    "en": "Arteries of the upper extremities",
+                    "ru": "Артерии верхних конечностей"
+                }
+            },
+            {
+                "id": "arteriesOfTheLowerExtremities",
+                "title": {
+                    "en": "Arteries of the lower extremities",
+                    "ru": "Артерии нижних конечностей"
+                }
+            },
+            {
+                "id": "veinsOfTheUpperExtremities",
+                "title": {
+                    "en": "Veins of the upper extremities",
+                    "ru": "Вены верхних конечностей"
+                }
+            },
+            {
+                "id": "veinsOfTheLowerExtremities",
+                "title": {
+                    "en": "Veins of the lower extremities",
+                    "ru": "Вены нижних конечностей"
+                }
+            }
+        ]
     },
     {
-        "id": "abdominalVessels",
+        "id": "abdominalAndUrinarySystem",
         "title": {
-            "en": "Abdominal vessels",
-            "ru": "Сосуды брюшной полости"
-        }
+            "en": "Abdominal and urinary system",
+            "ru": "Брюшная полость и мочевыделительная система"
+        },
+        "examinationTypes": [
+            {
+                "id": "abdominalCavity",
+                "title": {
+                    "en": "Abdominal cavity",
+                    "ru": "Брюшная полость"
+                }
+            },
+            {
+                "id": "hollowOrgansStomachAndIntestines",
+                "title": {
+                    "en": "Hollow organs (stomach and intestines)",
+                    "ru": "Полые органы (желудок и кишечник)"
+                }
+            },
+            {
+                "id": "kidneysAdrenalGlandsAndRetroperitonealSpace",
+                "title": {
+                    "en": "Kidneys, adrenal glands, and retroperitoneal space",
+                    "ru": "Почки, надпочечники и забрюшинное пространство"
+                }
+            },
+            {
+                "id": "bladder",
+                "title": {
+                    "en": "Bladder",
+                    "ru": "Мочевой пузырь"
+                }
+            },
+            {
+                "id": "bladderWithResidualUrineDetermination",
+                "title": {
+                    "en": "Bladder with residual urine determination",
+                    "ru": "Мочевой пузырь с определением остаточной мочи"
+                }
+            }
+        ]
     },
     {
-        "id": "arteriesOfTheLowerExtremities",
+        "id": "headAndNeck",
         "title": {
-            "en": "Arteries of the lower extremities",
-            "ru": "Артерии нижних конечностей"
-        }
+            "en": "Head and neck",
+            "ru": "Голова и шея"
+        },
+        "examinationTypes": [
+            {
+                "id": "eye",
+                "title": {
+                    "en": "Eye",
+                    "ru": "Глаз"
+                }
+            },
+            {
+                "id": "sinuses",
+                "title": {
+                    "en": "Sinuses",
+                    "ru": "Пазухи"
+                }
+            },
+            {
+                "id": "salivaryGlands",
+                "title": {
+                    "en": "Salivary glands",
+                    "ru": "Слюнные железы"
+                }
+            },
+            {
+                "id": "thyroidGland",
+                "title": {
+                    "en": "Thyroid gland",
+                    "ru": "Щитовидная железа"
+                }
+            },
+            {
+                "id": "neurosonography",
+                "title": {
+                    "en": "Neurosonography",
+                    "ru": "Нейросонография"
+                }
+            },
+            {
+                "id": "thymusGland",
+                "title": {
+                    "en": "Thymus gland",
+                    "ru": "Вилочковая железа"
+                }
+            }
+        ]
     },
     {
-        "id": "arteriesOfTheUpperExtremities",
+        "id": "lymphaticSystem",
         "title": {
-            "en": "Arteries of the upper extremities",
-            "ru": "Артерии верхних конечностей"
-        }
+            "en": "Lymphatic system",
+            "ru": "Лимфатическая система"
+        },
+        "examinationTypes": [
+            {
+                "id": "lymphNodes",
+                "title": {
+                    "en": "Lymph nodes",
+                    "ru": "Лимфатические узлы"
+                }
+            }
+        ]
     },
     {
-        "id": "bladder",
+        "id": "musculoskeletalAndSoftTissues",
         "title": {
-            "en": "Bladder",
-            "ru": "Мочевой пузырь"
-        }
+            "en": "Musculoskeletal system and soft tissues",
+            "ru": "Опорно-двигательная система и мягкие ткани"
+        },
+        "examinationTypes": [
+            {
+                "id": "joints",
+                "title": {
+                    "en": "Joints",
+                    "ru": "Суставы"
+                }
+            },
+            {
+                "id": "hipJointsInNewborns",
+                "title": {
+                    "en": "Hip joints in newborns",
+                    "ru": "Тазобедренные суставы у новорожденных"
+                }
+            },
+            {
+                "id": "softTissues",
+                "title": {
+                    "en": "Soft tissues",
+                    "ru": "Мягкие ткани"
+                }
+            }
+        ]
     },
     {
-        "id": "bladderWithResidualUrineDetermination",
+        "id": "reproductiveSystemAndBreast",
         "title": {
-            "en": "Bladder with residual urine determination",
-            "ru": "Мочевой пузырь с определением остаточной мочи"
-        }
+            "en": "Reproductive system and breast",
+            "ru": "Репродуктивная система и молочные железы"
+        },
+        "examinationTypes": [
+            {
+                "id": "pelvicOrgans",
+                "title": {
+                    "en": "Pelvic organs",
+                    "ru": "Органы малого таза"
+                }
+            },
+            {
+                "id": "scrotum",
+                "title": {
+                    "en": "Scrotum",
+                    "ru": "Мошонка"
+                }
+            },
+            {
+                "id": "mammaryGlands",
+                "title": {
+                    "en": "Mammary glands",
+                    "ru": "Молочные железы"
+                }
+            }
+        ]
     },
     {
-        "id": "brachiocephalicVessels",
+        "id": "thoracicExaminations",
         "title": {
-            "en": "Brachiocephalic vessels",
-            "ru": "Брахиоцефальные сосуды"
-        }
+            "en": "Thoracic examinations",
+            "ru": "Исследования грудной клетки"
+        },
+        "examinationTypes": [
+            {
+                "id": "pleuralRegion",
+                "title": {
+                    "en": "Pleural region",
+                    "ru": "Плевральная область"
+                }
+            }
+        ]
     },
     {
-        "id": "echocardiography",
+        "id": "screeningExaminations",
         "title": {
-            "en": "Echocardiography",
-            "ru": "Эхокардиография"
-        }
-    },
-    {
-        "id": "eye",
-        "title": {
-            "en": "Eye",
-            "ru": "Глаз"
-        }
-    },
-    {
-        "id": "hipJointsInNewborns",
-        "title": {
-            "en": "Hip joints in newborns",
-            "ru": "Тазобедренные суставы у новорожденных"
-        }
-    },
-    {
-        "id": "hollowOrgansStomachAndIntestines",
-        "title": {
-            "en": "Hollow organs (stomach and intestines)",
-            "ru": "Полые органы (желудок и кишечник)"
-        }
-    },
-    {
-        "id": "intracanialArteries",
-        "title": {
-            "en": "Intracanial arteries",
-            "ru": "Интраканиальные артерии"
-        }
-    },
-    {
-        "id": "joints",
-        "title": {
-            "en": "Joints",
-            "ru": "Суставы"
-        }
-    },
-    {
-        "id": "kidneysAdrenalGlandsAndRetroperitonealSpace",
-        "title": {
-            "en": "Kidneys, adrenal glands, and retroperitoneal space",
-            "ru": "Почки, надпочечники и забрюшинное пространство"
-        }
-    },
-    {
-        "id": "lymphNodes",
-        "title": {
-            "en": "Lymph nodes",
-            "ru": "Лимфатические узлы"
-        }
-    },
-    {
-        "id": "mammaryGlands",
-        "title": {
-            "en": "Mammary glands",
-            "ru": "Молочные железы"
-        }
-    },
-    {
-        "id": "neurosonography",
-        "title": {
-            "en": "Neurosonography",
-            "ru": "Нейросонография"
-        }
-    },
-    {
-        "id": "pelvicOrgans",
-        "title": {
-            "en": "Pelvic organs",
-            "ru": "Органы малого таза"
-        }
-    },
-    {
-        "id": "pleuralRegion",
-        "title": {
-            "en": "Pleural region",
-            "ru": "Плевральная область"
-        }
-    },
-    {
-        "id": "renalArteries",
-        "title": {
-            "en": "Renal arteries",
-            "ru": "Почечные артерии"
-        }
-    },
-    {
-        "id": "salivaryGlands",
-        "title": {
-            "en": "Salivary glands",
-            "ru": "Слюнные железы"
-        }
-    },
-    {
-        "id": "scrotum",
-        "title": {
-            "en": "Scrotum",
-            "ru": "Мошонка"
-        }
-    },
-    {
-        "id": "sinuses",
-        "title": {
-            "en": "Sinuses",
-            "ru": "Пазухи"
-        }
-    },
-    {
-        "id": "softTissues",
-        "title": {
-            "en": "Soft tissues",
-            "ru": "Мягкие ткани"
-        }
-    },
-    {
-        "id": "thymusGland",
-        "title": {
-            "en": "Thymus gland",
-            "ru": "Вилочковая железа"
-        }
-    },
-    {
-        "id": "thyroidGland",
-        "title": {
-            "en": "Thyroid gland",
-            "ru": "Щитовидная железа"
-        }
-    },
-    {
-        "id": "veinsOfTheLowerExtremities",
-        "title": {
-            "en": "Veins of the lower extremities",
-            "ru": "Вены нижних конечностей"
-        }
-    },
-    {
-        "id": "veinsOfTheUpperExtremities",
-        "title": {
-            "en": "Veins of the upper extremities",
-            "ru": "Вены верхних конечностей"
-        }
+            "en": "Screening examinations",
+            "ru": "Скрининговые исследования"
+        },
+        "examinationTypes": [
+            {
+                "id": "pregnancyFirstTrimester",
+                "title": {
+                    "en": "Pregnancy, first trimester",
+                    "ru": "Беременность, 1-й триместр"
+                }
+            },
+            {
+                "id": "pregnancySecondTrimester",
+                "title": {
+                    "en": "Pregnancy, second trimester",
+                    "ru": "Беременность, 2-й триместр"
+                }
+            },
+            {
+                "id": "pregnancyThirdTrimester",
+                "title": {
+                    "en": "Pregnancy, third trimester",
+                    "ru": "Беременность, 3-й триместр"
+                }
+            }
+        ]
     }
 ]

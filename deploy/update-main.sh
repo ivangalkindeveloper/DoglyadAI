@@ -139,7 +139,7 @@ APPLICATION_STATUS="$(
         --retry-delay 2 \
         --output /dev/null \
         --write-out '%{http_code}' \
-        "https://$DOMAIN/application_config" || true
+        "https://$DOMAIN/v1/application_config" || true
 )"
 PROTECTED_STATUS="$(
     curl --silent --show-error \
@@ -151,13 +151,13 @@ PROTECTED_STATUS="$(
         --request POST \
         --header 'Content-Type: application/json' \
         --data '{}' \
-        "https://$DOMAIN/v1/ultrasound_conclusion" || true
+        "https://$DOMAIN/v1/ultrasound/generate_report" || true
 )"
 
-echo "    GET  /application_config:        $APPLICATION_STATUS"
+echo "    GET  /v1/application_config without App Check token: $APPLICATION_STATUS"
 echo "    POST /v1 without App Check token: $PROTECTED_STATUS"
 
-if [ "$APPLICATION_STATUS" != 200 ] || [ "$PROTECTED_STATUS" != 401 ]; then
+if [ "$APPLICATION_STATUS" != 401 ] || [ "$PROTECTED_STATUS" != 401 ]; then
     echo "Health check failed; attempting rollback." >&2
     rollback || echo "Automatic rollback failed; restore $REMOTE_DIR/$BACKUP_ENV_FILE manually." >&2
     exit 1

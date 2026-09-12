@@ -13,6 +13,7 @@ from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
 from app.model.ultrasound.us_examination_type import USExaminationType
+from app.model.ultrasound.us_examination_type_group import USExaminationTypeGroup
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ _CONFIG_DIR = _CONFIG_BASE / variables.environment
 
 neural_models: dict[str, USExaminationNeuralModel] = {}
 examination_types: dict[str, USExaminationType] = {}
+examination_type_groups: list[USExaminationTypeGroup] = []
 
 # The documents the app reads at startup, served verbatim from the image. Keeping
 # the app and this backend on one source removes the window in which the app
@@ -67,9 +69,21 @@ def load_configs() -> None:
             model = USExaminationNeuralModel(**item)
             neural_models[model.id] = model
 
-        for item in _load_json_array(_CONFIG_DIR / "ultrasound_examination_types.json"):
-            examination_type = USExaminationType(**item)
-            examination_types[examination_type.id] = examination_type
+        loaded_groups = [
+            USExaminationTypeGroup(**item)
+            for item in _load_json_array(_CONFIG_DIR / "ultrasound_examination_types.json")
+        ]
+        loaded_types: dict[str, USExaminationType] = {}
+        for group in loaded_groups:
+            for examination_type in group.examinationTypes:
+                if examination_type.id in loaded_types:
+                    raise RuntimeError(f"Duplicate examination type id: {examination_type.id}")
+                loaded_types[examination_type.id] = examination_type
+
+        examination_type_groups.clear()
+        examination_type_groups.extend(loaded_groups)
+        examination_types.clear()
+        examination_types.update(loaded_types)
 
         for name in SERVED_DOCUMENTS:
             _served_documents[name] = _read_document(_CONFIG_DIR / name)

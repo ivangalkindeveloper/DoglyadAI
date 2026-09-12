@@ -3,7 +3,6 @@ import Foundation
 public enum DExaminationNeuralModelError: Error {
     case unavailable
     case resourceNotFound
-    case responseIsNotJSON
 }
 
 public protocol DExaminationNeuralModelProtocol {

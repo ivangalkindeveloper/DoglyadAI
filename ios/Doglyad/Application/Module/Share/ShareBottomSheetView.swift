@@ -41,7 +41,7 @@ struct ShareBottomSheetView: View {
                         }
                     }
                     .disabled(viewModel.isLoading)
-                    .paidBadge(.sendingConclusionByEmail)
+                    .paidBadge(.sendingReportByEmail)
                 }
 
                 if viewModel.isUserEmailButtonVisible {
@@ -54,7 +54,7 @@ struct ShareBottomSheetView: View {
                         )
                     }
                     .disabled(viewModel.isLoading)
-                    .paidBadge(.sendingConclusionByEmail)
+                    .paidBadge(.sendingReportByEmail)
                 }
 
                 DButtonCard(

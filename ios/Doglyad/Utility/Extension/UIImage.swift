@@ -19,7 +19,12 @@ extension UIImage {
 
         guard targetSize.width < size.width else { return self }
 
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let renderer = UIGraphicsImageRenderer(
+            size: targetSize,
+            format: format
+        )
         return renderer.image { _ in
             draw(in: CGRect(origin: .zero, size: targetSize))
         }

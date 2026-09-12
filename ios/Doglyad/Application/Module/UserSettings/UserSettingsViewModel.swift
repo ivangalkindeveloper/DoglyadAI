@@ -11,7 +11,7 @@ final class UserSettingsViewModel: DViewModel {
     }
 
     private let messager: DMessager
-    private let onEmailSaved: (String) -> Void
+    private let onSaved: (String, Bool) -> Void
 
     init(
         container: DependencyContainer,
@@ -19,10 +19,12 @@ final class UserSettingsViewModel: DViewModel {
         router: DRouter,
         subscription: SubscriptionViewModel,
         initialEmail: String?,
-        onEmailSaved: @escaping (String) -> Void
+        initialIncludeRecommendations: Bool,
+        onSaved: @escaping (String, Bool) -> Void
     ) {
         self.messager = messager
-        self.onEmailSaved = onEmailSaved
+        self.onSaved = onSaved
+        includeRecommendations = initialIncludeRecommendations
         super.init(
             container: container,
             router: router,
@@ -33,7 +35,12 @@ final class UserSettingsViewModel: DViewModel {
     }
 
     @Published var focus: Focus?
+    @Published var includeRecommendations: Bool
     @NestedObservableObject var emailController = DTextFieldController()
+
+    func toggleIncludeRecommendations() {
+        includeRecommendations.toggle()
+    }
 
     func onTapBack() {
         analytics.buttonTapped(.userSettingsBack)
@@ -62,7 +69,7 @@ final class UserSettingsViewModel: DViewModel {
         unfocus()
 
         let email = emailController.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        onEmailSaved(email)
+        onSaved(email, includeRecommendations)
         messager.show(
             type: .success,
             title: .userSettingsSavedSuccessMessageTitle,

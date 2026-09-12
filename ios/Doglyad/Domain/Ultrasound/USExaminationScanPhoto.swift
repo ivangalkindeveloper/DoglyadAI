@@ -11,15 +11,11 @@ extension CodingUserInfoKey {
 }
 
 struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
-    /// The preview is drawn in a 64pt PhotoCard, so 192px is enough
-    /// all the way up to 3x.
     static let thumbnailMaxDimension: CGFloat = 192
     static let thumbnailCompressionQuality: CGFloat = 0.8
 
     var id: UUID = .init()
     let image: UIImage
-    /// A downscaled copy for lists: a full-size frame in a 64pt tile forced
-    /// the main thread to decode the entire image.
     let thumbnail: UIImage
 
     init(
@@ -32,7 +28,6 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
         self.thumbnail = thumbnail ?? image.thumbnail(maxDimension: Self.thumbnailMaxDimension)
     }
 
-    /// Prepares the preview off the main thread — the capture and gallery-pick path.
     static func make(
         image: UIImage
     ) async -> USExaminationScanPhoto {
@@ -66,9 +61,16 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
             return
         }
 
-        let resizedImage = image.resized(maxDimension: options.resizeMaxDimension)
-        let data = resizedImage.jpegData(compressionQuality: options.compressionQuality) ?? Data()
+        let data = encodedJPEGData(options: options) ?? Data()
         try container.encode(data, forKey: .data)
+    }
+
+    func encodedJPEGData(
+        options: ScanPhotoEncodingOptions
+    ) -> Data? {
+        image
+            .resized(maxDimension: options.resizeMaxDimension)
+            .jpegData(compressionQuality: options.compressionQuality)
     }
 
     static func == (lhs: Self, rhs: Self) -> Bool {

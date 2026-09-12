@@ -32,7 +32,7 @@ struct ScanSheetFooterView: View {
                     }
 
                     DButton(
-                        title: .buttonScan,
+                        title: .buttonGenerate,
                         action: viewModel.onTapScan,
                         isLoading: viewModel.isLoading
                     )

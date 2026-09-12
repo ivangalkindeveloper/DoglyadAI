@@ -18,24 +18,38 @@ struct SelectUSExaminationTypeBottomSheetView: View {
             ScrollView(
                 showsIndicators: false
             ) {
-                VStack(
-                    spacing: .zero
+                LazyVStack(
+                    alignment: .leading,
+                    spacing: .zero,
+                    pinnedViews: [.sectionHeaders]
                 ) {
-                    ForEach(viewModel.types) { type in
-                        DListButtonCard(
-                            title: type.getLocalizedTitle(for: Locale.current),
-                            action: {
-                                viewModel.onTypeTap(type)
-                            },
-                            isSelected: viewModel.isSelected(type)
-                        )
+                    ForEach(viewModel.sections) { section in
+                        Section {
+                            ForEach(section.items) { item in
+                                DListButtonCard(
+                                    title: item.type.getLocalizedTitle(for: Locale.current),
+                                    action: {
+                                        viewModel.onTypeTap(item.type)
+                                    },
+                                    isSelected: viewModel.isSelected(item.type)
+                                )
+                                .padding(.bottom, size.s4)
+                            }
+                        } header: {
+                            SectionHeaderView(
+                                title: section.title
+                            )
+                        } footer: {
+                            Color.clear
+                                .frame(height: size.s12)
+                        }
                     }
-                    .padding(.bottom, size.s8)
                 }
-                .padding(.top, toolbarHeight)
-                .padding(size.s16)
-                .padding(.bottom, bottomHeight)
+                .padding(.top, size.s16)
+                .padding(.horizontal, size.s16)
+                .padding(.bottom, bottomHeight + size.s16)
             }
+            .contentMargins(.top, toolbarHeight, for: .scrollContent)
         }
         bottom: {
             DText(

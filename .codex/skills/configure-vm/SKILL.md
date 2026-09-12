@@ -98,7 +98,7 @@ For every main-to-inference route:
 1. Resolve the endpoint host from the local endpoint map without printing the complete map.
 2. Confirm the host is the current Tailscale address of the intended inference peer; never reuse a stale private-cloud `10.x` address by assumption.
 3. Run `tailscale ping <inference-ip>` and `ip route get <inference-ip>` on the main VM. Expect the route through `tailscale0`.
-4. POST an empty JSON object to `/v1/conclusion_generation` with `--noproxy '*'`, a 5-second connect timeout, and a 10-second total timeout. Expect `401`; it proves reachability and App Check rejection without exposing patient data.
+4. POST an empty JSON object to `/v1/generation` with `--noproxy '*'`, a 5-second connect timeout, and a 10-second total timeout. Expect `401`; it proves reachability and App Check rejection without exposing patient data.
 5. If the peer is reachable at a different address, ask the user to update the matching model entry in the protected local endpoint map, then synchronize secrets to every affected main VM.
 
 ## Configure a main VM
@@ -125,9 +125,9 @@ deploy/sync-secrets.sh main <ssh-target>
 6. Verify `backend_main` and `caddy` are running. Check recent logs without request bodies.
 7. Verify the public chain:
 
-- `GET https://<domain>/application_config` returns `200`
-- `GET https://<domain>/ultrasound_examination_neural_models` returns `200`
-- `POST https://<domain>/v1/ultrasound_conclusion` with `{}` and no App Check token returns `401`
+- `GET https://<domain>/v1/application_config` with no App Check token returns `401`
+- `GET https://<domain>/v1/ultrasound/examination_neural_models` with no App Check token returns `401`
+- `POST https://<domain>/v1/ultrasound/generate_report` with `{}` and no App Check token returns `401`
 
 For a later image-only update, use `make update-main-development` or `make update-main-production`. Verify the successful SHA first. Do not use `sync-secrets.sh` merely to update code, and do use it when local secrets actually changed.
 

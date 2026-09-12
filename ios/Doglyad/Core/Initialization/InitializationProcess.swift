@@ -19,11 +19,11 @@ final class InitializationProcess: DependencyInitializationProcess {
     var sharedRepository: SharedRepositoryProtocol?
     var userSettingsRepository: UserSettingsRepositoryProtocol?
     var ultrasoundModelRepository: UltrasoundModelRepositoryProtocol?
-    var ultrasoundConclusionRepository: UltrasoundConclusionRepositoryProtocol?
+    var ultrasoundReportRepository: UltrasoundReportRepositoryProtocol?
     var templateRepository: TemplateRepositoryProtocol?
     var subscriptionRepository: RevenueCatSubscriptionRepository?
     var applicationConfig: ApplicationConfig?
-    var usExaminationTypes: [USExaminationType]?
+    var usExaminationTypeGroups: [USExaminationTypeGroup]?
     var usExaminationTypesById: [String: USExaminationType]?
     var usExaminationTypeDefault: USExaminationType?
     var usExaminationNeuralModels: [USExaminationNeuralModel]?
@@ -31,7 +31,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var usExaminationNeuralModelDefault: USExaminationNeuralModel?
     var usExaminationContextualStrings: USExaminationContextualStrings?
     var examinationNeuralModelFactory: DExaminationNeuralModelFactory?
-    var initialUltraSoundConclusionsCount: Int?
+    var initialUltrasoundReportsCount: Int?
     var initialSubscriptionStatus: SubscriptionStatus?
     var initialRoute: RouteScreen<ScreenType>?
     var version: String?
@@ -46,11 +46,11 @@ final class InitializationProcess: DependencyInitializationProcess {
             sharedRepository: sharedRepository!,
             userSettingsRepository: userSettingsRepository!,
             ultrasoundModelRepository: ultrasoundModelRepository!,
-            ultrasoundConclusionRepository: ultrasoundConclusionRepository!,
+            ultrasoundReportRepository: ultrasoundReportRepository!,
             templateRepository: templateRepository!,
             subscriptionRepository: subscriptionRepository!,
             applicationConfig: applicationConfig!,
-            usExaminationTypes: usExaminationTypes!,
+            usExaminationTypeGroups: usExaminationTypeGroups!,
             usExaminationTypesById: usExaminationTypesById!,
             usExaminationTypeDefault: usExaminationTypeDefault!,
             usExaminationNeuralModels: usExaminationNeuralModels!,

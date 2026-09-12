@@ -28,20 +28,16 @@ public struct DExaminationNeuralModelResponse: Codable {
     public let patientComplaint: String?
     public let examinationDescription: String?
 
-    /// The model may produce a value outside the schema: gender as a word from the dictation,
-    /// a number as a string, a date in its own format. Such a field is nulled out, not fatal.
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
 
         patientName = try container.decodeIfPresent(String.self, forKey: .patientName)
-        patientGender = try Gender(
-            rawValue: container.decodeIfPresentLenientString(forKey: .patientGender)?.lowercased() ?? ""
-        )
+        patientGender = try container.decodeIfPresent(Gender.self, forKey: .patientGender)
         patientDateOfBirth = try DExaminationGenerationConfig.dateFormatter.date(
-            from: container.decodeIfPresentLenientString(forKey: .patientDateOfBirth) ?? ""
+            from: container.decodeIfPresent(String.self, forKey: .patientDateOfBirth) ?? ""
         )
-        patientHeightCM = try container.decodeIfPresentLenientDouble(forKey: .patientHeightCM)
-        patientWeightKG = try container.decodeIfPresentLenientDouble(forKey: .patientWeightKG)
+        patientHeightCM = try container.decodeIfPresent(Double.self, forKey: .patientHeightCM)
+        patientWeightKG = try container.decodeIfPresent(Double.self, forKey: .patientWeightKG)
         patientComplaint = try container.decodeIfPresent(String.self, forKey: .patientComplaint)
         examinationDescription = try container.decodeIfPresent(String.self, forKey: .examinationDescription)
     }

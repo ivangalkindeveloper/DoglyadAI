@@ -84,6 +84,21 @@ public final class DHttpClient: DHttpClientProtocol {
         return try response.result.get()
     }
 
+    public func get<Response: Decodable>(
+        endPoint: String,
+        headers: [String: String]? = nil
+    ) async throws -> Response {
+        let response = await session.request(
+            baseApiUrl + endPoint,
+            method: .get,
+            headers: headers.map(HTTPHeaders.init) ?? HTTPHeaders()
+        )
+        .validate()
+        .serializingDecodable(Response.self, decoder: jsonDecoder)
+        .response
+        return try response.result.get()
+    }
+
     public func get<Body: Encodable & Sendable, Response: Decodable>(
         endPoint: String,
         body: Body? = nil,

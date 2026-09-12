@@ -21,8 +21,8 @@ final class RouterBuilder: RouterBuilderProtocol {
             AnyView(ScanScreen(arguments: route.arguments as? ScanScreenArguments))
         case .history:
             AnyView(HistoryScreen(arguments: route.arguments as? HistoryScreenArguments))
-        case .conclusion:
-            AnyView(ConclusionScreen(arguments: route.arguments as! ConclusionScreenArguments))
+        case .reportDetail:
+            AnyView(ReportDetailScreen(arguments: route.arguments as! ReportDetailScreenArguments))
         case .settings:
             AnyView(SettingsScreen(arguments: route.arguments as? SettingsScreenArguments))
         case .neuralModelSettings:
@@ -64,9 +64,9 @@ final class RouterBuilder: RouterBuilderProtocol {
             AnyView(PermissionPhotoLibraryBottomSheet())
         case .photoLibraryPicker:
             AnyView(PhotoLibraryPicker(arguments: route.arguments as! PhotoLibraryPickerArguments))
-        case .recievedConclusion:
-            AnyView(RecievedConclusionBottomSheet(
-                arguments: route.arguments as! RecievedConclusionBottomSheetArguments
+        case .receivedReport:
+            AnyView(ReceivedReportBottomSheet(
+                arguments: route.arguments as! ReceivedReportBottomSheetArguments
             ))
         case .webDocument:
             AnyView(WebDocumentBottomSheet(arguments: route.arguments as! WebDocumentBottomSheetArguments))

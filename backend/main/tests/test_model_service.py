@@ -31,7 +31,7 @@ def http_client() -> httpx.AsyncClient:
 @pytest.fixture
 def inference_endpoints(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     path = tmp_path / "inference_endpoints.json"
-    path.write_text(json.dumps({_MODEL.id: "http://10.0.0.11:8100/v1/conclusion_generation"}), encoding="utf-8")
+    path.write_text(json.dumps({_MODEL.id: "http://10.0.0.11:8100"}), encoding="utf-8")
     monkeypatch.setattr(variables, "inference_endpoints_path", path)
     return path
 
@@ -41,6 +41,21 @@ def test_model_service_uses_dedicated_gpu_vms(
     inference_endpoints: Path,
 ) -> None:
     assert isinstance(create_model_service(http_client), InferenceService)
+
+
+def test_model_service_replaces_a_legacy_route_with_generation(
+    http_client: httpx.AsyncClient,
+    inference_endpoints: Path,
+) -> None:
+    inference_endpoints.write_text(
+        json.dumps({_MODEL.id: "http://10.0.0.11:8100/v1/conclusion_generation"}),
+        encoding="utf-8",
+    )
+
+    service = create_model_service(http_client)
+
+    assert isinstance(service, InferenceService)
+    assert service._urls[_MODEL.id] == "http://10.0.0.11:8100/v1/generation"
 
 
 def test_startup_fails_without_an_inference_map(
@@ -59,7 +74,7 @@ def test_the_same_composition_in_every_environment(
     inference_endpoints: Path,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    # ENVIRONMENT picks a config directory and nothing else: a conclusion is
+    # ENVIRONMENT picks a config directory and nothing else: a report is
     # produced by the same services in development as in production. That is what
     # makes testing against a development backend meaningful.
     built: list[type[ModelService]] = []

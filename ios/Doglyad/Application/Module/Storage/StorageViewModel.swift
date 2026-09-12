@@ -38,7 +38,7 @@ final class StorageViewModel: DViewModel {
                     guard let self = self else { return }
 
                     handle {
-                        await self.container.ultrasoundConclusionRepository.clearAllConclusions()
+                        await self.container.ultrasoundReportRepository.clearAllReports()
                     } onMainSuccess: { _ in
                         self.messager.show(
                             type: .success,
@@ -61,7 +61,7 @@ final class StorageViewModel: DViewModel {
                     guard let self = self else { return }
 
                     handle {
-                        await self.container.ultrasoundConclusionRepository.clearAll()
+                        await self.container.ultrasoundReportRepository.clearAll()
                     } onMainSuccess: { _ in
                         self.messager.show(
                             type: .success,

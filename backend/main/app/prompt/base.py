@@ -8,7 +8,11 @@ from app.model.ultrasound.us_examination_data import USExaminationData
 
 class PromptFactory(ABC):
     @abstractmethod
-    def system_prompt(self, settings: NeuralModelSettings) -> str: ...
+    def system_prompt(
+        self,
+        settings: NeuralModelSettings,
+        include_recommendations: bool,
+    ) -> str: ...
 
     @abstractmethod
     def build_prompt(

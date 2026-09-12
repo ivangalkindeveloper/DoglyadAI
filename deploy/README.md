@@ -69,16 +69,20 @@ curl --noproxy '*' -sS -o /dev/null -w '%{http_code}\n' \
   -X POST \
   -H 'Content-Type: application/json' \
   -d '{}' \
-  http://<gpu tailscale ip>:8100/v1/conclusion_generation
+  http://<gpu tailscale ip>:8100/v1/generation
 ```
 
 Only after that check, update the local `backend/main/secrets/inference_endpoints.json`:
 
 ```json
 {
-  "google/medgemma-4b-it": "http://<gpu tailscale ip>:8100/v1/conclusion_generation"
+  "google/medgemma-4b-it": "http://<gpu tailscale ip>:8100"
 }
 ```
+
+The main backend appends the inference route. Existing mappings that still contain
+the previous `/v1` endpoint are normalized at startup, so they can be migrated to
+the base VM URL independently of deployment.
 
 Apply the change to the development VM:
 
@@ -92,7 +96,7 @@ For production, use the environment-specific target:
 make sync-secrets-main-production TARGET=USER@MAIN_PRODUCTION_HOST
 ```
 
-The endpoint map is loaded when the main backend starts, so `sync-secrets.sh` recreates `backend_main`. A `200` response from `/application_config` and a `401` response from `/v1` without a token confirm the public stack is healthy after the update.
+The endpoint map is loaded when the main backend starts, so `sync-secrets.sh` recreates `backend_main`. A `401` response from both `/v1/application_config` and `/v1/ultrasound/generate_report` without a token confirms that the public stack is reachable and App Check is enforced after the update.
 
 ## Update an existing main backend
 
@@ -119,7 +123,7 @@ The update script:
 3. saves that file as `/opt/doglyad/.env.before-main-update`;
 4. sets the requested image tag and preserves the matching development or production profile;
 5. pulls and recreates only `backend_main`, leaving Caddy and its certificates untouched;
-6. expects `200` from `/application_config` and `401` from `/v1` without an App Check token;
+6. expects `401` from `/v1/application_config` and `/v1/ultrasound/generate_report` without an App Check token;
 7. restores the previous environment file and container if deployment or health verification fails.
 
 To use a dedicated SSH key, set `DOGLYAD_SSH_KEY` for either Make command.

@@ -4,7 +4,7 @@ enum ScreenType: Hashable {
     case legalUpdate
     case scan
     case history
-    case conclusion
+    case reportDetail
     case settings
     case neuralModelSettings
     case templateList
@@ -25,7 +25,7 @@ enum SheetType: Hashable {
     case permissionSpeech
     case permissionPhotoLibrary
     case photoLibraryPicker
-    case recievedConclusion
+    case receivedReport
     case webDocument
     case storageClearConclusions
     case storageClearAll

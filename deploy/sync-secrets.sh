@@ -107,12 +107,12 @@ echo "==> applying on the VM"
 if [ "$HAS_PUBLIC_ENDPOINT" = yes ]; then
     echo "==> checking"
     HOST="${TARGET#*@}"
-    printf '      GET /application_config -> '
-    curl -s -o /dev/null -w '%{http_code}\n' --max-time 20 "https://$HOST/application_config" || echo "unreachable"
+    printf '      GET /v1/application_config without a token -> '
+    curl -s -o /dev/null -w '%{http_code}\n' --max-time 20 "https://$HOST/v1/application_config" || echo "unreachable"
     printf '      POST /v1 without a token -> '
     curl -s -o /dev/null -w '%{http_code}\n' --max-time 20 \
-        -X POST "https://$HOST/v1/ultrasound_conclusion" -d '{}' || echo "unreachable"
-    echo "      (200 and 401 mean the chain is healthy)"
+        -X POST "https://$HOST/v1/ultrasound/generate_report" -d '{}' || echo "unreachable"
+    echo "      (401 responses mean the chain is healthy and App Check is enforced)"
 else
     echo "==> $ROLE has no public endpoint; check the logs:"
     echo "      ssh $TARGET 'cd $REMOTE_DIR && docker compose logs --tail=40'"

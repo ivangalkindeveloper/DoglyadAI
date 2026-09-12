@@ -13,8 +13,8 @@ extension SubscriptionStatus {
             neuralModelSettings
         case .formCompletionViaMicrophone:
             formCompletionViaMicrophone
-        case .sendingConclusionByEmail:
-            sendingConclusionByEmail
+        case .sendingReportByEmail:
+            sendingReportByEmail
         }
     }
 
@@ -26,8 +26,8 @@ extension SubscriptionStatus {
         entitlement.formCompletionViaMicrophone
     }
 
-    var sendingConclusionByEmail: SubscriptionFeatureAvailability {
-        entitlement.sendingConclusionByEmail
+    var sendingReportByEmail: SubscriptionFeatureAvailability {
+        entitlement.sendingReportByEmail
     }
 
     var neuralModelSettings: SubscriptionFeatureAvailability {

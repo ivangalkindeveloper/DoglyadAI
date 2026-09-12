@@ -4,22 +4,22 @@ import SwiftData
 public final class DDatabase: DDatabaseProtocol {
     let defaults: UserDefaults = .standard
     var container: ModelContainer
-    public let examinationConclusions: DExaminationConclusionsStore
+    public let examinationReports: DExaminationReportsStore
     public let examinationTemplates: DExaminationTemplatesStore
 
     public init() throws {
         let schema = Schema([
             NeuralModelSettingsDB.self,
-            USExaminationConclusionDB.self,
+            USExaminationReportDB.self,
             USExaminationDataDB.self,
             USExaminationScanPhotoDB.self,
-            USExaminationModelConclusionDB.self,
+            USExaminationModelReportDB.self,
             USExaminationTemplateDB.self,
         ])
         container = try ModelContainer(
             for: schema
         )
-        examinationConclusions = DExaminationConclusionsStore(
+        examinationReports = DExaminationReportsStore(
             modelContainer: container
         )
         examinationTemplates = DExaminationTemplatesStore(

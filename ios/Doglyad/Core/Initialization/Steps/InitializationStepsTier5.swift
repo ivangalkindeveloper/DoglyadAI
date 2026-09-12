@@ -7,14 +7,21 @@ extension InitializationProcess {
             SyncInitializationStep<InitializationProcess>(
                 title: "Check selected ultrasound examination type",
                 run: { (process: InitializationProcess) in
+                    let availableTypeIds = Set(process.usExaminationTypesById!.keys)
+                    let recentTypeIds = RecentUSExaminationTypes.available(
+                        from: process.ultrasoundReportRepository!.getRecentExaminationTypeIds(),
+                        availableIds: availableTypeIds
+                    )
+                    process.ultrasoundReportRepository!.setRecentExaminationTypeIds(recentTypeIds)
+
                     @MainActor
                     func setDefault() {
-                        process.ultrasoundConclusionRepository!.setSelectedExaminationTypeId(
+                        process.ultrasoundReportRepository!.setSelectedExaminationTypeId(
                             id: process.usExaminationTypeDefault!.id
                         )
                     }
 
-                    let usExaminationTypeId = process.ultrasoundConclusionRepository!.getSelectedExaminationTypeId()
+                    let usExaminationTypeId = process.ultrasoundReportRepository!.getSelectedExaminationTypeId()
                     guard usExaminationTypeId != nil else {
                         return
                     }
@@ -100,9 +107,9 @@ extension InitializationProcess {
                         applicationConfig: process.applicationConfig!,
                         applicationVersion: Bundle.shortVersion,
                         isOnBoardingCompleted: process.sharedRepository!.isOnBoardingCompleted(),
-                        selectedUSExaminationTypeId: process.ultrasoundConclusionRepository!.getSelectedExaminationTypeId(),
+                        selectedUSExaminationTypeId: process.ultrasoundReportRepository!.getSelectedExaminationTypeId(),
                         acceptedLegalDocumentDate: process.sharedRepository!.getAcceptedLegalDocumentDate(),
-                        conclusionsCount: process.initialUltraSoundConclusionsCount!,
+                        conclusionsCount: process.initialUltrasoundReportsCount!,
                         subscriptionStatus: process.initialSubscriptionStatus
                     )
                     process.initialRoute = try Coordinator.initialRoute(for: context)

@@ -1,11 +1,11 @@
 import Router
 
 final class ShareArguments: RouteArgumentsProtocol {
-    let conclusion: USExaminationConclusion
+    let report: USExaminationReport
 
     init(
-        conclusion: USExaminationConclusion
+        report: USExaminationReport
     ) {
-        self.conclusion = conclusion
+        self.report = report
     }
 }

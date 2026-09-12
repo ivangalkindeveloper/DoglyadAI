@@ -3,7 +3,7 @@ import Foundation
 struct HistoryDaySection: Identifiable {
     let day: Date
     let title: String
-    var conclusions: [USExaminationConclusion]
+    var reports: [USExaminationReport]
 
     var id: Date { day }
 }
