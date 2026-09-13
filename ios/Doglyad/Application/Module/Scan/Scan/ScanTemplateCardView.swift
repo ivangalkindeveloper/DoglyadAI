@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanSheetTemplateCardView: View {
+struct ScanTemplateCardView: View {
     @EnvironmentObject private var theme: DTheme
     private var color: DColor { theme.color }
     private var size: DSize { theme.size }

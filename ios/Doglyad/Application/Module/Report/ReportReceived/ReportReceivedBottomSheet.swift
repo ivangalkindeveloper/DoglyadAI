@@ -2,17 +2,17 @@ import DoglyadUI
 import Router
 import SwiftUI
 
-struct ReceivedReportBottomSheet: View {
+struct ReportReceivedBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
-    let arguments: ReceivedReportBottomSheetArguments
+    let arguments: ReportReceivedBottomSheetArguments
 
     var body: some View {
-        ReceivedReportBottomSheetView(
-            viewModel: ReceivedReportViewModel(
+        ReportReceivedBottomSheetView(
+            viewModel: ReportReceivedViewModel(
                 container: container,
                 messager: messager,
                 router: router,
@@ -25,8 +25,8 @@ struct ReceivedReportBottomSheet: View {
 }
 
 #Preview {
-    ReceivedReportBottomSheet(
-        arguments: ReceivedReportBottomSheetArguments(
+    ReportReceivedBottomSheet(
+        arguments: ReportReceivedBottomSheetArguments(
             report: USExaminationReport(
                 date: Date(),
                 neuralModelSettings: NeuralModelSettings(

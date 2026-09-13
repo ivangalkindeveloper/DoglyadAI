@@ -1,6 +1,6 @@
 import Router
 
-final class ReceivedReportBottomSheetArguments: RouteArgumentsProtocol {
+final class ReportReceivedBottomSheetArguments: RouteArgumentsProtocol {
     let report: USExaminationReport
 
     init(

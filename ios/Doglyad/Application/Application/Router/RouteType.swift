@@ -17,15 +17,17 @@ enum ScreenType: Hashable {
 }
 
 enum SheetType: Hashable {
+    case scanCamera
     case selectUSExaminationType
     case selectNeuralModel
     case selectDateOfBirth
     case scanSpeech
     case requestLimitExceeded
+    case permissionCamera
     case permissionSpeech
     case permissionPhotoLibrary
     case photoLibraryPicker
-    case receivedReport
+    case reportReceived
     case webDocument
     case storageClearConclusions
     case storageClearAll

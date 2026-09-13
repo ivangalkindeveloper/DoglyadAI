@@ -156,6 +156,23 @@
         }
       }
     },
+    "buttonCamera": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Камера"
+          }
+        }
+      }
+    },
     "buttonCameraTurnOn": {
       "extractionState": "manual",
       "localizations": {
@@ -271,6 +288,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Заполнить"
+          }
+        }
+      }
+    },
+    "buttonGallery": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gallery"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Галерея"
           }
         }
       }
@@ -564,40 +598,6 @@
         }
       }
     },
-    "errorNoCameraPermissionDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Please check camera permission for taking scan photos and try again"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Пожалуйста предоставьте разрешение доступа к камере для сбора фотографий для сканирования и попробуйте снова"
-          }
-        }
-      }
-    },
-    "errorNoCameraPermissionTitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Camera permission denied"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Отсутствует доступ к камере"
-          }
-        }
-      }
-    },
     "errorNoInternetConnectionDescription": {
       "extractionState": "manual",
       "localizations": {
@@ -628,40 +628,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Отсутствует интернет подключение"
-          }
-        }
-      }
-    },
-    "errorNoScanPhotoDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Please take at least one photo of the examination and try again"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Пожалуйста сделайте хотя бы один снимок исследования и попробуйте снова"
-          }
-        }
-      }
-    },
-    "errorNoScanPhotoTitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No examination photos"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Отсутствуют снимки исследования"
           }
         }
       }
@@ -1363,6 +1329,40 @@
         }
       }
     },
+    "permissionCameraDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grant the app permission to use the camera to take examination photos"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Предоставьте приложению разрешение на использование камеры, чтобы делать фотографии исследования"
+          }
+        }
+      }
+    },
+    "permissionCameraTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Камера"
+          }
+        }
+      }
+    },
     "permissionPhotoLibraryDescription": {
       "extractionState": "manual",
       "localizations": {
@@ -1444,40 +1444,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Политика конфиденциальности"
-          }
-        }
-      }
-    },
-    "receivedReportCopyMessageDescription": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The model report has been copied to the clipboard"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Протокол модели скопирован в буфер обмена"
-          }
-        }
-      }
-    },
-    "receivedReportCopyMessageTitle": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Report copied"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Протокол скопирован"
           }
         }
       }
@@ -1618,6 +1584,40 @@
         }
       }
     },
+    "reportReceivedCopyMessageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The model report has been copied to the clipboard"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Протокол модели скопирован в буфер обмена"
+          }
+        }
+      }
+    },
+    "reportReceivedCopyMessageTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Report copied"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Протокол скопирован"
+          }
+        }
+      }
+    },
     "reportRecommendationsTitle": {
       "extractionState": "manual",
       "localizations": {
@@ -1716,6 +1716,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Лимит запросов достигнут"
+          }
+        }
+      }
+    },
+    "scanCameraTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Camera"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Камера"
           }
         }
       }

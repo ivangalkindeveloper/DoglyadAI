@@ -60,8 +60,4 @@ final class ApplicationViewModel: ObservableObject {
     func retryInitialization() {
         initialize()
     }
-
-    func openSettings() {
-        UIApplication.openSettings()
-    }
 }

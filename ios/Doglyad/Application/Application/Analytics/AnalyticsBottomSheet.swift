@@ -1,10 +1,12 @@
 enum AnalyticsBottomSheet: String {
     case about
+    case permissionCamera = "permission_camera"
     case permissionPhotoLibrary = "permission_photo_library"
     case permissionSpeech = "permission_speech"
     case photoLibraryPicker = "photo_library_picker"
-    case receivedReport = "received_report"
+    case reportReceived = "report_received"
     case requestLimitExceeded = "request_limit_exceeded"
+    case scanCamera = "scan_camera"
     case scanSpeech = "scan_speech"
     case selectDateOfBirth = "select_date_of_birth"
     case selectNeuralModel = "select_neural_model"

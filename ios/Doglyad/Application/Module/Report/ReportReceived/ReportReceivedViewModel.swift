@@ -7,36 +7,36 @@ import SwiftUI
 import UIKit
 
 @MainActor
-final class ReceivedReportViewModel: DViewModel {
+final class ReportReceivedViewModel: DViewModel {
     private let messager: DMessager
-    private let arguments: ReceivedReportBottomSheetArguments
+    private let arguments: ReportReceivedBottomSheetArguments
     let userEmail: String?
 
     init(
         container: DependencyContainer,
         messager: DMessager,
         router: DRouter,
-        arguments: ReceivedReportBottomSheetArguments,
+        arguments: ReportReceivedBottomSheetArguments,
         subscription: SubscriptionViewModel,
         userEmail: String?
     ) {
         self.messager = messager
         self.arguments = arguments
         self.userEmail = userEmail
-        markdownViewModel = ReceivedReportMarkdownViewModel(
+        markdownViewModel = ReportReceivedMarkdownViewModel(
             response: arguments.report.actualModelReport.markdownText
         )
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.receivedReport)
+            analyticsDestination: .bottomSheet(.reportReceived)
         )
     }
 
     @Published var isLoading = false
-    // A plain reference keeps per-word updates scoped to ReceivedReportMarkdownView.
-    let markdownViewModel: ReceivedReportMarkdownViewModel
+    // A plain reference keeps per-word updates scoped to ReportReceivedMarkdownView.
+    let markdownViewModel: ReportReceivedMarkdownViewModel
 
     var model: USExaminationModelReport {
         arguments.report.actualModelReport
@@ -76,7 +76,7 @@ final class ReceivedReportViewModel: DViewModel {
     }
 
     func onTapReport() {
-        analytics.buttonTapped(.receivedReportOpen)
+        analytics.buttonTapped(.reportReceivedOpen)
         coordinator.dismissSheet()
         coordinator.screen(
             .reportDetail,
@@ -88,7 +88,7 @@ final class ReceivedReportViewModel: DViewModel {
 
     func onTapUserEmail() {
         analytics.buttonTapped(
-            .receivedReportEmail,
+            .reportReceivedEmail,
             parameters: AnalyticsParameters([
                 .hasCurrentValue: .bool(userEmail != nil),
             ])
@@ -131,12 +131,12 @@ final class ReceivedReportViewModel: DViewModel {
     }
 
     func onTapCopy() {
-        analytics.buttonTapped(.receivedReportCopy)
+        analytics.buttonTapped(.reportReceivedCopy)
         UIApplication.pasteboard(response)
         messager.show(
             type: .success,
-            title: .receivedReportCopyMessageTitle,
-            description: .receivedReportCopyMessageDescription
+            title: .reportReceivedCopyMessageTitle,
+            description: .reportReceivedCopyMessageDescription
         )
     }
 }

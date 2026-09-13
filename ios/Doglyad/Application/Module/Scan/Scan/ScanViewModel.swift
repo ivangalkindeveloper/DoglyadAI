@@ -1,5 +1,3 @@
-import BottomSheet
-import DoglyadCamera
 import DoglyadNetwork
 import DoglyadUI
 import Foundation
@@ -67,8 +65,6 @@ final class ScanViewModel: DViewModel {
 
     @Published var usExaminationType: USExaminationType
     @Published var photos: [USExaminationScanPhoto] = []
-    @NestedObservableObject var cameraController: DCameraControllerFactory.Controller = DCameraControllerFactory.make()
-    @NestedObservableObject var sheetController = ScanSheetController()
     //
     @Published var focus: Focus? = nil
     @NestedObservableObject var patientNameController = DTextFieldController(isRequired: true)
@@ -82,7 +78,6 @@ final class ScanViewModel: DViewModel {
     @Published var isLoading = false
 
     override func onInit() {
-        cameraController.startSession()
         if let usExaminationTypeId = container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
            let usExaminationType = container.usExaminationTypesById[usExaminationTypeId]
         {
@@ -102,10 +97,6 @@ final class ScanViewModel: DViewModel {
         photos.count == photoMaxCount
     }
 
-    var isCaptureAvailable: Bool {
-        cameraController.isRunning && !isPhotoFilling
-    }
-
     func unfocus() {
         focus = nil
     }
@@ -123,31 +114,6 @@ final class ScanViewModel: DViewModel {
             focus = .examinationDescription
         case .examinationDescription, .none:
             focus = nil
-        }
-    }
-
-    func onDisappear() {
-        cameraController.stopSession()
-    }
-
-    func onChangeContentForSheet() {
-        if photos.isEmpty,
-           patientComplaintController.text.isEmpty,
-           examinationDescriptionController.text.isEmpty
-        {
-            if focus == nil {
-                sheetController.setHidden()
-            }
-            return
-        }
-        if sheetController.isHidden {
-            sheetController.setBottom()
-        }
-    }
-
-    func onChangeSheetForCamera() {
-        if sheetController.isTop {
-            cameraController.stopSession()
         }
     }
 
@@ -175,52 +141,42 @@ final class ScanViewModel: DViewModel {
         )
     }
 
-    var captureIcon: ImageResource {
-        photos.count == photoMaxCount ? .down : .camera
+    var isMediaSelectionDisabled: Bool {
+        isPhotoFilling || isLoading
     }
 
-    func onTapCameraTurnOn() {
-        analytics.buttonTapped(.scanCameraTurnOn)
-        cameraController.startSession()
-    }
+    func onTapCamera() {
+        guard !isMediaSelectionDisabled else { return }
 
-    func onTapCapture() {
-        analytics.buttonTapped(
-            .scanCapture,
-            parameters: AnalyticsParameters([
-                .itemCount: .int(photos.count),
-            ])
-        )
-        if photos.count == photoMaxCount {
-            return sheetController.setTop()
-        }
-
-        cameraController.takePhoto(
-            completion: { [weak self] image in
-                guard let self = self else { return }
-
-                self.onCapture(image)
+        analytics.buttonTapped(.scanCamera)
+        unfocus()
+        handle {
+            await self.container.permissionManager.isGranted(.camera)
+        } onMainSuccess: { isGranted in
+            guard isGranted else {
+                return self.coordinator.sheet(.permissionCamera)
             }
-        )
-    }
 
-    private func onCapture(
-        _ image: UIImage
-    ) {
-        guard !isPhotoFilling else { return }
-
-        Task {
-            let photo = await USExaminationScanPhoto.make(image: image)
-            guard !self.isPhotoFilling else { return }
-
-            self.photos.append(photo)
-            if self.isPhotoFilling {
-                self.sheetController.setTop()
-            }
+            self.coordinator.sheet(
+                .scanCamera,
+                arguments: ScanCameraArguments(
+                    photos: Binding(
+                        get: { [weak self] in
+                            self?.photos ?? []
+                        },
+                        set: { [weak self] photos in
+                            self?.photos = photos
+                        }
+                    ),
+                    photoMaxCount: self.photoMaxCount
+                )
+            )
         }
     }
 
     func onTapGallery() {
+        guard !isMediaSelectionDisabled else { return }
+
         analytics.buttonTapped(
             .scanGallery,
             parameters: AnalyticsParameters([
@@ -265,9 +221,6 @@ final class ScanViewModel: DViewModel {
             }
 
             self.photos.append(contentsOf: newPhotos)
-            if self.isPhotoFilling {
-                self.sheetController.setTop()
-            }
         }
     }
 
@@ -392,7 +345,6 @@ final class ScanViewModel: DViewModel {
                 return self.coordinator.sheet(.permissionSpeech)
             }
 
-            self.cameraController.stopSession()
             self.coordinator.sheet(
                 .scanSpeech,
                 arguments: ScanSpeechBottomSheetArguments(
@@ -438,13 +390,6 @@ final class ScanViewModel: DViewModel {
         let isPatientHeightCMValid = patientHeightCMController.validate()
         let isPatientWeightKGValid = patientWeightKGController.validate()
         let isExaminationDescriptionValid = examinationDescriptionController.validate()
-        guard !photos.isEmpty else {
-            return messager.show(
-                type: .error,
-                title: .errorNoScanPhotoTitle,
-                description: .errorNoScanPhotoDescription
-            )
-        }
         guard isPatientNameValid,
               isPatientHeightCMValid,
               isPatientWeightKGValid,
@@ -518,8 +463,8 @@ final class ScanViewModel: DViewModel {
             self.isLoading = false
         } onMainSuccess: { report in
             self.coordinator.sheet(
-                .receivedReport,
-                arguments: ReceivedReportBottomSheetArguments(
+                .reportReceived,
+                arguments: ReportReceivedBottomSheetArguments(
                     report: report
                 )
             )
@@ -529,7 +474,6 @@ final class ScanViewModel: DViewModel {
     }
 
     private func reset() async {
-        sheetController.setHidden()
         photos.removeAll()
         let patientCount = await container.ultrasoundReportRepository.getReportsCount()
         patientNameController.text = String(localized: .scanPatientDefaultNameLabel(count: patientCount))

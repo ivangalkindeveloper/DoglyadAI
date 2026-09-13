@@ -21,15 +21,17 @@ struct HistoryCardView: View {
             HStack(
                 spacing: .zero
             ) {
-                ZStack {
-                    ForEach(Array(examinationData.photos.enumerated()), id: \.element.id) { index, photo in
-                        PhotoCardView(image: photo.thumbnail)
-                            .offset(x: Double.random(in: -4 ... 4), y: Double.random(in: -4 ... 4))
-                            .rotationEffect(.degrees(Double.random(in: -8 ... 8)))
-                            .zIndex(Double(index))
+                if !examinationData.photos.isEmpty {
+                    ZStack {
+                        ForEach(Array(examinationData.photos.enumerated()), id: \.element.id) { index, photo in
+                            PhotoCardView(image: photo.thumbnail)
+                                .offset(x: Double.random(in: -4 ... 4), y: Double.random(in: -4 ... 4))
+                                .rotationEffect(.degrees(Double.random(in: -8 ... 8)))
+                                .zIndex(Double(index))
+                        }
                     }
+                    .padding(.trailing, size.s20)
                 }
-                .padding(.trailing, size.s20)
 
                 VStack(
                     alignment: .leading,

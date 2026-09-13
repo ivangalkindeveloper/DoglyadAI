@@ -1,21 +1,22 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanSheetHeaderView: View {
+struct ScanPhotosView: View {
     @EnvironmentObject private var theme: DTheme
     private var color: DColor { theme.color }
     private var size: DSize { theme.size }
     private var typography: DTypography { theme.typography }
 
-    @EnvironmentObject private var viewModel: ScanViewModel
-    private var isBottom: Bool { viewModel.sheetController.isBottom }
+    let photos: [USExaminationScanPhoto]
+    let photoMaxCount: Int
+    let onTapDelete: (USExaminationScanPhoto) -> Void
 
     var body: some View {
-        VStack(
-            alignment: .leading,
-            spacing: .zero
-        ) {
-            if !viewModel.photos.isEmpty {
+        if !photos.isEmpty {
+            VStack(
+                alignment: .leading,
+                spacing: .zero
+            ) {
                 ScrollView(
                     .horizontal,
                     showsIndicators: false
@@ -23,34 +24,35 @@ struct ScanSheetHeaderView: View {
                     HStack(
                         spacing: .zero
                     ) {
-                        ForEach(viewModel.photos) { photo in
+                        ForEach(photos) { photo in
                             PhotoCardView(
                                 image: photo.thumbnail,
                                 actionDelete: {
-                                    viewModel.onTapDeletePhoto(photo: photo)
+                                    onTapDelete(photo)
                                 }
                             )
                             .transition(.opacity)
                         }
-                        .padding([.horizontal], size.s2)
+                        .padding(.horizontal, size.s2)
                     }
-                    .padding([.horizontal], size.s14)
+                    .padding(.horizontal, size.s14)
                 }
                 .padding(.bottom, size.s8)
-                .transition(.opacity)
 
-                DText(.scanMaxPhotoDescription(count: viewModel.photoMaxCount))
+                DText(.scanMaxPhotoDescription(count: photoMaxCount))
                     .dStyle(
                         font: typography.textSmall,
-                        color: color.grayscalePlacehold
+                        color: color.grayscalePlacehold,
+                        alignment: .center
                     )
                     .padding(.horizontal, size.s24)
-                    .padding(.bottom, isBottom ? size.s32 : size.s8)
             }
+            .padding(.bottom, size.s8)
+            .transition(.opacity)
+            .animation(
+                theme.animation,
+                value: photos
+            )
         }
-        .animation(
-            theme.animation,
-            value: viewModel.photos
-        )
     }
 }

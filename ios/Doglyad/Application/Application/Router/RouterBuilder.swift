@@ -48,6 +48,8 @@ final class RouterBuilder: RouterBuilderProtocol {
         route: RouteSheet<SheetType>
     ) -> AnyView {
         switch route.type {
+        case .scanCamera:
+            AnyView(ScanCameraBottomSheet(arguments: route.arguments as! ScanCameraArguments))
         case .selectUSExaminationType:
             AnyView(SelectUSExaminationTypeBottomSheet(
                 arguments: route.arguments as? SelectUSExaminationTypeArguments
@@ -58,15 +60,17 @@ final class RouterBuilder: RouterBuilderProtocol {
             AnyView(SelectDateOfBirthBottomSheet(arguments: route.arguments as? SelectDateOfBirthArguments))
         case .scanSpeech:
             AnyView(ScanSpeechBottomSheet(arguments: route.arguments as! ScanSpeechBottomSheetArguments))
+        case .permissionCamera:
+            AnyView(PermissionCameraBottomSheet())
         case .permissionSpeech:
             AnyView(PermissionSpeechBottomSheet())
         case .permissionPhotoLibrary:
             AnyView(PermissionPhotoLibraryBottomSheet())
         case .photoLibraryPicker:
             AnyView(PhotoLibraryPicker(arguments: route.arguments as! PhotoLibraryPickerArguments))
-        case .receivedReport:
-            AnyView(ReceivedReportBottomSheet(
-                arguments: route.arguments as! ReceivedReportBottomSheetArguments
+        case .reportReceived:
+            AnyView(ReportReceivedBottomSheet(
+                arguments: route.arguments as! ReportReceivedBottomSheetArguments
             ))
         case .webDocument:
             AnyView(WebDocumentBottomSheet(arguments: route.arguments as! WebDocumentBottomSheetArguments))

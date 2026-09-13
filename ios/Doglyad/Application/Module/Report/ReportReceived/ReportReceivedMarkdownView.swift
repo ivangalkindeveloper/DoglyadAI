@@ -1,8 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReceivedReportMarkdownView: View {
-    @ObservedObject var viewModel: ReceivedReportMarkdownViewModel
+struct ReportReceivedMarkdownView: View {
+    @ObservedObject var viewModel: ReportReceivedMarkdownViewModel
     let textColor: Color
 
     var body: some View {

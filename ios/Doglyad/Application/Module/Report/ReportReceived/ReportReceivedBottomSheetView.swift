@@ -1,12 +1,12 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReceivedReportBottomSheetView: View {
+struct ReportReceivedBottomSheetView: View {
     @EnvironmentObject private var theme: DTheme
     private var color: DColor { theme.color }
     private var size: DSize { theme.size }
 
-    @StateObject var viewModel: ReceivedReportViewModel
+    @StateObject var viewModel: ReportReceivedViewModel
 
     var body: some View {
         DBottomSheet(
@@ -18,7 +18,7 @@ struct ReceivedReportBottomSheetView: View {
                     spacing: .zero
                 ) {
                     ScrollView {
-                        ReceivedReportMarkdownView(
+                        ReportReceivedMarkdownView(
                             viewModel: viewModel.markdownViewModel,
                             textColor: color.grayscaleBackgroundWeak
                         )

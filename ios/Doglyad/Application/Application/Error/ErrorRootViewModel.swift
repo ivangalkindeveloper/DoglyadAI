@@ -26,10 +26,6 @@ final class ErrorRootViewModel: ObservableObject {
         analytics?.buttonTapped(.initializationRetry)
     }
 
-    func onTapOpenSettings() {
-        analytics?.buttonTapped(.initializationOpenSettings)
-    }
-
     func onTapServiceUnavailableEmail() {
         analytics?.buttonTapped(.serviceUnavailableEmail)
     }
@@ -38,8 +34,6 @@ final class ErrorRootViewModel: ObservableObject {
         switch error as? InitializationError {
         case .noInternetConnection:
             "no_internet_connection"
-        case .noCameraRequestDenied:
-            "camera_request_denied"
         case .serviceUnavailable:
             "service_unavailable"
         case .usExaminationTypesEmpty:

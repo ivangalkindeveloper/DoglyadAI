@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 @MainActor
-final class ReceivedReportMarkdownViewModel: ObservableObject {
+final class ReportReceivedMarkdownViewModel: ObservableObject {
     @Published private(set) var displayedResponse = ""
 
     private let response: String

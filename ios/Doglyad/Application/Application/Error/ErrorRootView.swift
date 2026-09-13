@@ -36,14 +36,6 @@ struct ErrorRootView: View {
                 ) { _ in
                     DText(.errorNoInternetConnectionDescription)
                 }
-            case .noCameraRequestDenied:
-                ErrorView(
-                    title: .errorNoCameraPermissionTitle,
-                    buttonTitle: .buttonOpenSettings,
-                    action: openSettings
-                ) { _ in
-                    DText(.errorNoCameraPermissionDescription)
-                }
             case let .serviceUnavailable(email):
                 ErrorView(
                     email: email,
@@ -91,11 +83,6 @@ struct ErrorRootView: View {
     private func retryInitialization() {
         analyticsViewModel.onTapRetry()
         viewModel.retryInitialization()
-    }
-
-    private func openSettings() {
-        analyticsViewModel.onTapOpenSettings()
-        viewModel.openSettings()
     }
 }
 
