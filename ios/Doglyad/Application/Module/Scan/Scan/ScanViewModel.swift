@@ -101,6 +101,54 @@ final class ScanViewModel: DViewModel {
         focus = nil
     }
 
+    var canFocusPreviousField: Bool {
+        switch focus {
+        case .patientName, .none:
+            false
+        case .patientHeightCM, .patientWeightKG, .patientComplaint, .examinationDescription:
+            true
+        }
+    }
+
+    var canFocusNextField: Bool {
+        switch focus {
+        case .patientName, .patientHeightCM, .patientWeightKG, .patientComplaint:
+            true
+        case .examinationDescription, .none:
+            false
+        }
+    }
+
+    func onTapToolbarUp() {
+        switch focus {
+        case .patientName, .none:
+            break
+        case .patientHeightCM:
+            focus = .patientName
+        case .patientWeightKG:
+            focus = .patientHeightCM
+        case .patientComplaint:
+            focus = .patientWeightKG
+        case .examinationDescription:
+            focus = .patientComplaint
+        }
+    }
+
+    func onTapToolbarDown() {
+        switch focus {
+        case .patientName:
+            focus = .patientHeightCM
+        case .patientHeightCM:
+            focus = .patientWeightKG
+        case .patientWeightKG:
+            focus = .patientComplaint
+        case .patientComplaint:
+            focus = .examinationDescription
+        case .examinationDescription, .none:
+            break
+        }
+    }
+
     func onSubmit() {
         analytics.buttonTapped(.scanSubmit)
         switch focus {

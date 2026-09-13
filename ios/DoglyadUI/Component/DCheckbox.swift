@@ -1,9 +1,7 @@
 import SwiftUI
 
-public struct DCheckbox: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
+public struct DCheckbox: DView {
+    @EnvironmentObject public var theme: DTheme
 
     @Binding var isChecked: Bool
 

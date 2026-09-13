@@ -1,10 +1,7 @@
 import SwiftUI
 
-public struct DBadge<Content: View>: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+public struct DBadge<Content: View>: DView {
+    @EnvironmentObject public var theme: DTheme
 
     let badges: [DBadgeItem]
     let content: () -> Content

@@ -1,12 +1,9 @@
 import DoglyadUI
 import SwiftUI
 
-struct HistoryCardView: View {
+struct HistoryCardView: DView {
     @EnvironmentObject private var container: DependencyContainer
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+    @EnvironmentObject var theme: DTheme
 
     let report: USExaminationReport
     let onTap: () -> Void

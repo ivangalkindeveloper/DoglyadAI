@@ -1,12 +1,9 @@
 import DoglyadUI
 import SwiftUI
 
-struct TemplateListScreenView: View {
-    @EnvironmentObject private var theme: DTheme
+struct TemplateListScreenView: DView {
+    @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var container: DependencyContainer
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
 
     @StateObject var viewModel: TemplateListViewModel
 

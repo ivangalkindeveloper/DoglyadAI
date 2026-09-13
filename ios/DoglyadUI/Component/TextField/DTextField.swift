@@ -1,34 +1,14 @@
 import SwiftUI
 
-public class DTextFieldFocus<Focus: Hashable> {
-    public let value: Focus
-    public let state: FocusState<Focus?>.Binding
-
-    public init(
-        value: Focus,
-        state: FocusState<Focus?>.Binding
-    ) {
-        self.value = value
-        self.state = state
-    }
-
-    public var isFocused: Bool {
-        state.wrappedValue == value
-    }
-}
-
-public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView {
+    @EnvironmentObject public var theme: DTheme
 
     @ObservedObject private var controller: DTextFieldController
     private let focus: DTextFieldFocus<Focus>?
     private let title: LocalizedStringResource
     private let placeholder: LocalizedStringResource
+    private let mode: any DTextFieldMode
     private let keyboardType: UIKeyboardType
-    private let sumbitLabel: SubmitLabel
     private let autocapitalization: TextInputAutocapitalization?
     private let leading: Leading
     private let trailing: Trailing
@@ -43,8 +23,8 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: View {
         focus: DTextFieldFocus<Focus>? = nil,
         title: LocalizedStringResource,
         placeholder: LocalizedStringResource,
+        mode: any DTextFieldMode = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
-        sumbitLabel: SubmitLabel = .done,
         autocapitalization: TextInputAutocapitalization? = .sentences,
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() }
@@ -53,8 +33,8 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: View {
         self.focus = focus
         self.title = title
         self.placeholder = placeholder
+        self.mode = mode
         self.keyboardType = keyboardType
-        self.sumbitLabel = sumbitLabel
         self.autocapitalization = autocapitalization
         self.leading = leading()
         self.trailing = trailing()
@@ -64,8 +44,8 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: View {
         controller: DTextFieldController,
         title: LocalizedStringResource,
         placeholder: LocalizedStringResource,
+        mode: any DTextFieldMode = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
-        sumbitLabel: SubmitLabel = .done,
         autocapitalization: TextInputAutocapitalization? = .sentences,
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() }
@@ -75,8 +55,8 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: View {
             focus: nil,
             title: title,
             placeholder: placeholder,
+            mode: mode,
             keyboardType: keyboardType,
-            sumbitLabel: sumbitLabel,
             autocapitalization: autocapitalization,
             leading: leading,
             trailing: trailing
@@ -113,7 +93,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: View {
                             text: $controller.text,
                             prompt: Text(verbatim: String(localized: placeholder))
                                 .foregroundStyle(color.grayscalePlacehold),
-                            axis: .vertical
+                            axis: mode.axis
                         )
                         Group {
                             if let focus {
@@ -126,9 +106,9 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: View {
                         .foregroundStyle(color.grayscaleHeader)
                         .multilineTextAlignment(.leading)
                         .tint(borderColor)
-                        .lineLimit(8)
+                        .lineLimit(mode.lineLimit)
                         .keyboardType(keyboardType)
-                        .submitLabel(sumbitLabel)
+                        .submitLabel(mode.submitLabel)
                         .textInputAutocapitalization(autocapitalization)
                     }
 
@@ -194,7 +174,8 @@ private extension DTextField {
         DTextField(
             controller: controller,
             title: "Some title",
-            placeholder: "Some placeholder for filling..."
+            placeholder: "Some placeholder for filling...",
+            mode: DTextFieldMultiLineMode()
         )
         Spacer()
         Button(

@@ -1,10 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct OnBoardingPageView<BottomContent: View>: View {
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct OnBoardingPageView<BottomContent: View>: DView {
+    @EnvironmentObject var theme: DTheme
 
     let tag: OnBoardingViewModel.Page
     let title: LocalizedStringResource

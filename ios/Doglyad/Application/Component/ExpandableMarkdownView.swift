@@ -2,11 +2,8 @@ import DoglyadUI
 import SwiftUI
 import UIKit
 
-struct ExpandableMarkdownView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct ExpandableMarkdownView: DView {
+    @EnvironmentObject var theme: DTheme
 
     let text: String
     let backgroundColor: Color

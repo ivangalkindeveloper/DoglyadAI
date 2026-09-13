@@ -1,9 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct SettingsScreenView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
+struct SettingsScreenView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SettingsViewModel
 

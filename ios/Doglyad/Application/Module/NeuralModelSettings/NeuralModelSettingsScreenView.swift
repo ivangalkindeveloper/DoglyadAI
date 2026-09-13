@@ -1,11 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct NeuralModelSettingsScreenView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct NeuralModelSettingsScreenView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: NeuralModelSettingsViewModel
     @FocusState private var focus: NeuralModelSettingsViewModel.Focus?
@@ -14,9 +11,22 @@ struct NeuralModelSettingsScreenView: View {
         DScreen(
             title: .neuralModelSettingsTitle,
             onTapBack: viewModel.onTapBack,
+            onTapBody: viewModel.unfocus,
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        upAccessibilityLabel: .buttonBack,
+                        downAccessibilityLabel: .buttonNext,
+                        doneAccessibilityLabel: .buttonDone,
+                        onTapUp: viewModel.canFocusPreviousField ? { viewModel.onTapToolbarUp() } : nil,
+                        onTapDown: viewModel.canFocusNextField ? { viewModel.onTapToolbarDown() } : nil,
+                        onTapDone: viewModel.unfocus
+                    )
+                }
+            },
             content: { toolbarInset, bottomInset in
-                ScrollView(
-                    showsIndicators: false
+                DFocusScrollView(
+                    focus: focus
                 ) {
                     VStack(
                         alignment: .leading,
@@ -65,9 +75,10 @@ struct NeuralModelSettingsScreenView: View {
                             ),
                             title: .neuralModelTemperatureLabel,
                             placeholder: .neuralModelTemperaturePlaceholder,
-                            keyboardType: .decimalPad,
-                            sumbitLabel: .next
+                            mode: DTextFieldSingleLineMode(submitLabel: .next),
+                            keyboardType: .decimalPad
                         )
+                        .id(NeuralModelSettingsViewModel.Focus.temperature)
                         .padding(.bottom, size.s4)
 
                         DText(.neuralModelTemperatureDescription)
@@ -86,9 +97,10 @@ struct NeuralModelSettingsScreenView: View {
                             ),
                             title: .neuralModelMaxTokensLabel,
                             placeholder: .neuralModelMaxTokensPlaceholder,
-                            keyboardType: .numberPad,
-                            sumbitLabel: .done
+                            mode: DTextFieldSingleLineMode(submitLabel: .done),
+                            keyboardType: .numberPad
                         )
+                        .id(NeuralModelSettingsViewModel.Focus.length)
                         .padding(.bottom, size.s4)
 
                         DText(.neuralModelMaxTokensDescription)
@@ -112,9 +124,6 @@ struct NeuralModelSettingsScreenView: View {
                 .padding(size.s16)
             }
         )
-        .onTapGesture {
-            viewModel.unfocus()
-        }
         .onAppear(perform: viewModel.onAppear)
         .onSubmit {
             viewModel.onSubmit()

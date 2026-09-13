@@ -1,12 +1,9 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReportDetailScreenView: View {
+struct ReportDetailScreenView: DView {
     @EnvironmentObject private var container: DependencyContainer
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ReportDetailViewModel
     private var report: USExaminationReport {

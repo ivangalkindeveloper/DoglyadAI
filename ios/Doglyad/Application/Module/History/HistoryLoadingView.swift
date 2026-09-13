@@ -1,9 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct HistoryLoadingView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
+struct HistoryLoadingView: DView {
+    @EnvironmentObject var theme: DTheme
 
     let cardCount: Int
 

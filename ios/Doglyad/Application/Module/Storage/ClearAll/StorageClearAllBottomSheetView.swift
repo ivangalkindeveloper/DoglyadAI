@@ -1,11 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct StorageClearAllBottomSheetView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct StorageClearAllBottomSheetView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: StorageClearAllViewModel
 

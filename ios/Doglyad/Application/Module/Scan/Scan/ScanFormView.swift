@@ -1,10 +1,9 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanFormView: View {
+struct ScanFormView: DView {
     @EnvironmentObject private var container: DependencyContainer
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
+    @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
     let focus: FocusState<ScanViewModel.Focus?>.Binding
@@ -22,9 +21,10 @@ struct ScanFormView: View {
                 ),
                 title: .scanPatientNameLabel,
                 placeholder: .scanPatientNamePlaceholder,
-                keyboardType: .default,
-                sumbitLabel: .next
+                mode: DTextFieldSingleLineMode(submitLabel: .next),
+                keyboardType: .default
             )
+            .id(ScanViewModel.Focus.patientName)
             .padding(.vertical, size.s4)
 
             DSegment<PatientGender>(
@@ -60,9 +60,10 @@ struct ScanFormView: View {
                 ),
                 title: .scanPatientHeightCMLabel,
                 placeholder: .scanNumberPlaceholder,
-                keyboardType: .decimalPad,
-                sumbitLabel: .next
+                mode: DTextFieldSingleLineMode(submitLabel: .next),
+                keyboardType: .decimalPad
             )
+            .id(ScanViewModel.Focus.patientHeightCM)
             .padding(.bottom, size.s4)
 
             DTextField(
@@ -73,9 +74,10 @@ struct ScanFormView: View {
                 ),
                 title: .scanPatientWeightKGLabel,
                 placeholder: .scanNumberPlaceholder,
-                keyboardType: .decimalPad,
-                sumbitLabel: .next
+                mode: DTextFieldSingleLineMode(submitLabel: .next),
+                keyboardType: .decimalPad
             )
+            .id(ScanViewModel.Focus.patientWeightKG)
             .padding(.bottom, size.s4)
 
             DTextField(
@@ -86,9 +88,10 @@ struct ScanFormView: View {
                 ),
                 title: .scanPatientComplaintLabel,
                 placeholder: .scanPatientComplaintPlaceholder,
-                keyboardType: .default,
-                sumbitLabel: .next
+                mode: DTextFieldMultiLineMode(),
+                keyboardType: .default
             )
+            .id(ScanViewModel.Focus.patientComplaint)
             .padding(.bottom, size.s4)
 
             DTextField(
@@ -99,9 +102,10 @@ struct ScanFormView: View {
                 ),
                 title: .scanExaminationDescriptionLabel,
                 placeholder: .scanExaminationDescriptionPlaceholder,
-                keyboardType: .default,
-                sumbitLabel: .done
+                mode: DTextFieldMultiLineMode(),
+                keyboardType: .default
             )
+            .id(ScanViewModel.Focus.examinationDescription)
             .padding(.bottom, size.s16)
 
             ScanTemplateCardView()

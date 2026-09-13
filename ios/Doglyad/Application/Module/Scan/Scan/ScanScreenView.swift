@@ -1,16 +1,14 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanScreenView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
+struct ScanScreenView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ScanViewModel
     @FocusState private var focus: ScanViewModel.Focus?
 
     var body: some View {
         DScreen(
-            toolbarType: .blur,
             leading: {
                 DButton(
                     image: .hambergerMenu,
@@ -27,12 +25,24 @@ struct ScanScreenView: View {
                 .dStyle(.primaryChip)
             },
             onTapBody: viewModel.unfocus,
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        upAccessibilityLabel: .buttonBack,
+                        downAccessibilityLabel: .buttonNext,
+                        doneAccessibilityLabel: .buttonDone,
+                        onTapUp: viewModel.canFocusPreviousField ? { viewModel.onTapToolbarUp() } : nil,
+                        onTapDown: viewModel.canFocusNextField ? { viewModel.onTapToolbarDown() } : nil,
+                        onTapDone: viewModel.unfocus
+                    )
+                }
+            },
             content: { toolbarHeight, _ in
                 ZStack(
                     alignment: .bottom
                 ) {
-                    ScrollView(
-                        showsIndicators: false
+                    DFocusScrollView(
+                        focus: focus
                     ) {
                         VStack(
                             alignment: .leading,
@@ -76,7 +86,6 @@ struct ScanScreenView: View {
                 }
             }
         )
-        .ignoresSafeArea(.keyboard)
         .onSubmit {
             viewModel.onSubmit()
         }

@@ -1,12 +1,9 @@
 import DoglyadUI
 import SwiftUI
 
-struct AboutBottomSheetView: View {
+struct AboutBottomSheetView: DView {
     @Environment(\.locale) private var locale: Locale
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: AboutViewModel
 
@@ -33,7 +30,7 @@ struct AboutBottomSheetView: View {
                         color: color.grayscaleHeader,
                         alignment: .center
                     )
-                    .padding(.bottom, size.s16)
+                    .padding(.bottom, size.s8)
 
                 DText("\(localizedResource(.aboutVersion)): \(viewModel.version)")
                     .dStyle(

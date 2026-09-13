@@ -2,11 +2,8 @@ import DoglyadUI
 import Foundation
 import SwiftUI
 
-struct SelectUSExaminationTypeBottomSheetView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct SelectUSExaminationTypeBottomSheetView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SelectUSExaminationTypeViewModel
 

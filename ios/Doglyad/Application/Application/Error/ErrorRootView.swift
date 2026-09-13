@@ -1,12 +1,9 @@
 import DoglyadUI
 import SwiftUI
 
-struct ErrorRootView: View {
+struct ErrorRootView: DView {
     @EnvironmentObject private var viewModel: ApplicationViewModel
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+    @EnvironmentObject var theme: DTheme
 
     let error: Error
     @StateObject private var analyticsViewModel: ErrorRootViewModel

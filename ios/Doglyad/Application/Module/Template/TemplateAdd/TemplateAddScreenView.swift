@@ -1,11 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct TemplateAddScreenView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct TemplateAddScreenView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: TemplateAddViewModel
     @FocusState private var focus: TemplateAddViewModel.Focus?
@@ -15,9 +12,19 @@ struct TemplateAddScreenView: View {
             title: .templateAddTitle,
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        upAccessibilityLabel: .buttonBack,
+                        downAccessibilityLabel: .buttonNext,
+                        doneAccessibilityLabel: .buttonDone,
+                        onTapDone: viewModel.unfocus
+                    )
+                }
+            },
             content: { toolbarInset, _ in
-                ScrollView(
-                    showsIndicators: false
+                DFocusScrollView(
+                    focus: focus
                 ) {
                     VStack(
                         alignment: .leading,
@@ -38,8 +45,9 @@ struct TemplateAddScreenView: View {
                             ),
                             title: .templateContentLabel,
                             placeholder: .templateContentPlaceholder,
-                            sumbitLabel: .done
+                            mode: DTextFieldMultiLineMode()
                         )
+                        .id(TemplateAddViewModel.Focus.content)
                         .padding(.bottom, size.s8)
 
                         VStack(

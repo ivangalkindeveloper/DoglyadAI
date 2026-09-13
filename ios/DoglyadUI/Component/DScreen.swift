@@ -1,19 +1,18 @@
 import SwiftUI
 
-public enum DScreenToolbarType {
-    case solid, blur
-}
-
-public struct DScreen<Leading: View, Title: View, Trailing: View, Content: View, Bottom: View>: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+public struct DScreen<
+    Leading: View,
+    Title: View,
+    Trailing: View,
+    Content: View,
+    Bottom: View,
+    KeyboardToolbar: View
+>: DView {
+    @EnvironmentObject public var theme: DTheme
 
     @State private var toolbarHeight: CGFloat = 0
     @State private var bottomHeight: CGFloat = 0
 
-    let toolbarType: DScreenToolbarType
     let title: LocalizedStringResource?
     let subTitle: String?
     let backgroundColor: Color?
@@ -24,9 +23,9 @@ public struct DScreen<Leading: View, Title: View, Trailing: View, Content: View,
     let onTapBody: (() -> Void)?
     let content: (CGFloat, CGFloat) -> Content
     let bottom: (() -> Bottom)?
+    let keyboardToolbar: KeyboardToolbar
 
     public init(
-        toolbarType: DScreenToolbarType = .solid,
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
@@ -36,8 +35,7 @@ public struct DScreen<Leading: View, Title: View, Trailing: View, Content: View,
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content
-    ) where Bottom == EmptyView {
-        self.toolbarType = toolbarType
+    ) where Bottom == EmptyView, KeyboardToolbar == EmptyView {
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
@@ -48,10 +46,10 @@ public struct DScreen<Leading: View, Title: View, Trailing: View, Content: View,
         self.onTapBody = onTapBody
         self.content = content
         bottom = nil
+        keyboardToolbar = EmptyView()
     }
 
     public init(
-        toolbarType: DScreenToolbarType = .solid,
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
@@ -62,8 +60,7 @@ public struct DScreen<Leading: View, Title: View, Trailing: View, Content: View,
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
         @ViewBuilder bottom: @escaping () -> Bottom
-    ) {
-        self.toolbarType = toolbarType
+    ) where KeyboardToolbar == EmptyView {
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
@@ -74,74 +71,133 @@ public struct DScreen<Leading: View, Title: View, Trailing: View, Content: View,
         self.onTapBody = onTapBody
         self.content = content
         self.bottom = bottom
+        keyboardToolbar = EmptyView()
+    }
+
+    public init(
+        title: LocalizedStringResource? = nil,
+        subTitle: String? = nil,
+        backgroundColor: Color? = nil,
+        onTapBack: (() -> Void)? = nil,
+        @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
+        @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
+        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
+        onTapBody: (() -> Void)? = nil,
+        @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
+        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content
+    ) where Bottom == EmptyView {
+        self.title = title
+        self.subTitle = subTitle
+        self.backgroundColor = backgroundColor
+        self.onTapBack = onTapBack
+        self.leading = leading()
+        self.titleContent = titleContent()
+        self.trailing = trailing()
+        self.onTapBody = onTapBody
+        self.content = content
+        bottom = nil
+        self.keyboardToolbar = keyboardToolbar()
+    }
+
+    public init(
+        title: LocalizedStringResource? = nil,
+        subTitle: String? = nil,
+        backgroundColor: Color? = nil,
+        onTapBack: (() -> Void)? = nil,
+        @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
+        @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
+        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
+        onTapBody: (() -> Void)? = nil,
+        @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
+        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
+        @ViewBuilder bottom: @escaping () -> Bottom
+    ) {
+        self.title = title
+        self.subTitle = subTitle
+        self.backgroundColor = backgroundColor
+        self.onTapBack = onTapBack
+        self.leading = leading()
+        self.titleContent = titleContent()
+        self.trailing = trailing()
+        self.onTapBody = onTapBody
+        self.content = content
+        self.bottom = bottom
+        self.keyboardToolbar = keyboardToolbar()
     }
 
     public var body: some View {
-        GeometryReader { proxy in
-            let safeAreaInsetTop = proxy.safeAreaInsets.top
-            let safeAreaInsetBottom = proxy.safeAreaInsets.bottom
+        ZStack(
+            alignment: .bottom
+        ) {
+            GeometryReader { proxy in
+                let safeAreaInsetTop = proxy.safeAreaInsets.top
+                let safeAreaInsetBottom = proxy.safeAreaInsets.bottom
 
-            ZStack(
-                alignment: .top
-            ) {
-                bodyView(toolbarHeight - safeAreaInsetTop, bottomHeight - safeAreaInsetBottom)
-
-                VStack(
-                    spacing: .zero
+                ZStack(
+                    alignment: .top
                 ) {
-                    Spacer()
-                    if let bottom = self.bottom?() {
-                        bottom
-                            .padding(.vertical, size.adaptiveCornerRadius / 6)
-                            .frame(maxWidth: .infinity)
-                            .safeAreaPadding(.bottom)
-                            .background(
-                                Rectangle()
-                                    .fill(.ultraThinMaterial)
-                                    .clipShape(
-                                        DRoundedCorner(
-                                            radius: size.adaptiveCornerRadius,
-                                            corners: [.topLeft, .topRight]
+                    bodyView(toolbarHeight - safeAreaInsetTop, bottomHeight - safeAreaInsetBottom)
+
+                    VStack(
+                        spacing: .zero
+                    ) {
+                        Spacer()
+                        if let bottom = self.bottom?() {
+                            bottom
+                                .padding(.vertical, size.adaptiveCornerRadius / 6)
+                                .frame(maxWidth: .infinity)
+                                .safeAreaPadding(.bottom)
+                                .background(
+                                    Rectangle()
+                                        .fill(.ultraThinMaterial)
+                                        .clipShape(
+                                            DRoundedCorner(
+                                                radius: size.adaptiveCornerRadius,
+                                                corners: [.topLeft, .topRight]
+                                            )
                                         )
-                                    )
-                            )
-                            .overlay {
-                                GeometryReader { proxy in
-                                    Color.clear
-                                        .preference(
-                                            key: BottomHeightPreferenceKey.self,
-                                            value: proxy.size.height
-                                        )
+                                )
+                                .overlay {
+                                    GeometryReader { proxy in
+                                        Color.clear
+                                            .preference(
+                                                key: BottomHeightPreferenceKey.self,
+                                                value: proxy.size.height
+                                            )
+                                    }
+                                }
+                                .onPreferenceChange(BottomHeightPreferenceKey.self) { value in
+                                    guard bottomHeight != value else { return }
+                                    bottomHeight = value
+                                }
+                                .transition(.move(edge: .bottom))
+                        }
+                    }
+                    .edgesIgnoringSafeArea(.bottom)
+
+                    if isShowsToolbar {
+                        toolbarView(safeAreaInsetTop)
+                            .onPreferenceChange(ToolbarHeightPreferenceKey.self) { value in
+                                guard toolbarHeight != value else { return }
+                                toolbarHeight = value
+                            }
+                            .onChange(of: isShowsToolbar) { _, value in
+                                if !value {
+                                    toolbarHeight = 0
                                 }
                             }
-                            .onPreferenceChange(BottomHeightPreferenceKey.self) { value in
-                                guard bottomHeight != value else { return }
-                                bottomHeight = value
-                            }
-                            .transition(.move(edge: .bottom))
+                            .ignoresSafeArea(.container, edges: [.top])
                     }
                 }
-                .edgesIgnoringSafeArea(.bottom)
-
-                if isShowsToolbar {
-                    toolbarView(safeAreaInsetTop)
-                        .onPreferenceChange(ToolbarHeightPreferenceKey.self) { value in
-                            guard toolbarHeight != value else { return }
-                            toolbarHeight = value
-                        }
-                        .onChange(of: isShowsToolbar) { _, value in
-                            if !value {
-                                toolbarHeight = 0
-                            }
-                        }
-                        .ignoresSafeArea(.container, edges: [.top])
-                }
+                .background(backgroundColor ?? color.grayscaleBackgroundWeak)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(DInteractivePopGestureView())
+                .toolbar(.hidden, for: .navigationBar)
+                .toolbarBackground(.hidden, for: .navigationBar)
             }
-            .background(backgroundColor ?? color.grayscaleBackgroundWeak)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(DInteractivePopGestureView())
-            .toolbar(.hidden, for: .navigationBar)
-            .toolbarBackground(.hidden, for: .navigationBar)
+            .ignoresSafeArea(.keyboard)
+
+            keyboardToolbar
         }
     }
 

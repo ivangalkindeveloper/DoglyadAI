@@ -1,10 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanSpeechAudioMeterView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
+struct ScanSpeechAudioMeterView: DView {
+    @EnvironmentObject var theme: DTheme
 
     let level: Float
 

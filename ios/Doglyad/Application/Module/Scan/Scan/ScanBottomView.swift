@@ -1,9 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanBottomView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
+struct ScanBottomView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
 

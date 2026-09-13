@@ -17,11 +17,8 @@ public struct DSegmentItem<T: Equatable>: Identifiable {
     }
 }
 
-public struct DSegment<T: Equatable>: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+public struct DSegment<T: Equatable>: DView {
+    @EnvironmentObject public var theme: DTheme
 
     let currentValue: T?
     let items: [DSegmentItem<T>]

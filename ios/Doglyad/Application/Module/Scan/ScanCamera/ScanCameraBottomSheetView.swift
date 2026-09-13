@@ -1,9 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanCameraBottomSheetView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
+struct ScanCameraBottomSheetView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ScanCameraViewModel
 

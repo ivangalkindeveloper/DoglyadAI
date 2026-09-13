@@ -1,9 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct SubscriptionScreenView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
+struct SubscriptionScreenView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SubscriptionScreenViewModel
 

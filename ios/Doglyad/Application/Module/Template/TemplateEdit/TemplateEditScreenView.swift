@@ -1,23 +1,30 @@
 import DoglyadUI
 import SwiftUI
 
-struct TemplateEditScreenView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct TemplateEditScreenView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: TemplateEditViewModel
-    @FocusState private var focus: TemplateAddViewModel.Focus?
+    @FocusState private var focus: TemplateEditViewModel.Focus?
 
     var body: some View {
         DScreen(
             title: .templateEditTitle,
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        upAccessibilityLabel: .buttonBack,
+                        downAccessibilityLabel: .buttonNext,
+                        doneAccessibilityLabel: .buttonDone,
+                        onTapDone: viewModel.unfocus
+                    )
+                }
+            },
             content: { toolbarInset, _ in
-                ScrollView(
-                    showsIndicators: false
+                DFocusScrollView(
+                    focus: focus
                 ) {
                     VStack(
                         alignment: .leading,
@@ -38,8 +45,9 @@ struct TemplateEditScreenView: View {
                             ),
                             title: .templateContentLabel,
                             placeholder: .templateContentPlaceholder,
-                            sumbitLabel: .done
+                            mode: DTextFieldMultiLineMode()
                         )
+                        .id(TemplateEditViewModel.Focus.content)
                         .padding(.bottom, size.s8)
 
                         VStack(
@@ -95,6 +103,17 @@ struct TemplateEditScreenView: View {
         )
         .onAppear {
             viewModel.onAppear()
+        }
+        .onSubmit {
+            viewModel.onSubmit()
+        }
+        .onChange(of: focus, initial: true) { _, newValue in
+            guard viewModel.focus != newValue else { return }
+            viewModel.focus = newValue
+        }
+        .onChange(of: viewModel.focus, initial: true) { _, newValue in
+            guard focus != newValue else { return }
+            focus = newValue
         }
         .environmentObject(viewModel)
     }

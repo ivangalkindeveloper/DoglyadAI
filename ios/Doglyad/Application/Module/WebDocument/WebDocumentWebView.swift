@@ -2,10 +2,9 @@ import DoglyadUI
 import SwiftUI
 import WebKit
 
-struct WebDocumentBottomSheetWebView: UIViewRepresentable {
+struct WebDocumentBottomSheetWebView: UIViewRepresentable, DView {
     @Environment(\.locale) private var locale
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
+    @EnvironmentObject var theme: DTheme
 
     let url: URL
     let topInset: CGFloat

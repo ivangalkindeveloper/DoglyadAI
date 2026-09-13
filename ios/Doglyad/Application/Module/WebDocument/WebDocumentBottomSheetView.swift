@@ -1,10 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct WebDocumentBottomSheetView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
+struct WebDocumentBottomSheetView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: WebDocumentViewModel
 

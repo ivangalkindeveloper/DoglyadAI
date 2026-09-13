@@ -1,11 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct UserSettingsScreenView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct UserSettingsScreenView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: UserSettingsViewModel
     @FocusState private var focus: UserSettingsViewModel.Focus?
@@ -15,9 +12,19 @@ struct UserSettingsScreenView: View {
             title: .userSettingsTitle,
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        upAccessibilityLabel: .buttonBack,
+                        downAccessibilityLabel: .buttonNext,
+                        doneAccessibilityLabel: .buttonDone,
+                        onTapDone: viewModel.unfocus
+                    )
+                }
+            },
             content: { toolbarInset, bottomInset in
-                ScrollView(
-                    showsIndicators: false
+                DFocusScrollView(
+                    focus: focus
                 ) {
                     VStack(
                         alignment: .leading,
@@ -31,10 +38,11 @@ struct UserSettingsScreenView: View {
                             ),
                             title: .userSettingsEmailLabel,
                             placeholder: .userSettingsEmailPlaceholder,
+                            mode: DTextFieldSingleLineMode(submitLabel: .done),
                             keyboardType: .emailAddress,
-                            sumbitLabel: .done,
                             autocapitalization: .never
                         )
+                        .id(UserSettingsViewModel.Focus.email)
                         .padding(.bottom, size.s4)
 
                         DText(.userSettingsEmailDescription)

@@ -1,9 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct SelectDateOfBirthBottomSheetView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
+struct SelectDateOfBirthBottomSheetView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SelectDateOfBirthViewModel
 

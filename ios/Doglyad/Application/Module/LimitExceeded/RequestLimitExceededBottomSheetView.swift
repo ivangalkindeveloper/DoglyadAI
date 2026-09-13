@@ -1,11 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct RequestLimitExceededBottomSheetView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct RequestLimitExceededBottomSheetView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: RequestLimitViewModel
 

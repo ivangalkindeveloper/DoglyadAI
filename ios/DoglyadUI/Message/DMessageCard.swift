@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DMessageCard: View {
+struct DMessageCard: DView {
     let theme: DTheme
     let message: DMessage
 
@@ -38,10 +38,6 @@ struct DMessageCard: View {
 }
 
 private extension DMessageCard {
-    var color: DColor { theme.color }
-    var size: DSize { theme.size }
-    var typography: DTypography { theme.typography }
-
     var backgroundColor: LinearGradient {
         switch message.type {
         case .success:

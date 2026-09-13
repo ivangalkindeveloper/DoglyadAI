@@ -1,10 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanCameraFrameView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
+struct ScanCameraFrameView: DView {
+    @EnvironmentObject var theme: DTheme
 
     var body: some View {
         GeometryReader { geometry in

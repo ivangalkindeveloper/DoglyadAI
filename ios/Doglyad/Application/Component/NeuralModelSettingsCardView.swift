@@ -1,11 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct NeuralModelSettingsCardView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct NeuralModelSettingsCardView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
     @EnvironmentObject private var subscription: SubscriptionViewModel
@@ -61,14 +58,11 @@ struct NeuralModelSettingsCardView: View {
     }
 }
 
-private struct NeuralModelSettingsMarkdownRowView: View {
+private struct NeuralModelSettingsMarkdownRowView: DView {
     private static let switchNativeHeight: CGFloat = 31
     private static let switchNativeWidth: CGFloat = 51
 
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+    @EnvironmentObject var theme: DTheme
 
     @Binding var isMarkdown: Bool
 

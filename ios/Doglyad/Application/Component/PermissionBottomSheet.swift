@@ -2,11 +2,8 @@ import DoglyadUI
 import Foundation
 import SwiftUI
 
-struct PermissionBottomSheet: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct PermissionBottomSheet: DView {
+    @EnvironmentObject var theme: DTheme
 
     let title: LocalizedStringResource
     let description: LocalizedStringResource

@@ -5,12 +5,9 @@ public enum DBottomSheetType {
     case blur
 }
 
-public struct DBottomSheet<Content, Bottom>: View where Content: View, Bottom: View {
+public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: View {
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+    @EnvironmentObject public var theme: DTheme
 
     @State private var toolbarHeight: CGFloat = 0
     @State private var bottomHeight: CGFloat = 0

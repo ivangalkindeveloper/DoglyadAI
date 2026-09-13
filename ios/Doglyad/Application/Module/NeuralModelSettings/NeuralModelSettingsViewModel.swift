@@ -46,6 +46,42 @@ final class NeuralModelSettingsViewModel: DViewModel {
         focus = nil
     }
 
+    var canFocusPreviousField: Bool {
+        switch focus {
+        case .temperature, .none:
+            false
+        case .length:
+            true
+        }
+    }
+
+    var canFocusNextField: Bool {
+        switch focus {
+        case .temperature:
+            true
+        case .length, .none:
+            false
+        }
+    }
+
+    func onTapToolbarUp() {
+        switch focus {
+        case .temperature, .none:
+            break
+        case .length:
+            focus = .temperature
+        }
+    }
+
+    func onTapToolbarDown() {
+        switch focus {
+        case .temperature:
+            focus = .length
+        case .length, .none:
+            break
+        }
+    }
+
     func toggleIsMarkdown() {
         analytics.buttonTapped(
             .neuralModelSettingsMarkdown,

@@ -2,11 +2,8 @@ import DoglyadUI
 import Foundation
 import SwiftUI
 
-struct DateOfBirthCardView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+struct DateOfBirthCardView: DView {
+    @EnvironmentObject var theme: DTheme
 
     let date: Date
     let action: () -> Void

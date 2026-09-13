@@ -1,11 +1,9 @@
 import DoglyadUI
 import SwiftUI
 
-struct OnBoardingScreenView: View {
+struct OnBoardingScreenView: DView {
     @Environment(\.locale) private var locale
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
-    private var color: DColor { theme.color }
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: OnBoardingViewModel
 

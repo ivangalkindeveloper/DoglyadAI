@@ -1,9 +1,8 @@
 internal import MarkdownUI
 import SwiftUI
 
-public struct DMarkdown: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
+public struct DMarkdown: DView {
+    @EnvironmentObject public var theme: DTheme
 
     private let content: String
     private let textColor: Color?

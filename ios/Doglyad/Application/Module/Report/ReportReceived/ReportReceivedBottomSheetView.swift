@@ -1,10 +1,8 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReportReceivedBottomSheetView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
+struct ReportReceivedBottomSheetView: DView {
+    @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ReportReceivedViewModel
 
