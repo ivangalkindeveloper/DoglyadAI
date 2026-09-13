@@ -12,16 +12,12 @@ struct ScanCameraBottomSheetView: DView {
             title: .scanCameraTitle,
             fraction: 0.9
         ) { _, _ in
-            ZStack {
+            ZStack(
+                alignment: .bottom
+            ) {
                 ScanCameraPreviewView()
 
-                VStack(
-                    spacing: .zero
-                ) {
-                    Spacer()
-                    ScanCameraCaptureView()
-                        .padding(.bottom, size.s16)
-                }
+                ScanCameraCaptureView()
             }
         }
         .onAppear(perform: viewModel.onAppear)

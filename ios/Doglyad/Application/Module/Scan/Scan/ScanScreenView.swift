@@ -68,11 +68,7 @@ struct ScanScreenView: DView {
                                 .padding(.bottom, size.s8)
                             }
 
-                            ScanPhotosView(
-                                photos: viewModel.photos,
-                                photoMaxCount: viewModel.photoMaxCount,
-                                onTapDelete: viewModel.onTapDeletePhoto
-                            )
+                            ScanPhotoListView()
 
                             ScanFormView(
                                 focus: $focus

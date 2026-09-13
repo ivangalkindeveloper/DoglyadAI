@@ -15,6 +15,7 @@ final class ScanCameraViewModel: DViewModel {
         arguments: ScanCameraArguments
     ) {
         self.arguments = arguments
+        photos = arguments.photos.wrappedValue
         super.init(
             container: container,
             router: router,
@@ -24,10 +25,7 @@ final class ScanCameraViewModel: DViewModel {
     }
 
     @NestedObservableObject var cameraController: DCameraControllerFactory.Controller = DCameraControllerFactory.make()
-
-    var photos: [USExaminationScanPhoto] {
-        arguments.photos.wrappedValue
-    }
+    @Published private(set) var photos: [USExaminationScanPhoto]
 
     var photoMaxCount: Int {
         arguments.photoMaxCount
@@ -73,7 +71,6 @@ final class ScanCameraViewModel: DViewModel {
     func onTapDeletePhoto(
         photo: USExaminationScanPhoto
     ) {
-        var photos = photos
         guard let index = photos.firstIndex(of: photo) else { return }
 
         analytics.buttonTapped(
@@ -82,9 +79,9 @@ final class ScanCameraViewModel: DViewModel {
                 .itemCount: .int(photos.count),
             ])
         )
-        photos.remove(at: index)
-        arguments.photos.wrappedValue = photos
-        objectWillChange.send()
+        var updatedPhotos = photos
+        updatedPhotos.remove(at: index)
+        updatePhotos(updatedPhotos)
     }
 
     private func onCapture(
@@ -98,14 +95,22 @@ final class ScanCameraViewModel: DViewModel {
                   !self.isPhotoFilling
             else { return }
 
-            var photos = self.photos
-            photos.append(photo)
-            self.arguments.photos.wrappedValue = photos
-            self.objectWillChange.send()
+            var updatedPhotos = self.photos
+            updatedPhotos.append(photo)
+            self.updatePhotos(updatedPhotos)
 
             if self.isPhotoFilling {
                 self.coordinator.dismissSheet()
             }
+        }
+    }
+
+    private func updatePhotos(
+        _ photos: [USExaminationScanPhoto]
+    ) {
+        withAnimation {
+            self.photos = photos
+            arguments.photos.wrappedValue = photos
         }
     }
 }

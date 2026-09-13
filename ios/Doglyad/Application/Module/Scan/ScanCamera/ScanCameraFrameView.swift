@@ -7,7 +7,7 @@ struct ScanCameraFrameView: DView {
     var body: some View {
         GeometryReader { geometry in
             let width = geometry.size.width
-            let height = geometry.size.height / 3
+            let height = geometry.size.height / 2
             let frameColor = color.grayscaleBackgroundWeak
             let cornerLength = size.s48
             let lineWidth = size.s8 / 2

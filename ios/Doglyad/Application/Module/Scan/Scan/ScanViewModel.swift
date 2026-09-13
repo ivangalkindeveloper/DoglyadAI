@@ -292,20 +292,26 @@ final class ScanViewModel: DViewModel {
                 newPhotos.append(await USExaminationScanPhoto.make(image: image))
             }
 
-            self.photos.append(contentsOf: newPhotos)
+            withAnimation {
+                self.photos.append(contentsOf: newPhotos)
+            }
         }
     }
 
     func onTapDeletePhoto(
         photo: USExaminationScanPhoto
     ) {
+        guard let index = photos.firstIndex(of: photo) else { return }
+
         analytics.buttonTapped(
             .scanDeletePhoto,
             parameters: AnalyticsParameters([
                 .itemCount: .int(photos.count),
             ])
         )
-        photos.remove(at: photos.firstIndex(of: photo)!)
+        withAnimation {
+            _ = photos.remove(at: index)
+        }
     }
 
     func onTapPatientGender(
