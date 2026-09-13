@@ -2,18 +2,18 @@ import DoglyadUI
 import SwiftUI
 
 struct ErrorRootView: DView {
-    @EnvironmentObject private var viewModel: ApplicationViewModel
+    @EnvironmentObject private var applicationViewModel: ApplicationViewModel
     @EnvironmentObject var theme: DTheme
 
     let error: Error
-    @StateObject private var analyticsViewModel: ErrorRootViewModel
+    @StateObject private var viewModel: ErrorRootViewModel
 
     init(
         error: Error,
         analytics: AnalyticsManager?
     ) {
         self.error = error
-        _analyticsViewModel = StateObject(
+        _viewModel = StateObject(
             wrappedValue: ErrorRootViewModel(
                 error: error,
                 analytics: analytics
@@ -25,6 +25,10 @@ struct ErrorRootView: DView {
         let error = error as? InitializationError
         Group {
             switch error {
+            case .newVersion:
+                NewVersionView(
+                    onTapUpdate: viewModel.onTapNewVersionUpdate
+                )
             case .noInternetConnection:
                 ErrorView(
                     title: .errorNoInternetConnectionTitle,
@@ -45,7 +49,7 @@ struct ErrorRootView: DView {
 
                         Button(
                             action: {
-                                analyticsViewModel.onTapServiceUnavailableEmail()
+                                viewModel.onTapServiceUnavailableEmail()
                                 errorViewModel.onTapEmail()
                             }
                         ) {
@@ -74,12 +78,12 @@ struct ErrorRootView: DView {
                 }
             }
         }
-        .onAppear(perform: analyticsViewModel.onAppear)
+        .onAppear(perform: viewModel.onAppear)
     }
 
     private func retryInitialization() {
-        analyticsViewModel.onTapRetry()
-        viewModel.retryInitialization()
+        viewModel.onTapRetry()
+        applicationViewModel.retryInitialization()
     }
 }
 

@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 @MainActor
 final class ErrorRootViewModel: ObservableObject {
@@ -14,12 +15,23 @@ final class ErrorRootViewModel: ObservableObject {
     }
 
     func onAppear() {
-        analytics?.screenViewed(
-            .initializationError,
-            parameters: AnalyticsParameters([
-                .error: .string(initializationErrorName),
-            ])
-        )
+        switch error as? InitializationError {
+        case .newVersion:
+            analytics?.screenViewed(.newVersion)
+        case .noInternetConnection,
+             .serviceUnavailable,
+             .usExaminationTypesEmpty,
+             .usExaminationNeuralModelsEmpty,
+             .examinationNeuralModelPromptEmpty,
+             .common,
+             .none:
+            analytics?.screenViewed(
+                .initializationError,
+                parameters: AnalyticsParameters([
+                    .error: .string(initializationErrorName),
+                ])
+            )
+        }
     }
 
     func onTapRetry() {
@@ -30,12 +42,24 @@ final class ErrorRootViewModel: ObservableObject {
         analytics?.buttonTapped(.serviceUnavailableEmail)
     }
 
+    func onTapNewVersionUpdate() {
+        guard case let .newVersion(appleUpdateUrl, appStoreId) = error as? InitializationError else { return }
+
+        analytics?.buttonTapped(.newVersionUpdate)
+        UIApplication.openAppStore(
+            appleUpdateUrl: appleUpdateUrl,
+            id: appStoreId
+        )
+    }
+
     private var initializationErrorName: String {
         switch error as? InitializationError {
         case .noInternetConnection:
             "no_internet_connection"
         case .serviceUnavailable:
             "service_unavailable"
+        case .newVersion:
+            "new_version"
         case .usExaminationTypesEmpty:
             "examination_types_empty"
         case .usExaminationNeuralModelsEmpty:

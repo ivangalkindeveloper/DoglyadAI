@@ -105,14 +105,13 @@ extension InitializationProcess {
                 run: { (process: InitializationProcess) in
                     let context = InitialNavigationContext(
                         applicationConfig: process.applicationConfig!,
-                        applicationVersion: Bundle.shortVersion,
                         isOnBoardingCompleted: process.sharedRepository!.isOnBoardingCompleted(),
                         selectedUSExaminationTypeId: process.ultrasoundReportRepository!.getSelectedExaminationTypeId(),
                         acceptedLegalDocumentDate: process.sharedRepository!.getAcceptedLegalDocumentDate(),
                         conclusionsCount: process.initialUltrasoundReportsCount!,
                         subscriptionStatus: process.initialSubscriptionStatus
                     )
-                    process.initialRoute = try Coordinator.initialRoute(for: context)
+                    process.initialRoute = Coordinator.initialRoute(for: context)
                 }
             ),
             SyncInitializationStep<InitializationProcess>(

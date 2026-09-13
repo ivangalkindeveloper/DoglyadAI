@@ -3,19 +3,8 @@ import Router
 extension Coordinator {
     static func initialRoute(
         for context: InitialNavigationContext
-    ) throws -> RouteScreen<ScreenType> {
+    ) -> RouteScreen<ScreenType> {
         let applicationConfig = context.applicationConfig
-        guard applicationConfig.isServiceAvailable else {
-            throw InitializationError.serviceUnavailable(
-                email: applicationConfig.contactEmail
-            )
-        }
-
-        if context.applicationVersion.major < applicationConfig.actualVersion.major,
-           !applicationConfig.appStoreId.isEmpty
-        {
-            return RouteScreen(type: .newVersion)
-        }
 
         guard context.isOnBoardingCompleted,
               context.selectedUSExaminationTypeId != nil
