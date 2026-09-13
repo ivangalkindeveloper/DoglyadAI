@@ -70,8 +70,30 @@ final class ScanViewModel: DViewModel {
     @NestedObservableObject var patientNameController = DTextFieldController(isRequired: true)
     @Published var patientGender = PatientGender.male
     @Published var patientDateOfBirth: Date = .init()
-    @NestedObservableObject var patientHeightCMController = DTextFieldController(isRequired: true)
-    @NestedObservableObject var patientWeightKGController = DTextFieldController(isRequired: true)
+    @NestedObservableObject var patientHeightCMController = DTextFieldController(
+        isRequired: true,
+        formatters: [
+            DTextFieldDecimalFormatter(),
+        ],
+        validators: [
+            DTextFieldDoubleRangeValidator(
+                validRange: Double.leastNonzeroMagnitude ... Double.greatestFiniteMagnitude,
+                invalidValueErrorText: String(localized: .errorInvalidPatientHeight)
+            ),
+        ]
+    )
+    @NestedObservableObject var patientWeightKGController = DTextFieldController(
+        isRequired: true,
+        formatters: [
+            DTextFieldDecimalFormatter(),
+        ],
+        validators: [
+            DTextFieldDoubleRangeValidator(
+                validRange: Double.leastNonzeroMagnitude ... Double.greatestFiniteMagnitude,
+                invalidValueErrorText: String(localized: .errorInvalidPatientWeight)
+            ),
+        ]
+    )
     @NestedObservableObject var patientComplaintController = DTextFieldController()
     @NestedObservableObject var examinationDescriptionController = DTextFieldController(isRequired: true)
     //
@@ -86,11 +108,13 @@ final class ScanViewModel: DViewModel {
         handle {
             await self.container.ultrasoundReportRepository.getReportsCount()
         } onMainSuccess: { patientCount in
-            self.patientNameController.text = String(localized: .scanPatientDefaultNameLabel(count: patientCount))
+            self.patientNameController.setText(
+                String(localized: .scanPatientDefaultNameLabel(count: patientCount))
+            )
         }
         patientDateOfBirth = defaultPatientDateOfBirth
-        patientHeightCMController.text = String(defaultPatientHeightCM)
-        patientWeightKGController.text = String(defaultPatientWeightKG)
+        patientHeightCMController.setText(String(defaultPatientHeightCM))
+        patientWeightKGController.setText(String(defaultPatientWeightKG))
     }
 
     var isPhotoFilling: Bool {
@@ -359,11 +383,15 @@ final class ScanViewModel: DViewModel {
 
     func onTapFill() {
         analytics.buttonTapped(.scanFill)
-        patientComplaintController.text = container.mockFactory.fillPatientComplaint(
-            for: Locale.current
+        patientComplaintController.setText(
+            container.mockFactory.fillPatientComplaint(
+                for: Locale.current
+            )
         )
-        examinationDescriptionController.text = container.mockFactory.fillExaminationDescription(
-            for: Locale.current
+        examinationDescriptionController.setText(
+            container.mockFactory.fillExaminationDescription(
+                for: Locale.current
+            )
         )
     }
 
@@ -400,7 +428,7 @@ final class ScanViewModel: DViewModel {
                         guard let self = self else { return }
 
                         if let patientName = response.patientName {
-                            self.patientNameController.text = patientName
+                            self.patientNameController.setText(patientName)
                         }
                         if let patientGender = PatientGender.fromUSExaminationNeuralModelResponse(response.patientGender) {
                             self.patientGender = patientGender
@@ -409,16 +437,16 @@ final class ScanViewModel: DViewModel {
                             self.patientDateOfBirth = patientDateOfBirth
                         }
                         if let patientHeightCM = response.patientHeightCM {
-                            self.patientHeightCMController.text = "\(patientHeightCM)"
+                            self.patientHeightCMController.setText("\(patientHeightCM)")
                         }
                         if let patientWeightKG = response.patientWeightKG {
-                            self.patientWeightKGController.text = "\(patientWeightKG)"
+                            self.patientWeightKGController.setText("\(patientWeightKG)")
                         }
                         if let patientComplaint = response.patientComplaint {
-                            self.patientComplaintController.text = patientComplaint
+                            self.patientComplaintController.setText(patientComplaint)
                         }
                         if let examinationDescription = response.examinationDescription {
-                            self.examinationDescriptionController.text = examinationDescription
+                            self.examinationDescriptionController.setText(examinationDescription)
                         }
                     }
                 )
@@ -461,22 +489,32 @@ final class ScanViewModel: DViewModel {
     }
 
     private func performScan() {
+        guard let patientName = patientNameController.value,
+              let patientHeightValue = patientHeightCMController.value,
+              let patientHeight = Double(patientHeightValue),
+              let patientWeightValue = patientWeightKGController.value,
+              let patientWeight = Double(patientWeightValue),
+              let examinationDescription = examinationDescriptionController.value
+        else {
+            return
+        }
+
         handle {
             self.isLoading = true
 
             let neuralModelSettings = self.subscription.neuralModelSettings
-            let patientComplaint = self.patientComplaintController.text
+            let patientComplaint = self.patientComplaintController.value?
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             let examinationData = USExaminationData(
                 usExaminationTypeId: self.usExaminationType.id,
                 photos: self.photos,
-                patientName: self.patientNameController.text,
+                patientName: patientName,
                 patientGender: self.patientGender,
                 patientDateOfBirth: self.patientDateOfBirth,
-                patientHeight: Double(self.patientHeightCMController.text) ?? self.defaultPatientHeightCM,
-                patientWeight: Double(self.patientWeightKGController.text) ?? self.defaultPatientWeightKG,
-                patientComplaint: patientComplaint.isEmpty ? nil : patientComplaint,
-                examinationDescription: self.examinationDescriptionController.text
+                patientHeight: patientHeight,
+                patientWeight: patientWeight,
+                patientComplaint: patientComplaint?.isEmpty == false ? patientComplaint : nil,
+                examinationDescription: examinationDescription
             )
             let template = self.getTemplate()
             let request = USExaminationRequest(
@@ -524,11 +562,13 @@ final class ScanViewModel: DViewModel {
     private func reset() async {
         photos.removeAll()
         let patientCount = await container.ultrasoundReportRepository.getReportsCount()
-        patientNameController.text = String(localized: .scanPatientDefaultNameLabel(count: patientCount))
+        patientNameController.setText(
+            String(localized: .scanPatientDefaultNameLabel(count: patientCount))
+        )
         patientGender = .male
         patientDateOfBirth = defaultPatientDateOfBirth
-        patientHeightCMController.text = String(defaultPatientHeightCM)
-        patientWeightKGController.text = String(defaultPatientWeightKG)
+        patientHeightCMController.setText(String(defaultPatientHeightCM))
+        patientWeightKGController.setText(String(defaultPatientWeightKG))
         patientComplaintController.clear()
         examinationDescriptionController.clear()
     }

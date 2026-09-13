@@ -615,6 +615,91 @@
         }
       }
     },
+    "errorInvalidEmail": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a valid email address"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Введите корректный адрес электронной почты"
+          }
+        }
+      }
+    },
+    "errorInvalidNeuralModelMaxTokens": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a maximum token count from 1 to 1024"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Введите максимальное количество токенов от 1 до 1024"
+          }
+        }
+      }
+    },
+    "errorInvalidNeuralModelTemperature": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a temperature from 0 to 2"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Введите температуру от 0 до 2"
+          }
+        }
+      }
+    },
+    "errorInvalidPatientHeight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a valid patient height"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Введите корректный рост пациента"
+          }
+        }
+      }
+    },
+    "errorInvalidPatientWeight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter a valid patient weight"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Введите корректный вес пациента"
+          }
+        }
+      }
+    },
     "errorNoInternetConnectionDescription": {
       "extractionState": "manual",
       "localizations": {
@@ -3144,23 +3229,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Шаблон уже есть"
-          }
-        }
-      }
-    },
-    "templateAddEmptyContentError": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter template text"
-          }
-        },
-        "ru": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Введите текст шаблона"
           }
         }
       }

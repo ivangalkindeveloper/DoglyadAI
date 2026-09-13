@@ -14,6 +14,8 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
     private let trailing: Trailing
 
     @FocusState private var internalFocus: Bool
+    @State private var inputText: String
+
     private var isFocused: Bool {
         focus?.isFocused ?? internalFocus
     }
@@ -38,6 +40,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
         self.autocapitalization = autocapitalization
         self.leading = leading()
         self.trailing = trailing()
+        _inputText = State(initialValue: controller.text)
     }
 
     public init(
@@ -90,7 +93,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
 
                         let field = TextField(
                             placeholder,
-                            text: $controller.text,
+                            text: $inputText,
                             prompt: Text(verbatim: String(localized: placeholder))
                                 .foregroundStyle(color.grayscalePlacehold),
                             axis: mode.axis
@@ -122,10 +125,11 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
 
             if let error = controller.errorText, !error.isEmpty {
                 Text(error)
-                    .font(typography.textSmall)
+                    .font(typography.textXSmall)
                     .foregroundStyle(color.dangerDefault)
                     .padding(.top, size.s4)
-                    .padding(.horizontal, size.s16)
+                    .padding(.horizontal, size.s8)
+                    .transition(.opacity)
             }
         }
         .fixedSize(horizontal: false, vertical: true)
@@ -133,17 +137,26 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
             guard focus == nil && self.isFocused == false else { return }
             self.internalFocus = true
         }
-        .onChange(of: controller.text) {
-            if self.controller.isError {
-                self.controller.isError = false
-            }
-            if self.controller.errorText != nil {
-                self.controller.errorText = nil
-            }
+        .onChange(of: inputText) { _, proposedText in
+            controller.setText(proposedText)
+            guard inputText != controller.text else { return }
+            inputText = controller.text
+        }
+        .onChange(of: controller.text) { _, text in
+            guard inputText != text else { return }
+            inputText = text
         }
         .animation(
             theme.animation,
             value: isFocused
+        )
+        .animation(
+            theme.animation,
+            value: controller.isError
+        )
+        .animation(
+            theme.animation,
+            value: controller.errorText
         )
     }
 }
@@ -186,7 +199,7 @@ private extension DTextField {
         Button(
             "Set sample text"
         ) {
-            controller.text = sampleText
+            controller.setText(sampleText)
         }
     }
     .padding()

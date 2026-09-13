@@ -58,7 +58,7 @@ final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, O
     @Published var includeRecommendations: Bool
 
     func saveUserSettings(
-        userEmail: String,
+        userEmail: String?,
         includeRecommendations: Bool
     ) {
         self.userEmail = userEmail

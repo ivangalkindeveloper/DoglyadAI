@@ -33,14 +33,34 @@ final class NeuralModelSettingsViewModel: DViewModel {
             analyticsDestination: .screen(.neuralModelSettings)
         )
         isMarkdown = initialIsMarkdown
-        temperatureController.text = String(initialTemperature)
-        maxTokensController.text = String(initialMaxTokens)
+        temperatureController.setText(String(initialTemperature))
+        maxTokensController.setText(String(initialMaxTokens))
     }
 
     @Published var focus: Focus?
     @Published var isMarkdown: Bool = false
-    @NestedObservableObject var temperatureController = DTextFieldController()
-    @NestedObservableObject var maxTokensController = DTextFieldController()
+    @NestedObservableObject var temperatureController = DTextFieldController(
+        formatters: [
+            DTextFieldDecimalFormatter(),
+        ],
+        validators: [
+            DTextFieldDoubleRangeValidator(
+                validRange: 0 ... 2,
+                invalidValueErrorText: String(localized: .errorInvalidNeuralModelTemperature)
+            ),
+        ]
+    )
+    @NestedObservableObject var maxTokensController = DTextFieldController(
+        formatters: [
+            DTextFieldIntegerFormatter(),
+        ],
+        validators: [
+            DTextFieldIntRangeValidator(
+                validRange: 1 ... 1024,
+                invalidValueErrorText: String(localized: .errorInvalidNeuralModelMaxTokens)
+            ),
+        ]
+    )
 
     func unfocus() {
         focus = nil
@@ -114,10 +134,15 @@ final class NeuralModelSettingsViewModel: DViewModel {
                 .result: .bool(isMarkdown),
             ])
         )
+
+        let isTemperatureValid = temperatureController.validate()
+        let isMaxTokensValid = maxTokensController.validate()
+        guard isTemperatureValid, isMaxTokensValid else { return }
+
         onSettingsSaved(
             isMarkdown,
-            Double(temperatureController.text),
-            Int(maxTokensController.text)
+            temperatureController.value.flatMap { Double($0) },
+            maxTokensController.value.flatMap { Int($0) }
         )
         messager.show(
             type: .success,

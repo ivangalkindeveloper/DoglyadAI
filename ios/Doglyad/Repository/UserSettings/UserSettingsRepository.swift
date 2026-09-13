@@ -19,7 +19,7 @@ extension UserSettingsRepository {
         database.getUserEmail()
     }
 
-    func setUserEmail(_ email: String) {
+    func setUserEmail(_ email: String?) {
         database.setUserEmail(value: email)
     }
 

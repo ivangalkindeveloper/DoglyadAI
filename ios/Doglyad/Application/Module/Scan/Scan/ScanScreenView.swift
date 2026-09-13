@@ -79,7 +79,7 @@ struct ScanScreenView: DView {
                             )
                         }
                         .padding(.top, toolbarHeight + size.s16)
-                        .padding(.bottom, size.s136)
+                        .padding(.bottom, size.s136 * 2)
                     }
 
                     ScanBottomView()

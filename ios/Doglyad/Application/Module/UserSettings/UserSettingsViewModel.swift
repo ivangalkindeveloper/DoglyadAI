@@ -11,7 +11,7 @@ final class UserSettingsViewModel: DViewModel {
     }
 
     private let messager: DMessager
-    private let onSaved: (String, Bool) -> Void
+    private let onSaved: (String?, Bool) -> Void
 
     init(
         container: DependencyContainer,
@@ -20,7 +20,7 @@ final class UserSettingsViewModel: DViewModel {
         subscription: SubscriptionViewModel,
         initialEmail: String?,
         initialIncludeRecommendations: Bool,
-        onSaved: @escaping (String, Bool) -> Void
+        onSaved: @escaping (String?, Bool) -> Void
     ) {
         self.messager = messager
         self.onSaved = onSaved
@@ -31,12 +31,22 @@ final class UserSettingsViewModel: DViewModel {
             subscription: subscription,
             analyticsDestination: .screen(.userSettings)
         )
-        emailController.text = initialEmail ?? ""
+        emailController.setText(initialEmail ?? "")
     }
 
     @Published var focus: Focus?
     @Published var includeRecommendations: Bool
-    @NestedObservableObject var emailController = DTextFieldController()
+    @NestedObservableObject var emailController = DTextFieldController(
+        formatters: [
+            DTextFieldEmailFormatter(),
+            DTextFieldMaxLengthFormatter(maxLength: 254),
+        ],
+        validators: [
+            DTextFieldEmailValidator(
+                invalidValueErrorText: String(localized: .errorInvalidEmail)
+            ),
+        ]
+    )
 
     func toggleIncludeRecommendations() {
         includeRecommendations.toggle()
@@ -60,15 +70,17 @@ final class UserSettingsViewModel: DViewModel {
     }
 
     func onTapSave() {
+        let email = emailController.value
         analytics.buttonTapped(
             .userSettingsSave,
             parameters: AnalyticsParameters([
-                .hasCurrentValue: .bool(!emailController.text.isEmpty),
+                .hasCurrentValue: .bool(email != nil),
             ])
         )
+        guard emailController.validate() else { return }
+
         unfocus()
 
-        let email = emailController.text.trimmingCharacters(in: .whitespacesAndNewlines)
         onSaved(email, includeRecommendations)
         messager.show(
             type: .success,

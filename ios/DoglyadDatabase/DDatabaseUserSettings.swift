@@ -3,7 +3,7 @@ import Foundation
 public protocol DDatabaseUserSettingsProtocol: AnyObject {
     func getUserEmail() -> String?
 
-    func setUserEmail(value: String)
+    func setUserEmail(value: String?)
 
     func getIncludeRecommendations() -> Bool
 
@@ -15,8 +15,12 @@ extension DDatabase: DDatabaseUserSettingsProtocol {
         getString(.userEmail)
     }
 
-    public func setUserEmail(value: String) {
-        setValue(value, .userEmail)
+    public func setUserEmail(value: String?) {
+        if let value {
+            setValue(value, .userEmail)
+        } else {
+            removeValue(.userEmail)
+        }
     }
 
     public func getIncludeRecommendations() -> Bool {

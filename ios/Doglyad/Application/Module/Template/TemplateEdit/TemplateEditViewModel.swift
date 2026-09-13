@@ -48,13 +48,13 @@ final class TemplateEditViewModel: DViewModel {
         } onMainSuccess: { template in
             self.usExaminationType = self.container.usExaminationTypesById[template.usExaminationType.id]
                 ?? self.container.usExaminationTypeDefault
-            self.templateController.text = template.content
+            self.templateController.setText(template.content)
         }
     }
 
     @Published var focus: Focus?
     @Published var usExaminationType: USExaminationType
-    @NestedObservableObject var templateController = DTextFieldController()
+    @NestedObservableObject var templateController = DTextFieldController(isRequired: true)
 
     func onTapBack() {
         analytics.buttonTapped(.templateEditBack)
@@ -89,16 +89,14 @@ final class TemplateEditViewModel: DViewModel {
     func onTapSave() {
         analytics.buttonTapped(.templateEditSave)
         let isContentValid = templateController.validate()
-        guard isContentValid else {
-            templateController.showError(
-                text: String(localized: .templateAddEmptyContentError)
-            )
+        guard isContentValid,
+              let content = templateController.value
+        else {
             return
         }
 
         unfocus()
 
-        let content = templateController.text
         let template = USExaminationTemplate(
             id: arguments.templateId,
             usExaminationType: usExaminationType,

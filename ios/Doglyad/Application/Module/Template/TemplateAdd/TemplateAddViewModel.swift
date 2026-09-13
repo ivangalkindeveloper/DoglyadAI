@@ -35,7 +35,7 @@ final class TemplateAddViewModel: DViewModel {
 
     @Published var focus: Focus?
     @Published var usExaminationType: USExaminationType
-    @NestedObservableObject var templateController = DTextFieldController()
+    @NestedObservableObject var templateController = DTextFieldController(isRequired: true)
 
     func onTapBack() {
         analytics.buttonTapped(.templateAddBack)
@@ -70,16 +70,14 @@ final class TemplateAddViewModel: DViewModel {
     func onTapSave() {
         analytics.buttonTapped(.templateAddSave)
         let isContentValid = templateController.validate()
-        guard isContentValid else {
-            templateController.showError(
-                text: String(localized: .templateAddEmptyContentError)
-            )
+        guard isContentValid,
+              let content = templateController.value
+        else {
             return
         }
 
         unfocus()
 
-        let content = templateController.text
         let usExaminationType = usExaminationType
 
         handle {
