@@ -30,7 +30,21 @@ final class OnBoardingViewModel: DViewModel {
     @Published var isLegalAccepted: Bool = false
 
     var isLegalDisabled: Bool {
-        page == .third && isLegalAccepted == false
+        switch page {
+        case .third:
+            isLegalAccepted == false
+        case .first, .second, .fourth, .fifth:
+            false
+        }
+    }
+
+    var isBackButtonVisible: Bool {
+        switch page {
+        case .first:
+            false
+        case .second, .third, .fourth, .fifth:
+            true
+        }
     }
 
     func onLegalAcceptedChanged(
@@ -91,11 +105,11 @@ final class OnBoardingViewModel: DViewModel {
         )
         switch page {
         case .first:
-            page = .second
+            move(to: .second)
         case .second:
-            page = .third
+            move(to: .third)
         case .third:
-            page = .fourth
+            move(to: .fourth)
         case .fourth:
             coordinator.sheet(
                 .selectUSExaminationType,
@@ -103,7 +117,7 @@ final class OnBoardingViewModel: DViewModel {
                     onSelected: { [weak self] type in
                         guard let self = self else { return }
 
-                        self.page = .fifth
+                        self.move(to: .fifth)
                         self.container.ultrasoundReportRepository.setSelectedExaminationTypeId(
                             id: type.id
                         )
@@ -122,6 +136,39 @@ final class OnBoardingViewModel: DViewModel {
                 try await self.coordinator.navigateAfterOnBoarding()
             }
         }
+    }
+
+    func onPressedBack() {
+        analytics.buttonTapped(
+            .onboardingBack,
+            parameters: AnalyticsParameters([
+                .source: .string(String(page.index + 1)),
+            ])
+        )
+        switch page {
+        case .first:
+            break
+        case .second:
+            move(to: .first)
+        case .third:
+            move(to: .second)
+        case .fourth:
+            move(to: .third)
+        case .fifth:
+            move(to: .fourth)
+        }
+    }
+
+    private func move(
+        to page: Page
+    ) {
+        switch page {
+        case .third:
+            isLegalAccepted = false
+        case .first, .second, .fourth, .fifth:
+            break
+        }
+        self.page = page
     }
 }
 

@@ -29,11 +29,11 @@ public struct DButtonStyle: ButtonStyle {
         configuration.label
             .padding(size.s14)
             .frame(
-                width: width,
-                height: height
+                width: width
             )
             .frame(
-                maxWidth: maxWidth
+                maxWidth: maxWidth,
+                minHeight: size.s48
             )
             .progressViewStyle(
                 CircularProgressViewStyle(tint: currentForegroundColor)
@@ -165,15 +165,6 @@ private extension DButtonStyle {
     }
 
     var width: CGFloat? {
-        switch type {
-        case .primaryButton, .primaryChip, .primaryText, .card, .chip, .textWeak:
-            return nil
-        case .primaryCircle, .circle:
-            return size.s56
-        }
-    }
-
-    var height: CGFloat? {
         switch type {
         case .primaryButton, .primaryChip, .primaryText, .card, .chip, .textWeak:
             return nil

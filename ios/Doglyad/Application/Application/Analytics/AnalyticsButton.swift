@@ -12,6 +12,7 @@ enum AnalyticsButton: String {
     case neuralModelSettingsSave = "neural_model_settings_save"
     case neuralModelSettingsSubmit = "neural_model_settings_submit"
     case newVersionUpdate = "new_version_update"
+    case onboardingBack = "onboarding_back"
     case onboardingPrimary = "onboarding_primary"
     case onboardingLegalToggle = "onboarding_legal_toggle"
     case onboardingPrivacyPolicy = "onboarding_privacy_policy"

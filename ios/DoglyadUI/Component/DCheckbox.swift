@@ -37,6 +37,7 @@ public struct DCheckbox: DView {
                 .frame(width: size.s24, height: size.s24)
         }
         .buttonStyle(.plain)
+        .contentShape(Rectangle().inset(by: -size.s12))
         .animation(theme.animation, value: isChecked)
     }
 }

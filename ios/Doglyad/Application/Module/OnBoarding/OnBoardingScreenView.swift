@@ -30,12 +30,24 @@ struct OnBoardingScreenView: DView {
                 .animation(.easeInOut, value: viewModel.page)
             },
             bottom: {
-                DButton(
-                    title: viewModel.buttonTitle(viewModel.page),
-                    action: viewModel.onPressedNext,
-                    isDisabled: viewModel.isLegalDisabled
-                )
-                .dStyle(.primaryButton)
+                HStack(
+                    spacing: size.s8
+                ) {
+                    if viewModel.isBackButtonVisible {
+                        DButton(
+                            image: .back,
+                            action: viewModel.onPressedBack
+                        )
+                        .dStyle(.circle)
+                    }
+
+                    DButton(
+                        title: viewModel.buttonTitle(viewModel.page),
+                        action: viewModel.onPressedNext,
+                        isDisabled: viewModel.isLegalDisabled
+                    )
+                    .dStyle(.primaryButton)
+                }
                 .padding(size.s16)
             }
         )
