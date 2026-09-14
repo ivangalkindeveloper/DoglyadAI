@@ -1,16 +1,16 @@
 import Foundation
 
 final class DefaultMockFactory: MockFactory {
-    func fillPatientComplaint(
+    func fillPatientComplaints(
         for locale: Locale
     ) -> String {
         switch locale.language.languageCode?.identifier {
         case "ru":
-            return Self.patientComplaintRU
+            return Self.patientComplaintsRU
         case "en":
-            return Self.patientComplaintEN
+            return Self.patientComplaintsEN
         default:
-            return Self.patientComplaintEN
+            return Self.patientComplaintsEN
         }
     }
 
@@ -29,7 +29,7 @@ final class DefaultMockFactory: MockFactory {
 }
 
 private extension DefaultMockFactory {
-    static let patientComplaintEN = """
+    static let patientComplaintsEN = """
     The patient reports intermittent pressure and discomfort in the anterior neck, \
     occurring mainly in the morning and during physical activity. \
     They report difficulty swallowing solid food that began about three weeks ago. \
@@ -40,7 +40,7 @@ private extension DefaultMockFactory {
     The family history is negative for thyroid disease.
     """
 
-    static let patientComplaintRU = """
+    static let patientComplaintsRU = """
     Пациент предъявляет жалобы на периодическое ощущение давления и дискомфорта в передней области шеи, \
     возникающее преимущественно в утренние часы и при физической нагрузке. \
     Отмечает затруднение при глотании твёрдой пищи, появившееся около трёх недель назад. \

@@ -31,7 +31,7 @@ class DExaminationGenerationConfig {
             "patientWeightKG": {
                 "type": ["number", "null"]
             },
-            "patientComplaint": {
+            "patientComplaints": {
                 "type": ["string", "null"],
                 "minLength": 1
             },
@@ -46,7 +46,7 @@ class DExaminationGenerationConfig {
             "patientDateOfBirth",
             "patientHeightCM",
             "patientWeightKG",
-            "patientComplaint",
+            "patientComplaints",
             "examinationDescription"
         ],
         "additionalProperties": false

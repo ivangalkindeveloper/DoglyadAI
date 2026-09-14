@@ -44,7 +44,7 @@ struct ShareBottomSheet: View {
                     patientDateOfBirth: Date(),
                     patientHeight: 180.0,
                     patientWeight: 80.0,
-                    patientComplaint: "Patient complaints",
+                    patientComplaints: "Patient complaints",
                     examinationDescription: "Examination description"
                 ),
                 actualModelReport: USExaminationModelReport(

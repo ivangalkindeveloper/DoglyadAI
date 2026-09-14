@@ -16,12 +16,12 @@ class USExaminationData(BaseModel):
     patientDateOfBirth: datetime
     patientHeight: float
     patientWeight: float
-    patientComplaint: str | None = None
+    patientComplaints: str | None = None
     examinationDescription: str
 
-    @field_validator("patientComplaint")
+    @field_validator("patientComplaints")
     @classmethod
-    def normalize_optional_complaint(cls, value: str | None) -> str | None:
+    def normalize_optional_complaints(cls, value: str | None) -> str | None:
         if value is None:
             return None
         return value.strip() or None

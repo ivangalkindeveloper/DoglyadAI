@@ -126,17 +126,17 @@ struct ReportDetailScreenView: DView {
                             )
                             .padding(.bottom, size.s8)
 
-                            if let patientComplaint = examinationData.patientComplaint,
-                               !patientComplaint.isEmpty
+                            if let patientComplaints = examinationData.patientComplaints,
+                               !patientComplaints.isEmpty
                             {
-                                DText(.scanPatientComplaintLabel)
+                                DText(.scanPatientComplaintsLabel)
                                     .dStyle(
                                         font: typography.linkSmall,
                                         color: color.grayscalePlacehold
                                     )
 
                                 ExpandableTextView(
-                                    text: patientComplaint,
+                                    text: patientComplaints,
                                     backgroundColor: color.grayscaleBackgroundWeak
                                 )
                                 .padding(.bottom, size.s8)

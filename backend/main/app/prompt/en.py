@@ -57,8 +57,8 @@ class PromptFactoryEn(PromptFactory):
             f"Patient weight: {examination.patientWeight}\n"
         )
 
-        if examination.patientComplaint:
-            prompt += f"Patient complaint: {examination.patientComplaint}\n"
+        if examination.patientComplaints:
+            prompt += f"Patient complaints: {examination.patientComplaints}\n"
 
         prompt += f"Ultrasound examination description: {examination.examinationDescription}\n"
 

@@ -40,6 +40,7 @@ class FakePromptFactory:
     ) -> str:
         assert examination.examinationNumber == "Examination#0"
         assert examination.patientName == "Patient"
+        assert examination.patientComplaints == "Complaint"
         assert examination_title == "Echocardiography"
         assert template == "Template"
         return "user prompt"
@@ -88,7 +89,7 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(monkeypat
             patientDateOfBirth=datetime(1990, 1, 1, tzinfo=UTC),
             patientHeight=170,
             patientWeight=65,
-            patientComplaint="Complaint",
+            patientComplaints="Complaint",
             examinationDescription="Description",
         ),
         template="Template",
@@ -126,7 +127,7 @@ def test_report_schema_can_exclude_optional_recommendations() -> None:
     assert set(schema["required"]) == {"description", "conclusion"}
 
 
-def test_blank_complaint_is_omitted_and_recommendations_can_be_disabled() -> None:
+def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled() -> None:
     examination = USExaminationData(
         usExaminationTypeId="echocardiography",
         photos=[],
@@ -136,14 +137,14 @@ def test_blank_complaint_is_omitted_and_recommendations_can_be_disabled() -> Non
         patientDateOfBirth=datetime(1990, 1, 1, tzinfo=UTC),
         patientHeight=170,
         patientWeight=65,
-        patientComplaint="   ",
+        patientComplaints="   ",
         examinationDescription="Description",
     )
     factory = PromptFactoryEn()
 
-    assert examination.patientComplaint is None
+    assert examination.patientComplaints is None
     assert "Examination number: Examination#0" in factory.build_prompt(examination, "Echocardiography")
-    assert "Patient complaint:" not in factory.build_prompt(examination, "Echocardiography")
+    assert "Patient complaints:" not in factory.build_prompt(examination, "Echocardiography")
     assert "Do not generate or include recommendations" in factory.system_prompt(
         NeuralModelSettings(),
         include_recommendations=False,

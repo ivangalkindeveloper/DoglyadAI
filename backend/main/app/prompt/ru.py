@@ -57,8 +57,8 @@ class PromptFactoryRu(PromptFactory):
             f"Вес пациента: {examination.patientWeight}\n"  # noqa: RUF001
         )
 
-        if examination.patientComplaint:
-            prompt += f"Жалобы пациента: {examination.patientComplaint}\n"
+        if examination.patientComplaints:
+            prompt += f"Жалобы пациента: {examination.patientComplaints}\n"
 
         prompt += f"Описание ультразвукового исследования: {examination.examinationDescription}\n"
 

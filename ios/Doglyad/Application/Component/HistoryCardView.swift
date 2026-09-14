@@ -100,7 +100,7 @@ struct HistoryCardView: DView {
                 patientDateOfBirth: Date(),
                 patientHeight: 180.0,
                 patientWeight: 80.0,
-                patientComplaint: """
+                patientComplaints: """
                 The patient reports an intermittent feeling of pressure in the neck.
                 They report mild discomfort while swallowing during the last two weeks.
                 They also mention general weakness and increased fatigue.

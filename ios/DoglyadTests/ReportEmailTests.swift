@@ -30,7 +30,7 @@ struct ReportEmailTests {
                 patientDateOfBirth: Date(timeIntervalSince1970: 0),
                 patientHeight: 180,
                 patientWeight: 80,
-                patientComplaint: nil,
+                patientComplaints: nil,
                 examinationDescription: "Description"
             ),
             actualModelReport: USExaminationModelReport(

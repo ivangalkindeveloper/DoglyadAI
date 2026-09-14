@@ -13,7 +13,7 @@ final class ScanViewModel: DViewModel {
         case patientName
         case patientHeightCM
         case patientWeightKG
-        case patientComplaint
+        case patientComplaints
         case examinationDescription
     }
 
@@ -102,7 +102,7 @@ final class ScanViewModel: DViewModel {
             ),
         ]
     )
-    @NestedObservableObject var patientComplaintController = DTextFieldController()
+    @NestedObservableObject var patientComplaintsController = DTextFieldController()
     @NestedObservableObject var examinationDescriptionController = DTextFieldController(isRequired: true)
     //
     @Published var isLoading = false
@@ -140,14 +140,14 @@ final class ScanViewModel: DViewModel {
         switch focus {
         case .examinationNumber, .none:
             false
-        case .patientName, .patientHeightCM, .patientWeightKG, .patientComplaint, .examinationDescription:
+        case .patientName, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription:
             true
         }
     }
 
     var canFocusNextField: Bool {
         switch focus {
-        case .examinationNumber, .patientName, .patientHeightCM, .patientWeightKG, .patientComplaint:
+        case .examinationNumber, .patientName, .patientHeightCM, .patientWeightKG, .patientComplaints:
             true
         case .examinationDescription, .none:
             false
@@ -164,10 +164,10 @@ final class ScanViewModel: DViewModel {
             focus = .patientName
         case .patientWeightKG:
             focus = .patientHeightCM
-        case .patientComplaint:
+        case .patientComplaints:
             focus = .patientWeightKG
         case .examinationDescription:
-            focus = .patientComplaint
+            focus = .patientComplaints
         }
     }
 
@@ -180,8 +180,8 @@ final class ScanViewModel: DViewModel {
         case .patientHeightCM:
             focus = .patientWeightKG
         case .patientWeightKG:
-            focus = .patientComplaint
-        case .patientComplaint:
+            focus = .patientComplaints
+        case .patientComplaints:
             focus = .examinationDescription
         case .examinationDescription, .none:
             break
@@ -198,8 +198,8 @@ final class ScanViewModel: DViewModel {
         case .patientHeightCM:
             focus = .patientWeightKG
         case .patientWeightKG:
-            focus = .patientComplaint
-        case .patientComplaint:
+            focus = .patientComplaints
+        case .patientComplaints:
             focus = .examinationDescription
         case .examinationDescription, .none:
             focus = nil
@@ -431,8 +431,8 @@ final class ScanViewModel: DViewModel {
 
     func onTapFill() {
         analytics.buttonTapped(.scanFill)
-        patientComplaintController.setText(
-            container.mockFactory.fillPatientComplaint(
+        patientComplaintsController.setText(
+            container.mockFactory.fillPatientComplaints(
                 for: Locale.current
             )
         )
@@ -490,8 +490,8 @@ final class ScanViewModel: DViewModel {
                         if let patientWeightKG = response.patientWeightKG {
                             self.patientWeightKGController.setText("\(patientWeightKG)")
                         }
-                        if let patientComplaint = response.patientComplaint {
-                            self.patientComplaintController.setText(patientComplaint)
+                        if let patientComplaints = response.patientComplaints {
+                            self.patientComplaintsController.setText(patientComplaints)
                         }
                         if let examinationDescription = response.examinationDescription {
                             self.examinationDescriptionController.setText(examinationDescription)
@@ -554,7 +554,7 @@ final class ScanViewModel: DViewModel {
             self.isLoading = true
 
             let neuralModelSettings = self.subscription.neuralModelSettings
-            let patientComplaint = self.patientComplaintController.value?
+            let patientComplaints = self.patientComplaintsController.value?
                 .trimmingCharacters(in: .whitespacesAndNewlines)
             let examinationData = USExaminationData(
                 usExaminationTypeId: self.usExaminationType.id,
@@ -565,7 +565,7 @@ final class ScanViewModel: DViewModel {
                 patientDateOfBirth: self.patientDateOfBirth,
                 patientHeight: patientHeight,
                 patientWeight: patientWeight,
-                patientComplaint: patientComplaint?.isEmpty == false ? patientComplaint : nil,
+                patientComplaints: patientComplaints?.isEmpty == false ? patientComplaints : nil,
                 examinationDescription: examinationDescription
             )
             let template = self.getSelectedTemplate()
@@ -624,7 +624,7 @@ final class ScanViewModel: DViewModel {
         patientDateOfBirth = defaultPatientDateOfBirth
         patientHeightCMController.setText(String(defaultPatientHeightCM))
         patientWeightKGController.setText(String(defaultPatientWeightKG))
-        patientComplaintController.clear()
+        patientComplaintsController.clear()
         examinationDescriptionController.clear()
     }
 }

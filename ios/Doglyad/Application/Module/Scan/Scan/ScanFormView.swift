@@ -95,17 +95,17 @@ struct ScanFormView: DView {
             .padding(.bottom, size.s4)
 
             DTextField(
-                controller: viewModel.patientComplaintController,
+                controller: viewModel.patientComplaintsController,
                 focus: DTextFieldFocus(
-                    value: .patientComplaint,
+                    value: .patientComplaints,
                     state: focus
                 ),
-                title: .scanPatientComplaintLabel,
-                placeholder: .scanPatientComplaintPlaceholder,
+                title: .scanPatientComplaintsLabel,
+                placeholder: .scanPatientComplaintsPlaceholder,
                 mode: DTextFieldMultiLineMode(),
                 keyboardType: .default
             )
-            .id(ScanViewModel.Focus.patientComplaint)
+            .id(ScanViewModel.Focus.patientComplaints)
             .padding(.bottom, size.s4)
 
             DTextField(

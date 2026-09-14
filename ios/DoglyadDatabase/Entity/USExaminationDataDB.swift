@@ -11,7 +11,7 @@ public final class USExaminationDataDB {
     public var patientDateOfBirth: Date
     public var patientHeight: Double
     public var patientWeight: Double
-    public var patientComplaint: String?
+    public var patientComplaints: String?
     public var examinationDescription: String
 
     public init(
@@ -23,7 +23,7 @@ public final class USExaminationDataDB {
         patientDateOfBirth: Date,
         patientHeight: Double,
         patientWeight: Double,
-        patientComplaint: String?,
+        patientComplaints: String?,
         examinationDescription: String
     ) {
         self.usExaminationTypeId = usExaminationTypeId
@@ -34,7 +34,7 @@ public final class USExaminationDataDB {
         self.patientDateOfBirth = patientDateOfBirth
         self.patientHeight = patientHeight
         self.patientWeight = patientWeight
-        self.patientComplaint = patientComplaint
+        self.patientComplaints = patientComplaints
         self.examinationDescription = examinationDescription
     }
 }

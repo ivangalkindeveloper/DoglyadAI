@@ -70,10 +70,10 @@ extension USExaminationReport {
             "\(String(localized: .scanExaminationDescriptionLabel))\n\(examinationData.examinationDescription)",
         ]
 
-        if let patientComplaint = examinationData.patientComplaint,
-           !patientComplaint.isEmpty
+        if let patientComplaints = examinationData.patientComplaints,
+           !patientComplaints.isEmpty
         {
-            lines.append("\(String(localized: .scanPatientComplaintLabel))\n\(patientComplaint)")
+            lines.append("\(String(localized: .scanPatientComplaintsLabel))\n\(patientComplaints)")
         }
         lines.append("\(String(localized: .reportActualModelResponseTitle))\n\(actualModelReport.plainText)")
 

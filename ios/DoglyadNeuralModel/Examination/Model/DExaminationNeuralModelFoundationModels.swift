@@ -21,7 +21,7 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
         let patientWeightKG: Double?
 
         @FoundationModels.Guide(description: "Patient complaints")
-        let patientComplaint: String?
+        let patientComplaints: String?
 
         @FoundationModels.Guide(description: "Examination description, including any technical details such as device model, probe types, and the number of saved photographs and videos")
         let examinationDescription: String?

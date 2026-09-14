@@ -1,7 +1,7 @@
 import Foundation
 
 protocol MockFactory: AnyObject {
-    func fillPatientComplaint(
+    func fillPatientComplaints(
         for locale: Locale
     ) -> String
 

@@ -25,7 +25,7 @@ public struct DExaminationNeuralModelResponse: Codable {
     public let patientDateOfBirth: Date?
     public let patientHeightCM: Double?
     public let patientWeightKG: Double?
-    public let patientComplaint: String?
+    public let patientComplaints: String?
     public let examinationDescription: String?
 
     public init(from decoder: any Decoder) throws {
@@ -38,7 +38,7 @@ public struct DExaminationNeuralModelResponse: Codable {
         )
         patientHeightCM = try container.decodeIfPresent(Double.self, forKey: .patientHeightCM)
         patientWeightKG = try container.decodeIfPresent(Double.self, forKey: .patientWeightKG)
-        patientComplaint = try container.decodeIfPresent(String.self, forKey: .patientComplaint)
+        patientComplaints = try container.decodeIfPresent(String.self, forKey: .patientComplaints)
         examinationDescription = try container.decodeIfPresent(String.self, forKey: .examinationDescription)
     }
 
@@ -48,7 +48,7 @@ public struct DExaminationNeuralModelResponse: Codable {
         patientDateOfBirth: Date?,
         patientHeightCM: Double?,
         patientWeightKG: Double?,
-        patientComplaint: String?,
+        patientComplaints: String?,
         examinationDescription: String?
     ) {
         self.patientName = patientName
@@ -56,7 +56,7 @@ public struct DExaminationNeuralModelResponse: Codable {
         self.patientDateOfBirth = patientDateOfBirth
         self.patientHeightCM = patientHeightCM
         self.patientWeightKG = patientWeightKG
-        self.patientComplaint = patientComplaint
+        self.patientComplaints = patientComplaints
         self.examinationDescription = examinationDescription
     }
 
@@ -74,7 +74,7 @@ public struct DExaminationNeuralModelResponse: Codable {
             ),
             patientHeightCM: response.patientHeightCM,
             patientWeightKG: response.patientWeightKG,
-            patientComplaint: response.patientComplaint,
+            patientComplaints: response.patientComplaints,
             examinationDescription: response.examinationDescription
         )
     }

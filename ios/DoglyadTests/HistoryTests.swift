@@ -138,7 +138,7 @@ struct HistoryTests {
                 patientDateOfBirth: date,
                 patientHeight: 180,
                 patientWeight: 80,
-                patientComplaint: "",
+                patientComplaints: "",
                 examinationDescription: ""
             ),
             actualModelReport: USExaminationModelReport(
@@ -168,7 +168,7 @@ struct HistoryTests {
                 patientDateOfBirth: date,
                 patientHeight: 180,
                 patientWeight: 80,
-                patientComplaint: "",
+                patientComplaints: "",
                 examinationDescription: ""
             ),
             actualModelReport: USExaminationModelReportDB(
