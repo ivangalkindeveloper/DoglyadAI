@@ -10,6 +10,7 @@ from app.core.logging import setup_logging
 from app.core.main_lifespan import MainLifespan
 from app.route.application_config import router as application_config_router
 from app.route.send_report_email import router as send_report_email_router
+from app.route.templates import router as templates_router
 from app.route.ultrasound import router as ultrasound_router
 
 setup_logging()
@@ -17,6 +18,7 @@ setup_logging()
 router_v1 = APIRouter(prefix="/v1", dependencies=[Depends(verify_app_check)])
 router_v1.include_router(application_config_router)
 router_v1.include_router(ultrasound_router)
+router_v1.include_router(templates_router)
 router_v1.include_router(send_report_email_router)
 
 app = FastAPI(lifespan=MainLifespan)

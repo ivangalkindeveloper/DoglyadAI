@@ -29,6 +29,8 @@ final class RouterBuilder: RouterBuilderProtocol {
             AnyView(NeuralModelSettingsScreen(arguments: route.arguments as? NeuralModelSettingsScreenArguments))
         case .templateList:
             AnyView(TemplateListScreen(arguments: route.arguments as? TemplateListScreenArguments))
+        case .readyMadeTemplateList:
+            AnyView(ReadyMadeTemplateListScreen(arguments: route.arguments as! ReadyMadeTemplateListScreenArguments))
         case .templateAdd:
             AnyView(TemplateAddScreen(arguments: route.arguments as? TemplateAddScreenArguments))
         case .templateEdit:

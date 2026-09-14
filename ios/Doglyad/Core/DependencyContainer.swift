@@ -132,7 +132,8 @@ extension DependencyContainer {
             httpClient: httpClient
         )
         let templateRepository = TemplateRepository(
-            database: database
+            database: database,
+            httpClient: httpClient
         )
         let subscriptionRepository = RevenueCatSubscriptionRepository(
             apiKey: "",

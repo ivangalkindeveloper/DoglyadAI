@@ -1,13 +1,17 @@
 import DoglyadDatabase
+import DoglyadNetwork
 import Foundation
 
 final class TemplateRepository: TemplateRepositoryProtocol {
     private let database: DDatabaseProtocol
+    private let httpClient: DHttpClientProtocol
 
     init(
-        database: DDatabaseProtocol
+        database: DDatabaseProtocol,
+        httpClient: DHttpClientProtocol
     ) {
         self.database = database
+        self.httpClient = httpClient
     }
 
     func getSelectedTemplateId() -> UUID? {
@@ -22,6 +26,13 @@ final class TemplateRepository: TemplateRepositoryProtocol {
 
     func clearSelectedTemplateId() {
         database.removeSelectedUSExaminationTemplateId()
+    }
+
+    func getReadyMadeTemplates() async throws -> [USExaminationReadyMadeTemplate] {
+        try await httpClient.get(
+            endPoint: Self.readyMadeListEndpoint,
+            headers: nil
+        )
     }
 
     func getTemplates(
@@ -54,4 +65,8 @@ final class TemplateRepository: TemplateRepositoryProtocol {
     ) async {
         try? await database.examinationTemplates.deleteExaminationTemplate(id: id)
     }
+}
+
+private extension TemplateRepository {
+    static let readyMadeListEndpoint = "/templates/ready_made_list"
 }

@@ -75,6 +75,21 @@ def test_only_the_app_facing_documents_are_exposed(client: TestClient) -> None:
     assert "/ultrasound_examination_types" not in served
 
 
+def test_ready_made_templates_are_served(client: TestClient) -> None:
+    response = client.get("/v1/templates/ready_made_list")
+
+    assert response.status_code == 200
+    assert response.json() == json.loads((_CONFIG_DIR / "ready_made_templates.json").read_text(encoding="utf-8"))
+
+
+def test_ready_made_templates_are_protected_by_app_check(client: TestClient) -> None:
+    from app.core.app_check import verify_app_check
+
+    route = next(r for r in client.app.routes if getattr(r, "path", None) == "/v1/templates/ready_made_list")
+    dependencies = [call.call for call in route.dependant.dependencies]  # type: ignore[attr-defined]
+    assert verify_app_check in dependencies
+
+
 @pytest.mark.parametrize("environment", ("development", "production"))
 def test_service_availability_is_the_first_boolean_field(environment: str) -> None:
     path = _CONFIG_DIR.parent / environment / "application.json"
@@ -104,3 +119,20 @@ def test_examination_types_are_grouped_and_unique(environment: str) -> None:
     assert all(group["id"] and group["title"] and group["examinationTypes"] for group in groups)
     type_ids = [item["id"] for group in groups for item in group["examinationTypes"]]
     assert len(type_ids) == len(set(type_ids))
+
+
+@pytest.mark.parametrize("environment", ("development", "production"))
+def test_ready_made_templates_are_localized_and_reference_known_types(environment: str) -> None:
+    environment_path = _CONFIG_DIR.parent / environment
+    templates = json.loads((environment_path / "ready_made_templates.json").read_text(encoding="utf-8"))
+    groups = json.loads((environment_path / "ultrasound_examination_types.json").read_text(encoding="utf-8"))
+    examination_type_ids = {item["id"] for group in groups for item in group["examinationTypes"]}
+
+    assert len(templates) == 5
+    assert len({template["id"] for template in templates}) == len(templates)
+    assert all(set(template) == {"id", "examinationType", "title", "content"} for template in templates)
+    assert all(template["examinationType"] in examination_type_ids for template in templates)
+    assert all(set(template["title"]) == {"en", "ru"} for template in templates)
+    assert all(set(template["content"]) == {"en", "ru"} for template in templates)
+    assert all(all(value for value in template["title"].values()) for template in templates)
+    assert all(all(value for value in template["content"].values()) for template in templates)

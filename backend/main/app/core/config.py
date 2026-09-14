@@ -12,6 +12,7 @@ from app.model.ultrasound.us_examination_neural_model import USExaminationNeural
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
+from app.model.ultrasound.us_examination_ready_made_template import USExaminationReadyMadeTemplate
 from app.model.ultrasound.us_examination_type import USExaminationType
 from app.model.ultrasound.us_examination_type_group import USExaminationTypeGroup
 
@@ -23,6 +24,7 @@ _CONFIG_DIR = _CONFIG_BASE / variables.environment
 neural_models: dict[str, USExaminationNeuralModel] = {}
 examination_types: dict[str, USExaminationType] = {}
 examination_type_groups: list[USExaminationTypeGroup] = []
+ready_made_templates: list[USExaminationReadyMadeTemplate] = []
 
 # The documents the app reads at startup, served verbatim from the image. Keeping
 # the app and this backend on one source removes the window in which the app
@@ -84,6 +86,23 @@ def load_configs() -> None:
         examination_type_groups.extend(loaded_groups)
         examination_types.clear()
         examination_types.update(loaded_types)
+
+        loaded_ready_made_templates = [
+            USExaminationReadyMadeTemplate(**item)
+            for item in _load_json_array(_CONFIG_DIR / "ready_made_templates.json")
+        ]
+        ready_made_template_ids: set[str] = set()
+        for template in loaded_ready_made_templates:
+            if template.id in ready_made_template_ids:
+                raise RuntimeError(f"Duplicate ready-made template id: {template.id}")
+            if template.examinationType not in loaded_types:
+                raise RuntimeError(
+                    f"Unknown examination type id for ready-made template {template.id}: {template.examinationType}"
+                )
+            ready_made_template_ids.add(template.id)
+
+        ready_made_templates.clear()
+        ready_made_templates.extend(loaded_ready_made_templates)
 
         for name in SERVED_DOCUMENTS:
             _served_documents[name] = _read_document(_CONFIG_DIR / name)

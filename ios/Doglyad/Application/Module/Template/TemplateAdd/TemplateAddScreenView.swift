@@ -88,6 +88,13 @@ struct TemplateAddScreenView: DView {
                                 .cornerRadius(size.s12)
                         }
                         .padding(.horizontal, size.s4)
+                        .padding(.bottom, size.s8)
+
+                        DButton(
+                            title: .templateAddReadyMadeTemplatesButton,
+                            action: viewModel.onTapReadyMadeTemplates
+                        )
+                        .dStyle(.card)
                         .padding(.bottom, size.s16)
                     }
                     .padding(size.s16)

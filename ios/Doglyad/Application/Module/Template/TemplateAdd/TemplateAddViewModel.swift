@@ -111,6 +111,19 @@ final class TemplateAddViewModel: DViewModel {
         )
     }
 
+    func onTapReadyMadeTemplates() {
+        analytics.buttonTapped(.templateAddReadyMadeTemplates)
+        unfocus()
+        coordinator.screen(
+            .readyMadeTemplateList,
+            arguments: ReadyMadeTemplateListScreenArguments(
+                onTemplateSelected: { [weak self] template in
+                    self?.onReadyMadeTemplateSelected(template)
+                }
+            )
+        )
+    }
+
     func onTapSave() {
         analytics.buttonTapped(.templateAddSave)
         let isNameValid = nameController.validate()
@@ -136,5 +149,19 @@ final class TemplateAddViewModel: DViewModel {
             description: .templateSavedSuccessDescription
         )
         coordinator.pop()
+    }
+
+    private func onReadyMadeTemplateSelected(
+        _ template: USExaminationReadyMadeTemplate
+    ) {
+        guard let examinationType = container.getUSExaminationTypeById(id: template.examinationType) else { return }
+
+        usExaminationType = examinationType
+        nameController.setText(
+            String(localized: template.getLocalizedTitle(for: Locale.current))
+        )
+        templateController.setText(
+            template.getLocalizedContent(for: Locale.current)
+        )
     }
 }

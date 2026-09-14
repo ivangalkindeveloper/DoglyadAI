@@ -6,6 +6,7 @@ enum AnalyticsScreen: String {
     case newVersion = "new_version"
     case onBoarding = "onboarding"
     case reportDetail = "report_detail"
+    case readyMadeTemplateList = "ready_made_template_list"
     case scan
     case settings
     case storage

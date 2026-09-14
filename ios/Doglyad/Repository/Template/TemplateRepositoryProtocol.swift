@@ -7,6 +7,8 @@ protocol TemplateRepositoryProtocol: AnyObject {
 
     func clearSelectedTemplateId()
 
+    func getReadyMadeTemplates() async throws -> [USExaminationReadyMadeTemplate]
+
     func getTemplates(
         usExaminationTypesById: [String: USExaminationType]
     ) async -> [USExaminationTemplate]
