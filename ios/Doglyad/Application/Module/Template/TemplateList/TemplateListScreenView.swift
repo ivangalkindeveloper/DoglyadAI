@@ -20,22 +20,18 @@ struct TemplateListScreenView: DView {
                     ) {
                         VStack(
                             alignment: .leading,
-                            spacing: .zero
+                            spacing: size.s4
                         ) {
                             if viewModel.templates.isEmpty {
                                 TemplateListEmptyView()
                             } else {
                                 ForEach(viewModel.templates) { template in
                                     TemplateListItemCardView(
-                                        examinationTypeTitle: template.usExaminationType.getLocalizedTitle(
-                                            for: Locale.current
-                                        ),
-                                        templateContent: template.content,
+                                        template: template,
                                         action: {
                                             viewModel.onTapTemplate(template)
                                         }
                                     )
-                                    .padding(.bottom, size.s4)
                                 }
                             }
                         }

@@ -56,6 +56,8 @@ final class RouterBuilder: RouterBuilderProtocol {
             ))
         case .selectNeuralModel:
             AnyView(SelectNeuralModelBottomSheet(arguments: route.arguments as? SelectNeuralModelArguments))
+        case .selectTemplate:
+            AnyView(SelectTemplateBottomSheet(arguments: route.arguments as! SelectTemplateArguments))
         case .selectDateOfBirth:
             AnyView(SelectDateOfBirthBottomSheet(arguments: route.arguments as? SelectDateOfBirthArguments))
         case .scanSpeech:

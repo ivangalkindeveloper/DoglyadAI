@@ -13,6 +13,7 @@ final class ReportDetailViewModel: DViewModel {
     }
 
     private let messager: DMessager
+    private let getSelectedTemplate: () -> USExaminationTemplate?
     private let getNeuralModel: () -> USExaminationNeuralModel
     private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
 
@@ -22,10 +23,12 @@ final class ReportDetailViewModel: DViewModel {
         router: DRouter,
         initialReport: USExaminationReport,
         subscription: SubscriptionViewModel,
+        getSelectedTemplate: @escaping () -> USExaminationTemplate?,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void
     ) {
         self.messager = messager
+        self.getSelectedTemplate = getSelectedTemplate
         self.getNeuralModel = getNeuralModel
         self.onNeuralModelSelected = onNeuralModelSelected
         report = initialReport
@@ -125,20 +128,10 @@ final class ReportDetailViewModel: DViewModel {
             self.isLoading = true
 
             let neuralModelSettings = self.subscription.neuralModelSettings
-            let template: String? = await {
-                let typeId = self.report.examinationData.usExaminationTypeId
-                if let template = await self.container.templateRepository.getTemplatesByUSExaminationId(usExaminationTypesById: self.container.usExaminationTypesById)[typeId] {
-                    return await self.container.templateRepository.getTemplate(
-                        id: template.id,
-                        usExaminationTypesById: self.container.usExaminationTypesById
-                    )?.content
-                }
-                return nil
-            }()
             let request = USExaminationRequest(
                 neuralModelSettings: neuralModelSettings,
                 examinationData: self.report.examinationData,
-                template: template,
+                template: self.getSelectedTemplate()?.content,
                 includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations()
             )
             let ultrasoundConfig = self.container.applicationConfig.ultrasound

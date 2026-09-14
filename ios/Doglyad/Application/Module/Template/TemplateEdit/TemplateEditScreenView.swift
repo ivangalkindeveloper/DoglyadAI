@@ -18,6 +18,8 @@ struct TemplateEditScreenView: DView {
                         upAccessibilityLabel: .buttonBack,
                         downAccessibilityLabel: .buttonNext,
                         doneAccessibilityLabel: .buttonDone,
+                        onTapUp: viewModel.canFocusPreviousField ? { viewModel.onTapToolbarUp() } : nil,
+                        onTapDown: viewModel.canFocusNextField ? { viewModel.onTapToolbarDown() } : nil,
                         onTapDone: viewModel.unfocus
                     )
                 }
@@ -35,6 +37,19 @@ struct TemplateEditScreenView: DView {
                             description: viewModel.usExaminationType.getLocalizedTitle(for: Locale.current),
                             action: viewModel.onTapExaminationType
                         )
+                        .padding(.bottom, size.s4)
+
+                        DTextField(
+                            controller: viewModel.nameController,
+                            focus: DTextFieldFocus(
+                                value: .name,
+                                state: $focus
+                            ),
+                            title: .templateNameLabel,
+                            placeholder: .templateNamePlaceholder,
+                            mode: DTextFieldSingleLineMode(submitLabel: .next)
+                        )
+                        .id(TemplateEditViewModel.Focus.name)
                         .padding(.bottom, size.s4)
 
                         DTextField(

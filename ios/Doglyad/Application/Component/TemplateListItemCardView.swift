@@ -4,9 +4,19 @@ import SwiftUI
 struct TemplateListItemCardView: DView {
     @EnvironmentObject var theme: DTheme
 
-    let examinationTypeTitle: LocalizedStringResource
-    let templateContent: String
+    let template: USExaminationTemplate
     let action: () -> Void
+    let isSelected: Bool
+
+    init(
+        template: USExaminationTemplate,
+        action: @escaping () -> Void,
+        isSelected: Bool = false
+    ) {
+        self.template = template
+        self.action = action
+        self.isSelected = isSelected
+    }
 
     var body: some View {
         DButtonCard(
@@ -14,21 +24,35 @@ struct TemplateListItemCardView: DView {
         ) {
             VStack(
                 alignment: .leading,
-                spacing: size.s8
+                spacing: size.s4
             ) {
-                DText(examinationTypeTitle)
+                HStack(
+                    alignment: .top,
+                    spacing: .zero
+                ) {
+                    DText(template.usExaminationType.getLocalizedTitle(for: Locale.current))
+                        .dStyle(
+                            font: typography.linkSmall
+                        )
+
+                    Spacer()
+
+                    if isSelected {
+                        DIcon(
+                            .check,
+                            color: color.successDefault
+                        )
+                        .padding(.leading, size.s16)
+                    }
+                }
+
+                DText(template.name)
                     .dStyle(
-                        font: typography.linkSmall,
-                        color: color.grayscaleBackground
-                    )
-                    .multilineTextAlignment(.leading)
-                    .padding(size.s10)
-                    .background(
-                        Capsule()
-                            .fill(color.gradientPrimaryWeak)
+                        font: typography.textSmall,
+                        color: color.grayscalePlacehold
                     )
 
-                DText(templateContent)
+                DText(template.content)
                     .dStyle(
                         font: typography.textXSmall,
                         color: color.grayscalePlacehold
@@ -43,15 +67,25 @@ struct TemplateListItemCardView: DView {
 
 #Preview {
     TemplateListItemCardView(
-        examinationTypeTitle: "Thyroid gland",
-        templateContent: """
-        An ultrasound examination was performed.
-        The lobes are symmetrical.
-        The parenchyma is homogeneous.
-        No focal lesions were identified.
-        An additional line demonstrates truncation.
-        """,
-        action: {}
+        template: USExaminationTemplate(
+            usExaminationType: USExaminationType(
+                id: "thyroid",
+                title: [
+                    "en": "Thyroid gland",
+                    "ru": "Щитовидная железа",
+                ]
+            ),
+            name: "Standard examination",
+            content: """
+            An ultrasound examination was performed.
+            The lobes are symmetrical.
+            The parenchyma is homogeneous.
+            No focal lesions were identified.
+            An additional line demonstrates truncation.
+            """
+        ),
+        action: {},
+        isSelected: true
     )
     .padding()
     .dThemeWrapper()

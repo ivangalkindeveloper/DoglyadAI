@@ -3,13 +3,16 @@ import SwiftUI
 public struct DButtonCard<Content: View>: DView {
     @EnvironmentObject public var theme: DTheme
 
+    let backgroundColor: Color?
     let action: () -> Void
     let content: () -> Content
 
     public init(
+        backgroundColor: Color? = nil,
         action: @escaping () -> Void,
         @ViewBuilder content: @escaping () -> Content
     ) {
+        self.backgroundColor = backgroundColor
         self.content = content
         self.action = action
     }
@@ -20,7 +23,12 @@ public struct DButtonCard<Content: View>: DView {
         ) {
             content()
         }
-        .buttonStyle(DButtonStyle(.card))
+        .buttonStyle(
+            DButtonStyle(
+                .card,
+                backgroundColor: backgroundColor
+            )
+        )
     }
 }
 

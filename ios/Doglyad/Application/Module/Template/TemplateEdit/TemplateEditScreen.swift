@@ -18,11 +18,21 @@ struct TemplateEditScreen: View {
                 subscription: subscriptionViewModel,
                 messager: messager,
                 arguments: arguments,
-                onSaveTemplate: { [ultrasoundViewModel] template in
-                    ultrasoundViewModel.saveTemplate(template)
+                onSaveTemplate: { [ultrasoundViewModel, arguments] template in
+                    ultrasoundViewModel.saveTemplate(
+                        template,
+                        onChanged: {
+                            arguments.onTemplatesChanged?()
+                        }
+                    )
                 },
-                onDeleteTemplate: { [ultrasoundViewModel] id in
-                    ultrasoundViewModel.deleteTemplate(id: id)
+                onDeleteTemplate: { [ultrasoundViewModel, arguments] id in
+                    ultrasoundViewModel.deleteTemplate(
+                        id: id,
+                        onChanged: {
+                            arguments.onTemplatesChanged?()
+                        }
+                    )
                 }
             )
         )

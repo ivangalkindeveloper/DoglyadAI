@@ -18,6 +18,9 @@ struct ReportDetailScreen: View {
                 router: router,
                 initialReport: arguments.report,
                 subscription: subscriptionViewModel,
+                getSelectedTemplate: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.template
+                },
                 getNeuralModel: { [ultrasoundViewModel] in
                     ultrasoundViewModel.neuralModel
                 },

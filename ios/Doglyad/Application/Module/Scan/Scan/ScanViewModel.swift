@@ -17,7 +17,9 @@ final class ScanViewModel: DViewModel {
     }
 
     private let messager: DMessager
-    private let getTemplateForType: (String) -> USExaminationTemplate?
+    private let getSelectedTemplate: () -> USExaminationTemplate?
+    private let onTemplateSelected: (USExaminationTemplate) -> Void
+    private let onTemplateReset: () -> Void
     private let getNeuralModel: () -> USExaminationNeuralModel
     private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
 
@@ -26,12 +28,16 @@ final class ScanViewModel: DViewModel {
         messager: DMessager,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        getTemplateForType: @escaping (String) -> USExaminationTemplate?,
+        getSelectedTemplate: @escaping () -> USExaminationTemplate?,
+        onTemplateSelected: @escaping (USExaminationTemplate) -> Void,
+        onTemplateReset: @escaping () -> Void,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void
     ) {
         self.messager = messager
-        self.getTemplateForType = getTemplateForType
+        self.getSelectedTemplate = getSelectedTemplate
+        self.onTemplateSelected = onTemplateSelected
+        self.onTemplateReset = onTemplateReset
         self.getNeuralModel = getNeuralModel
         self.onNeuralModelSelected = onNeuralModelSelected
         usExaminationType = container.usExaminationTypeDefault
@@ -339,27 +345,52 @@ final class ScanViewModel: DViewModel {
         )
     }
 
-    func getTemplate() -> USExaminationTemplate? {
-        getTemplateForType(usExaminationType.id)
-    }
-
     func onTapSelectedTemplate() {
         analytics.buttonTapped(
             .scanSelectedTemplate,
             parameters: AnalyticsParameters([
-                .hasCurrentValue: .bool(getTemplate() != nil),
+                .hasCurrentValue: .bool(getSelectedTemplate() != nil),
             ])
         )
-        if let template = getTemplate() {
-            return coordinator.screen(
-                .templateEdit,
-                arguments: TemplateEditScreenArguments(
-                    templateId: template.id
+        let usExaminationId = usExaminationType.id
+        handle {
+            let templates = await self.container.templateRepository.getTemplates(
+                usExaminationTypesById: self.container.usExaminationTypesById
+            )
+            return templates.contains { $0.usExaminationType.id == usExaminationId }
+        } onMainSuccess: { hasTemplates in
+            guard hasTemplates else {
+                return self.coordinator.screen(
+                    .templateAdd,
+                    arguments: TemplateAddScreenArguments(
+                        onAddSuccess: { [weak self] template in
+                            self?.onTemplateSelected(template)
+                        }
+                    )
+                )
+            }
+
+            self.coordinator.sheet(
+                .selectTemplate,
+                arguments: SelectTemplateArguments(
+                    usExaminationId: usExaminationId,
+                    currentValue: self.getSelectedTemplate(),
+                    onSelected: { [weak self] template in
+                        self?.onTemplateSelected(template)
+                    }
                 )
             )
         }
+    }
 
-        coordinator.screen(.templateList)
+    var isSelectedTemplateExaminationTypeMismatch: Bool {
+        guard let template = getSelectedTemplate() else { return false }
+        return template.usExaminationType.id != usExaminationType.id
+    }
+
+    func onTapResetTemplate() {
+        analytics.buttonTapped(.scanResetTemplate)
+        onTemplateReset()
     }
 
     func onTapNeuralModelSelection() {
@@ -522,7 +553,7 @@ final class ScanViewModel: DViewModel {
                 patientComplaint: patientComplaint?.isEmpty == false ? patientComplaint : nil,
                 examinationDescription: examinationDescription
             )
-            let template = self.getTemplate()
+            let template = self.getSelectedTemplate()
             let request = USExaminationRequest(
                 neuralModelSettings: neuralModelSettings,
                 examinationData: examinationData,

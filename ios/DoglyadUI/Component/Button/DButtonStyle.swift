@@ -18,11 +18,14 @@ public struct DButtonStyle: ButtonStyle {
     private var size: DSize { theme.size }
 
     let type: DButtonStyleType
+    let customBackgroundColor: Color?
 
     public init(
-        _ type: DButtonStyleType
+        _ type: DButtonStyleType,
+        backgroundColor: Color? = nil
     ) {
         self.type = type
+        customBackgroundColor = backgroundColor
     }
 
     public func makeBody(configuration: Configuration) -> some View {
@@ -65,6 +68,10 @@ private extension DButtonStyle {
     }
 
     var backgroundColor: Color {
+        if let customBackgroundColor {
+            return customBackgroundColor
+        }
+
         switch type {
         case .primaryButton, .primaryCircle, .primaryChip, .primaryText, .textWeak:
             return Self.defaultColor

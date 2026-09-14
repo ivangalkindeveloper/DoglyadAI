@@ -6,6 +6,8 @@ import SwiftUI
 
 @MainActor
 final class TemplateListViewModel: DViewModel {
+    @Published var templates: [USExaminationTemplate] = []
+
     init(
         container: DependencyContainer,
         router: DRouter,
@@ -20,6 +22,10 @@ final class TemplateListViewModel: DViewModel {
     }
 
     override func onInit() {
+        loadTemplates()
+    }
+
+    private func loadTemplates() {
         handle {
             await self.container.templateRepository.getTemplates(
                 usExaminationTypesById: self.container.usExaminationTypesById
@@ -29,8 +35,6 @@ final class TemplateListViewModel: DViewModel {
         }
     }
 
-    @Published var templates: [USExaminationTemplate] = []
-
     func onTapBack() {
         analytics.buttonTapped(.templateListBack)
         coordinator.pop()
@@ -38,7 +42,14 @@ final class TemplateListViewModel: DViewModel {
 
     func onTapAdd() {
         analytics.buttonTapped(.templateListAdd)
-        coordinator.screen(.templateAdd)
+        coordinator.screen(
+            .templateAdd,
+            arguments: TemplateAddScreenArguments(
+                onTemplatesChanged: { [weak self] in
+                    self?.loadTemplates()
+                }
+            )
+        )
     }
 
     func onTapTemplate(
@@ -48,7 +59,10 @@ final class TemplateListViewModel: DViewModel {
         coordinator.screen(
             .templateEdit,
             arguments: TemplateEditScreenArguments(
-                templateId: template.id
+                templateId: template.id,
+                onTemplatesChanged: { [weak self] in
+                    self?.loadTemplates()
+                }
             )
         )
     }

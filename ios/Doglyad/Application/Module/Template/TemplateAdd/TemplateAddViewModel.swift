@@ -1,7 +1,5 @@
-import DoglyadNetwork
 import DoglyadUI
 import Foundation
-import Handler
 import NestedObservableObject
 import Router
 import SwiftUI
@@ -9,6 +7,7 @@ import SwiftUI
 @MainActor
 final class TemplateAddViewModel: DViewModel {
     enum Focus: Hashable {
+        case name
         case content
     }
 
@@ -24,7 +23,13 @@ final class TemplateAddViewModel: DViewModel {
     ) {
         self.messager = messager
         self.onSaveTemplate = onSaveTemplate
-        usExaminationType = container.usExaminationTypeDefault
+        if let selectedTypeId = container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
+           let selectedType = container.usExaminationTypesById[selectedTypeId]
+        {
+            usExaminationType = selectedType
+        } else {
+            usExaminationType = container.usExaminationTypeDefault
+        }
         super.init(
             container: container,
             router: router,
@@ -35,6 +40,7 @@ final class TemplateAddViewModel: DViewModel {
 
     @Published var focus: Focus?
     @Published var usExaminationType: USExaminationType
+    @NestedObservableObject var nameController = DTextFieldController(isRequired: true)
     @NestedObservableObject var templateController = DTextFieldController(isRequired: true)
 
     func onTapBack() {
@@ -49,8 +55,46 @@ final class TemplateAddViewModel: DViewModel {
     func onSubmit() {
         analytics.buttonTapped(.templateAddSubmit)
         switch focus {
+        case .name:
+            focus = .content
         case .content, .none:
             focus = nil
+        }
+    }
+
+    var canFocusPreviousField: Bool {
+        switch focus {
+        case .name, .none:
+            false
+        case .content:
+            true
+        }
+    }
+
+    var canFocusNextField: Bool {
+        switch focus {
+        case .name:
+            true
+        case .content, .none:
+            false
+        }
+    }
+
+    func onTapToolbarUp() {
+        switch focus {
+        case .name, .none:
+            break
+        case .content:
+            focus = .name
+        }
+    }
+
+    func onTapToolbarDown() {
+        switch focus {
+        case .name:
+            focus = .content
+        case .content, .none:
+            break
         }
     }
 
@@ -69,8 +113,10 @@ final class TemplateAddViewModel: DViewModel {
 
     func onTapSave() {
         analytics.buttonTapped(.templateAddSave)
+        let isNameValid = nameController.validate()
         let isContentValid = templateController.validate()
-        guard isContentValid,
+        guard isNameValid, isContentValid,
+              let name = nameController.value,
               let content = templateController.value
         else {
             return
@@ -78,34 +124,17 @@ final class TemplateAddViewModel: DViewModel {
 
         unfocus()
 
-        let usExaminationType = usExaminationType
-
-        handle {
-            await self.container.templateRepository.getTemplates(
-                usExaminationTypesById: self.container.usExaminationTypesById
-            )
-        } onMainSuccess: { templates in
-            let hasTemplateForType = templates.contains { $0.usExaminationType.id == usExaminationType.id }
-            guard !hasTemplateForType else {
-                self.messager.show(
-                    type: .error,
-                    title: .templateAddDuplicateExaminationTypeTitle,
-                    description: .templateAddDuplicateExaminationTypeDescription
-                )
-                return
-            }
-
-            let template = USExaminationTemplate(
-                usExaminationType: usExaminationType,
-                content: content
-            )
-            self.onSaveTemplate(template)
-            self.messager.show(
-                type: .success,
-                title: .templateSavedSuccessTitle,
-                description: .templateSavedSuccessDescription
-            )
-            self.coordinator.pop()
-        }
+        let template = USExaminationTemplate(
+            usExaminationType: usExaminationType,
+            name: name,
+            content: content
+        )
+        onSaveTemplate(template)
+        messager.show(
+            type: .success,
+            title: .templateSavedSuccessTitle,
+            description: .templateSavedSuccessDescription
+        )
+        coordinator.pop()
     }
 }

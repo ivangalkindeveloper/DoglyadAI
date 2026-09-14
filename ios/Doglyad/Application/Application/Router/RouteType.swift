@@ -20,6 +20,7 @@ enum SheetType: Hashable {
     case scanCamera
     case selectUSExaminationType
     case selectNeuralModel
+    case selectTemplate
     case selectDateOfBirth
     case scanSpeech
     case requestLimitExceeded

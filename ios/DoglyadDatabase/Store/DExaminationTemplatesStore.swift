@@ -20,6 +20,7 @@ public actor DExaminationTemplatesStore {
         )
         if let existing = try? modelContext.fetch(descriptor).first {
             existing.usExaminationTypeId = value.usExaminationTypeId
+            existing.name = value.name
             existing.content = value.content
         } else {
             modelContext.insert(value)

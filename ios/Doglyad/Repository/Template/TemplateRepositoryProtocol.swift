@@ -1,13 +1,15 @@
 import Foundation
 
 protocol TemplateRepositoryProtocol: AnyObject {
+    func getSelectedTemplateId() -> UUID?
+
+    func setSelectedTemplateId(id: UUID)
+
+    func clearSelectedTemplateId()
+
     func getTemplates(
         usExaminationTypesById: [String: USExaminationType]
     ) async -> [USExaminationTemplate]
-
-    func getTemplatesByUSExaminationId(
-        usExaminationTypesById: [String: USExaminationType]
-    ) async -> [String: USExaminationTemplate]
 
     func getTemplate(
         id: UUID,

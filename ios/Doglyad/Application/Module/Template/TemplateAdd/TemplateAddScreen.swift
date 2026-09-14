@@ -17,8 +17,14 @@ struct TemplateAddScreen: View {
                 router: router,
                 subscription: subscriptionViewModel,
                 messager: messager,
-                onSaveTemplate: { [ultrasoundViewModel] template in
-                    ultrasoundViewModel.saveTemplate(template)
+                onSaveTemplate: { [ultrasoundViewModel, arguments] template in
+                    ultrasoundViewModel.saveTemplate(
+                        template,
+                        onChanged: {
+                            arguments?.onTemplatesChanged?()
+                            arguments?.onAddSuccess?(template)
+                        }
+                    )
                 }
             )
         )

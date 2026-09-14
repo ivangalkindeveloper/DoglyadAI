@@ -10,6 +10,20 @@ final class TemplateRepository: TemplateRepositoryProtocol {
         self.database = database
     }
 
+    func getSelectedTemplateId() -> UUID? {
+        database.getSelectedUSExaminationTemplateId()
+    }
+
+    func setSelectedTemplateId(
+        id: UUID
+    ) {
+        database.setSelectedUSExaminationTemplateId(value: id)
+    }
+
+    func clearSelectedTemplateId() {
+        database.removeSelectedUSExaminationTemplateId()
+    }
+
     func getTemplates(
         usExaminationTypesById: [String: USExaminationType]
     ) async -> [USExaminationTemplate] {
@@ -18,20 +32,6 @@ final class TemplateRepository: TemplateRepositoryProtocol {
                 guard let type = usExaminationTypesById[db.usExaminationTypeId] else { return nil }
                 return USExaminationTemplate.fromDB(db, usExaminationType: type)
             }
-        }
-    }
-
-    func getTemplatesByUSExaminationId(
-        usExaminationTypesById: [String: USExaminationType]
-    ) async -> [String: USExaminationTemplate] {
-        await database.examinationTemplates.fetchExaminationTemplates { dbs in
-            var map: [String: USExaminationTemplate] = [:]
-            for db in dbs {
-                guard let type = usExaminationTypesById[db.usExaminationTypeId] else { continue }
-                let template = USExaminationTemplate.fromDB(db, usExaminationType: type)
-                map[type.id] = template
-            }
-            return map
         }
     }
 

@@ -9,7 +9,7 @@ struct NeuralModelValueRowView: DView {
 
     var body: some View {
         HStack(
-            alignment: .top,
+            alignment: .bottom,
             spacing: size.s4
         ) {
             DText(title)

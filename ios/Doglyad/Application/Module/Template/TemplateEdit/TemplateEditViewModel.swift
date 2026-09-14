@@ -9,6 +9,7 @@ import SwiftUI
 @MainActor
 final class TemplateEditViewModel: DViewModel {
     enum Focus: Hashable {
+        case name
         case content
     }
 
@@ -48,12 +49,14 @@ final class TemplateEditViewModel: DViewModel {
         } onMainSuccess: { template in
             self.usExaminationType = self.container.usExaminationTypesById[template.usExaminationType.id]
                 ?? self.container.usExaminationTypeDefault
+            self.nameController.setText(template.name)
             self.templateController.setText(template.content)
         }
     }
 
     @Published var focus: Focus?
     @Published var usExaminationType: USExaminationType
+    @NestedObservableObject var nameController = DTextFieldController(isRequired: true)
     @NestedObservableObject var templateController = DTextFieldController(isRequired: true)
 
     func onTapBack() {
@@ -68,8 +71,46 @@ final class TemplateEditViewModel: DViewModel {
     func onSubmit() {
         analytics.buttonTapped(.templateEditSubmit)
         switch focus {
+        case .name:
+            focus = .content
         case .content, .none:
             focus = nil
+        }
+    }
+
+    var canFocusPreviousField: Bool {
+        switch focus {
+        case .name, .none:
+            false
+        case .content:
+            true
+        }
+    }
+
+    var canFocusNextField: Bool {
+        switch focus {
+        case .name:
+            true
+        case .content, .none:
+            false
+        }
+    }
+
+    func onTapToolbarUp() {
+        switch focus {
+        case .name, .none:
+            break
+        case .content:
+            focus = .name
+        }
+    }
+
+    func onTapToolbarDown() {
+        switch focus {
+        case .name:
+            focus = .content
+        case .content, .none:
+            break
         }
     }
 
@@ -88,8 +129,10 @@ final class TemplateEditViewModel: DViewModel {
 
     func onTapSave() {
         analytics.buttonTapped(.templateEditSave)
+        let isNameValid = nameController.validate()
         let isContentValid = templateController.validate()
-        guard isContentValid,
+        guard isNameValid, isContentValid,
+              let name = nameController.value,
               let content = templateController.value
         else {
             return
@@ -100,6 +143,7 @@ final class TemplateEditViewModel: DViewModel {
         let template = USExaminationTemplate(
             id: arguments.templateId,
             usExaminationType: usExaminationType,
+            name: name,
             content: content
         )
         onSaveTemplate(template)

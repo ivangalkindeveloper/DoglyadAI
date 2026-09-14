@@ -17,8 +17,14 @@ struct ScanScreen: View {
                 messager: messager,
                 router: router,
                 subscription: subscriptionViewModel,
-                getTemplateForType: { [ultrasoundViewModel] typeId in
-                    ultrasoundViewModel.templateIdByUSExaminationTypeId[typeId]
+                getSelectedTemplate: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.template
+                },
+                onTemplateSelected: { [ultrasoundViewModel] template in
+                    ultrasoundViewModel.selectTemplate(template)
+                },
+                onTemplateReset: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.resetTemplate()
                 },
                 getNeuralModel: { [ultrasoundViewModel] in
                     ultrasoundViewModel.neuralModel

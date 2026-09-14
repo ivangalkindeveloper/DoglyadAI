@@ -4,15 +4,18 @@ import Foundation
 struct USExaminationTemplate: Codable, Identifiable, Equatable {
     var id: UUID = .init()
     let usExaminationType: USExaminationType
+    let name: String
     let content: String
 
     init(
         id: UUID = UUID(),
         usExaminationType: USExaminationType,
+        name: String,
         content: String
     ) {
         self.id = id
         self.usExaminationType = usExaminationType
+        self.name = name
         self.content = content
     }
 }
@@ -25,6 +28,7 @@ extension USExaminationTemplate {
         USExaminationTemplate(
             id: db.id,
             usExaminationType: usExaminationType,
+            name: db.name,
             content: db.content
         )
     }
@@ -33,6 +37,7 @@ extension USExaminationTemplate {
         USExaminationTemplateDB(
             id: id,
             usExaminationTypeId: usExaminationType.id,
+            name: name,
             content: content
         )
     }
