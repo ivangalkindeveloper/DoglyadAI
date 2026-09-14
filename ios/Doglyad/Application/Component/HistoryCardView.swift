@@ -94,6 +94,7 @@ struct HistoryCardView: DView {
                     USExaminationScanPhoto(image: UIImage(resource: .alertInfo)),
                     USExaminationScanPhoto(image: UIImage(resource: .alertInfo)),
                 ],
+                examinationNumber: "Examination#0",
                 patientName: "Patient#0",
                 patientGender: .male,
                 patientDateOfBirth: Date(),

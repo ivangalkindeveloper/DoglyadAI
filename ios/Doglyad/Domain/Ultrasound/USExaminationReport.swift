@@ -63,6 +63,7 @@ extension USExaminationReport {
     var shareMessage: String {
         var lines: [String] = [
             "\(String(localized: .scanExaminationDateLabel))\n\(date.localized())",
+            "\(String(localized: .scanExaminationNumberLabel))\n\(examinationData.examinationNumber)",
             "\(String(localized: .scanPatientNameLabel))\n\(examinationData.patientName)",
             "\(String(localized: .scanPatientGenderLabel))\n\(String(localized: .forGender(examinationData.patientGender)))",
             "\(String(localized: .scanPatientDateOfBirthLabel))\n\(examinationData.patientDateOfBirth.localized())",

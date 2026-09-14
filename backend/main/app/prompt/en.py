@@ -49,6 +49,7 @@ class PromptFactoryEn(PromptFactory):
     ) -> str:
         prompt = (
             f"Ultrasound examination type: {examination_title}\n"
+            f"Examination number: {examination.examinationNumber}\n"
             f"Patient name: {examination.patientName}\n"
             f"Patient gender: {examination.patientGender}\n"
             f"Patient date of birth: {examination.patientDateOfBirth.date().isoformat()}\n"

@@ -49,6 +49,7 @@ class PromptFactoryRu(PromptFactory):
     ) -> str:
         prompt = (
             f"Тип ультразвукового исследования: {examination_title}\n"
+            f"Номер исследования: {examination.examinationNumber}\n"
             f"Имя пациента: {examination.patientName}\n"
             f"Пол пациента: {examination.patientGender}\n"
             f"Дата рождения пациента: {examination.patientDateOfBirth.date().isoformat()}\n"

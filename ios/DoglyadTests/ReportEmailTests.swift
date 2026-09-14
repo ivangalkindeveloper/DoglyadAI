@@ -24,6 +24,7 @@ struct ReportEmailTests {
             examinationData: USExaminationData(
                 usExaminationTypeId: "test",
                 photos: [USExaminationScanPhoto(image: sourceImage)],
+                examinationNumber: "Examination#0",
                 patientName: "Patient",
                 patientGender: .male,
                 patientDateOfBirth: Date(timeIntervalSince1970: 0),

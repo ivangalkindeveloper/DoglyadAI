@@ -1856,6 +1856,23 @@
         }
       }
     },
+    "scanExaminationDefaultNumberLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examination#%(count)lld"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Исследование#%(count)lld"
+          }
+        }
+      }
+    },
     "scanExaminationDateLabel": {
       "extractionState": "manual",
       "localizations": {
@@ -1903,6 +1920,40 @@
           "stringUnit": {
             "state": "translated",
             "value": "Объем и форма исследуемых объектов, состояние кривизны показывает..."
+          }
+        }
+      }
+    },
+    "scanExaminationNumberLabel": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examination number"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Номер исследования"
+          }
+        }
+      }
+    },
+    "scanExaminationNumberPlaceholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Examination#1"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Исследование#1"
           }
         }
       }

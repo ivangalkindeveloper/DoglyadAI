@@ -132,6 +132,7 @@ struct HistoryTests {
             examinationData: USExaminationData(
                 usExaminationTypeId: "test",
                 photos: [],
+                examinationNumber: "Examination#0",
                 patientName: "Patient",
                 patientGender: .male,
                 patientDateOfBirth: date,
@@ -161,6 +162,7 @@ struct HistoryTests {
             ),
             examinationData: USExaminationDataDB(
                 usExaminationTypeId: "test",
+                examinationNumber: "Examination#0",
                 patientName: "Patient",
                 patientGenderRawValue: "male",
                 patientDateOfBirth: date,

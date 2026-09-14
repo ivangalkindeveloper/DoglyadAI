@@ -9,6 +9,7 @@ import SwiftUI
 @MainActor
 final class ScanViewModel: DViewModel {
     enum Focus: Hashable {
+        case examinationNumber
         case patientName
         case patientHeightCM
         case patientWeightKG
@@ -73,6 +74,7 @@ final class ScanViewModel: DViewModel {
     @Published var photos: [USExaminationScanPhoto] = []
     //
     @Published var focus: Focus? = nil
+    @NestedObservableObject var examinationNumberController = DTextFieldController(isRequired: true)
     @NestedObservableObject var patientNameController = DTextFieldController(isRequired: true)
     @Published var patientGender = PatientGender.male
     @Published var patientDateOfBirth: Date = .init()
@@ -113,9 +115,12 @@ final class ScanViewModel: DViewModel {
         }
         handle {
             await self.container.ultrasoundReportRepository.getReportsCount()
-        } onMainSuccess: { patientCount in
+        } onMainSuccess: { reportsCount in
+            self.examinationNumberController.setText(
+                String(localized: .scanExaminationDefaultNumberLabel(count: reportsCount))
+            )
             self.patientNameController.setText(
-                String(localized: .scanPatientDefaultNameLabel(count: patientCount))
+                String(localized: .scanPatientDefaultNameLabel(count: reportsCount))
             )
         }
         patientDateOfBirth = defaultPatientDateOfBirth
@@ -133,16 +138,16 @@ final class ScanViewModel: DViewModel {
 
     var canFocusPreviousField: Bool {
         switch focus {
-        case .patientName, .none:
+        case .examinationNumber, .none:
             false
-        case .patientHeightCM, .patientWeightKG, .patientComplaint, .examinationDescription:
+        case .patientName, .patientHeightCM, .patientWeightKG, .patientComplaint, .examinationDescription:
             true
         }
     }
 
     var canFocusNextField: Bool {
         switch focus {
-        case .patientName, .patientHeightCM, .patientWeightKG, .patientComplaint:
+        case .examinationNumber, .patientName, .patientHeightCM, .patientWeightKG, .patientComplaint:
             true
         case .examinationDescription, .none:
             false
@@ -151,8 +156,10 @@ final class ScanViewModel: DViewModel {
 
     func onTapToolbarUp() {
         switch focus {
-        case .patientName, .none:
+        case .examinationNumber, .none:
             break
+        case .patientName:
+            focus = .examinationNumber
         case .patientHeightCM:
             focus = .patientName
         case .patientWeightKG:
@@ -166,6 +173,8 @@ final class ScanViewModel: DViewModel {
 
     func onTapToolbarDown() {
         switch focus {
+        case .examinationNumber:
+            focus = .patientName
         case .patientName:
             focus = .patientHeightCM
         case .patientHeightCM:
@@ -182,6 +191,8 @@ final class ScanViewModel: DViewModel {
     func onSubmit() {
         analytics.buttonTapped(.scanSubmit)
         switch focus {
+        case .examinationNumber:
+            focus = .patientName
         case .patientName:
             focus = .patientHeightCM
         case .patientHeightCM:
@@ -499,11 +510,13 @@ final class ScanViewModel: DViewModel {
                 .modelId: .string(getNeuralModel().id),
             ])
         )
+        let isExaminationNumberValid = examinationNumberController.validate()
         let isPatientNameValid = patientNameController.validate()
         let isPatientHeightCMValid = patientHeightCMController.validate()
         let isPatientWeightKGValid = patientWeightKGController.validate()
         let isExaminationDescriptionValid = examinationDescriptionController.validate()
-        guard isPatientNameValid,
+        guard isExaminationNumberValid,
+              isPatientNameValid,
               isPatientHeightCMValid,
               isPatientWeightKGValid,
               isExaminationDescriptionValid
@@ -526,7 +539,8 @@ final class ScanViewModel: DViewModel {
     }
 
     private func performScan() {
-        guard let patientName = patientNameController.value,
+        guard let examinationNumber = examinationNumberController.value,
+              let patientName = patientNameController.value,
               let patientHeightValue = patientHeightCMController.value,
               let patientHeight = Double(patientHeightValue),
               let patientWeightValue = patientWeightKGController.value,
@@ -545,6 +559,7 @@ final class ScanViewModel: DViewModel {
             let examinationData = USExaminationData(
                 usExaminationTypeId: self.usExaminationType.id,
                 photos: self.photos,
+                examinationNumber: examinationNumber,
                 patientName: patientName,
                 patientGender: self.patientGender,
                 patientDateOfBirth: self.patientDateOfBirth,
@@ -598,9 +613,12 @@ final class ScanViewModel: DViewModel {
 
     private func reset() async {
         photos.removeAll()
-        let patientCount = await container.ultrasoundReportRepository.getReportsCount()
+        let reportsCount = await container.ultrasoundReportRepository.getReportsCount()
+        examinationNumberController.setText(
+            String(localized: .scanExaminationDefaultNumberLabel(count: reportsCount))
+        )
         patientNameController.setText(
-            String(localized: .scanPatientDefaultNameLabel(count: patientCount))
+            String(localized: .scanPatientDefaultNameLabel(count: reportsCount))
         )
         patientGender = .male
         patientDateOfBirth = defaultPatientDateOfBirth

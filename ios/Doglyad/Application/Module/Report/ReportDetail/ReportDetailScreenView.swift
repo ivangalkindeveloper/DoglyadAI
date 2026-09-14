@@ -66,6 +66,18 @@ struct ReportDetailScreenView: DView {
                                 )
                                 .padding(.bottom, size.s8)
 
+                            DText(.scanExaminationNumberLabel)
+                                .dStyle(
+                                    font: typography.linkSmall,
+                                    color: color.grayscalePlacehold
+                                )
+
+                            DText(examinationData.examinationNumber)
+                                .dStyle(
+                                    font: typography.textSmall
+                                )
+                                .padding(.bottom, size.s8)
+
                             DText(.scanPatientNameLabel)
                                 .dStyle(
                                     font: typography.linkSmall,

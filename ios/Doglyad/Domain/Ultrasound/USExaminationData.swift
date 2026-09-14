@@ -4,6 +4,7 @@ import Foundation
 struct USExaminationData: Codable {
     let usExaminationTypeId: String
     let photos: [USExaminationScanPhoto]
+    let examinationNumber: String
     let patientName: String
     let patientGender: PatientGender
     let patientDateOfBirth: Date
@@ -20,6 +21,7 @@ extension USExaminationData {
         USExaminationData(
             usExaminationTypeId: db.usExaminationTypeId,
             photos: db.photos.map { USExaminationScanPhoto.fromDB($0) },
+            examinationNumber: db.examinationNumber,
             patientName: db.patientName,
             patientGender: PatientGender(rawValue: db.patientGenderRawValue) ?? .male,
             patientDateOfBirth: db.patientDateOfBirth,
@@ -34,6 +36,7 @@ extension USExaminationData {
         USExaminationDataDB(
             usExaminationTypeId: usExaminationTypeId,
             photos: photos.map { $0.toDB() },
+            examinationNumber: examinationNumber,
             patientName: patientName,
             patientGenderRawValue: patientGender.rawValue,
             patientDateOfBirth: patientDateOfBirth,

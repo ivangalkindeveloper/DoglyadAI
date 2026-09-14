@@ -48,6 +48,7 @@ struct ReportDetailScreen: View {
                     photos: [
                         USExaminationScanPhoto(image: UIImage(resource: .alertInfo)),
                     ],
+                    examinationNumber: "Examination#0",
                     patientName: "Patient#0",
                     patientGender: .male,
                     patientDateOfBirth: Date(),

@@ -10,6 +10,7 @@ from app.model.ultrasound.us_examination_scan_photo import USExaminationScanPhot
 class USExaminationData(BaseModel):
     usExaminationTypeId: str
     photos: list[USExaminationScanPhoto]
+    examinationNumber: str
     patientName: str
     patientGender: str
     patientDateOfBirth: datetime

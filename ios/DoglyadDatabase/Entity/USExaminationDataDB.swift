@@ -5,6 +5,7 @@ import SwiftData
 public final class USExaminationDataDB {
     public var usExaminationTypeId: String
     @Relationship public var photos: [USExaminationScanPhotoDB]
+    public var examinationNumber: String
     public var patientName: String
     public var patientGenderRawValue: String
     public var patientDateOfBirth: Date
@@ -16,6 +17,7 @@ public final class USExaminationDataDB {
     public init(
         usExaminationTypeId: String,
         photos: [USExaminationScanPhotoDB] = [],
+        examinationNumber: String,
         patientName: String,
         patientGenderRawValue: String,
         patientDateOfBirth: Date,
@@ -26,6 +28,7 @@ public final class USExaminationDataDB {
     ) {
         self.usExaminationTypeId = usExaminationTypeId
         self.photos = photos
+        self.examinationNumber = examinationNumber
         self.patientName = patientName
         self.patientGenderRawValue = patientGenderRawValue
         self.patientDateOfBirth = patientDateOfBirth

@@ -38,6 +38,7 @@ class FakePromptFactory:
         examination_title: str,
         template: str | None = None,
     ) -> str:
+        assert examination.examinationNumber == "Examination#0"
         assert examination.patientName == "Patient"
         assert examination_title == "Echocardiography"
         assert template == "Template"
@@ -81,6 +82,7 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(monkeypat
         examinationData=USExaminationData(
             usExaminationTypeId="echocardiography",
             photos=[],
+            examinationNumber="Examination#0",
             patientName="Patient",
             patientGender="female",
             patientDateOfBirth=datetime(1990, 1, 1, tzinfo=UTC),
@@ -128,6 +130,7 @@ def test_blank_complaint_is_omitted_and_recommendations_can_be_disabled() -> Non
     examination = USExaminationData(
         usExaminationTypeId="echocardiography",
         photos=[],
+        examinationNumber="Examination#0",
         patientName="Patient",
         patientGender="female",
         patientDateOfBirth=datetime(1990, 1, 1, tzinfo=UTC),
@@ -139,6 +142,7 @@ def test_blank_complaint_is_omitted_and_recommendations_can_be_disabled() -> Non
     factory = PromptFactoryEn()
 
     assert examination.patientComplaint is None
+    assert "Examination number: Examination#0" in factory.build_prompt(examination, "Echocardiography")
     assert "Patient complaint:" not in factory.build_prompt(examination, "Echocardiography")
     assert "Do not generate or include recommendations" in factory.system_prompt(
         NeuralModelSettings(),

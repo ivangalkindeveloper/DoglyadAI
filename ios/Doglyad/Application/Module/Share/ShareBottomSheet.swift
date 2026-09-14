@@ -38,6 +38,7 @@ struct ShareBottomSheet: View {
                 examinationData: USExaminationData(
                     usExaminationTypeId: "abdominalCavity",
                     photos: [],
+                    examinationNumber: "Examination#0",
                     patientName: "Patient#0",
                     patientGender: .male,
                     patientDateOfBirth: Date(),

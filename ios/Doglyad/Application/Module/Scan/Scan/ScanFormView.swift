@@ -14,6 +14,20 @@ struct ScanFormView: DView {
             spacing: .zero
         ) {
             DTextField(
+                controller: viewModel.examinationNumberController,
+                focus: DTextFieldFocus(
+                    value: .examinationNumber,
+                    state: focus
+                ),
+                title: .scanExaminationNumberLabel,
+                placeholder: .scanExaminationNumberPlaceholder,
+                mode: DTextFieldSingleLineMode(submitLabel: .next),
+                keyboardType: .default
+            )
+            .id(ScanViewModel.Focus.examinationNumber)
+            .padding(.vertical, size.s4)
+
+            DTextField(
                 controller: viewModel.patientNameController,
                 focus: DTextFieldFocus(
                     value: .patientName,
@@ -25,7 +39,7 @@ struct ScanFormView: DView {
                 keyboardType: .default
             )
             .id(ScanViewModel.Focus.patientName)
-            .padding(.vertical, size.s4)
+            .padding(.bottom, size.s4)
 
             DSegment<PatientGender>(
                 currentValue: viewModel.patientGender,
