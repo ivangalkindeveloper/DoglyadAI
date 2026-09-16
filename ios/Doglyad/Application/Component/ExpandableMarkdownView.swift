@@ -8,15 +8,18 @@ struct ExpandableMarkdownView: DView {
     let text: String
     let backgroundColor: Color
     let collapsedLineLimit: Int
+    let onTapContent: (() -> Void)?
 
     init(
         text: String,
         backgroundColor: Color,
-        collapsedLineLimit: Int = 3
+        collapsedLineLimit: Int = 3,
+        onTapContent: (() -> Void)? = nil
     ) {
         self.text = text
         self.backgroundColor = backgroundColor
         self.collapsedLineLimit = collapsedLineLimit
+        self.onTapContent = onTapContent
     }
 
     @State private var isExpanded = false
@@ -36,10 +39,8 @@ struct ExpandableMarkdownView: DView {
             spacing: size.s4
         ) {
             if isExpanded {
-                DMarkdown(
-                    content: text
-                )
-                .frame(maxWidth: .infinity, alignment: .leading)
+                markdown
+
                 Button(.buttonCollapse) {
                     withAnimation(theme.animation) {
                         isExpanded.toggle()
@@ -49,13 +50,14 @@ struct ExpandableMarkdownView: DView {
                 .foregroundColor(color.primaryDefault)
                 .frame(maxWidth: .infinity, alignment: .trailing)
             } else {
-                DMarkdown(
-                    content: text
-                )
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity, maxHeight: collapsedMarkdownHeight, alignment: .topLeading)
-                .clipped()
-                .overlay(alignment: .bottomTrailing) {
+                ZStack(
+                    alignment: .bottomTrailing
+                ) {
+                    markdown
+                        .fixedSize(horizontal: false, vertical: true)
+                        .frame(maxWidth: .infinity, maxHeight: collapsedMarkdownHeight, alignment: .topLeading)
+                        .clipped()
+
                     HStack(
                         spacing: .zero
                     ) {
@@ -71,6 +73,7 @@ struct ExpandableMarkdownView: DView {
                                 )
                             )
                             .frame(width: 100, height: 16)
+                            .allowsHitTesting(false)
 
                         Button(.buttonNext) {
                             withAnimation(theme.animation) {
@@ -84,6 +87,28 @@ struct ExpandableMarkdownView: DView {
                 }
             }
         }
+    }
+
+    @ViewBuilder
+    private var markdown: some View {
+        if let onTapContent {
+            Button(
+                action: onTapContent
+            ) {
+                markdownContent
+            }
+            .buttonStyle(.plain)
+        } else {
+            markdownContent
+        }
+    }
+
+    private var markdownContent: some View {
+        DMarkdown(
+            content: text
+        )
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .contentShape(Rectangle())
     }
 }
 

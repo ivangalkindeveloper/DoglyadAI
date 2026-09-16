@@ -23,7 +23,7 @@ struct ScanCameraPreviewView: DView {
 
                     if viewModel.cameraController.isRunning {
                         ScanCameraFrameView()
-                            .padding(.bottom, size.s128)
+                            .padding(.bottom, size.s136)
                     } else {
                         VStack(
                             alignment: .center

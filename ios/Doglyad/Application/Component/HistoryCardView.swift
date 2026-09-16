@@ -22,6 +22,15 @@ struct HistoryCardView: DView {
                     ZStack {
                         ForEach(Array(examinationData.photos.enumerated()), id: \.element.id) { index, photo in
                             PhotoCardView(image: photo.thumbnail)
+                                .overlay {
+                                    RoundedRectangle(
+                                        cornerRadius: size.adaptiveCornerRadius / 4
+                                    )
+                                    .strokeBorder(
+                                        color.grayscaleBackground,
+                                        lineWidth: 0.5
+                                    )
+                                }
                                 .offset(x: Double.random(in: -4 ... 4), y: Double.random(in: -4 ... 4))
                                 .rotationEffect(.degrees(Double.random(in: -8 ... 8)))
                                 .zIndex(Double(index))

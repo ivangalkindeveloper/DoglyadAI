@@ -31,7 +31,7 @@ struct ScanCameraPhotoListView: DView {
                             }
                             .padding(.horizontal, size.s2)
                         }
-                        .padding(.horizontal, size.s16)
+                        .padding(.horizontal, size.s8)
                     }
                     .padding(.bottom, size.s8)
 

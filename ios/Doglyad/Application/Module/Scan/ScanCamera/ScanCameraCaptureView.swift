@@ -28,13 +28,13 @@ struct ScanCameraCaptureView: DView {
                             alignment: .center
                         )
                 }
-                .padding(.horizontal, size.s16)
+                .padding(.horizontal, size.s8)
             }
 
             ScanCameraPhotoListView()
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, size.s16)
+        .padding(.vertical, size.s8)
         .animation(
             theme.animation,
             value: viewModel.cameraController.isRunning

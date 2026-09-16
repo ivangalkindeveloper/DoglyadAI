@@ -11,7 +11,7 @@ struct TemplateListScreenView: DView {
         DScreen(
             title: .templateListTitle,
             onTapBack: viewModel.onTapBack,
-            content: { toolbarInset, _ in
+            content: { toolbarInset, bottomInset in
                 ZStack(
                     alignment: .bottom
                 ) {
@@ -35,9 +35,9 @@ struct TemplateListScreenView: DView {
                                 }
                             }
                         }
-                        .padding(size.s16)
-                        .padding(.top, toolbarInset)
-                        .padding(.bottom, size.s64)
+                        .padding(.top, toolbarInset + size.s8)
+                        .padding(.horizontal, size.s16)
+                        .padding(.bottom, bottomInset + size.s16)
                     }
                 }
             },

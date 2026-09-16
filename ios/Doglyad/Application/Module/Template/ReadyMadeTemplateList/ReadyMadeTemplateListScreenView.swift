@@ -23,7 +23,7 @@ struct ReadyMadeTemplateListScreenView: DView {
                     )
                 }
             },
-            content: { toolbarInset, _ in
+            content: { toolbarInset, bottomInset in
                 switch viewModel.state {
                 case .loading:
                     ProgressView()
@@ -115,8 +115,10 @@ struct ReadyMadeTemplateListScreenView: DView {
                             guard searchFieldHeight != value else { return }
                             searchFieldHeight = value
                         }
-                        .padding(.horizontal, size.s16)
+
                         .padding(.top, toolbarInset + size.s8)
+                        .padding(.horizontal, size.s16)
+                        .padding(.bottom, bottomInset + size.s16)
                     }
                 }
             }

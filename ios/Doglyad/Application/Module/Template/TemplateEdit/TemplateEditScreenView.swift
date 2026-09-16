@@ -32,7 +32,7 @@ struct TemplateEditScreenView: DView {
                     )
                 }
             },
-            content: { toolbarInset, _ in
+            content: { toolbarInset, bottomInset in
                 DFocusScrollView(
                     focus: focus
                 ) {
@@ -98,9 +98,9 @@ struct TemplateEditScreenView: DView {
                         .padding(.horizontal, size.s4)
                         .padding(.bottom, size.s16)
                     }
-                    .padding(size.s16)
-                    .padding(.top, toolbarInset)
-                    .padding(.bottom, size.s32)
+                    .padding(.top, toolbarInset + size.s8)
+                    .padding(.horizontal, size.s16)
+                    .padding(.bottom, bottomInset + size.s16)
                 }
                 .scrollDismissesKeyboard(.interactively)
             },

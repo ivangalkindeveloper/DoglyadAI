@@ -39,7 +39,8 @@ struct ReadyMadeTemplateListItemCardView: DView {
             ExpandableMarkdownView(
                 text: template.getLocalizedContent(for: Locale.current),
                 backgroundColor: color.grayscaleBackground,
-                collapsedLineLimit: 4
+                collapsedLineLimit: 4,
+                onTapContent: action
             )
         }
         .padding(size.s16)
