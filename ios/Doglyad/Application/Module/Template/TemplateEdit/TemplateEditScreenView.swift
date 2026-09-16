@@ -20,7 +20,15 @@ struct TemplateEditScreenView: DView {
                         doneAccessibilityLabel: .buttonDone,
                         onTapUp: viewModel.canFocusPreviousField ? { viewModel.onTapToolbarUp() } : nil,
                         onTapDown: viewModel.canFocusNextField ? { viewModel.onTapToolbarDown() } : nil,
-                        onTapDone: viewModel.unfocus
+                        onTapDone: viewModel.unfocus,
+                        trailButtons: [
+                            DToolbarButton(
+                                accessibilityLabel: .buttonSave,
+                                style: .primaryDefault,
+                                content: .text(.buttonSave),
+                                action: viewModel.onTapSave
+                            ),
+                        ]
                     )
                 }
             },

@@ -33,7 +33,24 @@ struct ScanScreenView: DView {
                         doneAccessibilityLabel: .buttonDone,
                         onTapUp: viewModel.canFocusPreviousField ? { viewModel.onTapToolbarUp() } : nil,
                         onTapDown: viewModel.canFocusNextField ? { viewModel.onTapToolbarDown() } : nil,
-                        onTapDone: viewModel.unfocus
+                        onTapDone: viewModel.unfocus,
+                        trailButtons: [
+                            viewModel.isSpeechButtonVisible
+                                ? DToolbarButton(
+                                    accessibilityLabel: .buttonSpeech,
+                                    style: .primaryDefault,
+                                    badge: viewModel.speechButtonBadge,
+                                    content: .icon(.microphone),
+                                    action: viewModel.onTapSpeech
+                                )
+                                : nil,
+                            DToolbarButton(
+                                accessibilityLabel: .buttonGenerate,
+                                style: .primaryDefault,
+                                content: .text(.buttonGenerate),
+                                action: viewModel.onTapScan
+                            ),
+                        ].compactMap { $0 }
                     )
                 }
             },

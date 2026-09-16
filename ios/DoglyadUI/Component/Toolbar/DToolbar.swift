@@ -9,6 +9,7 @@ public struct DToolbar: DView {
     private let onTapUp: (() -> Void)?
     private let onTapDown: (() -> Void)?
     private let onTapDone: () -> Void
+    private let trailButtons: [DToolbarButton]
 
     public init(
         upAccessibilityLabel: LocalizedStringResource,
@@ -16,11 +17,13 @@ public struct DToolbar: DView {
         doneAccessibilityLabel: LocalizedStringResource,
         onTapUp: (() -> Void)? = nil,
         onTapDown: (() -> Void)? = nil,
-        onTapDone: @escaping () -> Void
+        onTapDone: @escaping () -> Void,
+        trailButtons: [DToolbarButton] = []
     ) {
         self.upAccessibilityLabel = upAccessibilityLabel
         self.downAccessibilityLabel = downAccessibilityLabel
         self.doneAccessibilityLabel = doneAccessibilityLabel
+        self.trailButtons = trailButtons
         self.onTapUp = onTapUp
         self.onTapDown = onTapDown
         self.onTapDone = onTapDone
@@ -31,73 +34,41 @@ public struct DToolbar: DView {
             spacing: .zero
         ) {
             if let onTapUp {
-                toolbarButton(
-                    image: .up,
+                DToolbarButton(
                     accessibilityLabel: upAccessibilityLabel,
+                    style: .grayscaleHeader,
+                    content: .icon(.up),
                     action: onTapUp
                 )
             }
 
             if let onTapDown {
-                toolbarButton(
-                    image: .down,
+                DToolbarButton(
                     accessibilityLabel: downAccessibilityLabel,
+                    style: .grayscaleHeader,
+                    content: .icon(.down),
                     action: onTapDown
                 )
             }
 
             Spacer()
 
-            toolbarButton(
-                image: .check,
+            DToolbarButton(
                 accessibilityLabel: doneAccessibilityLabel,
-                iconColor: color.grayscaleBackground,
-                usesGradientBackground: true,
+                style: .grayscaleHeader,
+                content: .icon(.check),
                 action: onTapDone
             )
+
+            ForEach(trailButtons.indices, id: \.self) { index in
+                trailButtons[index]
+            }
         }
         .padding(.horizontal, size.s8)
         .frame(
             maxWidth: .infinity,
             minHeight: size.s48
         )
-    }
-
-    private func toolbarButton(
-        image: ImageResource,
-        accessibilityLabel: LocalizedStringResource,
-        iconColor: Color? = nil,
-        usesGradientBackground: Bool = false,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(
-            action: action
-        ) {
-            DIcon(
-                image,
-                color: iconColor ?? color.grayscaleHeader
-            )
-            .frame(
-                width: size.s40,
-                height: size.s40
-            )
-            .background {
-                if usesGradientBackground {
-                    Circle()
-                        .fill(color.gradientPrimaryWeak)
-                } else {
-                    Circle()
-                        .fill(.ultraThinMaterial)
-                }
-            }
-            .frame(
-                width: size.s48,
-                height: size.s48
-            )
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(Text(accessibilityLabel))
     }
 }
 

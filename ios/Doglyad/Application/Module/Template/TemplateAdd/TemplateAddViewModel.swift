@@ -5,7 +5,7 @@ import Router
 import SwiftUI
 
 @MainActor
-final class TemplateAddViewModel: DViewModel {
+final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
     enum Focus: Hashable {
         case name
         case content
@@ -42,6 +42,19 @@ final class TemplateAddViewModel: DViewModel {
     @Published var usExaminationType: USExaminationType
     @NestedObservableObject var nameController = DTextFieldController(isRequired: true)
     @NestedObservableObject var templateController = DTextFieldController(isRequired: true)
+
+    var focusList: [DTextFieldFocusValidationItem<Focus>] {
+        [
+            DTextFieldFocusValidationItem(
+                focus: .name,
+                controller: nameController
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .content,
+                controller: templateController
+            ),
+        ]
+    }
 
     func onTapBack() {
         analytics.buttonTapped(.templateAddBack)
@@ -126,10 +139,12 @@ final class TemplateAddViewModel: DViewModel {
 
     func onTapSave() {
         analytics.buttonTapped(.templateAddSave)
-        let isNameValid = nameController.validate()
-        let isContentValid = templateController.validate()
-        guard isNameValid, isContentValid,
-              let name = nameController.value,
+        if let invalidFocus = firstInvalidFocus() {
+            focus = invalidFocus
+            return
+        }
+
+        guard let name = nameController.value,
               let content = templateController.value
         else {
             return

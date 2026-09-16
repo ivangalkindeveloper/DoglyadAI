@@ -7,7 +7,7 @@ import Router
 import SwiftUI
 
 @MainActor
-final class ScanViewModel: DViewModel {
+final class ScanViewModel: DViewModel, DTextFieldFocusValidating {
     enum Focus: Hashable {
         case examinationNumber
         case patientName
@@ -106,6 +106,31 @@ final class ScanViewModel: DViewModel {
     @NestedObservableObject var examinationDescriptionController = DTextFieldController(isRequired: true)
     //
     @Published var isLoading = false
+
+    var focusList: [DTextFieldFocusValidationItem<Focus>] {
+        [
+            DTextFieldFocusValidationItem(
+                focus: .examinationNumber,
+                controller: examinationNumberController
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .patientName,
+                controller: patientNameController
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .patientHeightCM,
+                controller: patientHeightCMController
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .patientWeightKG,
+                controller: patientWeightKGController
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .examinationDescription,
+                controller: examinationDescriptionController
+            ),
+        ]
+    }
 
     override func onInit() {
         if let usExaminationTypeId = container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
@@ -454,6 +479,18 @@ final class ScanViewModel: DViewModel {
         }
     }
 
+    var speechButtonBadge: DButtonBadge? {
+        switch subscription.availability(of: .formCompletionViaMicrophone) {
+        case .offered:
+            DButtonBadge(
+                .entitlementPro,
+                isShimmering: true
+            )
+        case .available, .unavailable:
+            nil
+        }
+    }
+
     func onTapSpeech() {
         analytics.buttonTapped(.scanSpeech)
         coordinator.run(.formCompletionViaMicrophone) {
@@ -510,17 +547,8 @@ final class ScanViewModel: DViewModel {
                 .modelId: .string(getNeuralModel().id),
             ])
         )
-        let isExaminationNumberValid = examinationNumberController.validate()
-        let isPatientNameValid = patientNameController.validate()
-        let isPatientHeightCMValid = patientHeightCMController.validate()
-        let isPatientWeightKGValid = patientWeightKGController.validate()
-        let isExaminationDescriptionValid = examinationDescriptionController.validate()
-        guard isExaminationNumberValid,
-              isPatientNameValid,
-              isPatientHeightCMValid,
-              isPatientWeightKGValid,
-              isExaminationDescriptionValid
-        else {
+        if let invalidFocus = firstInvalidFocus() {
+            focus = invalidFocus
             return
         }
 

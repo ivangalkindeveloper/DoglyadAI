@@ -25,7 +25,7 @@ struct ScanBottomView: DView {
             }
 
             DButton(
-                title: .buttonGenerate,
+                title: .buttonGenerateProtocol,
                 action: viewModel.onTapScan,
                 isLoading: viewModel.isLoading
             )

@@ -5,7 +5,7 @@ import Router
 import SwiftUI
 
 @MainActor
-final class UserSettingsViewModel: DViewModel {
+final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
     enum Focus: Hashable {
         case email
     }
@@ -48,6 +48,15 @@ final class UserSettingsViewModel: DViewModel {
         ]
     )
 
+    var focusList: [DTextFieldFocusValidationItem<Focus>] {
+        [
+            DTextFieldFocusValidationItem(
+                focus: .email,
+                controller: emailController
+            ),
+        ]
+    }
+
     func toggleIncludeRecommendations() {
         includeRecommendations.toggle()
     }
@@ -77,7 +86,10 @@ final class UserSettingsViewModel: DViewModel {
                 .hasCurrentValue: .bool(email != nil),
             ])
         )
-        guard emailController.validate() else { return }
+        if let invalidFocus = firstInvalidFocus() {
+            focus = invalidFocus
+            return
+        }
 
         unfocus()
 

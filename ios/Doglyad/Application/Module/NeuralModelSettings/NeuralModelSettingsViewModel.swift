@@ -5,7 +5,7 @@ import Router
 import SwiftUI
 
 @MainActor
-final class NeuralModelSettingsViewModel: DViewModel {
+final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating {
     enum Focus: Hashable {
         case temperature
         case length
@@ -61,6 +61,19 @@ final class NeuralModelSettingsViewModel: DViewModel {
             ),
         ]
     )
+
+    var focusList: [DTextFieldFocusValidationItem<Focus>] {
+        [
+            DTextFieldFocusValidationItem(
+                focus: .temperature,
+                controller: temperatureController
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .length,
+                controller: maxTokensController
+            ),
+        ]
+    }
 
     func unfocus() {
         focus = nil
@@ -135,9 +148,10 @@ final class NeuralModelSettingsViewModel: DViewModel {
             ])
         )
 
-        let isTemperatureValid = temperatureController.validate()
-        let isMaxTokensValid = maxTokensController.validate()
-        guard isTemperatureValid, isMaxTokensValid else { return }
+        if let invalidFocus = firstInvalidFocus() {
+            focus = invalidFocus
+            return
+        }
 
         onSettingsSaved(
             isMarkdown,

@@ -343,6 +343,23 @@
         }
       }
     },
+    "buttonGenerateProtocol": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Generate protocol"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сгенерировать протокол"
+          }
+        }
+      }
+    },
     "buttonNext": {
       "extractionState": "manual",
       "localizations": {

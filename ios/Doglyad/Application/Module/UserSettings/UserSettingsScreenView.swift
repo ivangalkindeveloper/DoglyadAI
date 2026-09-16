@@ -18,7 +18,15 @@ struct UserSettingsScreenView: DView {
                         upAccessibilityLabel: .buttonBack,
                         downAccessibilityLabel: .buttonNext,
                         doneAccessibilityLabel: .buttonDone,
-                        onTapDone: viewModel.unfocus
+                        onTapDone: viewModel.unfocus,
+                        trailButtons: [
+                            DToolbarButton(
+                                accessibilityLabel: .buttonSave,
+                                style: .primaryDefault,
+                                content: .text(.buttonSave),
+                                action: viewModel.onTapSave
+                            ),
+                        ]
                     )
                 }
             },
