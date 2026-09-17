@@ -36,6 +36,7 @@ enum AnalyticsButton: String {
     case scanCamera = "scan_camera"
     case scanCapture = "scan_capture"
     case scanCameraTurnOn = "scan_camera_turn_on"
+    case scanClear = "scan_clear"
     case scanDeletePhoto = "scan_delete_photo"
     case scanFill = "scan_fill"
     case scanGallery = "scan_gallery"

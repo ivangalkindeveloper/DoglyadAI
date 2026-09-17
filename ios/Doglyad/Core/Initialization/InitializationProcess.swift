@@ -20,6 +20,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var userSettingsRepository: UserSettingsRepositoryProtocol?
     var ultrasoundModelRepository: UltrasoundModelRepositoryProtocol?
     var ultrasoundReportRepository: UltrasoundReportRepositoryProtocol?
+    var ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol?
     var templateRepository: TemplateRepositoryProtocol?
     var subscriptionRepository: RevenueCatSubscriptionRepository?
     var applicationConfig: ApplicationConfig?
@@ -47,6 +48,7 @@ final class InitializationProcess: DependencyInitializationProcess {
             userSettingsRepository: userSettingsRepository!,
             ultrasoundModelRepository: ultrasoundModelRepository!,
             ultrasoundReportRepository: ultrasoundReportRepository!,
+            ultrasoundDraftRepository: ultrasoundDraftRepository!,
             templateRepository: templateRepository!,
             subscriptionRepository: subscriptionRepository!,
             applicationConfig: applicationConfig!,

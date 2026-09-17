@@ -12,4 +12,5 @@ public protocol DDatabaseProtocol: AnyObject,
 {
     var examinationReports: DExaminationReportsStore { get }
     var examinationTemplates: DExaminationTemplatesStore { get }
+    var examinationDraft: DExaminationDraftStore { get }
 }

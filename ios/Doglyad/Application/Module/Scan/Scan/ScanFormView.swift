@@ -2,7 +2,6 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanFormView: DView {
-    @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
@@ -140,10 +139,16 @@ struct ScanFormView: DView {
                 onTap: viewModel.onTapNeuralModelSettings
             )
 
-            if container.environment.type == EnvironmentType.development {
+            DButton(
+                title: .buttonClear,
+                action: viewModel.onTapClear
+            )
+            .dStyle(.primaryText)
+
+            if viewModel.isFillDevelopmentButtonVisible {
                 DButton(
-                    title: .buttonFill,
-                    action: viewModel.onTapFill
+                    title: .buttonFillDevelopment,
+                    action: viewModel.onTapFillDevelopment
                 )
                 .dStyle(.primaryText)
             }

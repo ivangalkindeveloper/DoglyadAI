@@ -1,6 +1,6 @@
 import DoglyadNeuralModel
 
-enum PatientGender: String, Codable {
+enum PatientGender: String, Codable, Sendable {
     case male
     case female
 

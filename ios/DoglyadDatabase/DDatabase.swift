@@ -6,6 +6,7 @@ public final class DDatabase: DDatabaseProtocol {
     var container: ModelContainer
     public let examinationReports: DExaminationReportsStore
     public let examinationTemplates: DExaminationTemplatesStore
+    public let examinationDraft: DExaminationDraftStore
 
     public init() throws {
         let schema = Schema([
@@ -15,6 +16,8 @@ public final class DDatabase: DDatabaseProtocol {
             USExaminationScanPhotoDB.self,
             USExaminationModelReportDB.self,
             USExaminationTemplateDB.self,
+            USExaminationDraftDB.self,
+            USExaminationDraftPhotoDB.self,
         ])
         container = try ModelContainer(
             for: schema
@@ -23,6 +26,9 @@ public final class DDatabase: DDatabaseProtocol {
             modelContainer: container
         )
         examinationTemplates = DExaminationTemplatesStore(
+            modelContainer: container
+        )
+        examinationDraft = DExaminationDraftStore(
             modelContainer: container
         )
     }

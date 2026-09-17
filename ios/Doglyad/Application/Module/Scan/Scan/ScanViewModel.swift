@@ -1,3 +1,4 @@
+import Combine
 import DoglyadNetwork
 import DoglyadUI
 import Foundation
@@ -5,9 +6,10 @@ import Handler
 import NestedObservableObject
 import Router
 import SwiftUI
+import UIKit
 
 @MainActor
-final class ScanViewModel: DViewModel, DTextFieldFocusValidating {
+final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     enum Focus: Hashable {
         case examinationNumber
         case patientName
@@ -23,6 +25,16 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating {
     private let onTemplateReset: () -> Void
     private let getNeuralModel: () -> USExaminationNeuralModel
     private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
+    let draftAutosaver = DDraftAutosaver<USExaminationDraftForm>(
+        delay: .seconds(1)
+    )
+    private var draftPhotosCancellable: AnyCancellable?
+    private var draftLifecycleCancellable: AnyCancellable?
+
+    private enum DraftInitializationResult {
+        case draft(USExaminationDraft)
+        case defaults(reportsCount: Int)
+    }
 
     init(
         container: DependencyContainer,
@@ -138,19 +150,24 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating {
         {
             self.usExaminationType = usExaminationType
         }
+
         handle {
-            await self.container.ultrasoundReportRepository.getReportsCount()
-        } onMainSuccess: { reportsCount in
-            self.examinationNumberController.setText(
-                String(localized: .scanExaminationDefaultNumberLabel(count: reportsCount))
-            )
-            self.patientNameController.setText(
-                String(localized: .scanPatientDefaultNameLabel(count: reportsCount))
-            )
+            let draft = await self.loadDraft()
+            if let draft {
+                return DraftInitializationResult.draft(draft)
+            }
+
+            let reportsCount = await self.container.ultrasoundReportRepository.getReportsCount()
+            return DraftInitializationResult.defaults(reportsCount: reportsCount)
+        } onMainSuccess: { result in
+            switch result {
+            case let .draft(draft):
+                self.applyDraft(draft)
+            case let .defaults(reportsCount):
+                self.applyDefaultValues(reportsCount: reportsCount)
+            }
+            self.startDraftObservation()
         }
-        patientDateOfBirth = defaultPatientDateOfBirth
-        patientHeightCMController.setText(String(defaultPatientHeightCM))
-        patientWeightKGController.setText(String(defaultPatientWeightKG))
     }
 
     var isPhotoFilling: Bool {
@@ -454,7 +471,24 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating {
         }
     }
 
-    func onTapFill() {
+    var isFillDevelopmentButtonVisible: Bool {
+        switch container.environment.type {
+        case .development:
+            true
+        case .production:
+            false
+        }
+    }
+
+    func onTapClear() {
+        analytics.buttonTapped(.scanClear)
+        clearForm()
+        handle {
+            await self.clearDraftAndReset()
+        }
+    }
+
+    func onTapFillDevelopment() {
         analytics.buttonTapped(.scanFill)
         patientComplaintsController.setText(
             container.mockFactory.fillPatientComplaints(
@@ -622,7 +656,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating {
                 report: report
             )
             self.subscription.incrementRequestCount()
-            await self.reset()
+            await self.clearDraftAndReset()
 
             return report
         } onDefer: {
@@ -639,9 +673,20 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating {
         }
     }
 
-    private func reset() async {
-        photos.removeAll()
+    private func clearDraftAndReset() async {
+        stopDraftObservation()
+        await waitForPendingDraftSave()
+        await clearDraft()
+
         let reportsCount = await container.ultrasoundReportRepository.getReportsCount()
+        applyDefaultValues(reportsCount: reportsCount)
+        startDraftObservation()
+    }
+
+    private func applyDefaultValues(
+        reportsCount: Int
+    ) {
+        photos.removeAll()
         examinationNumberController.setText(
             String(localized: .scanExaminationDefaultNumberLabel(count: reportsCount))
         )
@@ -654,5 +699,153 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating {
         patientWeightKGController.setText(String(defaultPatientWeightKG))
         patientComplaintsController.clear()
         examinationDescriptionController.clear()
+    }
+
+    private func clearForm() {
+        photos.removeAll()
+        examinationNumberController.clear()
+        patientNameController.clear()
+        patientGender = .male
+        patientDateOfBirth = defaultPatientDateOfBirth
+        patientHeightCMController.clear()
+        patientWeightKGController.clear()
+        patientComplaintsController.clear()
+        examinationDescriptionController.clear()
+    }
+}
+
+extension ScanViewModel {
+    func loadDraft() async -> USExaminationDraft? {
+        await container.ultrasoundDraftRepository.getDraft()
+    }
+
+    func applyDraft(
+        _ draft: USExaminationDraft
+    ) {
+        let form = draft.form
+        photos = Array(draft.photos.prefix(photoMaxCount))
+        examinationNumberController.setText(form.examinationNumber)
+        patientNameController.setText(form.patientName)
+        patientGender = form.patientGender
+        patientDateOfBirth = form.patientDateOfBirth
+        patientHeightCMController.setText(form.patientHeightCM)
+        patientWeightKGController.setText(form.patientWeightKG)
+        patientComplaintsController.setText(form.patientComplaints)
+        examinationDescriptionController.setText(form.examinationDescription)
+    }
+
+    func clearDraft() async {
+        await container.ultrasoundDraftRepository.clearDraft()
+    }
+
+    func makeDraftSnapshot() -> USExaminationDraftForm {
+        USExaminationDraftForm(
+            examinationNumber: examinationNumberController.text,
+            patientName: patientNameController.text,
+            patientGender: patientGender,
+            patientDateOfBirth: patientDateOfBirth,
+            patientHeightCM: patientHeightCMController.text,
+            patientWeightKG: patientWeightKGController.text,
+            patientComplaints: patientComplaintsController.text,
+            examinationDescription: examinationDescriptionController.text
+        )
+    }
+
+    func saveDraftSnapshot(
+        _ draft: USExaminationDraftForm
+    ) async {
+        await container.ultrasoundDraftRepository.saveForm(draft)
+    }
+
+    func draftChangePublishers() -> [AnyPublisher<Void, Never>] {
+        [
+            examinationNumberController.$text
+                .dropFirst()
+                .map { _ in () }
+                .eraseToAnyPublisher(),
+            patientNameController.$text
+                .dropFirst()
+                .map { _ in () }
+                .eraseToAnyPublisher(),
+            $patientGender
+                .dropFirst()
+                .map { _ in () }
+                .eraseToAnyPublisher(),
+            $patientDateOfBirth
+                .dropFirst()
+                .map { _ in () }
+                .eraseToAnyPublisher(),
+            patientHeightCMController.$text
+                .dropFirst()
+                .map { _ in () }
+                .eraseToAnyPublisher(),
+            patientWeightKGController.$text
+                .dropFirst()
+                .map { _ in () }
+                .eraseToAnyPublisher(),
+            patientComplaintsController.$text
+                .dropFirst()
+                .map { _ in () }
+                .eraseToAnyPublisher(),
+            examinationDescriptionController.$text
+                .dropFirst()
+                .map { _ in () }
+                .eraseToAnyPublisher(),
+        ]
+    }
+}
+
+private extension ScanViewModel {
+    func startDraftObservation() {
+        startDraftAutosave()
+
+        draftPhotosCancellable = $photos
+            .dropFirst()
+            .removeDuplicates()
+            .sink { [weak self] photos in
+                guard let self else { return }
+
+                saveDraftPhotos(photos)
+            }
+
+        draftLifecycleCancellable = NotificationCenter.default
+            .publisher(for: UIApplication.willResignActiveNotification)
+            .sink { [weak self] _ in
+                self?.saveDraftBeforeBackground()
+            }
+    }
+
+    func stopDraftObservation() {
+        stopDraftAutosave()
+        draftPhotosCancellable?.cancel()
+        draftPhotosCancellable = nil
+        draftLifecycleCancellable?.cancel()
+        draftLifecycleCancellable = nil
+    }
+
+    func saveDraftPhotos(
+        _ photos: [USExaminationScanPhoto]
+    ) {
+        let currentForm = makeDraftSnapshot()
+        draftAutosaver.enqueue { [weak self] in
+            guard let self else { return }
+
+            await container.ultrasoundDraftRepository.savePhotos(
+                photos,
+                currentForm: currentForm
+            )
+        }
+    }
+
+    func saveDraftBeforeBackground() {
+        let backgroundTask = UIApplication.shared.beginBackgroundTask()
+        handle {
+            self.flushPendingDraftSave()
+            await self.waitForPendingDraftSave()
+        } onDefer: {
+            guard backgroundTask != .invalid else { return }
+
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+        }
     }
 }

@@ -64,6 +64,9 @@ extension InitializationProcess {
                             database: process.database!,
                             httpClient: process.httpClient!
                         )
+                        process.ultrasoundDraftRepository = UltrasoundDraftRepository(
+                            database: process.database!
+                        )
                         process.templateRepository = TemplateRepository(
                             database: process.database!,
                             httpClient: process.httpClient!

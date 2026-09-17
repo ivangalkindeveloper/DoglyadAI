@@ -15,6 +15,7 @@ final class DependencyContainer: ObservableObject {
     let userSettingsRepository: UserSettingsRepositoryProtocol
     let ultrasoundModelRepository: UltrasoundModelRepositoryProtocol
     let ultrasoundReportRepository: UltrasoundReportRepositoryProtocol
+    let ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol
     let templateRepository: TemplateRepositoryProtocol
     let subscriptionRepository: RevenueCatSubscriptionRepository
     let applicationConfig: ApplicationConfig
@@ -40,6 +41,7 @@ final class DependencyContainer: ObservableObject {
         userSettingsRepository: UserSettingsRepositoryProtocol,
         ultrasoundModelRepository: UltrasoundModelRepositoryProtocol,
         ultrasoundReportRepository: UltrasoundReportRepositoryProtocol,
+        ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol,
         templateRepository: TemplateRepositoryProtocol,
         subscriptionRepository: RevenueCatSubscriptionRepository,
         applicationConfig: ApplicationConfig,
@@ -64,6 +66,7 @@ final class DependencyContainer: ObservableObject {
         self.userSettingsRepository = userSettingsRepository
         self.ultrasoundModelRepository = ultrasoundModelRepository
         self.ultrasoundReportRepository = ultrasoundReportRepository
+        self.ultrasoundDraftRepository = ultrasoundDraftRepository
         self.templateRepository = templateRepository
         self.subscriptionRepository = subscriptionRepository
         self.applicationConfig = applicationConfig
@@ -131,6 +134,9 @@ extension DependencyContainer {
             database: database,
             httpClient: httpClient
         )
+        let ultrasoundDraftRepository = UltrasoundDraftRepository(
+            database: database
+        )
         let templateRepository = TemplateRepository(
             database: database,
             httpClient: httpClient
@@ -151,6 +157,7 @@ extension DependencyContainer {
             userSettingsRepository: userSettingsRepository,
             ultrasoundModelRepository: ultrasoundModelRepository,
             ultrasoundReportRepository: ultrasoundReportRepository,
+            ultrasoundDraftRepository: ultrasoundDraftRepository,
             templateRepository: templateRepository,
             subscriptionRepository: subscriptionRepository,
             applicationConfig: .default,
