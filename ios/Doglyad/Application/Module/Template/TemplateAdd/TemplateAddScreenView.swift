@@ -45,6 +45,11 @@ struct TemplateAddScreenView: DView {
                             description: viewModel.usExaminationType.getLocalizedTitle(for: Locale.current),
                             action: viewModel.onTapExaminationType
                         )
+                        .contentTransition(.opacity)
+                        .animation(
+                            theme.animation,
+                            value: viewModel.usExaminationType.id
+                        )
                         .padding(.bottom, size.s4)
 
                         DTextField(

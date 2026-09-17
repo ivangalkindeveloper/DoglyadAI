@@ -34,6 +34,7 @@ struct SelectTemplateBottomSheetView: DView {
             }
             .contentMargins(.top, toolbarHeight, for: .scrollContent)
         }
+        .animation(theme.animation, value: viewModel.templates)
         .onAppear(perform: viewModel.onAppear)
     }
 }

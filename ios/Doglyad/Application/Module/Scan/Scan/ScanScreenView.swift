@@ -23,6 +23,11 @@ struct ScanScreenView: DView {
                     action: viewModel.onTapUSExaminationType
                 )
                 .dStyle(.primaryChip)
+                .contentTransition(.opacity)
+                .animation(
+                    theme.animation,
+                    value: viewModel.usExaminationType.id
+                )
             },
             onTapBody: viewModel.unfocus,
             keyboardToolbar: {
@@ -83,6 +88,10 @@ struct ScanScreenView: DView {
                                 }
                                 .padding(.horizontal, size.s16)
                                 .padding(.bottom, size.s8)
+                                .transition(
+                                    .move(edge: .top)
+                                        .combined(with: .opacity)
+                                )
                             }
 
                             ScanPhotoListView()
@@ -93,6 +102,10 @@ struct ScanScreenView: DView {
                         }
                         .padding(.top, toolbarHeight + size.s16)
                         .padding(.bottom, size.s136 * 2)
+                        .animation(
+                            theme.animation,
+                            value: viewModel.isPhotoFilling
+                        )
                     }
 
                     ScanBottomView()

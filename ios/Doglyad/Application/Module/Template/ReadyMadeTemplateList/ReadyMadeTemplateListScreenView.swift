@@ -30,6 +30,7 @@ struct ReadyMadeTemplateListScreenView: DView {
                         .tint(color.primaryDefault)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(.top, toolbarInset)
+                        .transition(.opacity)
                 case .error:
                     VStack(
                         spacing: size.s16
@@ -55,6 +56,7 @@ struct ReadyMadeTemplateListScreenView: DView {
                     .padding(size.s16)
                     .padding(.top, toolbarInset)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.opacity)
                 case .success:
                     ZStack(
                         alignment: .top
@@ -74,6 +76,7 @@ struct ReadyMadeTemplateListScreenView: DView {
                                         )
                                         .multilineTextAlignment(.center)
                                         .frame(maxWidth: .infinity)
+                                        .transition(.opacity)
                                 } else {
                                     ForEach(viewModel.filteredTemplates) { template in
                                         ReadyMadeTemplateListItemCardView(
@@ -120,9 +123,12 @@ struct ReadyMadeTemplateListScreenView: DView {
                         .padding(.horizontal, size.s16)
                         .padding(.bottom, bottomInset + size.s16)
                     }
+                    .transition(.opacity)
                 }
             }
         )
+        .animation(theme.animation, value: viewModel.state)
+        .animation(theme.animation, value: viewModel.filteredTemplates)
         .onAppear(perform: viewModel.onAppear)
         .onSubmit {
             viewModel.unfocus()

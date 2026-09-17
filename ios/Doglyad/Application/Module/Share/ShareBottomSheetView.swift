@@ -23,11 +23,13 @@ struct ShareBottomSheetView: DView {
                         ) {
                             if viewModel.isLoading {
                                 ProgressView()
+                                    .transition(.opacity)
                             } else {
                                 DIcon(
                                     .send,
                                     color: color.grayscaleHeader
                                 )
+                                .transition(.opacity)
                             }
                             DText(viewModel.userEmailButtonTitle)
                                 .dStyle(
@@ -39,6 +41,7 @@ struct ShareBottomSheetView: DView {
                     }
                     .disabled(viewModel.isLoading)
                     .paidBadge(.sendingReportByEmail)
+                    .transition(.opacity)
                 }
 
                 if viewModel.isUserEmailButtonVisible {
@@ -52,6 +55,7 @@ struct ShareBottomSheetView: DView {
                     }
                     .disabled(viewModel.isLoading)
                     .paidBadge(.sendingReportByEmail)
+                    .transition(.opacity)
                 }
 
                 DButtonCard(
@@ -80,6 +84,8 @@ struct ShareBottomSheetView: DView {
             .padding(.top, toolbarHeight + size.s16)
             .padding(.horizontal, size.s16)
         }
+        .animation(theme.animation, value: viewModel.isLoading)
+        .animation(theme.animation, value: viewModel.isUserEmailButtonVisible)
         .onAppear(perform: viewModel.onAppear)
     }
 

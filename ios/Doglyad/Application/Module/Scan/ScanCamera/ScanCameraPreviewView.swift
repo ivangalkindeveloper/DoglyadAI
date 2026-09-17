@@ -12,6 +12,7 @@ struct ScanCameraPreviewView: DView {
             if viewModel.cameraController.isLoading {
                 color.grayscaleBackground
                     .dShimmer(cornerRadius: .zero)
+                    .transition(.opacity)
             } else {
                 ZStack {
                     DCameraView(
@@ -24,6 +25,7 @@ struct ScanCameraPreviewView: DView {
                     if viewModel.cameraController.isRunning {
                         ScanCameraFrameView()
                             .padding(.bottom, size.s136)
+                            .transition(.opacity)
                     } else {
                         VStack(
                             alignment: .center
@@ -43,14 +45,20 @@ struct ScanCameraPreviewView: DView {
                             .dStyle(.chip)
                         }
                         .padding(size.s32)
+                        .transition(.opacity)
                     }
                 }
+                .transition(.opacity)
             }
         }
         .ignoresSafeArea()
         .animation(
             theme.animation,
             value: viewModel.cameraController.isRunning
+        )
+        .animation(
+            theme.animation,
+            value: viewModel.cameraController.isLoading
         )
     }
 }

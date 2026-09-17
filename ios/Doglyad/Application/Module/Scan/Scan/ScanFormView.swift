@@ -64,6 +64,11 @@ struct ScanFormView: DView {
                 date: viewModel.patientDateOfBirth,
                 action: viewModel.onTapPatientDateOfBirth
             )
+            .contentTransition(.opacity)
+            .animation(
+                theme.animation,
+                value: viewModel.patientDateOfBirth
+            )
             .padding(.bottom, size.s4)
 
             DTextField(

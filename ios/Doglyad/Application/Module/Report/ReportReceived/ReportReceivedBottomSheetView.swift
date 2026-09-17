@@ -59,6 +59,7 @@ struct ReportReceivedBottomSheetView: DView {
                             isLoading: viewModel.isLoading
                         )
                         .dStyle(.textWeak)
+                        .transition(.opacity)
                     }
 
                     DButton(
@@ -73,6 +74,7 @@ struct ReportReceivedBottomSheetView: DView {
                 .padding(.horizontal, size.s16)
             }
         )
+        .animation(theme.animation, value: viewModel.isUserEmailButtonVisible)
         .onAppear {
             viewModel.onAppear()
         }

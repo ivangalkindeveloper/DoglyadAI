@@ -47,5 +47,9 @@ struct ScanBottomView: DView {
             theme.animation,
             value: viewModel.isLoading
         )
+        .animation(
+            theme.animation,
+            value: viewModel.isSpeechButtonVisible
+        )
     }
 }

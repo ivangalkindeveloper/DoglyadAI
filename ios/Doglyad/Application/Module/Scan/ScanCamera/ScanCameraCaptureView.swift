@@ -29,6 +29,10 @@ struct ScanCameraCaptureView: DView {
                         )
                 }
                 .padding(.horizontal, size.s8)
+                .transition(
+                    .move(edge: .bottom)
+                        .combined(with: .opacity)
+                )
             }
 
             ScanCameraPhotoListView()
@@ -37,7 +41,7 @@ struct ScanCameraCaptureView: DView {
         .padding(.vertical, size.s8)
         .animation(
             theme.animation,
-            value: viewModel.cameraController.isRunning
+            value: viewModel.isCaptureAvailable
         )
     }
 }

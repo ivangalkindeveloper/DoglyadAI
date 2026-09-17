@@ -11,7 +11,7 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
         case search
     }
 
-    enum State {
+    enum State: Equatable {
         case loading
         case error
         case success([USExaminationReadyMadeTemplate])

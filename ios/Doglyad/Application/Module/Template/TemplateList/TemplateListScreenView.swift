@@ -24,6 +24,7 @@ struct TemplateListScreenView: DView {
                         ) {
                             if viewModel.templates.isEmpty {
                                 TemplateListEmptyView()
+                                    .transition(.opacity)
                             } else {
                                 ForEach(viewModel.templates) { template in
                                     TemplateListItemCardView(
@@ -50,6 +51,7 @@ struct TemplateListScreenView: DView {
                 .padding(size.s16)
             }
         )
+        .animation(theme.animation, value: viewModel.templates)
         .onAppear {
             viewModel.onAppear()
         }

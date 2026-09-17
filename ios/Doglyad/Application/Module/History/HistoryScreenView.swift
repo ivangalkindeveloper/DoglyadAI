@@ -23,8 +23,10 @@ struct HistoryScreenView: DView {
                             HistoryLoadingView(
                                 cardCount: viewModel.pageSize
                             )
+                            .transition(.opacity)
                         } else if viewModel.sections.isEmpty {
                             HistoryEmptyView()
+                                .transition(.opacity)
                         } else {
                             ForEach(viewModel.sections) { section in
                                 Section {
@@ -49,6 +51,7 @@ struct HistoryScreenView: DView {
 
                             if viewModel.hasMoreOffset {
                                 HistoryOffsetLoadingView()
+                                    .transition(.opacity)
                                     .onAppear {
                                         viewModel.onOffsetAppear()
                                     }
@@ -69,9 +72,21 @@ struct HistoryScreenView: DView {
                     )
                     .dStyle(.primaryButton)
                     .padding(size.s16)
+                    .transition(
+                        .move(edge: .bottom)
+                            .combined(with: .opacity)
+                    )
                 }
             }
         )
+        .animation(theme.animation, value: viewModel.isLoading)
+        .animation(
+            theme.animation,
+            value: viewModel.sections.flatMap { section in
+                section.reports.map(\.id)
+            }
+        )
+        .animation(theme.animation, value: viewModel.hasMoreOffset)
         .onAppear(perform: viewModel.onAppear)
         .environmentObject(viewModel)
     }

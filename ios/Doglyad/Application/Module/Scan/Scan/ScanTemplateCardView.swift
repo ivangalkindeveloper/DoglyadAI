@@ -98,5 +98,9 @@ struct ScanTemplateCardView: DView {
             theme.animation,
             value: viewModel.isSelectedTemplateExaminationTypeMismatch
         )
+        .animation(
+            theme.animation,
+            value: ultrasoundViewModel.template
+        )
     }
 }

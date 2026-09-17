@@ -39,6 +39,10 @@ struct OnBoardingScreenView: DView {
                             action: viewModel.onPressedBack
                         )
                         .dStyle(.circle)
+                        .transition(
+                            .scale
+                                .combined(with: .opacity)
+                        )
                     }
 
                     DButton(
@@ -49,6 +53,8 @@ struct OnBoardingScreenView: DView {
                     .dStyle(.primaryButton)
                 }
                 .padding(size.s16)
+                .animation(.easeInOut, value: viewModel.page)
+                .animation(theme.animation, value: viewModel.isLegalAccepted)
             }
         )
         .onAppear(perform: viewModel.onAppear)

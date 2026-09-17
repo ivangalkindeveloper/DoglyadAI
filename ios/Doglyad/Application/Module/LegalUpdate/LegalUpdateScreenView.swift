@@ -69,6 +69,7 @@ struct LegalUpdateScreenView: DView {
                 .padding(size.s16)
             }
         )
+        .animation(theme.animation, value: viewModel.isLegalAccepted)
         .onAppear(perform: viewModel.onAppear)
     }
 }

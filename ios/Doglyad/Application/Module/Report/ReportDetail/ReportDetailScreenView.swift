@@ -140,6 +140,7 @@ struct ReportDetailScreenView: DView {
                                     backgroundColor: color.grayscaleBackgroundWeak
                                 )
                                 .padding(.bottom, size.s8)
+                                .transition(.opacity)
                             }
 
                             DText(.reportActualModelResponseTitle)
@@ -186,21 +187,24 @@ struct ReportDetailScreenView: DView {
                             .padding(.bottom, size.s16)
 
                             if !report.previousModelReports.isEmpty {
-                                DText(.reportPreviousModelResponsesTitle)
-                                    .dStyle(
-                                        font: typography.linkLarge
-                                    )
-                                    .padding(.top, size.s8)
-                                    .padding(.horizontal, size.s8)
-                                    .padding(.bottom, size.s16)
+                                Group {
+                                    DText(.reportPreviousModelResponsesTitle)
+                                        .dStyle(
+                                            font: typography.linkLarge
+                                        )
+                                        .padding(.top, size.s8)
+                                        .padding(.horizontal, size.s8)
+                                        .padding(.bottom, size.s16)
 
-                                ForEach(report.previousModelReports) { modelReport in
-                                    NeuralModelReportCardView(
-                                        report: modelReport,
-                                        onTapCopy: { viewModel.onTapCopy(report: modelReport) }
-                                    )
-                                    .padding(.bottom, size.s8)
+                                    ForEach(report.previousModelReports) { modelReport in
+                                        NeuralModelReportCardView(
+                                            report: modelReport,
+                                            onTapCopy: { viewModel.onTapCopy(report: modelReport) }
+                                        )
+                                        .padding(.bottom, size.s8)
+                                    }
                                 }
+                                .transition(.opacity)
                             }
                         }
                         .padding(.horizontal, size.s16)
@@ -210,6 +214,14 @@ struct ReportDetailScreenView: DView {
                 }
             }
         }
+        .animation(
+            theme.animation,
+            value: viewModel.report.actualModelReport.id
+        )
+        .animation(
+            theme.animation,
+            value: viewModel.report.previousModelReports.map(\.id)
+        )
         .onAppear(perform: viewModel.onAppear)
         .environmentObject(viewModel)
     }

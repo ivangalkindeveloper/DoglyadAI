@@ -26,6 +26,7 @@ struct SettingsScreenView: DView {
                             description: viewModel.historyDescription(),
                             action: viewModel.onTapHistory
                         )
+                        .contentTransition(.opacity)
                         DListButtonCard(
                             image: .iconTemplates,
                             title: .settingsTemplatesTitle,
@@ -52,6 +53,7 @@ struct SettingsScreenView: DView {
                             ),
                             action: viewModel.onTapNeuralModelSelection
                         )
+                        .contentTransition(.opacity)
                         DListButtonCard(
                             image: .iconAISettings,
                             title: .settingsNeuralModelSettingsTitle,
@@ -91,6 +93,8 @@ struct SettingsScreenView: DView {
                 .padding(size.s16)
                 .padding(.top, toolbarInset)
                 .padding(.bottom, size.s32)
+                .animation(theme.animation, value: viewModel.reportsCount)
+                .animation(theme.animation, value: viewModel.neuralModel.id)
             }
         }
         .onAppear {
