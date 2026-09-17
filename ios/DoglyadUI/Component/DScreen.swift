@@ -4,6 +4,7 @@ public struct DScreen<
     Leading: View,
     Title: View,
     Trailing: View,
+    ToolbarContent: View,
     Content: View,
     Bottom: View,
     KeyboardToolbar: View
@@ -20,6 +21,7 @@ public struct DScreen<
     let leading: Leading
     let titleContent: Title
     let trailing: Trailing
+    let toolbarContent: ToolbarContent
     let onTapBody: (() -> Void)?
     let content: (CGFloat, CGFloat) -> Content
     let bottom: (() -> Bottom)?
@@ -33,6 +35,7 @@ public struct DScreen<
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
         @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
+        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content
     ) where Bottom == EmptyView, KeyboardToolbar == EmptyView {
@@ -43,6 +46,7 @@ public struct DScreen<
         self.leading = leading()
         self.titleContent = titleContent()
         self.trailing = trailing()
+        self.toolbarContent = toolbarContent()
         self.onTapBody = onTapBody
         self.content = content
         bottom = nil
@@ -57,6 +61,7 @@ public struct DScreen<
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
         @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
+        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
         @ViewBuilder bottom: @escaping () -> Bottom
@@ -68,6 +73,7 @@ public struct DScreen<
         self.leading = leading()
         self.titleContent = titleContent()
         self.trailing = trailing()
+        self.toolbarContent = toolbarContent()
         self.onTapBody = onTapBody
         self.content = content
         self.bottom = bottom
@@ -82,6 +88,7 @@ public struct DScreen<
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
         @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
+        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content
@@ -93,6 +100,7 @@ public struct DScreen<
         self.leading = leading()
         self.titleContent = titleContent()
         self.trailing = trailing()
+        self.toolbarContent = toolbarContent()
         self.onTapBody = onTapBody
         self.content = content
         bottom = nil
@@ -107,6 +115,7 @@ public struct DScreen<
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
         @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
+        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
@@ -119,6 +128,7 @@ public struct DScreen<
         self.leading = leading()
         self.titleContent = titleContent()
         self.trailing = trailing()
+        self.toolbarContent = toolbarContent()
         self.onTapBody = onTapBody
         self.content = content
         self.bottom = bottom
@@ -208,6 +218,7 @@ public struct DScreen<
             || !(leading is EmptyView)
             || !(titleContent is EmptyView)
             || !(trailing is EmptyView)
+            || !(toolbarContent is EmptyView)
     }
 
     private func bodyView(
@@ -225,17 +236,23 @@ public struct DScreen<
         VStack(
             spacing: .zero
         ) {
-            HStack(
-                spacing: size.s8
+            VStack(
+                spacing: .zero
             ) {
-                leadingView
-                Spacer()
-                titleView
-                Spacer()
-                trailingView
+                HStack(
+                    spacing: .zero
+                ) {
+                    leadingView
+                    Spacer()
+                    titleView
+                    Spacer()
+                    trailingView
+                }
+                .padding(.top, size.s2 + safeAreaInsetTop)
+                .padding(.horizontal, size.adaptiveCornerRadius / 4)
+
+                toolbarContent
             }
-            .padding(.top, size.s2 + safeAreaInsetTop)
-            .padding(.horizontal, size.adaptiveCornerRadius / 4)
             .padding(.bottom, size.adaptiveCornerRadius / 4)
         }
         .frame(maxWidth: .infinity, alignment: .top)

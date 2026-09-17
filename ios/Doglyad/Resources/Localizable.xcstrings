@@ -1607,13 +1607,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "There are no ready-made templates yet."
+            "value": "There are no ready-made templates yet"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Готовых шаблонов пока нет."
+            "value": "Готовых шаблонов пока нет"
           }
         }
       }
@@ -1624,13 +1624,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Check your internet connection and try again."
+            "value": "Check your internet connection and try again"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Проверьте подключение к интернету и попробуйте снова."
+            "value": "Проверьте подключение к интернету и попробуйте снова"
           }
         }
       }
@@ -1675,13 +1675,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No matching templates found."
+            "value": "No matching templates found"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Подходящие шаблоны не найдены."
+            "value": "Подходящие шаблоны не найдены"
           }
         }
       }
