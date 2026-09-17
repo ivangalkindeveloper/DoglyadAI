@@ -7,6 +7,7 @@ import SwiftUI
 @MainActor
 final class TemplateListViewModel: DViewModel {
     @Published var templates: [USExaminationTemplate] = []
+    @Published private(set) var isLoading = true
 
     init(
         container: DependencyContainer,
@@ -26,10 +27,13 @@ final class TemplateListViewModel: DViewModel {
     }
 
     private func loadTemplates() {
+        isLoading = true
         handle {
             await self.container.templateRepository.getTemplates(
                 usExaminationTypesById: self.container.usExaminationTypesById
             )
+        } onDefer: {
+            self.isLoading = false
         } onMainSuccess: { templates in
             self.templates = templates
         }

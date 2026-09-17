@@ -1,20 +1,20 @@
 import DoglyadUI
 import SwiftUI
 
-struct StorageClearConclusionsBottomSheetView: DView {
+struct TemplateDeleteBottomSheetView: DView {
     @EnvironmentObject var theme: DTheme
 
-    @StateObject var viewModel: StorageClearConclusionsViewModel
+    @StateObject var viewModel: TemplateDeleteViewModel
 
     var body: some View {
         DBottomSheet(
-            title: .storageClearConclusionsWarningTitle,
-            fraction: 0.3
+            title: .templateDeleteTitle,
+            fraction: 0.25
         ) { toolbarHeight, _ in
             VStack(
                 spacing: .zero
             ) {
-                DText(.storageClearConclusionsWarningDescription)
+                DText(.templateDeleteDescription)
                     .dStyle(
                         font: typography.textSmall,
                         color: color.grayscalePlacehold,
@@ -26,7 +26,7 @@ struct StorageClearConclusionsBottomSheetView: DView {
             }
         } bottom: {
             DButton(
-                title: .buttonClear,
+                title: .buttonDelete,
                 action: viewModel.onTapConfirm
             )
             .dStyle(.primaryButton)

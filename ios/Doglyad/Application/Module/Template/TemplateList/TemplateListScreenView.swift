@@ -22,7 +22,10 @@ struct TemplateListScreenView: DView {
                             alignment: .leading,
                             spacing: size.s4
                         ) {
-                            if viewModel.templates.isEmpty {
+                            if viewModel.isLoading {
+                                TemplateListLoadingView()
+                                    .transition(.opacity)
+                            } else if viewModel.templates.isEmpty {
                                 TemplateListEmptyView()
                                     .transition(.opacity)
                             } else {
@@ -51,6 +54,7 @@ struct TemplateListScreenView: DView {
                 .padding(size.s16)
             }
         )
+        .animation(theme.animation, value: viewModel.isLoading)
         .animation(theme.animation, value: viewModel.templates)
         .onAppear {
             viewModel.onAppear()

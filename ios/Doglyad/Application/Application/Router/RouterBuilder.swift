@@ -78,12 +78,14 @@ final class RouterBuilder: RouterBuilderProtocol {
             ))
         case .webDocument:
             AnyView(WebDocumentBottomSheet(arguments: route.arguments as! WebDocumentBottomSheetArguments))
-        case .storageClearConclusions:
-            AnyView(StorageClearConclusionsBottomSheet(
-                arguments: route.arguments as? StorageClearConclusionsArguments
+        case .storageClearProtocols:
+            AnyView(StorageClearProtocolsBottomSheet(
+                arguments: route.arguments as? StorageClearProtocolsArguments
             ))
         case .storageClearAll:
             AnyView(StorageClearAllBottomSheet(arguments: route.arguments as? StorageClearAllArguments))
+        case .templateDelete:
+            AnyView(TemplateDeleteBottomSheet(arguments: route.arguments as? TemplateDeleteArguments))
         case .about:
             AnyView(AboutBottomSheet())
         case .share:

@@ -258,6 +258,23 @@
         }
       }
     },
+    "buttonDelete": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Delete"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Удалить"
+          }
+        }
+      }
+    },
     "buttonDone": {
       "extractionState": "manual",
       "localizations": {
@@ -3216,7 +3233,7 @@
         }
       }
     },
-    "storageClearConclusionsDescription": {
+    "storageClearProtocolsDescription": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -3233,7 +3250,7 @@
         }
       }
     },
-    "storageClearConclusionsSuccessMessageDescription": {
+    "storageClearProtocolsSuccessMessageDescription": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -3250,7 +3267,7 @@
         }
       }
     },
-    "storageClearConclusionsSuccessMessageTitle": {
+    "storageClearProtocolsSuccessMessageTitle": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -3267,7 +3284,7 @@
         }
       }
     },
-    "storageClearConclusionsTitle": {
+    "storageClearProtocolsTitle": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -3284,7 +3301,7 @@
         }
       }
     },
-    "storageClearConclusionsWarningDescription": {
+    "storageClearProtocolsWarningDescription": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -3301,7 +3318,7 @@
         }
       }
     },
-    "storageClearConclusionsWarningTitle": {
+    "storageClearProtocolsWarningTitle": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -3539,7 +3556,24 @@
         }
       }
     },
-    "templateDeleteButton": {
+    "templateDeleteDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Are you sure you want to delete the template?"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вы уверены что хотите удалить шаблон?"
+          }
+        }
+      }
+    },
+    "templateDeleteTitle": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -3551,7 +3585,7 @@
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Удалить шаблон"
+            "value": "Удаление шаблона"
           }
         }
       }

@@ -18,9 +18,9 @@ struct StorageScreenView: DView {
                     spacing: size.s8
                 ) {
                     DListButtonCard(
-                        title: .storageClearConclusionsTitle,
-                        description: .storageClearConclusionsDescription,
-                        action: viewModel.onTapClearConclusions
+                        title: .storageClearProtocolsTitle,
+                        description: .storageClearProtocolsDescription,
+                        action: viewModel.onTapClearProtocols
                     )
                     DListButtonCard(
                         title: .storageClearAllTitle,

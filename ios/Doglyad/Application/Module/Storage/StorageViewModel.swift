@@ -29,11 +29,11 @@ final class StorageViewModel: DViewModel {
         coordinator.pop()
     }
 
-    func onTapClearConclusions() {
-        analytics.buttonTapped(.storageClearConclusions)
+    func onTapClearProtocols() {
+        analytics.buttonTapped(.storageClearProtocols)
         coordinator.sheet(
-            .storageClearConclusions,
-            arguments: StorageClearConclusionsArguments(
+            .storageClearProtocols,
+            arguments: StorageClearProtocolsArguments(
                 onConfirm: { [weak self] in
                     guard let self = self else { return }
 
@@ -42,8 +42,8 @@ final class StorageViewModel: DViewModel {
                     } onMainSuccess: { _ in
                         self.messager.show(
                             type: .success,
-                            title: .storageClearConclusionsSuccessMessageTitle,
-                            description: .storageClearConclusionsSuccessMessageDescription
+                            title: .storageClearProtocolsSuccessMessageTitle,
+                            description: .storageClearProtocolsSuccessMessageDescription
                         )
                         self.coordinator.pop()
                     }

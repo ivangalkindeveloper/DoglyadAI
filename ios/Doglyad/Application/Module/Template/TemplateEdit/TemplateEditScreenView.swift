@@ -11,6 +11,13 @@ struct TemplateEditScreenView: DView {
         DScreen(
             title: .templateEditTitle,
             onTapBack: viewModel.onTapBack,
+            trailing: {
+                DButton(
+                    image: .delete,
+                    action: viewModel.onTapDelete
+                )
+                .dStyle(.circle)
+            },
             onTapBody: viewModel.unfocus,
             keyboardToolbar: {
                 if focus != nil {
@@ -110,22 +117,11 @@ struct TemplateEditScreenView: DView {
                 .scrollDismissesKeyboard(.interactively)
             },
             bottom: {
-                VStack(
-                    spacing: .zero
-                ) {
-                    DButton(
-                        title: .buttonSave,
-                        action: viewModel.onTapSave
-                    )
-                    .dStyle(.primaryButton)
-                    .padding(.bottom, size.s8)
-
-                    DButton(
-                        title: .templateDeleteButton,
-                        action: viewModel.onTapDelete
-                    )
-                    .dStyle(.card)
-                }
+                DButton(
+                    title: .buttonSave,
+                    action: viewModel.onTapSave
+                )
+                .dStyle(.primaryButton)
                 .padding(size.s16)
             }
         )

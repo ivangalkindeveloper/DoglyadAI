@@ -31,8 +31,9 @@ enum SheetType: Hashable {
     case photoLibraryPicker
     case reportReceived
     case webDocument
-    case storageClearConclusions
+    case storageClearProtocols
     case storageClearAll
+    case templateDelete
     case about
     case share
     case subscriptionCustomerCenter

@@ -1,16 +1,16 @@
 import Router
 import SwiftUI
 
-struct StorageClearConclusionsBottomSheet: View {
+struct TemplateDeleteBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
 
-    let arguments: StorageClearConclusionsArguments?
+    let arguments: TemplateDeleteArguments?
 
     var body: some View {
-        StorageClearConclusionsBottomSheetView(
-            viewModel: StorageClearConclusionsViewModel(
+        TemplateDeleteBottomSheetView(
+            viewModel: TemplateDeleteViewModel(
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
@@ -21,7 +21,7 @@ struct StorageClearConclusionsBottomSheet: View {
 }
 
 #Preview {
-    StorageClearConclusionsBottomSheet(
+    TemplateDeleteBottomSheet(
         arguments: nil
     )
     .previewable()

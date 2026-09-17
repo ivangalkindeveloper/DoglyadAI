@@ -172,6 +172,17 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
 
     func onTapDelete() {
         analytics.buttonTapped(.templateEditDelete)
+        coordinator.sheet(
+            .templateDelete,
+            arguments: TemplateDeleteArguments(
+                onConfirm: { [weak self] in
+                    self?.deleteTemplate()
+                }
+            )
+        )
+    }
+
+    private func deleteTemplate() {
         onDeleteTemplate(arguments.templateId)
         messager.show(
             type: .success,

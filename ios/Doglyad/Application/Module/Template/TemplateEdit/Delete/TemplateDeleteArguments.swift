@@ -1,6 +1,6 @@
 import Router
 
-final class StorageClearConclusionsArguments: RouteArgumentsProtocol {
+final class TemplateDeleteArguments: RouteArgumentsProtocol {
     let onConfirm: () -> Void
 
     init(
