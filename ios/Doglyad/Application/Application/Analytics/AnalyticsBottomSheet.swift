@@ -1,5 +1,6 @@
 enum AnalyticsBottomSheet: String {
     case about
+    case importMedia = "import_media"
     case permissionCamera = "permission_camera"
     case permissionPhotoLibrary = "permission_photo_library"
     case permissionSpeech = "permission_speech"

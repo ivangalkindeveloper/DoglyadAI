@@ -20,7 +20,10 @@ struct ScanCameraBottomSheetView: DView {
                 ScanCameraCaptureView()
             }
         }
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear {
+            viewModel.onAppear()
+            viewModel.onCameraAppear()
+        }
         .onDisappear(perform: viewModel.onDisappear)
         .environmentObject(viewModel)
     }

@@ -1,3 +1,4 @@
+import DoglyadCamera
 import Router
 import SwiftUI
 
@@ -25,6 +26,7 @@ struct ScanCameraBottomSheet: View {
 
     ScanCameraBottomSheet(
         arguments: ScanCameraArguments(
+            cameraController: DCameraControllerFactory.make(),
             photos: $photos,
             photoMaxCount: 6
         )

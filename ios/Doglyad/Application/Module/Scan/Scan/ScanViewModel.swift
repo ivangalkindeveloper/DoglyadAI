@@ -1,4 +1,5 @@
 import Combine
+import DoglyadCamera
 import DoglyadNetwork
 import DoglyadUI
 import Foundation
@@ -30,6 +31,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     )
     private var draftPhotosCancellable: AnyCancellable?
     private var draftLifecycleCancellable: AnyCancellable?
+    private var cameraController: DCameraControllerFactory.Controller?
 
     private enum DraftInitializationResult {
         case draft(USExaminationDraft)
@@ -171,7 +173,19 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     var isPhotoFilling: Bool {
-        photos.count == photoMaxCount
+        photos.count >= photoMaxCount
+    }
+
+    var isPhotoEmptyStateVisible: Bool {
+        photos.isEmpty
+    }
+
+    var isPhotoListVisible: Bool {
+        !photos.isEmpty
+    }
+
+    var isPhotoImportButtonVisible: Bool {
+        !isPhotoFilling
     }
 
     func unfocus() {
@@ -276,7 +290,25 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         isPhotoFilling || isLoading
     }
 
-    func onTapCamera() {
+    func onTapImport() {
+        guard !isMediaSelectionDisabled else { return }
+
+        analytics.buttonTapped(.scanImport)
+        unfocus()
+        coordinator.sheet(
+            .importMedia,
+            arguments: ImportMediaArguments(
+                onTapCamera: { [weak self] in
+                    self?.onTapCamera()
+                },
+                onTapGallery: { [weak self] in
+                    self?.onTapGallery()
+                }
+            )
+        )
+    }
+
+    private func onTapCamera() {
         guard !isMediaSelectionDisabled else { return }
 
         analytics.buttonTapped(.scanCamera)
@@ -288,9 +320,12 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 return self.coordinator.sheet(.permissionCamera)
             }
 
+            let cameraController = self.cameraController ?? DCameraControllerFactory.make()
+            self.cameraController = cameraController
             self.coordinator.sheet(
                 .scanCamera,
                 arguments: ScanCameraArguments(
+                    cameraController: cameraController,
                     photos: Binding(
                         get: { [weak self] in
                             self?.photos ?? []
@@ -305,7 +340,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         }
     }
 
-    func onTapGallery() {
+    private func onTapGallery() {
         guard !isMediaSelectionDisabled else { return }
 
         analytics.buttonTapped(

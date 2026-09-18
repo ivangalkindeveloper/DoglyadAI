@@ -41,6 +41,7 @@ enum AnalyticsButton: String {
     case scanFill = "scan_fill"
     case scanGallery = "scan_gallery"
     case scanGenerate = "scan_generate"
+    case scanImport = "scan_import"
     case scanNeuralModelSelection = "scan_neural_model_selection"
     case scanNeuralModelSettings = "scan_neural_model_settings"
     case scanPatientDateOfBirth = "scan_patient_date_of_birth"

@@ -50,6 +50,8 @@ final class RouterBuilder: RouterBuilderProtocol {
         route: RouteSheet<SheetType>
     ) -> AnyView {
         switch route.type {
+        case .importMedia:
+            AnyView(ImportMediaBottomSheet(arguments: route.arguments as! ImportMediaArguments))
         case .scanCamera:
             AnyView(ScanCameraBottomSheet(arguments: route.arguments as! ScanCameraArguments))
         case .selectUSExaminationType:

@@ -8,7 +8,7 @@ struct ScanPhotoListView: DView {
 
     var body: some View {
         Group {
-            if !viewModel.photos.isEmpty {
+            if viewModel.isPhotoListVisible {
                 VStack(
                     alignment: .leading,
                     spacing: .zero
@@ -20,6 +20,16 @@ struct ScanPhotoListView: DView {
                         HStack(
                             spacing: .zero
                         ) {
+                            if viewModel.isPhotoImportButtonVisible {
+                                ScanMediaButtonView(
+                                    isCompact: true,
+                                    action: viewModel.onTapImport
+                                )
+                                .disabled(viewModel.isMediaSelectionDisabled)
+                                .padding(.horizontal, size.s4)
+                                .transition(.opacity)
+                            }
+
                             ForEach(viewModel.photos) { photo in
                                 PhotoCardView(
                                     image: photo.thumbnail,

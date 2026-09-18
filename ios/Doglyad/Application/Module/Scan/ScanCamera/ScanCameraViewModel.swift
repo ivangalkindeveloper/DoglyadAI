@@ -15,6 +15,7 @@ final class ScanCameraViewModel: DViewModel {
         arguments: ScanCameraArguments
     ) {
         self.arguments = arguments
+        _cameraController = NestedObservableObject(wrappedValue: arguments.cameraController)
         photos = arguments.photos.wrappedValue
         super.init(
             container: container,
@@ -24,7 +25,7 @@ final class ScanCameraViewModel: DViewModel {
         )
     }
 
-    @NestedObservableObject var cameraController: DCameraControllerFactory.Controller = DCameraControllerFactory.make()
+    @NestedObservableObject var cameraController: DCameraControllerFactory.Controller
     @Published private(set) var photos: [USExaminationScanPhoto]
 
     var photoMaxCount: Int {
@@ -39,7 +40,7 @@ final class ScanCameraViewModel: DViewModel {
         cameraController.isRunning && !isPhotoFilling
     }
 
-    override func onInit() {
+    func onCameraAppear() {
         cameraController.startSession()
     }
 

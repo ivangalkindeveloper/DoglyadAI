@@ -70,22 +70,11 @@ struct ScanScreenView: DView {
                             alignment: .leading,
                             spacing: .zero
                         ) {
-                            if !viewModel.isPhotoFilling {
-                                HStack(
-                                    spacing: size.s8
-                                ) {
-                                    ScanMediaButtonView(
-                                        image: .camera,
-                                        title: .buttonCamera,
-                                        action: viewModel.onTapCamera
-                                    )
-
-                                    ScanMediaButtonView(
-                                        image: .image,
-                                        title: .buttonGallery,
-                                        action: viewModel.onTapGallery
-                                    )
-                                }
+                            if viewModel.isPhotoEmptyStateVisible {
+                                ScanMediaButtonView(
+                                    action: viewModel.onTapImport
+                                )
+                                .disabled(viewModel.isMediaSelectionDisabled)
                                 .padding(.horizontal, size.s16)
                                 .padding(.bottom, size.s8)
                                 .transition(
@@ -104,7 +93,7 @@ struct ScanScreenView: DView {
                         .padding(.bottom, size.s136 * 2)
                         .animation(
                             theme.animation,
-                            value: viewModel.isPhotoFilling
+                            value: viewModel.photos
                         )
                     }
 

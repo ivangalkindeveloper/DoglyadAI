@@ -4,38 +4,56 @@ import SwiftUI
 struct ScanMediaButtonView: DView {
     @EnvironmentObject var theme: DTheme
 
-    let image: ImageResource
-    let title: LocalizedStringResource
+    let isCompact: Bool
     let action: () -> Void
+
+    init(
+        isCompact: Bool = false,
+        action: @escaping () -> Void
+    ) {
+        self.isCompact = isCompact
+        self.action = action
+    }
 
     var body: some View {
         DButtonCard(
             action: action
         ) {
-            VStack(
-                spacing: size.s4
+            HStack(
+                spacing: size.s8
             ) {
                 DIcon(
-                    image,
+                    .import,
                     color: color.primaryDefault,
                     height: size.s24
                 )
 
-                DText(title)
-                    .dStyle(
-                        font: typography.linkXSmall,
-                        color: color.primaryDefault,
-                        alignment: .center
-                    )
+                if !isCompact {
+                    DText(.scanImportButtonTitle)
+                        .dStyle(
+                            font: typography.linkSmall,
+                            color: color.primaryDefault,
+                            alignment: .center
+                        )
+                }
             }
+            .padding(isCompact ? .zero : size.s16)
             .frame(
-                maxWidth: .infinity,
-                minHeight: size.s36
+                maxWidth: isCompact ? nil : .infinity
             )
         }
+        .frame(
+            width: isCompact ? compactButtonSize : nil,
+            height: isCompact ? compactButtonSize : buttonHeight
+        )
+        .clipShape(
+            RoundedRectangle(
+                cornerRadius: cornerRadius
+            )
+        )
         .overlay {
             RoundedRectangle(
-                cornerRadius: size.adaptiveCardCornerRadius
+                cornerRadius: cornerRadius
             )
             .stroke(
                 color.primaryDefault,
@@ -46,19 +64,34 @@ struct ScanMediaButtonView: DView {
                 )
             )
         }
+        .if(isCompact) { view in
+            view
+                .padding(.top, size.s8)
+                .padding(.trailing, size.s8)
+        }
+    }
+
+    private var compactButtonSize: CGFloat {
+        size.s64
+    }
+
+    private var buttonHeight: CGFloat {
+        size.s64 + size.s8
+    }
+
+    private var cornerRadius: CGFloat {
+        isCompact ? size.adaptiveCornerRadius / 4 : size.adaptiveCardCornerRadius
     }
 }
 
 #Preview {
-    HStack {
+    VStack {
         ScanMediaButtonView(
-            image: .camera,
-            title: "Camera",
             action: {}
         )
+
         ScanMediaButtonView(
-            image: .image,
-            title: "Gallery",
+            isCompact: true,
             action: {}
         )
     }

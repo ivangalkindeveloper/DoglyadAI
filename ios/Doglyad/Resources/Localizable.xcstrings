@@ -853,6 +853,23 @@
         }
       }
     },
+    "importMediaTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import media"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Импорт медиа"
+          }
+        }
+      }
+    },
     "legalUpdateDescription": {
       "extractionState": "manual",
       "localizations": {
@@ -2175,6 +2192,23 @@
           "stringUnit": {
             "state": "translated",
             "value": "Мужчина"
+          }
+        }
+      }
+    },
+    "scanImportButtonTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attach ultrasound images"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Приложите снимки УЗИ"
           }
         }
       }
