@@ -26,7 +26,7 @@ struct ScanPhotoListView: DView {
                                     action: viewModel.onTapImport
                                 )
                                 .disabled(viewModel.isMediaSelectionDisabled)
-                                .padding(.horizontal, size.s4)
+                                .padding(.trailing, size.s8)
                                 .transition(.opacity)
                             }
 
@@ -39,7 +39,6 @@ struct ScanPhotoListView: DView {
                                 )
                                 .transition(.opacity)
                             }
-                            .padding(.horizontal, size.s2)
                         }
                         .padding(.horizontal, size.s16)
                     }

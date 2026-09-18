@@ -28,7 +28,7 @@ struct ScanCameraCaptureView: DView {
                             alignment: .center
                         )
                 }
-                .padding(.horizontal, size.s8)
+                .padding(.horizontal, size.s16)
                 .transition(
                     .move(edge: .bottom)
                         .combined(with: .opacity)

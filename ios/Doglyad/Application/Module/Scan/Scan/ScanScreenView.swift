@@ -76,7 +76,7 @@ struct ScanScreenView: DView {
                                 )
                                 .disabled(viewModel.isMediaSelectionDisabled)
                                 .padding(.horizontal, size.s16)
-                                .padding(.bottom, size.s8)
+                                .padding(.bottom, size.s4)
                                 .transition(
                                     .move(edge: .top)
                                         .combined(with: .opacity)

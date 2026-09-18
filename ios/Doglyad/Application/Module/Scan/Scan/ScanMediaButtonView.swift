@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanMediaButtonView: DView {
+    @Environment(\.isEnabled) private var isEnabled
     @EnvironmentObject var theme: DTheme
 
     let isCompact: Bool
@@ -16,7 +17,7 @@ struct ScanMediaButtonView: DView {
     }
 
     var body: some View {
-        DButtonCard(
+        Button(
             action: action
         ) {
             HStack(
@@ -39,35 +40,44 @@ struct ScanMediaButtonView: DView {
             }
             .padding(isCompact ? .zero : size.s16)
             .frame(
-                maxWidth: isCompact ? nil : .infinity
+                maxWidth: .infinity,
+                maxHeight: .infinity
             )
+            .background {
+                RoundedRectangle(
+                    cornerRadius: cornerRadius
+                )
+                .fill(
+                    isEnabled ? color.grayscaleBackground : color.grayscaleInput
+                )
+            }
+            .clipShape(
+                RoundedRectangle(
+                    cornerRadius: cornerRadius
+                )
+            )
+            .overlay {
+                RoundedRectangle(
+                    cornerRadius: cornerRadius
+                )
+                .strokeBorder(
+                    color.primaryDefault,
+                    style: StrokeStyle(
+                        lineWidth: 1,
+                        lineCap: .round,
+                        dash: [size.s8, size.s4]
+                    )
+                )
+            }
         }
+        .buttonStyle(ScanMediaButtonStyle())
         .frame(
             width: isCompact ? compactButtonSize : nil,
             height: isCompact ? compactButtonSize : buttonHeight
         )
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: cornerRadius
-            )
-        )
-        .overlay {
-            RoundedRectangle(
-                cornerRadius: cornerRadius
-            )
-            .stroke(
-                color.primaryDefault,
-                style: StrokeStyle(
-                    lineWidth: 1,
-                    lineCap: .round,
-                    dash: [size.s8, size.s4]
-                )
-            )
-        }
         .if(isCompact) { view in
             view
                 .padding(.top, size.s8)
-                .padding(.trailing, size.s8)
         }
     }
 
@@ -81,6 +91,17 @@ struct ScanMediaButtonView: DView {
 
     private var cornerRadius: CGFloat {
         isCompact ? size.adaptiveCornerRadius / 4 : size.adaptiveCardCornerRadius
+    }
+}
+
+private struct ScanMediaButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.6 : 1)
+            .animation(
+                .easeOut(duration: 0.1),
+                value: configuration.isPressed
+            )
     }
 }
 
