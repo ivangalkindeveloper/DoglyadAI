@@ -11,34 +11,48 @@ struct ScanCameraCaptureView: DView {
             spacing: size.s8
         ) {
             if viewModel.isCaptureAvailable {
-                VStack(
-                    spacing: size.s8
-                ) {
-                    DButton(
-                        image: .camera,
-                        action: viewModel.onTapCapture,
-                        isLoading: viewModel.cameraController.isCapturing
-                    )
-                    .dStyle(.primaryCircle)
-
-                    DText(.scanCaptureDescription)
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.grayscaleLine,
-                            alignment: .center
-                        )
-                }
-                .padding(.horizontal, size.s16)
+                DButton(
+                    image: .camera,
+                    action: viewModel.onTapCapture,
+                    isLoading: viewModel.cameraController.isCapturing
+                )
+                .dStyle(.primaryCircle)
                 .transition(
                     .move(edge: .bottom)
                         .combined(with: .opacity)
                 )
             }
 
-            ScanCameraPhotoListView()
+            VStack(
+                spacing: size.s8
+            ) {
+                if viewModel.isCaptureAvailable {
+                    DText(.scanCaptureDescription)
+                        .dStyle(
+                            font: typography.textSmall,
+                            color: color.grayscaleLine,
+                            alignment: .center
+                        )
+                        .padding(.horizontal, size.adaptiveCornerRadius / 2)
+                        .safeAreaPadding(.bottom, viewModel.photos.isEmpty ? nil : .zero)
+                }
+
+                ScanCameraPhotoListView()
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, size.s16)
+            .background(
+                Rectangle()
+                    .fill(.ultraThinMaterial)
+                    .clipShape(
+                        DRoundedCorner(
+                            radius: size.adaptiveCornerRadius,
+                            corners: [.topLeft, .topRight]
+                        )
+                    )
+            )
         }
         .frame(maxWidth: .infinity)
-        .padding(.vertical, size.s8)
         .animation(
             theme.animation,
             value: viewModel.isCaptureAvailable

@@ -48,13 +48,6 @@ final class ScanCameraViewModel: DViewModel {
         cameraController.stopSession()
     }
 
-    func onTapCameraTurnOn() {
-        guard !isPhotoFilling else { return }
-
-        analytics.buttonTapped(.scanCameraTurnOn)
-        cameraController.startSession()
-    }
-
     func onTapCapture() {
         guard !isPhotoFilling else { return }
 

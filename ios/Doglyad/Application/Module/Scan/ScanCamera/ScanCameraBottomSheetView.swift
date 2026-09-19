@@ -19,6 +19,7 @@ struct ScanCameraBottomSheetView: DView {
 
                 ScanCameraCaptureView()
             }
+            .ignoresSafeArea()
         }
         .onAppear {
             viewModel.onAppear()
