@@ -1,4 +1,5 @@
 name: Build backend images
+run-name: Backend images ${{ inputs.deployment_id || github.sha }}
 
 # Build both backend images and publish them to GitHub Container Registry.
 # VMs contain neither source code nor build tooling; they use docker compose pull.
@@ -6,6 +7,11 @@ on:
   # Manual only for now through the "Run workflow" button in Actions. Enable
   # builds on pushes to master after the deployment process is proven stable.
   workflow_dispatch:
+    inputs:
+      deployment_id:
+        description: Optional deployment correlation ID
+        required: false
+        type: string
 
 permissions:
   contents: read

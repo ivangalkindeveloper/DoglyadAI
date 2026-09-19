@@ -16,8 +16,8 @@
 	stop-backend-main \
 	sync-secrets-main-development \
 	sync-secrets-main-production \
-	update-main-development \
-	update-main-production \
+	update-infrastructure \
+	check-infrastructure \
 	start-backend-inference \
 	start-backend-inference-logs \
 	stop-backend-inference \
@@ -141,14 +141,14 @@ sync-secrets-inference:
 	test -n "$(TARGET)" || { echo "TARGET is required: make sync-secrets-inference TARGET=USER@HOST" >&2; exit 1; }
 	deploy/sync-secrets.sh inference "$(TARGET)"
 
-update-main-development:
-	test -n "$(TARGET)" || { echo "TARGET is required: make update-main-development TARGET=USER@HOST TAG=IMAGE_TAG" >&2; exit 1; }
-	test -n "$(TAG)" || { echo "TAG is required: make update-main-development TARGET=USER@HOST TAG=IMAGE_TAG" >&2; exit 1; }
-	deploy/update-main.sh development "$(TARGET)" "$(TAG)"
-update-main-production:
-	test -n "$(TARGET)" || { echo "TARGET is required: make update-main-production TARGET=USER@HOST TAG=IMAGE_TAG" >&2; exit 1; }
-	test -n "$(TAG)" || { echo "TAG is required: make update-main-production TARGET=USER@HOST TAG=IMAGE_TAG" >&2; exit 1; }
-	deploy/update-main.sh production "$(TARGET)" "$(TAG)"
+INFRASTRUCTURE_INVENTORY ?= deploy/secrets/infrastructure.json
+INFRASTRUCTURE_REF ?= master
+
+update-infrastructure:
+	bash deploy/update-infrastructure.sh --inventory "$(INFRASTRUCTURE_INVENTORY)" --ref "$(INFRASTRUCTURE_REF)"
+
+check-infrastructure:
+	bash deploy/update-infrastructure.sh --inventory "$(INFRASTRUCTURE_INVENTORY)" --check
 
 download-ios-examination-model:
 	sudo hf download mlx-community/Qwen2.5-1.5B-Instruct-4bit --local-dir ios/DoglyadNeuralModel/Resources/mlx-Qwen2.5-1.5B-Instruct-4bit

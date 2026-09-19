@@ -57,7 +57,13 @@ Response:
 
 A rate limiter is unnecessary here because the only client is the main backend, which already limits requests by client address. A limiter at this layer would group every caller under the main backend's single IP address.
 
-## Deployment
+## Deployment on managed VMs
+
+Use [deploy/README.md](../../deploy/README.md) for provisioning and the central `make check-infrastructure` / `make update-infrastructure` commands for existing servers. Those commands use published GHCR images and preserve the running vLLM container during backend updates.
+
+## Running from source on a development GPU VM
+
+The commands below build from the repository using `backend/inference/docker-compose.yml`. They are for a separate development GPU environment, not updates to managed `/opt/doglyad` deployments.
 
 1. Install Docker, NVIDIA drivers, and NVIDIA Container Toolkit on the VM.
 2. Copy the repository, or at least `backend/inference/`.

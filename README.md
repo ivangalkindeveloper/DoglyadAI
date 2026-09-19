@@ -169,6 +169,8 @@ For each model published by the main backend, `backend/main/secrets/inference_en
 
 Detailed deployment instructions are available in [`deploy/README.md`](deploy/README.md), while GPU-service configuration is documented in [`backend/inference/README.md`](backend/inference/README.md).
 
+For existing servers, use `make check-infrastructure` and `make update-infrastructure` with the inventory described in the [fleet update guide](deploy/README.md#update-all-backend-services). This is the single backend image-update entry point; bootstrap and secret synchronization serve separate purposes.
+
 ## Repository structure
 
 ```text

@@ -1,6 +1,6 @@
 ---
 name: configure-vm
-description: Configure and audit Doglyad main or inference Ubuntu VMs with bootstrap or cloud-init, Docker, Tailscale, machine configuration, secrets delivery, container startup, private inference routing, and health checks. Use when provisioning a new VM, validating an existing VM, deploying main-development, main-production, or inference, or diagnosing deployment and network readiness.
+description: Provision, configure, and audit Doglyad main or inference Ubuntu VMs with bootstrap or cloud-init, Docker, Tailscale, machine configuration, secrets delivery, initial container startup, and private routing. Use for VM setup and network readiness diagnostics. Use update-infrastructure for code rollouts and updates to existing services.
 ---
 
 # Configure a Doglyad VM
@@ -12,10 +12,12 @@ Set up or audit a VM end to end while keeping the repository, local secrets, and
 1. Resolve the role: `main` or `inference`.
 2. For `main`, resolve the environment: `development` or `production`, the public domain, and the exact SSH target.
 3. Resolve an SSH config alias when available. Inspect it with `ssh -G <alias>`; never read or print a private key.
-4. Resolve the image tag as the full SHA from a successful `Build backend images` GitHub Actions run. Do not infer success from `git rev-parse HEAD`, and do not use `latest` for a controlled deployment.
+4. For initial startup, resolve the full SHA of a successful Build backend images run and verify it in GHCR. If needed, dispatch build.yml for the intended ref and verify both image jobs. Do not run a whole-fleet update merely to provision one VM. Do not infer build success from `git rev-parse HEAD` or use `latest`.
 5. Ask only for values that cannot be discovered safely. Before any mutation, restate the resolved role, environment, SSH target, domain, and image SHA.
 
 If the user asks only to check or diagnose, perform read-only checks and report the fix without applying it. If the user asks to configure or deploy, execute safe in-scope setup steps and stop only at an interactive or external gate.
+
+For updates to existing services, use [update-infrastructure](../update-infrastructure/SKILL.md). That skill owns image builds, rollout order, verification, and rollback across the fleet; this skill owns VM setup and readiness.
 
 ## Load the current deployment contract
 
@@ -28,7 +30,6 @@ Read these files before acting because they are the source of truth and may have
 - `deploy/sync-secrets.sh`
 - `deploy/docker-compose.<role>.yml`
 - `deploy/cloud-init/<role>.yaml` when cloud-init is involved
-- `deploy/update-main.sh` and the matching Make target for an existing main deployment
 
 For `main`, also inspect the selected environment's neural-model config. For `inference`, inspect `backend/inference/README.md`.
 
@@ -129,7 +130,7 @@ deploy/sync-secrets.sh main <ssh-target>
 - `GET https://<domain>/v1/ultrasound/examination_neural_models` with no App Check token returns `401`
 - `POST https://<domain>/v1/ultrasound/generate_report` with `{}` and no App Check token returns `401`
 
-For a later image-only update, use `make update-main-development` or `make update-main-production`. Verify the successful SHA first. Do not use `sync-secrets.sh` merely to update code, and do use it when local secrets actually changed.
+For a later image-only update, use [update-infrastructure](../update-infrastructure/SKILL.md). Do not use `sync-secrets.sh` merely to update code; use it when local secrets actually changed.
 
 ## Configure an inference VM
 
