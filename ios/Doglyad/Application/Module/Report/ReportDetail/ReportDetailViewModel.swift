@@ -43,6 +43,22 @@ final class ReportDetailViewModel: DViewModel {
     @Published var report: USExaminationReport
     @Published var isLoading = false
 
+    var subTitle: String {
+        "\(report.examinationData.patientName), \(report.date.localized())"
+    }
+
+    func onTapPhoto(_ photo: USExaminationScanPhoto) {
+        guard !isLoading else { return }
+        coordinator.screen(
+            .photoView,
+            arguments: PhotoViewScreenArguments(
+                photos: .constant(report.examinationData.photos),
+                initialPhotoID: photo.id,
+                subTitle: subTitle
+            )
+        )
+    }
+
     func onTapBack() {
         analytics.buttonTapped(.reportDetailBack)
         coordinator.pop()

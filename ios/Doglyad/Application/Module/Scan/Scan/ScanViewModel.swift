@@ -392,6 +392,22 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         }
     }
 
+    func onTapPhoto(_ photo: USExaminationScanPhoto) {
+        coordinator.screen(
+            .photoView,
+            arguments: PhotoViewScreenArguments(
+                photos: Binding(
+                    get: { [weak self] in self?.photos ?? [] },
+                    set: { [weak self] in self?.photos = $0 }
+                ),
+                initialPhotoID: photo.id,
+                onDelete: { [weak self] photo in
+                    self?.onTapDeletePhoto(photo: photo)
+                }
+            )
+        )
+    }
+
     func onTapDeletePhoto(
         photo: USExaminationScanPhoto
     ) {

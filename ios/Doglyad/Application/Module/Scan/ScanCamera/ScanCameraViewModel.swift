@@ -28,6 +28,23 @@ final class ScanCameraViewModel: DViewModel {
     @NestedObservableObject var cameraController: DCameraControllerFactory.Controller
     @Published private(set) var photos: [USExaminationScanPhoto]
 
+    func onTapPhoto(_ photo: USExaminationScanPhoto) {
+        let photos = arguments.photos
+        coordinator.dismissSheet()
+        coordinator.screen(
+            .photoView,
+            arguments: PhotoViewScreenArguments(
+                photos: photos,
+                initialPhotoID: photo.id,
+                onDelete: { photo in
+                    withAnimation {
+                        photos.wrappedValue.removeAll { $0.id == photo.id }
+                    }
+                }
+            )
+        )
+    }
+
     var photoMaxCount: Int {
         arguments.photoMaxCount
     }

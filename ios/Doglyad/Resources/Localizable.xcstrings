@@ -1,6 +1,20 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "photoViewTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "Photos" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "Снимки" } }
+      }
+    },
+    "photoViewPage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": { "stringUnit": { "state": "translated", "value": "%(current)lld of %(total)lld" } },
+        "ru": { "stringUnit": { "state": "translated", "value": "%(current)lld из %(total)lld" } }
+      }
+    },
     "": {
       "localizations": {
         "ru": {

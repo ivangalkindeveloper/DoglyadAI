@@ -16,7 +16,8 @@ struct ReportDetailPhotosView: DView {
             ) {
                 ForEach(viewModel.report.examinationData.photos) { photo in
                     PhotoCardView(
-                        image: photo.thumbnail
+                        image: photo.thumbnail,
+                        onTap: { viewModel.onTapPhoto(photo) }
                     )
                 }
                 .padding([.horizontal], size.s2)

@@ -13,6 +13,8 @@ final class RouterBuilder: RouterBuilderProtocol {
         switch route.type {
         case .newVersion:
             AnyView(NewVersionScreen(arguments: route.arguments as? NewVersionScreenArguments))
+        case .photoView:
+            AnyView(PhotoViewScreen(arguments: route.arguments as! PhotoViewScreenArguments))
         case .onBoarding:
             AnyView(OnBoardingScreen(arguments: route.arguments as? OnBoardingScreenArguments))
         case .legalUpdate:

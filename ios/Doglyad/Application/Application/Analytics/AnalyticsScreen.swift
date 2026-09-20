@@ -1,4 +1,5 @@
 enum AnalyticsScreen: String {
+    case photoView = "photo_view"
     case history
     case initializationError = "initialization_error"
     case legalUpdate = "legal_update"

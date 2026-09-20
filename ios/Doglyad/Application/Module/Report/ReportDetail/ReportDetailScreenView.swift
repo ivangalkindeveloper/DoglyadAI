@@ -17,7 +17,7 @@ struct ReportDetailScreenView: DView {
     var body: some View {
         DScreen(
             title: .reportTitle,
-            subTitle: "\(examinationData.patientName), \(report.date.localized())",
+            subTitle: viewModel.subTitle,
             onTapBack: viewModel.onTapBack,
             trailing: {
                 DButton(

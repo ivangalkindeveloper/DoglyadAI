@@ -6,13 +6,16 @@ struct PhotoCardView: DView {
 
     let image: UIImage
     let actionDelete: (() -> Void)?
+    let onTap: (() -> Void)?
 
     init(
         image: UIImage,
-        actionDelete: (() -> Void)? = nil
+        actionDelete: (() -> Void)? = nil,
+        onTap: (() -> Void)? = nil
     ) {
         self.image = image
         self.actionDelete = actionDelete
+        self.onTap = onTap
     }
 
     var body: some View {
@@ -25,6 +28,8 @@ struct PhotoCardView: DView {
             )
             .clipped()
             .cornerRadius(size.adaptiveCornerRadius / 4)
+            .onTapGesture { onTap?() }
+            .accessibilityAddTraits(onTap == nil ? [] : .isButton)
             .if(actionDelete != nil) { view in
                 view
                     .padding(.top, size.s8)

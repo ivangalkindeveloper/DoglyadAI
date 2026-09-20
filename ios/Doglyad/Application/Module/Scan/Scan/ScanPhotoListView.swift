@@ -35,6 +35,9 @@ struct ScanPhotoListView: DView {
                                     image: photo.thumbnail,
                                     actionDelete: {
                                         viewModel.onTapDeletePhoto(photo: photo)
+                                    },
+                                    onTap: {
+                                        viewModel.onTapPhoto(photo)
                                     }
                                 )
                                 .transition(.opacity)
