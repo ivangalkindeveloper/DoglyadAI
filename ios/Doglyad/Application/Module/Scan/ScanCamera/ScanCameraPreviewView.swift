@@ -14,13 +14,13 @@ struct ScanCameraPreviewView: DView {
                     .dShimmer(cornerRadius: .zero)
                     .transition(.opacity)
             } else {
-                ZStack {
-                    DCameraView(
-                        controller: viewModel.cameraController
-                    )
-
-                    ScanCameraFrameView()
-                        .padding(.bottom, size.s136)
+                DCameraView(
+                    controller: viewModel.cameraController
+                )
+                .onGeometryChange(for: CGRect.self) { proxy in
+                    proxy.frame(in: .global)
+                } action: { frame in
+                    viewModel.updatePreviewFrame(frame)
                 }
                 .transition(.opacity)
             }

@@ -27,6 +27,20 @@ final class ScanCameraViewModel: DViewModel {
 
     @NestedObservableObject var cameraController: DCameraControllerFactory.Controller
     @Published private(set) var photos: [USExaminationScanPhoto]
+    @Published private(set) var captureFrame: CGRect = .zero
+    @Published private(set) var previewFrame: CGRect = .zero
+
+    func updateCaptureFrame(_ frame: CGRect) {
+        captureFrame = frame
+    }
+
+    func updatePreviewFrame(_ frame: CGRect) {
+        previewFrame = frame
+    }
+
+    var isCaptureFrameReady: Bool {
+        !captureFrame.isEmpty && !previewFrame.isEmpty && previewFrame.contains(captureFrame)
+    }
 
     func onTapPhoto(_ photo: USExaminationScanPhoto) {
         let photos = arguments.photos
@@ -66,7 +80,7 @@ final class ScanCameraViewModel: DViewModel {
     }
 
     func onTapCapture() {
-        guard !isPhotoFilling else { return }
+        guard isCaptureAvailable, isCaptureFrameReady else { return }
 
         analytics.buttonTapped(
             .scanCapture,
@@ -74,7 +88,11 @@ final class ScanCameraViewModel: DViewModel {
                 .itemCount: .int(photos.count),
             ])
         )
-        cameraController.takePhoto { [weak self] image in
+        let cropRegion = DCameraCropRegion(
+            rect: captureFrame.offsetBy(dx: -previewFrame.minX, dy: -previewFrame.minY),
+            previewSize: previewFrame.size
+        )
+        cameraController.takePhoto(cropRegion: cropRegion) { [weak self] image in
             self?.onCapture(image)
         }
     }

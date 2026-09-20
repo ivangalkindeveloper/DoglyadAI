@@ -7,53 +7,102 @@ struct PhotoViewZoomableImage: DView {
     let image: UIImage
     let isSelected: Bool
     let contentInsets: EdgeInsets
-    @State private var scale: CGFloat = 1
-    @GestureState private var magnification: CGFloat = 1
-
-    private var effectiveScale: CGFloat { min(max(scale * magnification, 1), 5) }
+    @State private var transform = PhotoViewImageTransform()
+    @GestureState private var gestureValue: SimultaneousGesture<MagnifyGesture, DragGesture>.Value?
 
     var body: some View {
         GeometryReader { proxy in
             let imageSize = fittedImageSize(in: proxy.size)
+            let center = CGPoint(
+                x: (proxy.size.width + contentInsets.leading - contentInsets.trailing) / 2,
+                y: (proxy.size.height + contentInsets.top - contentInsets.bottom) / 2
+            )
+            let displayed = transformed(
+                by: gestureValue,
+                imageSize: imageSize,
+                viewport: proxy.size,
+                center: center
+            )
 
-            ScrollView(
-                [.horizontal, .vertical],
-                showsIndicators: false
-            ) {
+            ZStack {
+                Color.clear
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFit()
                     .frame(
-                        width: imageSize.width * effectiveScale,
-                        height: imageSize.height * effectiveScale
+                        width: imageSize.width * displayed.scale,
+                        height: imageSize.height * displayed.scale
                     )
                     .clipShape(
                         RoundedRectangle(cornerRadius: size.s16)
                     )
-                    .padding(contentInsets)
-                    .frame(
-                        minWidth: proxy.size.width,
-                        minHeight: proxy.size.height
+                    .position(
+                        x: center.x + displayed.offset.width,
+                        y: center.y + displayed.offset.height
                     )
             }
-            .scrollClipDisabled()
-            .ignoresSafeArea(.container)
-            .scrollDisabled(effectiveScale <= 1)
-            .simultaneousGesture(
+            .frame(
+                width: proxy.size.width,
+                height: proxy.size.height
+            )
+            .contentShape(Rectangle())
+            .highPriorityGesture(
                 MagnifyGesture()
-                    .updating($magnification) { value, state, _ in
-                        state = value.magnification
+                    .simultaneously(with: DragGesture(
+                        minimumDistance: transform.scale > 1 ? 10 : .greatestFiniteMagnitude
+                    ))
+                    .updating($gestureValue) { value, state, _ in
+                        state = value
                     }
                     .onEnded { value in
-                        scale = min(max(scale * value.magnification, 1), 5)
+                        transform = transformed(
+                            by: value,
+                            imageSize: imageSize,
+                            viewport: proxy.size,
+                            center: center
+                        )
                     }
             )
-            .onTapGesture(count: 2) {
-                withAnimation { scale = scale > 1 ? 1 : 2 }
+            .simultaneousGesture(
+                SpatialTapGesture(count: 2)
+                    .onEnded { value in
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            transform = transform.scale > 1
+                                ? PhotoViewImageTransform()
+                                : transform.zoomed(to: 2.5, around: value.location, center: center)
+                                .constrained(imageSize: imageSize, viewport: proxy.size, center: center)
+                        }
+                    }
+            )
+            .onChange(of: proxy.size) { _, _ in
+                transform = PhotoViewImageTransform()
             }
         }
         .ignoresSafeArea(.container)
-        .onChange(of: isSelected) { _, _ in scale = 1 }
+        .onChange(of: isSelected) { _, _ in transform = PhotoViewImageTransform() }
+    }
+
+    private func transformed(
+        by value: SimultaneousGesture<MagnifyGesture, DragGesture>.Value?,
+        imageSize: CGSize,
+        viewport: CGSize,
+        center: CGPoint
+    ) -> PhotoViewImageTransform {
+        var result = transform
+        if let pinch = value?.first {
+            result = transform.zoomed(
+                to: transform.scale * pinch.magnification,
+                around: CGPoint(
+                    x: pinch.startAnchor.x * viewport.width,
+                    y: pinch.startAnchor.y * viewport.height
+                ),
+                center: center
+            )
+        } else if let drag = value?.second {
+            result.offset.width += drag.translation.width
+            result.offset.height += drag.translation.height
+        }
+        return result.constrained(imageSize: imageSize, viewport: viewport, center: center)
     }
 
     private func fittedImageSize(in viewport: CGSize) -> CGSize {

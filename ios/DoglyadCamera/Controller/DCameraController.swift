@@ -12,6 +12,7 @@ public protocol DCameraController: AnyObject, ObservableObject {
     func stopSession()
 
     func takePhoto(
+        cropRegion: DCameraCropRegion,
         completion: @escaping (UIImage) -> Void
     )
 

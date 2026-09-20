@@ -58,7 +58,6 @@ struct PhotoViewScreenView: DView {
                         )
                         .dStyle(
                             font: typography.textSmall,
-                            color: .white,
                             alignment: .center
                         )
                     }

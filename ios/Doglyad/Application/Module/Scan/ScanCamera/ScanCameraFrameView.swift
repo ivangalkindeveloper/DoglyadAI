@@ -3,11 +3,12 @@ import SwiftUI
 
 struct ScanCameraFrameView: DView {
     @EnvironmentObject var theme: DTheme
+    let onFrameChanged: (CGRect) -> Void
 
     var body: some View {
         GeometryReader { geometry in
             let width = geometry.size.width
-            let height = geometry.size.height / 2
+            let height = width * 2 / 3
             let frameColor = color.grayscaleBackgroundWeak
             let cornerLength = size.s48
             let lineWidth = size.s8 / 2
@@ -62,12 +63,16 @@ struct ScanCameraFrameView: DView {
                 width: width,
                 height: height
             )
-            .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity,
-                alignment: .center
-            )
+            .onGeometryChange(for: CGRect.self) { proxy in
+                proxy.frame(in: .global)
+            } action: { frame in
+                onFrameChanged(frame)
+            }
         }
-        .padding(size.s16)
+        .aspectRatio(
+            3.0 / 2.0,
+            contentMode: .fit
+        )
+        .frame(maxWidth: .infinity)
     }
 }

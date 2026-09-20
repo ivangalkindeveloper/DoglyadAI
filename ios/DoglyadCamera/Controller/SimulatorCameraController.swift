@@ -1,4 +1,5 @@
 import Combine
+import CoreImage
 import UIKit
 
 @MainActor
@@ -13,6 +14,7 @@ public final class SimulatorCameraController: DCameraController {
     )
     private var captureNumber = 0
     private var capturePhotoCompletion: ((UIImage) -> Void)?
+    private let ciContext = CIContext()
 
     init() {
         previewLayer.contents = previewImage.cgImage
@@ -30,6 +32,7 @@ public final class SimulatorCameraController: DCameraController {
     }
 
     public func takePhoto(
+        cropRegion: DCameraCropRegion,
         completion: @escaping (UIImage) -> Void
     ) {
         guard !isCapturing else { return }
@@ -51,21 +54,21 @@ public final class SimulatorCameraController: DCameraController {
             self.isCapturing = false
             let completion = self.capturePhotoCompletion
             self.capturePhotoCompletion = nil
-            completion?(image)
+            guard let source = CIImage(image: image),
+                  let cropped = DCameraPhotoCrop.crop(source, to: cropRegion),
+                  let cgImage = self.ciContext.createCGImage(cropped, from: cropped.extent)
+            else { return }
+            completion?(UIImage(cgImage: cgImage))
         }
     }
 
     public func makePreviewView() -> UIView {
-        let view = UIView(frame: .zero)
-        previewLayer.frame = UIScreen.main.bounds
-        view.layer.addSublayer(previewLayer)
-        return view
+        DCameraPreviewUIView(previewLayer: previewLayer)
     }
 
     public func updatePreviewView(
         _ view: UIView
     ) {
-        guard !view.bounds.isEmpty else { return }
-        previewLayer.frame = view.bounds
+        view.setNeedsLayout()
     }
 }

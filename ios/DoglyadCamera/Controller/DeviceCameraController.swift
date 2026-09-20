@@ -13,7 +13,7 @@ public final class DeviceCameraController: DCameraController {
     private nonisolated let session = AVCaptureSession()
     private let previewLayer = AVCaptureVideoPreviewLayer()
     private nonisolated let output = AVCapturePhotoOutput()
-    private nonisolated let delegate = DevicePhotoCaptureDelegate()
+    private var captureDelegate: DevicePhotoCaptureDelegate?
 
     private var capturePhotoCompletion: ((UIImage) -> Void)?
 
@@ -25,7 +25,6 @@ public final class DeviceCameraController: DCameraController {
     init() {
         previewLayer.session = session
         previewLayer.videoGravity = .resizeAspectFill
-        delegate.controller = self
         configureSession()
     }
 
@@ -57,9 +56,15 @@ public final class DeviceCameraController: DCameraController {
     }
 
     public func takePhoto(
+        cropRegion: DCameraCropRegion,
         completion: @escaping (UIImage) -> Void
     ) {
-        guard !isCapturing else { return }
+        guard !isCapturing, let previewConnection = previewLayer.connection else { return }
+        let rotationAngle = previewConnection.videoRotationAngle
+        let isMirrored = previewConnection.isVideoMirrored
+        let delegate = DevicePhotoCaptureDelegate(cropRegion: cropRegion)
+        delegate.controller = self
+        captureDelegate = delegate
 
         isCapturing = true
         capturePhotoCompletion = completion
@@ -73,7 +78,8 @@ public final class DeviceCameraController: DCameraController {
             guard self.session.isRunning,
                   let connection = self.output.connection(with: .video),
                   connection.isActive,
-                  connection.isEnabled
+                  connection.isEnabled,
+                  connection.isVideoRotationAngleSupported(rotationAngle)
             else {
                 Task { @MainActor in
                     self.handleCaptureFailed()
@@ -81,25 +87,27 @@ public final class DeviceCameraController: DCameraController {
                 return
             }
 
+            // The crop mapping uses the displayed image axes, not raw sensor axes.
+            connection.videoRotationAngle = rotationAngle
+            if connection.isVideoMirroringSupported {
+                connection.automaticallyAdjustsVideoMirroring = false
+                connection.isVideoMirrored = isMirrored
+            }
             self.output.capturePhoto(
                 with: Self.makeSettings(output: self.output),
-                delegate: self.delegate
+                delegate: delegate
             )
         }
     }
 
     public func makePreviewView() -> UIView {
-        let view = UIView(frame: .zero)
-        previewLayer.frame = UIScreen.main.bounds
-        view.layer.addSublayer(previewLayer)
-        return view
+        DCameraPreviewUIView(previewLayer: previewLayer)
     }
 
     public func updatePreviewView(
         _ view: UIView
     ) {
-        guard !view.bounds.isEmpty else { return }
-        previewLayer.frame = view.bounds
+        view.setNeedsLayout()
     }
 
     fileprivate func handlePhotoCaptured(
@@ -108,12 +116,14 @@ public final class DeviceCameraController: DCameraController {
         isCapturing = false
         let completion = capturePhotoCompletion
         capturePhotoCompletion = nil
+        captureDelegate = nil
         completion?(image)
     }
 
     fileprivate func handleCaptureFailed() {
         isCapturing = false
         capturePhotoCompletion = nil
+        captureDelegate = nil
     }
 }
 
@@ -126,7 +136,7 @@ private extension DeviceCameraController {
                 session: self.session,
                 output: self.output
             )
-            self.delegate.prepare()
+            DevicePhotoCaptureDelegate.prepare()
             Task { @MainActor in
                 self.isLoading = false
             }
@@ -208,16 +218,19 @@ private extension DeviceCameraController {
     }
 }
 
-private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureDelegate {
-    weak var controller: DeviceCameraController?
+private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureDelegate, Sendable {
+    @MainActor weak var controller: DeviceCameraController?
+    private let cropRegion: DCameraCropRegion
+    private static let ciContext = CIContext(options: [.useSoftwareRenderer: false])
 
-    // AVFoundation callbacks arrive on a single serial internal queue,
-    // so lazy initialization is safe here.
-    private lazy var ciContext = CIContext(options: [.useSoftwareRenderer: false])
+    init(cropRegion: DCameraCropRegion) {
+        self.cropRegion = cropRegion
+        super.init()
+    }
 
     /// Warms up the CIContext outside the capture path so the first shot does not
     /// pay for creating it.
-    func prepare() {
+    static func prepare() {
         _ = ciContext
     }
 
@@ -229,14 +242,14 @@ private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureD
         guard error == nil,
               let image = makeImage(from: photo)
         else {
-            Task { @MainActor [controller] in
-                controller?.handleCaptureFailed()
+            Task { @MainActor in
+                self.controller?.handleCaptureFailed()
             }
             return
         }
 
-        Task { @MainActor [controller] in
-            controller?.handlePhotoCaptured(image: image)
+        Task { @MainActor in
+            self.controller?.handlePhotoCaptured(image: image)
         }
     }
 
@@ -246,16 +259,21 @@ private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureD
     private func makeImage(
         from photo: AVCapturePhoto
     ) -> UIImage? {
-        guard let pixelBuffer = photo.pixelBuffer else {
-            guard let data = photo.fileDataRepresentation() else { return nil }
-            return UIImage(data: data)?.preparingForDisplay()
-        }
-
         let orientation = (photo.metadata[kCGImagePropertyOrientation as String] as? UInt32)
             .flatMap(CGImagePropertyOrientation.init)
             ?? .up
-        let ciImage = CIImage(cvPixelBuffer: pixelBuffer).oriented(orientation)
-        guard let cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent) else {
+        let rawImage: CIImage
+        if let pixelBuffer = photo.pixelBuffer {
+            rawImage = CIImage(cvPixelBuffer: pixelBuffer)
+        } else {
+            guard let data = photo.fileDataRepresentation(),
+                  let image = CIImage(data: data, options: [.applyOrientationProperty: false])
+            else { return nil }
+            rawImage = image
+        }
+        guard let cropped = DCameraPhotoCrop.crop(rawImage.oriented(orientation), to: cropRegion),
+              let cgImage = Self.ciContext.createCGImage(cropped, from: cropped.extent)
+        else {
             return nil
         }
 
