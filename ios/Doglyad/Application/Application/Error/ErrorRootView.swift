@@ -34,26 +34,22 @@ struct ErrorRootView: DView {
                     title: .errorNoInternetConnectionTitle,
                     buttonTitle: .buttonUpdate,
                     action: retryInitialization
-                ) { _ in
+                ) {
                     DText(.errorNoInternetConnectionDescription)
                 }
             case let .serviceUnavailable(email):
                 ErrorView(
-                    email: email,
                     title: .serviceUnavailableTitle
-                ) { errorViewModel in
+                ) {
                     VStack(
                         spacing: size.s8
                     ) {
                         DText(.serviceUnavailableDescription)
 
                         Button(
-                            action: {
-                                viewModel.onTapServiceUnavailableEmail()
-                                errorViewModel.onTapEmail()
-                            }
+                            action: viewModel.onTapServiceUnavailableEmail
                         ) {
-                            DText(errorViewModel.email ?? email)
+                            DText(email)
                                 .dStyle(
                                     font: typography.linkSmall,
                                     color: color.primaryDefault,
@@ -73,7 +69,7 @@ struct ErrorRootView: DView {
                     title: .errorUnknownTitle,
                     buttonTitle: .buttonUpdate,
                     action: retryInitialization
-                ) { _ in
+                ) {
                     DText(.errorUnknownDescription)
                 }
             }

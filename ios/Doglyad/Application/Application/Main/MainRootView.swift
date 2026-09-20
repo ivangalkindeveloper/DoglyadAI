@@ -1,10 +1,14 @@
 import DoglyadUI
 import Router
+import StoreKit
 import SwiftUI
 
 struct MainRootView: View {
+    @Environment(\.requestReview) private var requestReview
+
     let dependencyContainer: DependencyContainer
 
+    @StateObject private var viewModel: MainRootViewModel
     @StateObject private var ultrasoundViewModel: UltrasoundViewModel
     @StateObject private var subscriptionViewModel: SubscriptionViewModel
 
@@ -12,6 +16,9 @@ struct MainRootView: View {
         dependencyContainer: DependencyContainer
     ) {
         self.dependencyContainer = dependencyContainer
+        _viewModel = StateObject(wrappedValue: MainRootViewModel(
+            container: dependencyContainer
+        ))
         _ultrasoundViewModel = StateObject(wrappedValue: UltrasoundViewModel(
             container: dependencyContainer
         ))
@@ -31,6 +38,7 @@ struct MainRootView: View {
         .environmentObject(subscriptionViewModel)
         .onAppear {
             ultrasoundViewModel.onAppear()
+            viewModel.onAppear(requestReview: { requestReview() })
         }
     }
 }

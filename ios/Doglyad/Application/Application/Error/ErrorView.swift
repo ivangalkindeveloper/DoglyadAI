@@ -5,21 +5,17 @@ struct ErrorView<Description: View>: DView {
     @EnvironmentObject private var applicationViewModel: ApplicationViewModel
     @EnvironmentObject var theme: DTheme
 
-    @StateObject private var viewModel: ErrorViewModel
-
     private let title: LocalizedStringResource
     private let buttonTitle: LocalizedStringResource?
     private let action: (() -> Void)?
-    private let description: (ErrorViewModel) -> Description
+    private let description: () -> Description
 
     init(
-        email: String? = nil,
         title: LocalizedStringResource,
         buttonTitle: LocalizedStringResource? = nil,
         action: (() -> Void)? = nil,
-        @ViewBuilder description: @escaping (ErrorViewModel) -> Description
+        @ViewBuilder description: @escaping () -> Description
     ) {
-        _viewModel = StateObject(wrappedValue: ErrorViewModel(email: email))
         self.title = title
         self.buttonTitle = buttonTitle
         self.action = action
@@ -72,7 +68,7 @@ struct ErrorView<Description: View>: DView {
                 )
                 .padding(.bottom, size.s16)
 
-            description(viewModel)
+            description()
                 .font(typography.textSmall)
                 .foregroundStyle(color.grayscalePlacehold)
                 .multilineTextAlignment(.center)

@@ -40,6 +40,11 @@ final class ErrorRootViewModel: ObservableObject {
 
     func onTapServiceUnavailableEmail() {
         analytics?.buttonTapped(.serviceUnavailableEmail)
+
+        guard case let .serviceUnavailable(email) = error as? InitializationError else { return }
+        guard let encodedEmail = email.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else { return }
+        guard let url = URL(string: "mailto:\(encodedEmail)") else { return }
+        UIApplication.shared.open(url)
     }
 
     func onTapNewVersionUpdate() {
