@@ -149,3 +149,45 @@ def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled() -> N
         NeuralModelSettings(),
         include_recommendations=False,
     )
+
+
+@pytest.mark.parametrize(
+    "measurements",
+    [
+        {},
+        {"patientHeight": None, "patientWeight": None},
+        {"patientHeight": 170},
+        {"patientWeight": 65},
+        {"patientHeight": 170, "patientWeight": 65},
+    ],
+)
+@pytest.mark.parametrize("language", ["en", "ru"])
+def test_optional_patient_measurements(measurements: dict[str, float | None], language: str) -> None:
+    from app.prompt.ru import PromptFactoryRu
+
+    examination = USExaminationData.model_validate(
+        {
+            "usExaminationTypeId": "echocardiography",
+            "photos": [],
+            "examinationNumber": "Examination#0",
+            "patientName": "Patient",
+            "patientGender": "female",
+            "patientDateOfBirth": "1990-01-01T00:00:00Z",
+            "examinationDescription": "Description",
+            **measurements,
+        }
+    )
+    factory = PromptFactoryEn() if language == "en" else PromptFactoryRu()
+    prompt = factory.build_prompt(examination, "Echocardiography")
+    height_label = "Patient height:" if language == "en" else "Рост пациента:"
+    weight_label = "Patient weight:" if language == "en" else "Вес пациента:"
+
+    assert examination.patientHeight == measurements.get("patientHeight")
+    assert examination.patientWeight == measurements.get("patientWeight")
+    assert (height_label in prompt) == (examination.patientHeight is not None)
+    assert (weight_label in prompt) == (examination.patientWeight is not None)
+    assert "None" not in prompt
+    if examination.patientHeight is not None:
+        assert f"{height_label} {examination.patientHeight}" in prompt
+    if examination.patientWeight is not None:
+        assert f"{weight_label} {examination.patientWeight}" in prompt

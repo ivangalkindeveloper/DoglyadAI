@@ -30,6 +30,7 @@ struct TemplateAddScreenView: DView {
                             ),
                         ]
                     )
+                    .disabled(viewModel.isLoading)
                 }
             },
             content: { toolbarInset, bottomInset in
@@ -113,13 +114,15 @@ struct TemplateAddScreenView: DView {
                     .padding(.top, toolbarInset + size.s8)
                     .padding(.horizontal, size.s16)
                     .padding(.bottom, bottomInset + size.s16)
+                    .disabled(viewModel.isLoading)
                 }
                 .scrollDismissesKeyboard(.interactively)
             },
             bottom: {
                 DButton(
                     title: .buttonSave,
-                    action: viewModel.onTapSave
+                    action: viewModel.onTapSave,
+                    isLoading: viewModel.isLoading
                 )
                 .dStyle(.primaryButton)
                 .padding(size.s16)

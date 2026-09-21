@@ -38,6 +38,7 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
         )
     }
 
+    @Published private(set) var isLoading = false
     @Published var focus: Focus?
     @Published var usExaminationType: USExaminationType
     @NestedObservableObject var nameController = DTextFieldController(isRequired: true)
@@ -138,6 +139,8 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
     }
 
     func onTapSave() {
+        guard !isLoading else { return }
+
         analytics.buttonTapped(.templateAddSave)
         if let invalidFocus = firstInvalidFocus() {
             focus = invalidFocus
@@ -157,6 +160,7 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
             name: name,
             content: content
         )
+        isLoading = true
         onSaveTemplate(template)
         messager.show(
             type: .success,

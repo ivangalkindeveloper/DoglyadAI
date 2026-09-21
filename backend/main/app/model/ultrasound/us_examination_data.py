@@ -14,8 +14,8 @@ class USExaminationData(BaseModel):
     patientName: str
     patientGender: str
     patientDateOfBirth: datetime
-    patientHeight: float
-    patientWeight: float
+    patientHeight: float | None = None
+    patientWeight: float | None = None
     patientComplaints: str | None = None
     examinationDescription: str
 

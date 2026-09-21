@@ -44,7 +44,7 @@ final class ReportDetailViewModel: DViewModel {
     @Published var isLoading = false
 
     var subTitle: String {
-        "\(report.examinationData.patientName), \(report.date.localized())"
+        "\(report.examinationData.patientName), \(report.date.localizedDateTime())"
     }
 
     func onTapPhoto(_ photo: USExaminationScanPhoto) {

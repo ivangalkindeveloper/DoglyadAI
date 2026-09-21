@@ -25,10 +25,10 @@ class PromptFactoryRu(PromptFactory):
         if include_recommendations:
             system_prompt += (
                 "Также сформируй recommendations — обоснованные рекомендации по лечению или дальнейшим действиям. "
-                "Не предлагай действия, не подтверждённые предоставленными данными.\n"  # noqa: RUF001
+                "Не предлагай действия, не подтверждённые предоставленными данными.\n"
             )
         else:
-            system_prompt += "Не формируй и не включай рекомендации.\n"  # noqa: RUF001
+            system_prompt += "Не формируй и не включай рекомендации.\n"
 
         if settings.maxTokens is not None:
             system_prompt += (
@@ -53,9 +53,13 @@ class PromptFactoryRu(PromptFactory):
             f"Имя пациента: {examination.patientName}\n"
             f"Пол пациента: {examination.patientGender}\n"
             f"Дата рождения пациента: {examination.patientDateOfBirth.date().isoformat()}\n"
-            f"Рост пациента: {examination.patientHeight}\n"
-            f"Вес пациента: {examination.patientWeight}\n"  # noqa: RUF001
         )
+
+        if examination.patientHeight is not None:
+            prompt += f"Рост пациента: {examination.patientHeight}\n"
+
+        if examination.patientWeight is not None:
+            prompt += f"Вес пациента: {examination.patientWeight}\n"
 
         if examination.patientComplaints:
             prompt += f"Жалобы пациента: {examination.patientComplaints}\n"

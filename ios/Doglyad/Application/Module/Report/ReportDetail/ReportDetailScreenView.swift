@@ -60,7 +60,7 @@ struct ReportDetailScreenView: DView {
                                     color: color.grayscalePlacehold
                                 )
 
-                            DText(report.date.localized())
+                            DText(report.date.localizedDateTime())
                                 .dStyle(
                                     font: typography.textSmall
                                 )
@@ -113,6 +113,34 @@ struct ReportDetailScreenView: DView {
                                     font: typography.textSmall
                                 )
                                 .padding(.bottom, size.s8)
+
+                            if let patientHeight = examinationData.patientHeight {
+                                DText(.scanPatientHeightCMLabel)
+                                    .dStyle(
+                                        font: typography.linkSmall,
+                                        color: color.grayscalePlacehold
+                                    )
+
+                                DText(patientHeight.formatted(.number.grouping(.never)))
+                                    .dStyle(
+                                        font: typography.textSmall
+                                    )
+                                    .padding(.bottom, size.s8)
+                            }
+
+                            if let patientWeight = examinationData.patientWeight {
+                                DText(.scanPatientWeightKGLabel)
+                                    .dStyle(
+                                        font: typography.linkSmall,
+                                        color: color.grayscalePlacehold
+                                    )
+
+                                DText(patientWeight.formatted(.number.grouping(.never)))
+                                    .dStyle(
+                                        font: typography.textSmall
+                                    )
+                                    .padding(.bottom, size.s8)
+                            }
 
                             DText(.scanExaminationDescriptionLabel)
                                 .dStyle(

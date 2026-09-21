@@ -52,7 +52,7 @@ struct HistoryCardView: DView {
                             )
                             .padding(.trailing, size.s8)
 
-                        DText(report.date.localized())
+                        DText(report.date.localizedDateTime())
                             .dStyle(
                                 font: typography.textSmall,
                                 color: color.grayscaleLabel

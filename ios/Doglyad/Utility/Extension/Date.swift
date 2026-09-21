@@ -10,6 +10,15 @@ extension Date {
         return formatter.string(from: self)
     }
 
+    func localizedDateTime(
+        locale: Locale = .current
+    ) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "HH:mm"
+        return "\(localized(locale: locale)) \(formatter.string(from: self))"
+    }
+
     func localizedDayTitle(
         relativeTo now: Date = Date(),
         calendar: Calendar = .autoupdatingCurrent,

@@ -17,6 +17,7 @@ struct TemplateEditScreenView: DView {
                     action: viewModel.onTapDelete
                 )
                 .dStyle(.circle)
+                .disabled(viewModel.isLoading)
             },
             onTapBody: viewModel.unfocus,
             keyboardToolbar: {
@@ -37,6 +38,7 @@ struct TemplateEditScreenView: DView {
                             ),
                         ]
                     )
+                    .disabled(viewModel.isLoading)
                 }
             },
             content: { toolbarInset, bottomInset in
@@ -113,13 +115,15 @@ struct TemplateEditScreenView: DView {
                     .padding(.top, toolbarInset + size.s8)
                     .padding(.horizontal, size.s16)
                     .padding(.bottom, bottomInset + size.s16)
+                    .disabled(viewModel.isLoading)
                 }
                 .scrollDismissesKeyboard(.interactively)
             },
             bottom: {
                 DButton(
                     title: .buttonSave,
-                    action: viewModel.onTapSave
+                    action: viewModel.onTapSave,
+                    isLoading: viewModel.isLoading
                 )
                 .dStyle(.primaryButton)
                 .padding(size.s16)

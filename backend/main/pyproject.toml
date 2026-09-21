@@ -19,6 +19,8 @@ select = [
 known-first-party = ["app"]
 
 [tool.ruff.lint.per-file-ignores]
+"app/prompt/ru.py" = ["RUF001"]
+"tests/test_ultrasound_report.py" = ["RUF001"]
 # scripts/ — developer CLI tools; their comments and console output are in Russian,
 # so the "ambiguous Cyrillic character" checks do not apply.
 "scripts/*" = ["RUF001", "RUF002", "RUF003"]

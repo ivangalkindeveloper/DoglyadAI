@@ -76,14 +76,6 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         Calendar.current.date(byAdding: .year, value: -ultrasoundConfig.defaultPatientDateOfBirthGap, to: Date())!
     }
 
-    private var defaultPatientHeightCM: Double {
-        ultrasoundConfig.defaultPatientHeightCM
-    }
-
-    private var defaultPatientWeightKG: Double {
-        ultrasoundConfig.defaultPatientWeightKG
-    }
-
     @Published var usExaminationType: USExaminationType
     @Published var photos: [USExaminationScanPhoto] = []
     //
@@ -93,7 +85,6 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     @Published var patientGender = PatientGender.male
     @Published var patientDateOfBirth: Date = .init()
     @NestedObservableObject var patientHeightCMController = DTextFieldController(
-        isRequired: true,
         formatters: [
             DTextFieldDecimalFormatter(),
         ],
@@ -105,7 +96,6 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         ]
     )
     @NestedObservableObject var patientWeightKGController = DTextFieldController(
-        isRequired: true,
         formatters: [
             DTextFieldDecimalFormatter(),
         ],
@@ -532,10 +522,16 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     func onTapClear() {
+        guard !isLoading else { return }
+
         analytics.buttonTapped(.scanClear)
+        isLoading = true
+        unfocus()
         clearForm()
         handle {
             await self.clearDraftAndReset()
+        } onDefer: {
+            self.isLoading = false
         }
     }
 
@@ -625,6 +621,8 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     func onTapScan() {
+        guard !isLoading else { return }
+
         analytics.buttonTapped(
             .scanGenerate,
             parameters: AnalyticsParameters([
@@ -654,18 +652,16 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     private func performScan() {
         guard let examinationNumber = examinationNumberController.value,
               let patientName = patientNameController.value,
-              let patientHeightValue = patientHeightCMController.value,
-              let patientHeight = Double(patientHeightValue),
-              let patientWeightValue = patientWeightKGController.value,
-              let patientWeight = Double(patientWeightValue),
               let examinationDescription = examinationDescriptionController.value
         else {
             return
         }
 
-        handle {
-            self.isLoading = true
+        let patientHeight = patientHeightCMController.value.flatMap { Double($0) }
+        let patientWeight = patientWeightKGController.value.flatMap { Double($0) }
 
+        isLoading = true
+        handle {
             let neuralModelSettings = self.subscription.neuralModelSettings
             let patientComplaints = self.patientComplaintsController.value?
                 .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -746,8 +742,8 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         )
         patientGender = .male
         patientDateOfBirth = defaultPatientDateOfBirth
-        patientHeightCMController.setText(String(defaultPatientHeightCM))
-        patientWeightKGController.setText(String(defaultPatientWeightKG))
+        patientHeightCMController.clear()
+        patientWeightKGController.clear()
         patientComplaintsController.clear()
         examinationDescriptionController.clear()
     }

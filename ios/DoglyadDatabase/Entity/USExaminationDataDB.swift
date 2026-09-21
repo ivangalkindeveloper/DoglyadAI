@@ -9,8 +9,8 @@ public final class USExaminationDataDB {
     public var patientName: String
     public var patientGenderRawValue: String
     public var patientDateOfBirth: Date
-    public var patientHeight: Double
-    public var patientWeight: Double
+    public var patientHeight: Double?
+    public var patientWeight: Double?
     public var patientComplaints: String?
     public var examinationDescription: String
 
@@ -21,8 +21,8 @@ public final class USExaminationDataDB {
         patientName: String,
         patientGenderRawValue: String,
         patientDateOfBirth: Date,
-        patientHeight: Double,
-        patientWeight: Double,
+        patientHeight: Double?,
+        patientWeight: Double?,
         patientComplaints: String?,
         examinationDescription: String
     ) {

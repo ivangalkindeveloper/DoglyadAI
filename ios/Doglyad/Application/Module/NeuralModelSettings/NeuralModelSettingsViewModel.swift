@@ -37,6 +37,7 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
         maxTokensController.setText(String(initialMaxTokens))
     }
 
+    @Published private(set) var isLoading = false
     @Published var focus: Focus?
     @Published var isMarkdown: Bool = false
     @NestedObservableObject var temperatureController = DTextFieldController(
@@ -141,6 +142,8 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
     }
 
     func onTapSave() {
+        guard !isLoading else { return }
+
         analytics.buttonTapped(
             .neuralModelSettingsSave,
             parameters: AnalyticsParameters([
@@ -152,6 +155,9 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
             focus = invalidFocus
             return
         }
+
+        unfocus()
+        isLoading = true
 
         onSettingsSaved(
             isMarkdown,

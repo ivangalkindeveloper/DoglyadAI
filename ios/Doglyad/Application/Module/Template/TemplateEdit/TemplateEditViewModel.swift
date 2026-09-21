@@ -46,6 +46,8 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
                 id: self.arguments.templateId,
                 usExaminationTypesById: self.container.usExaminationTypesById
             )!
+        } onDefer: {
+            self.isLoading = false
         } onMainSuccess: { template in
             self.usExaminationType = self.container.usExaminationTypesById[template.usExaminationType.id]
                 ?? self.container.usExaminationTypeDefault
@@ -54,6 +56,7 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
         }
     }
 
+    @Published private(set) var isLoading = true
     @Published var focus: Focus?
     @Published var usExaminationType: USExaminationType
     @NestedObservableObject var nameController = DTextFieldController(isRequired: true)
@@ -141,6 +144,8 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
     }
 
     func onTapSave() {
+        guard !isLoading else { return }
+
         analytics.buttonTapped(.templateEditSave)
         if let invalidFocus = firstInvalidFocus() {
             focus = invalidFocus
@@ -161,6 +166,7 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
             name: name,
             content: content
         )
+        isLoading = true
         onSaveTemplate(template)
         messager.show(
             type: .success,
@@ -171,6 +177,8 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
     }
 
     func onTapDelete() {
+        guard !isLoading else { return }
+
         analytics.buttonTapped(.templateEditDelete)
         coordinator.sheet(
             .templateDelete,
@@ -183,6 +191,10 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
     }
 
     private func deleteTemplate() {
+        guard !isLoading else { return }
+        isLoading = true
+        unfocus()
+
         onDeleteTemplate(arguments.templateId)
         messager.show(
             type: .success,

@@ -8,8 +8,8 @@ struct USExaminationData: Codable {
     let patientName: String
     let patientGender: PatientGender
     let patientDateOfBirth: Date
-    let patientHeight: Double
-    let patientWeight: Double
+    let patientHeight: Double?
+    let patientWeight: Double?
     let patientComplaints: String?
     let examinationDescription: String
 }

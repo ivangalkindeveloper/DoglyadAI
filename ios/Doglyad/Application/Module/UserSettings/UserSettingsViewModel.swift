@@ -34,6 +34,7 @@ final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
         emailController.setText(initialEmail ?? "")
     }
 
+    @Published private(set) var isLoading = false
     @Published var focus: Focus?
     @Published var includeRecommendations: Bool
     @NestedObservableObject var emailController = DTextFieldController(
@@ -79,6 +80,8 @@ final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
     }
 
     func onTapSave() {
+        guard !isLoading else { return }
+
         let email = emailController.value
         analytics.buttonTapped(
             .userSettingsSave,
@@ -93,6 +96,7 @@ final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
 
         unfocus()
 
+        isLoading = true
         onSaved(email, includeRecommendations)
         messager.show(
             type: .success,

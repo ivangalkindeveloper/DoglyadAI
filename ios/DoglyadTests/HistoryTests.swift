@@ -97,6 +97,39 @@ struct HistoryTests {
         #expect(Set(secondPage).isDisjoint(with: Set(thirdPage)))
     }
 
+    @Test
+    func reportWithoutMeasurementsCanBeStoredAndEncoded() async throws {
+        let schema = Schema([
+            NeuralModelSettingsDB.self,
+            USExaminationReportDB.self,
+            USExaminationDataDB.self,
+            USExaminationScanPhotoDB.self,
+            USExaminationModelReportDB.self,
+        ])
+        let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
+        let container = try ModelContainer(for: schema, configurations: configuration)
+        let store = DExaminationReportsStore(modelContainer: container)
+        let report = databaseReport(at: Date())
+        report.examinationData.patientHeight = nil
+        report.examinationData.patientWeight = nil
+        try await store.setExaminationReport(value: report)
+
+        let examinations = await store.fetchExaminationReports(limit: 1, offset: 0) {
+            $0.map { USExaminationData.fromDB($0.examinationData) }
+        }
+        let examination = try #require(examinations.first)
+        #expect(examination.patientHeight == nil)
+        #expect(examination.patientWeight == nil)
+
+        let encoded = try JSONEncoder().encode(examination)
+        let json = try #require(JSONSerialization.jsonObject(with: encoded) as? [String: Any])
+        #expect(json["patientHeight"] == nil)
+        #expect(json["patientWeight"] == nil)
+        let decoded = try JSONDecoder().decode(USExaminationData.self, from: encoded)
+        #expect(decoded.patientHeight == nil)
+        #expect(decoded.patientWeight == nil)
+    }
+
     private func calendar() -> Calendar {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!

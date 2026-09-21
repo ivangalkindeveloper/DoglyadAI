@@ -36,6 +36,7 @@ struct ShareBottomSheetView: DView {
                                     font: typography.linkSmall
                                 )
                                 .lineLimit(1)
+                                .truncationMode(.middle)
                             Spacer()
                         }
                     }

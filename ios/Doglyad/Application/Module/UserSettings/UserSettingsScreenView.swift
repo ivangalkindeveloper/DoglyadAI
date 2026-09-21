@@ -28,6 +28,7 @@ struct UserSettingsScreenView: DView {
                             ),
                         ]
                     )
+                    .disabled(viewModel.isLoading)
                 }
             },
             content: { toolbarInset, bottomInset in
@@ -96,12 +97,14 @@ struct UserSettingsScreenView: DView {
                     .padding(.top, toolbarInset)
                     .padding(size.s16)
                     .padding(.bottom, bottomInset)
+                    .disabled(viewModel.isLoading)
                 }
             },
             bottom: {
                 DButton(
                     title: .buttonSave,
-                    action: viewModel.onTapSave
+                    action: viewModel.onTapSave,
+                    isLoading: viewModel.isLoading
                 )
                 .dStyle(.primaryButton)
                 .padding(size.s16)

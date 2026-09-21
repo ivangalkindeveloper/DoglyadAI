@@ -53,9 +53,13 @@ class PromptFactoryEn(PromptFactory):
             f"Patient name: {examination.patientName}\n"
             f"Patient gender: {examination.patientGender}\n"
             f"Patient date of birth: {examination.patientDateOfBirth.date().isoformat()}\n"
-            f"Patient height: {examination.patientHeight}\n"
-            f"Patient weight: {examination.patientWeight}\n"
         )
+
+        if examination.patientHeight is not None:
+            prompt += f"Patient height: {examination.patientHeight}\n"
+
+        if examination.patientWeight is not None:
+            prompt += f"Patient weight: {examination.patientWeight}\n"
 
         if examination.patientComplaints:
             prompt += f"Patient complaints: {examination.patientComplaints}\n"

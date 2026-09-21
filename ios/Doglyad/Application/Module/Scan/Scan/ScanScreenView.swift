@@ -15,6 +15,7 @@ struct ScanScreenView: DView {
                     action: viewModel.onTapSettings
                 )
                 .dStyle(.circle)
+                .disabled(viewModel.isLoading)
             },
             titleContent: {
                 DButton(
@@ -23,6 +24,7 @@ struct ScanScreenView: DView {
                     action: viewModel.onTapUSExaminationType
                 )
                 .dStyle(.primaryChip)
+                .disabled(viewModel.isLoading)
                 .contentTransition(.opacity)
                 .animation(
                     theme.animation,
@@ -57,6 +59,7 @@ struct ScanScreenView: DView {
                             ),
                         ].compactMap { $0 }
                     )
+                    .disabled(viewModel.isLoading)
                 }
             },
             content: { toolbarHeight, _ in
@@ -96,6 +99,7 @@ struct ScanScreenView: DView {
                             value: viewModel.photos
                         )
                     }
+                    .disabled(viewModel.isLoading)
 
                     ScanBottomView()
                 }
