@@ -45,8 +45,8 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
         return templates.filter { template in
             let values = [
                 localizedExaminationTypeTitle(for: template),
-                String(localized: template.getLocalizedTitle(for: Locale.current)),
-                template.getLocalizedContent(for: Locale.current),
+                String(localized: template.localizedTitle),
+                template.content,
             ]
             return values.contains { value in
                 value.localizedCaseInsensitiveContains(query)
@@ -108,7 +108,7 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
         guard let type = container.getUSExaminationTypeById(id: template.examinationType) else {
             return template.examinationType
         }
-        return String(localized: type.getLocalizedTitle(for: Locale.current))
+        return String(localized: type.localizedTitle)
     }
 
     private func loadTemplates() {

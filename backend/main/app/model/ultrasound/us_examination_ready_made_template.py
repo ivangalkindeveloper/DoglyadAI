@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class USExaminationReadyMadeTemplate(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
     id: str
     examinationType: str
-    title: dict[str, str]
-    content: dict[str, str]
+    titleLocaleKey: str
+    contentLocaleKey: str

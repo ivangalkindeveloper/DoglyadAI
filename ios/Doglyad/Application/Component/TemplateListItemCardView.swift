@@ -30,7 +30,7 @@ struct TemplateListItemCardView: DView {
                     alignment: .top,
                     spacing: .zero
                 ) {
-                    DText(template.usExaminationType.getLocalizedTitle(for: Locale.current))
+                    DText(template.usExaminationType.localizedTitle)
                         .dStyle(
                             font: typography.linkSmall
                         )
@@ -70,10 +70,8 @@ struct TemplateListItemCardView: DView {
         template: USExaminationTemplate(
             usExaminationType: USExaminationType(
                 id: "thyroid",
-                title: [
-                    "en": "Thyroid gland",
-                    "ru": "Щитовидная железа",
-                ]
+                title: "Thyroid gland",
+                contextualStrings: []
             ),
             name: "Standard examination",
             content: """

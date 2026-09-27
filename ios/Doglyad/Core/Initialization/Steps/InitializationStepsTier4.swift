@@ -1,4 +1,5 @@
 import DependencyInitializer
+import DoglyadNetwork
 import DoglyadNeuralModel
 import Foundation
 
@@ -10,7 +11,7 @@ extension InitializationProcess {
                 run: { (process: InitializationProcess) async throws in
                     let usExaminationTypeGroups: [USExaminationTypeGroup] = try await process.httpClient!.get(
                         endPoint: "/ultrasound/examination_types",
-                        headers: nil
+                        headers: [DHttpHeader.acceptLanguage: SupportedLanguage.currentCode]
                     )
                     guard let usExaminationTypeDefault = usExaminationTypeGroups.lazy
                         .compactMap(\.examinationTypes.first)
@@ -36,7 +37,7 @@ extension InitializationProcess {
                 run: { (process: InitializationProcess) async throws in
                     let usExaminationNeuralModels: [USExaminationNeuralModel] = try await process.httpClient!.get(
                         endPoint: "/ultrasound/examination_neural_models",
-                        headers: nil
+                        headers: [DHttpHeader.acceptLanguage: SupportedLanguage.currentCode]
                     )
                     if usExaminationNeuralModels.isEmpty {
                         throw InitializationError.usExaminationNeuralModelsEmpty
@@ -52,24 +53,12 @@ extension InitializationProcess {
                 }
             ),
             AsyncInitializationStep<InitializationProcess>(
-                title: "Ultrasound examination contextual strings",
-                run: { (process: InitializationProcess) async throws in
-                    let usExaminationContextualStrings: USExaminationContextualStrings = try await process.httpClient!.get(
-                        endPoint: "/ultrasound/examination_contextual_strings",
-                        headers: nil
-                    )
-
-                    await MainActor.run {
-                        process.usExaminationContextualStrings = usExaminationContextualStrings
-                    }
-                }
-            ),
-            AsyncInitializationStep<InitializationProcess>(
                 title: "Local ultrasound examination neural model",
                 run: { (process: InitializationProcess) in
                     let config = await process.applicationConfig!.ultrasound.examinationNeuralModel
-                    let locale = Locale.current
-                    guard let prompt = config.getPrompt(for: locale) else {
+                    let locale = SupportedLanguage.currentLocale
+                    let prompt = config.prompt
+                    guard !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
                         throw InitializationError.examinationNeuralModelPromptEmpty
                     }
 

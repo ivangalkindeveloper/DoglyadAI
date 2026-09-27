@@ -14,8 +14,10 @@ def _model(accessibility: USExaminationNeuralModelAccessibility) -> USExaminatio
     return USExaminationNeuralModel(
         id=f"test/{accessibility.value}",
         title="Test model",
+        entitlement="base",
         accessibility=accessibility,
-        description={"en": ""},
+        contextLength=128000,
+        descriptionLocaleKey="testModelDescription",
     )
 
 

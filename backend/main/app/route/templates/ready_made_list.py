@@ -2,19 +2,26 @@ from __future__ import annotations
 
 import logging
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, Response
 
-from app.core.config import ready_made_templates
+from app.core.config import resolve_ready_made_templates
+from app.core.http_header import HttpHeader
 from app.core.limiter import limiter
-from app.model.ultrasound.us_examination_ready_made_template import USExaminationReadyMadeTemplate
+from app.core.locale import resolve_language
+from app.model.ultrasound.us_examination_ready_made_template_response import (
+    USExaminationReadyMadeTemplateResponse,
+)
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.get("/ready_made_list", response_model=list[USExaminationReadyMadeTemplate])
+@router.get("/ready_made_list", response_model=list[USExaminationReadyMadeTemplateResponse])
 @limiter.limit("30/minute")
-async def ready_made_list(request: Request) -> list[USExaminationReadyMadeTemplate]:
-    del request  # only the rate limiter needs it
-    logger.info("Ready-made templates served: count=%d", len(ready_made_templates))
-    return ready_made_templates
+async def ready_made_list(request: Request, response: Response) -> list[USExaminationReadyMadeTemplateResponse]:
+    language = resolve_language(request.headers.get(HttpHeader.ACCEPT_LANGUAGE.value))
+    response.headers[HttpHeader.CONTENT_LANGUAGE.value] = language.value
+    response.headers[HttpHeader.VARY.value] = HttpHeader.ACCEPT_LANGUAGE.value
+    templates = resolve_ready_made_templates(language)
+    logger.info("Ready-made templates served: count=%d", len(templates))
+    return templates

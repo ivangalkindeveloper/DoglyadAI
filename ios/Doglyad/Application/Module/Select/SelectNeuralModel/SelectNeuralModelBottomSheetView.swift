@@ -35,7 +35,7 @@ struct SelectNeuralModelBottomSheetView: DView {
                                 description: """
                                 (\(model.id))
                                 \(String(localized: .neuralModelContextLengthDescription)) \(model.contextLength)
-                                \(model.getLocalizedDescription(for: Locale.current))
+                                \(model.localizedDescription)
                                 """,
                                 action: {
                                     viewModel.onModelTap(model)

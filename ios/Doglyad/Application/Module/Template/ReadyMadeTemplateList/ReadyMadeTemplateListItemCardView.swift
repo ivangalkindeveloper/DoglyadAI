@@ -25,7 +25,7 @@ struct ReadyMadeTemplateListItemCardView: DView {
                             font: typography.linkSmall
                         )
 
-                    DText(template.getLocalizedTitle(for: Locale.current))
+                    DText(template.localizedTitle)
                         .dStyle(
                             font: typography.linkSmall,
                             color: color.grayscalePlacehold
@@ -37,7 +37,7 @@ struct ReadyMadeTemplateListItemCardView: DView {
             .buttonStyle(.plain)
 
             ExpandableMarkdownView(
-                text: template.getLocalizedContent(for: Locale.current),
+                text: template.content,
                 backgroundColor: color.grayscaleBackground,
                 collapsedLineLimit: 4,
                 onTapContent: action
@@ -54,14 +54,8 @@ struct ReadyMadeTemplateListItemCardView: DView {
         template: USExaminationReadyMadeTemplate(
             id: "thyroidGlandStandard",
             examinationType: "thyroidGland",
-            title: [
-                "en": "Thyroid ultrasound",
-                "ru": "УЗИ Щитовидной железы",
-            ],
-            content: [
-                "en": "**Examination description:**\n\nThe thyroid gland is located in the typical position.",
-                "ru": "**Описание исследования:**\n\nЩитовидная железа расположена в типичном месте.",
-            ]
+            title: "Thyroid ultrasound",
+            content: "**Examination description:**\n\nThe thyroid gland is located in the typical position."
         ),
         examinationTypeTitle: "Thyroid gland",
         action: {}

@@ -68,7 +68,7 @@ final class SelectUSExaminationTypeViewModel: DViewModel {
         let configuredSections = container.usExaminationTypeGroups.map { group in
             Section(
                 id: group.id,
-                title: group.getLocalizedTitle(for: Locale.current),
+                title: group.localizedTitle,
                 types: group.examinationTypes
             )
         }

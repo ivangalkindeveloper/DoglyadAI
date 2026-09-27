@@ -10,6 +10,7 @@ from typing import Any
 import pytest
 from starlette.requests import Request
 
+from app.model.inference.inference_request import InferenceRequest
 from app.model.neural_model_settings import NeuralModelSettings
 from app.model.ultrasound.us_examination_data import USExaminationData
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
@@ -19,7 +20,6 @@ from app.model.ultrasound.us_examination_neural_model_accessibility import (
 from app.model.ultrasound.us_examination_request import USExaminationRequest
 from app.prompt.en import PromptFactoryEn
 from app.route.ultrasound import generate_report as route
-from app.service.base import InferenceRequest
 
 
 class FakePromptFactory:
@@ -51,6 +51,7 @@ class FakeModelService:
         assert request.system_prompt == "system prompt"
         assert request.prompt == "user prompt"
         assert request.app_check_token == "app-check-token"
+        assert request.request_id == "a" * 32
         schema = json.loads(request.structured_output)
         assert set(schema["properties"]) == {"description", "conclusion", "recommendations"}
         assert schema["additionalProperties"] is False
@@ -67,8 +68,10 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(monkeypat
     model = USExaminationNeuralModel(
         id="google/medgemma-4b-it",
         title="MedGemma 4B",
+        entitlement="base",
         accessibility=USExaminationNeuralModelAccessibility.AVAILABLE,
-        description={"en": ""},
+        contextLength=128000,
+        descriptionLocaleKey="googleMedGemma4BDescription",
     )
     monkeypatch.setattr(route, "resolve_neural_model", lambda _model_id: model)
     monkeypatch.setattr(route, "resolve_examination_title", lambda _type_id, _language: "Echocardiography")
@@ -106,6 +109,7 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(monkeypat
                 (b"x-firebase-appcheck", b"app-check-token"),
             ],
             "app": app,
+            "state": {"request_id": "a" * 32},
         }
     )
 

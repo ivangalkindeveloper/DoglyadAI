@@ -43,7 +43,7 @@ struct TemplateAddScreenView: DView {
                     ) {
                         DListButtonCard(
                             title: .templateExaminationTypeLabel,
-                            description: viewModel.usExaminationType.getLocalizedTitle(for: Locale.current),
+                            description: viewModel.usExaminationType.localizedTitle,
                             action: viewModel.onTapExaminationType
                         )
                         .contentTransition(.opacity)

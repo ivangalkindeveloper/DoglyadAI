@@ -26,7 +26,6 @@ final class DependencyContainer: ObservableObject {
     let usExaminationNeuralModels: [USExaminationNeuralModel]
     let usExaminationNeuralModelsById: [String: USExaminationNeuralModel]
     let usExaminationNeuralModelDefault: USExaminationNeuralModel
-    let usExaminationContextualStrings: USExaminationContextualStrings
     let initialSubscriptionStatus: SubscriptionStatus?
     let initialRoute: RouteScreen<ScreenType>
     let version: String
@@ -51,7 +50,6 @@ final class DependencyContainer: ObservableObject {
         usExaminationNeuralModels: [USExaminationNeuralModel],
         usExaminationNeuralModelsById: [String: USExaminationNeuralModel],
         usExaminationNeuralModelDefault: USExaminationNeuralModel,
-        usExaminationContextualStrings: USExaminationContextualStrings,
         examinationNeuralModelFactory: DExaminationNeuralModelFactory?,
         initialSubscriptionStatus: SubscriptionStatus?,
         initialRoute: RouteScreen<ScreenType>,
@@ -76,7 +74,6 @@ final class DependencyContainer: ObservableObject {
         self.usExaminationNeuralModels = usExaminationNeuralModels
         self.usExaminationNeuralModelsById = usExaminationNeuralModelsById
         self.usExaminationNeuralModelDefault = usExaminationNeuralModelDefault
-        self.usExaminationContextualStrings = usExaminationContextualStrings
         self.examinationNeuralModelFactory = examinationNeuralModelFactory
         self.initialSubscriptionStatus = initialSubscriptionStatus
         self.initialRoute = initialRoute
@@ -99,12 +96,6 @@ extension DependencyContainer {
         id: String
     ) -> USExaminationNeuralModel? {
         usExaminationNeuralModelsById[id]
-    }
-
-    func getContextualStrings(
-        for locale: Locale
-    ) -> [String] {
-        usExaminationContextualStrings.getStrings(for: locale)
     }
 }
 
@@ -165,7 +156,8 @@ extension DependencyContainer {
             usExaminationTypesById: [:],
             usExaminationTypeDefault: .init(
                 id: "",
-                title: [:]
+                title: "",
+                contextualStrings: []
             ),
             usExaminationNeuralModels: [],
             usExaminationNeuralModelsById: [:],
@@ -175,9 +167,8 @@ extension DependencyContainer {
                 entitlement: .base,
                 accessibility: .available,
                 contextLength: 0,
-                description: [:]
+                description: ""
             ),
-            usExaminationContextualStrings: .init(strings: [:]),
             examinationNeuralModelFactory: nil,
             initialSubscriptionStatus: nil,
             initialRoute: RouteScreen(type: .onBoarding),

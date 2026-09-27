@@ -34,7 +34,7 @@ struct ScanTemplateCardView: DView {
                         spacing: size.s4
                     ) {
                         if let template = ultrasoundViewModel.template {
-                            DText(template.usExaminationType.getLocalizedTitle(for: Locale.current))
+                            DText(template.usExaminationType.localizedTitle)
                                 .dStyle(
                                     font: typography.linkSmall
                                 )
@@ -53,7 +53,7 @@ struct ScanTemplateCardView: DView {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .lineLimit(4)
                         } else {
-                            DText(viewModel.usExaminationType.getLocalizedTitle(for: Locale.current))
+                            DText(viewModel.usExaminationType.localizedTitle)
                                 .dStyle(
                                     font: typography.linkSmall
                                 )

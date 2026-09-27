@@ -24,7 +24,7 @@ struct SelectUSExaminationTypeBottomSheetView: DView {
                         Section {
                             ForEach(section.items) { item in
                                 DListButtonCard(
-                                    title: item.type.getLocalizedTitle(for: Locale.current),
+                                    title: item.type.localizedTitle,
                                     action: {
                                         viewModel.onTypeTap(item.type)
                                     },

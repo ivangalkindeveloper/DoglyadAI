@@ -20,7 +20,7 @@ App Check is validated **twice**: at the system entry point (`backend/main`) and
 
 The main-backend check protects the public system entry point. The repeated check prevents direct access to a GPU VM that bypasses the main backend. Both VM groups are controlled by the developer.
 
-Validation cannot be disabled: there is no flag or mode. Every application endpoint lives under the versioned `/v1` router and is protected by App Check in every environment. This includes `/v1/application_config` and the three `/v1/ultrasound/examination_*` configuration endpoints. The iOS client configures Firebase and its App Check interceptor before downloading these documents.
+Validation cannot be disabled: there is no flag or mode. Every application endpoint lives under the versioned `/v1` router and is protected by App Check in every environment. This includes `/v1/application_config` and the two `/v1/ultrasound/examination_*` configuration endpoints. The iOS client configures Firebase and its App Check interceptor before downloading these documents.
 
 ### Environments
 
@@ -50,15 +50,15 @@ Every published model must have an entry in `backend/main/secrets/inference_endp
 | `backend/main/app/route/ultrasound/generate_report.py` | `POST /v1/ultrasound/generate_report`: accepts examination data, calls `ModelService`, validates the structured result, and returns a report with description, conclusion, and optional recommendations |
 | `backend/main/app/route/send_report_email.py` | `POST /v1/send_report_email`: sends any report through SMTP (`smtplib`) |
 | `backend/main/app/route/application_config.py` | Protected `/v1/application_config` endpoint. The file is returned as original text without a `response_model`; modeling the full configuration tree would create a second schema that could drift from JSON. |
-| `backend/main/app/route/ultrasound/examination_*.py` | Three protected `/v1/ultrasound/examination_*` configuration endpoints. |
+| `backend/main/app/route/ultrasound/examination_*.py` | Two protected `/v1/ultrasound/examination_*` configuration endpoints. |
 | `backend/main/app/core/variables.py` | Environment variables through `pydantic_settings` (`Variables`): `ENVIRONMENT`, `FIREBASE_CREDENTIALS_PATH`, `EMAIL_*`, `INFERENCE_ENDPOINTS_PATH`, and timeouts, including values loaded from `backend/main/secrets/.env` |
 | `backend/main/app/core/app_check.py` | Entry-point App Check validation: `APP_CHECK_HEADER`, `init_app_check`, and the `verify_app_check` dependency attached to `/v1`. It is unconditional; the backend cannot start without Firebase credentials. |
-| `backend/main/app/core/config.py` | Startup configuration loading. Neural models and examination types are parsed into objects, while `SERVED_DOCUMENTS` are also retained as text for `resolve_config_document`. Includes model and title resolvers. |
-| `backend/main/app/service/` | Inference abstraction: `ModelService` and `InferenceRequest` in `base.py`, `InferenceService` in `inference.py`. `create_model_service()` in `factory.py` creates the service once during lifespan and stores it in `app.state.model_service`; routes only call the ready service. |
+| `backend/main/app/core/config.py` | Loads configuration entities and the shared `l10n.json` catalog at startup, validates locale references, and assembles localized API responses for the requested language. Includes model and title resolvers. |
+| `backend/main/app/service/` | Inference abstraction: `ModelService` in `base.py`, `InferenceService` in `inference.py`, and `InferenceRequest` in `app/model/inference/inference_request.py`. `create_model_service()` in `factory.py` creates the service once during lifespan and stores it in `app.state.model_service`; routes only call the ready service. |
 | `backend/main/app/model/` | Pydantic models: `neural_model_settings.py`, `inference_response.py`, and the `ultrasound/` package for request, data, report, email, scan photo, type, and neural-model models |
 | `backend/main/secrets/inference_endpoints.json` | Manually maintained `modelId -> GPU VM URL` map, read from `INFERENCE_ENDPOINTS_PATH`, with one entry per VM. Never committed. |
 | `backend/main/app/prompt/` | Prompt generation: `PromptFactory` in `base.py`, `ru.py` and `en.py` localizations, and `resolve_prompt_factory` in `__init__.py` |
-| `backend/main/config/` | Environment-specific JSON documents (`development/`, `production/`): `application.json`, `ultrasound_examination_neural_models.json`, grouped `ultrasound_examination_types.json`, and `ultrasound_examination_contextual_strings.json`. The backend loads them at startup and serves them through `app/route/application_config.py` and the `app/route/ultrasound/examination_*.py` routes. They are baked into the image by `backend/main/Dockerfile`. |
+| `backend/main/config/` | Environment-specific JSON documents (`development/`, `production/`): `application.json`, `ultrasound_examination_neural_models.json`, grouped `ultrasound_examination_types.json`, `ready_made_templates.json`, and one `l10n.json` with `en`/`ru` values referenced through `*LocaleKey` fields. The backend loads them at startup and assembles localized responses for the configuration and template routes. They are baked into the image by `backend/main/Dockerfile`. |
 | `backend/main/docker-compose.yml` | Docker Compose reads `backend/main/secrets/.env` and a profile-specific `secrets/.env.<profile>` selected through `ENV_FILE`. Only `./secrets` and `./logs` are mounted; configuration is baked into the image. |
 
 ### `backend/inference/` — inference service
@@ -104,6 +104,8 @@ This service runs on a GPU VM, one VM per model. See [`backend/inference/README.
 - **Framework:** FastAPI with Pydantic models.
 - **Typing:** Put `from __future__ import annotations` in every file and annotate all functions and values.
 - **Naming:** Use snake_case for functions and variables, CamelCase for classes and Pydantic models, and camelCase for Pydantic fields shared with iOS.
+- **Models:** Put each Pydantic model or request dataclass in its own file under `app/model/`. Keep configuration entities separate from localized response models.
+- **Language and headers:** Use `LanguageCode` and `HttpHeader` in main-backend code; convert enum values to strings at JSON and HTTP boundaries.
 - **Concurrency:** Use `async`/`await` for handlers and HTTP calls. Reuse the shared `httpx.AsyncClient` from application state.
 - **Configuration:** Read environment values through `pydantic_settings` in `app/core/variables.py`, including values from `backend/main/secrets/.env`.
 - **Dependencies:** Pin versions in `requirements.txt`.

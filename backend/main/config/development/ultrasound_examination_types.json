@@ -1,290 +1,204 @@
 [
-        {
+    {
         "id": "cardiovascularSystem",
-        "title": {
-            "en": "Cardiovascular system",
-            "ru": "Сердечно-сосудистая система"
-        },
+        "titleLocaleKey": "cardiovascularSystemTitle",
         "examinationTypes": [
             {
                 "id": "echocardiography",
-                "title": {
-                    "en": "Echocardiography",
-                    "ru": "Эхокардиография"
-                }
+                "titleLocaleKey": "echocardiographyTitle",
+                "contextualStringsLocaleKey": "echocardiographyContextualStrings"
             },
             {
                 "id": "abdominalVessels",
-                "title": {
-                    "en": "Abdominal vessels",
-                    "ru": "Сосуды брюшной полости"
-                }
+                "titleLocaleKey": "abdominalVesselsTitle",
+                "contextualStringsLocaleKey": "abdominalVesselsContextualStrings"
             },
             {
                 "id": "brachiocephalicVessels",
-                "title": {
-                    "en": "Brachiocephalic vessels",
-                    "ru": "Брахиоцефальные сосуды"
-                }
+                "titleLocaleKey": "brachiocephalicVesselsTitle",
+                "contextualStringsLocaleKey": "brachiocephalicVesselsContextualStrings"
             },
             {
                 "id": "intracanialArteries",
-                "title": {
-                    "en": "Intracranial arteries",
-                    "ru": "Интракраниальные артерии"
-                }
+                "titleLocaleKey": "intracanialArteriesTitle",
+                "contextualStringsLocaleKey": "intracanialArteriesContextualStrings"
             },
             {
                 "id": "renalArteries",
-                "title": {
-                    "en": "Renal arteries",
-                    "ru": "Почечные артерии"
-                }
+                "titleLocaleKey": "renalArteriesTitle",
+                "contextualStringsLocaleKey": "renalArteriesContextualStrings"
             },
             {
                 "id": "arteriesOfTheUpperExtremities",
-                "title": {
-                    "en": "Arteries of the upper extremities",
-                    "ru": "Артерии верхних конечностей"
-                }
+                "titleLocaleKey": "arteriesOfTheUpperExtremitiesTitle",
+                "contextualStringsLocaleKey": "arteriesOfTheUpperExtremitiesContextualStrings"
             },
             {
                 "id": "arteriesOfTheLowerExtremities",
-                "title": {
-                    "en": "Arteries of the lower extremities",
-                    "ru": "Артерии нижних конечностей"
-                }
+                "titleLocaleKey": "arteriesOfTheLowerExtremitiesTitle",
+                "contextualStringsLocaleKey": "arteriesOfTheLowerExtremitiesContextualStrings"
             },
             {
                 "id": "veinsOfTheUpperExtremities",
-                "title": {
-                    "en": "Veins of the upper extremities",
-                    "ru": "Вены верхних конечностей"
-                }
+                "titleLocaleKey": "veinsOfTheUpperExtremitiesTitle",
+                "contextualStringsLocaleKey": "veinsOfTheUpperExtremitiesContextualStrings"
             },
             {
                 "id": "veinsOfTheLowerExtremities",
-                "title": {
-                    "en": "Veins of the lower extremities",
-                    "ru": "Вены нижних конечностей"
-                }
+                "titleLocaleKey": "veinsOfTheLowerExtremitiesTitle",
+                "contextualStringsLocaleKey": "veinsOfTheLowerExtremitiesContextualStrings"
             }
         ]
     },
     {
         "id": "abdominalAndUrinarySystem",
-        "title": {
-            "en": "Abdominal and urinary system",
-            "ru": "Брюшная полость и мочевыделительная система"
-        },
+        "titleLocaleKey": "abdominalAndUrinarySystemTitle",
         "examinationTypes": [
             {
                 "id": "abdominalCavity",
-                "title": {
-                    "en": "Abdominal cavity",
-                    "ru": "Брюшная полость"
-                }
+                "titleLocaleKey": "abdominalCavityTitle",
+                "contextualStringsLocaleKey": "abdominalCavityContextualStrings"
             },
             {
                 "id": "hollowOrgansStomachAndIntestines",
-                "title": {
-                    "en": "Hollow organs (stomach and intestines)",
-                    "ru": "Полые органы (желудок и кишечник)"
-                }
+                "titleLocaleKey": "hollowOrgansStomachAndIntestinesTitle",
+                "contextualStringsLocaleKey": "hollowOrgansStomachAndIntestinesContextualStrings"
             },
             {
                 "id": "kidneysAdrenalGlandsAndRetroperitonealSpace",
-                "title": {
-                    "en": "Kidneys, adrenal glands, and retroperitoneal space",
-                    "ru": "Почки, надпочечники и забрюшинное пространство"
-                }
+                "titleLocaleKey": "kidneysAdrenalGlandsAndRetroperitonealSpaceTitle",
+                "contextualStringsLocaleKey": "kidneysAdrenalGlandsAndRetroperitonealSpaceContextualStrings"
             },
             {
                 "id": "bladder",
-                "title": {
-                    "en": "Bladder",
-                    "ru": "Мочевой пузырь"
-                }
+                "titleLocaleKey": "bladderTitle",
+                "contextualStringsLocaleKey": "bladderContextualStrings"
             },
             {
                 "id": "bladderWithResidualUrineDetermination",
-                "title": {
-                    "en": "Bladder with residual urine determination",
-                    "ru": "Мочевой пузырь с определением остаточной мочи"
-                }
+                "titleLocaleKey": "bladderWithResidualUrineDeterminationTitle",
+                "contextualStringsLocaleKey": "bladderWithResidualUrineDeterminationContextualStrings"
             }
         ]
     },
     {
         "id": "headAndNeck",
-        "title": {
-            "en": "Head and neck",
-            "ru": "Голова и шея"
-        },
+        "titleLocaleKey": "headAndNeckTitle",
         "examinationTypes": [
             {
                 "id": "eye",
-                "title": {
-                    "en": "Eye",
-                    "ru": "Глаз"
-                }
+                "titleLocaleKey": "eyeTitle",
+                "contextualStringsLocaleKey": "eyeContextualStrings"
             },
             {
                 "id": "sinuses",
-                "title": {
-                    "en": "Sinuses",
-                    "ru": "Пазухи"
-                }
+                "titleLocaleKey": "sinusesTitle",
+                "contextualStringsLocaleKey": "sinusesContextualStrings"
             },
             {
                 "id": "salivaryGlands",
-                "title": {
-                    "en": "Salivary glands",
-                    "ru": "Слюнные железы"
-                }
+                "titleLocaleKey": "salivaryGlandsTitle",
+                "contextualStringsLocaleKey": "salivaryGlandsContextualStrings"
             },
             {
                 "id": "thyroidGland",
-                "title": {
-                    "en": "Thyroid gland",
-                    "ru": "Щитовидная железа"
-                }
+                "titleLocaleKey": "thyroidGlandTitle",
+                "contextualStringsLocaleKey": "thyroidGlandContextualStrings"
             },
             {
                 "id": "neurosonography",
-                "title": {
-                    "en": "Neurosonography",
-                    "ru": "Нейросонография"
-                }
+                "titleLocaleKey": "neurosonographyTitle",
+                "contextualStringsLocaleKey": "neurosonographyContextualStrings"
             },
             {
                 "id": "thymusGland",
-                "title": {
-                    "en": "Thymus gland",
-                    "ru": "Вилочковая железа"
-                }
+                "titleLocaleKey": "thymusGlandTitle",
+                "contextualStringsLocaleKey": "thymusGlandContextualStrings"
             }
         ]
     },
     {
         "id": "lymphaticSystem",
-        "title": {
-            "en": "Lymphatic system",
-            "ru": "Лимфатическая система"
-        },
+        "titleLocaleKey": "lymphaticSystemTitle",
         "examinationTypes": [
             {
                 "id": "lymphNodes",
-                "title": {
-                    "en": "Lymph nodes",
-                    "ru": "Лимфатические узлы"
-                }
+                "titleLocaleKey": "lymphNodesTitle",
+                "contextualStringsLocaleKey": "lymphNodesContextualStrings"
             }
         ]
     },
     {
         "id": "musculoskeletalAndSoftTissues",
-        "title": {
-            "en": "Musculoskeletal system and soft tissues",
-            "ru": "Опорно-двигательная система и мягкие ткани"
-        },
+        "titleLocaleKey": "musculoskeletalAndSoftTissuesTitle",
         "examinationTypes": [
             {
                 "id": "joints",
-                "title": {
-                    "en": "Joints",
-                    "ru": "Суставы"
-                }
+                "titleLocaleKey": "jointsTitle",
+                "contextualStringsLocaleKey": "jointsContextualStrings"
             },
             {
                 "id": "hipJointsInNewborns",
-                "title": {
-                    "en": "Hip joints in newborns",
-                    "ru": "Тазобедренные суставы у новорожденных"
-                }
+                "titleLocaleKey": "hipJointsInNewbornsTitle",
+                "contextualStringsLocaleKey": "hipJointsInNewbornsContextualStrings"
             },
             {
                 "id": "softTissues",
-                "title": {
-                    "en": "Soft tissues",
-                    "ru": "Мягкие ткани"
-                }
+                "titleLocaleKey": "softTissuesTitle",
+                "contextualStringsLocaleKey": "softTissuesContextualStrings"
             }
         ]
     },
     {
         "id": "reproductiveSystemAndBreast",
-        "title": {
-            "en": "Reproductive system and breast",
-            "ru": "Репродуктивная система и молочные железы"
-        },
+        "titleLocaleKey": "reproductiveSystemAndBreastTitle",
         "examinationTypes": [
             {
                 "id": "pelvicOrgans",
-                "title": {
-                    "en": "Pelvic organs",
-                    "ru": "Органы малого таза"
-                }
+                "titleLocaleKey": "pelvicOrgansTitle",
+                "contextualStringsLocaleKey": "pelvicOrgansContextualStrings"
             },
             {
                 "id": "scrotum",
-                "title": {
-                    "en": "Scrotum",
-                    "ru": "Мошонка"
-                }
+                "titleLocaleKey": "scrotumTitle",
+                "contextualStringsLocaleKey": "scrotumContextualStrings"
             },
             {
                 "id": "mammaryGlands",
-                "title": {
-                    "en": "Mammary glands",
-                    "ru": "Молочные железы"
-                }
+                "titleLocaleKey": "mammaryGlandsTitle",
+                "contextualStringsLocaleKey": "mammaryGlandsContextualStrings"
             }
         ]
     },
     {
         "id": "thoracicExaminations",
-        "title": {
-            "en": "Thoracic examinations",
-            "ru": "Исследования грудной клетки"
-        },
+        "titleLocaleKey": "thoracicExaminationsTitle",
         "examinationTypes": [
             {
                 "id": "pleuralRegion",
-                "title": {
-                    "en": "Pleural region",
-                    "ru": "Плевральная область"
-                }
+                "titleLocaleKey": "pleuralRegionTitle",
+                "contextualStringsLocaleKey": "pleuralRegionContextualStrings"
             }
         ]
     },
     {
         "id": "screeningExaminations",
-        "title": {
-            "en": "Screening examinations",
-            "ru": "Скрининговые исследования"
-        },
+        "titleLocaleKey": "screeningExaminationsTitle",
         "examinationTypes": [
             {
                 "id": "pregnancyFirstTrimester",
-                "title": {
-                    "en": "Pregnancy, first trimester",
-                    "ru": "Беременность, 1-й триместр"
-                }
+                "titleLocaleKey": "pregnancyFirstTrimesterTitle",
+                "contextualStringsLocaleKey": "pregnancyFirstTrimesterContextualStrings"
             },
             {
                 "id": "pregnancySecondTrimester",
-                "title": {
-                    "en": "Pregnancy, second trimester",
-                    "ru": "Беременность, 2-й триместр"
-                }
+                "titleLocaleKey": "pregnancySecondTrimesterTitle",
+                "contextualStringsLocaleKey": "pregnancySecondTrimesterContextualStrings"
             },
             {
                 "id": "pregnancyThirdTrimester",
-                "title": {
-                    "en": "Pregnancy, third trimester",
-                    "ru": "Беременность, 3-й триместр"
-                }
+                "titleLocaleKey": "pregnancyThirdTrimesterTitle",
+                "contextualStringsLocaleKey": "pregnancyThirdTrimesterContextualStrings"
             }
         ]
     }

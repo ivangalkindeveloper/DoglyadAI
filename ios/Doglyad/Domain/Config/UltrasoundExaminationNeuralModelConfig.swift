@@ -4,7 +4,7 @@ struct UltrasoundExaminationNeuralModelConfig: Codable {
     let temperature: Double
     let maxTokens: Int
     let maxContextTokens: Int
-    let prompt: [String: String]
+    let prompt: String
 }
 
 extension UltrasoundExaminationNeuralModelConfig {
@@ -12,15 +12,6 @@ extension UltrasoundExaminationNeuralModelConfig {
         temperature: 0,
         maxTokens: 0,
         maxContextTokens: 0,
-        prompt: [:]
+        prompt: ""
     )
-}
-
-extension UltrasoundExaminationNeuralModelConfig {
-    private static let fallbackPromptLanguageCode = "en"
-
-    func getPrompt(for locale: Locale) -> String? {
-        let key = locale.language.languageCode?.identifier ?? Self.fallbackPromptLanguageCode
-        return prompt[key] ?? prompt[Self.fallbackPromptLanguageCode]
-    }
 }

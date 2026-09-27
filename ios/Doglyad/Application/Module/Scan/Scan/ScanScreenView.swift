@@ -20,7 +20,7 @@ struct ScanScreenView: DView {
             titleContent: {
                 DButton(
                     image: .down,
-                    title: viewModel.usExaminationType.getLocalizedTitle(for: Locale.current),
+                    title: viewModel.usExaminationType.localizedTitle,
                     action: viewModel.onTapUSExaminationType
                 )
                 .dStyle(.primaryChip)

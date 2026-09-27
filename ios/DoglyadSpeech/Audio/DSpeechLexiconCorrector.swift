@@ -46,8 +46,6 @@ public struct DSpeechLexiconCorrector: Sendable {
 
         for text in terms {
             let wordCount = text.split(separator: " ").count
-            // There are no single-word terms in the dictionary, and that is for the best:
-            // on a short word the distance threshold catches far too much foreign text.
             guard wordCount > 1 else { continue }
 
             let normalized = Self.normalize(text)

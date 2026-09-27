@@ -1,4 +1,7 @@
 {
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv311/bin/python",
-    "python.terminal.activateEnvironment": true
+    "python.terminal.activateEnvironment": true,
+    "files.associations": {
+        "**/backend/main/app/route/templates/*.py": "python"
+    }
 }

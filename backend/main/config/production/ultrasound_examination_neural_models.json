@@ -5,10 +5,7 @@
         "entitlement": "base",
         "accessibility": "available",
         "contextLength": 128000,
-        "description": {
-            "en": "A dependable everyday assistant: it reads your ultrasound frames together with the patient's complaints and your notes and turns them into a structured clinical conclusion. Built by Google (released May 2025) on its Gemma 3 family and specially trained for medicine — on real de-identified medical images (X-ray, dermatology, ophthalmology, pathology, radiology) and a large body of clinical texts, exam-style medical questions and patient records. Compact and fast, a solid default for routine studies.",
-            "ru": "Надёжный помощник на каждый день: читает кадры УЗИ вместе с жалобами пациента и вашими заметками и превращает их в структурированное заключение. Создана Google (релиз — май 2025) на основе семейства Gemma 3 и специально обучена для медицины — на реальных обезличенных медицинских снимках (рентген, дерматология, офтальмология, патология, радиология) и большом массиве клинических текстов, экзаменационных медицинских вопросов и историй болезни. Компактная и быстрая — хороший выбор по умолчанию для рутинных исследований."
-        }
+        "descriptionLocaleKey": "googleMedGemma4BDescription"
     },
     {
         "id": "google/medgemma-1.5-4b-it",
@@ -16,9 +13,6 @@
         "entitlement": "pro",
         "accessibility": "coming_soon",
         "contextLength": 128000,
-        "description": {
-            "en": "Choose it for complex cases and long patient histories: the same compact size, but it reasons more carefully over clinical text while still linking the images to context. Google's January 2026 update to the 4B model, trained on a broader range of studies — including volumetric CT and MRI, follow-up chest imaging over time, and turning lab reports and documents into structured records. A richer first draft when the case needs more thought.",
-            "ru": "Выбирайте для сложных случаев и объёмного анамнеза: тот же компактный размер, но модель тщательнее рассуждает по клиническому тексту и по-прежнему связывает снимки с контекстом. Обновление Google (январь 2026) для модели 4B, обученное на более широком наборе исследований — включая объёмные КТ и МРТ, динамику снимков грудной клетки во времени и превращение лабораторных отчётов и документов в структурированные записи. Более содержательный черновик, когда случай требует размышления."
-        }
+        "descriptionLocaleKey": "googleMedGemma_1.5_4BDescription"
     }
 ]

@@ -25,6 +25,7 @@ struct ScanSpeechBottomSheet: View {
 #Preview {
     ScanSpeechBottomSheet(
         arguments: ScanSpeechBottomSheetArguments(
+            examinationType: USExaminationType(id: "", title: "", contextualStrings: []),
             onComplete: nil
         )
     )

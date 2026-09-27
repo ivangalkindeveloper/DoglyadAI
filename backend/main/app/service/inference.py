@@ -6,12 +6,13 @@ import httpx
 from fastapi import HTTPException
 from pydantic import ValidationError
 
-from app.core.app_check import APP_CHECK_HEADER
+from app.core.http_header import HttpHeader
 from app.core.variables import variables
 from app.model.inference.inference_generation_image import InferenceGenerationImage
 from app.model.inference.inference_generation_request import InferenceGenerationRequest
+from app.model.inference.inference_request import InferenceRequest
 from app.model.inference.inference_response import InferenceGenerationResponse
-from app.service.base import InferenceRequest, ModelService
+from app.service.base import ModelService
 
 logger = logging.getLogger(__name__)
 
@@ -46,7 +47,9 @@ class InferenceService(ModelService):
             # Already verified at the edge; the GPU VM verifies it again because it
             # is exposed on the network and must not serve anyone who merely knows
             # its address.
-            headers[APP_CHECK_HEADER] = request.app_check_token
+            headers[HttpHeader.FIREBASE_APP_CHECK.value] = request.app_check_token
+        if request.request_id:
+            headers[HttpHeader.REQUEST_ID.value] = request.request_id
 
         payload = InferenceGenerationRequest(
             modelId=model_id,
@@ -88,6 +91,9 @@ class InferenceService(ModelService):
 
         try:
             parsed = InferenceGenerationResponse.model_validate(response.json())
+            if parsed.modelId != model_id:
+                logger.error("Inference model mismatch: requested=%s, received=%s", model_id, parsed.modelId)
+                raise ValueError("Inference service returned a different model ID")
             value = parsed.value()
             logger.info("Inference value: model=%s, chars=%d", model_id, len(value))
             return value

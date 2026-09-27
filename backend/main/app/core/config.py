@@ -2,19 +2,29 @@ from __future__ import annotations
 
 import json
 import logging
+from copy import deepcopy
 from pathlib import Path
 from typing import Any
 
 from fastapi import HTTPException
 
+from app.core.language_code import LanguageCode
+from app.core.locale import SUPPORTED_LANGUAGES
 from app.core.variables import variables
+from app.model.config_localization import L10n
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
+from app.model.ultrasound.us_examination_neural_model_response import USExaminationNeuralModelResponse
 from app.model.ultrasound.us_examination_ready_made_template import USExaminationReadyMadeTemplate
+from app.model.ultrasound.us_examination_ready_made_template_response import (
+    USExaminationReadyMadeTemplateResponse,
+)
 from app.model.ultrasound.us_examination_type import USExaminationType
 from app.model.ultrasound.us_examination_type_group import USExaminationTypeGroup
+from app.model.ultrasound.us_examination_type_group_response import USExaminationTypeGroupResponse
+from app.model.ultrasound.us_examination_type_response import USExaminationTypeResponse
 
 logger = logging.getLogger(__name__)
 
@@ -26,101 +36,167 @@ examination_types: dict[str, USExaminationType] = {}
 examination_type_groups: list[USExaminationTypeGroup] = []
 ready_made_templates: list[USExaminationReadyMadeTemplate] = []
 
-# The documents the app reads at startup, served verbatim from the image. Keeping
-# the app and this backend on one source removes the window in which the app
-# offers a model the backend has not been redeployed to know about.
-SERVED_DOCUMENTS = (
-    "application.json",
-    "ultrasound_examination_types.json",
-    "ultrasound_examination_neural_models.json",
-    "ultrasound_examination_contextual_strings.json",
-)
+_application_config: dict[str, Any] = {}
+_l10n: L10n | None = None
 
-_served_documents: dict[str, str] = {}
+
+def _load_json(path: Path) -> Any:
+    if not path.exists():
+        raise RuntimeError(f"Config file not found: {path}")
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise RuntimeError(f"Invalid JSON in config file {path}: {error}") from error
 
 
 def _load_json_array(path: Path) -> list[dict[str, Any]]:
-    if not path.exists():
-        raise RuntimeError(f"Config file not found: {path}")
-    try:
-        with open(path, encoding="utf-8") as file:
-            data = json.load(file)
-    except json.JSONDecodeError as error:
-        raise RuntimeError(f"Invalid JSON in config file {path}: {error}") from error
-    if not isinstance(data, list):
-        raise RuntimeError(f"Config file {path} must contain a JSON array")
+    data = _load_json(path)
+    if not isinstance(data, list) or not all(isinstance(item, dict) for item in data):
+        raise RuntimeError(f"Config file {path} must contain an array of objects")
     return data
 
 
-def _read_document(path: Path) -> str:
-    if not path.exists():
-        raise RuntimeError(f"Config file not found: {path}")
-    text = path.read_text(encoding="utf-8")
-    # Parsed once here only to fail at startup rather than in the app's face; what
-    # is served is the original text, so nothing is lost in a re-serialization.
-    try:
-        json.loads(text)
-    except json.JSONDecodeError as error:
-        raise RuntimeError(f"Invalid JSON in config file {path}: {error}") from error
-    return text
+def _load_json_object(path: Path) -> dict[str, Any]:
+    data = _load_json(path)
+    if not isinstance(data, dict):
+        raise RuntimeError(f"Config file {path} must contain a JSON object")
+    return data
+
+
+def _application_response(application: dict[str, Any], l10n: L10n, language: LanguageCode) -> dict[str, Any]:
+    response = deepcopy(application)
+    settings = response["ultrasound"]["examinationNeuralModel"]
+    if "prompt" in settings:
+        raise ValueError("Examination prompt belongs in l10n.json")
+    settings["prompt"] = l10n.text(language, settings.pop("promptLocaleKey"))
+    return response
+
+
+def _examination_types_response(
+    groups: list[USExaminationTypeGroup], l10n: L10n, language: LanguageCode
+) -> list[USExaminationTypeGroupResponse]:
+    return [
+        USExaminationTypeGroupResponse(
+            id=group.id,
+            title=l10n.text(language, group.titleLocaleKey),
+            examinationTypes=[
+                USExaminationTypeResponse(
+                    id=item.id,
+                    title=l10n.text(language, item.titleLocaleKey),
+                    contextualStrings=l10n.contextual_strings(language, item.contextualStringsLocaleKey),
+                )
+                for item in group.examinationTypes
+            ],
+        )
+        for group in groups
+    ]
+
+
+def _neural_models_response(
+    models: list[USExaminationNeuralModel], l10n: L10n, language: LanguageCode
+) -> list[USExaminationNeuralModelResponse]:
+    return [
+        USExaminationNeuralModelResponse(
+            **model.model_dump(mode="json", exclude={"descriptionLocaleKey"}),
+            description=l10n.text(language, model.descriptionLocaleKey),
+        )
+        for model in models
+    ]
+
+
+def _ready_made_templates_response(
+    templates: list[USExaminationReadyMadeTemplate], l10n: L10n, language: LanguageCode
+) -> list[USExaminationReadyMadeTemplateResponse]:
+    return [
+        USExaminationReadyMadeTemplateResponse(
+            id=template.id,
+            examinationType=template.examinationType,
+            title=l10n.text(language, template.titleLocaleKey),
+            content=l10n.text(language, template.contentLocaleKey),
+        )
+        for template in templates
+    ]
+
+
+def _check_unique_ids(ids: list[str], kind: str) -> None:
+    if len(ids) != len(set(ids)):
+        raise ValueError(f"Duplicate {kind} id")
 
 
 def load_configs() -> None:
+    global _l10n
     try:
-        for item in _load_json_array(_CONFIG_DIR / "ultrasound_examination_neural_models.json"):
-            model = USExaminationNeuralModel(**item)
-            neural_models[model.id] = model
-
-        loaded_groups = [
-            USExaminationTypeGroup(**item)
+        application = _load_json_object(_CONFIG_DIR / "application.json")
+        groups = [
+            USExaminationTypeGroup.model_validate(item)
             for item in _load_json_array(_CONFIG_DIR / "ultrasound_examination_types.json")
         ]
-        loaded_types: dict[str, USExaminationType] = {}
-        for group in loaded_groups:
-            for examination_type in group.examinationTypes:
-                if examination_type.id in loaded_types:
-                    raise RuntimeError(f"Duplicate examination type id: {examination_type.id}")
-                loaded_types[examination_type.id] = examination_type
-
-        examination_type_groups.clear()
-        examination_type_groups.extend(loaded_groups)
-        examination_types.clear()
-        examination_types.update(loaded_types)
-
-        loaded_ready_made_templates = [
-            USExaminationReadyMadeTemplate(**item)
+        model_configs = [
+            USExaminationNeuralModel.model_validate(item)
+            for item in _load_json_array(_CONFIG_DIR / "ultrasound_examination_neural_models.json")
+        ]
+        templates = [
+            USExaminationReadyMadeTemplate.model_validate(item)
             for item in _load_json_array(_CONFIG_DIR / "ready_made_templates.json")
         ]
-        ready_made_template_ids: set[str] = set()
-        for template in loaded_ready_made_templates:
-            if template.id in ready_made_template_ids:
-                raise RuntimeError(f"Duplicate ready-made template id: {template.id}")
-            if template.examinationType not in loaded_types:
-                raise RuntimeError(
+        l10n = L10n.model_validate(_load_json_object(_CONFIG_DIR / "l10n.json"))
+
+        types = {item.id: item for group in groups for item in group.examinationTypes}
+        models = {item.id: item for item in model_configs}
+        _check_unique_ids([group.id for group in groups], "examination group")
+        _check_unique_ids([item.id for group in groups for item in group.examinationTypes], "examination type")
+        _check_unique_ids([item.id for item in model_configs], "neural model")
+        _check_unique_ids([item.id for item in templates], "ready-made template")
+        for template in templates:
+            if template.examinationType not in types:
+                raise ValueError(
                     f"Unknown examination type id for ready-made template {template.id}: {template.examinationType}"
                 )
-            ready_made_template_ids.add(template.id)
 
-        ready_made_templates.clear()
-        ready_made_templates.extend(loaded_ready_made_templates)
-
-        for name in SERVED_DOCUMENTS:
-            _served_documents[name] = _read_document(_CONFIG_DIR / name)
+        for language in SUPPORTED_LANGUAGES:
+            _application_response(application, l10n, language)
+            _examination_types_response(groups, l10n, language)
+            _neural_models_response(model_configs, l10n, language)
+            _ready_made_templates_response(templates, l10n, language)
     except Exception as error:
         logger.exception("Failed to load application configs from %s", _CONFIG_DIR)
         raise RuntimeError(f"Failed to load configs from {_CONFIG_DIR}: {error}") from error
 
+    neural_models.clear()
+    neural_models.update(models)
+    examination_types.clear()
+    examination_types.update(types)
+    examination_type_groups.clear()
+    examination_type_groups.extend(groups)
+    ready_made_templates.clear()
+    ready_made_templates.extend(templates)
+    _application_config.clear()
+    _application_config.update(application)
+    _l10n = l10n
 
-def resolve_config_document(name: str) -> str:
-    """The raw text of a config document, for serving to the app.
 
-    Read once at startup: these files ship inside the image and cannot change
-    under a running process.
+def _catalog() -> L10n:
+    if _l10n is None:
+        raise RuntimeError("Localizations have not been loaded")
+    return _l10n
 
-    Each route asks for a fixed name, so a miss here is a programming error and
-    not something a caller can provoke — hence `KeyError` rather than a 404.
-    """
-    return _served_documents[name]
+
+def resolve_application_config_document(language_code: LanguageCode) -> str:
+    return json.dumps(_application_response(_application_config, _catalog(), language_code), ensure_ascii=False)
+
+
+def resolve_examination_types_document(language_code: LanguageCode) -> str:
+    response = _examination_types_response(examination_type_groups, _catalog(), language_code)
+    return json.dumps([item.model_dump(mode="json") for item in response], ensure_ascii=False)
+
+
+def resolve_neural_models_document(language_code: LanguageCode) -> str:
+    response = _neural_models_response(list(neural_models.values()), _catalog(), language_code)
+    return json.dumps([item.model_dump(mode="json") for item in response], ensure_ascii=False)
+
+
+def resolve_ready_made_templates(language_code: LanguageCode) -> list[USExaminationReadyMadeTemplateResponse]:
+    return _ready_made_templates_response(ready_made_templates, _catalog(), language_code)
 
 
 def resolve_neural_model(selected_id: str | None) -> USExaminationNeuralModel:
@@ -143,11 +219,10 @@ def resolve_neural_model(selected_id: str | None) -> USExaminationNeuralModel:
     return model
 
 
-def resolve_examination_title(type_id: str, language_code: str) -> str:
-    examination_type = examination_types.get(type_id)
-    if not examination_type:
+def resolve_examination_title(type_id: str, language_code: LanguageCode) -> str:
+    if type_id not in examination_types:
         raise HTTPException(
             status_code=400,
             detail=f"Unknown examination type id: {type_id}",
         )
-    return examination_type.get_localized_title(language_code)
+    return _catalog().text(language_code, examination_types[type_id].titleLocaleKey)

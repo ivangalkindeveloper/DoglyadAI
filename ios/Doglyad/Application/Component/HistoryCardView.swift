@@ -62,8 +62,7 @@ struct HistoryCardView: DView {
                     DText(
                         LocalizedStringResource.forExaminationTypeById(
                             types: container.usExaminationTypesById,
-                            id: examinationData.usExaminationTypeId,
-                            locale: Locale.current
+                            id: examinationData.usExaminationTypeId
                         )
                     )
                     .dStyle(

@@ -31,7 +31,7 @@ final class TemplateRepository: TemplateRepositoryProtocol {
     func getReadyMadeTemplates() async throws -> [USExaminationReadyMadeTemplate] {
         try await httpClient.get(
             endPoint: Self.readyMadeListEndpoint,
-            headers: nil
+            headers: [DHttpHeader.acceptLanguage: SupportedLanguage.currentCode]
         )
     }
 

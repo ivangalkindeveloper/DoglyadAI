@@ -8,13 +8,14 @@ import httpx
 import pytest
 from fastapi import HTTPException
 
+from app.core.language_code import LanguageCode
+from app.model.inference.inference_request import InferenceRequest
 from app.model.neural_model_settings import NeuralModelSettings
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
 from app.model.ultrasound.us_examination_scan_photo import USExaminationScanPhoto
-from app.service.base import InferenceRequest
 from app.service.inference import InferenceService
 
 _URL = "http://10.0.0.11:8100/v1/generation"
@@ -23,8 +24,10 @@ _STRUCTURED_OUTPUT = '{"type":"object"}'
 _MODEL = USExaminationNeuralModel(
     id="google/medgemma-4b-it",
     title="MedGemma 4B",
+    entitlement="base",
     accessibility=USExaminationNeuralModelAccessibility.AVAILABLE,
-    description={"en": ""},
+    contextLength=128000,
+    descriptionLocaleKey="googleMedGemma4BDescription",
 )
 _ENDPOINTS = {_MODEL.id: _URL}
 
@@ -33,16 +36,18 @@ def _request(
     model: USExaminationNeuralModel = _MODEL,
     photos: list[USExaminationScanPhoto] | None = None,
     token: str | None = "app-check-token",
+    request_id: str | None = None,
 ) -> InferenceRequest:
     return InferenceRequest(
         neural_model=model,
         settings=NeuralModelSettings(temperature=0.3, maxTokens=512),
-        language_code="ru",
+        language_code=LanguageCode.RU,
         system_prompt="system",
         prompt="prompt",
         structured_output=_STRUCTURED_OUTPUT,
         photos=photos or [],
         app_check_token=token,
+        request_id=request_id,
     )
 
 
@@ -65,6 +70,19 @@ def test_app_check_token_is_relayed_to_the_gpu_vm() -> None:
     _call(handler)
 
     assert seen["x-firebase-appcheck"] == "app-check-token"
+
+
+def test_request_id_is_relayed_to_the_gpu_vm() -> None:
+    request_id = "a" * 32
+    seen: dict[str, str] = {}
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.update(request.headers)
+        return httpx.Response(200, json={"modelId": _MODEL.id, "response": _RESPONSE})
+
+    _call(handler, _request(request_id=request_id))
+
+    assert seen["x-request-id"] == request_id
 
 
 def test_request_carries_prompts_images_schema_and_sampling() -> None:
@@ -128,6 +146,16 @@ def test_blank_response_is_rejected() -> None:
     assert error.value.status_code == 502
 
 
+def test_response_from_another_model_is_rejected() -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"modelId": "google/another-model", "response": _RESPONSE})
+
+    with pytest.raises(HTTPException) as error:
+        _call(handler)
+
+    assert error.value.status_code == 502
+
+
 def test_model_without_a_vm_is_not_sent_anywhere() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         raise AssertionError("must not be called")
@@ -135,8 +163,10 @@ def test_model_without_a_vm_is_not_sent_anywhere() -> None:
     other = USExaminationNeuralModel(
         id="google/unsupported-model",
         title="Unsupported",
+        entitlement="base",
         accessibility=USExaminationNeuralModelAccessibility.AVAILABLE,
-        description={"en": ""},
+        contextLength=128000,
+        descriptionLocaleKey="unsupportedModelDescription",
     )
 
     with pytest.raises(HTTPException) as error:

@@ -8,7 +8,7 @@ import httpx
 from fastapi import FastAPI
 
 from app.core.app_check import init_app_check
-from app.core.config import load_configs
+from app.core.config import load_configs, neural_models
 from app.core.variables import variables
 from app.service import create_model_service
 
@@ -26,7 +26,7 @@ class MainLifespan(AbstractAsyncContextManager[None]):
         try:
             load_configs()
             init_app_check()
-            self._app.state.model_service = create_model_service(self._http_client)
+            self._app.state.model_service = create_model_service(self._http_client, neural_models.values())
         except RuntimeError as error:
             logger.critical("Application startup aborted: %s", error)
             await self._http_client.aclose()

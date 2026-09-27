@@ -177,10 +177,10 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
 
         usExaminationType = examinationType
         nameController.setText(
-            String(localized: template.getLocalizedTitle(for: Locale.current))
+            String(localized: template.localizedTitle)
         )
         templateController.setText(
-            template.getLocalizedContent(for: Locale.current)
+            template.content
         )
     }
 }

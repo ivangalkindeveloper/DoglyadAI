@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 
 class USExaminationType(BaseModel):
-    id: str
-    title: dict[str, str]
+    model_config = ConfigDict(extra="forbid")
 
-    def get_localized_title(self, language_code: str) -> str:
-        return self.title.get(language_code) or next(iter(self.title.values()), "")
+    id: str
+    titleLocaleKey: str
+    contextualStringsLocaleKey: str

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
@@ -30,11 +29,6 @@ class USExaminationReport(BaseModel):
         if value is None:
             return None
         return value.strip() or None
-
-
-class USExaminationModelReport(USExaminationReport):
-    date: datetime
-    modelId: str
 
 
 def us_examination_report_structured_output(include_recommendations: bool) -> str:

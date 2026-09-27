@@ -4,9 +4,10 @@ import logging
 import sys
 from logging.handlers import TimedRotatingFileHandler
 
+from app.core.request_id import RequestIdLogFilter
 from app.core.variables import variables
 
-_FORMAT = "%(asctime)s %(levelname)s %(name)s: %(message)s"
+_FORMAT = "%(asctime)s %(levelname)s %(name)s request_id=%(request_id)s: %(message)s"
 
 
 def setup_logging() -> None:
@@ -37,4 +38,5 @@ def setup_logging() -> None:
     root.setLevel(logging.INFO)
     for handler in handlers:
         handler.setFormatter(formatter)
+        handler.addFilter(RequestIdLogFilter())
         root.addHandler(handler)

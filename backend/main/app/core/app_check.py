@@ -7,11 +7,12 @@ import firebase_admin
 from fastapi import Header, HTTPException, status
 from firebase_admin import app_check, credentials
 
+from app.core.http_header import HttpHeader
 from app.core.variables import variables
 
 logger = logging.getLogger(__name__)
 
-APP_CHECK_HEADER = "X-Firebase-AppCheck"
+APP_CHECK_HEADER = HttpHeader.FIREBASE_APP_CHECK.value
 
 
 def init_app_check() -> None:

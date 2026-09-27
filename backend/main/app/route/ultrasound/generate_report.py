@@ -6,11 +6,12 @@ from datetime import UTC, datetime
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import ValidationError
 
-from app.core.app_check import APP_CHECK_HEADER
 from app.core.config import resolve_examination_title, resolve_neural_model
+from app.core.http_header import HttpHeader
 from app.core.limiter import limiter
+from app.core.locale import resolve_language
+from app.model.ultrasound.us_examination_model_report import USExaminationModelReport
 from app.model.ultrasound.us_examination_report import (
-    USExaminationModelReport,
     USExaminationReport,
     us_examination_report_structured_output,
 )
@@ -29,8 +30,7 @@ async def generate_report(
     body: USExaminationRequest,
     request: Request,
 ) -> USExaminationModelReport:
-    accept_language = request.headers.get("accept-language", "en")
-    language_code = accept_language.split("_")[0].strip()
+    language_code = resolve_language(request.headers.get(HttpHeader.ACCEPT_LANGUAGE.value))
     prompt_factory = resolve_prompt_factory(language_code)
 
     settings = body.neuralModelSettings
@@ -45,7 +45,7 @@ async def generate_report(
     logger.info(
         "Report request: model=%s, lang=%s, exam=%s, photos=%d",
         neural_model.id,
-        language_code,
+        language_code.value,
         examination_title,
         len(examination.photos),
     )
@@ -69,7 +69,8 @@ async def generate_report(
                 include_recommendations=body.includeRecommendations
             ),
             photos=examination.photos,
-            app_check_token=request.headers.get(APP_CHECK_HEADER),
+            app_check_token=request.headers.get(HttpHeader.FIREBASE_APP_CHECK.value),
+            request_id=request.state.request_id,
         )
     )
 

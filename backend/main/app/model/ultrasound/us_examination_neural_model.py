@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
@@ -8,10 +8,13 @@ from app.model.ultrasound.us_examination_neural_model_accessibility import (
 
 
 class USExaminationNeuralModel(BaseModel):
+    """Neural model stored in the backend configuration and used for selection."""
+
+    model_config = ConfigDict(extra="forbid")
+
     id: str
     title: str
+    entitlement: str
     accessibility: USExaminationNeuralModelAccessibility
-    description: dict[str, str]
-
-    def get_localized_description(self, language_code: str) -> str:
-        return self.description.get(language_code) or next(iter(self.description.values()), "")
+    contextLength: int
+    descriptionLocaleKey: str

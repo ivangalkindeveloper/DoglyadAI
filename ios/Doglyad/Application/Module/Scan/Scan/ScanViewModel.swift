@@ -590,6 +590,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
             self.coordinator.sheet(
                 .scanSpeech,
                 arguments: ScanSpeechBottomSheetArguments(
+                    examinationType: self.usExaminationType,
                     onComplete: { [weak self] response in
                         guard let self = self else { return }
 
@@ -685,7 +686,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations()
             )
             let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
-                locale: Locale.current,
+                locale: SupportedLanguage.currentLocale,
                 request: request,
                 scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
                     resizeMaxDimension: self.ultrasoundConfig.scanPhotoResizeMaxDimension,

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 
 import httpx
 import pytest
@@ -13,6 +14,22 @@ def test_app_exposes_routes() -> None:
 
     paths = {getattr(route, "path", None) for route in app.routes}
     assert "/v1/generation" in paths
+
+
+def test_inference_preserves_valid_request_id_and_replaces_invalid_one() -> None:
+    from app.main import app
+
+    async def run() -> tuple[str, str]:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+            valid = await client.get("/openapi.json", headers={"X-Request-ID": "a" * 32})
+            invalid = await client.get("/openapi.json", headers={"X-Request-ID": "client-supplied"})
+        assert valid.status_code == invalid.status_code == 200
+        return valid.headers["X-Request-ID"], invalid.headers["X-Request-ID"]
+
+    valid_id, replacement_id = asyncio.run(run())
+    assert valid_id == "a" * 32
+    assert re.fullmatch(r"[0-9a-f]{32}", replacement_id)
+    assert replacement_id != valid_id
 
 
 def test_no_route_is_reachable_without_app_check() -> None:

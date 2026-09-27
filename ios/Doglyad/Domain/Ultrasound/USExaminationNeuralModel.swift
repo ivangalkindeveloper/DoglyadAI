@@ -6,11 +6,9 @@ struct USExaminationNeuralModel: Codable, Identifiable, Equatable {
     let entitlement: SubscriptionType
     let accessibility: USExaminationNeuralModelAccessibility
     let contextLength: Int
-    let description: [String: String]
+    let description: String
 
-    func getLocalizedDescription(for locale: Locale) -> LocalizedStringResource {
-        let key = locale.language.languageCode?.identifier ?? "en"
-        let description = description[key] ?? description.values.first ?? ""
-        return LocalizedStringResource(stringLiteral: description)
+    var localizedDescription: LocalizedStringResource {
+        LocalizedStringResource(stringLiteral: description)
     }
 }

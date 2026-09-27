@@ -5,8 +5,8 @@ import Testing
 /// pinned down by tests: it must repair homophones and must refuse to substitute
 /// anywhere the substitution could invert the meaning.
 struct DSpeechLexiconCorrectorTests {
-    /// A sample of the real examination dictionary, including every dangerous pair:
-    /// opposites differing by a prefix or a couple of letters.
+    /// Regression examples of dangerous pairs: opposites differing by a prefix
+    /// or a couple of letters. The current per-type hints also include single words.
     private static let terms = [
         "анэхогенное образование",
         "гиперэхогенное образование",
@@ -33,6 +33,15 @@ struct DSpeechLexiconCorrectorTests {
     ]
 
     private let corrector = DSpeechLexiconCorrector(terms: terms)
+
+    @Test("Type-specific medical phrases repair spelling without touching measurements")
+    func correctsTypeSpecificTerms() {
+        let kidney = DSpeechLexiconCorrector(terms: ["почечная лоханка"])
+        let heart = DSpeechLexiconCorrector(terms: ["митральный клапан"])
+
+        #expect(kidney.correct("почечная лаханка 12 мм") == "почечная лоханка 12 мм")
+        #expect(heart.correct("митральный клопан не изменен") == "митральный клапан не изменен")
+    }
 
     // MARK: - Repairs what it was built for
 

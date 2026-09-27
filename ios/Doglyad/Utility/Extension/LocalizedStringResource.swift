@@ -3,10 +3,9 @@ import Foundation
 extension LocalizedStringResource {
     static func forExaminationTypeById(
         types: [String: USExaminationType],
-        id: String,
-        locale: Locale
+        id: String
     ) -> LocalizedStringResource {
-        types[id]?.getLocalizedTitle(for: locale) ?? LocalizedStringResource("")
+        types[id]?.localizedTitle ?? LocalizedStringResource("")
     }
 
     static func forGender(

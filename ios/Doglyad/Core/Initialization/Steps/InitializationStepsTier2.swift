@@ -1,4 +1,5 @@
 import DependencyInitializer
+import DoglyadNetwork
 import Foundation
 
 extension InitializationProcess {
@@ -9,7 +10,7 @@ extension InitializationProcess {
                 run: { (process: InitializationProcess) async throws in
                     let applicationConfig: ApplicationConfig = try await process.httpClient!.get(
                         endPoint: "/application_config",
-                        headers: nil
+                        headers: [DHttpHeader.acceptLanguage: SupportedLanguage.currentCode]
                     )
                     await MainActor.run {
                         process.applicationConfig = applicationConfig

@@ -43,18 +43,14 @@ extension USExaminationReport {
         )
     }
 
-    func shareSubject(
-        examinationTypesById: [String: USExaminationType],
-        locale: Locale = .current
-    ) -> String {
+    func shareSubject(examinationTypesById: [String: USExaminationType]) -> String {
         let appName = String(localized: .appName)
         let date = date.localized()
         let patientName = examinationData.patientName
         let examinationType = String(
             localized: .forExaminationTypeById(
                 types: examinationTypesById,
-                id: examinationData.usExaminationTypeId,
-                locale: locale
+                id: examinationData.usExaminationTypeId
             )
         )
         return "\(appName): \(date) \(patientName) \(examinationType)"
