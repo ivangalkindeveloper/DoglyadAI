@@ -5,48 +5,39 @@
         "examinationTypes": [
             {
                 "id": "echocardiography",
-                "titleLocaleKey": "echocardiographyTitle",
-                "contextualStringsLocaleKey": "echocardiographyContextualStrings"
+                "titleLocaleKey": "echocardiographyTitle"
             },
             {
                 "id": "abdominalVessels",
-                "titleLocaleKey": "abdominalVesselsTitle",
-                "contextualStringsLocaleKey": "abdominalVesselsContextualStrings"
+                "titleLocaleKey": "abdominalVesselsTitle"
             },
             {
                 "id": "brachiocephalicVessels",
-                "titleLocaleKey": "brachiocephalicVesselsTitle",
-                "contextualStringsLocaleKey": "brachiocephalicVesselsContextualStrings"
+                "titleLocaleKey": "brachiocephalicVesselsTitle"
             },
             {
                 "id": "intracanialArteries",
-                "titleLocaleKey": "intracanialArteriesTitle",
-                "contextualStringsLocaleKey": "intracanialArteriesContextualStrings"
+                "titleLocaleKey": "intracanialArteriesTitle"
             },
             {
                 "id": "renalArteries",
-                "titleLocaleKey": "renalArteriesTitle",
-                "contextualStringsLocaleKey": "renalArteriesContextualStrings"
+                "titleLocaleKey": "renalArteriesTitle"
             },
             {
                 "id": "arteriesOfTheUpperExtremities",
-                "titleLocaleKey": "arteriesOfTheUpperExtremitiesTitle",
-                "contextualStringsLocaleKey": "arteriesOfTheUpperExtremitiesContextualStrings"
+                "titleLocaleKey": "arteriesOfTheUpperExtremitiesTitle"
             },
             {
                 "id": "arteriesOfTheLowerExtremities",
-                "titleLocaleKey": "arteriesOfTheLowerExtremitiesTitle",
-                "contextualStringsLocaleKey": "arteriesOfTheLowerExtremitiesContextualStrings"
+                "titleLocaleKey": "arteriesOfTheLowerExtremitiesTitle"
             },
             {
                 "id": "veinsOfTheUpperExtremities",
-                "titleLocaleKey": "veinsOfTheUpperExtremitiesTitle",
-                "contextualStringsLocaleKey": "veinsOfTheUpperExtremitiesContextualStrings"
+                "titleLocaleKey": "veinsOfTheUpperExtremitiesTitle"
             },
             {
                 "id": "veinsOfTheLowerExtremities",
-                "titleLocaleKey": "veinsOfTheLowerExtremitiesTitle",
-                "contextualStringsLocaleKey": "veinsOfTheLowerExtremitiesContextualStrings"
+                "titleLocaleKey": "veinsOfTheLowerExtremitiesTitle"
             }
         ]
     },
@@ -56,28 +47,23 @@
         "examinationTypes": [
             {
                 "id": "abdominalCavity",
-                "titleLocaleKey": "abdominalCavityTitle",
-                "contextualStringsLocaleKey": "abdominalCavityContextualStrings"
+                "titleLocaleKey": "abdominalCavityTitle"
             },
             {
                 "id": "hollowOrgansStomachAndIntestines",
-                "titleLocaleKey": "hollowOrgansStomachAndIntestinesTitle",
-                "contextualStringsLocaleKey": "hollowOrgansStomachAndIntestinesContextualStrings"
+                "titleLocaleKey": "hollowOrgansStomachAndIntestinesTitle"
             },
             {
                 "id": "kidneysAdrenalGlandsAndRetroperitonealSpace",
-                "titleLocaleKey": "kidneysAdrenalGlandsAndRetroperitonealSpaceTitle",
-                "contextualStringsLocaleKey": "kidneysAdrenalGlandsAndRetroperitonealSpaceContextualStrings"
+                "titleLocaleKey": "kidneysAdrenalGlandsAndRetroperitonealSpaceTitle"
             },
             {
                 "id": "bladder",
-                "titleLocaleKey": "bladderTitle",
-                "contextualStringsLocaleKey": "bladderContextualStrings"
+                "titleLocaleKey": "bladderTitle"
             },
             {
                 "id": "bladderWithResidualUrineDetermination",
-                "titleLocaleKey": "bladderWithResidualUrineDeterminationTitle",
-                "contextualStringsLocaleKey": "bladderWithResidualUrineDeterminationContextualStrings"
+                "titleLocaleKey": "bladderWithResidualUrineDeterminationTitle"
             }
         ]
     },
@@ -87,33 +73,27 @@
         "examinationTypes": [
             {
                 "id": "eye",
-                "titleLocaleKey": "eyeTitle",
-                "contextualStringsLocaleKey": "eyeContextualStrings"
+                "titleLocaleKey": "eyeTitle"
             },
             {
                 "id": "sinuses",
-                "titleLocaleKey": "sinusesTitle",
-                "contextualStringsLocaleKey": "sinusesContextualStrings"
+                "titleLocaleKey": "sinusesTitle"
             },
             {
                 "id": "salivaryGlands",
-                "titleLocaleKey": "salivaryGlandsTitle",
-                "contextualStringsLocaleKey": "salivaryGlandsContextualStrings"
+                "titleLocaleKey": "salivaryGlandsTitle"
             },
             {
                 "id": "thyroidGland",
-                "titleLocaleKey": "thyroidGlandTitle",
-                "contextualStringsLocaleKey": "thyroidGlandContextualStrings"
+                "titleLocaleKey": "thyroidGlandTitle"
             },
             {
                 "id": "neurosonography",
-                "titleLocaleKey": "neurosonographyTitle",
-                "contextualStringsLocaleKey": "neurosonographyContextualStrings"
+                "titleLocaleKey": "neurosonographyTitle"
             },
             {
                 "id": "thymusGland",
-                "titleLocaleKey": "thymusGlandTitle",
-                "contextualStringsLocaleKey": "thymusGlandContextualStrings"
+                "titleLocaleKey": "thymusGlandTitle"
             }
         ]
     },
@@ -123,8 +103,7 @@
         "examinationTypes": [
             {
                 "id": "lymphNodes",
-                "titleLocaleKey": "lymphNodesTitle",
-                "contextualStringsLocaleKey": "lymphNodesContextualStrings"
+                "titleLocaleKey": "lymphNodesTitle"
             }
         ]
     },
@@ -134,18 +113,15 @@
         "examinationTypes": [
             {
                 "id": "joints",
-                "titleLocaleKey": "jointsTitle",
-                "contextualStringsLocaleKey": "jointsContextualStrings"
+                "titleLocaleKey": "jointsTitle"
             },
             {
                 "id": "hipJointsInNewborns",
-                "titleLocaleKey": "hipJointsInNewbornsTitle",
-                "contextualStringsLocaleKey": "hipJointsInNewbornsContextualStrings"
+                "titleLocaleKey": "hipJointsInNewbornsTitle"
             },
             {
                 "id": "softTissues",
-                "titleLocaleKey": "softTissuesTitle",
-                "contextualStringsLocaleKey": "softTissuesContextualStrings"
+                "titleLocaleKey": "softTissuesTitle"
             }
         ]
     },
@@ -155,18 +131,15 @@
         "examinationTypes": [
             {
                 "id": "pelvicOrgans",
-                "titleLocaleKey": "pelvicOrgansTitle",
-                "contextualStringsLocaleKey": "pelvicOrgansContextualStrings"
+                "titleLocaleKey": "pelvicOrgansTitle"
             },
             {
                 "id": "scrotum",
-                "titleLocaleKey": "scrotumTitle",
-                "contextualStringsLocaleKey": "scrotumContextualStrings"
+                "titleLocaleKey": "scrotumTitle"
             },
             {
                 "id": "mammaryGlands",
-                "titleLocaleKey": "mammaryGlandsTitle",
-                "contextualStringsLocaleKey": "mammaryGlandsContextualStrings"
+                "titleLocaleKey": "mammaryGlandsTitle"
             }
         ]
     },
@@ -176,8 +149,7 @@
         "examinationTypes": [
             {
                 "id": "pleuralRegion",
-                "titleLocaleKey": "pleuralRegionTitle",
-                "contextualStringsLocaleKey": "pleuralRegionContextualStrings"
+                "titleLocaleKey": "pleuralRegionTitle"
             }
         ]
     },
@@ -187,18 +159,15 @@
         "examinationTypes": [
             {
                 "id": "pregnancyFirstTrimester",
-                "titleLocaleKey": "pregnancyFirstTrimesterTitle",
-                "contextualStringsLocaleKey": "pregnancyFirstTrimesterContextualStrings"
+                "titleLocaleKey": "pregnancyFirstTrimesterTitle"
             },
             {
                 "id": "pregnancySecondTrimester",
-                "titleLocaleKey": "pregnancySecondTrimesterTitle",
-                "contextualStringsLocaleKey": "pregnancySecondTrimesterContextualStrings"
+                "titleLocaleKey": "pregnancySecondTrimesterTitle"
             },
             {
                 "id": "pregnancyThirdTrimester",
-                "titleLocaleKey": "pregnancyThirdTrimesterTitle",
-                "contextualStringsLocaleKey": "pregnancyThirdTrimesterContextualStrings"
+                "titleLocaleKey": "pregnancyThirdTrimesterTitle"
             }
         ]
     }

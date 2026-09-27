@@ -11,7 +11,9 @@ from fastapi import HTTPException
 from app.core.language_code import LanguageCode
 from app.core.locale import SUPPORTED_LANGUAGES
 from app.core.variables import variables
+from app.model.application_locale_config import ApplicationLocaleConfig
 from app.model.config_localization import L10n
+from app.model.ultrasound.us_examination_contextual_strings import USExaminationContextualStrings
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
@@ -37,7 +39,9 @@ examination_type_groups: list[USExaminationTypeGroup] = []
 ready_made_templates: list[USExaminationReadyMadeTemplate] = []
 
 _application_config: dict[str, Any] = {}
+_locale_config: ApplicationLocaleConfig | None = None
 _l10n: L10n | None = None
+_contextual_strings: USExaminationContextualStrings | None = None
 
 
 def _load_json(path: Path) -> Any:
@@ -73,7 +77,10 @@ def _application_response(application: dict[str, Any], l10n: L10n, language: Lan
 
 
 def _examination_types_response(
-    groups: list[USExaminationTypeGroup], l10n: L10n, language: LanguageCode
+    groups: list[USExaminationTypeGroup],
+    l10n: L10n,
+    contextual_strings: USExaminationContextualStrings,
+    language: LanguageCode,
 ) -> list[USExaminationTypeGroupResponse]:
     return [
         USExaminationTypeGroupResponse(
@@ -83,7 +90,7 @@ def _examination_types_response(
                 USExaminationTypeResponse(
                     id=item.id,
                     title=l10n.text(language, item.titleLocaleKey),
-                    contextualStrings=l10n.contextual_strings(language, item.contextualStringsLocaleKey),
+                    contextualStrings=contextual_strings.for_type(language, item.id),
                 )
                 for item in group.examinationTypes
             ],
@@ -124,9 +131,10 @@ def _check_unique_ids(ids: list[str], kind: str) -> None:
 
 
 def load_configs() -> None:
-    global _l10n
+    global _l10n, _contextual_strings, _locale_config
     try:
         application = _load_json_object(_CONFIG_DIR / "application.json")
+        locale_config = ApplicationLocaleConfig.model_validate(application.get("locale"))
         groups = [
             USExaminationTypeGroup.model_validate(item)
             for item in _load_json_array(_CONFIG_DIR / "ultrasound_examination_types.json")
@@ -139,7 +147,20 @@ def load_configs() -> None:
             USExaminationReadyMadeTemplate.model_validate(item)
             for item in _load_json_array(_CONFIG_DIR / "ready_made_templates.json")
         ]
-        l10n = L10n.model_validate(_load_json_object(_CONFIG_DIR / "l10n.json"))
+        l10n = L10n.model_validate(
+            {
+                language: _load_json_object(_CONFIG_DIR / language.value / "l10n.json")
+                for language in SUPPORTED_LANGUAGES
+            }
+        )
+        contextual_strings = USExaminationContextualStrings.model_validate(
+            {
+                language: _load_json_object(
+                    _CONFIG_DIR / language.value / "l10n_ultrasound_examination_contextual_strings.json"
+                )
+                for language in SUPPORTED_LANGUAGES
+            }
+        )
 
         types = {item.id: item for group in groups for item in group.examinationTypes}
         models = {item.id: item for item in model_configs}
@@ -147,6 +168,7 @@ def load_configs() -> None:
         _check_unique_ids([item.id for group in groups for item in group.examinationTypes], "examination type")
         _check_unique_ids([item.id for item in model_configs], "neural model")
         _check_unique_ids([item.id for item in templates], "ready-made template")
+        contextual_strings.validate_type_ids(set(types))
         for template in templates:
             if template.examinationType not in types:
                 raise ValueError(
@@ -155,7 +177,7 @@ def load_configs() -> None:
 
         for language in SUPPORTED_LANGUAGES:
             _application_response(application, l10n, language)
-            _examination_types_response(groups, l10n, language)
+            _examination_types_response(groups, l10n, contextual_strings, language)
             _neural_models_response(model_configs, l10n, language)
             _ready_made_templates_response(templates, l10n, language)
     except Exception as error:
@@ -172,7 +194,9 @@ def load_configs() -> None:
     ready_made_templates.extend(templates)
     _application_config.clear()
     _application_config.update(application)
+    _locale_config = locale_config
     _l10n = l10n
+    _contextual_strings = contextual_strings
 
 
 def _catalog() -> L10n:
@@ -181,12 +205,24 @@ def _catalog() -> L10n:
     return _l10n
 
 
+def get_application_locale_config() -> ApplicationLocaleConfig:
+    if _locale_config is None:
+        raise RuntimeError("Application locale config has not been loaded")
+    return _locale_config
+
+
+def _contextual_catalog() -> USExaminationContextualStrings:
+    if _contextual_strings is None:
+        raise RuntimeError("Contextual strings have not been loaded")
+    return _contextual_strings
+
+
 def resolve_application_config_document(language_code: LanguageCode) -> str:
     return json.dumps(_application_response(_application_config, _catalog(), language_code), ensure_ascii=False)
 
 
 def resolve_examination_types_document(language_code: LanguageCode) -> str:
-    response = _examination_types_response(examination_type_groups, _catalog(), language_code)
+    response = _examination_types_response(examination_type_groups, _catalog(), _contextual_catalog(), language_code)
     return json.dumps([item.model_dump(mode="json") for item in response], ensure_ascii=False)
 
 

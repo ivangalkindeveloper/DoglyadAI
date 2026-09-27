@@ -9,9 +9,10 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Ultrasound examination types",
                 run: { (process: InitializationProcess) async throws in
+                    let languageCode = await process.language!.currentCode
                     let usExaminationTypeGroups: [USExaminationTypeGroup] = try await process.httpClient!.get(
                         endPoint: "/ultrasound/examination_types",
-                        headers: [DHttpHeader.acceptLanguage: SupportedLanguage.currentCode]
+                        headers: [DHttpHeader.acceptLanguage: languageCode]
                     )
                     guard let usExaminationTypeDefault = usExaminationTypeGroups.lazy
                         .compactMap(\.examinationTypes.first)
@@ -35,9 +36,10 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Ultrasound examination neural models",
                 run: { (process: InitializationProcess) async throws in
+                    let languageCode = await process.language!.currentCode
                     let usExaminationNeuralModels: [USExaminationNeuralModel] = try await process.httpClient!.get(
                         endPoint: "/ultrasound/examination_neural_models",
-                        headers: [DHttpHeader.acceptLanguage: SupportedLanguage.currentCode]
+                        headers: [DHttpHeader.acceptLanguage: languageCode]
                     )
                     if usExaminationNeuralModels.isEmpty {
                         throw InitializationError.usExaminationNeuralModelsEmpty
@@ -56,7 +58,7 @@ extension InitializationProcess {
                 title: "Local ultrasound examination neural model",
                 run: { (process: InitializationProcess) in
                     let config = await process.applicationConfig!.ultrasound.examinationNeuralModel
-                    let locale = SupportedLanguage.currentLocale
+                    let locale = await process.language!.currentLocale
                     let prompt = config.prompt
                     guard !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
                         throw InitializationError.examinationNeuralModelPromptEmpty

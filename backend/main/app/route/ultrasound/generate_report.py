@@ -6,7 +6,7 @@ from datetime import UTC, datetime
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import ValidationError
 
-from app.core.config import resolve_examination_title, resolve_neural_model
+from app.core.config import get_application_locale_config, resolve_examination_title, resolve_neural_model
 from app.core.http_header import HttpHeader
 from app.core.limiter import limiter
 from app.core.locale import resolve_language
@@ -30,7 +30,9 @@ async def generate_report(
     body: USExaminationRequest,
     request: Request,
 ) -> USExaminationModelReport:
-    language_code = resolve_language(request.headers.get(HttpHeader.ACCEPT_LANGUAGE.value))
+    language_code = resolve_language(
+        request.headers.get(HttpHeader.ACCEPT_LANGUAGE.value), get_application_locale_config()
+    )
     prompt_factory = resolve_prompt_factory(language_code)
 
     settings = body.neuralModelSettings

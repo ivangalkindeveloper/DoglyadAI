@@ -19,6 +19,7 @@ final class DependencyContainer: ObservableObject {
     let templateRepository: TemplateRepositoryProtocol
     let subscriptionRepository: RevenueCatSubscriptionRepository
     let applicationConfig: ApplicationConfig
+    let language: Language
     let examinationNeuralModelFactory: DExaminationNeuralModelFactory?
     let usExaminationTypeGroups: [USExaminationTypeGroup]
     let usExaminationTypesById: [String: USExaminationType]
@@ -44,6 +45,7 @@ final class DependencyContainer: ObservableObject {
         templateRepository: TemplateRepositoryProtocol,
         subscriptionRepository: RevenueCatSubscriptionRepository,
         applicationConfig: ApplicationConfig,
+        language: Language,
         usExaminationTypeGroups: [USExaminationTypeGroup],
         usExaminationTypesById: [String: USExaminationType],
         usExaminationTypeDefault: USExaminationType,
@@ -68,6 +70,7 @@ final class DependencyContainer: ObservableObject {
         self.templateRepository = templateRepository
         self.subscriptionRepository = subscriptionRepository
         self.applicationConfig = applicationConfig
+        self.language = language
         self.usExaminationTypeGroups = usExaminationTypeGroups
         self.usExaminationTypesById = usExaminationTypesById
         self.usExaminationTypeDefault = usExaminationTypeDefault
@@ -137,6 +140,11 @@ extension DependencyContainer {
             environment: environment,
             securityDatabase: DSecurityDatabase()
         )
+        let applicationConfig = ApplicationConfig.default
+        let language = Language(
+            localeConfig: applicationConfig.locale,
+            preferredLanguageIdentifiers: Locale.preferredLanguages
+        )
 
         return DependencyContainer(
             analytics: AnalyticsManager(isEnabled: false),
@@ -151,7 +159,8 @@ extension DependencyContainer {
             ultrasoundDraftRepository: ultrasoundDraftRepository,
             templateRepository: templateRepository,
             subscriptionRepository: subscriptionRepository,
-            applicationConfig: .default,
+            applicationConfig: applicationConfig,
+            language: language,
             usExaminationTypeGroups: [],
             usExaminationTypesById: [:],
             usExaminationTypeDefault: .init(

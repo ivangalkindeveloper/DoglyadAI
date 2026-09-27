@@ -144,6 +144,7 @@ final class ReportDetailViewModel: DViewModel {
             self.isLoading = true
 
             let neuralModelSettings = self.subscription.neuralModelSettings
+            let locale = self.container.language.currentLocale
             let request = USExaminationRequest(
                 neuralModelSettings: neuralModelSettings,
                 examinationData: self.report.examinationData,
@@ -152,7 +153,7 @@ final class ReportDetailViewModel: DViewModel {
             )
             let ultrasoundConfig = self.container.applicationConfig.ultrasound
             let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
-                locale: Locale.current,
+                locale: locale,
                 request: request,
                 scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
                     resizeMaxDimension: ultrasoundConfig.scanPhotoResizeMaxDimension,

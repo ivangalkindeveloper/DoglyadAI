@@ -679,6 +679,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 examinationDescription: examinationDescription
             )
             let template = self.getSelectedTemplate()
+            let locale = self.container.language.currentLocale
             let request = USExaminationRequest(
                 neuralModelSettings: neuralModelSettings,
                 examinationData: examinationData,
@@ -686,7 +687,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations()
             )
             let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
-                locale: SupportedLanguage.currentLocale,
+                locale: locale,
                 request: request,
                 scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
                     resizeMaxDimension: self.ultrasoundConfig.scanPhotoResizeMaxDimension,

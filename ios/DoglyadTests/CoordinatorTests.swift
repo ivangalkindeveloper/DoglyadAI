@@ -60,6 +60,7 @@ struct CoordinatorTests {
         return ApplicationConfig(
             isServiceAvailable: true,
             appStoreId: "app-store-id",
+            locale: defaultConfig.locale,
             actualVersion: Version(major: 1, minor: 0, patch: 0),
             contactEmail: defaultConfig.contactEmail,
             appleUpdateUrl: defaultConfig.appleUpdateUrl,

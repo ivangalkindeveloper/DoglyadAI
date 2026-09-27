@@ -28,10 +28,10 @@ final class TemplateRepository: TemplateRepositoryProtocol {
         database.removeSelectedUSExaminationTemplateId()
     }
 
-    func getReadyMadeTemplates() async throws -> [USExaminationReadyMadeTemplate] {
+    func getReadyMadeTemplates(languageCode: String) async throws -> [USExaminationReadyMadeTemplate] {
         try await httpClient.get(
             endPoint: Self.readyMadeListEndpoint,
-            headers: [DHttpHeader.acceptLanguage: SupportedLanguage.currentCode]
+            headers: [DHttpHeader.acceptLanguage: languageCode]
         )
     }
 

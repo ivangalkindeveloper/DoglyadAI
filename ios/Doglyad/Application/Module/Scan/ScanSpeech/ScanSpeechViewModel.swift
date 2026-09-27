@@ -22,7 +22,7 @@ final class ScanSpeechViewModel: DViewModel {
         self.arguments = arguments
         let contextualStrings = arguments.examinationType.contextualStrings
         speechController = DSpeechFactory.makeDefault(
-            locale: SupportedLanguage.currentLocale,
+            locale: container.language.currentLocale,
             contextualStrings: contextualStrings
         )
         super.init(
@@ -35,7 +35,7 @@ final class ScanSpeechViewModel: DViewModel {
 
         Task { [weak self] in
             let controller = await DSpeechFactory.make(
-                locale: SupportedLanguage.currentLocale,
+                locale: container.language.currentLocale,
                 contextualStrings: contextualStrings
             )
             guard let self else { return }

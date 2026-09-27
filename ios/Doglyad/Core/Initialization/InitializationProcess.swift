@@ -24,6 +24,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var templateRepository: TemplateRepositoryProtocol?
     var subscriptionRepository: RevenueCatSubscriptionRepository?
     var applicationConfig: ApplicationConfig?
+    var language: Language?
     var usExaminationTypeGroups: [USExaminationTypeGroup]?
     var usExaminationTypesById: [String: USExaminationType]?
     var usExaminationTypeDefault: USExaminationType?
@@ -51,6 +52,7 @@ final class InitializationProcess: DependencyInitializationProcess {
             templateRepository: templateRepository!,
             subscriptionRepository: subscriptionRepository!,
             applicationConfig: applicationConfig!,
+            language: language!,
             usExaminationTypeGroups: usExaminationTypeGroups!,
             usExaminationTypesById: usExaminationTypesById!,
             usExaminationTypeDefault: usExaminationTypeDefault!,

@@ -8,4 +8,3 @@ class USExaminationType(BaseModel):
 
     id: str
     titleLocaleKey: str
-    contextualStringsLocaleKey: str

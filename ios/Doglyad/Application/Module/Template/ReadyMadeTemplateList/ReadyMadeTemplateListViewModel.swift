@@ -114,7 +114,9 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
     private func loadTemplates() {
         state = .loading
         handle {
-            try await self.container.templateRepository.getReadyMadeTemplates()
+            try await self.container.templateRepository.getReadyMadeTemplates(
+                languageCode: self.container.language.currentCode
+            )
         } onMainSuccess: { templates in
             self.state = .success(templates)
         } onMainApiError: { _ in

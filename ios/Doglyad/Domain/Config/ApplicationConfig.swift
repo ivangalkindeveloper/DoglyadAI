@@ -3,6 +3,7 @@ import Foundation
 struct ApplicationConfig: Codable {
     let isServiceAvailable: Bool
     let appStoreId: String
+    let locale: LocaleConfig
     let actualVersion: Version
     let contactEmail: String
     let appleUpdateUrl: URL
@@ -21,6 +22,7 @@ extension ApplicationConfig {
     static let `default` = ApplicationConfig(
         isServiceAvailable: false,
         appStoreId: "",
+        locale: .default,
         actualVersion: .default,
         contactEmail: "doglyadapp@gmail.com",
         appleUpdateUrl: URL(string: "https://apps.apple.com/app/id")!,
@@ -45,6 +47,7 @@ extension ApplicationConfig {
     private enum CodingKeys: String, CodingKey {
         case isServiceAvailable
         case appStoreId
+        case locale
         case actualVersion
         case contactEmail
         case appleUpdateUrl
@@ -64,6 +67,7 @@ extension ApplicationConfig {
             forKey: .isServiceAvailable
         ) ?? Self.default.isServiceAvailable
         appStoreId = try container.decode(String.self, forKey: .appStoreId)
+        locale = try container.decode(LocaleConfig.self, forKey: .locale)
         actualVersion = try container.decodeIfPresent(
             Version.self,
             forKey: .actualVersion
@@ -103,6 +107,7 @@ extension ApplicationConfig {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(isServiceAvailable, forKey: .isServiceAvailable)
         try container.encode(appStoreId, forKey: .appStoreId)
+        try container.encode(locale, forKey: .locale)
         try container.encode(actualVersion, forKey: .actualVersion)
         try container.encode(contactEmail, forKey: .contactEmail)
         try container.encode(appleUpdateUrl, forKey: .appleUpdateUrl)

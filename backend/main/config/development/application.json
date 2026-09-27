@@ -2,6 +2,13 @@
     "isServiceAvailable": true,
     "androidPackage": "com.medical.doglyad",
     "appStoreId": "6794941559",
+    "locale": {
+        "defaultCode": "en",
+        "codes": [
+            "en",
+            "ru"
+        ]
+    },
     "actualVersion": {
         "major": 0,
         "minor": 0,

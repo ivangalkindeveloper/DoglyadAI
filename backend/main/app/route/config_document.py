@@ -5,6 +5,7 @@ from collections.abc import Callable
 
 from fastapi import Request, Response
 
+from app.core.config import get_application_locale_config
 from app.core.http_header import HttpHeader
 from app.core.language_code import LanguageCode
 from app.core.locale import resolve_language
@@ -14,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 def config_document_response(request: Request, resolve_document: Callable[[LanguageCode], str]) -> Response:
     """Return the selected language of a configured document."""
-    language = resolve_language(request.headers.get(HttpHeader.ACCEPT_LANGUAGE.value))
+    language = resolve_language(request.headers.get(HttpHeader.ACCEPT_LANGUAGE.value), get_application_locale_config())
     logger.info("Config document served: %s", request.url.path)
     return Response(
         content=resolve_document(language),
