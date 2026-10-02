@@ -8,9 +8,7 @@ import httpx
 import pytest
 from fastapi import HTTPException
 
-from app.core.language_code import LanguageCode
 from app.model.inference.inference_request import InferenceRequest
-from app.model.neural_model_settings import NeuralModelSettings
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
@@ -39,12 +37,12 @@ def _request(
     request_id: str | None = None,
 ) -> InferenceRequest:
     return InferenceRequest(
-        neural_model=model,
-        settings=NeuralModelSettings(temperature=0.3, maxTokens=512),
-        language_code=LanguageCode.RU,
+        model_id=model.id,
         system_prompt="system",
         prompt="prompt",
         structured_output=_STRUCTURED_OUTPUT,
+        temperature=0.3,
+        max_tokens=512,
         photos=photos or [],
         app_check_token=token,
         request_id=request_id,

@@ -1,4 +1,5 @@
 import DoglyadDatabase
+import DoglyadNeuralModel
 import Foundation
 
 protocol UltrasoundReportRepositoryProtocol: AnyObject {
@@ -19,6 +20,12 @@ protocol UltrasoundReportRepositoryProtocol: AnyObject {
         request: USExaminationRequest,
         scanPhotoEncodingOptions: ScanPhotoEncodingOptions
     ) async throws -> USExaminationModelReport
+
+    func parseDictation(
+        locale: Locale,
+        examinationTypeId: String,
+        transcript: String
+    ) async throws -> USVoiceFormParseResponseDTO
 
     func getReports(
         limit: Int,

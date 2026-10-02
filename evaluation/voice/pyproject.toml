@@ -1,0 +1,6 @@
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+# These files intentionally contain Russian fixture text and labels.
+extend-ignore = ["RUF001", "RUF002", "RUF003"]

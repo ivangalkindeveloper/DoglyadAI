@@ -52,9 +52,15 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     private var analyzer: SpeechAnalyzer?
     private var transcriber: DictationTranscriber?
     private var inputBuilder: AsyncStream<AnalyzerInput>.Continuation?
-    private var analyzerFormat: AVAudioFormat?
     private var recognizerTask: Task<Void, Never>?
     private var startTask: Task<Void, Never>?
+    private var finalizationTask: Task<Void, Never>?
+    private var timeoutTask: Task<Void, Never>?
+    private var finalizationContinuation: CheckedContinuation<Void, Never>?
+    private var session = DictationSessionGate()
+    private var hasTap = false
+    private var wasTimedOut = false
+    private var recognizerFailed = false
 
     /// Accumulated finalized text: the "draft" chunk of the current phrase is appended
     /// to it so that speech is visible on screen in real time.
@@ -63,6 +69,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     @Published public var status: DRecordingStatus = .stopped
     @Published public var text: String?
     @Published public var audioMeter: Float = 0.0
+    @Published public private(set) var lastTranscript: DictationTranscript?
 
     public init(
         locale: Locale,
@@ -74,28 +81,46 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     }
 
     public func start() {
-        guard status == .stopped else { return }
+        switch status {
+        case .stopped:
+            break
+        case .preparing, .recording:
+            return
+        }
+        guard let sessionID = session.start() else { return }
 
         status = .preparing
         text = nil
+        lastTranscript = nil
         audioMeter = 0.0
         finalizedText = AttributedString()
+        wasTimedOut = false
+        recognizerFailed = false
 
         startTask = Task { [weak self] in
             do {
-                try await self?.beginTranscription()
+                try await self?.beginTranscription(sessionID: sessionID)
             } catch {
-                await self?.stop()
+                guard let self, self.session.acceptsResult(for: sessionID) else { return }
+                _ = await self.stop(completion: .failed)
             }
         }
     }
 
     @discardableResult
-    public func stop() async -> String? {
-        guard status != .stopped else { return text }
+    public func stop() async -> DictationTranscript? {
+        await stop(completion: .finished)
+    }
+
+    private func stop(completion requestedCompletion: DictationCompletion) async -> DictationTranscript? {
+        guard let sessionID = session.activeID,
+              session.beginFinalization(for: sessionID) else { return lastTranscript }
 
         audioEngine.stop()
-        audioEngine.inputNode.removeTap(onBus: 0)
+        if hasTap {
+            audioEngine.inputNode.removeTap(onBus: 0)
+            hasTap = false
+        }
         meter.reset()
         status = .stopped
 
@@ -114,33 +139,136 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         transcriber = nil
         self.recognizerTask = nil
 
-        let finalization = Task {
-            try? await analyzer?.finalizeAndFinishThroughEndOfInput()
-            await recognizerTask?.value
+        // Resume on either completion or timeout. Waiting for a cancelled Apple task
+        // here could otherwise keep the sheet blocked past the timeout.
+        await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
+            finalizationContinuation = continuation
+            let finalization = Task { [weak self] in
+                do {
+                    try await analyzer?.finalizeAndFinishThroughEndOfInput()
+                } catch {
+                    guard let self, self.session.acceptsResult(for: sessionID) else { return }
+                    self.recognizerFailed = true
+                }
+                await recognizerTask?.value
+                self?.finishFinalizationWait(for: sessionID)
+            }
+            finalizationTask = finalization
+            timeoutTask = Task { [weak self] in
+                try? await Task.sleep(for: Self.finalizationTimeout)
+                guard !Task.isCancelled else { return }
+                guard let self, self.session.acceptsResult(for: sessionID),
+                      self.finalizationContinuation != nil else { return }
+                self.wasTimedOut = true
+                finalization.cancel()
+                recognizerTask?.cancel()
+                Task { await analyzer?.cancelAndFinishNow() }
+                self.finishFinalizationWait(for: sessionID)
+            }
         }
-        // A guard against a stuck finalization: the physician must not wait forever.
-        let timeout = Task {
-            try? await Task.sleep(for: Self.finalizationTimeout)
-            guard !Task.isCancelled else { return }
-            finalization.cancel()
-            recognizerTask?.cancel()
+        if session.acceptsResult(for: sessionID) {
+            timeoutTask?.cancel()
+            timeoutTask = nil
+            finalizationTask = nil
         }
-        await finalization.value
-        timeout.cancel()
+
+        guard session.finish(for: sessionID) else { return nil }
+
+        let completion: DictationCompletion
+        switch requestedCompletion {
+        case .finished:
+            completion = wasTimedOut ? .timedOut : (recognizerFailed ? .interrupted : .finished)
+        case .timedOut, .interrupted, .cancelled, .failed:
+            completion = requestedCompletion
+        }
 
         audioMeter = 0.0
         DSpeechAudioSession.deactivate()
 
-        // The vocabulary is applied to the final text, not to drafts: swapping terms
-        // mid-speech would only make the screen flicker.
-        if let result = text, !result.isEmpty {
-            text = corrector.correct(result)
+        let finalized = String(finalizedText.characters)
+        let rawText: String
+        switch completion {
+        case .finished:
+            rawText = finalized
+        case .timedOut, .interrupted, .cancelled, .failed:
+            rawText = text ?? finalized
         }
-
-        return text
+        let correctedText = corrector.correct(rawText)
+        text = correctedText.isEmpty ? nil : correctedText
+        let confidenceSpans: [DSpeechConfidenceSpan]
+        switch completion {
+        case .finished:
+            confidenceSpans = DSpeechConfidenceSpan.from(finalizedText)
+        case .timedOut, .interrupted, .cancelled, .failed:
+            confidenceSpans = []
+        }
+        let transcript = DictationTranscript(
+            rawText: rawText,
+            correctedText: correctedText,
+            locale: locale,
+            engine: .speechAnalyzer,
+            completion: completion,
+            confidenceSpans: confidenceSpans
+        )
+        lastTranscript = transcript
+        return transcript
     }
 
-    private func beginTranscription() async throws {
+    @discardableResult
+    public func cancel() -> DictationTranscript? {
+        guard session.cancel() != nil else { return lastTranscript }
+
+        startTask?.cancel()
+        startTask = nil
+        finalizationTask?.cancel()
+        timeoutTask?.cancel()
+        finishFinalizationWait()
+        recognizerTask?.cancel()
+        recognizerTask = nil
+        inputBuilder?.finish()
+        inputBuilder = nil
+        if let analyzer {
+            Task { await analyzer.cancelAndFinishNow() }
+        }
+        analyzer = nil
+        transcriber = nil
+
+        audioEngine.stop()
+        if hasTap {
+            audioEngine.inputNode.removeTap(onBus: 0)
+            hasTap = false
+        }
+        meter.reset()
+        audioMeter = 0.0
+        status = .stopped
+        DSpeechAudioSession.deactivate()
+
+        let rawText = text ?? String(finalizedText.characters)
+        let correctedText = corrector.correct(rawText)
+        text = correctedText.isEmpty ? nil : correctedText
+        let transcript = DictationTranscript(
+            rawText: rawText,
+            correctedText: correctedText,
+            locale: locale,
+            engine: .speechAnalyzer,
+            completion: .cancelled
+        )
+        lastTranscript = transcript
+        return transcript
+    }
+
+    private func finishFinalizationWait(for sessionID: UUID) {
+        guard session.acceptsResult(for: sessionID) else { return }
+        finishFinalizationWait()
+    }
+
+    private func finishFinalizationWait() {
+        let continuation = finalizationContinuation
+        finalizationContinuation = nil
+        continuation?.resume()
+    }
+
+    private func beginTranscription(sessionID: UUID) async throws {
         let route = try DSpeechAudioSession.activate()
 
         // The device locale may differ by region from a supported one (or not be
@@ -150,23 +278,22 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         guard let resolvedLocale = await DictationTranscriber.supportedLocale(equivalentTo: locale) else {
             throw DSpeechError.unavailable
         }
+        try Task.checkCancellation()
 
         // `.farField` is a hint that the speaker is not right up against the mic. On a
         // headset that would be a lie, so it is set only for the built-in microphone.
-        var contentHints: Set<DictationTranscriber.ContentHint> = []
+        var isFarField = false
         switch route {
         case .builtIn:
-            contentHints.insert(.farField)
+            isFarField = true
         case .headset:
             break
         }
 
-        let transcriber = DictationTranscriber(
+        let transcriber = DSpeechAnalyzerConfiguration.makeTranscriber(
             locale: resolvedLocale,
-            contentHints: contentHints,
-            transcriptionOptions: [.punctuation],
-            reportingOptions: [.volatileResults],
-            attributeOptions: []
+            isFarField: isFarField,
+            includeConfidence: true
         )
         self.transcriber = transcriber
 
@@ -174,15 +301,16 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         self.analyzer = analyzer
 
         // The whole point of the exercise: examination vocabulary reaches the recognizer.
-        if !contextualStrings.isEmpty {
-            let context = AnalysisContext()
-            context.contextualStrings[.general] = contextualStrings
-            try await analyzer.setContext(context)
+        try await DSpeechAnalyzerConfiguration.setContext(on: analyzer, contextualStrings: contextualStrings)
+        try Task.checkCancellation()
+
+        try await DSpeechAnalyzerConfiguration.installModelIfNeeded(transcriber: transcriber)
+        try Task.checkCancellation()
+
+        guard let analyzerFormat = await SpeechAnalyzer.bestAvailableAudioFormat(compatibleWith: [transcriber]) else {
+            throw DSpeechError.unavailable
         }
-
-        try await installModelIfNeeded(transcriber: transcriber, locale: resolvedLocale)
-
-        analyzerFormat = await SpeechAnalyzer.bestAvailableAudioFormat(compatibleWith: [transcriber])
+        try Task.checkCancellation()
 
         let (inputSequence, inputBuilder) = AsyncStream<AnalyzerInput>.makeStream()
         self.inputBuilder = inputBuilder
@@ -191,7 +319,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         recognizerTask = Task { [weak self] in
             do {
                 for try await result in transcriber.results {
-                    guard let self else { return }
+                    guard let self, self.session.acceptsResult(for: sessionID) else { return }
                     if result.isFinal {
                         self.finalizedText += result.text
                         self.text = String(self.finalizedText.characters)
@@ -200,7 +328,13 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
                     }
                 }
             } catch {
-                await self?.stop()
+                guard let self, self.session.acceptsResult(for: sessionID) else { return }
+                self.recognizerFailed = true
+            }
+            guard let self, self.session.acceptsResult(for: sessionID),
+                  !self.session.isFinalizing else { return }
+            Task { [weak self] in
+                _ = await self?.stop(completion: .interrupted)
             }
         }
 
@@ -212,15 +346,14 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         audioEngine = AVAudioEngine()
         let (inputNode, recordingFormat) = try prepareInputNode(route: route)
         let converter = converter
-        let analyzerFormat = analyzerFormat
         let meter = meter
         inputNode.installTap(onBus: 0, bufferSize: Self.tapBufferSize, format: recordingFormat) { buffer, _ in
             meter.process(buffer)
 
-            guard let analyzerFormat else { return }
             guard let converted = try? converter.convert(buffer, to: analyzerFormat) else { return }
             inputBuilder.yield(AnalyzerInput(buffer: converted))
         }
+        hasTap = true
 
         audioEngine.prepare()
         try audioEngine.start()
@@ -242,7 +375,14 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         // Stationary noise suppression (the scanner's hum), echo cancellation,
         // automatic gain. Needed when the phone lies off to the side, and not needed
         // on a headset where the microphone is at the mouth anyway.
-        try? inputNode.setVoiceProcessingEnabled(route == .builtIn)
+        let useVoiceProcessing: Bool
+        switch route {
+        case .builtIn:
+            useVoiceProcessing = true
+        case .headset:
+            useVoiceProcessing = false
+        }
+        try? inputNode.setVoiceProcessingEnabled(useVoiceProcessing)
 
         var recordingFormat = inputNode.outputFormat(forBus: 0)
         if !recordingFormat.isValidForCapture, inputNode.isVoiceProcessingEnabled {
@@ -254,64 +394,5 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         }
 
         return (inputNode, recordingFormat)
-    }
-
-    /// Downloads the language model for the locale if it is not on the device yet.
-    private func installModelIfNeeded(
-        transcriber: DictationTranscriber,
-        locale: Locale
-    ) async throws {
-        let identifier = locale.identifier(.bcp47)
-        let installed = await DictationTranscriber.installedLocales
-        guard !installed.contains(where: { $0.identifier(.bcp47) == identifier }) else {
-            return
-        }
-
-        if let request = try await AssetInventory.assetInstallationRequest(supporting: [transcriber]) {
-            try await request.downloadAndInstall()
-        }
-    }
-}
-
-/// Converts microphone buffers to the format `SpeechAnalyzer` expects.
-private final class DSpeechBufferConverter: @unchecked Sendable {
-    private var converter: AVAudioConverter?
-
-    func convert(
-        _ buffer: AVAudioPCMBuffer,
-        to format: AVAudioFormat
-    ) throws -> AVAudioPCMBuffer {
-        let inputFormat = buffer.format
-        guard inputFormat != format else { return buffer }
-
-        if converter == nil || converter?.outputFormat != format {
-            converter = AVAudioConverter(from: inputFormat, to: format)
-            converter?.primeMethod = .none
-        }
-        guard let converter else {
-            throw DSpeechError.unavailable
-        }
-
-        let ratio = converter.outputFormat.sampleRate / converter.inputFormat.sampleRate
-        let frameCapacity = AVAudioFrameCount((Double(buffer.frameLength) * ratio).rounded(.up))
-        guard let output = AVAudioPCMBuffer(
-            pcmFormat: converter.outputFormat,
-            frameCapacity: frameCapacity
-        ) else {
-            throw DSpeechError.unavailable
-        }
-
-        var error: NSError?
-        var consumed = false
-        let status = converter.convert(to: output, error: &error) { _, inputStatus in
-            defer { consumed = true }
-            inputStatus.pointee = consumed ? .noDataNow : .haveData
-            return consumed ? nil : buffer
-        }
-        guard status != .error else {
-            throw DSpeechError.unavailable
-        }
-
-        return output
     }
 }

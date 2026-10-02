@@ -1,6 +1,7 @@
 import Combine
 import DoglyadCamera
 import DoglyadNetwork
+import DoglyadNeuralModel
 import DoglyadUI
 import Foundation
 import Handler
@@ -587,34 +588,23 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 return self.coordinator.sheet(.permissionSpeech)
             }
 
+            let examinationType = self.usExaminationType
             self.coordinator.sheet(
                 .scanSpeech,
                 arguments: ScanSpeechBottomSheetArguments(
-                    examinationType: self.usExaminationType,
-                    onComplete: { [weak self] response in
-                        guard let self = self else { return }
-
-                        if let patientName = response.patientName {
-                            self.patientNameController.setText(patientName)
-                        }
-                        if let patientGender = PatientGender.fromUSExaminationNeuralModelResponse(response.patientGender) {
-                            self.patientGender = patientGender
-                        }
-                        if let patientDateOfBirth = response.patientDateOfBirth {
-                            self.patientDateOfBirth = patientDateOfBirth
-                        }
-                        if let patientHeightCM = response.patientHeightCM {
-                            self.patientHeightCMController.setText("\(patientHeightCM)")
-                        }
-                        if let patientWeightKG = response.patientWeightKG {
-                            self.patientWeightKGController.setText("\(patientWeightKG)")
-                        }
-                        if let patientComplaints = response.patientComplaints {
-                            self.patientComplaintsController.setText(patientComplaints)
-                        }
-                        if let examinationDescription = response.examinationDescription {
-                            self.examinationDescriptionController.setText(examinationDescription)
-                        }
+                    examinationType: examinationType,
+                    getCurrentValue: { [weak self] fieldId in
+                        self?.currentVoiceFieldValue(fieldId) ?? ""
+                    },
+                    onConfirm: { [weak self] proposals in
+                        guard let self, self.usExaminationType.id == examinationType.id,
+                              let updatedForm = ScanFormPatch.apply(
+                                  proposals,
+                                  to: self.makeDraftSnapshot()
+                              )
+                        else { return false }
+                        self.applyDraft(USExaminationDraft(form: updatedForm, photos: self.photos))
+                        return true
                     }
                 )
             )
@@ -798,6 +788,23 @@ extension ScanViewModel {
             patientComplaints: patientComplaintsController.text,
             examinationDescription: examinationDescriptionController.text
         )
+    }
+
+    func currentVoiceFieldValue(_ id: VoiceFieldId) -> String {
+        switch id {
+        case .examinationNumber: examinationNumberController.text
+        case .patientName: patientNameController.text
+        case .patientGender:
+            switch patientGender {
+            case .male: String(localized: .scanGenderMaleLabel)
+            case .female: String(localized: .scanGenderFemaleLabel)
+            }
+        case .patientDateOfBirth: patientDateOfBirth.formatted(date: .abbreviated, time: .omitted)
+        case .patientHeightCM: patientHeightCMController.text
+        case .patientWeightKG: patientWeightKGController.text
+        case .patientComplaints: patientComplaintsController.text
+        case .examinationDescription: examinationDescriptionController.text
+        }
     }
 
     func saveDraftSnapshot(

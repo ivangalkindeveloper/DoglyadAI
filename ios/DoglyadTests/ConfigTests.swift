@@ -144,5 +144,6 @@ struct ConfigTests {
         #expect(template.title == "Шаблон")
         #expect(template.content == "Описание")
         #expect(config.prompt == "Системный промпт")
+        #expect(config.proposalPrompt.isEmpty)
     }
 }

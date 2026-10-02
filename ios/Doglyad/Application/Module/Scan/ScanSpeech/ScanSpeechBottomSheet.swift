@@ -26,7 +26,8 @@ struct ScanSpeechBottomSheet: View {
     ScanSpeechBottomSheet(
         arguments: ScanSpeechBottomSheetArguments(
             examinationType: USExaminationType(id: "", title: "", contextualStrings: []),
-            onComplete: nil
+            getCurrentValue: { _ in "" },
+            onConfirm: nil
         )
     )
     .previewable()

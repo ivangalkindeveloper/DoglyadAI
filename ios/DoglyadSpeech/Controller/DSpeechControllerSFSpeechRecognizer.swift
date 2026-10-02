@@ -3,8 +3,8 @@ import Foundation
 import Speech
 
 /// Speech recognition on the classic `SFSpeechRecognizer` (available on every
-/// supported iOS version). By default it uses server-side recognition, so it adds
-/// punctuation and serves as a reliable fallback before iOS 26.
+/// supported iOS version). It starts only when on-device recognition is supported
+/// and available; a fallback never sends patient audio to Apple's servers.
 ///
 /// A single `SFSpeechRecognizer` task has a duration limit (about a minute), after
 /// which the service finalizes it itself. So that a long examination dictation is not
@@ -15,12 +15,11 @@ import Speech
 public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtocol {
     /// Tap buffer size. At 48 kHz that is roughly 21 ms of audio.
     private static let tapBufferSize: AVAudioFrameCount = 1024
-    /// How long we wait for the final result after the microphone stops. Server-side
-    /// recognition may never answer at all (no network), and the physician must not be
-    /// stuck on the screen — once it expires we take the last draft.
+    /// How long we wait for the final result after the microphone stops.
     private static let finalizationTimeout: Duration = .seconds(3)
 
     private let speechRecognizer: SFSpeechRecognizer?
+    private let locale: Locale
     /// Hints for the recognizer: examination-specific vocabulary for the current locale.
     private let contextualStrings: [String]
     /// The same vocabulary, but as post-processing: hints bias recognition, while the
@@ -39,6 +38,11 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
 
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
+    private var session = DictationSessionGate()
+    private var finalizationTimeoutTask: Task<Void, Never>?
+    private var finalizationCompletion: DictationCompletion = .finished
+    private var hadUnfinalizedSegment = false
+    private var hasTap = false
 
     /// Marks an active session: tells a restart on the duration limit (keep going)
     /// apart from a stop by the user (do not restart).
@@ -54,27 +58,51 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     @Published public var status: DRecordingStatus = .stopped
     @Published public var text: String?
     @Published public var audioMeter: Float = 0.0
+    @Published public private(set) var lastTranscript: DictationTranscript?
 
     public init(
         locale: Locale,
         contextualStrings: [String]
     ) {
         speechRecognizer = SFSpeechRecognizer(locale: locale)
+        self.locale = locale
         self.contextualStrings = contextualStrings
         corrector = DSpeechLexiconCorrector(terms: contextualStrings)
     }
 
     public func start() {
-        guard status == .stopped, !audioEngine.isRunning else { return }
+        switch status {
+        case .stopped:
+            break
+        case .preparing, .recording:
+            return
+        }
+        guard !audioEngine.isRunning else { return }
         // Without an available recognizer, recording is pointless: the engine would
         // record while no text ever appeared.
-        guard let recognizer = speechRecognizer, recognizer.isAvailable else { return }
+        guard let recognizer = speechRecognizer,
+              recognizer.isAvailable,
+              recognizer.supportsOnDeviceRecognition
+        else {
+            lastTranscript = DictationTranscript(
+                rawText: "",
+                correctedText: "",
+                locale: locale,
+                engine: .sfSpeechRecognizer,
+                completion: .failed
+            )
+            return
+        }
+        guard let sessionID = session.start() else { return }
 
         status = .preparing
         text = nil
+        lastTranscript = nil
         finalizedText = ""
         lastPartial = ""
         audioMeter = 0.0
+        finalizationCompletion = .finished
+        hadUnfinalizedSegment = false
 
         do {
             let route = try DSpeechAudioSession.activate()
@@ -92,15 +120,24 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
                 relay.append(buffer)
                 meter.process(buffer)
             }
+            hasTap = true
 
             isRunning = true
-            startTask()
+            startTask(sessionID: sessionID)
 
             audioEngine.prepare()
             try audioEngine.start()
 
             status = .recording
         } catch {
+            session.cancel()
+            lastTranscript = DictationTranscript(
+                rawText: text ?? "",
+                correctedText: text ?? "",
+                locale: locale,
+                engine: .sfSpeechRecognizer,
+                completion: .failed
+            )
             teardown()
         }
     }
@@ -119,7 +156,14 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         // Stationary noise suppression (the scanner's hum), echo cancellation,
         // automatic gain. Needed when the phone lies off to the side, and not needed
         // on a headset where the microphone is at the mouth anyway.
-        try? inputNode.setVoiceProcessingEnabled(route == .builtIn)
+        let useVoiceProcessing: Bool
+        switch route {
+        case .builtIn:
+            useVoiceProcessing = true
+        case .headset:
+            useVoiceProcessing = false
+        }
+        try? inputNode.setVoiceProcessingEnabled(useVoiceProcessing)
 
         var recordingFormat = inputNode.outputFormat(forBus: 0)
         if !recordingFormat.isValidForCapture, inputNode.isVoiceProcessingEnabled {
@@ -134,24 +178,74 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     }
 
     @discardableResult
-    public func stop() async -> String? {
-        guard isRunning else { return text }
+    public func stop() async -> DictationTranscript? {
+        await stop(completion: .finished)
+    }
+
+    private func stop(completion requestedCompletion: DictationCompletion) async -> DictationTranscript? {
+        guard isRunning, let sessionID = session.activeID,
+              session.beginFinalization(for: sessionID) else { return lastTranscript }
 
         isRunning = false
         audioEngine.stop()
-        audioEngine.inputNode.removeTap(onBus: 0)
+        if hasTap {
+            audioEngine.inputNode.removeTap(onBus: 0)
+            hasTap = false
+        }
         relay.detach()
         meter.reset()
         status = .stopped
 
         let result = await finalize()
+        guard session.finish(for: sessionID) else { return nil }
 
         teardown()
-        // The vocabulary is applied to the final text, not to drafts: swapping terms
-        // mid-speech would only make the screen flicker.
-        text = result.isEmpty ? nil : corrector.correct(result)
+        let correctedText = corrector.correct(result)
+        text = correctedText.isEmpty ? nil : correctedText
 
-        return text
+        let completion: DictationCompletion
+        switch requestedCompletion {
+        case .finished:
+            switch finalizationCompletion {
+            case .finished:
+                completion = hadUnfinalizedSegment ? .interrupted : .finished
+            case .timedOut, .interrupted, .cancelled, .failed:
+                completion = finalizationCompletion
+            }
+        case .timedOut, .interrupted, .cancelled, .failed:
+            completion = requestedCompletion
+        }
+        let transcript = DictationTranscript(
+            rawText: result,
+            correctedText: correctedText,
+            locale: locale,
+            engine: .sfSpeechRecognizer,
+            completion: completion
+        )
+        lastTranscript = transcript
+        return transcript
+    }
+
+    @discardableResult
+    public func cancel() -> DictationTranscript? {
+        guard session.cancel() != nil else { return lastTranscript }
+
+        finalizationCompletion = .cancelled
+        finishFinalization(with: nil)
+        let rawText = text ?? combine(finalizedText, lastPartial)
+        let correctedText = corrector.correct(rawText)
+        teardown()
+        text = correctedText.isEmpty ? nil : correctedText
+
+        let transcript = DictationTranscript(
+            rawText: rawText,
+            correctedText: correctedText,
+            locale: locale,
+            engine: .sfSpeechRecognizer,
+            completion: .cancelled
+        )
+        lastTranscript = transcript
+        return transcript
     }
 
     /// Asks the service to finish the remaining audio and waits for the final result.
@@ -159,22 +253,23 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     /// unfinished results, and parsing starts right after the stop.
     private func finalize() async -> String {
         guard let request = recognitionRequest, recognitionTask != nil else {
+            finalizationCompletion = .interrupted
             return combine(finalizedText, lastPartial)
         }
 
         request.endAudio()
 
-        let timeout = Task { [weak self] in
-            try? await Task.sleep(for: Self.finalizationTimeout)
-            guard !Task.isCancelled else { return }
-            // The service did not answer — return the last draft, still better than nothing.
-            self?.finishFinalization(with: nil)
-        }
-
         let segment = await withCheckedContinuation { (continuation: CheckedContinuation<String, Never>) in
             finalizationContinuation = continuation
+            finalizationTimeoutTask = Task { [weak self] in
+                try? await Task.sleep(for: Self.finalizationTimeout)
+                guard !Task.isCancelled else { return }
+                self?.finalizationCompletion = .timedOut
+                self?.finishFinalization(with: nil)
+            }
         }
-        timeout.cancel()
+        finalizationTimeoutTask?.cancel()
+        finalizationTimeoutTask = nil
 
         return combine(finalizedText, segment)
     }
@@ -193,9 +288,15 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     private func teardown() {
         isRunning = false
         audioEngine.stop()
+        if hasTap {
+            audioEngine.inputNode.removeTap(onBus: 0)
+            hasTap = false
+        }
         recognitionTask?.cancel()
         recognitionTask = nil
         recognitionRequest = nil
+        finalizationTimeoutTask?.cancel()
+        finalizationTimeoutTask = nil
         relay.reset()
         audioMeter = 0.0
         status = .stopped
@@ -203,12 +304,21 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     }
 
     /// Creates a new recognition task on top of the running audio engine.
-    private func startTask() {
-        guard let recognizer = speechRecognizer, recognizer.isAvailable else { return }
+    private func startTask(sessionID: UUID) {
+        guard session.acceptsResult(for: sessionID) else { return }
+        guard let recognizer = speechRecognizer,
+              recognizer.isAvailable,
+              recognizer.supportsOnDeviceRecognition
+        else {
+            Task { [weak self] in
+                _ = await self?.stop(completion: .failed)
+            }
+            return
+        }
 
         let request = SFSpeechAudioBufferRecognitionRequest()
         request.shouldReportPartialResults = true
-        request.requiresOnDeviceRecognition = false
+        request.requiresOnDeviceRecognition = true
         request.addsPunctuation = true
         request.taskHint = .dictation
         request.contextualStrings = contextualStrings
@@ -217,7 +327,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
 
         recognitionTask = recognizer.recognitionTask(with: request) { [weak self] result, error in
             Task { @MainActor in
-                self?.handleResult(result, error: error, request: request)
+                self?.handleResult(result, error: error, request: request, sessionID: sessionID)
             }
         }
 
@@ -229,10 +339,11 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     private func handleResult(
         _ result: SFSpeechRecognitionResult?,
         error: (any Error)?,
-        request: SFSpeechAudioBufferRecognitionRequest
+        request: SFSpeechAudioBufferRecognitionRequest,
+        sessionID: UUID
     ) {
         // Ignore delayed callbacks from an already recreated task.
-        guard request === recognitionRequest else { return }
+        guard session.acceptsResult(for: sessionID), request === recognitionRequest else { return }
 
         if let result {
             let segment = result.bestTranscription.formattedString
@@ -248,19 +359,21 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
             }
             // Duration limit or a pause: record the segment and carry on.
             commitCurrentSegment(segment)
-            startTask()
+            startTask(sessionID: sessionID)
             return
         }
 
         guard error != nil else { return }
 
         guard isRunning else {
+            finalizationCompletion = .interrupted
             finishFinalization(with: nil)
             return
         }
         // The task ended without a final — keep the last draft and continue.
+        hadUnfinalizedSegment = true
         commitCurrentSegment(lastPartial)
-        startTask()
+        startTask(sessionID: sessionID)
     }
 
     /// Appends a finished segment to the accumulated text and clears the draft.

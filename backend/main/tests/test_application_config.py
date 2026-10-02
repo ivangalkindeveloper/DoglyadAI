@@ -93,6 +93,7 @@ def test_config_document_resolves_locale_keys(client: TestClient, path: str, sou
         expected = deepcopy(source)
         settings = expected["ultrasound"]["examinationNeuralModel"]
         settings["prompt"] = texts[settings.pop("promptLocaleKey")]
+        settings["proposalPrompt"] = texts[settings.pop("proposalPromptLocaleKey")]
         assert result == expected
     elif path.endswith("examination_types"):
         assert [group["id"] for group in result] == [group["id"] for group in source]
@@ -278,7 +279,7 @@ def test_config_references_complete_locale_catalogs(environment: str) -> None:
     ),
 )
 def test_startup_rejects_incomplete_localization(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, defect: str) -> None:
-    for name in (*_ENDPOINTS.values(), "ready_made_templates.json"):
+    for name in (*_ENDPOINTS.values(), "ready_made_templates.json", "voice_form_parsing.json"):
         shutil.copyfile(_CONFIG_DIR / name, tmp_path / name)
     for language in ("en", "ru"):
         (tmp_path / language).mkdir()

@@ -1,5 +1,6 @@
 import DoglyadDatabase
 import DoglyadNetwork
+import DoglyadNeuralModel
 import Foundation
 
 final class UltrasoundReportRepository: UltrasoundReportRepositoryProtocol {
@@ -48,6 +49,24 @@ extension UltrasoundReportRepository {
 
 extension UltrasoundReportRepository {
     static let reportEndpoint = "/ultrasound/generate_report"
+    static let voiceParseEndpoint = "/ultrasound/parse_dictation"
+
+    func parseDictation(
+        locale: Locale,
+        examinationTypeId: String,
+        transcript: String
+    ) async throws -> USVoiceFormParseResponseDTO {
+        let request = USVoiceFormParseRequestDTO(
+            usExaminationTypeId: examinationTypeId,
+            transcript: transcript
+        )
+        return try await httpClient.post(
+            endPoint: Self.voiceParseEndpoint,
+            body: request,
+            headers: [DHttpHeader.acceptLanguage: locale.identifier],
+            encoderUserInfo: nil
+        )
+    }
 
     func generateReport(
         locale: Locale,

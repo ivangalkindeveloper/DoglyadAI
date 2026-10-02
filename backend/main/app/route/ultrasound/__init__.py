@@ -5,8 +5,10 @@ from fastapi import APIRouter
 from app.route.ultrasound.examination_neural_models import router as examination_neural_models_router
 from app.route.ultrasound.examination_types import router as examination_types_router
 from app.route.ultrasound.generate_report import router as generate_report_router
+from app.route.ultrasound.parse_dictation import router as parse_dictation_router
 
 router = APIRouter(prefix="/ultrasound")
 router.include_router(examination_types_router)
 router.include_router(examination_neural_models_router)
 router.include_router(generate_report_router)
+router.include_router(parse_dictation_router)

@@ -50,6 +50,7 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
     }
 
     private let systemPrompt: String
+    private let proposalPrompt: String?
     private let generationOptions: GenerationOptions
     /// A session warmed up for the next parse. It is created ahead of time: on the
     /// first request the model compiles the response schema and raises guardrails, and
@@ -61,9 +62,11 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
 
     public init(
         systemPrompt: String,
+        proposalPrompt: String?,
         parameters: DExaminationGenerationParameters
     ) {
         self.systemPrompt = systemPrompt
+        self.proposalPrompt = proposalPrompt
         generationOptions = GenerationOptions(
             temperature: parameters.temperature,
             maximumResponseTokens: parameters.maxTokens
@@ -76,7 +79,7 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
 
         guard prewarmedSession == nil else { return }
 
-        let session = LanguageModelSession(instructions: systemPrompt)
+        let session = LanguageModelSession(instructions: proposalPrompt ?? systemPrompt)
         session.prewarm()
         prewarmedSession = session
     }
@@ -90,7 +93,7 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
         lock.lock()
         defer { lock.unlock() }
 
-        let session = prewarmedSession ?? LanguageModelSession(instructions: systemPrompt)
+        let session = prewarmedSession ?? LanguageModelSession(instructions: proposalPrompt ?? systemPrompt)
         prewarmedSession = nil
 
         return session
@@ -99,7 +102,9 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
     public func parseSpeech(
         speech: String
     ) async throws -> DExaminationNeuralModelResponse {
-        let session = takeSession()
+        let session = proposalPrompt == nil
+            ? takeSession()
+            : LanguageModelSession(instructions: systemPrompt)
         let response = try await session.respond(
             to: DExaminationGenerationConfig.userPrompt(for: speech),
             generating: Response.self,
@@ -109,5 +114,17 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
         return DExaminationNeuralModelResponse.fromFoudationModels(
             response.content
         )
+    }
+
+    public func parseProposals(request: DictationParseRequest) async throws -> DictationProposal {
+        guard proposalPrompt != nil else { throw DExaminationNeuralModelError.proposalPromptUnavailable }
+        let session = takeSession()
+        let response = try await session.respond(
+            to: DExaminationProposalGenerationConfig.userPrompt(for: request),
+            generating: DExaminationProposalFoundationResponse.self,
+            options: generationOptions
+        )
+        let generated = try DExaminationProposalGenerationResponse.fromFoundationModels(response.content)
+        return try DictationProposal(generated: generated, request: request)
     }
 }

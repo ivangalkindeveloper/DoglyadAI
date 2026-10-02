@@ -3,6 +3,7 @@ import Foundation
 public enum DExaminationNeuralModelError: Error {
     case unavailable
     case resourceNotFound
+    case proposalPromptUnavailable
 }
 
 public protocol DExaminationNeuralModelProtocol {
@@ -16,6 +17,7 @@ public protocol DExaminationNeuralModelProtocol {
 
     init(
         systemPrompt: String,
+        proposalPrompt: String?,
         parameters: DExaminationGenerationParameters
     ) async throws
 
@@ -26,4 +28,8 @@ public protocol DExaminationNeuralModelProtocol {
     func parseSpeech(
         speech: String
     ) async throws -> DExaminationNeuralModelResponse
+
+    func parseProposals(
+        request: DictationParseRequest
+    ) async throws -> DictationProposal
 }

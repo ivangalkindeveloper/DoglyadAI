@@ -27,6 +27,7 @@ from app.model.ultrasound.us_examination_type import USExaminationType
 from app.model.ultrasound.us_examination_type_group import USExaminationTypeGroup
 from app.model.ultrasound.us_examination_type_group_response import USExaminationTypeGroupResponse
 from app.model.ultrasound.us_examination_type_response import USExaminationTypeResponse
+from app.model.ultrasound.us_voice_form_parsing_config import USVoiceFormParsingConfig
 
 logger = logging.getLogger(__name__)
 
@@ -42,6 +43,7 @@ _application_config: dict[str, Any] = {}
 _locale_config: ApplicationLocaleConfig | None = None
 _l10n: L10n | None = None
 _contextual_strings: USExaminationContextualStrings | None = None
+_voice_parsing_config: USVoiceFormParsingConfig | None = None
 
 
 def _load_json(path: Path) -> Any:
@@ -70,9 +72,10 @@ def _load_json_object(path: Path) -> dict[str, Any]:
 def _application_response(application: dict[str, Any], l10n: L10n, language: LanguageCode) -> dict[str, Any]:
     response = deepcopy(application)
     settings = response["ultrasound"]["examinationNeuralModel"]
-    if "prompt" in settings:
-        raise ValueError("Examination prompt belongs in l10n.json")
+    if "prompt" in settings or "proposalPrompt" in settings:
+        raise ValueError("Examination prompts belong in l10n.json")
     settings["prompt"] = l10n.text(language, settings.pop("promptLocaleKey"))
+    settings["proposalPrompt"] = l10n.text(language, settings.pop("proposalPromptLocaleKey"))
     return response
 
 
@@ -131,7 +134,7 @@ def _check_unique_ids(ids: list[str], kind: str) -> None:
 
 
 def load_configs() -> None:
-    global _l10n, _contextual_strings, _locale_config
+    global _l10n, _contextual_strings, _locale_config, _voice_parsing_config
     try:
         application = _load_json_object(_CONFIG_DIR / "application.json")
         locale_config = ApplicationLocaleConfig.model_validate(application.get("locale"))
@@ -143,6 +146,9 @@ def load_configs() -> None:
             USExaminationNeuralModel.model_validate(item)
             for item in _load_json_array(_CONFIG_DIR / "ultrasound_examination_neural_models.json")
         ]
+        voice_parsing_config = USVoiceFormParsingConfig.model_validate(
+            _load_json_object(_CONFIG_DIR / "voice_form_parsing.json")
+        )
         templates = [
             USExaminationReadyMadeTemplate.model_validate(item)
             for item in _load_json_array(_CONFIG_DIR / "ready_made_templates.json")
@@ -164,6 +170,10 @@ def load_configs() -> None:
 
         types = {item.id: item for group in groups for item in group.examinationTypes}
         models = {item.id: item for item in model_configs}
+        if voice_parsing_config.modelId not in models:
+            raise ValueError(f"Unknown voice parsing model: {voice_parsing_config.modelId}")
+        if models[voice_parsing_config.modelId].accessibility is not USExaminationNeuralModelAccessibility.AVAILABLE:
+            raise ValueError(f"Voice parsing model is unavailable: {voice_parsing_config.modelId}")
         _check_unique_ids([group.id for group in groups], "examination group")
         _check_unique_ids([item.id for group in groups for item in group.examinationTypes], "examination type")
         _check_unique_ids([item.id for item in model_configs], "neural model")
@@ -197,6 +207,13 @@ def load_configs() -> None:
     _locale_config = locale_config
     _l10n = l10n
     _contextual_strings = contextual_strings
+    _voice_parsing_config = voice_parsing_config
+
+
+def get_voice_parsing_config() -> USVoiceFormParsingConfig:
+    if _voice_parsing_config is None:
+        raise RuntimeError("Voice parsing config has not been loaded")
+    return _voice_parsing_config
 
 
 def _catalog() -> L10n:

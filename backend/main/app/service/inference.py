@@ -36,7 +36,7 @@ class InferenceService(ModelService):
         logger.info("Inference service configured for models: %s", ", ".join(sorted(self._urls)) or "none")
 
     async def call(self, request: InferenceRequest) -> str:
-        model_id = request.neural_model.id
+        model_id = request.model_id
         url = self._urls.get(model_id)
         if not url:
             logger.error("No GPU VM is configured for model %s", model_id)
@@ -57,8 +57,8 @@ class InferenceService(ModelService):
             prompt=request.prompt,
             structuredOutput=request.structured_output,
             images=[InferenceGenerationImage(data=photo.data) for photo in request.photos] or None,
-            temperature=request.settings.temperature,
-            maxTokens=request.settings.maxTokens,
+            temperature=request.temperature,
+            maxTokens=request.max_tokens,
         )
         # Never log the payload contents: it holds patient data and scan images.
         logger.info(

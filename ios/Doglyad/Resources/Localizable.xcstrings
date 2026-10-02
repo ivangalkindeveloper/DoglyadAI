@@ -3151,13 +3151,506 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "\"Patient: ...; gender: male/female; date of birth: ...; height: ... centimeters; weight: ... kilograms; complaints: ...; examination description: ...\""
+            "value": "\"Examination number: ...; patient: ...; gender: male/female; date of birth: ...; height: ... centimeters; weight: ... kilograms; complaints: ...; examination description: ...\""
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "«Пациент: …; пол: мужчина/женщина; дата рождения: …; рост: … сантиметров; вес: … килограммов; жалобы: …; описание исследования: …»"
+            "value": "«Номер исследования: …; пациент: …; пол: мужчина/женщина; дата рождения: …; рост: … сантиметров; вес: … килограммов; жалобы: …; описание исследования: …»"
+          }
+        }
+      }
+    },
+    "speechProposalApplyButton": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apply selected fields"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Применить выбранные поля"
+          }
+        }
+      }
+    },
+    "speechProposalBackButton": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back to dictation"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вернуться к диктовке"
+          }
+        }
+      }
+    },
+    "speechProposalCurrentValueTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Current value"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Текущее значение"
+          }
+        }
+      }
+    },
+    "speechProposalInstructions": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check only the uncertain items below. Select a field if its proposed value is correct."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проверьте только спорные пункты ниже. Выберите поле, если предложенное значение верно."
+          }
+        }
+      }
+    },
+    "speechProposalInstructionsWithAutomatic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reliable fields are already filled. Check only the uncertain items below and select the correct ones."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Надёжно распознанные поля уже заполнены. Проверьте только спорные пункты ниже и выберите верные."
+          }
+        }
+      }
+    },
+    "speechProposalNeedsReview": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please check this value against the dictated words."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Пожалуйста, сверьте значение с продиктованными словами."
+          }
+        }
+      }
+    },
+    "speechProposalNoFields": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No supported fields were found. You can return to the dictation and edit the text."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Подходящих полей не найдено. Вернитесь к диктовке и исправьте текст."
+          }
+        }
+      }
+    },
+    "speechProposalRejectedTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These fields could not be verified from the dictation and will not be applied"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Эти поля не удалось проверить по диктовке, они не будут применены"
+          }
+        }
+      }
+    },
+    "speechProposalSourceTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From dictation"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Из диктовки"
+          }
+        }
+      }
+    },
+    "speechProposalUnmappedTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other dictated findings"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Другие наблюдения из диктовки"
+          }
+        }
+      }
+    },
+    "speechProposalWarningAmbiguous": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The dictation contains a correction or uncertainty. Check which fact is final."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "В диктовке есть исправление или неопределённость. Проверьте, какой факт окончательный."
+          }
+        }
+      }
+    },
+    "speechProposalWarningDate": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The full date could not be verified from the quoted text."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Полную дату не удалось подтвердить по цитате."
+          }
+        }
+      }
+    },
+    "speechProposalWarningGender": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The stated gender could not be verified from the quoted text."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Указанный пол не удалось подтвердить по цитате."
+          }
+        }
+      }
+    },
+    "speechProposalWarningIdentifier": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The examination number differs from the quoted text. Check leading zeros."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Номер исследования отличается от цитаты. Проверьте ведущие нули."
+          }
+        }
+      }
+    },
+    "speechProposalWarningNegation": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A negation may have been added or lost."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Отрицание могло добавиться или пропасть."
+          }
+        }
+      }
+    },
+    "speechProposalWarningNumber": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A number may be missing or different."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Число может отсутствовать или отличаться."
+          }
+        }
+      }
+    },
+    "speechProposalWarningSide": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The side may differ from the quoted text."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сторона может отличаться от цитаты."
+          }
+        }
+      }
+    },
+    "speechProposalWarningTextChanged": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The proposed wording is not a literal excerpt. Check every clinical detail."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Предложенный текст не совпадает дословно с цитатой. Проверьте все клинические детали."
+          }
+        }
+      }
+    },
+    "speechProposalWarningTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check before applying"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проверьте перед применением"
+          }
+        }
+      }
+    },
+    "speechProposalWarningUnit": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A unit or its pairing with a number may differ."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Единица измерения или её связь с числом может отличаться."
+          }
+        }
+      }
+    },
+    "speechReviewCancelledDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recording was cancelled."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Запись отменена."
+          }
+        }
+      }
+    },
+    "speechReviewContinueButton": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue to form"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Продолжить заполнение"
+          }
+        }
+      }
+    },
+    "speechReviewFailedDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recognition failed. Enter or correct the text before continuing, or record again."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удалось распознать речь. Введите или исправьте текст перед продолжением либо запишите заново."
+          }
+        }
+      }
+    },
+    "speechReviewFieldPlaceholder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enter or correct the recognized text"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Введите или исправьте распознанный текст"
+          }
+        }
+      }
+    },
+    "speechReviewFieldTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dictation text"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Текст диктовки"
+          }
+        }
+      }
+    },
+    "speechReviewFinishedDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recognition is complete. Check the patient's name, date, measurements, and the end of the description before continuing."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Распознавание завершено. Проверьте имя пациента, дату, измерения и конец описания перед заполнением формы."
+          }
+        }
+      }
+    },
+    "speechReviewInterruptedDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recognition was interrupted. Correct the text before continuing, or record again."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Распознавание прервано. Исправьте текст перед продолжением либо запишите заново."
+          }
+        }
+      }
+    },
+    "speechReviewRecordAgainButton": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Record again"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Записать заново"
+          }
+        }
+      }
+    },
+    "speechReviewTimedOutDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Recognition timed out. Correct the text before continuing, or record again."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Распознавание не завершилось вовремя. Исправьте текст перед продолжением либо запишите заново."
           }
         }
       }

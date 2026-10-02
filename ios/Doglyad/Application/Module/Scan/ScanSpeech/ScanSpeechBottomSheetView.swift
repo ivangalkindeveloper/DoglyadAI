@@ -8,80 +8,19 @@ struct ScanSpeechBottomSheetView: DView {
 
     var body: some View {
         DBottomSheet(
-            type: .blur,
+            type: viewModel.isReviewVisible ? .default : .blur,
             title: .speechTitle,
-            fraction: 0.5
+            fraction: viewModel.isReviewVisible ? 0.85 : 0.5
         ) { toolbarHeight, _ in
-            VStack(
-                spacing: .zero
-            ) {
-                Spacer()
-
-                if let speechText = viewModel.speechText {
-                    DText(speechText)
-                        .dStyle(
-                            font: typography.linkSmall,
-                            color: color.grayscaleBackgroundWeak,
-                            alignment: .center
-                        )
-                        .lineLimit(1)
-                        .truncationMode(.head)
-                        .clipped()
-                        .padding(.horizontal, size.s32)
-                        .padding(.bottom, size.s8)
-                        .transition(.opacity)
-                }
-
-                if viewModel.isAudioMeterVisible {
-                    ScanSpeechAudioMeterView(
-                        level: viewModel.audioMeterLevel
-                    )
-                    .padding(.bottom, size.s16)
-                    .transition(.opacity)
-                }
-
-                if viewModel.isPreparingDescriptionVisible {
-                    DText(.speechProcessPreparingDescription)
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.grayscaleBackgroundWeak,
-                            alignment: .center
-                        )
-                        .padding(.horizontal, size.s16)
-                        .padding(.bottom, size.s8)
-                        .transition(.opacity)
+            Group {
+                if viewModel.isProposalVisible {
+                    ScanSpeechProposalView(viewModel: viewModel)
+                } else if viewModel.isReviewVisible {
+                    ScanSpeechReviewView(viewModel: viewModel)
                 } else {
-                    Group {
-                        DText(.speechProcessDescription)
-                            .dStyle(
-                                font: typography.textSmall,
-                                color: color.grayscaleBackgroundWeak,
-                                alignment: .center
-                            )
-                            .padding(.horizontal, size.s16)
-                            .padding(.bottom, size.s8)
-
-                        DText(.speechProcessSpeechDescription)
-                            .dStyle(
-                                font: typography.textSmall,
-                                color: color.grayscaleBackgroundWeak,
-                                alignment: .center
-                            )
-                            .padding(.horizontal, size.s16)
-                    }
-                    .transition(.opacity)
+                    recordingContent
                 }
-
-                Spacer()
-
-                DButton(
-                    image: viewModel.speechIcon,
-                    action: viewModel.onTapSpeech,
-                    isLoading: viewModel.isSpeechButtonLoading
-                )
-                .dStyle(.primaryCircle)
             }
-            .padding(size.s16)
             .padding(.top, toolbarHeight)
         }
         .animation(
@@ -90,8 +29,82 @@ struct ScanSpeechBottomSheetView: DView {
         )
         .animation(
             theme.animation,
-            value: viewModel.isSpeechTextVisible
+            value: viewModel.isReviewVisible
         )
         .onAppear(perform: viewModel.onAppear)
+        .onDisappear(perform: viewModel.onDisappear)
+    }
+
+    private var recordingContent: some View {
+        VStack(
+            spacing: .zero
+        ) {
+            Spacer()
+
+            if let speechText = viewModel.speechText {
+                DText(speechText)
+                    .dStyle(
+                        font: typography.linkSmall,
+                        color: color.grayscaleBackgroundWeak,
+                        alignment: .center
+                    )
+                    .lineLimit(1)
+                    .truncationMode(.head)
+                    .clipped()
+                    .padding(.horizontal, size.s32)
+                    .padding(.bottom, size.s8)
+                    .transition(.opacity)
+            }
+
+            if viewModel.isAudioMeterVisible {
+                ScanSpeechAudioMeterView(
+                    level: viewModel.audioMeterLevel
+                )
+                .padding(.bottom, size.s16)
+                .transition(.opacity)
+            }
+
+            if viewModel.isPreparingDescriptionVisible {
+                DText(.speechProcessPreparingDescription)
+                    .dStyle(
+                        font: typography.textSmall,
+                        color: color.grayscaleBackgroundWeak,
+                        alignment: .center
+                    )
+                    .padding(.horizontal, size.s16)
+                    .padding(.bottom, size.s8)
+                    .transition(.opacity)
+            } else {
+                Group {
+                    DText(.speechProcessDescription)
+                        .dStyle(
+                            font: typography.textSmall,
+                            color: color.grayscaleBackgroundWeak,
+                            alignment: .center
+                        )
+                        .padding(.horizontal, size.s16)
+                        .padding(.bottom, size.s8)
+
+                    DText(.speechProcessSpeechDescription)
+                        .dStyle(
+                            font: typography.textSmall,
+                            color: color.grayscaleBackgroundWeak,
+                            alignment: .center
+                        )
+                        .padding(.horizontal, size.s16)
+                }
+                .transition(.opacity)
+            }
+
+            Spacer()
+
+            DButton(
+                image: viewModel.speechIcon,
+                action: viewModel.onTapSpeech,
+                isLoading: viewModel.isSpeechButtonLoading
+            )
+            .dStyle(.primaryCircle)
+        }
+        .padding(size.s16)
     }
 }

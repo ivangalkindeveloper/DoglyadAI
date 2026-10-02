@@ -22,14 +22,19 @@ public protocol DSpeechControllerProtocol: ObservableObject
     var status: DRecordingStatus { get }
     var text: String? { get }
     var audioMeter: Float { get }
+    var lastTranscript: DictationTranscript? { get }
 
     func start()
 
     /// Stops recording and waits for the final recognition result.
     ///
-    /// Returns the final text: reading `text` right after the call is not enough —
-    /// the tail of the dictation is recognized asynchronously after the microphone
-    /// stops, and the last phrase of the examination would otherwise be lost.
+    /// Returns text and its completion status after the audio tail is processed.
+    /// A timed-out or interrupted session can retain text for review, but must not
+    /// be interpreted as a finished dictation.
     @discardableResult
-    func stop() async -> String?
+    func stop() async -> DictationTranscript?
+
+    /// Discards an active session and rejects any results that arrive afterwards.
+    @discardableResult
+    func cancel() -> DictationTranscript?
 }

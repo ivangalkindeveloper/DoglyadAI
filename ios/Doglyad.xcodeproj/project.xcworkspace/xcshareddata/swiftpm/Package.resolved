@@ -1,5 +1,5 @@
 {
-  "originHash" : "c752c4416ca752e9f2ed1c7e55192767585ec0e9336486d6bcf13ef467226b0b",
+  "originHash" : "e53d54e14d7af8afadd7613f802f8a9ed18fbfe8a978e3a4767f135f730d4154",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -26,6 +26,14 @@
       "state" : {
         "revision" : "97f7d74dd0e8f3d0fe5fc75cc8957aa73bdc948a",
         "version" : "11.3.2"
+      }
+    },
+    {
+      "identity" : "argmax-oss-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/argmaxinc/argmax-oss-swift.git",
+      "state" : {
+        "revision" : "f4e5d6be37ec820614fb0d72037e76c22d4c16f7"
       }
     },
     {

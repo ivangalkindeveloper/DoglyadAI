@@ -45,10 +45,12 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
     private let model: MLXLMCommon.ModelContainer
     private let grammarTokenizer: MLXGuidedGeneration.GrammarTokenizer
     private let systemPrompt: String
+    private let proposalPrompt: String?
     private let maxTokens: Int
 
     public init(
         systemPrompt: String,
+        proposalPrompt: String?,
         parameters: DExaminationGenerationParameters
     ) async throws {
         guard let directory = Self.resourceDirectory else {
@@ -82,10 +84,19 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
                 jsonSchema: DExaminationGenerationConfig.responseJSONSchema
             )
         }.value
+        if proposalPrompt != nil {
+            _ = try await Task.detached(priority: .userInitiated) {
+                try MLXGuidedGeneration.GrammarConstraint(
+                    tokenizer: grammarTokenizer,
+                    jsonSchema: DExaminationProposalGenerationConfig.responseJSONSchema
+                )
+            }.value
+        }
 
         self.model = model
         self.grammarTokenizer = grammarTokenizer
         self.systemPrompt = systemPrompt
+        self.proposalPrompt = proposalPrompt
         maxTokens = parameters.maxTokens
     }
 
@@ -104,15 +115,41 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
     public func parseSpeech(
         speech: String
     ) async throws -> DExaminationNeuralModelResponse {
+        let data = try await generateResponse(
+            systemPrompt: systemPrompt,
+            userPrompt: DExaminationGenerationConfig.userPrompt(for: speech),
+            schema: DExaminationGenerationConfig.responseJSONSchema
+        )
+        return try DExaminationGenerationConfig.jsonDecoder.decode(
+            DExaminationNeuralModelResponse.self,
+            from: data
+        )
+    }
+
+    public func parseProposals(request: DictationParseRequest) async throws -> DictationProposal {
+        guard let proposalPrompt else { throw DExaminationNeuralModelError.proposalPromptUnavailable }
+        let data = try await generateResponse(
+            systemPrompt: proposalPrompt,
+            userPrompt: DExaminationProposalGenerationConfig.userPrompt(for: request),
+            schema: DExaminationProposalGenerationConfig.responseJSONSchema
+        )
+        let generated = try JSONDecoder().decode(DExaminationProposalGenerationResponse.self, from: data)
+        return try DictationProposal(generated: generated, request: request)
+    }
+
+    private func generateResponse(
+        systemPrompt: String,
+        userPrompt: String,
+        schema: String
+    ) async throws -> Data {
         let model = model
         let grammarTokenizer = grammarTokenizer
-        let systemPrompt = systemPrompt
         let maxTokens = maxTokens
         let generationTask = Task.detached(priority: .userInitiated) {
             try await model.perform { context in
                 let constraint = try MLXGuidedGeneration.GrammarConstraint(
                     tokenizer: grammarTokenizer,
-                    jsonSchema: DExaminationGenerationConfig.responseJSONSchema,
+                    jsonSchema: schema,
                     fastForward: true,
                     hostTokenizer: context.tokenizer
                 )
@@ -120,7 +157,7 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
                     input: MLXLMCommon.UserInput(
                         chat: [
                             .system(systemPrompt),
-                            .user(DExaminationGenerationConfig.userPrompt(for: speech)),
+                            .user(userPrompt),
                         ]
                     )
                 )
@@ -143,13 +180,7 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
         } onCancel: {
             generationTask.cancel()
         }
-
-        let data = Data(response.utf8)
-        let decoded = try DExaminationGenerationConfig.jsonDecoder.decode(
-            DExaminationNeuralModelResponse.self,
-            from: data
-        )
-        return decoded
+        return Data(response.utf8)
     }
 }
 

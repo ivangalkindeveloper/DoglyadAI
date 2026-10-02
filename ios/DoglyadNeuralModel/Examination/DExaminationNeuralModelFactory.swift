@@ -12,6 +12,7 @@ import UIKit
 public final class DExaminationNeuralModelFactory {
     private let locale: Locale
     private let systemPrompt: String
+    private let proposalPrompt: String?
     private let parameters: DExaminationGenerationParameters
     private var loadedModel: (any DExaminationNeuralModelProtocol)?
     private var loadingTask: Task<any DExaminationNeuralModelProtocol, any Error>?
@@ -33,10 +34,12 @@ public final class DExaminationNeuralModelFactory {
     public init(
         locale: Locale,
         systemPrompt: String,
+        proposalPrompt: String? = nil,
         parameters: DExaminationGenerationParameters
     ) {
         self.locale = locale
         self.systemPrompt = systemPrompt
+        self.proposalPrompt = proposalPrompt
         self.parameters = parameters
 
         memoryWarningObserver = NotificationCenter.default.addObserver(
@@ -78,6 +81,7 @@ public final class DExaminationNeuralModelFactory {
 
         let locale = locale
         let systemPrompt = systemPrompt
+        let proposalPrompt = proposalPrompt
         let parameters = parameters
         let task = Task { () async throws -> any DExaminationNeuralModelProtocol in
             // The implementation is chosen right here rather than up front: availability
@@ -87,12 +91,14 @@ public final class DExaminationNeuralModelFactory {
             {
                 return DExaminationNeuralModelFoundationModels(
                     systemPrompt: systemPrompt,
+                    proposalPrompt: proposalPrompt,
                     parameters: parameters
                 )
             }
             if DExaminationNeuralModelMLX.isAvailable(locale: locale, parameters: parameters) {
                 return try await DExaminationNeuralModelMLX(
                     systemPrompt: systemPrompt,
+                    proposalPrompt: proposalPrompt,
                     parameters: parameters
                 )
             }
@@ -106,6 +112,39 @@ public final class DExaminationNeuralModelFactory {
         loadedModel = model
 
         return model
+    }
+
+    public func parseProposals(request: DictationParseRequest) async throws -> DictationProposal {
+        if let labeled = DictationLabeledFormParser.parse(request: request) {
+            return labeled
+        }
+        let explicit = DictationExplicitFactsExtractor.extract(request: request)
+        if explicit.count == request.allowedFields.count {
+            return DictationProposal(
+                source: .explicitFacts, proposals: explicit, unmappedFindings: [], rejectedFieldIds: []
+            )
+        }
+        do {
+            let generated = try await model().parseProposals(request: request)
+            guard !explicit.isEmpty else { return generated }
+            var byId = Dictionary(uniqueKeysWithValues: generated.proposals.map { ($0.id, $0) })
+            for field in explicit {
+                byId[field.id] = field
+            }
+            return DictationProposal(
+                source: .localModel,
+                proposals: request.allowedFields.compactMap { byId[$0] },
+                unmappedFindings: generated.unmappedFindings,
+                rejectedFieldIds: generated.rejectedFieldIds.filter { byId[$0] == nil }
+            )
+        } catch is CancellationError {
+            throw CancellationError()
+        } catch {
+            guard !explicit.isEmpty else { throw error }
+            return DictationProposal(
+                source: .explicitFacts, proposals: explicit, unmappedFindings: [], rejectedFieldIds: []
+            )
+        }
     }
 
     public func unload() {

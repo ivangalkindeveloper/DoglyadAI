@@ -40,13 +40,14 @@
     "ultrasound": {
         "neuralModel": {
             "temperature": 0.3,
-            "maxTokens": 1024
+            "maxTokens": 2048
         },
         "examinationNeuralModel": {
             "temperature": 0.0,
-            "maxTokens": 1024,
+            "maxTokens": 2048,
             "maxContextTokens": 4096,
-            "promptLocaleKey": "examinationNeuralModelPrompt"
+            "promptLocaleKey": "examinationNeuralModelPrompt",
+            "proposalPromptLocaleKey": "examinationDictationProposalPrompt"
         },
         "scanPhotoMaxNumber": 6,
         "scanPhotoResizeMaxDimension": 128,

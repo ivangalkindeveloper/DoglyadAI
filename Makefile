@@ -24,7 +24,21 @@
 	sync-secrets-inference \
 	init-vm-main \
 	init-vm-inference \
-	download-ios-examination-model
+	download-ios-examination-model \
+	voice-eval-text \
+	voice-eval-audio \
+	voice-eval-audio-extended \
+	voice-eval-audio-v2 \
+	voice-eval-guided-format-audio \
+	voice-eval-reordered-format-audio \
+	voice-eval-freeform-audio \
+	voice-eval-asr-macos \
+	voice-eval-asr-compare \
+	voice-eval-fleurs \
+	voice-eval-ios \
+	voice-eval-ios-candidate \
+	voice-eval-verify \
+	voice-eval-report
 .SILENT:
 
 IOS_DEST ?= platform=iOS Simulator,name=iPhone 17
@@ -152,3 +166,46 @@ check-infrastructure:
 
 download-ios-examination-model:
 	sudo hf download mlx-community/Qwen2.5-1.5B-Instruct-4bit --local-dir ios/DoglyadNeuralModel/Resources/mlx-Qwen2.5-1.5B-Instruct-4bit
+
+voice-eval-text:
+	python3 -m evaluation.voice.generate
+
+voice-eval-audio:
+	python3 -m evaluation.voice.audio --mode quick
+
+voice-eval-audio-extended:
+	python3 -m evaluation.voice.audio --mode extended
+
+voice-eval-audio-v2:
+	python3 -m evaluation.voice.audio_v2
+
+voice-eval-guided-format-audio:
+	python3 -m evaluation.voice.guided_format
+
+voice-eval-reordered-format-audio:
+	python3 -m evaluation.voice.reordered_format
+
+voice-eval-freeform-audio:
+	python3 -m evaluation.voice.freeform_audio
+
+voice-eval-asr-macos: voice-eval-audio
+	python3 -m evaluation.voice.asr --mode quick
+
+voice-eval-asr-compare: voice-eval-audio
+	python3 -m evaluation.voice.comparison --mode quick
+
+voice-eval-fleurs:
+	python3 -m evaluation.voice.fleurs --locale both
+	python3 -m evaluation.voice.fleurs_eval
+
+voice-eval-ios: voice-eval-audio
+	python3 -m evaluation.voice.run_ios
+
+voice-eval-ios-candidate: voice-eval-audio
+	python3 -m evaluation.voice.run_ios --candidate
+
+voice-eval-verify:
+	python3 -m evaluation.voice.verify
+
+voice-eval-report:
+	python3 -m evaluation.voice.report --strict

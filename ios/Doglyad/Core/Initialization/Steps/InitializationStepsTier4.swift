@@ -63,6 +63,12 @@ extension InitializationProcess {
                     guard !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
                         throw InitializationError.examinationNeuralModelPromptEmpty
                     }
+                    let proposalPrompt = config.proposalPrompt
+                    // An older backend may omit this prompt. Keep the app available;
+                    // a nil factory hides the voice button until the backend is updated.
+                    guard !proposalPrompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+                        return
+                    }
 
                     let parameters = DExaminationGenerationParameters(
                         temperature: config.temperature,
@@ -74,6 +80,7 @@ extension InitializationProcess {
                         process.examinationNeuralModelFactory = DExaminationNeuralModelFactory(
                             locale: locale,
                             systemPrompt: prompt,
+                            proposalPrompt: proposalPrompt,
                             parameters: parameters
                         )
                     }

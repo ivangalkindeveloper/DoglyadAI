@@ -55,9 +55,7 @@ async def generate_report(
     model_service: ModelService = request.app.state.model_service
     response_text = await model_service.call(
         InferenceRequest(
-            neural_model=neural_model,
-            settings=settings,
-            language_code=language_code,
+            model_id=neural_model.id,
             system_prompt=prompt_factory.system_prompt(
                 settings,
                 include_recommendations=body.includeRecommendations,
@@ -70,6 +68,8 @@ async def generate_report(
             structured_output=us_examination_report_structured_output(
                 include_recommendations=body.includeRecommendations
             ),
+            temperature=settings.temperature,
+            max_tokens=settings.maxTokens,
             photos=examination.photos,
             app_check_token=request.headers.get(HttpHeader.FIREBASE_APP_CHECK.value),
             request_id=request.state.request_id,

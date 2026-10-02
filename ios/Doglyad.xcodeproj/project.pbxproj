@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7700AAAA000000000000C002 /* Tokenizers in Frameworks */ = {isa = PBXBuildFile; productRef = 7700AAAA000000000000B002 /* Tokenizers */; };
+		7700BBBB000000000000C001 /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7700BBBB000000000000B001 /* WhisperKit */; };
 		770AEB572F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit in Resources */ = {isa = PBXBuildFile; fileRef = 770AEB562F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit */; };
 		770AEB5E2F1DA67D00C09C76 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 770AEB5D2F1DA67D00C09C76 /* FirebaseAnalytics */; };
 		770AEB602F1DA67D00C09C76 /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 770AEB5F2F1DA67D00C09C76 /* FirebaseAnalyticsCore */; };
@@ -496,6 +497,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7700BBBB000000000000C001 /* WhisperKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -779,6 +781,7 @@
 			);
 			name = DoglyadTests;
 			packageProductDependencies = (
+				7700BBBB000000000000B001 /* WhisperKit */,
 			);
 			productName = DoglyadTests;
 			productReference = 77AC58C12E929E800028250A /* DoglyadTests.xctest */;
@@ -934,6 +937,7 @@
 			mainGroup = 77AC58A92E929E7E0028250A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				7700BBBB000000000000A001 /* XCRemoteSwiftPackageReference "argmax-oss-swift" */,
 				77759AF92E932B78007CC90C /* XCRemoteSwiftPackageReference "DependencyInitializer" */,
 				77E7F0AC2EA843F000E49A4E /* XCRemoteSwiftPackageReference "Router" */,
 				777B8DE32EB0020D007F5678 /* XCRemoteSwiftPackageReference "BottomSheet" */,
@@ -3015,6 +3019,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		7700BBBB000000000000A001 /* XCRemoteSwiftPackageReference "argmax-oss-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/argmaxinc/argmax-oss-swift.git";
+			requirement = {
+				kind = revision;
+				revision = f4e5d6be37ec820614fb0d72037e76c22d4c16f7;
+			};
+		};
 		7700AAAA000000000000A001 /* XCRemoteSwiftPackageReference "swift-transformers" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/huggingface/swift-transformers";
@@ -3124,6 +3136,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		7700BBBB000000000000B001 /* WhisperKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7700BBBB000000000000A001 /* XCRemoteSwiftPackageReference "argmax-oss-swift" */;
+			productName = WhisperKit;
+		};
 		7700AAAA000000000000B002 /* Tokenizers */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7700AAAA000000000000A001 /* XCRemoteSwiftPackageReference "swift-transformers" */;

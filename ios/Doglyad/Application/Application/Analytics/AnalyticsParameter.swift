@@ -4,15 +4,18 @@ enum AnalyticsParameter: String, Hashable {
     case bottomSheet = "bottom_sheet"
     case button
     case document
+    case durationMs = "duration_ms"
     case environment
     case error
     case hasCurrentValue = "has_current_value"
     case itemCount = "item_count"
     case modelId = "model_id"
     case productId = "product_id"
+    case rejectedCount = "rejected_count"
     case result
     case screen = "screen_name"
     case selectionLimit = "selection_limit"
     case source
     case subscriptionType = "subscription_type"
+    case warningCount = "warning_count"
 }
