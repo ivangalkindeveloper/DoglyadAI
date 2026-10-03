@@ -110,18 +110,21 @@ class VLLMService:
         try:
             parsed = VLLMChatCompletion.model_validate(response.json())
             value = parsed.value()
+            usage = parsed.usage
+            finish_reason = parsed.choices[0].finish_reason
+            logger.info(
+                "vLLM value: model=%s, chars=%d, finish_reason=%s, prompt_tokens=%d, completion_tokens=%d",
+                self._model_id,
+                len(value),
+                finish_reason,
+                usage.prompt_tokens if usage else 0,
+                usage.completion_tokens if usage else 0,
+            )
             if request.structuredOutput is not None:
                 json.loads(value)
         except (ValueError, ValidationError) as error:
-            logger.exception("Failed to parse vLLM response: %s", error)
+            # Pydantic errors may contain generated patient text. Keep only the
+            # failure category and generation metadata in service logs.
+            logger.warning("Failed to parse vLLM response: %s", type(error).__name__)
             raise HTTPException(status_code=502, detail="Invalid response from local model engine") from error
-
-        usage = parsed.usage
-        logger.info(
-            "vLLM value: model=%s, chars=%d, prompt_tokens=%d, completion_tokens=%d",
-            self._model_id,
-            len(value),
-            usage.prompt_tokens if usage else 0,
-            usage.completion_tokens if usage else 0,
-        )
         return value

@@ -68,6 +68,12 @@ def test_validator_rejects_duplicate_field_without_choosing_one() -> None:
     assert [item.value for item in response.rejectedFieldIds] == ["patientGender"]
 
 
+def test_generation_schema_caps_repeated_items() -> None:
+    properties = USVoiceFormGeneration.model_json_schema()["properties"]
+    assert properties["proposals"]["maxItems"] == 8
+    assert properties["unmappedFindings"]["maxItems"] == 8
+
+
 class FakeModelService:
     def __init__(self, response: dict[str, Any]) -> None:
         self.response = response

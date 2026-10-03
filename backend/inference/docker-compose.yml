@@ -12,6 +12,7 @@ services:
   # authentication of its own and must never be reachable from outside the VM.
   vllm:
     image: ${VLLM_IMAGE:-vllm/vllm-openai:v0.27.1@sha256:c2f3b1b964e47809b722b5e75b61b1e7b39a50f70388cf2bf2418f16a9f31da2}
+    # Keep constrained JSON compact so models cannot loop on blank lines.
     command: >
       ${SERVED_MODEL_ID}
       --served-model-name ${SERVED_MODEL_ID}
@@ -23,6 +24,7 @@ services:
       --gpu-memory-utilization ${VLLM_GPU_MEMORY_UTILIZATION:-0.90}
       --tensor-parallel-size ${VLLM_TENSOR_PARALLEL_SIZE:-1}
       --enable-prefix-caching
+      --structured-outputs-config '{"backend":"xgrammar","disable_any_whitespace":true}'
     environment:
       HF_TOKEN: ${HF_TOKEN}
       # Older vLLM builds read the token under its previous name.
