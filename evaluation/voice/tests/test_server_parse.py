@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+import asyncio
 import json
 from pathlib import Path
 
+import httpx
 import pytest
 
+from evaluation.voice import server_parse
 from evaluation.voice.server_parse import load_cases, score_response, summarize
 
 
@@ -118,3 +121,116 @@ def test_summary_keeps_missing_parse_in_denominator() -> None:
     assert summary["en/complete"]["cases"] == 1
     assert summary["en/complete"]["parsed"] == 0
     assert summary["en/complete"]["expectedPresentFields"] == 1
+
+
+@pytest.mark.parametrize("statuses, expected_status", [([502, 200], "ok"), ([502, 502, 502], "httpError")])
+def test_server_retry_records_each_attempt(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, statuses: list[int], expected_status: str
+) -> None:
+    corpus = tmp_path / "cases.jsonl"
+    corpus.write_text(
+        json.dumps(
+            {
+                "id": "case-1",
+                "locale": "en",
+                "scenario": "complete",
+                "examinationTypeId": "echocardiography",
+                "expectedFields": {"patientWeightKG": 72},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    asr = tmp_path / "asr.json"
+    asr.write_text(
+        json.dumps(
+            {"results": [{"caseId": "case-1", "locale": "en", "status": "ok", "correctedText": "weight 72 kg"}]}
+        ),
+        encoding="utf-8",
+    )
+    token_file = tmp_path / "token"
+    token_file.write_text("test-token", encoding="utf-8")
+    calls = 0
+
+    def respond(request: httpx.Request) -> httpx.Response:
+        nonlocal calls
+        assert request.headers["X-Firebase-AppCheck"] == "test-token"
+        status = statuses[calls]
+        calls += 1
+        if status == 200:
+            return httpx.Response(
+                200,
+                json={"proposals": [{"fieldId": "patientWeightKG", "value": "72"}], "rejectedFieldIds": []},
+            )
+        return httpx.Response(status)
+
+    real_client = httpx.AsyncClient
+    monkeypatch.setattr(
+        server_parse.httpx, "AsyncClient", lambda **kwargs: real_client(transport=httpx.MockTransport(respond))
+    )
+
+    async def no_sleep(_: float) -> None:
+        return None
+
+    monkeypatch.setattr(server_parse.asyncio, "sleep", no_sleep)
+    report = asyncio.run(
+        server_parse.run(
+            corpus_path=corpus,
+            asr_report_path=asr,
+            audio_manifest_path=None,
+            output_path=tmp_path / "result.json",
+            base_url="https://example.test",
+            token_file=token_file,
+        )
+    )
+
+    row = report["results"][0]
+    assert row["status"] == expected_status
+    assert calls == len(statuses)
+    assert [attempt["httpStatus"] for attempt in row["attempts"]] == statuses
+    assert report["byLocaleScenario"]["en/complete"]["parsed"] == int(expected_status == "ok")
+
+
+def test_authentication_failure_stops_run_without_scoring(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    corpus = tmp_path / "cases.jsonl"
+    corpus.write_text(
+        json.dumps(
+            {
+                "id": "case-1",
+                "locale": "en",
+                "scenario": "complete",
+                "examinationTypeId": "echocardiography",
+                "expectedFields": {"patientWeightKG": 72},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    asr = tmp_path / "asr.json"
+    asr.write_text(
+        json.dumps(
+            {"results": [{"caseId": "case-1", "locale": "en", "status": "ok", "correctedText": "weight 72 kg"}]}
+        ),
+        encoding="utf-8",
+    )
+    token_file = tmp_path / "token"
+    token_file.write_text("test-token", encoding="utf-8")
+    real_client = httpx.AsyncClient
+    monkeypatch.setattr(
+        server_parse.httpx,
+        "AsyncClient",
+        lambda **kwargs: real_client(transport=httpx.MockTransport(lambda _: httpx.Response(401))),
+    )
+
+    with pytest.raises(RuntimeError, match="App Check token"):
+        asyncio.run(
+            server_parse.run(
+                corpus_path=corpus,
+                asr_report_path=asr,
+                audio_manifest_path=None,
+                output_path=tmp_path / "result.json",
+                base_url="https://example.test",
+                token_file=token_file,
+            )
+        )
+    assert not (tmp_path / "result.json").exists()

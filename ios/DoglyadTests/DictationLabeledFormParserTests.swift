@@ -116,7 +116,7 @@ struct DictationLabeledFormParserTests {
         #expect(values[.patientGender] == .gender(.male))
         #expect(values[.patientHeightCM] == .number(188))
         #expect(values[.patientWeightKG] == .number(71))
-        #expect(values[.examinationDescription] == .text("Right ventricle. 49 millimeters. No additional abnormality."))
+        #expect(values[.examinationDescription] == .text("Right ventricle: 49 mm. No additional abnormality."))
     }
 
     @Test("ASR dashes after Russian labels do not hide typed fields")
@@ -284,20 +284,23 @@ struct DictationLabeledFormParserTests {
             (
                 "en_US",
                 "Examination number: zero four eight. Patient: Michael Taylor. Gender: male. Date of birth: one nine seven four, one zero, two three. Height: one hundred eighty eight centimeters. Weight: seventy one kilograms. Complaints: discomfort on the right. Examination description: right ventricle: forty nine millimeters. No additional abnormality.",
-                "1974-10-23", 188.0, 71.0
+                "1974-10-23", 188.0, 71.0,
+                "right ventricle: 49 mm. No additional abnormality."
             ),
             (
                 "ru_RU",
                 "Номер исследования: ноль четыре три. Пациент: Анна Петрова. Пол: женщина. Дата рождения: один девять восемь один, ноль четыре, два шесть. Рост: сто семьдесят четыре сантиметра. Вес: шестьдесят четыре килограмма. Жалобы: боль справа. Описание исследования: правая почка тридцать семь миллиметров.",
-                "1981-04-26", 174.0, 64.0
+                "1981-04-26", 174.0, 64.0,
+                "правая почка тридцать семь миллиметров."
             ),
         ]
-        for (code, text, dateString, height, weight) in samples {
+        for (code, text, dateString, height, weight, description) in samples {
             let proposal = try #require(DictationLabeledFormParser.parse(request: request(text, locale: code)))
             let values = Dictionary(uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) })
             #expect(values.count == 8)
             #expect(values[.patientHeightCM] == .number(height))
             #expect(values[.patientWeightKG] == .number(weight))
+            #expect(values[.examinationDescription] == .text(description))
             guard case let .date(date) = values[.patientDateOfBirth] else {
                 Issue.record("Expected a date proposal")
                 continue
@@ -336,6 +339,20 @@ struct DictationLabeledFormParserTests {
         let text = "Examination number 035 patient Daniel read gender mail date of birth 1999-0301 171 cm weight 82 kg complains discovered on the right examination description lateral ventricle 3 mm no additional lavender melody"
         let proposal = try #require(DictationLabeledFormParser.parse(request: request(text, locale: "en_US")))
         #expect(!proposal.proposals.contains { $0.id == .patientComplaints })
+    }
+
+    @Test("A measurement stays reviewable when ASR loses the following label")
+    func recoversMeasurementBeforeMisheardLabel() throws {
+        let text = "Weight 71 kg complete on the right examination description right ventricle 49 mm"
+        let proposal = try #require(DictationLabeledFormParser.parse(request: request(text, locale: "en_US")))
+        let weight = try #require(proposal.proposals.first { $0.id == .patientWeightKG })
+        #expect(weight.value == .number(71))
+        #expect(weight.warnings.contains(.ambiguousDictation))
+        #expect(weight.sourceQuote.contains("complete on the right"))
+        let complaint = try #require(proposal.proposals.first { $0.id == .patientComplaints })
+        #expect(complaint.value == .text("on the right"))
+        #expect(complaint.warnings.contains(.ambiguousDictation))
+        #expect(text.contains(complaint.sourceQuote))
     }
 
     @Test("Explicitly separated fields may be dictated in reverse order")
@@ -441,7 +458,7 @@ struct DictationLabeledFormParserTests {
             ("Examination number: 039; Examination description: right ventricle: 54, no, 51 mm. No additional abnormality.", "right ventricle: 51 mm. No additional abnormality.", "en_US"),
             ("Номер исследования: 013; Описание исследования: правый желудочек: 39, нет, 36 мм. Дополнительных изменений не выявлено.", "правый желудочек: 36 мм. Дополнительных изменений не выявлено.", "ru_RU"),
             ("Номер исследования – 013. Описание исследования – правый желудочек – 39, нет – 36 мм. Дополнительных изменений не выявлено.", "правый желудочек – 36 мм. Дополнительных изменений не выявлено.", "ru_RU"),
-            ("Номер исследования. 013. Пациент. Мария Смирнова. Пол. Женщина. Дата рождения. 1991-11-21. Рост. 170 см. Вес. 89 кг. Жалобы. Дискомфорт справа. Описание исследования. Правый желудочек. 39. Нет. 36 мм.", "Правый желудочек. 36 мм.", "ru_RU"),
+            ("Номер исследования. 013. Пациент. Мария Смирнова. Пол. Женщина. Дата рождения. 1991-11-21. Рост. 170 см. Вес. 89 кг. Жалобы. Дискомфорт справа. Описание исследования. Правый желудочек. 39. Нет. 36 мм.", "Правый желудочек: 36 мм.", "ru_RU"),
             ("Examination number 039 patient Anna Morgan gender female examination description right ventricle seven no 4 mm no additional abnormality", "right ventricle 4 mm no additional abnormality", "en_US"),
             ("Номер исследования 013 пациент Мария Смирнова пол женщина описание исследования правый желудочек девять нет 6 мм дополнительных изменений не выявлено", "правый желудочек 6 мм дополнительных изменений не выявлено", "ru_RU"),
         ]

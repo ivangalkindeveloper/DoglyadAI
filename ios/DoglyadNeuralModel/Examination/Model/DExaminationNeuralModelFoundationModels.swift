@@ -40,13 +40,9 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
         let model = SystemLanguageModel.default
         guard model.isAvailable else { return false }
 
-        // The system model does not cover every app language, yet it stays
-        // "available" on the uncovered ones too. Without this check we would prefer
-        // it over MLX on a locale whose language it does not know. The language set
-        // changes between system releases, so we ask at runtime instead of hardcoding.
-        guard let languageCode = locale.language.languageCode else { return false }
-
-        return model.supportedLanguages.contains { $0.languageCode == languageCode }
+        // Model readiness and dictation-language support are separate checks.
+        // supportsLocale also handles Apple's language fallbacks between regions.
+        return model.supportsLocale(locale)
     }
 
     private let systemPrompt: String

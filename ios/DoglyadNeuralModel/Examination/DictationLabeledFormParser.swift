@@ -223,7 +223,7 @@ enum DictationLabeledFormParser {
     ) -> DictationProposal {
         var proposals: [VoiceFieldProposal] = []
         var rejected = preRejected
-        for entry in recoveringUnlabeledGender(in: values) {
+        for entry in recoveringUnlabeledGender(in: recoveringMisheardComplaintLabel(in: values)) {
             guard request.allowedFields.contains(entry.id) else { continue }
             var rawValue = entry.rawValue.trimmingCharacters(
                 in: .whitespacesAndNewlines.union(CharacterSet(charactersIn: ":;,"))
@@ -243,6 +243,17 @@ enum DictationLabeledFormParser {
                     options: [.regularExpression, .caseInsensitive]
                 )
             }
+            var recoveredMeasurementBoundary = false
+            switch entry.id {
+            case .patientHeightCM, .patientWeightKG:
+                if let leading = leadingMeasurement(rawValue, for: entry.id) {
+                    rawValue = leading
+                    recoveredMeasurementBoundary = true
+                }
+            case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
+                 .patientComplaints, .examinationDescription:
+                break
+            }
             let correctedNumber: String
             switch entry.id {
             case .examinationDescription:
@@ -252,7 +263,13 @@ enum DictationLabeledFormParser {
                 correctedNumber = rawValue
             }
             let hasNumericSelfCorrection = correctedNumber != rawValue
-            rawValue = correctedNumber
+            switch entry.id {
+            case .examinationDescription:
+                rawValue = DictationDescriptionNormalizer.normalize(correctedNumber, locale: request.locale)
+            case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
+                 .patientHeightCM, .patientWeightKG, .patientComplaints:
+                rawValue = correctedNumber
+            }
             guard !isUnfinishedDescription(rawValue, for: entry.id),
                   !isUnresolvedDescription(rawValue, for: entry.id, locale: request.locale),
                   let value = parseValue(rawValue, for: entry.id, locale: request.locale)
@@ -275,6 +292,9 @@ enum DictationLabeledFormParser {
             if entry.recoveredWithoutLabel, !warnings.contains(.ambiguousDictation) {
                 warnings.append(.ambiguousDictation)
             }
+            if recoveredMeasurementBoundary, !warnings.contains(.ambiguousDictation) {
+                warnings.append(.ambiguousDictation)
+            }
             if entry.id == .examinationNumber,
                rawValue.range(of: #"[.,–—-]"#, options: .regularExpression) != nil,
                !warnings.contains(.ambiguousDictation)
@@ -294,6 +314,50 @@ enum DictationLabeledFormParser {
             unmappedFindings: unmapped,
             rejectedFieldIds: rejected
         )
+    }
+
+    /// In the guided format, ASR often hears the complaint label as "complete"
+    /// or "complain". Recover the following words only between a measured
+    /// weight and an explicit examination-description label. This is always
+    /// reviewable because the original label was not recognized.
+    private static func recoveringMisheardComplaintLabel(in values: [LabeledValue]) -> [LabeledValue] {
+        let hasComplaint = values.contains { entry in
+            switch entry.id {
+            case .patientComplaints: true
+            case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
+                 .patientHeightCM, .patientWeightKG, .examinationDescription: false
+            }
+        }
+        guard !hasComplaint else { return values }
+        var result: [LabeledValue] = []
+        for (index, entry) in values.enumerated() {
+            result.append(entry)
+            guard index + 1 < values.count else { continue }
+            switch entry.id {
+            case .patientWeightKG: break
+            case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
+                 .patientHeightCM, .patientComplaints, .examinationDescription: continue
+            }
+            switch values[index + 1].id {
+            case .examinationDescription: break
+            case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
+                 .patientHeightCM, .patientWeightKG, .patientComplaints: continue
+            }
+            guard let unitPattern = measurementUnitPattern(for: .patientWeightKG) else { continue }
+            let pattern = "^[0-9]+(?:[.,][0-9]+)?\\s*(?:\(unitPattern))\\s+(complete|complain)\\s+([\\p{L}][^0-9]*)$"
+            guard let groups = captures(pattern, in: entry.rawValue), groups.count == 2 else { continue }
+            let complaint = groups[1].trimmingCharacters(in: .whitespacesAndNewlines.union(.punctuationCharacters))
+            guard !complaint.isEmpty,
+                  let cueRange = entry.rawValue.range(of: groups[0])
+            else { continue }
+            result.append(LabeledValue(
+                id: .patientComplaints,
+                quote: String(entry.rawValue[cueRange.lowerBound...]),
+                rawValue: complaint,
+                recoveredWithoutLabel: true
+            ))
+        }
+        return result
     }
 
     /// Speech recognition can drop the short Russian label "пол" while keeping
@@ -467,16 +531,7 @@ enum DictationLabeledFormParser {
 
     private static func parseMeasurement(_ raw: String, for id: VoiceFieldId, locale: Locale) -> VoiceFieldValue? {
         let measurementText = raw.trimmingCharacters(in: .whitespacesAndNewlines.union(.punctuationCharacters))
-        let unitPattern: String
-        switch id {
-        case .patientHeightCM:
-            unitPattern = #"см|cm|сантиметр(?:ов|а|ы)?|centimet(?:er|re)s?|м|m|метр(?:ов|а|ы)?|met(?:er|re)s?"#
-        case .patientWeightKG:
-            unitPattern = #"кг|kg|килограмм(?:ов|а|ы)?|kilograms?|г|g|грамм(?:ов|а|ы)?|grams?"#
-        case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-             .patientComplaints, .examinationDescription:
-            return nil
-        }
+        guard let unitPattern = measurementUnitPattern(for: id) else { return nil }
         let numericPattern = "^([0-9]+(?:[.,][0-9]+)?)\\s*(\(unitPattern))$"
         let spokenPattern = "^([\\p{L}]+(?:[\\s-]+[\\p{L}]+){0,3})\\s+(\(unitPattern))$"
         let groups = captures(numericPattern, in: measurementText)
@@ -500,6 +555,30 @@ enum DictationLabeledFormParser {
             return nil
         }
         return .number(amount * factor)
+    }
+
+    private static func measurementUnitPattern(for id: VoiceFieldId) -> String? {
+        switch id {
+        case .patientHeightCM:
+            return #"см|cm|сантиметр(?:ов|а|ы)?|centimet(?:er|re)s?|м|m|метр(?:ов|а|ы)?|met(?:er|re)s?"#
+        case .patientWeightKG:
+            return #"кг|kg|килограмм(?:ов|а|ы)?|kilograms?|г|g|грамм(?:ов|а|ы)?|grams?"#
+        case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
+             .patientComplaints, .examinationDescription:
+            return nil
+        }
+    }
+
+    private static func leadingMeasurement(_ raw: String, for id: VoiceFieldId) -> String? {
+        guard let unitPattern = measurementUnitPattern(for: id) else { return nil }
+        let pattern = "^([0-9]+(?:[.,][0-9]+)?\\s*(?:\(unitPattern)))(?=\\s+[\\p{L}])"
+        guard let expression = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive),
+              let match = expression.firstMatch(in: raw, range: NSRange(raw.startIndex ..< raw.endIndex, in: raw)),
+              let prefixRange = Range(match.range(at: 1), in: raw)
+        else { return nil }
+        let trailing = String(raw[prefixRange.upperBound...])
+        guard trailing.rangeOfCharacter(from: .decimalDigits) == nil else { return nil }
+        return String(raw[prefixRange])
     }
 
     private static func captures(_ pattern: String, in text: String) -> [String]? {

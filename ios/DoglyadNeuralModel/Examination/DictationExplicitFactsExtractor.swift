@@ -52,14 +52,17 @@ enum DictationExplicitFactsExtractor {
 
         let datePattern: String
         switch locale.language.languageCode?.identifier {
-        case "en": datePattern = #"born\s+(.+?)(?=,\s+(?:the\s+)?recorded\s+sex\b)"#
+        case "en": datePattern = #"born\s+(.+?)(?=[,.;]\s+(?:the\s+)?recorded\s+sex\b)"#
         case "ru": datePattern = #",\s+(.+?\s+года\s+рождения)\b"#
         default: datePattern = "(?!)"
         }
+        let compactEnglishDate = locale.language.languageCode?.identifier == "en"
+            ? uniqueMatch(#"\bborn\s+((?:19|20)\d{6})\b"#, in: text)
+            : nil
         let compactRussianDate = locale.language.languageCode?.identifier == "ru"
             ? uniqueMatch(#"\b((?:19|20)\d{6}\s+года\s+рождения)\b"#, in: text)
             : nil
-        if let match = compactRussianDate ?? uniqueMatch(datePattern, in: text) {
+        if let match = compactEnglishDate ?? compactRussianDate ?? uniqueMatch(datePattern, in: text) {
             let quote = locale.language.languageCode?.identifier == "ru" ? match.value : match.quote
             if let date = date(match.value, quote: quote, locale: locale) {
                 append(.patientDateOfBirth, .date(date), quote: quote, to: &fields, request: request)
@@ -83,7 +86,7 @@ enum DictationExplicitFactsExtractor {
             append(.patientWeightKG, .number(number), quote: match.quote, to: &fields, request: request)
         }
 
-        let complaintPattern = #"(?:they\s+report|сообщает\s*[:,-]?)\s+(.+?)(?=\s*(?:on\s+ultrasound|an\s+ultrasound|на\s+узи|and\s+weigh|,\s*вес\b|$))"#
+        let complaintPattern = #"(?:they\s+report|сообщает\s*[:,-]?)\s+(.+?)(?=\s*(?:(?:on|an)\s+ultrasound|ultrasound|на\s+узи|and\s+weigh|,\s*вес\b|$))"#
         if let match = uniqueMatch(complaintPattern, in: text) {
             let complaint = match.value.trimmingCharacters(
                 in: .whitespacesAndNewlines.union(CharacterSet(charactersIn: ".,;"))
@@ -108,7 +111,7 @@ enum DictationExplicitFactsExtractor {
             if !observed.isEmpty {
                 append(
                     .examinationDescription,
-                    .text(normalizedDescription(observed, locale: locale)),
+                    .text(DictationDescriptionNormalizer.normalize(observed, locale: locale)),
                     quote: match.quote,
                     to: &fields,
                     request: request
@@ -159,34 +162,6 @@ enum DictationExplicitFactsExtractor {
               case let .date(date) = parsed
         else { return nil }
         return date
-    }
-
-    private static func normalizedDescription(_ text: String, locale: Locale) -> String {
-        let corrected = DictationNumericCorrection.apply(to: text)
-        let measurementPattern = #"(?:[:.,])\s*([\p{L}\p{N}-]+(?:\s+[\p{L}\p{N}-]+){0,3})\s+(millimeters?|millimetres?|mm|миллиметр(?:а|ов)?|мм|centimeters?\s+per\s+second|сантиметр(?:а|ов)?\s+в\s+секунду|millilit(?:er|re)s?|миллилитр(?:а|ов)?|ml|мл|cm/s|см/с)\b"#
-        guard let match = uniqueMatch(measurementPattern, in: corrected),
-              let measurement = number(match.value, locale: locale),
-              measurement.rounded() == measurement,
-              let unit = measurementUnit(in: match.quote, locale: locale)
-        else { return corrected }
-        return corrected.replacingOccurrences(
-            of: match.quote,
-            with: ": \(Int(measurement)) \(unit)"
-        )
-    }
-
-    private static func measurementUnit(in text: String, locale: Locale) -> String? {
-        let russian = locale.language.languageCode?.identifier == "ru"
-        if text.range(of: #"(?i)(?:millimeters?|millimetres?|мм|миллиметр(?:а|ов)?)\b"#, options: .regularExpression) != nil {
-            return russian ? "мм" : "mm"
-        }
-        if text.range(of: #"(?i)(?:centimeters?\s+per\s+second|сантиметр(?:а|ов)?\s+в\s+секунду|cm/s|см/с)\b"#, options: .regularExpression) != nil {
-            return russian ? "см/с" : "cm/s"
-        }
-        if text.range(of: #"(?i)(?:millilit(?:er|re)s?|миллилитр(?:а|ов)?|ml|мл)\b"#, options: .regularExpression) != nil {
-            return russian ? "мл" : "ml"
-        }
-        return nil
     }
 
     private static func uniqueMatch(_ pattern: String, in text: String) -> Match? {

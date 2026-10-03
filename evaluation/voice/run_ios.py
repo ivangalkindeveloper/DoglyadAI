@@ -88,6 +88,7 @@ def run_ios(
     confidence_only: bool = False,
     asr_only: bool = False,
     force_mlx: bool = False,
+    parse_strategy: str = "production",
 ) -> dict[str, Any]:
     if control and adversarial:
         raise ValueError("Choose one text-only corpus")
@@ -117,6 +118,10 @@ def run_ios(
         raise ValueError("ASR-only mode requires candidate audio mode")
     if force_mlx and (not candidate or not text_only or mode != "freeform-development"):
         raise ValueError("Forced MLX diagnosis requires candidate freeform text-only mode")
+    if parse_strategy not in {"production", "exactLabels", "naturalLanguage", "foundationModels", "mlx"}:
+        raise ValueError(f"Unknown voice parse strategy: {parse_strategy}")
+    if parse_strategy != "production" and (not candidate or not text_only or force_mlx):
+        raise ValueError("Direct parse strategies require candidate text-only mode without --force-mlx")
     fixture = (
         prepare_control_fixtures()
         if control
@@ -156,6 +161,8 @@ def run_ios(
         prefix += "-asr-only"
     if force_mlx:
         prefix += "-forced-mlx"
+    if parse_strategy != "production":
+        prefix += f"-{parse_strategy}"
     if control:
         suffix = f"{prefix}-control"
     elif adversarial:
@@ -204,6 +211,8 @@ def run_ios(
         environment["TEST_RUNNER_VOICE_ASR_ONLY"] = "1"
     if force_mlx:
         environment["TEST_RUNNER_VOICE_FORCE_MLX"] = "1"
+    if parse_strategy != "production":
+        environment["TEST_RUNNER_VOICE_PARSE_STRATEGY"] = parse_strategy
     environment["TEST_RUNNER_VOICE_REPORT_ID"] = run_id
     with (output / "xcodebuild.log").open("w", encoding="utf-8") as log:
         completed = subprocess.run(
@@ -226,6 +235,9 @@ def run_ios(
     if candidate:
         if report.get("forcedMLXDiagnostic", False) != force_mlx:
             raise ValueError("iOS runner used a different model selection")
+        expected_strategy = "mlx" if force_mlx else parse_strategy
+        if any(row.get("parseStrategy") != expected_strategy for row in report["results"]):
+            raise ValueError("iOS runner used a different parse strategy")
         for report_key, fixture_key in (
             ("fixtureInputSource", "inputSource"),
             ("fixtureASRReportSha256", "asrReportSha256"),
@@ -251,6 +263,7 @@ def run_ios(
                 "asrRecognizer": fixture.get("asrRecognizer"),
                 "generationMaxTokens": fixture["generation"]["maxTokens"],
                 "forcedMLXDiagnostic": force_mlx,
+                "parseStrategy": "mlx" if force_mlx else parse_strategy,
                 "xcodebuildExitCode": completed.returncode,
             },
             indent=2,
@@ -302,6 +315,11 @@ def main() -> None:
     parser.add_argument("--confidence-only", action="store_true")
     parser.add_argument("--asr-only", action="store_true")
     parser.add_argument("--force-mlx", action="store_true")
+    parser.add_argument(
+        "--parse-strategy",
+        choices=("production", "exactLabels", "naturalLanguage", "foundationModels", "mlx"),
+        default="production",
+    )
     args = parser.parse_args()
     summary = run_ios(
         limit=args.limit,
@@ -323,6 +341,7 @@ def main() -> None:
         confidence_only=args.confidence_only,
         asr_only=args.asr_only,
         force_mlx=args.force_mlx,
+        parse_strategy=args.parse_strategy,
     )
     print(f"iOS cases: {summary['requestedCases']}")
     for locale, metrics in summary["byLocale"].items():

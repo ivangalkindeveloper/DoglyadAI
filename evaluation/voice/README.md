@@ -587,9 +587,10 @@ python3 -m evaluation.voice.run_ios --candidate --mode extended --variant noisy
 python3 -m evaluation.voice.server_parse \
   --corpus build/voice-eval/text/regression.jsonl \
   --asr-report build/voice-eval/ios-candidate-device-asr-only-guided-format-clean/asr-replay-speechAnalyzer-hints-true-report.json \
-  --output build/voice-eval/server/guided-clean.json \
+  --output build/voice-eval/server/guided-clean-retry3.json \
   --base-url https://dev.api.doglyad.ru \
-  --token-file /private/tmp/doglyad-app-check-token
+  --token-file /private/tmp/doglyad-app-check-token \
+  --max-attempts 3
 ```
 
 Чтобы отдельно проверить разбор точного текста, поданного синтезатору,
@@ -606,3 +607,30 @@ python3 -m evaluation.voice.server_parse \
 валидации на iPhone**: неверное предложенное поле считается ошибкой даже
 если экран позднее отправит его врачу на подтверждение. Финальную политику
 автозаполнения следует оценивать отдельно.
+
+Для честного сравнения числа попыток используйте новый выходной файл: при
+возобновлении уже записанные случаи пропускаются. Каждая попытка сохраняется
+в `results[].attempts`; после трёх ошибок случай остаётся техническим провалом.
+При HTTP 401 оценщик останавливается, чтобы истёкший App Check токен не
+считался ошибкой модели. После обновления токена команду можно повторить.
+
+## Сравнение локальных разборщиков на одном транскрипте
+
+Численные результаты всех способов и разбор причин ошибок: [PARSER_COMPARISON.md](PARSER_COMPARISON.md).
+
+Флаг `--parse-strategy` в режиме `--candidate --text-only --diagnostic-only`
+выбирает один способ разбора: `exactLabels` (буквальные метки),
+`naturalLanguage` (метки и явные факты с распознаванием имени через Apple
+Natural Language), `foundationModels` или `mlx` (прямой вызов модели).
+`production` использует текущую последовательность приложения. Во всех
+случаях передавайте один и тот же `--replay-asr-report`, чтобы сравнивать
+разбор, а не заново распознавать аудио. Например:
+
+```bash
+python3 -m evaluation.voice.run_ios \
+  --candidate --text-only --diagnostic-only \
+  --mode guided-format --variant clean \
+  --replay-asr-report build/voice-eval/ios-candidate-device-asr-only-guided-format-clean/asr-replay-speechAnalyzer-hints-true-report.json \
+  --parse-strategy naturalLanguage \
+  --physical-device-id <UDID>
+```

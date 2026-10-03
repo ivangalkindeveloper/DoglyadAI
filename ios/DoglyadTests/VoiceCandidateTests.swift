@@ -1,9 +1,18 @@
 import CryptoKit
-import DoglyadNeuralModel
+@testable import DoglyadNeuralModel
 import DoglyadSpeech
 import Foundation
+import FoundationModels
 import UIKit
 import XCTest
+
+private enum VoiceParseStrategy: String {
+    case production
+    case exactLabels
+    case naturalLanguage
+    case foundationModels
+    case mlx
+}
 
 final class VoiceCandidateTests: XCTestCase {
     @MainActor
@@ -34,10 +43,16 @@ final class VoiceCandidateTests: XCTestCase {
         )
         var activeFactory: DExaminationNeuralModelFactory?
         var activeMLX: DExaminationNeuralModelMLX?
+        var activeFoundation: (any DExaminationNeuralModelProtocol)?
         var activeCode: String?
         var rows: [[String: Any]] = []
         let reportURL = try reportDestination()
         let asrOnly = ProcessInfo.processInfo.environment["VOICE_ASR_ONLY"] == "1"
+        let configuredStrategy = try XCTUnwrap(VoiceParseStrategy(
+            rawValue: ProcessInfo.processInfo.environment["VOICE_PARSE_STRATEGY"] ?? "production"
+        ))
+        let strategy: VoiceParseStrategy = ProcessInfo.processInfo.environment["VOICE_FORCE_MLX"] == "1"
+            ? .mlx : configuredStrategy
 
         for testCase in cases {
             let id = try string(testCase, "id")
@@ -49,6 +64,7 @@ final class VoiceCandidateTests: XCTestCase {
                 activeFactory?.unload()
                 activeFactory = nil
                 activeMLX = nil
+                activeFoundation = nil
                 activeCode = code
             }
             if activeFactory == nil {
@@ -60,15 +76,21 @@ final class VoiceCandidateTests: XCTestCase {
                 )
             }
             let factory = try XCTUnwrap(activeFactory)
-            let forceMLX = ProcessInfo.processInfo.environment["VOICE_FORCE_MLX"] == "1"
             let mlxAvailable = DExaminationNeuralModelMLX.isAvailable(locale: locale, parameters: parameters)
             let foundationModelsAvailable: Bool
+            let foundationModelsAvailability: String
+            let foundationModelsSupportsLocale: Bool
             if #available(iOS 26.0, *) {
+                let systemModel = SystemLanguageModel.default
+                foundationModelsAvailability = String(describing: systemModel.availability)
+                foundationModelsSupportsLocale = systemModel.supportsLocale(locale)
                 foundationModelsAvailable = DExaminationNeuralModelFoundationModels.isAvailable(
                     locale: locale, parameters: parameters
                 )
             } else {
                 foundationModelsAvailable = false
+                foundationModelsAvailability = "unsupportedOS"
+                foundationModelsSupportsLocale = false
             }
             let typeId = try string(testCase, "examinationTypeId")
             var asr: [String: Any] = [:]
@@ -108,7 +130,7 @@ final class VoiceCandidateTests: XCTestCase {
                 allowedFields: VoiceFieldId.allCases
             )
             var mlxLoadError: String?
-            if forceMLX, !asrOnly, activeMLX == nil {
+            if case .mlx = strategy, !asrOnly, activeMLX == nil {
                 do {
                     guard mlxAvailable else { throw DExaminationNeuralModelError.unavailable }
                     activeMLX = try await DExaminationNeuralModelMLX(
@@ -119,6 +141,15 @@ final class VoiceCandidateTests: XCTestCase {
                 } catch {
                     mlxLoadError = String(describing: error)
                 }
+            }
+            if case .foundationModels = strategy, !asrOnly, activeFoundation == nil,
+               foundationModelsAvailable, #available(iOS 26.0, *)
+            {
+                activeFoundation = try DExaminationNeuralModelFoundationModels(
+                    systemPrompt: string(testCase, "systemPrompt"),
+                    proposalPrompt: string(testCase, "proposalPrompt"),
+                    parameters: parameters
+                )
             }
             var recognizedTextParse: [String: Any] = [:]
             for engine in ["speechAnalyzer", "sfSpeechRecognizer"] {
@@ -137,7 +168,10 @@ final class VoiceCandidateTests: XCTestCase {
                     if let mlxLoadError {
                         recognizedTextParse[engine] = ["status": "failed", "reason": mlxLoadError]
                     } else {
-                        recognizedTextParse[engine] = await parse(recognizedRequest, factory: factory, forcedMLX: activeMLX)
+                        recognizedTextParse[engine] = await parse(
+                            recognizedRequest, factory: factory, strategy: strategy,
+                            mlx: activeMLX, foundation: activeFoundation
+                        )
                     }
                 } else {
                     recognizedTextParse[engine] = ["status": "skipped", "reason": "No final transcript"]
@@ -152,13 +186,19 @@ final class VoiceCandidateTests: XCTestCase {
                 if let mlxLoadError {
                     goldTextParse = ["status": "failed", "reason": mlxLoadError]
                 } else {
-                    goldTextParse = await parse(request, factory: factory, forcedMLX: activeMLX)
+                    goldTextParse = await parse(
+                        request, factory: factory, strategy: strategy,
+                        mlx: activeMLX, foundation: activeFoundation
+                    )
                 }
             }
             rows.append([
                 "id": id, "locale": code, "examinationTypeId": typeId,
+                "parseStrategy": strategy.rawValue,
                 "asr": asr,
                 "foundationModelsAvailable": foundationModelsAvailable,
+                "foundationModelsAvailability": foundationModelsAvailability,
+                "foundationModelsSupportsLocale": foundationModelsSupportsLocale,
                 "mlxAvailable": mlxAvailable,
                 "goldTextParse": goldTextParse,
                 "recognizedTextParse": recognizedTextParse,
@@ -216,15 +256,27 @@ final class VoiceCandidateTests: XCTestCase {
     @MainActor
     private func parse(
         _ request: DictationParseRequest, factory: DExaminationNeuralModelFactory,
-        forcedMLX: DExaminationNeuralModelMLX?
+        strategy: VoiceParseStrategy, mlx: DExaminationNeuralModelMLX?,
+        foundation: (any DExaminationNeuralModelProtocol)?
     ) async -> [String: Any] {
         let started = Date()
         do {
             let proposal: DictationProposal
-            if let forcedMLX {
-                proposal = try await forcedMLX.parseProposals(request: request)
-            } else {
+            switch strategy {
+            case .production:
                 proposal = try await factory.parseProposals(request: request)
+            case .exactLabels:
+                proposal = DictationLabeledFormParser.parse(request: request) ?? DictationProposal(
+                    source: .labeledDictation, proposals: [], unmappedFindings: [], rejectedFieldIds: []
+                )
+            case .naturalLanguage:
+                proposal = DictationNaturalLanguageParser.parse(request: request)
+            case .foundationModels:
+                guard let foundation else { throw DExaminationNeuralModelError.unavailable }
+                proposal = try await foundation.parseProposals(request: request)
+            case .mlx:
+                guard let mlx else { throw DExaminationNeuralModelError.unavailable }
+                proposal = try await mlx.parseProposals(request: request)
             }
             let source: String
             switch proposal.source {

@@ -121,7 +121,10 @@ async def run(
     base_url: str,
     token_file: Path,
     limit: int | None = None,
+    max_attempts: int = 3,
 ) -> dict[str, Any]:
+    if max_attempts < 1:
+        raise ValueError("max_attempts must be positive")
     cases = load_cases(corpus_path, asr_report_path, audio_manifest_path)
     if limit is not None:
         cases = cases[:limit]
@@ -162,29 +165,43 @@ async def run(
             if case["inputText"] is None:
                 row["status"] = "noTranscript"
             else:
-                token = token_file.read_text(encoding="utf-8").strip()
-                if not token:
-                    raise ValueError("App Check token file is empty")
                 started = time.monotonic()
-                try:
-                    response = await client.post(
-                        f"{base_url.rstrip('/')}/v1/ultrasound/parse_dictation",
-                        headers={"X-Firebase-AppCheck": token, "Accept-Language": case["locale"]},
-                        json={
-                            "usExaminationTypeId": case["examinationTypeId"],
-                            "transcript": case["inputText"],
-                        },
-                    )
-                    row["httpStatus"] = response.status_code
-                    if response.status_code == 200:
-                        result = response.json()
-                        row["response"] = result
-                        row["score"] = score_response(case["expectedFields"], result, case["locale"])
-                        row["status"] = "ok"
-                    else:
-                        row["status"] = "httpError"
-                except (httpx.HTTPError, ValueError, KeyError, TypeError):
-                    row["status"] = "invalidResponse"
+                row["attempts"] = []
+                for attempt in range(max_attempts):
+                    token = token_file.read_text(encoding="utf-8").strip()
+                    if not token:
+                        raise ValueError("App Check token file is empty")
+                    attempt_result: dict[str, Any] = {"number": attempt + 1}
+                    try:
+                        response = await client.post(
+                            f"{base_url.rstrip('/')}/v1/ultrasound/parse_dictation",
+                            headers={"X-Firebase-AppCheck": token, "Accept-Language": case["locale"]},
+                            json={
+                                "usExaminationTypeId": case["examinationTypeId"],
+                                "transcript": case["inputText"],
+                            },
+                        )
+                        row["httpStatus"] = response.status_code
+                        attempt_result["httpStatus"] = response.status_code
+                        if response.status_code == 401:
+                            raise RuntimeError("App Check token expired or was rejected; refresh it and resume the run")
+                        if response.status_code == 200:
+                            result = response.json()
+                            score = score_response(case["expectedFields"], result, case["locale"])
+                            row["response"] = result
+                            row["score"] = score
+                            row["status"] = "ok"
+                        else:
+                            row["status"] = "httpError"
+                    except (httpx.HTTPError, ValueError, KeyError, TypeError) as error:
+                        row["status"] = "invalidResponse"
+                        attempt_result["errorType"] = type(error).__name__
+                    attempt_result["status"] = row["status"]
+                    row["attempts"].append(attempt_result)
+                    if row["status"] == "ok":
+                        break
+                    if attempt + 1 < max_attempts:
+                        await asyncio.sleep(2.1 * (attempt + 1))
                 row["elapsedSeconds"] = round(time.monotonic() - started, 3)
             report["results"].append(row)
             report["byLocaleScenario"] = summarize(report["results"])
@@ -207,6 +224,7 @@ def main() -> None:
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--token-file", required=True, type=Path)
     parser.add_argument("--limit", type=int)
+    parser.add_argument("--max-attempts", type=int, default=3)
     args = parser.parse_args()
     asyncio.run(
         run(
@@ -217,6 +235,7 @@ def main() -> None:
             base_url=args.base_url,
             token_file=args.token_file,
             limit=args.limit,
+            max_attempts=args.max_attempts,
         )
     )
 

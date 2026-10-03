@@ -6,6 +6,20 @@ internal import MLXLMCommon
 internal import Tokenizers
 
 public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
+    /// The arrays are derived once from an immutable tokenizer and only read
+    /// while adding logit bias during generation.
+    private final class TokenizerBias: @unchecked Sendable {
+        let closing: MLXArray
+        let whitespace: MLXArray
+        let whitespaceTokenIDs: Set<Int>
+
+        init(closing: MLXArray, whitespace: MLXArray, whitespaceTokenIDs: Set<Int>) {
+            self.closing = closing
+            self.whitespace = whitespace
+            self.whitespaceTokenIDs = whitespaceTokenIDs
+        }
+    }
+
     /// The locale does not affect availability: the language is set by the system
     /// prompt while the weights stay the same. The parameter exists so that all
     /// implementations share one interface.
@@ -44,6 +58,7 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
     )
     private let model: MLXLMCommon.ModelContainer
     private let grammarTokenizer: MLXGuidedGeneration.GrammarTokenizer
+    private let tokenizerBias: TokenizerBias
     private let systemPrompt: String
     private let proposalPrompt: String?
     private let maxTokens: Int
@@ -65,16 +80,26 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
             from: directory,
             using: DTransformersTokenizerLoader()
         )
-        let grammarTokenizer = try await model.perform { context in
+        let generationSetup = try await model.perform { context in
             let grammarVocab = MLXGuidedGeneration.TokenizerVocabExtractor.extractForGrammar(
                 from: context.tokenizer
             )
-            return try MLXGuidedGeneration.GrammarTokenizer(
+            let grammarTokenizer = try MLXGuidedGeneration.GrammarTokenizer(
                 vocab: grammarVocab.vocab,
                 vocabType: grammarVocab.vocabType,
                 eosTokenId: Int32(context.tokenizer.eosTokenId ?? 0)
             )
+            let closingBias = MLXGuidedGeneration.ClosingTokenBias.compute(
+                tokenizer: context.tokenizer, eosTokenId: context.tokenizer.eosTokenId
+            )
+            let whitespace = MLXGuidedGeneration.WhitespaceTokenBias.compute(tokenizer: context.tokenizer)
+            return (grammarTokenizer, TokenizerBias(
+                closing: closingBias,
+                whitespace: whitespace.bias,
+                whitespaceTokenIDs: whitespace.tokenIDs
+            ))
         }
+        let grammarTokenizer = generationSetup.0
 
         // Compile the schema while the model is loading. XGrammar caches the
         // compilation, so a request only needs a fresh matcher state.
@@ -95,6 +120,7 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
 
         self.model = model
         self.grammarTokenizer = grammarTokenizer
+        tokenizerBias = generationSetup.1
         self.systemPrompt = systemPrompt
         self.proposalPrompt = proposalPrompt
         maxTokens = parameters.maxTokens
@@ -144,6 +170,7 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
     ) async throws -> Data {
         let model = model
         let grammarTokenizer = grammarTokenizer
+        let tokenizerBias = tokenizerBias
         let maxTokens = maxTokens
         let generationTask = Task.detached(priority: .userInitiated) {
             try await model.perform { context in
@@ -162,12 +189,20 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
                     )
                 )
                 var response = ""
+                let structuralReserve = MLXGuidedGeneration.CompletionReserve.estimate(
+                    schemaJSON: schema, tokenizer: context.tokenizer
+                )
                 try MLXGuidedGeneration.GuidedGenerationLoop.run(
                     input: input,
                     context: context,
                     constraint: constraint,
                     maxTokens: maxTokens,
-                    vocabSize: grammarTokenizer.vocabSize
+                    vocabSize: grammarTokenizer.vocabSize,
+                    completionReserve: max(structuralReserve * 3, maxTokens / 4),
+                    hardReserve: structuralReserve * 8,
+                    closingBias: tokenizerBias.closing,
+                    whitespaceBias: tokenizerBias.whitespace,
+                    whitespaceTokenIDs: tokenizerBias.whitespaceTokenIDs
                 ) { chunk in
                     response += chunk
                     return true

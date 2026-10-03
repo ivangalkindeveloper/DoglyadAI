@@ -21,7 +21,9 @@ struct DictationExplicitFactsExtractorTests {
         #expect(fields.first(where: { $0.id == .patientHeightCM })?.value == .number(182))
         #expect(fields.first(where: { $0.id == .patientWeightKG })?.value == .number(80))
         #expect(fields.first(where: { $0.id == .patientDateOfBirth })?.value != nil)
-        #expect(fields.first(where: { $0.id == .patientComplaints })?.value == .text("swelling"))
+        let complaint = fields.first(where: { $0.id == .patientComplaints })
+        #expect(complaint?.value == .text("swelling"))
+        #expect(complaint?.sourceQuote == "They report swelling.")
         #expect(fields.first(where: { $0.id == .examinationDescription })?.value == .text("right ventricle: 47 mm."))
         #expect(fields.allSatisfy { request.text.contains($0.sourceQuote) })
     }
@@ -67,7 +69,7 @@ struct DictationExplicitFactsExtractorTests {
         #expect(fields[3].value == .text("left ventricle: 38 mm."))
     }
 
-    @Test("Missing section boundary does not copy ultrasound findings into complaints")
+    @Test("A bare ultrasound cue separates complaints from findings")
     func missingBoundary() {
         let request = DictationParseRequest(
             text: "This is study 026 they report swelling ultrasound right ventricle 47 mm no additional abnormality",
@@ -76,7 +78,7 @@ struct DictationExplicitFactsExtractorTests {
             allowedFields: VoiceFieldId.allCases
         )
         let fields = DictationExplicitFactsExtractor.extract(request: request)
-        #expect(!fields.contains(where: { $0.id == .patientComplaints }))
+        #expect(fields.first(where: { $0.id == .patientComplaints })?.value == .text("swelling"))
         #expect(!fields.contains(where: { $0.id == .examinationDescription }))
     }
 
@@ -95,6 +97,30 @@ struct DictationExplicitFactsExtractorTests {
         #expect(fields.first(where: { $0.id == .patientHeightCM })?.value == .number(177))
         #expect(fields.first(where: { $0.id == .patientWeightKG })?.value == .number(95))
         #expect(!fields.contains(where: { $0.id == .patientComplaints }))
+    }
+
+    @Test("English ASR sentence break preserves an explicit birth date")
+    func englishASRSentenceBreakBeforeGender() {
+        for text in [
+            "For Anna Morgan born 19720802. The recorded sex female. They are 182 cm tall.",
+            "For Anna Morgan born 19720802. The recorded six female. They are 182 cm tall.",
+        ] {
+            let request = DictationParseRequest(
+                text: text,
+                examinationTypeId: "echocardiography",
+                locale: Locale(identifier: "en_US"),
+                allowedFields: VoiceFieldId.allCases
+            )
+            let fields = DictationExplicitFactsExtractor.extract(request: request)
+            let date = fields.first(where: { $0.id == .patientDateOfBirth })?.value
+            guard case let .date(value) = date else {
+                Issue.record("Expected a birth date proposal")
+                continue
+            }
+            let formatter = ISO8601DateFormatter()
+            formatter.formatOptions = [.withFullDate]
+            #expect(formatter.string(from: value) == "1972-08-02")
+        }
     }
 
     @Test("An ASR sentence break before an explicit measurement preserves the finding")
