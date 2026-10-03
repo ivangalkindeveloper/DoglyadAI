@@ -19,27 +19,17 @@ from app.route.ultrasound import parse_dictation as route
 from app.service.voice_form_validation import validate_voice_form_generation
 
 
-def test_voice_parsing_config_loads_for_both_environments(monkeypatch: pytest.MonkeyPatch) -> None:
-    from app.core.config import get_voice_parsing_config
-    from app.core.variables import variables
+def test_voice_parsing_config_loads_for_both_environments() -> None:
+    from app.core.config import _CONFIG_BASE, get_voice_parsing_config
+    from app.model.ultrasound.us_voice_form_parsing_config import USVoiceFormParsingConfig
 
-    original_environment = variables.environment
-    try:
-        for environment in ("development", "production"):
-            monkeypatch.setattr(variables, "environment", environment)
-            # _CONFIG_DIR is resolved on module import; inspect both documents directly.
-            from app.core.config import _CONFIG_BASE
-            from app.model.ultrasound.us_voice_form_parsing_config import USVoiceFormParsingConfig
-
-            config = USVoiceFormParsingConfig.model_validate_json(
-                (_CONFIG_BASE / environment / "voice_form_parsing.json").read_text(encoding="utf-8")
-            )
-            assert config.modelId == "google/medgemma-4b-it"
-        monkeypatch.setattr(variables, "environment", original_environment)
-        load_configs()
-        assert get_voice_parsing_config().maxTokens == 2048
-    finally:
-        monkeypatch.setattr(variables, "environment", original_environment)
+    for environment in ("development", "production"):
+        config = USVoiceFormParsingConfig.model_validate_json(
+            (_CONFIG_BASE / environment / "voice_form_parsing.json").read_text(encoding="utf-8")
+        )
+        assert config.modelId == "google/medgemma-4b-it"
+    load_configs()
+    assert get_voice_parsing_config().maxTokens == 2048
 
 
 def test_validator_returns_sparse_supported_fields_and_rejects_bad_quotes() -> None:

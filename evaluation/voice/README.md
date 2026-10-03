@@ -571,3 +571,38 @@ python3 -m evaluation.voice.run_ios --candidate --mode extended --variant noisy
 аналитика передаёт только исход этапа, количество
 предложений и предупреждений и длительность разбора; речь и поля пациента в
 события не входят.
+
+## Эксперимент с серверным разбором текста
+
+`POST /v1/ultrasound/parse_dictation` получает тип исследования и финальный
+транскрипт. `backend/main` строит локализованный промпт и проверяет ответ;
+`backend/inference` использует действующий `/v1/generation`. Аудио в этом
+эксперименте не передаётся на сервер. Оба серверных конфига
+`voice_form_parsing.json` сейчас указывают на `google/medgemma-4b-it`.
+
+После запуска inference и обновления всех VM повторить каждый набор можно
+командой (для остальных наборов заменить пути корпуса и ASR-отчёта):
+
+```bash
+python3 -m evaluation.voice.server_parse \
+  --corpus build/voice-eval/text/regression.jsonl \
+  --asr-report build/voice-eval/ios-candidate-device-asr-only-guided-format-clean/asr-replay-speechAnalyzer-hints-true-report.json \
+  --output build/voice-eval/server/guided-clean.json \
+  --base-url https://dev.api.doglyad.ru \
+  --token-file /private/tmp/doglyad-app-check-token
+```
+
+Чтобы отдельно проверить разбор точного текста, поданного синтезатору,
+вместо `--asr-report` передаётся
+`--audio-manifest build/voice-eval/audio/guided-format/manifest.json`.
+Для набора без порядка нужен корпус `build/voice-eval/text/voiceBlind.jsonl`,
+для свободной речи — `build/voice-eval/text/freeformDevelopment.jsonl`.
+
+Файл токена должен содержать действующий App Check токен приложения и
+находиться вне Git; оценщик перечитывает его перед каждым запросом. Запросы
+идут не чаще 30 в минуту. Результат сохраняется после каждого случая и
+продолжается с прерванного места при повторном запуске. Метрики этого
+отчёта характеризуют **проверенный backend ответ до дополнительной
+валидации на iPhone**: неверное предложенное поле считается ошибкой даже
+если экран позднее отправит его врачу на подтверждение. Финальную политику
+автозаполнения следует оценивать отдельно.
