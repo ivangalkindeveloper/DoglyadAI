@@ -7,9 +7,11 @@ from app.model.ultrasound.us_voice_field_id import USVoiceFieldId
 from app.model.ultrasound.us_voice_field_proposal import USVoiceFieldProposal
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.model.ultrasound.us_voice_form_parse_response import USVoiceFormParseResponse
+from app.model.ultrasound.us_voice_numeric_field_generation import USVoiceNumericFieldGeneration
+from app.model.ultrasound.us_voice_text_field_generation import USVoiceTextFieldGeneration
 
 
-def _valid_typed_value(proposal: USVoiceFieldProposal) -> bool:
+def _valid_typed_value(proposal: USVoiceTextFieldGeneration | USVoiceNumericFieldGeneration) -> bool:
     value = proposal.value
     match proposal.field_id:
         case USVoiceFieldId.PATIENT_GENDER:
@@ -52,7 +54,7 @@ def validate_voice_form_generation(
         if not quote.strip() or folded_text.count(folded_quote) != 1 or not _valid_typed_value(proposal):
             rejected.append(proposal.field_id)
             continue
-        proposals.append(proposal)
+        proposals.append(USVoiceFieldProposal.model_validate(proposal.model_dump()))
     return USVoiceFormParseResponse(
         proposals=proposals,
         rejectedFieldIds=list(dict.fromkeys(rejected)),

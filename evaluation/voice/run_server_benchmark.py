@@ -56,7 +56,7 @@ async def run_benchmark(
     for selected_source in sources:
         for name, corpus_name, folder in PACKS:
             input_path = source_path(folder, selected_source)
-            output_name = f"medgemma-{selected_source}-{name}-v2"
+            output_name = f"medgemma-{selected_source}-{name}-v3"
             if limit is not None:
                 output_name += f"-pilot{limit}"
             output_path = output_dir / f"{output_name}.json"

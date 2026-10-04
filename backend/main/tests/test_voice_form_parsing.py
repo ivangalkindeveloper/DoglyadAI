@@ -88,11 +88,23 @@ def test_boolean_measurement_is_not_accepted_as_one() -> None:
         )
 
 
+def test_string_measurement_is_rejected_by_generation_contract() -> None:
+    with pytest.raises(ValueError):
+        USVoiceFormGeneration.model_validate(
+            [{"field_id": "patient_weight_kg", "value": "72", "evidence": "вес 72 кг", "accuracy": "full"}]
+        )
+
+
 def test_generation_schema_caps_repeated_items() -> None:
     schema = USVoiceFormGeneration.model_json_schema()
     assert schema["type"] == "array"
     assert schema["maxItems"] == 8
-    assert set(schema["$defs"]["USVoiceFieldProposal"]["required"]) == {"field_id", "value", "evidence", "accuracy"}
+    variants = [schema["$defs"][item["$ref"].split("/")[-1]] for item in schema["items"]["anyOf"]]
+    by_field = {field: variant for variant in variants for field in variant["properties"]["field_id"]["enum"]}
+    assert by_field["patient_weight_kg"]["properties"]["value"]["type"] == "number"
+    assert by_field["patient_height_cm"]["properties"]["value"]["type"] == "number"
+    assert by_field["patient_name"]["properties"]["value"]["type"] == "string"
+    assert all(set(variant["required"]) == {"field_id", "value", "evidence", "accuracy"} for variant in variants)
 
 
 class FakeModelService:
