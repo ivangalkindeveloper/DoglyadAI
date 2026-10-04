@@ -50,18 +50,27 @@ def test_pack_scenario_metrics_count_failed_stages_as_non_exact() -> None:
         {
             "locale": "ru",
             "scenario": "complete",
+            "expectedFieldIds": ["patientName", "patientWeightKG"],
             "goldTextStatus": "ok",
-            "goldText": {"equivalentExactCase": True},
+            "goldText": {
+                "equivalentExactCase": True,
+                "equivalentMatches": {"patientName": True, "patientWeightKG": True},
+            },
             "speechAnalyzerASRStatus": "ok",
             "speechAnalyzerParseStatus": "ok",
             "speechAnalyzerCorrectedWER": 0.1,
-            "speechAnalyzer": {"equivalentExactCase": True, "equivalentUnnoticedWrongFields": []},
+            "speechAnalyzer": {
+                "equivalentExactCase": True,
+                "equivalentMatches": {"patientName": True, "patientWeightKG": True},
+                "equivalentUnnoticedWrongFields": [],
+            },
             "sfSpeechRecognizerASRStatus": "failed",
             "sfSpeechRecognizerParseStatus": "skipped",
         },
         {
             "locale": "ru",
             "scenario": "complete",
+            "expectedFieldIds": ["patientName", "patientWeightKG"],
             "goldTextStatus": "failed",
             "speechAnalyzerASRStatus": "failed",
             "speechAnalyzerParseStatus": "skipped",
@@ -72,9 +81,12 @@ def test_pack_scenario_metrics_count_failed_stages_as_non_exact() -> None:
     metrics = score_scenarios(scored, ("complete",))["ru/complete"]
     assert metrics["cases"] == 2
     assert metrics["goldTextExactCases"] == 1
+    assert metrics["goldTextCorrectFields"] == 2
+    assert metrics["expectedPresentFields"] == 4
     assert metrics["speechAnalyzer"]["asrCompleted"] == 1
     assert metrics["speechAnalyzer"]["asrAttempted"] == 2
     assert metrics["speechAnalyzer"]["exactCases"] == 1
+    assert metrics["speechAnalyzer"]["correctFields"] == 2
     assert metrics["speechAnalyzer"]["meanWER"] == 0.1
     assert metrics["sfSpeechRecognizer"]["exactCases"] == 0
     assert metrics["sfSpeechRecognizer"]["parseAttempted"] == 0

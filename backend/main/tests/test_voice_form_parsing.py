@@ -35,47 +35,68 @@ def test_voice_parsing_config_loads_for_both_environments() -> None:
 def test_validator_returns_sparse_supported_fields_and_rejects_bad_quotes() -> None:
     transcript = "Пациент Иванов Иван. Вес семьдесят два килограмма."
     generated = USVoiceFormGeneration.model_validate(
-        {
-            "proposals": [
-                {"fieldId": "patientName", "value": "Иванов Иван", "sourceQuote": "Пациент Иванов Иван"},
-                {"fieldId": "patientWeightKG", "value": "72", "sourceQuote": "Вес семьдесят два килограмма"},
-                {"fieldId": "patientHeightCM", "value": "180", "sourceQuote": "рост сто восемьдесят"},
-            ],
-            "unmappedFindings": ["Вес семьдесят два килограмма", "несуществующая фраза"],
-        }
+        [
+            {"field_id": "patient_name", "value": "Иванов Иван", "evidence": "Пациент Иванов Иван", "accuracy": "full"},
+            {
+                "field_id": "patient_weight_kg",
+                "value": 72,
+                "evidence": "Вес семьдесят два килограмма",
+                "accuracy": "full",
+            },
+            {"field_id": "patient_height_cm", "value": 180, "evidence": "рост сто восемьдесят", "accuracy": "full"},
+        ]
     )
 
     response = validate_voice_form_generation(generated, transcript)
 
-    assert [item.fieldId.value for item in response.proposals] == ["patientName", "patientWeightKG"]
-    assert [item.value for item in response.proposals] == ["Иванов Иван", "72"]
-    assert [item.value for item in response.rejectedFieldIds] == ["patientHeightCM"]
-    assert response.unmappedFindings == ["Вес семьдесят два килограмма"]
+    assert [item.field_id.value for item in response.proposals] == ["patient_name", "patient_weight_kg"]
+    assert [item.value for item in response.proposals] == ["Иванов Иван", 72]
+    assert [item.value for item in response.rejectedFieldIds] == ["patient_height_cm"]
+    assert response.unmappedFindings == []
 
 
 def test_validator_rejects_duplicate_field_without_choosing_one() -> None:
     generated = USVoiceFormGeneration.model_validate(
-        {
-            "proposals": [
-                {"fieldId": "patientGender", "value": "male", "sourceQuote": "male"},
-                {"fieldId": "patientGender", "value": "female", "sourceQuote": "female"},
-            ],
-            "unmappedFindings": [],
-        }
+        [
+            {"field_id": "patient_gender", "value": "male", "evidence": "male", "accuracy": "full"},
+            {"field_id": "patient_gender", "value": "female", "evidence": "female", "accuracy": "full"},
+        ]
     )
     response = validate_voice_form_generation(generated, "male or female")
     assert response.proposals == []
-    assert [item.value for item in response.rejectedFieldIds] == ["patientGender"]
+    assert [item.value for item in response.rejectedFieldIds] == ["patient_gender"]
+
+
+def test_empty_generation_leaves_form_unchanged() -> None:
+    response = validate_voice_form_generation(USVoiceFormGeneration.model_validate([]), "Никаких данных формы")
+    assert response.proposals == []
+    assert response.rejectedFieldIds == []
+
+
+def test_questionable_accuracy_survives_validation() -> None:
+    generated = USVoiceFormGeneration.model_validate(
+        [{"field_id": "patient_name", "value": "Иванов", "evidence": "пациент Иванов", "accuracy": "questionable"}]
+    )
+    response = validate_voice_form_generation(generated, "пациент Иванов")
+    assert response.proposals[0].accuracy.value == "questionable"
+
+
+def test_boolean_measurement_is_not_accepted_as_one() -> None:
+    with pytest.raises(ValueError):
+        USVoiceFormGeneration.model_validate(
+            [{"field_id": "patient_weight_kg", "value": True, "evidence": "вес", "accuracy": "full"}]
+        )
 
 
 def test_generation_schema_caps_repeated_items() -> None:
-    properties = USVoiceFormGeneration.model_json_schema()["properties"]
-    assert properties["proposals"]["maxItems"] == 8
-    assert properties["unmappedFindings"]["maxItems"] == 8
+    schema = USVoiceFormGeneration.model_json_schema()
+    assert schema["type"] == "array"
+    assert schema["maxItems"] == 8
+    assert set(schema["$defs"]["USVoiceFieldProposal"]["required"]) == {"field_id", "value", "evidence", "accuracy"}
 
 
 class FakeModelService:
-    def __init__(self, response: dict[str, Any]) -> None:
+    def __init__(self, response: Any) -> None:
         self.response = response
         self.request: InferenceRequest | None = None
 
@@ -88,12 +109,7 @@ class FakeModelService:
 def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(language: str, expected_fragment: str) -> None:
     load_configs()
     service = FakeModelService(
-        {
-            "proposals": [
-                {"fieldId": "patientWeightKG", "value": "72", "sourceQuote": "вес 72 килограмма"},
-            ],
-            "unmappedFindings": [],
-        }
+        [{"field_id": "patient_weight_kg", "value": 72, "evidence": "вес 72 килограмма", "accuracy": "full"}]
     )
     request = Request(
         {
@@ -116,7 +132,7 @@ def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(language: st
 
     response = asyncio.run(handler(body=body, request=request))
 
-    assert response.proposals[0].value == "72"
+    assert response.proposals[0].value == 72
     assert service.request is not None
     assert service.request.model_id == "google/medgemma-4b-it"
     assert service.request.max_tokens == 2048
@@ -124,7 +140,7 @@ def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(language: st
     assert service.request.app_check_token == "token"
     assert service.request.request_id == "b" * 32
     assert json.loads(service.request.prompt)["transcript"] == body.transcript
-    assert json.loads(service.request.structured_output)["properties"]["proposals"]
+    assert json.loads(service.request.structured_output)["type"] == "array"
     assert expected_fragment in service.request.system_prompt
 
 

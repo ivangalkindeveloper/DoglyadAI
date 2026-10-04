@@ -6,12 +6,13 @@ import json
 import os
 import time
 from pathlib import Path
+from statistics import median
 from typing import Any
 
 import httpx
 
 from evaluation.voice.generate import file_sha256
-from evaluation.voice.score_candidate import FIELDS, score_fields
+from evaluation.voice.score_candidate import FIELDS, WIRE_FIELD_IDS, score_fields
 
 NUMERIC_FIELDS = {"patientHeightCM", "patientWeightKG"}
 
@@ -74,17 +75,20 @@ def load_cases(
 
 def score_response(expected: dict[str, Any], response: dict[str, Any], locale: str) -> dict[str, Any]:
     actual: dict[str, Any] = {}
+    accuracies: dict[str, str] = {}
     for proposal in response["proposals"]:
-        field_id = proposal["fieldId"]
+        field_id = WIRE_FIELD_IDS[proposal["field_id"]]
         if field_id not in FIELDS or field_id in actual:
             raise ValueError(f"Unknown or duplicate response field: {field_id}")
         value: Any = proposal["value"]
         if field_id in NUMERIC_FIELDS:
             value = float(value)
         actual[field_id] = value
+        accuracies[field_id] = proposal["accuracy"]
     parsed = {
         "fields": actual,
         "warnings": {},
+        "accuracies": accuracies,
         "rejectedFieldIds": response["rejectedFieldIds"],
     }
     return score_fields(expected, parsed, locale=locale, normalize_description=True)
@@ -101,15 +105,49 @@ def summarize(rows: list[dict[str, Any]]) -> dict[str, Any]:
             groups[f"{locale}/{scenario}"] = {
                 "cases": len(subset),
                 "parsed": len(scored),
-                "exactForms": sum(row["score"]["equivalentExactCase"] for row in scored),
+                "exactForms": sum(row["score"]["exactCase"] for row in scored),
                 "correctPresentFields": sum(
+                    sum(row["score"]["matches"][field] for field in row["expectedFieldIds"]) for row in scored
+                ),
+                "equivalentExactForms": sum(row["score"]["equivalentExactCase"] for row in scored),
+                "equivalentCorrectPresentFields": sum(
                     sum(row["score"]["equivalentMatches"][field] for field in row["expectedFieldIds"]) for row in scored
                 ),
                 "expectedPresentFields": sum(len(row["expectedFieldIds"]) for row in subset),
                 "falseFilledFields": sum(len(row["score"]["falseFilledFields"]) for row in scored),
-                "wrongProposedFields": sum(len(row["score"]["equivalentUnnoticedWrongFields"]) for row in scored),
+                "wrongProposedFields": sum(len(row["score"]["unnoticedWrongFields"]) for row in scored),
+                "wrongFullFields": sum(len(row["score"]["wrongFullFields"]) for row in scored),
+                "medianElapsedSeconds": median(row["elapsedSeconds"] for row in scored) if scored else None,
             }
     return groups
+
+
+def summary_markdown(report: dict[str, Any]) -> str:
+    lines = [
+        "# Server voice form parsing",
+        "",
+        f"Source: {report['source']}; cases completed: {len(report['results'])}.",
+        "",
+        "Strict values use the same comparison as the iOS candidate report. Equivalent values also accept spoken-number and unit normalization.",
+        "A failed parse remains in the case and expected-field denominators.",
+        "",
+        "| Locale / scenario | Cases | Parsed | Exact forms | Correct fields | Equivalent exact forms | Equivalent correct fields | False filled | Wrong full | Median seconds |",
+        "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
+    ]
+    for key, metrics in report.get("byLocaleScenario", {}).items():
+        cases = metrics["cases"]
+        expected_fields = metrics["expectedPresentFields"]
+        median_seconds = metrics["medianElapsedSeconds"]
+        median_display = f"{median_seconds:.2f}" if median_seconds is not None else "—"
+        lines.append(
+            f"| {key} | {cases} | {metrics['parsed']}/{cases} | {metrics['exactForms']}/{cases} | "
+            f"{metrics['correctPresentFields']}/{expected_fields} | "
+            f"{metrics['equivalentExactForms']}/{cases} | "
+            f"{metrics['equivalentCorrectPresentFields']}/{expected_fields} | "
+            f"{metrics['falseFilledFields']} | {metrics['wrongFullFields']} | "
+            f"{median_display} |"
+        )
+    return "\n".join(lines) + "\n"
 
 
 async def run(
@@ -132,7 +170,7 @@ async def run(
     asr_hash = file_sha256(asr_report_path) if asr_report_path else None
     manifest_hash = file_sha256(audio_manifest_path) if audio_manifest_path else None
     report: dict[str, Any] = {
-        "schemaVersion": 1,
+        "schemaVersion": 2,
         "corpusSha256": corpus_hash,
         "asrReportSha256": asr_hash,
         "audioManifestSha256": manifest_hash,
@@ -208,9 +246,11 @@ async def run(
             temporary = output_path.with_suffix(output_path.suffix + ".tmp")
             temporary.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             os.replace(temporary, output_path)
+            output_path.with_suffix(".md").write_text(summary_markdown(report), encoding="utf-8")
             print(f"{len(report['results'])}/{len(cases)} {case['id']}: {row['status']}", flush=True)
             # The protected endpoint is limited to 30 requests per minute.
             await asyncio.sleep(2.1)
+    output_path.with_suffix(".md").write_text(summary_markdown(report), encoding="utf-8")
     return report
 
 

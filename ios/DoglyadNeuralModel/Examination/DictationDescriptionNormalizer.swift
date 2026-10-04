@@ -5,11 +5,14 @@ import Foundation
 enum DictationDescriptionNormalizer {
     static func normalize(_ text: String, locale: Locale) -> String {
         let corrected = DictationNumericCorrection.apply(to: text)
-        let measurementPattern = #"(?:[:.,])\s*([\p{L}\p{N}-]+(?:\s+[\p{L}\p{N}-]+){0,3})\s+(millimeters?|millimetres?|mm|миллиметр(?:а|ов)?|мм|centimeters?\s+per\s+second|сантиметр(?:а|ов)?\s+в\s+секунду|millilit(?:er|re)s?|миллилитр(?:а|ов)?|ml|мл|cm/s|см/с)\b"#
-        guard let match = uniqueMatch(measurementPattern, in: corrected),
-              let measurement = number(match.value, locale: locale),
-              measurement.rounded() == measurement,
-              let unit = measurementUnit(in: match.quote, locale: locale)
+        let unitPattern = #"millimeters?|millimetres?|mm|миллиметр(?:а|ов)?|мм|centimeters?\s+per\s+second|cm\s+per\s+second|сантиметр(?:а|ов)?\s+в\s+секунду|см\s+в\s+секунду|millilit(?:er|re)s?|миллилитр(?:а|ов)?|ml|мл|cm/s|см/с"#
+        let labeledMeasurementPattern = #"(?:\s*(?<!\d)[:.,]\s*|\s+[–—-]\s+)([\p{L}\p{N}-]+(?:\s+[\p{L}\p{N}-]+){0,3})\s*("# + unitPattern + #")\b"#
+        let unpunctuatedMeasurementPattern = #"\s+(\d{1,3})\s*("# + unitPattern + #")\b"#
+        guard let match = uniqueMatch(labeledMeasurementPattern, in: corrected)
+            ?? uniqueMatch(unpunctuatedMeasurementPattern, in: corrected),
+            let measurement = number(match.value, locale: locale),
+            measurement.rounded() == measurement,
+            let unit = measurementUnit(in: match.quote, locale: locale)
         else { return corrected }
         return corrected.replacingOccurrences(
             of: match.quote,
@@ -24,10 +27,10 @@ enum DictationDescriptionNormalizer {
 
     private static func measurementUnit(in text: String, locale: Locale) -> String? {
         let russian = locale.language.languageCode?.identifier == "ru"
-        if text.range(of: #"(?i)(?:millimeters?|millimetres?|мм|миллиметр(?:а|ов)?)\b"#, options: .regularExpression) != nil {
+        if text.range(of: #"(?i)(?:millimeters?|millimetres?|mm|мм|миллиметр(?:а|ов)?)\b"#, options: .regularExpression) != nil {
             return russian ? "мм" : "mm"
         }
-        if text.range(of: #"(?i)(?:centimeters?\s+per\s+second|сантиметр(?:а|ов)?\s+в\s+секунду|cm/s|см/с)\b"#, options: .regularExpression) != nil {
+        if text.range(of: #"(?i)(?:centimeters?\s+per\s+second|cm\s+per\s+second|сантиметр(?:а|ов)?\s+в\s+секунду|см\s+в\s+секунду|cm/s|см/с)\b"#, options: .regularExpression) != nil {
             return russian ? "см/с" : "cm/s"
         }
         if text.range(of: #"(?i)(?:millilit(?:er|re)s?|миллилитр(?:а|ов)?|ml|мл)\b"#, options: .regularExpression) != nil {

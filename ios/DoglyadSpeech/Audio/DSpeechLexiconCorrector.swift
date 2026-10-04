@@ -9,10 +9,9 @@ import Foundation
 /// Comparison uses a phonetic skeleton rather than raw spelling because recognition
 /// errors usually follow sound instead of orthography.
 ///
-/// Two substitutions are forbidden outright because they invert the meaning of a
-/// report: the algorithm never adds or removes a negation and never touches phrases
-/// with numbers. Small edit distances can otherwise connect statements with opposite
-/// meanings or different measurement values.
+/// Clinical facts are immutable: the algorithm never adds or removes a negation or
+/// a side, and never touches phrases with numbers. Small edit distances can otherwise
+/// connect statements with opposite meanings or different measurement values.
 public struct DSpeechLexiconCorrector: Sendable {
     /// The allowed share of edits relative to the term length. Chosen conservatively:
     /// missing a fix is cheaper than replacing what the physician actually said.
@@ -32,6 +31,12 @@ public struct DSpeechLexiconCorrector: Sendable {
         let text: String
         let normalized: [Character]
         let hasNegation: Bool
+        let sides: Set<Side>
+    }
+
+    private enum Side: Hashable, Sendable {
+        case left
+        case right
     }
 
     /// Terms are bucketed by word count: a window of text is compared only with
@@ -55,7 +60,8 @@ public struct DSpeechLexiconCorrector: Sendable {
                 Term(
                     text: text,
                     normalized: normalized,
-                    hasNegation: Self.hasNegation(text)
+                    hasNegation: Self.hasNegation(text),
+                    sides: Self.sides(in: text)
                 )
             )
         }
@@ -88,7 +94,7 @@ public struct DSpeechLexiconCorrector: Sendable {
                 let window = words[range].joined(separator: " ")
                 guard let match = bestMatch(for: window, among: candidates) else { continue }
 
-                replacements[start] = (Self.matchingCase(of: window, for: match), wordCount)
+                replacements[start] = (Self.render(match, preservingPunctuationOf: window), wordCount)
                 for index in range {
                     isConsumed[index] = true
                 }
@@ -125,13 +131,14 @@ public struct DSpeechLexiconCorrector: Sendable {
         guard limit > 0 else { return nil }
 
         let hasNegation = Self.hasNegation(window)
+        let sides = Self.sides(in: window)
         var best: Term?
         var bestDistance = Int.max
         var runnerUpDistance = Int.max
 
         for term in candidates {
-            // Negation is immutable: the algorithm must neither add nor remove it.
-            guard term.hasNegation == hasNegation else { continue }
+            // Negation and side are immutable clinical facts.
+            guard term.hasNegation == hasNegation, term.sides == sides else { continue }
             guard abs(term.normalized.count - normalized.count) <= limit else { continue }
 
             let distance = Self.distance(normalized, term.normalized, limit: limit)
@@ -198,6 +205,20 @@ public struct DSpeechLexiconCorrector: Sendable {
             .contains { negations.contains(String($0)) }
     }
 
+    private static func sides(in text: String) -> Set<Side> {
+        var found: Set<Side> = []
+        for token in text.lowercased().split(whereSeparator: { !$0.isLetter }) {
+            let word = String(token)
+            if word == "left" || word == "слева" || word.hasPrefix("лев") {
+                found.insert(.left)
+            }
+            if word == "right" || word == "справа" || (word.hasPrefix("прав") && !word.hasPrefix("правил")) {
+                found.insert(.right)
+            }
+        }
+        return found
+    }
+
     /// Levenshtein distance with an early exit: once the entire row has gone past the
     /// threshold, computing the rest is pointless.
     private static func distance(
@@ -242,5 +263,16 @@ public struct DSpeechLexiconCorrector: Sendable {
         guard let first = window.first, first.isUppercase else { return replacement }
 
         return replacement.prefix(1).uppercased() + replacement.dropFirst()
+    }
+
+    private static func render(_ replacement: String, preservingPunctuationOf window: String) -> String {
+        let canonical = matchingCase(of: window, for: replacement).split(separator: " ")
+        let original = window.split(separator: " ")
+        guard canonical.count == original.count else { return replacement }
+        return zip(original, canonical).map { source, term in
+            let leading = source.prefix { !$0.isLetter && !$0.isNumber }
+            let trailing = source.reversed().prefix { !$0.isLetter && !$0.isNumber }.reversed()
+            return String(leading) + term + String(trailing)
+        }.joined(separator: " ")
     }
 }

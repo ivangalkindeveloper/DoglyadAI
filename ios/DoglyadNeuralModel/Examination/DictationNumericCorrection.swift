@@ -10,7 +10,7 @@ enum DictationNumericCorrection {
         let spokenNumber = "\(word)(?:\\s+\(word)){0,3}"
         let pattern = #"(?<![\p{L}\d])(?:\d+(?:[.,]\d+)?|"# + spokenNumber
             + #")\s*[,.;–—]?\s*(?:no|нет)\s*[,.;–—]?\s*(\d+(?:[.,]\d+)?|"# + spokenNumber
-            + #")(?![\p{L}\d])"#
+            + #")(?=(?:mm|мм|cm|см|kg|кг|ml|мл)\b|[^\p{L}\d]|$)"#
         guard let expression = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) else {
             return text
         }

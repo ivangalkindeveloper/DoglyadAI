@@ -1,0 +1,877 @@
+{
+  "schemaVersion": 1,
+  "summaries": [
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.1932368272550659,
+      "medianSeconds": 1.235552966594696,
+      "meanSeconds": 1.248831558612085
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.06596195013459391,
+      "medianSeconds": 0.8523120284080505,
+      "meanSeconds": 0.8368027575554386
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.29337290900918456,
+      "medianSeconds": 0.8063395023345947,
+      "meanSeconds": 0.8892490767663525
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.08032500643313407,
+      "medianSeconds": 0.3847849369049072,
+      "meanSeconds": 0.3899162680872025
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.008528555715352415,
+      "medianSeconds": 1.6359860301017761,
+      "meanSeconds": 1.7885134393169033
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.020093616137520406,
+      "medianSeconds": 1.9172990322113037,
+      "meanSeconds": 1.9516383217227073
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.021165274714338565,
+      "medianSeconds": 0.18759357929229736,
+      "meanSeconds": 0.18506304487105338
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.03345882423128869,
+      "medianSeconds": 0.27022451162338257,
+      "meanSeconds": 0.2641133454538161
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.3020254482098144,
+      "medianSeconds": 1.7053070068359375,
+      "meanSeconds": 1.7852400310577885
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.05079969280836571,
+      "medianSeconds": 0.9181485176086426,
+      "meanSeconds": 0.9061064797063028
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.5498399620258941,
+      "medianSeconds": 1.2016195058822632,
+      "meanSeconds": 1.3334933327090355
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.06505707536323423,
+      "medianSeconds": 0.4200810194015503,
+      "meanSeconds": 0.4253437711346534
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.022905218479111953,
+      "medianSeconds": 1.5002129673957825,
+      "meanSeconds": 1.8406547211831616
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.023170237565604702,
+      "medianSeconds": 1.8766995072364807,
+      "meanSeconds": 1.997374257733745
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.034755014973246116,
+      "medianSeconds": 0.18977051973342896,
+      "meanSeconds": 0.1903204244952048
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.05425962250656229,
+      "medianSeconds": 0.2482450008392334,
+      "meanSeconds": 0.26176896787458853
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.13596205757255309,
+      "medianSeconds": 1.6802690029144287,
+      "meanSeconds": 1.7589992092501732
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.03992703418517587,
+      "medianSeconds": 0.964697003364563,
+      "meanSeconds": 0.9676878202346063
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.36766046053165974,
+      "medianSeconds": 1.1372610330581665,
+      "meanSeconds": 1.246926030805034
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.04701750462405234,
+      "medianSeconds": 0.4564945101737976,
+      "meanSeconds": 0.4623695804226783
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.005770614378608769,
+      "medianSeconds": 1.9600204825401306,
+      "meanSeconds": 2.0016144514083862
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.01424537560069322,
+      "medianSeconds": 2.0564849376678467,
+      "meanSeconds": 2.1029996429720232
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.01740861473030652,
+      "medianSeconds": 0.24314355850219727,
+      "meanSeconds": 0.24372808971712667
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.04090953236959582,
+      "medianSeconds": 0.2863575220108032,
+      "meanSeconds": 0.2914924083217498
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.15631534188150376,
+      "medianSeconds": 1.756587028503418,
+      "meanSeconds": 1.8225693741152365
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.02807905085993166,
+      "medianSeconds": 0.9555010199546814,
+      "meanSeconds": 0.9902321907781786
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.419760418629577,
+      "medianSeconds": 1.1766050457954407,
+      "meanSeconds": 1.297809322034159
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.06766697402649405,
+      "medianSeconds": 0.459789514541626,
+      "meanSeconds": 0.4768978030450882
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.03994511482769417,
+      "medianSeconds": 1.8605735301971436,
+      "meanSeconds": 2.323034772949834
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.019492105375781357,
+      "medianSeconds": 2.131845533847809,
+      "meanSeconds": 2.2767765695048916
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.02222496650305871,
+      "medianSeconds": 0.24628901481628418,
+      "meanSeconds": 0.2428230720181619
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.05755911987423802,
+      "medianSeconds": 0.3260674476623535,
+      "meanSeconds": 0.3033908932439743
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.23609326846750223,
+      "medianSeconds": 1.8567759990692139,
+      "meanSeconds": 1.891618017227419
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.07370243612256859,
+      "medianSeconds": 1.0028810501098633,
+      "meanSeconds": 1.008280909830524
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.247712229776563,
+      "medianSeconds": 1.2762635350227356,
+      "meanSeconds": 1.3066550666286099
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.08554172544872964,
+      "medianSeconds": 0.4714420437812805,
+      "meanSeconds": 0.47587740613568213
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.0076329340551899855,
+      "medianSeconds": 1.6454880237579346,
+      "meanSeconds": 1.6458653519230504
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.06561368239839686,
+      "medianSeconds": 1.8501514792442322,
+      "meanSeconds": 1.944359314057135
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.031353471171777274,
+      "medianSeconds": 0.22147303819656372,
+      "meanSeconds": 0.1898252348746023
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.09544740505771922,
+      "medianSeconds": 0.30189698934555054,
+      "meanSeconds": 0.2631527954532254
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.3428481617638353,
+      "medianSeconds": 2.740347445011139,
+      "meanSeconds": 2.9498441430830185
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.07569656768909326,
+      "medianSeconds": 1.0579710006713867,
+      "meanSeconds": 1.0507141774700535
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.40293163595130044,
+      "medianSeconds": 2.012750506401062,
+      "meanSeconds": 2.2560048084105215
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.08920374713963355,
+      "medianSeconds": 0.5296455025672913,
+      "meanSeconds": 0.512237056609123
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.04291372822179744,
+      "medianSeconds": 1.9032689929008484,
+      "meanSeconds": 2.034853558386526
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.06900028371072961,
+      "medianSeconds": 2.009269952774048,
+      "meanSeconds": 2.036003147402117
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "en",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.045438392171069944,
+      "medianSeconds": 0.2208395004272461,
+      "meanSeconds": 0.20305070761711366
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "ru",
+      "completed": 62,
+      "total": 62,
+      "meanRawWER": 0.08506170305723852,
+      "medianSeconds": 0.3088740110397339,
+      "meanSeconds": 0.2866236182951158
+    }
+  ],
+  "qwenScreening": [
+    {
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "en",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.012984496124031008,
+      "ParakeetMeanWER": 0.022190524339159322,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.03831246273106738
+    },
+    {
+      "mode": "guided-format",
+      "variant": "clean",
+      "locale": "ru",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.020238095238095236,
+      "ParakeetMeanWER": 0.02261904761904762,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.20232515546469035
+    },
+    {
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "en",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.026726568005637774,
+      "ParakeetMeanWER": 0.06110451732291975,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.11764301589882986
+    },
+    {
+      "mode": "guided-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.029944629014396457,
+      "ParakeetMeanWER": 0.04900055370985603,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.22628950506857484
+    },
+    {
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "en",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.006926406926406926,
+      "ParakeetMeanWER": 0.01629148629148629,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.020836940836940838
+    },
+    {
+      "mode": "reordered-format",
+      "variant": "clean",
+      "locale": "ru",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.004878048780487805,
+      "ParakeetMeanWER": 0.02559751047821037,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.11361337237326781
+    },
+    {
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "en",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.024862914862914864,
+      "ParakeetMeanWER": 0.025339105339105338,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.03469680190610423
+    },
+    {
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "locale": "ru",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.013987779629349089,
+      "ParakeetMeanWER": 0.05873100489077455,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.13496348520239368
+    },
+    {
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "en",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.013311333043855839,
+      "ParakeetMeanWER": 0.045375472411186696,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.09557995331247611
+    },
+    {
+      "mode": "freeform-development",
+      "variant": "clean",
+      "locale": "ru",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.06333410904341137,
+      "ParakeetMeanWER": 0.10363427012264222,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.17417674487441928
+    },
+    {
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "en",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.04865384337040872,
+      "ParakeetMeanWER": 0.07454394831218539,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.1614056176571374
+    },
+    {
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "locale": "ru",
+      "sampleSize": 10,
+      "WhisperKitMeanWER": 0.07761982332912565,
+      "ParakeetMeanWER": 0.09363588091495068,
+      "qwenCompleted": 10,
+      "qwenMeanWER": 0.2335833159088973
+    }
+  ],
+  "modelLoadMedianSeconds": {
+    "WhisperKit": 61.068920493125916,
+    "Parakeet": 14.390757024288177
+  },
+  "sources": [
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "guided-format",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-candidate-device-asr-only-guided-format-clean/asr-replay-speechAnalyzer-hints-true-report.json"
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "guided-format",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-candidate-device-asr-only-sfSpeechRecognizer-only-guided-format-clean/asr-replay-sfSpeechRecognizer-hints-true-raw-report.json"
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "guided-format",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-whisperkit-device-guided-format-clean/asr-report.json"
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "guided-format",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-parakeet-device-guided-format-clean/asr-report.json"
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-candidate-device-asr-only-guided-format-noisy/asr-replay-speechAnalyzer-hints-true-report.json"
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-candidate-device-asr-only-sfSpeechRecognizer-only-guided-format-noisy/asr-replay-sfSpeechRecognizer-hints-true-raw-report.json"
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-whisperkit-device-guided-format-noisy/asr-report.json"
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-parakeet-device-guided-format-noisy/asr-report.json"
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-candidate-device-confidence-only-asr-only-reordered-format-clean/asr-replay-speechAnalyzer-hints-true-report.json"
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-candidate-device-asr-only-sfSpeechRecognizer-only-reordered-format-clean/asr-replay-sfSpeechRecognizer-hints-true-raw-report.json"
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-whisperkit-device-reordered-format-clean/asr-report.json"
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-parakeet-device-reordered-format-clean/asr-report.json"
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-candidate-device-confidence-only-asr-only-reordered-format-noisy/asr-replay-speechAnalyzer-hints-true-report.json"
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-candidate-device-asr-only-sfSpeechRecognizer-only-reordered-format-noisy/asr-replay-sfSpeechRecognizer-hints-true-raw-report.json"
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-whisperkit-device-reordered-format-noisy/asr-report.json"
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-parakeet-device-reordered-format-noisy/asr-report.json"
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-candidate-device-confidence-only-asr-only-freeform-development-clean/asr-replay-speechAnalyzer-hints-true-report.json"
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-candidate-device-asr-only-sfSpeechRecognizer-only-freeform-development-clean/asr-replay-sfSpeechRecognizer-hints-true-raw-report.json"
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-whisperkit-device-freeform-development-clean/asr-report.json"
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "path": "build/voice-eval/ios-parakeet-device-freeform-development-clean/asr-report.json"
+    },
+    {
+      "engine": "SpeechAnalyzer",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-candidate-device-confidence-only-asr-only-freeform-development-noisy/asr-replay-speechAnalyzer-hints-true-report.json"
+    },
+    {
+      "engine": "SFSpeechRecognizer",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-candidate-device-asr-only-sfSpeechRecognizer-only-freeform-development-noisy/asr-replay-sfSpeechRecognizer-hints-true-raw-report.json"
+    },
+    {
+      "engine": "WhisperKit",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-whisperkit-device-freeform-development-noisy/asr-report.json"
+    },
+    {
+      "engine": "Parakeet",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "path": "build/voice-eval/ios-parakeet-device-freeform-development-noisy/asr-report.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "guided-format",
+      "variant": "clean",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-guided-format-clean-en.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "guided-format",
+      "variant": "clean",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-guided-format-clean-ru.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-guided-format-noisy-en.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "guided-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-guided-format-noisy-ru.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-reordered-format-clean-en.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "reordered-format",
+      "variant": "clean",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-reordered-format-clean-ru.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-reordered-format-noisy-en.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "reordered-format",
+      "variant": "noisy",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-reordered-format-noisy-ru.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-freeform-development-clean-en.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "freeform-development",
+      "variant": "clean",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-freeform-development-clean-ru.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-freeform-development-noisy-en.json"
+    },
+    {
+      "engine": "Qwen3-ASR Mac screening",
+      "mode": "freeform-development",
+      "variant": "noisy",
+      "path": "build/voice-eval/qwen3-asr-mac-sample-freeform-development-noisy-ru.json"
+    }
+  ]
+}

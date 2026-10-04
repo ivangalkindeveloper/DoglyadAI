@@ -3,17 +3,21 @@ struct DExaminationProposalGenerationResponse: Codable {
     let unmappedFindings: [String]
 
     @available(iOS 26.0, *)
-    static func fromFoundationModels(_ response: DExaminationProposalFoundationResponse) throws -> Self {
-        let proposals = try response.proposals.map { item in
-            guard let fieldId = VoiceFieldId(rawValue: item.fieldId) else {
-                throw DictationProposalError.unknownField
+    static func fromFoundationModels(_ response: [DExaminationProposalFoundationItem]) -> Self {
+        var proposals: [DExaminationProposalGenerationItem] = []
+        var unmappedFindings: [String] = []
+        for item in response {
+            guard let fieldId = VoiceFieldId(wireValue: item.field_id) else {
+                unmappedFindings.append(item.evidence)
+                continue
             }
-            return DExaminationProposalGenerationItem(
+            proposals.append(DExaminationProposalGenerationItem(
                 fieldId: fieldId,
                 value: item.value,
-                sourceQuote: item.sourceQuote
-            )
+                sourceQuote: item.evidence,
+                accuracy: VoiceFieldAccuracy(rawValue: item.accuracy) ?? .questionable
+            ))
         }
-        return Self(proposals: proposals, unmappedFindings: response.unmappedFindings)
+        return Self(proposals: proposals, unmappedFindings: unmappedFindings)
     }
 }

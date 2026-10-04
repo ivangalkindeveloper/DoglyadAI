@@ -582,7 +582,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
 
     private func startSpeechFlow() {
         handle {
-            await self.container.permissionManager.isGranted(.speech)
+            await self.container.permissionManager.isGranted(.microphone)
         } onMainSuccess: { isGranted in
             if !isGranted {
                 return self.coordinator.sheet(.permissionSpeech)

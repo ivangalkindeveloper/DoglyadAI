@@ -1,8 +1,45 @@
 @testable import DoglyadNeuralModel
 import Foundation
+import FoundationModels
 import Testing
 
 struct DictationProposalTests {
+    @Test("Model items decode the shared extraction contract with numeric measurements")
+    func decodesExtractionContract() throws {
+        let data = Data(#"[{"field_id":"patient_weight_kg","value":82,"evidence":"вес 82","accuracy":"full"},{"field_id":"patient_name","value":"Иванов Пётр","evidence":"Пациент Иванов Пётр","accuracy":"questionable"}]"#.utf8)
+        let items = try JSONDecoder().decode([DExaminationProposalGenerationItem].self, from: data)
+        #expect(items.map(\.fieldId) == [.patientWeightKG, .patientName])
+        #expect(items[0].value == "82.0")
+        #expect(items[0].accuracy == .full)
+        #expect(items[1].accuracy == .questionable)
+        #expect(try JSONSerialization.jsonObject(with: JSONEncoder().encode(items)) is [[String: Any]])
+    }
+
+    @Test("A numeric model value written as text remains available for typed validation")
+    func decodesNumericModelText() throws {
+        let data = Data(#"[{"field_id":"patient_weight_kg","value":"82","evidence":"вес 82","accuracy":"full"}]"#.utf8)
+        let items = try JSONDecoder().decode([DExaminationProposalGenerationItem].self, from: data)
+        #expect(items[0].value == "82")
+        let encoded = try JSONSerialization.jsonObject(with: JSONEncoder().encode(items)) as? [[String: Any]]
+        #expect(encoded?[0]["value"] as? Double == 82)
+    }
+
+    @Test("A model's questionable result remains questionable after validation")
+    func keepsQuestionableAccuracy() throws {
+        let text = "Пациент Иванов Пётр"
+        let request = DictationParseRequest(
+            text: text, examinationTypeId: "kidney", locale: Locale(identifier: "ru_RU"),
+            allowedFields: [.patientName]
+        )
+        let generated = DExaminationProposalGenerationResponse(
+            proposals: [DExaminationProposalGenerationItem(
+                fieldId: .patientName, value: "Иванов Пётр", sourceQuote: text, accuracy: .questionable
+            )], unmappedFindings: []
+        )
+        let proposal = try DictationProposal(generated: generated, request: request)
+        #expect(proposal.proposals.first?.accuracy == .questionable)
+    }
+
     @Test("All eight form fields use typed proposals with exact quotes")
     func coversAllFields() throws {
         let text = "Номер исследования 007. Пациент Иван. Пол мужчина. Дата рождения 1990-01-02. Рост 174 см. Вес 72 кг. Жалобы боль. Описание правая почка 12 мм."
@@ -117,6 +154,126 @@ struct DictationProposalTests {
         #expect(proposal.rejectedFieldIds == [.patientName, .patientGender, .patientDateOfBirth, .patientHeightCM])
     }
 
+    @Test("A name needs a nearby patient cue even when it appears in the quoted text")
+    func requiresPatientContextForName() throws {
+        let observation = "On ultrasound, no additional lavender Melanie."
+        let observationRequest = DictationParseRequest(
+            text: observation, examinationTypeId: "echocardiography", locale: Locale(identifier: "en_US"),
+            allowedFields: [.patientName]
+        )
+        let rejected = try DictationProposal(
+            generated: response(fieldId: .patientName, value: "Melanie", quote: observation),
+            request: observationRequest
+        )
+        #expect(rejected.proposals.isEmpty)
+        #expect(rejected.rejectedFieldIds == [.patientName])
+
+        let patientRequest = DictationParseRequest(
+            text: "For Emily Taylor, born October 23, 1974.", examinationTypeId: "echocardiography",
+            locale: Locale(identifier: "en_US"), allowedFields: [.patientName]
+        )
+        let supported = try DictationProposal(
+            generated: response(fieldId: .patientName, value: "Emily Taylor", quote: "Emily Taylor"),
+            request: patientRequest
+        )
+        #expect(supported.proposals.map(\.id) == [.patientName])
+
+        let falseCueRequest = DictationParseRequest(
+            text: "Forever Morgan born 19860519.", examinationTypeId: "echocardiography",
+            locale: Locale(identifier: "en_US"), allowedFields: [.patientName]
+        )
+        let falseCue = try DictationProposal(
+            generated: response(fieldId: .patientName, value: "Morgan", quote: "Forever Morgan born"),
+            request: falseCueRequest
+        )
+        #expect(falseCue.proposals.isEmpty)
+    }
+
+    @Test("A dropped patient name cannot turn a gender word into the name")
+    func rejectsGenderWordAsName() throws {
+        let request = DictationParseRequest(
+            text: "Patient Male Date of birth 1995-05-11.", examinationTypeId: "echocardiography",
+            locale: Locale(identifier: "en_US"), allowedFields: [.patientName]
+        )
+        let generated = try DictationProposal(
+            generated: response(fieldId: .patientName, value: "Male", quote: "Patient Male"),
+            request: request
+        )
+        #expect(generated.proposals.isEmpty)
+        #expect(generated.rejectedFieldIds == [.patientName])
+    }
+
+    @available(iOS 26.0, *)
+    @Test("An unknown model field leaves valid fields usable")
+    func keepsKnownFieldsWithUnknownModelField() throws {
+        let response = [
+            DExaminationProposalFoundationItem(
+                field_id: "patient_weight_kg", value: "72", evidence: "Weight 72 kg", accuracy: "full"
+            ),
+            DExaminationProposalFoundationItem(
+                field_id: "diagnosis", value: "cyst", evidence: "Right kidney 12 mm", accuracy: "questionable"
+            ),
+        ]
+        let generated = DExaminationProposalGenerationResponse.fromFoundationModels(response)
+        let request = DictationParseRequest(
+            text: "Weight 72 kg. Right kidney 12 mm.", examinationTypeId: "echocardiography",
+            locale: Locale(identifier: "en_US"), allowedFields: VoiceFieldId.allCases
+        )
+
+        let proposal = try DictationProposal(generated: generated, request: request)
+
+        #expect(proposal.proposals.map(\.id) == [.patientWeightKG])
+        #expect(proposal.unmappedFindings == ["Right kidney 12 mm"])
+    }
+
+    @available(iOS 26.0, *)
+    @Test("Foundation Models can generate the array contract on device")
+    func foundationModelsGeneratesArrayOnDevice() async throws {
+        guard ProcessInfo.processInfo.environment["VOICE_FOUNDATION_CONTRACT_RUN"] == "1" else { return }
+        let locale = Locale(identifier: "en_US")
+        #expect(DExaminationNeuralModelFoundationModels.isAvailable(
+            locale: locale,
+            parameters: DExaminationGenerationParameters(temperature: 0, maxTokens: 512, maxContextTokens: 4096)
+        ))
+        let model = DExaminationNeuralModelFoundationModels(
+            systemPrompt: "Extract only explicit form fields from the dictation.",
+            proposalPrompt: "Return a JSON array. Each item has field_id, value, evidence copied exactly from the dictation, and accuracy (full or questionable). Omit absent fields.",
+            parameters: DExaminationGenerationParameters(temperature: 0, maxTokens: 512, maxContextTokens: 4096)
+        )
+        let request = DictationParseRequest(
+            text: "Patient Jane Doe. Weight 70 kg.", examinationTypeId: "kidney", locale: locale,
+            allowedFields: [.patientName, .patientWeightKG]
+        )
+        let proposal = try await model.parseProposals(request: request)
+        #expect(proposal.proposals.contains { $0.id == .patientWeightKG && $0.value == .number(70) })
+        #expect(proposal.proposals.allSatisfy { request.text.contains($0.sourceQuote) })
+    }
+
+    @Test("An ultrasound measurement is not patient height or weight")
+    func rejectsUnrelatedMeasurements() throws {
+        let text = "Ultrasound middle cerebral artery 65 cm/s. Lesion mass 72 kg."
+        let request = DictationParseRequest(
+            text: text, examinationTypeId: "intracanialArteries", locale: Locale(identifier: "en_US"),
+            allowedFields: [.patientHeightCM, .patientWeightKG]
+        )
+        let generated = DExaminationProposalGenerationResponse(
+            proposals: [
+                DExaminationProposalGenerationItem(
+                    fieldId: .patientHeightCM, value: "65", sourceQuote: "middle cerebral artery 65 cm/s"
+                ),
+                DExaminationProposalGenerationItem(
+                    fieldId: .patientWeightKG, value: "72", sourceQuote: "Lesion mass 72 kg"
+                ),
+            ],
+            unmappedFindings: []
+        )
+
+        let proposal = try DictationProposal(generated: generated, request: request)
+
+        #expect(proposal.proposals.isEmpty)
+        #expect(proposal.rejectedFieldIds == [.patientHeightCM, .patientWeightKG])
+    }
+
     @Test("Grouped English birth digits verify a matching model date")
     func verifiesEnglishSpokenBirthDate() throws {
         let text = "Born one nine seven two, zero eight, zero two."
@@ -134,7 +291,7 @@ struct DictationProposalTests {
         #expect(proposal.proposals[0].warnings.isEmpty)
     }
 
-    @Test("Ungrouped Russian birth digits remain reviewable")
+    @Test("Ungrouped Russian birth digits resolve to the cited date")
     func retainsRussianSpokenBirthDate() throws {
         let text = "один девять девять семь ноль один два ноль года рождения"
         let request = DictationParseRequest(
@@ -146,7 +303,8 @@ struct DictationProposalTests {
             request: request
         )
         #expect(proposal.proposals.map(\.id) == [.patientDateOfBirth])
-        #expect(proposal.proposals[0].warnings.contains(.dateUnverified))
+        #expect(proposal.proposals[0].warnings.isEmpty)
+        #expect(proposal.proposals[0].accuracy == .full)
     }
 
     @Test("Grouped spoken birth digits correct a mismatched model date and require review")
@@ -238,6 +396,84 @@ struct DictationProposalTests {
             request: request
         )
         #expect(withoutPreposition.proposals[0].value == proposal.proposals[0].value)
+    }
+
+    @Test("Model framing is removed without dropping a clinical measurement")
+    func removesObservationFraming() throws {
+        let text = "Sonographic observations: right ventricle: 52 mm. No additional abnormality."
+        let request = DictationParseRequest(
+            text: text, examinationTypeId: "echocardiography", locale: Locale(identifier: "en_US"),
+            allowedFields: [.examinationDescription]
+        )
+        let proposal = try DictationProposal(
+            generated: response(fieldId: .examinationDescription, value: text, quote: text),
+            request: request
+        )
+        #expect(proposal.proposals[0].value == .text("right ventricle: 52 mm. No additional abnormality."))
+        #expect(proposal.proposals[0].warnings.isEmpty)
+    }
+
+    @Test("A quote that omits the measured observation must be reviewed")
+    func marksIncompleteObservationQuote() throws {
+        let text = "Sonographic observations: right ventricle: 52 mm. No additional abnormality."
+        let request = DictationParseRequest(
+            text: text, examinationTypeId: "echocardiography", locale: Locale(identifier: "en_US"),
+            allowedFields: [.examinationDescription]
+        )
+        let proposal = try DictationProposal(
+            generated: response(
+                fieldId: .examinationDescription,
+                value: "No additional abnormality.", quote: "No additional abnormality."
+            ),
+            request: request
+        )
+        #expect(proposal.proposals[0].warnings.contains(.ambiguousDictation))
+    }
+
+    @Test("An identifier that disagrees with its cited record is rejected")
+    func rejectsWrongRecordNumber() throws {
+        let request = DictationParseRequest(
+            text: "File reference 097 is for Olivia Carter.",
+            examinationTypeId: "echocardiography", locale: Locale(identifier: "en_US"),
+            allowedFields: [.examinationNumber]
+        )
+        let proposal = try DictationProposal(
+            generated: response(
+                fieldId: .examinationNumber, value: "098", quote: "File reference 097"
+            ), request: request
+        )
+        #expect(proposal.proposals.isEmpty)
+        #expect(proposal.rejectedFieldIds == [.examinationNumber])
+    }
+
+    @Test("A description that includes the next record number requires review")
+    func flagsNextFieldInsideDescription() throws {
+        let text = "Ultrasound demonstrates left kidney: 35 mm. No additional abnormality. Reference number 075."
+        let request = DictationParseRequest(
+            text: text, examinationTypeId: "kidneysAdrenalGlandsAndRetroperitonealSpace",
+            locale: Locale(identifier: "en_US"), allowedFields: [.examinationDescription]
+        )
+        let proposal = try DictationProposal(
+            generated: response(fieldId: .examinationDescription, value: text, quote: text),
+            request: request
+        )
+        #expect(proposal.proposals[0].warnings.contains(.ambiguousDictation))
+    }
+
+    @Test("A quote missing the Russian negative sentence requires review")
+    func flagsMissingRussianNegation() throws {
+        let text = "Ультразвук выявил левый желудочек: 40 мм. Дополнительных изменений не выявлено."
+        let request = DictationParseRequest(
+            text: text, examinationTypeId: "echocardiography", locale: Locale(identifier: "ru_RU"),
+            allowedFields: [.examinationDescription]
+        )
+        let proposal = try DictationProposal(
+            generated: response(
+                fieldId: .examinationDescription,
+                value: "левый желудочек: 40 мм", quote: "левый желудочек: 40 мм"
+            ), request: request
+        )
+        #expect(proposal.proposals[0].warnings.contains(.ambiguousDictation))
     }
 
     @Test("Model proposals normalize spoken digits and explicit measurement correction")

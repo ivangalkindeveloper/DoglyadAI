@@ -25,6 +25,14 @@ def test_wrong_critical_value_without_warning_blocks_safety_gate() -> None:
     assert score["unnoticedWrongFields"] == ["examinationDescription"]
 
 
+def test_wrong_full_accuracy_is_counted_separately() -> None:
+    score = score_fields(
+        {"patientWeightKG": 82},
+        {"fields": {"patientWeightKG": 72}, "warnings": {}, "accuracies": {"patientWeightKG": "full"}},
+    )
+    assert score["wrongFullFields"] == ["patientWeightKG"]
+
+
 def test_warning_does_not_turn_wrong_value_into_correct_value() -> None:
     expected = {"examinationDescription": "No lesion on the right."}
     actual = {
@@ -37,6 +45,22 @@ def test_warning_does_not_turn_wrong_value_into_correct_value() -> None:
     assert score["exactCase"] is False
     assert score["unnoticedWrongFields"] == []
     assert score["warnedFields"] == ["examinationDescription"]
+
+
+def test_automatic_fields_are_scored_against_missing_and_wrong_expected_values() -> None:
+    expected = {"patientWeightKG": 72}
+    parse = {
+        "fields": {"patientName": "Melanie", "patientWeightKG": 72},
+        "warnings": {},
+        "automaticFieldIds": ["patientName", "patientWeightKG"],
+    }
+
+    score = score_fields(expected, parse)
+
+    assert score["automaticFields"] == ["patientName", "patientWeightKG"]
+    assert score["wrongAutomaticFields"] == ["patientName"]
+    assert score["falseAutomaticFields"] == ["patientName"]
+    assert score["falseFilledFields"] == ["patientName"]
 
 
 def test_v2_reports_spelling_equivalence_separately_from_strict_exactness() -> None:

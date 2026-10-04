@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import time
@@ -13,6 +14,8 @@ from typing import Any
 from evaluation.voice.common import ROOT
 from evaluation.voice.prepare_ios import prepare_fixtures
 from evaluation.voice.prepare_control_ios import prepare_adversarial_fixtures, prepare_control_fixtures
+from evaluation.voice.prepare_holdout_ios import HOLDOUTS
+from evaluation.voice.prepare_holdout_ios import prepare_holdout_fixtures
 from evaluation.voice.score_ios import score_ios_report
 from evaluation.voice.score_candidate import require_exact_gold_text, score_candidate_report
 
@@ -81,15 +84,26 @@ def run_ios(
     text_only: bool = False,
     replay_macos_asr: bool = False,
     replay_asr_report: Path | None = None,
+    apply_replay_lexicon: bool = False,
     all_regression_text: bool = False,
+    holdout_v4: bool = False,
+    holdout_v5: bool = False,
+    holdout_v6: bool = False,
+    holdout_v7: bool = False,
+    holdout_v8: bool = False,
     max_tokens: int | None = None,
     physical_device_id: str | None = None,
     diagnostic_only: bool = False,
     confidence_only: bool = False,
     asr_only: bool = False,
+    asr_engine_only: str | None = None,
+    no_far_field_hint: bool = False,
     force_mlx: bool = False,
     parse_strategy: str = "production",
+    output_tag: str | None = None,
 ) -> dict[str, Any]:
+    if output_tag is not None and re.fullmatch(r"[a-z0-9][a-z0-9-]*", output_tag) is None:
+        raise ValueError("Output tag must contain only lowercase letters, digits, and hyphens")
     if control and adversarial:
         raise ValueError("Choose one text-only corpus")
     if control and (not candidate or limit is not None or locale is not None):
@@ -102,6 +116,8 @@ def run_ios(
         raise ValueError("Regression text-only mode requires candidate gold-text parsing")
     if replay_macos_asr and replay_asr_report is not None:
         raise ValueError("Choose only one ASR replay source")
+    if apply_replay_lexicon and replay_asr_report is None:
+        raise ValueError("Lexicon replay requires an ASR report")
     if all_regression_text and (not candidate or not text_only or replay_macos_asr or replay_asr_report is not None):
         raise ValueError("Full regression corpus requires candidate original text-only input")
     if (replay_macos_asr or replay_asr_report is not None) and (
@@ -116,14 +132,54 @@ def run_ios(
         raise ValueError("Confidence-only mode requires candidate audio mode")
     if asr_only and (not candidate or text_only or control or adversarial):
         raise ValueError("ASR-only mode requires candidate audio mode")
+    if asr_engine_only not in (None, "speechAnalyzer", "sfSpeechRecognizer") or (
+        asr_engine_only is not None and (not asr_only or confidence_only)
+    ):
+        raise ValueError("An ASR engine filter requires ASR-only mode without confidence-only mode")
+    if no_far_field_hint and (not asr_only or not confidence_only):
+        raise ValueError("The far-field comparison requires confidence-only ASR mode")
     if force_mlx and (not candidate or not text_only or mode != "freeform-development"):
         raise ValueError("Forced MLX diagnosis requires candidate freeform text-only mode")
-    if parse_strategy not in {"production", "exactLabels", "naturalLanguage", "foundationModels", "mlx"}:
+    if parse_strategy not in {
+        "production",
+        "exactLabels",
+        "explicitRules",
+        "naturalLanguage",
+        "foundationModels",
+        "mlx",
+    }:
         raise ValueError(f"Unknown voice parse strategy: {parse_strategy}")
     if parse_strategy != "production" and (not candidate or not text_only or force_mlx):
         raise ValueError("Direct parse strategies require candidate text-only mode without --force-mlx")
+    if sum((holdout_v4, holdout_v5, holdout_v6, holdout_v7, holdout_v8)) > 1:
+        raise ValueError("Choose one holdout version")
+    holdout_version = (
+        8 if holdout_v8 else 7 if holdout_v7 else 6 if holdout_v6 else 5 if holdout_v5 else 4 if holdout_v4 else None
+    )
+    if holdout_version is not None and (
+        not candidate
+        or not text_only
+        or locale not in ("en", "ru")
+        or limit is not None
+        or control
+        or adversarial
+        or skip_gold
+        or replay_macos_asr
+        or replay_asr_report is not None
+        or apply_replay_lexicon
+        or all_regression_text
+        or max_tokens is not None
+        or confidence_only
+        or asr_only
+        or force_mlx
+        or mode != "quick"
+        or variant != "clean"
+    ):
+        raise ValueError("Holdout requires a complete locale-specific candidate text-only run")
     fixture = (
-        prepare_control_fixtures()
+        prepare_holdout_fixtures(locale=locale, version=holdout_version)
+        if holdout_version is not None
+        else prepare_control_fixtures()
         if control
         else prepare_adversarial_fixtures()
         if adversarial
@@ -136,6 +192,7 @@ def run_ios(
             text_only=text_only,
             replay_macos_asr=replay_macos_asr,
             replay_asr_report=replay_asr_report,
+            apply_replay_lexicon=apply_replay_lexicon,
             all_regression_text=all_regression_text,
             max_tokens=max_tokens,
         )
@@ -149,6 +206,8 @@ def run_ios(
         prefix += "-macos-asr-replay"
     if replay_asr_report is not None:
         prefix += f"-asr-replay-{replay_asr_report.parent.name}-{replay_asr_report.stem}"
+    if apply_replay_lexicon:
+        prefix += "-lexicon"
     if all_regression_text:
         prefix += "-all-regression"
     if max_tokens is not None:
@@ -159,11 +218,17 @@ def run_ios(
         prefix += "-confidence-only"
     if asr_only:
         prefix += "-asr-only"
+    if asr_engine_only is not None:
+        prefix += f"-{asr_engine_only}-only"
+    if no_far_field_hint:
+        prefix += "-no-far-field-hint"
     if force_mlx:
         prefix += "-forced-mlx"
     if parse_strategy != "production":
         prefix += f"-{parse_strategy}"
-    if control:
+    if holdout_version is not None:
+        suffix = f"{prefix}-holdout-v{holdout_version}-{locale}"
+    elif control:
         suffix = f"{prefix}-control"
     elif adversarial:
         suffix = f"{prefix}-adversarial"
@@ -171,6 +236,8 @@ def run_ios(
         suffix = prefix if mode == "quick" else f"{prefix}-{mode}-{variant}"
     else:
         suffix = f"{prefix}-{mode}-{variant}-smoke-{locale or 'both'}-{limit or 'all'}"
+    if output_tag is not None:
+        suffix += f"-{output_tag}"
     output = OUTPUT_ROOT / suffix
     output.mkdir(parents=True, exist_ok=True)
     device_id = physical_device_id or simulator_id(device)
@@ -204,11 +271,15 @@ def run_ios(
     environment = os.environ.copy()
     environment["TEST_RUNNER_VOICE_CANDIDATE_RUN" if candidate else "TEST_RUNNER_VOICE_BASELINE_RUN"] = "1"
     if candidate:
-        environment["TEST_RUNNER_VOICE_EXPECTED_AUDIO_MODE"] = mode
+        environment["TEST_RUNNER_VOICE_EXPECTED_AUDIO_MODE"] = HOLDOUTS[holdout_version][2] if holdout_version else mode
     if confidence_only:
         environment["TEST_RUNNER_VOICE_ASR_CONFIDENCE_ONLY"] = "1"
     if asr_only:
         environment["TEST_RUNNER_VOICE_ASR_ONLY"] = "1"
+    if asr_engine_only is not None:
+        environment["TEST_RUNNER_VOICE_ASR_ENGINE_ONLY"] = asr_engine_only
+    if no_far_field_hint:
+        environment["TEST_RUNNER_VOICE_ASR_NO_FAR_FIELD_HINT"] = "1"
     if force_mlx:
         environment["TEST_RUNNER_VOICE_FORCE_MLX"] = "1"
     if parse_strategy != "production":
@@ -232,9 +303,15 @@ def run_ios(
         raise ValueError("iOS runner returned a report from another run")
     if report.get("fixtureRegressionSha256") != fixture.get("regressionSha256"):
         raise ValueError("iOS runner used a different regression corpus")
+    if holdout_version is not None and report.get(f"fixtureHoldoutV{holdout_version}Sha256") != fixture.get(
+        f"holdoutV{holdout_version}Sha256"
+    ):
+        raise ValueError("iOS runner used a different holdout corpus")
     if candidate:
         if report.get("forcedMLXDiagnostic", False) != force_mlx:
             raise ValueError("iOS runner used a different model selection")
+        if report.get("asrNoFarFieldHint", False) != no_far_field_hint:
+            raise ValueError("iOS runner used another acoustic hint")
         expected_strategy = "mlx" if force_mlx else parse_strategy
         if any(row.get("parseStrategy") != expected_strategy for row in report["results"]):
             raise ValueError("iOS runner used a different parse strategy")
@@ -242,6 +319,7 @@ def run_ios(
             ("fixtureInputSource", "inputSource"),
             ("fixtureASRReportSha256", "asrReportSha256"),
             ("fixtureAudioManifestSha256", "audioManifestSha256"),
+            ("fixtureReplayLexiconApplied", "replayLexiconApplied"),
         ):
             if report.get(report_key) != fixture.get(fixture_key):
                 raise ValueError(f"iOS runner used stale fixture: {report_key}")
@@ -257,10 +335,12 @@ def run_ios(
                 "isPhysical": physical_device_id is not None,
                 "confidenceOnly": confidence_only,
                 "asrOnly": asr_only,
+                "noFarFieldHint": no_far_field_hint,
                 "textOnly": text_only,
                 "inputSource": fixture.get("inputSource", "originalText"),
                 "asrReportSha256": fixture.get("asrReportSha256"),
                 "asrRecognizer": fixture.get("asrRecognizer"),
+                "replayLexiconApplied": apply_replay_lexicon,
                 "generationMaxTokens": fixture["generation"]["maxTokens"],
                 "forcedMLXDiagnostic": force_mlx,
                 "parseStrategy": "mlx" if force_mlx else parse_strategy,
@@ -275,7 +355,13 @@ def run_ios(
         json.dumps({"status": "complete", "runId": run_id, "startedAtUnix": started}, indent=2) + "\n",
         encoding="utf-8",
     )
-    if candidate and fixture.get("measureGold", True) and not diagnostic_only and not asr_only:
+    if (
+        candidate
+        and fixture.get("measureGold", True)
+        and not diagnostic_only
+        and not asr_only
+        and holdout_version is None
+    ):
         require_exact_gold_text(summary)
     return summary
 
@@ -286,6 +372,7 @@ def main() -> None:
     parser.add_argument("--locale", choices=("en", "ru"))
     parser.add_argument("--device", default="iPhone 17")
     parser.add_argument("--physical-device-id")
+    parser.add_argument("--output-tag")
     parser.add_argument("--candidate", action="store_true")
     parser.add_argument(
         "--mode",
@@ -309,15 +396,23 @@ def main() -> None:
     parser.add_argument("--text-only", action="store_true")
     parser.add_argument("--replay-macos-asr", action="store_true")
     parser.add_argument("--replay-asr-report", type=Path)
+    parser.add_argument("--apply-replay-lexicon", action="store_true")
     parser.add_argument("--all-regression-text", action="store_true")
+    parser.add_argument("--holdout-v4", action="store_true")
+    parser.add_argument("--holdout-v5", action="store_true")
+    parser.add_argument("--holdout-v6", action="store_true")
+    parser.add_argument("--holdout-v7", action="store_true")
+    parser.add_argument("--holdout-v8", action="store_true")
     parser.add_argument("--max-tokens", type=int)
     parser.add_argument("--diagnostic-only", action="store_true")
     parser.add_argument("--confidence-only", action="store_true")
     parser.add_argument("--asr-only", action="store_true")
+    parser.add_argument("--asr-engine-only", choices=("speechAnalyzer", "sfSpeechRecognizer"))
+    parser.add_argument("--no-far-field-hint", action="store_true")
     parser.add_argument("--force-mlx", action="store_true")
     parser.add_argument(
         "--parse-strategy",
-        choices=("production", "exactLabels", "naturalLanguage", "foundationModels", "mlx"),
+        choices=("production", "exactLabels", "explicitRules", "naturalLanguage", "foundationModels", "mlx"),
         default="production",
     )
     args = parser.parse_args()
@@ -334,14 +429,23 @@ def main() -> None:
         text_only=args.text_only,
         replay_macos_asr=args.replay_macos_asr,
         replay_asr_report=args.replay_asr_report,
+        apply_replay_lexicon=args.apply_replay_lexicon,
         all_regression_text=args.all_regression_text,
+        holdout_v4=args.holdout_v4,
+        holdout_v5=args.holdout_v5,
+        holdout_v6=args.holdout_v6,
+        holdout_v7=args.holdout_v7,
+        holdout_v8=args.holdout_v8,
         max_tokens=args.max_tokens,
         physical_device_id=args.physical_device_id,
         diagnostic_only=args.diagnostic_only,
         confidence_only=args.confidence_only,
         asr_only=args.asr_only,
+        asr_engine_only=args.asr_engine_only,
+        no_far_field_hint=args.no_far_field_hint,
         force_mlx=args.force_mlx,
         parse_strategy=args.parse_strategy,
+        output_tag=args.output_tag,
     )
     print(f"iOS cases: {summary['requestedCases']}")
     for locale, metrics in summary["byLocale"].items():

@@ -28,6 +28,32 @@ enum DictationSpokenBirthDate {
                 return date
             }
         }
+        // Some recognizers place separators *inside* the three dictated groups:
+        // "1,977, 04, 1,7" and "1-9-8-9-0-4-0-7" still contain exactly one
+        // checkable year-first date. Never repair a missing or extra digit.
+        if digitsText.range(of: #"^[\d\s,.\-–—]+$"#, options: .regularExpression) != nil {
+            let digits = String(digitsText.filter(\.isNumber))
+            if digits.count == 8, digits.hasPrefix("19") || digits.hasPrefix("20") {
+                let iso = "\(digits.prefix(4))-\(digits.dropFirst(4).prefix(2))-\(digits.suffix(2))"
+                if let value = try? VoiceFieldValue.parse(fieldId: .patientDateOfBirth, text: iso, locale: locale),
+                   case let .date(date) = value
+                {
+                    return date
+                }
+            }
+        }
+        // The recognizer can replace a three-group date with eight spoken
+        // single digits. Accept only a valid year-first calendar date.
+        if let digits = SpokenDigitSequence.parse(digitsText, locale: locale),
+           digits.count == 8, digits.hasPrefix("19") || digits.hasPrefix("20")
+        {
+            let iso = "\(digits.prefix(4))-\(digits.dropFirst(4).prefix(2))-\(digits.suffix(2))"
+            if let value = try? VoiceFieldValue.parse(fieldId: .patientDateOfBirth, text: iso, locale: locale),
+               case let .date(date) = value
+            {
+                return date
+            }
+        }
         let groups = digitsText.split(separator: ",", omittingEmptySubsequences: false)
         guard groups.count == 3 else { return nil }
         let digits = groups.compactMap { group in

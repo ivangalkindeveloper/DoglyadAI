@@ -112,6 +112,45 @@ struct ScanSpeechConfidencePolicyTests {
         #expect(warnedPlan.automatic.isEmpty)
     }
 
+    @Test("A questionable field always requires review even with strong speech evidence")
+    func questionableAccuracyRequiresReview() {
+        let raw = "номер исследования: 123"
+        let proposal = DictationProposal(
+            source: .labeledDictation,
+            proposals: [VoiceFieldProposal(
+                id: .examinationNumber, value: .text("123"), sourceQuote: raw, accuracy: .questionable
+            )],
+            unmappedFindings: [], rejectedFieldIds: []
+        )
+        let plan = ScanSpeechConfidencePolicy.plan(
+            proposal: proposal, transcript: recording(raw, confidence: 1), parsedText: raw
+        )
+        #expect(plan.automatic.isEmpty)
+        #expect(plan.uncertain.map(\.id) == [.examinationNumber])
+    }
+
+    @Test("A mixed proposal retains automatic eligibility only for its labeled fields")
+    func mixedFieldSources() throws {
+        let labeled = try parsed(text)
+        let mixed = DictationProposal(
+            source: .localModel,
+            proposals: labeled.proposals,
+            unmappedFindings: [],
+            rejectedFieldIds: [],
+            fieldSources: [
+                .examinationNumber: .labeledDictation,
+                .patientGender: .localModel,
+                .patientWeightKG: .explicitFacts,
+            ]
+        )
+        let plan = ScanSpeechConfidencePolicy.plan(
+            proposal: mixed, transcript: recording(text, confidence: 1), parsedText: text
+        )
+        #expect(plan.automatic.map(\.id) == [.examinationNumber])
+        #expect(plan.uncertain.contains { $0.id == .patientGender })
+        #expect(plan.uncertain.contains { $0.id == .patientWeightKG })
+    }
+
     @Test("Editing, incomplete recording and lexicon changes disable automatic filling")
     func changedSource() throws {
         let proposal = try parsed(text)

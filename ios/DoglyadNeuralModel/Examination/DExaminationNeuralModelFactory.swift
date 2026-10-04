@@ -115,35 +115,34 @@ public final class DExaminationNeuralModelFactory {
     }
 
     public func parseProposals(request: DictationParseRequest) async throws -> DictationProposal {
-        if let labeled = DictationLabeledFormParser.parse(request: request) {
-            return labeled
-        }
+        let labeled = DictationLabeledFormParser.parse(request: request)
         let explicit = DictationExplicitFactsExtractor.extract(request: request)
-        if explicit.count == request.allowedFields.count {
-            return DictationProposal(
-                source: .explicitFacts, proposals: explicit, unmappedFindings: [], rejectedFieldIds: []
+        let deterministic = DictationProposalReconciler.reconcile(
+            request: request, labeled: labeled, explicit: explicit, generated: nil
+        )
+        let foundationModelsAvailable: Bool
+        if #available(iOS 26.0, *) {
+            foundationModelsAvailable = DExaminationNeuralModelFoundationModels.isAvailable(
+                locale: locale, parameters: parameters
             )
+        } else {
+            foundationModelsAvailable = false
+        }
+        let deterministicComplete = labeled?.proposals.isEmpty == false && labeled?.rejectedFieldIds.isEmpty == true
+            || deterministic.proposals.count == request.allowedFields.count
+        if !foundationModelsAvailable, deterministicComplete {
+            return deterministic
         }
         do {
             let generated = try await model().parseProposals(request: request)
-            guard !explicit.isEmpty else { return generated }
-            var byId = Dictionary(uniqueKeysWithValues: generated.proposals.map { ($0.id, $0) })
-            for field in explicit {
-                byId[field.id] = field
-            }
-            return DictationProposal(
-                source: .localModel,
-                proposals: request.allowedFields.compactMap { byId[$0] },
-                unmappedFindings: generated.unmappedFindings,
-                rejectedFieldIds: generated.rejectedFieldIds.filter { byId[$0] == nil }
+            return DictationProposalReconciler.reconcile(
+                request: request, labeled: labeled, explicit: explicit, generated: generated
             )
         } catch is CancellationError {
             throw CancellationError()
         } catch {
-            guard !explicit.isEmpty else { throw error }
-            return DictationProposal(
-                source: .explicitFacts, proposals: explicit, unmappedFindings: [], rejectedFieldIds: []
-            )
+            guard !deterministic.proposals.isEmpty else { throw error }
+            return deterministic
         }
     }
 

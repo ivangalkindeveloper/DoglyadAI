@@ -17,6 +17,11 @@ struct ScanSpeechBottomSheetView: DView {
                     ScanSpeechProposalView(viewModel: viewModel)
                 } else if viewModel.isReviewVisible {
                     ScanSpeechReviewView(viewModel: viewModel)
+                } else if !viewModel.isModelReady {
+                    ScanSpeechModelPreparationView(
+                        state: viewModel.modelPreparation,
+                        onRetry: viewModel.onTapRetryModelPreparation
+                    )
                 } else {
                     recordingContent
                 }
@@ -30,6 +35,10 @@ struct ScanSpeechBottomSheetView: DView {
         .animation(
             theme.animation,
             value: viewModel.isReviewVisible
+        )
+        .animation(
+            theme.animation,
+            value: viewModel.isModelReady
         )
         .onAppear(perform: viewModel.onAppear)
         .onDisappear(perform: viewModel.onDisappear)
@@ -64,8 +73,8 @@ struct ScanSpeechBottomSheetView: DView {
                 .transition(.opacity)
             }
 
-            if viewModel.isPreparingDescriptionVisible {
-                DText(.speechProcessPreparingDescription)
+            if let processingDescription = viewModel.processingDescription {
+                DText(processingDescription)
                     .dStyle(
                         font: typography.textSmall,
                         color: color.grayscaleBackgroundWeak,

@@ -18,6 +18,31 @@ public final class DSpeechFileRecognizerSFSpeechRecognizer {
         useHints: Bool = true,
         useCorrection: Bool = true
     ) async throws -> DSpeechFileTranscription {
+        let authorization: SFSpeechRecognizerAuthorizationStatus
+        switch SFSpeechRecognizer.authorizationStatus() {
+        case .notDetermined:
+            authorization = await withCheckedContinuation { continuation in
+                SFSpeechRecognizer.requestAuthorization { status in
+                    continuation.resume(returning: status)
+                }
+            }
+        case .authorized:
+            authorization = .authorized
+        case .denied:
+            authorization = .denied
+        case .restricted:
+            authorization = .restricted
+        @unknown default:
+            authorization = .restricted
+        }
+        switch authorization {
+        case .authorized:
+            break
+        case .notDetermined, .denied, .restricted:
+            throw DSpeechFileTranscriberError.recognitionFailed("Speech recognition authorization: \(authorization.rawValue)")
+        @unknown default:
+            throw DSpeechFileTranscriberError.recognitionFailed("Speech recognition authorization: \(authorization.rawValue)")
+        }
         guard let recognizer = SFSpeechRecognizer(locale: locale),
               recognizer.isAvailable,
               recognizer.supportsOnDeviceRecognition

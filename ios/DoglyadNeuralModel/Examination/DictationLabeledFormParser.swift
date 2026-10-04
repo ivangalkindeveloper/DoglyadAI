@@ -46,8 +46,8 @@ enum DictationLabeledFormParser {
             }
             let matches = expression.matches(in: text, range: wholeRange)
             guard let match = matches.first(where: { match in
-                isAllowedMeasurementAlias(id, match: match, source: text as NSString,
-                                          complaintsStart: complaintsStart, descriptionStart: descriptionStart)
+                isAllowedLabel(id, match: match, source: text as NSString,
+                               complaintsStart: complaintsStart, descriptionStart: descriptionStart)
             }) else { continue }
             found.append((id, match.range))
         }
@@ -96,8 +96,8 @@ enum DictationLabeledFormParser {
                 return nil
             }
             let matches = expression.matches(in: text, range: wholeRange).filter {
-                isAllowedMeasurementAlias(id, match: $0, source: source,
-                                          complaintsStart: complaintsStart, descriptionStart: descriptionStart)
+                isAllowedLabel(id, match: $0, source: source,
+                               complaintsStart: complaintsStart, descriptionStart: descriptionStart)
             }
             guard let first = matches.first else { continue }
             if matches.count > 1 {
@@ -130,10 +130,16 @@ enum DictationLabeledFormParser {
         return expression.firstMatch(in: text, range: NSRange(text.startIndex ..< text.endIndex, in: text))?.range.location
     }
 
-    private static func isAllowedMeasurementAlias(
+    private static func isAllowedLabel(
         _ id: VoiceFieldId, match: NSTextCheckingResult, source: NSString,
         complaintsStart: Int?, descriptionStart: Int?
     ) -> Bool {
+        if id == .patientComplaints {
+            let prefix = source.substring(to: match.range.location)
+            if prefix.range(of: #"\b(?:no|нет)\s*$"#, options: [.regularExpression, .caseInsensitive]) != nil {
+                return false
+            }
+        }
         let word = source.substring(with: match.range).lowercased()
         let isAlias = switch id {
         case .patientHeightCM: ["high", "hi"].contains(word)
@@ -488,6 +494,7 @@ enum DictationLabeledFormParser {
             guard captures(#"^[\p{L}][\p{L}'’\-]*(?:\s+[\p{L}][\p{L}'’\-]*){0,3}$"#, in: name) != nil else {
                 return nil
             }
+            guard !VoiceGender.isIsolatedSpokenWord(name) else { return nil }
             return .text(name)
         case .patientGender:
             switch raw.trimmingCharacters(in: .punctuationCharacters).lowercased() {

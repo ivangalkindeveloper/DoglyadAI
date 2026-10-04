@@ -12,13 +12,10 @@ def test_mac_model_diagnostic_rejects_nonliteral_quotes_and_wrong_units() -> Non
         "locale": "en",
     }
     output = json.dumps(
-        {
-            "proposals": [
-                {"fieldId": "examinationNumber", "value": "007", "sourceQuote": "This is study 007"},
-                {"fieldId": "patientWeightKG", "value": "70", "sourceQuote": "patient weighs 70 kg"},
-            ],
-            "unmappedFindings": [],
-        }
+        [
+            {"field_id": "examination_number", "value": "007", "evidence": "This is study 007", "accuracy": "full"},
+            {"field_id": "patient_weight_kg", "value": 70, "evidence": "patient weighs 70 kg", "accuracy": "full"},
+        ]
     )
 
     score = score_output(case, output)

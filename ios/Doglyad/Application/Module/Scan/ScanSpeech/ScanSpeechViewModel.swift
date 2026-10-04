@@ -30,7 +30,7 @@ final class ScanSpeechViewModel: DViewModel {
         self.messager = messager
         self.arguments = arguments
         let contextualStrings = arguments.examinationType.contextualStrings
-        speechController = DSpeechFactory.makeDefault(
+        speechController = DSpeechFactory.make(
             locale: container.language.currentLocale,
             contextualStrings: contextualStrings
         )
@@ -47,29 +47,7 @@ final class ScanSpeechViewModel: DViewModel {
     }
 
     override func onInit() {
-        let locale = container.language.currentLocale
-        let contextualStrings = arguments.examinationType.contextualStrings
-        Task { [weak self] in
-            let controller = await DSpeechFactory.make(
-                locale: locale,
-                contextualStrings: contextualStrings
-            )
-            guard let self else { return }
-            guard self.isActive, !self.isLoading else { return }
-            switch self.speechController.status {
-            case .stopped:
-                break
-            case .preparing, .recording:
-                return
-            @unknown default:
-                fatalError()
-            }
-            guard type(of: controller) != type(of: self.speechController) else { return }
-
-            self.objectWillChange.send()
-            self.speechController = controller
-            self.observeSpeechController()
-        }
+        speechController.prepareModel()
     }
 
     private func observeSpeechController() {
@@ -87,7 +65,7 @@ final class ScanSpeechViewModel: DViewModel {
         switch speechController.status {
         case .stopped:
             processTranscript(transcript)
-        case .preparing, .recording:
+        case .preparing, .recording, .transcribing:
             break
         @unknown default:
             fatalError()
@@ -105,6 +83,21 @@ final class ScanSpeechViewModel: DViewModel {
     }
 
     @Published var isLoading = false
+    var modelPreparation: DSpeechModelPreparation { speechController.modelPreparation }
+    var isModelReady: Bool {
+        switch modelPreparation {
+        case .ready:
+            return true
+        case .checking, .downloading, .loading, .failed:
+            return false
+        }
+    }
+
+    func onTapRetryModelPreparation() {
+        guard isActive else { return }
+        speechController.prepareModel()
+    }
+
     var isReviewVisible: Bool { reviewTranscript != nil && !isParsingAutomatically }
     var isProposalVisible: Bool { dictationProposal != nil }
     var isApplyDisabled: Bool { isLoading || selectedFieldIds.isEmpty }
@@ -152,7 +145,8 @@ final class ScanSpeechViewModel: DViewModel {
     var speechIcon: ImageResource {
         switch speechController.status {
         case .preparing,
-             .recording:
+             .recording,
+             .transcribing:
             return .check
         case .stopped:
             return .play
@@ -165,7 +159,7 @@ final class ScanSpeechViewModel: DViewModel {
         guard !isLoading else { return true }
 
         switch speechController.status {
-        case .preparing:
+        case .preparing, .transcribing:
             return true
         case .recording,
              .stopped:
@@ -180,6 +174,7 @@ final class ScanSpeechViewModel: DViewModel {
         case .recording:
             return true
         case .preparing,
+             .transcribing,
              .stopped:
             return false
         @unknown default:
@@ -187,13 +182,14 @@ final class ScanSpeechViewModel: DViewModel {
         }
     }
 
-    var isPreparingDescriptionVisible: Bool {
+    var processingDescription: LocalizedStringResource? {
         switch speechController.status {
         case .preparing:
-            return true
-        case .recording,
-             .stopped:
-            return false
+            return .speechProcessPreparingDescription
+        case .transcribing:
+            return .speechProcessTranscribingDescription
+        case .recording, .stopped:
+            return nil
         @unknown default:
             fatalError()
         }
@@ -212,7 +208,7 @@ final class ScanSpeechViewModel: DViewModel {
     }
 
     func onTapSpeech() {
-        guard isActive, !isLoading, reviewTranscript == nil else { return }
+        guard isActive, isModelReady, !isLoading, reviewTranscript == nil else { return }
 
         analytics.buttonTapped(
             .speechToggle,
@@ -222,7 +218,7 @@ final class ScanSpeechViewModel: DViewModel {
         )
 
         switch speechController.status {
-        case .preparing:
+        case .preparing, .transcribing:
             return
         case .recording:
             onStopSpeech()
@@ -238,6 +234,8 @@ final class ScanSpeechViewModel: DViewModel {
         switch speechController.status {
         case .preparing:
             "preparing"
+        case .transcribing:
+            "transcribing"
         case .recording:
             "recording"
         case .stopped:
@@ -260,6 +258,7 @@ final class ScanSpeechViewModel: DViewModel {
                 self.isLoading = false
                 return
             }
+            guard self.reviewTranscript == nil else { return }
             self.processTranscript(transcript)
         }
     }
@@ -282,7 +281,7 @@ final class ScanSpeechViewModel: DViewModel {
         guard isActive, !isLoading, reviewTranscript != nil, dictationProposal == nil else { return }
         speechController.start()
         switch speechController.status {
-        case .preparing, .recording:
+        case .preparing, .recording, .transcribing:
             reviewTranscript = nil
             transcriptController.clear()
             container.examinationNeuralModelFactory?.prewarm()

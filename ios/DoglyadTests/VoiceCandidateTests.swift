@@ -1,4 +1,5 @@
 import CryptoKit
+@testable import Doglyad
 @testable import DoglyadNeuralModel
 import DoglyadSpeech
 import Foundation
@@ -9,6 +10,7 @@ import XCTest
 private enum VoiceParseStrategy: String {
     case production
     case exactLabels
+    case explicitRules
     case naturalLanguage
     case foundationModels
     case mlx
@@ -48,6 +50,8 @@ final class VoiceCandidateTests: XCTestCase {
         var rows: [[String: Any]] = []
         let reportURL = try reportDestination()
         let asrOnly = ProcessInfo.processInfo.environment["VOICE_ASR_ONLY"] == "1"
+        let asrEngineOnly = ProcessInfo.processInfo.environment["VOICE_ASR_ENGINE_ONLY"]
+        let noFarFieldHint = ProcessInfo.processInfo.environment["VOICE_ASR_NO_FAR_FIELD_HINT"] == "1"
         let configuredStrategy = try XCTUnwrap(VoiceParseStrategy(
             rawValue: ProcessInfo.processInfo.environment["VOICE_PARSE_STRATEGY"] ?? "production"
         ))
@@ -60,6 +64,13 @@ final class VoiceCandidateTests: XCTestCase {
             let locale = Locale(identifier: code == "ru" ? "ru_RU" : "en_US")
             let terms = try XCTUnwrap(testCase["contextualStrings"] as? [String])
             let spokenText = try string(testCase, "spokenText")
+            let parsingText: String = if let replay = testCase["replayASR"] as? [String: Any],
+                                         replay["applyLexicon"] as? Bool == true
+            {
+                DSpeechLexiconCorrector(terms: terms).correct(spokenText)
+            } else {
+                spokenText
+            }
             if activeCode != code {
                 activeFactory?.unload()
                 activeFactory = nil
@@ -109,11 +120,13 @@ final class VoiceCandidateTests: XCTestCase {
                     for engine in ["speechAnalyzer", "sfSpeechRecognizer"] {
                         for hints in [false, true] {
                             let key = "\(engine)/hints=\(hints)"
-                            if confidenceOnly, engine != "speechAnalyzer" || !hints {
+                            if let asrEngineOnly, engine != asrEngineOnly || !hints {
+                                asr[key] = ["status": "skipped", "reason": "Another ASR engine selected"]
+                            } else if confidenceOnly, engine != "speechAnalyzer" || !hints {
                                 asr[key] = ["status": "skipped", "reason": "Confidence-only run"]
                             } else {
                                 asr[key] = await transcribe(audioURL, locale: locale, terms: terms,
-                                                            engine: engine, hints: hints)
+                                                            engine: engine, hints: hints, noFarFieldHint: noFarFieldHint)
                             }
                         }
                     }
@@ -126,9 +139,31 @@ final class VoiceCandidateTests: XCTestCase {
                 asr["reason"] = "Bundled WAV missing"
             }
             let request = DictationParseRequest(
-                text: spokenText, examinationTypeId: typeId, locale: locale,
+                text: parsingText, examinationTypeId: typeId, locale: locale,
                 allowedFields: VoiceFieldId.allCases
             )
+            let replayTranscript: DictationTranscript? = if let replay = testCase["replayASR"] as? [String: Any],
+                                                            let rawText = replay["rawText"] as? String
+            {
+                DictationTranscript(
+                    rawText: rawText,
+                    correctedText: parsingText,
+                    locale: locale,
+                    engine: .speechAnalyzer,
+                    completion: .finished,
+                    confidenceSpans: (replay["confidenceSpans"] as? [[String: Any]] ?? []).compactMap { span in
+                        guard let start = span["utf16Start"] as? Int,
+                              let length = span["utf16Length"] as? Int,
+                              let confidence = span["confidence"] as? Double
+                        else { return nil }
+                        return DSpeechConfidenceSpan(
+                            utf16Start: start, utf16Length: length, confidence: confidence
+                        )
+                    }
+                )
+            } else {
+                nil
+            }
             var mlxLoadError: String?
             if case .mlx = strategy, !asrOnly, activeMLX == nil {
                 do {
@@ -188,13 +223,14 @@ final class VoiceCandidateTests: XCTestCase {
                 } else {
                     goldTextParse = await parse(
                         request, factory: factory, strategy: strategy,
-                        mlx: activeMLX, foundation: activeFoundation
+                        mlx: activeMLX, foundation: activeFoundation, transcript: replayTranscript
                     )
                 }
             }
             rows.append([
                 "id": id, "locale": code, "examinationTypeId": typeId,
                 "parseStrategy": strategy.rawValue,
+                "parseInputText": parsingText,
                 "asr": asr,
                 "foundationModelsAvailable": foundationModelsAvailable,
                 "foundationModelsAvailability": foundationModelsAvailability,
@@ -211,7 +247,7 @@ final class VoiceCandidateTests: XCTestCase {
 
     @MainActor
     private func transcribe(
-        _ fileURL: URL, locale: Locale, terms: [String], engine: String, hints: Bool
+        _ fileURL: URL, locale: Locale, terms: [String], engine: String, hints: Bool, noFarFieldHint: Bool
     ) async -> [String: Any] {
         let started = Date()
         do {
@@ -222,7 +258,8 @@ final class VoiceCandidateTests: XCTestCase {
                     return ["status": "skipped", "reason": "SpeechAnalyzer requires iOS 26"]
                 }
                 result = try await DSpeechFileTranscriber().transcribe(
-                    fileURL: fileURL, locale: locale, contextualStrings: terms, useHints: hints
+                    fileURL: fileURL, locale: locale, contextualStrings: terms,
+                    useHints: hints, isFarField: !noFarFieldHint
                 )
             case "sfSpeechRecognizer":
                 result = try await DSpeechFileRecognizerSFSpeechRecognizer().transcribe(
@@ -257,7 +294,7 @@ final class VoiceCandidateTests: XCTestCase {
     private func parse(
         _ request: DictationParseRequest, factory: DExaminationNeuralModelFactory,
         strategy: VoiceParseStrategy, mlx: DExaminationNeuralModelMLX?,
-        foundation: (any DExaminationNeuralModelProtocol)?
+        foundation: (any DExaminationNeuralModelProtocol)?, transcript: DictationTranscript? = nil
     ) async -> [String: Any] {
         let started = Date()
         do {
@@ -268,6 +305,13 @@ final class VoiceCandidateTests: XCTestCase {
             case .exactLabels:
                 proposal = DictationLabeledFormParser.parse(request: request) ?? DictationProposal(
                     source: .labeledDictation, proposals: [], unmappedFindings: [], rejectedFieldIds: []
+                )
+            case .explicitRules:
+                proposal = DictationProposalReconciler.reconcile(
+                    request: request,
+                    labeled: DictationLabeledFormParser.parse(request: request),
+                    explicit: DictationExplicitFactsExtractor.extract(request: request),
+                    generated: nil
                 )
             case .naturalLanguage:
                 proposal = DictationNaturalLanguageParser.parse(request: request)
@@ -294,6 +338,7 @@ final class VoiceCandidateTests: XCTestCase {
             var fields: [String: Any] = [:]
             var quotes: [String: String] = [:]
             var warnings: [String: [String]] = [:]
+            var accuracies: [String: String] = [:]
             for item in proposal.proposals {
                 let value: Any
                 switch item.value {
@@ -305,17 +350,27 @@ final class VoiceCandidateTests: XCTestCase {
                 fields[item.id.rawValue] = value
                 quotes[item.id.rawValue] = item.sourceQuote
                 warnings[item.id.rawValue] = item.warnings.map(\.rawValue)
+                accuracies[item.id.rawValue] = item.accuracy.rawValue
             }
-            return [
+            var result: [String: Any] = [
                 "status": "ok",
                 "source": source,
                 "fields": fields,
                 "sourceQuotes": quotes,
                 "warnings": warnings,
+                "accuracies": accuracies,
                 "unmappedFindings": proposal.unmappedFindings,
                 "rejectedFieldIds": proposal.rejectedFieldIds.map(\.rawValue),
                 "elapsedSeconds": Date().timeIntervalSince(started),
             ]
+            if let transcript {
+                let review = ScanSpeechConfidencePolicy.plan(
+                    proposal: proposal, transcript: transcript, parsedText: request.text
+                )
+                result["automaticFieldIds"] = review.automatic.map(\.id.rawValue)
+                result["uncertainFieldIds"] = review.uncertain.map(\.id.rawValue)
+            }
+            return result
         } catch {
             return [
                 "status": "failed",
@@ -343,6 +398,11 @@ final class VoiceCandidateTests: XCTestCase {
             "fixtureControlSha256": fixture["controlSha256"] ?? NSNull(),
             "fixtureVoiceBlindSha256": fixture["voiceBlindSha256"] ?? NSNull(),
             "fixtureFreeformDevelopmentSha256": fixture["freeformDevelopmentSha256"] ?? NSNull(),
+            "fixtureHoldoutV4Sha256": fixture["holdoutV4Sha256"] ?? NSNull(),
+            "fixtureHoldoutV5Sha256": fixture["holdoutV5Sha256"] ?? NSNull(),
+            "fixtureHoldoutV6Sha256": fixture["holdoutV6Sha256"] ?? NSNull(),
+            "fixtureHoldoutV7Sha256": fixture["holdoutV7Sha256"] ?? NSNull(),
+            "fixtureHoldoutV8Sha256": fixture["holdoutV8Sha256"] ?? NSNull(),
             "fixtureAdversarialSha256": fixture["adversarialSha256"] ?? NSNull(),
             "fixtureSplit": fixture["split"] ?? "regression",
             "fixtureAudioManifestSha256": fixture["audioManifestSha256"] ?? NSNull(),
@@ -354,8 +414,10 @@ final class VoiceCandidateTests: XCTestCase {
             "fixtureSourceFilesSha256": fixture["sourceFilesSha256"] ?? NSNull(),
             "fixtureInputSource": fixture["inputSource"] ?? "originalText",
             "forcedMLXDiagnostic": ProcessInfo.processInfo.environment["VOICE_FORCE_MLX"] == "1",
+            "asrNoFarFieldHint": ProcessInfo.processInfo.environment["VOICE_ASR_NO_FAR_FIELD_HINT"] == "1",
             "fixtureASRRecognizer": fixture["asrRecognizer"] ?? NSNull(),
             "fixtureASRReportSha256": fixture["asrReportSha256"] ?? NSNull(),
+            "fixtureReplayLexiconApplied": fixture["replayLexiconApplied"] ?? false,
             "results": rows,
         ]
         try JSONSerialization.data(withJSONObject: report, options: [.prettyPrinted, .sortedKeys])

@@ -3,40 +3,30 @@ import Foundation
 enum DExaminationProposalGenerationConfig {
     static let responseJSONSchema: String = #"""
     {
-        "type": "object",
-        "properties": {
-            "proposals": {
-                "type": "array",
-                "maxItems": 8,
-                "items": {
-                    "type": "object",
-                    "properties": {
-                        "fieldId": {
-                            "enum": [
-                                "examinationNumber", "patientName", "patientGender",
-                                "patientDateOfBirth", "patientHeightCM", "patientWeightKG",
-                                "patientComplaints", "examinationDescription"
-                            ]
-                        },
-                        "value": {"type": "string", "minLength": 1},
-                        "sourceQuote": {"type": "string", "minLength": 1}
-                    },
-                    "required": ["fieldId", "value", "sourceQuote"],
-                    "additionalProperties": false
-                }
+        "type": "array",
+        "maxItems": 8,
+        "items": {
+            "type": "object",
+            "properties": {
+                "field_id": {
+                    "enum": [
+                        "examination_number", "patient_name", "patient_gender",
+                        "patient_date_of_birth", "patient_height_cm", "patient_weight_kg",
+                        "patient_complaints", "examination_description"
+                    ]
+                },
+                "value": {"type": ["string", "number"]},
+                "evidence": {"type": "string", "minLength": 1},
+                "accuracy": {"enum": ["full", "questionable"]}
             },
-            "unmappedFindings": {
-                "type": "array",
-                "items": {"type": "string"}
-            }
-        },
-        "required": ["proposals", "unmappedFindings"],
-        "additionalProperties": false
+            "required": ["field_id", "value", "evidence", "accuracy"],
+            "additionalProperties": false
+        }
     }
     """#
 
     static func userPrompt(for request: DictationParseRequest) -> String {
-        let fields = request.allowedFields.map(\.rawValue).joined(separator: ", ")
+        let fields = request.allowedFields.map(\.wireValue).joined(separator: ", ")
         let locale = request.locale.identifier(.bcp47)
         return """
         <examinationTypeId>\(request.examinationTypeId)</examinationTypeId>

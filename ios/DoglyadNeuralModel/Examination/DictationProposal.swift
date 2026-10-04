@@ -5,17 +5,20 @@ public struct DictationProposal: Sendable {
     public let proposals: [VoiceFieldProposal]
     public let unmappedFindings: [String]
     public let rejectedFieldIds: [VoiceFieldId]
+    public let fieldSources: [VoiceFieldId: DictationProposalSource]
 
     init(
         source: DictationProposalSource,
         proposals: [VoiceFieldProposal],
         unmappedFindings: [String],
-        rejectedFieldIds: [VoiceFieldId]
+        rejectedFieldIds: [VoiceFieldId],
+        fieldSources: [VoiceFieldId: DictationProposalSource] = [:]
     ) {
         self.source = source
         self.proposals = proposals
         self.unmappedFindings = unmappedFindings
         self.rejectedFieldIds = rejectedFieldIds
+        self.fieldSources = fieldSources
     }
 
     init(
@@ -24,6 +27,7 @@ public struct DictationProposal: Sendable {
         source: DictationProposalSource = .localModel
     ) throws {
         self.source = source
+        fieldSources = [:]
         var seen = Set<VoiceFieldId>()
         var verified: [VoiceFieldProposal] = []
         var rejectedQuotes: [String] = []
@@ -77,8 +81,8 @@ public struct DictationProposal: Sendable {
             // A literal quote alone does not support a field. A model can cite
             // an unrelated passage and still invent a patient identity or a
             // measurement; do not offer such fields for confirmation.
-            if Self.lacksFieldEvidence(fieldId: item.fieldId, warnings: warnings, sourceQuote: sourceQuote,
-                                       locale: request.locale)
+            if Self.lacksFieldEvidence(fieldId: item.fieldId, value: value, warnings: warnings,
+                                       sourceQuote: sourceQuote, request: request)
             {
                 rejected.append(item.fieldId)
                 rejectedQuotes.append(sourceQuote)
@@ -88,6 +92,7 @@ public struct DictationProposal: Sendable {
                 id: item.fieldId,
                 value: value,
                 sourceQuote: sourceQuote,
+                accuracy: item.accuracy,
                 warnings: warnings
             ))
         }
@@ -108,7 +113,8 @@ public struct DictationProposal: Sendable {
                 DExaminationProposalGenerationItem(
                     fieldId: $0.fieldId,
                     value: $0.value,
-                    sourceQuote: $0.sourceQuote
+                    sourceQuote: $0.sourceQuote,
+                    accuracy: $0.accuracy
                 )
             },
             unmappedFindings: serverResponse.unmappedFindings
@@ -139,11 +145,7 @@ public struct DictationProposal: Sendable {
         case .examinationNumber:
             return SpokenDigitSequence.parse(value, locale: locale) ?? value
         case .examinationDescription:
-            let description = value.replacingOccurrences(
-                of: #"(?i)^(?:on\s+ultrasound|(?:на\s+)?узи)\s*[,.:—-]?\s*"#,
-                with: "",
-                options: .regularExpression
-            )
+            let description = DictationObservationCue.removeFraming(from: value)
             return DictationNumericCorrection.apply(to: description)
         case .patientHeightCM, .patientWeightKG:
             return SpokenCardinal.parse(value, locale: locale).map { String($0) } ?? value
@@ -153,24 +155,48 @@ public struct DictationProposal: Sendable {
     }
 
     private static func lacksFieldEvidence(
-        fieldId: VoiceFieldId, warnings: [VoiceProposalWarning], sourceQuote: String, locale: Locale
+        fieldId: VoiceFieldId, value: VoiceFieldValue, warnings: [VoiceProposalWarning],
+        sourceQuote: String, request: DictationParseRequest
     ) -> Bool {
         switch fieldId {
         case .examinationNumber:
             return warnings.contains(.identifierMismatch)
         case .patientName:
+            guard case let .text(name) = value else { return true }
             return warnings.contains(.textChanged)
+                || VoiceGender.isIsolatedSpokenWord(name)
+                || !hasPatientCue(before: name, in: sourceQuote, request: request)
         case .patientGender:
             return warnings.contains(.genderUnverified)
         case .patientDateOfBirth:
             guard warnings.contains(.dateUnverified) else { return false }
-            return !DictationTextFacts(sourceQuote, locale: locale).tokens.contains { token in
+            return !DictationTextFacts(sourceQuote, locale: request.locale).tokens.contains { token in
                 token == "born" || token == "birth" || token.hasPrefix("родил") || token.hasPrefix("рожд")
             }
-        case .patientHeightCM, .patientWeightKG:
+        case .patientHeightCM:
             return warnings.contains(.unitMismatch)
+                || !hasMeasurementCue(in: sourceQuote, pattern: #"(?i)\b(?:height|tall|they\s+are|рост)\b"#)
+        case .patientWeightKG:
+            return warnings.contains(.unitMismatch)
+                || !hasMeasurementCue(in: sourceQuote, pattern: #"(?i)\b(?:weigh|weight|вес|масса\s+тела)\b"#)
         case .patientComplaints, .examinationDescription:
             return false
         }
+    }
+
+    private static func hasPatientCue(
+        before name: String, in sourceQuote: String, request: DictationParseRequest
+    ) -> Bool {
+        guard let quoteRange = request.text.range(of: sourceQuote),
+              let nameRange = sourceQuote.range(of: name, options: .caseInsensitive, locale: request.locale)
+        else { return false }
+        let precedingText = String(request.text[..<quoteRange.lowerBound].suffix(40))
+        let beforeName = precedingText + String(sourceQuote[..<nameRange.lowerBound])
+        let cue = #"(?i)\b(?:for|patient|name|пациент|имя(?:\s+пациента)?|фио|на\s+при[её]ме)\b\s*[:,-]?\s*$"#
+        return beforeName.range(of: cue, options: .regularExpression) != nil
+    }
+
+    private static func hasMeasurementCue(in quote: String, pattern: String) -> Bool {
+        quote.range(of: pattern, options: .regularExpression) != nil
     }
 }

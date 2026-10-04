@@ -13,7 +13,8 @@ public final class DSpeechFileTranscriber {
         locale: Locale,
         contextualStrings: [String],
         useHints: Bool = true,
-        useCorrection: Bool = true
+        useCorrection: Bool = true,
+        isFarField: Bool = true
     ) async throws -> DSpeechFileTranscription {
         guard let resolvedLocale = await DictationTranscriber.supportedLocale(equivalentTo: locale) else {
             throw DSpeechFileTranscriberError.unsupportedLocale
@@ -21,7 +22,7 @@ public final class DSpeechFileTranscriber {
 
         let transcriber = DSpeechAnalyzerConfiguration.makeTranscriber(
             locale: resolvedLocale,
-            isFarField: true,
+            isFarField: isFarField,
             includeConfidence: true
         )
         let analyzer = SpeechAnalyzer(modules: [transcriber])

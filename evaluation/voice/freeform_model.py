@@ -11,7 +11,7 @@ from evaluation.voice.audio import AUDIO_OUTPUT_DIR
 from evaluation.voice.common import CONFIG_DIR, ROOT
 from evaluation.voice.generate import OUTPUT_DIR as TEXT_OUTPUT_DIR
 from evaluation.voice.generate import file_sha256
-from evaluation.voice.score_candidate import FIELDS, score_fields
+from evaluation.voice.score_candidate import FIELD_WIRE_IDS, WIRE_FIELD_IDS, score_fields
 
 MODE = "freeform-development"
 CORPUS = TEXT_OUTPUT_DIR / "freeformDevelopment.jsonl"
@@ -22,22 +22,22 @@ STRICT_PROMPT = {
     "en": (
         "The schema lists possible fields, not required fields. Omit every field absent from the dictation; "
         "never supply a placeholder, default patient, guessed date, or inferred gender. "
-        "For each proposal, copy the shortest exact contiguous sourceQuote from the dictation, "
+        "For each proposal, copy the shortest exact contiguous evidence from the dictation, "
         "preserving capitalization and punctuation. The quote must directly support that field and value; "
         "a broad passage containing unrelated facts is not evidence. "
         "Copy complaints only from patient-reported symptoms. Copy ultrasound findings only into "
         "examinationDescription, preserving sides, measurements, units, and negations. "
-        "When the speaker corrects a number, use the final number and retain the correction in sourceQuote."
+        "When the speaker corrects a number, use the final number and retain the correction in evidence."
     ),
     "ru": (
         "Схема перечисляет возможные, а не обязательные поля. Пропускай все поля, которых нет в диктовке; "
         "не подставляй вымышленного пациента, дату, пол или значения по умолчанию. "
-        "Для каждого поля копируй кратчайшую точную непрерывную цитату sourceQuote из диктовки "
+        "Для каждого поля копируй кратчайшую точную непрерывную цитату evidence из диктовки "
         "с сохранением регистра и пунктуации. Цитата должна прямо подтверждать именно это поле и значение; "
         "большой фрагмент с посторонними фактами не считается доказательством. "
         "Жалобы бери только из слов пациента, данные УЗИ — только в examinationDescription, "
         "сохраняй сторону, числа, единицы и отрицания. При самоисправлении используй последнее число "
-        "и сохрани исправление в sourceQuote."
+        "и сохрани исправление в evidence."
     ),
 }
 
@@ -72,37 +72,47 @@ def prepare_inputs(per_locale: int) -> tuple[list[dict[str, Any]], dict[str, Any
 
 def score_output(case: dict[str, Any], response: str) -> dict[str, Any]:
     try:
-        parsed = json.loads(response)
-        generated = parsed["proposals"]
-        if not isinstance(generated, list) or not isinstance(parsed["unmappedFindings"], list):
-            raise ValueError("Invalid proposal response structure")
-    except (ValueError, KeyError, TypeError) as error:
+        generated = json.loads(response)
+        if not isinstance(generated, list):
+            raise ValueError("Proposal response is not an array")
+    except (ValueError, TypeError) as error:
         return {"status": "invalidJSON", "reason": str(error)}
 
     raw: dict[str, Any] = {}
     quoted: dict[str, Any] = {}
+    accuracies: dict[str, str] = {}
     quote_rejected: list[str] = []
     invalid: list[str] = []
     for item in generated:
-        if not isinstance(item, dict) or item.get("fieldId") not in FIELDS or not isinstance(item.get("value"), str):
+        if not isinstance(item, dict) or item.get("field_id") not in WIRE_FIELD_IDS:
             invalid.append(str(item))
             continue
-        field = item["fieldId"]
+        field = WIRE_FIELD_IDS[item["field_id"]]
         if field in raw:
             invalid.append(f"duplicate: {field}")
             continue
+        if "value" not in item:
+            invalid.append(f"missing value: {field}")
+            continue
         value: Any = item["value"]
         if field in ("patientHeightCM", "patientWeightKG"):
-            try:
-                value = float(value)
-            except ValueError:
+            if isinstance(value, bool) or not isinstance(value, (int, float)):
                 invalid.append(f"non-numeric: {field}")
                 continue
+            value = float(value)
             if not math.isfinite(value) or value <= 0:
                 invalid.append(f"invalid measurement: {field}")
                 continue
+        elif not isinstance(value, str):
+            invalid.append(f"non-text: {field}")
+            continue
+        accuracy = item.get("accuracy")
+        if accuracy not in ("full", "questionable"):
+            invalid.append(f"invalid accuracy: {field}")
+            continue
         raw[field] = value
-        quote = item.get("sourceQuote")
+        accuracies[field] = accuracy
+        quote = item.get("evidence")
         if isinstance(quote, str) and quote and quote in case["inputText"]:
             quoted[field] = value
         else:
@@ -114,11 +124,14 @@ def score_output(case: dict[str, Any], response: str) -> dict[str, Any]:
         "quoteRejected": quote_rejected,
         "invalidProposals": invalid,
         "rawScore": score_fields(
-            case["expectedFields"], {"fields": raw, "warnings": {}}, locale=case["locale"], normalize_description=True
+            case["expectedFields"],
+            {"fields": raw, "warnings": {}, "accuracies": accuracies},
+            locale=case["locale"],
+            normalize_description=True,
         ),
         "quotedScore": score_fields(
             case["expectedFields"],
-            {"fields": quoted, "warnings": {}},
+            {"fields": quoted, "warnings": {}, "accuracies": accuracies},
             locale=case["locale"],
             normalize_description=True,
         ),
@@ -159,7 +172,7 @@ def run(per_locale: int, output: Path, *, strict_prompt: bool = False) -> dict[s
         user = (
             f"<examinationTypeId>{case['examinationTypeId']}</examinationTypeId>\n"
             f"<locale>{'ru-RU' if locale == 'ru' else 'en-US'}</locale>\n"
-            f"<allowedFields>{', '.join(FIELDS)}</allowedFields>\n"
+            f"<allowedFields>{', '.join(FIELD_WIRE_IDS.values())}</allowedFields>\n"
             f"<dictation>\n{case['inputText']}\n</dictation>"
         )
         chat = tokenizer.apply_chat_template(

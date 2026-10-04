@@ -33,7 +33,13 @@ enum ScanSpeechConfidencePolicy {
     ) -> Bool {
         guard transcript.isFinal, parsedText == transcript.correctedText,
               field.warnings.isEmpty else { return false }
-        switch proposal.source {
+        switch field.accuracy {
+        case .full:
+            break
+        case .questionable:
+            return false
+        }
+        switch proposal.fieldSources[field.id] ?? proposal.source {
         case .labeledDictation:
             break
         case .explicitFacts:

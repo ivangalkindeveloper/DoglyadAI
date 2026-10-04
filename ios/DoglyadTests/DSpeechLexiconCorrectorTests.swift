@@ -41,6 +41,14 @@ struct DSpeechLexiconCorrectorTests {
 
         #expect(kidney.correct("почечная лаханка 12 мм") == "почечная лоханка 12 мм")
         #expect(heart.correct("митральный клопан не изменен") == "митральный клапан не изменен")
+        #expect(heart.correct("Митральный клопан: не изменен.") == "Митральный клапан: не изменен.")
+    }
+
+    @Test("Clinical phrase correction preserves dictated punctuation and field boundaries")
+    func preservesPunctuation() {
+        let corrector = DSpeechLexiconCorrector(terms: ["biparietal diameter", "right ventricle"])
+        #expect(corrector.correct("Biparital diameter. 67 mm.") == "Biparietal diameter. 67 mm.")
+        #expect(corrector.correct("Right ventricle: 49 mm.") == "Right ventricle: 49 mm.")
     }
 
     // MARK: - Repairs what it was built for
@@ -79,6 +87,17 @@ struct DSpeechLexiconCorrectorTests {
     @Test("Existing negation is not removed")
     func neverRemovesNegation() {
         #expect(corrector.correct("капсула не изменена") == "капсула не изменена")
+    }
+
+    @Test("A similar sounding clinical phrase cannot add or change the side")
+    func neverChangesSide() {
+        let english = DSpeechLexiconCorrector(terms: ["right kidney", "left kidney"])
+        #expect(english.correct("bright kidney 100 mm") == "bright kidney 100 mm")
+        #expect(english.correct("left kidney 100 mm") == "left kidney 100 mm")
+
+        let russian = DSpeechLexiconCorrector(terms: ["правая почка", "левая почка"])
+        #expect(russian.correct("правая почка 100 мм") == "правая почка 100 мм")
+        #expect(russian.correct("левая почка 100 мм") == "левая почка 100 мм")
     }
 
     @Test(

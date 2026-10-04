@@ -8,24 +8,20 @@ enum DictationNaturalLanguageParser {
     static func parse(request: DictationParseRequest) -> DictationProposal {
         let labeled = DictationLabeledFormParser.parse(request: request)
         let explicit = DictationExplicitFactsExtractor.extract(request: request)
-        let rejected = Set(labeled?.rejectedFieldIds ?? [])
-        var byId = Dictionary(uniqueKeysWithValues: (labeled?.proposals ?? []).map { ($0.id, $0) })
-        var source: DictationProposalSource = labeled == nil ? .explicitFacts : .labeledDictation
-        for field in explicit where byId[field.id] == nil && !rejected.contains(field.id) {
-            byId[field.id] = field
-            source = .explicitFacts
-        }
-        if byId[.patientName] == nil, !rejected.contains(.patientName), request.allowedFields.contains(.patientName),
-           let name = patientName(in: request)
-        {
-            byId[.patientName] = name
-            source = .explicitFacts
-        }
-        return DictationProposal(
-            source: source,
-            proposals: request.allowedFields.compactMap { byId[$0] },
-            unmappedFindings: labeled?.unmappedFindings ?? [],
-            rejectedFieldIds: labeled?.rejectedFieldIds ?? []
+        let baseline = DictationProposalReconciler.reconcile(
+            request: request, labeled: labeled, explicit: explicit, generated: nil
+        )
+        guard !baseline.proposals.contains(where: { $0.id == .patientName }),
+              !baseline.rejectedFieldIds.contains(.patientName),
+              request.allowedFields.contains(.patientName),
+              let name = patientName(in: request)
+        else { return baseline }
+
+        let naturalLanguage = DictationProposal(
+            source: .explicitFacts, proposals: [name], unmappedFindings: [], rejectedFieldIds: []
+        )
+        return DictationProposalReconciler.reconcile(
+            request: request, labeled: labeled, explicit: explicit, generated: naturalLanguage
         )
     }
 

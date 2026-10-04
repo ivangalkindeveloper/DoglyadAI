@@ -5,7 +5,7 @@ import Foundation
 ///
 /// An observable object: the scanning screen subscribes to `status`, `text` and
 /// `audioMeter` to reflect the progress of dictation. The concrete implementation is
-/// chosen by ``DSpeechFactory`` based on system support and locale support.
+/// chosen by ``DSpeechFactory``.
 ///
 /// Requiring `ObjectWillChangePublisher == ObservableObjectPublisher` lets a consumer
 /// subscribe to `objectWillChange` through the `any DSpeechControllerProtocol`
@@ -23,6 +23,9 @@ public protocol DSpeechControllerProtocol: ObservableObject
     var text: String? { get }
     var audioMeter: Float { get }
     var lastTranscript: DictationTranscript? { get }
+    var modelPreparation: DSpeechModelPreparation { get }
+
+    func prepareModel()
 
     func start()
 
@@ -37,4 +40,10 @@ public protocol DSpeechControllerProtocol: ObservableObject
     /// Discards an active session and rejects any results that arrive afterwards.
     @discardableResult
     func cancel() -> DictationTranscript?
+}
+
+public extension DSpeechControllerProtocol {
+    var modelPreparation: DSpeechModelPreparation { .ready }
+
+    func prepareModel() {}
 }

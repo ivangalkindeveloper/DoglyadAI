@@ -33,8 +33,19 @@ SOURCE_FILES = (
     ROOT / "ios/DoglyadNeuralModel/Examination/Model/DExaminationNeuralModelFoundationModels.swift",
     ROOT / "ios/DoglyadNeuralModel/Examination/DExaminationProposalGenerationConfig.swift",
     ROOT / "ios/DoglyadNeuralModel/Examination/DictationProposal.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationProposalReconciler.swift",
     ROOT / "ios/DoglyadNeuralModel/Examination/DictationProposalSource.swift",
     ROOT / "ios/DoglyadNeuralModel/Examination/DictationLabeledFormParser.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationExplicitFactsExtractor.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationIdentifierCue.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationFollowingFieldCue.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationSectionCue.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationObservationCue.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationDescriptionNormalizer.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationNumericCorrection.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationNaturalLanguageParser.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/DictationSpokenBirthDate.swift",
+    ROOT / "ios/DoglyadNeuralModel/Examination/VoiceGender.swift",
     ROOT / "ios/DoglyadNeuralModel/Examination/SpokenDigitSequence.swift",
     ROOT / "ios/DoglyadNeuralModel/Examination/SpokenCardinal.swift",
     ROOT / "ios/DoglyadNeuralModel/Examination/DictationTextFacts.swift",
@@ -59,12 +70,15 @@ def prepare_fixtures(
     text_only: bool = False,
     replay_macos_asr: bool = False,
     replay_asr_report: Path | None = None,
+    apply_replay_lexicon: bool = False,
     all_regression_text: bool = False,
     max_tokens: int | None = None,
     destination: Path = FIXTURE_DIR,
 ) -> dict[str, Any]:
     if replay_macos_asr and replay_asr_report is not None:
         raise ValueError("Choose only one ASR replay source")
+    if apply_replay_lexicon and replay_asr_report is None:
+        raise ValueError("Lexicon replay requires an ASR report")
     if all_regression_text and (not text_only or replay_macos_asr or replay_asr_report is not None):
         raise ValueError("Full regression corpus requires original text-only input")
     if (replay_macos_asr or replay_asr_report is not None) and not text_only:
@@ -173,6 +187,7 @@ def prepare_fixtures(
             )
             else case["spokenText"]
         )
+        replay_result: dict[str, Any] | None = None
         if replay_recognizer is not None:
             result = replay_results.get((case["id"], variant))
             if result is None or result["status"] != "ok" or not result.get("correctedText"):
@@ -180,6 +195,7 @@ def prepare_fixtures(
             if result["locale"] != case["locale"]:
                 raise ValueError(f"ASR transcript locale differs from {case['id']}")
             input_text = result["correctedText"]
+            replay_result = result
         prepared_case = {
             "id": case["id"],
             "locale": case["locale"],
@@ -189,6 +205,12 @@ def prepare_fixtures(
             "systemPrompt": prompts[case["locale"]],
             "proposalPrompt": proposal_prompts[case["locale"]],
         }
+        if replay_result is not None:
+            prepared_case["replayASR"] = {
+                "rawText": replay_result.get("rawText", input_text),
+                "confidenceSpans": replay_result.get("confidenceSpans", []),
+                "applyLexicon": apply_replay_lexicon,
+            }
         if not all_regression_text:
             source = ROOT / entry[variant]["path"]
             if file_sha256(source) != entry[variant]["sha256"]:
@@ -228,6 +250,7 @@ def prepare_fixtures(
         "applicationSha256": file_sha256(CONFIG_DIR / "application.json"),
         "sourceFilesSha256": {str(path.relative_to(ROOT)): file_sha256(path) for path in SOURCE_FILES},
         "inputSource": "macosASR" if replay_macos_asr else "asrReplay" if replay_recognizer else "originalText",
+        "replayLexiconApplied": apply_replay_lexicon,
         "asrRecognizer": replay_recognizer,
         "asrReportSha256": file_sha256(asr_report_path) if replay_recognizer else None,
     }

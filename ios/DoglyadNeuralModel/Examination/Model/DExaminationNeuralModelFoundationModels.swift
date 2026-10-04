@@ -117,10 +117,10 @@ public final class DExaminationNeuralModelFoundationModels: DExaminationNeuralMo
         let session = takeSession()
         let response = try await session.respond(
             to: DExaminationProposalGenerationConfig.userPrompt(for: request),
-            generating: DExaminationProposalFoundationResponse.self,
+            generating: [DExaminationProposalFoundationItem].self,
             options: generationOptions
         )
-        let generated = try DExaminationProposalGenerationResponse.fromFoundationModels(response.content)
+        let generated = DExaminationProposalGenerationResponse.fromFoundationModels(response.content)
         return try DictationProposal(generated: generated, request: request)
     }
 }

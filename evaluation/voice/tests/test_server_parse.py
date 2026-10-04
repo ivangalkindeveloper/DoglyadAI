@@ -8,7 +8,7 @@ import httpx
 import pytest
 
 from evaluation.voice import server_parse
-from evaluation.voice.server_parse import load_cases, score_response, summarize
+from evaluation.voice.server_parse import load_cases, score_response, summarize, summary_markdown
 
 
 def test_load_cases_replays_only_matching_iphone_transcripts(tmp_path: Path) -> None:
@@ -81,8 +81,8 @@ def test_score_counts_wrong_and_unspoken_values() -> None:
         {"patientWeightKG": 72},
         {
             "proposals": [
-                {"fieldId": "patientWeightKG", "value": "73", "sourceQuote": "вес 73 кг"},
-                {"fieldId": "patientGender", "value": "male", "sourceQuote": "male"},
+                {"field_id": "patient_weight_kg", "value": 73, "evidence": "вес 73 кг", "accuracy": "full"},
+                {"field_id": "patient_gender", "value": "male", "evidence": "male", "accuracy": "full"},
             ],
             "rejectedFieldIds": [],
             "unmappedFindings": [],
@@ -97,8 +97,8 @@ def test_score_counts_wrong_and_unspoken_values() -> None:
 def test_duplicate_server_field_fails_scoring() -> None:
     response = {
         "proposals": [
-            {"fieldId": "patientGender", "value": "male"},
-            {"fieldId": "patientGender", "value": "female"},
+            {"field_id": "patient_gender", "value": "male", "accuracy": "full"},
+            {"field_id": "patient_gender", "value": "female", "accuracy": "full"},
         ],
         "rejectedFieldIds": [],
     }
@@ -121,6 +121,54 @@ def test_summary_keeps_missing_parse_in_denominator() -> None:
     assert summary["en/complete"]["cases"] == 1
     assert summary["en/complete"]["parsed"] == 0
     assert summary["en/complete"]["expectedPresentFields"] == 1
+    assert summary["en/complete"]["exactForms"] == 0
+    assert summary["en/complete"]["correctPresentFields"] == 0
+
+
+def test_summary_reports_strict_and_spoken_equivalent_results() -> None:
+    score = score_response(
+        {"examinationDescription": "Left ventricle 54 mm."},
+        {
+            "proposals": [
+                {
+                    "field_id": "examination_description",
+                    "value": "Left ventricle fifty four millimeters.",
+                    "evidence": "Left ventricle fifty four millimeters.",
+                    "accuracy": "full",
+                }
+            ],
+            "rejectedFieldIds": [],
+        },
+        "en",
+    )
+    summary = summarize(
+        [
+            {
+                "id": "case-1",
+                "locale": "en",
+                "scenario": "complete",
+                "status": "ok",
+                "expectedFieldIds": ["examinationDescription"],
+                "score": score,
+                "elapsedSeconds": 2.5,
+            },
+            {
+                "id": "case-2",
+                "locale": "en",
+                "scenario": "complete",
+                "status": "httpError",
+                "expectedFieldIds": ["patientName"],
+            },
+        ]
+    )
+    group = summary["en/complete"]
+    assert group["exactForms"] == 0
+    assert group["correctPresentFields"] == 0
+    assert group["equivalentExactForms"] == 1
+    assert group["equivalentCorrectPresentFields"] == 1
+    assert group["expectedPresentFields"] == 2
+    markdown = summary_markdown({"source": "audioScript", "results": [{}, {}], "byLocaleScenario": summary})
+    assert "| en/complete | 2 | 1/2 | 0/2 | 0/2 | 1/2 | 1/2 |" in markdown
 
 
 @pytest.mark.parametrize("statuses, expected_status", [([502, 200], "ok"), ([502, 502, 502], "httpError")])
@@ -160,7 +208,10 @@ def test_server_retry_records_each_attempt(
         if status == 200:
             return httpx.Response(
                 200,
-                json={"proposals": [{"fieldId": "patientWeightKG", "value": "72"}], "rejectedFieldIds": []},
+                json={
+                    "proposals": [{"field_id": "patient_weight_kg", "value": 72, "accuracy": "full"}],
+                    "rejectedFieldIds": [],
+                },
             )
         return httpx.Response(status)
 

@@ -8,7 +8,7 @@ struct VoiceServerResponseTests {
     @Test
     func serverResponseIsRevalidatedAndNotAppliedAutomatically() throws {
         let text = "вес 72 килограмма"
-        let data = Data(#"{"proposals":[{"fieldId":"patientWeightKG","value":"72","sourceQuote":"вес 72 килограмма"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8)
+        let data = Data(#"{"proposals":[{"field_id":"patient_weight_kg","value":72,"evidence":"вес 72 килограмма","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8)
         let response = try JSONDecoder().decode(USVoiceFormParseResponseDTO.self, from: data)
         let request = DictationParseRequest(
             text: text,
@@ -37,7 +37,7 @@ struct VoiceServerResponseTests {
 
     @Test
     func serverResponseCannotAddFieldWithoutVerbatimQuote() throws {
-        let data = Data(#"{"proposals":[{"fieldId":"patientName","value":"Иванов Иван","sourceQuote":"пациент Иванов Иван"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8)
+        let data = Data(#"{"proposals":[{"field_id":"patient_name","value":"Иванов Иван","evidence":"пациент Иванов Иван","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8)
         let response = try JSONDecoder().decode(USVoiceFormParseResponseDTO.self, from: data)
         let request = DictationParseRequest(
             text: "вес 72 килограмма",

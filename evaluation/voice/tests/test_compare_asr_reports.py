@@ -117,6 +117,9 @@ def test_spoken_composite_units_are_retained_as_whole_phrases() -> None:
         ]
     }
     assert _critical_retention(case, "75 centimeters per second")["unit"] is True
+    assert _critical_retention(case, "75cm/s")["unit"] is True
+    assert _critical_retention(case, "75 см в секунду")["unit"] is True
     assert _critical_retention(case, "75 centimeters")["unit"] is False
     russian = {"expectedFacts": [{"kind": "measurement", "value": 51, "unit": "мм"}]}
     assert _critical_retention(russian, "51 миллиметров")["unit"] is True
+    assert _critical_retention(russian, "51мм")["unit"] is True

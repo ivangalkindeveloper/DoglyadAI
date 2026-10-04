@@ -12,7 +12,7 @@ from evaluation.voice.audio import AUDIO_OUTPUT_DIR
 from evaluation.voice.common import CONFIG_DIR
 from evaluation.voice.freeform_model import CORPUS, MANIFEST, MODEL, prepare_inputs, schema_text, score_output
 from evaluation.voice.generate import file_sha256
-from evaluation.voice.score_candidate import FIELDS
+from evaluation.voice.score_candidate import FIELDS, FIELD_WIRE_IDS
 
 MODE = "freeform-development"
 HARNESS = Path(__file__).parent / "MacGuidedHarness/.build/release/voice-guided"
@@ -60,10 +60,7 @@ def nullable_schema() -> str:
 
 
 def proposals_only_schema() -> str:
-    schema = json.loads(schema_text())
-    del schema["properties"]["unmappedFindings"]
-    schema["required"].remove("unmappedFindings")
-    return json.dumps(schema, ensure_ascii=False, separators=(",", ":"))
+    return schema_text()
 
 
 def normalize_nullable_response(output: str) -> str:
@@ -81,15 +78,25 @@ def normalize_nullable_response(output: str) -> str:
             or not isinstance(item.get("sourceQuote"), str)
         ):
             raise ValueError(f"Invalid nullable field: {field}")
-        proposals.append({"fieldId": field, "value": item["value"], "sourceQuote": item["sourceQuote"]})
-    return json.dumps({"proposals": proposals, "unmappedFindings": []}, ensure_ascii=False)
+        value: Any = item["value"]
+        if field in ("patientHeightCM", "patientWeightKG"):
+            value = float(value)
+        proposals.append(
+            {
+                "field_id": FIELD_WIRE_IDS[field],
+                "value": value,
+                "evidence": item["sourceQuote"],
+                "accuracy": "questionable",
+            }
+        )
+    return json.dumps(proposals, ensure_ascii=False)
 
 
 def normalize_proposals_only_response(output: str) -> str:
     parsed = json.loads(output)
-    if not isinstance(parsed, dict) or set(parsed) != {"proposals"}:
-        raise ValueError("Proposals-only response has missing or extra fields")
-    return json.dumps({"proposals": parsed["proposals"], "unmappedFindings": []}, ensure_ascii=False)
+    if not isinstance(parsed, list):
+        raise ValueError("Proposals-only response must be an array")
+    return json.dumps(parsed, ensure_ascii=False)
 
 
 def asr_inputs(report_path: Path, *, cases: list[dict[str, Any]]) -> dict[str, str]:
@@ -140,17 +147,6 @@ def run(
         raise FileNotFoundError(f"Build Mac guided harness first: {HARNESS}")
     schema = nullable_schema() if nullable_fields else proposals_only_schema() if proposals_only else schema_text()
     system_prompts = NULLABLE_PROMPTS if nullable_fields else prompts
-    if proposals_only:
-        system_prompts = {
-            "en": prompts["en"].replace(
-                "Keep unsupported relevant clinical text in unmappedFindings rather than forcing it into a field.",
-                "Omit unsupported clinical text rather than forcing it into a field.",
-            ),
-            "ru": prompts["ru"].replace(
-                "Клинический текст, который не относится к допустимым полям, помещай в unmappedFindings, а не в неподходящее поле.",
-                "Клинический текст, который не относится к допустимым полям, не подставляй в поле.",
-            ),
-        }
     rows: list[dict[str, Any]] = []
     report: dict[str, Any] = {
         "schemaVersion": 1,
@@ -193,7 +189,11 @@ def run(
                 user_prompt = (
                     f"<examinationTypeId>{case['examinationTypeId']}</examinationTypeId>\n"
                     f"<locale>{'ru-RU' if locale == 'ru' else 'en-US'}</locale>\n"
-                    + ("" if nullable_fields else f"<allowedFields>{', '.join(FIELDS)}</allowedFields>\n")
+                    + (
+                        ""
+                        if nullable_fields
+                        else f"<allowedFields>{', '.join(FIELD_WIRE_IDS.values())}</allowedFields>\n"
+                    )
                     + f"<dictation>\n{input_text}\n</dictation>"
                 )
                 request = {

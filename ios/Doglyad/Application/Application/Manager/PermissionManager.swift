@@ -1,10 +1,9 @@
 import AVFoundation
 import Photos
-import Speech
 
 enum PermissionType {
     case camera
-    case speech
+    case microphone
     case photoLibrary
 }
 
@@ -24,17 +23,8 @@ extension PermissionManager: PermissionManagerProtocol {
         case .camera:
             await AVCaptureDevice.requestAccess(for: .video)
 
-        case .speech:
-            await withCheckedContinuation { continuation in
-                SFSpeechRecognizer.requestAuthorization { status in
-                    switch status {
-                    case .authorized:
-                        continuation.resume(returning: true)
-                    default:
-                        continuation.resume(returning: false)
-                    }
-                }
-            }
+        case .microphone:
+            await AVCaptureDevice.requestAccess(for: .audio)
 
         case .photoLibrary:
             switch await PHPhotoLibrary.requestAuthorization(for: .readWrite) {

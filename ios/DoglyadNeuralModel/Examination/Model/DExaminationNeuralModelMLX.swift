@@ -159,7 +159,8 @@ public final class DExaminationNeuralModelMLX: DExaminationNeuralModelProtocol {
             userPrompt: DExaminationProposalGenerationConfig.userPrompt(for: request),
             schema: DExaminationProposalGenerationConfig.responseJSONSchema
         )
-        let generated = try JSONDecoder().decode(DExaminationProposalGenerationResponse.self, from: data)
+        let items = try JSONDecoder().decode([DExaminationProposalGenerationItem].self, from: data)
+        let generated = DExaminationProposalGenerationResponse(proposals: items, unmappedFindings: [])
         return try DictationProposal(generated: generated, request: request)
     }
 

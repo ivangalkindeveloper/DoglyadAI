@@ -16,14 +16,7 @@ enum DictationProposalValidator {
         switch fieldId {
         case .examinationNumber:
             guard case let .text(number) = value else { return [.identifierMismatch] }
-            let hasExaminationCue = source.tokens.contains { token in
-                token == "examination" || token == "study" || token == "scan"
-                    || token.hasPrefix("исследован") || token.hasPrefix("обследован")
-            }
-            if !source.containsLiteral(DictationTextFacts(number, locale: request.locale))
-                && !hasSpokenIdentifier(number, in: sourceQuote, locale: request.locale)
-                || !hasExaminationCue
-            {
+            if !hasCitedIdentifier(number, in: sourceQuote, locale: request.locale) {
                 warnings.append(.identifierMismatch)
             }
         case .patientName:
@@ -96,6 +89,9 @@ enum DictationProposalValidator {
                 warnings.append(.ambiguousDictation)
             }
         case .examinationDescription:
+            if DictationFollowingFieldCue.isInsideDescription(sourceQuote) {
+                warnings.append(.ambiguousDictation)
+            }
             if hasIncompleteObservationQuote(sourceQuote, in: request.text) {
                 warnings.append(.ambiguousDictation)
             }
@@ -156,9 +152,21 @@ enum DictationProposalValidator {
         return warnings
     }
 
+    private static func hasCitedIdentifier(_ identifier: String, in quote: String, locale: Locale) -> Bool {
+        let numericPattern = #"(?<![\p{L}\p{N}])"# + DictationIdentifierCue.pattern
+            + #"\s*[:№]?\s*([0-9]+)(?![\p{L}\p{N}])"#
+        if let expression = try? NSRegularExpression(pattern: numericPattern, options: .caseInsensitive),
+           let match = expression.firstMatch(in: quote, range: NSRange(quote.startIndex ..< quote.endIndex, in: quote)),
+           let digits = Range(match.range(at: 1), in: quote).map({ String(quote[$0]) })
+        {
+            return digits == identifier
+        }
+        return hasSpokenIdentifier(identifier, in: quote, locale: locale)
+    }
+
     private static func hasSpokenIdentifier(_ identifier: String, in quote: String, locale: Locale) -> Bool {
-        let cue = #"(?i)(?:examination\s+number|study|scan|номер\s+исследования|исследование\s+номер|обследование\s+номер)"#
-        guard let range = quote.range(of: cue, options: .regularExpression) else { return false }
+        let cue = DictationIdentifierCue.pattern
+        guard let range = quote.range(of: cue, options: [.regularExpression, .caseInsensitive]) else { return false }
         let spoken = String(quote[range.upperBound...]).trimmingCharacters(in: .whitespacesAndNewlines)
         return SpokenDigitSequence.parse(spoken, locale: locale) == identifier
     }
@@ -244,27 +252,43 @@ enum DictationProposalValidator {
 
     private static func hasIncompleteObservationQuote(_ quote: String, in text: String) -> Bool {
         guard let quoteRange = text.range(of: quote) else { return false }
-        let prefix = String(text[..<quoteRange.upperBound])
-        let observationCue = #"(?i)(?:on\s+ultrasound|на\s+узи)"#
-        let complaintCue = #"(?i)(?:they\s+report|сообщает\s*:)"#
-        let lastObservation = lastMatchStart(observationCue, in: prefix)
-        let lastComplaint = lastMatchStart(complaintCue, in: prefix)
-        if let lastComplaint, lastComplaint > (lastObservation ?? -1) {
+        let observation = lastMatch(
+            DictationObservationCue.pattern, in: text, before: quoteRange.upperBound
+        )
+        let complaint = lastMatch(DictationSectionCue.complaint, in: text, before: quoteRange.upperBound)
+        if let complaint, complaint.lowerBound > (observation?.lowerBound ?? text.startIndex) {
             return true
         }
-        guard lastObservation != nil else { return false }
+        guard let observation else { return false }
+
+        // A literal model quote can omit the measured first sentence and cite
+        // only the final negative sentence. Check the text between the finding
+        // cue and the beginning of the quote, as well as the text after it.
+        if observation.upperBound <= quoteRange.lowerBound {
+            let omittedPrefix = text[observation.upperBound ..< quoteRange.lowerBound]
+            if omittedPrefix.unicodeScalars.contains(where: {
+                CharacterSet.letters.union(.decimalDigits).contains($0)
+            }) {
+                return true
+            }
+        }
 
         let suffix = String(text[quoteRange.upperBound...])
-        let nextFieldCue = #"(?i)(?:this\s+is\s+study|это\s+исследование\s+номер|they\s+report|сообщает\s*:)"#
-        let remainingObservation = suffix.range(of: nextFieldCue, options: .regularExpression)
+        let nextFieldCue = #"(?:"# + DictationFollowingFieldCue.recordPattern
+            + #"|record\s+(?:marked|carries\s+number)|это\s+исследование\s+номер|"#
+            + DictationSectionCue.complaint + #"|"# + DictationSectionCue.measurement + #")"#
+        let remainingObservation = suffix.range(of: nextFieldCue, options: [.regularExpression, .caseInsensitive])
             .map { String(suffix[..<$0.lowerBound]) } ?? suffix
         return remainingObservation.unicodeScalars.contains { CharacterSet.letters.contains($0) }
     }
 
-    private static func lastMatchStart(_ pattern: String, in text: String) -> Int? {
-        guard let expression = try? NSRegularExpression(pattern: pattern) else { return nil }
-        return expression.matches(in: text, range: NSRange(text.startIndex ..< text.endIndex, in: text))
-            .last?.range.location
+    private static func lastMatch(
+        _ pattern: String, in text: String, before end: String.Index
+    ) -> Range<String.Index>? {
+        guard let expression = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive),
+              let match = expression.matches(in: text, range: NSRange(text.startIndex ..< end, in: text)).last
+        else { return nil }
+        return Range(match.range, in: text)
     }
 
     private static func hasDiscourseCorrection(_ text: String) -> Bool {

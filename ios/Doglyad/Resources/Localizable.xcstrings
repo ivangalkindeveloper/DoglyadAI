@@ -3111,6 +3111,91 @@
         }
       }
     },
+    "speechModelCheckingDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Checking the speech recognition model…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Проверяем модель распознавания речи…"
+          }
+        }
+      }
+    },
+    "speechModelDownloadDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Downloading the speech recognition model. Recording will be available when the download finishes."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Скачиваем модель распознавания речи. Запись станет доступна после загрузки."
+          }
+        }
+      }
+    },
+    "speechModelLoadFailedDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The speech recognition model could not be prepared. Please try again."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Не удалось подготовить модель распознавания речи. Повторите попытку."
+          }
+        }
+      }
+    },
+    "speechModelLoadingDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading the speech recognition model on this device…"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Загружаем модель распознавания речи на устройстве…"
+          }
+        }
+      }
+    },
+    "speechModelRetryButton": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Повторить"
+          }
+        }
+      }
+    },
     "speechProcessDescription": {
       "extractionState": "manual",
       "localizations": {
@@ -3134,13 +3219,30 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Preparing speech recognition. On the first run the language model is downloaded — please wait before dictating."
+            "value": "Preparing the microphone…"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Готовим распознавание речи. При первом запуске загружается языковая модель — подождите, прежде чем диктовать."
+            "value": "Подготавливаем микрофон…"
+          }
+        }
+      }
+    },
+    "speechProcessTranscribingDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transcribing the recording on this device. Please wait."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Расшифровываем запись на устройстве. Пожалуйста, подождите."
           }
         }
       }

@@ -82,6 +82,15 @@ struct DictationLabeledFormParserTests {
         #expect(proposal.rejectedFieldIds.isEmpty)
     }
 
+    @Test("A dropped name cannot populate the patient field with a gender word")
+    func rejectsGenderWordAsPatientName() throws {
+        let text = "Examination number 030 Patient Male Date of birth 1995-05-11"
+        let proposal = try #require(DictationLabeledFormParser.parse(request: request(text, locale: "en_US")))
+        #expect(!proposal.proposals.contains { $0.id == .patientName })
+        #expect(proposal.rejectedFieldIds.contains(.patientName))
+        #expect(proposal.proposals.contains { $0.id == .examinationNumber })
+    }
+
     @Test("Punctuation separated from a unit does not discard a measurement")
     func parsesMeasurementBeforeSpacedPeriod() throws {
         let text = "Height 185 cm . Weight 70 kg ."
@@ -160,7 +169,7 @@ struct DictationLabeledFormParserTests {
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withFullDate]
         #expect(formatter.string(from: parsedDate) == "1981-04-26")
-        #expect(date.warnings.contains(.dateUnverified))
+        #expect(!date.warnings.contains(.dateUnverified))
 
         let ambiguous = valid.replacingOccurrences(of: "19 81 04 26", with: "19 80 0 07 27")
         let ambiguousProposal = try #require(DictationLabeledFormParser.parse(request: request(ambiguous, locale: "ru_RU")))

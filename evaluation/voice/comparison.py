@@ -55,8 +55,26 @@ def _critical_retention(case: dict[str, Any], actual: str) -> dict[str, bool | N
         "мм": millimeter_forms,
         "cm": centimeter_forms,
         "см": centimeter_forms,
-        "cm/s": {"cm/s", "centimeter per second", "centimeters per second", "см/с", "сантиметров в секунду"},
-        "см/с": {"cm/s", "centimeter per second", "centimeters per second", "см/с", "сантиметров в секунду"},
+        "cm/s": {
+            "cm/s",
+            "cm per second",
+            "centimeter per second",
+            "centimeters per second",
+            "см/с",
+            "см в секунду",
+            "сантиметра в секунду",
+            "сантиметров в секунду",
+        },
+        "см/с": {
+            "cm/s",
+            "cm per second",
+            "centimeter per second",
+            "centimeters per second",
+            "см/с",
+            "см в секунду",
+            "сантиметра в секунду",
+            "сантиметров в секунду",
+        },
         "ml": {"ml", "milliliter", "milliliters", "мл", "миллилитр", "миллилитров"},
         "мл": {"ml", "milliliter", "milliliters", "мл", "миллилитр", "миллилитров"},
     }
@@ -65,7 +83,10 @@ def _critical_retention(case: dict[str, Any], actual: str) -> dict[str, bool | N
         if measurements
         else None
     )
-    normalized_text = f" {' '.join(words(actual))} "
+    # ASR often joins a measurement and its unit ("5mm", "50см/с").
+    # Split only that digit-to-letter boundary before checking literal units.
+    unit_text = re.sub(r"(?<=\d)(?=[^\W\d_])", " ", actual)
+    normalized_text = f" {' '.join(words(unit_text))} "
     unit_retained = (
         all(
             any(

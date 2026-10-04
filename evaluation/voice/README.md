@@ -1,5 +1,10 @@
 # Оценка голосового заполнения формы: текст, аудио и iOS
 
+Полное сравнение четырёх клиентских ASR на физическом iPhone и предварительный
+отсев Qwen3-ASR: [CLIENT_ASR_COMPARISON.md](CLIENT_ASR_COMPARISON.md).
+Сравнение способов извлечения полей из готового пунктуированного текста:
+[IDEAL_TEXT_EXTRACTION_COMPARISON.md](IDEAL_TEXT_EXTRACTION_COMPARISON.md).
+
 ## Три отдельных набора проверки
 
 | Набор | Что диктуется | Эталон | Назначение |
@@ -189,11 +194,102 @@ python3 -m evaluation.voice.run_ios --candidate --text-only --diagnostic-only --
 python3 -m evaluation.voice.run_ios --candidate --text-only --all-regression-text --diagnostic-only
 ```
 
-WhisperKit в Xcode подключён только к тестовому target. Для его прогона
-модель Core ML должна лежать в `Documents/VoiceWhisperKitModel` контейнера
-тестового приложения на iPhone; продукт её не загружает. Тест
+Для отдельной проверки влияния `.farField` на файловый SpeechAnalyzer:
+
+```sh
+python3 -m evaluation.voice.run_ios --candidate --asr-only --confidence-only \
+  --no-far-field-hint --mode freeform-development --variant clean \
+  --locale ru --limit 12 --physical-device-id <UDID>
+```
+
+Этот флаг оставляет набор акустических подсказок пустым. Он действует только
+в тесте WAV и не переключает микрофонный контроллер приложения.
+
+Рабочая запись теперь использует WhisperKit Turbo в `DoglyadSpeech`: при входе
+в шторку проверяется модель `large-v3-v20240930_626MB`. Если её нет, шторка
+показывает прогресс скачивания и открывает кнопку записи после подготовки.
+Скачанная модель хранится в Application Support и доступна без сети. Аудио
+записывается во временный несжатый CAF, расшифровывается на устройстве после
+остановки и удаляется.
+Старые SpeechAnalyzer и SFSpeechRecognizer сохранены для сравнительных тестов.
+
+Для отдельного тестового прогона WhisperKit модель Core ML должна лежать в
+`Documents/VoiceWhisperKitModel` контейнера тестового приложения на iPhone. Тест
 `VoiceWhisperKitTests` запускается с `TEST_RUNNER_VOICE_WHISPERKIT_RUN=1`, а
 `export_whisperkit_ios.py` переводит сохранённый JSON в общий ASR-отчёт.
+Обёртка готовит WAV, запускает тест на физическом устройстве, проверяет хеш
+манифеста и экспортирует отчёт для трёх форматов диктовки и контрольного
+набора `voice-blind-v3`:
+
+```sh
+python3 -m evaluation.voice.run_whisperkit_ios --mode guided-format --variant clean --device-id <UDID>
+python3 -m evaluation.voice.run_whisperkit_ios --mode reordered-format --variant noisy --device-id <UDID>
+python3 -m evaluation.voice.run_whisperkit_ios --mode freeform-development --variant clean --device-id <UDID>
+python3 -m evaluation.voice.run_whisperkit_ios --mode freeform-development --variant clean --device-id <UDID> --model large-v3-947
+python3 -m evaluation.voice.run_whisperkit_ios --mode freeform-development --variant clean --device-id <UDID> --prompt type-context
+python3 -m evaluation.voice.run_whisperkit_ios --mode voice-blind-v3 --variant clean --device-id <UDID>
+python3 -m evaluation.voice.run_whisperkit_ios --mode voice-blind-v3 --variant noisy --device-id <UDID>
+```
+
+Каждый запуск создаёт `build/voice-eval/ios-whisperkit-device-<mode>-<variant>/`
+с `results.json`, `asr-report.json` и журналом Xcode. Сравнение с сохранённым
+SpeechAnalyzer выполняет `python3 -m evaluation.voice.compare_asr_reports
+<speechAnalyzer-report.json> <asr-report.json> <comparison.json>`; оно отдельно
+считает WER и потери стороны, отрицания, числа и единицы измерения.
+`--model large-v3-947` требует отдельную Core ML модель в
+`Documents/VoiceWhisperKitModelLargeV3` и сохраняет отчёт в отдельном каталоге.
+`--prompt type-context` передаёт первые 20 существующих фраз выбранного типа
+исследования в декодер WhisperKit и тоже сохраняет отдельный отчёт. Оба
+режима остаются тестовыми и не меняют путь приложения.
+
+Для проверки конечной формы на том же сохранённом WhisperKit-тексте:
+
+```sh
+python3 -m evaluation.voice.run_ios --candidate --text-only --diagnostic-only \
+  --mode voice-blind-v3 --variant clean --locale ru \
+  --replay-asr-report build/voice-eval/ios-whisperkit-device-voice-blind-v3-clean/asr-report.json \
+  --apply-replay-lexicon --parse-strategy production --physical-device-id <UDID>
+```
+
+Повторите с `--locale en` и `--variant noisy`, подставив `noisy/asr-report.json`.
+Этот replay проверяет продуктовый Swift-разбор, но не измеряет уверенность слов
+WhisperKit для автоматического применения полей.
+
+Для диагностического скрининга Parakeet на Mac соберите `fluidaudiocli` из
+[FluidAudio](https://github.com/FluidInference/FluidAudio), загрузите
+[модель v3](https://huggingface.co/nvidia/parakeet-tdt-0.6b-v3) и запустите:
+
+```sh
+python3 -m evaluation.voice.run_parakeet_mac \
+  --cli build/voice-eval/tools/FluidAudio/.build/release/fluidaudiocli \
+  --model-dir build/voice-eval/models/parakeet-tdt-0.6b-v3 \
+  --source-commit <FluidAudio-commit> \
+  --mode freeform-development --variant clean \
+  --output build/voice-eval/parakeet-v3-mac-freeform-clean/asr-report.json
+```
+
+Runner проверяет SHA-256 каждого WAV и фиксирует SHA-256 файлов модели. Его
+задержка измерена на Mac и не является оценкой скорости iPhone.
+
+Чтобы измерить результат заполнения формы по сохранённому WhisperKit-тексту,
+передайте его `asr-report.json` в `run_ios` с `--candidate --text-only
+--diagnostic-only --parse-strategy production`. Флаг `--apply-replay-lexicon`
+создаёт **отдельный** прогон, в котором перед разбором используется тот же
+`DSpeechLexiconCorrector` и словарь фраз типа исследования. В `results.json`
+поле `parseInputText` сохраняет текст после коррекции для проверки изменений.
+Если меняется сам `DSpeechLexiconCorrector`, сохранённый отчёт SpeechAnalyzer
+можно переоценить без повторного ASR: `python3 -m
+evaluation.voice.raw_asr_replay <asr-report.json> <raw-report.json>` переносит
+`rawText` в поле входного текста, сохраняя диапазоны уверенности. Затем
+`run_ios` получает `<raw-report.json>` и `--apply-replay-lexicon`. Производный
+отчёт фиксирует SHA-256 исходного отчёта.
+
+```sh
+python3 -m evaluation.voice.run_ios --candidate --text-only --diagnostic-only \
+  --mode guided-format --variant clean --locale en \
+  --replay-asr-report build/voice-eval/ios-whisperkit-device-guided-format-clean/asr-report.json \
+  --apply-replay-lexicon --parse-strategy production --physical-device-id <UDID>
+```
 
 Измерения ASR и их ограничения: [FREEFORM_DEVELOPMENT_STATUS.md](FREEFORM_DEVELOPMENT_STATUS.md).
 
@@ -580,6 +676,26 @@ python3 -m evaluation.voice.run_ios --candidate --mode extended --variant noisy
 эксперименте не передаётся на сервер. Оба серверных конфига
 `voice_form_parsing.json` сейчас указывают на `google/medgemma-4b-it`.
 
+Для сравнения с прямым разбором готовой пунктуированной строки один запуск
+обрабатывает все три набора (по 62 случая на EN и RU). Вход `ideal-text` —
+ровно `ttsText` из аудиоманифестов, поданный в iOS-диагностику как
+`originalText`. Вход `whisperkit-clean` — сохранённые `correctedText` с iPhone.
+Скрипт перед запросами проверяет полноту шести групп и сохраняет отдельные
+возобновляемые JSON- и Markdown-отчёты по каждому набору:
+
+```bash
+python3 -m evaluation.voice.run_server_benchmark \
+  --source ideal-text \
+  --token-file /private/tmp/doglyad-app-check-token
+```
+
+Для проверки пути после ASR заменить `ideal-text` на `whisperkit-clean`;
+`--source both` последовательно прогоняет оба входа. `--limit 1` создаёт
+отдельные пилотные файлы и не загрязняет полный прогон. В таблицах отчёта
+`Exact forms` и `Correct fields` означают строгое совпадение с эталоном;
+рядом отдельно указаны показатели с эквивалентностью записи произнесённых
+чисел и единиц. Неудавшийся разбор даёт ноль и остаётся в знаменателе.
+
 После запуска inference и обновления всех VM повторить каждый набор можно
 командой (для остальных наборов заменить пути корпуса и ASR-отчёта):
 
@@ -634,3 +750,60 @@ python3 -m evaluation.voice.run_ios \
   --parse-strategy naturalLanguage \
   --physical-device-id <UDID>
 ```
+
+### Независимый текстовый контроль свободной речи
+
+`freeformHoldoutV4.jsonl` содержит 124 новых случая: 31 тип исследования ×
+полная/частичная форма × EN/RU. Генератор использует другие фразы и новые имена,
+а SHA-256 корпуса зафиксирован тестом. Он повторно использует синтетические
+клинические фрагменты каталога и всего несколько шаблонов фраз, поэтому это
+контроль обобщения разбора текста, а не независимая выборка реальной речи.
+Аудио и ASR в этом наборе отсутствуют. После просмотра его ошибок правила
+нельзя подгонять и продолжать называть тот же набор независимым.
+
+```bash
+python3 -m evaluation.voice.freeform_holdout_v4
+python3 -m evaluation.voice.run_ios \
+  --candidate --text-only --holdout-v4 --locale ru \
+  --parse-strategy production --diagnostic-only \
+  --physical-device-id <UDID>
+python3 -m evaluation.voice.run_ios \
+  --candidate --text-only --holdout-v4 --locale ru \
+  --parse-strategy naturalLanguage --diagnostic-only \
+  --physical-device-id <UDID>
+```
+
+Повторить с `--locale en`. Результаты записываются в отдельные каталоги
+`build/voice-eval/ios-candidate-device-text-*-holdout-v4-<locale>/`. Отчёт
+проверяет хеш корпуса и сравнивает каждое поле и полную форму.
+
+После изучения ошибок V4 этот набор становится диагностическим. Перед
+изменением парсера отдельно зафиксирован `freeformHoldoutV5.jsonl` с другими
+формулировками и именами; тот же runner принимает `--holdout-v5`. Его первый
+результат и дальнейшие измерения записаны в [PARSER_COMPARISON.md](PARSER_COMPARISON.md).
+
+V6 был зафиксирован до перехода к объединению предложений по полям. Его
+исходные результаты сохранены в `build/voice-eval/holdout-v6-baseline/`.
+После изучения V6 и исправления маркеров он тоже считается диагностическим.
+V7 зафиксирован до исправления этих маркеров: 124 случая, SHA-256
+`0d499bdbbd7e95fb23e47f77a8cdbcd7cf712df338d50b916357f23682627aa8`.
+Он использует новые фразы, но тот же генератор клинических фактов, поэтому
+остаётся синтетическим контролем переноса, а не доказательством качества на
+речи врачей. Для наборов V6–V8 работают `--holdout-v6`, `--holdout-v7` и
+`--holdout-v8`. V8 был зафиксирован до исправления ошибок V7. Первый результат
+V8 сохранён в `build/voice-eval/holdout-v8-first-pass/`; после его разбора V8
+также стал диагностическим. Цифры приведены в [PARSER_COMPARISON.md](PARSER_COMPARISON.md).
+
+```bash
+python3 -m evaluation.voice.freeform_holdout_v7
+python3 -m evaluation.voice.run_ios \
+  --candidate --text-only --diagnostic-only --holdout-v7 \
+  --locale en --physical-device-id <UDID>
+python3 -m evaluation.voice.clinical_fact_coverage \
+  build/voice-eval/ios-candidate-device-text-diagnostic-holdout-v7-en/results.json
+```
+
+Проверка клинического текста отдельно считает отсутствующие описания и
+предложенные описания, у которых исчезли число, единица, сторона или отрицание.
+Это буквальная проверка синтетических фактов, а не определение медицинской
+эквивалентности.

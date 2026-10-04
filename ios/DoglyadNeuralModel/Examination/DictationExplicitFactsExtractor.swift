@@ -12,39 +12,70 @@ enum DictationExplicitFactsExtractor {
         let text = request.text
         let locale = request.locale
         var fields: [VoiceFieldProposal] = []
-
         let digit = #"(?:[0-9]+|zero|one|two|three|four|five|six|seven|eight|nine|ноль|один|одна|два|две|три|четыре|пять|шесть|семь|восемь|девять)"#
-        let identifierPattern = #"(?:this\s+is\s+study|study|examination\s+number|это\s+исследование\s+номер|номер\s+исследования)\s+("#
-            + digit + #"(?:\s+"# + digit + #"){0,7})(?![\p{L}\p{N}])"#
+        let identifierPattern = #"(?<![\p{L}\p{N}])"# + DictationIdentifierCue.pattern + #"\s+("#
+            + digit + #"(?:(?:\s*,\s*|\s+)"# + digit + #"){0,7})(?![\p{L}\p{N}])(?!\s*,\s*[0-9])(?!\s*(?:mm|мм|cm|см|kg|кг|ml|мл)\b)"#
         if let match = uniqueMatch(identifierPattern, in: text),
            let identifier = identifier(match.value, locale: locale)
         {
             append(.examinationNumber, .text(identifier), quote: match.quote, to: &fields, request: request)
         }
 
-        let namePattern: String
+        let namePatterns: [String]
         switch locale.language.languageCode?.identifier {
         case "en":
-            namePattern = #"(?:^|[.;]\s*)for\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*,?\s*born\b"#
+            namePatterns = [
+                #"\bcase\s+\d+\s*:\s*([\p{L}]+\s+[\p{L}]+)\s+is\s+the\s+patient\b"#,
+                #"\b(?:concerns|examining|regarding\s+patient)\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*[,.:]"#,
+                #"\bpatient\s+details\s*:\s*([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*,\s*(?:male|female)\b"#,
+                #"\b(?:is\s+for|examined)\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*,\s*(?:a\s+)?(?:male|female)\b"#,
+                #"(?:^|[.;]\s*)for\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*,?\s*born\b"#,
+                #"\bpatient\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*,\s*born\b"#,
+                #"\bexamined\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*[.]\s*date\s+of\s+birth\b"#,
+            ]
         case "ru":
-            namePattern = #"(?:^|[.;]\s*)на\s+при[её]ме\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*,?\s*(?:(?=\d{8}\s+года\s+рождения)|(?=\b(?:один|два|ноль)\b))"#
+            namePatterns = [
+                #"\b(?:пациент|пациента|осматриваю|о\s+пациенте)\s+([\p{L}]+\s+[\p{L}]+)\s*[,.:]\s*(?:(?:пол\s+)?(?:мужчина|женщина)|дата\s+рождения)\b"#,
+                #"\b(?:для|о\s+пациенте)\s+([\p{L}]+\s+[\p{L}]+)\s*[.]\s*пол\b"#,
+                #"\bданные\s+пациента\s*:\s*([\p{L}]+\s+[\p{L}]+)\s*,\s*(?:мужчина|женщина)\b"#,
+                #"\b(?:к\s+пациенту|осмотрен\s+пациент)\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*,\s*(?:мужчина|женщина)\b"#,
+                #"(?:^|[.;]\s*)на\s+при[её]ме\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*,?\s*(?:(?=\d{8}\s+года\s+рождения)|(?=\b(?:один|два|ноль)\b)|(?=[\d\s.,–—-]{4,45}\bгода\s+рождения\b))"#,
+                #"\bпациент\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*,\s*дата\s+рождения\b"#,
+                #"\bосматриваем\s+([\p{L}]+(?:\s+[\p{L}]+){1,2})\s*[.]\s*родил(?:ся|ась)\b"#,
+            ]
         default:
-            namePattern = "(?!)"
+            namePatterns = []
         }
-        if let match = uniqueMatch(namePattern, in: text) {
+        if let match = firstUniqueMatch(namePatterns, in: text) {
             append(.patientName, .text(match.value), quote: match.quote, to: &fields, request: request)
         }
 
-        let genderPattern: String
+        let genderPatterns: [String]
         switch locale.language.languageCode?.identifier {
         case "en":
-            genderPattern = #"recorded\s+sex\s+(?:is\s+)?(male|female)\b"#
+            genderPatterns = [
+                #"\b(?:recorded\s+)?(?:sex|gender)\s+(?:is\s+)?(male|female)\b"#,
+                #"\bpatient\s+details\s*:\s*[\p{L}]+\s+[\p{L}]+\s*,\s*(male|female)\b"#,
+                #"\b(?:concerns|examining|regarding\s+patient)\s+[\p{L}]+\s+[\p{L}]+\s*[,.:]\s*(male|female)\b"#,
+                #"\b(?:is\s+for|examined)\s+[\p{L}]+(?:\s+[\p{L}]+){1,2}\s*,\s*(?:a\s+)?(male|female)\b"#,
+                #"recorded\s+sex\s+(?:is\s+)?(male|female)\b"#,
+                #"\bborn\s+(?:19|20)\d{2}-\d{2}-\d{2}\s*,\s*is\s+(male|female)\b"#,
+                #"\bdate\s+of\s+birth\s+(?:19|20)\d{2}-\d{2}-\d{2}\s*;\s*(male|female)\b"#,
+            ]
         case "ru":
-            genderPattern = #"года\s+рождения\s*,?\s*(мужчина|женщина)\b"#
+            genderPatterns = [
+                #"\bпол\s+(?:указан\s+как\s+)?(мужчина|женщина)\b"#,
+                #"\b(?:пациент|пациента|осматриваю|о\s+пациенте)\s+[\p{L}]+\s+[\p{L}]+\s*[,.:]\s*(мужчина|женщина)\b"#,
+                #"\bданные\s+пациента\s*:\s*[\p{L}]+\s+[\p{L}]+\s*,\s*(мужчина|женщина)\b"#,
+                #"\b(?:к\s+пациенту|осмотрен\s+пациент)\s+[\p{L}]+(?:\s+[\p{L}]+){1,2}\s*,\s*(мужчина|женщина)\b"#,
+                #"года\s+рождения\s*,?\s*(мужчина|женщина)\b"#,
+                #"\bпол\s+(мужчина|женщина)\b"#,
+                #"\bродил(?:ся|ась)\s+(?:19|20)\d{2}-\d{2}-\d{2}\s*,\s*(мужчина|женщина)\b"#,
+            ]
         default:
-            genderPattern = "(?!)"
+            genderPatterns = []
         }
-        if let match = uniqueMatch(genderPattern, in: text) {
+        if let match = firstUniqueMatch(genderPatterns, in: text) {
             let gender: VoiceGender = match.value.lowercased(with: locale) == "male"
                 || match.value.lowercased(with: locale) == "мужчина" ? .male : .female
             append(.patientGender, .gender(gender), quote: match.quote, to: &fields, request: request)
@@ -62,7 +93,15 @@ enum DictationExplicitFactsExtractor {
         let compactRussianDate = locale.language.languageCode?.identifier == "ru"
             ? uniqueMatch(#"\b((?:19|20)\d{6}\s+года\s+рождения)\b"#, in: text)
             : nil
-        if let match = compactEnglishDate ?? compactRussianDate ?? uniqueMatch(datePattern, in: text) {
+        let isoBirthPattern: String
+        switch locale.language.languageCode?.identifier {
+        case "en": isoBirthPattern = #"(?:\bborn(?:\s+on)?|\b(?:date\s+of\s+birth|birth\s+date)(?:\s+is)?)\s+((?:19|20)\d{2}-\d{2}-\d{2})\b"#
+        case "ru": isoBirthPattern = #"(?:\bдата\s+рождения|\bродил(?:ся|ась))\s+((?:19|20)\d{2}-\d{2}-\d{2})\b"#
+        default: isoBirthPattern = "(?!)"
+        }
+        if let match = compactEnglishDate ?? compactRussianDate ?? uniqueMatch(isoBirthPattern, in: text)
+            ?? uniqueMatch(datePattern, in: text)
+        {
             let quote = locale.language.languageCode?.identifier == "ru" ? match.value : match.quote
             if let date = date(match.value, quote: quote, locale: locale) {
                 append(.patientDateOfBirth, .date(date), quote: quote, to: &fields, request: request)
@@ -70,23 +109,30 @@ enum DictationExplicitFactsExtractor {
         }
 
         let cardinal = #"([\p{L}\p{N}-]+(?:\s+[\p{L}\p{N}-]+){0,3})"#
-        let heightPattern = #"(?:they\s+are|height|рост)\s+"# + cardinal
+        let heightPattern = #"(?:they\s+are|(?:measured\s+)?height(?:\s+(?:is|of|comes\s+to))?|stature|patient\s+is|(?:измеренный\s+)?рост(?:\s+(?:составляет|равен))?)\s+"# + cardinal
             + #"\s+(?:cm|см|centimet(?:er|re)s?|сантиметр(?:а|ов)?)\b"#
-        if let match = uniqueMatch(heightPattern, in: text),
+        let tallPattern = #"\bat\s+"# + cardinal + #"\s+(?:cm|centimet(?:er|re)s?)\s+tall\b"#
+        if let match = uniqueMatch(heightPattern, in: text) ?? uniqueMatch(tallPattern, in: text),
            let number = number(match.value, locale: locale)
         {
             append(.patientHeightCM, .number(number), quote: match.quote, to: &fields, request: request)
         }
 
-        let weightPattern = #"(?:weigh|weight|вес)\s+"# + cardinal
+        let weightPattern = #"(?:weighs?|(?:body\s+)?weight|body\s+mass|(?:their\s+)?measured\s+weight|вес(?:ит|\s+пациента)?|(?:измеренный|текущий)\s+вес|масса(?:\s+тела|\s+пациента)?|измеренная\s+масса\s+тела)\s+(?:(?:is|of|measures|comes\s+to|recorded\s+at|равен|составляет)\s+)?"# + cardinal
             + #"\s+(?:kg|кг|kilograms?|килограмм(?:а|ов)?)\b"#
-        if let match = uniqueMatch(weightPattern, in: text),
+        let inWeightPattern = #"\b(?:and\s+)?([0-9]+(?:[.,][0-9]+)?)\s+(?:kg|kilograms?)\s+in\s+weight\b"#
+        if let match = uniqueMatch(weightPattern, in: text) ?? uniqueMatch(inWeightPattern, in: text),
            let number = number(match.value, locale: locale)
         {
             append(.patientWeightKG, .number(number), quote: match.quote, to: &fields, request: request)
         }
 
-        let complaintPattern = #"(?:they\s+report|сообщает\s*[:,-]?)\s+(.+?)(?=\s*(?:(?:on|an)\s+ultrasound|ultrasound|на\s+узи|and\s+weigh|,\s*вес\b|$))"#
+        let observationCue = DictationObservationCue.pattern
+        let complaintCue = DictationSectionCue.complaint
+        let measurementCue = DictationSectionCue.measurement
+        let recordCue = DictationFollowingFieldCue.recordPattern
+        let complaintPattern = complaintCue + #"\s*[:,—-]?\s+(.+?)(?=\s*(?:"#
+            + observationCue + #"|ultrasound\b|"# + measurementCue + #"|"# + recordCue + #"|$))"#
         if let match = uniqueMatch(complaintPattern, in: text) {
             let complaint = match.value.trimmingCharacters(
                 in: .whitespacesAndNewlines.union(CharacterSet(charactersIn: ".,;"))
@@ -105,7 +151,8 @@ enum DictationExplicitFactsExtractor {
             }
         }
 
-        let observationPattern = #"(?:(?:on|an)\s+ultrasound|на\s+узи)\s*[,.:]?\s*(.+?)(?=\s*(?:this\s+is\s+study|это\s+исследование\s+номер|they\s+report|сообщает\s*[:,-]?)|$)"#
+        let observationPattern = observationCue + #"\s*[,.:]?\s*(.+?)(?=\s*(?:this\s+is\s+study|это\s+исследование\s+номер|"#
+            + complaintCue + #"|"# + measurementCue + #"|"# + recordCue + #"|$))"#
         if let match = uniqueMatch(observationPattern, in: text) {
             let observed = match.value.trimmingCharacters(in: .whitespacesAndNewlines)
             if !observed.isEmpty {
@@ -139,6 +186,12 @@ enum DictationExplicitFactsExtractor {
     private static func identifier(_ text: String, locale: Locale) -> String? {
         let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
         if trimmed.range(of: #"^[0-9]+$"#, options: .regularExpression) != nil { return trimmed }
+        // ASR can punctuate a dictated identifier as "0,1,1" or "0,25".
+        // All digits are present next to an explicit study-number cue.
+        if trimmed.range(of: #"^[0-9]+(?:\s*,\s*[0-9]+){1,2}$"#, options: .regularExpression) != nil {
+            let digits = String(trimmed.filter(\.isNumber))
+            if digits.count <= 4 { return digits }
+        }
         return SpokenDigitSequence.parse(trimmed, locale: locale)
     }
 
@@ -173,5 +226,12 @@ enum DictationExplicitFactsExtractor {
               let valueRange = Range(match.range(at: 1), in: text)
         else { return nil }
         return Match(quote: String(text[quoteRange]), value: String(text[valueRange]))
+    }
+
+    private static func firstUniqueMatch(_ patterns: [String], in text: String) -> Match? {
+        for pattern in patterns {
+            if let match = uniqueMatch(pattern, in: text) { return match }
+        }
+        return nil
     }
 }

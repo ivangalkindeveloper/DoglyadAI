@@ -74,7 +74,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         switch status {
         case .stopped:
             break
-        case .preparing, .recording:
+        case .preparing, .recording, .transcribing:
             return
         }
         guard !audioEngine.isRunning else { return }

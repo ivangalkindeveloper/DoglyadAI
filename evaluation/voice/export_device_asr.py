@@ -68,7 +68,9 @@ def export_device_asr(
     report = {
         "schemaVersion": 1,
         "platform": "iOS",
-        "recognizer": f"{engine} on physical iPhone; hints={str(hints).lower()}; text={'raw' if raw else 'corrected'}",
+        "recognizer": f"{engine} on physical iPhone; hints={str(hints).lower()}; "
+        + f"fieldHint={'none' if original.get('asrNoFarFieldHint', False) else 'far'}; "
+        + f"text={'raw' if raw else 'corrected'}",
         "runId": original["runId"],
         "sourceReportSha256": file_sha256(results_path),
         "audioMode": mode,

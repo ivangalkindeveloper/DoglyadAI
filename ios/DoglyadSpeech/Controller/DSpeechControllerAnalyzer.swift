@@ -84,7 +84,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         switch status {
         case .stopped:
             break
-        case .preparing, .recording:
+        case .preparing, .recording, .transcribing:
             return
         }
         guard let sessionID = session.start() else { return }
