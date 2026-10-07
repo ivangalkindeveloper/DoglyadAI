@@ -61,7 +61,7 @@
 ## Проверки и воспроизводимость
 
 - iOS: Development и Release Production собраны; 80 тестов в 6 выбранных наборах проходят, включая приоритет Foundation Models, сервер при недоступности, отмену, проверку цитат, частичное применение и подтверждение только сомнительных WhisperKit-предложений.
-- Backend: проверки языка, App Check и передаваемого ID модели сохраняются. Добавлены регрессии полноты жалоб, отсутствия выдуманных клинических слов и запрета копировать метаданные в описание.
+- Backend: Ruff и mypy проходят, **171 тест main, 10 тестов inference** проходят; **105 тестов оценочного набора** проходят. Проверки языка, App Check и передаваемого ID модели сохраняются. Добавлены регрессии полноты жалоб, отсутствия выдуманных клинических слов и запрета копировать метаданные в описание.
 - Артефакты: `build/voice-eval/gpu-free-control/` и `build/voice-eval/gpu-free-confirmation/`. В каждой папке есть входы, сырые ответы, исходная оценка, отдельная повторная оценка, SHA-256 до ответа и снимок всех исходников проверки. `gpu-free-confirmation/frozen_validator.py` воспроизводит независимую версию независимо от последующих правок рабочих файлов.
 - Прежние 60 и 12 текстов MedGemma повторно проверяются финальной обработкой; сырые ответы не перегенерируются.
 - GPU перед и после прогонов обслуживал `google/medgemma-4b-it`, vLLM healthy. Тесты обращались к внутренней vLLM на VM; защищённый путь с действительным App Check на iPhone в этот этап не входит.
@@ -71,4 +71,14 @@ ENVIRONMENT=development PYTHONPATH=backend/main .venv311/bin/python -m evaluatio
 ENVIRONMENT=development PYTHONPATH=backend/main .venv311/bin/python -m evaluation.voice.free_speech_control build/voice-eval/gpu-free-confirmation/cases.jsonl --fixtures evaluation/voice/fixtures/free_speech_confirmation.json
 ```
 
-Обновление сервисов выполняется централизованно через `make update-infrastructure`: inference backend, main-development, main-production. Точная версия и результат развертывания сообщаются отдельно после завершения команды. Сама vLLM и модель этим обновлением не заменяются.
+## Развертывание
+
+`make update-infrastructure` успешно обновил **inference backend, main-development и main-production** на код `51e4c2f2b94b70b4ccc780421b0b3f26f92a6c77`. [Сборка GitHub Actions](https://github.com/ivangalkindeveloper/DoglyadAI/actions/runs/37704541348) завершилась успешно для обоих образов. Повторный `make check-infrastructure` после обновления прошёл; незавершённых блокировок развертывания нет.
+
+- Main image ID: `sha256:496b4c992ba3cc083273e901d9801f0a1fa78a8f4af338be67fb71d9f3c06e6f`, одинаковый образ для обоих окружений.
+- Inference image ID: `sha256:0db8e4058acf226ffc09602c1251166f020ffb8788329620e613d3b9ecffe0a5`.
+- Контейнер vLLM, его образ и ID модели совпадают со снимком до обновления. Состояние healthy, `/v1/models` возвращает единственную модель **`google/medgemma-4b-it`**. Конфигурация inference `SERVED_MODEL_ID` имеет этот же ID. Qwen на GPU не осталась.
+- На каждом main загруженная конфигурация разбора выбирает MedGemma и содержит её ID в существующей карте GPU-эндпоинтов. Вызовы защищённого `/v1/ultrasound/parse_dictation` и соответствующего inference-эндпоинта без токена дают **401**.
+- Проверка 401 подтверждает доступность и защиту маршрутов. Полная генерация через main → inference с действительным App Check на iPhone в этом этапе не выполнялась; замеры качества текста проводились через внутреннюю vLLM.
+
+Последующее изменение этого отчёта не меняет код развернутых backend-образов.
