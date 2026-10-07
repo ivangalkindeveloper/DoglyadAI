@@ -1,0 +1,44 @@
+[
+  {
+    "locale": "ru",
+    "name": "Нина Крылова",
+    "gender": "female",
+    "birth": "1968-05-14",
+    "date": "четырнадцатое мая тысяча девятьсот шестьдесят восьмого года",
+    "height": 164,
+    "weight": 76.3,
+    "number": "MT-0201",
+    "complaints": "Сухой кашель по ночам. Кровохарканья нет.",
+    "description": "Справа в плевральном синусе жидкость слоем 24 мм. Слева плевральная жидкость не определяется. В жидкости перегородок нет. Диафрагма справа визуализируется. Дополнительных образований не выявлено.",
+    "freeText": "Сегодня пациентка Нина Крылова. Пол женщина, родилась четырнадцатое мая тысяча девятьсот шестьдесят восьмого года. Вес составляет 76.3 кг, рост 164 см. Номер исследования MT-0201. Жалобы: Сухой кашель по ночам. Кровохарканья нет. Описание исследования: Справа в плевральном синусе жидкость слоем 24 мм. Слева плевральная жидкость не определяется. В жидкости перегородок нет. Диафрагма справа визуализируется. Дополнительных образований не выявлено."
+  },
+  {
+    "locale": "ru",
+    "weight": 88.2,
+    "number": "RX-019",
+    "complaints": "Боль в левой молочной железе перед менструацией.",
+    "description": "В левой молочной железе киста 14 на 9 мм с тонкой стенкой. Внутреннего кровотока нет. Справа очаговых образований не выявлено. Подмышечные лимфоузлы не увеличены с обеих сторон.",
+    "freeText": "В левой молочной железе киста 14 на 9 мм с тонкой стенкой. Внутреннего кровотока нет. Справа очаговых образований не выявлено. Подмышечные лимфоузлы не увеличены с обеих сторон. Номер исследования RX-019, вес 88.2 кг. Жалобы: Боль в левой молочной железе перед менструацией."
+  },
+  {
+    "locale": "en",
+    "name": "Nora Davis",
+    "gender": "female",
+    "birth": "1968-05-14",
+    "date": "the fourteenth of May nineteen sixty eight",
+    "height": 164,
+    "weight": 76.3,
+    "number": "MT-0201",
+    "complaints": "Dry cough at night. No hemoptysis.",
+    "description": "Right pleural recess contains a 24 mm layer of fluid. No left pleural fluid. No septations in the fluid. Right diaphragm is visible. No additional masses.",
+    "freeText": "We are examining patient Nora Davis. Sex is female, born the fourteenth of May nineteen sixty eight. Weight is 76.3 kg; height is 164 cm. Exam ID MT-0201. Complaints: Dry cough at night. No hemoptysis. Examination description: Right pleural recess contains a 24 mm layer of fluid. No left pleural fluid. No septations in the fluid. Right diaphragm is visible. No additional masses."
+  },
+  {
+    "locale": "en",
+    "weight": 88.2,
+    "number": "RX-019",
+    "complaints": "Left breast pain before menstruation.",
+    "description": "Left breast cyst 14 by 9 mm with a thin wall. No internal vascularity. No focal lesions on the right. Neither axilla has enlarged lymph nodes.",
+    "freeText": "Left breast cyst 14 by 9 mm with a thin wall. No internal vascularity. No focal lesions on the right. Neither axilla has enlarged lymph nodes. Exam ID RX-019; weight is 88.2 kg. Complaints: Left breast pain before menstruation."
+  }
+]

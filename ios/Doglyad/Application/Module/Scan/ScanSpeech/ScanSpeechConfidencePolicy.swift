@@ -39,6 +39,16 @@ enum ScanSpeechConfidencePolicy {
         case .questionable:
             return false
         }
+        // WhisperKit exposes no calibrated per-word confidence. For the selected
+        // ASR, automatic application follows the checked extraction decision:
+        // an unchanged, final transcript, a unique quote, full accuracy and no
+        // validation warnings. This is not an estimate of acoustic accuracy.
+        switch transcript.engine {
+        case .whisperKit:
+            return uniqueRange(for: field.sourceQuote, in: transcript.rawText) != nil
+        case .speechAnalyzer, .sfSpeechRecognizer:
+            break
+        }
         switch proposal.fieldSources[field.id] ?? proposal.source {
         case .labeledDictation:
             break

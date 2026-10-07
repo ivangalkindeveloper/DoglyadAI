@@ -557,8 +557,8 @@ struct DictationExplicitFactsExtractorTests {
     }
 
     @MainActor
-    @Test("A false complaint label cannot stop complete explicit fact extraction")
-    func falseComplaintLabelDoesNotStopFactory() async throws {
+    @Test("A false complaint label cannot stop complete explicit fact reconciliation")
+    func falseComplaintLabelDoesNotStopReconciliation() throws {
         let request = DictationParseRequest(
             text: "Patient Olivia Carter, born 1994-10-03, is female. Study 079. "
                 + "Height 162 centimeters; weight 53 kilograms. The concern is no complaints. "
@@ -566,11 +566,12 @@ struct DictationExplicitFactsExtractorTests {
             examinationTypeId: "arteriesOfTheLowerExtremities", locale: Locale(identifier: "en_US"),
             allowedFields: VoiceFieldId.allCases
         )
-        let factory = DExaminationNeuralModelFactory(
-            locale: request.locale, systemPrompt: "unused",
-            parameters: DExaminationGenerationParameters(temperature: 0, maxTokens: 100, maxContextTokens: 1024)
+        let proposal = DictationProposalReconciler.reconcile(
+            request: request,
+            labeled: DictationLabeledFormParser.parse(request: request),
+            explicit: DictationExplicitFactsExtractor.extract(request: request),
+            generated: nil
         )
-        let proposal = try await factory.parseProposals(request: request)
         #expect(proposal.fieldSources[.patientComplaints] == .explicitFacts)
         #expect(proposal.proposals.count == 8)
         #expect(proposal.proposals.first(where: { $0.id == .patientComplaints })?.value == .text("no complaints"))

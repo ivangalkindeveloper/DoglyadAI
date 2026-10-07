@@ -81,6 +81,200 @@ def test_questionable_accuracy_survives_validation() -> None:
     assert response.proposals[0].accuracy.value == "questionable"
 
 
+@pytest.mark.parametrize(
+    "transcript,evidence,value",
+    [
+        (
+            "Examination description: left ventricle: fifty two millimeters.",
+            "left ventricle: fifty two millimeters",
+            "52",
+        ),
+        ("Описание исследования: правый желудочек 37 мм.", "правый желудочек 37 мм", "37"),
+        ("Описание исследования: объём 80 мл.", "объём 80 мл", "80"),
+        ("Номер исследования: 007. Описание исследования: желудочек 37 мм.", "желудочек 37 мм", "37"),
+        ("Описание исследования: желудочек 37.", "желудочек 37", "37"),
+        (
+            "Номер исследования: 007. Описание исследования: желудочек 37 мм.",
+            "Номер исследования: 007. Описание исследования: желудочек 37 мм.",
+            "37",
+        ),
+    ],
+)
+def test_measurement_cannot_be_used_as_examination_number(transcript: str, evidence: str, value: str) -> None:
+    generated = USVoiceFormGeneration.model_validate(
+        [{"field_id": "examination_number", "value": value, "evidence": evidence, "accuracy": "full"}]
+    )
+    response = validate_voice_form_generation(generated, transcript)
+    numbers = [item for item in response.proposals if item.field_id.value == "examination_number"]
+    assert all(item.value != value for item in numbers)
+    if not numbers:
+        assert [item.value for item in response.rejectedFieldIds] == ["examination_number"]
+
+
+@pytest.mark.parametrize(
+    "transcript,evidence,value",
+    [
+        ("Номер исследования: 007. Описание исследования: желудочек 37 мм.", "007", "007"),
+        ("Это исследование номер ноль ноль семь.", "исследование номер ноль ноль семь", "007"),
+        ("This is study zero zero seven. No complaints.", "This is study zero zero seven", "007"),
+        ("Study ID: A-007.", "A-007", "A-007"),
+        ("Exam No. 007.", "Exam No. 007", "007"),
+        ("Examination number: zero zero seven.", "zero zero seven", "007"),
+        (
+            "Описание исследования: желудочек 37 мм. Вес: 82 кг. "
+            "Номер исследования: ноль ноль семь. Жалобы: жалоб нет.",
+            "Описание исследования: желудочек 37 мм. Вес: 82 кг. "
+            "Номер исследования: ноль ноль семь. Жалобы: жалоб нет.",
+            "007",
+        ),
+        (
+            "Это исследование номер ноль ноль семь; сообщает: жалоб нет, вес 82 килограмма.",
+            "Это исследование номер ноль ноль семь; сообщает: жалоб нет, вес 82 килограмма.",
+            "007",
+        ),
+    ],
+)
+def test_explicit_study_identifier_is_kept(transcript: str, evidence: str, value: str) -> None:
+    generated = USVoiceFormGeneration.model_validate(
+        [{"field_id": "examination_number", "value": value, "evidence": evidence, "accuracy": "full"}]
+    )
+    response = validate_voice_form_generation(generated, transcript)
+    assert response.rejectedFieldIds == []
+    assert response.proposals[0].value == value
+
+
+def test_full_clinical_text_is_preserved_in_response() -> None:
+    description = "Правый желудочек: 37 мм. Дополнительных изменений не выявлено. Выпота нет."
+    generated = USVoiceFormGeneration.model_validate(
+        [
+            {"field_id": "patient_complaints", "value": "Жалоб нет", "evidence": "Жалоб нет", "accuracy": "full"},
+            {"field_id": "examination_description", "value": description, "evidence": description, "accuracy": "full"},
+        ]
+    )
+    response = validate_voice_form_generation(generated, f"Жалобы: Жалоб нет. Описание исследования: {description}")
+    assert [item.value for item in response.proposals] == ["Жалоб нет.", description]
+
+
+@pytest.mark.parametrize(
+    "transcript,complaints,description",
+    [
+        (
+            "Жалобы: Жалоб нет. Описание исследования: Правый желудочек: 37 мм. "
+            "Дополнительных изменений не выявлено. Выпота нет.",
+            "Жалоб нет.",
+            "Правый желудочек: 37 мм. Дополнительных изменений не выявлено. Выпота нет.",
+        ),
+        (
+            "Complaints: No complaints. Examination description: Right ventricle: 37 mm. "
+            "No additional abnormality. No effusion.",
+            "No complaints.",
+            "Right ventricle: 37 mm. No additional abnormality. No effusion.",
+        ),
+    ],
+)
+def test_labeled_clinical_sections_survive_model_omission(transcript: str, complaints: str, description: str) -> None:
+    response = validate_voice_form_generation(USVoiceFormGeneration.model_validate([]), transcript)
+    actual = {item.field_id.value: item for item in response.proposals}
+    assert set(actual) == {"patient_complaints", "examination_description"}
+    assert actual["patient_complaints"].value == complaints
+    assert actual["examination_description"].value == description
+    assert description in actual["examination_description"].evidence
+    assert all(item.accuracy.value == "full" for item in actual.values())
+    assert response.rejectedFieldIds == []
+
+
+def test_labeled_text_replaces_shortening_and_stops_before_other_fields() -> None:
+    description = "Правый желудочек: 37 мм. Дополнительных изменений не выявлено."
+    transcript = f"Описание исследования: {description} Вес: 82 кг. Жалобы: Жалоб нет. Пациент: Иванов Иван."
+    generated = USVoiceFormGeneration.model_validate(
+        [
+            {
+                "field_id": "examination_description",
+                "value": "Правый желудочек: 37 мм.",
+                "evidence": "Правый желудочек: 37 мм.",
+                "accuracy": "full",
+            },
+            {"field_id": "patient_complaints", "value": "нет", "evidence": "Жалоб нет", "accuracy": "full"},
+            {"field_id": "patient_weight_kg", "value": 82, "evidence": "Вес: 82 кг.", "accuracy": "full"},
+        ]
+    )
+    response = validate_voice_form_generation(generated, transcript)
+    actual = {item.field_id.value: item.value for item in response.proposals}
+    assert actual == {
+        "examination_description": description,
+        "patient_complaints": "Жалоб нет.",
+        "patient_weight_kg": 82,
+    }
+
+
+def test_repeated_clinical_labels_are_not_chosen_automatically() -> None:
+    response = validate_voice_form_generation(
+        USVoiceFormGeneration.model_validate([]), "Жалобы: боль справа. Жалобы: боли нет."
+    )
+    assert response.proposals == []
+
+
+def test_free_speech_with_later_explicit_labels_preserves_the_sections() -> None:
+    response = validate_voice_form_generation(
+        USVoiceFormGeneration.model_validate([]),
+        "На приёме Иванов. Жалобы: боль справа. Описание исследования: печень не увеличена.",
+    )
+    assert {item.field_id.value: item.value for item in response.proposals} == {
+        "patient_complaints": "боль справа.",
+        "examination_description": "печень не увеличена.",
+    }
+
+
+def test_natural_ultrasound_cue_restores_sentences_omitted_by_the_model() -> None:
+    generated = USVoiceFormGeneration.model_validate(
+        [
+            {
+                "field_id": "examination_description",
+                "value": "Печень не увеличена.",
+                "evidence": "Печень не увеличена.",
+                "accuracy": "full",
+            }
+        ]
+    )
+    response = validate_voice_form_generation(generated, "На УЗИ: Печень не увеличена. Очаговых изменений нет.")
+    assert response.proposals[0].value == "Печень не увеличена. Очаговых изменений нет."
+    assert response.proposals[0].accuracy.value == "questionable"
+
+
+def test_explicit_numeric_self_correction_keeps_the_model_normalization() -> None:
+    source = "Левый желудочек: 54, нет, 51 мм. Дополнительных изменений не выявлено."
+    value = "Левый желудочек: 51 мм. Дополнительных изменений не выявлено."
+    generated = USVoiceFormGeneration.model_validate(
+        [{"field_id": "examination_description", "value": value, "evidence": source, "accuracy": "questionable"}]
+    )
+    response = validate_voice_form_generation(generated, f"Жалобы: Жалоб нет. Описание исследования: {source}")
+    proposal = next(item for item in response.proposals if item.field_id.value == "examination_description")
+    assert proposal.value == value
+    assert source in proposal.evidence
+    assert proposal.accuracy.value == "questionable"
+
+
+@pytest.mark.parametrize(
+    "source",
+    ["1 августа 1978 года", "первое августа тысяча девятьсот семьдесят восьмого года"],
+)
+def test_natural_birth_date_proposal_is_accepted(source: str) -> None:
+    generated = USVoiceFormGeneration.model_validate(
+        [{"field_id": "patient_date_of_birth", "value": "1978-08-01", "evidence": source, "accuracy": "full"}]
+    )
+    response = validate_voice_form_generation(generated, f"Дата рождения: {source}.")
+    assert response.proposals[0].value == "1978-08-01"
+    assert response.proposals[0].accuracy.value == "full"
+
+
+def test_iso_birth_date_does_not_need_model_conversion() -> None:
+    generated = USVoiceFormGeneration.model_validate(
+        [{"field_id": "patient_date_of_birth", "value": "1978-08-01", "evidence": "1978-08-01", "accuracy": "full"}]
+    )
+    response = validate_voice_form_generation(generated, "Дата рождения: 1978-08-01.")
+    assert response.proposals[0].accuracy.value == "full"
+
+
 def test_boolean_measurement_is_not_accepted_as_one() -> None:
     with pytest.raises(ValueError):
         USVoiceFormGeneration.model_validate(

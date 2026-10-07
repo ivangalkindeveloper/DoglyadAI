@@ -1,13 +1,8 @@
 import Foundation
 import UIKit
 
-/// Creates and holds the local dictation-parsing model, picking its implementation
-/// (Foundation Models or MLX) by what the current system supports and by the
-/// dictation language.
-///
-/// The model weighs hundreds of megabytes and coexists with the camera session on
-/// the scanning screen, so it is loaded lazily — on the first parse or warm-up
-/// rather than at app start — and released when the system asks for memory back.
+/// Creates the local Foundation Models parser when the system and dictation
+/// language support it. The application routes other requests to its backend.
 @MainActor
 public final class DExaminationNeuralModelFactory {
     private let locale: Locale
@@ -28,7 +23,7 @@ public final class DExaminationNeuralModelFactory {
             return true
         }
 
-        return DExaminationNeuralModelMLX.isAvailable(locale: locale, parameters: parameters)
+        return false
     }
 
     public init(
@@ -95,14 +90,6 @@ public final class DExaminationNeuralModelFactory {
                     parameters: parameters
                 )
             }
-            if DExaminationNeuralModelMLX.isAvailable(locale: locale, parameters: parameters) {
-                return try await DExaminationNeuralModelMLX(
-                    systemPrompt: systemPrompt,
-                    proposalPrompt: proposalPrompt,
-                    parameters: parameters
-                )
-            }
-
             throw DExaminationNeuralModelError.unavailable
         }
         loadingTask = task
@@ -120,19 +107,7 @@ public final class DExaminationNeuralModelFactory {
         let deterministic = DictationProposalReconciler.reconcile(
             request: request, labeled: labeled, explicit: explicit, generated: nil
         )
-        let foundationModelsAvailable: Bool
-        if #available(iOS 26.0, *) {
-            foundationModelsAvailable = DExaminationNeuralModelFoundationModels.isAvailable(
-                locale: locale, parameters: parameters
-            )
-        } else {
-            foundationModelsAvailable = false
-        }
-        let deterministicComplete = labeled?.proposals.isEmpty == false && labeled?.rejectedFieldIds.isEmpty == true
-            || deterministic.proposals.count == request.allowedFields.count
-        if !foundationModelsAvailable, deterministicComplete {
-            return deterministic
-        }
+        guard isAvailable else { throw DExaminationNeuralModelError.unavailable }
         do {
             let generated = try await model().parseProposals(request: request)
             return DictationProposalReconciler.reconcile(

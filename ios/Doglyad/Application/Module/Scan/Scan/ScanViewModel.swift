@@ -551,8 +551,6 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     var isSpeechButtonVisible: Bool {
-        guard container.isUSExaminationNeuralModelAvailable else { return false }
-
         switch subscription.availability(of: .formCompletionViaMicrophone) {
         case .offered, .available:
             return true

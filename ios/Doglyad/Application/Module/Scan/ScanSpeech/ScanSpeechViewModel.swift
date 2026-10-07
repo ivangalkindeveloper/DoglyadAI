@@ -264,9 +264,7 @@ final class ScanSpeechViewModel: DViewModel {
     }
 
     private func processTranscript(_ transcript: DictationTranscript) {
-        guard transcript.isReadyForParsing,
-              container.examinationNeuralModelFactory != nil
-        else {
+        guard transcript.isReadyForParsing else {
             showReview(transcript)
             return
         }
@@ -298,11 +296,6 @@ final class ScanSpeechViewModel: DViewModel {
                   transcript: reviewTranscript,
                   visibleText: transcriptController.text
               ) else { return }
-        guard container.examinationNeuralModelFactory != nil else {
-            messager.showUnknownError()
-            return
-        }
-
         if speech != reviewTranscript.correctedText {
             analytics.actionCompleted(.voiceTranscriptEdited)
         }
@@ -314,7 +307,8 @@ final class ScanSpeechViewModel: DViewModel {
     private func onParseProposals(
         speech: String
     ) {
-        guard let factory = container.examinationNeuralModelFactory else { return }
+        let factory = container.examinationNeuralModelFactory
+        let repository = container.ultrasoundReportRepository
         let request = DictationParseRequest(
             text: speech,
             examinationTypeId: arguments.examinationType.id,
@@ -324,7 +318,21 @@ final class ScanSpeechViewModel: DViewModel {
         let started = Date()
 
         handle {
-            try await factory.parseProposals(request: request)
+            try await DictationParseRouter.parse(
+                request: request,
+                isFoundationModelsAvailable: factory?.isAvailable ?? false,
+                parseFoundationModels: {
+                    guard let factory else { throw DExaminationNeuralModelError.unavailable }
+                    return try await factory.parseProposals(request: request)
+                },
+                parseServer: {
+                    try await repository.parseDictation(
+                        locale: request.locale,
+                        examinationTypeId: request.examinationTypeId,
+                        transcript: request.text
+                    )
+                }
+            )
         } onDefer: {
             self.isLoading = false
         } onMainSuccess: { proposal in

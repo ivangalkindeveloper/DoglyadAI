@@ -178,7 +178,7 @@ public struct DictationProposal: Sendable {
                 || !hasMeasurementCue(in: sourceQuote, pattern: #"(?i)\b(?:height|tall|they\s+are|рост)\b"#)
         case .patientWeightKG:
             return warnings.contains(.unitMismatch)
-                || !hasMeasurementCue(in: sourceQuote, pattern: #"(?i)\b(?:weigh|weight|вес|масса\s+тела)\b"#)
+                || !hasMeasurementCue(in: sourceQuote, pattern: #"(?i)\b(?:weighs?|weight|вес(?:ит)?|масса\s+тела)\b"#)
         case .patientComplaints, .examinationDescription:
             return false
         }
@@ -192,7 +192,7 @@ public struct DictationProposal: Sendable {
         else { return false }
         let precedingText = String(request.text[..<quoteRange.lowerBound].suffix(40))
         let beforeName = precedingText + String(sourceQuote[..<nameRange.lowerBound])
-        let cue = #"(?i)\b(?:for|patient|name|пациент|имя(?:\s+пациента)?|фио|на\s+при[её]ме)\b\s*[:,-]?\s*$"#
+        let cue = #"(?i)\b(?:for|patient|name|пациент(?:а|ка|ки|ке|ку)?|имя(?:\s+пациента)?|фио|на\s+при[её]ме)\b\s*(?:is\s+)?[:,-]?\s*$"#
         return beforeName.range(of: cue, options: .regularExpression) != nil
     }
 

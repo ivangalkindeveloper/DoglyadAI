@@ -1,0 +1,66 @@
+[
+  {
+    "id": "quality-ru-written-birth-date",
+    "locale": "ru",
+    "inputText": "Дата рождения: 1 августа 1978 года.",
+    "expectedFields": {"patientDateOfBirth": "1978-08-01"}
+  },
+  {
+    "id": "quality-ru-spoken-birth-date",
+    "locale": "ru",
+    "inputText": "Дата рождения: первое августа тысяча девятьсот семьдесят восьмого года.",
+    "expectedFields": {"patientDateOfBirth": "1978-08-01"}
+  },
+  {
+    "id": "quality-ru-partial-clinical",
+    "locale": "ru",
+    "inputText": "Жалобы: Жалоб нет. Описание исследования: Правый желудочек: 37 мм. Дополнительных изменений не выявлено. Выпота нет.",
+    "expectedFields": {
+      "patientComplaints": "Жалоб нет",
+      "examinationDescription": "Правый желудочек: 37 мм. Дополнительных изменений не выявлено. Выпота нет."
+    }
+  },
+  {
+    "id": "quality-ru-reordered-clinical",
+    "locale": "ru",
+    "inputText": "Описание исследования: Правый желудочек: 37 мм. Дополнительных изменений не выявлено. Вес: 82 кг. Номер исследования: 007. Жалобы: Жалоб нет.",
+    "expectedFields": {
+      "examinationDescription": "Правый желудочек: 37 мм. Дополнительных изменений не выявлено.",
+      "patientWeightKG": 82,
+      "examinationNumber": "007",
+      "patientComplaints": "Жалоб нет"
+    }
+  },
+  {
+    "id": "quality-en-written-birth-date",
+    "locale": "en",
+    "inputText": "Date of birth: August 1, 1978.",
+    "expectedFields": {"patientDateOfBirth": "1978-08-01"}
+  },
+  {
+    "id": "quality-en-spoken-birth-date",
+    "locale": "en",
+    "inputText": "Date of birth: the first of August nineteen seventy eight.",
+    "expectedFields": {"patientDateOfBirth": "1978-08-01"}
+  },
+  {
+    "id": "quality-en-partial-clinical",
+    "locale": "en",
+    "inputText": "Complaints: No complaints. Examination description: Right ventricle: 37 mm. No additional abnormality. No effusion.",
+    "expectedFields": {
+      "patientComplaints": "No complaints",
+      "examinationDescription": "Right ventricle: 37 mm. No additional abnormality. No effusion."
+    }
+  },
+  {
+    "id": "quality-en-reordered-clinical",
+    "locale": "en",
+    "inputText": "Examination description: Right ventricle: 37 mm. No additional abnormality. Weight: 82 kg. Examination number: 007. Complaints: No complaints.",
+    "expectedFields": {
+      "examinationDescription": "Right ventricle: 37 mm. No additional abnormality.",
+      "patientWeightKG": 82,
+      "examinationNumber": "007",
+      "patientComplaints": "No complaints"
+    }
+  }
+]

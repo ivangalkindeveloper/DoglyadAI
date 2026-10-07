@@ -85,10 +85,6 @@ final class DependencyContainer: ObservableObject {
 }
 
 extension DependencyContainer {
-    var isUSExaminationNeuralModelAvailable: Bool {
-        examinationNeuralModelFactory?.isAvailable ?? false
-    }
-
     func getUSExaminationTypeById(
         id: String
     ) -> USExaminationType? {
