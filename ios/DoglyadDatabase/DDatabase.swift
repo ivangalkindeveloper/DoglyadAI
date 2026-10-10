@@ -9,54 +9,84 @@ public final class DDatabase: DDatabaseProtocol {
     public let examinationDraft: DExaminationDraftStore
 
     public init() throws {
-        let schema = Schema([
-            NeuralModelSettingsDB.self,
-            USExaminationReportDB.self,
-            USExaminationDataDB.self,
-            USExaminationScanPhotoDB.self,
-            USExaminationModelReportDB.self,
-            USExaminationTemplateDB.self,
-            USExaminationDraftDB.self,
-            USExaminationDraftPhotoDB.self,
-        ])
+        let schema = Schema(
+            [
+                NeuralModelSettingsDB.self,
+                USExaminationReportDB.self,
+                USExaminationDataDB.self,
+                USExaminationScanPhotoDB.self,
+                USExaminationModelReportDB.self,
+                USExaminationTemplateDB.self,
+                USExaminationDraftDB.self,
+                USExaminationDraftPhotoDB.self,
+            ],
+        )
         container = try ModelContainer(
-            for: schema
+            for: schema,
         )
         examinationReports = DExaminationReportsStore(
-            modelContainer: container
+            modelContainer: container,
         )
         examinationTemplates = DExaminationTemplatesStore(
-            modelContainer: container
+            modelContainer: container,
         )
         examinationDraft = DExaminationDraftStore(
-            modelContainer: container
+            modelContainer: container,
         )
     }
 }
 
 extension DDatabase {
-    func getBool(_ key: DUserDefaultsKey) -> Bool {
-        defaults.bool(forKey: key.rawValue)
+    func getBool(
+        _ key: DUserDefaultsKey,
+    ) -> Bool {
+        defaults.bool(
+            forKey: key.rawValue,
+        )
     }
 
-    func getString(_ key: DUserDefaultsKey) -> String? {
-        defaults.string(forKey: key.rawValue)
+    func getString(
+        _ key: DUserDefaultsKey,
+    ) -> String? {
+        defaults.string(
+            forKey: key.rawValue,
+        )
     }
 
-    func getInt(_ key: DUserDefaultsKey) -> Int? {
-        defaults.object(forKey: key.rawValue) as? Int
+    func getInt(
+        _ key: DUserDefaultsKey,
+    ) -> Int? {
+        defaults.object(
+            forKey: key.rawValue,
+        ) as? Int
     }
 
-    func getDouble(_ key: DUserDefaultsKey) -> Double? {
-        guard defaults.object(forKey: key.rawValue) != nil else { return nil }
-        return defaults.double(forKey: key.rawValue)
+    func getDouble(
+        _ key: DUserDefaultsKey,
+    ) -> Double? {
+        guard defaults.object(
+            forKey: key.rawValue,
+        ) != nil else { return nil }
+        return defaults.double(
+            forKey: key.rawValue,
+        )
     }
 
-    func setValue<T>(_ value: T, _ key: DUserDefaultsKey) -> Void {
-        defaults.set(value, forKey: key.rawValue)
+    func setValue(
+        _ value: some Any,
+        _ key: DUserDefaultsKey,
+    ) {
+        defaults.set(
+            value,
+            forKey: key.rawValue,
+        )
     }
 
-    func removeValue(_ key: DUserDefaultsKey) {
-        defaults.removeObject(forKey: key.rawValue)
+    func removeValue(
+        _ key: DUserDefaultsKey,
+    ) {
+        defaults.removeObject(
+            forKey: key.rawValue,
+        )
     }
 }

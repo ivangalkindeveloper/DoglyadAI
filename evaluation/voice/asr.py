@@ -13,10 +13,12 @@ from evaluation.voice.generate import file_sha256
 
 ASR_SOURCE = ROOT / "evaluation/voice/AudioASR/main.swift"
 CORRECTOR_SOURCE = ROOT / "ios/DoglyadSpeech/Audio/DSpeechLexiconCorrector.swift"
-CLASSIC_SOURCE = ROOT / "ios/DoglyadSpeech/Controller/DSpeechFileRecognizerSFSpeechRecognizer.swift"
+LEXICON_LOCALIZATION_SOURCE = ROOT / "ios/DoglyadSpeech/Audio/DSpeechLexiconLocalization.swift"
+VOICE_LOCALIZATION_DIR = ROOT / "ios/Doglyad/Resources/Localization"
+CLASSIC_SOURCE = ROOT / "ios/DoglyadSpeech/SFSpeechRecognizer/DSpeechFileRecognizerSFSpeechRecognizer.swift"
 FILE_RESULT_SOURCE = ROOT / "ios/DoglyadSpeech/Controller/DSpeechFileTranscription.swift"
 FILE_ERROR_SOURCE = ROOT / "ios/DoglyadSpeech/Controller/DSpeechFileTranscriberError.swift"
-CONFIDENCE_SPAN_SOURCE = ROOT / "ios/DoglyadSpeech/DSpeechConfidenceSpan.swift"
+CONFIDENCE_SPAN_SOURCE = ROOT / "ios/DoglyadSpeech/Span/DSpeechConfidenceSpan.swift"
 FORM_LABEL_HINTS = {
     "en": [
         "examination number",
@@ -120,6 +122,11 @@ def run_asr(
                 {
                     "id": job_id,
                     "locale": entry["locale"],
+                    "lexiconLocalization": json.loads(
+                        (VOICE_LOCALIZATION_DIR / f"{entry['locale']}.lproj/VoiceParsing.json").read_text(
+                            encoding="utf-8"
+                        )
+                    )["speech"],
                     "audioPath": str(audio_path),
                     "contextualStrings": terms[entry["locale"]][entry["examinationTypeId"]]
                     + (FORM_LABEL_HINTS[entry["locale"]] if form_label_hints else []),
@@ -151,6 +158,7 @@ def run_asr(
             str(AUDIO_OUTPUT_DIR / "swift-module-cache"),
             str(ASR_SOURCE),
             str(CORRECTOR_SOURCE),
+            str(LEXICON_LOCALIZATION_SOURCE),
             str(CLASSIC_SOURCE),
             str(FILE_RESULT_SOURCE),
             str(FILE_ERROR_SOURCE),
@@ -223,6 +231,10 @@ def run_asr(
         "asrSourceSha256": file_sha256(ASR_SOURCE),
         "asrOrchestratorSourceSha256": file_sha256(ROOT / "evaluation/voice/asr.py"),
         "correctorSourceSha256": file_sha256(CORRECTOR_SOURCE),
+        "lexiconLocalizationSourceSha256": file_sha256(LEXICON_LOCALIZATION_SOURCE),
+        "voiceLocalizationSha256": {
+            locale: file_sha256(VOICE_LOCALIZATION_DIR / f"{locale}.lproj/VoiceParsing.json") for locale in ("en", "ru")
+        },
         "contextualStringsSha256": {
             locale: file_sha256(CONFIG_DIR / locale / "l10n_ultrasound_examination_contextual_strings.json")
             for locale in ("en", "ru")

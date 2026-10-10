@@ -11,18 +11,24 @@ extension InitializationProcess {
                     let preferredLanguageIdentifiers = Locale.preferredLanguages
                     let applicationConfig: ApplicationConfig = try await process.httpClient!.get(
                         endPoint: "/application_config",
-                        headers: [DHttpHeader.acceptLanguage: preferredLanguageIdentifiers.joined(separator: ", ")]
+                        headers: [DHttpHeader.acceptLanguage: preferredLanguageIdentifiers.joined(
+                            separator: ", ",
+                        )],
                     )
                     let language = Language(
                         localeConfig: applicationConfig.locale,
-                        preferredLanguageIdentifiers: preferredLanguageIdentifiers
+                        preferredLanguageIdentifiers: preferredLanguageIdentifiers,
+                    )
+                    let voiceLocalization = try VoiceLocalization.load(
+                        locale: language.currentLocale,
                     )
                     await MainActor.run {
                         process.applicationConfig = applicationConfig
                         process.language = language
+                        process.voiceLocalization = voiceLocalization
                     }
-                }
+                },
             ),
-        ]
+        ],
     )
 }

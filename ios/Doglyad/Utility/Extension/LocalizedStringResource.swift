@@ -3,13 +3,17 @@ import Foundation
 extension LocalizedStringResource {
     static func forExaminationTypeById(
         types: [String: USExaminationType],
-        id: String
+        id: String,
     ) -> LocalizedStringResource {
-        types[id]?.localizedTitle ?? LocalizedStringResource("")
+        types[
+            id,
+        ]?.localizedTitle ?? LocalizedStringResource(
+            "",
+        )
     }
 
     static func forGender(
-        _ gender: PatientGender
+        _ gender: PatientGender,
     ) -> LocalizedStringResource {
         switch gender {
         case PatientGender.male:

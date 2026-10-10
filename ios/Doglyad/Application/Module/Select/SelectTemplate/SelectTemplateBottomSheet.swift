@@ -14,8 +14,8 @@ struct SelectTemplateBottomSheet: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }
@@ -23,8 +23,8 @@ struct SelectTemplateBottomSheet: View {
 #Preview {
     SelectTemplateBottomSheet(
         arguments: SelectTemplateArguments(
-            onSelected: { _ in }
-        )
+            onSelected: { _ in },
+        ),
     )
     .previewable()
 }

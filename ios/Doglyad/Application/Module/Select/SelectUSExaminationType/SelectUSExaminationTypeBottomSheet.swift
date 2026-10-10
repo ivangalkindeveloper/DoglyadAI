@@ -14,15 +14,15 @@ struct SelectUSExaminationTypeBottomSheet: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }
 
 #Preview {
     SelectUSExaminationTypeBottomSheet(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

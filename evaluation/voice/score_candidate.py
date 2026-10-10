@@ -351,7 +351,6 @@ def score_candidate_report(report_path: Path, output_dir: Path) -> dict[str, Any
         "audioMode": report.get("fixtureAudioMode"),
         "audioVariant": report.get("fixtureAudioVariant"),
         "inputSource": report.get("fixtureInputSource", "originalText"),
-        "forcedMLXDiagnostic": report.get("forcedMLXDiagnostic", False),
         "asrRecognizer": report.get("fixtureASRRecognizer"),
         "asrReportSha256": report.get("fixtureASRReportSha256"),
         "replayLexiconApplied": report.get("fixtureReplayLexiconApplied", False),

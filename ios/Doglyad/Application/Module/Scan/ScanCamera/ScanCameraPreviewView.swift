@@ -11,24 +11,36 @@ struct ScanCameraPreviewView: DView {
         Group {
             if viewModel.cameraController.isLoading {
                 color.grayscaleBackground
-                    .dShimmer(cornerRadius: .zero)
-                    .transition(.opacity)
+                    .dShimmer(
+                        cornerRadius: .zero,
+                    )
+                    .transition(
+                        .opacity,
+                    )
             } else {
                 DCameraView(
-                    controller: viewModel.cameraController
+                    controller: viewModel.cameraController,
                 )
-                .onGeometryChange(for: CGRect.self) { proxy in
-                    proxy.frame(in: .global)
+                .onGeometryChange(
+                    for: CGRect.self,
+                ) { proxy in
+                    proxy.frame(
+                        in: .global,
+                    )
                 } action: { frame in
-                    viewModel.updatePreviewFrame(frame)
+                    viewModel.updatePreviewFrame(
+                        frame,
+                    )
                 }
-                .transition(.opacity)
+                .transition(
+                    .opacity,
+                )
             }
         }
         .ignoresSafeArea()
         .animation(
             theme.animation,
-            value: viewModel.cameraController.isLoading
+            value: viewModel.cameraController.isLoading,
         )
     }
 }

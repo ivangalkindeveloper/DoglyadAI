@@ -7,7 +7,7 @@ final class EnvironmentBase: EnvironmentProtocol {
 
     init(
         type: EnvironmentType,
-        baseUrl: URL
+        baseUrl: URL,
     ) {
         self.type = type
         self.baseUrl = baseUrl

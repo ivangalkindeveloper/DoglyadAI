@@ -9,7 +9,7 @@ final class UltrasoundReportRepository: UltrasoundReportRepositoryProtocol {
 
     init(
         database: DDatabaseProtocol,
-        httpClient: DHttpClientProtocol
+        httpClient: DHttpClientProtocol,
     ) {
         self.database = database
         self.httpClient = httpClient
@@ -22,10 +22,10 @@ extension UltrasoundReportRepository {
     }
 
     func setSelectedExaminationTypeId(
-        id: String
+        id: String,
     ) {
         database.setSelectedUSExaminationTypeId(
-            value: id
+            value: id,
         )
     }
 
@@ -33,16 +33,26 @@ extension UltrasoundReportRepository {
         database.getRecentUSExaminationTypeIds()
     }
 
-    func setRecentExaminationTypeIds(_ ids: [String]) {
-        database.setRecentUSExaminationTypeIds(values: Array(ids.prefix(RecentUSExaminationTypes.maximumCount)))
+    func setRecentExaminationTypeIds(
+        _ ids: [String],
+    ) {
+        database.setRecentUSExaminationTypeIds(
+            values: Array(
+                ids.prefix(
+                    RecentUSExaminationTypes.maximumCount,
+                ),
+            ),
+        )
     }
 
-    func recordRecentExaminationTypeId(_ id: String) {
+    func recordRecentExaminationTypeId(
+        _ id: String,
+    ) {
         setRecentExaminationTypeIds(
             RecentUSExaminationTypes.recording(
                 id,
-                in: getRecentExaminationTypeIds()
-            )
+                in: getRecentExaminationTypeIds(),
+            ),
         )
     }
 }
@@ -54,24 +64,24 @@ extension UltrasoundReportRepository {
     func parseDictation(
         locale: Locale,
         examinationTypeId: String,
-        transcript: String
-    ) async throws -> USVoiceFormParseResponseDTO {
+        transcript: String,
+    ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
         let request = USVoiceFormParseRequestDTO(
             usExaminationTypeId: examinationTypeId,
-            transcript: transcript
+            transcript: transcript,
         )
         return try await httpClient.post(
             endPoint: Self.voiceParseEndpoint,
             body: request,
             headers: [DHttpHeader.acceptLanguage: locale.identifier],
-            encoderUserInfo: nil
+            encoderUserInfo: nil,
         )
     }
 
     func generateReport(
         locale: Locale,
         request: USExaminationRequest,
-        scanPhotoEncodingOptions: ScanPhotoEncodingOptions
+        scanPhotoEncodingOptions: ScanPhotoEncodingOptions,
     ) async throws -> USExaminationModelReport {
         try await httpClient.post(
             endPoint: Self.reportEndpoint,
@@ -81,19 +91,21 @@ extension UltrasoundReportRepository {
             ],
             encoderUserInfo: [
                 .scanPhotoEncodingOptions: scanPhotoEncodingOptions,
-            ]
+            ],
         )
     }
 
     func getReports(
         limit: Int,
-        offset: Int
+        offset: Int,
     ) async -> [USExaminationReport] {
         await database.examinationReports.fetchExaminationReports(
             limit: limit,
-            offset: offset
+            offset: offset,
         ) { models in
-            models.map { USExaminationReport.fromDB($0) }
+            models.map { USExaminationReport.fromDB(
+                $0,
+            ) }
         }
     }
 
@@ -102,18 +114,18 @@ extension UltrasoundReportRepository {
     }
 
     func setReport(
-        report: USExaminationReport
+        report: USExaminationReport,
     ) async {
         try? await database.examinationReports.setExaminationReport(
-            value: report.toDB()
+            value: report.toDB(),
         )
     }
 
     func updateReport(
-        report: USExaminationReport
+        report: USExaminationReport,
     ) async {
         try? await database.examinationReports.updateExaminationReport(
-            value: report.toDB()
+            value: report.toDB(),
         )
     }
 

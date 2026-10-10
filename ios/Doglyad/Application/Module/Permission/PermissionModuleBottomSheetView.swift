@@ -9,8 +9,10 @@ struct PermissionModuleBottomSheetView: View {
     var body: some View {
         PermissionBottomSheet(
             title: title,
-            description: description
+            description: description,
         )
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }

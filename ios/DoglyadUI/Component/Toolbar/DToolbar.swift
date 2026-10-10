@@ -18,7 +18,7 @@ public struct DToolbar: DView {
         onTapUp: (() -> Void)? = nil,
         onTapDown: (() -> Void)? = nil,
         onTapDone: @escaping () -> Void,
-        trailButtons: [DToolbarButton] = []
+        trailButtons: [DToolbarButton] = [],
     ) {
         self.upAccessibilityLabel = upAccessibilityLabel
         self.downAccessibilityLabel = downAccessibilityLabel
@@ -31,14 +31,16 @@ public struct DToolbar: DView {
 
     public var body: some View {
         HStack(
-            spacing: .zero
+            spacing: .zero,
         ) {
             if let onTapUp {
                 DToolbarButton(
                     accessibilityLabel: upAccessibilityLabel,
                     style: .grayscaleHeader,
-                    content: .icon(.up),
-                    action: onTapUp
+                    content: .icon(
+                        .up,
+                    ),
+                    action: onTapUp,
                 )
             }
 
@@ -46,8 +48,10 @@ public struct DToolbar: DView {
                 DToolbarButton(
                     accessibilityLabel: downAccessibilityLabel,
                     style: .grayscaleHeader,
-                    content: .icon(.down),
-                    action: onTapDown
+                    content: .icon(
+                        .down,
+                    ),
+                    action: onTapDown,
                 )
             }
 
@@ -56,18 +60,28 @@ public struct DToolbar: DView {
             DToolbarButton(
                 accessibilityLabel: doneAccessibilityLabel,
                 style: .grayscaleHeader,
-                content: .icon(.check),
-                action: onTapDone
+                content: .icon(
+                    .check,
+                ),
+                action: onTapDone,
             )
 
-            ForEach(trailButtons.indices, id: \.self) { index in
-                trailButtons[index]
+            ForEach(
+                trailButtons.indices,
+                id: \.self,
+            ) { index in
+                trailButtons[
+                    index,
+                ]
             }
         }
-        .padding(.horizontal, size.s8)
+        .padding(
+            .horizontal,
+            size.s8,
+        )
         .frame(
             maxWidth: .infinity,
-            minHeight: size.s48
+            minHeight: size.s48,
         )
     }
 }
@@ -79,7 +93,7 @@ public struct DToolbar: DView {
         doneAccessibilityLabel: "Done",
         onTapUp: {},
         onTapDown: {},
-        onTapDone: {}
+        onTapDone: {},
     )
     .dThemeWrapper()
 }

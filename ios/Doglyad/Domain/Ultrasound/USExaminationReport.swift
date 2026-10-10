@@ -24,34 +24,42 @@ extension USExaminationReport {
     func makeEmail(
         recipientEmail: String,
         examinationTypesById: [String: USExaminationType],
-        scanPhotoEncodingOptions: ScanPhotoEncodingOptions
+        scanPhotoEncodingOptions: ScanPhotoEncodingOptions,
     ) -> ReportEmail {
         ReportEmail(
             recipientEmail: recipientEmail,
-            subject: shareSubject(examinationTypesById: examinationTypesById),
+            subject: shareSubject(
+                examinationTypesById: examinationTypesById,
+            ),
             body: shareMessage,
             attachments: examinationData.photos.enumerated().compactMap { index, photo in
-                guard let data = photo.encodedJPEGData(options: scanPhotoEncodingOptions) else {
+                guard let data = photo.encodedJPEGData(
+                    options: scanPhotoEncodingOptions,
+                ) else {
                     return nil
                 }
                 return ReportEmailAttachment(
                     fileName: "ultrasound-\(index + 1).jpg",
                     mimeType: "image/jpeg",
-                    data: data
+                    data: data,
                 )
-            }
+            },
         )
     }
 
-    func shareSubject(examinationTypesById: [String: USExaminationType]) -> String {
-        let appName = String(localized: .appName)
+    func shareSubject(
+        examinationTypesById: [String: USExaminationType],
+    ) -> String {
+        let appName = String(
+            localized: .appName,
+        )
         let date = date.localized()
         let patientName = examinationData.patientName
         let examinationType = String(
             localized: .forExaminationTypeById(
                 types: examinationTypesById,
-                id: examinationData.usExaminationTypeId
-            )
+                id: examinationData.usExaminationTypeId,
+            ),
         )
         return "\(appName): \(date) \(patientName) \(examinationType)"
     }
@@ -69,30 +77,50 @@ extension USExaminationReport {
         if let patientComplaints = examinationData.patientComplaints,
            !patientComplaints.isEmpty
         {
-            lines.append("\(String(localized: .scanPatientComplaintsLabel))\n\(patientComplaints)")
+            lines.append(
+                "\(String(localized: .scanPatientComplaintsLabel))\n\(patientComplaints)",
+            )
         }
-        lines.append("\(String(localized: .reportActualModelResponseTitle))\n\(actualModelReport.plainText)")
+        lines.append(
+            "\(String(localized: .reportActualModelResponseTitle))\n\(actualModelReport.plainText)",
+        )
 
         if !previousModelReports.isEmpty {
-            lines.append(String(localized: .reportPreviousModelResponsesTitle))
+            lines.append(
+                String(
+                    localized: .reportPreviousModelResponsesTitle,
+                ),
+            )
             for modelReport in previousModelReports {
-                lines.append(modelReport.plainText)
+                lines.append(
+                    modelReport.plainText,
+                )
             }
         }
 
-        return lines.joined(separator: "\n\n")
+        return lines.joined(
+            separator: "\n\n",
+        )
     }
 
     static func fromDB(
-        _ db: USExaminationReportDB
+        _ db: USExaminationReportDB,
     ) -> USExaminationReport {
         USExaminationReport(
             id: db.id,
             date: db.date,
-            neuralModelSettings: NeuralModelSettings.fromDB(db.neuralModelSettings),
-            examinationData: USExaminationData.fromDB(db.examinationData),
-            actualModelReport: USExaminationModelReport.fromDB(db.actualModelReport),
-            previousModelReports: db.previousModelReports.map { USExaminationModelReport.fromDB($0) }
+            neuralModelSettings: NeuralModelSettings.fromDB(
+                db.neuralModelSettings,
+            ),
+            examinationData: USExaminationData.fromDB(
+                db.examinationData,
+            ),
+            actualModelReport: USExaminationModelReport.fromDB(
+                db.actualModelReport,
+            ),
+            previousModelReports: db.previousModelReports.map { USExaminationModelReport.fromDB(
+                $0,
+            ) },
         )
     }
 
@@ -103,7 +131,7 @@ extension USExaminationReport {
             neuralModelSettings: neuralModelSettings.toDB(),
             examinationData: examinationData.toDB(),
             actualModelReport: actualModelReport.toDB(),
-            previousModelReports: previousModelReports.map { $0.toDB() }
+            previousModelReports: previousModelReports.map { $0.toDB() },
         )
     }
 }

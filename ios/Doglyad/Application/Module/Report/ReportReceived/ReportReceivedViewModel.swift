@@ -18,19 +18,21 @@ final class ReportReceivedViewModel: DViewModel {
         router: DRouter,
         arguments: ReportReceivedBottomSheetArguments,
         subscription: SubscriptionViewModel,
-        userEmail: String?
+        userEmail: String?,
     ) {
         self.messager = messager
         self.arguments = arguments
         self.userEmail = userEmail
         markdownViewModel = ReportReceivedMarkdownViewModel(
-            response: arguments.report.actualModelReport.markdownText
+            response: arguments.report.actualModelReport.markdownText,
         )
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.reportReceived)
+            analyticsDestination: .bottomSheet(
+                .reportReceived,
+            ),
         )
     }
 
@@ -51,11 +53,13 @@ final class ReportReceivedViewModel: DViewModel {
     }
 
     var isUserEmailButtonVisible: Bool {
-        switch subscription.availability(of: .sendingReportByEmail) {
+        switch subscription.availability(
+            of: .sendingReportByEmail,
+        ) {
         case .offered, .available:
-            return true
+            true
         case .unavailable:
-            return false
+            false
         }
     }
 
@@ -64,45 +68,57 @@ final class ReportReceivedViewModel: DViewModel {
     }
 
     var userEmailButtonBadge: DButtonBadge? {
-        switch subscription.availability(of: .sendingReportByEmail) {
+        switch subscription.availability(
+            of: .sendingReportByEmail,
+        ) {
         case .offered:
-            return DButtonBadge(
+            DButtonBadge(
                 .entitlementPro,
-                isShimmering: true
+                isShimmering: true,
             )
         case .available, .unavailable:
-            return nil
+            nil
         }
     }
 
     func onTapReport() {
-        analytics.buttonTapped(.reportReceivedOpen)
+        analytics.buttonTapped(
+            .reportReceivedOpen,
+        )
         coordinator.dismissSheet()
         coordinator.screen(
             .reportDetail,
             arguments: ReportDetailScreenArguments(
-                report: arguments.report
-            )
+                report: arguments.report,
+            ),
         )
     }
 
     func onTapUserEmail() {
         analytics.buttonTapped(
             .reportReceivedEmail,
-            parameters: AnalyticsParameters([
-                .hasCurrentValue: .bool(userEmail != nil),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .hasCurrentValue: .bool(
+                        userEmail != nil,
+                    ),
+                ],
+            ),
         )
         guard let userEmail: String = userEmail else { return }
         coordinator.run(
             .sendingReportByEmail,
-            dismissesSheetOnPaywall: true
+            dismissesSheetOnPaywall: true,
         ) {
-            self.sendReportEmail(to: userEmail)
+            self.sendReportEmail(
+                to: userEmail,
+            )
         }
     }
 
-    private func sendReportEmail(to userEmail: String) {
+    private func sendReportEmail(
+        to userEmail: String,
+    ) {
         let report = arguments.report
         let ultrasoundConfig = container.applicationConfig.ultrasound
         handle {
@@ -113,9 +129,9 @@ final class ReportReceivedViewModel: DViewModel {
                     examinationTypesById: self.container.usExaminationTypesById,
                     scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
                         resizeMaxDimension: ultrasoundConfig.scanPhotoResizeMaxDimension,
-                        compressionQuality: ultrasoundConfig.scanPhotoCompressionQuality
-                    )
-                )
+                        compressionQuality: ultrasoundConfig.scanPhotoCompressionQuality,
+                    ),
+                ),
             )
         } onDefer: {
             self.isLoading = false
@@ -123,7 +139,7 @@ final class ReportReceivedViewModel: DViewModel {
             self.messager.show(
                 type: .success,
                 title: .shareUserEmailSuccessMessageTitle,
-                description: .shareUserEmailSuccessMessageDescription
+                description: .shareUserEmailSuccessMessageDescription,
             )
         } onUnknownError: { _ in
             self.messager.showUnknownError()
@@ -131,12 +147,16 @@ final class ReportReceivedViewModel: DViewModel {
     }
 
     func onTapCopy() {
-        analytics.buttonTapped(.reportReceivedCopy)
-        UIApplication.pasteboard(response)
+        analytics.buttonTapped(
+            .reportReceivedCopy,
+        )
+        UIApplication.pasteboard(
+            response,
+        )
         messager.show(
             type: .success,
             title: .reportReceivedCopyMessageTitle,
-            description: .reportReceivedCopyMessageDescription
+            description: .reportReceivedCopyMessageDescription,
         )
     }
 }

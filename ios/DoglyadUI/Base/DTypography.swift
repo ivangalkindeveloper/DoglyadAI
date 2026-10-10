@@ -24,24 +24,72 @@ public struct DTypography {
 
 public extension DTypography {
     static let shared = DTypography(
-        displayHuge: .custom(.MontserratRegular, 32),
-        displayLarge: .custom(.MontserratRegular, 28),
-        displayMedium: .custom(.MontserratRegular, 24),
-        displaySmall: .custom(.MontserratRegular, 20),
+        displayHuge: .custom(
+            .MontserratRegular,
+            32,
+        ),
+        displayLarge: .custom(
+            .MontserratRegular,
+            28,
+        ),
+        displayMedium: .custom(
+            .MontserratRegular,
+            24,
+        ),
+        displaySmall: .custom(
+            .MontserratRegular,
+            20,
+        ),
 
-        displayHugeBold: .custom(.MontserratBold, 32),
-        displayLargeBold: .custom(.MontserratBold, 28),
-        displayMediumBold: .custom(.MontserratBold, 24),
-        displaySmallBold: .custom(.MontserratBold, 20),
+        displayHugeBold: .custom(
+            .MontserratBold,
+            32,
+        ),
+        displayLargeBold: .custom(
+            .MontserratBold,
+            28,
+        ),
+        displayMediumBold: .custom(
+            .MontserratBold,
+            24,
+        ),
+        displaySmallBold: .custom(
+            .MontserratBold,
+            20,
+        ),
 
-        textLarge: .custom(.MontserratRegular, 20),
-        textMedium: .custom(.MontserratRegular, 16),
-        textSmall: .custom(.MontserratRegular, 14),
-        textXSmall: .custom(.MontserratMedium, 12),
+        textLarge: .custom(
+            .MontserratRegular,
+            20,
+        ),
+        textMedium: .custom(
+            .MontserratRegular,
+            16,
+        ),
+        textSmall: .custom(
+            .MontserratRegular,
+            14,
+        ),
+        textXSmall: .custom(
+            .MontserratMedium,
+            12,
+        ),
 
-        linkLarge: .custom(.MontserratSemiBold, 20),
-        linkMedium: .custom(.MontserratSemiBold, 16),
-        linkSmall: .custom(.MontserratSemiBold, 14),
-        linkXSmall: .custom(.MontserratSemiBold, 12)
+        linkLarge: .custom(
+            .MontserratSemiBold,
+            20,
+        ),
+        linkMedium: .custom(
+            .MontserratSemiBold,
+            16,
+        ),
+        linkSmall: .custom(
+            .MontserratSemiBold,
+            14,
+        ),
+        linkXSmall: .custom(
+            .MontserratSemiBold,
+            12,
+        ),
     )
 }

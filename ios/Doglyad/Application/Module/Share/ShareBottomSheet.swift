@@ -18,8 +18,8 @@ struct ShareBottomSheet: View {
                 router: router,
                 arguments: arguments,
                 subscription: subscriptionViewModel,
-                userEmail: ultrasoundViewModel.userEmail
-            )
+                userEmail: ultrasoundViewModel.userEmail,
+            ),
         )
     }
 }
@@ -33,7 +33,7 @@ struct ShareBottomSheet: View {
                     selectedNeuralModelId: "google/medgemma-1.5-4b-it",
                     isMarkdown: false,
                     temperature: nil,
-                    maxTokens: nil
+                    maxTokens: nil,
                 ),
                 examinationData: USExaminationData(
                     usExaminationTypeId: "abdominalCavity",
@@ -45,18 +45,18 @@ struct ShareBottomSheet: View {
                     patientHeight: 180.0,
                     patientWeight: 80.0,
                     patientComplaints: "Patient complaints",
-                    examinationDescription: "Examination description"
+                    examinationDescription: "Examination description",
                 ),
                 actualModelReport: USExaminationModelReport(
                     date: Date(),
                     modelId: "google/medgemma-1.5-4b-it",
                     description: "The thyroid has homogeneous echogenicity and smooth contours.",
                     conclusion: "The ultrasound findings are within normal limits.",
-                    recommendations: "Routine follow-up when clinically indicated."
+                    recommendations: "Routine follow-up when clinically indicated.",
                 ),
-                previousModelReports: []
-            )
-        )
+                previousModelReports: [],
+            ),
+        ),
     )
     .previewable()
 }

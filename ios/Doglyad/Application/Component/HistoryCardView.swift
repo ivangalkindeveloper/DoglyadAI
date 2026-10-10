@@ -13,75 +13,120 @@ struct HistoryCardView: DView {
 
     var body: some View {
         DButtonCard(
-            action: onTap
+            action: onTap,
         ) {
             HStack(
-                spacing: .zero
+                spacing: .zero,
             ) {
                 if !examinationData.photos.isEmpty {
                     ZStack {
-                        ForEach(Array(examinationData.photos.enumerated()), id: \.element.id) { index, photo in
-                            PhotoCardView(image: photo.thumbnail)
-                                .overlay {
-                                    RoundedRectangle(
-                                        cornerRadius: size.adaptiveCornerRadius / 4
-                                    )
-                                    .strokeBorder(
-                                        color.grayscaleBackground,
-                                        lineWidth: 0.5
-                                    )
-                                }
-                                .offset(x: Double.random(in: -4 ... 4), y: Double.random(in: -4 ... 4))
-                                .rotationEffect(.degrees(Double.random(in: -8 ... 8)))
-                                .zIndex(Double(index))
+                        ForEach(
+                            Array(
+                                examinationData.photos.enumerated(),
+                            ),
+                            id: \.element.id,
+                        ) { index, photo in
+                            PhotoCardView(
+                                image: photo.thumbnail,
+                            )
+                            .overlay {
+                                RoundedRectangle(
+                                    cornerRadius: size.adaptiveCornerRadius / 4,
+                                )
+                                .strokeBorder(
+                                    color.grayscaleBackground,
+                                    lineWidth: 0.5,
+                                )
+                            }
+                            .offset(
+                                x: Double.random(
+                                    in: -4 ... 4,
+                                ),
+                                y: Double.random(
+                                    in: -4 ... 4,
+                                ),
+                            )
+                            .rotationEffect(
+                                .degrees(
+                                    Double.random(
+                                        in: -8 ... 8,
+                                    ),
+                                ),
+                            )
+                            .zIndex(
+                                Double(
+                                    index,
+                                ),
+                            )
                         }
                     }
-                    .padding(.trailing, size.s20)
+                    .padding(
+                        .trailing,
+                        size.s20,
+                    )
                 }
 
                 VStack(
                     alignment: .leading,
-                    spacing: .zero
+                    spacing: .zero,
                 ) {
                     HStack(
-                        spacing: .zero
+                        spacing: .zero,
                     ) {
-                        DText(examinationData.patientName)
-                            .dStyle(
-                                font: typography.linkSmall
-                            )
-                            .padding(.trailing, size.s8)
+                        DText(
+                            examinationData.patientName,
+                        )
+                        .dStyle(
+                            font: typography.linkSmall,
+                        )
+                        .padding(
+                            .trailing,
+                            size.s8,
+                        )
 
-                        DText(report.date.localizedDateTime())
-                            .dStyle(
-                                font: typography.textSmall,
-                                color: color.grayscaleLabel
-                            )
+                        DText(
+                            report.date.localizedDateTime(),
+                        )
+                        .dStyle(
+                            font: typography.textSmall,
+                            color: color.grayscaleLabel,
+                        )
                     }
 
                     DText(
                         LocalizedStringResource.forExaminationTypeById(
                             types: container.usExaminationTypesById,
-                            id: examinationData.usExaminationTypeId
-                        )
+                            id: examinationData.usExaminationTypeId,
+                        ),
                     )
                     .dStyle(
                         font: typography.linkSmall,
-                        color: color.grayscalePlacehold
+                        color: color.grayscalePlacehold,
                     )
 
-                    DText(examinationData.examinationDescription)
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.grayscaleLabel
-                        )
-                        .lineLimit(2)
+                    DText(
+                        examinationData.examinationDescription,
+                    )
+                    .dStyle(
+                        font: typography.textSmall,
+                        color: color.grayscaleLabel,
+                    )
+                    .lineLimit(
+                        2,
+                    )
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading,
+                )
             }
         }
-        .background(color.grayscaleBackground)
-        .cornerRadius(size.s16)
+        .background(
+            color.grayscaleBackground,
+        )
+        .cornerRadius(
+            size.s16,
+        )
     }
 }
 
@@ -93,14 +138,26 @@ struct HistoryCardView: DView {
                 selectedNeuralModelId: "google/medgemma-1.5-4b-it",
                 isMarkdown: false,
                 temperature: nil,
-                maxTokens: nil
+                maxTokens: nil,
             ),
             examinationData: USExaminationData(
                 usExaminationTypeId: "thyroidGland",
                 photos: [
-                    USExaminationScanPhoto(image: UIImage(resource: .alertInfo)),
-                    USExaminationScanPhoto(image: UIImage(resource: .alertInfo)),
-                    USExaminationScanPhoto(image: UIImage(resource: .alertInfo)),
+                    USExaminationScanPhoto(
+                        image: UIImage(
+                            resource: .alertInfo,
+                        ),
+                    ),
+                    USExaminationScanPhoto(
+                        image: UIImage(
+                            resource: .alertInfo,
+                        ),
+                    ),
+                    USExaminationScanPhoto(
+                        image: UIImage(
+                            resource: .alertInfo,
+                        ),
+                    ),
                 ],
                 examinationNumber: "Examination#0",
                 patientName: "Patient#0",
@@ -121,7 +178,7 @@ struct HistoryCardView: DView {
                 The parenchyma is homogeneous with moderate echogenicity.
                 No focal lesions were identified.
                 The regional lymph nodes are unremarkable.
-                """
+                """,
             ),
             actualModelReport: USExaminationModelReport(
                 date: Date(),
@@ -134,7 +191,7 @@ struct HistoryCardView: DView {
                 The ultrasound findings are within normal limits.
                 """,
                 conclusion: "The ultrasound findings are within normal limits.",
-                recommendations: "Routine follow-up when clinically indicated."
+                recommendations: "Routine follow-up when clinically indicated.",
             ),
             previousModelReports: [
                 USExaminationModelReport(
@@ -148,7 +205,7 @@ struct HistoryCardView: DView {
                     The ultrasound findings are within normal limits.
                     """,
                     conclusion: "The ultrasound findings are within normal limits.",
-                    recommendations: "Routine follow-up when clinically indicated."
+                    recommendations: "Routine follow-up when clinically indicated.",
                 ),
                 USExaminationModelReport(
                     date: Date(),
@@ -166,11 +223,11 @@ struct HistoryCardView: DView {
                     Routine follow-up ultrasound is recommended when clinically indicated.
                     """,
                     conclusion: "The findings correspond to a normal thyroid ultrasound appearance.",
-                    recommendations: "Routine follow-up when clinically indicated."
+                    recommendations: "Routine follow-up when clinically indicated.",
                 ),
-            ]
+            ],
         ),
-        onTap: {}
+        onTap: {},
     )
     .padding()
     .dThemeWrapper()

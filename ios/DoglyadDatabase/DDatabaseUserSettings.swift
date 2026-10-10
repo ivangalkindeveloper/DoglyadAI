@@ -3,34 +3,56 @@ import Foundation
 public protocol DDatabaseUserSettingsProtocol: AnyObject {
     func getUserEmail() -> String?
 
-    func setUserEmail(value: String?)
+    func setUserEmail(
+        value: String?,
+    )
 
     func getIncludeRecommendations() -> Bool
 
-    func setIncludeRecommendations(value: Bool)
+    func setIncludeRecommendations(
+        value: Bool,
+    )
 }
 
 extension DDatabase: DDatabaseUserSettingsProtocol {
     public func getUserEmail() -> String? {
-        getString(.userEmail)
+        getString(
+            .userEmail,
+        )
     }
 
-    public func setUserEmail(value: String?) {
+    public func setUserEmail(
+        value: String?,
+    ) {
         if let value {
-            setValue(value, .userEmail)
+            setValue(
+                value,
+                .userEmail,
+            )
         } else {
-            removeValue(.userEmail)
+            removeValue(
+                .userEmail,
+            )
         }
     }
 
     public func getIncludeRecommendations() -> Bool {
-        guard defaults.object(forKey: DUserDefaultsKey.includeRecommendations.rawValue) != nil else {
+        guard defaults.object(
+            forKey: DUserDefaultsKey.includeRecommendations.rawValue,
+        ) != nil else {
             return true
         }
-        return getBool(.includeRecommendations)
+        return getBool(
+            .includeRecommendations,
+        )
     }
 
-    public func setIncludeRecommendations(value: Bool) {
-        setValue(value, .includeRecommendations)
+    public func setIncludeRecommendations(
+        value: Bool,
+    ) {
+        setValue(
+            value,
+            .includeRecommendations,
+        )
     }
 }

@@ -8,7 +8,7 @@ The backend is split into two independently deployable services: `backend/main` 
 
 - **Main backend** (`backend/main/`) — Python, FastAPI, Docker. Runs on a **non-GPU VM** and never performs inference itself: it builds the prompt, selects the model, and routes the request. It also sends reports by email through SMTP.
 - **Inference service** (`backend/inference/`) — Python, FastAPI, Docker. Runs on a **GPU VM** (one VM per model) beside local vLLM and the model. It validates App Check and performs model-agnostic structured generation.
-- **iOS application** — SwiftUI, MVVM, SwiftData, Alamofire, MLX for on-device inference, Firebase, and RevenueCat for subscriptions.
+- **iOS application** — SwiftUI, MVVM, SwiftData, Alamofire, Apple Foundation Models for on-device inference, Firebase, and RevenueCat for subscriptions.
 
 A report-generation request follows this path:
 
@@ -91,7 +91,7 @@ This service runs on a GPU VM, one VM per model. See [`backend/inference/README.
 | `ios/DoglyadUI/` | Design system: `DTheme`, Montserrat fonts, and reusable components such as `DSegment`, `DCloseButton`, `DButtonCard`, and `DMessage` |
 | `ios/DoglyadDatabase/` | SwiftData database: `DDatabase`, `*DB.swift` entities, and UserDefaults wrappers |
 | `ios/DoglyadNetwork/` | Alamofire HTTP client: `DHttpClientProtocol`, `DHttpClient`, `DHttpHeader`, and `DHttpError` |
-| `ios/DoglyadNeuralModel/` | ML model integrations using MLX and Foundation Models |
+| `ios/DoglyadNeuralModel/` | Foundation Models extraction, domain contracts, and validation for ultrasound text |
 | `ios/DoglyadCamera/` | Camera implementation: `DCameraController` and `DCameraView` |
 | `ios/DoglyadSpeech/` | Speech recognition: `DSpeechController` implementations and lexicon correction |
 | `ios/Config/` | Build configuration. Development and production `.xcconfig` files define `ENVIRONMENT`, `BASE_URL`, and `REVENUECAT_API_KEY`. Xcode schemes select the matching configuration; files are never copied or swapped. |
@@ -116,13 +116,16 @@ This service runs on a GPU VM, one VM per model. See [`backend/inference/README.
 
 - **Initialization:** `DependencyInitializer` runs `InitializationProcess` through ordered `StepSet` values in `stepsTier1…stepsTier5`. Each set contains synchronous and asynchronous steps. `ApplicationViewModel.initialize()` starts the process, `toContainer` builds `DependencyContainer`, and SwiftUI Environment receives the container.
 - **Concurrency:** Use Swift Concurrency (`async`/`await`, `Task`) and `@MainActor` for UI code.
+- **Formatting:** Run `make format-ios` and verify with `make lint-ios`. Put every nonempty call argument and declaration parameter on its own line, including single arguments, with a trailing comma. The project combines SwiftFormat with its SwiftSyntax rule; preserve string literals/interpolations and function type syntax. See `tools/README.md`.
 - **Architecture:** Follow MVVM. A module contains `*Screen` (SwiftUI view and view-model creation), `*ScreenView` (pure view without logic), `*ViewModel` (`ObservableObject` with presentation logic), and `*Arguments` (module input). When a view model depends on `DependencyContainer`, pass the entire container rather than individual dependencies.
 - **State:** Use `ObservableObject` and `@Published` for scalar state, `@NestedObservableObject` for nested observable controllers, `@StateObject` for view-model ownership, `@EnvironmentObject` for environment injection, `@ObservedObject` for externally owned controllers, and `@State` for local view state.
 - **Module communication:** View models never communicate directly. Exchange data only through closures supplied when a module creates its view model, such as `getIsActive`, `getAvailableRequestCount`, `getNeuralModelSettingsAvailability`, and `onNeuralModelSelected`.
 - **Presentation ownership:** A module's view model decides which parts of its UI are shown. Pass required data and closures into that view model, expose computed flags such as `isSpeechButtonVisible` and `isNeuralModelSettingsVisible`, and let `*ScreenView` branch only on its own view model. Do not read unrelated `@EnvironmentObject` values for these decisions.
-- **Naming:** Prefix ultrasound domain models with `US`, database models with the `DB` suffix, and DTO models with `DTO`. Use the `D` prefix only for foundational types from custom modules such as `DDatabase`, `DTheme`, and `DHttpClient`.
+- **Naming:** Prefix ultrasound domain models with `US`, database models with the `DB` suffix, and DTO models with `DTO`. Use the `D` prefix only for foundational types from custom modules such as `DDatabase`, `DTheme`, and `DHttpClient`. All types declared in `DoglyadSpeech`, including nested helper types, use the `DSpeech` prefix. Keep engine-specific speech files in `SpeechAnalyzer/`, `SFSpeechRecognizer/`, and `WhisperKit/`; keep shared types outside these folders. Keep transcript confidence and decoding span types in `DoglyadSpeech/Span/`.
+- **Localization:** Keep language-dependent phrases, words, parsing patterns, numeric vocabularies, and schema descriptions only in localization resources. Select one catalog using `Language.currentLocale` and inject it through arguments; do not embed or mix localized RU/EN matching rules in Swift models, parsers, or policies. Technical identifiers, protocol syntax, and test input data are not translations.
+- **Neural module:** Shared types use `DNeural`; ultrasound-specific types, including nested helpers, use `DNeuralUltrasound` and live in `UltrasoundExamination/`. Keep `DNeuralUltrasoundModelFactory` at that folder's root, above its Foundation Models integration. Shared code must not depend on ultrasound field IDs, schemas, or catalogs. Keep `DNeuralGenerationParameters`, `DNeuralModelError`, and `DNeuralModelProtocol` at the module root. Keep the ultrasound model and foundation provider protocols in `UltrasoundExamination/Contract/`. Keep shared values and numeric vocabularies in semantic folders at the module level; keep ultrasound contracts, parsing, validation, localization, server implementations and DTOs under `UltrasoundExamination/`. Extensions of shared values that parse ultrasound fields belong inside that domain folder. Experimental candidates and historical legacy schemas used only by comparisons belong in `DoglyadTests/VoiceSupport/`. Both Foundation Models and server parsing implement `DNeuralUltrasoundModelProtocol`; the factory selects the implementation, and `DNeuralUltrasoundProposalProcessor` owns shared validation/reconciliation. Server HTTP stays in the application repository through `DNeuralUltrasoundServerTransportProtocol`.
 - **Modules:** Keep reusable code in the local framework targets `DoglyadUI`, `DoglyadDatabase`, `DoglyadNetwork`, `DoglyadNeuralModel`, `DoglyadCamera`, and `DoglyadSpeech`.
-- **External SPM dependencies:** RevenueCat, Firebase, MLX, swift-transformers, Alamofire, swift-markdown-ui, SwiftMessages, SwiftUI-Shimmer, BottomSheet, `DependencyInitializer`, `NestedObservableObject`, `Handler`, and `Router`.
+- **External SPM dependencies:** RevenueCat, Firebase, Alamofire, swift-markdown-ui, SwiftMessages, SwiftUI-Shimmer, BottomSheet, `DependencyInitializer`, `NestedObservableObject`, `Handler`, and `Router`.
 - **Enum branching:** Express behavior that depends on an enum with an exhaustive `switch` and no `default`, never with `==` or `!=`. Adding a case must produce compiler errors everywhere it is not handled. This applies, for example, to visibility flags based on `SubscriptionFeatureAvailability`.
 
 ## Constraints
@@ -140,10 +143,10 @@ This service runs on a GPU VM, one VM per model. See [`backend/inference/README.
 The `Makefile` contains all project commands. Common targets:
 
 - `make venv` / `make pip-install` — create a Python 3.11 environment and install `backend/main/requirements.txt`.
-- `make format` — run SwiftFormat for iOS and Ruff format for both backends.
+- `make format` — run the iOS formatting pipeline and Ruff format for both backends.
+- `make format-ios` / `make lint-ios` — apply or check SwiftFormat and the mandatory argument line breaks without modifying protected resource/configuration folders.
 - `make init-ios-local` — update the local iOS `BASE_URL` with the `en0` address.
 - `make build-ios-debug-local` / `make build-ios-debug-development` / `make build-ios-release-development` / `make build-ios-release-production` — build the matching Xcode scheme; override `IOS_DEST` to select another simulator.
-- `make download-ios-examination-model` — download `mlx-community/Qwen2.5-1.5B-Instruct-4bit` into `DoglyadNeuralModel/Resources/`.
 - `make start-backend-main-development` / `make start-backend-main-production` — run the main backend with the matching environment profile.
 - `make check-infrastructure` / `make update-infrastructure` — check or update all inventoried existing backend VMs through the central deployment script. See `deploy/README.md`; `start-backend-*` builds from source and is not the deployed-fleet update path.
 - `make start-backend-main-logs` / `make stop-backend-main` — follow logs or stop the main backend.

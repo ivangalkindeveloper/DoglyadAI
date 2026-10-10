@@ -13,15 +13,15 @@ struct SelectNeuralModelBottomSheet: View {
                 container: container,
                 router: router,
                 arguments: arguments,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }
 
 #Preview {
     SelectNeuralModelBottomSheet(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

@@ -18,8 +18,8 @@ struct ReportReceivedBottomSheet: View {
                 router: router,
                 arguments: arguments,
                 subscription: subscriptionViewModel,
-                userEmail: ultrasoundViewModel.userEmail
-            )
+                userEmail: ultrasoundViewModel.userEmail,
+            ),
         )
     }
 }
@@ -33,7 +33,7 @@ struct ReportReceivedBottomSheet: View {
                     selectedNeuralModelId: "google/medgemma-1.5-4b-it",
                     isMarkdown: false,
                     temperature: nil,
-                    maxTokens: nil
+                    maxTokens: nil,
                 ),
                 examinationData: USExaminationData(
                     usExaminationTypeId: "abdominalCavity",
@@ -45,7 +45,7 @@ struct ReportReceivedBottomSheet: View {
                     patientHeight: 180.0,
                     patientWeight: 80.0,
                     patientComplaints: "Patient complaints",
-                    examinationDescription: "Examination description"
+                    examinationDescription: "Examination description",
                 ),
                 actualModelReport: USExaminationModelReport(
                     date: Date(),
@@ -58,12 +58,14 @@ struct ReportReceivedBottomSheet: View {
                     The ultrasound findings are within normal limits.
                     """,
                     conclusion: "The ultrasound findings are within normal limits.",
-                    recommendations: "Routine follow-up when clinically indicated."
+                    recommendations: "Routine follow-up when clinically indicated.",
                 ),
-                previousModelReports: []
-            )
-        )
+                previousModelReports: [],
+            ),
+        ),
     )
-    .background(.black)
+    .background(
+        .black,
+    )
     .previewable()
 }

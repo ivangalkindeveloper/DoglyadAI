@@ -11,6 +11,7 @@ private struct Job: Decodable {
     let engine: String?
     let useHints: Bool?
     let isFarField: Bool?
+    let lexiconLocalization: DSpeechLexiconLocalization
 }
 
 private struct Result: Encodable {
@@ -41,7 +42,8 @@ private func recognize(_ job: Job) async -> Result {
                 fileURL: URL(fileURLWithPath: job.audioPath),
                 locale: requestedLocale,
                 contextualStrings: job.contextualStrings,
-                useHints: job.useHints ?? true
+                useHints: job.useHints ?? true,
+                lexiconLocalization: job.lexiconLocalization
             )
             return Result(id: job.id, status: "ok", rawText: result.rawText,
                           correctedText: result.correctedText, reason: nil,
@@ -90,7 +92,8 @@ private func recognize(_ job: Job) async -> Result {
         async let finalText = collectFinalText(from: transcriber)
         try await analyzer.start(inputAudioFile: file, finishAfterFile: true)
         let raw = try await finalText
-        let corrected = DSpeechLexiconCorrector(terms: job.correctionStrings ?? job.contextualStrings).correct(raw)
+        let corrected = DSpeechLexiconCorrector(terms: job.correctionStrings ?? job.contextualStrings,
+                                                localization: job.lexiconLocalization).correct(raw)
         return Result(id: job.id, status: "ok", rawText: raw, correctedText: corrected,
                       reason: nil, elapsedSeconds: Date().timeIntervalSince(started))
     } catch {

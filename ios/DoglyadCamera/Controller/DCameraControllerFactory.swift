@@ -1,9 +1,11 @@
 @MainActor
 public enum DCameraControllerFactory {
-    #if targetEnvironment(simulator)
-        public typealias Controller = SimulatorCameraController
+    #if targetEnvironment(
+        simulator,
+    )
+    public typealias Controller = SimulatorCameraController
     #else
-        public typealias Controller = DeviceCameraController
+    public typealias Controller = DeviceCameraController
     #endif
 
     public static func make() -> Controller {

@@ -10,14 +10,14 @@ struct ErrorRootView: DView {
 
     init(
         error: Error,
-        analytics: AnalyticsManager?
+        analytics: AnalyticsManager?,
     ) {
         self.error = error
         _viewModel = StateObject(
             wrappedValue: ErrorRootViewModel(
                 error: error,
-                analytics: analytics
-            )
+                analytics: analytics,
+            ),
         )
     }
 
@@ -27,54 +27,72 @@ struct ErrorRootView: DView {
             switch error {
             case .newVersion:
                 NewVersionView(
-                    onTapUpdate: viewModel.onTapNewVersionUpdate
+                    onTapUpdate: viewModel.onTapNewVersionUpdate,
                 )
             case .noInternetConnection:
                 ErrorView(
                     title: .errorNoInternetConnectionTitle,
                     buttonTitle: .buttonUpdate,
-                    action: retryInitialization
+                    action: retryInitialization,
                 ) {
-                    DText(.errorNoInternetConnectionDescription)
+                    DText(
+                        .errorNoInternetConnectionDescription,
+                    )
                 }
-            case let .serviceUnavailable(email):
+            case let .serviceUnavailable(
+                email,
+            ):
                 ErrorView(
-                    title: .serviceUnavailableTitle
+                    title: .serviceUnavailableTitle,
                 ) {
                     VStack(
-                        spacing: size.s8
+                        spacing: size.s8,
                     ) {
-                        DText(.serviceUnavailableDescription)
+                        DText(
+                            .serviceUnavailableDescription,
+                        )
 
                         Button(
-                            action: viewModel.onTapServiceUnavailableEmail
+                            action: viewModel.onTapServiceUnavailableEmail,
                         ) {
-                            DText(email)
-                                .dStyle(
-                                    font: typography.linkSmall,
-                                    color: color.primaryDefault,
-                                    alignment: .center
-                                )
-                                .padding(.vertical, size.s4)
+                            DText(
+                                email,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                                color: color.primaryDefault,
+                                alignment: .center,
+                            )
+                            .padding(
+                                .vertical,
+                                size.s4,
+                            )
                         }
-                        .buttonStyle(.plain)
+                        .buttonStyle(
+                            .plain,
+                        )
                     }
                 }
             case .usExaminationTypesEmpty,
                  .usExaminationNeuralModelsEmpty,
-                 .examinationNeuralModelPromptEmpty,
-                 .some(.common),
+                 .some(
+                     .common,
+                 ),
                  .none:
                 ErrorView(
                     title: .errorUnknownTitle,
                     buttonTitle: .buttonUpdate,
-                    action: retryInitialization
+                    action: retryInitialization,
                 ) {
-                    DText(.errorUnknownDescription)
+                    DText(
+                        .errorUnknownDescription,
+                    )
                 }
             }
         }
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 
     private func retryInitialization() {
@@ -86,7 +104,9 @@ struct ErrorRootView: DView {
 #Preview {
     ErrorRootView(
         error: InitializationError.noInternetConnection,
-        analytics: AnalyticsManager(isEnabled: false)
+        analytics: AnalyticsManager(
+            isEnabled: false,
+        ),
     )
     .previewable()
 }

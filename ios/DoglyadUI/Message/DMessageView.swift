@@ -6,24 +6,36 @@ private struct DMessageModifier: ViewModifier {
 
     @StateObject var messager = DMessager()
 
-    func body(content: Content) -> some View {
+    func body(
+        content: Content,
+    ) -> some View {
         content
             .swiftMessage(
-                message: $messager.message
+                message: $messager.message,
             ) { message in
                 DMessageCard(
                     theme: theme,
-                    message: message
+                    message: message,
                 )
-                .padding(.top, theme.size.s4)
-                .padding(.horizontal, theme.size.s16)
+                .padding(
+                    .top,
+                    theme.size.s4,
+                )
+                .padding(
+                    .horizontal,
+                    theme.size.s16,
+                )
             }
-            .environmentObject(messager)
+            .environmentObject(
+                messager,
+            )
     }
 }
 
 public extension View {
     func dMessage() -> some View {
-        modifier(DMessageModifier())
+        modifier(
+            DMessageModifier(),
+        )
     }
 }

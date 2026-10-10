@@ -14,8 +14,8 @@ struct ImportMediaBottomSheet: View {
                 container: container,
                 router: router,
                 arguments: arguments,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }
@@ -24,8 +24,8 @@ struct ImportMediaBottomSheet: View {
     ImportMediaBottomSheet(
         arguments: ImportMediaArguments(
             onTapCamera: {},
-            onTapGallery: {}
-        )
+            onTapGallery: {},
+        ),
     )
     .previewable()
 }

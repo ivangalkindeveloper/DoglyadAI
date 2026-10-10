@@ -25,7 +25,7 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
         messager: DMessager,
         arguments: TemplateEditScreenArguments,
         onSaveTemplate: @escaping (USExaminationTemplate) -> Void,
-        onDeleteTemplate: @escaping (UUID) -> Void
+        onDeleteTemplate: @escaping (UUID) -> Void,
     ) {
         self.messager = messager
         self.arguments = arguments
@@ -36,7 +36,9 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.templateEdit)
+            analyticsDestination: .screen(
+                .templateEdit,
+            ),
         )
     }
 
@@ -44,39 +46,51 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
         handle {
             await self.container.templateRepository.getTemplate(
                 id: self.arguments.templateId,
-                usExaminationTypesById: self.container.usExaminationTypesById
+                usExaminationTypesById: self.container.usExaminationTypesById,
             )!
         } onDefer: {
             self.isLoading = false
         } onMainSuccess: { template in
-            self.usExaminationType = self.container.usExaminationTypesById[template.usExaminationType.id]
+            self.usExaminationType = self.container.usExaminationTypesById[
+                template.usExaminationType.id,
+            ]
                 ?? self.container.usExaminationTypeDefault
-            self.nameController.setText(template.name)
-            self.templateController.setText(template.content)
+            self.nameController.setText(
+                template.name,
+            )
+            self.templateController.setText(
+                template.content,
+            )
         }
     }
 
     @Published private(set) var isLoading = true
     @Published var focus: Focus?
     @Published var usExaminationType: USExaminationType
-    @NestedObservableObject var nameController = DTextFieldController(isRequired: true)
-    @NestedObservableObject var templateController = DTextFieldController(isRequired: true)
+    @NestedObservableObject var nameController = DTextFieldController(
+        isRequired: true,
+    )
+    @NestedObservableObject var templateController = DTextFieldController(
+        isRequired: true,
+    )
 
     var focusList: [DTextFieldFocusValidationItem<Focus>] {
         [
             DTextFieldFocusValidationItem(
                 focus: .name,
-                controller: nameController
+                controller: nameController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .content,
-                controller: templateController
+                controller: templateController,
             ),
         ]
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.templateEditBack)
+        analytics.buttonTapped(
+            .templateEditBack,
+        )
         coordinator.pop()
     }
 
@@ -85,7 +99,9 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
     }
 
     func onSubmit() {
-        analytics.buttonTapped(.templateEditSubmit)
+        analytics.buttonTapped(
+            .templateEditSubmit,
+        )
         switch focus {
         case .name:
             focus = .content
@@ -131,22 +147,26 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
     }
 
     func onTapExaminationType() {
-        analytics.buttonTapped(.templateEditExaminationType)
+        analytics.buttonTapped(
+            .templateEditExaminationType,
+        )
         coordinator.sheet(
             .selectUSExaminationType,
             arguments: SelectUSExaminationTypeArguments(
                 currentValue: usExaminationType,
                 onSelected: { [weak self] type in
                     self?.usExaminationType = type
-                }
-            )
+                },
+            ),
         )
     }
 
     func onTapSave() {
         guard !isLoading else { return }
 
-        analytics.buttonTapped(.templateEditSave)
+        analytics.buttonTapped(
+            .templateEditSave,
+        )
         if let invalidFocus = firstInvalidFocus() {
             focus = invalidFocus
             return
@@ -164,14 +184,16 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
             id: arguments.templateId,
             usExaminationType: usExaminationType,
             name: name,
-            content: content
+            content: content,
         )
         isLoading = true
-        onSaveTemplate(template)
+        onSaveTemplate(
+            template,
+        )
         messager.show(
             type: .success,
             title: .templateSavedSuccessTitle,
-            description: .templateSavedSuccessDescription
+            description: .templateSavedSuccessDescription,
         )
         coordinator.pop()
     }
@@ -179,14 +201,16 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
     func onTapDelete() {
         guard !isLoading else { return }
 
-        analytics.buttonTapped(.templateEditDelete)
+        analytics.buttonTapped(
+            .templateEditDelete,
+        )
         coordinator.sheet(
             .templateDelete,
             arguments: TemplateDeleteArguments(
                 onConfirm: { [weak self] in
                     self?.deleteTemplate()
-                }
-            )
+                },
+            ),
         )
     }
 
@@ -195,11 +219,13 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
         isLoading = true
         unfocus()
 
-        onDeleteTemplate(arguments.templateId)
+        onDeleteTemplate(
+            arguments.templateId,
+        )
         messager.show(
             type: .success,
             title: .templateDeletedSuccessTitle,
-            description: .templateDeletedSuccessDescription
+            description: .templateDeletedSuccessDescription,
         )
         coordinator.pop()
     }

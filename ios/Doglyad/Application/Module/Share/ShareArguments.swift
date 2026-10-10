@@ -4,7 +4,7 @@ final class ShareArguments: RouteArgumentsProtocol {
     let report: USExaminationReport
 
     init(
-        report: USExaminationReport
+        report: USExaminationReport,
     ) {
         self.report = report
     }

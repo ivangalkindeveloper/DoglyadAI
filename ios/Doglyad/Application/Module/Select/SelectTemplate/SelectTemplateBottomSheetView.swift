@@ -9,32 +9,56 @@ struct SelectTemplateBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: .selectTemplateTitle,
-            fraction: 0.6
+            fraction: 0.6,
         ) { toolbarHeight, bottomHeight in
             ScrollView(
-                showsIndicators: false
+                showsIndicators: false,
             ) {
                 LazyVStack(
                     alignment: .leading,
-                    spacing: size.s4
+                    spacing: size.s4,
                 ) {
-                    ForEach(viewModel.templates) { template in
+                    ForEach(
+                        viewModel.templates,
+                    ) { template in
                         TemplateListItemCardView(
                             template: template,
                             action: {
-                                viewModel.onTemplateTap(template)
+                                viewModel.onTemplateTap(
+                                    template,
+                                )
                             },
-                            isSelected: viewModel.isSelected(template)
+                            isSelected: viewModel.isSelected(
+                                template,
+                            ),
                         )
                     }
                 }
-                .padding(.top, size.s16)
-                .padding(.horizontal, size.s16)
-                .padding(.bottom, bottomHeight + size.s16)
+                .padding(
+                    .top,
+                    size.s16,
+                )
+                .padding(
+                    .horizontal,
+                    size.s16,
+                )
+                .padding(
+                    .bottom,
+                    bottomHeight + size.s16,
+                )
             }
-            .contentMargins(.top, toolbarHeight, for: .scrollContent)
+            .contentMargins(
+                .top,
+                toolbarHeight,
+                for: .scrollContent,
+            )
         }
-        .animation(theme.animation, value: viewModel.templates)
-        .onAppear(perform: viewModel.onAppear)
+        .animation(
+            theme.animation,
+            value: viewModel.templates,
+        )
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }

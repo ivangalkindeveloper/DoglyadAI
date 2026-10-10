@@ -6,7 +6,7 @@ public final class DTextFieldMultiLineMode: DTextFieldMode {
     public let submitLabel: SubmitLabel = .return
 
     public init(
-        lineLimit: ClosedRange<Int> = 3 ... 8
+        lineLimit: ClosedRange<Int> = 3 ... 8,
     ) {
         self.lineLimit = lineLimit
     }

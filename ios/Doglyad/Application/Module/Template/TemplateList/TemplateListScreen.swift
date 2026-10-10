@@ -13,15 +13,15 @@ struct TemplateListScreen: View {
             viewModel: TemplateListViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }
 
 #Preview {
     TemplateListScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

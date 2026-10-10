@@ -26,21 +26,36 @@ final class DSpeechAudioMeter: @unchecked Sendable {
     private let onLevel: @Sendable (Float) -> Void
 
     init(
-        onLevel: @escaping @Sendable (Float) -> Void
+        onLevel: @escaping @Sendable (Float) -> Void,
     ) {
         self.onLevel = onLevel
     }
 
     /// Called from the audio thread.
     func process(
-        _ buffer: AVAudioPCMBuffer
+        _ buffer: AVAudioPCMBuffer,
     ) {
         guard buffer.frameLength > 0 else { return }
-        guard let channel = buffer.floatChannelData?[0] else { return }
+        guard let channel = buffer.floatChannelData?[
+            0,
+        ] else { return }
 
         var rms: Float = 0
-        vDSP_rmsqv(channel, 1, &rms, vDSP_Length(buffer.frameLength))
-        let target = min(max(rms * Self.gain, 0), 1)
+        vDSP_rmsqv(
+            channel,
+            1,
+            &rms,
+            vDSP_Length(
+                buffer.frameLength,
+            ),
+        )
+        let target = min(
+            max(
+                rms * Self.gain,
+                0,
+            ),
+            1,
+        )
         let now = ProcessInfo.processInfo.systemUptime
 
         lock.lock()
@@ -53,7 +68,9 @@ final class DSpeechAudioMeter: @unchecked Sendable {
         let published = level
         lock.unlock()
 
-        onLevel(published)
+        onLevel(
+            published,
+        )
     }
 
     func reset() {
@@ -62,6 +79,8 @@ final class DSpeechAudioMeter: @unchecked Sendable {
         lastPublishUptime = 0
         lock.unlock()
 
-        onLevel(0)
+        onLevel(
+            0,
+        )
     }
 }

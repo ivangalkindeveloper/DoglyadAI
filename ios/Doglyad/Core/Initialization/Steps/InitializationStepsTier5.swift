@@ -7,17 +7,21 @@ extension InitializationProcess {
             SyncInitializationStep<InitializationProcess>(
                 title: "Check selected ultrasound examination type",
                 run: { (process: InitializationProcess) in
-                    let availableTypeIds = Set(process.usExaminationTypesById!.keys)
+                    let availableTypeIds = Set(
+                        process.usExaminationTypesById!.keys,
+                    )
                     let recentTypeIds = RecentUSExaminationTypes.available(
                         from: process.ultrasoundReportRepository!.getRecentExaminationTypeIds(),
-                        availableIds: availableTypeIds
+                        availableIds: availableTypeIds,
                     )
-                    process.ultrasoundReportRepository!.setRecentExaminationTypeIds(recentTypeIds)
+                    process.ultrasoundReportRepository!.setRecentExaminationTypeIds(
+                        recentTypeIds,
+                    )
 
                     @MainActor
                     func setDefault() {
                         process.ultrasoundReportRepository!.setSelectedExaminationTypeId(
-                            id: process.usExaminationTypeDefault!.id
+                            id: process.usExaminationTypeDefault!.id,
                         )
                     }
 
@@ -26,11 +30,13 @@ extension InitializationProcess {
                         return
                     }
 
-                    let matchedId = process.usExaminationTypesById![usExaminationTypeId!]
+                    let matchedId = process.usExaminationTypesById![
+                        usExaminationTypeId!,
+                    ]
                     guard matchedId != nil else {
                         return setDefault()
                     }
-                }
+                },
             ),
             SyncInitializationStep<InitializationProcess>(
                 title: "Check selected ultrasound selected neural model",
@@ -38,7 +44,7 @@ extension InitializationProcess {
                     @MainActor
                     func setDefault() {
                         process.ultrasoundModelRepository!.setSelectedModelId(
-                            id: process.usExaminationNeuralModelDefault!.id
+                            id: process.usExaminationNeuralModelDefault!.id,
                         )
                     }
 
@@ -47,31 +53,34 @@ extension InitializationProcess {
                         return setDefault()
                     }
 
-                    let selectedModel = process.usExaminationNeuralModelsById![selectedUSExaminationNeuralModelId!]
+                    let selectedModel = process.usExaminationNeuralModelsById![
+                        selectedUSExaminationNeuralModelId!,
+                    ]
                     guard let selectedModel else {
                         return setDefault()
                     }
 
                     @MainActor
                     func selectFirstAvailableBaseModel() {
-                        let firstBaseModel = process.usExaminationNeuralModels!.first(where: {
-                            let isAvailable: Bool
-                            switch $0.accessibility {
-                            case .available:
-                                isAvailable = true
-                            case .comingSoon, .unavailable:
-                                isAvailable = false
-                            }
+                        let firstBaseModel = process.usExaminationNeuralModels!.first(
+                            where: {
+                                let isAvailable = switch $0.accessibility {
+                                case .available:
+                                    true
+                                case .comingSoon, .unavailable:
+                                    false
+                                }
 
-                            switch $0.entitlement {
-                            case .base:
-                                return isAvailable
-                            case .pro:
-                                return false
-                            }
-                        })
+                                switch $0.entitlement {
+                                case .base:
+                                    return isAvailable
+                                case .pro:
+                                    return false
+                                }
+                            },
+                        )
                         process.ultrasoundModelRepository!.setSelectedModelId(
-                            id: (firstBaseModel ?? process.usExaminationNeuralModelDefault!).id
+                            id: (firstBaseModel ?? process.usExaminationNeuralModelDefault!).id,
                         )
                     }
 
@@ -83,22 +92,25 @@ extension InitializationProcess {
                     }
 
                     let activeSubscriptionType = process.initialSubscriptionStatus?.type
-                    let isModelEntitlementAvailable: Bool
-                    switch selectedModel.entitlement {
+                    let isModelEntitlementAvailable = switch selectedModel.entitlement {
                     case .base:
-                        isModelEntitlementAvailable = true
+                        true
                     case .pro:
                         switch activeSubscriptionType {
-                        case .some(.pro):
-                            isModelEntitlementAvailable = true
-                        case .some(.base), .none:
-                            isModelEntitlementAvailable = false
+                        case .some(
+                            .pro,
+                        ):
+                            true
+                        case .some(
+                            .base,
+                        ), .none:
+                            false
                         }
                     }
                     guard isModelEntitlementAvailable else {
                         return selectFirstAvailableBaseModel()
                     }
-                }
+                },
             ),
             SyncInitializationStep<InitializationProcess>(
                 title: "Initial screen",
@@ -109,18 +121,20 @@ extension InitializationProcess {
                         selectedUSExaminationTypeId: process.ultrasoundReportRepository!.getSelectedExaminationTypeId(),
                         acceptedLegalDocumentDate: process.sharedRepository!.getAcceptedLegalDocumentDate(),
                         conclusionsCount: process.initialUltrasoundReportsCount!,
-                        subscriptionStatus: process.initialSubscriptionStatus
+                        subscriptionStatus: process.initialSubscriptionStatus,
                     )
-                    process.initialRoute = Coordinator.initialRoute(for: context)
-                }
+                    process.initialRoute = Coordinator.initialRoute(
+                        for: context,
+                    )
+                },
             ),
             SyncInitializationStep<InitializationProcess>(
                 title: "Application version",
                 run: { (process: InitializationProcess) in
                     let version = Bundle.shortVersion
                     process.version = "\(version.major).\(version.minor).\(version.patch)"
-                }
+                },
             ),
-        ]
+        ],
     )
 }

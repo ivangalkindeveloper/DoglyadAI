@@ -7,7 +7,7 @@ final class WebDocumentBottomSheetArguments: RouteArgumentsProtocol {
 
     init(
         url: URL,
-        title: LocalizedStringResource
+        title: LocalizedStringResource,
     ) {
         self.url = url
         self.title = title

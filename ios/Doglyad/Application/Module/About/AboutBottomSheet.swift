@@ -10,8 +10,8 @@ struct AboutBottomSheet: View {
             viewModel: AboutViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }

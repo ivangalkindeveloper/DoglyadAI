@@ -2,7 +2,9 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanMediaButtonView: DView {
-    @Environment(\.isEnabled) private var isEnabled
+    @Environment(
+        \.isEnabled,
+    ) private var isEnabled
     @EnvironmentObject var theme: DTheme
 
     let isCompact: Bool
@@ -10,7 +12,7 @@ struct ScanMediaButtonView: DView {
 
     init(
         isCompact: Bool = false,
-        action: @escaping () -> Void
+        action: @escaping () -> Void,
     ) {
         self.isCompact = isCompact
         self.action = action
@@ -18,66 +20,77 @@ struct ScanMediaButtonView: DView {
 
     var body: some View {
         Button(
-            action: action
+            action: action,
         ) {
             HStack(
-                spacing: size.s8
+                spacing: size.s8,
             ) {
                 DIcon(
                     .import,
                     color: color.primaryDefault,
-                    height: size.s24
+                    height: size.s24,
                 )
 
                 if !isCompact {
-                    DText(.scanImportButtonTitle)
-                        .dStyle(
-                            font: typography.linkSmall,
-                            color: color.primaryDefault,
-                            alignment: .center
-                        )
+                    DText(
+                        .scanImportButtonTitle,
+                    )
+                    .dStyle(
+                        font: typography.linkSmall,
+                        color: color.primaryDefault,
+                        alignment: .center,
+                    )
                 }
             }
-            .padding(isCompact ? .zero : size.s16)
+            .padding(
+                isCompact ? .zero : size.s16,
+            )
             .frame(
                 maxWidth: .infinity,
-                maxHeight: .infinity
+                maxHeight: .infinity,
             )
             .background {
                 RoundedRectangle(
-                    cornerRadius: cornerRadius
+                    cornerRadius: cornerRadius,
                 )
                 .fill(
-                    isEnabled ? color.grayscaleBackground : color.grayscaleInput
+                    isEnabled ? color.grayscaleBackground : color.grayscaleInput,
                 )
             }
             .clipShape(
                 RoundedRectangle(
-                    cornerRadius: cornerRadius
-                )
+                    cornerRadius: cornerRadius,
+                ),
             )
             .overlay {
                 RoundedRectangle(
-                    cornerRadius: cornerRadius
+                    cornerRadius: cornerRadius,
                 )
                 .strokeBorder(
                     color.primaryDefault,
                     style: StrokeStyle(
                         lineWidth: 1,
                         lineCap: .round,
-                        dash: [size.s8, size.s4]
-                    )
+                        dash: [size.s8, size.s4],
+                    ),
                 )
             }
         }
-        .buttonStyle(ScanMediaButtonStyle())
+        .buttonStyle(
+            ScanMediaButtonStyle(),
+        )
         .frame(
             width: isCompact ? compactButtonSize : nil,
-            height: isCompact ? compactButtonSize : buttonHeight
+            height: isCompact ? compactButtonSize : buttonHeight,
         )
-        .if(isCompact) { view in
+        .if(
+            isCompact,
+        ) { view in
             view
-                .padding(.top, size.s8)
+                .padding(
+                    .top,
+                    size.s8,
+                )
         }
     }
 
@@ -95,12 +108,18 @@ struct ScanMediaButtonView: DView {
 }
 
 private struct ScanMediaButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
+    func makeBody(
+        configuration: Configuration,
+    ) -> some View {
         configuration.label
-            .opacity(configuration.isPressed ? 0.6 : 1)
+            .opacity(
+                configuration.isPressed ? 0.6 : 1,
+            )
             .animation(
-                .easeOut(duration: 0.1),
-                value: configuration.isPressed
+                .easeOut(
+                    duration: 0.1,
+                ),
+                value: configuration.isPressed,
             )
     }
 }
@@ -108,12 +127,12 @@ private struct ScanMediaButtonStyle: ButtonStyle {
 #Preview {
     VStack {
         ScanMediaButtonView(
-            action: {}
+            action: {},
         )
 
         ScanMediaButtonView(
             isCompact: true,
-            action: {}
+            action: {},
         )
     }
     .padding()

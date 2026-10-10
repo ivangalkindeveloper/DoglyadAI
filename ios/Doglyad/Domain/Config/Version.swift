@@ -10,6 +10,6 @@ extension Version {
     static let `default` = Version(
         major: 1,
         minor: 0,
-        patch: 0
+        patch: 0,
     )
 }

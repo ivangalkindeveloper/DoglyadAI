@@ -13,15 +13,15 @@ struct HistoryScreen: View {
             viewModel: HistoryViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }
 
 #Preview {
     HistoryScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

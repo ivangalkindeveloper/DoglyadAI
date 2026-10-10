@@ -13,52 +13,81 @@ struct TemplateListScreenView: DView {
             onTapBack: viewModel.onTapBack,
             content: { toolbarInset, bottomInset in
                 ZStack(
-                    alignment: .bottom
+                    alignment: .bottom,
                 ) {
                     ScrollView(
-                        showsIndicators: false
+                        showsIndicators: false,
                     ) {
                         VStack(
                             alignment: .leading,
-                            spacing: size.s4
+                            spacing: size.s4,
                         ) {
                             if viewModel.isLoading {
                                 TemplateListLoadingView()
-                                    .transition(.opacity)
+                                    .transition(
+                                        .opacity,
+                                    )
                             } else if viewModel.templates.isEmpty {
                                 TemplateListEmptyView()
-                                    .transition(.opacity)
+                                    .transition(
+                                        .opacity,
+                                    )
                             } else {
-                                ForEach(viewModel.templates) { template in
+                                ForEach(
+                                    viewModel.templates,
+                                ) { template in
                                     TemplateListItemCardView(
                                         template: template,
                                         action: {
-                                            viewModel.onTapTemplate(template)
-                                        }
+                                            viewModel.onTapTemplate(
+                                                template,
+                                            )
+                                        },
                                     )
                                 }
                             }
                         }
-                        .padding(.top, toolbarInset + size.s8)
-                        .padding(.horizontal, size.s16)
-                        .padding(.bottom, bottomInset + size.s16)
+                        .padding(
+                            .top,
+                            toolbarInset + size.s8,
+                        )
+                        .padding(
+                            .horizontal,
+                            size.s16,
+                        )
+                        .padding(
+                            .bottom,
+                            bottomInset + size.s16,
+                        )
                     }
                 }
             },
             bottom: {
                 DButton(
                     title: .templateListAddButton,
-                    action: viewModel.onTapAdd
+                    action: viewModel.onTapAdd,
                 )
-                .dStyle(.primaryButton)
-                .padding(size.s16)
-            }
+                .dStyle(
+                    .primaryButton,
+                )
+                .padding(
+                    size.s16,
+                )
+            },
         )
-        .animation(theme.animation, value: viewModel.isLoading)
-        .animation(theme.animation, value: viewModel.templates)
+        .animation(
+            theme.animation,
+            value: viewModel.isLoading,
+        )
+        .animation(
+            theme.animation,
+            value: viewModel.templates,
+        )
         .onAppear {
             viewModel.onAppear()
         }
-        .environmentObject(viewModel)
+        .environmentObject(
+            viewModel,
+        )
     }
 }

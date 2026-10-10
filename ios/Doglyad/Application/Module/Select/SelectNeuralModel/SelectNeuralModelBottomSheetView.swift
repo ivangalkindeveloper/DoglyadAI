@@ -10,60 +10,97 @@ struct SelectNeuralModelBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: .settingsNeuralModelTitle,
-            fraction: 0.8
+            fraction: 0.8,
         ) { toolbarHeight, bottomHeight in
             ScrollView(
-                showsIndicators: false
+                showsIndicators: false,
             ) {
                 VStack(
-                    spacing: .zero
+                    spacing: .zero,
                 ) {
-                    ForEach(viewModel.models) { model in
-                        DBadge([
-                            DBadgeItem(
-                                .entitlementPro,
-                                isVisible: viewModel.isProBadgeVisible(for: model),
-                                isShimmering: true
-                            ),
-                            DBadgeItem(
-                                .neuralModelComingSoonBadge,
-                                isVisible: viewModel.isComingSoonBadgeVisible(for: model)
-                            ),
-                        ]) {
+                    ForEach(
+                        viewModel.models,
+                    ) { model in
+                        DBadge(
+                            [
+                                DBadgeItem(
+                                    .entitlementPro,
+                                    isVisible: viewModel.isProBadgeVisible(
+                                        for: model,
+                                    ),
+                                    isShimmering: true,
+                                ),
+                                DBadgeItem(
+                                    .neuralModelComingSoonBadge,
+                                    isVisible: viewModel.isComingSoonBadgeVisible(
+                                        for: model,
+                                    ),
+                                ),
+                            ],
+                        ) {
                             DListButtonCard(
-                                title: LocalizedStringResource(stringLiteral: model.title),
+                                title: LocalizedStringResource(
+                                    stringLiteral: model.title,
+                                ),
                                 description: """
                                 (\(model.id))
                                 \(String(localized: .neuralModelContextLengthDescription)) \(model.contextLength)
                                 \(model.localizedDescription)
                                 """,
                                 action: {
-                                    viewModel.onModelTap(model)
+                                    viewModel.onModelTap(
+                                        model,
+                                    )
                                 },
-                                isSelected: viewModel.isSelected(model)
+                                isSelected: viewModel.isSelected(
+                                    model,
+                                ),
                             )
-                            .disabled(!viewModel.isSelectionEnabled(for: model))
+                            .disabled(
+                                !viewModel.isSelectionEnabled(
+                                    for: model,
+                                ),
+                            )
                         }
                     }
-                    .padding(.bottom, size.s8)
+                    .padding(
+                        .bottom,
+                        size.s8,
+                    )
                 }
-                .padding(.top, toolbarHeight)
-                .padding(size.s16)
-                .padding(.bottom, bottomHeight)
+                .padding(
+                    .top,
+                    toolbarHeight,
+                )
+                .padding(
+                    size.s16,
+                )
+                .padding(
+                    .bottom,
+                    bottomHeight,
+                )
             }
         }
         bottom: {
             DText(
-                .neuralModelAddingDescription
+                .neuralModelAddingDescription,
             )
             .dStyle(
                 font: typography.textSmall,
                 color: color.grayscalePlacehold,
-                alignment: .center
+                alignment: .center,
             )
-            .padding(.top, size.s16)
-            .padding(.horizontal, size.s16)
+            .padding(
+                .top,
+                size.s16,
+            )
+            .padding(
+                .horizontal,
+                size.s16,
+            )
         }
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }

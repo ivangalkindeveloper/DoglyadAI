@@ -10,149 +10,212 @@ struct ScanFormView: DView {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: .zero
+            spacing: .zero,
         ) {
             DTextField(
                 controller: viewModel.examinationNumberController,
                 focus: DTextFieldFocus(
                     value: .examinationNumber,
-                    state: focus
+                    state: focus,
                 ),
                 title: .scanExaminationNumberLabel,
                 placeholder: .scanExaminationNumberPlaceholder,
-                mode: DTextFieldSingleLineMode(submitLabel: .next),
-                keyboardType: .default
+                mode: DTextFieldSingleLineMode(
+                    submitLabel: .next,
+                ),
+                keyboardType: .default,
             )
-            .id(ScanViewModel.Focus.examinationNumber)
-            .padding(.vertical, size.s4)
+            .id(
+                ScanViewModel.Focus.examinationNumber,
+            )
+            .padding(
+                .vertical,
+                size.s4,
+            )
 
             DTextField(
                 controller: viewModel.patientNameController,
                 focus: DTextFieldFocus(
                     value: .patientName,
-                    state: focus
+                    state: focus,
                 ),
                 title: .scanPatientNameLabel,
                 placeholder: .scanPatientNamePlaceholder,
-                mode: DTextFieldSingleLineMode(submitLabel: .next),
-                keyboardType: .default
+                mode: DTextFieldSingleLineMode(
+                    submitLabel: .next,
+                ),
+                keyboardType: .default,
             )
-            .id(ScanViewModel.Focus.patientName)
-            .padding(.bottom, size.s4)
+            .id(
+                ScanViewModel.Focus.patientName,
+            )
+            .padding(
+                .bottom,
+                size.s4,
+            )
 
             DSegment<PatientGender>(
                 currentValue: viewModel.patientGender,
                 items: [
                     DSegmentItem<PatientGender>(
                         value: .male,
-                        title: .scanGenderMaleLabel
+                        title: .scanGenderMaleLabel,
                     ) {
-                        viewModel.onTapPatientGender(value: .male)
+                        viewModel.onTapPatientGender(
+                            value: .male,
+                        )
                     },
                     DSegmentItem<PatientGender>(
                         value: .female,
-                        title: .scanGenderFemaleLabel
+                        title: .scanGenderFemaleLabel,
                     ) {
-                        viewModel.onTapPatientGender(value: .female)
+                        viewModel.onTapPatientGender(
+                            value: .female,
+                        )
                     },
-                ]
+                ],
             )
-            .padding(.bottom, size.s4)
+            .padding(
+                .bottom,
+                size.s4,
+            )
 
             DateOfBirthCardView(
                 date: viewModel.patientDateOfBirth,
-                action: viewModel.onTapPatientDateOfBirth
+                action: viewModel.onTapPatientDateOfBirth,
             )
-            .contentTransition(.opacity)
+            .contentTransition(
+                .opacity,
+            )
             .animation(
                 theme.animation,
-                value: viewModel.patientDateOfBirth
+                value: viewModel.patientDateOfBirth,
             )
-            .padding(.bottom, size.s4)
+            .padding(
+                .bottom,
+                size.s4,
+            )
 
             DTextField(
                 controller: viewModel.patientHeightCMController,
                 focus: DTextFieldFocus(
                     value: .patientHeightCM,
-                    state: focus
+                    state: focus,
                 ),
                 title: .scanPatientHeightCMLabel,
                 placeholder: .scanNumberPlaceholder,
-                mode: DTextFieldSingleLineMode(submitLabel: .next),
-                keyboardType: .decimalPad
+                mode: DTextFieldSingleLineMode(
+                    submitLabel: .next,
+                ),
+                keyboardType: .decimalPad,
             )
-            .id(ScanViewModel.Focus.patientHeightCM)
-            .padding(.bottom, size.s4)
+            .id(
+                ScanViewModel.Focus.patientHeightCM,
+            )
+            .padding(
+                .bottom,
+                size.s4,
+            )
 
             DTextField(
                 controller: viewModel.patientWeightKGController,
                 focus: DTextFieldFocus(
                     value: .patientWeightKG,
-                    state: focus
+                    state: focus,
                 ),
                 title: .scanPatientWeightKGLabel,
                 placeholder: .scanNumberPlaceholder,
-                mode: DTextFieldSingleLineMode(submitLabel: .next),
-                keyboardType: .decimalPad
+                mode: DTextFieldSingleLineMode(
+                    submitLabel: .next,
+                ),
+                keyboardType: .decimalPad,
             )
-            .id(ScanViewModel.Focus.patientWeightKG)
-            .padding(.bottom, size.s4)
+            .id(
+                ScanViewModel.Focus.patientWeightKG,
+            )
+            .padding(
+                .bottom,
+                size.s4,
+            )
 
             DTextField(
                 controller: viewModel.patientComplaintsController,
                 focus: DTextFieldFocus(
                     value: .patientComplaints,
-                    state: focus
+                    state: focus,
                 ),
                 title: .scanPatientComplaintsLabel,
                 placeholder: .scanPatientComplaintsPlaceholder,
                 mode: DTextFieldMultiLineMode(),
-                keyboardType: .default
+                keyboardType: .default,
             )
-            .id(ScanViewModel.Focus.patientComplaints)
-            .padding(.bottom, size.s4)
+            .id(
+                ScanViewModel.Focus.patientComplaints,
+            )
+            .padding(
+                .bottom,
+                size.s4,
+            )
 
             DTextField(
                 controller: viewModel.examinationDescriptionController,
                 focus: DTextFieldFocus(
                     value: .examinationDescription,
-                    state: focus
+                    state: focus,
                 ),
                 title: .scanExaminationDescriptionLabel,
                 placeholder: .scanExaminationDescriptionPlaceholder,
                 mode: DTextFieldMultiLineMode(),
-                keyboardType: .default
+                keyboardType: .default,
             )
-            .id(ScanViewModel.Focus.examinationDescription)
-            .padding(.bottom, size.s16)
+            .id(
+                ScanViewModel.Focus.examinationDescription,
+            )
+            .padding(
+                .bottom,
+                size.s16,
+            )
 
             ScanTemplateCardView()
-                .padding(.bottom, size.s16)
+                .padding(
+                    .bottom,
+                    size.s16,
+                )
 
             NeuralModelCardView(
-                onTap: viewModel.onTapNeuralModelSelection
+                onTap: viewModel.onTapNeuralModelSelection,
             )
-            .padding(.bottom, size.s16)
+            .padding(
+                .bottom,
+                size.s16,
+            )
 
             NeuralModelSettingsCardView(
                 feature: .neuralModelSettings,
-                onTap: viewModel.onTapNeuralModelSettings
+                onTap: viewModel.onTapNeuralModelSettings,
             )
 
             DButton(
                 title: .buttonClear,
-                action: viewModel.onTapClear
+                action: viewModel.onTapClear,
             )
-            .dStyle(.primaryText)
+            .dStyle(
+                .primaryText,
+            )
 
             if viewModel.isFillDevelopmentButtonVisible {
                 DButton(
                     title: .buttonFillDevelopment,
-                    action: viewModel.onTapFillDevelopment
+                    action: viewModel.onTapFillDevelopment,
                 )
-                .dStyle(.primaryText)
+                .dStyle(
+                    .primaryText,
+                )
             }
         }
-        .padding(.horizontal, size.s16)
+        .padding(
+            .horizontal,
+            size.s16,
+        )
     }
 }

@@ -2,19 +2,23 @@ import Foundation
 
 extension Date {
     func localized(
-        locale: Locale = .current
+        locale: Locale = .current,
     ) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
         formatter.dateStyle = .short
-        return formatter.string(from: self)
+        return formatter.string(
+            from: self,
+        )
     }
 
     func localizedDateTime(
-        locale: Locale = .current
+        locale: Locale = .current,
     ) -> String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.locale = Locale(
+            identifier: "en_US_POSIX",
+        )
         formatter.dateFormat = "HH:mm"
         return "\(localized(locale: locale)) \(formatter.string(from: self))"
     }
@@ -22,19 +26,33 @@ extension Date {
     func localizedDayTitle(
         relativeTo now: Date = Date(),
         calendar: Calendar = .autoupdatingCurrent,
-        locale: Locale = .current
+        locale: Locale = .current,
     ) -> String {
-        let day = calendar.startOfDay(for: self)
-        let today = calendar.startOfDay(for: now)
+        let day = calendar.startOfDay(
+            for: self,
+        )
+        let today = calendar.startOfDay(
+            for: now,
+        )
 
         if day == today {
-            return String(localized: "dateTodayLabel", locale: locale)
+            return String(
+                localized: "dateTodayLabel",
+                locale: locale,
+            )
         }
 
-        if let yesterday = calendar.date(byAdding: .day, value: -1, to: today),
-           day == yesterday
+        if let yesterday = calendar.date(
+            byAdding: .day,
+            value: -1,
+            to: today,
+        ),
+            day == yesterday
         {
-            return String(localized: "dateYesterdayLabel", locale: locale)
+            return String(
+                localized: "dateYesterdayLabel",
+                locale: locale,
+            )
         }
 
         let formatter = DateFormatter()
@@ -42,14 +60,28 @@ extension Date {
         formatter.locale = locale
         formatter.timeZone = calendar.timeZone
 
-        if calendar.component(.year, from: day) == calendar.component(.year, from: today) {
-            formatter.setLocalizedDateFormatFromTemplate("dMMMM")
-        } else if locale.identifier.lowercased().hasPrefix("ru") {
+        if calendar.component(
+            .year,
+            from: day,
+        ) == calendar.component(
+            .year,
+            from: today,
+        ) {
+            formatter.setLocalizedDateFormatFromTemplate(
+                "dMMMM",
+            )
+        } else if locale.identifier.lowercased().hasPrefix(
+            "ru",
+        ) {
             formatter.dateFormat = "d MMMM yyyy"
         } else {
-            formatter.setLocalizedDateFormatFromTemplate("dMMMMyyyy")
+            formatter.setLocalizedDateFormatFromTemplate(
+                "dMMMMyyyy",
+            )
         }
 
-        return formatter.string(from: day)
+        return formatter.string(
+            from: day,
+        )
     }
 }

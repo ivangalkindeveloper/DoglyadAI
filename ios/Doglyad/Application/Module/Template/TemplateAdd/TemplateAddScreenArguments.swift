@@ -6,7 +6,7 @@ final class TemplateAddScreenArguments: RouteArgumentsProtocol {
 
     init(
         onTemplatesChanged: (() -> Void)? = nil,
-        onAddSuccess: ((USExaminationTemplate) -> Void)? = nil
+        onAddSuccess: ((USExaminationTemplate) -> Void)? = nil,
     ) {
         self.onTemplatesChanged = onTemplatesChanged
         self.onAddSuccess = onAddSuccess

@@ -9,7 +9,7 @@ public struct DSegmentItem<T: Equatable>: Identifiable {
     public init(
         value: T,
         title: LocalizedStringResource,
-        action: @escaping () -> Void
+        action: @escaping () -> Void,
     ) {
         self.value = value
         self.title = title
@@ -25,7 +25,7 @@ public struct DSegment<T: Equatable>: DView {
 
     public init(
         currentValue: T?,
-        items: [DSegmentItem<T>]
+        items: [DSegmentItem<T>],
     ) {
         self.currentValue = currentValue
         self.items = items
@@ -33,25 +33,33 @@ public struct DSegment<T: Equatable>: DView {
 
     public var body: some View {
         HStack(
-            spacing: size.s8
+            spacing: size.s8,
         ) {
-            ForEach(items) { item in
+            ForEach(
+                items,
+            ) { item in
                 Button(
-                    action: item.action
+                    action: item.action,
                 ) {
-                    Text(item.title)
-                        .font(typography.linkSmall)
+                    Text(
+                        item.title,
+                    )
+                    .font(
+                        typography.linkSmall,
+                    )
                 }
                 .buttonStyle(
                     DSegmentButtonStyle(
-                        currentValue == item.value
-                    )
+                        currentValue == item.value,
+                    ),
                 )
             }
         }
         .animation(
-            .easeOut(duration: 0.1),
-            value: currentValue
+            .easeOut(
+                duration: 0.1,
+            ),
+            value: currentValue,
         )
     }
 }
@@ -65,24 +73,38 @@ public struct DSegmentButtonStyle: ButtonStyle {
     let condition: Bool
 
     public init(
-        _ condition: Bool
+        _ condition: Bool,
     ) {
         self.condition = condition
     }
 
-    public func makeBody(configuration: Configuration) -> some View {
+    public func makeBody(
+        configuration: Configuration,
+    ) -> some View {
         configuration.label
-            .padding(size.s8)
-            .frame(maxWidth: .infinity)
-            .background(background)
-            .foregroundColor(foregroundColor)
-            .foregroundStyle(foregroundColor)
+            .padding(
+                size.s8,
+            )
+            .frame(
+                maxWidth: .infinity,
+            )
+            .background(
+                background,
+            )
+            .foregroundColor(
+                foregroundColor,
+            )
+            .foregroundStyle(
+                foregroundColor,
+            )
             .opacity(
-                configuration.isPressed ? 0.6 : 1
+                configuration.isPressed ? 0.6 : 1,
             )
             .animation(
-                .easeOut(duration: 0.1),
-                value: configuration.isPressed
+                .easeOut(
+                    duration: 0.1,
+                ),
+                value: configuration.isPressed,
             )
     }
 
@@ -90,10 +112,14 @@ public struct DSegmentButtonStyle: ButtonStyle {
     var background: some View {
         if condition {
             Capsule()
-                .fill(color.gradientPrimaryWeak)
+                .fill(
+                    color.gradientPrimaryWeak,
+                )
         } else {
             Capsule()
-                .fill(color.grayscaleBackground)
+                .fill(
+                    color.grayscaleBackground,
+                )
         }
     }
 
@@ -109,15 +135,25 @@ public struct DSegmentButtonStyle: ButtonStyle {
         DSegment<String>(
             currentValue: value,
             items: [
-                DSegmentItem<String>(value: "Apple", title: "Value - Apple", action: {
-                    value = "Apple"
-                }),
-                DSegmentItem<String>(value: "Cherry", title: "Value - Cherry", action: {
-                    value = "Cherry"
-                }),
-            ]
+                DSegmentItem<String>(
+                    value: "Apple",
+                    title: "Value - Apple",
+                    action: {
+                        value = "Apple"
+                    },
+                ),
+                DSegmentItem<String>(
+                    value: "Cherry",
+                    title: "Value - Cherry",
+                    action: {
+                        value = "Cherry"
+                    },
+                ),
+            ],
         )
-        .redacted(reason: .placeholder)
+        .redacted(
+            reason: .placeholder,
+        )
         .padding()
     }
     .dThemeWrapper()

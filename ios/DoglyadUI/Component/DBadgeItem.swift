@@ -8,7 +8,7 @@ public struct DBadgeItem {
     public init(
         _ title: LocalizedStringResource,
         isVisible: Bool = true,
-        isShimmering: Bool = false
+        isShimmering: Bool = false,
     ) {
         self.title = title
         self.isVisible = isVisible

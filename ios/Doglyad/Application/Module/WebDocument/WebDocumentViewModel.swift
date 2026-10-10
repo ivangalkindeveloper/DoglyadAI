@@ -9,7 +9,7 @@ final class WebDocumentViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: WebDocumentBottomSheetArguments
+        arguments: WebDocumentBottomSheetArguments,
     ) {
         url = arguments.url
         title = arguments.title
@@ -17,10 +17,12 @@ final class WebDocumentViewModel: DViewModel {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.webDocument),
-            analyticsParameters: AnalyticsParameters([
-                .document: .string(AnalyticsDocument(url: arguments.url).rawValue),
-            ])
+            analyticsDestination: .bottomSheet(
+                .webDocument,
+            ),
+            analyticsParameters: .document(
+                url: arguments.url,
+            ),
         )
     }
 }

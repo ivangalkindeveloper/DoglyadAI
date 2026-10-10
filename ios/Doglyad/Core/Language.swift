@@ -6,13 +6,21 @@ struct Language {
 
     init(
         localeConfig: LocaleConfig,
-        preferredLanguageIdentifiers: [String]
+        preferredLanguageIdentifiers: [String],
     ) {
-        let availableCodes = Set(localeConfig.codes)
+        let availableCodes = Set(
+            localeConfig.codes,
+        )
         let code = preferredLanguageIdentifiers
-            .compactMap { Locale(identifier: $0).language.languageCode?.identifier }
-            .first(where: availableCodes.contains) ?? localeConfig.defaultCode
+            .compactMap { Locale(
+                identifier: $0,
+            ).language.languageCode?.identifier }
+            .first(
+                where: availableCodes.contains,
+            ) ?? localeConfig.defaultCode
         currentCode = code
-        currentLocale = Locale(identifier: code)
+        currentLocale = Locale(
+            identifier: code,
+        )
     }
 }

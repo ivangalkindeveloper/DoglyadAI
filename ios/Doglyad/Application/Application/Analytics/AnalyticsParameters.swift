@@ -4,20 +4,26 @@ struct AnalyticsParameters {
     private let values: [AnalyticsParameter: AnalyticsValue]
 
     init(
-        _ values: [AnalyticsParameter: AnalyticsValue] = [:]
+        _ values: [AnalyticsParameter: AnalyticsValue] = [:],
     ) {
         self.values = values
     }
 
     func merging(
-        _ other: AnalyticsParameters
+        _ other: AnalyticsParameters,
     ) -> AnalyticsParameters {
-        AnalyticsParameters(values.merging(other.values) { _, new in new })
+        AnalyticsParameters(
+            values.merging(
+                other.values,
+            ) { _, new in new },
+        )
     }
 
     var firebaseParameters: [String: Any] {
-        Dictionary(uniqueKeysWithValues: values.map { key, value in
-            (key.rawValue, value.firebaseValue)
-        })
+        Dictionary(
+            uniqueKeysWithValues: values.map { key, value in
+                (key.rawValue, value.firebaseValue)
+            },
+        )
     }
 }

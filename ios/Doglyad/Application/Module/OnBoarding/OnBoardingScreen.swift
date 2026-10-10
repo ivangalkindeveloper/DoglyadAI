@@ -13,15 +13,15 @@ struct OnBoardingScreen: View {
             viewModel: OnBoardingViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }
 
 #Preview {
     OnBoardingScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

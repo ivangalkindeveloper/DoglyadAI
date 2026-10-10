@@ -3,47 +3,78 @@ import Foundation
 public protocol DDatabaseNeuralModelSettingsProtocol: AnyObject {
     func getNeuralModelIsMarkdown() -> Bool
 
-    func setNeuralModelIsMarkdown(value: Bool)
+    func setNeuralModelIsMarkdown(
+        value: Bool,
+    )
 
     func getNeuralModelTemperature() -> Double?
 
-    func setNeuralModelTemperature(value: Double?)
+    func setNeuralModelTemperature(
+        value: Double?,
+    )
 
     func getNeuralModelMaxTokens() -> Int?
 
-    func setNeuralModelMaxTokens(value: Int?)
+    func setNeuralModelMaxTokens(
+        value: Int?,
+    )
 }
 
 extension DDatabase: DDatabaseNeuralModelSettingsProtocol {
     public func getNeuralModelIsMarkdown() -> Bool {
-        getBool(.neuralModelIsMarkdown)
+        getBool(
+            .neuralModelIsMarkdown,
+        )
     }
 
-    public func setNeuralModelIsMarkdown(value: Bool) {
-        setValue(value, .neuralModelIsMarkdown)
+    public func setNeuralModelIsMarkdown(
+        value: Bool,
+    ) {
+        setValue(
+            value,
+            .neuralModelIsMarkdown,
+        )
     }
 
     public func getNeuralModelTemperature() -> Double? {
-        getDouble(.neuralModelTemperature)
+        getDouble(
+            .neuralModelTemperature,
+        )
     }
 
-    public func setNeuralModelTemperature(value: Double?) {
+    public func setNeuralModelTemperature(
+        value: Double?,
+    ) {
         if let value {
-            setValue(value, .neuralModelTemperature)
+            setValue(
+                value,
+                .neuralModelTemperature,
+            )
         } else {
-            removeValue(.neuralModelTemperature)
+            removeValue(
+                .neuralModelTemperature,
+            )
         }
     }
 
     public func getNeuralModelMaxTokens() -> Int? {
-        getInt(.neuralModelMaxTokens)
+        getInt(
+            .neuralModelMaxTokens,
+        )
     }
 
-    public func setNeuralModelMaxTokens(value: Int?) {
+    public func setNeuralModelMaxTokens(
+        value: Int?,
+    ) {
         if let value {
-            setValue(value, .neuralModelMaxTokens)
+            setValue(
+                value,
+                .neuralModelMaxTokens,
+            )
         } else {
-            removeValue(.neuralModelMaxTokens)
+            removeValue(
+                .neuralModelMaxTokens,
+            )
         }
     }
 }

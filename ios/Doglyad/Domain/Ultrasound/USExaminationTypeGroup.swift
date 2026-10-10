@@ -6,6 +6,8 @@ struct USExaminationTypeGroup: Codable, Identifiable, Equatable {
     let examinationTypes: [USExaminationType]
 
     var localizedTitle: LocalizedStringResource {
-        LocalizedStringResource(stringLiteral: title)
+        LocalizedStringResource(
+            stringLiteral: title,
+        )
     }
 }

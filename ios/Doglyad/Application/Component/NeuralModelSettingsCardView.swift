@@ -12,48 +12,69 @@ struct NeuralModelSettingsCardView: DView {
 
     @ViewBuilder
     var body: some View {
-        switch subscription.availability(of: feature) {
+        switch subscription.availability(
+            of: feature,
+        ) {
         case .unavailable:
             EmptyView()
         case .offered, .available:
             VStack(
                 alignment: .leading,
-                spacing: .zero
+                spacing: .zero,
             ) {
-                DText(.scanNeuralModelSettingsTitleLabel)
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscalePlacehold
-                    )
-                    .padding(.horizontal, size.s8)
-                    .padding(.bottom, size.s8)
+                DText(
+                    .scanNeuralModelSettingsTitleLabel,
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscalePlacehold,
+                )
+                .padding(
+                    .horizontal,
+                    size.s8,
+                )
+                .padding(
+                    .bottom,
+                    size.s8,
+                )
 
                 DButtonCard(
-                    action: onTap
+                    action: onTap,
                 ) {
                     VStack(
                         alignment: .leading,
-                        spacing: size.s4
+                        spacing: size.s4,
                     ) {
                         NeuralModelSettingsMarkdownRowView(
-                            isMarkdown: $ultrasoundViewModel.isMarkdown
+                            isMarkdown: $ultrasoundViewModel.isMarkdown,
                         )
 
                         NeuralModelValueRowView(
                             title: .scanNeuralModelSettingsTemperatureLabel,
-                            value: String(format: "%.2f", ultrasoundViewModel.temperature)
+                            value: String(
+                                format: "%.2f",
+                                ultrasoundViewModel.temperature,
+                            ),
                         )
 
                         NeuralModelValueRowView(
                             title: .scanNeuralModelSettingsMaxTokensLabel,
-                            value: "\(ultrasoundViewModel.maxTokens)"
+                            value: "\(ultrasoundViewModel.maxTokens)",
                         )
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading,
+                    )
                 }
-                .paidBadge(feature)
+                .paidBadge(
+                    feature,
+                )
             }
-            .padding(.bottom, size.s16)
+            .padding(
+                .bottom,
+                size.s16,
+            )
         }
     }
 }
@@ -73,26 +94,34 @@ private struct NeuralModelSettingsMarkdownRowView: DView {
     var body: some View {
         HStack(
             alignment: .center,
-            spacing: size.s8
+            spacing: size.s8,
         ) {
-            DText(.scanNeuralModelSettingsMarkdownLabel)
-                .dStyle(
-                    font: typography.textXSmall,
-                    color: color.grayscalePlacehold
-                )
+            DText(
+                .scanNeuralModelSettingsMarkdownLabel,
+            )
+            .dStyle(
+                font: typography.textXSmall,
+                color: color.grayscalePlacehold,
+            )
 
             Toggle(
                 "",
-                isOn: $isMarkdown
+                isOn: $isMarkdown,
             )
             .labelsHidden()
-            .toggleStyle(.switch)
-            .scaleEffect(switchScale)
+            .toggleStyle(
+                .switch,
+            )
+            .scaleEffect(
+                switchScale,
+            )
             .frame(
                 width: Self.switchNativeWidth * switchScale,
-                height: size.s12
+                height: size.s12,
             )
-            .allowsHitTesting(false)
+            .allowsHitTesting(
+                false,
+            )
         }
     }
 }

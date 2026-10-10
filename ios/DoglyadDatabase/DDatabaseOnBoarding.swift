@@ -3,15 +3,24 @@ import Foundation
 public protocol DDatabaseOnBoardingProtocol: AnyObject {
     func getOnBoardingCompleted() -> Bool
 
-    func setOnBoardingCompleted(value: Bool)
+    func setOnBoardingCompleted(
+        value: Bool,
+    )
 }
 
 extension DDatabase: DDatabaseOnBoardingProtocol {
     public func getOnBoardingCompleted() -> Bool {
-        getBool(.isOnBoardingCompleted)
+        getBool(
+            .isOnBoardingCompleted,
+        )
     }
 
-    public func setOnBoardingCompleted(value: Bool) {
-        setValue(value, .isOnBoardingCompleted)
+    public func setOnBoardingCompleted(
+        value: Bool,
+    ) {
+        setValue(
+            value,
+            .isOnBoardingCompleted,
+        )
     }
 }

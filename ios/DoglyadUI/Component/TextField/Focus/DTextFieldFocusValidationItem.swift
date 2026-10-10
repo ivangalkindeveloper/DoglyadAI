@@ -4,7 +4,7 @@ public struct DTextFieldFocusValidationItem<Focus: Hashable> {
 
     public init(
         focus: Focus,
-        controller: DTextFieldController
+        controller: DTextFieldController,
     ) {
         self.focus = focus
         self.controller = controller

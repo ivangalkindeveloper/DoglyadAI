@@ -6,43 +6,62 @@ struct ScanSpeechReviewView: DView {
     @ObservedObject var viewModel: ScanSpeechViewModel
 
     var body: some View {
-        VStack(spacing: size.s16) {
+        VStack(
+            spacing: size.s16,
+        ) {
             ScrollView {
-                VStack(alignment: .leading, spacing: size.s16) {
+                VStack(
+                    alignment: .leading,
+                    spacing: size.s16,
+                ) {
                     if let reviewStatusDescription = viewModel.reviewStatusDescription {
-                        DText(reviewStatusDescription)
-                            .dStyle(
-                                font: typography.textSmall,
-                                color: color.grayscaleHeader
-                            )
+                        DText(
+                            reviewStatusDescription,
+                        )
+                        .dStyle(
+                            font: typography.textSmall,
+                            color: color.grayscaleHeader,
+                        )
                     }
 
                     DTextField(
                         controller: viewModel.transcriptController,
                         title: .speechReviewFieldTitle,
                         placeholder: .speechReviewFieldPlaceholder,
-                        mode: DTextFieldMultiLineMode(lineLimit: 6 ... 14)
+                        mode: DTextFieldMultiLineMode(
+                            lineLimit: 6 ... 14,
+                        ),
                     )
-                    .disabled(viewModel.isLoading)
+                    .disabled(
+                        viewModel.isLoading,
+                    )
                 }
             }
-            .scrollDismissesKeyboard(.interactively)
+            .scrollDismissesKeyboard(
+                .interactively,
+            )
 
             DButton(
                 title: .speechReviewContinueButton,
                 action: viewModel.onTapContinue,
                 isLoading: viewModel.isLoading,
-                isDisabled: viewModel.isReviewContinueDisabled
+                isDisabled: viewModel.isReviewContinueDisabled,
             )
-            .dStyle(.primaryButton)
+            .dStyle(
+                .primaryButton,
+            )
 
             DButton(
                 title: .speechReviewRecordAgainButton,
                 action: viewModel.onTapRecordAgain,
-                isDisabled: viewModel.isLoading
+                isDisabled: viewModel.isLoading,
             )
-            .dStyle(.primaryText)
+            .dStyle(
+                .primaryText,
+            )
         }
-        .padding(size.s16)
+        .padding(
+            size.s16,
+        )
     }
 }

@@ -10,97 +10,141 @@ struct ScanTemplateCardView: DView {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: .zero
+            spacing: .zero,
         ) {
-            DText(.scanTemplateCardTitleLabel)
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscalePlacehold
-                )
-                .padding(.horizontal, size.s8)
-                .padding(.bottom, size.s8)
+            DText(
+                .scanTemplateCardTitleLabel,
+            )
+            .dStyle(
+                font: typography.textSmall,
+                color: color.grayscalePlacehold,
+            )
+            .padding(
+                .horizontal,
+                size.s8,
+            )
+            .padding(
+                .bottom,
+                size.s8,
+            )
 
             ZStack(
-                alignment: .topTrailing
+                alignment: .topTrailing,
             ) {
                 DButtonCard(
                     backgroundColor: viewModel.isSelectedTemplateExaminationTypeMismatch
                         ? color.dangerBackground
                         : nil,
-                    action: viewModel.onTapSelectedTemplate
+                    action: viewModel.onTapSelectedTemplate,
                 ) {
                     VStack(
                         alignment: .leading,
-                        spacing: size.s4
+                        spacing: size.s4,
                     ) {
                         if let template = ultrasoundViewModel.template {
-                            DText(template.usExaminationType.localizedTitle)
-                                .dStyle(
-                                    font: typography.linkSmall
-                                )
+                            DText(
+                                template.usExaminationType.localizedTitle,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                            )
 
-                            DText(template.name)
-                                .dStyle(
-                                    font: typography.textSmall,
-                                    color: color.grayscalePlacehold
-                                )
+                            DText(
+                                template.name,
+                            )
+                            .dStyle(
+                                font: typography.textSmall,
+                                color: color.grayscalePlacehold,
+                            )
 
-                            DText(template.content)
-                                .dStyle(
-                                    font: typography.textXSmall,
-                                    color: color.grayscalePlacehold
-                                )
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .lineLimit(4)
+                            DText(
+                                template.content,
+                            )
+                            .dStyle(
+                                font: typography.textXSmall,
+                                color: color.grayscalePlacehold,
+                            )
+                            .frame(
+                                maxWidth: .infinity,
+                                alignment: .leading,
+                            )
+                            .lineLimit(
+                                4,
+                            )
                         } else {
-                            DText(viewModel.usExaminationType.localizedTitle)
-                                .dStyle(
-                                    font: typography.linkSmall
-                                )
+                            DText(
+                                viewModel.usExaminationType.localizedTitle,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                            )
 
-                            DText(.scanTemplateCardNoTemplateLabel)
-                                .dStyle(
-                                    font: typography.textXSmall,
-                                    color: color.grayscalePlacehold
-                                )
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            DText(
+                                .scanTemplateCardNoTemplateLabel,
+                            )
+                            .dStyle(
+                                font: typography.textXSmall,
+                                color: color.grayscalePlacehold,
+                            )
+                            .frame(
+                                maxWidth: .infinity,
+                                alignment: .leading,
+                            )
                         }
                     }
                     .padding(
                         .trailing,
-                        ultrasoundViewModel.template == nil ? .zero : size.s32
+                        ultrasoundViewModel.template == nil ? .zero : size.s32,
                     )
                     .frame(
                         maxWidth: .infinity,
-                        alignment: .leading
+                        alignment: .leading,
                     )
                 }
 
                 if ultrasoundViewModel.template != nil {
                     DCloseButton(
-                        action: viewModel.onTapResetTemplate
+                        action: viewModel.onTapResetTemplate,
                     )
-                    .padding(size.s14)
-                    .transition(.opacity)
+                    .padding(
+                        size.s14,
+                    )
+                    .transition(
+                        .opacity,
+                    )
                 }
             }
 
             if viewModel.isSelectedTemplateExaminationTypeMismatch {
-                Text(.scanTemplateCardExaminationTypeMismatchError)
-                    .font(typography.textXSmall)
-                    .foregroundStyle(color.dangerDefault)
-                    .padding(.top, size.s4)
-                    .padding(.horizontal, size.s8)
-                    .transition(.opacity)
+                Text(
+                    .scanTemplateCardExaminationTypeMismatchError,
+                )
+                .font(
+                    typography.textXSmall,
+                )
+                .foregroundStyle(
+                    color.dangerDefault,
+                )
+                .padding(
+                    .top,
+                    size.s4,
+                )
+                .padding(
+                    .horizontal,
+                    size.s8,
+                )
+                .transition(
+                    .opacity,
+                )
             }
         }
         .animation(
             theme.animation,
-            value: viewModel.isSelectedTemplateExaminationTypeMismatch
+            value: viewModel.isSelectedTemplateExaminationTypeMismatch,
         )
         .animation(
             theme.animation,
-            value: ultrasoundViewModel.template
+            value: ultrasoundViewModel.template,
         )
     }
 }

@@ -6,7 +6,7 @@ final class SelectUSExaminationTypeArguments: RouteArgumentsProtocol {
 
     init(
         currentValue: USExaminationType? = nil,
-        onSelected: @escaping (USExaminationType) -> Void
+        onSelected: @escaping (USExaminationType) -> Void,
     ) {
         self.currentValue = currentValue
         self.onSelected = onSelected

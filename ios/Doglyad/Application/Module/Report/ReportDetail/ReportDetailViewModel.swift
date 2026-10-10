@@ -8,7 +8,9 @@ import UIKit
 
 @MainActor
 final class ReportDetailViewModel: DViewModel {
-    static func actualModelReportCardScrollId(toolbarInset: CGFloat) -> String {
+    static func actualModelReportCardScrollId(
+        toolbarInset: CGFloat,
+    ) -> String {
         "actualModelReportCard-\(toolbarInset)"
     }
 
@@ -25,7 +27,7 @@ final class ReportDetailViewModel: DViewModel {
         subscription: SubscriptionViewModel,
         getSelectedTemplate: @escaping () -> USExaminationTemplate?,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
-        onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void
+        onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void,
     ) {
         self.messager = messager
         self.getSelectedTemplate = getSelectedTemplate
@@ -36,7 +38,9 @@ final class ReportDetailViewModel: DViewModel {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.reportDetail)
+            analyticsDestination: .screen(
+                .reportDetail,
+            ),
         )
     }
 
@@ -47,79 +51,107 @@ final class ReportDetailViewModel: DViewModel {
         "\(report.examinationData.patientName), \(report.date.localizedDateTime())"
     }
 
-    func onTapPhoto(_ photo: USExaminationScanPhoto) {
+    func onTapPhoto(
+        _ photo: USExaminationScanPhoto,
+    ) {
         guard !isLoading else { return }
         coordinator.screen(
             .photoView,
             arguments: PhotoViewScreenArguments(
-                photos: .constant(report.examinationData.photos),
+                photos: .constant(
+                    report.examinationData.photos,
+                ),
                 initialPhotoID: photo.id,
-                subTitle: subTitle
-            )
+                subTitle: subTitle,
+            ),
         )
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.reportDetailBack)
+        analytics.buttonTapped(
+            .reportDetailBack,
+        )
         coordinator.pop()
     }
 
     func onTapShare() {
-        analytics.buttonTapped(.reportDetailShare)
+        analytics.buttonTapped(
+            .reportDetailShare,
+        )
         coordinator.sheet(
             .share,
             arguments: ShareArguments(
-                report: report
-            )
+                report: report,
+            ),
         )
     }
 
     func onTapCopy(
-        report: USExaminationModelReport
+        report: USExaminationModelReport,
     ) {
-        analytics.buttonTapped(.reportDetailCopy)
-        UIApplication.pasteboard(report.plainText)
+        analytics.buttonTapped(
+            .reportDetailCopy,
+        )
+        UIApplication.pasteboard(
+            report.plainText,
+        )
         messager.show(
             type: .success,
             title: .reportDetailModelCopyMessageTitle,
-            description: .reportDetailModelCopyMessageDescription
+            description: .reportDetailModelCopyMessageDescription,
         )
     }
 
     func onTapNeuralModelSelection() {
         analytics.buttonTapped(
             .reportDetailNeuralModelSelection,
-            parameters: AnalyticsParameters([
-                .modelId: .string(getNeuralModel().id),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .modelId: .string(
+                        getNeuralModel().id,
+                    ),
+                ],
+            ),
         )
         coordinator.sheet(
             .selectNeuralModel,
             arguments: SelectNeuralModelArguments(
                 currentValue: getNeuralModel(),
                 onSelected: { [weak self] model in
-                    self?.onNeuralModelSelected(model)
-                }
-            )
+                    self?.onNeuralModelSelected(
+                        model,
+                    )
+                },
+            ),
         )
     }
 
     func onTapNeuralModelSettings() {
-        analytics.buttonTapped(.reportDetailNeuralModelSettings)
-        coordinator.run(.neuralModelSettings) {
-            self.coordinator.screen(.neuralModelSettings)
+        analytics.buttonTapped(
+            .reportDetailNeuralModelSettings,
+        )
+        coordinator.run(
+            .neuralModelSettings,
+        ) {
+            self.coordinator.screen(
+                .neuralModelSettings,
+            )
         }
     }
 
     func onTapRepeatScan(
         proxy: ScrollViewProxy,
-        toolbarInset: CGFloat
+        toolbarInset: CGFloat,
     ) {
         analytics.buttonTapped(
             .reportDetailRepeatScan,
-            parameters: AnalyticsParameters([
-                .modelId: .string(getNeuralModel().id),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .modelId: .string(
+                        getNeuralModel().id,
+                    ),
+                ],
+            ),
         )
         handle {
             try await self.coordinator.prepareReportGeneration()
@@ -128,7 +160,7 @@ final class ReportDetailViewModel: DViewModel {
             case .proceed:
                 self.performRepeatScan(
                     proxy: proxy,
-                    toolbarInset: toolbarInset
+                    toolbarInset: toolbarInset,
                 )
             case .routed:
                 break
@@ -138,7 +170,7 @@ final class ReportDetailViewModel: DViewModel {
 
     private func performRepeatScan(
         proxy: ScrollViewProxy,
-        toolbarInset: CGFloat
+        toolbarInset: CGFloat,
     ) {
         handle {
             self.isLoading = true
@@ -149,7 +181,7 @@ final class ReportDetailViewModel: DViewModel {
                 neuralModelSettings: neuralModelSettings,
                 examinationData: self.report.examinationData,
                 template: self.getSelectedTemplate()?.content,
-                includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations()
+                includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations(),
             )
             let ultrasoundConfig = self.container.applicationConfig.ultrasound
             let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
@@ -157,8 +189,8 @@ final class ReportDetailViewModel: DViewModel {
                 request: request,
                 scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
                     resizeMaxDimension: ultrasoundConfig.scanPhotoResizeMaxDimension,
-                    compressionQuality: ultrasoundConfig.scanPhotoCompressionQuality
-                )
+                    compressionQuality: ultrasoundConfig.scanPhotoCompressionQuality,
+                ),
             )
             let updatedReport = USExaminationReport(
                 id: self.report.id,
@@ -166,10 +198,10 @@ final class ReportDetailViewModel: DViewModel {
                 neuralModelSettings: neuralModelSettings,
                 examinationData: self.report.examinationData,
                 actualModelReport: modelReport,
-                previousModelReports: [self.report.actualModelReport] + self.report.previousModelReports
+                previousModelReports: [self.report.actualModelReport] + self.report.previousModelReports,
             )
             await self.container.ultrasoundReportRepository.updateReport(
-                report: updatedReport
+                report: updatedReport,
             )
             self.subscription.incrementRequestCount()
 
@@ -180,14 +212,16 @@ final class ReportDetailViewModel: DViewModel {
             self.report = updatedReport
             withAnimation {
                 proxy.scrollTo(
-                    Self.actualModelReportCardScrollId(toolbarInset: toolbarInset),
-                    anchor: .top
+                    Self.actualModelReportCardScrollId(
+                        toolbarInset: toolbarInset,
+                    ),
+                    anchor: .top,
                 )
             }
             self.messager.show(
                 type: .success,
                 title: .reportDetailModelResponseUpdatedMessageTitle,
-                description: .reportDetailModelResponseUpdatedMessageDescription
+                description: .reportDetailModelResponseUpdatedMessageDescription,
             )
         } onUnknownError: { _ in
             self.messager.showUnknownError()

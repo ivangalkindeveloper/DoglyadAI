@@ -11,57 +11,90 @@ struct ScanPhotoListView: DView {
             if viewModel.isPhotoListVisible {
                 VStack(
                     alignment: .leading,
-                    spacing: .zero
+                    spacing: .zero,
                 ) {
                     ScrollView(
                         .horizontal,
-                        showsIndicators: false
+                        showsIndicators: false,
                     ) {
                         HStack(
-                            spacing: .zero
+                            spacing: .zero,
                         ) {
                             if viewModel.isPhotoImportButtonVisible {
                                 ScanMediaButtonView(
                                     isCompact: true,
-                                    action: viewModel.onTapImport
+                                    action: viewModel.onTapImport,
                                 )
-                                .disabled(viewModel.isMediaSelectionDisabled)
-                                .padding(.trailing, size.s8)
-                                .transition(.opacity)
+                                .disabled(
+                                    viewModel.isMediaSelectionDisabled,
+                                )
+                                .padding(
+                                    .trailing,
+                                    size.s8,
+                                )
+                                .transition(
+                                    .opacity,
+                                )
                             }
 
-                            ForEach(viewModel.photos) { photo in
+                            ForEach(
+                                viewModel.photos,
+                            ) { photo in
                                 PhotoCardView(
                                     image: photo.thumbnail,
                                     actionDelete: {
-                                        viewModel.onTapDeletePhoto(photo: photo)
+                                        viewModel.onTapDeletePhoto(
+                                            photo: photo,
+                                        )
                                     },
                                     onTap: {
-                                        viewModel.onTapPhoto(photo)
-                                    }
+                                        viewModel.onTapPhoto(
+                                            photo,
+                                        )
+                                    },
                                 )
-                                .transition(.opacity)
+                                .transition(
+                                    .opacity,
+                                )
                             }
                         }
-                        .padding(.horizontal, size.s16)
-                    }
-                    .padding(.bottom, size.s8)
-
-                    DText(.scanMaxPhotoDescription(count: viewModel.photoMaxCount))
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.grayscalePlacehold,
-                            alignment: .center
+                        .padding(
+                            .horizontal,
+                            size.s16,
                         )
-                        .padding(.horizontal, size.s16)
+                    }
+                    .padding(
+                        .bottom,
+                        size.s8,
+                    )
+
+                    DText(
+                        .scanMaxPhotoDescription(
+                            count: viewModel.photoMaxCount,
+                        ),
+                    )
+                    .dStyle(
+                        font: typography.textSmall,
+                        color: color.grayscalePlacehold,
+                        alignment: .center,
+                    )
+                    .padding(
+                        .horizontal,
+                        size.s16,
+                    )
                 }
-                .padding(.bottom, size.s8)
-                .transition(.opacity)
+                .padding(
+                    .bottom,
+                    size.s8,
+                )
+                .transition(
+                    .opacity,
+                )
             }
         }
         .animation(
             theme.animation,
-            value: viewModel.photos
+            value: viewModel.photos,
         )
     }
 }

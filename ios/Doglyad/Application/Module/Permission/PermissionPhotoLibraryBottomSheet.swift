@@ -11,10 +11,10 @@ struct PermissionPhotoLibraryBottomSheet: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                destination: .permissionPhotoLibrary
+                destination: .permissionPhotoLibrary,
             ),
             title: .permissionPhotoLibraryTitle,
-            description: .permissionPhotoLibraryDescription
+            description: .permissionPhotoLibraryDescription,
         )
     }
 }

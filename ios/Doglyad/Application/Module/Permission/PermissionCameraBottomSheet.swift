@@ -11,10 +11,10 @@ struct PermissionCameraBottomSheet: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                destination: .permissionCamera
+                destination: .permissionCamera,
             ),
             title: .permissionCameraTitle,
-            description: .permissionCameraDescription
+            description: .permissionCameraDescription,
         )
     }
 }

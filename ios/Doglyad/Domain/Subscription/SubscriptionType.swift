@@ -7,12 +7,15 @@ enum SubscriptionType: String, Codable, Equatable, Comparable {
     /// The higher the priority, the more expensive/capable the subscription.
     private var priority: Int {
         switch self {
-        case .base: return 0
-        case .pro: return 1
+        case .base: 0
+        case .pro: 1
         }
     }
 
-    static func < (lhs: SubscriptionType, rhs: SubscriptionType) -> Bool {
+    static func < (
+        lhs: SubscriptionType,
+        rhs: SubscriptionType,
+    ) -> Bool {
         lhs.priority < rhs.priority
     }
 }

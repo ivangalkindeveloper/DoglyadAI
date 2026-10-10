@@ -4,12 +4,12 @@ protocol UltrasoundDraftRepositoryProtocol: AnyObject {
     func getDraft() async -> USExaminationDraft?
 
     func saveForm(
-        _ form: USExaminationDraftForm
+        _ form: USExaminationDraftForm,
     ) async
 
     func savePhotos(
         _ photos: [USExaminationScanPhoto],
-        currentForm: USExaminationDraftForm
+        currentForm: USExaminationDraftForm,
     ) async
 
     func clearDraft() async

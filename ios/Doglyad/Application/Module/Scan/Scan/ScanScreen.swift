@@ -21,7 +21,9 @@ struct ScanScreen: View {
                     ultrasoundViewModel.template
                 },
                 onTemplateSelected: { [ultrasoundViewModel] template in
-                    ultrasoundViewModel.selectTemplate(template)
+                    ultrasoundViewModel.selectTemplate(
+                        template,
+                    )
                 },
                 onTemplateReset: { [ultrasoundViewModel] in
                     ultrasoundViewModel.resetTemplate()
@@ -30,16 +32,18 @@ struct ScanScreen: View {
                     ultrasoundViewModel.neuralModel
                 },
                 onNeuralModelSelected: { [ultrasoundViewModel] model in
-                    ultrasoundViewModel.saveNeuralModel(model)
-                }
-            )
+                    ultrasoundViewModel.saveNeuralModel(
+                        model,
+                    )
+                },
+            ),
         )
     }
 }
 
 #Preview {
     ScanScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

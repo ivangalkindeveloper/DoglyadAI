@@ -6,7 +6,7 @@ public struct RequestLimitDB: Codable, Sendable, Equatable {
 
     public init(
         count: Int,
-        date: Date
+        date: Date,
     ) {
         self.count = count
         self.date = date

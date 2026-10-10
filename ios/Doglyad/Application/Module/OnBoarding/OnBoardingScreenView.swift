@@ -2,7 +2,9 @@ import DoglyadUI
 import SwiftUI
 
 struct OnBoardingScreenView: DView {
-    @Environment(\.locale) private var locale
+    @Environment(
+        \.locale,
+    ) private var locale
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: OnBoardingViewModel
@@ -12,69 +14,106 @@ struct OnBoardingScreenView: DView {
             content: { _, bottomHeight in
                 VStack(
                     alignment: .leading,
-                    spacing: .zero
+                    spacing: .zero,
                 ) {
                     stepper
-                        .padding(.bottom, size.s16)
+                        .padding(
+                            .bottom,
+                            size.s16,
+                        )
 
                     currentPage
-                        .id(viewModel.page)
-                        .transition(.opacity)
+                        .id(
+                            viewModel.page,
+                        )
+                        .transition(
+                            .opacity,
+                        )
                         .frame(
                             maxWidth: .infinity,
-                            maxHeight: .infinity
+                            maxHeight: .infinity,
                         )
                 }
-                .padding(size.s16)
-                .padding(.bottom, bottomHeight)
-                .animation(.easeInOut, value: viewModel.page)
+                .padding(
+                    size.s16,
+                )
+                .padding(
+                    .bottom,
+                    bottomHeight,
+                )
+                .animation(
+                    .easeInOut,
+                    value: viewModel.page,
+                )
             },
             bottom: {
                 HStack(
-                    spacing: size.s8
+                    spacing: size.s8,
                 ) {
                     if viewModel.isBackButtonVisible {
                         DButton(
                             image: .back,
-                            action: viewModel.onPressedBack
+                            action: viewModel.onPressedBack,
                         )
-                        .dStyle(.circle)
+                        .dStyle(
+                            .circle,
+                        )
                         .transition(
                             .scale
-                                .combined(with: .opacity)
+                                .combined(
+                                    with: .opacity,
+                                ),
                         )
                     }
 
                     DButton(
-                        title: viewModel.buttonTitle(viewModel.page),
+                        title: viewModel.buttonTitle(
+                            viewModel.page,
+                        ),
                         action: viewModel.onPressedNext,
-                        isDisabled: viewModel.isLegalDisabled
+                        isDisabled: viewModel.isLegalDisabled,
                     )
-                    .dStyle(.primaryButton)
+                    .dStyle(
+                        .primaryButton,
+                    )
                 }
-                .padding(size.s16)
-                .animation(.easeInOut, value: viewModel.page)
-                .animation(theme.animation, value: viewModel.isLegalAccepted)
-            }
+                .padding(
+                    size.s16,
+                )
+                .animation(
+                    .easeInOut,
+                    value: viewModel.page,
+                )
+                .animation(
+                    theme.animation,
+                    value: viewModel.isLegalAccepted,
+                )
+            },
         )
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 
     private var stepper: some View {
         HStack(
-            spacing: size.s4
+            spacing: size.s4,
         ) {
             ForEach(
-                Array(OnBoardingViewModel.Page.allCases.enumerated()),
-                id: \.offset
+                Array(
+                    OnBoardingViewModel.Page.allCases.enumerated(),
+                ),
+                id: \.offset,
             ) { index, _ in
                 Capsule()
                     .fill(
                         index <= viewModel.page.index
                             ? color.primaryDefault
-                            : color.grayscaleLine
+                            : color.grayscaleLine,
                     )
-                    .frame(height: size.s2)
+                    .frame(
+                        height: size.s2,
+                    )
             }
         }
     }
@@ -87,57 +126,83 @@ struct OnBoardingScreenView: DView {
                 tag: .first,
                 title: .onBoardingTitleFirst,
                 image: .doglyad,
-                description: .onBoardingDescriptionFirst
+                description: .onBoardingDescriptionFirst,
             )
         case .second:
             OnBoardingPageView(
                 tag: .second,
                 title: .onBoardingTitleSecond,
                 image: .doglyadUSMachine,
-                description: .onBoardingDescriptionSecond
+                description: .onBoardingDescriptionSecond,
             )
         case .third:
             OnBoardingPageView(
                 tag: .third,
                 title: .onBoardingTitleThird,
                 image: .doglyadQuiet,
-                description: .onBoardingDescriptionThird
+                description: .onBoardingDescriptionThird,
             ) {
                 HStack(
-                    alignment: .center
+                    alignment: .center,
                 ) {
                     DCheckbox(
                         isChecked: Binding(
                             get: { viewModel.isLegalAccepted },
-                            set: viewModel.onLegalAcceptedChanged
-                        )
+                            set: viewModel.onLegalAcceptedChanged,
+                        ),
                     )
-                    .padding(.trailing, size.s8)
+                    .padding(
+                        .trailing,
+                        size.s8,
+                    )
 
-                    Text(viewModel.legalAttributedText(theme: theme, locale: locale))
-                        .multilineTextAlignment(.leading)
-                        .tint(color.grayscaleHeader)
-                        .environment(\.openURL, OpenURLAction { url in
-                            viewModel.onLegalAttributedEnvironment(url: url)
-                        })
+                    Text(
+                        viewModel.legalAttributedText(
+                            theme: theme,
+                            locale: locale,
+                        ),
+                    )
+                    .multilineTextAlignment(
+                        .leading,
+                    )
+                    .tint(
+                        color.grayscaleHeader,
+                    )
+                    .environment(
+                        \.openURL,
+                        OpenURLAction { url in
+                            viewModel.onLegalAttributedEnvironment(
+                                url: url,
+                            )
+                        },
+                    )
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.top, size.s16)
-                .padding(.horizontal, size.s16)
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading,
+                )
+                .padding(
+                    .top,
+                    size.s16,
+                )
+                .padding(
+                    .horizontal,
+                    size.s16,
+                )
             }
         case .fourth:
             OnBoardingPageView(
                 tag: .fourth,
                 title: .onBoardingTitleFourth,
                 image: .doglyadQuestion,
-                description: .onBoardingDescriptionFourth
+                description: .onBoardingDescriptionFourth,
             )
         case .fifth:
             OnBoardingPageView(
                 tag: .fifth,
                 title: .onBoardingTitleFifth,
                 image: .doglyadTable,
-                description: .onBoardingDescriptionFifth
+                description: .onBoardingDescriptionFifth,
             )
         }
     }

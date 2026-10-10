@@ -9,29 +9,44 @@ struct TemplateDeleteBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: .templateDeleteTitle,
-            fraction: 0.25
+            fraction: 0.25,
         ) { toolbarHeight, _ in
             VStack(
-                spacing: .zero
+                spacing: .zero,
             ) {
-                DText(.templateDeleteDescription)
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscalePlacehold,
-                        alignment: .center
-                    )
-                    .padding(.top, toolbarHeight + size.s24)
-                    .padding(.horizontal, size.s16)
+                DText(
+                    .templateDeleteDescription,
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscalePlacehold,
+                    alignment: .center,
+                )
+                .padding(
+                    .top,
+                    toolbarHeight + size.s24,
+                )
+                .padding(
+                    .horizontal,
+                    size.s16,
+                )
                 Spacer()
             }
         } bottom: {
             DButton(
                 title: .buttonDelete,
-                action: viewModel.onTapConfirm
+                action: viewModel.onTapConfirm,
             )
-            .dStyle(.primaryButton)
-            .padding(.horizontal, size.s16)
+            .dStyle(
+                .primaryButton,
+            )
+            .padding(
+                .horizontal,
+                size.s16,
+            )
         }
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }

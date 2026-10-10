@@ -6,7 +6,7 @@ final class SelectNeuralModelArguments: RouteArgumentsProtocol {
 
     init(
         currentValue: USExaminationNeuralModel? = nil,
-        onSelected: @escaping (USExaminationNeuralModel) -> Void
+        onSelected: @escaping (USExaminationNeuralModel) -> Void,
     ) {
         self.currentValue = currentValue
         self.onSelected = onSelected

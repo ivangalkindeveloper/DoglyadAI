@@ -10,29 +10,45 @@ public protocol DDatabaseLegalProtocol: AnyObject {
 
     func setAcceptedLegal(
         documentDate: Date,
-        acceptedAt: Date
+        acceptedAt: Date,
     )
 }
 
 extension DDatabase: DDatabaseLegalProtocol {
     public func getAcceptedLegalDocumentDate() -> Date? {
-        date(for: .acceptedLegalDocumentDate)
+        date(
+            for: .acceptedLegalDocumentDate,
+        )
     }
 
     public func getLegalAcceptedAt() -> Date? {
-        date(for: .legalAcceptedAt)
+        date(
+            for: .legalAcceptedAt,
+        )
     }
 
     public func setAcceptedLegal(
         documentDate: Date,
-        acceptedAt: Date
+        acceptedAt: Date,
     ) {
-        setValue(documentDate.timeIntervalSince1970, .acceptedLegalDocumentDate)
-        setValue(acceptedAt.timeIntervalSince1970, .legalAcceptedAt)
+        setValue(
+            documentDate.timeIntervalSince1970,
+            .acceptedLegalDocumentDate,
+        )
+        setValue(
+            acceptedAt.timeIntervalSince1970,
+            .legalAcceptedAt,
+        )
     }
 
-    private func date(for key: DUserDefaultsKey) -> Date? {
-        guard let interval = getDouble(key) else { return nil }
-        return Date(timeIntervalSince1970: interval)
+    private func date(
+        for key: DUserDefaultsKey,
+    ) -> Date? {
+        guard let interval = getDouble(
+            key,
+        ) else { return nil }
+        return Date(
+            timeIntervalSince1970: interval,
+        )
     }
 }

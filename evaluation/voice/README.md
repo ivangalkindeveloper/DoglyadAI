@@ -5,6 +5,162 @@
 Сравнение способов извлечения полей из готового пунктуированного текста:
 [IDEAL_TEXT_EXTRACTION_COMPARISON.md](IDEAL_TEXT_EXTRACTION_COMPARISON.md).
 
+## Сквозная проверка текущего рабочего пути на iPhone
+
+Отдельная проверка Foundation Models от 10 октября завершена без GPU:
+76 EN-случаев, результат самой модели и рабочего пути показаны отдельно:
+[FOUNDATION_MODELS_DEVICE_2026_10_10_REPORT.md](FOUNDATION_MODELS_DEVICE_2026_10_10_REPORT.md).
+
+Запуск от 10 октября остановлен на проверке серверной связи: три попытки
+дали HTTP 502 из-за недоступного GPU. План возобновления и фактические
+проверки: [DEVICE_QUALITY_2026_10_10_REPORT.md](DEVICE_QUALITY_2026_10_10_REPORT.md).
+
+Исправления после последнего прогона, проверенные без iPhone, разбор ошибок
+и подготовленный новый набор:
+[TEXT_QUALITY_FIXES_REPORT.md](TEXT_QUALITY_FIXES_REPORT.md).
+
+Последняя проверка от 9 октября, естественное произнесение, исправления
+разбора и ограничения автозаполнения:
+[NATURAL_VOICE_CONTROL_REPORT.md](NATURAL_VOICE_CONTROL_REPORT.md).
+
+Предыдущие результаты готового текста и аудио от 8 октября:
+[DEVICE_END_TO_END_REPORT.md](DEVICE_END_TO_END_REPORT.md).
+
+`end_to_end` готовит 56 новых синтетических WAV с обычными датами рождения:
+40 текстов последнего контроля свободной речи и по 8 вариантов по формату
+и с переставленными полями. Эталоны общие, 278 ожидаемых полей. Длинные
+тексты озвучиваются короткими фрагментами и соединяются без потери PCM;
+целый длинный `AVSpeechUtterance` может дать неполный файл. Микрофон и
+диктовка пользователем не требуются.
+
+```bash
+.venv311/bin/python -m evaluation.voice.end_to_end
+TEST_RUNNER_VOICE_END_TO_END_RUN=1 TEST_RUNNER_VOICE_REPORT_ID=audio-run \
+xcodebuild -quiet test -project ios/Doglyad.xcodeproj \
+  -scheme Doglyad-Debug-Development -configuration Release-Development \
+  -destination 'platform=iOS,id=<UDID>' \
+  -parallel-testing-enabled NO -test-timeouts-enabled NO \
+  -only-testing:DoglyadTests/VoiceEndToEndTests/testReadyAudioThroughProductionPipeline \
+  ENABLE_TESTABILITY=YES
+```
+
+Несмотря на имя схемы, явный `Release-Development` компилирует приложение
+с настоящим App Attest. Тест откажется работать в Debug и на симуляторе.
+Используются конфиги с защищённого backend, рабочий WhisperKit model store,
+маршрутизатор Foundation Models / MedGemma, `UltrasoundReportRepository`,
+`ScanSpeechConfidencePolicy` и `ScanFormPatch`. Проверяется форма в памяти;
+нажатия интерфейса и сохранение тестовой записи в историю не выполняются.
+Сомнительные предложения применяются отдельно как имитация подтверждения,
+а отсутствующие поля должны сохранить исходные значения.
+
+Отчёт сохраняется в контейнере приложения:
+`Documents/voice-end-to-end-audio-run.json`. Скопировать его через
+`devicectl device copy from`, затем оценить:
+
+```bash
+.venv311/bin/python -m evaluation.voice.score_end_to_end results.json scored.json
+```
+
+Для сопоставимого контроля готового текста запустить тот же тест с
+`TEST_RUNNER_VOICE_END_TO_END_TEXT_ONLY=1` и другим `VOICE_REPORT_ID`.
+Этот режим пропускает ASR и исправление словаря и использует исходный
+пунктуированный текст. `TEST_RUNNER_VOICE_END_TO_END_LIMIT=6` ограничивает
+пробу одним примером на каждую пару набора и языка. Отчёт качества
+считает все ожидаемые поля и формы, включая технические провалы; отдельно
+показывает ошибочные автоматические предложения.
+
+### Отдельная проверка Foundation Models без GPU
+
+В этом же тесте `TEST_RUNNER_VOICE_END_TO_END_LOCALE=en` выбирает EN-случаи
+из исходной фикстуры, сохраняя её хеш и эталоны. Параметр
+`TEST_RUNNER_VOICE_END_TO_END_REQUIRE_FOUNDATION_MODELS=1` требует локальную
+модель и запрещает серверный разбор. Если Foundation Models не поддерживает
+выбранную локаль или недоступна, случай получает техническую ошибку;
+обращения к GPU не происходит.
+
+Основной backend нужен для получения конфигураций и промптов с настоящим
+App Attest. Извлечение и ASR выполняются на iPhone. При повторе сохранённого
+ASR параметр `TEST_RUNNER_VOICE_ASR_CHECKPOINT` использует только выбранные
+случаи из соответствующего исходного отчёта; прежние результаты извлечения
+не применяются.
+
+Отчёт содержит исходный ответ Foundation Models, предложения после проверки
+цитат и итог после объединения с явными метками/фактами. Ошибка генерации
+сохраняется отдельно, даже если рабочий путь смог вернуть предложения по
+правилам. Качество самой модели и итогового пути следует показывать отдельно.
+
+### Естественное произнесение и возобновление после отключения iPhone
+
+`natural_end_to_end` отдельно готовит два замороженных корпуса:
+
+```bash
+.venv311/bin/python -m evaluation.voice.natural_end_to_end regression
+.venv311/bin/python -m evaluation.voice.natural_end_to_end control
+.venv311/bin/python -m evaluation.voice.natural_end_to_end holdout
+```
+
+Регрессия содержит те же 56 историй с цифровыми номерами исследования.
+Новый контроль — 8 других историй в трёх вариантах диктовки: 24 случая,
+138 ожидаемых полей, RU/EN, полные и частичные формы. Варианты одной истории
+связаны между собой и не являются независимыми пациентами. Даты, числа,
+дроби и единицы передаются синтезатору словами. `spokenText` сохраняет
+задуманный текст произнесения, `inputText` — пунктуированный текст для
+отдельной проверки извлечения, `expectedFields` — неизменяемый эталон формы.
+Старый корпус с буквенными номерами и цифровыми дробями сохраняется.
+
+Следующий ещё не измеренный набор — `natural_voice_holdout_v1.json`:
+12 историй × 3 стиля, 36 случаев / 198 полей. Он использует тот же генератор
+с естественными датами и дробями и отдельный каталог `natural-holdout-v1`.
+Результаты моделей на нём не используются для доработок до завершения
+заранее запланированного прогона.
+
+Тот же тест принимает `TEST_RUNNER_VOICE_FIXTURE_NAME=natural-regression-v1`
+или `natural-control-v1` / `natural-holdout-v1`. Декодирование и повторная расшифровка коротких
+фрагментов вызываются через общий с приложением
+`DSpeechWhisperKitTranscription`. В отчёте отдельно записываются исходные
+сегменты, оценки декодера, повторный текст и время каждого этапа. Оценки
+декодера и совпадение двух расшифровок не являются вероятностью правильности.
+
+После отключения телефона скопируйте его последний JSON в
+`ios/DoglyadTests/VoiceFixtures/<checkpoint>.json` и пересоберите тест с
+`TEST_RUNNER_VOICE_ASR_CHECKPOINT=<checkpoint>`. Проверяются SHA-256 фикстуры,
+аудио, исходный текст и эталон каждого случая. Повторно используются только
+реальные ASR-транскрипты и диагностика; разбор, валидация и применение формы
+выполняются заново для всех случаев. Оставшееся аудио распознаётся на iPhone.
+Хеш источника повторного ASR сохраняется в `asrReusedFromSha256`, его прежнее
+время сохраняется отдельно от времени текущего выполнения. Не смешивайте
+готовые формы от разных версий кода в один итоговый результат.
+
+`TEST_RUNNER_VOICE_SOURCE_SHA256` записывает идентификатор замороженных
+исходников в отчёт. Для диагностики фильтра декодера:
+
+```bash
+.venv311/bin/python -m evaluation.voice.asr_reliability scored.json reliability.json
+```
+
+`recheckComparison` сравнивает нынешнюю политику автозаполнения с повторным
+ASR и без него на одинаковых сохранённых предложениях. Вариант без повтора
+рассматривает также поля, которые повтор ранее отправил на проверку.
+`observedPolicyMismatchFields` показывает отличие расчёта от записанного
+рабочего решения; ненулевое значение требует объяснения перед использованием
+цифр. Это анализ сохранённых выходов, а не новый прогон моделей.
+
+Для отдельного воспроизведения коррекции без iPhone:
+
+```bash
+swiftc -parse-as-library ios/DoglyadSpeech/Audio/DSpeechLexiconCorrector.swift \
+  ios/DoglyadSpeech/Audio/DSpeechLexiconLocalization.swift \
+  evaluation/voice/LexiconReplay.swift -o build/voice-eval/lexicon-replay
+build/voice-eval/lexicon-replay device-results.json \
+  backend/main/config/development lexicon-replay.json
+```
+
+Порог выбирается на регрессии; итоговый контроль выполняется после фиксации
+кода. Если после просмотра контроля код меняется, этот контроль становится
+регрессионным. Подтверждение сомнительных предложений в тесте не означает
+исправления их значения врачом: оно применяется как есть и сравнивается с
+эталоном.
+
 ## Три отдельных набора проверки
 
 | Набор | Что диктуется | Эталон | Назначение |
@@ -80,10 +236,7 @@ python3 -m evaluation.voice.generate --release-control
 python3 -m evaluation.voice.phrase_holdout
 python3 -m evaluation.voice.asr --mode phrase-holdout --variant clean
 python3 -m evaluation.voice.asr --mode phrase-holdout --variant noisy
-python3 -m evaluation.voice.whisper_asr --model-path /path/to/turbo --model whisper-turbo-4bit --mode phrase-holdout --variant clean
-python3 -m evaluation.voice.whisper_asr --model-path /path/to/turbo --model whisper-turbo-4bit --mode phrase-holdout --variant noisy
 python3 -m evaluation.voice.run_ios --candidate --text-only --diagnostic-only --mode phrase-holdout --variant clean
-python3 -m evaluation.voice.run_ios --candidate --text-only --diagnostic-only --mode phrase-holdout --variant clean --replay-asr-report build/voice-eval/audio/phrase-holdout/whisper-turbo-4bit/clean-report.json
 ```
 
 Остальные варианты повторного разбора запускаются с соответствующими
@@ -102,10 +255,7 @@ python3 -m evaluation.voice.run_ios --candidate --text-only --diagnostic-only --
 python3 -m evaluation.voice.voice_blind_v3
 python3 -m evaluation.voice.asr --mode voice-blind-v3 --variant clean
 python3 -m evaluation.voice.asr --mode voice-blind-v3 --variant noisy
-python3 -m evaluation.voice.whisper_asr --model-path /path/to/turbo --model whisper-turbo-4bit --mode voice-blind-v3 --variant clean
-python3 -m evaluation.voice.whisper_asr --model-path /path/to/turbo --model whisper-turbo-4bit --mode voice-blind-v3 --variant noisy
 python3 -m evaluation.voice.run_ios --candidate --text-only --diagnostic-only --mode voice-blind-v3 --variant clean
-python3 -m evaluation.voice.run_ios --candidate --text-only --diagnostic-only --mode voice-blind-v3 --variant clean --replay-asr-report build/voice-eval/audio/voice-blind-v3/whisper-turbo-4bit/clean-report.json
 python3 -m evaluation.voice.field_diagnostic build/voice-eval/ios-candidate-text-asr-replay-whisper-turbo-4bit-clean-report-diagnostic-voice-blind-v3-clean/summary.json
 python3 -m evaluation.voice.audit_replay build/voice-eval/ios-candidate-text-asr-replay-whisper-turbo-4bit-clean-report-diagnostic-voice-blind-v3-clean/summary.json build/voice-eval/audio/voice-blind-v3/whisper-turbo-4bit/clean-report.json build/voice-eval/audio/voice-blind-v3/audit-turbo-clean.json
 ```
@@ -125,60 +275,13 @@ python3 -m evaluation.voice.freeform_development
 python3 -m evaluation.voice.freeform_audio
 python3 -m evaluation.voice.asr --mode freeform-development --variant clean
 python3 -m evaluation.voice.asr --mode freeform-development --variant noisy
-python3 -m evaluation.voice.whisper_asr --model-path /path/to/turbo --model whisper-turbo-4bit --mode freeform-development --variant clean
-python3 -m evaluation.voice.whisper_asr --model-path /path/to/turbo --model whisper-turbo-4bit --mode freeform-development --variant noisy
 python3 -m evaluation.voice.fact_diagnostic build/voice-eval/audio/freeform-development/asr-clean-report.json build/voice-eval/audio/freeform-development/apple-clean-facts.json
 ```
 
 Это рабочий набор с чистыми и шумовыми WAV, а не независимый выпускной тест.
 Текущий шумовой профиль задаёт SNR 25 дБ в `audio.py`; прежние результаты
 для SNR 20 дБ отделены в `FREEFORM_DEVELOPMENT_STATUS.md`.
-Foundation Models падает при генерации на симуляторе, а MLX не проходит
-проверку доступности. Файлы модели в сборке есть. Без физического iPhone
-можно запустить те же веса Qwen и грамматический декодер на Mac, затем
-проверить их ответы настоящим Swift валидатором в iOS Simulator:
-
-```sh
-swift build -c release --package-path evaluation/voice/MacGuidedHarness
-.venv311/bin/python -m evaluation.voice.freeform_guided --per-locale 62 --output build/voice-eval/audio/freeform-development/mac-guided-gold.json
-.venv311/bin/python -m evaluation.voice.replay_guided_ios build/voice-eval/audio/freeform-development/mac-guided-gold.json build/voice-eval/ios-guided-freeform-gold
-```
-
-Для небольшого ASR-прогона передайте `--asr-report` и запишите отдельный
-выходной JSON. Повторная оценка уже сохранённого iOS результата выполняется
-тем же `replay_guided_ios` с `--score-only`, без нового запуска Xcode. Runner
-фиксирует хеши корпуса, аудиоманифеста, конфига модели, backend prompt и исполняемого
-файла; Swift replay проверяет хеш входного отчёта. Для исторического сравнения
-остаётся Python `mlx_lm` **без** продуктового грамматического декодера:
-
-```bash
-.venv311/bin/python -m evaluation.voice.freeform_model --per-locale 4
-.venv311/bin/python -m evaluation.voice.freeform_model --per-locale 4 --strict-prompt --output build/voice-eval/audio/freeform-development/mac-model-gold-strict-diagnostic.json
-python3 -m evaluation.voice.run_ios --candidate --text-only --mode freeform-development --limit 1 --diagnostic-only
-python3 -m evaluation.voice.run_ios --candidate --text-only --mode freeform-development --limit 1 --diagnostic-only --force-mlx
-```
-
-Swift Mac runner точнее воспроизводит MLX путь, но всё ещё не является
-измерением конечного приложения: на устройстве может быть выбран Foundation
-Models, а работа модели, время и память iPhone отличаются. Финальный v4 нужно
-фиксировать после появления проверяемого кандидата, чтобы не использовать
-контрольный набор для подгонки.
-
-Для сравнения с более крупной моделью использован зафиксированный снимок
-`mlx-community/Qwen3-4B-Instruct-2507-4bit` (коммит
-`50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b`). Он загружается только во
-временный каталог, а runner получает его через `--model-path`:
-
-```sh
-.venv311/bin/hf download mlx-community/Qwen3-4B-Instruct-2507-4bit --revision 50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b --local-dir /private/tmp/doglyad-qwen3-4b
-.venv311/bin/python -m evaluation.voice.freeform_guided --per-locale 62 --proposals-only --model-path /private/tmp/doglyad-qwen3-4b --output build/voice-eval/audio/freeform-development/mac-guided-qwen3-4b-proposals-only-gold.json
-.venv311/bin/python -m evaluation.voice.replay_guided_ios build/voice-eval/audio/freeform-development/mac-guided-qwen3-4b-proposals-only-gold.json build/voice-eval/ios-guided-qwen3-4b-proposals-only-gold
-```
-
-`--proposals-only` — диагностическая короткая JSON-схема без
-`unmappedFindings`; приложение её не использует. Сравнение и причины отказа
-от замены продуктовой модели — в
-[FREEFORM_DEVELOPMENT_STATUS.md](FREEFORM_DEVELOPMENT_STATUS.md).
+Генерацию Foundation Models измеряем на физическом iPhone с доступной системной моделью и поддерживаемым языком. На симуляторе проверяем детерминированный разбор, валидацию и применение полей. Исторические сравнения моделей сохранены в [FREEFORM_DEVELOPMENT_STATUS.md](FREEFORM_DEVELOPMENT_STATUS.md).
 
 Физический iPhone можно проверить без микрофона, передав тесту заранее
 синтезированные WAV. `--asr-only` обходит медленную локальную модель и
@@ -491,7 +594,7 @@ python3 -m evaluation.voice.run_ios --locale ru --limit 1
 
 Тестовый runner использует те же параметры `DictationTranscriber`, контекстный
 словарь и `DSpeechLexiconCorrector`, что и запись с микрофона. Он отдельно
-вызывает текущий `parseSpeech` с исходным текстом и с распознанным текстом,
+вызывает исторический `parseSpeech` из `DoglyadTests/VoiceSupport/Legacy/` с исходным текстом и с распознанным текстом,
 сохраняет время, результат либо причину отказа. Номер исследования отмечает
 как неподдерживаемый текущей моделью ответа. Подробности первого прогона — в
 [`IOS_BASELINE_STATUS.md`](IOS_BASELINE_STATUS.md).
@@ -540,36 +643,6 @@ python3 -m evaluation.voice.run_ios --candidate --text-only --replay-macos-asr -
 python3 -m evaluation.voice.run_ios --candidate --text-only --all-regression-text
 ```
 
-Для сравнения с локальным Whisper на **тех же WAV** установите `mlx-whisper`
-в отдельное окружение и скачайте MLX-модель вне репозитория. Например,
-`mlx-community/whisper-small-mlx-4bit` на ревизии
-`b60eea21106598b69d5fff2d3502f1e71127c924` или
-`mlx-community/whisper-large-v3-turbo-4bit` на ревизии
-`0f058d38170d183f9fdee07908f5b515d91793a8`. Для второй модели
-`mlx_whisper` ожидает файл `weights.safetensors`: создайте во временном каталоге
-ссылку на её `model.safetensors` и ссылку на `config.json`. После этого:
-
-```sh
-python3 -m evaluation.voice.whisper_asr --model-path /path/to/model --model whisper-small-4bit --mode extended --variant clean
-python3 -m evaluation.voice.run_ios --candidate --text-only --replay-asr-report build/voice-eval/audio/extended/whisper-small-4bit/clean-report.json --mode extended --variant clean
-```
-
-Для Turbo замените `--model` на `whisper-turbo-4bit` и путь к отчёту. Модель,
-ревизия, хеш весов и аудиоманифеста сохраняются в отчёте. Результат этого
-сравнения относится к macOS, а не к скорости или качеству Whisper на iPhone.
-Для полных диктовок v2 и другого голоса используйте `--mode extended-v2` либо
-`--mode voice-holdout`. Например, без микрофона и физического устройства:
-
-```sh
-python3 -m evaluation.voice.whisper_asr --model-path /path/to/turbo --model whisper-turbo-4bit --mode extended-v2 --variant clean
-python3 -m evaluation.voice.run_ios --candidate --text-only --diagnostic-only --mode extended-v2 --variant clean --replay-asr-report build/voice-eval/audio/extended-v2/whisper-turbo-4bit/clean-report.json
-```
-
-Повторите команды с `--variant noisy` и с `--mode voice-holdout` для остальных
-срезов. `run_ios` обновляет время изменения папки `VoiceFixtures`, чтобы Xcode
-не переиспользовал предыдущий `cases.json`; runner дополнительно проверяет
-хеш ASR-отчёта в результате. Сводные числа и ограничения находятся в
-[`V2_STATUS.md`](V2_STATUS.md).
 Другой локальный ASR можно сравнить через JSONL с полями `id` (`caseId/clean`
 или `caseId/noisy`), `status`, `text` и `elapsedSeconds`. Для каждого WAV
 должен быть ровно один результат. Конвертер проверяет полноту и привязывает
@@ -737,7 +810,7 @@ python3 -m evaluation.voice.server_parse \
 Флаг `--parse-strategy` в режиме `--candidate --text-only --diagnostic-only`
 выбирает один способ разбора: `exactLabels` (буквальные метки),
 `naturalLanguage` (метки и явные факты с распознаванием имени через Apple
-Natural Language), `foundationModels` или `mlx` (прямой вызов модели).
+Natural Language) или `foundationModels` (прямой вызов модели).
 `production` использует текущую последовательность приложения. Во всех
 случаях передавайте один и тот же `--replay-asr-report`, чтобы сравнивать
 разбор, а не заново распознавать аудио. Например:

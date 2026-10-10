@@ -8,34 +8,44 @@ final class SubscriptionScreenViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: SubscriptionScreenArguments?
+        arguments: SubscriptionScreenArguments?,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.subscription)
+            analyticsDestination: .screen(
+                .subscription,
+            ),
         )
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.subscriptionBack)
+        analytics.buttonTapped(
+            .subscriptionBack,
+        )
         coordinator.pop()
     }
 
     func onTapChangeType() {
         analytics.buttonTapped(
             .subscriptionChangeType,
-            parameters: AnalyticsParameters([
-                .subscriptionType: .string(subscription.status?.type.rawValue ?? "none"),
-            ])
+            parameters: .subscription(
+                type: subscription.status?.type,
+            ),
         )
-        coordinator.screen(.subscriptionPaywall)
+        coordinator.screen(
+            .subscriptionPaywall,
+        )
     }
 
     func onTapSupportCenter() {
-        analytics.buttonTapped(.subscriptionCustomerCenter)
-        coordinator.sheet(.subscriptionCustomerCenter)
+        analytics.buttonTapped(
+            .subscriptionCustomerCenter,
+        )
+        coordinator.sheet(
+            .subscriptionCustomerCenter,
+        )
     }
 }

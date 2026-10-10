@@ -10,7 +10,7 @@ final class ReportReceivedMarkdownViewModel: ObservableObject {
     private var isAnimating = false
 
     init(
-        response: String
+        response: String,
     ) {
         self.response = response
     }
@@ -21,20 +21,32 @@ final class ReportReceivedMarkdownViewModel: ObservableObject {
         isAnimating = true
         defer { isAnimating = false }
 
-        let words = response.components(separatedBy: " ")
+        let words = response.components(
+            separatedBy: " ",
+        )
         while nextWordIndex < words.count {
             guard !Task.isCancelled else { return }
 
             let separator = nextWordIndex == 0 ? "" : " "
-            let word = words[nextWordIndex]
-            withAnimation(.easeIn(duration: 0.3)) {
-                displayedResponse.append(separator + word)
+            let word = words[
+                nextWordIndex,
+            ]
+            withAnimation(
+                .easeIn(
+                    duration: 0.3,
+                ),
+            ) {
+                displayedResponse.append(
+                    separator + word,
+                )
             }
             nextWordIndex += 1
 
             guard nextWordIndex < words.count else { return }
             do {
-                try await Task.sleep(nanoseconds: 60000000)
+                try await Task.sleep(
+                    nanoseconds: 60000000,
+                )
             } catch {
                 return
             }

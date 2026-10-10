@@ -29,7 +29,7 @@ public final class DHttpClient: DHttpClientProtocol {
     public init(
         baseUrl: String,
         baseVersionPrefix: String,
-        interceptor: DHttpInterceptorProtocol? = nil
+        interceptor: DHttpInterceptorProtocol? = nil,
     ) {
         self.baseUrl = baseUrl
         self.baseVersionPrefix = baseVersionPrefix
@@ -39,13 +39,13 @@ public final class DHttpClient: DHttpClientProtocol {
         session = Self.makeSession(
             interceptor: interceptor,
             timeoutIntervalForRequest: 300,
-            timeoutIntervalForResource: 300
+            timeoutIntervalForResource: 300,
         )
     }
 
     public func updateConfiguration(
         timeoutIntervalForRequest: TimeInterval,
-        timeoutIntervalForResource: TimeInterval
+        timeoutIntervalForResource: TimeInterval,
     ) {
         // URLSession copies its configuration when created, so mutating the old one is a
         // no-op — the session has to be replaced for new timeouts to take effect. Safe
@@ -53,75 +53,92 @@ public final class DHttpClient: DHttpClientProtocol {
         session = Self.makeSession(
             interceptor: interceptor,
             timeoutIntervalForRequest: timeoutIntervalForRequest,
-            timeoutIntervalForResource: timeoutIntervalForResource
+            timeoutIntervalForResource: timeoutIntervalForResource,
         )
     }
 
     private static func makeSession(
         interceptor: DHttpInterceptorProtocol?,
         timeoutIntervalForRequest: TimeInterval,
-        timeoutIntervalForResource: TimeInterval
+        timeoutIntervalForResource: TimeInterval,
     ) -> Session {
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = timeoutIntervalForRequest
         configuration.timeoutIntervalForResource = timeoutIntervalForResource
         return Session(
             configuration: configuration,
-            interceptor: interceptor.map(DHttpInterceptorAdapter.init)
+            interceptor: interceptor.map(
+                DHttpInterceptorAdapter.init,
+            ),
         )
     }
 
     public func get<Response: Decodable>(
-        url: URL
+        url: URL,
     ) async throws -> Response {
         let response = await session.request(
             url,
-            method: .get
+            method: .get,
         )
         .validate()
-        .serializingDecodable(Response.self, decoder: jsonDecoder)
+        .serializingDecodable(
+            Response.self,
+            decoder: jsonDecoder,
+        )
         .response
         return try response.result.get()
     }
 
     public func get<Response: Decodable>(
         endPoint: String,
-        headers: [String: String]? = nil
+        headers: [String: String]? = nil,
     ) async throws -> Response {
         let response = await session.request(
             baseApiUrl + endPoint,
             method: .get,
-            headers: headers.map(HTTPHeaders.init) ?? HTTPHeaders()
+            headers: headers.map(
+                HTTPHeaders.init,
+            ) ?? HTTPHeaders(),
         )
         .validate()
-        .serializingDecodable(Response.self, decoder: jsonDecoder)
+        .serializingDecodable(
+            Response.self,
+            decoder: jsonDecoder,
+        )
         .response
         return try response.result.get()
     }
 
-    public func get<Body: Encodable & Sendable, Response: Decodable>(
+    public func get<Response: Decodable>(
         endPoint: String,
-        body: Body? = nil,
-        headers: [String: String]? = nil
+        body: (some Encodable & Sendable)? = nil,
+        headers: [String: String]? = nil,
     ) async throws -> Response {
         let response = await session.request(
             baseApiUrl + endPoint,
             method: .get,
             parameters: body,
-            encoder: JSONParameterEncoder(encoder: jsonEncoder),
-            headers: headers.map(HTTPHeaders.init) ?? HTTPHeaders()
+            encoder: JSONParameterEncoder(
+                encoder: jsonEncoder,
+            ),
+            headers: headers.map(
+                HTTPHeaders.init,
+            ) ?? HTTPHeaders(),
         )
         .validate()
-        .serializingDecodable(Response.self, decoder: jsonDecoder)
+        .serializingDecodable(
+            Response.self,
+            decoder: jsonDecoder,
+        )
         .response
         return try response.result.get()
     }
 
-    public func post<Body: Encodable & Sendable, Response: Decodable>(
+    public func post<Response: Decodable>(
         endPoint: String,
-        body: Body? = nil,
+        body: (some Encodable & Sendable)? = nil,
         headers: [String: String]? = nil,
-        encoderUserInfo: [CodingUserInfoKey: Any]? = nil
+        encoderUserInfo: [CodingUserInfoKey: Any]? = nil,
     ) async throws -> Response {
         let encoder: JSONEncoder
         if let encoderUserInfo {
@@ -136,20 +153,27 @@ public final class DHttpClient: DHttpClientProtocol {
             baseApiUrl + endPoint,
             method: .post,
             parameters: body,
-            encoder: JSONParameterEncoder(encoder: encoder),
-            headers: headers.map(HTTPHeaders.init) ?? HTTPHeaders()
+            encoder: JSONParameterEncoder(
+                encoder: encoder,
+            ),
+            headers: headers.map(
+                HTTPHeaders.init,
+            ) ?? HTTPHeaders(),
         )
         .validate()
-        .serializingDecodable(Response.self, decoder: jsonDecoder)
+        .serializingDecodable(
+            Response.self,
+            decoder: jsonDecoder,
+        )
         .response
         return try response.result.get()
     }
 
-    public func post<Body: Encodable & Sendable>(
+    public func post(
         endPoint: String,
-        body: Body? = nil,
+        body: (some Encodable & Sendable)? = nil,
         headers: [String: String]? = nil,
-        encoderUserInfo: [CodingUserInfoKey: Any]? = nil
+        encoderUserInfo: [CodingUserInfoKey: Any]? = nil,
     ) async throws {
         let encoder: JSONEncoder
         if let encoderUserInfo {
@@ -164,11 +188,17 @@ public final class DHttpClient: DHttpClientProtocol {
             baseApiUrl + endPoint,
             method: .post,
             parameters: body,
-            encoder: JSONParameterEncoder(encoder: encoder),
-            headers: headers.map(HTTPHeaders.init) ?? HTTPHeaders()
+            encoder: JSONParameterEncoder(
+                encoder: encoder,
+            ),
+            headers: headers.map(
+                HTTPHeaders.init,
+            ) ?? HTTPHeaders(),
         )
         .validate()
-        .serializingData(emptyResponseCodes: [204])
+        .serializingData(
+            emptyResponseCodes: [204],
+        )
         .response
         _ = try response.result.get()
     }

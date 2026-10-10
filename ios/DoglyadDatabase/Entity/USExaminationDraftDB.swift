@@ -11,7 +11,9 @@ public final class USExaminationDraftDB {
     public var patientWeightKG: String
     public var patientComplaints: String
     public var examinationDescription: String
-    @Relationship(deleteRule: .cascade) public var photos: [USExaminationDraftPhotoDB]
+    @Relationship(
+        deleteRule: .cascade,
+    ) public var photos: [USExaminationDraftPhotoDB]
 
     public init(
         examinationNumber: String,
@@ -22,7 +24,7 @@ public final class USExaminationDraftDB {
         patientWeightKG: String,
         patientComplaints: String,
         examinationDescription: String,
-        photos: [USExaminationDraftPhotoDB]
+        photos: [USExaminationDraftPhotoDB],
     ) {
         self.examinationNumber = examinationNumber
         self.patientName = patientName

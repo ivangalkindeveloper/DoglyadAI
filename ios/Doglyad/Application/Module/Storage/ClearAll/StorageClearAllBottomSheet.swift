@@ -14,15 +14,15 @@ struct StorageClearAllBottomSheet: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }
 
 #Preview {
     StorageClearAllBottomSheet(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

@@ -23,7 +23,7 @@ struct TemplateEditScreen: View {
                         template,
                         onChanged: {
                             arguments.onTemplatesChanged?()
-                        }
+                        },
                     )
                 },
                 onDeleteTemplate: { [ultrasoundViewModel, arguments] id in
@@ -31,10 +31,10 @@ struct TemplateEditScreen: View {
                         id: id,
                         onChanged: {
                             arguments.onTemplatesChanged?()
-                        }
+                        },
                     )
-                }
-            )
+                },
+            ),
         )
     }
 }
@@ -42,8 +42,8 @@ struct TemplateEditScreen: View {
 #Preview {
     TemplateEditScreen(
         arguments: TemplateEditScreenArguments(
-            templateId: UUID()
-        )
+            templateId: UUID(),
+        ),
     )
     .previewable()
 }

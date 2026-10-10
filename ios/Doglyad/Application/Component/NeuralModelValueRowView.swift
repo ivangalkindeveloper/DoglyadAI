@@ -10,19 +10,25 @@ struct NeuralModelValueRowView: DView {
     var body: some View {
         HStack(
             alignment: .bottom,
-            spacing: size.s4
+            spacing: size.s4,
         ) {
-            DText(title)
-                .dStyle(
-                    font: typography.textXSmall,
-                    color: color.grayscalePlacehold
-                )
+            DText(
+                title,
+            )
+            .dStyle(
+                font: typography.textXSmall,
+                color: color.grayscalePlacehold,
+            )
 
-            DText(value)
-                .dStyle(
-                    font: typography.linkSmall
-                )
-                .lineLimit(2)
+            DText(
+                value,
+            )
+            .dStyle(
+                font: typography.linkSmall,
+            )
+            .lineLimit(
+                2,
+            )
         }
     }
 }

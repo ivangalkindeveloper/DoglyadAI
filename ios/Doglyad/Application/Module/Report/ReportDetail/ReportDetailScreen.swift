@@ -25,9 +25,11 @@ struct ReportDetailScreen: View {
                     ultrasoundViewModel.neuralModel
                 },
                 onNeuralModelSelected: { [ultrasoundViewModel] model in
-                    ultrasoundViewModel.saveNeuralModel(model)
-                }
-            )
+                    ultrasoundViewModel.saveNeuralModel(
+                        model,
+                    )
+                },
+            ),
         )
     }
 }
@@ -41,12 +43,16 @@ struct ReportDetailScreen: View {
                     selectedNeuralModelId: "google/medgemma-1.5-4b-it",
                     isMarkdown: false,
                     temperature: nil,
-                    maxTokens: nil
+                    maxTokens: nil,
                 ),
                 examinationData: USExaminationData(
                     usExaminationTypeId: "abdominalCavity",
                     photos: [
-                        USExaminationScanPhoto(image: UIImage(resource: .alertInfo)),
+                        USExaminationScanPhoto(
+                            image: UIImage(
+                                resource: .alertInfo,
+                            ),
+                        ),
                     ],
                     examinationNumber: "Examination#0",
                     patientName: "Patient#0",
@@ -67,7 +73,7 @@ struct ReportDetailScreen: View {
                     The parenchyma is homogeneous with moderate echogenicity.
                     No focal lesions were identified.
                     The regional lymph nodes are unremarkable.
-                    """
+                    """,
                 ),
                 actualModelReport: USExaminationModelReport(
                     date: Date(),
@@ -80,7 +86,7 @@ struct ReportDetailScreen: View {
                     The ultrasound findings are within normal limits.
                     """,
                     conclusion: "The ultrasound findings are within normal limits.",
-                    recommendations: "Routine follow-up when clinically indicated."
+                    recommendations: "Routine follow-up when clinically indicated.",
                 ),
                 previousModelReports: [
                     USExaminationModelReport(
@@ -94,7 +100,7 @@ struct ReportDetailScreen: View {
                         The ultrasound findings are within normal limits.
                         """,
                         conclusion: "The ultrasound findings are within normal limits.",
-                        recommendations: "Routine follow-up when clinically indicated."
+                        recommendations: "Routine follow-up when clinically indicated.",
                     ),
                     USExaminationModelReport(
                         date: Date(),
@@ -112,11 +118,11 @@ struct ReportDetailScreen: View {
                         Routine follow-up ultrasound is recommended when clinically indicated.
                         """,
                         conclusion: "The findings correspond to a normal thyroid ultrasound appearance.",
-                        recommendations: "Routine follow-up when clinically indicated."
+                        recommendations: "Routine follow-up when clinically indicated.",
                     ),
-                ]
-            )
-        )
+                ],
+            ),
+        ),
     )
     .previewable()
 }

@@ -15,8 +15,8 @@ struct ScanCameraBottomSheet: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }
@@ -28,8 +28,8 @@ struct ScanCameraBottomSheet: View {
         arguments: ScanCameraArguments(
             cameraController: DCameraControllerFactory.make(),
             photos: $photos,
-            photoMaxCount: 6
-        )
+            photoMaxCount: 6,
+        ),
     )
     .previewable()
 }

@@ -8,7 +8,7 @@ final class SelectTemplateArguments: RouteArgumentsProtocol {
     init(
         usExaminationId: String? = nil,
         currentValue: USExaminationTemplate? = nil,
-        onSelected: @escaping (USExaminationTemplate) -> Void
+        onSelected: @escaping (USExaminationTemplate) -> Void,
     ) {
         self.usExaminationId = usExaminationId
         self.currentValue = currentValue

@@ -8,6 +8,9 @@ struct LocaleConfig: Codable {
 extension LocaleConfig {
     static let `default`: LocaleConfig = {
         let code = Locale.current.language.languageCode?.identifier ?? Locale.current.identifier
-        return LocaleConfig(defaultCode: code, codes: [code])
+        return LocaleConfig(
+            defaultCode: code,
+            codes: [code],
+        )
     }()
 }

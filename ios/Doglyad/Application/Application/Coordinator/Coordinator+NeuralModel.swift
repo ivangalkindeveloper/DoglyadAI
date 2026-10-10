@@ -1,7 +1,7 @@
 extension Coordinator {
     func selectNeuralModel(
         _ model: USExaminationNeuralModel,
-        onSelected: (USExaminationNeuralModel) -> Void
+        onSelected: (USExaminationNeuralModel) -> Void,
     ) {
         switch model.accessibility {
         case .available:
@@ -13,14 +13,24 @@ extension Coordinator {
         switch model.entitlement {
         case .base:
             dismissSheet()
-            onSelected(model)
+            onSelected(
+                model,
+            )
         case .pro:
             switch getSubscriptionStatus()?.type {
-            case .some(.pro):
+            case .some(
+                .pro,
+            ):
                 dismissSheet()
-                onSelected(model)
-            case .some(.base), .none:
-                showPaywall(dismissingSheet: true)
+                onSelected(
+                    model,
+                )
+            case .some(
+                .base,
+            ), .none:
+                showPaywall(
+                    dismissingSheet: true,
+                )
             }
         }
     }

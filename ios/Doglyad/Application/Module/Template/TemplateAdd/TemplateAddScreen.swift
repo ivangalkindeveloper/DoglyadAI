@@ -22,18 +22,20 @@ struct TemplateAddScreen: View {
                         template,
                         onChanged: {
                             arguments?.onTemplatesChanged?()
-                            arguments?.onAddSuccess?(template)
-                        }
+                            arguments?.onAddSuccess?(
+                                template,
+                            )
+                        },
                     )
-                }
-            )
+                },
+            ),
         )
     }
 }
 
 #Preview {
     TemplateAddScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

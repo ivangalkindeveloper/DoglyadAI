@@ -13,7 +13,7 @@ final class Coordinator {
         container: DependencyContainer,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
-        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
     ) {
         self.router = router
         subscriptionRepository = container.subscriptionRepository
@@ -24,48 +24,48 @@ final class Coordinator {
 
     func screen(
         _ screen: ScreenType,
-        arguments: RouteArgumentsProtocol? = nil
+        arguments: RouteArgumentsProtocol? = nil,
     ) {
         router.push(
             route: RouteScreen(
                 type: screen,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 
     func sheet(
         _ sheet: SheetType,
-        arguments: RouteArgumentsProtocol? = nil
+        arguments: RouteArgumentsProtocol? = nil,
     ) {
         router.push(
             route: RouteSheet(
                 type: sheet,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 
     func root(
         _ screen: ScreenType,
         arguments: RouteArgumentsProtocol? = nil,
-        animated: Bool = false
+        animated: Bool = false,
     ) {
         if animated {
             withAnimation {
                 router.root(
                     route: RouteScreen(
                         type: screen,
-                        arguments: arguments
-                    )
+                        arguments: arguments,
+                    ),
                 )
             }
         } else {
             router.root(
                 route: RouteScreen(
                     type: screen,
-                    arguments: arguments
-                )
+                    arguments: arguments,
+                ),
             )
         }
     }

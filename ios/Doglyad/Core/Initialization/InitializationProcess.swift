@@ -25,13 +25,14 @@ final class InitializationProcess: DependencyInitializationProcess {
     var subscriptionRepository: RevenueCatSubscriptionRepository?
     var applicationConfig: ApplicationConfig?
     var language: Language?
+    var voiceLocalization: VoiceLocalization?
     var usExaminationTypeGroups: [USExaminationTypeGroup]?
     var usExaminationTypesById: [String: USExaminationType]?
     var usExaminationTypeDefault: USExaminationType?
     var usExaminationNeuralModels: [USExaminationNeuralModel]?
     var usExaminationNeuralModelsById: [String: USExaminationNeuralModel]?
     var usExaminationNeuralModelDefault: USExaminationNeuralModel?
-    var examinationNeuralModelFactory: DExaminationNeuralModelFactory?
+    var examinationNeuralModelFactory: DNeuralUltrasoundModelFactory?
     var initialUltrasoundReportsCount: Int?
     var initialSubscriptionStatus: SubscriptionStatus?
     var initialRoute: RouteScreen<ScreenType>?
@@ -53,16 +54,17 @@ final class InitializationProcess: DependencyInitializationProcess {
             subscriptionRepository: subscriptionRepository!,
             applicationConfig: applicationConfig!,
             language: language!,
+            voiceLocalization: voiceLocalization!,
             usExaminationTypeGroups: usExaminationTypeGroups!,
             usExaminationTypesById: usExaminationTypesById!,
             usExaminationTypeDefault: usExaminationTypeDefault!,
             usExaminationNeuralModels: usExaminationNeuralModels!,
             usExaminationNeuralModelsById: usExaminationNeuralModelsById!,
             usExaminationNeuralModelDefault: usExaminationNeuralModelDefault!,
-            examinationNeuralModelFactory: examinationNeuralModelFactory,
+            examinationNeuralModelFactory: examinationNeuralModelFactory!,
             initialSubscriptionStatus: initialSubscriptionStatus,
             initialRoute: initialRoute!,
-            version: version!
+            version: version!,
         )
     }
 }

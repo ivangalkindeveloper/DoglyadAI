@@ -23,103 +23,168 @@ struct UserSettingsScreenView: DView {
                             DToolbarButton(
                                 accessibilityLabel: .buttonSave,
                                 style: .primaryDefault,
-                                content: .text(.buttonSave),
-                                action: viewModel.onTapSave
+                                content: .text(
+                                    .buttonSave,
+                                ),
+                                action: viewModel.onTapSave,
                             ),
-                        ]
+                        ],
                     )
-                    .disabled(viewModel.isLoading)
+                    .disabled(
+                        viewModel.isLoading,
+                    )
                 }
             },
             content: { toolbarInset, bottomInset in
                 DFocusScrollView(
-                    focus: focus
+                    focus: focus,
                 ) {
                     VStack(
                         alignment: .leading,
-                        spacing: .zero
+                        spacing: .zero,
                     ) {
                         DTextField(
                             controller: viewModel.emailController,
                             focus: DTextFieldFocus(
                                 value: .email,
-                                state: $focus
+                                state: $focus,
                             ),
                             title: .userSettingsEmailLabel,
                             placeholder: .userSettingsEmailPlaceholder,
-                            mode: DTextFieldSingleLineMode(submitLabel: .done),
+                            mode: DTextFieldSingleLineMode(
+                                submitLabel: .done,
+                            ),
                             keyboardType: .emailAddress,
-                            autocapitalization: .never
+                            autocapitalization: .never,
                         )
-                        .id(UserSettingsViewModel.Focus.email)
-                        .padding(.bottom, size.s4)
+                        .id(
+                            UserSettingsViewModel.Focus.email,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s4,
+                        )
 
-                        DText(.userSettingsEmailDescription)
-                            .dStyle(
-                                font: typography.textXSmall,
-                                color: color.grayscalePlacehold
-                            )
-                            .padding(.horizontal, size.s8)
-                            .padding(.bottom, size.s16)
+                        DText(
+                            .userSettingsEmailDescription,
+                        )
+                        .dStyle(
+                            font: typography.textXSmall,
+                            color: color.grayscalePlacehold,
+                        )
+                        .padding(
+                            .horizontal,
+                            size.s8,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s16,
+                        )
 
                         DButtonCard(
-                            action: viewModel.toggleIncludeRecommendations
+                            action: viewModel.toggleIncludeRecommendations,
                         ) {
-                            HStack(alignment: .center) {
-                                DText(.userSettingsRecommendationsLabel)
-                                    .dStyle(font: typography.linkSmall)
+                            HStack(
+                                alignment: .center,
+                            ) {
+                                DText(
+                                    .userSettingsRecommendationsLabel,
+                                )
+                                .dStyle(
+                                    font: typography.linkSmall,
+                                )
 
-                                Spacer(minLength: size.s16)
+                                Spacer(
+                                    minLength: size.s16,
+                                )
 
                                 Toggle(
                                     "",
-                                    isOn: $viewModel.includeRecommendations
+                                    isOn: $viewModel.includeRecommendations,
                                 )
                                 .labelsHidden()
-                                .toggleStyle(.switch)
-                                .allowsHitTesting(false)
+                                .toggleStyle(
+                                    .switch,
+                                )
+                                .allowsHitTesting(
+                                    false,
+                                )
                             }
                             .frame(
                                 maxWidth: .infinity,
-                                alignment: .leading
+                                alignment: .leading,
                             )
-                            .foregroundStyle(color.grayscaleHeader)
+                            .foregroundStyle(
+                                color.grayscaleHeader,
+                            )
                         }
-                        .padding(.bottom, size.s4)
+                        .padding(
+                            .bottom,
+                            size.s4,
+                        )
 
-                        DText(.userSettingsRecommendationsDescription)
-                            .dStyle(
-                                font: typography.textXSmall,
-                                color: color.grayscalePlacehold
-                            )
-                            .padding(.horizontal, size.s8)
+                        DText(
+                            .userSettingsRecommendationsDescription,
+                        )
+                        .dStyle(
+                            font: typography.textXSmall,
+                            color: color.grayscalePlacehold,
+                        )
+                        .padding(
+                            .horizontal,
+                            size.s8,
+                        )
                     }
-                    .padding(.top, toolbarInset)
-                    .padding(size.s16)
-                    .padding(.bottom, bottomInset)
-                    .disabled(viewModel.isLoading)
+                    .padding(
+                        .top,
+                        toolbarInset,
+                    )
+                    .padding(
+                        size.s16,
+                    )
+                    .padding(
+                        .bottom,
+                        bottomInset,
+                    )
+                    .disabled(
+                        viewModel.isLoading,
+                    )
                 }
             },
             bottom: {
                 DButton(
                     title: .buttonSave,
                     action: viewModel.onTapSave,
-                    isLoading: viewModel.isLoading
+                    isLoading: viewModel.isLoading,
                 )
-                .dStyle(.primaryButton)
-                .padding(size.s16)
-            }
+                .dStyle(
+                    .primaryButton,
+                )
+                .padding(
+                    size.s16,
+                )
+            },
         )
-        .onAppear(perform: viewModel.onAppear)
-        .scrollDismissesKeyboard(.interactively)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
+        .scrollDismissesKeyboard(
+            .interactively,
+        )
         .onSubmit {
             viewModel.onSubmit()
         }
-        .onChange(of: focus, initial: true) { _, newValue in
+        .onChange(
+            of: focus,
+            initial: true,
+        ) { _, newValue in
             guard viewModel.focus != newValue else { return }
             viewModel.focus = newValue
         }
-        .onChange(of: viewModel.focus, initial: true) { _, newValue in
+        .onChange(
+            of: viewModel.focus,
+            initial: true,
+        ) { _, newValue in
             guard focus != newValue else { return }
             focus = newValue
         }

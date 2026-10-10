@@ -7,13 +7,15 @@ import Foundation
 /// The token is then verified on the backend.
 struct AppCheckHttpInterceptor: DHttpInterceptorProtocol {
     func adapt(
-        _ urlRequest: URLRequest
+        _ urlRequest: URLRequest,
     ) async throws -> URLRequest {
-        let token = try await AppCheck.appCheck().token(forcingRefresh: false)
+        let token = try await AppCheck.appCheck().token(
+            forcingRefresh: false,
+        )
         var request = urlRequest
         request.setValue(
             token.token,
-            forHTTPHeaderField: DHttpHeader.firebaseAppCheck
+            forHTTPHeaderField: DHttpHeader.firebaseAppCheck,
         )
         return request
     }

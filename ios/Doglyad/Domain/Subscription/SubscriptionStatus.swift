@@ -7,7 +7,9 @@ struct SubscriptionStatus: Equatable {
 }
 
 extension SubscriptionStatus {
-    func availability(of feature: PaidFeature) -> SubscriptionFeatureAvailability {
+    func availability(
+        of feature: PaidFeature,
+    ) -> SubscriptionFeatureAvailability {
         switch feature {
         case .neuralModelSettings:
             neuralModelSettings

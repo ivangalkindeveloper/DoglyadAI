@@ -4,16 +4,18 @@ public final class DTextFieldLengthValidator: DTextFieldValidator {
 
     public init(
         validRange: ClosedRange<Int>,
-        invalidValueErrorText: String
+        invalidValueErrorText: String,
     ) {
         self.validRange = validRange
         self.invalidValueErrorText = invalidValueErrorText
     }
 
     public func errorText(
-        for value: String?
+        for value: String?,
     ) -> String? {
         guard let value else { return nil }
-        return validRange.contains(value.count) ? nil : invalidValueErrorText
+        return validRange.contains(
+            value.count,
+        ) ? nil : invalidValueErrorText
     }
 }

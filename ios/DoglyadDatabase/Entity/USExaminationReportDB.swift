@@ -16,7 +16,7 @@ public final class USExaminationReportDB {
         neuralModelSettings: NeuralModelSettingsDB,
         examinationData: USExaminationDataDB,
         actualModelReport: USExaminationModelReportDB,
-        previousModelReports: [USExaminationModelReportDB]
+        previousModelReports: [USExaminationModelReportDB],
     ) {
         self.id = id
         self.date = date

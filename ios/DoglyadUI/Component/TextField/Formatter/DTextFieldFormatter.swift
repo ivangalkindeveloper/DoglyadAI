@@ -1,6 +1,6 @@
 public protocol DTextFieldFormatter {
     func format(
         currentValue: String,
-        proposedValue: String
+        proposedValue: String,
     ) -> String
 }

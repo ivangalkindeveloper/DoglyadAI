@@ -12,15 +12,15 @@ struct RequestLimitExceededBottomSheet: View {
             viewModel: RequestLimitViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }
 
 #Preview {
     RequestLimitExceededBottomSheet(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

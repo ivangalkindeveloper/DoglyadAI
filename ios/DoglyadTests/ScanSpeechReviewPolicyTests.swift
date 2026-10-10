@@ -4,57 +4,87 @@ import Foundation
 import Testing
 
 struct ScanSpeechReviewPolicyTests {
-    @Test("A completed dictation sends the exact visible text to the parser")
+    @Test(
+        "A completed dictation sends the exact visible text to the parser",
+    )
     func finishedUsesVisibleText() {
         let edited = "  Правая почка 12 мм.  "
         let result = ScanSpeechReviewPolicy.textForParsing(
-            transcript: transcript(completion: .finished),
-            visibleText: edited
+            transcript: transcript(
+                completion: .finished,
+            ),
+            visibleText: edited,
         )
-        #expect(result == edited)
+        #expect(
+            result == edited,
+        )
     }
 
-    @Test("An incomplete dictation requires a real correction")
+    @Test(
+        "An incomplete dictation requires a real correction",
+    )
     func incompleteRequiresCorrection() {
-        let partial = transcript(completion: .timedOut)
+        let partial = transcript(
+            completion: .timedOut,
+        )
         let unchanged = ScanSpeechReviewPolicy.textForParsing(
             transcript: partial,
-            visibleText: "Правая почка 12 мм"
+            visibleText: "Правая почка 12 мм",
         )
         let whitespaceOnly = ScanSpeechReviewPolicy.textForParsing(
             transcript: partial,
-            visibleText: "  Правая почка 12 мм  "
+            visibleText: "  Правая почка 12 мм  ",
         )
         let corrected = ScanSpeechReviewPolicy.textForParsing(
             transcript: partial,
-            visibleText: "Правая почка 12 мм, конкрементов нет"
+            visibleText: "Правая почка 12 мм, конкрементов нет",
         )
-        #expect(unchanged == nil)
-        #expect(whitespaceOnly == nil)
-        #expect(corrected == "Правая почка 12 мм, конкрементов нет")
+        #expect(
+            unchanged == nil,
+        )
+        #expect(
+            whitespaceOnly == nil,
+        )
+        #expect(
+            corrected == "Правая почка 12 мм, конкрементов нет",
+        )
     }
 
-    @Test("Empty text and cancelled recordings cannot continue")
+    @Test(
+        "Empty text and cancelled recordings cannot continue",
+    )
     func refusesEmptyAndCancelled() {
         let empty = ScanSpeechReviewPolicy.textForParsing(
-            transcript: transcript(completion: .finished),
-            visibleText: " \n "
+            transcript: transcript(
+                completion: .finished,
+            ),
+            visibleText: " \n ",
         )
         let cancelled = ScanSpeechReviewPolicy.textForParsing(
-            transcript: transcript(completion: .cancelled),
-            visibleText: "Правая почка 12 мм"
+            transcript: transcript(
+                completion: .cancelled,
+            ),
+            visibleText: "Правая почка 12 мм",
         )
-        #expect(empty == nil)
-        #expect(cancelled == nil)
+        #expect(
+            empty == nil,
+        )
+        #expect(
+            cancelled == nil,
+        )
     }
 
-    private func transcript(completion: DictationCompletion) -> DictationTranscript {
-        DictationTranscript(
+    private func transcript(
+        completion: DSpeechCompletion,
+    ) -> DSpeechTranscript {
+        DSpeechTranscript(
             rawText: "Правая почка 12 мм",
             correctedText: "Правая почка 12 мм",
-            locale: Locale(identifier: "ru_RU"),
+            locale: Locale(
+                identifier: "ru_RU",
+            ),
             engine: .speechAnalyzer,
-            completion: completion
+            completion: completion,
         )
     }
 }

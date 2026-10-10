@@ -14,8 +14,8 @@ struct ReadyMadeTemplateListScreen: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }
@@ -23,8 +23,8 @@ struct ReadyMadeTemplateListScreen: View {
 #Preview {
     ReadyMadeTemplateListScreen(
         arguments: ReadyMadeTemplateListScreenArguments(
-            onTemplateSelected: { _ in }
-        )
+            onTemplateSelected: { _ in },
+        ),
     )
     .previewable()
 }

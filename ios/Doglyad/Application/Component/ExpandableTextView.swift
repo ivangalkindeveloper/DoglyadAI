@@ -11,7 +11,7 @@ struct ExpandableTextView: DView {
     init(
         text: String,
         backgroundColor: Color,
-        collapsedLineLimit: Int = 3
+        collapsedLineLimit: Int = 3,
     ) {
         self.text = text
         self.backgroundColor = backgroundColor
@@ -23,58 +23,98 @@ struct ExpandableTextView: DView {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: size.s4
+            spacing: size.s4,
         ) {
             if isExpanded {
-                DText(text)
-                    .dStyle(
-                        font: typography.textSmall,
-                        alignment: .leading
-                    )
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                Button(.buttonCollapse) {
-                    withAnimation(theme.animation) {
+                DText(
+                    text,
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    alignment: .leading,
+                )
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading,
+                )
+                Button(
+                    .buttonCollapse,
+                ) {
+                    withAnimation(
+                        theme.animation,
+                    ) {
                         isExpanded.toggle()
                     }
                 }
-                .font(typography.linkSmall)
-                .foregroundColor(color.primaryDefault)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                .font(
+                    typography.linkSmall,
+                )
+                .foregroundColor(
+                    color.primaryDefault,
+                )
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .trailing,
+                )
             } else {
-                DText(text)
-                    .dStyle(
-                        font: typography.textSmall,
-                        alignment: .leading
-                    )
-                    .lineLimit(collapsedLineLimit)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .overlay(alignment: .bottomTrailing) {
-                        HStack(
-                            spacing: .zero
-                        ) {
-                            Rectangle()
-                                .fill(
-                                    LinearGradient(
-                                        colors: [
-                                            backgroundColor.opacity(0),
-                                            backgroundColor,
-                                        ],
-                                        startPoint: .leading,
-                                        endPoint: .trailing
-                                    )
-                                )
-                                .frame(width: 100, height: 16)
+                DText(
+                    text,
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    alignment: .leading,
+                )
+                .lineLimit(
+                    collapsedLineLimit,
+                )
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading,
+                )
+                .overlay(
+                    alignment: .bottomTrailing,
+                ) {
+                    HStack(
+                        spacing: .zero,
+                    ) {
+                        Rectangle()
+                            .fill(
+                                LinearGradient(
+                                    colors: [
+                                        backgroundColor.opacity(
+                                            0,
+                                        ),
+                                        backgroundColor,
+                                    ],
+                                    startPoint: .leading,
+                                    endPoint: .trailing,
+                                ),
+                            )
+                            .frame(
+                                width: 100,
+                                height: 16,
+                            )
 
-                            Button(.buttonNext) {
-                                withAnimation(theme.animation) {
-                                    isExpanded.toggle()
-                                }
+                        Button(
+                            .buttonNext,
+                        ) {
+                            withAnimation(
+                                theme.animation,
+                            ) {
+                                isExpanded.toggle()
                             }
-                            .font(typography.linkSmall)
-                            .foregroundColor(color.primaryDefault)
-                            .background(backgroundColor)
                         }
+                        .font(
+                            typography.linkSmall,
+                        )
+                        .foregroundColor(
+                            color.primaryDefault,
+                        )
+                        .background(
+                            backgroundColor,
+                        )
                     }
+                }
             }
         }
     }
@@ -88,7 +128,9 @@ struct ExpandableTextView: DView {
         placed on the same line as the end of the truncated text. \
         Tapping the button expands the entire text.
         """,
-        backgroundColor: Color(.white)
+        backgroundColor: Color(
+            .white,
+        ),
     )
     .padding()
     .dThemeWrapper()

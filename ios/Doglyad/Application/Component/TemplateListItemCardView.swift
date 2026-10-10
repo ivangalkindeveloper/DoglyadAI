@@ -11,7 +11,7 @@ struct TemplateListItemCardView: DView {
     init(
         template: USExaminationTemplate,
         action: @escaping () -> Void,
-        isSelected: Bool = false
+        isSelected: Bool = false,
     ) {
         self.template = template
         self.action = action
@@ -20,47 +20,64 @@ struct TemplateListItemCardView: DView {
 
     var body: some View {
         DButtonCard(
-            action: action
+            action: action,
         ) {
             VStack(
                 alignment: .leading,
-                spacing: size.s4
+                spacing: size.s4,
             ) {
                 HStack(
                     alignment: .top,
-                    spacing: .zero
+                    spacing: .zero,
                 ) {
-                    DText(template.usExaminationType.localizedTitle)
-                        .dStyle(
-                            font: typography.linkSmall
-                        )
+                    DText(
+                        template.usExaminationType.localizedTitle,
+                    )
+                    .dStyle(
+                        font: typography.linkSmall,
+                    )
 
                     Spacer()
 
                     if isSelected {
                         DIcon(
                             .check,
-                            color: color.successDefault
+                            color: color.successDefault,
                         )
-                        .padding(.leading, size.s16)
+                        .padding(
+                            .leading,
+                            size.s16,
+                        )
                     }
                 }
 
-                DText(template.name)
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscalePlacehold
-                    )
+                DText(
+                    template.name,
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscalePlacehold,
+                )
 
-                DText(template.content)
-                    .dStyle(
-                        font: typography.textXSmall,
-                        color: color.grayscalePlacehold
-                    )
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .lineLimit(4)
+                DText(
+                    template.content,
+                )
+                .dStyle(
+                    font: typography.textXSmall,
+                    color: color.grayscalePlacehold,
+                )
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading,
+                )
+                .lineLimit(
+                    4,
+                )
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(
+                maxWidth: .infinity,
+                alignment: .leading,
+            )
         }
     }
 }
@@ -71,7 +88,7 @@ struct TemplateListItemCardView: DView {
             usExaminationType: USExaminationType(
                 id: "thyroid",
                 title: "Thyroid gland",
-                contextualStrings: []
+                contextualStrings: [],
             ),
             name: "Standard examination",
             content: """
@@ -80,10 +97,10 @@ struct TemplateListItemCardView: DView {
             The parenchyma is homogeneous.
             No focal lesions were identified.
             An additional line demonstrates truncation.
-            """
+            """,
         ),
         action: {},
-        isSelected: true
+        isSelected: true,
     )
     .padding()
     .dThemeWrapper()

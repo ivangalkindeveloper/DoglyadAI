@@ -16,8 +16,8 @@ struct ScanSpeechBottomSheet: View {
                 messager: messager,
                 router: router,
                 subscription: subscriptionViewModel,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }
@@ -25,10 +25,14 @@ struct ScanSpeechBottomSheet: View {
 #Preview {
     ScanSpeechBottomSheet(
         arguments: ScanSpeechBottomSheetArguments(
-            examinationType: USExaminationType(id: "", title: "", contextualStrings: []),
+            examinationType: USExaminationType(
+                id: "",
+                title: "",
+                contextualStrings: [],
+            ),
             getCurrentValue: { _ in "" },
-            onConfirm: nil
-        )
+            onConfirm: nil,
+        ),
     )
     .previewable()
 }

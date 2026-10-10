@@ -28,7 +28,9 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     private let getNeuralModel: () -> USExaminationNeuralModel
     private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
     let draftAutosaver = DDraftAutosaver<USExaminationDraftForm>(
-        delay: .seconds(1)
+        delay: .seconds(
+            1,
+        ),
     )
     private var draftPhotosCancellable: AnyCancellable?
     private var draftLifecycleCancellable: AnyCancellable?
@@ -48,7 +50,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         onTemplateSelected: @escaping (USExaminationTemplate) -> Void,
         onTemplateReset: @escaping () -> Void,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
-        onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void
+        onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void,
     ) {
         self.messager = messager
         self.getSelectedTemplate = getSelectedTemplate
@@ -61,7 +63,9 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.scan)
+            analyticsDestination: .screen(
+                .scan,
+            ),
         )
     }
 
@@ -74,15 +78,23 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     private var defaultPatientDateOfBirth: Date {
-        Calendar.current.date(byAdding: .year, value: -ultrasoundConfig.defaultPatientDateOfBirthGap, to: Date())!
+        Calendar.current.date(
+            byAdding: .year,
+            value: -ultrasoundConfig.defaultPatientDateOfBirthGap,
+            to: Date(),
+        )!
     }
 
     @Published var usExaminationType: USExaminationType
     @Published var photos: [USExaminationScanPhoto] = []
     //
     @Published var focus: Focus? = nil
-    @NestedObservableObject var examinationNumberController = DTextFieldController(isRequired: true)
-    @NestedObservableObject var patientNameController = DTextFieldController(isRequired: true)
+    @NestedObservableObject var examinationNumberController = DTextFieldController(
+        isRequired: true,
+    )
+    @NestedObservableObject var patientNameController = DTextFieldController(
+        isRequired: true,
+    )
     @Published var patientGender = PatientGender.male
     @Published var patientDateOfBirth: Date = .init()
     @NestedObservableObject var patientHeightCMController = DTextFieldController(
@@ -92,9 +104,11 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         validators: [
             DTextFieldDoubleRangeValidator(
                 validRange: Double.leastNonzeroMagnitude ... Double.greatestFiniteMagnitude,
-                invalidValueErrorText: String(localized: .errorInvalidPatientHeight)
+                invalidValueErrorText: String(
+                    localized: .errorInvalidPatientHeight,
+                ),
             ),
-        ]
+        ],
     )
     @NestedObservableObject var patientWeightKGController = DTextFieldController(
         formatters: [
@@ -103,12 +117,16 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         validators: [
             DTextFieldDoubleRangeValidator(
                 validRange: Double.leastNonzeroMagnitude ... Double.greatestFiniteMagnitude,
-                invalidValueErrorText: String(localized: .errorInvalidPatientWeight)
+                invalidValueErrorText: String(
+                    localized: .errorInvalidPatientWeight,
+                ),
             ),
-        ]
+        ],
     )
     @NestedObservableObject var patientComplaintsController = DTextFieldController()
-    @NestedObservableObject var examinationDescriptionController = DTextFieldController(isRequired: true)
+    @NestedObservableObject var examinationDescriptionController = DTextFieldController(
+        isRequired: true,
+    )
     //
     @Published var isLoading = false
 
@@ -116,30 +134,32 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         [
             DTextFieldFocusValidationItem(
                 focus: .examinationNumber,
-                controller: examinationNumberController
+                controller: examinationNumberController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .patientName,
-                controller: patientNameController
+                controller: patientNameController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .patientHeightCM,
-                controller: patientHeightCMController
+                controller: patientHeightCMController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .patientWeightKG,
-                controller: patientWeightKGController
+                controller: patientWeightKGController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .examinationDescription,
-                controller: examinationDescriptionController
+                controller: examinationDescriptionController,
             ),
         ]
     }
 
     override func onInit() {
         if let usExaminationTypeId = container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
-           let usExaminationType = container.usExaminationTypesById[usExaminationTypeId]
+           let usExaminationType = container.usExaminationTypesById[
+               usExaminationTypeId,
+           ]
         {
             self.usExaminationType = usExaminationType
         }
@@ -147,17 +167,29 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         handle {
             let draft = await self.loadDraft()
             if let draft {
-                return DraftInitializationResult.draft(draft)
+                return DraftInitializationResult.draft(
+                    draft,
+                )
             }
 
             let reportsCount = await self.container.ultrasoundReportRepository.getReportsCount()
-            return DraftInitializationResult.defaults(reportsCount: reportsCount)
+            return DraftInitializationResult.defaults(
+                reportsCount: reportsCount,
+            )
         } onMainSuccess: { result in
             switch result {
-            case let .draft(draft):
-                self.applyDraft(draft)
-            case let .defaults(reportsCount):
-                self.applyDefaultValues(reportsCount: reportsCount)
+            case let .draft(
+                draft,
+            ):
+                self.applyDraft(
+                    draft,
+                )
+            case let .defaults(
+                reportsCount,
+            ):
+                self.applyDefaultValues(
+                    reportsCount: reportsCount,
+                )
             }
             self.startDraftObservation()
         }
@@ -236,7 +268,9 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     func onSubmit() {
-        analytics.buttonTapped(.scanSubmit)
+        analytics.buttonTapped(
+            .scanSubmit,
+        )
         switch focus {
         case .examinationNumber:
             focus = .patientName
@@ -254,26 +288,32 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     func onTapSettings() {
-        analytics.buttonTapped(.scanSettings)
-        coordinator.screen(.settings)
+        analytics.buttonTapped(
+            .scanSettings,
+        )
+        coordinator.screen(
+            .settings,
+        )
     }
 
     func onTapUSExaminationType() {
-        analytics.buttonTapped(.scanUSExaminationType)
+        analytics.buttonTapped(
+            .scanUSExaminationType,
+        )
         coordinator.sheet(
             .selectUSExaminationType,
             arguments: SelectUSExaminationTypeArguments(
                 currentValue: usExaminationType,
                 onSelected: { [weak self] usExaminationType in
-                    guard let self = self else { return }
+                    guard let self else { return }
                     guard self.usExaminationType != usExaminationType else { return }
 
                     self.usExaminationType = usExaminationType
-                    self.container.ultrasoundReportRepository.setSelectedExaminationTypeId(
-                        id: usExaminationType.id
+                    container.ultrasoundReportRepository.setSelectedExaminationTypeId(
+                        id: usExaminationType.id,
                     )
-                }
-            )
+                },
+            ),
         )
     }
 
@@ -284,7 +324,9 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     func onTapImport() {
         guard !isMediaSelectionDisabled else { return }
 
-        analytics.buttonTapped(.scanImport)
+        analytics.buttonTapped(
+            .scanImport,
+        )
         unfocus()
         coordinator.sheet(
             .importMedia,
@@ -294,21 +336,27 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 },
                 onTapGallery: { [weak self] in
                     self?.onTapGallery()
-                }
-            )
+                },
+            ),
         )
     }
 
     private func onTapCamera() {
         guard !isMediaSelectionDisabled else { return }
 
-        analytics.buttonTapped(.scanCamera)
+        analytics.buttonTapped(
+            .scanCamera,
+        )
         unfocus()
         handle {
-            await self.container.permissionManager.isGranted(.camera)
+            await self.container.permissionManager.isGranted(
+                .camera,
+            )
         } onMainSuccess: { isGranted in
             guard isGranted else {
-                return self.coordinator.sheet(.permissionCamera)
+                return self.coordinator.sheet(
+                    .permissionCamera,
+                )
             }
 
             let cameraController = self.cameraController ?? DCameraControllerFactory.make()
@@ -323,10 +371,10 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                         },
                         set: { [weak self] photos in
                             self?.photos = photos
-                        }
+                        },
                     ),
-                    photoMaxCount: self.photoMaxCount
-                )
+                    photoMaxCount: self.photoMaxCount,
+                ),
             )
         }
     }
@@ -336,15 +384,23 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
 
         analytics.buttonTapped(
             .scanGallery,
-            parameters: AnalyticsParameters([
-                .selectionLimit: .int(gallerySelectionLimit),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .selectionLimit: .int(
+                        gallerySelectionLimit,
+                    ),
+                ],
+            ),
         )
         handle {
-            await self.container.permissionManager.isGranted(.photoLibrary)
+            await self.container.permissionManager.isGranted(
+                .photoLibrary,
+            )
         } onMainSuccess: { isGranted in
             guard isGranted else {
-                return self.coordinator.sheet(.permissionPhotoLibrary)
+                return self.coordinator.sheet(
+                    .permissionPhotoLibrary,
+                )
             }
 
             self.coordinator.sheet(
@@ -352,105 +408,138 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 arguments: PhotoLibraryPickerArguments(
                     selectionLimit: self.gallerySelectionLimit,
                     onComplete: { [weak self] images in
-                        guard let self = self else { return }
+                        guard let self else { return }
 
-                        self.onSelectGalleryImages(images)
-                    }
-                )
+                        onSelectGalleryImages(
+                            images,
+                        )
+                    },
+                ),
             )
         }
     }
 
     private var gallerySelectionLimit: Int {
-        max(photoMaxCount - photos.count, 0)
+        max(
+            photoMaxCount - photos.count,
+            0,
+        )
     }
 
     private func onSelectGalleryImages(
-        _ images: [UIImage]
+        _ images: [UIImage],
     ) {
         guard !isPhotoFilling else { return }
 
         let availableCount = photoMaxCount - photos.count
         Task {
             var newPhotos: [USExaminationScanPhoto] = []
-            for image in images.prefix(availableCount) {
-                newPhotos.append(await USExaminationScanPhoto.make(image: image))
+            for image in images.prefix(
+                availableCount,
+            ) {
+                await newPhotos.append(
+                    USExaminationScanPhoto.make(
+                        image: image,
+                    ),
+                )
             }
 
             withAnimation {
-                self.photos.append(contentsOf: newPhotos)
+                self.photos.append(
+                    contentsOf: newPhotos,
+                )
             }
         }
     }
 
-    func onTapPhoto(_ photo: USExaminationScanPhoto) {
+    func onTapPhoto(
+        _ photo: USExaminationScanPhoto,
+    ) {
         coordinator.screen(
             .photoView,
             arguments: PhotoViewScreenArguments(
                 photos: Binding(
                     get: { [weak self] in self?.photos ?? [] },
-                    set: { [weak self] in self?.photos = $0 }
+                    set: { [weak self] in self?.photos = $0 },
                 ),
                 initialPhotoID: photo.id,
                 onDelete: { [weak self] photo in
-                    self?.onTapDeletePhoto(photo: photo)
-                }
-            )
+                    self?.onTapDeletePhoto(
+                        photo: photo,
+                    )
+                },
+            ),
         )
     }
 
     func onTapDeletePhoto(
-        photo: USExaminationScanPhoto
+        photo: USExaminationScanPhoto,
     ) {
-        guard let index = photos.firstIndex(of: photo) else { return }
+        guard let index = photos.firstIndex(
+            of: photo,
+        ) else { return }
 
         analytics.buttonTapped(
             .scanDeletePhoto,
-            parameters: AnalyticsParameters([
-                .itemCount: .int(photos.count),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .itemCount: .int(
+                        photos.count,
+                    ),
+                ],
+            ),
         )
         withAnimation {
-            _ = photos.remove(at: index)
+            _ = photos.remove(
+                at: index,
+            )
         }
     }
 
     func onTapPatientGender(
-        value: PatientGender
+        value: PatientGender,
     ) {
-        analytics.buttonTapped(.scanPatientGender)
+        analytics.buttonTapped(
+            .scanPatientGender,
+        )
         guard patientGender != value else { return }
 
         patientGender = value
     }
 
     func onTapPatientDateOfBirth() {
-        analytics.buttonTapped(.scanPatientDateOfBirth)
+        analytics.buttonTapped(
+            .scanPatientDateOfBirth,
+        )
         coordinator.sheet(
             .selectDateOfBirth,
             arguments: SelectDateOfBirthArguments(
                 currentValue: patientDateOfBirth,
                 onSelected: { [weak self] date in
-                    guard let self = self else { return }
-                    guard self.patientDateOfBirth != date else { return }
+                    guard let self else { return }
+                    guard patientDateOfBirth != date else { return }
 
-                    self.patientDateOfBirth = date
-                }
-            )
+                    patientDateOfBirth = date
+                },
+            ),
         )
     }
 
     func onTapSelectedTemplate() {
         analytics.buttonTapped(
             .scanSelectedTemplate,
-            parameters: AnalyticsParameters([
-                .hasCurrentValue: .bool(getSelectedTemplate() != nil),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .hasCurrentValue: .bool(
+                        getSelectedTemplate() != nil,
+                    ),
+                ],
+            ),
         )
         let usExaminationId = usExaminationType.id
         handle {
             let templates = await self.container.templateRepository.getTemplates(
-                usExaminationTypesById: self.container.usExaminationTypesById
+                usExaminationTypesById: self.container.usExaminationTypesById,
             )
             return templates.contains { $0.usExaminationType.id == usExaminationId }
         } onMainSuccess: { hasTemplates in
@@ -459,9 +548,11 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                     .templateAdd,
                     arguments: TemplateAddScreenArguments(
                         onAddSuccess: { [weak self] template in
-                            self?.onTemplateSelected(template)
-                        }
-                    )
+                            self?.onTemplateSelected(
+                                template,
+                            )
+                        },
+                    ),
                 )
             }
 
@@ -471,9 +562,11 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                     usExaminationId: usExaminationId,
                     currentValue: self.getSelectedTemplate(),
                     onSelected: { [weak self] template in
-                        self?.onTemplateSelected(template)
-                    }
-                )
+                        self?.onTemplateSelected(
+                            template,
+                        )
+                    },
+                ),
             )
         }
     }
@@ -484,32 +577,46 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     func onTapResetTemplate() {
-        analytics.buttonTapped(.scanResetTemplate)
+        analytics.buttonTapped(
+            .scanResetTemplate,
+        )
         onTemplateReset()
     }
 
     func onTapNeuralModelSelection() {
         analytics.buttonTapped(
             .scanNeuralModelSelection,
-            parameters: AnalyticsParameters([
-                .modelId: .string(getNeuralModel().id),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .modelId: .string(
+                        getNeuralModel().id,
+                    ),
+                ],
+            ),
         )
         coordinator.sheet(
             .selectNeuralModel,
             arguments: SelectNeuralModelArguments(
                 currentValue: getNeuralModel(),
                 onSelected: { [weak self] model in
-                    self?.onNeuralModelSelected(model)
-                }
-            )
+                    self?.onNeuralModelSelected(
+                        model,
+                    )
+                },
+            ),
         )
     }
 
     func onTapNeuralModelSettings() {
-        analytics.buttonTapped(.scanNeuralModelSettings)
-        coordinator.run(.neuralModelSettings) {
-            self.coordinator.screen(.neuralModelSettings)
+        analytics.buttonTapped(
+            .scanNeuralModelSettings,
+        )
+        coordinator.run(
+            .neuralModelSettings,
+        ) {
+            self.coordinator.screen(
+                .neuralModelSettings,
+            )
         }
     }
 
@@ -525,7 +632,9 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     func onTapClear() {
         guard !isLoading else { return }
 
-        analytics.buttonTapped(.scanClear)
+        analytics.buttonTapped(
+            .scanClear,
+        )
         isLoading = true
         unfocus()
         clearForm()
@@ -537,34 +646,40 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     func onTapFillDevelopment() {
-        analytics.buttonTapped(.scanFill)
+        analytics.buttonTapped(
+            .scanFill,
+        )
         patientComplaintsController.setText(
             container.mockFactory.fillPatientComplaints(
-                for: Locale.current
-            )
+                for: Locale.current,
+            ),
         )
         examinationDescriptionController.setText(
             container.mockFactory.fillExaminationDescription(
-                for: Locale.current
-            )
+                for: Locale.current,
+            ),
         )
     }
 
     var isSpeechButtonVisible: Bool {
-        switch subscription.availability(of: .formCompletionViaMicrophone) {
+        switch subscription.availability(
+            of: .formCompletionViaMicrophone,
+        ) {
         case .offered, .available:
-            return true
+            true
         case .unavailable:
-            return false
+            false
         }
     }
 
     var speechButtonBadge: DButtonBadge? {
-        switch subscription.availability(of: .formCompletionViaMicrophone) {
+        switch subscription.availability(
+            of: .formCompletionViaMicrophone,
+        ) {
         case .offered:
             DButtonBadge(
                 .entitlementPro,
-                isShimmering: true
+                isShimmering: true,
             )
         case .available, .unavailable:
             nil
@@ -572,18 +687,26 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     }
 
     func onTapSpeech() {
-        analytics.buttonTapped(.scanSpeech)
-        coordinator.run(.formCompletionViaMicrophone) {
+        analytics.buttonTapped(
+            .scanSpeech,
+        )
+        coordinator.run(
+            .formCompletionViaMicrophone,
+        ) {
             self.startSpeechFlow()
         }
     }
 
     private func startSpeechFlow() {
         handle {
-            await self.container.permissionManager.isGranted(.microphone)
+            await self.container.permissionManager.isGranted(
+                .microphone,
+            )
         } onMainSuccess: { isGranted in
             if !isGranted {
-                return self.coordinator.sheet(.permissionSpeech)
+                return self.coordinator.sheet(
+                    .permissionSpeech,
+                )
             }
 
             let examinationType = self.usExaminationType
@@ -592,19 +715,26 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 arguments: ScanSpeechBottomSheetArguments(
                     examinationType: examinationType,
                     getCurrentValue: { [weak self] fieldId in
-                        self?.currentVoiceFieldValue(fieldId) ?? ""
+                        self?.currentVoiceFieldValue(
+                            fieldId,
+                        ) ?? ""
                     },
                     onConfirm: { [weak self] proposals in
-                        guard let self, self.usExaminationType.id == examinationType.id,
+                        guard let self, usExaminationType.id == examinationType.id,
                               let updatedForm = ScanFormPatch.apply(
                                   proposals,
-                                  to: self.makeDraftSnapshot()
+                                  to: makeDraftSnapshot(),
                               )
                         else { return false }
-                        self.applyDraft(USExaminationDraft(form: updatedForm, photos: self.photos))
+                        applyDraft(
+                            USExaminationDraft(
+                                form: updatedForm,
+                                photos: photos,
+                            ),
+                        )
                         return true
-                    }
-                )
+                    },
+                ),
             )
         }
     }
@@ -614,10 +744,16 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
 
         analytics.buttonTapped(
             .scanGenerate,
-            parameters: AnalyticsParameters([
-                .itemCount: .int(photos.count),
-                .modelId: .string(getNeuralModel().id),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .itemCount: .int(
+                        photos.count,
+                    ),
+                    .modelId: .string(
+                        getNeuralModel().id,
+                    ),
+                ],
+            ),
         )
         if let invalidFocus = firstInvalidFocus() {
             focus = invalidFocus
@@ -646,14 +782,20 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
             return
         }
 
-        let patientHeight = patientHeightCMController.value.flatMap { Double($0) }
-        let patientWeight = patientWeightKGController.value.flatMap { Double($0) }
+        let patientHeight = patientHeightCMController.value.flatMap { Double(
+            $0,
+        ) }
+        let patientWeight = patientWeightKGController.value.flatMap { Double(
+            $0,
+        ) }
 
         isLoading = true
         handle {
             let neuralModelSettings = self.subscription.neuralModelSettings
             let patientComplaints = self.patientComplaintsController.value?
-                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .trimmingCharacters(
+                    in: .whitespacesAndNewlines,
+                )
             let examinationData = USExaminationData(
                 usExaminationTypeId: self.usExaminationType.id,
                 photos: self.photos,
@@ -664,7 +806,7 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 patientHeight: patientHeight,
                 patientWeight: patientWeight,
                 patientComplaints: patientComplaints?.isEmpty == false ? patientComplaints : nil,
-                examinationDescription: examinationDescription
+                examinationDescription: examinationDescription,
             )
             let template = self.getSelectedTemplate()
             let locale = self.container.language.currentLocale
@@ -672,25 +814,25 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 neuralModelSettings: neuralModelSettings,
                 examinationData: examinationData,
                 template: template?.content,
-                includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations()
+                includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations(),
             )
             let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
                 locale: locale,
                 request: request,
                 scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
                     resizeMaxDimension: self.ultrasoundConfig.scanPhotoResizeMaxDimension,
-                    compressionQuality: self.ultrasoundConfig.scanPhotoCompressionQuality
-                )
+                    compressionQuality: self.ultrasoundConfig.scanPhotoCompressionQuality,
+                ),
             )
             let report = USExaminationReport(
                 date: Date(),
                 neuralModelSettings: neuralModelSettings,
                 examinationData: examinationData,
                 actualModelReport: modelReport,
-                previousModelReports: []
+                previousModelReports: [],
             )
             await self.container.ultrasoundReportRepository.setReport(
-                report: report
+                report: report,
             )
             self.subscription.incrementRequestCount()
             await self.clearDraftAndReset()
@@ -702,8 +844,8 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
             self.coordinator.sheet(
                 .reportReceived,
                 arguments: ReportReceivedBottomSheetArguments(
-                    report: report
-                )
+                    report: report,
+                ),
             )
         } onUnknownError: { _ in
             self.messager.showUnknownError()
@@ -716,19 +858,29 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         await clearDraft()
 
         let reportsCount = await container.ultrasoundReportRepository.getReportsCount()
-        applyDefaultValues(reportsCount: reportsCount)
+        applyDefaultValues(
+            reportsCount: reportsCount,
+        )
         startDraftObservation()
     }
 
     private func applyDefaultValues(
-        reportsCount: Int
+        reportsCount: Int,
     ) {
         photos.removeAll()
         examinationNumberController.setText(
-            String(localized: .scanExaminationDefaultNumberLabel(count: reportsCount))
+            String(
+                localized: .scanExaminationDefaultNumberLabel(
+                    count: reportsCount,
+                ),
+            ),
         )
         patientNameController.setText(
-            String(localized: .scanPatientDefaultNameLabel(count: reportsCount))
+            String(
+                localized: .scanPatientDefaultNameLabel(
+                    count: reportsCount,
+                ),
+            ),
         )
         patientGender = .male
         patientDateOfBirth = defaultPatientDateOfBirth
@@ -757,18 +909,34 @@ extension ScanViewModel {
     }
 
     func applyDraft(
-        _ draft: USExaminationDraft
+        _ draft: USExaminationDraft,
     ) {
         let form = draft.form
-        photos = Array(draft.photos.prefix(photoMaxCount))
-        examinationNumberController.setText(form.examinationNumber)
-        patientNameController.setText(form.patientName)
+        photos = Array(
+            draft.photos.prefix(
+                photoMaxCount,
+            ),
+        )
+        examinationNumberController.setText(
+            form.examinationNumber,
+        )
+        patientNameController.setText(
+            form.patientName,
+        )
         patientGender = form.patientGender
         patientDateOfBirth = form.patientDateOfBirth
-        patientHeightCMController.setText(form.patientHeightCM)
-        patientWeightKGController.setText(form.patientWeightKG)
-        patientComplaintsController.setText(form.patientComplaints)
-        examinationDescriptionController.setText(form.examinationDescription)
+        patientHeightCMController.setText(
+            form.patientHeightCM,
+        )
+        patientWeightKGController.setText(
+            form.patientWeightKG,
+        )
+        patientComplaintsController.setText(
+            form.patientComplaints,
+        )
+        examinationDescriptionController.setText(
+            form.examinationDescription,
+        )
     }
 
     func clearDraft() async {
@@ -784,20 +952,29 @@ extension ScanViewModel {
             patientHeightCM: patientHeightCMController.text,
             patientWeightKG: patientWeightKGController.text,
             patientComplaints: patientComplaintsController.text,
-            examinationDescription: examinationDescriptionController.text
+            examinationDescription: examinationDescriptionController.text,
         )
     }
 
-    func currentVoiceFieldValue(_ id: VoiceFieldId) -> String {
+    func currentVoiceFieldValue(
+        _ id: DNeuralUltrasoundVoiceFieldId,
+    ) -> String {
         switch id {
         case .examinationNumber: examinationNumberController.text
         case .patientName: patientNameController.text
         case .patientGender:
             switch patientGender {
-            case .male: String(localized: .scanGenderMaleLabel)
-            case .female: String(localized: .scanGenderFemaleLabel)
+            case .male: String(
+                    localized: .scanGenderMaleLabel,
+                )
+            case .female: String(
+                    localized: .scanGenderFemaleLabel,
+                )
             }
-        case .patientDateOfBirth: patientDateOfBirth.formatted(date: .abbreviated, time: .omitted)
+        case .patientDateOfBirth: patientDateOfBirth.formatted(
+                date: .abbreviated,
+                time: .omitted,
+            )
         case .patientHeightCM: patientHeightCMController.text
         case .patientWeightKG: patientWeightKGController.text
         case .patientComplaints: patientComplaintsController.text
@@ -806,9 +983,11 @@ extension ScanViewModel {
     }
 
     func saveDraftSnapshot(
-        _ draft: USExaminationDraftForm
+        _ draft: USExaminationDraftForm,
     ) async {
-        await container.ultrasoundDraftRepository.saveForm(draft)
+        await container.ultrasoundDraftRepository.saveForm(
+            draft,
+        )
     }
 
     func draftChangePublishers() -> [AnyPublisher<Void, Never>] {
@@ -859,11 +1038,15 @@ private extension ScanViewModel {
             .sink { [weak self] photos in
                 guard let self else { return }
 
-                saveDraftPhotos(photos)
+                saveDraftPhotos(
+                    photos,
+                )
             }
 
         draftLifecycleCancellable = NotificationCenter.default
-            .publisher(for: UIApplication.willResignActiveNotification)
+            .publisher(
+                for: UIApplication.willResignActiveNotification,
+            )
             .sink { [weak self] _ in
                 self?.saveDraftBeforeBackground()
             }
@@ -878,7 +1061,7 @@ private extension ScanViewModel {
     }
 
     func saveDraftPhotos(
-        _ photos: [USExaminationScanPhoto]
+        _ photos: [USExaminationScanPhoto],
     ) {
         let currentForm = makeDraftSnapshot()
         draftAutosaver.enqueue { [weak self] in
@@ -886,7 +1069,7 @@ private extension ScanViewModel {
 
             await container.ultrasoundDraftRepository.savePhotos(
                 photos,
-                currentForm: currentForm
+                currentForm: currentForm,
             )
         }
     }
@@ -899,7 +1082,9 @@ private extension ScanViewModel {
         } onDefer: {
             guard backgroundTask != .invalid else { return }
 
-            UIApplication.shared.endBackgroundTask(backgroundTask)
+            UIApplication.shared.endBackgroundTask(
+                backgroundTask,
+            )
         }
     }
 }

@@ -9,21 +9,34 @@ struct ReportDetailPhotosView: DView {
     var body: some View {
         ScrollView(
             .horizontal,
-            showsIndicators: false
+            showsIndicators: false,
         ) {
             HStack(
-                spacing: .zero
+                spacing: .zero,
             ) {
-                ForEach(viewModel.report.examinationData.photos) { photo in
+                ForEach(
+                    viewModel.report.examinationData.photos,
+                ) { photo in
                     PhotoCardView(
                         image: photo.thumbnail,
-                        onTap: { viewModel.onTapPhoto(photo) }
+                        onTap: { viewModel.onTapPhoto(
+                            photo,
+                        ) },
                     )
                 }
-                .padding([.horizontal], size.s2)
+                .padding(
+                    [.horizontal],
+                    size.s2,
+                )
             }
-            .padding([.horizontal], size.s14)
+            .padding(
+                [.horizontal],
+                size.s14,
+            )
         }
-        .padding(.bottom, size.s16)
+        .padding(
+            .bottom,
+            size.s16,
+        )
     }
 }

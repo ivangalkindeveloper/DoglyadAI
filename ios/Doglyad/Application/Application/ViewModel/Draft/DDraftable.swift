@@ -10,7 +10,7 @@ protocol DDraftable: AnyObject {
     func loadDraft() async -> Draft?
 
     func applyDraft(
-        _ draft: Draft
+        _ draft: Draft,
     )
 
     func clearDraft() async
@@ -18,7 +18,7 @@ protocol DDraftable: AnyObject {
     func makeDraftSnapshot() -> DraftSnapshot
 
     func saveDraftSnapshot(
-        _ draft: DraftSnapshot
+        _ draft: DraftSnapshot,
     ) async
 
     func draftChangePublishers() -> [AnyPublisher<Void, Never>]
@@ -28,7 +28,9 @@ extension DDraftable {
     func restoreDraft() async -> Bool {
         guard let draft = await loadDraft() else { return false }
 
-        applyDraft(draft)
+        applyDraft(
+            draft,
+        )
         return true
     }
 
@@ -40,8 +42,10 @@ extension DDraftable {
             },
             saveDraft: { [weak self] draft in
                 guard let self else { return }
-                await self.saveDraftSnapshot(draft)
-            }
+                await saveDraftSnapshot(
+                    draft,
+                )
+            },
         )
     }
 

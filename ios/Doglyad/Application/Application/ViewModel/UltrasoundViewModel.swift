@@ -7,13 +7,15 @@ final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, O
     private let container: DependencyContainer
 
     init(
-        container: DependencyContainer
+        container: DependencyContainer,
     ) {
         self.container = container
 
         let ultrasoundModelRepository = container.ultrasoundModelRepository
         if let id = ultrasoundModelRepository.getSelectedModelId(),
-           let model = container.usExaminationNeuralModelsById[id]
+           let model = container.usExaminationNeuralModelsById[
+               id,
+           ]
         {
             neuralModel = model
         } else {
@@ -50,7 +52,7 @@ final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, O
         handle {
             await templateRepository.getTemplate(
                 id: selectedTemplateId,
-                usExaminationTypesById: self.container.usExaminationTypesById
+                usExaminationTypesById: self.container.usExaminationTypesById,
             )
         } onMainSuccess: { template in
             guard templateRepository.getSelectedTemplateId() == selectedTemplateId else { return }
@@ -73,26 +75,34 @@ final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, O
 
     func saveUserSettings(
         userEmail: String?,
-        includeRecommendations: Bool
+        includeRecommendations: Bool,
     ) {
         self.userEmail = userEmail
         self.includeRecommendations = includeRecommendations
-        container.userSettingsRepository.setUserEmail(userEmail)
-        container.userSettingsRepository.setIncludeRecommendations(includeRecommendations)
+        container.userSettingsRepository.setUserEmail(
+            userEmail,
+        )
+        container.userSettingsRepository.setIncludeRecommendations(
+            includeRecommendations,
+        )
     }
 
     func saveNeuralModel(
-        _ model: USExaminationNeuralModel
+        _ model: USExaminationNeuralModel,
     ) {
         neuralModel = model
-        container.ultrasoundModelRepository.setSelectedModelId(id: model.id)
+        container.ultrasoundModelRepository.setSelectedModelId(
+            id: model.id,
+        )
     }
 
     func selectTemplate(
-        _ template: USExaminationTemplate
+        _ template: USExaminationTemplate,
     ) {
         self.template = template
-        container.templateRepository.setSelectedTemplateId(id: template.id)
+        container.templateRepository.setSelectedTemplateId(
+            id: template.id,
+        )
     }
 
     func resetTemplate() {
@@ -103,29 +113,35 @@ final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, O
     func saveNeuralModelSettings(
         isMarkdown: Bool,
         temperature: Double?,
-        maxTokens: Int?
+        maxTokens: Int?,
     ) {
         self.isMarkdown = isMarkdown
-        container.ultrasoundModelRepository.setIsMarkdown(isMarkdown)
+        container.ultrasoundModelRepository.setIsMarkdown(
+            isMarkdown,
+        )
 
-        if let temperature = temperature {
+        if let temperature {
             self.temperature = temperature
-            container.ultrasoundModelRepository.setTemperature(temperature)
+            container.ultrasoundModelRepository.setTemperature(
+                temperature,
+            )
         }
 
-        if let maxTokens = maxTokens {
+        if let maxTokens {
             self.maxTokens = maxTokens
-            container.ultrasoundModelRepository.setMaxTokens(maxTokens)
+            container.ultrasoundModelRepository.setMaxTokens(
+                maxTokens,
+            )
         }
     }
 
     func saveTemplate(
         _ template: USExaminationTemplate,
-        onChanged: @escaping () -> Void = {}
+        onChanged: @escaping () -> Void = {},
     ) {
         Task { @MainActor in
             await container.templateRepository.saveTemplate(
-                template: template
+                template: template,
             )
             if self.template?.id == template.id {
                 self.template = template
@@ -136,10 +152,12 @@ final class UltrasoundViewModel: Handler<DHttpApiError, DHttpConnectionError>, O
 
     func deleteTemplate(
         id: UUID,
-        onChanged: @escaping () -> Void = {}
+        onChanged: @escaping () -> Void = {},
     ) {
         Task { @MainActor in
-            await container.templateRepository.deleteTemplate(id: id)
+            await container.templateRepository.deleteTemplate(
+                id: id,
+            )
             if template?.id == id || container.templateRepository.getSelectedTemplateId() == id {
                 template = nil
                 container.templateRepository.clearSelectedTemplateId()

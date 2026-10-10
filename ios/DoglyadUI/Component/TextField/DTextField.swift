@@ -29,7 +29,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
-        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() }
+        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
     ) {
         self.controller = controller
         self.focus = focus
@@ -40,7 +40,9 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
         self.autocapitalization = autocapitalization
         self.leading = leading()
         self.trailing = trailing()
-        _inputText = State(initialValue: controller.text)
+        _inputText = State(
+            initialValue: controller.text,
+        )
     }
 
     public init(
@@ -51,7 +53,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
-        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() }
+        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
     ) where Focus == Bool {
         self.init(
             controller: controller,
@@ -62,101 +64,180 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
             keyboardType: keyboardType,
             autocapitalization: autocapitalization,
             leading: leading,
-            trailing: trailing
+            trailing: trailing,
         )
     }
 
     public var body: some View {
         VStack(
             alignment: .leading,
-            spacing: .zero
+            spacing: .zero,
         ) {
             ZStack {
-                RoundedRectangle(cornerRadius: size.s16)
-                    .fill(fillColor)
-                    .stroke(borderColor, lineWidth: 1)
+                RoundedRectangle(
+                    cornerRadius: size.s16,
+                )
+                .fill(
+                    fillColor,
+                )
+                .stroke(
+                    borderColor,
+                    lineWidth: 1,
+                )
 
-                HStack(spacing: .zero) {
+                HStack(
+                    spacing: .zero,
+                ) {
                     if !(leading is EmptyView) {
                         leading.fixedSize()
-                            .padding(.leading, size.s16)
+                            .padding(
+                                .leading,
+                                size.s16,
+                            )
                     }
 
                     VStack(
                         alignment: .leading,
-                        spacing: .zero
+                        spacing: .zero,
                     ) {
-                        Text(title)
-                            .font(.custom(.MontserratRegular, size.s10))
-                            .foregroundStyle(titleColor)
-                            .padding(.bottom, size.s2)
+                        Text(
+                            title,
+                        )
+                        .font(
+                            .custom(
+                                .MontserratRegular,
+                                size.s10,
+                            ),
+                        )
+                        .foregroundStyle(
+                            titleColor,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s2,
+                        )
 
                         let field = TextField(
                             placeholder,
                             text: $inputText,
-                            prompt: Text(verbatim: String(localized: placeholder))
-                                .foregroundStyle(color.grayscalePlacehold),
-                            axis: mode.axis
+                            prompt: Text(
+                                verbatim: String(
+                                    localized: placeholder,
+                                ),
+                            )
+                            .foregroundStyle(
+                                color.grayscalePlacehold,
+                            ),
+                            axis: mode.axis,
                         )
                         Group {
                             if let focus {
-                                field.focused(focus.state, equals: focus.value)
+                                field.focused(
+                                    focus.state,
+                                    equals: focus.value,
+                                )
                             } else {
-                                field.focused($internalFocus)
+                                field.focused(
+                                    $internalFocus,
+                                )
                             }
                         }
-                        .font(typography.textSmall)
-                        .foregroundStyle(color.grayscaleHeader)
-                        .multilineTextAlignment(.leading)
-                        .tint(borderColor)
-                        .lineLimit(mode.lineLimit)
-                        .keyboardType(keyboardType)
-                        .submitLabel(mode.submitLabel)
-                        .textInputAutocapitalization(autocapitalization)
+                        .font(
+                            typography.textSmall,
+                        )
+                        .foregroundStyle(
+                            color.grayscaleHeader,
+                        )
+                        .multilineTextAlignment(
+                            .leading,
+                        )
+                        .tint(
+                            borderColor,
+                        )
+                        .lineLimit(
+                            mode.lineLimit,
+                        )
+                        .keyboardType(
+                            keyboardType,
+                        )
+                        .submitLabel(
+                            mode.submitLabel,
+                        )
+                        .textInputAutocapitalization(
+                            autocapitalization,
+                        )
                     }
 
                     if !(trailing is EmptyView) {
                         trailing.fixedSize()
-                            .padding(.leading, size.s16)
+                            .padding(
+                                .leading,
+                                size.s16,
+                            )
                     }
                 }
-                .padding(size.s10)
+                .padding(
+                    size.s10,
+                )
             }
 
             if let error = controller.errorText, !error.isEmpty {
-                Text(error)
-                    .font(typography.textXSmall)
-                    .foregroundStyle(color.dangerDefault)
-                    .padding(.top, size.s4)
-                    .padding(.horizontal, size.s8)
-                    .transition(.opacity)
+                Text(
+                    error,
+                )
+                .font(
+                    typography.textXSmall,
+                )
+                .foregroundStyle(
+                    color.dangerDefault,
+                )
+                .padding(
+                    .top,
+                    size.s4,
+                )
+                .padding(
+                    .horizontal,
+                    size.s8,
+                )
+                .transition(
+                    .opacity,
+                )
             }
         }
-        .fixedSize(horizontal: false, vertical: true)
+        .fixedSize(
+            horizontal: false,
+            vertical: true,
+        )
         .onTapGesture {
-            guard focus == nil && self.isFocused == false else { return }
-            self.internalFocus = true
+            guard focus == nil, isFocused == false else { return }
+            internalFocus = true
         }
-        .onChange(of: inputText) { _, proposedText in
-            controller.setText(proposedText)
+        .onChange(
+            of: inputText,
+        ) { _, proposedText in
+            controller.setText(
+                proposedText,
+            )
             guard inputText != controller.text else { return }
             inputText = controller.text
         }
-        .onChange(of: controller.text) { _, text in
+        .onChange(
+            of: controller.text,
+        ) { _, text in
             guard inputText != text else { return }
             inputText = text
         }
         .animation(
             theme.animation,
-            value: isFocused
+            value: isFocused,
         )
         .animation(
             theme.animation,
-            value: controller.isError
+            value: controller.isError,
         )
         .animation(
             theme.animation,
-            value: controller.errorText
+            value: controller.errorText,
         )
     }
 }
@@ -188,21 +269,27 @@ private extension DTextField {
             controller: controller,
             title: "Some title",
             placeholder: "Some placeholder for filling...",
-            mode: DTextFieldMultiLineMode()
+            mode: DTextFieldMultiLineMode(),
         )
         Spacer()
         Button(
-            "Show error"
+            "Show error",
         ) {
-            controller.showError(text: "Some Error")
+            controller.showError(
+                text: "Some Error",
+            )
         }
         Button(
-            "Set sample text"
+            "Set sample text",
         ) {
-            controller.setText(sampleText)
+            controller.setText(
+                sampleText,
+            )
         }
     }
     .padding()
-    .background(.gray)
+    .background(
+        .gray,
+    )
     .dThemeWrapper()
 }

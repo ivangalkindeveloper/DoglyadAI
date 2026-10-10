@@ -11,7 +11,9 @@ final class DDraftAutosaver<Draft> {
     private var saveDraft: ((Draft) async -> Void)?
 
     init(
-        delay: RunLoop.SchedulerTimeType.Stride = .seconds(1)
+        delay: RunLoop.SchedulerTimeType.Stride = .seconds(
+            1,
+        ),
     ) {
         self.delay = delay
     }
@@ -19,26 +21,30 @@ final class DDraftAutosaver<Draft> {
     func start(
         publishers: [AnyPublisher<Void, Never>],
         makeDraft: @escaping () -> Draft?,
-        saveDraft: @escaping (Draft) async -> Void
+        saveDraft: @escaping (Draft) async -> Void,
     ) {
         stop()
         self.makeDraft = makeDraft
         self.saveDraft = saveDraft
 
-        Publishers.MergeMany(publishers)
-            .handleEvents(
-                receiveOutput: { [weak self] in
-                    self?.hasPendingChanges = true
-                }
-            )
-            .debounce(
-                for: delay,
-                scheduler: RunLoop.main
-            )
-            .sink { [weak self] _ in
-                self?.savePendingDraft()
-            }
-            .store(in: &cancellables)
+        Publishers.MergeMany(
+            publishers,
+        )
+        .handleEvents(
+            receiveOutput: { [weak self] in
+                self?.hasPendingChanges = true
+            },
+        )
+        .debounce(
+            for: delay,
+            scheduler: RunLoop.main,
+        )
+        .sink { [weak self] _ in
+            self?.savePendingDraft()
+        }
+        .store(
+            in: &cancellables,
+        )
     }
 
     func flush() {
@@ -46,7 +52,7 @@ final class DDraftAutosaver<Draft> {
     }
 
     func enqueue(
-        operation: @escaping () async -> Void
+        operation: @escaping () async -> Void,
     ) {
         let previousTask = writeTask
         writeTask = Task {
@@ -79,7 +85,9 @@ final class DDraftAutosaver<Draft> {
 
         hasPendingChanges = false
         enqueue {
-            await saveDraft(draft)
+            await saveDraft(
+                draft,
+            )
         }
     }
 }

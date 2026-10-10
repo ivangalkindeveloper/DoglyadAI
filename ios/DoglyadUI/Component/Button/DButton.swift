@@ -16,7 +16,7 @@ public struct DButton: DView {
         badge: DButtonBadge? = nil,
         action: @escaping () -> Void,
         isLoading: Bool = false,
-        isDisabled: Bool = false
+        isDisabled: Bool = false,
     ) {
         self.image = image
         self.title = title
@@ -28,15 +28,15 @@ public struct DButton: DView {
 
     public var body: some View {
         Button(
-            action: isLoading || isDisabled ? {} : action
+            action: isLoading || isDisabled ? {} : action,
         ) {
             if isLoading {
                 ProgressView()
-            } else if let badge = self.badge {
+            } else if let badge {
                 DBadge(
                     badge.title,
                     isVisible: badge.isVisible,
-                    isShimmering: badge.isShimmering
+                    isShimmering: badge.isShimmering,
                 ) {
                     label
                 }
@@ -44,32 +44,55 @@ public struct DButton: DView {
                 label
             }
         }
-        .disabled(isDisabled)
+        .disabled(
+            isDisabled,
+        )
         .animation(
             theme.animation,
-            value: isLoading
+            value: isLoading,
         )
     }
 
     private var label: some View {
-        HStack(spacing: .zero) {
-            if let image = self.image {
-                Image(image)
-                    .renderingMode(.template)
-                    .resizable()
-                    .frame(
-                        width: size.s20,
-                        height: size.s20
+        HStack(
+            spacing: .zero,
+        ) {
+            if let image {
+                Image(
+                    image,
+                )
+                .renderingMode(
+                    .template,
+                )
+                .resizable()
+                .frame(
+                    width: size.s20,
+                    height: size.s20,
+                )
+                .if(
+                    title != nil,
+                ) { view in
+                    view.padding(
+                        .trailing,
+                        size.s10,
                     )
-                    .if(title != nil) { view in
-                        view.padding(.trailing, size.s10)
-                    }
+                }
             }
-            if let title = self.title {
-                Text(verbatim: String(localized: title))
-                    .font(typography.linkSmall)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
+            if let title {
+                Text(
+                    verbatim: String(
+                        localized: title,
+                    ),
+                )
+                .font(
+                    typography.linkSmall,
+                )
+                .multilineTextAlignment(
+                    .center,
+                )
+                .lineLimit(
+                    2,
+                )
             }
         }
     }
@@ -77,9 +100,13 @@ public struct DButton: DView {
 
 public extension DButton {
     func dStyle(
-        _ type: DButtonStyleType
+        _ type: DButtonStyleType,
     ) -> some View {
-        modifier(DTextModifier(type: type))
+        modifier(
+            DTextModifier(
+                type: type,
+            ),
+        )
     }
 }
 
@@ -87,14 +114,20 @@ private struct DTextModifier: ViewModifier {
     let type: DButtonStyleType
 
     init(
-        type: DButtonStyleType
+        type: DButtonStyleType,
     ) {
         self.type = type
     }
 
-    func body(content: Content) -> some View {
+    func body(
+        content: Content,
+    ) -> some View {
         content
-            .buttonStyle(DButtonStyle(type))
+            .buttonStyle(
+                DButtonStyle(
+                    type,
+                ),
+            )
     }
 }
 
@@ -107,75 +140,93 @@ private struct DTextModifier: ViewModifier {
                 image: .bag,
                 title: "Primary button",
                 action: { isLoading.toggle() },
-                isLoading: isLoading
+                isLoading: isLoading,
             )
-            .dStyle(.primaryButton)
+            .dStyle(
+                .primaryButton,
+            )
 
             DButton(
                 image: .camera,
                 action: { isLoading.toggle() },
-                isLoading: isLoading
+                isLoading: isLoading,
             )
-            .dStyle(.primaryCircle)
+            .dStyle(
+                .primaryCircle,
+            )
 
             DButton(
                 image: .alertInfo,
                 title: "Primary chip",
                 action: { isLoading.toggle() },
-                isLoading: isLoading
+                isLoading: isLoading,
             )
-            .dStyle(.primaryChip)
+            .dStyle(
+                .primaryChip,
+            )
 
             DButton(
                 image: .alertInfo,
                 action: { isLoading.toggle() },
-                isLoading: isLoading
+                isLoading: isLoading,
             )
-            .dStyle(.circle)
+            .dStyle(
+                .circle,
+            )
 
             DButton(
                 image: .atSign,
                 title: "Some card",
                 action: { isLoading.toggle() },
-                isLoading: isLoading
+                isLoading: isLoading,
             )
-            .dStyle(.card)
+            .dStyle(
+                .card,
+            )
 
             DButton(
                 image: .send,
                 title: "Text button",
                 action: { isLoading.toggle() },
-                isLoading: isLoading
+                isLoading: isLoading,
             )
-            .dStyle(.primaryText)
+            .dStyle(
+                .primaryText,
+            )
 
             DButton(
                 image: .send,
                 title: "Text weak button",
                 action: { isLoading.toggle() },
-                isLoading: isLoading
+                isLoading: isLoading,
             )
-            .dStyle(.textWeak)
+            .dStyle(
+                .textWeak,
+            )
 
             DButton(
                 image: .send,
                 title: "Badged text weak button",
                 badge: DButtonBadge(
                     "Pro",
-                    isShimmering: true
+                    isShimmering: true,
                 ),
                 action: { isLoading.toggle() },
-                isLoading: isLoading
+                isLoading: isLoading,
             )
-            .dStyle(.primaryButton)
+            .dStyle(
+                .primaryButton,
+            )
 
             DButton(
                 image: .bag,
                 title: "Disabled button",
                 action: {},
-                isDisabled: true
+                isDisabled: true,
             )
-            .dStyle(.primaryButton)
+            .dStyle(
+                .primaryButton,
+            )
         }
         .padding()
     }

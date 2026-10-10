@@ -13,35 +13,35 @@ public protocol DHttpClientProtocol {
     ///     start regardless of activity.
     func updateConfiguration(
         timeoutIntervalForRequest: TimeInterval,
-        timeoutIntervalForResource: TimeInterval
+        timeoutIntervalForResource: TimeInterval,
     )
 
     func get<Response: Decodable>(
-        url: URL
+        url: URL,
     ) async throws -> Response
 
     func get<Response: Decodable>(
         endPoint: String,
-        headers: [String: String]?
-    ) async throws -> Response
-
-    func get<Body: Encodable & Sendable, Response: Decodable>(
-        endPoint: String,
-        body: Body?,
-        headers: [String: String]?
-    ) async throws -> Response
-
-    func post<Body: Encodable & Sendable, Response: Decodable>(
-        endPoint: String,
-        body: Body?,
         headers: [String: String]?,
-        encoderUserInfo: [CodingUserInfoKey: Any]?
     ) async throws -> Response
 
-    func post<Body: Encodable & Sendable>(
+    func get<Response: Decodable>(
         endPoint: String,
-        body: Body?,
+        body: (some Encodable & Sendable)?,
         headers: [String: String]?,
-        encoderUserInfo: [CodingUserInfoKey: Any]?
+    ) async throws -> Response
+
+    func post<Response: Decodable>(
+        endPoint: String,
+        body: (some Encodable & Sendable)?,
+        headers: [String: String]?,
+        encoderUserInfo: [CodingUserInfoKey: Any]?,
+    ) async throws -> Response
+
+    func post(
+        endPoint: String,
+        body: (some Encodable & Sendable)?,
+        headers: [String: String]?,
+        encoderUserInfo: [CodingUserInfoKey: Any]?,
     ) async throws
 }

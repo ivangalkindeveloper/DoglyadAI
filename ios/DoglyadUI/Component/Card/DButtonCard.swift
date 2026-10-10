@@ -10,7 +10,7 @@ public struct DButtonCard<Content: View>: DView {
     public init(
         backgroundColor: Color? = nil,
         action: @escaping () -> Void,
-        @ViewBuilder content: @escaping () -> Content
+        @ViewBuilder content: @escaping () -> Content,
     ) {
         self.backgroundColor = backgroundColor
         self.content = content
@@ -19,37 +19,49 @@ public struct DButtonCard<Content: View>: DView {
 
     public var body: some View {
         Button(
-            action: action
+            action: action,
         ) {
             content()
         }
         .buttonStyle(
             DButtonStyle(
                 .card,
-                backgroundColor: backgroundColor
-            )
+                backgroundColor: backgroundColor,
+            ),
         )
     }
 }
 
 #Preview {
-    VStack(spacing: 16) {
+    VStack(
+        spacing: 16,
+    ) {
         DButtonCard(
-            action: { print("Tap") }
+            action: { print(
+                "Tap",
+            ) },
         ) {
             HStack {
-                DIcon(.alertInfo)
-                DText("Button card")
-                    .dStyle()
+                DIcon(
+                    .alertInfo,
+                )
+                DText(
+                    "Button card",
+                )
+                .dStyle()
                 Spacer()
             }
         }
 
         DButtonCard(
-            action: { print("Tap") }
+            action: { print(
+                "Tap",
+            ) },
         ) {
-            DText("Simple card")
-                .dStyle()
+            DText(
+                "Simple card",
+            )
+            .dStyle()
         }
     }
     .padding()

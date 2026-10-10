@@ -15,7 +15,7 @@ struct OnBoardingPageView<BottomContent: View>: DView {
         title: LocalizedStringResource,
         image: ImageResource,
         description: LocalizedStringResource,
-        @ViewBuilder bottomContent: @escaping () -> BottomContent = { EmptyView() }
+        @ViewBuilder bottomContent: @escaping () -> BottomContent = { EmptyView() },
     ) {
         self.tag = tag
         self.title = title
@@ -27,34 +27,43 @@ struct OnBoardingPageView<BottomContent: View>: DView {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: .zero
+            spacing: .zero,
         ) {
-            DText(title)
-                .dStyle(
-                    font: typography.displayLargeBold
-                )
-                .padding(.bottom, size.s16)
+            DText(
+                title,
+            )
+            .dStyle(
+                font: typography.displayLargeBold,
+            )
+            .padding(
+                .bottom,
+                size.s16,
+            )
 
             Spacer()
 
-            Image(image)
-                .resizable()
-                .scaledToFit()
-                .frame(
-                    maxWidth: .infinity,
-                    maxHeight: .infinity,
-                    alignment: .center
-                )
-                .padding(size.s16)
+            Image(
+                image,
+            )
+            .resizable()
+            .scaledToFit()
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity,
+                alignment: .center,
+            )
+            .padding(
+                size.s16,
+            )
 
             Spacer()
 
             DText(
-                description
+                description,
             )
             .dStyle(
                 font: typography.textMedium,
-                alignment: .leading
+                alignment: .leading,
             )
 
             if !(bottomContent is EmptyView) {
@@ -63,8 +72,10 @@ struct OnBoardingPageView<BottomContent: View>: DView {
         }
         .frame(
             maxWidth: .infinity,
-            maxHeight: .infinity
+            maxHeight: .infinity,
         )
-        .tag(tag)
+        .tag(
+            tag,
+        )
     }
 }

@@ -6,19 +6,23 @@ final class TemplateDeleteViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: TemplateDeleteArguments?
+        arguments: TemplateDeleteArguments?,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.templateDelete)
+            analyticsDestination: .bottomSheet(
+                .templateDelete,
+            ),
         )
     }
 
     func onTapConfirm() {
-        analytics.buttonTapped(.templateDeleteConfirm)
+        analytics.buttonTapped(
+            .templateDeleteConfirm,
+        )
         coordinator.dismissSheet()
         arguments?.onConfirm()
     }

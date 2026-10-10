@@ -27,9 +27,13 @@ extension USExaminationModelReport {
             "\(String(localized: .reportConclusionTitle))\n\(conclusion)",
         ]
         if let recommendations, !recommendations.isEmpty {
-            sections.append("\(String(localized: .reportRecommendationsTitle))\n\(recommendations)")
+            sections.append(
+                "\(String(localized: .reportRecommendationsTitle))\n\(recommendations)",
+            )
         }
-        return sections.joined(separator: "\n\n")
+        return sections.joined(
+            separator: "\n\n",
+        )
     }
 
     var markdownText: String {
@@ -38,13 +42,17 @@ extension USExaminationModelReport {
             "## \(String(localized: .reportConclusionTitle))\n\(conclusion)",
         ]
         if let recommendations, !recommendations.isEmpty {
-            sections.append("## \(String(localized: .reportRecommendationsTitle))\n\(recommendations)")
+            sections.append(
+                "## \(String(localized: .reportRecommendationsTitle))\n\(recommendations)",
+            )
         }
-        return sections.joined(separator: "\n\n")
+        return sections.joined(
+            separator: "\n\n",
+        )
     }
 
     static func fromDB(
-        _ db: USExaminationModelReportDB
+        _ db: USExaminationModelReportDB,
     ) -> USExaminationModelReport {
         USExaminationModelReport(
             id: db.id,
@@ -52,7 +60,7 @@ extension USExaminationModelReport {
             modelId: db.modelId,
             description: db.reportDescription,
             conclusion: db.conclusion,
-            recommendations: db.recommendations
+            recommendations: db.recommendations,
         )
     }
 
@@ -63,7 +71,7 @@ extension USExaminationModelReport {
             modelId: modelId,
             description: description,
             conclusion: conclusion,
-            recommendations: recommendations
+            recommendations: recommendations,
         )
     }
 }

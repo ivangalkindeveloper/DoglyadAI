@@ -16,7 +16,7 @@ public final class USExaminationModelReportDB {
         modelId: String,
         description: String,
         conclusion: String,
-        recommendations: String?
+        recommendations: String?,
     ) {
         self.id = id
         self.date = date

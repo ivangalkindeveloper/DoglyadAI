@@ -9,29 +9,44 @@ struct StorageClearProtocolsBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: .storageClearProtocolsWarningTitle,
-            fraction: 0.3
+            fraction: 0.3,
         ) { toolbarHeight, _ in
             VStack(
-                spacing: .zero
+                spacing: .zero,
             ) {
-                DText(.storageClearProtocolsWarningDescription)
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscalePlacehold,
-                        alignment: .center
-                    )
-                    .padding(.top, toolbarHeight + size.s24)
-                    .padding(.horizontal, size.s16)
+                DText(
+                    .storageClearProtocolsWarningDescription,
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscalePlacehold,
+                    alignment: .center,
+                )
+                .padding(
+                    .top,
+                    toolbarHeight + size.s24,
+                )
+                .padding(
+                    .horizontal,
+                    size.s16,
+                )
                 Spacer()
             }
         } bottom: {
             DButton(
                 title: .buttonClear,
-                action: viewModel.onTapConfirm
+                action: viewModel.onTapConfirm,
             )
-            .dStyle(.primaryButton)
-            .padding(.horizontal, size.s16)
+            .dStyle(
+                .primaryButton,
+            )
+            .padding(
+                .horizontal,
+                size.s16,
+            )
         }
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }

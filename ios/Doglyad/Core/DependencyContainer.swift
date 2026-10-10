@@ -20,7 +20,8 @@ final class DependencyContainer: ObservableObject {
     let subscriptionRepository: RevenueCatSubscriptionRepository
     let applicationConfig: ApplicationConfig
     let language: Language
-    let examinationNeuralModelFactory: DExaminationNeuralModelFactory?
+    let voiceLocalization: VoiceLocalization
+    let examinationNeuralModelFactory: DNeuralUltrasoundModelFactory
     let usExaminationTypeGroups: [USExaminationTypeGroup]
     let usExaminationTypesById: [String: USExaminationType]
     let usExaminationTypeDefault: USExaminationType
@@ -46,16 +47,17 @@ final class DependencyContainer: ObservableObject {
         subscriptionRepository: RevenueCatSubscriptionRepository,
         applicationConfig: ApplicationConfig,
         language: Language,
+        voiceLocalization: VoiceLocalization,
         usExaminationTypeGroups: [USExaminationTypeGroup],
         usExaminationTypesById: [String: USExaminationType],
         usExaminationTypeDefault: USExaminationType,
         usExaminationNeuralModels: [USExaminationNeuralModel],
         usExaminationNeuralModelsById: [String: USExaminationNeuralModel],
         usExaminationNeuralModelDefault: USExaminationNeuralModel,
-        examinationNeuralModelFactory: DExaminationNeuralModelFactory?,
+        examinationNeuralModelFactory: DNeuralUltrasoundModelFactory,
         initialSubscriptionStatus: SubscriptionStatus?,
         initialRoute: RouteScreen<ScreenType>,
-        version: String
+        version: String,
     ) {
         self.analytics = analytics
         self.environment = environment
@@ -71,6 +73,7 @@ final class DependencyContainer: ObservableObject {
         self.subscriptionRepository = subscriptionRepository
         self.applicationConfig = applicationConfig
         self.language = language
+        self.voiceLocalization = voiceLocalization
         self.usExaminationTypeGroups = usExaminationTypeGroups
         self.usExaminationTypesById = usExaminationTypesById
         self.usExaminationTypeDefault = usExaminationTypeDefault
@@ -86,15 +89,19 @@ final class DependencyContainer: ObservableObject {
 
 extension DependencyContainer {
     func getUSExaminationTypeById(
-        id: String
+        id: String,
     ) -> USExaminationType? {
-        usExaminationTypesById[id]
+        usExaminationTypesById[
+            id,
+        ]
     }
 
     func getUSExaminationNeuralModelById(
-        id: String
+        id: String,
     ) -> USExaminationNeuralModel? {
-        usExaminationNeuralModelsById[id]
+        usExaminationNeuralModelsById[
+            id,
+        ]
     }
 }
 
@@ -103,47 +110,51 @@ extension DependencyContainer {
     static var previewable: DependencyContainer {
         let environment = EnvironmentBase(
             type: .development,
-            baseUrl: URL(filePath: "")!
+            baseUrl: URL(
+                filePath: "",
+            )!,
         )
         let database = try! DDatabase()
         let httpClient = DHttpClient(
             baseUrl: environment.baseUrl.absoluteString,
-            baseVersionPrefix: environment.baseVersionPrefix
+            baseVersionPrefix: environment.baseVersionPrefix,
         )
         let sharedRepository = SharedRepository(
-            database: database
+            database: database,
         )
         let userSettingsRepository = UserSettingsRepository(
             database: database,
-            httpClient: httpClient
+            httpClient: httpClient,
         )
         let ultrasoundModelRepository = UltrasoundModelRepository(
-            database: database
+            database: database,
         )
         let ultrasoundReportRepository = UltrasoundReportRepository(
             database: database,
-            httpClient: httpClient
+            httpClient: httpClient,
         )
         let ultrasoundDraftRepository = UltrasoundDraftRepository(
-            database: database
+            database: database,
         )
         let templateRepository = TemplateRepository(
             database: database,
-            httpClient: httpClient
+            httpClient: httpClient,
         )
         let subscriptionRepository = RevenueCatSubscriptionRepository(
             apiKey: "",
             environment: environment,
-            securityDatabase: DSecurityDatabase()
+            securityDatabase: DSecurityDatabase(),
         )
         let applicationConfig = ApplicationConfig.default
         let language = Language(
             localeConfig: applicationConfig.locale,
-            preferredLanguageIdentifiers: Locale.preferredLanguages
+            preferredLanguageIdentifiers: Locale.preferredLanguages,
         )
 
         return DependencyContainer(
-            analytics: AnalyticsManager(isEnabled: false),
+            analytics: AnalyticsManager(
+                isEnabled: false,
+            ),
             environment: environment,
             connectionManager: ConnectionManager(),
             permissionManager: PermissionManager(),
@@ -157,12 +168,15 @@ extension DependencyContainer {
             subscriptionRepository: subscriptionRepository,
             applicationConfig: applicationConfig,
             language: language,
+            voiceLocalization: try! VoiceLocalization.load(
+                locale: language.currentLocale,
+            ),
             usExaminationTypeGroups: [],
             usExaminationTypesById: [:],
             usExaminationTypeDefault: .init(
                 id: "",
                 title: "",
-                contextualStrings: []
+                contextualStrings: [],
             ),
             usExaminationNeuralModels: [],
             usExaminationNeuralModelsById: [:],
@@ -172,12 +186,23 @@ extension DependencyContainer {
                 entitlement: .base,
                 accessibility: .available,
                 contextLength: 0,
-                description: ""
+                description: "",
             ),
-            examinationNeuralModelFactory: nil,
+            examinationNeuralModelFactory: DNeuralUltrasoundModelFactory(
+                locale: language.currentLocale,
+                proposalPrompt: applicationConfig.ultrasound.examinationNeuralModel.proposalPrompt,
+                parameters: DNeuralGenerationParameters(
+                    temperature: applicationConfig.ultrasound.examinationNeuralModel.temperature,
+                    maxTokens: applicationConfig.ultrasound.examinationNeuralModel.maxTokens,
+                    maxContextTokens: applicationConfig.ultrasound.examinationNeuralModel.maxContextTokens,
+                ),
+                serverTransport: ultrasoundReportRepository,
+            ),
             initialSubscriptionStatus: nil,
-            initialRoute: RouteScreen(type: .onBoarding),
-            version: "1.0.0"
+            initialRoute: RouteScreen(
+                type: .onBoarding,
+            ),
+            version: "1.0.0",
         )
     }
 }

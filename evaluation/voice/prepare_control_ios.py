@@ -4,7 +4,7 @@ import json
 from pathlib import Path
 from typing import Any, Literal
 
-from evaluation.voice.common import CONFIG_DIR, ROOT, load_catalog
+from evaluation.voice.common import CONFIG_DIR, ROOT, load_catalog, load_examination_titles
 from evaluation.voice.generate import OUTPUT_DIR as TEXT_OUTPUT_DIR
 from evaluation.voice.generate import file_sha256
 from evaluation.voice.prepare_ios import FIXTURE_DIR, SOURCE_FILES
@@ -23,6 +23,7 @@ def _prepare_text_fixtures(split: Literal["control", "adversarial"], *, destinat
     if len(cases) != expected_count:
         raise ValueError(f"{split} set must contain exactly {expected_count} cases")
     _, terms = load_catalog()
+    titles = load_examination_titles()
     localizations = {
         locale: json.loads((CONFIG_DIR / locale / "l10n.json").read_text(encoding="utf-8")) for locale in ("en", "ru")
     }
@@ -50,6 +51,7 @@ def _prepare_text_fixtures(split: Literal["control", "adversarial"], *, destinat
                 "id": case["id"],
                 "locale": case["locale"],
                 "examinationTypeId": case["examinationTypeId"],
+                "examinationTypeTitle": titles[case["locale"]][case["examinationTypeId"]],
                 "spokenText": case["spokenText"],
                 "contextualStrings": terms[case["locale"]][case["examinationTypeId"]],
                 "systemPrompt": localizations[case["locale"]]["examinationNeuralModelPrompt"],

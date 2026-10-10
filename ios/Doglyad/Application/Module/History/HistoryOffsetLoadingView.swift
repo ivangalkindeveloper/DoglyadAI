@@ -7,8 +7,13 @@ struct HistoryOffsetLoadingView: DView {
     private let cardCount = 3
 
     var body: some View {
-        VStack(spacing: size.s4) {
-            ForEach(0 ..< cardCount, id: \.self) { _ in
+        VStack(
+            spacing: size.s4,
+        ) {
+            ForEach(
+                0 ..< cardCount,
+                id: \.self,
+            ) { _ in
                 HistoryLoadingCardView()
             }
         }

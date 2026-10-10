@@ -15,8 +15,11 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
         focus: Focus?,
         axes: Axis.Set = .vertical,
         showsIndicators: Bool = false,
-        anchor: UnitPoint = UnitPoint(x: 0.5, y: 0.35),
-        @ViewBuilder content: () -> Content
+        anchor: UnitPoint = UnitPoint(
+            x: 0.5,
+            y: 0.35,
+        ),
+        @ViewBuilder content: () -> Content,
     ) {
         self.focus = focus
         self.axes = axes
@@ -30,45 +33,58 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
             ScrollViewReader { proxy in
                 ScrollView(
                     axes,
-                    showsIndicators: showsIndicators
+                    showsIndicators: showsIndicators,
                 ) {
                     content
-                        .padding(.bottom, keyboardHeight)
+                        .padding(
+                            .bottom,
+                            keyboardHeight,
+                        )
                 }
-                .onChange(of: focus) { _, newValue in
+                .onChange(
+                    of: focus,
+                ) { _, newValue in
                     guard let newValue else { return }
                     scroll(
                         to: newValue,
-                        proxy: proxy
+                        proxy: proxy,
                     )
                 }
-                .onChange(of: keyboardHeight) { oldValue, newValue in
+                .onChange(
+                    of: keyboardHeight,
+                ) { oldValue, newValue in
                     guard newValue > oldValue, let focus else { return }
                     scroll(
                         to: focus,
-                        proxy: proxy
+                        proxy: proxy,
                     )
                 }
                 .onReceive(
                     NotificationCenter.default.publisher(
-                        for: UIResponder.keyboardWillChangeFrameNotification
-                    )
+                        for: UIResponder.keyboardWillChangeFrameNotification,
+                    ),
                 ) { notification in
-                    guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+                    guard let keyboardFrame = notification.userInfo?[
+                        UIResponder.keyboardFrameEndUserInfoKey,
+                    ] as? CGRect
                     else {
                         return
                     }
 
-                    let scrollViewFrame = geometry.frame(in: .global)
+                    let scrollViewFrame = geometry.frame(
+                        in: .global,
+                    )
                     let newKeyboardHeight = max(
                         .zero,
                         min(
                             scrollViewFrame.height,
-                            scrollViewFrame.maxY - keyboardFrame.minY
-                        )
+                            scrollViewFrame.maxY - keyboardFrame.minY,
+                        ),
                     )
                     guard keyboardHeight != newKeyboardHeight else { return }
-                    withAnimation(theme.animation) {
+                    withAnimation(
+                        theme.animation,
+                    ) {
                         keyboardHeight = newKeyboardHeight
                     }
                 }
@@ -78,12 +94,14 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
 
     private func scroll(
         to focus: Focus,
-        proxy: ScrollViewProxy
+        proxy: ScrollViewProxy,
     ) {
-        withAnimation(theme.animation) {
+        withAnimation(
+            theme.animation,
+        ) {
             proxy.scrollTo(
                 focus,
-                anchor: anchor
+                anchor: anchor,
             )
         }
     }
@@ -91,13 +109,21 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
 
 #Preview {
     DFocusScrollView(
-        focus: Optional(5)
+        focus: Optional(
+            5,
+        ),
     ) {
         VStack {
-            ForEach(0 ..< 10) { index in
-                DText("Item \(index)")
-                    .dStyle()
-                    .id(index)
+            ForEach(
+                0 ..< 10,
+            ) { index in
+                DText(
+                    "Item \(index)",
+                )
+                .dStyle()
+                .id(
+                    index,
+                )
             }
         }
     }

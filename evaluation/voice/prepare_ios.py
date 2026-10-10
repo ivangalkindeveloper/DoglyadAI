@@ -9,49 +9,39 @@ from pathlib import Path
 from typing import Any
 
 from evaluation.voice.audio import AUDIO_OUTPUT_DIR
-from evaluation.voice.common import CONFIG_DIR, ROOT, load_catalog
+from evaluation.voice.common import CONFIG_DIR, ROOT, load_catalog, load_examination_titles
 from evaluation.voice.generate import OUTPUT_DIR as TEXT_OUTPUT_DIR
 from evaluation.voice.generate import file_sha256
 
 FIXTURE_DIR = ROOT / "ios/DoglyadTests/VoiceFixtures"
+NEURAL_SOURCE_DIR = ROOT / "ios/DoglyadNeuralModel"
+NEURAL_SOURCE_FILES = tuple(
+    sorted(
+        path
+        for path in NEURAL_SOURCE_DIR.rglob("*.swift")
+        if "Resources" not in path.relative_to(NEURAL_SOURCE_DIR).parts
+    )
+)
 SOURCE_FILES = (
-    ROOT / "ios/DoglyadSpeech/DictationCompletion.swift",
-    ROOT / "ios/DoglyadSpeech/DictationEngine.swift",
-    ROOT / "ios/DoglyadSpeech/DSpeechConfidenceSpan.swift",
-    ROOT / "ios/DoglyadSpeech/Controller/DSpeechControllerAnalyzer.swift",
-    ROOT / "ios/DoglyadSpeech/Controller/DSpeechAnalyzerConfiguration.swift",
-    ROOT / "ios/DoglyadSpeech/Controller/DSpeechControllerSFSpeechRecognizer.swift",
-    ROOT / "ios/DoglyadSpeech/Controller/DSpeechFileTranscriber.swift",
-    ROOT / "ios/DoglyadSpeech/Controller/DSpeechFileRecognizerSFSpeechRecognizer.swift",
+    CONFIG_DIR / "ultrasound_examination_types.json",
+    ROOT / "ios/Doglyad/Resources/Localization/en.lproj/VoiceParsing.json",
+    ROOT / "ios/Doglyad/Resources/Localization/ru.lproj/VoiceParsing.json",
+    ROOT / "ios/Doglyad/Core/VoiceLocalization.swift",
+    *NEURAL_SOURCE_FILES,
+    ROOT / "ios/DoglyadSpeech/Audio/DSpeechLexiconLocalization.swift",
+    ROOT / "ios/DoglyadSpeech/DSpeechCompletion.swift",
+    ROOT / "ios/DoglyadSpeech/DSpeechEngine.swift",
+    ROOT / "ios/DoglyadSpeech/Span/DSpeechConfidenceSpan.swift",
+    ROOT / "ios/DoglyadSpeech/SpeechAnalyzer/DSpeechControllerAnalyzer.swift",
+    ROOT / "ios/DoglyadSpeech/SpeechAnalyzer/DSpeechAnalyzerConfiguration.swift",
+    ROOT / "ios/DoglyadSpeech/SFSpeechRecognizer/DSpeechControllerSFSpeechRecognizer.swift",
+    ROOT / "ios/DoglyadSpeech/SpeechAnalyzer/DSpeechFileTranscriber.swift",
+    ROOT / "ios/DoglyadSpeech/SFSpeechRecognizer/DSpeechFileRecognizerSFSpeechRecognizer.swift",
     ROOT / "ios/DoglyadSpeech/Audio/DSpeechLexiconCorrector.swift",
     ROOT / "ios/DoglyadTests/VoiceBaselineTests.swift",
     ROOT / "ios/DoglyadTests/VoiceCandidateTests.swift",
     ROOT / "ios/DoglyadTests/DictationLabeledFormParserTests.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DExaminationNeuralModelFactory.swift",
-    ROOT / "ios/DoglyadNeuralModel/DNeuralDevice.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/Model/DExaminationNeuralModelMLX.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/Model/DExaminationNeuralModelFoundationModels.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DExaminationProposalGenerationConfig.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationProposal.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationProposalReconciler.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationProposalSource.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationLabeledFormParser.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationExplicitFactsExtractor.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationIdentifierCue.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationFollowingFieldCue.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationSectionCue.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationObservationCue.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationDescriptionNormalizer.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationNumericCorrection.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationNaturalLanguageParser.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationSpokenBirthDate.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/VoiceGender.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/SpokenDigitSequence.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/SpokenCardinal.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationTextFacts.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationUnit.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/DictationProposalValidator.swift",
-    ROOT / "ios/DoglyadNeuralModel/Examination/VoiceFieldValue.swift",
+    ROOT / "ios/DoglyadTests/VoiceSupport/NaturalLanguage/DNeuralUltrasoundDictationNaturalLanguageParser.swift",
     ROOT / "ios/Doglyad/Application/Module/Scan/Scan/ScanViewModel.swift",
     ROOT / "ios/Doglyad/Application/Module/Scan/ScanSpeech/ScanSpeechViewModel.swift",
     ROOT / "ios/Doglyad/Application/Module/Scan/ScanSpeech/ScanSpeechReviewPolicy.swift",
@@ -152,6 +142,7 @@ def prepare_fixtures(
             raise ValueError("Limit must be positive")
         entries = entries[:limit]
     _, terms = load_catalog()
+    titles = load_examination_titles()
     prompts = {
         locale: json.loads((CONFIG_DIR / locale / "l10n.json").read_text(encoding="utf-8"))[
             "examinationNeuralModelPrompt"
@@ -200,6 +191,7 @@ def prepare_fixtures(
             "id": case["id"],
             "locale": case["locale"],
             "examinationTypeId": case["examinationTypeId"],
+            "examinationTypeTitle": titles[case["locale"]][case["examinationTypeId"]],
             "spokenText": input_text,
             "contextualStrings": terms[case["locale"]][case["examinationTypeId"]],
             "systemPrompt": prompts[case["locale"]],

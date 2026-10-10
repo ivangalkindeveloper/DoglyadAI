@@ -13,7 +13,7 @@ final class SelectDateOfBirthViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: SelectDateOfBirthArguments?
+        arguments: SelectDateOfBirthArguments?,
     ) {
         self.arguments = arguments
         toDate = Date()
@@ -21,22 +21,32 @@ final class SelectDateOfBirthViewModel: DViewModel {
         fromDate = Calendar.current.date(
             byAdding: .year,
             value: -100,
-            to: toDate
+            to: toDate,
         )!
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.selectDateOfBirth),
-            analyticsParameters: AnalyticsParameters([
-                .hasCurrentValue: .bool(arguments?.currentValue != nil),
-            ])
+            analyticsDestination: .bottomSheet(
+                .selectDateOfBirth,
+            ),
+            analyticsParameters: AnalyticsParameters(
+                [
+                    .hasCurrentValue: .bool(
+                        arguments?.currentValue != nil,
+                    ),
+                ],
+            ),
         )
     }
 
     func onTapSelect() {
-        analytics.buttonTapped(.selectDateOfBirth)
+        analytics.buttonTapped(
+            .selectDateOfBirth,
+        )
         coordinator.dismissSheet()
-        arguments?.onSelected(date)
+        arguments?.onSelected(
+            date,
+        )
     }
 }

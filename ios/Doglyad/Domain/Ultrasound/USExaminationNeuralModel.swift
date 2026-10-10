@@ -9,6 +9,8 @@ struct USExaminationNeuralModel: Codable, Identifiable, Equatable {
     let description: String
 
     var localizedDescription: LocalizedStringResource {
-        LocalizedStringResource(stringLiteral: description)
+        LocalizedStringResource(
+            stringLiteral: description,
+        )
     }
 }

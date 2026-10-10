@@ -7,8 +7,13 @@ struct TemplateListLoadingView: DView {
     private let cardCount = 5
 
     var body: some View {
-        VStack(spacing: size.s4) {
-            ForEach(0 ..< cardCount, id: \.self) { _ in
+        VStack(
+            spacing: size.s4,
+        ) {
+            ForEach(
+                0 ..< cardCount,
+                id: \.self,
+            ) { _ in
                 TemplateListLoadingCardView()
             }
         }

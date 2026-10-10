@@ -12,82 +12,132 @@ struct HistoryScreenView: DView {
             onTapBack: viewModel.onTapBack,
             content: { toolbarInset, bottomHeight in
                 ScrollView(
-                    showsIndicators: false
+                    showsIndicators: false,
                 ) {
                     LazyVStack(
                         alignment: .leading,
                         spacing: .zero,
-                        pinnedViews: [.sectionHeaders]
+                        pinnedViews: [.sectionHeaders],
                     ) {
                         if viewModel.isLoading {
                             HistoryLoadingView(
-                                cardCount: viewModel.pageSize
+                                cardCount: viewModel.pageSize,
                             )
-                            .transition(.opacity)
+                            .transition(
+                                .opacity,
+                            )
                         } else if viewModel.sections.isEmpty {
                             HistoryEmptyView()
-                                .transition(.opacity)
+                                .transition(
+                                    .opacity,
+                                )
                         } else {
-                            ForEach(viewModel.sections) { section in
+                            ForEach(
+                                viewModel.sections,
+                            ) { section in
                                 Section {
-                                    ForEach(section.reports) { report in
+                                    ForEach(
+                                        section.reports,
+                                    ) { report in
                                         HistoryCardView(
                                             report: report,
                                             onTap: {
-                                                viewModel.onTapReport(value: report)
-                                            }
+                                                viewModel.onTapReport(
+                                                    value: report,
+                                                )
+                                            },
                                         )
-                                        .padding(.bottom, size.s4)
+                                        .padding(
+                                            .bottom,
+                                            size.s4,
+                                        )
                                     }
                                 } header: {
                                     SectionHeaderView(
-                                        title: section.title
+                                        title: section.title,
                                     )
                                 } footer: {
                                     Color.clear
-                                        .frame(height: size.s12)
+                                        .frame(
+                                            height: size.s12,
+                                        )
                                 }
                             }
 
                             if viewModel.hasMoreOffset {
                                 HistoryOffsetLoadingView()
-                                    .transition(.opacity)
+                                    .transition(
+                                        .opacity,
+                                    )
                                     .onAppear {
                                         viewModel.onOffsetAppear()
                                     }
                             }
                         }
                     }
-                    .padding(.top, size.s16)
-                    .padding(.horizontal, size.s16)
-                    .padding(.bottom, bottomHeight + size.s16)
+                    .padding(
+                        .top,
+                        size.s16,
+                    )
+                    .padding(
+                        .horizontal,
+                        size.s16,
+                    )
+                    .padding(
+                        .bottom,
+                        bottomHeight + size.s16,
+                    )
                 }
-                .contentMargins(.top, toolbarInset, for: .scrollContent)
+                .contentMargins(
+                    .top,
+                    toolbarInset,
+                    for: .scrollContent,
+                )
             },
             bottom: {
                 if viewModel.isEmpty {
                     DButton(
                         title: .buttonBack,
-                        action: viewModel.onTapBack
+                        action: viewModel.onTapBack,
                     )
-                    .dStyle(.primaryButton)
-                    .padding(size.s16)
+                    .dStyle(
+                        .primaryButton,
+                    )
+                    .padding(
+                        size.s16,
+                    )
                     .transition(
-                        .move(edge: .bottom)
-                            .combined(with: .opacity)
+                        .move(
+                            edge: .bottom,
+                        )
+                        .combined(
+                            with: .opacity,
+                        ),
                     )
                 }
-            }
+            },
         )
-        .animation(theme.animation, value: viewModel.isLoading)
+        .animation(
+            theme.animation,
+            value: viewModel.isLoading,
+        )
         .animation(
             theme.animation,
             value: viewModel.sections.flatMap { section in
-                section.reports.map(\.id)
-            }
+                section.reports.map(
+                    \.id,
+                )
+            },
         )
-        .animation(theme.animation, value: viewModel.hasMoreOffset)
-        .onAppear(perform: viewModel.onAppear)
-        .environmentObject(viewModel)
+        .animation(
+            theme.animation,
+            value: viewModel.hasMoreOffset,
+        )
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
+        .environmentObject(
+            viewModel,
+        )
     }
 }

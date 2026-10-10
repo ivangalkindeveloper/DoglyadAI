@@ -17,7 +17,7 @@ final class HistoryViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        sectionBuilder: HistoryDaySectionBuilder = HistoryDaySectionBuilder()
+        sectionBuilder: HistoryDaySectionBuilder = HistoryDaySectionBuilder(),
     ) {
         self.sectionBuilder = sectionBuilder
         historyConfig = container.applicationConfig.history
@@ -25,7 +25,9 @@ final class HistoryViewModel: DViewModel {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.history)
+            analyticsDestination: .screen(
+                .history,
+            ),
         )
     }
 
@@ -46,19 +48,23 @@ final class HistoryViewModel: DViewModel {
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.historyBack)
+        analytics.buttonTapped(
+            .historyBack,
+        )
         coordinator.pop()
     }
 
     func onTapReport(
-        value: USExaminationReport
+        value: USExaminationReport,
     ) {
-        analytics.buttonTapped(.historyReport)
+        analytics.buttonTapped(
+            .historyReport,
+        )
         coordinator.screen(
             .reportDetail,
             arguments: ReportDetailScreenArguments(
-                report: value
-            )
+                report: value,
+            ),
         )
     }
 
@@ -70,12 +76,14 @@ final class HistoryViewModel: DViewModel {
         handle {
             await self.container.ultrasoundReportRepository.getReports(
                 limit: self.pageSize,
-                offset: 0
+                offset: 0,
             )
         } onDefer: {
             self.isLoading = false
         } onMainSuccess: { reports in
-            self.append(reports)
+            self.append(
+                reports,
+            )
         }
     }
 
@@ -86,25 +94,31 @@ final class HistoryViewModel: DViewModel {
         offsetLoadingTask = handle {
             await self.container.ultrasoundReportRepository.getReports(
                 limit: self.pageSize,
-                offset: requestedOffset
+                offset: requestedOffset,
             )
         } onDefer: {
             self.offsetLoadingTask = nil
         } onMainSuccess: { reports in
-            self.append(reports)
+            self.append(
+                reports,
+            )
         }
     }
 
-    private func append(_ reports: [USExaminationReport]) {
+    private func append(
+        _ reports: [USExaminationReport],
+    ) {
         offset += reports.count
         hasMoreOffset = reports.count == pageSize
 
         let uniqueReports = reports.filter {
-            loadedReportIds.insert($0.id).inserted
+            loadedReportIds.insert(
+                $0.id,
+            ).inserted
         }
         sections = sectionBuilder.appending(
             uniqueReports,
-            to: sections
+            to: sections,
         )
     }
 }

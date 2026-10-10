@@ -8,12 +8,14 @@ struct SubscriptionPaywallScreenView: View {
     var body: some View {
         PaywallView(
             fonts: DPaywallFontProvider(),
-            displayCloseButton: !router.path.isEmpty
+            displayCloseButton: !router.path.isEmpty,
         )
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
         .onPurchaseStarted { package in
             viewModel.onPurchaseStarted(
-                productId: package.storeProduct.productIdentifier
+                productId: package.storeProduct.productIdentifier,
             )
         }
         .onPurchaseCompleted { _ in

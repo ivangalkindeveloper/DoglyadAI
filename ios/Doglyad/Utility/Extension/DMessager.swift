@@ -5,7 +5,7 @@ extension DMessager {
         show(
             type: .error,
             title: .errorUnknownTitle,
-            description: .errorUnknownDescription
+            description: .errorUnknownDescription,
         )
     }
 }

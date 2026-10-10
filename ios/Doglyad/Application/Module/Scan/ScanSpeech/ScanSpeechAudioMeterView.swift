@@ -14,30 +14,47 @@ struct ScanSpeechAudioMeterView: DView {
 
     var body: some View {
         HStack(
-            spacing: size.s4
+            spacing: size.s4,
         ) {
-            ForEach(Array(Self.profile.enumerated()), id: \.offset) { _, weight in
+            ForEach(
+                Array(
+                    Self.profile.enumerated(),
+                ),
+                id: \.offset,
+            ) { _, weight in
                 Capsule()
-                    .fill(color.grayscaleBackgroundWeak)
+                    .fill(
+                        color.grayscaleBackgroundWeak,
+                    )
                     .frame(
                         width: size.s4,
-                        height: height(for: weight)
+                        height: height(
+                            for: weight,
+                        ),
                     )
             }
         }
         .frame(
-            height: size.s24
+            height: size.s24,
         )
         .animation(
             theme.animation,
-            value: level
+            value: level,
         )
     }
 
     private func height(
-        for weight: CGFloat
+        for weight: CGFloat,
     ) -> CGFloat {
-        let clamped = CGFloat(min(max(level, 0), 1))
+        let clamped = CGFloat(
+            min(
+                max(
+                    level,
+                    0,
+                ),
+                1,
+            ),
+        )
         let range = size.s24 - Self.minimumHeight
 
         return Self.minimumHeight + range * weight * clamped

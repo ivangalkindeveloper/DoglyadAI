@@ -17,7 +17,7 @@ final class ShareViewModel: DViewModel {
         router: DRouter,
         arguments: ShareArguments,
         subscription: SubscriptionViewModel,
-        userEmail: String?
+        userEmail: String?,
     ) {
         self.messager = messager
         self.arguments = arguments
@@ -26,7 +26,9 @@ final class ShareViewModel: DViewModel {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.share)
+            analyticsDestination: .bottomSheet(
+                .share,
+            ),
         )
     }
 
@@ -37,11 +39,13 @@ final class ShareViewModel: DViewModel {
     }
 
     var isUserEmailButtonVisible: Bool {
-        switch subscription.availability(of: .sendingReportByEmail) {
+        switch subscription.availability(
+            of: .sendingReportByEmail,
+        ) {
         case .offered, .available:
-            return true
+            true
         case .unavailable:
-            return false
+            false
         }
     }
 
@@ -51,7 +55,7 @@ final class ShareViewModel: DViewModel {
 
     var subject: String {
         arguments.report.shareSubject(
-            examinationTypesById: container.usExaminationTypesById
+            examinationTypesById: container.usExaminationTypesById,
         )
     }
 
@@ -62,17 +66,28 @@ final class ShareViewModel: DViewModel {
     func onTapUserEmail() {
         analytics.buttonTapped(
             .shareUserEmail,
-            parameters: AnalyticsParameters([
-                .hasCurrentValue: .bool(userEmail != nil),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .hasCurrentValue: .bool(
+                        userEmail != nil,
+                    ),
+                ],
+            ),
         )
-        guard let userEmail = userEmail else { return }
-        coordinator.run(.sendingReportByEmail, dismissesSheetOnPaywall: true) {
-            self.sendReportEmail(to: userEmail)
+        guard let userEmail else { return }
+        coordinator.run(
+            .sendingReportByEmail,
+            dismissesSheetOnPaywall: true,
+        ) {
+            self.sendReportEmail(
+                to: userEmail,
+            )
         }
     }
 
-    private func sendReportEmail(to userEmail: String) {
+    private func sendReportEmail(
+        to userEmail: String,
+    ) {
         let ultrasoundConfig = container.applicationConfig.ultrasound
         handle {
             self.isLoading = true
@@ -82,9 +97,9 @@ final class ShareViewModel: DViewModel {
                     examinationTypesById: self.container.usExaminationTypesById,
                     scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
                         resizeMaxDimension: ultrasoundConfig.scanPhotoResizeMaxDimension,
-                        compressionQuality: ultrasoundConfig.scanPhotoCompressionQuality
-                    )
-                )
+                        compressionQuality: ultrasoundConfig.scanPhotoCompressionQuality,
+                    ),
+                ),
             )
         } onDefer: {
             self.isLoading = false
@@ -93,7 +108,7 @@ final class ShareViewModel: DViewModel {
             self.messager.show(
                 type: .success,
                 title: .shareUserEmailSuccessMessageTitle,
-                description: .shareUserEmailSuccessMessageDescription
+                description: .shareUserEmailSuccessMessageDescription,
             )
         } onUnknownError: { _ in
             self.messager.showUnknownError()
@@ -101,24 +116,33 @@ final class ShareViewModel: DViewModel {
     }
 
     func onTapEmail() {
-        analytics.buttonTapped(.shareCustomEmail)
-        coordinator.run(.sendingReportByEmail, dismissesSheetOnPaywall: true) {
+        analytics.buttonTapped(
+            .shareCustomEmail,
+        )
+        coordinator.run(
+            .sendingReportByEmail,
+            dismissesSheetOnPaywall: true,
+        ) {
             self.coordinator.dismissSheet()
             UIApplication.openMail(
                 subject: self.subject,
-                body: self.shareMessage
+                body: self.shareMessage,
             )
         }
     }
 
     func onTapCopy() {
-        analytics.buttonTapped(.shareCopy)
+        analytics.buttonTapped(
+            .shareCopy,
+        )
         coordinator.dismissSheet()
-        UIApplication.pasteboard(shareMessage)
+        UIApplication.pasteboard(
+            shareMessage,
+        )
         messager.show(
             type: .success,
             title: .shareExaminationCopyMessageTitle,
-            description: .shareExaminationCopyMessageDescription
+            description: .shareExaminationCopyMessageDescription,
         )
     }
 }

@@ -14,8 +14,8 @@ struct WebDocumentBottomSheet: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }
@@ -23,9 +23,11 @@ struct WebDocumentBottomSheet: View {
 #Preview {
     WebDocumentBottomSheet(
         arguments: WebDocumentBottomSheetArguments(
-            url: URL(string: "https://ivangalkindeveloper.github.io/DoglyadAI/legal/privacy-policy/")!,
-            title: .privacyPolicyTitle
-        )
+            url: URL(
+                string: "https://ivangalkindeveloper.github.io/DoglyadAI/legal/privacy-policy/",
+            )!,
+            title: .privacyPolicyTitle,
+        ),
     )
     .previewable()
 }

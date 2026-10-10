@@ -10,7 +10,7 @@ final class ScanCameraArguments: RouteArgumentsProtocol {
     init(
         cameraController: DCameraControllerFactory.Controller,
         photos: Binding<[USExaminationScanPhoto]>,
-        photoMaxCount: Int
+        photoMaxCount: Int,
     ) {
         self.cameraController = cameraController
         self.photos = photos

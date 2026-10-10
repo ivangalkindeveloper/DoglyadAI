@@ -7,7 +7,7 @@ final class SubscriptionViewModel: Handler<DHttpApiError, DHttpConnectionError>,
     private let container: DependencyContainer
 
     init(
-        container: DependencyContainer
+        container: DependencyContainer,
     ) {
         self.container = container
         status = container.initialSubscriptionStatus
@@ -36,8 +36,12 @@ final class SubscriptionViewModel: Handler<DHttpApiError, DHttpConnectionError>,
         status?.neuralModelSettings ?? .unavailable
     }
 
-    func availability(of feature: PaidFeature) -> SubscriptionFeatureAvailability {
-        status?.availability(of: feature) ?? .unavailable
+    func availability(
+        of feature: PaidFeature,
+    ) -> SubscriptionFeatureAvailability {
+        status?.availability(
+            of: feature,
+        ) ?? .unavailable
     }
 
     var neuralModelSettings: NeuralModelSettings {
@@ -49,14 +53,14 @@ final class SubscriptionViewModel: Handler<DHttpApiError, DHttpConnectionError>,
                 selectedNeuralModelId: ultrasoundModelRepository.getSelectedModelId(),
                 isMarkdown: ultrasoundModelRepository.getIsMarkdown(),
                 temperature: ultrasoundModelRepository.getTemperature() ?? neuralModelConfig.temperature,
-                maxTokens: ultrasoundModelRepository.getMaxTokens() ?? neuralModelConfig.maxTokens
+                maxTokens: ultrasoundModelRepository.getMaxTokens() ?? neuralModelConfig.maxTokens,
             )
         case .offered, .unavailable:
             return NeuralModelSettings(
                 selectedNeuralModelId: ultrasoundModelRepository.getSelectedModelId(),
                 isMarkdown: false,
                 temperature: neuralModelConfig.temperature,
-                maxTokens: neuralModelConfig.maxTokens
+                maxTokens: neuralModelConfig.maxTokens,
             )
         }
     }
@@ -64,7 +68,7 @@ final class SubscriptionViewModel: Handler<DHttpApiError, DHttpConnectionError>,
     func refreshStatus() async {
         handle {
             try await self.container.subscriptionRepository.fetchStatus(
-                configEntitlements: self.container.applicationConfig.entitlements
+                configEntitlements: self.container.applicationConfig.entitlements,
             )
         } onMainSuccess: { status in
             self.status = status
@@ -74,14 +78,16 @@ final class SubscriptionViewModel: Handler<DHttpApiError, DHttpConnectionError>,
     func incrementRequestCount() {
         handle {
             try await self.container.subscriptionRepository.incrementRequestCount(
-                configEntitlements: self.container.applicationConfig.entitlements
+                configEntitlements: self.container.applicationConfig.entitlements,
             )
         } onMainSuccess: { status in
             self.status = status
         }
     }
 
-    func update(status: SubscriptionStatus?) {
+    func update(
+        status: SubscriptionStatus?,
+    ) {
         self.status = status
     }
 }

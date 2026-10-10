@@ -24,7 +24,7 @@ public final class USExaminationDataDB {
         patientHeight: Double?,
         patientWeight: Double?,
         patientComplaints: String?,
-        examinationDescription: String
+        examinationDescription: String,
     ) {
         self.usExaminationTypeId = usExaminationTypeId
         self.photos = photos

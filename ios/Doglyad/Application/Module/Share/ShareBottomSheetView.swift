@@ -9,102 +9,148 @@ struct ShareBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: .shareTitle,
-            fraction: viewModel.isUserEmailAvailable && viewModel.isUserEmailButtonVisible ? 0.4 : 0.3
+            fraction: viewModel.isUserEmailAvailable && viewModel.isUserEmailButtonVisible ? 0.4 : 0.3,
         ) { toolbarHeight, _ in
             VStack(
-                spacing: size.s8
+                spacing: size.s8,
             ) {
-                if viewModel.isUserEmailAvailable && viewModel.isUserEmailButtonVisible {
+                if viewModel.isUserEmailAvailable, viewModel.isUserEmailButtonVisible {
                     DButtonCard(
-                        action: viewModel.onTapUserEmail
+                        action: viewModel.onTapUserEmail,
                     ) {
                         HStack(
-                            spacing: size.s8
+                            spacing: size.s8,
                         ) {
                             if viewModel.isLoading {
                                 ProgressView()
-                                    .transition(.opacity)
+                                    .transition(
+                                        .opacity,
+                                    )
                             } else {
                                 DIcon(
                                     .send,
-                                    color: color.grayscaleHeader
+                                    color: color.grayscaleHeader,
                                 )
-                                .transition(.opacity)
+                                .transition(
+                                    .opacity,
+                                )
                             }
-                            DText(viewModel.userEmailButtonTitle)
-                                .dStyle(
-                                    font: typography.linkSmall
-                                )
-                                .lineLimit(1)
-                                .truncationMode(.middle)
+                            DText(
+                                viewModel.userEmailButtonTitle,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                            )
+                            .lineLimit(
+                                1,
+                            )
+                            .truncationMode(
+                                .middle,
+                            )
                             Spacer()
                         }
                     }
-                    .disabled(viewModel.isLoading)
-                    .paidBadge(.sendingReportByEmail)
-                    .transition(.opacity)
+                    .disabled(
+                        viewModel.isLoading,
+                    )
+                    .paidBadge(
+                        .sendingReportByEmail,
+                    )
+                    .transition(
+                        .opacity,
+                    )
                 }
 
                 if viewModel.isUserEmailButtonVisible {
                     DButtonCard(
-                        action: viewModel.onTapEmail
+                        action: viewModel.onTapEmail,
                     ) {
                         row(
                             icon: .mail,
-                            title: .buttonShareEmail
+                            title: .buttonShareEmail,
                         )
                     }
-                    .disabled(viewModel.isLoading)
-                    .paidBadge(.sendingReportByEmail)
-                    .transition(.opacity)
+                    .disabled(
+                        viewModel.isLoading,
+                    )
+                    .paidBadge(
+                        .sendingReportByEmail,
+                    )
+                    .transition(
+                        .opacity,
+                    )
                 }
 
                 DButtonCard(
-                    action: viewModel.onTapCopy
+                    action: viewModel.onTapCopy,
                 ) {
                     row(
                         icon: .copy,
-                        title: .buttonCopy
+                        title: .buttonCopy,
                     )
                 }
-                .disabled(viewModel.isLoading)
+                .disabled(
+                    viewModel.isLoading,
+                )
 
                 ShareLink(
-                    item: viewModel.shareMessage
+                    item: viewModel.shareMessage,
                 ) {
                     row(
                         icon: .export,
-                        title: .buttonShare
+                        title: .buttonShare,
                     )
                 }
-                .buttonStyle(DButtonStyle(.card))
-                .disabled(viewModel.isLoading)
+                .buttonStyle(
+                    DButtonStyle(
+                        .card,
+                    ),
+                )
+                .disabled(
+                    viewModel.isLoading,
+                )
 
                 Spacer()
             }
-            .padding(.top, toolbarHeight + size.s16)
-            .padding(.horizontal, size.s16)
+            .padding(
+                .top,
+                toolbarHeight + size.s16,
+            )
+            .padding(
+                .horizontal,
+                size.s16,
+            )
         }
-        .animation(theme.animation, value: viewModel.isLoading)
-        .animation(theme.animation, value: viewModel.isUserEmailButtonVisible)
-        .onAppear(perform: viewModel.onAppear)
+        .animation(
+            theme.animation,
+            value: viewModel.isLoading,
+        )
+        .animation(
+            theme.animation,
+            value: viewModel.isUserEmailButtonVisible,
+        )
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 
     private func row(
         icon: ImageResource,
-        title: LocalizedStringResource
+        title: LocalizedStringResource,
     ) -> some View {
         HStack(
-            spacing: size.s8
+            spacing: size.s8,
         ) {
             DIcon(
                 icon,
-                color: color.grayscaleHeader
+                color: color.grayscaleHeader,
             )
-            DText(title)
-                .dStyle(
-                    font: typography.linkSmall
-                )
+            DText(
+                title,
+            )
+            .dStyle(
+                font: typography.linkSmall,
+            )
             Spacer()
         }
     }

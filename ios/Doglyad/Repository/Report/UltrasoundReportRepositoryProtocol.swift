@@ -2,44 +2,42 @@ import DoglyadDatabase
 import DoglyadNeuralModel
 import Foundation
 
-protocol UltrasoundReportRepositoryProtocol: AnyObject {
+protocol UltrasoundReportRepositoryProtocol: AnyObject, DNeuralUltrasoundServerTransportProtocol {
     func getSelectedExaminationTypeId() -> String?
 
     func setSelectedExaminationTypeId(
-        id: String
+        id: String,
     )
 
     func getRecentExaminationTypeIds() -> [String]
 
-    func setRecentExaminationTypeIds(_ ids: [String])
+    func setRecentExaminationTypeIds(
+        _ ids: [String],
+    )
 
-    func recordRecentExaminationTypeId(_ id: String)
+    func recordRecentExaminationTypeId(
+        _ id: String,
+    )
 
     func generateReport(
         locale: Locale,
         request: USExaminationRequest,
-        scanPhotoEncodingOptions: ScanPhotoEncodingOptions
+        scanPhotoEncodingOptions: ScanPhotoEncodingOptions,
     ) async throws -> USExaminationModelReport
-
-    func parseDictation(
-        locale: Locale,
-        examinationTypeId: String,
-        transcript: String
-    ) async throws -> USVoiceFormParseResponseDTO
 
     func getReports(
         limit: Int,
-        offset: Int
+        offset: Int,
     ) async -> [USExaminationReport]
 
     func getReportsCount() async -> Int
 
     func setReport(
-        report: USExaminationReport
+        report: USExaminationReport,
     ) async
 
     func updateReport(
-        report: USExaminationReport
+        report: USExaminationReport,
     ) async
 
     func clearAllReports() async

@@ -10,14 +10,25 @@ import UIKit
 struct DraftTests {
     @Test
     func databaseStoresDraftFieldsAndOrderedPhotos() async throws {
-        let schema = Schema([
-            USExaminationDraftDB.self,
-            USExaminationDraftPhotoDB.self,
-        ])
-        let configuration = ModelConfiguration(isStoredInMemoryOnly: true)
-        let container = try ModelContainer(for: schema, configurations: configuration)
-        let store = DExaminationDraftStore(modelContainer: container)
-        let date = Date(timeIntervalSince1970: 1000000000)
+        let schema = Schema(
+            [
+                USExaminationDraftDB.self,
+                USExaminationDraftPhotoDB.self,
+            ],
+        )
+        let configuration = ModelConfiguration(
+            isStoredInMemoryOnly: true,
+        )
+        let container = try ModelContainer(
+            for: schema,
+            configurations: configuration,
+        )
+        let store = DExaminationDraftStore(
+            modelContainer: container,
+        )
+        let date = Date(
+            timeIntervalSince1970: 1000000000,
+        )
         let form = USExaminationDraftForm(
             examinationNumber: "Examination#7",
             patientName: "Patient#7",
@@ -26,42 +37,72 @@ struct DraftTests {
             patientHeightCM: "170.5",
             patientWeightKG: "60.5",
             patientComplaints: "Complaints",
-            examinationDescription: "Description"
+            examinationDescription: "Description",
         )
         let firstPhotoId = UUID()
         let secondPhotoId = UUID()
         let image = UIGraphicsImageRenderer(
-            size: CGSize(width: 2, height: 2)
+            size: CGSize(
+                width: 2,
+                height: 2,
+            ),
         ).image { context in
             UIColor.red.setFill()
-            context.fill(CGRect(x: 0, y: 0, width: 2, height: 2))
+            context.fill(
+                CGRect(
+                    x: 0,
+                    y: 0,
+                    width: 2,
+                    height: 2,
+                ),
+            )
         }
         let photos = [
-            USExaminationScanPhoto(id: firstPhotoId, image: image),
-            USExaminationScanPhoto(id: secondPhotoId, image: image),
+            USExaminationScanPhoto(
+                id: firstPhotoId,
+                image: image,
+            ),
+            USExaminationScanPhoto(
+                id: secondPhotoId,
+                image: image,
+            ),
         ]
 
-        try await store.upsertDraftForm(value: form.toDB())
+        try await store.upsertDraftForm(
+            value: form.toDB(),
+        )
         try await store.replaceDraftPhotos(
             values: photos.toDraftDB(),
-            currentForm: form.toDB()
+            currentForm: form.toDB(),
         )
 
         let snapshot = await store.fetchDraft { draft in
             guard let draft else { return Snapshot.empty }
-            let value = USExaminationDraft.fromDB(draft)
+            let value = USExaminationDraft.fromDB(
+                draft,
+            )
             return Snapshot(
                 examinationNumber: value.form.examinationNumber,
                 patientGender: value.form.patientGender,
                 patientDateOfBirth: value.form.patientDateOfBirth,
-                photoIds: value.photos.map(\.id)
+                photoIds: value.photos.map(
+                    \.id,
+                ),
             )
         }
 
-        #expect(snapshot.examinationNumber == form.examinationNumber)
-        #expect(snapshot.patientGender == form.patientGender)
-        #expect(snapshot.patientDateOfBirth == form.patientDateOfBirth)
-        #expect(snapshot.photoIds == [firstPhotoId, secondPhotoId])
+        #expect(
+            snapshot.examinationNumber == form.examinationNumber,
+        )
+        #expect(
+            snapshot.patientGender == form.patientGender,
+        )
+        #expect(
+            snapshot.patientDateOfBirth == form.patientDateOfBirth,
+        )
+        #expect(
+            snapshot.photoIds == [firstPhotoId, secondPhotoId],
+        )
 
         let updatedForm = USExaminationDraftForm(
             examinationNumber: "Examination#8",
@@ -71,31 +112,47 @@ struct DraftTests {
             patientHeightCM: form.patientHeightCM,
             patientWeightKG: form.patientWeightKG,
             patientComplaints: form.patientComplaints,
-            examinationDescription: form.examinationDescription
+            examinationDescription: form.examinationDescription,
         )
-        try await store.upsertDraftForm(value: updatedForm.toDB())
+        try await store.upsertDraftForm(
+            value: updatedForm.toDB(),
+        )
         let updatedSnapshot = await store.fetchDraft { draft in
             guard let draft else { return Snapshot.empty }
-            let value = USExaminationDraft.fromDB(draft)
+            let value = USExaminationDraft.fromDB(
+                draft,
+            )
             return Snapshot(
                 examinationNumber: value.form.examinationNumber,
                 patientGender: value.form.patientGender,
                 patientDateOfBirth: value.form.patientDateOfBirth,
-                photoIds: value.photos.map(\.id)
+                photoIds: value.photos.map(
+                    \.id,
+                ),
             )
         }
 
-        #expect(updatedSnapshot.examinationNumber == updatedForm.examinationNumber)
-        #expect(updatedSnapshot.photoIds == [firstPhotoId, secondPhotoId])
+        #expect(
+            updatedSnapshot.examinationNumber == updatedForm.examinationNumber,
+        )
+        #expect(
+            updatedSnapshot.photoIds == [firstPhotoId, secondPhotoId],
+        )
 
         try await store.clearDraft()
         let isEmpty = await store.fetchDraft { $0 == nil }
-        #expect(isEmpty)
+        #expect(
+            isEmpty,
+        )
     }
 
     @Test @MainActor
     func autosaverDebouncesChangesAndSavesLatestDraft() async throws {
-        let autosaver = DDraftAutosaver<Int>(delay: .milliseconds(20))
+        let autosaver = DDraftAutosaver<Int>(
+            delay: .milliseconds(
+                20,
+            ),
+        )
         let changes = PassthroughSubject<Void, Never>()
         var currentDraft = 0
         var savedDrafts: [Int] = []
@@ -104,8 +161,10 @@ struct DraftTests {
             publishers: [changes.eraseToAnyPublisher()],
             makeDraft: { currentDraft },
             saveDraft: { draft in
-                savedDrafts.append(draft)
-            }
+                savedDrafts.append(
+                    draft,
+                )
+            },
         )
 
         currentDraft = 1
@@ -113,15 +172,23 @@ struct DraftTests {
         currentDraft = 2
         changes.send()
 
-        try await Task.sleep(nanoseconds: 60000000)
+        try await Task.sleep(
+            nanoseconds: 60000000,
+        )
         await autosaver.waitForPendingSave()
 
-        #expect(savedDrafts == [2])
+        #expect(
+            savedDrafts == [2],
+        )
     }
 
     @Test @MainActor
     func autosaverFlushesOnlyChangedDraft() async throws {
-        let autosaver = DDraftAutosaver<Int>(delay: .milliseconds(20))
+        let autosaver = DDraftAutosaver<Int>(
+            delay: .milliseconds(
+                20,
+            ),
+        )
         let changes = PassthroughSubject<Void, Never>()
         var currentDraft = 0
         var savedDrafts: [Int] = []
@@ -130,30 +197,42 @@ struct DraftTests {
             publishers: [changes.eraseToAnyPublisher()],
             makeDraft: { currentDraft },
             saveDraft: { draft in
-                savedDrafts.append(draft)
-            }
+                savedDrafts.append(
+                    draft,
+                )
+            },
         )
 
         autosaver.flush()
         await autosaver.waitForPendingSave()
-        #expect(savedDrafts.isEmpty)
+        #expect(
+            savedDrafts.isEmpty,
+        )
 
         currentDraft = 1
         changes.send()
         autosaver.flush()
         await autosaver.waitForPendingSave()
-        try await Task.sleep(nanoseconds: 60000000)
+        try await Task.sleep(
+            nanoseconds: 60000000,
+        )
         await autosaver.waitForPendingSave()
-        #expect(savedDrafts == [1])
+        #expect(
+            savedDrafts == [1],
+        )
     }
 
     @Test @MainActor
     func autosaverObservesFormattedTextFieldControllerChanges() async throws {
         let controller = DTextFieldController(
             initialText: "170",
-            formatters: [DTextFieldDecimalFormatter()]
+            formatters: [DTextFieldDecimalFormatter()],
         )
-        let autosaver = DDraftAutosaver<String>(delay: .milliseconds(20))
+        let autosaver = DDraftAutosaver<String>(
+            delay: .milliseconds(
+                20,
+            ),
+        )
         var savedDrafts: [String] = []
 
         autosaver.start(
@@ -165,15 +244,23 @@ struct DraftTests {
             ],
             makeDraft: { controller.text },
             saveDraft: { draft in
-                savedDrafts.append(draft)
-            }
+                savedDrafts.append(
+                    draft,
+                )
+            },
         )
 
-        controller.setText("185")
-        try await Task.sleep(nanoseconds: 60000000)
+        controller.setText(
+            "185",
+        )
+        try await Task.sleep(
+            nanoseconds: 60000000,
+        )
         await autosaver.waitForPendingSave()
 
-        #expect(savedDrafts == ["185"])
+        #expect(
+            savedDrafts == ["185"],
+        )
     }
 }
 
@@ -183,7 +270,7 @@ private extension DraftTests {
             examinationNumber: "",
             patientGender: .male,
             patientDateOfBirth: .distantPast,
-            photoIds: []
+            photoIds: [],
         )
 
         let examinationNumber: String

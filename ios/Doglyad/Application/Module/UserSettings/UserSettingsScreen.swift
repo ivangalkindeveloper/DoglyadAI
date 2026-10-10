@@ -22,17 +22,17 @@ struct UserSettingsScreen: View {
                 onSaved: { [ultrasoundViewModel] email, includeRecommendations in
                     ultrasoundViewModel.saveUserSettings(
                         userEmail: email,
-                        includeRecommendations: includeRecommendations
+                        includeRecommendations: includeRecommendations,
                     )
-                }
-            )
+                },
+            ),
         )
     }
 }
 
 #Preview {
     UserSettingsScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

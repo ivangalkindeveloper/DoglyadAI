@@ -22,7 +22,7 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
         messager: DMessager,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        onSettingsSaved: @escaping (Bool, Double?, Int?) -> Void
+        onSettingsSaved: @escaping (Bool, Double?, Int?) -> Void,
     ) {
         self.messager = messager
         self.onSettingsSaved = onSettingsSaved
@@ -30,11 +30,21 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.neuralModelSettings)
+            analyticsDestination: .screen(
+                .neuralModelSettings,
+            ),
         )
         isMarkdown = initialIsMarkdown
-        temperatureController.setText(String(initialTemperature))
-        maxTokensController.setText(String(initialMaxTokens))
+        temperatureController.setText(
+            String(
+                initialTemperature,
+            ),
+        )
+        maxTokensController.setText(
+            String(
+                initialMaxTokens,
+            ),
+        )
     }
 
     @Published private(set) var isLoading = false
@@ -47,9 +57,11 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
         validators: [
             DTextFieldDoubleRangeValidator(
                 validRange: 0 ... 2,
-                invalidValueErrorText: String(localized: .errorInvalidNeuralModelTemperature)
+                invalidValueErrorText: String(
+                    localized: .errorInvalidNeuralModelTemperature,
+                ),
             ),
-        ]
+        ],
     )
     @NestedObservableObject var maxTokensController = DTextFieldController(
         formatters: [
@@ -58,20 +70,22 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
         validators: [
             DTextFieldIntRangeValidator(
                 validRange: 1 ... 1024,
-                invalidValueErrorText: String(localized: .errorInvalidNeuralModelMaxTokens)
+                invalidValueErrorText: String(
+                    localized: .errorInvalidNeuralModelMaxTokens,
+                ),
             ),
-        ]
+        ],
     )
 
     var focusList: [DTextFieldFocusValidationItem<Focus>] {
         [
             DTextFieldFocusValidationItem(
                 focus: .temperature,
-                controller: temperatureController
+                controller: temperatureController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .length,
-                controller: maxTokensController
+                controller: maxTokensController,
             ),
         ]
     }
@@ -119,15 +133,21 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
     func toggleIsMarkdown() {
         analytics.buttonTapped(
             .neuralModelSettingsMarkdown,
-            parameters: AnalyticsParameters([
-                .result: .bool(!isMarkdown),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .result: .bool(
+                        !isMarkdown,
+                    ),
+                ],
+            ),
         )
         isMarkdown.toggle()
     }
 
     func onSubmit() {
-        analytics.buttonTapped(.neuralModelSettingsSubmit)
+        analytics.buttonTapped(
+            .neuralModelSettingsSubmit,
+        )
         switch focus {
         case .temperature:
             focus = .length
@@ -137,7 +157,9 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.neuralModelSettingsBack)
+        analytics.buttonTapped(
+            .neuralModelSettingsBack,
+        )
         coordinator.pop()
     }
 
@@ -146,9 +168,13 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
 
         analytics.buttonTapped(
             .neuralModelSettingsSave,
-            parameters: AnalyticsParameters([
-                .result: .bool(isMarkdown),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .result: .bool(
+                        isMarkdown,
+                    ),
+                ],
+            ),
         )
 
         if let invalidFocus = firstInvalidFocus() {
@@ -161,13 +187,17 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
 
         onSettingsSaved(
             isMarkdown,
-            temperatureController.value.flatMap { Double($0) },
-            maxTokensController.value.flatMap { Int($0) }
+            temperatureController.value.flatMap { Double(
+                $0,
+            ) },
+            maxTokensController.value.flatMap { Int(
+                $0,
+            ) },
         )
         messager.show(
             type: .success,
             title: .neuralModelSettingsSavedSuccessMessageTitle,
-            description: .neuralModelSettingsSavedSuccessMessageDescription
+            description: .neuralModelSettingsSavedSuccessMessageDescription,
         )
         coordinator.pop()
     }

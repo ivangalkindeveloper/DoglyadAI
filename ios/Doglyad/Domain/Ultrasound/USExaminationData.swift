@@ -16,19 +16,23 @@ struct USExaminationData: Codable {
 
 extension USExaminationData {
     static func fromDB(
-        _ db: USExaminationDataDB
+        _ db: USExaminationDataDB,
     ) -> USExaminationData {
         USExaminationData(
             usExaminationTypeId: db.usExaminationTypeId,
-            photos: db.photos.map { USExaminationScanPhoto.fromDB($0) },
+            photos: db.photos.map { USExaminationScanPhoto.fromDB(
+                $0,
+            ) },
             examinationNumber: db.examinationNumber,
             patientName: db.patientName,
-            patientGender: PatientGender(rawValue: db.patientGenderRawValue) ?? .male,
+            patientGender: PatientGender(
+                rawValue: db.patientGenderRawValue,
+            ) ?? .male,
             patientDateOfBirth: db.patientDateOfBirth,
             patientHeight: db.patientHeight,
             patientWeight: db.patientWeight,
             patientComplaints: db.patientComplaints,
-            examinationDescription: db.examinationDescription
+            examinationDescription: db.examinationDescription,
         )
     }
 
@@ -43,7 +47,7 @@ extension USExaminationData {
             patientHeight: patientHeight,
             patientWeight: patientWeight,
             patientComplaints: patientComplaints,
-            examinationDescription: examinationDescription
+            examinationDescription: examinationDescription,
         )
     }
 }

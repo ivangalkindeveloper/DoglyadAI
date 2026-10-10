@@ -7,7 +7,7 @@ final class TemplateEditScreenArguments: RouteArgumentsProtocol {
 
     init(
         templateId: UUID,
-        onTemplatesChanged: (() -> Void)? = nil
+        onTemplatesChanged: (() -> Void)? = nil,
     ) {
         self.templateId = templateId
         self.onTemplatesChanged = onTemplatesChanged

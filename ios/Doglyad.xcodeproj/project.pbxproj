@@ -7,11 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7700AAAA000000000000C002 /* Tokenizers in Frameworks */ = {isa = PBXBuildFile; productRef = 7700AAAA000000000000B002 /* Tokenizers */; };
 		7700BBBB000000000000C001 /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7700BBBB000000000000B001 /* WhisperKit */; };
 		7700BBBB000000000000C002 /* WhisperKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7700BBBB000000000000B001 /* WhisperKit */; };
 		7700CCCC000000000000C001 /* FluidAudio in Frameworks */ = {isa = PBXBuildFile; productRef = 7700CCCC000000000000B001 /* FluidAudio */; };
-		770AEB572F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit in Resources */ = {isa = PBXBuildFile; fileRef = 770AEB562F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit */; };
 		770AEB5E2F1DA67D00C09C76 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 770AEB5D2F1DA67D00C09C76 /* FirebaseAnalytics */; };
 		770AEB602F1DA67D00C09C76 /* FirebaseAnalyticsCore in Frameworks */ = {isa = PBXBuildFile; productRef = 770AEB5F2F1DA67D00C09C76 /* FirebaseAnalyticsCore */; };
 		770AEB622F1DA67D00C09C76 /* FirebaseAnalyticsIdentitySupport in Frameworks */ = {isa = PBXBuildFile; productRef = 770AEB612F1DA67D00C09C76 /* FirebaseAnalyticsIdentitySupport */; };
@@ -19,13 +17,8 @@
 		771F41AF2EA430B400C4945A /* DoglyadDatabase.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 771F41A82EA430B400C4945A /* DoglyadDatabase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7720FEEB2E9ACE43002EA89E /* DoglyadUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7720FEE52E9ACE42002EA89E /* DoglyadUI.framework */; };
 		7720FEEC2E9ACE43002EA89E /* DoglyadUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7720FEE52E9ACE42002EA89E /* DoglyadUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		776175242EF8A04D006A2B5A /* MLXEmbedders in Frameworks */ = {isa = PBXBuildFile; productRef = 776175232EF8A04D006A2B5A /* MLXEmbedders */; };
-		776175262EF8A04D006A2B5A /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 776175252EF8A04D006A2B5A /* MLXLLM */; };
-		776175282EF8A04D006A2B5A /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 776175272EF8A04D006A2B5A /* MLXLMCommon */; };
-		7761752A2EF8A04D006A2B5A /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = 776175292EF8A04D006A2B5A /* MLXVLM */; };
 		77759AFB2E932B78007CC90C /* DependencyInitializer in Frameworks */ = {isa = PBXBuildFile; productRef = 77759AFA2E932B78007CC90C /* DependencyInitializer */; };
 		77783DC32F0E873800FFC217 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 77783DC22F0E873800FFC217 /* Alamofire */; };
-		7779215A3056008800CA3814 /* MLXGuidedGeneration in Frameworks */ = {isa = PBXBuildFile; productRef = 777921593056008800CA3814 /* MLXGuidedGeneration */; };
 		777B8DE52EB0020D007F5678 /* BottomSheet in Frameworks */ = {isa = PBXBuildFile; productRef = 777B8DE42EB0020D007F5678 /* BottomSheet */; };
 		777D76583014CFC9004E81FE /* FirebaseAppCheck in Frameworks */ = {isa = PBXBuildFile; productRef = 777D76573014CFC9004E81FE /* FirebaseAppCheck */; };
 		777D765A3014D00C004E81FE /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 777D76593014D00C004E81FE /* FirebaseCore */; };
@@ -48,14 +41,6 @@
 		77E745C030030621008B204A /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 77E745BF30030621008B204A /* Shimmer */; };
 		77F3A0042F2D100000000001 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 77F3A0022F2D100000000001 /* RevenueCat */; };
 		77F3A0052F2D100000000001 /* RevenueCatUI in Frameworks */ = {isa = PBXBuildFile; productRef = 77F3A0032F2D100000000001 /* RevenueCatUI */; };
-		77FEE7302F01DEEF00607F3F /* MLXEmbedders in Frameworks */ = {isa = PBXBuildFile; productRef = 77FEE72F2F01DEEF00607F3F /* MLXEmbedders */; };
-		77FEE7322F01DEEF00607F3F /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 77FEE7312F01DEEF00607F3F /* MLXLLM */; };
-		77FEE7342F01DEEF00607F3F /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 77FEE7332F01DEEF00607F3F /* MLXLMCommon */; };
-		77FEE7362F01DEEF00607F3F /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = 77FEE7352F01DEEF00607F3F /* MLXVLM */; };
-		77FEE7382F01DEF900607F3F /* MLXEmbedders in Frameworks */ = {isa = PBXBuildFile; productRef = 77FEE7372F01DEF900607F3F /* MLXEmbedders */; };
-		77FEE73A2F01DEF900607F3F /* MLXLLM in Frameworks */ = {isa = PBXBuildFile; productRef = 77FEE7392F01DEF900607F3F /* MLXLLM */; };
-		77FEE73C2F01DEF900607F3F /* MLXLMCommon in Frameworks */ = {isa = PBXBuildFile; productRef = 77FEE73B2F01DEF900607F3F /* MLXLMCommon */; };
-		77FEE73E2F01DEF900607F3F /* MLXVLM in Frameworks */ = {isa = PBXBuildFile; productRef = 77FEE73D2F01DEF900607F3F /* MLXVLM */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -154,7 +139,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		770AEB562F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "mlx-Qwen2.5-1.5B-Instruct-4bit"; path = "DoglyadNeuralModel/Resources/mlx-Qwen2.5-1.5B-Instruct-4bit"; sourceTree = "<group>"; };
 		771F41A82EA430B400C4945A /* DoglyadDatabase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DoglyadDatabase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7720FEE52E9ACE42002EA89E /* DoglyadUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = DoglyadUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		77828E9F304A380500847071 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
@@ -331,29 +315,8 @@
 		77D084093003E9830027BF40 /* Exceptions for "DoglyadNeuralModel" folder in "DoglyadNeuralModel" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/.gitignore",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/.gitattributes.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/added_tokens.json.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/config.json.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/merges.txt.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/model.safetensors.index.json.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/model.safetensors.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/README.md.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/special_tokens_map.json.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/tokenizer_config.json.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/tokenizer.json.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.cache/huggingface/download/vocab.json.metadata",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/.gitattributes",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/added_tokens.json",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/config.json",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/merges.txt",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/model.safetensors",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/model.safetensors.index.json",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/README.md",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/special_tokens_map.json",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/tokenizer_config.json",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/tokenizer.json",
-				"Resources/mlx-Qwen2.5-1.5B-Instruct-4bit/vocab.json",
+				README.md,
+				Resources,
 			);
 			target = 77CB95222EB90C8500489F3E /* DoglyadNeuralModel */;
 		};
@@ -428,6 +391,9 @@
 			exceptions = (
 				77D084093003E9830027BF40 /* Exceptions for "DoglyadNeuralModel" folder in "DoglyadNeuralModel" target */,
 			);
+			explicitFolders = (
+				Resources,
+			);
 			path = DoglyadNeuralModel;
 			sourceTree = "<group>";
 		};
@@ -464,27 +430,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77FEE7322F01DEEF00607F3F /* MLXLLM in Frameworks */,
 				77A895C02F09E7EE006E6E41 /* NestedObservableObject in Frameworks */,
-				776175262EF8A04D006A2B5A /* MLXLLM in Frameworks */,
-				776175242EF8A04D006A2B5A /* MLXEmbedders in Frameworks */,
-				77FEE7342F01DEEF00607F3F /* MLXLMCommon in Frameworks */,
 				777B8DE52EB0020D007F5678 /* BottomSheet in Frameworks */,
 				77759AFB2E932B78007CC90C /* DependencyInitializer in Frameworks */,
-				7761752A2EF8A04D006A2B5A /* MLXVLM in Frameworks */,
 				777D765A3014D00C004E81FE /* FirebaseCore in Frameworks */,
 				777D76583014CFC9004E81FE /* FirebaseAppCheck in Frameworks */,
 				77A9DFD32F0E74F3003D5ECB /* DoglyadNetwork.framework in Frameworks */,
-				77FEE7362F01DEEF00607F3F /* MLXVLM in Frameworks */,
 				7720FEEB2E9ACE43002EA89E /* DoglyadUI.framework in Frameworks */,
 				77A896C32F0AD5EF006E6E41 /* Handler in Frameworks */,
 				77BB12242E92A87700B9FFC5 /* DependencyInitializer in Frameworks */,
 				77828EA0304A380500847071 /* StoreKit.framework in Frameworks */,
-				776175282EF8A04D006A2B5A /* MLXLMCommon in Frameworks */,
 				770AEB602F1DA67D00C09C76 /* FirebaseAnalyticsCore in Frameworks */,
 				770AEB622F1DA67D00C09C76 /* FirebaseAnalyticsIdentitySupport in Frameworks */,
 				77CB95192EB90C4600489F3E /* DoglyadSpeech.framework in Frameworks */,
-				77FEE7302F01DEEF00607F3F /* MLXEmbedders in Frameworks */,
 				771F41AE2EA430B400C4945A /* DoglyadDatabase.framework in Frameworks */,
 				77CB95292EB90C8500489F3E /* DoglyadNeuralModel.framework in Frameworks */,
 				770AEB5E2F1DA67D00C09C76 /* FirebaseAnalytics in Frameworks */,
@@ -530,12 +488,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				77FEE73A2F01DEF900607F3F /* MLXLLM in Frameworks */,
-				77FEE73C2F01DEF900607F3F /* MLXLMCommon in Frameworks */,
-				77FEE73E2F01DEF900607F3F /* MLXVLM in Frameworks */,
-				77FEE7382F01DEF900607F3F /* MLXEmbedders in Frameworks */,
-				7779215A3056008800CA3814 /* MLXGuidedGeneration in Frameworks */,
-				7700AAAA000000000000C002 /* Tokenizers in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -563,7 +515,6 @@
 			children = (
 				77C3EE2C2FD617FF00DC4D6A /* Config */,
 				7730C19B30168F0000E0BE55 /* Firebase */,
-				770AEB562F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit */,
 				77FEE72B2F01DE9F00607F3F /* Doglyad.xcodeproj */,
 				77AC58B42E929E7E0028250A /* Doglyad */,
 				77A896BE2F0AC7DC006E6E41 /* Frameworks */,
@@ -744,14 +695,6 @@
 				77BB12232E92A87700B9FFC5 /* DependencyInitializer */,
 				77759AFA2E932B78007CC90C /* DependencyInitializer */,
 				777B8DE42EB0020D007F5678 /* BottomSheet */,
-				776175232EF8A04D006A2B5A /* MLXEmbedders */,
-				776175252EF8A04D006A2B5A /* MLXLLM */,
-				776175272EF8A04D006A2B5A /* MLXLMCommon */,
-				776175292EF8A04D006A2B5A /* MLXVLM */,
-				77FEE72F2F01DEEF00607F3F /* MLXEmbedders */,
-				77FEE7312F01DEEF00607F3F /* MLXLLM */,
-				77FEE7332F01DEEF00607F3F /* MLXLMCommon */,
-				77FEE7352F01DEEF00607F3F /* MLXVLM */,
 				77A895BF2F09E7EE006E6E41 /* NestedObservableObject */,
 				77A896C22F0AD5EF006E6E41 /* Handler */,
 				770AEB5D2F1DA67D00C09C76 /* FirebaseAnalytics */,
@@ -880,12 +823,6 @@
 			);
 			name = DoglyadNeuralModel;
 			packageProductDependencies = (
-				77FEE7372F01DEF900607F3F /* MLXEmbedders */,
-				77FEE7392F01DEF900607F3F /* MLXLLM */,
-				77FEE73B2F01DEF900607F3F /* MLXLMCommon */,
-				77FEE73D2F01DEF900607F3F /* MLXVLM */,
-				7700AAAA000000000000B002 /* Tokenizers */,
-				777921593056008800CA3814 /* MLXGuidedGeneration */,
 			);
 			productName = DoglyadML;
 			productReference = 77CB95232EB90C8500489F3E /* DoglyadNeuralModel.framework */;
@@ -949,8 +886,6 @@
 				77E7F0AC2EA843F000E49A4E /* XCRemoteSwiftPackageReference "Router" */,
 				777B8DE32EB0020D007F5678 /* XCRemoteSwiftPackageReference "BottomSheet" */,
 				776889DB2EBD483B00880301 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */,
-				77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */,
-				7700AAAA000000000000A001 /* XCRemoteSwiftPackageReference "swift-transformers" */,
 				77A895BE2F09E7EE006E6E41 /* XCRemoteSwiftPackageReference "NestedObservableObject" */,
 				77A896C12F0AD5EE006E6E41 /* XCRemoteSwiftPackageReference "Handler" */,
 				77783DC12F0E873800FFC217 /* XCRemoteSwiftPackageReference "Alamofire" */,
@@ -1009,7 +944,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				770AEB572F1D870100C09C76 /* mlx-Qwen2.5-1.5B-Instruct-4bit in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3042,16 +2976,6 @@
 				revision = 0b1f46289fe27d95b5e66ad8be46e64f5ee02ae7;
 			};
 		};
-		7700AAAA000000000000A001 /* XCRemoteSwiftPackageReference "swift-transformers" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/huggingface/swift-transformers";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
-			};
-			traits = (
-			);
-		};
 		770AEB5C2F1DA67D00C09C76 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -3140,14 +3064,6 @@
 				minimumVersion = 5.0.0;
 			};
 		};
-		77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ml-explore/mlx-swift-lm";
-			requirement = {
-				kind = revision;
-				revision = 604fae710a4e3324346fc59e3845952350acd4b7;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3160,11 +3076,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7700CCCC000000000000A001 /* XCRemoteSwiftPackageReference "FluidAudio" */;
 			productName = FluidAudio;
-		};
-		7700AAAA000000000000B002 /* Tokenizers */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 7700AAAA000000000000A001 /* XCRemoteSwiftPackageReference "swift-transformers" */;
-			productName = Tokenizers;
 		};
 		770AEB5D2F1DA67D00C09C76 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3181,22 +3092,6 @@
 			package = 770AEB5C2F1DA67D00C09C76 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseAnalyticsIdentitySupport;
 		};
-		776175232EF8A04D006A2B5A /* MLXEmbedders */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MLXEmbedders;
-		};
-		776175252EF8A04D006A2B5A /* MLXLLM */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MLXLLM;
-		};
-		776175272EF8A04D006A2B5A /* MLXLMCommon */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MLXLMCommon;
-		};
-		776175292EF8A04D006A2B5A /* MLXVLM */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = MLXVLM;
-		};
 		77759AFA2E932B78007CC90C /* DependencyInitializer */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 77759AF92E932B78007CC90C /* XCRemoteSwiftPackageReference "DependencyInitializer" */;
@@ -3206,11 +3101,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 77783DC12F0E873800FFC217 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
-		};
-		777921593056008800CA3814 /* MLXGuidedGeneration */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = MLXGuidedGeneration;
 		};
 		777B8DE42EB0020D007F5678 /* BottomSheet */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3275,46 +3165,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 77F3A0012F2D100000000001 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
 			productName = RevenueCatUI;
-		};
-		77FEE72F2F01DEEF00607F3F /* MLXEmbedders */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = MLXEmbedders;
-		};
-		77FEE7312F01DEEF00607F3F /* MLXLLM */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = MLXLLM;
-		};
-		77FEE7332F01DEEF00607F3F /* MLXLMCommon */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = MLXLMCommon;
-		};
-		77FEE7352F01DEEF00607F3F /* MLXVLM */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = MLXVLM;
-		};
-		77FEE7372F01DEF900607F3F /* MLXEmbedders */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = MLXEmbedders;
-		};
-		77FEE7392F01DEF900607F3F /* MLXLLM */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = MLXLLM;
-		};
-		77FEE73B2F01DEF900607F3F /* MLXLMCommon */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = MLXLMCommon;
-		};
-		77FEE73D2F01DEF900607F3F /* MLXVLM */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77FEE72E2F01DEEF00607F3F /* XCRemoteSwiftPackageReference "mlx-swift-lm" */;
-			productName = MLXVLM;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

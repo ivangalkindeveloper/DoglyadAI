@@ -4,19 +4,23 @@ public struct DCameraView<Controller: DCameraController>: UIViewRepresentable {
     private let controller: Controller
 
     public init(
-        controller: Controller
+        controller: Controller,
     ) {
         self.controller = controller
     }
 
-    public func makeUIView(context _: Context) -> UIView {
+    public func makeUIView(
+        context _: Context,
+    ) -> UIView {
         controller.makePreviewView()
     }
 
     public func updateUIView(
         _ view: UIView,
-        context _: Context
+        context _: Context,
     ) {
-        controller.updatePreviewView(view)
+        controller.updatePreviewView(
+            view,
+        )
     }
 }

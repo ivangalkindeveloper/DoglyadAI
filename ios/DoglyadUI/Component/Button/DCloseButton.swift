@@ -6,7 +6,7 @@ public struct DCloseButton: DView {
     let action: () -> Void
 
     public init(
-        action: @escaping () -> Void
+        action: @escaping () -> Void,
     ) {
         self.action = action
     }
@@ -15,16 +15,26 @@ public struct DCloseButton: DView {
         Button {
             action()
         } label: {
-            Image(systemName: "xmark.circle.fill")
-                .font(.system(size: 22))
-                .foregroundStyle(color.grayscaleLine)
+            Image(
+                systemName: "xmark.circle.fill",
+            )
+            .font(
+                .system(
+                    size: 22,
+                ),
+            )
+            .foregroundStyle(
+                color.grayscaleLine,
+            )
         }
     }
 }
 
 #Preview {
     DCloseButton {
-        print("Close")
+        print(
+            "Close",
+        )
     }
     .padding()
     .dThemeWrapper()

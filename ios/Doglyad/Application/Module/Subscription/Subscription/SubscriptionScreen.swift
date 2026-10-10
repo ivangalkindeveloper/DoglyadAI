@@ -13,15 +13,15 @@ struct SubscriptionScreen: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }
 
 #Preview {
     SubscriptionScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

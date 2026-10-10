@@ -14,15 +14,15 @@ struct LegalUpdateScreen: View {
             viewModel: LegalUpdateViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }
 
 #Preview {
     LegalUpdateScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

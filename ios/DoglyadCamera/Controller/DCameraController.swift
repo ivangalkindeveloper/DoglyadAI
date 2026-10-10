@@ -13,12 +13,12 @@ public protocol DCameraController: AnyObject, ObservableObject {
 
     func takePhoto(
         cropRegion: DCameraCropRegion,
-        completion: @escaping (UIImage) -> Void
+        completion: @escaping (UIImage) -> Void,
     )
 
     func makePreviewView() -> UIView
 
     func updatePreviewView(
-        _ view: UIView
+        _ view: UIView,
     )
 }

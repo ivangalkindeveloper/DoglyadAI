@@ -12,13 +12,15 @@ final class TemplateListViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel
+        subscription: SubscriptionViewModel,
     ) {
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.templateList)
+            analyticsDestination: .screen(
+                .templateList,
+            ),
         )
     }
 
@@ -30,7 +32,7 @@ final class TemplateListViewModel: DViewModel {
         isLoading = true
         handle {
             await self.container.templateRepository.getTemplates(
-                usExaminationTypesById: self.container.usExaminationTypesById
+                usExaminationTypesById: self.container.usExaminationTypesById,
             )
         } onDefer: {
             self.isLoading = false
@@ -40,34 +42,40 @@ final class TemplateListViewModel: DViewModel {
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.templateListBack)
+        analytics.buttonTapped(
+            .templateListBack,
+        )
         coordinator.pop()
     }
 
     func onTapAdd() {
-        analytics.buttonTapped(.templateListAdd)
+        analytics.buttonTapped(
+            .templateListAdd,
+        )
         coordinator.screen(
             .templateAdd,
             arguments: TemplateAddScreenArguments(
                 onTemplatesChanged: { [weak self] in
                     self?.loadTemplates()
-                }
-            )
+                },
+            ),
         )
     }
 
     func onTapTemplate(
-        _ template: USExaminationTemplate
+        _ template: USExaminationTemplate,
     ) {
-        analytics.buttonTapped(.templateListTemplate)
+        analytics.buttonTapped(
+            .templateListTemplate,
+        )
         coordinator.screen(
             .templateEdit,
             arguments: TemplateEditScreenArguments(
                 templateId: template.id,
                 onTemplatesChanged: { [weak self] in
                     self?.loadTemplates()
-                }
-            )
+                },
+            ),
         )
     }
 }

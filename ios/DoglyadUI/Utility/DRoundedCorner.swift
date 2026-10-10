@@ -6,18 +6,25 @@ public struct DRoundedCorner: Shape {
 
     public init(
         radius: CGFloat,
-        corners: UIRectCorner
+        corners: UIRectCorner,
     ) {
         self.radius = radius
         self.corners = corners
     }
 
-    public func path(in rect: CGRect) -> Path {
+    public func path(
+        in rect: CGRect,
+    ) -> Path {
         let path = UIBezierPath(
             roundedRect: rect,
             byRoundingCorners: corners,
-            cornerRadii: CGSize(width: radius, height: radius)
+            cornerRadii: CGSize(
+                width: radius,
+                height: radius,
+            ),
         )
-        return Path(path.cgPath)
+        return Path(
+            path.cgPath,
+        )
     }
 }

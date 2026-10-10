@@ -5,7 +5,7 @@ final class UltrasoundModelRepository: UltrasoundModelRepositoryProtocol {
     let database: DDatabaseProtocol
 
     init(
-        database: DDatabaseProtocol
+        database: DDatabaseProtocol,
     ) {
         self.database = database
     }
@@ -19,10 +19,10 @@ extension UltrasoundModelRepository {
     }
 
     func setSelectedModelId(
-        id: String
+        id: String,
     ) {
         database.setSelectedUSExaminationNeuralModelId(
-            value: id
+            value: id,
         )
     }
 
@@ -30,23 +30,35 @@ extension UltrasoundModelRepository {
         database.getNeuralModelIsMarkdown()
     }
 
-    func setIsMarkdown(_ value: Bool) {
-        database.setNeuralModelIsMarkdown(value: value)
+    func setIsMarkdown(
+        _ value: Bool,
+    ) {
+        database.setNeuralModelIsMarkdown(
+            value: value,
+        )
     }
 
     func getTemperature() -> Double? {
         database.getNeuralModelTemperature()
     }
 
-    func setTemperature(_ value: Double?) {
-        database.setNeuralModelTemperature(value: value)
+    func setTemperature(
+        _ value: Double?,
+    ) {
+        database.setNeuralModelTemperature(
+            value: value,
+        )
     }
 
     func getMaxTokens() -> Int? {
         database.getNeuralModelMaxTokens()
     }
 
-    func setMaxTokens(_ value: Int?) {
-        database.setNeuralModelMaxTokens(value: value)
+    func setMaxTokens(
+        _ value: Int?,
+    ) {
+        database.setNeuralModelMaxTokens(
+            value: value,
+        )
     }
 }

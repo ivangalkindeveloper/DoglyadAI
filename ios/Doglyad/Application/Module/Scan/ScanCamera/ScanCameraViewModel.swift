@@ -12,16 +12,20 @@ final class ScanCameraViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: ScanCameraArguments
+        arguments: ScanCameraArguments,
     ) {
         self.arguments = arguments
-        _cameraController = NestedObservableObject(wrappedValue: arguments.cameraController)
+        _cameraController = NestedObservableObject(
+            wrappedValue: arguments.cameraController,
+        )
         photos = arguments.photos.wrappedValue
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.scanCamera)
+            analyticsDestination: .bottomSheet(
+                .scanCamera,
+            ),
         )
     }
 
@@ -30,19 +34,27 @@ final class ScanCameraViewModel: DViewModel {
     @Published private(set) var captureFrame: CGRect = .zero
     @Published private(set) var previewFrame: CGRect = .zero
 
-    func updateCaptureFrame(_ frame: CGRect) {
+    func updateCaptureFrame(
+        _ frame: CGRect,
+    ) {
         captureFrame = frame
     }
 
-    func updatePreviewFrame(_ frame: CGRect) {
+    func updatePreviewFrame(
+        _ frame: CGRect,
+    ) {
         previewFrame = frame
     }
 
     var isCaptureFrameReady: Bool {
-        !captureFrame.isEmpty && !previewFrame.isEmpty && previewFrame.contains(captureFrame)
+        !captureFrame.isEmpty && !previewFrame.isEmpty && previewFrame.contains(
+            captureFrame,
+        )
     }
 
-    func onTapPhoto(_ photo: USExaminationScanPhoto) {
+    func onTapPhoto(
+        _ photo: USExaminationScanPhoto,
+    ) {
         let photos = arguments.photos
         coordinator.dismissSheet()
         coordinator.screen(
@@ -54,8 +66,8 @@ final class ScanCameraViewModel: DViewModel {
                     withAnimation {
                         photos.wrappedValue.removeAll { $0.id == photo.id }
                     }
-                }
-            )
+                },
+            ),
         )
     }
 
@@ -84,58 +96,85 @@ final class ScanCameraViewModel: DViewModel {
 
         analytics.buttonTapped(
             .scanCapture,
-            parameters: AnalyticsParameters([
-                .itemCount: .int(photos.count),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .itemCount: .int(
+                        photos.count,
+                    ),
+                ],
+            ),
         )
         let cropRegion = DCameraCropRegion(
-            rect: captureFrame.offsetBy(dx: -previewFrame.minX, dy: -previewFrame.minY),
-            previewSize: previewFrame.size
+            rect: captureFrame.offsetBy(
+                dx: -previewFrame.minX,
+                dy: -previewFrame.minY,
+            ),
+            previewSize: previewFrame.size,
         )
-        cameraController.takePhoto(cropRegion: cropRegion) { [weak self] image in
-            self?.onCapture(image)
+        cameraController.takePhoto(
+            cropRegion: cropRegion,
+        ) { [weak self] image in
+            self?.onCapture(
+                image,
+            )
         }
     }
 
     func onTapDeletePhoto(
-        photo: USExaminationScanPhoto
+        photo: USExaminationScanPhoto,
     ) {
-        guard let index = photos.firstIndex(of: photo) else { return }
+        guard let index = photos.firstIndex(
+            of: photo,
+        ) else { return }
 
         analytics.buttonTapped(
             .scanDeletePhoto,
-            parameters: AnalyticsParameters([
-                .itemCount: .int(photos.count),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .itemCount: .int(
+                        photos.count,
+                    ),
+                ],
+            ),
         )
         var updatedPhotos = photos
-        updatedPhotos.remove(at: index)
-        updatePhotos(updatedPhotos)
+        updatedPhotos.remove(
+            at: index,
+        )
+        updatePhotos(
+            updatedPhotos,
+        )
     }
 
     private func onCapture(
-        _ image: UIImage
+        _ image: UIImage,
     ) {
         guard !isPhotoFilling else { return }
 
         Task { [weak self] in
-            let photo = await USExaminationScanPhoto.make(image: image)
+            let photo = await USExaminationScanPhoto.make(
+                image: image,
+            )
             guard let self,
                   !self.isPhotoFilling
             else { return }
 
-            var updatedPhotos = self.photos
-            updatedPhotos.append(photo)
-            self.updatePhotos(updatedPhotos)
+            var updatedPhotos = photos
+            updatedPhotos.append(
+                photo,
+            )
+            updatePhotos(
+                updatedPhotos,
+            )
 
-            if self.isPhotoFilling {
-                self.coordinator.dismissSheet()
+            if isPhotoFilling {
+                coordinator.dismissSheet()
             }
         }
     }
 
     private func updatePhotos(
-        _ photos: [USExaminationScanPhoto]
+        _ photos: [USExaminationScanPhoto],
     ) {
         withAnimation {
             self.photos = photos

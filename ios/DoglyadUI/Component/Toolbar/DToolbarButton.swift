@@ -24,7 +24,7 @@ public struct DToolbarButton: DView {
         style: Style,
         badge: DButtonBadge? = nil,
         content: Content,
-        action: @escaping () -> Void
+        action: @escaping () -> Void,
     ) {
         self.accessibilityLabel = accessibilityLabel
         self.style = style
@@ -35,12 +35,18 @@ public struct DToolbarButton: DView {
 
     public var body: some View {
         Button(
-            action: action
+            action: action,
         ) {
             buttonContent
         }
-        .buttonStyle(.plain)
-        .accessibilityLabel(Text(accessibilityLabel))
+        .buttonStyle(
+            .plain,
+        )
+        .accessibilityLabel(
+            Text(
+                accessibilityLabel,
+            ),
+        )
     }
 
     @ViewBuilder
@@ -49,7 +55,7 @@ public struct DToolbarButton: DView {
             DBadge(
                 badge.title,
                 isVisible: badge.isVisible,
-                isShimmering: badge.isShimmering
+                isShimmering: badge.isShimmering,
             ) {
                 styledLabel
             }
@@ -62,34 +68,47 @@ public struct DToolbarButton: DView {
         label
             .frame(
                 minWidth: size.s40,
-                minHeight: size.s40
+                minHeight: size.s40,
             )
             .background {
                 background
             }
             .frame(
                 minWidth: size.s48,
-                minHeight: size.s48
+                minHeight: size.s48,
             )
-            .contentShape(Rectangle())
+            .contentShape(
+                Rectangle(),
+            )
     }
 
     @ViewBuilder
     private var label: some View {
         switch content {
-        case let .icon(icon):
+        case let .icon(
+            icon,
+        ):
             DIcon(
                 icon,
-                color: foregroundColor
+                color: foregroundColor,
             )
-        case let .text(text):
-            DText(text)
-                .dStyle(
-                    font: typography.linkSmall,
-                    color: foregroundColor
-                )
-                .lineLimit(1)
-                .padding(.horizontal, size.s12)
+        case let .text(
+            text,
+        ):
+            DText(
+                text,
+            )
+            .dStyle(
+                font: typography.linkSmall,
+                color: foregroundColor,
+            )
+            .lineLimit(
+                1,
+            )
+            .padding(
+                .horizontal,
+                size.s12,
+            )
         }
     }
 
@@ -107,32 +126,42 @@ public struct DToolbarButton: DView {
         switch style {
         case .grayscaleHeader:
             Capsule()
-                .fill(.ultraThinMaterial)
+                .fill(
+                    .ultraThinMaterial,
+                )
         case .primaryDefault:
             Capsule()
-                .fill(color.gradientPrimaryWeak)
+                .fill(
+                    color.gradientPrimaryWeak,
+                )
         }
     }
 }
 
 #Preview {
-    HStack(spacing: .zero) {
+    HStack(
+        spacing: .zero,
+    ) {
         DToolbarButton(
             accessibilityLabel: "Microphone",
             style: .grayscaleHeader,
             badge: DButtonBadge(
                 "Pro",
-                isShimmering: true
+                isShimmering: true,
             ),
-            content: .icon(.microphone),
-            action: {}
+            content: .icon(
+                .microphone,
+            ),
+            action: {},
         )
 
         DToolbarButton(
             accessibilityLabel: "Generate",
             style: .primaryDefault,
-            content: .text("Generate"),
-            action: {}
+            content: .text(
+                "Generate",
+            ),
+            action: {},
         )
     }
     .dThemeWrapper()

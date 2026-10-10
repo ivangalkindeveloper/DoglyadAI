@@ -8,6 +8,6 @@ struct UltrasoundNeuralModelConfig: Codable {
 extension UltrasoundNeuralModelConfig {
     static let `default` = UltrasoundNeuralModelConfig(
         temperature: 0.2,
-        maxTokens: 512
+        maxTokens: 512,
     )
 }

@@ -7,7 +7,7 @@ final class PhotoLibraryPickerArguments: RouteArgumentsProtocol {
 
     init(
         selectionLimit: Int,
-        onComplete: @escaping ([UIImage]) -> Void
+        onComplete: @escaping ([UIImage]) -> Void,
     ) {
         self.selectionLimit = selectionLimit
         self.onComplete = onComplete

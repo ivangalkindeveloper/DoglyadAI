@@ -13,68 +13,98 @@ struct ReportReceivedBottomSheetView: DView {
             fraction: 1,
             content: { toolbarHeight, bottomHeight in
                 VStack(
-                    spacing: .zero
+                    spacing: .zero,
                 ) {
                     ScrollView {
                         ReportReceivedMarkdownView(
                             viewModel: viewModel.markdownViewModel,
-                            textColor: color.grayscaleBackgroundWeak
+                            textColor: color.grayscaleBackgroundWeak,
                         )
-                        .padding(.top, toolbarHeight)
-                        .padding(size.s16)
-                        .padding(.bottom, bottomHeight)
+                        .padding(
+                            .top,
+                            toolbarHeight,
+                        )
+                        .padding(
+                            size.s16,
+                        )
+                        .padding(
+                            .bottom,
+                            bottomHeight,
+                        )
                     }
                     .mask(
                         VStack(
-                            spacing: .zero
+                            spacing: .zero,
                         ) {
                             LinearGradient(
                                 colors: [.clear, .black],
                                 startPoint: .top,
-                                endPoint: .bottom
+                                endPoint: .bottom,
                             )
-                            .frame(height: size.s16)
+                            .frame(
+                                height: size.s16,
+                            )
 
                             Color.black
-                        }
+                        },
                     )
                 }
             },
             bottom: {
                 VStack(
-                    spacing: size.s8
+                    spacing: size.s8,
                 ) {
                     DButton(
                         title: .buttonToReport,
-                        action: viewModel.onTapReport
+                        action: viewModel.onTapReport,
                     )
-                    .dStyle(.primaryButton)
+                    .dStyle(
+                        .primaryButton,
+                    )
 
-                    if viewModel.isUserEmailAvailable && viewModel.isUserEmailButtonVisible {
+                    if viewModel.isUserEmailAvailable, viewModel.isUserEmailButtonVisible {
                         DButton(
                             image: .send,
                             title: viewModel.userEmailButtonTitle,
                             badge: viewModel.userEmailButtonBadge,
                             action: viewModel.onTapUserEmail,
-                            isLoading: viewModel.isLoading
+                            isLoading: viewModel.isLoading,
                         )
-                        .dStyle(.textWeak)
-                        .transition(.opacity)
+                        .dStyle(
+                            .textWeak,
+                        )
+                        .transition(
+                            .opacity,
+                        )
                     }
 
                     DButton(
                         image: .copy,
                         title: .buttonCopy,
-                        action: viewModel.onTapCopy
+                        action: viewModel.onTapCopy,
                     )
-                    .dStyle(.textWeak)
-                    .padding(.bottom, size.s10)
+                    .dStyle(
+                        .textWeak,
+                    )
+                    .padding(
+                        .bottom,
+                        size.s10,
+                    )
                 }
-                .padding(.top, size.s8)
-                .padding(.horizontal, size.s16)
-            }
+                .padding(
+                    .top,
+                    size.s8,
+                )
+                .padding(
+                    .horizontal,
+                    size.s16,
+                )
+            },
         )
-        .animation(theme.animation, value: viewModel.isUserEmailButtonVisible)
+        .animation(
+            theme.animation,
+            value: viewModel.isUserEmailButtonVisible,
+        )
         .onAppear {
             viewModel.onAppear()
         }

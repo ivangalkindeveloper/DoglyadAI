@@ -6,19 +6,23 @@ final class StorageClearAllViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: StorageClearAllArguments?
+        arguments: StorageClearAllArguments?,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.storageClearAll)
+            analyticsDestination: .bottomSheet(
+                .storageClearAll,
+            ),
         )
     }
 
     func onTapConfirm() {
-        analytics.buttonTapped(.storageClearAllConfirm)
+        analytics.buttonTapped(
+            .storageClearAllConfirm,
+        )
         coordinator.dismissSheet()
         arguments?.onConfirm()
     }

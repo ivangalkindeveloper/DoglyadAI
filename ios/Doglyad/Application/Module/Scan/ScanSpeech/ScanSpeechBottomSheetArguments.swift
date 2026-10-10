@@ -3,13 +3,13 @@ import Router
 
 final class ScanSpeechBottomSheetArguments: RouteArgumentsProtocol {
     let examinationType: USExaminationType
-    let getCurrentValue: (VoiceFieldId) -> String
-    let onConfirm: (([VoiceFieldProposal]) -> Bool)?
+    let getCurrentValue: (DNeuralUltrasoundVoiceFieldId) -> String
+    let onConfirm: (([DNeuralUltrasoundVoiceFieldProposal]) -> Bool)?
 
     init(
         examinationType: USExaminationType,
-        getCurrentValue: @escaping (VoiceFieldId) -> String,
-        onConfirm: (([VoiceFieldProposal]) -> Bool)?
+        getCurrentValue: @escaping (DNeuralUltrasoundVoiceFieldId) -> String,
+        onConfirm: (([DNeuralUltrasoundVoiceFieldProposal]) -> Bool)?,
     ) {
         self.examinationType = examinationType
         self.getCurrentValue = getCurrentValue

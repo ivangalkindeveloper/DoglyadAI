@@ -5,27 +5,33 @@ struct DTextFieldFormatterTests {
     @Test
     func regexFormatterReplacesMatchingText() {
         let formatter = DTextFieldRegexReplacingFormatter(
-            pattern: #"\s+"#
+            pattern: #"\s+"#,
         )
 
         let value = formatter.format(
             currentValue: "",
-            proposedValue: "one two\nthree"
+            proposedValue: "one two\nthree",
         )
 
-        #expect(value == "onetwothree")
+        #expect(
+            value == "onetwothree",
+        )
     }
 
     @Test
     func maxLengthFormatterLimitsCharacters() {
-        let formatter = DTextFieldMaxLengthFormatter(maxLength: 3)
+        let formatter = DTextFieldMaxLengthFormatter(
+            maxLength: 3,
+        )
 
         let value = formatter.format(
             currentValue: "",
-            proposedValue: "1234"
+            proposedValue: "1234",
         )
 
-        #expect(value == "123")
+        #expect(
+            value == "123",
+        )
     }
 
     @Test
@@ -34,24 +40,28 @@ struct DTextFieldFormatterTests {
 
         let value = formatter.format(
             currentValue: "",
-            proposedValue: "1a2.3"
+            proposedValue: "1a2.3",
         )
 
-        #expect(value == "123")
+        #expect(
+            value == "123",
+        )
     }
 
     @Test
     func decimalFormatterNormalizesSeparatorAndLimitsFraction() {
         let formatter = DTextFieldDecimalFormatter(
-            maxFractionLength: 2
+            maxFractionLength: 2,
         )
 
         let value = formatter.format(
             currentValue: "",
-            proposedValue: "12,34.5a"
+            proposedValue: "12,34.5a",
         )
 
-        #expect(value == "12.34")
+        #expect(
+            value == "12.34",
+        )
     }
 
     @Test
@@ -60,9 +70,11 @@ struct DTextFieldFormatterTests {
 
         let value = formatter.format(
             currentValue: "",
-            proposedValue: " doctor+tag@example.com\n@"
+            proposedValue: " doctor+tag@example.com\n@",
         )
 
-        #expect(value == "doctor+tag@example.com")
+        #expect(
+            value == "doctor+tag@example.com",
+        )
     }
 }

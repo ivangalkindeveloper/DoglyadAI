@@ -14,20 +14,28 @@ struct PhotoViewScreenView: DView {
                 if viewModel.isDeleteButtonVisible {
                     DButton(
                         image: .delete,
-                        action: viewModel.onTapDelete
+                        action: viewModel.onTapDelete,
                     )
-                    .dStyle(.circle)
-                    .accessibilityLabel(Text(.buttonDelete))
+                    .dStyle(
+                        .circle,
+                    )
+                    .accessibilityLabel(
+                        Text(
+                            .buttonDelete,
+                        ),
+                    )
                 }
-            }
+            },
         ) { toolbarInset, _ in
             ZStack(
-                alignment: .bottom
+                alignment: .bottom,
             ) {
                 TabView(
-                    selection: $viewModel.selectedPhotoID
+                    selection: $viewModel.selectedPhotoID,
                 ) {
-                    ForEach(viewModel.photos) { photo in
+                    ForEach(
+                        viewModel.photos,
+                    ) { photo in
                         PhotoViewZoomableImage(
                             image: photo.image,
                             isSelected: photo.id == viewModel.selectedPhotoID,
@@ -35,46 +43,62 @@ struct PhotoViewScreenView: DView {
                                 top: toolbarInset + size.s16,
                                 leading: size.s16,
                                 bottom: size.s16,
-                                trailing: size.s16
-                            )
+                                trailing: size.s16,
+                            ),
                         )
-                        .tag(photo.id)
+                        .tag(
+                            photo.id,
+                        )
                     }
                 }
                 .tabViewStyle(
-                    .page(indexDisplayMode: .never)
+                    .page(
+                        indexDisplayMode: .never,
+                    ),
                 )
                 .ignoresSafeArea()
 
                 if viewModel.isPhotoAvailable {
                     HStack(
-                        spacing: size.s16
+                        spacing: size.s16,
                     ) {
                         DText(
                             .photoViewPage(
                                 current: viewModel.currentPage,
-                                total: viewModel.photos.count
-                            )
+                                total: viewModel.photos.count,
+                            ),
                         )
                         .dStyle(
                             font: typography.textSmall,
-                            alignment: .center
+                            alignment: .center,
                         )
                     }
-                    .padding(size.s16)
+                    .padding(
+                        size.s16,
+                    )
                     .background(
                         RoundedRectangle(
-                            cornerRadius: size.adaptiveCardCornerRadius
+                            cornerRadius: size.adaptiveCardCornerRadius,
                         )
-                        .fill(.ultraThinMaterial)
+                        .fill(
+                            .ultraThinMaterial,
+                        ),
                     )
-                    .padding(size.s16)
+                    .padding(
+                        size.s16,
+                    )
                 }
             }
         }
-        .onAppear(perform: viewModel.onAppear)
-        .onChange(of: viewModel.sourcePhotos) { _, updated in
-            viewModel.synchronizePhotos(updated)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
+        .onChange(
+            of: viewModel.sourcePhotos,
+        ) { _, updated in
+            viewModel.synchronizePhotos(
+                updated,
+            )
         }
     }
 }

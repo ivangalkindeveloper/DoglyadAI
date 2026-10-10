@@ -4,13 +4,15 @@ final class PermissionBottomSheetViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        destination: AnalyticsBottomSheet
+        destination: AnalyticsBottomSheet,
     ) {
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(destination)
+            analyticsDestination: .bottomSheet(
+                destination,
+            ),
         )
     }
 }

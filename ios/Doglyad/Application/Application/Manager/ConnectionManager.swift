@@ -11,7 +11,7 @@ protocol ConnectionManagerProtocol: AnyObject {
 final class ConnectionManager {
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue.global(
-        qos: .utility
+        qos: .utility,
     )
 
     init() {
@@ -23,7 +23,9 @@ final class ConnectionManager {
 
 extension ConnectionManager: ConnectionManagerProtocol {
     func start() {
-        monitor.start(queue: queue)
+        monitor.start(
+            queue: queue,
+        )
     }
 
     var isConnected: Bool {

@@ -1,0 +1,42 @@
+[
+  {
+    "id": "natural-control-ru-01", "locale": "ru", "category": "complete", "examinationTypeId": "kidneysAdrenalGlandsAndRetroperitonealSpace",
+    "inputText": "Сегодня обследуем пациента Павел Никитин. Пол мужчина. Родился 18 октября 1982 года. Номер исследования 7482. Рост 176 сантиметров, вес 81.3 килограмма. Пациент жалуется на боль слева в пояснице после ходьбы. Температура не повышалась. На УЗИ правая почка 109 на 48 мм, левая 111 на 50 мм. Чашечно-лоханочная система не расширена. Конкрементов нет.",
+    "expectedFields": {"examinationNumber": "7482", "patientName": "Павел Никитин", "patientGender": "male", "patientDateOfBirth": "1982-10-18", "patientHeightCM": 176, "patientWeightKG": 81.3, "patientComplaints": "Боль слева в пояснице после ходьбы. Температура не повышалась.", "examinationDescription": "Правая почка 109 на 48 мм, левая 111 на 50 мм. Чашечно-лоханочная система не расширена. Конкрементов нет."}
+  },
+  {
+    "id": "natural-control-ru-02", "locale": "ru", "category": "complete", "examinationTypeId": "thyroidGland",
+    "inputText": "По ультразвуку правая доля щитовидной железы объёмом 7.8 мл, левая 6.9 мл. Перешеек 2 мм. Узловых образований нет. Пациент: Марина Соколова. Дата рождения 6 июля 1974 года. Пол женщина. Вес 62.4 килограмма, рост 164 сантиметра. Номер исследования 9365. Жалобы: Ощущение давления в области шеи. Боли при глотании нет.",
+    "expectedFields": {"examinationNumber": "9365", "patientName": "Марина Соколова", "patientGender": "female", "patientDateOfBirth": "1974-07-06", "patientHeightCM": 164, "patientWeightKG": 62.4, "patientComplaints": "Ощущение давления в области шеи. Боли при глотании нет.", "examinationDescription": "Правая доля щитовидной железы объёмом 7.8 мл, левая 6.9 мл. Перешеек 2 мм. Узловых образований нет."}
+  },
+  {
+    "id": "natural-control-ru-03", "locale": "ru", "category": "clinical", "examinationTypeId": "joints",
+    "inputText": "Жалобы: Боль в левом колене при подъёме по лестнице. В покое боли нет. На УЗИ в верхнем завороте левого коленного сустава жидкость слоем 4 мм. Сухожилие четырёхглавой мышцы непрерывное. Киста Бейкера не определяется.",
+    "expectedFields": {"patientComplaints": "Боль в левом колене при подъёме по лестнице. В покое боли нет.", "examinationDescription": "В верхнем завороте левого коленного сустава жидкость слоем 4 мм. Сухожилие четырёхглавой мышцы непрерывное. Киста Бейкера не определяется."}
+  },
+  {
+    "id": "natural-control-ru-04", "locale": "ru", "category": "patient_details", "examinationTypeId": "abdominalCavity",
+    "inputText": "Пациент: Дарья Морозова. Родилась 24 ноября 1996 года. Рост 169 сантиметров. Вес 58.2 килограмма. Жалоб нет.",
+    "expectedFields": {"patientName": "Дарья Морозова", "patientDateOfBirth": "1996-11-24", "patientHeightCM": 169, "patientWeightKG": 58.2, "patientComplaints": "Жалоб нет."}
+  },
+  {
+    "id": "natural-control-en-01", "locale": "en", "category": "complete", "examinationTypeId": "kidneysAdrenalGlandsAndRetroperitonealSpace",
+    "inputText": "Today's patient is Daniel Brooks. Gender male. Born October 18, 1982. Study number 7482. Height 176 centimeters, weight 81.3 kilograms. He reports left flank pain after walking. No fever. On ultrasound right kidney measures 109 by 48 mm and left kidney 111 by 50 mm. No collecting system dilatation. No calculi.",
+    "expectedFields": {"examinationNumber": "7482", "patientName": "Daniel Brooks", "patientGender": "male", "patientDateOfBirth": "1982-10-18", "patientHeightCM": 176, "patientWeightKG": 81.3, "patientComplaints": "Left flank pain after walking. No fever.", "examinationDescription": "Right kidney measures 109 by 48 mm and left kidney 111 by 50 mm. No collecting system dilatation. No calculi."}
+  },
+  {
+    "id": "natural-control-en-02", "locale": "en", "category": "complete", "examinationTypeId": "thyroidGland",
+    "inputText": "Ultrasound demonstrates right thyroid lobe volume 7.8 ml and left lobe volume 6.9 ml. Isthmus 2 mm. No thyroid nodules. Patient: Laura Morgan. Date of birth July 6, 1974. Gender female. Weight 62.4 kilograms, height 164 centimeters. Examination number 9365. Complaints: Pressure at the front of the neck. No pain on swallowing.",
+    "expectedFields": {"examinationNumber": "9365", "patientName": "Laura Morgan", "patientGender": "female", "patientDateOfBirth": "1974-07-06", "patientHeightCM": 164, "patientWeightKG": 62.4, "patientComplaints": "Pressure at the front of the neck. No pain on swallowing.", "examinationDescription": "Right thyroid lobe volume 7.8 ml and left lobe volume 6.9 ml. Isthmus 2 mm. No thyroid nodules."}
+  },
+  {
+    "id": "natural-control-en-03", "locale": "en", "category": "clinical", "examinationTypeId": "joints",
+    "inputText": "Complaints: Left knee pain when climbing stairs. No pain at rest. On ultrasound the left suprapatellar recess contains a 4 mm layer of fluid. Quadriceps tendon is continuous. No Baker cyst.",
+    "expectedFields": {"patientComplaints": "Left knee pain when climbing stairs. No pain at rest.", "examinationDescription": "The left suprapatellar recess contains a 4 mm layer of fluid. Quadriceps tendon is continuous. No Baker cyst."}
+  },
+  {
+    "id": "natural-control-en-04", "locale": "en", "category": "patient_details", "examinationTypeId": "abdominalCavity",
+    "inputText": "Patient: Claire Wilson. Born November 24, 1996. Height 169 centimeters. Weight 58.2 kilograms. No complaints.",
+    "expectedFields": {"patientName": "Claire Wilson", "patientDateOfBirth": "1996-11-24", "patientHeightCM": 169, "patientWeightKG": 58.2, "patientComplaints": "No complaints."}
+  }
+]

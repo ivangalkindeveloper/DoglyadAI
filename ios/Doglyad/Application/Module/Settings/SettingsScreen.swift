@@ -17,16 +17,18 @@ struct SettingsScreen: View {
                 initialNeuralModel: ultrasoundViewModel.neuralModel,
                 subscription: subscriptionViewModel,
                 onNeuralModelSelected: { [ultrasoundViewModel] model in
-                    ultrasoundViewModel.saveNeuralModel(model)
-                }
-            )
+                    ultrasoundViewModel.saveNeuralModel(
+                        model,
+                    )
+                },
+            ),
         )
     }
 }
 
 #Preview {
     SettingsScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

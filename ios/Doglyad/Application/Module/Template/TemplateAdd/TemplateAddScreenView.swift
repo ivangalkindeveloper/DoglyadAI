@@ -25,121 +25,201 @@ struct TemplateAddScreenView: DView {
                             DToolbarButton(
                                 accessibilityLabel: .buttonSave,
                                 style: .primaryDefault,
-                                content: .text(.buttonSave),
-                                action: viewModel.onTapSave
+                                content: .text(
+                                    .buttonSave,
+                                ),
+                                action: viewModel.onTapSave,
                             ),
-                        ]
+                        ],
                     )
-                    .disabled(viewModel.isLoading)
+                    .disabled(
+                        viewModel.isLoading,
+                    )
                 }
             },
             content: { toolbarInset, bottomInset in
                 DFocusScrollView(
-                    focus: focus
+                    focus: focus,
                 ) {
                     VStack(
                         alignment: .leading,
-                        spacing: .zero
+                        spacing: .zero,
                     ) {
                         DListButtonCard(
                             title: .templateExaminationTypeLabel,
                             description: viewModel.usExaminationType.localizedTitle,
-                            action: viewModel.onTapExaminationType
+                            action: viewModel.onTapExaminationType,
                         )
-                        .contentTransition(.opacity)
+                        .contentTransition(
+                            .opacity,
+                        )
                         .animation(
                             theme.animation,
-                            value: viewModel.usExaminationType.id
+                            value: viewModel.usExaminationType.id,
                         )
-                        .padding(.bottom, size.s4)
+                        .padding(
+                            .bottom,
+                            size.s4,
+                        )
 
                         DTextField(
                             controller: viewModel.nameController,
                             focus: DTextFieldFocus(
                                 value: .name,
-                                state: $focus
+                                state: $focus,
                             ),
                             title: .templateNameLabel,
                             placeholder: .templateNamePlaceholder,
-                            mode: DTextFieldSingleLineMode(submitLabel: .next)
+                            mode: DTextFieldSingleLineMode(
+                                submitLabel: .next,
+                            ),
                         )
-                        .id(TemplateAddViewModel.Focus.name)
-                        .padding(.bottom, size.s4)
+                        .id(
+                            TemplateAddViewModel.Focus.name,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s4,
+                        )
 
                         DTextField(
                             controller: viewModel.templateController,
                             focus: DTextFieldFocus(
                                 value: .content,
-                                state: $focus
+                                state: $focus,
                             ),
                             title: .templateContentLabel,
                             placeholder: .templateContentPlaceholder,
-                            mode: DTextFieldMultiLineMode()
+                            mode: DTextFieldMultiLineMode(),
                         )
-                        .id(TemplateAddViewModel.Focus.content)
-                        .padding(.bottom, size.s8)
+                        .id(
+                            TemplateAddViewModel.Focus.content,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s8,
+                        )
 
                         VStack(
                             alignment: .leading,
-                            spacing: .zero
+                            spacing: .zero,
                         ) {
-                            DText(.templateContentDescription)
-                                .dStyle(
-                                    font: typography.textXSmall,
-                                    color: color.grayscalePlacehold
-                                )
-                                .padding(.horizontal, size.s8)
-                                .padding(.bottom, size.s8)
+                            DText(
+                                .templateContentDescription,
+                            )
+                            .dStyle(
+                                font: typography.textXSmall,
+                                color: color.grayscalePlacehold,
+                            )
+                            .padding(
+                                .horizontal,
+                                size.s8,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s8,
+                            )
 
-                            DText(.templateExampleDescription)
-                                .dStyle(
-                                    font: typography.textXSmall,
-                                    color: color.grayscalePlacehold
-                                )
-                                .padding(size.s8)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(color.grayscaleInput.opacity(0.6))
-                                .cornerRadius(size.s12)
+                            DText(
+                                .templateExampleDescription,
+                            )
+                            .dStyle(
+                                font: typography.textXSmall,
+                                color: color.grayscalePlacehold,
+                            )
+                            .padding(
+                                size.s8,
+                            )
+                            .frame(
+                                maxWidth: .infinity,
+                                alignment: .leading,
+                            )
+                            .background(
+                                color.grayscaleInput.opacity(
+                                    0.6,
+                                ),
+                            )
+                            .cornerRadius(
+                                size.s12,
+                            )
                         }
-                        .padding(.horizontal, size.s4)
-                        .padding(.bottom, size.s8)
+                        .padding(
+                            .horizontal,
+                            size.s4,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s8,
+                        )
 
                         DButton(
                             title: .templateAddReadyMadeTemplatesButton,
-                            action: viewModel.onTapReadyMadeTemplates
+                            action: viewModel.onTapReadyMadeTemplates,
                         )
-                        .dStyle(.card)
-                        .padding(.bottom, size.s16)
+                        .dStyle(
+                            .card,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s16,
+                        )
                     }
-                    .padding(.top, toolbarInset + size.s8)
-                    .padding(.horizontal, size.s16)
-                    .padding(.bottom, bottomInset + size.s16)
-                    .disabled(viewModel.isLoading)
+                    .padding(
+                        .top,
+                        toolbarInset + size.s8,
+                    )
+                    .padding(
+                        .horizontal,
+                        size.s16,
+                    )
+                    .padding(
+                        .bottom,
+                        bottomInset + size.s16,
+                    )
+                    .disabled(
+                        viewModel.isLoading,
+                    )
                 }
-                .scrollDismissesKeyboard(.interactively)
+                .scrollDismissesKeyboard(
+                    .interactively,
+                )
             },
             bottom: {
                 DButton(
                     title: .buttonSave,
                     action: viewModel.onTapSave,
-                    isLoading: viewModel.isLoading
+                    isLoading: viewModel.isLoading,
                 )
-                .dStyle(.primaryButton)
-                .padding(size.s16)
-            }
+                .dStyle(
+                    .primaryButton,
+                )
+                .padding(
+                    size.s16,
+                )
+            },
         )
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
         .onSubmit {
             viewModel.onSubmit()
         }
-        .onChange(of: focus, initial: true) { _, newValue in
+        .onChange(
+            of: focus,
+            initial: true,
+        ) { _, newValue in
             guard viewModel.focus != newValue else { return }
             viewModel.focus = newValue
         }
-        .onChange(of: viewModel.focus, initial: true) { _, newValue in
+        .onChange(
+            of: viewModel.focus,
+            initial: true,
+        ) { _, newValue in
             guard focus != newValue else { return }
             focus = newValue
         }
-        .environmentObject(viewModel)
+        .environmentObject(
+            viewModel,
+        )
     }
 }

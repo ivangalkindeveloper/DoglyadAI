@@ -6,21 +6,33 @@ internal import Alamofire
 struct DHttpInterceptorAdapter: RequestInterceptor {
     private let interceptor: DHttpInterceptorProtocol
 
-    init(interceptor: DHttpInterceptorProtocol) {
+    init(
+        interceptor: DHttpInterceptorProtocol,
+    ) {
         self.interceptor = interceptor
     }
 
     func adapt(
         _ urlRequest: URLRequest,
         for _: Session,
-        completion: @escaping (Result<URLRequest, Error>) -> Void
+        completion: @escaping (Result<URLRequest, Error>) -> Void,
     ) {
         Task {
             do {
-                let adapted = try await interceptor.adapt(urlRequest)
-                completion(.success(adapted))
+                let adapted = try await interceptor.adapt(
+                    urlRequest,
+                )
+                completion(
+                    .success(
+                        adapted,
+                    ),
+                )
             } catch {
-                completion(.failure(error))
+                completion(
+                    .failure(
+                        error,
+                    ),
+                )
             }
         }
     }

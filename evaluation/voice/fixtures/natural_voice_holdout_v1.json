@@ -1,0 +1,62 @@
+[
+  {
+    "id": "natural-holdout-ru-01", "locale": "ru", "category": "complete", "examinationTypeId": "abdominalCavity",
+    "inputText": "Осматриваю пациента Алексей Романов. Пол мужчина. Дата рождения 9 февраля 1987 года. Это исследование номер 5816. Рост 179 сантиметров, вес 86.5 килограмма. Жалуется на тяжесть в правом подреберье после еды. Тошноты нет. При УЗИ правая доля печени 142 мм. Жёлчный пузырь 73 на 26 мм, стенка 2 мм. Свободной жидкости нет.",
+    "expectedFields": {"examinationNumber": "5816", "patientName": "Алексей Романов", "patientGender": "male", "patientDateOfBirth": "1987-02-09", "patientHeightCM": 179, "patientWeightKG": 86.5, "patientComplaints": "Тяжесть в правом подреберье после еды. Тошноты нет.", "examinationDescription": "Правая доля печени 142 мм. Жёлчный пузырь 73 на 26 мм, стенка 2 мм. Свободной жидкости нет."}
+  },
+  {
+    "id": "natural-holdout-ru-02", "locale": "ru", "category": "complete", "examinationTypeId": "mammaryGlands",
+    "inputText": "Пациент: Ольга Белова. Дата рождения 17 мая 1991 года. Пол женщина. Номер исследования 6243. Вес 63.8 килограмма, рост 166 сантиметров. Сообщает о болезненности в верхних отделах правой молочной железы. Выделений нет. Ультразвук выявил кисту правой молочной железы 8 на 5 мм. Стенка тонкая. Подмышечные лимфоузлы не увеличены.",
+    "expectedFields": {"examinationNumber": "6243", "patientName": "Ольга Белова", "patientGender": "female", "patientDateOfBirth": "1991-05-17", "patientHeightCM": 166, "patientWeightKG": 63.8, "patientComplaints": "О болезненности в верхних отделах правой молочной железы. Выделений нет.", "examinationDescription": "Киста правой молочной железы 8 на 5 мм. Стенка тонкая. Подмышечные лимфоузлы не увеличены."}
+  },
+  {
+    "id": "natural-holdout-ru-03", "locale": "ru", "category": "complete", "examinationTypeId": "kidneysAdrenalGlandsAndRetroperitonealSpace",
+    "inputText": "На приёме Сергей Волков, дата рождения 3 сентября 1968 года. Пол мужчина. Рост 182 сантиметра. Вес 94.2 килограмма. Номер исследования 3097. Жалобы: Боль справа в пояснице. Озноба нет. По ультразвуку правая почка 113 на 52 мм, левая 110 на 49 мм. Паренхима правой почки 16 мм. Лоханки не расширены.",
+    "expectedFields": {"examinationNumber": "3097", "patientName": "Сергей Волков", "patientGender": "male", "patientDateOfBirth": "1968-09-03", "patientHeightCM": 182, "patientWeightKG": 94.2, "patientComplaints": "Боль справа в пояснице. Озноба нет.", "examinationDescription": "Правая почка 113 на 52 мм, левая 110 на 49 мм. Паренхима правой почки 16 мм. Лоханки не расширены."}
+  },
+  {
+    "id": "natural-holdout-ru-04", "locale": "ru", "category": "clinical", "examinationTypeId": "joints",
+    "inputText": "Жалуется на боль в правом плече при поднятии руки. В покое боль уменьшается. При сонографии отмечено утолщение сухожилия надостной мышцы до 6 мм. Непрерывность сухожилия сохранена. Жидкости в суставе нет.",
+    "expectedFields": {"patientComplaints": "Боль в правом плече при поднятии руки. В покое боль уменьшается.", "examinationDescription": "Утолщение сухожилия надостной мышцы до 6 мм. Непрерывность сухожилия сохранена. Жидкости в суставе нет."}
+  },
+  {
+    "id": "natural-holdout-ru-05", "locale": "ru", "category": "clinical", "examinationTypeId": "thyroidGland",
+    "inputText": "Повод для обследования: Дискомфорт в передней области шеи. Осиплости нет. Ультразвуковая картина следующая: объём правой доли 6.4 мл, левой 5.7 мл. В левой доле киста 3 мм. Перешеек 2 мм.",
+    "expectedFields": {"patientComplaints": "Дискомфорт в передней области шеи. Осиплости нет.", "examinationDescription": "Объём правой доли 6.4 мл, левой 5.7 мл. В левой доле киста 3 мм. Перешеек 2 мм."}
+  },
+  {
+    "id": "natural-holdout-ru-06", "locale": "ru", "category": "patient_details", "examinationTypeId": "abdominalCavity",
+    "inputText": "Пациент: Елена Кузнецова. Родилась 21 декабря 1993 года. Рост 172 сантиметра. Вес 67.1 килограмма. Жалоб нет.",
+    "expectedFields": {"patientName": "Елена Кузнецова", "patientDateOfBirth": "1993-12-21", "patientHeightCM": 172, "patientWeightKG": 67.1, "patientComplaints": "Жалоб нет."}
+  },
+  {
+    "id": "natural-holdout-en-01", "locale": "en", "category": "complete", "examinationTypeId": "abdominalCavity",
+    "inputText": "Today's patient is Andrew Bennett. Gender male. Born February 9, 1987. Study number 5816. Height 179 centimeters, weight 86.5 kilograms. He reports heaviness in the right upper abdomen after meals. No nausea. On ultrasound the right hepatic lobe measures 142 mm. Gallbladder 73 by 26 mm, wall 2 mm. No free fluid.",
+    "expectedFields": {"examinationNumber": "5816", "patientName": "Andrew Bennett", "patientGender": "male", "patientDateOfBirth": "1987-02-09", "patientHeightCM": 179, "patientWeightKG": 86.5, "patientComplaints": "Heaviness in the right upper abdomen after meals. No nausea.", "examinationDescription": "The right hepatic lobe measures 142 mm. Gallbladder 73 by 26 mm, wall 2 mm. No free fluid."}
+  },
+  {
+    "id": "natural-holdout-en-02", "locale": "en", "category": "complete", "examinationTypeId": "mammaryGlands",
+    "inputText": "Patient: Sophie Turner. Date of birth May 17, 1991. Gender female. Examination number 6243. Weight 63.8 kilograms, height 166 centimeters. She reports tenderness in the upper right breast. No discharge. Ultrasound demonstrates a right breast cyst measuring 8 by 5 mm. Thin wall. Axillary lymph nodes are not enlarged.",
+    "expectedFields": {"examinationNumber": "6243", "patientName": "Sophie Turner", "patientGender": "female", "patientDateOfBirth": "1991-05-17", "patientHeightCM": 166, "patientWeightKG": 63.8, "patientComplaints": "Tenderness in the upper right breast. No discharge.", "examinationDescription": "A right breast cyst measuring 8 by 5 mm. Thin wall. Axillary lymph nodes are not enlarged."}
+  },
+  {
+    "id": "natural-holdout-en-03", "locale": "en", "category": "complete", "examinationTypeId": "kidneysAdrenalGlandsAndRetroperitonealSpace",
+    "inputText": "For Michael Reed, born September 3, 1968, the recorded sex is male. Height 182 centimeters. Weight 94.2 kilograms. Study number 3097. Complaints: Right flank pain. No chills. The scan shows right kidney 113 by 52 mm and left kidney 110 by 49 mm. Right renal parenchyma 16 mm. No pelvic dilatation.",
+    "expectedFields": {"examinationNumber": "3097", "patientName": "Michael Reed", "patientGender": "male", "patientDateOfBirth": "1968-09-03", "patientHeightCM": 182, "patientWeightKG": 94.2, "patientComplaints": "Right flank pain. No chills.", "examinationDescription": "Right kidney 113 by 52 mm and left kidney 110 by 49 mm. Right renal parenchyma 16 mm. No pelvic dilatation."}
+  },
+  {
+    "id": "natural-holdout-en-04", "locale": "en", "category": "clinical", "examinationTypeId": "joints",
+    "inputText": "They report right shoulder pain when raising the arm. Pain decreases at rest. Sonographic findings are supraspinatus tendon thickness 6 mm. Tendon continuity is preserved. No joint fluid.",
+    "expectedFields": {"patientComplaints": "Right shoulder pain when raising the arm. Pain decreases at rest.", "examinationDescription": "Supraspinatus tendon thickness 6 mm. Tendon continuity is preserved. No joint fluid."}
+  },
+  {
+    "id": "natural-holdout-en-05", "locale": "en", "category": "clinical", "examinationTypeId": "thyroidGland",
+    "inputText": "The reason for examination is discomfort at the front of the neck. No hoarseness. Imaging revealed right thyroid lobe volume 6.4 ml and left lobe volume 5.7 ml. A 3 mm cyst in the left lobe. Isthmus 2 mm.",
+    "expectedFields": {"patientComplaints": "Discomfort at the front of the neck. No hoarseness.", "examinationDescription": "Right thyroid lobe volume 6.4 ml and left lobe volume 5.7 ml. A 3 mm cyst in the left lobe. Isthmus 2 mm."}
+  },
+  {
+    "id": "natural-holdout-en-06", "locale": "en", "category": "patient_details", "examinationTypeId": "abdominalCavity",
+    "inputText": "Patient: Grace Foster. Born December 21, 1993. Height 172 centimeters. Weight 67.1 kilograms. No complaints.",
+    "expectedFields": {"patientName": "Grace Foster", "patientDateOfBirth": "1993-12-21", "patientHeightCM": 172, "patientWeightKG": 67.1, "patientComplaints": "No complaints."}
+  }
+]

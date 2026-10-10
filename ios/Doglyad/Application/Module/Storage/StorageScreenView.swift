@@ -9,31 +9,43 @@ struct StorageScreenView: DView {
     var body: some View {
         DScreen(
             title: .storageTitle,
-            onTapBack: viewModel.onTapBack
+            onTapBack: viewModel.onTapBack,
         ) { toolbarInset, _ in
             ScrollView(
-                showsIndicators: false
+                showsIndicators: false,
             ) {
                 VStack(
-                    spacing: size.s8
+                    spacing: size.s8,
                 ) {
                     DListButtonCard(
                         title: .storageClearProtocolsTitle,
                         description: .storageClearProtocolsDescription,
-                        action: viewModel.onTapClearProtocols
+                        action: viewModel.onTapClearProtocols,
                     )
                     DListButtonCard(
                         title: .storageClearAllTitle,
                         description: .storageClearAllDescription,
-                        action: viewModel.onTapClearAll
+                        action: viewModel.onTapClearAll,
                     )
                 }
-                .padding(size.s16)
-                .padding(.top, toolbarInset)
-                .padding(.bottom, size.s32)
+                .padding(
+                    size.s16,
+                )
+                .padding(
+                    .top,
+                    toolbarInset,
+                )
+                .padding(
+                    .bottom,
+                    size.s32,
+                )
             }
         }
-        .onAppear(perform: viewModel.onAppear)
-        .environmentObject(viewModel)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
+        .environmentObject(
+            viewModel,
+        )
     }
 }

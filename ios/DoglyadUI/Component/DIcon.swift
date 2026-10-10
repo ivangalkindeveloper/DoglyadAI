@@ -10,7 +10,7 @@ public struct DIcon: DView {
     public init(
         _ resource: ImageResource,
         color: Color? = nil,
-        height: CGFloat? = nil
+        height: CGFloat? = nil,
     ) {
         self.resource = resource
         self.color = color
@@ -18,19 +18,28 @@ public struct DIcon: DView {
     }
 
     public var body: some View {
-        Image(resource)
-            .resizable()
-            .renderingMode(.template)
-            .foregroundColor(color ?? theme.color.grayscaleHeader)
-            .scaledToFit()
-            .frame(width: height ?? size.s20, height: height ?? size.s20)
+        Image(
+            resource,
+        )
+        .resizable()
+        .renderingMode(
+            .template,
+        )
+        .foregroundColor(
+            color ?? theme.color.grayscaleHeader,
+        )
+        .scaledToFit()
+        .frame(
+            width: height ?? size.s20,
+            height: height ?? size.s20,
+        )
     }
 }
 
 #Preview {
     DIcon(
         .wifi,
-        color: .red
+        color: .red,
     )
     .dThemeWrapper()
 }

@@ -42,24 +42,40 @@ enum DSpeechAudioSession {
         if #available(iOS 26.0, *) {
             // Compatible AirPods record at full bandwidth; if the route cannot sustain it,
             // the system falls back to HFP on its own.
-            options.insert(.bluetoothHighQualityRecording)
+            options.insert(
+                .bluetoothHighQualityRecording,
+            )
         }
 
         // Errors here must not be swallowed: after a failed setup the input node
         // reports an invalid format, and the crash lands far from its cause.
-        try session.setCategory(.playAndRecord, mode: .default, options: options)
-        try session.setActive(true, options: .notifyOthersOnDeactivation)
+        try session.setCategory(
+            .playAndRecord,
+            mode: .default,
+            options: options,
+        )
+        try session.setActive(
+            true,
+            options: .notifyOthersOnDeactivation,
+        )
         // An incoming call in the middle of dictation cuts the recording short and the
         // examination has to start over — ask the system not to interrupt us.
-        try? session.setPrefersNoInterruptionsFromSystemAlerts(true)
+        try? session.setPrefersNoInterruptionsFromSystemAlerts(
+            true,
+        )
 
         return currentRoute
     }
 
     static func deactivate() {
         let session = AVAudioSession.sharedInstance()
-        try? session.setPrefersNoInterruptionsFromSystemAlerts(false)
-        try? session.setActive(false, options: .notifyOthersOnDeactivation)
+        try? session.setPrefersNoInterruptionsFromSystemAlerts(
+            false,
+        )
+        try? session.setActive(
+            false,
+            options: .notifyOthersOnDeactivation,
+        )
     }
 
     /// The microphone counts as built-in only when there are no other inputs: anything

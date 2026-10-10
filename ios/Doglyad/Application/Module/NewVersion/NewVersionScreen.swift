@@ -13,15 +13,15 @@ struct NewVersionScreen: View {
             viewModel: NewVersionViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }
 
 #Preview {
     NewVersionScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

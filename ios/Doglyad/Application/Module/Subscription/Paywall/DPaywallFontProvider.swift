@@ -6,12 +6,14 @@ struct DPaywallFontProvider: PaywallFontProvider {
     private let typography: DTypography
 
     init(
-        typography: DTypography = .shared
+        typography: DTypography = .shared,
     ) {
         self.typography = typography
     }
 
-    func font(for textStyle: Font.TextStyle) -> Font {
+    func font(
+        for textStyle: Font.TextStyle,
+    ) -> Font {
         switch textStyle {
         case .largeTitle:
             return typography.displayHugeBold

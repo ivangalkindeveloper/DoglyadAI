@@ -10,56 +10,90 @@ struct SelectUSExaminationTypeBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: .usExaminationTypeTitle,
-            fraction: 0.8
+            fraction: 0.8,
         ) { toolbarHeight, bottomHeight in
             ScrollView(
-                showsIndicators: false
+                showsIndicators: false,
             ) {
                 LazyVStack(
                     alignment: .leading,
                     spacing: .zero,
-                    pinnedViews: [.sectionHeaders]
+                    pinnedViews: [.sectionHeaders],
                 ) {
-                    ForEach(viewModel.sections) { section in
+                    ForEach(
+                        viewModel.sections,
+                    ) { section in
                         Section {
-                            ForEach(section.items) { item in
+                            ForEach(
+                                section.items,
+                            ) { item in
                                 DListButtonCard(
                                     title: item.type.localizedTitle,
                                     action: {
-                                        viewModel.onTypeTap(item.type)
+                                        viewModel.onTypeTap(
+                                            item.type,
+                                        )
                                     },
-                                    isSelected: viewModel.isSelected(item.type)
+                                    isSelected: viewModel.isSelected(
+                                        item.type,
+                                    ),
                                 )
-                                .padding(.bottom, size.s4)
+                                .padding(
+                                    .bottom,
+                                    size.s4,
+                                )
                             }
                         } header: {
                             SectionHeaderView(
-                                title: section.title
+                                title: section.title,
                             )
                         } footer: {
                             Color.clear
-                                .frame(height: size.s12)
+                                .frame(
+                                    height: size.s12,
+                                )
                         }
                     }
                 }
-                .padding(.top, size.s16)
-                .padding(.horizontal, size.s16)
-                .padding(.bottom, bottomHeight + size.s16)
+                .padding(
+                    .top,
+                    size.s16,
+                )
+                .padding(
+                    .horizontal,
+                    size.s16,
+                )
+                .padding(
+                    .bottom,
+                    bottomHeight + size.s16,
+                )
             }
-            .contentMargins(.top, toolbarHeight, for: .scrollContent)
+            .contentMargins(
+                .top,
+                toolbarHeight,
+                for: .scrollContent,
+            )
         }
         bottom: {
             DText(
-                .usExaminationTypeAddingDescription
+                .usExaminationTypeAddingDescription,
             )
             .dStyle(
                 font: typography.textSmall,
                 color: color.grayscalePlacehold,
-                alignment: .center
+                alignment: .center,
             )
-            .padding(.top, size.s16)
-            .padding(.horizontal, size.s16)
+            .padding(
+                .top,
+                size.s16,
+            )
+            .padding(
+                .horizontal,
+                size.s16,
+            )
         }
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }

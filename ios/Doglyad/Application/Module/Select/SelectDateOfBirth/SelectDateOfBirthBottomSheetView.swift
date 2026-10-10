@@ -9,34 +9,53 @@ struct SelectDateOfBirthBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: .selectDateOfBirthTitle,
-            fraction: 0.5
+            fraction: 0.5,
         ) { toolbarHeight, _ in
             VStack(
-                spacing: .zero
+                spacing: .zero,
             ) {
                 DatePicker(
                     .selectDateOfBirthTitle,
                     selection: $viewModel.date,
                     in: viewModel.fromDate ... viewModel.toDate,
-                    displayedComponents: [.date]
+                    displayedComponents: [.date],
                 )
                 .labelsHidden()
-                .datePickerStyle(.wheel)
-                .colorScheme(.light)
-                .padding(.bottom, size.s16)
+                .datePickerStyle(
+                    .wheel,
+                )
+                .colorScheme(
+                    .light,
+                )
+                .padding(
+                    .bottom,
+                    size.s16,
+                )
 
                 Spacer()
             }
-            .padding(size.s16)
-            .padding(.top, toolbarHeight)
+            .padding(
+                size.s16,
+            )
+            .padding(
+                .top,
+                toolbarHeight,
+            )
         } bottom: {
             DButton(
                 title: .buttonSelect,
-                action: viewModel.onTapSelect
+                action: viewModel.onTapSelect,
             )
-            .dStyle(.primaryButton)
-            .padding(.horizontal, size.s16)
+            .dStyle(
+                .primaryButton,
+            )
+            .padding(
+                .horizontal,
+                size.s16,
+            )
         }
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }

@@ -10,25 +10,31 @@ struct Application: App {
         WindowGroup {
             ZStack {
                 AnyView(
-                    self.viewModel.root
+                    viewModel.root,
                 )
-                .id(self.viewModel.rootID)
+                .id(
+                    viewModel.rootID,
+                )
                 .transition(
                     .asymmetric(
                         insertion: .opacity,
-                        removal: .opacity
-                    )
+                        removal: .opacity,
+                    ),
                 )
             }
             .animation(
-                .easeInOut(duration: 0.35),
-                value: self.viewModel.rootID
+                .easeInOut(
+                    duration: 0.35,
+                ),
+                value: viewModel.rootID,
             )
             .onAppear {
-                self.viewModel.initialize()
+                viewModel.initialize()
             }
             .dThemeWrapper()
-            .environmentObject(viewModel)
+            .environmentObject(
+                viewModel,
+            )
         }
     }
 }

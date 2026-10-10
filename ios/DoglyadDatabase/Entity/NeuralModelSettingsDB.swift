@@ -12,7 +12,7 @@ public final class NeuralModelSettingsDB {
         selectedNeuralModelId: String?,
         isMarkdown: Bool = false,
         temperature: Double?,
-        maxTokens: Int?
+        maxTokens: Int?,
     ) {
         self.selectedNeuralModelId = selectedNeuralModelId
         self.isMarkdown = isMarkdown

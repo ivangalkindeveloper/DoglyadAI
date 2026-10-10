@@ -11,47 +11,72 @@ struct ScanCameraPhotoListView: DView {
             if !viewModel.photos.isEmpty {
                 VStack(
                     alignment: .leading,
-                    spacing: .zero
+                    spacing: .zero,
                 ) {
                     ScrollView(
                         .horizontal,
-                        showsIndicators: false
+                        showsIndicators: false,
                     ) {
                         HStack(
-                            spacing: .zero
+                            spacing: .zero,
                         ) {
-                            ForEach(viewModel.photos) { photo in
+                            ForEach(
+                                viewModel.photos,
+                            ) { photo in
                                 PhotoCardView(
                                     image: photo.thumbnail,
                                     actionDelete: {
-                                        viewModel.onTapDeletePhoto(photo: photo)
+                                        viewModel.onTapDeletePhoto(
+                                            photo: photo,
+                                        )
                                     },
                                     onTap: {
-                                        viewModel.onTapPhoto(photo)
-                                    }
+                                        viewModel.onTapPhoto(
+                                            photo,
+                                        )
+                                    },
                                 )
-                                .transition(.opacity)
+                                .transition(
+                                    .opacity,
+                                )
                             }
                         }
-                        .padding(.horizontal, size.s16)
-                    }
-                    .padding(.bottom, size.s8)
-
-                    DText(.scanMaxPhotoDescription(count: viewModel.photoMaxCount))
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.grayscaleLine,
-                            alignment: .center
+                        .padding(
+                            .horizontal,
+                            size.s16,
                         )
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal, size.s16)
+                    }
+                    .padding(
+                        .bottom,
+                        size.s8,
+                    )
+
+                    DText(
+                        .scanMaxPhotoDescription(
+                            count: viewModel.photoMaxCount,
+                        ),
+                    )
+                    .dStyle(
+                        font: typography.textSmall,
+                        color: color.grayscaleLine,
+                        alignment: .center,
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                    )
+                    .padding(
+                        .horizontal,
+                        size.s16,
+                    )
                 }
-                .transition(.opacity)
+                .transition(
+                    .opacity,
+                )
             }
         }
         .animation(
             theme.animation,
-            value: viewModel.photos
+            value: viewModel.photos,
         )
     }
 }

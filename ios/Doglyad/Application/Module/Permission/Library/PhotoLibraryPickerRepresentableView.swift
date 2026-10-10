@@ -6,23 +6,27 @@ struct PhotoLibraryPickerRepresentableView: UIViewControllerRepresentable {
     let onComplete: ([UIImage]) -> Void
 
     func makeUIViewController(
-        context: Context
+        context: Context,
     ) -> PHPickerViewController {
         var configuration = PHPickerConfiguration()
         configuration.filter = .images
         configuration.selectionLimit = selectionLimit
 
-        let controller = PHPickerViewController(configuration: configuration)
+        let controller = PHPickerViewController(
+            configuration: configuration,
+        )
         controller.delegate = context.coordinator
         return controller
     }
 
     func updateUIViewController(
         _: PHPickerViewController,
-        context _: Context
+        context _: Context,
     ) {}
 
     func makeCoordinator() -> PhotoLibraryPickerCoordinator {
-        PhotoLibraryPickerCoordinator(onComplete: onComplete)
+        PhotoLibraryPickerCoordinator(
+            onComplete: onComplete,
+        )
     }
 }

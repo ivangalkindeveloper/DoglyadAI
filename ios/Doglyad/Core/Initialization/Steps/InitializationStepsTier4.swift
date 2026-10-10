@@ -12,18 +12,22 @@ extension InitializationProcess {
                     let languageCode = await process.language!.currentCode
                     let usExaminationTypeGroups: [USExaminationTypeGroup] = try await process.httpClient!.get(
                         endPoint: "/ultrasound/examination_types",
-                        headers: [DHttpHeader.acceptLanguage: languageCode]
+                        headers: [DHttpHeader.acceptLanguage: languageCode],
                     )
                     guard let usExaminationTypeDefault = usExaminationTypeGroups.lazy
-                        .compactMap(\.examinationTypes.first)
+                        .compactMap(
+                            \.examinationTypes.first,
+                        )
                         .first
                     else {
                         throw InitializationError.usExaminationTypesEmpty
                     }
                     let usExaminationTypesById = Dictionary(
                         uniqueKeysWithValues: usExaminationTypeGroups
-                            .flatMap(\.examinationTypes)
-                            .map { ($0.id, $0) }
+                            .flatMap(
+                                \.examinationTypes,
+                            )
+                            .map { ($0.id, $0) },
                     )
 
                     await MainActor.run {
@@ -31,7 +35,7 @@ extension InitializationProcess {
                         process.usExaminationTypesById = usExaminationTypesById
                         process.usExaminationTypeDefault = usExaminationTypeDefault
                     }
-                }
+                },
             ),
             AsyncInitializationStep<InitializationProcess>(
                 title: "Ultrasound examination neural models",
@@ -39,7 +43,7 @@ extension InitializationProcess {
                     let languageCode = await process.language!.currentCode
                     let usExaminationNeuralModels: [USExaminationNeuralModel] = try await process.httpClient!.get(
                         endPoint: "/ultrasound/examination_neural_models",
-                        headers: [DHttpHeader.acceptLanguage: languageCode]
+                        headers: [DHttpHeader.acceptLanguage: languageCode],
                     )
                     if usExaminationNeuralModels.isEmpty {
                         throw InitializationError.usExaminationNeuralModelsEmpty
@@ -48,55 +52,46 @@ extension InitializationProcess {
                     await MainActor.run {
                         process.usExaminationNeuralModels = usExaminationNeuralModels
                         process.usExaminationNeuralModelsById = Dictionary(
-                            uniqueKeysWithValues: usExaminationNeuralModels.map { ($0.id, $0) }
+                            uniqueKeysWithValues: usExaminationNeuralModels.map { ($0.id, $0) },
                         )
                         process.usExaminationNeuralModelDefault = usExaminationNeuralModels.first!
                     }
-                }
+                },
             ),
             AsyncInitializationStep<InitializationProcess>(
-                title: "Local ultrasound examination neural model",
+                title: "Ultrasound dictation model factory",
                 run: { (process: InitializationProcess) in
                     let config = await process.applicationConfig!.ultrasound.examinationNeuralModel
                     let locale = await process.language!.currentLocale
-                    let prompt = config.prompt
-                    guard !prompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-                        throw InitializationError.examinationNeuralModelPromptEmpty
-                    }
-                    let proposalPrompt = config.proposalPrompt
-                    // An older backend may omit this prompt. Keep the app available;
-                    // a nil factory hides the voice button until the backend is updated.
-                    guard !proposalPrompt.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-                        return
-                    }
+                    let repository = await process.ultrasoundReportRepository!
 
-                    let parameters = DExaminationGenerationParameters(
+                    let parameters = DNeuralGenerationParameters(
                         temperature: config.temperature,
                         maxTokens: config.maxTokens,
-                        maxContextTokens: config.maxContextTokens
+                        maxContextTokens: config.maxContextTokens,
                     )
 
                     await MainActor.run {
-                        process.examinationNeuralModelFactory = DExaminationNeuralModelFactory(
+                        process.examinationNeuralModelFactory = DNeuralUltrasoundModelFactory(
                             locale: locale,
-                            systemPrompt: prompt,
-                            proposalPrompt: proposalPrompt,
-                            parameters: parameters
+                            proposalPrompt: config.proposalPrompt,
+                            parameters: parameters,
+                            serverTransport: repository,
                         )
                     }
-                }
+                },
             ),
             AsyncInitializationStep<InitializationProcess>(
                 title: "Subscription",
                 run: { (process: InitializationProcess) async throws in
                     let configEntitlements = await process.applicationConfig!.entitlements
                     let status = try await process.subscriptionRepository!.fetchStatus(
-                        configEntitlements: configEntitlements
+                        configEntitlements: configEntitlements,
                     )
                     await MainActor.run {
                         process.initialSubscriptionStatus = status
                     }
-                }
+                },
             ),
             AsyncInitializationStep<InitializationProcess>(
                 title: "Initial ultrasound conclusions",
@@ -105,8 +100,8 @@ extension InitializationProcess {
                     await MainActor.run {
                         process.initialUltrasoundReportsCount = count
                     }
-                }
+                },
             ),
-        ]
+        ],
     )
 }

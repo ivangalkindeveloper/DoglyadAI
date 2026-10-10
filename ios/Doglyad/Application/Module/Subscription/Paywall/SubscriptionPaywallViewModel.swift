@@ -11,7 +11,7 @@ final class SubscriptionPaywallViewModel: DViewModel {
         router: DRouter,
         subscription: SubscriptionViewModel,
         arguments: SubscriptionPaywallArguments?,
-        onRefreshStatus: @escaping () async -> Void
+        onRefreshStatus: @escaping () async -> Void,
     ) {
         self.arguments = arguments
         self.onRefreshStatus = onRefreshStatus
@@ -19,41 +19,55 @@ final class SubscriptionPaywallViewModel: DViewModel {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.subscriptionPaywall)
+            analyticsDestination: .screen(
+                .subscriptionPaywall,
+            ),
         )
     }
 
     func onPurchaseStarted(
-        productId: String
+        productId: String,
     ) {
         analytics.buttonTapped(
             .subscriptionPaywallPurchaseStarted,
-            parameters: AnalyticsParameters([
-                .productId: .string(productId),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .productId: .string(
+                        productId,
+                    ),
+                ],
+            ),
         )
     }
 
     func onPurchaseCompleted() {
-        analytics.actionCompleted(.subscriptionPurchaseCompleted)
+        analytics.actionCompleted(
+            .subscriptionPurchaseCompleted,
+        )
         handle {
             await self.onRefreshStatus()
         }
     }
 
     func onRestoreStarted() {
-        analytics.buttonTapped(.subscriptionPaywallRestoreStarted)
+        analytics.buttonTapped(
+            .subscriptionPaywallRestoreStarted,
+        )
     }
 
     func onRestoreCompleted() {
-        analytics.actionCompleted(.subscriptionRestoreCompleted)
+        analytics.actionCompleted(
+            .subscriptionRestoreCompleted,
+        )
         handle {
             await self.onRefreshStatus()
         }
     }
 
     func onRequestedDismissal() {
-        analytics.buttonTapped(.subscriptionPaywallCancel)
+        analytics.buttonTapped(
+            .subscriptionPaywallCancel,
+        )
         coordinator.dismissPaywall()
     }
 }

@@ -6,19 +6,29 @@ final class DInteractivePopGestureController: UIViewController, UIGestureRecogni
     private var previousIsEnabled: Bool?
 
     override func loadView() {
-        let view = UIView(frame: .zero)
+        let view = UIView(
+            frame: .zero,
+        )
         view.backgroundColor = .clear
         view.isUserInteractionEnabled = false
         self.view = view
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewDidAppear(
+        _ animated: Bool,
+    ) {
+        super.viewDidAppear(
+            animated,
+        )
         installInteractivePopGesture()
     }
 
-    override func didMove(toParent parent: UIViewController?) {
-        super.didMove(toParent: parent)
+    override func didMove(
+        toParent parent: UIViewController?,
+    ) {
+        super.didMove(
+            toParent: parent,
+        )
 
         guard parent != nil else {
             restoreInteractivePopGesture()
@@ -69,7 +79,9 @@ final class DInteractivePopGestureController: UIViewController, UIGestureRecogni
         previousIsEnabled = nil
     }
 
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+    func gestureRecognizerShouldBegin(
+        _ gestureRecognizer: UIGestureRecognizer,
+    ) -> Bool {
         guard
             let installedNavigationController,
             gestureRecognizer === installedNavigationController.interactivePopGestureRecognizer

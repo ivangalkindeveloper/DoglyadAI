@@ -15,14 +15,14 @@ final class SelectUSExaminationTypeViewModel: DViewModel {
         init(
             id: String,
             title: LocalizedStringResource,
-            types: [USExaminationType]
+            types: [USExaminationType],
         ) {
             self.id = id
             self.title = title
             items = types.map { type in
                 Item(
                     id: "\(id):\(type.id)",
-                    type: type
+                    type: type,
                 )
             }
         }
@@ -34,33 +34,40 @@ final class SelectUSExaminationTypeViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: SelectUSExaminationTypeArguments?
+        arguments: SelectUSExaminationTypeArguments?,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.selectUSExaminationType),
-            analyticsParameters: AnalyticsParameters([
-                .hasCurrentValue: .bool(arguments?.currentValue != nil),
-            ])
+            analyticsDestination: .bottomSheet(
+                .selectUSExaminationType,
+            ),
+            analyticsParameters: AnalyticsParameters(
+                [
+                    .hasCurrentValue: .bool(
+                        arguments?.currentValue != nil,
+                    ),
+                ],
+            ),
         )
     }
 
     var sections: [Section] {
         let recentTypes = container.ultrasoundReportRepository
             .getRecentExaminationTypeIds()
-            .compactMap { container.usExaminationTypesById[$0] }
-        let recentSections: [Section]
-        if recentTypes.isEmpty {
-            recentSections = []
+            .compactMap { container.usExaminationTypesById[
+                $0,
+            ] }
+        let recentSections: [Section] = if recentTypes.isEmpty {
+            []
         } else {
-            recentSections = [
+            [
                 Section(
                     id: "recent",
                     title: .usExaminationTypeRecentGroupTitle,
-                    types: recentTypes
+                    types: recentTypes,
                 ),
             ]
         }
@@ -69,20 +76,30 @@ final class SelectUSExaminationTypeViewModel: DViewModel {
             Section(
                 id: group.id,
                 title: group.localizedTitle,
-                types: group.examinationTypes
+                types: group.examinationTypes,
             )
         }
         return recentSections + configuredSections
     }
 
-    func isSelected(_ type: USExaminationType) -> Bool {
+    func isSelected(
+        _ type: USExaminationType,
+    ) -> Bool {
         arguments?.currentValue == type
     }
 
-    func onTypeTap(_ type: USExaminationType) {
-        analytics.buttonTapped(.selectUSExaminationType)
-        container.ultrasoundReportRepository.recordRecentExaminationTypeId(type.id)
+    func onTypeTap(
+        _ type: USExaminationType,
+    ) {
+        analytics.buttonTapped(
+            .selectUSExaminationType,
+        )
+        container.ultrasoundReportRepository.recordRecentExaminationTypeId(
+            type.id,
+        )
         coordinator.dismissSheet()
-        arguments?.onSelected(type)
+        arguments?.onSelected(
+            type,
+        )
     }
 }

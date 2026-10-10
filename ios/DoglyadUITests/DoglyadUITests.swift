@@ -26,7 +26,9 @@ final class DoglyadUITests: XCTestCase {
     @MainActor
     func testLaunchPerformance() throws {
         // This measures how long it takes to launch your application.
-        measure(metrics: [XCTApplicationLaunchMetric()]) {
+        measure(
+            metrics: [XCTApplicationLaunchMetric()],
+        ) {
             XCUIApplication().launch()
         }
     }

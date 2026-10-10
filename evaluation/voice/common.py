@@ -124,6 +124,16 @@ def load_catalog() -> tuple[list[str], dict[str, dict[str, list[str]]]]:
     return type_ids, terms
 
 
+def load_examination_titles() -> dict[str, dict[str, str]]:
+    groups = json.loads((CONFIG_DIR / "ultrasound_examination_types.json").read_text(encoding="utf-8"))
+    types = [item for group in groups for item in group["examinationTypes"]]
+    titles: dict[str, dict[str, str]] = {}
+    for locale in LABELS:
+        strings = json.loads((CONFIG_DIR / locale / "l10n.json").read_text(encoding="utf-8"))
+        titles[locale] = {item["id"]: strings[item["titleLocaleKey"]] for item in types}
+    return titles
+
+
 def seeded_random(split: str, locale: str, type_id: str, index: int) -> random.Random:
     seed = hashlib.sha256(f"voice-v1:{split}:{locale}:{type_id}:{index}".encode()).digest()
     return random.Random(int.from_bytes(seed[:8], "big"))

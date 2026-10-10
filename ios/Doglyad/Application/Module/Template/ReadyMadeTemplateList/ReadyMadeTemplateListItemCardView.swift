@@ -11,41 +11,58 @@ struct ReadyMadeTemplateListItemCardView: DView {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: size.s8
+            spacing: size.s8,
         ) {
             Button(
-                action: action
+                action: action,
             ) {
                 VStack(
                     alignment: .leading,
-                    spacing: size.s4
+                    spacing: size.s4,
                 ) {
-                    DText(examinationTypeTitle)
-                        .dStyle(
-                            font: typography.linkSmall
-                        )
+                    DText(
+                        examinationTypeTitle,
+                    )
+                    .dStyle(
+                        font: typography.linkSmall,
+                    )
 
-                    DText(template.localizedTitle)
-                        .dStyle(
-                            font: typography.linkSmall,
-                            color: color.grayscalePlacehold
-                        )
+                    DText(
+                        template.localizedTitle,
+                    )
+                    .dStyle(
+                        font: typography.linkSmall,
+                        color: color.grayscalePlacehold,
+                    )
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .contentShape(Rectangle())
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading,
+                )
+                .contentShape(
+                    Rectangle(),
+                )
             }
-            .buttonStyle(.plain)
+            .buttonStyle(
+                .plain,
+            )
 
             ExpandableMarkdownView(
                 text: template.content,
                 backgroundColor: color.grayscaleBackground,
                 collapsedLineLimit: 4,
-                onTapContent: action
+                onTapContent: action,
             )
         }
-        .padding(size.s16)
-        .background(color.grayscaleBackground)
-        .cornerRadius(size.s16)
+        .padding(
+            size.s16,
+        )
+        .background(
+            color.grayscaleBackground,
+        )
+        .cornerRadius(
+            size.s16,
+        )
     }
 }
 
@@ -55,10 +72,10 @@ struct ReadyMadeTemplateListItemCardView: DView {
             id: "thyroidGlandStandard",
             examinationType: "thyroidGland",
             title: "Thyroid ultrasound",
-            content: "**Examination description:**\n\nThe thyroid gland is located in the typical position."
+            content: "**Examination description:**\n\nThe thyroid gland is located in the typical position.",
         ),
         examinationTypeTitle: "Thyroid gland",
-        action: {}
+        action: {},
     )
     .padding()
     .dThemeWrapper()

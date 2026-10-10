@@ -6,8 +6,10 @@ struct PhotoLibraryPickerView: View {
     var body: some View {
         PhotoLibraryPickerRepresentableView(
             selectionLimit: viewModel.selectionLimit,
-            onComplete: viewModel.onComplete
+            onComplete: viewModel.onComplete,
         )
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }

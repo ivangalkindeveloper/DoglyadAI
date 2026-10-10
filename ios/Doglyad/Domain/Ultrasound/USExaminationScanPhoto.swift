@@ -7,7 +7,9 @@ struct ScanPhotoEncodingOptions {
 }
 
 extension CodingUserInfoKey {
-    static let scanPhotoEncodingOptions = CodingUserInfoKey(rawValue: "scanPhotoEncodingOptions")!
+    static let scanPhotoEncodingOptions = CodingUserInfoKey(
+        rawValue: "scanPhotoEncodingOptions",
+    )!
 }
 
 struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
@@ -21,59 +23,95 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
     init(
         id: UUID = UUID(),
         image: UIImage,
-        thumbnail: UIImage? = nil
+        thumbnail: UIImage? = nil,
     ) {
         self.id = id
         self.image = image
-        self.thumbnail = thumbnail ?? image.thumbnail(maxDimension: Self.thumbnailMaxDimension)
+        self.thumbnail = thumbnail ?? image.thumbnail(
+            maxDimension: Self.thumbnailMaxDimension,
+        )
     }
 
     static func make(
-        image: UIImage
+        image: UIImage,
     ) async -> USExaminationScanPhoto {
-        let thumbnail = await Task.detached(priority: .userInitiated) {
-            image.thumbnail(maxDimension: Self.thumbnailMaxDimension)
+        let thumbnail = await Task.detached(
+            priority: .userInitiated,
+        ) {
+            image.thumbnail(
+                maxDimension: Self.thumbnailMaxDimension,
+            )
         }.value
 
         return USExaminationScanPhoto(
             image: image,
-            thumbnail: thumbnail
+            thumbnail: thumbnail,
         )
     }
 
     init(
-        from decoder: Decoder
+        from decoder: Decoder,
     ) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(
+            keyedBy: CodingKeys.self,
+        )
         id = UUID()
-        let data = try container.decode(Data.self, forKey: .data)
-        let image = UIImage(data: data) ?? UIImage()
+        let data = try container.decode(
+            Data.self,
+            forKey: .data,
+        )
+        let image = UIImage(
+            data: data,
+        ) ?? UIImage()
         self.image = image
-        thumbnail = image.thumbnail(maxDimension: Self.thumbnailMaxDimension)
+        thumbnail = image.thumbnail(
+            maxDimension: Self.thumbnailMaxDimension,
+        )
     }
 
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
+    func encode(
+        to encoder: Encoder,
+    ) throws {
+        var container = encoder.container(
+            keyedBy: CodingKeys.self,
+        )
 
-        guard let options = encoder.userInfo[.scanPhotoEncodingOptions] as? ScanPhotoEncodingOptions else {
+        guard let options = encoder.userInfo[
+            .scanPhotoEncodingOptions,
+        ] as? ScanPhotoEncodingOptions else {
             let data = image.pngData() ?? Data()
-            try container.encode(data, forKey: .data)
+            try container.encode(
+                data,
+                forKey: .data,
+            )
             return
         }
 
-        let data = encodedJPEGData(options: options) ?? Data()
-        try container.encode(data, forKey: .data)
+        let data = encodedJPEGData(
+            options: options,
+        ) ?? Data()
+        try container.encode(
+            data,
+            forKey: .data,
+        )
     }
 
     func encodedJPEGData(
-        options: ScanPhotoEncodingOptions
+        options: ScanPhotoEncodingOptions,
     ) -> Data? {
         image
-            .resized(maxDimension: options.resizeMaxDimension)
-            .jpegData(compressionQuality: options.compressionQuality)
+            .resized(
+                maxDimension: options.resizeMaxDimension,
+            )
+            .jpegData(
+                compressionQuality: options.compressionQuality,
+            )
     }
 
-    static func == (lhs: Self, rhs: Self) -> Bool {
+    static func == (
+        lhs: Self,
+        rhs: Self,
+    ) -> Bool {
         lhs.id == rhs.id
     }
 }
@@ -86,12 +124,16 @@ private extension USExaminationScanPhoto {
 
 extension USExaminationScanPhoto {
     static func fromDB(
-        _ db: USExaminationScanPhotoDB
+        _ db: USExaminationScanPhotoDB,
     ) -> USExaminationScanPhoto {
         USExaminationScanPhoto(
             id: db.id,
-            image: UIImage(data: db.data) ?? UIImage(),
-            thumbnail: db.thumbnailData.flatMap { UIImage(data: $0) }
+            image: UIImage(
+                data: db.data,
+            ) ?? UIImage(),
+            thumbnail: db.thumbnailData.flatMap { UIImage(
+                data: $0,
+            ) },
         )
     }
 
@@ -100,8 +142,8 @@ extension USExaminationScanPhoto {
             id: id,
             data: image.pngData() ?? Data(),
             thumbnailData: thumbnail.jpegData(
-                compressionQuality: Self.thumbnailCompressionQuality
-            )
+                compressionQuality: Self.thumbnailCompressionQuality,
+            ),
         )
     }
 }

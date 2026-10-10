@@ -22,181 +22,287 @@ struct ReportDetailScreenView: DView {
             trailing: {
                 DButton(
                     image: .export,
-                    action: viewModel.onTapShare
+                    action: viewModel.onTapShare,
                 )
-                .dStyle(.circle)
-            }
+                .dStyle(
+                    .circle,
+                )
+            },
         ) { toolbarInset, _ in
             ScrollViewReader { proxy in
                 ScrollView(
-                    showsIndicators: false
+                    showsIndicators: false,
                 ) {
                     VStack(
                         alignment: .leading,
-                        spacing: .zero
+                        spacing: .zero,
                     ) {
                         DText(
                             LocalizedStringResource.forExaminationTypeById(
                                 types: container.usExaminationTypesById,
-                                id: examinationData.usExaminationTypeId
-                            )
+                                id: examinationData.usExaminationTypeId,
+                            ),
                         )
                         .dStyle(
-                            font: typography.linkLarge
+                            font: typography.linkLarge,
                         )
-                        .padding(.horizontal, size.s16)
-                        .padding(.bottom, size.s16)
+                        .padding(
+                            .horizontal,
+                            size.s16,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s16,
+                        )
 
                         ReportDetailPhotosView()
 
                         VStack(
                             alignment: .leading,
-                            spacing: .zero
+                            spacing: .zero,
                         ) {
-                            DText(.scanExaminationDateLabel)
-                                .dStyle(
-                                    font: typography.linkSmall,
-                                    color: color.grayscalePlacehold
-                                )
+                            DText(
+                                .scanExaminationDateLabel,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                                color: color.grayscalePlacehold,
+                            )
 
-                            DText(report.date.localizedDateTime())
-                                .dStyle(
-                                    font: typography.textSmall
-                                )
-                                .padding(.bottom, size.s8)
+                            DText(
+                                report.date.localizedDateTime(),
+                            )
+                            .dStyle(
+                                font: typography.textSmall,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s8,
+                            )
 
-                            DText(.scanExaminationNumberLabel)
-                                .dStyle(
-                                    font: typography.linkSmall,
-                                    color: color.grayscalePlacehold
-                                )
+                            DText(
+                                .scanExaminationNumberLabel,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                                color: color.grayscalePlacehold,
+                            )
 
-                            DText(examinationData.examinationNumber)
-                                .dStyle(
-                                    font: typography.textSmall
-                                )
-                                .padding(.bottom, size.s8)
+                            DText(
+                                examinationData.examinationNumber,
+                            )
+                            .dStyle(
+                                font: typography.textSmall,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s8,
+                            )
 
-                            DText(.scanPatientNameLabel)
-                                .dStyle(
-                                    font: typography.linkSmall,
-                                    color: color.grayscalePlacehold
-                                )
+                            DText(
+                                .scanPatientNameLabel,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                                color: color.grayscalePlacehold,
+                            )
 
-                            DText(examinationData.patientName)
-                                .dStyle(
-                                    font: typography.textSmall
-                                )
-                                .padding(.bottom, size.s8)
+                            DText(
+                                examinationData.patientName,
+                            )
+                            .dStyle(
+                                font: typography.textSmall,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s8,
+                            )
 
-                            DText(.scanPatientGenderLabel)
-                                .dStyle(
-                                    font: typography.linkSmall,
-                                    color: color.grayscalePlacehold
-                                )
+                            DText(
+                                .scanPatientGenderLabel,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                                color: color.grayscalePlacehold,
+                            )
 
-                            DText(.forGender(examinationData.patientGender))
-                                .dStyle(
-                                    font: typography.textSmall
-                                )
-                                .padding(.bottom, size.s8)
+                            DText(
+                                .forGender(
+                                    examinationData.patientGender,
+                                ),
+                            )
+                            .dStyle(
+                                font: typography.textSmall,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s8,
+                            )
 
-                            DText(.scanPatientDateOfBirthLabel)
-                                .dStyle(
-                                    font: typography.linkSmall,
-                                    color: color.grayscalePlacehold
-                                )
+                            DText(
+                                .scanPatientDateOfBirthLabel,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                                color: color.grayscalePlacehold,
+                            )
 
-                            DText(examinationData.patientDateOfBirth.localized())
-                                .dStyle(
-                                    font: typography.textSmall
-                                )
-                                .padding(.bottom, size.s8)
+                            DText(
+                                examinationData.patientDateOfBirth.localized(),
+                            )
+                            .dStyle(
+                                font: typography.textSmall,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s8,
+                            )
 
                             if let patientHeight = examinationData.patientHeight {
-                                DText(.scanPatientHeightCMLabel)
-                                    .dStyle(
-                                        font: typography.linkSmall,
-                                        color: color.grayscalePlacehold
-                                    )
+                                DText(
+                                    .scanPatientHeightCMLabel,
+                                )
+                                .dStyle(
+                                    font: typography.linkSmall,
+                                    color: color.grayscalePlacehold,
+                                )
 
-                                DText(patientHeight.formatted(.number.grouping(.never)))
-                                    .dStyle(
-                                        font: typography.textSmall
-                                    )
-                                    .padding(.bottom, size.s8)
+                                DText(
+                                    patientHeight.formatted(
+                                        .number.grouping(
+                                            .never,
+                                        ),
+                                    ),
+                                )
+                                .dStyle(
+                                    font: typography.textSmall,
+                                )
+                                .padding(
+                                    .bottom,
+                                    size.s8,
+                                )
                             }
 
                             if let patientWeight = examinationData.patientWeight {
-                                DText(.scanPatientWeightKGLabel)
-                                    .dStyle(
-                                        font: typography.linkSmall,
-                                        color: color.grayscalePlacehold
-                                    )
-
-                                DText(patientWeight.formatted(.number.grouping(.never)))
-                                    .dStyle(
-                                        font: typography.textSmall
-                                    )
-                                    .padding(.bottom, size.s8)
-                            }
-
-                            DText(.scanExaminationDescriptionLabel)
+                                DText(
+                                    .scanPatientWeightKGLabel,
+                                )
                                 .dStyle(
                                     font: typography.linkSmall,
-                                    color: color.grayscalePlacehold
+                                    color: color.grayscalePlacehold,
                                 )
+
+                                DText(
+                                    patientWeight.formatted(
+                                        .number.grouping(
+                                            .never,
+                                        ),
+                                    ),
+                                )
+                                .dStyle(
+                                    font: typography.textSmall,
+                                )
+                                .padding(
+                                    .bottom,
+                                    size.s8,
+                                )
+                            }
+
+                            DText(
+                                .scanExaminationDescriptionLabel,
+                            )
+                            .dStyle(
+                                font: typography.linkSmall,
+                                color: color.grayscalePlacehold,
+                            )
 
                             ExpandableTextView(
                                 text: examinationData.examinationDescription,
-                                backgroundColor: color.grayscaleBackgroundWeak
+                                backgroundColor: color.grayscaleBackgroundWeak,
                             )
-                            .padding(.bottom, size.s8)
+                            .padding(
+                                .bottom,
+                                size.s8,
+                            )
 
                             if let patientComplaints = examinationData.patientComplaints,
                                !patientComplaints.isEmpty
                             {
-                                DText(.scanPatientComplaintsLabel)
-                                    .dStyle(
-                                        font: typography.linkSmall,
-                                        color: color.grayscalePlacehold
-                                    )
+                                DText(
+                                    .scanPatientComplaintsLabel,
+                                )
+                                .dStyle(
+                                    font: typography.linkSmall,
+                                    color: color.grayscalePlacehold,
+                                )
 
                                 ExpandableTextView(
                                     text: patientComplaints,
-                                    backgroundColor: color.grayscaleBackgroundWeak
+                                    backgroundColor: color.grayscaleBackgroundWeak,
                                 )
-                                .padding(.bottom, size.s8)
-                                .transition(.opacity)
+                                .padding(
+                                    .bottom,
+                                    size.s8,
+                                )
+                                .transition(
+                                    .opacity,
+                                )
                             }
 
-                            DText(.reportActualModelResponseTitle)
-                                .dStyle(
-                                    font: typography.linkLarge
-                                )
-                                .padding(.top, size.s16)
-                                .padding(.horizontal, size.s8)
-                                .padding(.bottom, size.s16)
+                            DText(
+                                .reportActualModelResponseTitle,
+                            )
+                            .dStyle(
+                                font: typography.linkLarge,
+                            )
+                            .padding(
+                                .top,
+                                size.s16,
+                            )
+                            .padding(
+                                .horizontal,
+                                size.s8,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s16,
+                            )
 
                             NeuralModelReportCardView(
                                 report: report.actualModelReport,
-                                onTapCopy: { viewModel.onTapCopy(report: report.actualModelReport) }
+                                onTapCopy: { viewModel.onTapCopy(
+                                    report: report.actualModelReport,
+                                ) },
                             )
-                            .padding(.top, toolbarInset)
-                            .id(ReportDetailViewModel.actualModelReportCardScrollId(
-                                toolbarInset: toolbarInset
-                            ))
-                            .padding(.top, -toolbarInset)
-                            .padding(.bottom, size.s8)
+                            .padding(
+                                .top,
+                                toolbarInset,
+                            )
+                            .id(
+                                ReportDetailViewModel.actualModelReportCardScrollId(
+                                    toolbarInset: toolbarInset,
+                                ),
+                            )
+                            .padding(
+                                .top,
+                                -toolbarInset,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s8,
+                            )
 
                             NeuralModelCardView(
-                                onTap: viewModel.onTapNeuralModelSelection
+                                onTap: viewModel.onTapNeuralModelSelection,
                             )
-                            .padding(.bottom, size.s16)
+                            .padding(
+                                .bottom,
+                                size.s16,
+                            )
 
                             NeuralModelSettingsCardView(
                                 feature: .neuralModelSettings,
-                                onTap: viewModel.onTapNeuralModelSettings
+                                onTap: viewModel.onTapNeuralModelSettings,
                             )
 
                             DButton(
@@ -205,51 +311,91 @@ struct ReportDetailScreenView: DView {
                                 action: {
                                     viewModel.onTapRepeatScan(
                                         proxy: proxy,
-                                        toolbarInset: toolbarInset
+                                        toolbarInset: toolbarInset,
                                     )
                                 },
-                                isLoading: viewModel.isLoading
+                                isLoading: viewModel.isLoading,
                             )
-                            .dStyle(.primaryButton)
-                            .padding(.bottom, size.s16)
+                            .dStyle(
+                                .primaryButton,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s16,
+                            )
 
                             if !report.previousModelReports.isEmpty {
                                 Group {
-                                    DText(.reportPreviousModelResponsesTitle)
-                                        .dStyle(
-                                            font: typography.linkLarge
-                                        )
-                                        .padding(.top, size.s8)
-                                        .padding(.horizontal, size.s8)
-                                        .padding(.bottom, size.s16)
+                                    DText(
+                                        .reportPreviousModelResponsesTitle,
+                                    )
+                                    .dStyle(
+                                        font: typography.linkLarge,
+                                    )
+                                    .padding(
+                                        .top,
+                                        size.s8,
+                                    )
+                                    .padding(
+                                        .horizontal,
+                                        size.s8,
+                                    )
+                                    .padding(
+                                        .bottom,
+                                        size.s16,
+                                    )
 
-                                    ForEach(report.previousModelReports) { modelReport in
+                                    ForEach(
+                                        report.previousModelReports,
+                                    ) { modelReport in
                                         NeuralModelReportCardView(
                                             report: modelReport,
-                                            onTapCopy: { viewModel.onTapCopy(report: modelReport) }
+                                            onTapCopy: { viewModel.onTapCopy(
+                                                report: modelReport,
+                                            ) },
                                         )
-                                        .padding(.bottom, size.s8)
+                                        .padding(
+                                            .bottom,
+                                            size.s8,
+                                        )
                                     }
                                 }
-                                .transition(.opacity)
+                                .transition(
+                                    .opacity,
+                                )
                             }
                         }
-                        .padding(.horizontal, size.s16)
+                        .padding(
+                            .horizontal,
+                            size.s16,
+                        )
                     }
-                    .padding(.top, size.s16 + toolbarInset)
-                    .padding(.bottom, size.s128)
+                    .padding(
+                        .top,
+                        size.s16 + toolbarInset,
+                    )
+                    .padding(
+                        .bottom,
+                        size.s128,
+                    )
                 }
             }
         }
         .animation(
             theme.animation,
-            value: viewModel.report.actualModelReport.id
+            value: viewModel.report.actualModelReport.id,
         )
         .animation(
             theme.animation,
-            value: viewModel.report.previousModelReports.map(\.id)
+            value: viewModel.report.previousModelReports.map(
+                \.id,
+            ),
         )
-        .onAppear(perform: viewModel.onAppear)
-        .environmentObject(viewModel)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
+        .environmentObject(
+            viewModel,
+        )
     }
 }

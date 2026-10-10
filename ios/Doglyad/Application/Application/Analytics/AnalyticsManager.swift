@@ -7,84 +7,114 @@ final class AnalyticsManager {
     private let isEnabled: Bool
 
     init(
-        isEnabled: Bool = true
+        isEnabled: Bool = true,
     ) {
         self.isEnabled = isEnabled
     }
 
     func applicationOpened(
         environment: EnvironmentType,
-        appVersion: String
+        appVersion: String,
     ) {
         guard isEnabled, !Self.didLogApplicationOpened else { return }
         Self.didLogApplicationOpened = true
 
         log(
             event: .applicationOpened,
-            parameters: AnalyticsParameters([
-                .appVersion: .string(appVersion),
-                .environment: .string(environment.rawValue),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .appVersion: .string(
+                        appVersion,
+                    ),
+                    .environment: .string(
+                        environment.rawValue,
+                    ),
+                ],
+            ),
         )
     }
 
     func screenViewed(
         _ screen: AnalyticsScreen,
-        parameters: AnalyticsParameters = .empty
+        parameters: AnalyticsParameters = .empty,
     ) {
         log(
             event: .screenViewed,
-            parameters: AnalyticsParameters([
-                .screen: .string(screen.rawValue),
-            ]).merging(parameters)
+            parameters: AnalyticsParameters(
+                [
+                    .screen: .string(
+                        screen.rawValue,
+                    ),
+                ],
+            ).merging(
+                parameters,
+            ),
         )
     }
 
     func bottomSheetViewed(
         _ bottomSheet: AnalyticsBottomSheet,
-        parameters: AnalyticsParameters = .empty
+        parameters: AnalyticsParameters = .empty,
     ) {
         log(
             event: .bottomSheetViewed,
-            parameters: AnalyticsParameters([
-                .bottomSheet: .string(bottomSheet.rawValue),
-            ]).merging(parameters)
+            parameters: AnalyticsParameters(
+                [
+                    .bottomSheet: .string(
+                        bottomSheet.rawValue,
+                    ),
+                ],
+            ).merging(
+                parameters,
+            ),
         )
     }
 
     func buttonTapped(
         _ button: AnalyticsButton,
-        parameters: AnalyticsParameters = .empty
+        parameters: AnalyticsParameters = .empty,
     ) {
         log(
             event: .buttonTapped,
-            parameters: AnalyticsParameters([
-                .button: .string(button.rawValue),
-            ]).merging(parameters)
+            parameters: AnalyticsParameters(
+                [
+                    .button: .string(
+                        button.rawValue,
+                    ),
+                ],
+            ).merging(
+                parameters,
+            ),
         )
     }
 
     func actionCompleted(
         _ action: AnalyticsAction,
-        parameters: AnalyticsParameters = .empty
+        parameters: AnalyticsParameters = .empty,
     ) {
         log(
             event: .actionCompleted,
-            parameters: AnalyticsParameters([
-                .action: .string(action.rawValue),
-            ]).merging(parameters)
+            parameters: AnalyticsParameters(
+                [
+                    .action: .string(
+                        action.rawValue,
+                    ),
+                ],
+            ).merging(
+                parameters,
+            ),
         )
     }
 
     private func log(
         event: AnalyticsEvent,
-        parameters: AnalyticsParameters
+        parameters: AnalyticsParameters,
     ) {
         guard isEnabled else { return }
 
         Analytics.logEvent(
             event.rawValue,
-            parameters: parameters.firebaseParameters
+            parameters: parameters.firebaseParameters,
         )
     }
 }

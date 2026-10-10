@@ -11,10 +11,10 @@ extension InitializationProcess {
                     let applicationConfig = process.applicationConfig!
                     guard applicationConfig.isServiceAvailable else {
                         throw InitializationError.serviceUnavailable(
-                            email: applicationConfig.contactEmail
+                            email: applicationConfig.contactEmail,
                         )
                     }
-                }
+                },
             ),
             SyncInitializationStep<InitializationProcess>(
                 title: "Application version",
@@ -27,9 +27,9 @@ extension InitializationProcess {
 
                     throw InitializationError.newVersion(
                         appleUpdateUrl: applicationConfig.appleUpdateUrl,
-                        appStoreId: applicationConfig.appStoreId
+                        appStoreId: applicationConfig.appStoreId,
                     )
-                }
+                },
             ),
             SyncInitializationStep<InitializationProcess>(
                 title: "Network configuration",
@@ -37,10 +37,10 @@ extension InitializationProcess {
                     let network = process.applicationConfig!.network
                     process.httpClient!.updateConfiguration(
                         timeoutIntervalForRequest: network.timeoutIntervalForRequest,
-                        timeoutIntervalForResource: network.timeoutIntervalForResource
+                        timeoutIntervalForResource: network.timeoutIntervalForResource,
                     )
-                }
+                },
             ),
-        ]
+        ],
     )
 }

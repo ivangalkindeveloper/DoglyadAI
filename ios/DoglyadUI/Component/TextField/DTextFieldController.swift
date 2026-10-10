@@ -14,7 +14,7 @@ public final class DTextFieldController: ObservableObject {
         initialText: String = "",
         isRequired: Bool = false,
         formatters: [any DTextFieldFormatter] = [],
-        validators: [any DTextFieldValidator] = []
+        validators: [any DTextFieldValidator] = [],
     ) {
         self.isRequired = isRequired
         self.formatters = formatters
@@ -24,7 +24,7 @@ public final class DTextFieldController: ObservableObject {
         for formatter in formatters {
             formattedText = formatter.format(
                 currentValue: "",
-                proposedValue: formattedText
+                proposedValue: formattedText,
             )
         }
         text = formattedText
@@ -35,13 +35,13 @@ public final class DTextFieldController: ObservableObject {
     }
 
     public func setText(
-        _ proposedValue: String
+        _ proposedValue: String,
     ) {
         var formattedText = proposedValue
         for formatter in formatters {
             formattedText = formatter.format(
                 currentValue: text,
-                proposedValue: formattedText
+                proposedValue: formattedText,
             )
         }
         guard formattedText != text else { return }
@@ -61,7 +61,7 @@ public final class DTextFieldController: ObservableObject {
     }
 
     public func showError(
-        text: String
+        text: String,
     ) {
         isError = true
         errorText = text
@@ -82,7 +82,9 @@ public final class DTextFieldController: ObservableObject {
         }
 
         for validator in validators {
-            if let errorText = validator.errorText(for: value) {
+            if let errorText = validator.errorText(
+                for: value,
+            ) {
                 isError = true
                 self.errorText = errorText
                 return false

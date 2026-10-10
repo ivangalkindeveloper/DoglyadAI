@@ -24,7 +24,7 @@
 
 /ios/Config/
 /ios/Firebase/
-/ios/DoglyadNeuralModel/Resources/mlx-Qwen2.5-1.5B-Instruct-4bit
+/ios/DoglyadNeuralModel/Resources/
 /ios/DoglyadTests/VoiceFixtures/
 
 /ml/examination/

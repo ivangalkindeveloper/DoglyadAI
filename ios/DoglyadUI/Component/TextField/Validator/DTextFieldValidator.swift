@@ -1,5 +1,5 @@
 public protocol DTextFieldValidator {
     func errorText(
-        for value: String?
+        for value: String?,
     ) -> String?
 }

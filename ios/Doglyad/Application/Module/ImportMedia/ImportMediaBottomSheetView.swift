@@ -9,53 +9,65 @@ struct ImportMediaBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: .importMediaTitle,
-            fraction: 0.25
+            fraction: 0.25,
         ) { toolbarHeight, _ in
             VStack(
-                spacing: size.s8
+                spacing: size.s8,
             ) {
                 DButtonCard(
-                    action: viewModel.onTapCamera
+                    action: viewModel.onTapCamera,
                 ) {
                     row(
                         icon: .camera,
-                        title: .buttonCamera
+                        title: .buttonCamera,
                     )
                 }
 
                 DButtonCard(
-                    action: viewModel.onTapGallery
+                    action: viewModel.onTapGallery,
                 ) {
                     row(
                         icon: .image,
-                        title: .buttonGallery
+                        title: .buttonGallery,
                     )
                 }
 
                 Spacer()
             }
-            .padding(.top, toolbarHeight + size.s16)
-            .padding(.horizontal, size.s16)
+            .padding(
+                .top,
+                toolbarHeight + size.s16,
+            )
+            .padding(
+                .horizontal,
+                size.s16,
+            )
         }
-        .onAppear(perform: viewModel.onAppear)
-        .onDisappear(perform: viewModel.onDisappear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 
     private func row(
         icon: ImageResource,
-        title: LocalizedStringResource
+        title: LocalizedStringResource,
     ) -> some View {
         HStack(
-            spacing: size.s8
+            spacing: size.s8,
         ) {
             DIcon(
                 icon,
-                color: color.grayscaleHeader
+                color: color.grayscaleHeader,
             )
-            DText(title)
-                .dStyle(
-                    font: typography.linkSmall
-                )
+            DText(
+                title,
+            )
+            .dStyle(
+                font: typography.linkSmall,
+            )
             Spacer()
         }
     }

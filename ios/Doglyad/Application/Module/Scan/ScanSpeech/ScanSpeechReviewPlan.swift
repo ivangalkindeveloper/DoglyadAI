@@ -1,6 +1,6 @@
 import DoglyadNeuralModel
 
 struct ScanSpeechReviewPlan {
-    let automatic: [VoiceFieldProposal]
-    let uncertain: [VoiceFieldProposal]
+    let automatic: [DNeuralUltrasoundVoiceFieldProposal]
+    let uncertain: [DNeuralUltrasoundVoiceFieldProposal]
 }

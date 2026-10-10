@@ -24,17 +24,17 @@ struct NeuralModelSettingsScreen: View {
                     ultrasoundViewModel.saveNeuralModelSettings(
                         isMarkdown: isMarkdown,
                         temperature: temperature,
-                        maxTokens: maxTokens
+                        maxTokens: maxTokens,
                     )
-                }
-            )
+                },
+            ),
         )
     }
 }
 
 #Preview {
     NeuralModelSettingsScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

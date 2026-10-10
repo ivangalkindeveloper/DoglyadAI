@@ -16,15 +16,15 @@ struct SubscriptionPaywallScreen: View {
                 arguments: arguments,
                 onRefreshStatus: { [subscriptionViewModel] in
                     await subscriptionViewModel.refreshStatus()
-                }
-            )
+                },
+            ),
         )
     }
 }
 
 #Preview {
     SubscriptionPaywallScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

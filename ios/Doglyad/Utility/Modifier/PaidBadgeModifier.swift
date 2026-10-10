@@ -7,14 +7,18 @@ struct PaidBadgeModifier: ViewModifier {
     let feature: PaidFeature
 
     @ViewBuilder
-    func body(content: Content) -> some View {
-        switch subscription.availability(of: feature) {
+    func body(
+        content: Content,
+    ) -> some View {
+        switch subscription.availability(
+            of: feature,
+        ) {
         case .unavailable:
             EmptyView()
         case .offered:
             DBadge(
                 .entitlementPro,
-                isShimmering: true
+                isShimmering: true,
             ) {
                 content
             }
@@ -25,7 +29,13 @@ struct PaidBadgeModifier: ViewModifier {
 }
 
 extension View {
-    func paidBadge(_ feature: PaidFeature) -> some View {
-        modifier(PaidBadgeModifier(feature: feature))
+    func paidBadge(
+        _ feature: PaidFeature,
+    ) -> some View {
+        modifier(
+            PaidBadgeModifier(
+                feature: feature,
+            ),
+        )
     }
 }

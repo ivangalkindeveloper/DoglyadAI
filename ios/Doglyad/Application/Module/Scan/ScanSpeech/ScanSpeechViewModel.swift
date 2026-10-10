@@ -11,13 +11,15 @@ final class ScanSpeechViewModel: DViewModel {
     private(set) var speechController: any DSpeechControllerProtocol
     private var speechCancellable: AnyCancellable?
     private var transcriptCancellable: AnyCancellable?
-    private var isActive = true
+    // Ignore UI actions and asynchronous results after the sheet disappears.
+    private var isSheetPresented = true
+    // Editable review text; the original ASR result stays in reviewTranscript.
     let transcriptController = DTextFieldController()
-    @Published private(set) var reviewTranscript: DictationTranscript?
-    @Published private(set) var dictationProposal: DictationProposal?
-    @Published private(set) var selectedFieldIds = Set<VoiceFieldId>()
-    @Published private(set) var reviewProposals: [VoiceFieldProposal] = []
-    @Published private(set) var automaticFieldIds = Set<VoiceFieldId>()
+    @Published private(set) var reviewTranscript: DSpeechTranscript?
+    @Published private(set) var dictationProposal: DNeuralUltrasoundDictationProposal?
+    @Published private(set) var selectedFieldIds = Set<DNeuralUltrasoundVoiceFieldId>()
+    @Published private(set) var reviewProposals: [DNeuralUltrasoundVoiceFieldProposal] = []
+    @Published private(set) var automaticFieldIds = Set<DNeuralUltrasoundVoiceFieldId>()
     @Published private(set) var isParsingAutomatically = false
 
     init(
@@ -25,20 +27,23 @@ final class ScanSpeechViewModel: DViewModel {
         messager: DMessager,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: ScanSpeechBottomSheetArguments
+        arguments: ScanSpeechBottomSheetArguments,
     ) {
         self.messager = messager
         self.arguments = arguments
         let contextualStrings = arguments.examinationType.contextualStrings
         speechController = DSpeechFactory.make(
             locale: container.language.currentLocale,
-            contextualStrings: contextualStrings
+            contextualStrings: contextualStrings,
+            lexiconLocalization: container.voiceLocalization.speech,
         )
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.scanSpeech)
+            analyticsDestination: .bottomSheet(
+                .scanSpeech,
+            ),
         )
         observeSpeechController()
         transcriptCancellable = transcriptController.objectWillChange.sink { [weak self] _ in
@@ -60,26 +65,33 @@ final class ScanSpeechViewModel: DViewModel {
     }
 
     private func showAutomaticStopIfNeeded() {
-        guard isActive, !isLoading, reviewTranscript == nil,
+        guard isSheetPresented, !isLoading, reviewTranscript == nil,
               let transcript = speechController.lastTranscript else { return }
         switch speechController.status {
         case .stopped:
-            processTranscript(transcript)
+            processTranscript(
+                transcript,
+            )
         case .preparing, .recording, .transcribing:
             break
-        @unknown default:
-            fatalError()
         }
     }
 
-    private func showReview(_ transcript: DictationTranscript) {
-        transcriptController.setText(transcript.correctedText)
+    private func showReview(
+        _ transcript: DSpeechTranscript,
+    ) {
+        transcriptController.setText(
+            transcript.correctedText,
+        )
         reviewTranscript = transcript
         isParsingAutomatically = false
         isLoading = false
-        analytics.actionCompleted(.voiceDictationReviewed, parameters: AnalyticsParameters([
-            .result: .string(transcript.completion.rawValue),
-        ]))
+        analytics.actionCompleted(
+            .voiceDictationReviewed,
+            parameters: .dictationReviewed(
+                completion: transcript.completion,
+            ),
+        )
     }
 
     @Published var isLoading = false
@@ -87,14 +99,14 @@ final class ScanSpeechViewModel: DViewModel {
     var isModelReady: Bool {
         switch modelPreparation {
         case .ready:
-            return true
+            true
         case .checking, .downloading, .loading, .failed:
-            return false
+            false
         }
     }
 
     func onTapRetryModelPreparation() {
-        guard isActive else { return }
+        guard isSheetPresented else { return }
         speechController.prepareModel()
     }
 
@@ -125,20 +137,24 @@ final class ScanSpeechViewModel: DViewModel {
         guard let reviewTranscript else { return true }
         return isLoading || ScanSpeechReviewPolicy.textForParsing(
             transcript: reviewTranscript,
-            visibleText: transcriptController.text
+            visibleText: transcriptController.text,
         ) == nil
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.speechBack)
+        analytics.buttonTapped(
+            .speechBack,
+        )
         if automaticFieldIds.isEmpty {
-            analytics.actionCompleted(.voiceFlowCancelled)
+            analytics.actionCompleted(
+                .voiceFlowCancelled,
+            )
         }
         coordinator.dismissSheet()
     }
 
     func onDisappear() {
-        isActive = false
+        isSheetPresented = false
         speechController.cancel()
     }
 
@@ -147,11 +163,9 @@ final class ScanSpeechViewModel: DViewModel {
         case .preparing,
              .recording,
              .transcribing:
-            return .check
+            .check
         case .stopped:
-            return .play
-        @unknown default:
-            fatalError()
+            .play
         }
     }
 
@@ -164,34 +178,28 @@ final class ScanSpeechViewModel: DViewModel {
         case .recording,
              .stopped:
             return false
-        @unknown default:
-            fatalError()
         }
     }
 
     var isAudioMeterVisible: Bool {
         switch speechController.status {
         case .recording:
-            return true
+            true
         case .preparing,
              .transcribing,
              .stopped:
-            return false
-        @unknown default:
-            fatalError()
+            false
         }
     }
 
     var processingDescription: LocalizedStringResource? {
         switch speechController.status {
         case .preparing:
-            return .speechProcessPreparingDescription
+            .speechProcessPreparingDescription
         case .transcribing:
-            return .speechProcessTranscribingDescription
+            .speechProcessTranscribingDescription
         case .recording, .stopped:
-            return nil
-        @unknown default:
-            fatalError()
+            nil
         }
     }
 
@@ -208,13 +216,13 @@ final class ScanSpeechViewModel: DViewModel {
     }
 
     func onTapSpeech() {
-        guard isActive, isModelReady, !isLoading, reviewTranscript == nil else { return }
+        guard isSheetPresented, isModelReady, !isLoading, reviewTranscript == nil else { return }
 
         analytics.buttonTapped(
             .speechToggle,
-            parameters: AnalyticsParameters([
-                .source: .string(speechStatusAnalyticsValue),
-            ])
+            parameters: .speechToggle(
+                status: speechController.status,
+            ),
         )
 
         switch speechController.status {
@@ -224,24 +232,7 @@ final class ScanSpeechViewModel: DViewModel {
             onStopSpeech()
         case .stopped:
             speechController.start()
-            container.examinationNeuralModelFactory?.prewarm()
-        @unknown default:
-            fatalError()
-        }
-    }
-
-    private var speechStatusAnalyticsValue: String {
-        switch speechController.status {
-        case .preparing:
-            "preparing"
-        case .transcribing:
-            "transcribing"
-        case .recording:
-            "recording"
-        case .stopped:
-            "stopped"
-        @unknown default:
-            "unknown"
+            container.examinationNeuralModelFactory.prewarm()
         }
     }
 
@@ -253,118 +244,136 @@ final class ScanSpeechViewModel: DViewModel {
             guard let self else { return }
 
             let transcript = await controller.stop()
-            guard self.isActive else { return }
+            guard isSheetPresented else { return }
             guard let transcript else {
-                self.isLoading = false
+                isLoading = false
                 return
             }
-            guard self.reviewTranscript == nil else { return }
-            self.processTranscript(transcript)
+            guard reviewTranscript == nil else { return }
+            processTranscript(
+                transcript,
+            )
         }
     }
 
-    private func processTranscript(_ transcript: DictationTranscript) {
+    /// A finished, nonempty result starts extraction automatically. Other results
+    /// first go to text review; field confidence is checked after extraction.
+    private func processTranscript(
+        _ transcript: DSpeechTranscript,
+    ) {
         guard transcript.isReadyForParsing else {
-            showReview(transcript)
+            showReview(
+                transcript,
+            )
             return
         }
         reviewTranscript = transcript
-        transcriptController.setText(transcript.correctedText)
+        transcriptController.setText(
+            transcript.correctedText,
+        )
         isParsingAutomatically = true
         isLoading = true
-        onParseProposals(speech: transcript.correctedText)
+        onParseProposals(
+            speech: transcript.correctedText,
+        )
     }
 
     func onTapRecordAgain() {
-        guard isActive, !isLoading, reviewTranscript != nil, dictationProposal == nil else { return }
+        guard isSheetPresented, !isLoading, reviewTranscript != nil, dictationProposal == nil else { return }
         speechController.start()
         switch speechController.status {
         case .preparing, .recording, .transcribing:
             reviewTranscript = nil
             transcriptController.clear()
-            container.examinationNeuralModelFactory?.prewarm()
+            container.examinationNeuralModelFactory.prewarm()
         case .stopped:
             break
-        @unknown default:
-            fatalError()
         }
     }
 
     func onTapContinue() {
-        guard isActive, !isLoading, dictationProposal == nil, let reviewTranscript,
+        guard isSheetPresented, !isLoading, dictationProposal == nil, let reviewTranscript,
               let speech = ScanSpeechReviewPolicy.textForParsing(
                   transcript: reviewTranscript,
-                  visibleText: transcriptController.text
+                  visibleText: transcriptController.text,
               ) else { return }
         if speech != reviewTranscript.correctedText {
-            analytics.actionCompleted(.voiceTranscriptEdited)
+            analytics.actionCompleted(
+                .voiceTranscriptEdited,
+            )
         }
 
         isLoading = true
-        onParseProposals(speech: speech)
+        onParseProposals(
+            speech: speech,
+        )
     }
 
     private func onParseProposals(
-        speech: String
+        speech: String,
     ) {
         let factory = container.examinationNeuralModelFactory
-        let repository = container.ultrasoundReportRepository
-        let request = DictationParseRequest(
+        let request = DNeuralUltrasoundDictationParseRequest(
             text: speech,
             examinationTypeId: arguments.examinationType.id,
+            examinationTypeTitle: arguments.examinationType.title,
             locale: container.language.currentLocale,
-            allowedFields: VoiceFieldId.allCases
+            allowedFields: DNeuralUltrasoundVoiceFieldId.allCases,
+            localization: container.voiceLocalization.dictation,
         )
         let started = Date()
 
         handle {
-            try await DictationParseRouter.parse(
+            let model = try factory.model()
+            return try await model.parseProposals(
                 request: request,
-                isFoundationModelsAvailable: factory?.isAvailable ?? false,
-                parseFoundationModels: {
-                    guard let factory else { throw DExaminationNeuralModelError.unavailable }
-                    return try await factory.parseProposals(request: request)
-                },
-                parseServer: {
-                    try await repository.parseDictation(
-                        locale: request.locale,
-                        examinationTypeId: request.examinationTypeId,
-                        transcript: request.text
-                    )
-                }
             )
         } onDefer: {
             self.isLoading = false
         } onMainSuccess: { proposal in
-            guard self.isActive else { return }
+            guard self.isSheetPresented else { return }
             guard let transcript = self.reviewTranscript else { return }
             let plan = ScanSpeechConfidencePolicy.plan(
                 proposal: proposal,
                 transcript: transcript,
-                parsedText: speech
+                parsedText: speech,
+                noComplaintsPattern: self.container.voiceLocalization.dictation.pattern(
+                    .noComplaintsValue,
+                ),
             )
             if !plan.automatic.isEmpty {
-                guard self.arguments.onConfirm?(plan.automatic) == true else {
-                    self.showReview(transcript)
+                guard self.arguments.onConfirm?(
+                    plan.automatic,
+                ) == true else {
+                    self.showReview(
+                        transcript,
+                    )
                     self.messager.showUnknownError()
                     return
                 }
-                self.automaticFieldIds.formUnion(plan.automatic.map(\.id))
-                self.analytics.actionCompleted(.voiceProposalApplied, parameters: AnalyticsParameters([
-                    .source: .string("automatic"),
-                    .itemCount: .int(plan.automatic.count),
-                    .warningCount: .int(0),
-                ]))
+                self.automaticFieldIds.formUnion(
+                    plan.automatic.map(
+                        \.id,
+                    ),
+                )
+                self.analytics.actionCompleted(
+                    .voiceProposalApplied,
+                    parameters: .voiceProposalApplied(
+                        proposals: plan.automatic,
+                        source: .automatic,
+                    ),
+                )
             }
             self.isParsingAutomatically = false
             self.reviewProposals = plan.uncertain
             self.selectedFieldIds = []
-            self.analytics.actionCompleted(.voiceProposalsGenerated, parameters: AnalyticsParameters([
-                .itemCount: .int(proposal.proposals.count),
-                .warningCount: .int(proposal.proposals.reduce(0) { $0 + $1.warnings.count }),
-                .rejectedCount: .int(proposal.rejectedFieldIds.count),
-                .durationMs: .int(Int(Date().timeIntervalSince(started) * 1000)),
-            ]))
+            self.analytics.actionCompleted(
+                .voiceProposalsGenerated,
+                parameters: .voiceProposalsGenerated(
+                    proposal: proposal,
+                    startedAt: started,
+                ),
+            )
             if plan.uncertain.isEmpty,
                proposal.rejectedFieldIds.isEmpty,
                proposal.unmappedFindings.isEmpty,
@@ -375,29 +384,45 @@ final class ScanSpeechViewModel: DViewModel {
                       proposal.rejectedFieldIds.isEmpty,
                       proposal.unmappedFindings.isEmpty
             {
-                self.showReview(transcript)
+                self.showReview(
+                    transcript,
+                )
             } else {
                 self.dictationProposal = proposal
             }
         } onUnknownError: { _ in
-            guard self.isActive else { return }
+            guard self.isSheetPresented else { return }
             if let transcript = self.reviewTranscript {
-                self.showReview(transcript)
+                self.showReview(
+                    transcript,
+                )
             }
             self.messager.showUnknownError()
         }
     }
 
-    func isSelected(_ id: VoiceFieldId) -> Bool {
-        selectedFieldIds.contains(id)
+    func isSelected(
+        _ id: DNeuralUltrasoundVoiceFieldId,
+    ) -> Bool {
+        selectedFieldIds.contains(
+            id,
+        )
     }
 
-    func onTapProposal(_ id: VoiceFieldId) {
+    func onTapProposal(
+        _ id: DNeuralUltrasoundVoiceFieldId,
+    ) {
         guard !isLoading else { return }
-        if selectedFieldIds.contains(id) {
-            selectedFieldIds.remove(id)
+        if selectedFieldIds.contains(
+            id,
+        ) {
+            selectedFieldIds.remove(
+                id,
+            )
         } else {
-            selectedFieldIds.insert(id)
+            selectedFieldIds.insert(
+                id,
+            )
         }
     }
 
@@ -410,20 +435,28 @@ final class ScanSpeechViewModel: DViewModel {
 
     func onTapApplySelected() {
         guard !isApplyDisabled, dictationProposal != nil else { return }
-        let selected = reviewProposals.filter { selectedFieldIds.contains($0.id) }
-        guard arguments.onConfirm?(selected) == true else {
+        let selected = reviewProposals.filter { selectedFieldIds.contains(
+            $0.id,
+        ) }
+        guard arguments.onConfirm?(
+            selected,
+        ) == true else {
             messager.showUnknownError()
             return
         }
-        analytics.actionCompleted(.voiceProposalApplied, parameters: AnalyticsParameters([
-            .source: .string("reviewed"),
-            .itemCount: .int(selected.count),
-            .warningCount: .int(selected.reduce(0) { $0 + $1.warnings.count }),
-        ]))
+        analytics.actionCompleted(
+            .voiceProposalApplied,
+            parameters: .voiceProposalApplied(
+                proposals: selected,
+                source: .reviewed,
+            ),
+        )
         coordinator.dismissSheet()
     }
 
-    func fieldTitle(_ id: VoiceFieldId) -> LocalizedStringResource {
+    func fieldTitle(
+        _ id: DNeuralUltrasoundVoiceFieldId,
+    ) -> LocalizedStringResource {
         switch id {
         case .examinationNumber: .scanExaminationNumberLabel
         case .patientName: .scanPatientNameLabel
@@ -436,7 +469,9 @@ final class ScanSpeechViewModel: DViewModel {
         }
     }
 
-    func warningText(_ warning: VoiceProposalWarning) -> LocalizedStringResource {
+    func warningText(
+        _ warning: DNeuralVoiceProposalWarning,
+    ) -> LocalizedStringResource {
         switch warning {
         case .ambiguousDictation: .speechProposalWarningAmbiguous
         case .sideMismatch: .speechProposalWarningSide
@@ -450,20 +485,43 @@ final class ScanSpeechViewModel: DViewModel {
         }
     }
 
-    func proposedValue(_ value: VoiceFieldValue) -> String {
+    func proposedValue(
+        _ value: DNeuralVoiceFieldValue,
+    ) -> String {
         switch value {
-        case let .text(text): text
-        case let .gender(gender):
+        case let .text(
+            text,
+        ): text
+        case let .gender(
+            gender,
+        ):
             switch gender {
-            case .male: String(localized: .scanGenderMaleLabel)
-            case .female: String(localized: .scanGenderFemaleLabel)
+            case .male: String(
+                    localized: .scanGenderMaleLabel,
+                )
+            case .female: String(
+                    localized: .scanGenderFemaleLabel,
+                )
             }
-        case let .date(date): date.formatted(date: .abbreviated, time: .omitted)
-        case let .number(number): String(number)
+        case let .date(
+            date,
+        ): date.formatted(
+                date: .abbreviated,
+                time: .omitted,
+            )
+        case let .number(
+            number,
+        ): String(
+                number,
+            )
         }
     }
 
-    func currentValue(_ id: VoiceFieldId) -> String {
-        arguments.getCurrentValue(id)
+    func currentValue(
+        _ id: DNeuralUltrasoundVoiceFieldId,
+    ) -> String {
+        arguments.getCurrentValue(
+            id,
+        )
     }
 }

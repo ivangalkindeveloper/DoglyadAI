@@ -15,15 +15,15 @@ struct StorageScreen: View {
                 container: container,
                 messager: messager,
                 router: router,
-                subscription: subscriptionViewModel
-            )
+                subscription: subscriptionViewModel,
+            ),
         )
     }
 }
 
 #Preview {
     StorageScreen(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

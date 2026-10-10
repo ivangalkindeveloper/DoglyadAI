@@ -13,7 +13,7 @@ final class SettingsViewModel: DViewModel {
         router: DRouter,
         initialNeuralModel: USExaminationNeuralModel,
         subscription: SubscriptionViewModel,
-        onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void
+        onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void,
     ) {
         self.onNeuralModelSelected = onNeuralModelSelected
         neuralModel = initialNeuralModel
@@ -21,7 +21,9 @@ final class SettingsViewModel: DViewModel {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.settings)
+            analyticsDestination: .screen(
+                .settings,
+            ),
         )
     }
 
@@ -37,102 +39,146 @@ final class SettingsViewModel: DViewModel {
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.settingsBack)
+        analytics.buttonTapped(
+            .settingsBack,
+        )
         coordinator.pop()
     }
 
     func historyDescription() -> LocalizedStringResource {
-        reportsCount == 0 ? .settingsHistoryEmptyDescription : .settingsHistoryDescription(count: reportsCount)
+        reportsCount == 0 ? .settingsHistoryEmptyDescription : .settingsHistoryDescription(
+            count: reportsCount,
+        )
     }
 
     func onTapHistory() {
         analytics.buttonTapped(
             .settingsHistory,
-            parameters: AnalyticsParameters([
-                .itemCount: .int(reportsCount),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .itemCount: .int(
+                        reportsCount,
+                    ),
+                ],
+            ),
         )
-        coordinator.screen(.history)
+        coordinator.screen(
+            .history,
+        )
     }
 
     func onTapTemplates() {
-        analytics.buttonTapped(.settingsTemplates)
-        coordinator.screen(.templateList)
+        analytics.buttonTapped(
+            .settingsTemplates,
+        )
+        coordinator.screen(
+            .templateList,
+        )
     }
 
     func onTapUserSettings() {
-        analytics.buttonTapped(.settingsUserSettings)
-        coordinator.screen(.userSettings)
+        analytics.buttonTapped(
+            .settingsUserSettings,
+        )
+        coordinator.screen(
+            .userSettings,
+        )
     }
 
     func onTapSubscription() {
         analytics.buttonTapped(
             .settingsSubscription,
-            parameters: AnalyticsParameters([
-                .subscriptionType: .string(subscription.status?.type.rawValue ?? "none"),
-            ])
+            parameters: .subscription(
+                type: subscription.status?.type,
+            ),
         )
-        coordinator.screen(.subscription)
+        coordinator.screen(
+            .subscription,
+        )
     }
 
     func onTapNeuralModelSelection() {
         analytics.buttonTapped(
             .settingsNeuralModelSelection,
-            parameters: AnalyticsParameters([
-                .modelId: .string(neuralModel.id),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .modelId: .string(
+                        neuralModel.id,
+                    ),
+                ],
+            ),
         )
         coordinator.sheet(
             .selectNeuralModel,
             arguments: SelectNeuralModelArguments(
                 currentValue: neuralModel,
                 onSelected: { [weak self] model in
-                    guard let self = self else { return }
-                    guard self.neuralModel != model else { return }
+                    guard let self else { return }
+                    guard neuralModel != model else { return }
 
-                    self.neuralModel = model
-                    self.onNeuralModelSelected(model)
-                }
-            )
+                    neuralModel = model
+                    onNeuralModelSelected(
+                        model,
+                    )
+                },
+            ),
         )
     }
 
     func onTapNeuralModelSettings() {
-        analytics.buttonTapped(.settingsNeuralModelSettings)
-        coordinator.run(.neuralModelSettings) {
-            self.coordinator.screen(.neuralModelSettings)
+        analytics.buttonTapped(
+            .settingsNeuralModelSettings,
+        )
+        coordinator.run(
+            .neuralModelSettings,
+        ) {
+            self.coordinator.screen(
+                .neuralModelSettings,
+            )
         }
     }
 
     func onTapStorage() {
-        analytics.buttonTapped(.settingsStorage)
-        coordinator.screen(.storage)
+        analytics.buttonTapped(
+            .settingsStorage,
+        )
+        coordinator.screen(
+            .storage,
+        )
     }
 
     func onTapPrivacyPolicy() {
-        analytics.buttonTapped(.settingsPrivacyPolicy)
+        analytics.buttonTapped(
+            .settingsPrivacyPolicy,
+        )
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.privacyPolicyUrl,
-                title: .privacyPolicyTitle
-            )
+                title: .privacyPolicyTitle,
+            ),
         )
     }
 
     func onTapTermsAndConditions() {
-        analytics.buttonTapped(.settingsTermsAndConditions)
+        analytics.buttonTapped(
+            .settingsTermsAndConditions,
+        )
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.termsAndConditionsUrl,
-                title: .termsAndConditionsTitle
-            )
+                title: .termsAndConditionsTitle,
+            ),
         )
     }
 
     func onTapAboutApp() {
-        analytics.buttonTapped(.settingsAbout)
-        coordinator.sheet(.about)
+        analytics.buttonTapped(
+            .settingsAbout,
+        )
+        coordinator.sheet(
+            .about,
+        )
     }
 }

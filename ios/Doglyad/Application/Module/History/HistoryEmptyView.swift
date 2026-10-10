@@ -6,25 +6,35 @@ struct HistoryEmptyView: DView {
 
     var body: some View {
         VStack(
-            spacing: .zero
+            spacing: .zero,
         ) {
-            Image(.doglyadMagnifier)
-                .resizable()
-                .scaledToFit()
-                .frame(
-                    maxWidth: .infinity,
-                    maxHeight: .infinity,
-                    alignment: .center
-                )
-                .padding(.horizontal, size.s64)
+            Image(
+                .doglyadMagnifier,
+            )
+            .resizable()
+            .scaledToFit()
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity,
+                alignment: .center,
+            )
+            .padding(
+                .horizontal,
+                size.s64,
+            )
 
-            DText(.historyEmptyDescription)
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscalePlacehold,
-                    alignment: .center
-                )
+            DText(
+                .historyEmptyDescription,
+            )
+            .dStyle(
+                font: typography.textSmall,
+                color: color.grayscalePlacehold,
+                alignment: .center,
+            )
         }
-        .padding(.top, size.screenHeight / 6)
+        .padding(
+            .top,
+            size.screenHeight / 6,
+        )
     }
 }

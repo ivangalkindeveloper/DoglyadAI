@@ -8,13 +8,13 @@ public class DTheme: ObservableObject {
     @Published public var animation: Animation? = .spring(
         response: 0.5,
         dampingFraction: 0.75,
-        blendDuration: 1
+        blendDuration: 1,
     )
 
     public init(
         color: DColor,
         size: DSize,
-        typography: DTypography
+        typography: DTypography,
     ) {
         self.color = color
         self.size = size
@@ -26,11 +26,11 @@ public extension DTheme {
     static let light = DTheme(
         color: DColor.light,
         size: DSize.shared,
-        typography: DTypography.shared
+        typography: DTypography.shared,
     )
 
     func changeColor(
-        color: DColor
+        color: DColor,
     ) {
         self.color = color
     }

@@ -20,6 +20,6 @@ extension UltrasoundConfig {
         scanPhotoCompressionQuality: 0,
         defaultPatientDateOfBirthGap: 0,
         defaultPatientHeightCM: 0,
-        defaultPatientWeightKG: 0
+        defaultPatientWeightKG: 0,
     )
 }

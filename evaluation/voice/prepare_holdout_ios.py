@@ -6,7 +6,7 @@ import time
 from pathlib import Path
 from typing import Any
 
-from evaluation.voice.common import CONFIG_DIR, ROOT, load_catalog
+from evaluation.voice.common import CONFIG_DIR, ROOT, load_catalog, load_examination_titles
 from evaluation.voice import (
     freeform_holdout_v4,
     freeform_holdout_v5,
@@ -45,6 +45,7 @@ def prepare_holdout_fixtures(*, locale: str, version: int = 4, destination: Path
     if len(selected) * 2 != len(cases):
         raise ValueError("Holdout locale is incomplete")
     _, terms = load_catalog()
+    titles = load_examination_titles()
     strings_path = CONFIG_DIR / locale / "l10n.json"
     strings = json.loads(strings_path.read_text(encoding="utf-8"))
     application_path = CONFIG_DIR / "application.json"
@@ -60,6 +61,7 @@ def prepare_holdout_fixtures(*, locale: str, version: int = 4, destination: Path
                 "id": case["id"],
                 "locale": locale,
                 "examinationTypeId": case["examinationTypeId"],
+                "examinationTypeTitle": titles[locale][case["examinationTypeId"]],
                 "spokenText": case["spokenText"],
                 "contextualStrings": terms[locale][case["examinationTypeId"]],
                 "systemPrompt": strings["examinationNeuralModelPrompt"],

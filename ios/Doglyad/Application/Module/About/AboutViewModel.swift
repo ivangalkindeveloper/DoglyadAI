@@ -3,13 +3,15 @@ final class AboutViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel
+        subscription: SubscriptionViewModel,
     ) {
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.about)
+            analyticsDestination: .bottomSheet(
+                .about,
+            ),
         )
     }
 
@@ -22,6 +24,8 @@ final class AboutViewModel: DViewModel {
     }
 
     func onTapEmail() {
-        analytics.buttonTapped(.aboutEmail)
+        analytics.buttonTapped(
+            .aboutEmail,
+        )
     }
 }

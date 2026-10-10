@@ -7,6 +7,8 @@ struct USExaminationReadyMadeTemplate: Codable, Identifiable, Equatable {
     let content: String
 
     var localizedTitle: LocalizedStringResource {
-        LocalizedStringResource(stringLiteral: title)
+        LocalizedStringResource(
+            stringLiteral: title,
+        )
     }
 }

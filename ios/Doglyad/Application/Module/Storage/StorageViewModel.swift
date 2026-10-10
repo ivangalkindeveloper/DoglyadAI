@@ -13,29 +13,35 @@ final class StorageViewModel: DViewModel {
         container: DependencyContainer,
         messager: DMessager,
         router: DRouter,
-        subscription: SubscriptionViewModel
+        subscription: SubscriptionViewModel,
     ) {
         self.messager = messager
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.storage)
+            analyticsDestination: .screen(
+                .storage,
+            ),
         )
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.storageBack)
+        analytics.buttonTapped(
+            .storageBack,
+        )
         coordinator.pop()
     }
 
     func onTapClearProtocols() {
-        analytics.buttonTapped(.storageClearProtocols)
+        analytics.buttonTapped(
+            .storageClearProtocols,
+        )
         coordinator.sheet(
             .storageClearProtocols,
             arguments: StorageClearProtocolsArguments(
                 onConfirm: { [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
 
                     handle {
                         await self.container.ultrasoundReportRepository.clearAllReports()
@@ -43,22 +49,24 @@ final class StorageViewModel: DViewModel {
                         self.messager.show(
                             type: .success,
                             title: .storageClearProtocolsSuccessMessageTitle,
-                            description: .storageClearProtocolsSuccessMessageDescription
+                            description: .storageClearProtocolsSuccessMessageDescription,
                         )
                         self.coordinator.pop()
                     }
-                }
-            )
+                },
+            ),
         )
     }
 
     func onTapClearAll() {
-        analytics.buttonTapped(.storageClearAll)
+        analytics.buttonTapped(
+            .storageClearAll,
+        )
         coordinator.sheet(
             .storageClearAll,
             arguments: StorageClearAllArguments(
                 onConfirm: { [weak self] in
-                    guard let self = self else { return }
+                    guard let self else { return }
 
                     handle {
                         await self.container.ultrasoundReportRepository.clearAll()
@@ -66,12 +74,12 @@ final class StorageViewModel: DViewModel {
                         self.messager.show(
                             type: .success,
                             title: .storageClearAllSuccessMessageTitle,
-                            description: .storageClearAllSuccessMessageDescription
+                            description: .storageClearAllSuccessMessageDescription,
                         )
                         self.coordinator.resetToOnBoarding()
                     }
-                }
-            )
+                },
+            ),
         )
     }
 }

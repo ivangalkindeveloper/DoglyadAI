@@ -6,13 +6,21 @@ enum AnalyticsValue {
 
     var firebaseValue: Any {
         switch self {
-        case let .bool(value):
+        case let .bool(
+            value,
+        ):
             value
-        case let .double(value):
+        case let .double(
+            value,
+        ):
             value
-        case let .int(value):
+        case let .int(
+            value,
+        ):
             value
-        case let .string(value):
+        case let .string(
+            value,
+        ):
             value
         }
     }

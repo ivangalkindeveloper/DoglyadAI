@@ -14,15 +14,15 @@ struct SelectDateOfBirthBottomSheet: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }
 
 #Preview {
     SelectDateOfBirthBottomSheet(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

@@ -6,25 +6,35 @@ struct TemplateListEmptyView: DView {
 
     var body: some View {
         VStack(
-            spacing: .zero
+            spacing: .zero,
         ) {
-            Image(.doglyadFile)
-                .resizable()
-                .scaledToFit()
-                .frame(
-                    maxWidth: .infinity,
-                    maxHeight: .infinity,
-                    alignment: .center
-                )
-                .padding(.horizontal, size.s64)
+            Image(
+                .doglyadFile,
+            )
+            .resizable()
+            .scaledToFit()
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity,
+                alignment: .center,
+            )
+            .padding(
+                .horizontal,
+                size.s64,
+            )
 
-            DText(.templateListEmptyDescription)
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscalePlacehold,
-                    alignment: .center
-                )
+            DText(
+                .templateListEmptyDescription,
+            )
+            .dStyle(
+                font: typography.textSmall,
+                color: color.grayscalePlacehold,
+                alignment: .center,
+            )
         }
-        .padding(.top, size.screenHeight / 6)
+        .padding(
+            .top,
+            size.screenHeight / 6,
+        )
     }
 }

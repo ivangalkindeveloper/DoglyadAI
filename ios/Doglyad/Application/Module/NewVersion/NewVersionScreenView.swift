@@ -5,8 +5,10 @@ struct NewVersionScreenView: View {
 
     var body: some View {
         NewVersionView(
-            onTapUpdate: viewModel.onTapUpdate
+            onTapUpdate: viewModel.onTapUpdate,
         )
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }

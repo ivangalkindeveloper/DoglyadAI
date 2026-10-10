@@ -12,7 +12,7 @@ public final class USExaminationDraftPhotoDB {
         id: UUID,
         position: Int,
         data: Data,
-        thumbnailData: Data?
+        thumbnailData: Data?,
     ) {
         self.id = id
         self.position = position

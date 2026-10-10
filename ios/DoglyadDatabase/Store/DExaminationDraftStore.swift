@@ -4,13 +4,15 @@ import SwiftData
 @ModelActor
 public actor DExaminationDraftStore {
     public func fetchDraft<T: Sendable>(
-        _ transform: @Sendable (USExaminationDraftDB?) -> T
+        _ transform: @Sendable (USExaminationDraftDB?) -> T,
     ) -> T {
-        transform(fetchDraft())
+        transform(
+            fetchDraft(),
+        )
     }
 
     public func upsertDraftForm(
-        value: USExaminationDraftDB
+        value: USExaminationDraftDB,
     ) throws {
         if let draft = fetchDraft() {
             draft.examinationNumber = value.examinationNumber
@@ -22,39 +24,51 @@ public actor DExaminationDraftStore {
             draft.patientComplaints = value.patientComplaints
             draft.examinationDescription = value.examinationDescription
         } else {
-            modelContext.insert(value)
+            modelContext.insert(
+                value,
+            )
         }
         try modelContext.save()
     }
 
     public func replaceDraftPhotos(
         values: [USExaminationDraftPhotoDB],
-        currentForm: USExaminationDraftDB
+        currentForm: USExaminationDraftDB,
     ) throws {
         if let draft = fetchDraft() {
             let previousPhotos = draft.photos
             draft.photos = values
             for photo in previousPhotos {
-                modelContext.delete(photo)
+                modelContext.delete(
+                    photo,
+                )
             }
         } else {
             currentForm.photos = values
-            modelContext.insert(currentForm)
+            modelContext.insert(
+                currentForm,
+            )
         }
         try modelContext.save()
     }
 
     public func clearDraft() throws {
         let descriptor = FetchDescriptor<USExaminationDraftDB>()
-        let drafts = (try? modelContext.fetch(descriptor)) ?? []
+        let drafts = (try? modelContext.fetch(
+            descriptor,
+        )) ?? []
         for draft in drafts {
-            modelContext.delete(draft)
+            modelContext.delete(
+                draft,
+            )
         }
         try modelContext.save()
     }
 
     private func fetchDraft() -> USExaminationDraftDB? {
         let descriptor = FetchDescriptor<USExaminationDraftDB>()
-        return try? modelContext.fetch(descriptor).first
+        return try? modelContext.fetch(
+            descriptor,
+        ).first
     }
 }

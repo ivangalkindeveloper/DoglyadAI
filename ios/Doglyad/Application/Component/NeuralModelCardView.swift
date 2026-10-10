@@ -12,34 +12,45 @@ struct NeuralModelCardView: DView {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: .zero
+            spacing: .zero,
         ) {
-            DText(.scanNeuralModelTitleLabel)
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscalePlacehold
-                )
-                .padding(.horizontal, size.s8)
-                .padding(.bottom, size.s8)
+            DText(
+                .scanNeuralModelTitleLabel,
+            )
+            .dStyle(
+                font: typography.textSmall,
+                color: color.grayscalePlacehold,
+            )
+            .padding(
+                .horizontal,
+                size.s8,
+            )
+            .padding(
+                .bottom,
+                size.s8,
+            )
 
             DButtonCard(
-                action: onTap
+                action: onTap,
             ) {
                 VStack(
                     alignment: .leading,
-                    spacing: size.s4
+                    spacing: size.s4,
                 ) {
                     NeuralModelValueRowView(
                         title: .scanNerualModelSettingsModelLabel,
-                        value: ultrasoundViewModel.neuralModel.title
+                        value: ultrasoundViewModel.neuralModel.title,
                     )
 
                     NeuralModelValueRowView(
                         title: .scanNeuralModelSettingsAvailableRequestsLabel,
-                        value: "\(subscriptionViewModel.availableRequestCount)"
+                        value: "\(subscriptionViewModel.availableRequestCount)",
                     )
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(
+                    maxWidth: .infinity,
+                    alignment: .leading,
+                )
             }
         }
     }

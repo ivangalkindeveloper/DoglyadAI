@@ -6,6 +6,5 @@ enum InitializationError: Error {
     case newVersion(appleUpdateUrl: URL, appStoreId: String)
     case usExaminationTypesEmpty
     case usExaminationNeuralModelsEmpty
-    case examinationNeuralModelPromptEmpty
     case common
 }

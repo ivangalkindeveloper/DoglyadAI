@@ -5,7 +5,7 @@ final class SharedRepository: SharedRepositoryProtocol {
     let database: DDatabaseProtocol
 
     init(
-        database: DDatabaseProtocol
+        database: DDatabaseProtocol,
     ) {
         self.database = database
     }
@@ -18,9 +18,11 @@ extension SharedRepository {
         database.getOnBoardingCompleted()
     }
 
-    func setOnBoardingCompleted(value: Bool) {
+    func setOnBoardingCompleted(
+        value: Bool,
+    ) {
         database.setOnBoardingCompleted(
-            value: value
+            value: value,
         )
     }
 }
@@ -36,10 +38,12 @@ extension SharedRepository {
         database.getLegalAcceptedAt()
     }
 
-    func acceptLegal(documentDate: Date) {
+    func acceptLegal(
+        documentDate: Date,
+    ) {
         database.setAcceptedLegal(
             documentDate: documentDate,
-            acceptedAt: Date()
+            acceptedAt: Date(),
         )
     }
 }

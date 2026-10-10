@@ -12,7 +12,7 @@ public final class USExaminationTemplateDB {
         id: UUID,
         usExaminationTypeId: String,
         name: String,
-        content: String
+        content: String,
     ) {
         self.id = id
         self.usExaminationTypeId = usExaminationTypeId

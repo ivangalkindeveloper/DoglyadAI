@@ -8,7 +8,7 @@ struct ReportReceivedMarkdownView: View {
     var body: some View {
         DMarkdown(
             content: viewModel.displayedResponse,
-            textColor: textColor
+            textColor: textColor,
         )
         .task {
             await viewModel.animateResponse()

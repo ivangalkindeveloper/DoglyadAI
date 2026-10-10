@@ -23,14 +23,16 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: ReadyMadeTemplateListScreenArguments
+        arguments: ReadyMadeTemplateListScreenArguments,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.readyMadeTemplateList)
+            analyticsDestination: .screen(
+                .readyMadeTemplateList,
+            ),
         )
     }
 
@@ -39,17 +41,25 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
     @NestedObservableObject var searchController = DTextFieldController()
 
     var filteredTemplates: [USExaminationReadyMadeTemplate] {
-        guard case let .success(templates) = state else { return [] }
+        guard case let .success(
+            templates,
+        ) = state else { return [] }
         guard let query = searchQuery else { return templates }
 
         return templates.filter { template in
             let values = [
-                localizedExaminationTypeTitle(for: template),
-                String(localized: template.localizedTitle),
+                localizedExaminationTypeTitle(
+                    for: template,
+                ),
+                String(
+                    localized: template.localizedTitle,
+                ),
                 template.content,
             ]
             return values.contains { value in
-                value.localizedCaseInsensitiveContains(query)
+                value.localizedCaseInsensitiveContains(
+                    query,
+                )
             }
         }
     }
@@ -65,12 +75,16 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.readyMadeTemplateListBack)
+        analytics.buttonTapped(
+            .readyMadeTemplateListBack,
+        )
         coordinator.pop()
     }
 
     func onTapRetry() {
-        analytics.buttonTapped(.readyMadeTemplateListRetry)
+        analytics.buttonTapped(
+            .readyMadeTemplateListRetry,
+        )
         loadTemplates()
     }
 
@@ -78,23 +92,33 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
         focus = nil
     }
 
-    func onTapTemplate(_ template: USExaminationReadyMadeTemplate) {
-        analytics.buttonTapped(.readyMadeTemplateListTemplate)
+    func onTapTemplate(
+        _ template: USExaminationReadyMadeTemplate,
+    ) {
+        analytics.buttonTapped(
+            .readyMadeTemplateListTemplate,
+        )
         coordinator.pop()
-        arguments.onTemplateSelected(template)
+        arguments.onTemplateSelected(
+            template,
+        )
     }
 
     func examinationTypeTitle(
-        for template: USExaminationReadyMadeTemplate
+        for template: USExaminationReadyMadeTemplate,
     ) -> LocalizedStringResource {
         LocalizedStringResource(
-            stringLiteral: localizedExaminationTypeTitle(for: template)
+            stringLiteral: localizedExaminationTypeTitle(
+                for: template,
+            ),
         )
     }
 
     private var searchQuery: String? {
         guard let value = searchController.value?
-            .trimmingCharacters(in: .whitespacesAndNewlines),
+            .trimmingCharacters(
+                in: .whitespacesAndNewlines,
+            ),
             !value.isEmpty
         else {
             return nil
@@ -103,22 +127,28 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
     }
 
     private func localizedExaminationTypeTitle(
-        for template: USExaminationReadyMadeTemplate
+        for template: USExaminationReadyMadeTemplate,
     ) -> String {
-        guard let type = container.getUSExaminationTypeById(id: template.examinationType) else {
+        guard let type = container.getUSExaminationTypeById(
+            id: template.examinationType,
+        ) else {
             return template.examinationType
         }
-        return String(localized: type.localizedTitle)
+        return String(
+            localized: type.localizedTitle,
+        )
     }
 
     private func loadTemplates() {
         state = .loading
         handle {
             try await self.container.templateRepository.getReadyMadeTemplates(
-                languageCode: self.container.language.currentCode
+                languageCode: self.container.language.currentCode,
             )
         } onMainSuccess: { templates in
-            self.state = .success(templates)
+            self.state = .success(
+                templates,
+            )
         } onMainApiError: { _ in
             self.state = .error
         } onMainConnectionError: { _ in

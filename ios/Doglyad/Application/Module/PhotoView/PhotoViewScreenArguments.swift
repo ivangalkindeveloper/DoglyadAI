@@ -11,7 +11,7 @@ final class PhotoViewScreenArguments: RouteArgumentsProtocol {
         photos: Binding<[USExaminationScanPhoto]>,
         initialPhotoID: UUID,
         subTitle: String? = nil,
-        onDelete: ((USExaminationScanPhoto) -> Void)? = nil
+        onDelete: ((USExaminationScanPhoto) -> Void)? = nil,
     ) {
         self.photos = photos
         self.initialPhotoID = initialPhotoID

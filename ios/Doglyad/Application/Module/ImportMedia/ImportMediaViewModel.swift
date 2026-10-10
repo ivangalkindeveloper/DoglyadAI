@@ -9,14 +9,16 @@ final class ImportMediaViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         arguments: ImportMediaArguments,
-        subscription: SubscriptionViewModel
+        subscription: SubscriptionViewModel,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.importMedia)
+            analyticsDestination: .bottomSheet(
+                .importMedia,
+            ),
         )
     }
 

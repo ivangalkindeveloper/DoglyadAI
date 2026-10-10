@@ -6,7 +6,7 @@ public struct DCheckbox: DView {
     @Binding var isChecked: Bool
 
     public init(
-        isChecked: Binding<Bool>
+        isChecked: Binding<Bool>,
     ) {
         _isChecked = isChecked
     }
@@ -15,30 +15,57 @@ public struct DCheckbox: DView {
         Button {
             isChecked.toggle()
         } label: {
-            RoundedRectangle(cornerRadius: size.s4)
-                .fill(isChecked ? color.primaryDefault : .clear)
-                .overlay(
-                    RoundedRectangle(cornerRadius: size.s4)
-                        .stroke(
-                            isChecked ? color.primaryDefault : color.grayscalePlacehold,
-                            lineWidth: 1.5
-                        )
+            RoundedRectangle(
+                cornerRadius: size.s4,
+            )
+            .fill(
+                isChecked ? color.primaryDefault : .clear,
+            )
+            .overlay(
+                RoundedRectangle(
+                    cornerRadius: size.s4,
                 )
-                .overlay {
-                    if isChecked {
-                        Image(systemName: "checkmark")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: size.s10, height: size.s10)
-                            .foregroundColor(color.grayscaleBackground)
-                            .fontWeight(.bold)
-                    }
+                .stroke(
+                    isChecked ? color.primaryDefault : color.grayscalePlacehold,
+                    lineWidth: 1.5,
+                ),
+            )
+            .overlay {
+                if isChecked {
+                    Image(
+                        systemName: "checkmark",
+                    )
+                    .resizable()
+                    .scaledToFit()
+                    .frame(
+                        width: size.s10,
+                        height: size.s10,
+                    )
+                    .foregroundColor(
+                        color.grayscaleBackground,
+                    )
+                    .fontWeight(
+                        .bold,
+                    )
                 }
-                .frame(width: size.s24, height: size.s24)
+            }
+            .frame(
+                width: size.s24,
+                height: size.s24,
+            )
         }
-        .buttonStyle(.plain)
-        .contentShape(Rectangle().inset(by: -size.s12))
-        .animation(theme.animation, value: isChecked)
+        .buttonStyle(
+            .plain,
+        )
+        .contentShape(
+            Rectangle().inset(
+                by: -size.s12,
+            ),
+        )
+        .animation(
+            theme.animation,
+            value: isChecked,
+        )
     }
 }
 
@@ -47,9 +74,11 @@ public struct DCheckbox: DView {
 
     HStack {
         DCheckbox(
-            isChecked: $isChecked
+            isChecked: $isChecked,
         )
-        Text("Accept terms")
+        Text(
+            "Accept terms",
+        )
     }
     .padding()
     .dThemeWrapper()

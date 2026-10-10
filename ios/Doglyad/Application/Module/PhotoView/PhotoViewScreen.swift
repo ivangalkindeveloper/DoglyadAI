@@ -12,8 +12,8 @@ struct PhotoViewScreen: View {
                 container: container,
                 router: router,
                 subscription: subscription,
-                arguments: arguments
-            )
+                arguments: arguments,
+            ),
         )
     }
 }

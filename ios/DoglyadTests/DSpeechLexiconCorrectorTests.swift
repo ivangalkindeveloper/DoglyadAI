@@ -1,4 +1,5 @@
 import DoglyadSpeech
+import Foundation
 import Testing
 
 /// The corrector substitutes words in a medical report, so its safety properties are
@@ -32,72 +33,283 @@ struct DSpeechLexiconCorrectorTests {
         "асцит не определяется",
     ]
 
-    private let corrector = DSpeechLexiconCorrector(terms: terms)
+    private let corrector = DSpeechLexiconCorrector(
+        terms: terms,
+        localization: VoiceLocalizationTestSupport.speech(
+            locale: Locale(
+                identifier: "ru",
+            ),
+        ),
+    )
 
-    @Test("Type-specific medical phrases repair spelling without touching measurements")
+    @Test(
+        "Type-specific medical phrases repair spelling without touching measurements",
+    )
     func correctsTypeSpecificTerms() {
-        let kidney = DSpeechLexiconCorrector(terms: ["почечная лоханка"])
-        let heart = DSpeechLexiconCorrector(terms: ["митральный клапан"])
+        let kidney = DSpeechLexiconCorrector(
+            terms: ["почечная лоханка"],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "ru",
+                ),
+            ),
+        )
+        let heart = DSpeechLexiconCorrector(
+            terms: ["митральный клапан"],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "ru",
+                ),
+            ),
+        )
 
-        #expect(kidney.correct("почечная лаханка 12 мм") == "почечная лоханка 12 мм")
-        #expect(heart.correct("митральный клопан не изменен") == "митральный клапан не изменен")
-        #expect(heart.correct("Митральный клопан: не изменен.") == "Митральный клапан: не изменен.")
+        #expect(
+            kidney.correct(
+                "почечная лаханка 12 мм",
+            ) == "почечная лоханка 12 мм",
+        )
+        #expect(
+            heart.correct(
+                "митральный клопан не изменен",
+            ) == "митральный клапан не изменен",
+        )
+        #expect(
+            heart.correct(
+                "Митральный клопан: не изменен.",
+            ) == "Митральный клапан: не изменен.",
+        )
     }
 
-    @Test("Clinical phrase correction preserves dictated punctuation and field boundaries")
+    @Test(
+        "Clinical phrase correction preserves dictated punctuation and field boundaries",
+    )
     func preservesPunctuation() {
-        let corrector = DSpeechLexiconCorrector(terms: ["biparietal diameter", "right ventricle"])
-        #expect(corrector.correct("Biparital diameter. 67 mm.") == "Biparietal diameter. 67 mm.")
-        #expect(corrector.correct("Right ventricle: 49 mm.") == "Right ventricle: 49 mm.")
+        let corrector = DSpeechLexiconCorrector(
+            terms: ["biparietal diameter", "right ventricle"],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "en",
+                ),
+            ),
+        )
+        #expect(
+            corrector.correct(
+                "Biparital diameter. 67 mm.",
+            ) == "Biparietal diameter. 67 mm.",
+        )
+        #expect(
+            corrector.correct(
+                "Right ventricle: 49 mm.",
+            ) == "Right ventricle: 49 mm.",
+        )
     }
 
     // MARK: - Repairs what it was built for
 
-    @Test("A phonetic vowel variant resolves to the canonical term")
+    @Test(
+        "A canonical singular does not overwrite a correctly dictated plural",
+    )
+    func preservesEnglishInflection() {
+        let corrector = DSpeechLexiconCorrector(
+            terms: ["no thyroid nodule", "renal calculus"],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "en",
+                ),
+            ),
+        )
+        #expect(
+            corrector.correct(
+                "No thyroid nodules.",
+            ) == "No thyroid nodules.",
+        )
+        #expect(
+            corrector.correct(
+                "No renal calculi.",
+            ) == "No renal calculi.",
+        )
+    }
+
+    @Test(
+        "Russian case endings are preserved instead of replaced with a dictionary form",
+    )
+    func preservesRussianInflection() {
+        let corrector = DSpeechLexiconCorrector(
+            terms: ["щитовидная железа", "правая почка"],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "ru",
+                ),
+            ),
+        )
+        #expect(
+            corrector.correct(
+                "Правая доля щитовидной железы объёмом 7,8 мл.",
+            )
+                == "Правая доля щитовидной железы объёмом 7,8 мл.",
+        )
+        #expect(
+            corrector.correct(
+                "В правой почке изменений нет.",
+            ) == "В правой почке изменений нет.",
+        )
+        #expect(
+            DSpeechLexiconCorrector(
+                terms: ["желчный пузырь"],
+                localization: VoiceLocalizationTestSupport.speech(
+                    locale: Locale(
+                        identifier: "ru",
+                    ),
+                ),
+            ).correct(
+                "Жёлчный пузырь не изменён.",
+            )
+                == "Жёлчный пузырь не изменён.",
+        )
+    }
+
+    @Test(
+        "Correction retains original spaces, newlines, and punctuation",
+    )
+    func preservesWhitespace() {
+        let corrector = DSpeechLexiconCorrector(
+            terms: ["митральный клапан"],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "ru",
+                ),
+            ),
+        )
+        #expect(
+            corrector.correct(
+                "  Митральный\tклопан: сохранён.\n\nЖалоб нет.  ",
+            )
+                == "  Митральный\tклапан: сохранён.\n\nЖалоб нет.  ",
+        )
+    }
+
+    @Test(
+        "A dictionary phrase cannot join words across sentence or field boundaries",
+    )
+    func respectsSentenceBoundaries() {
+        let corrector = DSpeechLexiconCorrector(
+            terms: ["митральный клапан"],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "ru",
+                ),
+            ),
+        )
+        for text in ["митральный. клопан", "митральный: клопан", "митральный; клопан"] {
+            #expect(
+                corrector.correct(
+                    text,
+                ) == text,
+            )
+        }
+    }
+
+    @Test(
+        "A phonetic vowel variant resolves to the canonical term",
+    )
     func correctsPhoneticVariant() {
         #expect(
-            corrector.correct("анехогенное образование в правой доле")
-                == "анэхогенное образование в правой доле"
+            corrector.correct(
+                "анехогенное образование в правой доле",
+            )
+                == "анэхогенное образование в правой доле",
         )
     }
 
-    @Test("A missing syllable in the middle of a phrase is restored")
+    @Test(
+        "A missing syllable in the middle of a phrase is restored",
+    )
     func correctsMissingSyllable() {
         #expect(
-            corrector.correct("дистальное усилие сигнала определяется")
-                == "дистальное усиление сигнала определяется"
+            corrector.correct(
+                "дистальное усилие сигнала определяется",
+            )
+                == "дистальное усиление сигнала определяется",
         )
     }
 
-    @Test("A longer term wins over a nested shorter term")
+    @Test(
+        "A longer term wins over a nested shorter term",
+    )
     func prefersLongerTerm() {
         #expect(
-            corrector.correct("дистальное усиление сигнала")
-                == "дистальное усиление сигнала"
+            corrector.correct(
+                "дистальное усиление сигнала",
+            )
+                == "дистальное усиление сигнала",
         )
     }
 
     // MARK: - Refuses where a substitution changes the meaning
 
-    @Test("Negation is not added to a phrase")
+    @Test(
+        "Negation is not added to a phrase",
+    )
     func neverAddsNegation() {
-        #expect(corrector.correct("капсула изменена") == "капсула изменена")
+        #expect(
+            corrector.correct(
+                "капсула изменена",
+            ) == "капсула изменена",
+        )
     }
 
-    @Test("Existing negation is not removed")
+    @Test(
+        "Existing negation is not removed",
+    )
     func neverRemovesNegation() {
-        #expect(corrector.correct("капсула не изменена") == "капсула не изменена")
+        #expect(
+            corrector.correct(
+                "капсула не изменена",
+            ) == "капсула не изменена",
+        )
     }
 
-    @Test("A similar sounding clinical phrase cannot add or change the side")
+    @Test(
+        "A similar sounding clinical phrase cannot add or change the side",
+    )
     func neverChangesSide() {
-        let english = DSpeechLexiconCorrector(terms: ["right kidney", "left kidney"])
-        #expect(english.correct("bright kidney 100 mm") == "bright kidney 100 mm")
-        #expect(english.correct("left kidney 100 mm") == "left kidney 100 mm")
+        let english = DSpeechLexiconCorrector(
+            terms: ["right kidney", "left kidney"],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "en",
+                ),
+            ),
+        )
+        #expect(
+            english.correct(
+                "bright kidney 100 mm",
+            ) == "bright kidney 100 mm",
+        )
+        #expect(
+            english.correct(
+                "left kidney 100 mm",
+            ) == "left kidney 100 mm",
+        )
 
-        let russian = DSpeechLexiconCorrector(terms: ["правая почка", "левая почка"])
-        #expect(russian.correct("правая почка 100 мм") == "правая почка 100 мм")
-        #expect(russian.correct("левая почка 100 мм") == "левая почка 100 мм")
+        let russian = DSpeechLexiconCorrector(
+            terms: ["правая почка", "левая почка"],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "ru",
+                ),
+            ),
+        )
+        #expect(
+            russian.correct(
+                "правая почка 100 мм",
+            ) == "правая почка 100 мм",
+        )
+        #expect(
+            russian.correct(
+                "левая почка 100 мм",
+            ) == "левая почка 100 мм",
+        )
     }
 
     @Test(
@@ -111,10 +323,16 @@ struct DSpeechLexiconCorrectorTests {
             "контуры неровные",
             "контуры четкие",
             "контуры нечеткие",
-        ]
+        ],
     )
-    func keepsPrefixedOpposites(term: String) {
-        #expect(corrector.correct(term) == term)
+    func keepsPrefixedOpposites(
+        term: String,
+    ) {
+        #expect(
+            corrector.correct(
+                term,
+            ) == term,
+        )
     }
 
     @Test(
@@ -124,13 +342,21 @@ struct DSpeechLexiconCorrectorTests {
             "эхогенность снижена",
             "васкуляризация усилена",
             "васкуляризация снижена",
-        ]
+        ],
     )
-    func keepsOpposites(term: String) {
-        #expect(corrector.correct(term) == term)
+    func keepsOpposites(
+        term: String,
+    ) {
+        #expect(
+            corrector.correct(
+                term,
+            ) == term,
+        )
     }
 
-    @Test("Similar lesion types are not substituted for one another")
+    @Test(
+        "Similar lesion types are not substituted for one another",
+    )
     func keepsEchogenicityFamily() {
         for term in [
             "анэхогенное образование",
@@ -138,14 +364,24 @@ struct DSpeechLexiconCorrectorTests {
             "гипоэхогенное образование",
             "изоэхогенное образование",
         ] {
-            #expect(corrector.correct(term) == term)
+            #expect(
+                corrector.correct(
+                    term,
+                ) == term,
+            )
         }
     }
 
-    @Test("Phrases containing numbers remain unchanged")
+    @Test(
+        "Phrases containing numbers remain unchanged",
+    )
     func keepsPhrasesWithNumbers() {
         let text = "использован датчик 7,5 мегагерц линейный"
-        #expect(corrector.correct(text) == text)
+        #expect(
+            corrector.correct(
+                text,
+            ) == text,
+        )
     }
 
     // MARK: - Does not damage ordinary speech
@@ -157,28 +393,57 @@ struct DSpeechLexiconCorrectorTests {
             "печень увеличена в размерах",
             "пациент иван мужчина рост метр семьдесят четыре",
             "сохранено двенадцать снимков и три видео",
-        ]
+        ],
     )
-    func keepsUnrelatedSpeech(text: String) {
-        #expect(corrector.correct(text) == text)
+    func keepsUnrelatedSpeech(
+        text: String,
+    ) {
+        #expect(
+            corrector.correct(
+                text,
+            ) == text,
+        )
     }
 
-    @Test("An empty lexicon makes the corrector an identity function")
+    @Test(
+        "An empty lexicon makes the corrector an identity function",
+    )
     func emptyLexiconIsIdentity() {
-        let empty = DSpeechLexiconCorrector(terms: [])
-        #expect(empty.correct("анехогенное образование") == "анехогенное образование")
+        let empty = DSpeechLexiconCorrector(
+            terms: [],
+            localization: VoiceLocalizationTestSupport.speech(
+                locale: Locale(
+                    identifier: "ru",
+                ),
+            ),
+        )
+        #expect(
+            empty.correct(
+                "анехогенное образование",
+            ) == "анехогенное образование",
+        )
     }
 
-    @Test("Empty text is handled safely")
+    @Test(
+        "Empty text is handled safely",
+    )
     func handlesEmptyText() {
-        #expect(corrector.correct("") == "")
+        #expect(
+            corrector.correct(
+                "",
+            ) == "",
+        )
     }
 
-    @Test("Leading capitalization is preserved during substitution")
+    @Test(
+        "Leading capitalization is preserved during substitution",
+    )
     func preservesLeadingCase() {
         #expect(
-            corrector.correct("Анехогенное образование в левой доле")
-                == "Анэхогенное образование в левой доле"
+            corrector.correct(
+                "Анехогенное образование в левой доле",
+            )
+                == "Анэхогенное образование в левой доле",
         )
     }
 
@@ -187,18 +452,28 @@ struct DSpeechLexiconCorrectorTests {
     /// The key property: a single corruption of a term by a recognition error leads
     /// either to restoring the original term or to leaving the text as is — but never
     /// to turning one dictionary term into another.
-    @Test("Corrupting a term never turns it into another dictionary term")
+    @Test(
+        "Corrupting a term never turns it into another dictionary term",
+    )
     func neverFlipsOneTermIntoAnother() {
-        let vocabulary = Set(Self.terms)
+        let vocabulary = Set(
+            Self.terms,
+        )
 
         for term in Self.terms {
-            for corrupted in Self.corruptions(of: term) {
-                let result = corrector.correct(corrupted)
+            for corrupted in Self.corruptions(
+                of: term,
+            ) {
+                let result = corrector.correct(
+                    corrupted,
+                )
                 guard result != term else { continue }
 
                 #expect(
-                    !vocabulary.contains(result),
-                    "\(corrupted) became \(result) instead of \(term)"
+                    !vocabulary.contains(
+                        result,
+                    ),
+                    "\(corrupted) became \(result) instead of \(term)",
                 )
             }
         }
@@ -207,24 +482,62 @@ struct DSpeechLexiconCorrectorTests {
     /// Corruptions imitating a recognition error: a dropped letter, a swap of adjacent
     /// letters, and a vowel substitution.
     private static func corruptions(
-        of term: String
+        of term: String,
     ) -> [String] {
         var results: [String] = []
 
-        for word in term.split(separator: " ") where word.count > 4 {
-            let characters = Array(word)
+        for word in term.split(
+            separator: " ",
+        ) where word.count > 4 {
+            let characters = Array(
+                word,
+            )
             for index in 1 ..< (characters.count - 1) {
                 var dropped = characters
-                dropped.remove(at: index)
-                results.append(term.replacingOccurrences(of: String(word), with: String(dropped)))
+                dropped.remove(
+                    at: index,
+                )
+                results.append(
+                    term.replacingOccurrences(
+                        of: String(
+                            word,
+                        ),
+                        with: String(
+                            dropped,
+                        ),
+                    ),
+                )
 
                 var swapped = characters
-                swapped.swapAt(index, index + 1)
-                results.append(term.replacingOccurrences(of: String(word), with: String(swapped)))
+                swapped.swapAt(
+                    index,
+                    index + 1,
+                )
+                results.append(
+                    term.replacingOccurrences(
+                        of: String(
+                            word,
+                        ),
+                        with: String(
+                            swapped,
+                        ),
+                    ),
+                )
 
                 var replaced = characters
-                replaced[index] = "о"
-                results.append(term.replacingOccurrences(of: String(word), with: String(replaced)))
+                replaced[
+                    index,
+                ] = "о"
+                results.append(
+                    term.replacingOccurrences(
+                        of: String(
+                            word,
+                        ),
+                        with: String(
+                            replaced,
+                        ),
+                    ),
+                )
             }
         }
 

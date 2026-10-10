@@ -8,6 +8,6 @@ struct NetworkConfig: Codable {
 extension NetworkConfig {
     static let `default` = NetworkConfig(
         timeoutIntervalForRequest: 300,
-        timeoutIntervalForResource: 300
+        timeoutIntervalForResource: 300,
     )
 }

@@ -9,7 +9,7 @@ enum PermissionType {
 
 protocol PermissionManagerProtocol: AnyObject {
     func isGranted(
-        _ type: PermissionType
+        _ type: PermissionType,
     ) async -> Bool
 }
 
@@ -17,17 +17,23 @@ final class PermissionManager {}
 
 extension PermissionManager: PermissionManagerProtocol {
     func isGranted(
-        _ type: PermissionType
+        _ type: PermissionType,
     ) async -> Bool {
         switch type {
         case .camera:
-            await AVCaptureDevice.requestAccess(for: .video)
+            await AVCaptureDevice.requestAccess(
+                for: .video,
+            )
 
         case .microphone:
-            await AVCaptureDevice.requestAccess(for: .audio)
+            await AVCaptureDevice.requestAccess(
+                for: .audio,
+            )
 
         case .photoLibrary:
-            switch await PHPhotoLibrary.requestAuthorization(for: .readWrite) {
+            switch await PHPhotoLibrary.requestAuthorization(
+                for: .readWrite,
+            ) {
             case .authorized, .limited:
                 true
             default:

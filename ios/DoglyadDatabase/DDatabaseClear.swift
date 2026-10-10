@@ -7,7 +7,9 @@ public protocol DDatabaseClearProtocol: AnyObject {
 extension DDatabase: DDatabaseClearProtocol {
     public func clearAll() async {
         for key in DUserDefaultsKey.allCases {
-            removeValue(key)
+            removeValue(
+                key,
+            )
         }
 
         try? await examinationReports.clearAllExaminationReports()

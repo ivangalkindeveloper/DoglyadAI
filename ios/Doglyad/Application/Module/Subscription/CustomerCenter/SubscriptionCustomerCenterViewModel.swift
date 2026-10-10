@@ -8,7 +8,7 @@ final class SubscriptionCustomerCenterViewModel: DViewModel {
         router: DRouter,
         subscription: SubscriptionViewModel,
         arguments: SubscriptionCustomerCenterArguments?,
-        onRefreshStatus: @escaping () async -> Void
+        onRefreshStatus: @escaping () async -> Void,
     ) {
         self.arguments = arguments
         self.onRefreshStatus = onRefreshStatus
@@ -16,18 +16,24 @@ final class SubscriptionCustomerCenterViewModel: DViewModel {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.subscriptionCustomerCenter)
+            analyticsDestination: .bottomSheet(
+                .subscriptionCustomerCenter,
+            ),
         )
     }
 
     func onRestoreCompleted() {
-        analytics.actionCompleted(.subscriptionCustomerCenterRestoreCompleted)
+        analytics.actionCompleted(
+            .subscriptionCustomerCenterRestoreCompleted,
+        )
         Task {
             await onRefreshStatus()
         }
     }
 
     func onRestoreStarted() {
-        analytics.buttonTapped(.subscriptionCustomerCenterRestoreStarted)
+        analytics.buttonTapped(
+            .subscriptionCustomerCenterRestoreStarted,
+        )
     }
 }

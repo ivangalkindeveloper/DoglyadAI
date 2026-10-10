@@ -1,0 +1,202 @@
+[
+  {
+    "id": "final-holdout-ru-01", "locale": "ru", "category": "complete",
+    "inputText": "Пациент Дарья Мельникова. Родилась 14 января 1983 года. Пол женщина. Рост 167 сантиметров и вес 60.7 килограмма. Исследование номер H-0419. Жалуется на тяжесть в эпигастрии после еды. Изжоги и рвоты нет. На УЗИ поджелудочная железа: головка 24 мм, тело 15 мм, хвост 22 мм. Контуры ровные, структура однородная. Вирсунгов проток не расширен. Свободной жидкости нет.",
+    "expectedFields": {"patientName": "Дарья Мельникова", "patientDateOfBirth": "1983-01-14", "patientGender": "female", "patientHeightCM": 167, "patientWeightKG": 60.7, "examinationNumber": "H-0419", "patientComplaints": "Тяжесть в эпигастрии после еды. Изжоги и рвоты нет.", "examinationDescription": "Поджелудочная железа: головка 24 мм, тело 15 мм, хвост 22 мм. Контуры ровные, структура однородная. Вирсунгов проток не расширен. Свободной жидкости нет."}
+  },
+  {
+    "id": "final-holdout-ru-02", "locale": "ru", "category": "complete",
+    "inputText": "При УЗИ правая почка 116 на 54 мм. Левая почка 111 на 48 мм. Паренхима 18 и 16 мм соответственно. Расширения чашечно-лоханочной системы нет. Жалобы: Боль в пояснице слева в течение двух дней. Озноба и лихорадки нет. Пациент: Андрей Семёнов. Номер исследования R-0527. Дата рождения 23 апреля 1972 года. Рост 182 см, вес 88.9 кг, пол мужчина.",
+    "expectedFields": {"examinationDescription": "Правая почка 116 на 54 мм. Левая почка 111 на 48 мм. Паренхима 18 и 16 мм соответственно. Расширения чашечно-лоханочной системы нет.", "patientComplaints": "Боль в пояснице слева в течение двух дней. Озноба и лихорадки нет.", "patientName": "Андрей Семёнов", "examinationNumber": "R-0527", "patientDateOfBirth": "1972-04-23", "patientHeightCM": 182, "patientWeightKG": 88.9, "patientGender": "male"}
+  },
+  {
+    "id": "final-holdout-ru-03", "locale": "ru", "category": "complete",
+    "inputText": "Сегодня обследуем пациента Вероника Дроздова. Пол женщина, дата рождения седьмое сентября тысяча девятьсот девяносто первого года. Вес 57.6 кг. Номер исследования TH-0082. Сообщает о дискомфорте при глотании. Повышения температуры нет. Рост 171 см. На УЗИ правая доля щитовидной железы 5.9 мл, левая 5.1 мл. Перешеек 2 мм. Справа коллоидная киста 4 на 3 мм. Солидных узлов не выявлено. Лимфоузлы не увеличены.",
+    "expectedFields": {"patientName": "Вероника Дроздова", "patientGender": "female", "patientDateOfBirth": "1991-09-07", "patientWeightKG": 57.6, "examinationNumber": "TH-0082", "patientComplaints": "О дискомфорте при глотании. Повышения температуры нет.", "patientHeightCM": 171, "examinationDescription": "Правая доля щитовидной железы 5.9 мл, левая 5.1 мл. Перешеек 2 мм. Справа коллоидная киста 4 на 3 мм. Солидных узлов не выявлено. Лимфоузлы не увеличены."}
+  },
+  {
+    "id": "final-holdout-ru-04", "locale": "ru", "category": "complete",
+    "inputText": "Исследование номер EC-063. Пациент: Пётр Мартынов, пол мужчина. Родился 29 февраля 1964 года. Рост составляет 175 см, масса тела 83.4 кг. Жалуется на сердцебиение при подъёме по лестнице. Потери сознания не было. При УЗИ левый желудочек: конечный диастолический размер 50 мм, конечный систолический 33 мм. Межжелудочковая перегородка 9 мм. Фракция выброса 63 процента. Правое предсердие не увеличено. Перикардиального выпота нет.",
+    "expectedFields": {"examinationNumber": "EC-063", "patientName": "Пётр Мартынов", "patientGender": "male", "patientDateOfBirth": "1964-02-29", "patientHeightCM": 175, "patientWeightKG": 83.4, "patientComplaints": "Сердцебиение при подъёме по лестнице. Потери сознания не было.", "examinationDescription": "Левый желудочек: конечный диастолический размер 50 мм, конечный систолический 33 мм. Межжелудочковая перегородка 9 мм. Фракция выброса 63 процента. Правое предсердие не увеличено. Перикардиального выпота нет."}
+  },
+  {
+    "id": "final-holdout-ru-05", "locale": "ru", "category": "partial",
+    "inputText": "Пациент жалуется на горечь во рту после жирной пищи. Тошнота бывает по утрам, рвоты нет. При УЗИ жёлчный пузырь 77 на 28 мм. Стенка 3 мм, в просвете взвесь. Общий жёлчный проток 5 мм. Внутрипечёночные протоки не расширены. Номер исследования GB-0206. Вес 73.8 кг.",
+    "expectedFields": {"patientComplaints": "Горечь во рту после жирной пищи. Тошнота бывает по утрам, рвоты нет.", "examinationDescription": "Жёлчный пузырь 77 на 28 мм. Стенка 3 мм, в просвете взвесь. Общий жёлчный проток 5 мм. Внутрипечёночные протоки не расширены.", "examinationNumber": "GB-0206", "patientWeightKG": 73.8}
+  },
+  {
+    "id": "final-holdout-ru-06", "locale": "ru", "category": "partial",
+    "inputText": "Вес 79.2 кг. Номер исследования V-0104. Жалобы: Чувство тяжести в правой голени к вечеру. Утром отёка нет. УЗИ показало проходимые глубокие вены справа, полностью сжимаемые датчиком. Тромботические массы не визуализируются. Кровоток фазный. Подколенная вена без расширения.",
+    "expectedFields": {"patientWeightKG": 79.2, "examinationNumber": "V-0104", "patientComplaints": "Чувство тяжести в правой голени к вечеру. Утром отёка нет.", "examinationDescription": "Проходимые глубокие вены справа, полностью сжимаемые датчиком. Тромботические массы не визуализируются. Кровоток фазный. Подколенная вена без расширения."}
+  },
+  {
+    "id": "final-holdout-ru-07", "locale": "ru", "category": "partial",
+    "inputText": "На УЗИ в левом плечевом суставе небольшое количество жидкости. Сухожилие надостной мышцы непрерывное, толщиной 5 мм. В субакромиальной сумке жидкости нет. Номер исследования J-0308, вес 76.3 кг. Пациент жалуется на боль в левом плече при поднятии руки. В покое боль уменьшается.",
+    "expectedFields": {"examinationDescription": "В левом плечевом суставе небольшое количество жидкости. Сухожилие надостной мышцы непрерывное, толщиной 5 мм. В субакромиальной сумке жидкости нет.", "examinationNumber": "J-0308", "patientWeightKG": 76.3, "patientComplaints": "Боль в левом плече при поднятии руки. В покое боль уменьшается."}
+  },
+  {
+    "id": "final-holdout-ru-08", "locale": "ru", "category": "partial",
+    "inputText": "Это исследование номер SFT-009. На УЗИ в подкожной клетчатке спины овальное образование 18 на 7 мм, с ровными контурами и без внутреннего кровотока. Окружающие ткани не изменены. Пациент: Руслан Зайцев.",
+    "expectedFields": {"examinationNumber": "SFT-009", "examinationDescription": "В подкожной клетчатке спины овальное образование 18 на 7 мм, с ровными контурами и без внутреннего кровотока. Окружающие ткани не изменены.", "patientName": "Руслан Зайцев"}
+  },
+  {
+    "id": "final-holdout-ru-09", "locale": "ru", "category": "clinical",
+    "inputText": "Пациент жалуется на припухлость перед левым ухом. Боли при жевании нет. На УЗИ околоушная железа слева 42 на 19 мм. Структура однородная. Проток не расширен, конкрементов не выявлено. Справа железа без очаговых изменений.",
+    "expectedFields": {"patientComplaints": "Припухлость перед левым ухом. Боли при жевании нет.", "examinationDescription": "Околоушная железа слева 42 на 19 мм. Структура однородная. Проток не расширен, конкрементов не выявлено. Справа железа без очаговых изменений."}
+  },
+  {
+    "id": "final-holdout-ru-10", "locale": "ru", "category": "clinical",
+    "inputText": "Беспокоит боль в наружных отделах левой молочной железы. Выделений из соска нет. При УЗИ слева простая киста 9 на 6 мм. Справа кист и солидных образований не выявлено. Подмышечные лимфоузлы с сохранённой структурой.",
+    "expectedFields": {"patientComplaints": "Беспокоит боль в наружных отделах левой молочной железы. Выделений из соска нет.", "examinationDescription": "Слева простая киста 9 на 6 мм. Справа кист и солидных образований не выявлено. Подмышечные лимфоузлы с сохранённой структурой."}
+  },
+  {
+    "id": "final-holdout-ru-11", "locale": "ru", "category": "clinical",
+    "inputText": "Селезёнка 104 на 46 мм, структура однородная. Очаговых образований нет. Селезёночная вена 6 мм, не расширена. Свободная жидкость не определяется. Жалоб нет.",
+    "expectedFields": {"examinationDescription": "Селезёнка 104 на 46 мм, структура однородная. Очаговых образований нет. Селезёночная вена 6 мм, не расширена. Свободная жидкость не определяется.", "patientComplaints": "Жалоб нет."}
+  },
+  {
+    "id": "final-holdout-ru-12", "locale": "ru", "category": "clinical",
+    "inputText": "Жалобы: Частые ночные мочеиспускания. Крови в моче не замечал. Предстательная железа объёмом 31 мл. Контуры чёткие, структура неоднородная. Мочевой пузырь содержит 180 мл, стенка 3 мм. Остаточная моча 24 мл.",
+    "expectedFields": {"patientComplaints": "Частые ночные мочеиспускания. Крови в моче не замечал.", "examinationDescription": "Предстательная железа объёмом 31 мл. Контуры чёткие, структура неоднородная. Мочевой пузырь содержит 180 мл, стенка 3 мм. Остаточная моча 24 мл."}
+  },
+  {
+    "id": "final-holdout-ru-13", "locale": "ru", "category": "clinical",
+    "inputText": "При УЗИ общая сонная артерия справа диаметром 6.2 мм, слева 6.1 мм. Толщина комплекса интима-медиа 0.7 мм с обеих сторон. Бляшек и гемодинамически значимых стенозов не выявлено. Жалобы: Периодический шум в ушах. Головной боли нет.",
+    "expectedFields": {"examinationDescription": "Общая сонная артерия справа диаметром 6.2 мм, слева 6.1 мм. Толщина комплекса интима-медиа 0.7 мм с обеих сторон. Бляшек и гемодинамически значимых стенозов не выявлено.", "patientComplaints": "Периодический шум в ушах. Головной боли нет."}
+  },
+  {
+    "id": "final-holdout-ru-14", "locale": "ru", "category": "clinical",
+    "inputText": "Пациент жалуется на онемение третьего пальца правой кисти ночью. Днём симптомы проходят. Срединный нерв справа площадью 12 мм2, слева 9 мм2. Контуры ровные. В карпальном канале дополнительных образований нет. Сухожилия сгибателей непрерывные.",
+    "expectedFields": {"patientComplaints": "Онемение третьего пальца правой кисти ночью. Днём симптомы проходят.", "examinationDescription": "Срединный нерв справа площадью 12 мм2, слева 9 мм2. Контуры ровные. В карпальном канале дополнительных образований нет. Сухожилия сгибателей непрерывные."}
+  },
+  {
+    "id": "final-holdout-ru-15", "locale": "ru", "category": "patient_details",
+    "inputText": "Пациент: Алёна Лукина. Дата рождения 3 марта 1989 года. Весит 54.8 килограмма, рост 158 сантиметров.",
+    "expectedFields": {"patientName": "Алёна Лукина", "patientDateOfBirth": "1989-03-03", "patientWeightKG": 54.8, "patientHeightCM": 158}
+  },
+  {
+    "id": "final-holdout-ru-16", "locale": "ru", "category": "patient_details",
+    "inputText": "Номер исследования 000946. Сегодня обследуем пациента Виктор Фомин, пол мужчина. Родился 12 декабря 1951 года.",
+    "expectedFields": {"examinationNumber": "000946", "patientName": "Виктор Фомин", "patientGender": "male", "patientDateOfBirth": "1951-12-12"}
+  },
+  {
+    "id": "final-holdout-ru-17", "locale": "ru", "category": "patient_details",
+    "inputText": "Рост 173 см, вес 67.9 кг. Пациент: Инна Егорова. Дата рождения 25 августа 1980 года. Жалоб нет.",
+    "expectedFields": {"patientHeightCM": 173, "patientWeightKG": 67.9, "patientName": "Инна Егорова", "patientDateOfBirth": "1980-08-25", "patientComplaints": "Жалоб нет."}
+  },
+  {
+    "id": "final-holdout-ru-18", "locale": "ru", "category": "single_field",
+    "inputText": "На УЗИ плевральная полость справа свободна. Слева определяется жидкость слоем 8 мм. В прилежащих тканях дополнительных образований нет. Диафрагма визуализируется с обеих сторон.",
+    "expectedFields": {"examinationDescription": "Плевральная полость справа свободна. Слева определяется жидкость слоем 8 мм. В прилежащих тканях дополнительных образований нет. Диафрагма визуализируется с обеих сторон."}
+  },
+  {
+    "id": "final-holdout-ru-19", "locale": "ru", "category": "single_field",
+    "inputText": "Жалобы: Боль по наружной поверхности правого бедра при длительной ходьбе. Онемения и слабости в ноге нет. В покое боль не беспокоит.",
+    "expectedFields": {"patientComplaints": "Боль по наружной поверхности правого бедра при длительной ходьбе. Онемения и слабости в ноге нет. В покое боль не беспокоит."}
+  },
+  {
+    "id": "final-holdout-ru-20", "locale": "ru", "category": "single_field",
+    "inputText": "Это исследование номер D-00731.",
+    "expectedFields": {"examinationNumber": "D-00731"}
+  },
+  {
+    "id": "final-holdout-en-01", "locale": "en", "category": "complete",
+    "inputText": "Today's patient is Sarah Bennett. Born on the sixteenth of February nineteen eighty four. Gender female. Height 168 cm, weight 64.1 kg. Study number HIP-0064. She reports right hip pain when climbing stairs. No pain at night. On ultrasound anterior hip recess contains a 3 mm layer of fluid. Iliopsoas tendon is continuous. No bursal distension. No focal soft tissue mass.",
+    "expectedFields": {"patientName": "Sarah Bennett", "patientDateOfBirth": "1984-02-16", "patientGender": "female", "patientHeightCM": 168, "patientWeightKG": 64.1, "examinationNumber": "HIP-0064", "patientComplaints": "Right hip pain when climbing stairs. No pain at night.", "examinationDescription": "Anterior hip recess contains a 3 mm layer of fluid. Iliopsoas tendon is continuous. No bursal distension. No focal soft tissue mass."}
+  },
+  {
+    "id": "final-holdout-en-02", "locale": "en", "category": "complete",
+    "inputText": "Ultrasound shows right thyroid lobe volume 8.3 ml, left 7.4 ml. Isthmus 3 mm. Left lobe contains a 6 by 4 mm colloid cyst. No solid nodules. Regional lymph nodes are not enlarged. Patient: Amelia Shaw. Gender female. Date of birth June 27, 1979. Examination number TH-0548. Weight 71.6 kg and height 174 cm. Complaints: Pressure at the front of the neck. No hoarseness or swallowing pain.",
+    "expectedFields": {"examinationDescription": "Right thyroid lobe volume 8.3 ml, left 7.4 ml. Isthmus 3 mm. Left lobe contains a 6 by 4 mm colloid cyst. No solid nodules. Regional lymph nodes are not enlarged.", "patientName": "Amelia Shaw", "patientGender": "female", "patientDateOfBirth": "1979-06-27", "examinationNumber": "TH-0548", "patientWeightKG": 71.6, "patientHeightCM": 174, "patientComplaints": "Pressure at the front of the neck. No hoarseness or swallowing pain."}
+  },
+  {
+    "id": "final-holdout-en-03", "locale": "en", "category": "complete",
+    "inputText": "Patient: Nathan Cole, gender male, born April 15, 1965. Height is 179 cm; weight is 86.4 kg. Examination number UR-00138. He complains of difficulty starting urination. No visible blood in the urine. Right kidney 115 by 52 mm and left kidney 112 by 51 mm. No hydronephrosis or calculi. Bladder wall 4 mm. Postvoid residual 36 ml. Prostate volume 34 ml.",
+    "expectedFields": {"patientName": "Nathan Cole", "patientGender": "male", "patientDateOfBirth": "1965-04-15", "patientHeightCM": 179, "patientWeightKG": 86.4, "examinationNumber": "UR-00138", "patientComplaints": "Difficulty starting urination. No visible blood in the urine.", "examinationDescription": "Right kidney 115 by 52 mm and left kidney 112 by 51 mm. No hydronephrosis or calculi. Bladder wall 4 mm. Postvoid residual 36 ml. Prostate volume 34 ml."}
+  },
+  {
+    "id": "final-holdout-en-04", "locale": "en", "category": "complete",
+    "inputText": "Study ID AA-0036. Today's patient is George Foster. Date of birth December 2, 1957. Gender male. Weight 94.2 kg; height 181 cm. Complaints: Intermittent lower back discomfort. No abdominal pain. On ultrasound abdominal aorta measures 21 mm proximally, 19 mm in the middle segment and 18 mm distally. No aneurysm. Both common iliac arteries are patent. No focal dilatation.",
+    "expectedFields": {"examinationNumber": "AA-0036", "patientName": "George Foster", "patientDateOfBirth": "1957-12-02", "patientGender": "male", "patientWeightKG": 94.2, "patientHeightCM": 181, "patientComplaints": "Intermittent lower back discomfort. No abdominal pain.", "examinationDescription": "Abdominal aorta measures 21 mm proximally, 19 mm in the middle segment and 18 mm distally. No aneurysm. Both common iliac arteries are patent. No focal dilatation."}
+  },
+  {
+    "id": "final-holdout-en-05", "locale": "en", "category": "partial",
+    "inputText": "The patient reports shortness of breath on exertion. No pleuritic chest pain. On ultrasound there is a 7 mm layer of left pleural fluid. No fluid on the right. No additional pleural mass. Diaphragm moves bilaterally. Study number PL-087, weight 77.5 kg.",
+    "expectedFields": {"patientComplaints": "Shortness of breath on exertion. No pleuritic chest pain.", "examinationDescription": "There is a 7 mm layer of left pleural fluid. No fluid on the right. No additional pleural mass. Diaphragm moves bilaterally.", "examinationNumber": "PL-087", "patientWeightKG": 77.5}
+  },
+  {
+    "id": "final-holdout-en-06", "locale": "en", "category": "partial",
+    "inputText": "Weight is 68.7 kg. Study number WR-041. Complaints: Pain over the radial side of the left wrist during gripping. No finger numbness. Ultrasound demonstrates thickening of the first extensor compartment tendons to 3 mm. A small amount of sheath fluid is present. Tendons remain continuous. No ganglion cyst.",
+    "expectedFields": {"patientWeightKG": 68.7, "examinationNumber": "WR-041", "patientComplaints": "Pain over the radial side of the left wrist during gripping. No finger numbness.", "examinationDescription": "Thickening of the first extensor compartment tendons to 3 mm. A small amount of sheath fluid is present. Tendons remain continuous. No ganglion cyst."}
+  },
+  {
+    "id": "final-holdout-en-07", "locale": "en", "category": "partial",
+    "inputText": "On ultrasound left kidney measures 118 by 55 mm. A 5 mm lower pole calculus casts an acoustic shadow. No collecting system dilatation. Right kidney has no calculi. Examination number K-0289, weight 80.6 kg. The patient reports intermittent left flank pain. No fever or vomiting.",
+    "expectedFields": {"examinationDescription": "Left kidney measures 118 by 55 mm. A 5 mm lower pole calculus casts an acoustic shadow. No collecting system dilatation. Right kidney has no calculi.", "examinationNumber": "K-0289", "patientWeightKG": 80.6, "patientComplaints": "Intermittent left flank pain. No fever or vomiting."}
+  },
+  {
+    "id": "final-holdout-en-08", "locale": "en", "category": "partial",
+    "inputText": "This is study LN-061. On ultrasound the right posterior cervical node measures 14 by 5 mm. Fatty hilum is preserved. No abnormal peripheral vascularity. Other cervical nodes are not enlarged. Patient: Leo Turner.",
+    "expectedFields": {"examinationNumber": "LN-061", "examinationDescription": "The right posterior cervical node measures 14 by 5 mm. Fatty hilum is preserved. No abnormal peripheral vascularity. Other cervical nodes are not enlarged.", "patientName": "Leo Turner"}
+  },
+  {
+    "id": "final-holdout-en-09", "locale": "en", "category": "clinical",
+    "inputText": "The patient reports lower abdominal pressure. No bleeding. On ultrasound uterus measures 57 by 40 by 46 mm. Endometrium is 5 mm. Ovarian volumes are 6.1 ml on the right and 5.7 ml on the left. No adnexal mass. No free pelvic fluid.",
+    "expectedFields": {"patientComplaints": "Lower abdominal pressure. No bleeding.", "examinationDescription": "Uterus measures 57 by 40 by 46 mm. Endometrium is 5 mm. Ovarian volumes are 6.1 ml on the right and 5.7 ml on the left. No adnexal mass. No free pelvic fluid."}
+  },
+  {
+    "id": "final-holdout-en-10", "locale": "en", "category": "clinical",
+    "inputText": "Pain over the outer right elbow after lifting. No pain at rest. Ultrasound shows common extensor tendon thickness of 5 mm, mildly heterogeneous structure. No tendon tear. No joint effusion. Ulnar nerve is not enlarged.",
+    "expectedFields": {"patientComplaints": "Pain over the outer right elbow after lifting. No pain at rest.", "examinationDescription": "Common extensor tendon thickness of 5 mm, mildly heterogeneous structure. No tendon tear. No joint effusion. Ulnar nerve is not enlarged."}
+  },
+  {
+    "id": "final-holdout-en-11", "locale": "en", "category": "clinical",
+    "inputText": "Left submandibular gland measures 29 by 12 mm. Right gland measures 30 by 13 mm. Homogeneous structure on both sides. No ductal calculi or dilatation. No complaints.",
+    "expectedFields": {"examinationDescription": "Left submandibular gland measures 29 by 12 mm. Right gland measures 30 by 13 mm. Homogeneous structure on both sides. No ductal calculi or dilatation.", "patientComplaints": "No complaints."}
+  },
+  {
+    "id": "final-holdout-en-12", "locale": "en", "category": "clinical",
+    "inputText": "Complaints: Dull discomfort in the left scrotum after prolonged standing. No fever. Left testis measures 43 by 26 by 22 mm, right 42 by 25 by 23 mm. Both have homogeneous echotexture and preserved blood flow. No focal lesion. Small left hydrocele.",
+    "expectedFields": {"patientComplaints": "Dull discomfort in the left scrotum after prolonged standing. No fever.", "examinationDescription": "Left testis measures 43 by 26 by 22 mm, right 42 by 25 by 23 mm. Both have homogeneous echotexture and preserved blood flow. No focal lesion. Small left hydrocele."}
+  },
+  {
+    "id": "final-holdout-en-13", "locale": "en", "category": "clinical",
+    "inputText": "On ultrasound right common carotid artery is 6.4 mm and left 6.3 mm in diameter. Intima media thickness is 0.6 mm. No plaque or significant stenosis. Vertebral artery flow is antegrade on both sides. Complaints: Brief dizziness when turning the head. No headache.",
+    "expectedFields": {"examinationDescription": "Right common carotid artery is 6.4 mm and left 6.3 mm in diameter. Intima media thickness is 0.6 mm. No plaque or significant stenosis. Vertebral artery flow is antegrade on both sides.", "patientComplaints": "Brief dizziness when turning the head. No headache."}
+  },
+  {
+    "id": "final-holdout-en-14", "locale": "en", "category": "clinical",
+    "inputText": "The patient complains of upper abdominal pain after meals. No nausea or weight loss. Pancreatic head measures 23 mm, body 14 mm and tail 21 mm. Smooth contour and homogeneous echogenicity. Main pancreatic duct is not dilated. No peripancreatic fluid.",
+    "expectedFields": {"patientComplaints": "Upper abdominal pain after meals. No nausea or weight loss.", "examinationDescription": "Pancreatic head measures 23 mm, body 14 mm and tail 21 mm. Smooth contour and homogeneous echogenicity. Main pancreatic duct is not dilated. No peripancreatic fluid."}
+  },
+  {
+    "id": "final-holdout-en-15", "locale": "en", "category": "patient_details",
+    "inputText": "Patient: Isaac Parker. Born March 11, 1992. Weighs 84.7 kilograms. Height is 1.87 meters.",
+    "expectedFields": {"patientName": "Isaac Parker", "patientDateOfBirth": "1992-03-11", "patientWeightKG": 84.7, "patientHeightCM": 187}
+  },
+  {
+    "id": "final-holdout-en-16", "locale": "en", "category": "patient_details",
+    "inputText": "Study number 000857. Today's patient is Evelyn Clark, gender female. Date of birth August 19, 1948.",
+    "expectedFields": {"examinationNumber": "000857", "patientName": "Evelyn Clark", "patientGender": "female", "patientDateOfBirth": "1948-08-19"}
+  },
+  {
+    "id": "final-holdout-en-17", "locale": "en", "category": "patient_details",
+    "inputText": "Height 172 cm and weight 66.8 kg. Patient: Ruby Collins. Date of birth January 9, 1987. No complaints.",
+    "expectedFields": {"patientHeightCM": 172, "patientWeightKG": 66.8, "patientName": "Ruby Collins", "patientDateOfBirth": "1987-01-09", "patientComplaints": "No complaints."}
+  },
+  {
+    "id": "final-holdout-en-18", "locale": "en", "category": "single_field",
+    "inputText": "On ultrasound fetus is in breech presentation. Biparietal diameter is 74 mm. Femur length is 55 mm. Fetal sex is female. Amniotic fluid volume is within the normal range. Placenta is on the posterior wall.",
+    "expectedFields": {"examinationDescription": "Fetus is in breech presentation. Biparietal diameter is 74 mm. Femur length is 55 mm. Fetal sex is female. Amniotic fluid volume is within the normal range. Placenta is on the posterior wall."}
+  },
+  {
+    "id": "final-holdout-en-19", "locale": "en", "category": "single_field",
+    "inputText": "Complaints: Burning pain under the left forefoot after long walks. No numbness. Symptoms resolve with rest.",
+    "expectedFields": {"patientComplaints": "Burning pain under the left forefoot after long walks. No numbness. Symptoms resolve with rest."}
+  },
+  {
+    "id": "final-holdout-en-20", "locale": "en", "category": "single_field",
+    "inputText": "Liver right lobe measures 143 mm, smooth contour. Echogenicity is normal. No focal lesion. Portal vein measures 10 mm with preserved flow. No ascites.",
+    "expectedFields": {"examinationDescription": "Liver right lobe measures 143 mm, smooth contour. Echogenicity is normal. No focal lesion. Portal vein measures 10 mm with preserved flow. No ascites."}
+  }
+]

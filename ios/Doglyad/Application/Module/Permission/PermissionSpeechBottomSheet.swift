@@ -11,10 +11,10 @@ struct PermissionSpeechBottomSheet: View {
                 container: container,
                 router: router,
                 subscription: subscriptionViewModel,
-                destination: .permissionSpeech
+                destination: .permissionSpeech,
             ),
             title: .permissionSpeechTitle,
-            description: .permissionSpeechDescription
+            description: .permissionSpeechDescription,
         )
     }
 }

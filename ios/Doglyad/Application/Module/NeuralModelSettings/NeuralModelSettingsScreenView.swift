@@ -25,128 +25,206 @@ struct NeuralModelSettingsScreenView: DView {
                             DToolbarButton(
                                 accessibilityLabel: .buttonSave,
                                 style: .primaryDefault,
-                                content: .text(.buttonSave),
-                                action: viewModel.onTapSave
+                                content: .text(
+                                    .buttonSave,
+                                ),
+                                action: viewModel.onTapSave,
                             ),
-                        ]
+                        ],
                     )
-                    .disabled(viewModel.isLoading)
+                    .disabled(
+                        viewModel.isLoading,
+                    )
                 }
             },
             content: { toolbarInset, bottomInset in
                 DFocusScrollView(
-                    focus: focus
+                    focus: focus,
                 ) {
                     VStack(
                         alignment: .leading,
-                        spacing: .zero
+                        spacing: .zero,
                     ) {
                         DButtonCard(
-                            action: { viewModel.toggleIsMarkdown() }
+                            action: { viewModel.toggleIsMarkdown() },
                         ) {
-                            HStack(alignment: .center) {
-                                DText(.neuralModelMarkdownLabel)
-                                    .dStyle(
-                                        font: typography.linkSmall
-                                    )
+                            HStack(
+                                alignment: .center,
+                            ) {
+                                DText(
+                                    .neuralModelMarkdownLabel,
+                                )
+                                .dStyle(
+                                    font: typography.linkSmall,
+                                )
 
-                                Spacer(minLength: size.s16)
+                                Spacer(
+                                    minLength: size.s16,
+                                )
 
                                 Toggle(
                                     "",
-                                    isOn: $viewModel.isMarkdown
+                                    isOn: $viewModel.isMarkdown,
                                 )
                                 .labelsHidden()
-                                .toggleStyle(.switch)
-                                .allowsHitTesting(false)
+                                .toggleStyle(
+                                    .switch,
+                                )
+                                .allowsHitTesting(
+                                    false,
+                                )
                             }
                             .frame(
                                 maxWidth: .infinity,
-                                alignment: .leading
+                                alignment: .leading,
                             )
-                            .foregroundStyle(color.grayscaleHeader)
+                            .foregroundStyle(
+                                color.grayscaleHeader,
+                            )
                         }
-                        .padding(.bottom, size.s4)
+                        .padding(
+                            .bottom,
+                            size.s4,
+                        )
 
-                        DText(.neuralModelMarkdownDescription)
-                            .dStyle(
-                                font: typography.textXSmall,
-                                color: color.grayscalePlacehold
-                            )
-                            .padding(.horizontal, size.s8)
-                            .padding(.bottom, size.s16)
+                        DText(
+                            .neuralModelMarkdownDescription,
+                        )
+                        .dStyle(
+                            font: typography.textXSmall,
+                            color: color.grayscalePlacehold,
+                        )
+                        .padding(
+                            .horizontal,
+                            size.s8,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s16,
+                        )
 
                         DTextField(
                             controller: viewModel.temperatureController,
                             focus: DTextFieldFocus(
                                 value: .temperature,
-                                state: $focus
+                                state: $focus,
                             ),
                             title: .neuralModelTemperatureLabel,
                             placeholder: .neuralModelTemperaturePlaceholder,
-                            mode: DTextFieldSingleLineMode(submitLabel: .next),
-                            keyboardType: .decimalPad
+                            mode: DTextFieldSingleLineMode(
+                                submitLabel: .next,
+                            ),
+                            keyboardType: .decimalPad,
                         )
-                        .id(NeuralModelSettingsViewModel.Focus.temperature)
-                        .padding(.bottom, size.s4)
+                        .id(
+                            NeuralModelSettingsViewModel.Focus.temperature,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s4,
+                        )
 
-                        DText(.neuralModelTemperatureDescription)
-                            .dStyle(
-                                font: typography.textXSmall,
-                                color: color.grayscalePlacehold
-                            )
-                            .padding(.horizontal, size.s8)
-                            .padding(.bottom, size.s16)
+                        DText(
+                            .neuralModelTemperatureDescription,
+                        )
+                        .dStyle(
+                            font: typography.textXSmall,
+                            color: color.grayscalePlacehold,
+                        )
+                        .padding(
+                            .horizontal,
+                            size.s8,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s16,
+                        )
 
                         DTextField(
                             controller: viewModel.maxTokensController,
                             focus: DTextFieldFocus(
                                 value: .length,
-                                state: $focus
+                                state: $focus,
                             ),
                             title: .neuralModelMaxTokensLabel,
                             placeholder: .neuralModelMaxTokensPlaceholder,
-                            mode: DTextFieldSingleLineMode(submitLabel: .done),
-                            keyboardType: .numberPad
+                            mode: DTextFieldSingleLineMode(
+                                submitLabel: .done,
+                            ),
+                            keyboardType: .numberPad,
                         )
-                        .id(NeuralModelSettingsViewModel.Focus.length)
-                        .padding(.bottom, size.s4)
+                        .id(
+                            NeuralModelSettingsViewModel.Focus.length,
+                        )
+                        .padding(
+                            .bottom,
+                            size.s4,
+                        )
 
-                        DText(.neuralModelMaxTokensDescription)
-                            .dStyle(
-                                font: typography.textXSmall,
-                                color: color.grayscalePlacehold
-                            )
-                            .padding(.horizontal, size.s8)
+                        DText(
+                            .neuralModelMaxTokensDescription,
+                        )
+                        .dStyle(
+                            font: typography.textXSmall,
+                            color: color.grayscalePlacehold,
+                        )
+                        .padding(
+                            .horizontal,
+                            size.s8,
+                        )
                     }
-                    .padding(.top, toolbarInset)
-                    .padding(size.s16)
-                    .padding(.bottom, bottomInset)
-                    .disabled(viewModel.isLoading)
+                    .padding(
+                        .top,
+                        toolbarInset,
+                    )
+                    .padding(
+                        size.s16,
+                    )
+                    .padding(
+                        .bottom,
+                        bottomInset,
+                    )
+                    .disabled(
+                        viewModel.isLoading,
+                    )
                 }
             },
             bottom: {
                 DButton(
                     title: .buttonSave,
                     action: viewModel.onTapSave,
-                    isLoading: viewModel.isLoading
+                    isLoading: viewModel.isLoading,
                 )
-                .dStyle(.primaryButton)
-                .padding(size.s16)
-            }
+                .dStyle(
+                    .primaryButton,
+                )
+                .padding(
+                    size.s16,
+                )
+            },
         )
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
         .onSubmit {
             viewModel.onSubmit()
         }
-        .onChange(of: focus, initial: true) { _, newValue in
+        .onChange(
+            of: focus,
+            initial: true,
+        ) { _, newValue in
             guard viewModel.focus != newValue else { return }
             viewModel.focus = newValue
         }
-        .onChange(of: viewModel.focus, initial: true) { _, newValue in
+        .onChange(
+            of: viewModel.focus,
+            initial: true,
+        ) { _, newValue in
             guard focus != newValue else { return }
             focus = newValue
         }
-        .scrollDismissesKeyboard(.interactively)
+        .scrollDismissesKeyboard(
+            .interactively,
+        )
     }
 }

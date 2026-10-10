@@ -6,7 +6,9 @@ public enum DBottomSheetType {
 }
 
 public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: View {
-    @Environment(\.dismiss) private var dismiss
+    @Environment(
+        \.dismiss,
+    ) private var dismiss
     @EnvironmentObject public var theme: DTheme
 
     @State private var toolbarHeight: CGFloat = 0
@@ -25,7 +27,7 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
         isCloseButtonVisible: Bool = true,
         fraction: Double = 0.3,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
-        @ViewBuilder bottom: @escaping () -> Bottom
+        @ViewBuilder bottom: @escaping () -> Bottom,
     ) {
         self.type = type
         self.title = title
@@ -40,7 +42,7 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
         title: LocalizedStringResource,
         isCloseButtonVisible: Bool = true,
         fraction: Double = 0.3,
-        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content
+        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
     ) where Bottom == EmptyView {
         self.type = type
         self.title = title
@@ -55,62 +57,98 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
             let safeAreaInsetBottom = proxy.safeAreaInsets.bottom
 
             ZStack(
-                alignment: .top
+                alignment: .top,
             ) {
                 ZStack {
-                    content(toolbarHeight, bottomHeight - safeAreaInsetBottom)
+                    content(
+                        toolbarHeight,
+                        bottomHeight - safeAreaInsetBottom,
+                    )
 
                     VStack(
-                        spacing: .zero
+                        spacing: .zero,
                     ) {
                         Spacer()
-                        if let bottom = self.bottom?() {
+                        if let bottom = bottom?() {
                             bottom
-                                .padding(.vertical, size.adaptiveCornerRadius / 6)
-                                .frame(maxWidth: .infinity)
-                                .safeAreaPadding(.bottom)
+                                .padding(
+                                    .vertical,
+                                    size.adaptiveCornerRadius / 6,
+                                )
+                                .frame(
+                                    maxWidth: .infinity,
+                                )
+                                .safeAreaPadding(
+                                    .bottom,
+                                )
                                 .background(
                                     Rectangle()
-                                        .fill(.ultraThinMaterial)
+                                        .fill(
+                                            .ultraThinMaterial,
+                                        )
                                         .clipShape(
                                             DRoundedCorner(
                                                 radius: size.adaptiveCornerRadius,
-                                                corners: [.topLeft, .topRight]
-                                            )
-                                        )
+                                                corners: [.topLeft, .topRight],
+                                            ),
+                                        ),
                                 )
                                 .overlay {
                                     GeometryReader { proxy in
                                         Color.clear
                                             .preference(
                                                 key: BottomSheetBottomHeightPreferenceKey.self,
-                                                value: proxy.size.height
+                                                value: proxy.size.height,
                                             )
                                     }
                                 }
-                                .onPreferenceChange(BottomSheetBottomHeightPreferenceKey.self) { value in
+                                .onPreferenceChange(
+                                    BottomSheetBottomHeightPreferenceKey.self,
+                                ) { value in
                                     guard bottomHeight != value else { return }
                                     bottomHeight = value
                                 }
-                                .transition(.move(edge: .bottom))
+                                .transition(
+                                    .move(
+                                        edge: .bottom,
+                                    ),
+                                )
                         }
                     }
-                    .edgesIgnoringSafeArea(.bottom)
+                    .edgesIgnoringSafeArea(
+                        .bottom,
+                    )
                 }
 
                 toolbarView
-                    .onPreferenceChange(BottomSheetToolbarHeightPreferenceKey.self) { value in
+                    .onPreferenceChange(
+                        BottomSheetToolbarHeightPreferenceKey.self,
+                    ) { value in
                         guard toolbarHeight != value else { return }
                         toolbarHeight = value
                     }
             }
             .presentationBackground { presentationBackgroundView }
-            .presentationDragIndicator(.hidden)
-            .presentationCornerRadius(size.adaptiveCornerRadius)
-            .presentationDetents([.fraction(fraction)])
-            .interactiveDismissDisabled(!isCloseButtonVisible)
-            .if(type == .blur) {
-                $0.preferredColorScheme(.dark)
+            .presentationDragIndicator(
+                .hidden,
+            )
+            .presentationCornerRadius(
+                size.adaptiveCornerRadius,
+            )
+            .presentationDetents(
+                [.fraction(
+                    fraction,
+                )],
+            )
+            .interactiveDismissDisabled(
+                !isCloseButtonVisible,
+            )
+            .if(
+                type == .blur,
+            ) {
+                $0.preferredColorScheme(
+                    .dark,
+                )
             }
         }
     }
@@ -119,24 +157,28 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
         Color.clear
             .frame(
                 width: 22,
-                height: .zero
+                height: .zero,
             )
     }
 
     private var toolbarView: some View {
         VStack(
-            spacing: .zero
+            spacing: .zero,
         ) {
             HStack {
                 toolbarSpacer
                 Spacer()
-                DText(title)
-                    .dStyle(
-                        font: typography.linkSmall,
-                        color: type == .blur ? color.grayscaleBackgroundWeak : nil,
-                        alignment: .center
-                    )
-                    .padding(size.s16)
+                DText(
+                    title,
+                )
+                .dStyle(
+                    font: typography.linkSmall,
+                    color: type == .blur ? color.grayscaleBackgroundWeak : nil,
+                    alignment: .center,
+                )
+                .padding(
+                    size.s16,
+                )
                 Spacer()
                 if isCloseButtonVisible {
                     DCloseButton {
@@ -146,24 +188,37 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
                     toolbarSpacer
                 }
             }
-            .padding(.top, size.adaptiveCornerRadius / 4)
-            .padding(.horizontal, size.adaptiveCornerRadius / 2)
+            .padding(
+                .top,
+                size.adaptiveCornerRadius / 4,
+            )
+            .padding(
+                .horizontal,
+                size.adaptiveCornerRadius / 2,
+            )
         }
-        .frame(maxWidth: .infinity, alignment: .top)
+        .frame(
+            maxWidth: .infinity,
+            alignment: .top,
+        )
         .background {
             Rectangle()
-                .fill(.ultraThinMaterial)
-                .clipShape(DRoundedCorner(
-                    radius: size.adaptiveCornerRadius,
-                    corners: [.bottomLeft, .bottomRight]
-                ))
+                .fill(
+                    .ultraThinMaterial,
+                )
+                .clipShape(
+                    DRoundedCorner(
+                        radius: size.adaptiveCornerRadius,
+                        corners: [.bottomLeft, .bottomRight],
+                    ),
+                )
         }
         .overlay {
             GeometryReader { proxy in
                 Color.clear
                     .preference(
                         key: BottomSheetToolbarHeightPreferenceKey.self,
-                        value: proxy.size.height
+                        value: proxy.size.height,
                     )
             }
         }
@@ -175,7 +230,9 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
         case .default:
             color.grayscaleBackgroundWeak
         case .blur:
-            Rectangle().fill(.ultraThinMaterial)
+            Rectangle().fill(
+                .ultraThinMaterial,
+            )
         }
     }
 }
@@ -183,7 +240,10 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
 private struct BottomSheetToolbarHeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
 
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+    static func reduce(
+        value: inout CGFloat,
+        nextValue: () -> CGFloat,
+    ) {
         value = nextValue()
     }
 }
@@ -191,7 +251,10 @@ private struct BottomSheetToolbarHeightPreferenceKey: PreferenceKey {
 private struct BottomSheetBottomHeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
 
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+    static func reduce(
+        value: inout CGFloat,
+        nextValue: () -> CGFloat,
+    ) {
         value = nextValue()
     }
 }
@@ -199,31 +262,48 @@ private struct BottomSheetBottomHeightPreferenceKey: PreferenceKey {
 #Preview {
     @Previewable @State var isPresented = false
 
-    Button("Show Sheet") {
+    Button(
+        "Show Sheet",
+    ) {
         isPresented = true
     }
-    .sheet(isPresented: $isPresented) {
+    .sheet(
+        isPresented: $isPresented,
+    ) {
         DBottomSheet(
             title: "Sheet Title",
-            fraction: 0.4
+            fraction: 0.4,
         ) { toolbarHeight, _ in
             ScrollView {
-                VStack(spacing: 12) {
-                    DText("Bottom sheet content")
-                        .dStyle()
-                    DText("Some description text")
-                        .dStyle()
+                VStack(
+                    spacing: 12,
+                ) {
+                    DText(
+                        "Bottom sheet content",
+                    )
+                    .dStyle()
+                    DText(
+                        "Some description text",
+                    )
+                    .dStyle()
                 }
                 .padding()
-                .padding(.top, toolbarHeight)
+                .padding(
+                    .top,
+                    toolbarHeight,
+                )
             }
         } bottom: {
             DButton(
                 title: "Confirm",
-                action: { isPresented = false }
+                action: { isPresented = false },
             )
-            .dStyle(.primaryButton)
-            .padding(.horizontal)
+            .dStyle(
+                .primaryButton,
+            )
+            .padding(
+                .horizontal,
+            )
         }
         .dThemeWrapper()
     }

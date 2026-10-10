@@ -7,7 +7,7 @@ public struct DScreen<
     ToolbarContent: View,
     Content: View,
     Bottom: View,
-    KeyboardToolbar: View
+    KeyboardToolbar: View,
 >: DView {
     @EnvironmentObject public var theme: DTheme
 
@@ -37,7 +37,7 @@ public struct DScreen<
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
         @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
         onTapBody: (() -> Void)? = nil,
-        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content
+        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
     ) where Bottom == EmptyView, KeyboardToolbar == EmptyView {
         self.title = title
         self.subTitle = subTitle
@@ -64,7 +64,7 @@ public struct DScreen<
         @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
-        @ViewBuilder bottom: @escaping () -> Bottom
+        @ViewBuilder bottom: @escaping () -> Bottom,
     ) where KeyboardToolbar == EmptyView {
         self.title = title
         self.subTitle = subTitle
@@ -91,7 +91,7 @@ public struct DScreen<
         @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
-        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content
+        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
     ) where Bottom == EmptyView {
         self.title = title
         self.subTitle = subTitle
@@ -119,7 +119,7 @@ public struct DScreen<
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
-        @ViewBuilder bottom: @escaping () -> Bottom
+        @ViewBuilder bottom: @escaping () -> Bottom,
     ) {
         self.title = title
         self.subTitle = subTitle
@@ -137,75 +137,119 @@ public struct DScreen<
 
     public var body: some View {
         ZStack(
-            alignment: .bottom
+            alignment: .bottom,
         ) {
             GeometryReader { proxy in
                 let safeAreaInsetTop = proxy.safeAreaInsets.top
                 let safeAreaInsetBottom = proxy.safeAreaInsets.bottom
 
                 ZStack(
-                    alignment: .top
+                    alignment: .top,
                 ) {
-                    bodyView(toolbarHeight - safeAreaInsetTop, bottomHeight - safeAreaInsetBottom)
+                    bodyView(
+                        toolbarHeight - safeAreaInsetTop,
+                        bottomHeight - safeAreaInsetBottom,
+                    )
 
                     VStack(
-                        spacing: .zero
+                        spacing: .zero,
                     ) {
                         Spacer()
-                        if let bottom = self.bottom?() {
+                        if let bottom = bottom?() {
                             bottom
-                                .padding(.vertical, size.adaptiveCornerRadius / 6)
-                                .frame(maxWidth: .infinity)
-                                .safeAreaPadding(.bottom)
+                                .padding(
+                                    .vertical,
+                                    size.adaptiveCornerRadius / 6,
+                                )
+                                .frame(
+                                    maxWidth: .infinity,
+                                )
+                                .safeAreaPadding(
+                                    .bottom,
+                                )
                                 .background(
                                     Rectangle()
-                                        .fill(.ultraThinMaterial)
+                                        .fill(
+                                            .ultraThinMaterial,
+                                        )
                                         .clipShape(
                                             DRoundedCorner(
                                                 radius: size.adaptiveCornerRadius,
-                                                corners: [.topLeft, .topRight]
-                                            )
-                                        )
+                                                corners: [.topLeft, .topRight],
+                                            ),
+                                        ),
                                 )
                                 .overlay {
                                     GeometryReader { proxy in
                                         Color.clear
                                             .preference(
                                                 key: BottomHeightPreferenceKey.self,
-                                                value: proxy.size.height
+                                                value: proxy.size.height,
                                             )
                                     }
                                 }
-                                .onPreferenceChange(BottomHeightPreferenceKey.self) { value in
+                                .onPreferenceChange(
+                                    BottomHeightPreferenceKey.self,
+                                ) { value in
                                     guard bottomHeight != value else { return }
                                     bottomHeight = value
                                 }
-                                .transition(.move(edge: .bottom))
+                                .transition(
+                                    .move(
+                                        edge: .bottom,
+                                    ),
+                                )
                         }
                     }
-                    .edgesIgnoringSafeArea(.bottom)
+                    .edgesIgnoringSafeArea(
+                        .bottom,
+                    )
 
                     if isShowsToolbar {
-                        toolbarView(safeAreaInsetTop)
-                            .onPreferenceChange(ToolbarHeightPreferenceKey.self) { value in
-                                guard toolbarHeight != value else { return }
-                                toolbarHeight = value
+                        toolbarView(
+                            safeAreaInsetTop,
+                        )
+                        .onPreferenceChange(
+                            ToolbarHeightPreferenceKey.self,
+                        ) { value in
+                            guard toolbarHeight != value else { return }
+                            toolbarHeight = value
+                        }
+                        .onChange(
+                            of: isShowsToolbar,
+                        ) { _, value in
+                            if !value {
+                                toolbarHeight = 0
                             }
-                            .onChange(of: isShowsToolbar) { _, value in
-                                if !value {
-                                    toolbarHeight = 0
-                                }
-                            }
-                            .ignoresSafeArea(.container, edges: [.top])
+                        }
+                        .ignoresSafeArea(
+                            .container,
+                            edges: [.top],
+                        )
                     }
                 }
-                .background(backgroundColor ?? color.grayscaleBackgroundWeak)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(DInteractivePopGestureView())
-                .toolbar(.hidden, for: .navigationBar)
-                .toolbarBackground(.hidden, for: .navigationBar)
+                .background(
+                    backgroundColor ?? color.grayscaleBackgroundWeak,
+                )
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                )
+                .background(
+                    DInteractivePopGestureView(),
+                )
+                .toolbar(
+                    .hidden,
+                    for: .navigationBar,
+                )
+                .toolbarBackground(
+                    .hidden,
+                    for: .navigationBar,
+                )
             }
-            .ignoresSafeArea(.keyboard)
+            .ignoresSafeArea(
+                .keyboard,
+            )
 
             keyboardToolbar
         }
@@ -223,24 +267,30 @@ public struct DScreen<
 
     private func bodyView(
         _ toolbarHeight: CGFloat,
-        _ bottomHeight: CGFloat
+        _ bottomHeight: CGFloat,
     ) -> some View {
-        content(toolbarHeight, bottomHeight)
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .onTapGesture { onTapBody?() }
+        content(
+            toolbarHeight,
+            bottomHeight,
+        )
+        .frame(
+            maxWidth: .infinity,
+            maxHeight: .infinity,
+        )
+        .onTapGesture { onTapBody?() }
     }
 
     private func toolbarView(
-        _ safeAreaInsetTop: CGFloat
+        _ safeAreaInsetTop: CGFloat,
     ) -> some View {
         VStack(
-            spacing: .zero
+            spacing: .zero,
         ) {
             VStack(
-                spacing: .zero
+                spacing: .zero,
             ) {
                 HStack(
-                    spacing: .zero
+                    spacing: .zero,
                 ) {
                     leadingView
                     Spacer()
@@ -248,28 +298,44 @@ public struct DScreen<
                     Spacer()
                     trailingView
                 }
-                .padding(.top, size.s2 + safeAreaInsetTop)
-                .padding(.horizontal, size.adaptiveCornerRadius / 4)
+                .padding(
+                    .top,
+                    size.s2 + safeAreaInsetTop,
+                )
+                .padding(
+                    .horizontal,
+                    size.adaptiveCornerRadius / 4,
+                )
 
                 toolbarContent
             }
-            .padding(.bottom, size.adaptiveCornerRadius / 4)
+            .padding(
+                .bottom,
+                size.adaptiveCornerRadius / 4,
+            )
         }
-        .frame(maxWidth: .infinity, alignment: .top)
+        .frame(
+            maxWidth: .infinity,
+            alignment: .top,
+        )
         .background {
             Rectangle()
-                .fill(.ultraThinMaterial)
-                .clipShape(DRoundedCorner(
-                    radius: size.adaptiveCornerRadius,
-                    corners: [.bottomLeft, .bottomRight]
-                ))
+                .fill(
+                    .ultraThinMaterial,
+                )
+                .clipShape(
+                    DRoundedCorner(
+                        radius: size.adaptiveCornerRadius,
+                        corners: [.bottomLeft, .bottomRight],
+                    ),
+                )
         }
         .overlay {
             GeometryReader { proxy in
                 Color.clear
                     .preference(
                         key: ToolbarHeightPreferenceKey.self,
-                        value: proxy.size.height
+                        value: proxy.size.height,
                     )
             }
         }
@@ -277,63 +343,78 @@ public struct DScreen<
 
     private var leadingView: some View {
         HStack(
-            spacing: size.s8
+            spacing: size.s8,
         ) {
-            if let onTapBack = onTapBack {
+            if let onTapBack {
                 DButton(
                     image: .back,
-                    action: onTapBack
+                    action: onTapBack,
                 )
-                .dStyle(.circle)
+                .dStyle(
+                    .circle,
+                )
             }
             if !(leading is EmptyView) {
                 leading
             }
         }
-        .frame(width: size.s56, height: size.s56)
+        .frame(
+            width: size.s56,
+            height: size.s56,
+        )
     }
 
     private var titleView: some View {
         VStack(
-            spacing: .zero
+            spacing: .zero,
         ) {
             if !(titleContent is EmptyView) {
                 titleContent
             }
-            if let title = title {
-                DText(title)
-                    .dStyle(
-                        font: typography.linkSmall,
-                        alignment: .center
-                    )
+            if let title {
+                DText(
+                    title,
+                )
+                .dStyle(
+                    font: typography.linkSmall,
+                    alignment: .center,
+                )
             }
-            if let subTitle = subTitle {
-                DText(subTitle)
-                    .dStyle(
-                        font: typography.textXSmall,
-                        color: color.grayscaleLabel,
-                        alignment: .center
-                    )
+            if let subTitle {
+                DText(
+                    subTitle,
+                )
+                .dStyle(
+                    font: typography.textXSmall,
+                    color: color.grayscaleLabel,
+                    alignment: .center,
+                )
             }
         }
     }
 
     private var trailingView: some View {
         HStack(
-            spacing: size.s8
+            spacing: size.s8,
         ) {
             if !(trailing is EmptyView) {
                 trailing
             }
         }
-        .frame(width: size.s56, height: size.s56)
+        .frame(
+            width: size.s56,
+            height: size.s56,
+        )
     }
 }
 
 private struct ToolbarHeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
 
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+    static func reduce(
+        value: inout CGFloat,
+        nextValue: () -> CGFloat,
+    ) {
         value = nextValue()
     }
 }
@@ -341,44 +422,71 @@ private struct ToolbarHeightPreferenceKey: PreferenceKey {
 private struct BottomHeightPreferenceKey: PreferenceKey {
     static var defaultValue: CGFloat = 0
 
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+    static func reduce(
+        value: inout CGFloat,
+        nextValue: () -> CGFloat,
+    ) {
         value = nextValue()
     }
 }
 
-#Preview("With toolbar") {
+#Preview(
+    "With toolbar",
+) {
     DScreen(
         title: "Screen Title",
         subTitle: "Subtitle",
-        onTapBack: { print("Back") },
+        onTapBack: { print(
+            "Back",
+        ) },
         trailing: {
             DButton(
                 image: .alertInfo,
-                action: { print("Info") }
+                action: { print(
+                    "Info",
+                ) },
             )
-            .dStyle(.circle)
-        }
+            .dStyle(
+                .circle,
+            )
+        },
     ) { toolbarHeight, _ in
         ScrollView {
-            VStack(spacing: 16) {
-                ForEach(0 ..< 10, id: \.self) { index in
-                    DText("Item \(index)")
-                        .dStyle()
-                        .frame(maxWidth: .infinity)
-                        .padding()
+            VStack(
+                spacing: 16,
+            ) {
+                ForEach(
+                    0 ..< 10,
+                    id: \.self,
+                ) { index in
+                    DText(
+                        "Item \(index)",
+                    )
+                    .dStyle()
+                    .frame(
+                        maxWidth: .infinity,
+                    )
+                    .padding()
                 }
             }
-            .padding(.top, toolbarHeight)
+            .padding(
+                .top,
+                toolbarHeight,
+            )
         }
     }
     .dThemeWrapper()
 }
 
-#Preview("Without toolbar") {
+#Preview(
+    "Without toolbar",
+) {
     DScreen { _, _ in
         VStack {
-            DText("Content without toolbar")
-                .dStyle()
+            DText(
+                "Content without toolbar",
+            )
+            .dStyle()
         }
     }
     .dThemeWrapper()

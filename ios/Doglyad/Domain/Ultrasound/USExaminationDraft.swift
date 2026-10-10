@@ -20,35 +20,41 @@ struct USExaminationDraftForm: Equatable, Sendable {
 
 extension USExaminationDraft {
     static func fromDB(
-        _ db: USExaminationDraftDB
+        _ db: USExaminationDraftDB,
     ) -> USExaminationDraft {
         USExaminationDraft(
-            form: USExaminationDraftForm.fromDB(db),
+            form: USExaminationDraftForm.fromDB(
+                db,
+            ),
             photos: db.photos
                 .sorted { $0.position < $1.position }
-                .compactMap { USExaminationScanPhoto.fromDraftDB($0) }
+                .compactMap { USExaminationScanPhoto.fromDraftDB(
+                    $0,
+                ) },
         )
     }
 }
 
 extension USExaminationDraftForm {
     static func fromDB(
-        _ db: USExaminationDraftDB
+        _ db: USExaminationDraftDB,
     ) -> USExaminationDraftForm {
         USExaminationDraftForm(
             examinationNumber: db.examinationNumber,
             patientName: db.patientName,
-            patientGender: PatientGender(rawValue: db.patientGenderRawValue) ?? .male,
+            patientGender: PatientGender(
+                rawValue: db.patientGenderRawValue,
+            ) ?? .male,
             patientDateOfBirth: db.patientDateOfBirth,
             patientHeightCM: db.patientHeightCM,
             patientWeightKG: db.patientWeightKG,
             patientComplaints: db.patientComplaints,
-            examinationDescription: db.examinationDescription
+            examinationDescription: db.examinationDescription,
         )
     }
 
     func toDB(
-        photos: [USExaminationDraftPhotoDB] = []
+        photos: [USExaminationDraftPhotoDB] = [],
     ) -> USExaminationDraftDB {
         USExaminationDraftDB(
             examinationNumber: examinationNumber,
@@ -59,26 +65,30 @@ extension USExaminationDraftForm {
             patientWeightKG: patientWeightKG,
             patientComplaints: patientComplaints,
             examinationDescription: examinationDescription,
-            photos: photos
+            photos: photos,
         )
     }
 }
 
 private extension USExaminationScanPhoto {
     static func fromDraftDB(
-        _ db: USExaminationDraftPhotoDB
+        _ db: USExaminationDraftPhotoDB,
     ) -> USExaminationScanPhoto? {
-        guard let image = UIImage(data: db.data) else { return nil }
+        guard let image = UIImage(
+            data: db.data,
+        ) else { return nil }
 
         return USExaminationScanPhoto(
             id: db.id,
             image: image,
-            thumbnail: db.thumbnailData.flatMap { UIImage(data: $0) }
+            thumbnail: db.thumbnailData.flatMap { UIImage(
+                data: $0,
+            ) },
         )
     }
 
     func toDraftDB(
-        position: Int
+        position: Int,
     ) -> USExaminationDraftPhotoDB? {
         guard let data = image.pngData() else { return nil }
 
@@ -87,16 +97,18 @@ private extension USExaminationScanPhoto {
             position: position,
             data: data,
             thumbnailData: thumbnail.jpegData(
-                compressionQuality: Self.thumbnailCompressionQuality
-            )
+                compressionQuality: Self.thumbnailCompressionQuality,
+            ),
         )
     }
 }
 
-extension Array where Element == USExaminationScanPhoto {
+extension [USExaminationScanPhoto] {
     func toDraftDB() -> [USExaminationDraftPhotoDB] {
         enumerated().compactMap { index, photo in
-            photo.toDraftDB(position: index)
+            photo.toDraftDB(
+                position: index,
+            )
         }
     }
 }

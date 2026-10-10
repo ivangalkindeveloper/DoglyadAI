@@ -3,6 +3,8 @@
 	pip-install \
 	pip-install-dev \
 	format \
+	format-ios \
+	lint-ios \
 	init-ios-local \
 	build-ios-debug-local \
 	build-ios-debug-development \
@@ -24,7 +26,6 @@
 	sync-secrets-inference \
 	init-vm-main \
 	init-vm-inference \
-	download-ios-examination-model \
 	voice-eval-text \
 	voice-eval-audio \
 	voice-eval-audio-extended \
@@ -60,10 +61,15 @@ pip-install:
 pip-install-dev:
 	pip3 install -r backend/main/requirements-dev.txt
 
-format:
-	cd ios && swiftformat .
+format: format-ios
 	cd backend/main && "$(RUFF)" format app tests
 	cd backend/inference && "$(RUFF)" format app tests
+
+format-ios:
+	python3 tools/format_ios.py
+
+lint-ios:
+	python3 tools/format_ios.py --check
 
 init-ios-local:
 	@set -e; \
@@ -163,9 +169,6 @@ update-infrastructure:
 
 check-infrastructure:
 	bash deploy/update-infrastructure.sh --inventory "$(INFRASTRUCTURE_INVENTORY)" --check
-
-download-ios-examination-model:
-	sudo hf download mlx-community/Qwen2.5-1.5B-Instruct-4bit --local-dir ios/DoglyadNeuralModel/Resources/mlx-Qwen2.5-1.5B-Instruct-4bit
 
 voice-eval-text:
 	python3 -m evaluation.voice.generate

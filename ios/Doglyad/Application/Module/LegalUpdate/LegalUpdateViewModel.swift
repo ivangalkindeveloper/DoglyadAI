@@ -8,13 +8,15 @@ final class LegalUpdateViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel
+        subscription: SubscriptionViewModel,
     ) {
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.legalUpdate)
+            analyticsDestination: .screen(
+                .legalUpdate,
+            ),
         )
     }
 
@@ -25,47 +27,57 @@ final class LegalUpdateViewModel: DViewModel {
     }
 
     func onLegalAcceptedChanged(
-        _ value: Bool
+        _ value: Bool,
     ) {
         analytics.buttonTapped(
             .legalUpdateLegalToggle,
-            parameters: AnalyticsParameters([
-                .result: .bool(value),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .result: .bool(
+                        value,
+                    ),
+                ],
+            ),
         )
         isLegalAccepted = value
     }
 
     func onTapPrivacyPolicy() {
-        analytics.buttonTapped(.legalUpdatePrivacyPolicy)
+        analytics.buttonTapped(
+            .legalUpdatePrivacyPolicy,
+        )
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.privacyPolicyUrl,
-                title: .privacyPolicyTitle
-            )
+                title: .privacyPolicyTitle,
+            ),
         )
     }
 
     func onTapTermsAndConditions() {
-        analytics.buttonTapped(.legalUpdateTermsAndConditions)
+        analytics.buttonTapped(
+            .legalUpdateTermsAndConditions,
+        )
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.termsAndConditionsUrl,
-                title: .termsAndConditionsTitle
-            )
+                title: .termsAndConditionsTitle,
+            ),
         )
     }
 
     func onTapAccept() {
-        analytics.buttonTapped(.legalUpdateAccept)
+        analytics.buttonTapped(
+            .legalUpdateAccept,
+        )
         container.sharedRepository.acceptLegal(
-            documentDate: container.applicationConfig.legalDate
+            documentDate: container.applicationConfig.legalDate,
         )
         coordinator.root(
             .scan,
-            animated: true
+            animated: true,
         )
     }
 }
@@ -75,42 +87,71 @@ extension LegalUpdateViewModel {
         case privacy, terms
     }
 
-    func legalAttributedText(theme: DTheme, locale: Locale) -> AttributedString {
+    func legalAttributedText(
+        theme: DTheme,
+        locale: Locale,
+    ) -> AttributedString {
         let typography: DTypography = theme.typography
         let color: DColor = theme.color
 
-        var accept = AttributedString(localizedResource(.onBoardingLegalAcceptDescription, locale: locale))
+        var accept = AttributedString(
+            localizedResource(
+                .onBoardingLegalAcceptDescription,
+                locale: locale,
+            ),
+        )
         accept.font = typography.textSmall
         accept.foregroundColor = color.grayscaleHeader
 
-        var privacy = AttributedString(localizedResource(.onBoardingPrivacyPolicyLabel, locale: locale))
+        var privacy = AttributedString(
+            localizedResource(
+                .onBoardingPrivacyPolicyLabel,
+                locale: locale,
+            ),
+        )
         privacy.font = typography.textSmall
         privacy.foregroundColor = color.primaryDefault
-        privacy.link = URL(string: AttributedLinks.privacy.rawValue)
+        privacy.link = URL(
+            string: AttributedLinks.privacy.rawValue,
+        )
 
-        var and = AttributedString(localizedResource(.onBoardingLegalAcceptAndDescription, locale: locale))
+        var and = AttributedString(
+            localizedResource(
+                .onBoardingLegalAcceptAndDescription,
+                locale: locale,
+            ),
+        )
         and.font = typography.textSmall
         and.foregroundColor = color.grayscaleHeader
 
-        var terms = AttributedString(localizedResource(.onBoardingTermsAndConditionsLabel, locale: locale))
+        var terms = AttributedString(
+            localizedResource(
+                .onBoardingTermsAndConditionsLabel,
+                locale: locale,
+            ),
+        )
         terms.font = typography.textSmall
         terms.foregroundColor = color.primaryDefault
-        terms.link = URL(string: AttributedLinks.terms.rawValue)
+        terms.link = URL(
+            string: AttributedLinks.terms.rawValue,
+        )
 
         return accept + privacy + and + terms
     }
 
     private func localizedResource(
         _ resource: LocalizedStringResource,
-        locale: Locale
+        locale: Locale,
     ) -> String {
         var resource = resource
         resource.locale = locale
-        return String(localized: resource)
+        return String(
+            localized: resource,
+        )
     }
 
     func onLegalAttributedEnvironment(
-        url: URL
+        url: URL,
     ) -> OpenURLAction.Result {
         switch url.absoluteString {
         case AttributedLinks.privacy.rawValue:

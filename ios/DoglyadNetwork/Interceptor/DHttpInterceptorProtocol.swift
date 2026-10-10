@@ -6,6 +6,6 @@ public import Foundation
 /// layer stays independent of the token source (Firebase and the like).
 public protocol DHttpInterceptorProtocol: Sendable {
     func adapt(
-        _ urlRequest: URLRequest
+        _ urlRequest: URLRequest,
     ) async throws -> URLRequest
 }

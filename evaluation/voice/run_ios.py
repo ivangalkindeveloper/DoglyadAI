@@ -98,7 +98,6 @@ def run_ios(
     asr_only: bool = False,
     asr_engine_only: str | None = None,
     no_far_field_hint: bool = False,
-    force_mlx: bool = False,
     parse_strategy: str = "production",
     output_tag: str | None = None,
 ) -> dict[str, Any]:
@@ -138,19 +137,16 @@ def run_ios(
         raise ValueError("An ASR engine filter requires ASR-only mode without confidence-only mode")
     if no_far_field_hint and (not asr_only or not confidence_only):
         raise ValueError("The far-field comparison requires confidence-only ASR mode")
-    if force_mlx and (not candidate or not text_only or mode != "freeform-development"):
-        raise ValueError("Forced MLX diagnosis requires candidate freeform text-only mode")
     if parse_strategy not in {
         "production",
         "exactLabels",
         "explicitRules",
         "naturalLanguage",
         "foundationModels",
-        "mlx",
     }:
         raise ValueError(f"Unknown voice parse strategy: {parse_strategy}")
-    if parse_strategy != "production" and (not candidate or not text_only or force_mlx):
-        raise ValueError("Direct parse strategies require candidate text-only mode without --force-mlx")
+    if parse_strategy != "production" and (not candidate or not text_only):
+        raise ValueError("Direct parse strategies require candidate text-only mode")
     if sum((holdout_v4, holdout_v5, holdout_v6, holdout_v7, holdout_v8)) > 1:
         raise ValueError("Choose one holdout version")
     holdout_version = (
@@ -171,7 +167,6 @@ def run_ios(
         or max_tokens is not None
         or confidence_only
         or asr_only
-        or force_mlx
         or mode != "quick"
         or variant != "clean"
     ):
@@ -222,8 +217,6 @@ def run_ios(
         prefix += f"-{asr_engine_only}-only"
     if no_far_field_hint:
         prefix += "-no-far-field-hint"
-    if force_mlx:
-        prefix += "-forced-mlx"
     if parse_strategy != "production":
         prefix += f"-{parse_strategy}"
     if holdout_version is not None:
@@ -280,8 +273,6 @@ def run_ios(
         environment["TEST_RUNNER_VOICE_ASR_ENGINE_ONLY"] = asr_engine_only
     if no_far_field_hint:
         environment["TEST_RUNNER_VOICE_ASR_NO_FAR_FIELD_HINT"] = "1"
-    if force_mlx:
-        environment["TEST_RUNNER_VOICE_FORCE_MLX"] = "1"
     if parse_strategy != "production":
         environment["TEST_RUNNER_VOICE_PARSE_STRATEGY"] = parse_strategy
     environment["TEST_RUNNER_VOICE_REPORT_ID"] = run_id
@@ -308,11 +299,9 @@ def run_ios(
     ):
         raise ValueError("iOS runner used a different holdout corpus")
     if candidate:
-        if report.get("forcedMLXDiagnostic", False) != force_mlx:
-            raise ValueError("iOS runner used a different model selection")
         if report.get("asrNoFarFieldHint", False) != no_far_field_hint:
             raise ValueError("iOS runner used another acoustic hint")
-        expected_strategy = "mlx" if force_mlx else parse_strategy
+        expected_strategy = parse_strategy
         if any(row.get("parseStrategy") != expected_strategy for row in report["results"]):
             raise ValueError("iOS runner used a different parse strategy")
         for report_key, fixture_key in (
@@ -342,8 +331,7 @@ def run_ios(
                 "asrRecognizer": fixture.get("asrRecognizer"),
                 "replayLexiconApplied": apply_replay_lexicon,
                 "generationMaxTokens": fixture["generation"]["maxTokens"],
-                "forcedMLXDiagnostic": force_mlx,
-                "parseStrategy": "mlx" if force_mlx else parse_strategy,
+                "parseStrategy": parse_strategy,
                 "xcodebuildExitCode": completed.returncode,
             },
             indent=2,
@@ -409,10 +397,9 @@ def main() -> None:
     parser.add_argument("--asr-only", action="store_true")
     parser.add_argument("--asr-engine-only", choices=("speechAnalyzer", "sfSpeechRecognizer"))
     parser.add_argument("--no-far-field-hint", action="store_true")
-    parser.add_argument("--force-mlx", action="store_true")
     parser.add_argument(
         "--parse-strategy",
-        choices=("production", "exactLabels", "explicitRules", "naturalLanguage", "foundationModels", "mlx"),
+        choices=("production", "exactLabels", "explicitRules", "naturalLanguage", "foundationModels"),
         default="production",
     )
     args = parser.parse_args()
@@ -443,7 +430,6 @@ def main() -> None:
         asr_only=args.asr_only,
         asr_engine_only=args.asr_engine_only,
         no_far_field_hint=args.no_far_field_hint,
-        force_mlx=args.force_mlx,
         parse_strategy=args.parse_strategy,
         output_tag=args.output_tag,
     )

@@ -11,7 +11,7 @@ struct USExaminationTemplate: Codable, Identifiable, Equatable {
         id: UUID = UUID(),
         usExaminationType: USExaminationType,
         name: String,
-        content: String
+        content: String,
     ) {
         self.id = id
         self.usExaminationType = usExaminationType
@@ -23,13 +23,13 @@ struct USExaminationTemplate: Codable, Identifiable, Equatable {
 extension USExaminationTemplate {
     static func fromDB(
         _ db: USExaminationTemplateDB,
-        usExaminationType: USExaminationType
+        usExaminationType: USExaminationType,
     ) -> USExaminationTemplate {
         USExaminationTemplate(
             id: db.id,
             usExaminationType: usExaminationType,
             name: db.name,
-            content: db.content
+            content: db.content,
         )
     }
 
@@ -38,7 +38,7 @@ extension USExaminationTemplate {
             id: id,
             usExaminationTypeId: usExaminationType.id,
             name: name,
-            content: content
+            content: content,
         )
     }
 }

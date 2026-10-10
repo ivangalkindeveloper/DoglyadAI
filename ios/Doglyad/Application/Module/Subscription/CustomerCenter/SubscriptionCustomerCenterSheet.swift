@@ -16,15 +16,15 @@ struct SubscriptionCustomerCenterSheet: View {
                 arguments: arguments,
                 onRefreshStatus: { [subscriptionViewModel] in
                     await subscriptionViewModel.refreshStatus()
-                }
-            )
+                },
+            ),
         )
     }
 }
 
 #Preview {
     SubscriptionCustomerCenterSheet(
-        arguments: nil
+        arguments: nil,
     )
     .previewable()
 }

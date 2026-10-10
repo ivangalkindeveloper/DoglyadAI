@@ -19,12 +19,14 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
         router: DRouter,
         subscription: SubscriptionViewModel,
         messager: DMessager,
-        onSaveTemplate: @escaping (USExaminationTemplate) -> Void
+        onSaveTemplate: @escaping (USExaminationTemplate) -> Void,
     ) {
         self.messager = messager
         self.onSaveTemplate = onSaveTemplate
         if let selectedTypeId = container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
-           let selectedType = container.usExaminationTypesById[selectedTypeId]
+           let selectedType = container.usExaminationTypesById[
+               selectedTypeId,
+           ]
         {
             usExaminationType = selectedType
         } else {
@@ -34,31 +36,39 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.templateAdd)
+            analyticsDestination: .screen(
+                .templateAdd,
+            ),
         )
     }
 
     @Published private(set) var isLoading = false
     @Published var focus: Focus?
     @Published var usExaminationType: USExaminationType
-    @NestedObservableObject var nameController = DTextFieldController(isRequired: true)
-    @NestedObservableObject var templateController = DTextFieldController(isRequired: true)
+    @NestedObservableObject var nameController = DTextFieldController(
+        isRequired: true,
+    )
+    @NestedObservableObject var templateController = DTextFieldController(
+        isRequired: true,
+    )
 
     var focusList: [DTextFieldFocusValidationItem<Focus>] {
         [
             DTextFieldFocusValidationItem(
                 focus: .name,
-                controller: nameController
+                controller: nameController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .content,
-                controller: templateController
+                controller: templateController,
             ),
         ]
     }
 
     func onTapBack() {
-        analytics.buttonTapped(.templateAddBack)
+        analytics.buttonTapped(
+            .templateAddBack,
+        )
         coordinator.pop()
     }
 
@@ -67,7 +77,9 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
     }
 
     func onSubmit() {
-        analytics.buttonTapped(.templateAddSubmit)
+        analytics.buttonTapped(
+            .templateAddSubmit,
+        )
         switch focus {
         case .name:
             focus = .content
@@ -113,35 +125,43 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
     }
 
     func onTapExaminationType() {
-        analytics.buttonTapped(.templateAddExaminationType)
+        analytics.buttonTapped(
+            .templateAddExaminationType,
+        )
         coordinator.sheet(
             .selectUSExaminationType,
             arguments: SelectUSExaminationTypeArguments(
                 currentValue: usExaminationType,
                 onSelected: { [weak self] type in
                     self?.usExaminationType = type
-                }
-            )
+                },
+            ),
         )
     }
 
     func onTapReadyMadeTemplates() {
-        analytics.buttonTapped(.templateAddReadyMadeTemplates)
+        analytics.buttonTapped(
+            .templateAddReadyMadeTemplates,
+        )
         unfocus()
         coordinator.screen(
             .readyMadeTemplateList,
             arguments: ReadyMadeTemplateListScreenArguments(
                 onTemplateSelected: { [weak self] template in
-                    self?.onReadyMadeTemplateSelected(template)
-                }
-            )
+                    self?.onReadyMadeTemplateSelected(
+                        template,
+                    )
+                },
+            ),
         )
     }
 
     func onTapSave() {
         guard !isLoading else { return }
 
-        analytics.buttonTapped(.templateAddSave)
+        analytics.buttonTapped(
+            .templateAddSave,
+        )
         if let invalidFocus = firstInvalidFocus() {
             focus = invalidFocus
             return
@@ -158,29 +178,35 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
         let template = USExaminationTemplate(
             usExaminationType: usExaminationType,
             name: name,
-            content: content
+            content: content,
         )
         isLoading = true
-        onSaveTemplate(template)
+        onSaveTemplate(
+            template,
+        )
         messager.show(
             type: .success,
             title: .templateSavedSuccessTitle,
-            description: .templateSavedSuccessDescription
+            description: .templateSavedSuccessDescription,
         )
         coordinator.pop()
     }
 
     private func onReadyMadeTemplateSelected(
-        _ template: USExaminationReadyMadeTemplate
+        _ template: USExaminationReadyMadeTemplate,
     ) {
-        guard let examinationType = container.getUSExaminationTypeById(id: template.examinationType) else { return }
+        guard let examinationType = container.getUSExaminationTypeById(
+            id: template.examinationType,
+        ) else { return }
 
         usExaminationType = examinationType
         nameController.setText(
-            String(localized: template.localizedTitle)
+            String(
+                localized: template.localizedTitle,
+            ),
         )
         templateController.setText(
-            template.content
+            template.content,
         )
     }
 }

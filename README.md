@@ -37,7 +37,7 @@ Doglyad is an AI assistant for ultrasound physicians. Its goal is to reduce repe
 - Dictate patient and examination data instead of filling every field manually.
 - Recognize English and Russian medical speech with domain-specific contextual vocabulary.
 - Correct common recognition errors using the medical lexicon before parsing the transcript.
-- Convert free-form dictation into structured fields with Apple Foundation Models when available or a bundled MLX model as the on-device fallback.
+- Convert free-form dictation into structured fields with Apple Foundation Models when available or server-side MedGemma otherwise.
 
 ### Organization and personalization
 
@@ -71,30 +71,34 @@ Doglyad is an AI assistant for ultrasound physicians. Its goal is to reduce repe
 
 The two App Check validations protect different boundaries: the first protects the public API, while the second prevents direct access to a GPU model VM that bypasses the main backend.
 
-### On-device voice parsing
+### Voice recording and field extraction
 
 ```text
 Microphone
    │
-   ├─ iOS 26+: SpeechAnalyzer + DictationTranscriber
-   └─ fallback: SFSpeechRecognizer
+WhisperKit Turbo (on device)
    │
    ▼
 Medical lexicon correction
    │
    ├─ Apple Foundation Models, when supported for the device and locale
-   └─ bundled Qwen2.5 1.5B 4-bit model through MLX
+   └─ main backend → inference → MedGemma otherwise
    │
    ▼
-Structured patient and examination fields
+Evidence and value validation + explicit labels/facts
+   │
+   ▼
+Verified fields applied automatically; uncertain fields reviewed
 ```
+
+See [DoglyadNeuralModel](ios/DoglyadNeuralModel/README.md) and [DoglyadSpeech](ios/DoglyadSpeech/README.md) for the current module flows.
 
 ## Technology stack
 
 | Area | Languages and frameworks | Main libraries and services |
 |---|---|---|
-| iOS | Swift 5, SwiftUI, MVVM, Swift Concurrency, SwiftData, iOS 18.6+ | Alamofire, Firebase, RevenueCat, MLX, Foundation Models, Speech, AVFoundation, MarkdownUI, BottomSheet, SwiftMessages, SwiftUI-Shimmer |
-| iOS AI | Apple Foundation Models, MLX Swift | Qwen2.5 1.5B Instruct 4-bit, swift-transformers |
+| iOS | Swift 5, SwiftUI, MVVM, Swift Concurrency, SwiftData, iOS 18.6+ | Alamofire, Firebase, RevenueCat, Foundation Models, Speech, AVFoundation, MarkdownUI, BottomSheet, SwiftMessages, SwiftUI-Shimmer |
+| iOS AI | Apple Foundation Models, Core ML | WhisperKit Turbo for ASR; Foundation Models for local text extraction |
 | Backend Main  | Python 3.11, FastAPI, Pydantic v2, async/await | httpx, pydantic-settings, Firebase Admin SDK, SlowAPI, Uvicorn, SMTP |
 | Backend Inference | Python 3.11, FastAPI, Pydantic v2 | httpx, Firebase Admin SDK, Uvicorn, vLLM OpenAI-compatible API |
 | Infrastructure | Docker, Docker Compose, Caddy, Tailscale, cloud-init | GitHub Actions, GitHub Container Registry, NVIDIA Container Toolkit and CDI |
@@ -115,7 +119,7 @@ The client is organized as one application target and several focused local fram
 | `DoglyadUI` | Design system, theme, typography, and reusable UI components |
 | `DoglyadDatabase` | SwiftData entities, persistence, and UserDefaults-backed settings |
 | `DoglyadNetwork` | Alamofire-based HTTP client, headers, DTO transport, and network errors |
-| `DoglyadNeuralModel` | Foundation Models and MLX-based on-device extraction |
+| `DoglyadNeuralModel` | Foundation Models extraction and validation of ultrasound text |
 | `DoglyadCamera` | Camera controller and SwiftUI camera surface |
 | `DoglyadSpeech` | Speech recognition, audio processing, and medical lexicon correction |
 
@@ -138,8 +142,8 @@ The backend is deliberately split into two independently deployable services:
 - **Firebase Analytics and Crashlytics** provide product telemetry and crash diagnostics.
 - **RevenueCat** resolves subscription offerings, entitlements, customer-center access, and purchase restoration.
 - **Apple Speech** provides `SpeechAnalyzer`/`DictationTranscriber` on supported systems and `SFSpeechRecognizer` as the compatibility path.
-- **Apple Foundation Models and MLX** parse dictated text into structured fields on device.
-- **Hugging Face** supplies the MedGemma weights used by vLLM and the bundled MLX model used by the app.
+- **Apple Foundation Models** parse dictated text into structured fields on device.
+- **Hugging Face** supplies the MedGemma weights used by vLLM and the WhisperKit weights downloaded by the app.
 - **SMTP** delivers generated reports to a physician's work email through `backend/main`.
 - **GitHub Container Registry** stores immutable backend images produced by GitHub Actions.
 - **Tailscale** connects the main backend VM to private inference endpoints.

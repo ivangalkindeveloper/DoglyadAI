@@ -6,7 +6,7 @@ public final class DTextFieldSingleLineMode: DTextFieldMode {
     public let submitLabel: SubmitLabel
 
     public init(
-        submitLabel: SubmitLabel = .done
+        submitLabel: SubmitLabel = .done,
     ) {
         self.submitLabel = submitLabel
     }

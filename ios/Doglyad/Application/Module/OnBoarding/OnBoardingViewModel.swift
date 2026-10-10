@@ -9,20 +9,24 @@ final class OnBoardingViewModel: DViewModel {
         case first, second, third, fourth, fifth
 
         var index: Int {
-            Self.allCases.firstIndex(of: self) ?? 0
+            Self.allCases.firstIndex(
+                of: self,
+            ) ?? 0
         }
     }
 
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel
+        subscription: SubscriptionViewModel,
     ) {
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .screen(.onBoarding)
+            analyticsDestination: .screen(
+                .onBoarding,
+            ),
         )
     }
 
@@ -48,41 +52,49 @@ final class OnBoardingViewModel: DViewModel {
     }
 
     func onLegalAcceptedChanged(
-        _ value: Bool
+        _ value: Bool,
     ) {
         analytics.buttonTapped(
             .onboardingLegalToggle,
-            parameters: AnalyticsParameters([
-                .result: .bool(value),
-            ])
+            parameters: AnalyticsParameters(
+                [
+                    .result: .bool(
+                        value,
+                    ),
+                ],
+            ),
         )
         isLegalAccepted = value
     }
 
     func onTapPrivacyPolicy() {
-        analytics.buttonTapped(.onboardingPrivacyPolicy)
+        analytics.buttonTapped(
+            .onboardingPrivacyPolicy,
+        )
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.privacyPolicyUrl,
-                title: .privacyPolicyTitle
-            )
+                title: .privacyPolicyTitle,
+            ),
         )
     }
 
     func onTapTermsAndConditions() {
-        analytics.buttonTapped(.onboardingTermsAndConditions)
+        analytics.buttonTapped(
+            .onboardingTermsAndConditions,
+        )
         coordinator.sheet(
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.termsAndConditionsUrl,
-                title: .termsAndConditionsTitle
-            )
+                title: .termsAndConditionsTitle,
+            ),
         )
     }
 
     func buttonTitle(
-        _ page: OnBoardingViewModel.Page
+        _ page: OnBoardingViewModel.Page,
     ) -> LocalizedStringResource {
         switch page {
         case .first, .second:
@@ -99,38 +111,46 @@ final class OnBoardingViewModel: DViewModel {
     func onPressedNext() {
         analytics.buttonTapped(
             .onboardingPrimary,
-            parameters: AnalyticsParameters([
-                .source: .string(String(page.index + 1)),
-            ])
+            parameters: .onboardingPage(
+                index: page.index,
+            ),
         )
         switch page {
         case .first:
-            move(to: .second)
+            move(
+                to: .second,
+            )
         case .second:
-            move(to: .third)
+            move(
+                to: .third,
+            )
         case .third:
-            move(to: .fourth)
+            move(
+                to: .fourth,
+            )
         case .fourth:
             coordinator.sheet(
                 .selectUSExaminationType,
                 arguments: SelectUSExaminationTypeArguments(
                     onSelected: { [weak self] type in
-                        guard let self = self else { return }
+                        guard let self else { return }
 
-                        self.move(to: .fifth)
-                        self.container.ultrasoundReportRepository.setSelectedExaminationTypeId(
-                            id: type.id
+                        move(
+                            to: .fifth,
                         )
-                    }
-                )
+                        container.ultrasoundReportRepository.setSelectedExaminationTypeId(
+                            id: type.id,
+                        )
+                    },
+                ),
             )
         case .fifth:
             container.sharedRepository.setOnBoardingCompleted(
-                value: true
+                value: true,
             )
             // Record which revision of the documents the user accepted.
             container.sharedRepository.acceptLegal(
-                documentDate: container.applicationConfig.legalDate
+                documentDate: container.applicationConfig.legalDate,
             )
             handle {
                 try await self.coordinator.navigateAfterOnBoarding()
@@ -141,26 +161,34 @@ final class OnBoardingViewModel: DViewModel {
     func onPressedBack() {
         analytics.buttonTapped(
             .onboardingBack,
-            parameters: AnalyticsParameters([
-                .source: .string(String(page.index + 1)),
-            ])
+            parameters: .onboardingPage(
+                index: page.index,
+            ),
         )
         switch page {
         case .first:
             break
         case .second:
-            move(to: .first)
+            move(
+                to: .first,
+            )
         case .third:
-            move(to: .second)
+            move(
+                to: .second,
+            )
         case .fourth:
-            move(to: .third)
+            move(
+                to: .third,
+            )
         case .fifth:
-            move(to: .fourth)
+            move(
+                to: .fourth,
+            )
         }
     }
 
     private func move(
-        to page: Page
+        to page: Page,
     ) {
         switch page {
         case .third:
@@ -177,42 +205,71 @@ extension OnBoardingViewModel {
         case privacy, terms
     }
 
-    func legalAttributedText(theme: DTheme, locale: Locale) -> AttributedString {
+    func legalAttributedText(
+        theme: DTheme,
+        locale: Locale,
+    ) -> AttributedString {
         let typography: DTypography = theme.typography
         let color: DColor = theme.color
 
-        var accept = AttributedString(localizedResource(.onBoardingLegalAcceptDescription, locale: locale))
+        var accept = AttributedString(
+            localizedResource(
+                .onBoardingLegalAcceptDescription,
+                locale: locale,
+            ),
+        )
         accept.font = typography.textSmall
         accept.foregroundColor = color.grayscaleHeader
 
-        var privacy = AttributedString(localizedResource(.onBoardingPrivacyPolicyLabel, locale: locale))
+        var privacy = AttributedString(
+            localizedResource(
+                .onBoardingPrivacyPolicyLabel,
+                locale: locale,
+            ),
+        )
         privacy.font = typography.textSmall
         privacy.foregroundColor = color.primaryDefault
-        privacy.link = URL(string: AttributedLinks.privacy.rawValue)
+        privacy.link = URL(
+            string: AttributedLinks.privacy.rawValue,
+        )
 
-        var and = AttributedString(localizedResource(.onBoardingLegalAcceptAndDescription, locale: locale))
+        var and = AttributedString(
+            localizedResource(
+                .onBoardingLegalAcceptAndDescription,
+                locale: locale,
+            ),
+        )
         and.font = typography.textSmall
         and.foregroundColor = color.grayscaleHeader
 
-        var terms = AttributedString(localizedResource(.onBoardingTermsAndConditionsLabel, locale: locale))
+        var terms = AttributedString(
+            localizedResource(
+                .onBoardingTermsAndConditionsLabel,
+                locale: locale,
+            ),
+        )
         terms.font = typography.textSmall
         terms.foregroundColor = color.primaryDefault
-        terms.link = URL(string: AttributedLinks.terms.rawValue)
+        terms.link = URL(
+            string: AttributedLinks.terms.rawValue,
+        )
 
         return accept + privacy + and + terms
     }
 
     private func localizedResource(
         _ resource: LocalizedStringResource,
-        locale: Locale
+        locale: Locale,
     ) -> String {
         var resource = resource
         resource.locale = locale
-        return String(localized: resource)
+        return String(
+            localized: resource,
+        )
     }
 
     func onLegalAttributedEnvironment(
-        url: URL
+        url: URL,
     ) -> OpenURLAction.Result {
         switch url.absoluteString {
         case AttributedLinks.privacy.rawValue:

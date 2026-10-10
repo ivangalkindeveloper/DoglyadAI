@@ -10,7 +10,7 @@ public final class USExaminationScanPhotoDB {
     public init(
         id: UUID = UUID(),
         data: Data,
-        thumbnailData: Data? = nil
+        thumbnailData: Data? = nil,
     ) {
         self.id = id
         self.data = data

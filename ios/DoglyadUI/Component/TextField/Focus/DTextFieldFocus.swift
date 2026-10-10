@@ -6,7 +6,7 @@ public final class DTextFieldFocus<Focus: Hashable> {
 
     public init(
         value: Focus,
-        state: FocusState<Focus?>.Binding
+        state: FocusState<Focus?>.Binding,
     ) {
         self.value = value
         self.state = state

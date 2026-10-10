@@ -8,21 +8,29 @@ import Foundation
 extension InitializationProcess {
     static func stepsTier1(
         getIsFirebaseConfigured: @escaping () -> Bool,
-        onFirebaseConfigured: @escaping () -> Void
+        onFirebaseConfigured: @escaping () -> Void,
     ) -> StepSet<InitializationProcess> {
         StepSet(
             sync: [
                 SyncInitializationStep<InitializationProcess>(
                     title: "Environment",
                     run: { (process: InitializationProcess) in
-                        let type = EnvironmentType(rawValue: Bundle.dictionaryString(.ENVIRONMENT)) ?? .development
-                        let baseUrlString = Bundle.dictionaryString(.BASE_URL)
-                        let baseUrl = URL(string: baseUrlString)!
+                        let type = EnvironmentType(
+                            rawValue: Bundle.dictionaryString(
+                                .ENVIRONMENT,
+                            ),
+                        ) ?? .development
+                        let baseUrlString = Bundle.dictionaryString(
+                            .BASE_URL,
+                        )
+                        let baseUrl = URL(
+                            string: baseUrlString,
+                        )!
                         process.environment = EnvironmentBase(
                             type: type,
-                            baseUrl: baseUrl
+                            baseUrl: baseUrl,
                         )
-                    }
+                    },
                 ),
                 SyncInitializationStep<InitializationProcess>(
                     title: "Manager",
@@ -32,14 +40,14 @@ extension InitializationProcess {
                         process.connectionManager?.start()
                         process.permissionManager = PermissionManager()
                         process.mockFactory = DefaultMockFactory()
-                    }
+                    },
                 ),
                 SyncInitializationStep<InitializationProcess>(
                     title: "Database",
                     run: { (process: InitializationProcess) in
                         process.database = try DDatabase()
                         process.securityDatabase = DSecurityDatabase()
-                    }
+                    },
                 ),
                 SyncInitializationStep<InitializationProcess>(
                     title: "Network",
@@ -47,62 +55,68 @@ extension InitializationProcess {
                         process.httpClient = DHttpClient(
                             baseUrl: process.environment!.baseUrl.absoluteString,
                             baseVersionPrefix: process.environment!.baseVersionPrefix,
-                            interceptor: AppCheckHttpInterceptor()
+                            interceptor: AppCheckHttpInterceptor(),
                         )
-                    }
+                    },
                 ),
                 SyncInitializationStep<InitializationProcess>(
                     title: "Repository",
                     run: { (process: InitializationProcess) in
                         process.sharedRepository = SharedRepository(
-                            database: process.database!
+                            database: process.database!,
                         )
                         process.ultrasoundModelRepository = UltrasoundModelRepository(
-                            database: process.database!
+                            database: process.database!,
                         )
                         process.ultrasoundReportRepository = UltrasoundReportRepository(
                             database: process.database!,
-                            httpClient: process.httpClient!
+                            httpClient: process.httpClient!,
                         )
                         process.ultrasoundDraftRepository = UltrasoundDraftRepository(
-                            database: process.database!
+                            database: process.database!,
                         )
                         process.templateRepository = TemplateRepository(
                             database: process.database!,
-                            httpClient: process.httpClient!
+                            httpClient: process.httpClient!,
                         )
                         process.userSettingsRepository = UserSettingsRepository(
                             database: process.database!,
-                            httpClient: process.httpClient!
+                            httpClient: process.httpClient!,
                         )
-                    }
+                    },
                 ),
                 SyncInitializationStep<InitializationProcess>(
                     title: "Firebase",
                     run: { (process: InitializationProcess) in
                         if !getIsFirebaseConfigured() {
-                            AppCheck.setAppCheckProviderFactory(DAppCheckProviderFactory())
+                            AppCheck.setAppCheckProviderFactory(
+                                DAppCheckProviderFactory(),
+                            )
                             FirebaseApp.configure()
                             onFirebaseConfigured()
                         }
 
                         process.analytics!.applicationOpened(
                             environment: process.environment!.type,
-                            appVersion: Bundle.dictionaryString(.CFBundleShortVersionString)
+                            appVersion: Bundle.dictionaryString(
+                                .CFBundleShortVersionString,
+                            ),
                         )
-                    }
+                    },
                 ),
                 SyncInitializationStep<InitializationProcess>(
                     title: "RevenueCat",
                     run: { (process: InitializationProcess) in
                         let repository = RevenueCatSubscriptionRepository(
-                            apiKey: Bundle.dictionaryString(.REVENUECAT_API_KEY),
+                            apiKey: Bundle.dictionaryString(
+                                .REVENUECAT_API_KEY,
+                            ),
                             environment: process.environment!,
-                            securityDatabase: process.securityDatabase!
+                            securityDatabase: process.securityDatabase!,
                         )
                         repository.configure()
                         process.subscriptionRepository = repository
-                    }
+                    },
                 ),
                 SyncInitializationStep<InitializationProcess>(
                     title: "Internet connection",
@@ -111,9 +125,9 @@ extension InitializationProcess {
                         if !isConnected {
                             throw InitializationError.noInternetConnection
                         }
-                    }
+                    },
                 ),
-            ]
+            ],
         )
     }
 }

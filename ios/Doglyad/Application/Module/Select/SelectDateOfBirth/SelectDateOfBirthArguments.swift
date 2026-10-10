@@ -7,7 +7,7 @@ final class SelectDateOfBirthArguments: RouteArgumentsProtocol {
 
     init(
         currentValue: Date? = nil,
-        onSelected: @escaping (Date) -> Void
+        onSelected: @escaping (Date) -> Void,
     ) {
         self.currentValue = currentValue
         self.onSelected = onSelected

@@ -19,7 +19,7 @@ public final class DeviceCameraController: DCameraController {
 
     private nonisolated let sessionQueue = DispatchQueue(
         label: "com.doglyad.camera.session",
-        qos: .userInitiated
+        qos: .userInitiated,
     )
 
     init() {
@@ -33,12 +33,12 @@ public final class DeviceCameraController: DCameraController {
         isRunning = true
 
         sessionQueue.async { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
-            if !self.session.isRunning {
-                self.session.startRunning()
+            if !session.isRunning {
+                session.startRunning()
             }
-            let isRunning = self.session.isRunning
+            let isRunning = session.isRunning
             Task { @MainActor in
                 self.isRunning = isRunning
                 self.previewLayer.connection?.isEnabled = isRunning
@@ -57,12 +57,14 @@ public final class DeviceCameraController: DCameraController {
 
     public func takePhoto(
         cropRegion: DCameraCropRegion,
-        completion: @escaping (UIImage) -> Void
+        completion: @escaping (UIImage) -> Void,
     ) {
         guard !isCapturing, let previewConnection = previewLayer.connection else { return }
         let rotationAngle = previewConnection.videoRotationAngle
         let isMirrored = previewConnection.isVideoMirrored
-        let delegate = DevicePhotoCaptureDelegate(cropRegion: cropRegion)
+        let delegate = DevicePhotoCaptureDelegate(
+            cropRegion: cropRegion,
+        )
         delegate.controller = self
         captureDelegate = delegate
 
@@ -70,16 +72,20 @@ public final class DeviceCameraController: DCameraController {
         capturePhotoCompletion = completion
 
         sessionQueue.async { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             // The queue is serial, so configuration and startRunning() are already
             // guaranteed to have finished here — a capture never reaches a session
             // that has no active connection yet.
-            guard self.session.isRunning,
-                  let connection = self.output.connection(with: .video),
+            guard session.isRunning,
+                  let connection = output.connection(
+                      with: .video,
+                  ),
                   connection.isActive,
                   connection.isEnabled,
-                  connection.isVideoRotationAngleSupported(rotationAngle)
+                  connection.isVideoRotationAngleSupported(
+                      rotationAngle,
+                  )
             else {
                 Task { @MainActor in
                     self.handleCaptureFailed()
@@ -93,31 +99,37 @@ public final class DeviceCameraController: DCameraController {
                 connection.automaticallyAdjustsVideoMirroring = false
                 connection.isVideoMirrored = isMirrored
             }
-            self.output.capturePhoto(
-                with: Self.makeSettings(output: self.output),
-                delegate: delegate
+            output.capturePhoto(
+                with: Self.makeSettings(
+                    output: output,
+                ),
+                delegate: delegate,
             )
         }
     }
 
     public func makePreviewView() -> UIView {
-        DCameraPreviewUIView(previewLayer: previewLayer)
+        DCameraPreviewUIView(
+            previewLayer: previewLayer,
+        )
     }
 
     public func updatePreviewView(
-        _ view: UIView
+        _ view: UIView,
     ) {
         view.setNeedsLayout()
     }
 
     fileprivate func handlePhotoCaptured(
-        image: UIImage
+        image: UIImage,
     ) {
         isCapturing = false
         let completion = capturePhotoCompletion
         capturePhotoCompletion = nil
         captureDelegate = nil
-        completion?(image)
+        completion?(
+            image,
+        )
     }
 
     fileprivate func handleCaptureFailed() {
@@ -130,11 +142,11 @@ public final class DeviceCameraController: DCameraController {
 private extension DeviceCameraController {
     func configureSession() {
         sessionQueue.async { [weak self] in
-            guard let self = self else { return }
+            guard let self else { return }
 
             Self.configure(
-                session: self.session,
-                output: self.output
+                session: session,
+                output: output,
             )
             DevicePhotoCaptureDelegate.prepare()
             Task { @MainActor in
@@ -145,14 +157,16 @@ private extension DeviceCameraController {
 
     nonisolated static func configure(
         session: AVCaptureSession,
-        output: AVCapturePhotoOutput
+        output: AVCapturePhotoOutput,
     ) {
         guard let device = AVCaptureDevice.default(
             .builtInWideAngleCamera,
             for: .video,
-            position: .back
+            position: .back,
         ),
-            let input = try? AVCaptureDeviceInput(device: device)
+            let input = try? AVCaptureDeviceInput(
+                device: device,
+            )
         else {
             return
         }
@@ -160,18 +174,28 @@ private extension DeviceCameraController {
         session.beginConfiguration()
         defer { session.commitConfiguration() }
 
-        guard session.canAddInput(input),
-              session.canAddOutput(output)
+        guard session.canAddInput(
+            input,
+        ),
+            session.canAddOutput(
+                output,
+            )
         else {
             return
         }
-        session.addInput(input)
-        session.addOutput(output)
+        session.addInput(
+            input,
+        )
+        session.addOutput(
+            output,
+        )
 
         // The frame is downscaled to scanPhotoResizeMaxDimension anyway, so 1080p
         // is more than enough for both the network and the preview. The .photo preset
         // would make the ISP process the full sensor frame.
-        if session.canSetSessionPreset(.hd1920x1080) {
+        if session.canSetSessionPreset(
+            .hd1920x1080,
+        ) {
             session.sessionPreset = .hd1920x1080
         }
 
@@ -190,22 +214,25 @@ private extension DeviceCameraController {
     }
 
     nonisolated static func makeSettings(
-        output: AVCapturePhotoOutput
+        output: AVCapturePhotoOutput,
     ) -> AVCapturePhotoSettings {
-        let settings: AVCapturePhotoSettings
+        let settings
 
-        // An uncompressed buffer removes the HEIC encode and the decode that follows:
-        // the UIImage is assembled straight from pixels.
-        if output.availablePhotoPixelFormatTypes.contains(kCVPixelFormatType_32BGRA) {
-            settings = AVCapturePhotoSettings(
+            // An uncompressed buffer removes the HEIC encode and the decode that follows:
+            // the UIImage is assembled straight from pixels.
+            = if output.availablePhotoPixelFormatTypes.contains(
+                kCVPixelFormatType_32BGRA,
+            )
+        {
+            AVCapturePhotoSettings(
                 format: [
                     kCVPixelBufferPixelFormatTypeKey as String: NSNumber(
-                        value: kCVPixelFormatType_32BGRA
+                        value: kCVPixelFormatType_32BGRA,
                     ),
-                ]
+                ],
             )
         } else {
-            settings = AVCapturePhotoSettings()
+            AVCapturePhotoSettings()
         }
 
         settings.photoQualityPrioritization = .speed
@@ -221,9 +248,13 @@ private extension DeviceCameraController {
 private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureDelegate, Sendable {
     @MainActor weak var controller: DeviceCameraController?
     private let cropRegion: DCameraCropRegion
-    private static let ciContext = CIContext(options: [.useSoftwareRenderer: false])
+    private static let ciContext = CIContext(
+        options: [.useSoftwareRenderer: false],
+    )
 
-    init(cropRegion: DCameraCropRegion) {
+    init(
+        cropRegion: DCameraCropRegion,
+    ) {
         self.cropRegion = cropRegion
         super.init()
     }
@@ -237,10 +268,12 @@ private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureD
     func photoOutput(
         _: AVCapturePhotoOutput,
         didFinishProcessingPhoto photo: AVCapturePhoto,
-        error: Error?
+        error: Error?,
     ) {
         guard error == nil,
-              let image = makeImage(from: photo)
+              let image = makeImage(
+                  from: photo,
+              )
         else {
             Task { @MainActor in
                 self.controller?.handleCaptureFailed()
@@ -249,7 +282,9 @@ private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureD
         }
 
         Task { @MainActor in
-            self.controller?.handlePhotoCaptured(image: image)
+            self.controller?.handlePhotoCaptured(
+                image: image,
+            )
         }
     }
 
@@ -257,26 +292,45 @@ private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureD
     /// Orientation comes from the frame metadata — on an uncompressed buffer it is
     /// not applied, unlike EXIF in fileDataRepresentation().
     private func makeImage(
-        from photo: AVCapturePhoto
+        from photo: AVCapturePhoto,
     ) -> UIImage? {
-        let orientation = (photo.metadata[kCGImagePropertyOrientation as String] as? UInt32)
-            .flatMap(CGImagePropertyOrientation.init)
+        let orientation = (photo.metadata[
+            kCGImagePropertyOrientation as String,
+        ] as? UInt32)
+            .flatMap(
+                CGImagePropertyOrientation.init,
+            )
             ?? .up
         let rawImage: CIImage
         if let pixelBuffer = photo.pixelBuffer {
-            rawImage = CIImage(cvPixelBuffer: pixelBuffer)
+            rawImage = CIImage(
+                cvPixelBuffer: pixelBuffer,
+            )
         } else {
             guard let data = photo.fileDataRepresentation(),
-                  let image = CIImage(data: data, options: [.applyOrientationProperty: false])
+                  let image = CIImage(
+                      data: data,
+                      options: [.applyOrientationProperty: false],
+                  )
             else { return nil }
             rawImage = image
         }
-        guard let cropped = DCameraPhotoCrop.crop(rawImage.oriented(orientation), to: cropRegion),
-              let cgImage = Self.ciContext.createCGImage(cropped, from: cropped.extent)
+        guard let cropped = DCameraPhotoCrop.crop(
+            rawImage.oriented(
+                orientation,
+            ),
+            to: cropRegion,
+        ),
+            let cgImage = Self.ciContext.createCGImage(
+                cropped,
+                from: cropped.extent,
+            )
         else {
             return nil
         }
 
-        return UIImage(cgImage: cgImage)
+        return UIImage(
+            cgImage: cgImage,
+        )
     }
 }

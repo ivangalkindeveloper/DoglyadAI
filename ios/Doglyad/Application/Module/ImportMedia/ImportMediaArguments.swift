@@ -6,7 +6,7 @@ final class ImportMediaArguments: RouteArgumentsProtocol {
 
     init(
         onTapCamera: @escaping () -> Void,
-        onTapGallery: @escaping () -> Void
+        onTapGallery: @escaping () -> Void,
     ) {
         self.onTapCamera = onTapCamera
         self.onTapGallery = onTapGallery

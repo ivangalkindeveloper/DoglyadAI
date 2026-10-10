@@ -10,25 +10,37 @@ struct PermissionBottomSheet: DView {
 
     var body: some View {
         DBottomSheet(
-            title: title
+            title: title,
         ) { toolbarHeight, _ in
             VStack(
-                spacing: .zero
+                spacing: .zero,
             ) {
-                DText(description)
-                    .dStyle(
-                        font: typography.textSmall,
-                        alignment: .center
-                    )
-                    .padding(.bottom, size.s32)
+                DText(
+                    description,
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    alignment: .center,
+                )
+                .padding(
+                    .bottom,
+                    size.s32,
+                )
                 DButton(
                     title: .buttonOpenSettings,
-                    action: UIApplication.openSettings
+                    action: UIApplication.openSettings,
                 )
-                .dStyle(.primaryButton)
+                .dStyle(
+                    .primaryButton,
+                )
             }
-            .padding(size.s16)
-            .padding(.top, toolbarHeight)
+            .padding(
+                size.s16,
+            )
+            .padding(
+                .top,
+                toolbarHeight,
+            )
         }
     }
 }

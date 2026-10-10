@@ -10,13 +10,13 @@ struct NeuralModelSettings: Codable {
 
 extension NeuralModelSettings {
     static func fromDB(
-        _ db: NeuralModelSettingsDB
+        _ db: NeuralModelSettingsDB,
     ) -> NeuralModelSettings {
         NeuralModelSettings(
             selectedNeuralModelId: db.selectedNeuralModelId,
             isMarkdown: db.isMarkdown,
             temperature: db.temperature,
-            maxTokens: db.maxTokens
+            maxTokens: db.maxTokens,
         )
     }
 
@@ -25,7 +25,7 @@ extension NeuralModelSettings {
             selectedNeuralModelId: selectedNeuralModelId,
             isMarkdown: isMarkdown,
             temperature: temperature,
-            maxTokens: maxTokens
+            maxTokens: maxTokens,
         )
     }
 }

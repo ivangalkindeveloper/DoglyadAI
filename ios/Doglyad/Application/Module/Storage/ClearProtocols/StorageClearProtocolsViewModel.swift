@@ -6,19 +6,23 @@ final class StorageClearProtocolsViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        arguments: StorageClearProtocolsArguments?
+        arguments: StorageClearProtocolsArguments?,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
             subscription: subscription,
-            analyticsDestination: .bottomSheet(.storageClearProtocols)
+            analyticsDestination: .bottomSheet(
+                .storageClearProtocols,
+            ),
         )
     }
 
     func onTapConfirm() {
-        analytics.buttonTapped(.storageClearProtocolsConfirm)
+        analytics.buttonTapped(
+            .storageClearProtocolsConfirm,
+        )
         coordinator.dismissSheet()
         arguments?.onConfirm()
     }

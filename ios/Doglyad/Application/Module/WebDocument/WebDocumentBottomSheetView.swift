@@ -11,28 +11,37 @@ struct WebDocumentBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: viewModel.title,
-            fraction: 0.8
+            fraction: 0.8,
         ) { toolbarHeight, bottomHeight in
             ZStack {
                 WebDocumentBottomSheetWebView(
                     url: viewModel.url,
                     topInset: toolbarHeight,
                     bottomInset: bottomHeight,
-                    isLoading: $isLoading
+                    isLoading: $isLoading,
                 )
 
                 if isLoading {
                     color.grayscaleBackground
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .dShimmer(cornerRadius: 0)
+                        .frame(
+                            maxWidth: .infinity,
+                            maxHeight: .infinity,
+                        )
+                        .dShimmer(
+                            cornerRadius: 0,
+                        )
                 }
             }
-            .edgesIgnoringSafeArea(.bottom)
+            .edgesIgnoringSafeArea(
+                .bottom,
+            )
         }
         .animation(
             theme.animation,
-            value: isLoading
+            value: isLoading,
         )
-        .onAppear(perform: viewModel.onAppear)
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
     }
 }
