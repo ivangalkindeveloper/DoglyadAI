@@ -163,12 +163,13 @@ sync-secrets-inference:
 
 INFRASTRUCTURE_INVENTORY ?= deploy/secrets/infrastructure.json
 INFRASTRUCTURE_REF ?= master
+INFRASTRUCTURE_SCOPE ?= all
 
 update-infrastructure:
-	bash deploy/update-infrastructure.sh --inventory "$(INFRASTRUCTURE_INVENTORY)" --ref "$(INFRASTRUCTURE_REF)"
+	bash deploy/update-infrastructure.sh --inventory "$(INFRASTRUCTURE_INVENTORY)" --ref "$(INFRASTRUCTURE_REF)" --scope "$(INFRASTRUCTURE_SCOPE)"
 
 check-infrastructure:
-	bash deploy/update-infrastructure.sh --inventory "$(INFRASTRUCTURE_INVENTORY)" --check
+	bash deploy/update-infrastructure.sh --inventory "$(INFRASTRUCTURE_INVENTORY)" --scope "$(INFRASTRUCTURE_SCOPE)" --check
 
 voice-eval-text:
 	python3 -m evaluation.voice.generate

@@ -152,6 +152,6 @@ The `Makefile` contains all project commands. Common targets:
 - `make init-ios-local` — update the local iOS `BASE_URL` with the `en0` address.
 - `make build-ios-debug-local` / `make build-ios-debug-development` / `make build-ios-release-development` / `make build-ios-release-production` — build the matching Xcode scheme; override `IOS_DEST` to select another simulator.
 - `make start-backend-main-development` / `make start-backend-main-production` — run the main backend with the matching environment profile.
-- `make check-infrastructure` / `make update-infrastructure` — check or update all inventoried existing backend VMs through the central deployment script. See `deploy/README.md`; `start-backend-*` builds from source and is not the deployed-fleet update path.
+- `make check-infrastructure` / `make update-infrastructure` — check or update all inventoried existing backend VMs through the central deployment script. Set `INFRASTRUCTURE_SCOPE=main` to select both main environments without contacting inference VMs; inference availability/routes are unverified in this mode. See `deploy/README.md`; `start-backend-*` builds from source and is not the deployed-fleet update path.
 - `make start-backend-main-logs` / `make stop-backend-main` — follow logs or stop the main backend.
 - `make start-backend-inference` / `make start-backend-inference-logs` / `make stop-backend-inference` — manage the inference stack **on a GPU VM**, not on a developer machine. The stack starts vLLM with `SERVED_MODEL_ID` and the adjacent inference service.

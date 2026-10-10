@@ -182,7 +182,12 @@ def amd64_image(service: str, sha: str) -> str:
 
 
 def rollout(
-    targets: list[dict[str, str]], release: str, images: dict[str, str], sha: str
+    targets: list[dict[str, str]],
+    release: str,
+    images: dict[str, str],
+    sha: str,
+    *,
+    check_inference_routes: bool = True,
 ) -> None:
     attempted: list[dict[str, str]] = []
     try:
@@ -194,9 +199,10 @@ def rollout(
                 f"Updated {target['role']} {target['ssh']}: {result['image']}",
                 flush=True,
             )
-            for main in targets:
-                if main["role"] != "inference":
-                    remote(main, "routes", release)
+            if check_inference_routes:
+                for main in targets:
+                    if main["role"] != "inference":
+                        remote(main, "routes", release)
     except BaseException:
         for target in reversed(attempted):
             try:
@@ -217,13 +223,25 @@ def main() -> int:
     )
     parser.add_argument("--ref", default="master")
     parser.add_argument(
+        "--scope",
+        choices=("all", "main"),
+        default="all",
+        help="main updates both main environments without contacting inference VMs",
+    )
+    parser.add_argument(
         "--check",
         action="store_true",
         help="read-only fleet preflight; no build or update",
     )
     parser.add_argument("--build-timeout", type=int, default=3600)
     args = parser.parse_args()
-    targets = inventory(args.inventory)
+    all_targets = inventory(args.inventory)
+    targets = (
+        all_targets
+        if args.scope == "all"
+        else [target for target in all_targets if target["role"] != "inference"]
+    )
+    check_inference_routes = args.scope == "all"
     release = uuid.uuid4().hex
     prepared: list[dict[str, str]] = []
     rollout_started = False
@@ -235,16 +253,20 @@ def main() -> int:
                 f"Ready: {target['role']} {target['ssh']} ({result['image']})",
                 flush=True,
             )
-        expected_models = [t["model"] for t in targets if t["role"] == "inference"]
-        for target in targets:
-            if target["role"] != "inference":
-                remote(target, "routes", release, models=expected_models)
+        expected_models = [t["model"] for t in all_targets if t["role"] == "inference"]
+        if check_inference_routes:
+            for target in targets:
+                if target["role"] != "inference":
+                    remote(target, "routes", release, models=expected_models)
+        else:
+            print("Main-only scope: inference availability/routes are not checked.")
         if args.check:
             print("Preflight passed. No changes made. Generation not tested.")
             return 0
         sha, url = build(args.ref, args.build_timeout)
-        images = {s: amd64_image(s, sha) for s in ("main", "inference")}
-        # Snapshot the entire fleet before the first replacement. Persistent locks
+        services = ("main", "inference") if args.scope == "all" else ("main",)
+        images = {s: amd64_image(s, sha) for s in services}
+        # Snapshot all selected targets before replacement. Persistent locks
         # also block another invocation if this process is killed or disconnected.
         for target in targets:
             prepared.append(target)
@@ -255,10 +277,16 @@ def main() -> int:
                 target, "stage", release, image=images[service], models=expected_models
             )
         rollout_started = True
-        rollout(targets, release, images, sha)
+        rollout(
+            targets,
+            release,
+            images,
+            sha,
+            check_inference_routes=check_inference_routes,
+        )
         rollout_completed = True
         print(
-            f"Fleet updated: {sha}\n{url}\nCaddy/vLLM preserved. Generation not tested."
+            f"Updated scope={args.scope}: {sha}\n{url}\nCaddy/vLLM preserved. Generation not tested."
         )
         return 0
     finally:

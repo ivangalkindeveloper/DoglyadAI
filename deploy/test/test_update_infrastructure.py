@@ -69,6 +69,82 @@ class DeploymentTests(unittest.TestCase):
         )
         self.assertNotIn(("prod", "update"), calls)
 
+    def test_main_scope_keeps_model_coverage_and_never_contacts_gpu(self) -> None:
+        calls: list[tuple[str, str, dict]] = []
+
+        def remote(target: dict, action: str, *args: object, **kwargs: object) -> dict:
+            calls.append((target["ssh"], action, kwargs))
+            return {"image": "digest"}
+
+        with (
+            patch.object(sys, "argv", ["update", "--scope", "main"]),
+            patch.object(update, "inventory", return_value=self.targets),
+            patch.object(update, "remote", side_effect=remote),
+            patch.object(update, "build", return_value=("sha", "run-url")),
+            patch.object(update, "amd64_image", return_value="image") as image,
+        ):
+            self.assertEqual(update.main(), 0)
+        self.assertEqual({host for host, _, _ in calls}, {"dev", "prod"})
+        self.assertFalse(any(action == "routes" for _, action, _ in calls))
+        self.assertEqual(
+            [(host, action) for host, action, _ in calls],
+            [
+                ("dev", "check"),
+                ("prod", "check"),
+                ("dev", "prepare"),
+                ("prod", "prepare"),
+                ("dev", "stage"),
+                ("prod", "stage"),
+                ("dev", "update"),
+                ("prod", "update"),
+                ("prod", "unlock"),
+                ("dev", "unlock"),
+            ],
+        )
+        for _, action, kwargs in calls:
+            if action == "stage":
+                self.assertEqual(kwargs["models"], ["model"])
+        image.assert_called_once_with("main", "sha")
+
+    def test_main_scope_preflight_never_builds_or_checks_inference(self) -> None:
+        with (
+            patch.object(sys, "argv", ["update", "--scope", "main", "--check"]),
+            patch.object(update, "inventory", return_value=self.targets),
+            patch.object(update, "remote", return_value={"image": "digest"}) as remote,
+            patch.object(update, "build") as build,
+        ):
+            self.assertEqual(update.main(), 0)
+        self.assertEqual(remote.call_count, 2)
+        self.assertEqual(
+            [(call.args[0]["ssh"], call.args[1]) for call in remote.call_args_list],
+            [("dev", "check"), ("prod", "check")],
+        )
+        build.assert_not_called()
+
+    def test_main_scope_failure_rolls_back_both_main_hosts(self) -> None:
+        calls: list[tuple[str, str]] = []
+
+        def remote(target: dict, action: str, *args: object, **kwargs: object) -> dict:
+            calls.append((target["ssh"], action))
+            if target["ssh"] == "prod" and action == "update":
+                raise RuntimeError("SSH lost after production update")
+            return {"image": "digest"}
+
+        with (
+            patch.object(sys, "argv", ["update", "--scope", "main"]),
+            patch.object(update, "inventory", return_value=self.targets),
+            patch.object(update, "remote", side_effect=remote),
+            patch.object(update, "build", return_value=("sha", "run-url")),
+            patch.object(update, "amd64_image", return_value="image"),
+        ):
+            with self.assertRaises(RuntimeError):
+                update.main()
+        self.assertEqual(
+            [host for host, action in calls if action == "rollback"], ["prod", "dev"]
+        )
+        self.assertFalse(any(action in {"unlock", "routes"} for _, action in calls))
+        self.assertNotIn("gpu", [host for host, _ in calls])
+
     def test_manifest_pins_amd64_digest(self) -> None:
         manifest = [
             {

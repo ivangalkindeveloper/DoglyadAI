@@ -115,6 +115,15 @@ Commit and push the intended code first. The script does not publish local chang
 make update-infrastructure INFRASTRUCTURE_INVENTORY=/path/to/infrastructure.json INFRASTRUCTURE_REF=master
 ```
 
+To update only main-development and main-production, including when the GPU VM is off:
+
+```bash
+make check-infrastructure INFRASTRUCTURE_SCOPE=main
+make update-infrastructure INFRASTRUCTURE_SCOPE=main
+```
+
+This selects the explicit `--scope main` mode. The full inventory is still validated and its model IDs are used to check the new main image against existing endpoint mappings. Only the two main VMs are contacted, locked, staged, updated and, if necessary, rolled back. Main container, environment, image and App Check checks remain enabled; inference availability and private-route checks are skipped and reported as unverified. Both image jobs still build, but only the main image is deployed. The default scope is `all`.
+
 All targets are preflighted, locked and snapshotted; all images are staged before container replacement. The order is inference backends, development main, production main. Only backend containers are recreated. Caddy, vLLM, weights, secrets, OS packages, and deployed Compose files are preserved. The new machine `TAG` contains `<commit-sha>@sha256:<digest>`, supported by the existing Compose image references.
 
 The single update path is `make update-infrastructure` → `deploy/update-infrastructure.sh` → `deploy/update_infrastructure.py` → `deploy/update_remote.py` over SSH. The local Python module coordinates Actions and rollout; the remote helper owns container changes and rollback for both roles. Use the `update-infrastructure` skill for updates, and `configure-vm` for provisioning/readiness. `sync-secrets.sh` is only for delivering changed secrets or initial startup.
@@ -135,7 +144,7 @@ ssh -o BatchMode=yes GPU_SSH_ALIAS 'python3 - '\''{"action":"rollback","release"
 
 After checking recovery, use the same command with `"action":"unlock"` on each prepared target. For main targets use the inventory's development/production role. Ownership and operation locks are checked. Never clear another rollout's lock. A killed process or unreachable VM may require manual recovery; the script cannot guarantee rollback over a broken SSH connection. A restored mutable old tag may have moved: the saved image ID and rollback override in the snapshot identify the actual recovered image.
 
-The entry point currently updates the full inventory. Partial rollouts, explicit historical-SHA releases, incompatible migrations, and platform upgrades require a separate plan; there are no flags for these operations.
+The entry point supports the full inventory and the two-main scope above. Other partial rollouts, explicit historical-SHA releases, incompatible migrations, and platform upgrades require a separate plan; there are no flags for these operations.
 
 Local tests, without GitHub/VM access:
 
