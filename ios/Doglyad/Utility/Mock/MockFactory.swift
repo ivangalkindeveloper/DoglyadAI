@@ -2,10 +2,10 @@ import Foundation
 
 protocol MockFactory: AnyObject {
     func fillPatientComplaints(
-        for locale: Locale,
+        l10n: L10N,
     ) -> String
 
     func fillExaminationDescription(
-        for locale: Locale,
+        l10n: L10N,
     ) -> String
 }

@@ -75,7 +75,9 @@ final class OnBoardingViewModel: DViewModel {
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.privacyPolicyUrl,
-                title: .privacyPolicyTitle,
+                title: container.l10n[
+                    .privacyPolicyTitle,
+                ],
             ),
         )
     }
@@ -88,7 +90,9 @@ final class OnBoardingViewModel: DViewModel {
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.termsAndConditionsUrl,
-                title: .termsAndConditionsTitle,
+                title: container.l10n[
+                    .termsAndConditionsTitle,
+                ],
             ),
         )
     }
@@ -98,13 +102,21 @@ final class OnBoardingViewModel: DViewModel {
     ) -> LocalizedStringResource {
         switch page {
         case .first, .second:
-            .buttonNext
+            container.l10n[
+                .buttonNext,
+            ]
         case .third:
-            .buttonAccept
+            container.l10n[
+                .buttonAccept,
+            ]
         case .fourth:
-            .buttonSelectType
+            container.l10n[
+                .buttonSelectType,
+            ]
         case .fifth:
-            .buttonStart
+            container.l10n[
+                .buttonStart,
+            ]
         }
     }
 
@@ -214,7 +226,9 @@ extension OnBoardingViewModel {
 
         var accept = AttributedString(
             localizedResource(
-                .onBoardingLegalAcceptDescription,
+                container.l10n[
+                    .onBoardingLegalAcceptDescription,
+                ],
                 locale: locale,
             ),
         )
@@ -223,7 +237,9 @@ extension OnBoardingViewModel {
 
         var privacy = AttributedString(
             localizedResource(
-                .onBoardingPrivacyPolicyLabel,
+                container.l10n[
+                    .onBoardingPrivacyPolicyLabel,
+                ],
                 locale: locale,
             ),
         )
@@ -235,7 +251,9 @@ extension OnBoardingViewModel {
 
         var and = AttributedString(
             localizedResource(
-                .onBoardingLegalAcceptAndDescription,
+                container.l10n[
+                    .onBoardingLegalAcceptAndDescription,
+                ],
                 locale: locale,
             ),
         )
@@ -244,7 +262,9 @@ extension OnBoardingViewModel {
 
         var terms = AttributedString(
             localizedResource(
-                .onBoardingTermsAndConditionsLabel,
+                container.l10n[
+                    .onBoardingTermsAndConditionsLabel,
+                ],
                 locale: locale,
             ),
         )

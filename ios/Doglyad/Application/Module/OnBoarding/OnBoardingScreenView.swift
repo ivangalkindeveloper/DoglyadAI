@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct OnBoardingScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @Environment(
         \.locale,
     ) private var locale
@@ -124,23 +125,35 @@ struct OnBoardingScreenView: DView {
         case .first:
             OnBoardingPageView(
                 tag: .first,
-                title: .onBoardingTitleFirst,
+                title: l10n[
+                    .onBoardingTitleFirst,
+                ],
                 image: .doglyad,
-                description: .onBoardingDescriptionFirst,
+                description: l10n[
+                    .onBoardingDescriptionFirst,
+                ],
             )
         case .second:
             OnBoardingPageView(
                 tag: .second,
-                title: .onBoardingTitleSecond,
+                title: l10n[
+                    .onBoardingTitleSecond,
+                ],
                 image: .doglyadUSMachine,
-                description: .onBoardingDescriptionSecond,
+                description: l10n[
+                    .onBoardingDescriptionSecond,
+                ],
             )
         case .third:
             OnBoardingPageView(
                 tag: .third,
-                title: .onBoardingTitleThird,
+                title: l10n[
+                    .onBoardingTitleThird,
+                ],
                 image: .doglyadQuiet,
-                description: .onBoardingDescriptionThird,
+                description: l10n[
+                    .onBoardingDescriptionThird,
+                ],
             ) {
                 HStack(
                     alignment: .center,
@@ -193,16 +206,24 @@ struct OnBoardingScreenView: DView {
         case .fourth:
             OnBoardingPageView(
                 tag: .fourth,
-                title: .onBoardingTitleFourth,
+                title: l10n[
+                    .onBoardingTitleFourth,
+                ],
                 image: .doglyadQuestion,
-                description: .onBoardingDescriptionFourth,
+                description: l10n[
+                    .onBoardingDescriptionFourth,
+                ],
             )
         case .fifth:
             OnBoardingPageView(
                 tag: .fifth,
-                title: .onBoardingTitleFifth,
+                title: l10n[
+                    .onBoardingTitleFifth,
+                ],
                 image: .doglyadTable,
-                description: .onBoardingDescriptionFifth,
+                description: l10n[
+                    .onBoardingDescriptionFifth,
+                ],
             )
         }
     }

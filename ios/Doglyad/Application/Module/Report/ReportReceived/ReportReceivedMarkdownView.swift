@@ -2,7 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ReportReceivedMarkdownView: View {
-    @ObservedObject var viewModel: ReportReceivedMarkdownViewModel
+    @EnvironmentObject private var viewModel: ReportReceivedMarkdownViewModel
     let textColor: Color
 
     var body: some View {

@@ -44,6 +44,9 @@ struct MainRootView: View {
         .environmentObject(
             dependencyContainer,
         )
+        .localization(
+            dependencyContainer.l10n,
+        )
         .environmentObject(
             ultrasoundViewModel,
         )

@@ -2,8 +2,9 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanSpeechProposalView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-    @ObservedObject var viewModel: ScanSpeechViewModel
+    @EnvironmentObject private var viewModel: ScanSpeechViewModel
 
     var body: some View {
         VStack(
@@ -28,7 +29,9 @@ struct ScanSpeechProposalView: DView {
                            proposal.unmappedFindings.isEmpty
                         {
                             DText(
-                                .speechProposalNoFields,
+                                l10n[
+                                    .speechProposalNoFields,
+                                ],
                             )
                             .dStyle(
                                 font: typography.textSmall,
@@ -40,14 +43,15 @@ struct ScanSpeechProposalView: DView {
                             viewModel.reviewProposals,
                         ) { field in
                             ScanSpeechProposalCardView(
-                                viewModel: viewModel,
                                 proposal: field,
                             )
                         }
 
                         if !proposal.rejectedFieldIds.isEmpty {
                             DText(
-                                .speechProposalRejectedTitle,
+                                l10n[
+                                    .speechProposalRejectedTitle,
+                                ],
                             )
                             .dStyle(
                                 font: typography.linkSmall,
@@ -71,7 +75,9 @@ struct ScanSpeechProposalView: DView {
 
                         if !proposal.unmappedFindings.isEmpty {
                             DText(
-                                .speechProposalUnmappedTitle,
+                                l10n[
+                                    .speechProposalUnmappedTitle,
+                                ],
                             )
                             .dStyle(
                                 font: typography.linkSmall,
@@ -94,7 +100,9 @@ struct ScanSpeechProposalView: DView {
             }
 
             DButton(
-                title: .speechProposalApplyButton,
+                title: l10n[
+                    .speechProposalApplyButton,
+                ],
                 action: viewModel.onTapApplySelected,
                 isDisabled: viewModel.isApplyDisabled,
             )
@@ -103,7 +111,9 @@ struct ScanSpeechProposalView: DView {
             )
 
             DButton(
-                title: .speechProposalBackButton,
+                title: l10n[
+                    .speechProposalBackButton,
+                ],
                 action: viewModel.onTapBackToTranscript,
                 isDisabled: viewModel.isLoading,
             )

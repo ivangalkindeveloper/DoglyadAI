@@ -2,13 +2,16 @@ import DoglyadUI
 import SwiftUI
 
 struct HistoryScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: HistoryViewModel
 
     var body: some View {
         DScreen(
-            title: .historyTitle,
+            title: l10n[
+                .historyTitle,
+            ],
             onTapBack: viewModel.onTapBack,
             content: { toolbarInset, bottomHeight in
                 ScrollView(
@@ -97,7 +100,9 @@ struct HistoryScreenView: DView {
             bottom: {
                 if viewModel.isEmpty {
                     DButton(
-                        title: .buttonBack,
+                        title: l10n[
+                            .buttonBack,
+                        ],
                         action: viewModel.onTapBack,
                     )
                     .dStyle(

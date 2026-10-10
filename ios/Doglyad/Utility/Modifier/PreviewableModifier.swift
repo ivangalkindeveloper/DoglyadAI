@@ -25,6 +25,9 @@ private struct PreviewableModifier: ViewModifier {
             .environmentObject(
                 container,
             )
+            .localization(
+                container.l10n,
+            )
             .environmentObject(
                 UltrasoundViewModel(
                     container: container,

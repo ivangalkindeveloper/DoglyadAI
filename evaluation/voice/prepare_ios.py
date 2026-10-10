@@ -24,9 +24,9 @@ NEURAL_SOURCE_FILES = tuple(
 )
 SOURCE_FILES = (
     CONFIG_DIR / "ultrasound_examination_types.json",
-    ROOT / "ios/Doglyad/Resources/Localization/en.lproj/VoiceParsing.json",
-    ROOT / "ios/Doglyad/Resources/Localization/ru.lproj/VoiceParsing.json",
-    ROOT / "ios/Doglyad/Core/VoiceLocalization.swift",
+    CONFIG_DIR / "en/l10n_voice_parsing.json",
+    CONFIG_DIR / "ru/l10n_voice_parsing.json",
+    ROOT / "ios/Doglyad/Domain/Localization/VoiceLocalization.swift",
     *NEURAL_SOURCE_FILES,
     ROOT / "ios/DoglyadSpeech/Audio/DSpeechLexiconLocalization.swift",
     ROOT / "ios/DoglyadSpeech/DSpeechCompletion.swift",

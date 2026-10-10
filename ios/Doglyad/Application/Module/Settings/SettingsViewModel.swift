@@ -46,8 +46,13 @@ final class SettingsViewModel: DViewModel {
     }
 
     func historyDescription() -> LocalizedStringResource {
-        reportsCount == 0 ? .settingsHistoryEmptyDescription : .settingsHistoryDescription(
-            count: reportsCount,
+        reportsCount == 0 ? container.l10n[
+            .settingsHistoryEmptyDescription,
+        ] : container.l10n.resource(
+            .settingsHistoryDescription,
+            values: ["count": String(
+                reportsCount,
+            )],
         )
     }
 
@@ -155,7 +160,9 @@ final class SettingsViewModel: DViewModel {
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.privacyPolicyUrl,
-                title: .privacyPolicyTitle,
+                title: container.l10n[
+                    .privacyPolicyTitle,
+                ],
             ),
         )
     }
@@ -168,7 +175,9 @@ final class SettingsViewModel: DViewModel {
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.termsAndConditionsUrl,
-                title: .termsAndConditionsTitle,
+                title: container.l10n[
+                    .termsAndConditionsTitle,
+                ],
             ),
         )
     }

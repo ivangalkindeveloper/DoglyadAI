@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct NeuralModelCardView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
@@ -15,7 +16,9 @@ struct NeuralModelCardView: DView {
             spacing: .zero,
         ) {
             DText(
-                .scanNeuralModelTitleLabel,
+                l10n[
+                    .scanNeuralModelTitleLabel,
+                ],
             )
             .dStyle(
                 font: typography.textSmall,
@@ -38,12 +41,16 @@ struct NeuralModelCardView: DView {
                     spacing: size.s4,
                 ) {
                     NeuralModelValueRowView(
-                        title: .scanNerualModelSettingsModelLabel,
+                        title: l10n[
+                            .scanNerualModelSettingsModelLabel,
+                        ],
                         value: ultrasoundViewModel.neuralModel.title,
                     )
 
                     NeuralModelValueRowView(
-                        title: .scanNeuralModelSettingsAvailableRequestsLabel,
+                        title: l10n[
+                            .scanNeuralModelSettingsAvailableRequestsLabel,
+                        ],
                         value: "\(subscriptionViewModel.availableRequestCount)",
                     )
                 }

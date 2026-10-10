@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ExpandableTextView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     let text: String
@@ -38,7 +39,9 @@ struct ExpandableTextView: DView {
                     alignment: .leading,
                 )
                 Button(
-                    .buttonCollapse,
+                    l10n[
+                        .buttonCollapse,
+                    ],
                 ) {
                     withAnimation(
                         theme.animation,
@@ -96,7 +99,9 @@ struct ExpandableTextView: DView {
                             )
 
                         Button(
-                            .buttonNext,
+                            l10n[
+                                .buttonNext,
+                            ],
                         ) {
                             withAnimation(
                                 theme.animation,
@@ -134,4 +139,7 @@ struct ExpandableTextView: DView {
     )
     .padding()
     .dThemeWrapper()
+    .localization(
+        DependencyContainer.previewable.l10n,
+    )
 }

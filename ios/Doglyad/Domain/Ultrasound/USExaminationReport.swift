@@ -25,13 +25,17 @@ extension USExaminationReport {
         recipientEmail: String,
         examinationTypesById: [String: USExaminationType],
         scanPhotoEncodingOptions: ScanPhotoEncodingOptions,
+        l10n: L10N,
     ) -> ReportEmail {
         ReportEmail(
             recipientEmail: recipientEmail,
             subject: shareSubject(
                 examinationTypesById: examinationTypesById,
+                l10n: l10n,
             ),
-            body: shareMessage,
+            body: shareMessage(
+                l10n: l10n,
+            ),
             attachments: examinationData.photos.enumerated().compactMap { index, photo in
                 guard let data = photo.encodedJPEGData(
                     options: scanPhotoEncodingOptions,
@@ -49,11 +53,16 @@ extension USExaminationReport {
 
     func shareSubject(
         examinationTypesById: [String: USExaminationType],
+        l10n: L10N,
     ) -> String {
         let appName = String(
-            localized: .appName,
+            localized: l10n[
+                .appName,
+            ],
         )
-        let date = date.localized()
+        let date = date.localized(
+            locale: l10n.locale,
+        )
         let patientName = examinationData.patientName
         let examinationType = String(
             localized: .forExaminationTypeById(
@@ -64,36 +73,42 @@ extension USExaminationReport {
         return "\(appName): \(date) \(patientName) \(examinationType)"
     }
 
-    var shareMessage: String {
+    func shareMessage(
+        l10n: L10N,
+    ) -> String {
         var lines: [String] = [
-            "\(String(localized: .scanExaminationDateLabel))\n\(date.localized())",
-            "\(String(localized: .scanExaminationNumberLabel))\n\(examinationData.examinationNumber)",
-            "\(String(localized: .scanPatientNameLabel))\n\(examinationData.patientName)",
-            "\(String(localized: .scanPatientGenderLabel))\n\(String(localized: .forGender(examinationData.patientGender)))",
-            "\(String(localized: .scanPatientDateOfBirthLabel))\n\(examinationData.patientDateOfBirth.localized())",
-            "\(String(localized: .scanExaminationDescriptionLabel))\n\(examinationData.examinationDescription)",
+            "\(String(localized: l10n[.scanExaminationDateLabel]))\n\(date.localized(locale: l10n.locale))",
+            "\(String(localized: l10n[.scanExaminationNumberLabel]))\n\(examinationData.examinationNumber)",
+            "\(String(localized: l10n[.scanPatientNameLabel]))\n\(examinationData.patientName)",
+            "\(String(localized: l10n[.scanPatientGenderLabel]))\n\(String(localized: l10n.forGender(examinationData.patientGender)))",
+            "\(String(localized: l10n[.scanPatientDateOfBirthLabel]))\n\(examinationData.patientDateOfBirth.localized(locale: l10n.locale))",
+            "\(String(localized: l10n[.scanExaminationDescriptionLabel]))\n\(examinationData.examinationDescription)",
         ]
 
         if let patientComplaints = examinationData.patientComplaints,
            !patientComplaints.isEmpty
         {
             lines.append(
-                "\(String(localized: .scanPatientComplaintsLabel))\n\(patientComplaints)",
+                "\(String(localized: l10n[.scanPatientComplaintsLabel]))\n\(patientComplaints)",
             )
         }
         lines.append(
-            "\(String(localized: .reportActualModelResponseTitle))\n\(actualModelReport.plainText)",
+            "\(String(localized: l10n[.reportActualModelResponseTitle]))\n\(actualModelReport.plainText(l10n: l10n))",
         )
 
         if !previousModelReports.isEmpty {
             lines.append(
                 String(
-                    localized: .reportPreviousModelResponsesTitle,
+                    localized: l10n[
+                        .reportPreviousModelResponsesTitle,
+                    ],
                 ),
             )
             for modelReport in previousModelReports {
                 lines.append(
-                    modelReport.plainText,
+                    modelReport.plainText(
+                        l10n: l10n,
+                    ),
                 )
             }
         }

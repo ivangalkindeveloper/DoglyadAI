@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanCameraBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ScanCameraViewModel
@@ -9,7 +10,9 @@ struct ScanCameraBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             type: .blur,
-            title: .scanCameraTitle,
+            title: l10n[
+                .scanCameraTitle,
+            ],
             fraction: 0.9,
         ) { toolbarInset, bottomInset in
             ZStack(
@@ -67,7 +70,9 @@ struct ScanCameraBottomSheetView: DView {
             ) {
                 if viewModel.isCaptureAvailable {
                     DText(
-                        .scanCaptureDescription,
+                        l10n[
+                            .scanCaptureDescription,
+                        ],
                     )
                     .dStyle(
                         font: typography.textSmall,

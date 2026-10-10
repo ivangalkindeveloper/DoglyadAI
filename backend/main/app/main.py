@@ -10,6 +10,7 @@ from app.core.logging import setup_logging
 from app.core.main_lifespan import MainLifespan
 from app.core.request_id import request_id_middleware
 from app.route.application_config import router as application_config_router
+from app.route.l10n import router_v1 as l10n_router_v1
 from app.route.send_report_email import router as send_report_email_router
 from app.route.templates import router as templates_router
 from app.route.ultrasound import router as ultrasound_router
@@ -27,3 +28,4 @@ app.middleware("http")(request_id_middleware)
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 app.include_router(router_v1)
+app.include_router(l10n_router_v1)

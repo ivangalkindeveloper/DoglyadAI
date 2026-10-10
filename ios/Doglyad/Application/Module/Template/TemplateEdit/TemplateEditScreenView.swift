@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct TemplateEditScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: TemplateEditViewModel
@@ -9,7 +10,9 @@ struct TemplateEditScreenView: DView {
 
     var body: some View {
         DScreen(
-            title: .templateEditTitle,
+            title: l10n[
+                .templateEditTitle,
+            ],
             onTapBack: viewModel.onTapBack,
             trailing: {
                 DButton(
@@ -27,18 +30,28 @@ struct TemplateEditScreenView: DView {
             keyboardToolbar: {
                 if focus != nil {
                     DToolbar(
-                        upAccessibilityLabel: .buttonBack,
-                        downAccessibilityLabel: .buttonNext,
-                        doneAccessibilityLabel: .buttonDone,
+                        upAccessibilityLabel: l10n[
+                            .buttonBack,
+                        ],
+                        downAccessibilityLabel: l10n[
+                            .buttonNext,
+                        ],
+                        doneAccessibilityLabel: l10n[
+                            .buttonDone,
+                        ],
                         onTapUp: viewModel.canFocusPreviousField ? { viewModel.onTapToolbarUp() } : nil,
                         onTapDown: viewModel.canFocusNextField ? { viewModel.onTapToolbarDown() } : nil,
                         onTapDone: viewModel.unfocus,
                         trailButtons: [
                             DToolbarButton(
-                                accessibilityLabel: .buttonSave,
+                                accessibilityLabel: l10n[
+                                    .buttonSave,
+                                ],
                                 style: .primaryDefault,
                                 content: .text(
-                                    .buttonSave,
+                                    l10n[
+                                        .buttonSave,
+                                    ],
                                 ),
                                 action: viewModel.onTapSave,
                             ),
@@ -58,7 +71,9 @@ struct TemplateEditScreenView: DView {
                         spacing: .zero,
                     ) {
                         DListButtonCard(
-                            title: .templateExaminationTypeLabel,
+                            title: l10n[
+                                .templateExaminationTypeLabel,
+                            ],
                             description: viewModel.usExaminationType.localizedTitle,
                             action: viewModel.onTapExaminationType,
                         )
@@ -80,8 +95,12 @@ struct TemplateEditScreenView: DView {
                                 value: .name,
                                 state: $focus,
                             ),
-                            title: .templateNameLabel,
-                            placeholder: .templateNamePlaceholder,
+                            title: l10n[
+                                .templateNameLabel,
+                            ],
+                            placeholder: l10n[
+                                .templateNamePlaceholder,
+                            ],
                             mode: DTextFieldSingleLineMode(
                                 submitLabel: .next,
                             ),
@@ -100,8 +119,12 @@ struct TemplateEditScreenView: DView {
                                 value: .content,
                                 state: $focus,
                             ),
-                            title: .templateContentLabel,
-                            placeholder: .templateContentPlaceholder,
+                            title: l10n[
+                                .templateContentLabel,
+                            ],
+                            placeholder: l10n[
+                                .templateContentPlaceholder,
+                            ],
                             mode: DTextFieldMultiLineMode(),
                         )
                         .id(
@@ -117,7 +140,9 @@ struct TemplateEditScreenView: DView {
                             spacing: .zero,
                         ) {
                             DText(
-                                .templateContentDescription,
+                                l10n[
+                                    .templateContentDescription,
+                                ],
                             )
                             .dStyle(
                                 font: typography.textXSmall,
@@ -133,7 +158,9 @@ struct TemplateEditScreenView: DView {
                             )
 
                             DText(
-                                .templateExampleDescription,
+                                l10n[
+                                    .templateExampleDescription,
+                                ],
                             )
                             .dStyle(
                                 font: typography.textXSmall,
@@ -186,7 +213,9 @@ struct TemplateEditScreenView: DView {
             },
             bottom: {
                 DButton(
-                    title: .buttonSave,
+                    title: l10n[
+                        .buttonSave,
+                    ],
                     action: viewModel.onTapSave,
                     isLoading: viewModel.isLoading,
                 )

@@ -59,6 +59,40 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         self.getNeuralModel = getNeuralModel
         self.onNeuralModelSelected = onNeuralModelSelected
         usExaminationType = container.usExaminationTypeDefault
+        _patientHeightCMController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                formatters: [
+                    DTextFieldDecimalFormatter(),
+                ],
+                validators: [
+                    DTextFieldDoubleRangeValidator(
+                        validRange: Double.leastNonzeroMagnitude ... Double.greatestFiniteMagnitude,
+                        invalidValueErrorText: String(
+                            localized: container.l10n[
+                                .errorInvalidPatientHeight,
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        )
+        _patientWeightKGController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                formatters: [
+                    DTextFieldDecimalFormatter(),
+                ],
+                validators: [
+                    DTextFieldDoubleRangeValidator(
+                        validRange: Double.leastNonzeroMagnitude ... Double.greatestFiniteMagnitude,
+                        invalidValueErrorText: String(
+                            localized: container.l10n[
+                                .errorInvalidPatientWeight,
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        )
         super.init(
             container: container,
             router: router,
@@ -97,32 +131,8 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
     )
     @Published var patientGender = PatientGender.male
     @Published var patientDateOfBirth: Date = .init()
-    @NestedObservableObject var patientHeightCMController = DTextFieldController(
-        formatters: [
-            DTextFieldDecimalFormatter(),
-        ],
-        validators: [
-            DTextFieldDoubleRangeValidator(
-                validRange: Double.leastNonzeroMagnitude ... Double.greatestFiniteMagnitude,
-                invalidValueErrorText: String(
-                    localized: .errorInvalidPatientHeight,
-                ),
-            ),
-        ],
-    )
-    @NestedObservableObject var patientWeightKGController = DTextFieldController(
-        formatters: [
-            DTextFieldDecimalFormatter(),
-        ],
-        validators: [
-            DTextFieldDoubleRangeValidator(
-                validRange: Double.leastNonzeroMagnitude ... Double.greatestFiniteMagnitude,
-                invalidValueErrorText: String(
-                    localized: .errorInvalidPatientWeight,
-                ),
-            ),
-        ],
-    )
+    @NestedObservableObject var patientHeightCMController: DTextFieldController
+    @NestedObservableObject var patientWeightKGController: DTextFieldController
     @NestedObservableObject var patientComplaintsController = DTextFieldController()
     @NestedObservableObject var examinationDescriptionController = DTextFieldController(
         isRequired: true,
@@ -651,12 +661,12 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         )
         patientComplaintsController.setText(
             container.mockFactory.fillPatientComplaints(
-                for: Locale.current,
+                l10n: container.l10n,
             ),
         )
         examinationDescriptionController.setText(
             container.mockFactory.fillExaminationDescription(
-                for: Locale.current,
+                l10n: container.l10n,
             ),
         )
     }
@@ -678,7 +688,9 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         ) {
         case .offered:
             DButtonBadge(
-                .entitlementPro,
+                container.l10n[
+                    .entitlementPro,
+                ],
                 isShimmering: true,
             )
         case .available, .unavailable:
@@ -848,7 +860,9 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
                 ),
             )
         } onUnknownError: { _ in
-            self.messager.showUnknownError()
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
         }
     }
 
@@ -870,15 +884,21 @@ final class ScanViewModel: DViewModel, DTextFieldFocusValidating, DDraftable {
         photos.removeAll()
         examinationNumberController.setText(
             String(
-                localized: .scanExaminationDefaultNumberLabel(
-                    count: reportsCount,
+                localized: container.l10n.resource(
+                    .scanExaminationDefaultNumberLabel,
+                    values: ["count": String(
+                        reportsCount,
+                    )],
                 ),
             ),
         )
         patientNameController.setText(
             String(
-                localized: .scanPatientDefaultNameLabel(
-                    count: reportsCount,
+                localized: container.l10n.resource(
+                    .scanPatientDefaultNameLabel,
+                    values: ["count": String(
+                        reportsCount,
+                    )],
                 ),
             ),
         )
@@ -965,10 +985,14 @@ extension ScanViewModel {
         case .patientGender:
             switch patientGender {
             case .male: String(
-                    localized: .scanGenderMaleLabel,
+                    localized: container.l10n[
+                        .scanGenderMaleLabel,
+                    ],
                 )
             case .female: String(
-                    localized: .scanGenderFemaleLabel,
+                    localized: container.l10n[
+                        .scanGenderFemaleLabel,
+                    ],
                 )
             }
         case .patientDateOfBirth: patientDateOfBirth.formatted(

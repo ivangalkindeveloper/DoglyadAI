@@ -2,20 +2,25 @@ import DoglyadUI
 import SwiftUI
 
 struct StorageClearProtocolsBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: StorageClearProtocolsViewModel
 
     var body: some View {
         DBottomSheet(
-            title: .storageClearProtocolsWarningTitle,
+            title: l10n[
+                .storageClearProtocolsWarningTitle,
+            ],
             fraction: 0.3,
         ) { toolbarHeight, _ in
             VStack(
                 spacing: .zero,
             ) {
                 DText(
-                    .storageClearProtocolsWarningDescription,
+                    l10n[
+                        .storageClearProtocolsWarningDescription,
+                    ],
                 )
                 .dStyle(
                     font: typography.textSmall,
@@ -34,7 +39,9 @@ struct StorageClearProtocolsBottomSheetView: DView {
             }
         } bottom: {
             DButton(
-                title: .buttonClear,
+                title: l10n[
+                    .buttonClear,
+                ],
                 action: viewModel.onTapConfirm,
             )
             .dStyle(

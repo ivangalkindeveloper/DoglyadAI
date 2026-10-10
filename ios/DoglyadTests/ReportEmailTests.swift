@@ -61,12 +61,15 @@ struct ReportEmailTests {
             previousModelReports: [],
         )
 
-        let email = report.makeEmail(
+        let email = try report.makeEmail(
             recipientEmail: "doctor@example.com",
             examinationTypesById: [:],
             scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
                 resizeMaxDimension: 10,
                 compressionQuality: 0.8,
+            ),
+            l10n: VoiceLocalizationTestSupport.l10n(
+                code: "en",
             ),
         )
 

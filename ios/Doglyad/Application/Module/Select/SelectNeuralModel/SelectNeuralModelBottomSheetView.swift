@@ -3,13 +3,16 @@ import Foundation
 import SwiftUI
 
 struct SelectNeuralModelBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SelectNeuralModelViewModel
 
     var body: some View {
         DBottomSheet(
-            title: .settingsNeuralModelTitle,
+            title: l10n[
+                .settingsNeuralModelTitle,
+            ],
             fraction: 0.8,
         ) { toolbarHeight, bottomHeight in
             ScrollView(
@@ -24,14 +27,18 @@ struct SelectNeuralModelBottomSheetView: DView {
                         DBadge(
                             [
                                 DBadgeItem(
-                                    .entitlementPro,
+                                    l10n[
+                                        .entitlementPro,
+                                    ],
                                     isVisible: viewModel.isProBadgeVisible(
                                         for: model,
                                     ),
                                     isShimmering: true,
                                 ),
                                 DBadgeItem(
-                                    .neuralModelComingSoonBadge,
+                                    l10n[
+                                        .neuralModelComingSoonBadge,
+                                    ],
                                     isVisible: viewModel.isComingSoonBadgeVisible(
                                         for: model,
                                     ),
@@ -42,11 +49,19 @@ struct SelectNeuralModelBottomSheetView: DView {
                                 title: LocalizedStringResource(
                                     stringLiteral: model.title,
                                 ),
-                                description: """
-                                (\(model.id))
-                                \(String(localized: .neuralModelContextLengthDescription)) \(model.contextLength)
-                                \(model.localizedDescription)
-                                """,
+                                description: l10n.resource(
+                                    .neuralModelDetailsDescription,
+                                    values: [
+                                        "id": model.id,
+                                        "contextLabel": l10n.text(
+                                            .neuralModelContextLengthDescription,
+                                        ),
+                                        "contextLength": String(
+                                            model.contextLength,
+                                        ),
+                                        "description": model.description,
+                                    ],
+                                ),
                                 action: {
                                     viewModel.onModelTap(
                                         model,
@@ -83,7 +98,9 @@ struct SelectNeuralModelBottomSheetView: DView {
         }
         bottom: {
             DText(
-                .neuralModelAddingDescription,
+                l10n[
+                    .neuralModelAddingDescription,
+                ],
             )
             .dStyle(
                 font: typography.textSmall,

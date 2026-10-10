@@ -66,7 +66,9 @@ final class SelectUSExaminationTypeViewModel: DViewModel {
             [
                 Section(
                     id: "recent",
-                    title: .usExaminationTypeRecentGroupTitle,
+                    title: container.l10n[
+                        .usExaminationTypeRecentGroupTitle,
+                    ],
                     types: recentTypes,
                 ),
             ]

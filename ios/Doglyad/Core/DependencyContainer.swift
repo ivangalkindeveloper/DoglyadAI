@@ -20,7 +20,7 @@ final class DependencyContainer: ObservableObject {
     let subscriptionRepository: RevenueCatSubscriptionRepository
     let applicationConfig: ApplicationConfig
     let language: Language
-    let voiceLocalization: VoiceLocalization
+    let l10n: L10N
     let examinationNeuralModelFactory: DNeuralUltrasoundModelFactory
     let usExaminationTypeGroups: [USExaminationTypeGroup]
     let usExaminationTypesById: [String: USExaminationType]
@@ -47,7 +47,7 @@ final class DependencyContainer: ObservableObject {
         subscriptionRepository: RevenueCatSubscriptionRepository,
         applicationConfig: ApplicationConfig,
         language: Language,
-        voiceLocalization: VoiceLocalization,
+        l10n: L10N,
         usExaminationTypeGroups: [USExaminationTypeGroup],
         usExaminationTypesById: [String: USExaminationType],
         usExaminationTypeDefault: USExaminationType,
@@ -73,7 +73,7 @@ final class DependencyContainer: ObservableObject {
         self.subscriptionRepository = subscriptionRepository
         self.applicationConfig = applicationConfig
         self.language = language
-        self.voiceLocalization = voiceLocalization
+        self.l10n = l10n
         self.usExaminationTypeGroups = usExaminationTypeGroups
         self.usExaminationTypesById = usExaminationTypesById
         self.usExaminationTypeDefault = usExaminationTypeDefault
@@ -168,8 +168,8 @@ extension DependencyContainer {
             subscriptionRepository: subscriptionRepository,
             applicationConfig: applicationConfig,
             language: language,
-            voiceLocalization: try! VoiceLocalization.load(
-                locale: language.currentLocale,
+            l10n: L10N.previewable(
+                code: language.currentCode,
             ),
             usExaminationTypeGroups: [],
             usExaminationTypesById: [:],

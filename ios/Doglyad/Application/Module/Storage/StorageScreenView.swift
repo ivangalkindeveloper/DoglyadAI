@@ -2,13 +2,16 @@ import DoglyadUI
 import SwiftUI
 
 struct StorageScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: StorageViewModel
 
     var body: some View {
         DScreen(
-            title: .storageTitle,
+            title: l10n[
+                .storageTitle,
+            ],
             onTapBack: viewModel.onTapBack,
         ) { toolbarInset, _ in
             ScrollView(
@@ -18,13 +21,21 @@ struct StorageScreenView: DView {
                     spacing: size.s8,
                 ) {
                     DListButtonCard(
-                        title: .storageClearProtocolsTitle,
-                        description: .storageClearProtocolsDescription,
+                        title: l10n[
+                            .storageClearProtocolsTitle,
+                        ],
+                        description: l10n[
+                            .storageClearProtocolsDescription,
+                        ],
                         action: viewModel.onTapClearProtocols,
                     )
                     DListButtonCard(
-                        title: .storageClearAllTitle,
-                        description: .storageClearAllDescription,
+                        title: l10n[
+                            .storageClearAllTitle,
+                        ],
+                        description: l10n[
+                            .storageClearAllDescription,
+                        ],
                         action: viewModel.onTapClearAll,
                     )
                 }

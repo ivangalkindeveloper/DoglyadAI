@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanBottomView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
@@ -14,7 +15,9 @@ struct ScanBottomView: DView {
                 if !viewModel.isLoading {
                     DButton(
                         image: .microphone,
-                        title: .buttonSpeech,
+                        title: l10n[
+                            .buttonSpeech,
+                        ],
                         action: viewModel.onTapSpeech,
                     )
                     .dStyle(
@@ -36,7 +39,9 @@ struct ScanBottomView: DView {
             }
 
             DButton(
-                title: .buttonGenerateProtocol,
+                title: l10n[
+                    .buttonGenerateProtocol,
+                ],
                 action: viewModel.onTapScan,
                 isLoading: viewModel.isLoading,
             )

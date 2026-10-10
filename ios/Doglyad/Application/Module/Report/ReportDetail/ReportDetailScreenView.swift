@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ReportDetailScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject var theme: DTheme
 
@@ -16,7 +17,9 @@ struct ReportDetailScreenView: DView {
 
     var body: some View {
         DScreen(
-            title: .reportTitle,
+            title: l10n[
+                .reportTitle,
+            ],
             subTitle: viewModel.subTitle,
             onTapBack: viewModel.onTapBack,
             trailing: {
@@ -62,7 +65,9 @@ struct ReportDetailScreenView: DView {
                             spacing: .zero,
                         ) {
                             DText(
-                                .scanExaminationDateLabel,
+                                l10n[
+                                    .scanExaminationDateLabel,
+                                ],
                             )
                             .dStyle(
                                 font: typography.linkSmall,
@@ -81,7 +86,9 @@ struct ReportDetailScreenView: DView {
                             )
 
                             DText(
-                                .scanExaminationNumberLabel,
+                                l10n[
+                                    .scanExaminationNumberLabel,
+                                ],
                             )
                             .dStyle(
                                 font: typography.linkSmall,
@@ -100,7 +107,9 @@ struct ReportDetailScreenView: DView {
                             )
 
                             DText(
-                                .scanPatientNameLabel,
+                                l10n[
+                                    .scanPatientNameLabel,
+                                ],
                             )
                             .dStyle(
                                 font: typography.linkSmall,
@@ -119,7 +128,9 @@ struct ReportDetailScreenView: DView {
                             )
 
                             DText(
-                                .scanPatientGenderLabel,
+                                l10n[
+                                    .scanPatientGenderLabel,
+                                ],
                             )
                             .dStyle(
                                 font: typography.linkSmall,
@@ -127,7 +138,7 @@ struct ReportDetailScreenView: DView {
                             )
 
                             DText(
-                                .forGender(
+                                l10n.forGender(
                                     examinationData.patientGender,
                                 ),
                             )
@@ -140,7 +151,9 @@ struct ReportDetailScreenView: DView {
                             )
 
                             DText(
-                                .scanPatientDateOfBirthLabel,
+                                l10n[
+                                    .scanPatientDateOfBirthLabel,
+                                ],
                             )
                             .dStyle(
                                 font: typography.linkSmall,
@@ -160,7 +173,9 @@ struct ReportDetailScreenView: DView {
 
                             if let patientHeight = examinationData.patientHeight {
                                 DText(
-                                    .scanPatientHeightCMLabel,
+                                    l10n[
+                                        .scanPatientHeightCMLabel,
+                                    ],
                                 )
                                 .dStyle(
                                     font: typography.linkSmall,
@@ -185,7 +200,9 @@ struct ReportDetailScreenView: DView {
 
                             if let patientWeight = examinationData.patientWeight {
                                 DText(
-                                    .scanPatientWeightKGLabel,
+                                    l10n[
+                                        .scanPatientWeightKGLabel,
+                                    ],
                                 )
                                 .dStyle(
                                     font: typography.linkSmall,
@@ -209,7 +226,9 @@ struct ReportDetailScreenView: DView {
                             }
 
                             DText(
-                                .scanExaminationDescriptionLabel,
+                                l10n[
+                                    .scanExaminationDescriptionLabel,
+                                ],
                             )
                             .dStyle(
                                 font: typography.linkSmall,
@@ -229,7 +248,9 @@ struct ReportDetailScreenView: DView {
                                !patientComplaints.isEmpty
                             {
                                 DText(
-                                    .scanPatientComplaintsLabel,
+                                    l10n[
+                                        .scanPatientComplaintsLabel,
+                                    ],
                                 )
                                 .dStyle(
                                     font: typography.linkSmall,
@@ -250,7 +271,9 @@ struct ReportDetailScreenView: DView {
                             }
 
                             DText(
-                                .reportActualModelResponseTitle,
+                                l10n[
+                                    .reportActualModelResponseTitle,
+                                ],
                             )
                             .dStyle(
                                 font: typography.linkLarge,
@@ -307,7 +330,9 @@ struct ReportDetailScreenView: DView {
 
                             DButton(
                                 image: .refresh,
-                                title: .buttonRepeatGenerate,
+                                title: l10n[
+                                    .buttonRepeatGenerate,
+                                ],
                                 action: {
                                     viewModel.onTapRepeatScan(
                                         proxy: proxy,
@@ -327,7 +352,9 @@ struct ReportDetailScreenView: DView {
                             if !report.previousModelReports.isEmpty {
                                 Group {
                                     DText(
-                                        .reportPreviousModelResponsesTitle,
+                                        l10n[
+                                            .reportPreviousModelResponsesTitle,
+                                        ],
                                     )
                                     .dStyle(
                                         font: typography.linkLarge,

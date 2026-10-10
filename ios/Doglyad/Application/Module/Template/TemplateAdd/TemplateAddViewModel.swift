@@ -186,8 +186,12 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
         )
         messager.show(
             type: .success,
-            title: .templateSavedSuccessTitle,
-            description: .templateSavedSuccessDescription,
+            title: container.l10n[
+                .templateSavedSuccessTitle,
+            ],
+            description: container.l10n[
+                .templateSavedSuccessDescription,
+            ],
         )
         coordinator.pop()
     }

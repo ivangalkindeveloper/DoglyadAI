@@ -2,20 +2,25 @@ import DoglyadUI
 import SwiftUI
 
 struct SelectDateOfBirthBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SelectDateOfBirthViewModel
 
     var body: some View {
         DBottomSheet(
-            title: .selectDateOfBirthTitle,
+            title: l10n[
+                .selectDateOfBirthTitle,
+            ],
             fraction: 0.5,
         ) { toolbarHeight, _ in
             VStack(
                 spacing: .zero,
             ) {
                 DatePicker(
-                    .selectDateOfBirthTitle,
+                    l10n[
+                        .selectDateOfBirthTitle,
+                    ],
                     selection: $viewModel.date,
                     in: viewModel.fromDate ... viewModel.toDate,
                     displayedComponents: [.date],
@@ -43,7 +48,9 @@ struct SelectDateOfBirthBottomSheetView: DView {
             )
         } bottom: {
             DButton(
-                title: .buttonSelect,
+                title: l10n[
+                    .buttonSelect,
+                ],
                 action: viewModel.onTapSelect,
             )
             .dStyle(

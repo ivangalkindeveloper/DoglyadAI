@@ -25,7 +25,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var subscriptionRepository: RevenueCatSubscriptionRepository?
     var applicationConfig: ApplicationConfig?
     var language: Language?
-    var voiceLocalization: VoiceLocalization?
+    var l10n: L10N?
     var usExaminationTypeGroups: [USExaminationTypeGroup]?
     var usExaminationTypesById: [String: USExaminationType]?
     var usExaminationTypeDefault: USExaminationType?
@@ -54,7 +54,7 @@ final class InitializationProcess: DependencyInitializationProcess {
             subscriptionRepository: subscriptionRepository!,
             applicationConfig: applicationConfig!,
             language: language!,
-            voiceLocalization: voiceLocalization!,
+            l10n: l10n!,
             usExaminationTypeGroups: usExaminationTypeGroups!,
             usExaminationTypesById: usExaminationTypesById!,
             usExaminationTypeDefault: usExaminationTypeDefault!,

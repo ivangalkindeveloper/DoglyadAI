@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct NeuralModelSettingsScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: NeuralModelSettingsViewModel
@@ -9,24 +10,36 @@ struct NeuralModelSettingsScreenView: DView {
 
     var body: some View {
         DScreen(
-            title: .neuralModelSettingsTitle,
+            title: l10n[
+                .neuralModelSettingsTitle,
+            ],
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
             keyboardToolbar: {
                 if focus != nil {
                     DToolbar(
-                        upAccessibilityLabel: .buttonBack,
-                        downAccessibilityLabel: .buttonNext,
-                        doneAccessibilityLabel: .buttonDone,
+                        upAccessibilityLabel: l10n[
+                            .buttonBack,
+                        ],
+                        downAccessibilityLabel: l10n[
+                            .buttonNext,
+                        ],
+                        doneAccessibilityLabel: l10n[
+                            .buttonDone,
+                        ],
                         onTapUp: viewModel.canFocusPreviousField ? { viewModel.onTapToolbarUp() } : nil,
                         onTapDown: viewModel.canFocusNextField ? { viewModel.onTapToolbarDown() } : nil,
                         onTapDone: viewModel.unfocus,
                         trailButtons: [
                             DToolbarButton(
-                                accessibilityLabel: .buttonSave,
+                                accessibilityLabel: l10n[
+                                    .buttonSave,
+                                ],
                                 style: .primaryDefault,
                                 content: .text(
-                                    .buttonSave,
+                                    l10n[
+                                        .buttonSave,
+                                    ],
                                 ),
                                 action: viewModel.onTapSave,
                             ),
@@ -52,7 +65,9 @@ struct NeuralModelSettingsScreenView: DView {
                                 alignment: .center,
                             ) {
                                 DText(
-                                    .neuralModelMarkdownLabel,
+                                    l10n[
+                                        .neuralModelMarkdownLabel,
+                                    ],
                                 )
                                 .dStyle(
                                     font: typography.linkSmall,
@@ -88,7 +103,9 @@ struct NeuralModelSettingsScreenView: DView {
                         )
 
                         DText(
-                            .neuralModelMarkdownDescription,
+                            l10n[
+                                .neuralModelMarkdownDescription,
+                            ],
                         )
                         .dStyle(
                             font: typography.textXSmall,
@@ -109,8 +126,12 @@ struct NeuralModelSettingsScreenView: DView {
                                 value: .temperature,
                                 state: $focus,
                             ),
-                            title: .neuralModelTemperatureLabel,
-                            placeholder: .neuralModelTemperaturePlaceholder,
+                            title: l10n[
+                                .neuralModelTemperatureLabel,
+                            ],
+                            placeholder: l10n[
+                                .neuralModelTemperaturePlaceholder,
+                            ],
                             mode: DTextFieldSingleLineMode(
                                 submitLabel: .next,
                             ),
@@ -125,7 +146,9 @@ struct NeuralModelSettingsScreenView: DView {
                         )
 
                         DText(
-                            .neuralModelTemperatureDescription,
+                            l10n[
+                                .neuralModelTemperatureDescription,
+                            ],
                         )
                         .dStyle(
                             font: typography.textXSmall,
@@ -146,8 +169,12 @@ struct NeuralModelSettingsScreenView: DView {
                                 value: .length,
                                 state: $focus,
                             ),
-                            title: .neuralModelMaxTokensLabel,
-                            placeholder: .neuralModelMaxTokensPlaceholder,
+                            title: l10n[
+                                .neuralModelMaxTokensLabel,
+                            ],
+                            placeholder: l10n[
+                                .neuralModelMaxTokensPlaceholder,
+                            ],
                             mode: DTextFieldSingleLineMode(
                                 submitLabel: .done,
                             ),
@@ -162,7 +189,9 @@ struct NeuralModelSettingsScreenView: DView {
                         )
 
                         DText(
-                            .neuralModelMaxTokensDescription,
+                            l10n[
+                                .neuralModelMaxTokensDescription,
+                            ],
                         )
                         .dStyle(
                             font: typography.textXSmall,
@@ -191,7 +220,9 @@ struct NeuralModelSettingsScreenView: DView {
             },
             bottom: {
                 DButton(
-                    title: .buttonSave,
+                    title: l10n[
+                        .buttonSave,
+                    ],
                     action: viewModel.onTapSave,
                     isLoading: viewModel.isLoading,
                 )

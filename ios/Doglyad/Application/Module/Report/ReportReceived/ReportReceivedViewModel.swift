@@ -24,7 +24,9 @@ final class ReportReceivedViewModel: DViewModel {
         self.arguments = arguments
         self.userEmail = userEmail
         markdownViewModel = ReportReceivedMarkdownViewModel(
-            response: arguments.report.actualModelReport.markdownText,
+            response: arguments.report.actualModelReport.markdownText(
+                l10n: container.l10n,
+            ),
         )
         super.init(
             container: container,
@@ -45,7 +47,9 @@ final class ReportReceivedViewModel: DViewModel {
     }
 
     var response: String {
-        arguments.report.actualModelReport.plainText
+        arguments.report.actualModelReport.plainText(
+            l10n: container.l10n,
+        )
     }
 
     var isUserEmailAvailable: Bool {
@@ -64,7 +68,12 @@ final class ReportReceivedViewModel: DViewModel {
     }
 
     var userEmailButtonTitle: LocalizedStringResource {
-        "\(String(localized: .buttonShareUserEmailPrefix)) \(userEmail ?? "")"
+        container.l10n.resource(
+            .shareUserEmailTitle,
+            values: ["prefix": container.l10n.text(
+                .buttonShareUserEmailPrefix,
+            ), "email": userEmail ?? ""],
+        )
     }
 
     var userEmailButtonBadge: DButtonBadge? {
@@ -73,7 +82,9 @@ final class ReportReceivedViewModel: DViewModel {
         ) {
         case .offered:
             DButtonBadge(
-                .entitlementPro,
+                container.l10n[
+                    .entitlementPro,
+                ],
                 isShimmering: true,
             )
         case .available, .unavailable:
@@ -131,6 +142,7 @@ final class ReportReceivedViewModel: DViewModel {
                         resizeMaxDimension: ultrasoundConfig.scanPhotoResizeMaxDimension,
                         compressionQuality: ultrasoundConfig.scanPhotoCompressionQuality,
                     ),
+                    l10n: self.container.l10n,
                 ),
             )
         } onDefer: {
@@ -138,11 +150,17 @@ final class ReportReceivedViewModel: DViewModel {
         } onMainSuccess: { _ in
             self.messager.show(
                 type: .success,
-                title: .shareUserEmailSuccessMessageTitle,
-                description: .shareUserEmailSuccessMessageDescription,
+                title: self.container.l10n[
+                    .shareUserEmailSuccessMessageTitle,
+                ],
+                description: self.container.l10n[
+                    .shareUserEmailSuccessMessageDescription,
+                ],
             )
         } onUnknownError: { _ in
-            self.messager.showUnknownError()
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
         }
     }
 
@@ -155,8 +173,12 @@ final class ReportReceivedViewModel: DViewModel {
         )
         messager.show(
             type: .success,
-            title: .reportReceivedCopyMessageTitle,
-            description: .reportReceivedCopyMessageDescription,
+            title: container.l10n[
+                .reportReceivedCopyMessageTitle,
+            ],
+            description: container.l10n[
+                .reportReceivedCopyMessageDescription,
+            ],
         )
     }
 }

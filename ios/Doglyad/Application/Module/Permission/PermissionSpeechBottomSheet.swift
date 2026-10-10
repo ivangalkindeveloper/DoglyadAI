@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PermissionSpeechBottomSheet: View {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
@@ -13,8 +14,12 @@ struct PermissionSpeechBottomSheet: View {
                 subscription: subscriptionViewModel,
                 destination: .permissionSpeech,
             ),
-            title: .permissionSpeechTitle,
-            description: .permissionSpeechDescription,
+            title: l10n[
+                .permissionSpeechTitle,
+            ],
+            description: l10n[
+                .permissionSpeechDescription,
+            ],
         )
     }
 }

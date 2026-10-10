@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanFormView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
@@ -18,8 +19,12 @@ struct ScanFormView: DView {
                     value: .examinationNumber,
                     state: focus,
                 ),
-                title: .scanExaminationNumberLabel,
-                placeholder: .scanExaminationNumberPlaceholder,
+                title: l10n[
+                    .scanExaminationNumberLabel,
+                ],
+                placeholder: l10n[
+                    .scanExaminationNumberPlaceholder,
+                ],
                 mode: DTextFieldSingleLineMode(
                     submitLabel: .next,
                 ),
@@ -39,8 +44,12 @@ struct ScanFormView: DView {
                     value: .patientName,
                     state: focus,
                 ),
-                title: .scanPatientNameLabel,
-                placeholder: .scanPatientNamePlaceholder,
+                title: l10n[
+                    .scanPatientNameLabel,
+                ],
+                placeholder: l10n[
+                    .scanPatientNamePlaceholder,
+                ],
                 mode: DTextFieldSingleLineMode(
                     submitLabel: .next,
                 ),
@@ -59,7 +68,9 @@ struct ScanFormView: DView {
                 items: [
                     DSegmentItem<PatientGender>(
                         value: .male,
-                        title: .scanGenderMaleLabel,
+                        title: l10n[
+                            .scanGenderMaleLabel,
+                        ],
                     ) {
                         viewModel.onTapPatientGender(
                             value: .male,
@@ -67,7 +78,9 @@ struct ScanFormView: DView {
                     },
                     DSegmentItem<PatientGender>(
                         value: .female,
-                        title: .scanGenderFemaleLabel,
+                        title: l10n[
+                            .scanGenderFemaleLabel,
+                        ],
                     ) {
                         viewModel.onTapPatientGender(
                             value: .female,
@@ -102,8 +115,12 @@ struct ScanFormView: DView {
                     value: .patientHeightCM,
                     state: focus,
                 ),
-                title: .scanPatientHeightCMLabel,
-                placeholder: .scanNumberPlaceholder,
+                title: l10n[
+                    .scanPatientHeightCMLabel,
+                ],
+                placeholder: l10n[
+                    .scanNumberPlaceholder,
+                ],
                 mode: DTextFieldSingleLineMode(
                     submitLabel: .next,
                 ),
@@ -123,8 +140,12 @@ struct ScanFormView: DView {
                     value: .patientWeightKG,
                     state: focus,
                 ),
-                title: .scanPatientWeightKGLabel,
-                placeholder: .scanNumberPlaceholder,
+                title: l10n[
+                    .scanPatientWeightKGLabel,
+                ],
+                placeholder: l10n[
+                    .scanNumberPlaceholder,
+                ],
                 mode: DTextFieldSingleLineMode(
                     submitLabel: .next,
                 ),
@@ -144,8 +165,12 @@ struct ScanFormView: DView {
                     value: .patientComplaints,
                     state: focus,
                 ),
-                title: .scanPatientComplaintsLabel,
-                placeholder: .scanPatientComplaintsPlaceholder,
+                title: l10n[
+                    .scanPatientComplaintsLabel,
+                ],
+                placeholder: l10n[
+                    .scanPatientComplaintsPlaceholder,
+                ],
                 mode: DTextFieldMultiLineMode(),
                 keyboardType: .default,
             )
@@ -163,8 +188,12 @@ struct ScanFormView: DView {
                     value: .examinationDescription,
                     state: focus,
                 ),
-                title: .scanExaminationDescriptionLabel,
-                placeholder: .scanExaminationDescriptionPlaceholder,
+                title: l10n[
+                    .scanExaminationDescriptionLabel,
+                ],
+                placeholder: l10n[
+                    .scanExaminationDescriptionPlaceholder,
+                ],
                 mode: DTextFieldMultiLineMode(),
                 keyboardType: .default,
             )
@@ -196,7 +225,9 @@ struct ScanFormView: DView {
             )
 
             DButton(
-                title: .buttonClear,
+                title: l10n[
+                    .buttonClear,
+                ],
                 action: viewModel.onTapClear,
             )
             .dStyle(
@@ -205,7 +236,9 @@ struct ScanFormView: DView {
 
             if viewModel.isFillDevelopmentButtonVisible {
                 DButton(
-                    title: .buttonFillDevelopment,
+                    title: l10n[
+                        .buttonFillDevelopment,
+                    ],
                     action: viewModel.onTapFillDevelopment,
                 )
                 .dStyle(

@@ -50,7 +50,9 @@ final class LegalUpdateViewModel: DViewModel {
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.privacyPolicyUrl,
-                title: .privacyPolicyTitle,
+                title: container.l10n[
+                    .privacyPolicyTitle,
+                ],
             ),
         )
     }
@@ -63,7 +65,9 @@ final class LegalUpdateViewModel: DViewModel {
             .webDocument,
             arguments: WebDocumentBottomSheetArguments(
                 url: container.applicationConfig.termsAndConditionsUrl,
-                title: .termsAndConditionsTitle,
+                title: container.l10n[
+                    .termsAndConditionsTitle,
+                ],
             ),
         )
     }
@@ -96,7 +100,9 @@ extension LegalUpdateViewModel {
 
         var accept = AttributedString(
             localizedResource(
-                .onBoardingLegalAcceptDescription,
+                container.l10n[
+                    .onBoardingLegalAcceptDescription,
+                ],
                 locale: locale,
             ),
         )
@@ -105,7 +111,9 @@ extension LegalUpdateViewModel {
 
         var privacy = AttributedString(
             localizedResource(
-                .onBoardingPrivacyPolicyLabel,
+                container.l10n[
+                    .onBoardingPrivacyPolicyLabel,
+                ],
                 locale: locale,
             ),
         )
@@ -117,7 +125,9 @@ extension LegalUpdateViewModel {
 
         var and = AttributedString(
             localizedResource(
-                .onBoardingLegalAcceptAndDescription,
+                container.l10n[
+                    .onBoardingLegalAcceptAndDescription,
+                ],
                 locale: locale,
             ),
         )
@@ -126,7 +136,9 @@ extension LegalUpdateViewModel {
 
         var terms = AttributedString(
             localizedResource(
-                .onBoardingTermsAndConditionsLabel,
+                container.l10n[
+                    .onBoardingTermsAndConditionsLabel,
+                ],
                 locale: locale,
             ),
         )

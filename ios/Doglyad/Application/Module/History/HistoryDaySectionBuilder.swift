@@ -3,11 +3,17 @@ import Foundation
 struct HistoryDaySectionBuilder {
     private let calendar: Calendar
     private let locale: Locale
+    private let todayTitle: String
+    private let yesterdayTitle: String
 
     init(
+        todayTitle: String,
+        yesterdayTitle: String,
         calendar: Calendar = .autoupdatingCurrent,
         locale: Locale = .current,
     ) {
+        self.todayTitle = todayTitle
+        self.yesterdayTitle = yesterdayTitle
         self.calendar = calendar
         self.locale = locale
     }
@@ -35,6 +41,8 @@ struct HistoryDaySectionBuilder {
                     HistoryDaySection(
                         day: day,
                         title: day.localizedDayTitle(
+                            todayTitle: todayTitle,
+                            yesterdayTitle: yesterdayTitle,
                             relativeTo: now,
                             calendar: calendar,
                             locale: locale,

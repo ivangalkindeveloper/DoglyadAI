@@ -3,8 +3,9 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanSpeechProposalCardView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-    @ObservedObject var viewModel: ScanSpeechViewModel
+    @EnvironmentObject private var viewModel: ScanSpeechViewModel
     let proposal: DNeuralUltrasoundVoiceFieldProposal
 
     var body: some View {
@@ -51,7 +52,9 @@ struct ScanSpeechProposalCardView: DView {
 
                     if proposal.warnings.isEmpty {
                         DText(
-                            .speechProposalNeedsReview,
+                            l10n[
+                                .speechProposalNeedsReview,
+                            ],
                         )
                         .dStyle(
                             font: typography.textSmall,
@@ -59,7 +62,9 @@ struct ScanSpeechProposalCardView: DView {
                         )
                     } else {
                         DText(
-                            .speechProposalWarningTitle,
+                            l10n[
+                                .speechProposalWarningTitle,
+                            ],
                         )
                         .dStyle(
                             font: typography.linkSmall,
@@ -82,7 +87,9 @@ struct ScanSpeechProposalCardView: DView {
                     }
 
                     DText(
-                        .speechProposalCurrentValueTitle,
+                        l10n[
+                            .speechProposalCurrentValueTitle,
+                        ],
                     )
                     .dStyle(
                         font: typography.textXSmall,
@@ -99,7 +106,9 @@ struct ScanSpeechProposalCardView: DView {
                     )
 
                     DText(
-                        .speechProposalSourceTitle,
+                        l10n[
+                            .speechProposalSourceTitle,
+                        ],
                     )
                     .dStyle(
                         font: typography.textXSmall,

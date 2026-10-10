@@ -143,7 +143,7 @@ flowchart TD
 | `examinationTypeTitle` | `"Щитовидная железа"` | Локализованное название из `USExaminationType.title`, полученное с backend; контекст локальной модели. |
 | `locale` | `Locale(identifier: "ru")` | Выбор языка промпта, словарей, дат и единиц. |
 | `allowedFields` | `DNeuralUltrasoundVoiceFieldId.allCases` в текущем UI | Восемь разрешённых ID. Не означает, что нужно вернуть все восемь полей. |
-| `localization` | RU-раздел `dictation` из `VoiceParsing.json` | Например, правила для меток `«рост»`, `«вес»`, слов чисел, дат и единиц. Модуль получает каталог аргументом. |
+| `localization` | RU-раздел `dictation` из `l10n_voice_parsing.json` | Например, правила для меток `«рост»`, `«вес»`, слов чисел, дат и единиц. Модуль получает каталог аргументом. |
 
 Аудиофайл, `rawText`, ASR-spans и сохранённые значения формы **не входят** в `DNeuralUltrasoundDictationParseRequest`. ASR-признаки остаются в `ScanSpeech` и используются после извлечения полей.
 
@@ -398,7 +398,7 @@ flowchart LR
 | `DNeuralDictationNumberLocalization` | Слова единиц, десятков, сотни и соответствия отдельных цифр. |
 | `DNeuralDictationShortUnitLocalization` | Локализованная короткая запись единиц для нормализованного значения. |
 
-Каталоги находятся в приложении: `Doglyad/Resources/Localization/<code>.lproj/VoiceParsing.json`. `VoiceLocalization` загружает каталог для `Language.currentLocale` при инициализации; `DependencyContainer` передаёт его в запросы; генератор получает описания схемы из запроса. Модуль не выбирает RU/EN самостоятельно и не содержит языковых паттернов. Системные промпты продолжают приходить с основного backend.
+Каталоги находятся на основном backend: `config/<environment>/<code>/l10n_voice_parsing.json`. Первым шагом Tier 4 приложение скачивает `/v1/l10n` для `Language.currentLocale`. `L10N` проверяет обязательные ключи ответа, создаёт локаль из `Localization.code` и хранит `VoiceLocalization`; `DependencyContainer` передаёт каталог в запросы; генератор получает описания схемы из запроса. Модуль не выбирает RU/EN самостоятельно и не содержит языковых паттернов. Системные промпты продолжают приходить с основного backend.
 
 ### Исторический baseline вне модуля
 

@@ -3,18 +3,77 @@ import DoglyadNeuralModel
 import DoglyadSpeech
 import Foundation
 
-/// Tests use the same bundled catalogs as the application, selected explicitly.
+/// Fixtures link to the backend catalogs and belong only to the test bundle.
+private final class LocalizationFixtureBundleMarker {}
+
 enum VoiceLocalizationTestSupport {
-    private static let english = try! VoiceLocalization.load(
+    private static let english = try! load(
         locale: Locale(
             identifier: "en",
         ),
     )
-    private static let russian = try! VoiceLocalization.load(
+    private static let russian = try! load(
         locale: Locale(
             identifier: "ru",
         ),
     )
+
+    static func data(
+        kind: String,
+        code: String,
+    ) throws -> Data {
+        let bundle = Bundle(
+            for: LocalizationFixtureBundleMarker.self,
+        )
+        guard let url = bundle.url(
+            forResource: "\(kind)-\(code)",
+            withExtension: "json",
+        ) else {
+            throw CocoaError(
+                .fileReadNoSuchFile,
+            )
+        }
+        return try Data(
+            contentsOf: url,
+        )
+    }
+
+    static func load(
+        locale: Locale,
+    ) throws -> VoiceLocalization {
+        let code = locale.language.languageCode?.identifier ?? locale.identifier
+        return try JSONDecoder().decode(
+            VoiceLocalization.self,
+            from: data(
+                kind: "voice",
+                code: code,
+            ),
+        )
+    }
+
+    static func l10n(
+        code: String,
+    ) throws -> L10N {
+        let voice = try load(
+            locale: Locale(
+                identifier: code,
+            ),
+        )
+        let strings = try JSONDecoder().decode(
+            [String: String].self,
+            from: data(
+                kind: "strings",
+                code: code,
+            ),
+        )
+        return try L10N(
+            localization: Localization(
+                code: code,
+                strings: strings,
+                voice: voice,
+            ),
+        )
+    }
 
     static func dictation(
         locale: Locale,

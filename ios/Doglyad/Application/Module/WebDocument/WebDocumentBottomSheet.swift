@@ -2,6 +2,7 @@ import Router
 import SwiftUI
 
 struct WebDocumentBottomSheet: View {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
@@ -21,12 +22,15 @@ struct WebDocumentBottomSheet: View {
 }
 
 #Preview {
+    let l10n = DependencyContainer.previewable.l10n
     WebDocumentBottomSheet(
         arguments: WebDocumentBottomSheetArguments(
             url: URL(
                 string: "https://ivangalkindeveloper.github.io/DoglyadAI/legal/privacy-policy/",
             )!,
-            title: .privacyPolicyTitle,
+            title: l10n[
+                .privacyPolicyTitle,
+            ],
         ),
     )
     .previewable()

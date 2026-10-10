@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct AboutBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @Environment(
         \.locale,
     ) private var locale: Locale
@@ -11,7 +12,9 @@ struct AboutBottomSheetView: DView {
 
     var body: some View {
         DBottomSheet(
-            title: .settingsAboutAppTitle,
+            title: l10n[
+                .settingsAboutAppTitle,
+            ],
             fraction: 0.6,
         ) { toolbarHeight, bottomHeight in
             VStack(
@@ -29,7 +32,9 @@ struct AboutBottomSheetView: DView {
                 )
 
                 DText(
-                    .aboutDescription,
+                    l10n[
+                        .aboutDescription,
+                    ],
                 )
                 .dStyle(
                     font: typography.textSmall,
@@ -42,7 +47,7 @@ struct AboutBottomSheetView: DView {
                 )
 
                 DText(
-                    "\(localizedResource(.aboutVersion)): \(viewModel.version)",
+                    "\(localizedResource(l10n[.aboutVersion])): \(viewModel.version)",
                 )
                 .dStyle(
                     font: typography.textSmall,
@@ -90,7 +95,9 @@ struct AboutBottomSheetView: DView {
     private func contactAttributedText() -> AttributedString {
         var description = AttributedString(
             localizedResource(
-                .aboutContactDescription,
+                l10n[
+                    .aboutContactDescription,
+                ],
             ),
         )
         description.font = typography.textSmall

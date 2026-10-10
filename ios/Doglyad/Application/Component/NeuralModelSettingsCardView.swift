@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct NeuralModelSettingsCardView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
@@ -23,7 +24,9 @@ struct NeuralModelSettingsCardView: DView {
                 spacing: .zero,
             ) {
                 DText(
-                    .scanNeuralModelSettingsTitleLabel,
+                    l10n[
+                        .scanNeuralModelSettingsTitleLabel,
+                    ],
                 )
                 .dStyle(
                     font: typography.textSmall,
@@ -50,7 +53,9 @@ struct NeuralModelSettingsCardView: DView {
                         )
 
                         NeuralModelValueRowView(
-                            title: .scanNeuralModelSettingsTemperatureLabel,
+                            title: l10n[
+                                .scanNeuralModelSettingsTemperatureLabel,
+                            ],
                             value: String(
                                 format: "%.2f",
                                 ultrasoundViewModel.temperature,
@@ -58,7 +63,9 @@ struct NeuralModelSettingsCardView: DView {
                         )
 
                         NeuralModelValueRowView(
-                            title: .scanNeuralModelSettingsMaxTokensLabel,
+                            title: l10n[
+                                .scanNeuralModelSettingsMaxTokensLabel,
+                            ],
                             value: "\(ultrasoundViewModel.maxTokens)",
                         )
                     }
@@ -80,6 +87,7 @@ struct NeuralModelSettingsCardView: DView {
 }
 
 private struct NeuralModelSettingsMarkdownRowView: DView {
+    @EnvironmentObject private var l10n: L10N
     private static let switchNativeHeight: CGFloat = 31
     private static let switchNativeWidth: CGFloat = 51
 
@@ -97,7 +105,9 @@ private struct NeuralModelSettingsMarkdownRowView: DView {
             spacing: size.s8,
         ) {
             DText(
-                .scanNeuralModelSettingsMarkdownLabel,
+                l10n[
+                    .scanNeuralModelSettingsMarkdownLabel,
+                ],
             )
             .dStyle(
                 font: typography.textXSmall,

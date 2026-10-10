@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct TemplateListEmptyView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     var body: some View {
@@ -24,7 +25,9 @@ struct TemplateListEmptyView: DView {
             )
 
             DText(
-                .templateListEmptyDescription,
+                l10n[
+                    .templateListEmptyDescription,
+                ],
             )
             .dStyle(
                 font: typography.textSmall,

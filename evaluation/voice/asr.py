@@ -14,7 +14,6 @@ from evaluation.voice.generate import file_sha256
 ASR_SOURCE = ROOT / "evaluation/voice/AudioASR/main.swift"
 CORRECTOR_SOURCE = ROOT / "ios/DoglyadSpeech/Audio/DSpeechLexiconCorrector.swift"
 LEXICON_LOCALIZATION_SOURCE = ROOT / "ios/DoglyadSpeech/Audio/DSpeechLexiconLocalization.swift"
-VOICE_LOCALIZATION_DIR = ROOT / "ios/Doglyad/Resources/Localization"
 CLASSIC_SOURCE = ROOT / "ios/DoglyadSpeech/SFSpeechRecognizer/DSpeechFileRecognizerSFSpeechRecognizer.swift"
 FILE_RESULT_SOURCE = ROOT / "ios/DoglyadSpeech/Controller/DSpeechFileTranscription.swift"
 FILE_ERROR_SOURCE = ROOT / "ios/DoglyadSpeech/Controller/DSpeechFileTranscriberError.swift"
@@ -123,9 +122,7 @@ def run_asr(
                     "id": job_id,
                     "locale": entry["locale"],
                     "lexiconLocalization": json.loads(
-                        (VOICE_LOCALIZATION_DIR / f"{entry['locale']}.lproj/VoiceParsing.json").read_text(
-                            encoding="utf-8"
-                        )
+                        (CONFIG_DIR / entry["locale"] / "l10n_voice_parsing.json").read_text(encoding="utf-8")
                     )["speech"],
                     "audioPath": str(audio_path),
                     "contextualStrings": terms[entry["locale"]][entry["examinationTypeId"]]
@@ -233,7 +230,7 @@ def run_asr(
         "correctorSourceSha256": file_sha256(CORRECTOR_SOURCE),
         "lexiconLocalizationSourceSha256": file_sha256(LEXICON_LOCALIZATION_SOURCE),
         "voiceLocalizationSha256": {
-            locale: file_sha256(VOICE_LOCALIZATION_DIR / f"{locale}.lproj/VoiceParsing.json") for locale in ("en", "ru")
+            locale: file_sha256(CONFIG_DIR / locale / "l10n_voice_parsing.json") for locale in ("en", "ru")
         },
         "contextualStringsSha256": {
             locale: file_sha256(CONFIG_DIR / locale / "l10n_ultrasound_examination_contextual_strings.json")

@@ -24,6 +24,8 @@ extension Date {
     }
 
     func localizedDayTitle(
+        todayTitle: String,
+        yesterdayTitle: String,
         relativeTo now: Date = Date(),
         calendar: Calendar = .autoupdatingCurrent,
         locale: Locale = .current,
@@ -36,10 +38,7 @@ extension Date {
         )
 
         if day == today {
-            return String(
-                localized: "dateTodayLabel",
-                locale: locale,
-            )
+            return todayTitle
         }
 
         if let yesterday = calendar.date(
@@ -49,10 +48,7 @@ extension Date {
         ),
             day == yesterday
         {
-            return String(
-                localized: "dateYesterdayLabel",
-                locale: locale,
-            )
+            return yesterdayTitle
         }
 
         let formatter = DateFormatter()

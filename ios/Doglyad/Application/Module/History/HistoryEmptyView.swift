@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct HistoryEmptyView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     var body: some View {
@@ -24,7 +25,9 @@ struct HistoryEmptyView: DView {
             )
 
             DText(
-                .historyEmptyDescription,
+                l10n[
+                    .historyEmptyDescription,
+                ],
             )
             .dStyle(
                 font: typography.textSmall,

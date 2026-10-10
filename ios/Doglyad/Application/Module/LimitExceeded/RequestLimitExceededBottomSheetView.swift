@@ -2,13 +2,16 @@ import DoglyadUI
 import SwiftUI
 
 struct RequestLimitExceededBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: RequestLimitViewModel
 
     var body: some View {
         DBottomSheet(
-            title: .requestLimitExceededTitle,
+            title: l10n[
+                .requestLimitExceededTitle,
+            ],
             isCloseButtonVisible: false,
             fraction: 0.3,
         ) { toolbarHeight, _ in
@@ -16,7 +19,9 @@ struct RequestLimitExceededBottomSheetView: DView {
                 spacing: .zero,
             ) {
                 DText(
-                    .requestLimitExceededDescription,
+                    l10n[
+                        .requestLimitExceededDescription,
+                    ],
                 )
                 .dStyle(
                     font: typography.textSmall,
@@ -38,14 +43,18 @@ struct RequestLimitExceededBottomSheetView: DView {
                 spacing: size.s8,
             ) {
                 DButton(
-                    title: .settingsSubscriptionManageTitle,
+                    title: l10n[
+                        .settingsSubscriptionManageTitle,
+                    ],
                     action: viewModel.onTapUpgrade,
                 )
                 .dStyle(
                     .primaryButton,
                 )
                 DButton(
-                    title: .buttonBack,
+                    title: l10n[
+                        .buttonBack,
+                    ],
                     action: viewModel.onTapBack,
                 )
                 .dStyle(

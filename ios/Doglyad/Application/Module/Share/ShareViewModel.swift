@@ -50,17 +50,25 @@ final class ShareViewModel: DViewModel {
     }
 
     var userEmailButtonTitle: String {
-        "\(String(localized: .buttonShareUserEmailPrefix)) \(userEmail ?? "")"
+        container.l10n.text(
+            .shareUserEmailTitle,
+            values: ["prefix": container.l10n.text(
+                .buttonShareUserEmailPrefix,
+            ), "email": userEmail ?? ""],
+        )
     }
 
     var subject: String {
         arguments.report.shareSubject(
             examinationTypesById: container.usExaminationTypesById,
+            l10n: container.l10n,
         )
     }
 
     var shareMessage: String {
-        arguments.report.shareMessage
+        arguments.report.shareMessage(
+            l10n: container.l10n,
+        )
     }
 
     func onTapUserEmail() {
@@ -99,6 +107,7 @@ final class ShareViewModel: DViewModel {
                         resizeMaxDimension: ultrasoundConfig.scanPhotoResizeMaxDimension,
                         compressionQuality: ultrasoundConfig.scanPhotoCompressionQuality,
                     ),
+                    l10n: self.container.l10n,
                 ),
             )
         } onDefer: {
@@ -107,11 +116,17 @@ final class ShareViewModel: DViewModel {
             self.coordinator.dismissSheet()
             self.messager.show(
                 type: .success,
-                title: .shareUserEmailSuccessMessageTitle,
-                description: .shareUserEmailSuccessMessageDescription,
+                title: self.container.l10n[
+                    .shareUserEmailSuccessMessageTitle,
+                ],
+                description: self.container.l10n[
+                    .shareUserEmailSuccessMessageDescription,
+                ],
             )
         } onUnknownError: { _ in
-            self.messager.showUnknownError()
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
         }
     }
 
@@ -141,8 +156,12 @@ final class ShareViewModel: DViewModel {
         )
         messager.show(
             type: .success,
-            title: .shareExaminationCopyMessageTitle,
-            description: .shareExaminationCopyMessageDescription,
+            title: container.l10n[
+                .shareExaminationCopyMessageTitle,
+            ],
+            description: container.l10n[
+                .shareExaminationCopyMessageDescription,
+            ],
         )
     }
 }

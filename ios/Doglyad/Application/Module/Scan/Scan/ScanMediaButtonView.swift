@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanMediaButtonView: DView {
+    @EnvironmentObject private var l10n: L10N
     @Environment(
         \.isEnabled,
     ) private var isEnabled
@@ -33,7 +34,9 @@ struct ScanMediaButtonView: DView {
 
                 if !isCompact {
                     DText(
-                        .scanImportButtonTitle,
+                        l10n[
+                            .scanImportButtonTitle,
+                        ],
                     )
                     .dStyle(
                         font: typography.linkSmall,
@@ -137,4 +140,7 @@ private struct ScanMediaButtonStyle: ButtonStyle {
     }
     .padding()
     .dThemeWrapper()
+    .localization(
+        DependencyContainer.previewable.l10n,
+    )
 }

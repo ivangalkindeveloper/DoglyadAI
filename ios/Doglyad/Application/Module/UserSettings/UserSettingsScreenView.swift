@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct UserSettingsScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: UserSettingsViewModel
@@ -9,22 +10,34 @@ struct UserSettingsScreenView: DView {
 
     var body: some View {
         DScreen(
-            title: .userSettingsTitle,
+            title: l10n[
+                .userSettingsTitle,
+            ],
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
             keyboardToolbar: {
                 if focus != nil {
                     DToolbar(
-                        upAccessibilityLabel: .buttonBack,
-                        downAccessibilityLabel: .buttonNext,
-                        doneAccessibilityLabel: .buttonDone,
+                        upAccessibilityLabel: l10n[
+                            .buttonBack,
+                        ],
+                        downAccessibilityLabel: l10n[
+                            .buttonNext,
+                        ],
+                        doneAccessibilityLabel: l10n[
+                            .buttonDone,
+                        ],
                         onTapDone: viewModel.unfocus,
                         trailButtons: [
                             DToolbarButton(
-                                accessibilityLabel: .buttonSave,
+                                accessibilityLabel: l10n[
+                                    .buttonSave,
+                                ],
                                 style: .primaryDefault,
                                 content: .text(
-                                    .buttonSave,
+                                    l10n[
+                                        .buttonSave,
+                                    ],
                                 ),
                                 action: viewModel.onTapSave,
                             ),
@@ -49,8 +62,12 @@ struct UserSettingsScreenView: DView {
                                 value: .email,
                                 state: $focus,
                             ),
-                            title: .userSettingsEmailLabel,
-                            placeholder: .userSettingsEmailPlaceholder,
+                            title: l10n[
+                                .userSettingsEmailLabel,
+                            ],
+                            placeholder: l10n[
+                                .userSettingsEmailPlaceholder,
+                            ],
                             mode: DTextFieldSingleLineMode(
                                 submitLabel: .done,
                             ),
@@ -66,7 +83,9 @@ struct UserSettingsScreenView: DView {
                         )
 
                         DText(
-                            .userSettingsEmailDescription,
+                            l10n[
+                                .userSettingsEmailDescription,
+                            ],
                         )
                         .dStyle(
                             font: typography.textXSmall,
@@ -88,7 +107,9 @@ struct UserSettingsScreenView: DView {
                                 alignment: .center,
                             ) {
                                 DText(
-                                    .userSettingsRecommendationsLabel,
+                                    l10n[
+                                        .userSettingsRecommendationsLabel,
+                                    ],
                                 )
                                 .dStyle(
                                     font: typography.linkSmall,
@@ -124,7 +145,9 @@ struct UserSettingsScreenView: DView {
                         )
 
                         DText(
-                            .userSettingsRecommendationsDescription,
+                            l10n[
+                                .userSettingsRecommendationsDescription,
+                            ],
                         )
                         .dStyle(
                             font: typography.textXSmall,
@@ -153,7 +176,9 @@ struct UserSettingsScreenView: DView {
             },
             bottom: {
                 DButton(
-                    title: .buttonSave,
+                    title: l10n[
+                        .buttonSave,
+                    ],
                     action: viewModel.onTapSave,
                     isLoading: viewModel.isLoading,
                 )

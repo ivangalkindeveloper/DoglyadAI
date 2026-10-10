@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ScanViewModel
@@ -45,16 +46,24 @@ struct ScanScreenView: DView {
             keyboardToolbar: {
                 if focus != nil {
                     DToolbar(
-                        upAccessibilityLabel: .buttonBack,
-                        downAccessibilityLabel: .buttonNext,
-                        doneAccessibilityLabel: .buttonDone,
+                        upAccessibilityLabel: l10n[
+                            .buttonBack,
+                        ],
+                        downAccessibilityLabel: l10n[
+                            .buttonNext,
+                        ],
+                        doneAccessibilityLabel: l10n[
+                            .buttonDone,
+                        ],
                         onTapUp: viewModel.canFocusPreviousField ? { viewModel.onTapToolbarUp() } : nil,
                         onTapDown: viewModel.canFocusNextField ? { viewModel.onTapToolbarDown() } : nil,
                         onTapDone: viewModel.unfocus,
                         trailButtons: [
                             viewModel.isSpeechButtonVisible
                                 ? DToolbarButton(
-                                    accessibilityLabel: .buttonSpeech,
+                                    accessibilityLabel: l10n[
+                                        .buttonSpeech,
+                                    ],
                                     style: .primaryDefault,
                                     badge: viewModel.speechButtonBadge,
                                     content: .icon(
@@ -64,10 +73,14 @@ struct ScanScreenView: DView {
                                 )
                                 : nil,
                             DToolbarButton(
-                                accessibilityLabel: .buttonGenerate,
+                                accessibilityLabel: l10n[
+                                    .buttonGenerate,
+                                ],
                                 style: .primaryDefault,
                                 content: .text(
-                                    .buttonGenerate,
+                                    l10n[
+                                        .buttonGenerate,
+                                    ],
                                 ),
                                 action: viewModel.onTapScan,
                             ),

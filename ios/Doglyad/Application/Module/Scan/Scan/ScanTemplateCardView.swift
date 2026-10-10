@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanTemplateCardView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
@@ -13,7 +14,9 @@ struct ScanTemplateCardView: DView {
             spacing: .zero,
         ) {
             DText(
-                .scanTemplateCardTitleLabel,
+                l10n[
+                    .scanTemplateCardTitleLabel,
+                ],
             )
             .dStyle(
                 font: typography.textSmall,
@@ -80,7 +83,9 @@ struct ScanTemplateCardView: DView {
                             )
 
                             DText(
-                                .scanTemplateCardNoTemplateLabel,
+                                l10n[
+                                    .scanTemplateCardNoTemplateLabel,
+                                ],
                             )
                             .dStyle(
                                 font: typography.textXSmall,
@@ -117,7 +122,9 @@ struct ScanTemplateCardView: DView {
 
             if viewModel.isSelectedTemplateExaminationTypeMismatch {
                 Text(
-                    .scanTemplateCardExaminationTypeMismatchError,
+                    l10n[
+                        .scanTemplateCardExaminationTypeMismatchError,
+                    ],
                 )
                 .font(
                     typography.textXSmall,

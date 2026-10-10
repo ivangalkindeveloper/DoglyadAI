@@ -3,6 +3,7 @@ import SwiftUI
 import UIKit
 
 struct ExpandableMarkdownView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     let text: String
@@ -54,7 +55,9 @@ struct ExpandableMarkdownView: DView {
                 markdown
 
                 Button(
-                    .buttonCollapse,
+                    l10n[
+                        .buttonCollapse,
+                    ],
                 ) {
                     withAnimation(
                         theme.animation,
@@ -113,7 +116,9 @@ struct ExpandableMarkdownView: DView {
                             )
 
                         Button(
-                            .buttonNext,
+                            l10n[
+                                .buttonNext,
+                            ],
                         ) {
                             withAnimation(
                                 theme.animation,
@@ -178,4 +183,7 @@ struct ExpandableMarkdownView: DView {
     )
     .padding()
     .dThemeWrapper()
+    .localization(
+        DependencyContainer.previewable.l10n,
+    )
 }

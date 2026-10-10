@@ -25,6 +25,25 @@ final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
         self.messager = messager
         self.onSaved = onSaved
         includeRecommendations = initialIncludeRecommendations
+        _emailController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                formatters: [
+                    DTextFieldEmailFormatter(),
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: 254,
+                    ),
+                ],
+                validators: [
+                    DTextFieldEmailValidator(
+                        invalidValueErrorText: String(
+                            localized: container.l10n[
+                                .errorInvalidEmail,
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        )
         super.init(
             container: container,
             router: router,
@@ -41,21 +60,7 @@ final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
     @Published private(set) var isLoading = false
     @Published var focus: Focus?
     @Published var includeRecommendations: Bool
-    @NestedObservableObject var emailController = DTextFieldController(
-        formatters: [
-            DTextFieldEmailFormatter(),
-            DTextFieldMaxLengthFormatter(
-                maxLength: 254,
-            ),
-        ],
-        validators: [
-            DTextFieldEmailValidator(
-                invalidValueErrorText: String(
-                    localized: .errorInvalidEmail,
-                ),
-            ),
-        ],
-    )
+    @NestedObservableObject var emailController: DTextFieldController
 
     var focusList: [DTextFieldFocusValidationItem<Focus>] {
         [
@@ -119,8 +124,12 @@ final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
         )
         messager.show(
             type: .success,
-            title: .userSettingsSavedSuccessMessageTitle,
-            description: .userSettingsSavedSuccessMessageDescription,
+            title: container.l10n[
+                .userSettingsSavedSuccessMessageTitle,
+            ],
+            description: container.l10n[
+                .userSettingsSavedSuccessMessageDescription,
+            ],
         )
         coordinator.pop()
     }

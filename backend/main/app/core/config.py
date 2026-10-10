@@ -8,11 +8,13 @@ from typing import Any
 
 from fastapi import HTTPException
 
+from app.core.application_localization import validate_application_localizations
 from app.core.language_code import LanguageCode
 from app.core.locale import SUPPORTED_LANGUAGES
 from app.core.variables import variables
 from app.model.application_locale_config import ApplicationLocaleConfig
 from app.model.config_localization import L10n
+from app.model.l10n_response import L10nResponse
 from app.model.ultrasound.us_examination_contextual_strings import USExaminationContextualStrings
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
@@ -44,6 +46,7 @@ _locale_config: ApplicationLocaleConfig | None = None
 _l10n: L10n | None = None
 _contextual_strings: USExaminationContextualStrings | None = None
 _voice_parsing_config: USVoiceFormParsingConfig | None = None
+_application_localizations: dict[LanguageCode, L10nResponse] = {}
 
 
 def _load_json(path: Path) -> Any:
@@ -167,6 +170,17 @@ def load_configs() -> None:
                 for language in SUPPORTED_LANGUAGES
             }
         )
+        application_localizations = {
+            language: L10nResponse.model_validate(
+                {
+                    "code": language.value,
+                    "strings": _load_json_object(_CONFIG_DIR / language.value / "l10n_application.json"),
+                    "voice": _load_json_object(_CONFIG_DIR / language.value / "l10n_voice_parsing.json"),
+                }
+            )
+            for language in SUPPORTED_LANGUAGES
+        }
+        validate_application_localizations(application_localizations)
 
         types = {item.id: item for group in groups for item in group.examinationTypes}
         models = {item.id: item for item in model_configs}
@@ -208,6 +222,8 @@ def load_configs() -> None:
     _l10n = l10n
     _contextual_strings = contextual_strings
     _voice_parsing_config = voice_parsing_config
+    _application_localizations.clear()
+    _application_localizations.update(application_localizations)
 
 
 def get_voice_parsing_config() -> USVoiceFormParsingConfig:
@@ -236,6 +252,12 @@ def _contextual_catalog() -> USExaminationContextualStrings:
 
 def resolve_application_config_document(language_code: LanguageCode) -> str:
     return json.dumps(_application_response(_application_config, _catalog(), language_code), ensure_ascii=False)
+
+
+def resolve_l10n_document(language_code: LanguageCode) -> str:
+    if not _application_localizations:
+        raise RuntimeError("Application localizations have not been loaded")
+    return _application_localizations[language_code].model_dump_json()
 
 
 def resolve_examination_types_document(language_code: LanguageCode) -> str:

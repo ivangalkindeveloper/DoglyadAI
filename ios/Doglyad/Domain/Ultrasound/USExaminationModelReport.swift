@@ -21,14 +21,16 @@ private extension USExaminationModelReport {
 }
 
 extension USExaminationModelReport {
-    var plainText: String {
+    func plainText(
+        l10n: L10N,
+    ) -> String {
         var sections = [
-            "\(String(localized: .reportDescriptionTitle))\n\(description)",
-            "\(String(localized: .reportConclusionTitle))\n\(conclusion)",
+            "\(String(localized: l10n[.reportDescriptionTitle]))\n\(description)",
+            "\(String(localized: l10n[.reportConclusionTitle]))\n\(conclusion)",
         ]
         if let recommendations, !recommendations.isEmpty {
             sections.append(
-                "\(String(localized: .reportRecommendationsTitle))\n\(recommendations)",
+                "\(String(localized: l10n[.reportRecommendationsTitle]))\n\(recommendations)",
             )
         }
         return sections.joined(
@@ -36,14 +38,16 @@ extension USExaminationModelReport {
         )
     }
 
-    var markdownText: String {
+    func markdownText(
+        l10n: L10N,
+    ) -> String {
         var sections = [
-            "## \(String(localized: .reportDescriptionTitle))\n\(description)",
-            "## \(String(localized: .reportConclusionTitle))\n\(conclusion)",
+            "## \(String(localized: l10n[.reportDescriptionTitle]))\n\(description)",
+            "## \(String(localized: l10n[.reportConclusionTitle]))\n\(conclusion)",
         ]
         if let recommendations, !recommendations.isEmpty {
             sections.append(
-                "## \(String(localized: .reportRecommendationsTitle))\n\(recommendations)",
+                "## \(String(localized: l10n[.reportRecommendationsTitle]))\n\(recommendations)",
             )
         }
         return sections.joined(

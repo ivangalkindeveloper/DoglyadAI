@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ReadyMadeTemplateListScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ReadyMadeTemplateListViewModel
@@ -9,7 +10,9 @@ struct ReadyMadeTemplateListScreenView: DView {
 
     var body: some View {
         DScreen(
-            title: .readyMadeTemplateListTitle,
+            title: l10n[
+                .readyMadeTemplateListTitle,
+            ],
             onTapBack: viewModel.onTapBack,
             toolbarContent: {
                 if case .success = viewModel.state {
@@ -19,8 +22,12 @@ struct ReadyMadeTemplateListScreenView: DView {
                             value: .search,
                             state: $focus,
                         ),
-                        title: .readyMadeTemplateListSearchLabel,
-                        placeholder: .readyMadeTemplateListSearchPlaceholder,
+                        title: l10n[
+                            .readyMadeTemplateListSearchLabel,
+                        ],
+                        placeholder: l10n[
+                            .readyMadeTemplateListSearchPlaceholder,
+                        ],
                         mode: DTextFieldSingleLineMode(
                             submitLabel: .done,
                         ),
@@ -40,9 +47,15 @@ struct ReadyMadeTemplateListScreenView: DView {
             keyboardToolbar: {
                 if focus != nil {
                     DToolbar(
-                        upAccessibilityLabel: .buttonBack,
-                        downAccessibilityLabel: .buttonNext,
-                        doneAccessibilityLabel: .buttonDone,
+                        upAccessibilityLabel: l10n[
+                            .buttonBack,
+                        ],
+                        downAccessibilityLabel: l10n[
+                            .buttonNext,
+                        ],
+                        doneAccessibilityLabel: l10n[
+                            .buttonDone,
+                        ],
                         onTapDone: viewModel.unfocus,
                     )
                 }
@@ -70,14 +83,18 @@ struct ReadyMadeTemplateListScreenView: DView {
                         spacing: size.s16,
                     ) {
                         DText(
-                            .readyMadeTemplateListErrorTitle,
+                            l10n[
+                                .readyMadeTemplateListErrorTitle,
+                            ],
                         )
                         .dStyle(
                             font: typography.linkLarge,
                         )
 
                         DText(
-                            .readyMadeTemplateListErrorDescription,
+                            l10n[
+                                .readyMadeTemplateListErrorDescription,
+                            ],
                         )
                         .dStyle(
                             font: typography.linkSmall,
@@ -88,7 +105,9 @@ struct ReadyMadeTemplateListScreenView: DView {
                         )
 
                         DButton(
-                            title: .readyMadeTemplateListRetryButton,
+                            title: l10n[
+                                .readyMadeTemplateListRetryButton,
+                            ],
                             action: viewModel.onTapRetry,
                         )
                         .dStyle(

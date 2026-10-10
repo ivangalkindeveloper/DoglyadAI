@@ -3,6 +3,7 @@ import Foundation
 import SwiftUI
 
 struct PermissionBottomSheet: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     let title: LocalizedStringResource
@@ -27,7 +28,9 @@ struct PermissionBottomSheet: DView {
                     size.s32,
                 )
                 DButton(
-                    title: .buttonOpenSettings,
+                    title: l10n[
+                        .buttonOpenSettings,
+                    ],
                     action: UIApplication.openSettings,
                 )
                 .dStyle(

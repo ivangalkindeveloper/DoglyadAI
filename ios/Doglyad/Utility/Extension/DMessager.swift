@@ -1,11 +1,17 @@
 import DoglyadUI
 
 extension DMessager {
-    func showUnknownError() {
+    func showUnknownError(
+        l10n: L10N,
+    ) {
         show(
             type: .error,
-            title: .errorUnknownTitle,
-            description: .errorUnknownDescription,
+            title: l10n[
+                .errorUnknownTitle,
+            ],
+            description: l10n[
+                .errorUnknownDescription,
+            ],
         )
     }
 }

@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct PaidBadgeModifier: ViewModifier {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var subscription: SubscriptionViewModel
 
     let feature: PaidFeature
@@ -17,7 +18,9 @@ struct PaidBadgeModifier: ViewModifier {
             EmptyView()
         case .offered:
             DBadge(
-                .entitlementPro,
+                l10n[
+                    .entitlementPro,
+                ],
                 isShimmering: true,
             ) {
                 content

@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ReportReceivedBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ReportReceivedViewModel
@@ -9,7 +10,9 @@ struct ReportReceivedBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             type: .blur,
-            title: .reportTitle,
+            title: l10n[
+                .reportTitle,
+            ],
             fraction: 1,
             content: { toolbarHeight, bottomHeight in
                 VStack(
@@ -17,8 +20,10 @@ struct ReportReceivedBottomSheetView: DView {
                 ) {
                     ScrollView {
                         ReportReceivedMarkdownView(
-                            viewModel: viewModel.markdownViewModel,
                             textColor: color.grayscaleBackgroundWeak,
+                        )
+                        .environmentObject(
+                            viewModel.markdownViewModel,
                         )
                         .padding(
                             .top,
@@ -55,7 +60,9 @@ struct ReportReceivedBottomSheetView: DView {
                     spacing: size.s8,
                 ) {
                     DButton(
-                        title: .buttonToReport,
+                        title: l10n[
+                            .buttonToReport,
+                        ],
                         action: viewModel.onTapReport,
                     )
                     .dStyle(
@@ -80,7 +87,9 @@ struct ReportReceivedBottomSheetView: DView {
 
                     DButton(
                         image: .copy,
-                        title: .buttonCopy,
+                        title: l10n[
+                            .buttonCopy,
+                        ],
                         action: viewModel.onTapCopy,
                     )
                     .dStyle(

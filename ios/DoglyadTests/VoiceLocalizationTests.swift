@@ -7,7 +7,7 @@ import Testing
 
 struct VoiceLocalizationTests {
     @Test(
-        "Bundled catalogs are complete and selected explicitly, including regional locales",
+        "Backend catalogs are complete and selected explicitly, including regional locales",
         arguments: ["en", "en_US", "ru", "ru_RU"],
     )
     func selectedCatalog(
@@ -16,7 +16,7 @@ struct VoiceLocalizationTests {
         let locale = Locale(
             identifier: code,
         )
-        let catalog = try VoiceLocalization.load(
+        let catalog = try VoiceLocalizationTestSupport.load(
             locale: locale,
         )
         #expect(
@@ -38,13 +38,13 @@ struct VoiceLocalizationTests {
     }
 
     @Test(
-        "An unavailable language does not silently use another catalog",
+        "Missing locale fixtures fail loading instead of using another catalog",
     )
-    func missingLanguage() {
+    func missingLocaleFixture() {
         #expect(
-            throws: VoiceLocalizationError.self,
+            throws: CocoaError.self,
         ) {
-            try VoiceLocalization.load(
+            try VoiceLocalizationTestSupport.load(
                 locale: Locale(
                     identifier: "fr",
                 ),
@@ -143,12 +143,12 @@ struct VoiceLocalizationTests {
         "Field labels, genders and spoken numbers use only the selected language",
     )
     func languagesAreIsolated() throws {
-        let en = try VoiceLocalization.load(
+        let en = try VoiceLocalizationTestSupport.load(
             locale: Locale(
                 identifier: "en",
             ),
         ).dictation
-        let ru = try VoiceLocalization.load(
+        let ru = try VoiceLocalizationTestSupport.load(
             locale: Locale(
                 identifier: "ru",
             ),
@@ -234,7 +234,7 @@ struct VoiceLocalizationTests {
         let locale = Locale(
             identifier: code,
         )
-        let localization = try VoiceLocalization.load(
+        let localization = try VoiceLocalizationTestSupport.load(
             locale: locale,
         ).dictation
         for text in ["No complaints", "Жалоб нет"] {
@@ -361,7 +361,7 @@ struct VoiceLocalizationTests {
     )
     func foundationSchemaDescriptions() throws {
         for code in ["en", "ru"] {
-            let localization = try VoiceLocalization.load(
+            let localization = try VoiceLocalizationTestSupport.load(
                 locale: Locale(
                     identifier: code,
                 ),
@@ -404,18 +404,11 @@ struct VoiceLocalizationTests {
     private func catalogJSON(
         code: String,
     ) throws -> [String: Any] {
-        let url = try #require(
-            Bundle.main.url(
-                forResource: "VoiceParsing",
-                withExtension: "json",
-                subdirectory: nil,
-                localization: code,
-            ),
-        )
-        return try #require(
+        try #require(
             JSONSerialization.jsonObject(
-                with: Data(
-                    contentsOf: url,
+                with: VoiceLocalizationTestSupport.data(
+                    kind: "voice",
+                    code: code,
                 ),
             ) as? [String: Any],
         )

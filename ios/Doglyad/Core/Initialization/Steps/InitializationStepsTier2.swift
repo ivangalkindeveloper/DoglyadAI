@@ -19,13 +19,9 @@ extension InitializationProcess {
                         localeConfig: applicationConfig.locale,
                         preferredLanguageIdentifiers: preferredLanguageIdentifiers,
                     )
-                    let voiceLocalization = try VoiceLocalization.load(
-                        locale: language.currentLocale,
-                    )
                     await MainActor.run {
                         process.applicationConfig = applicationConfig
                         process.language = language
-                        process.voiceLocalization = voiceLocalization
                     }
                 },
             ),

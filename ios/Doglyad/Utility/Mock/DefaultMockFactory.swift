@@ -2,20 +2,18 @@ import Foundation
 
 final class DefaultMockFactory: MockFactory {
     func fillPatientComplaints(
-        for locale: Locale,
+        l10n: L10N,
     ) -> String {
-        String(
-            localized: "mockPatientComplaints",
-            locale: locale,
+        l10n.text(
+            .mockPatientComplaints,
         )
     }
 
     func fillExaminationDescription(
-        for locale: Locale,
+        l10n: L10N,
     ) -> String {
-        String(
-            localized: "mockExaminationDescription",
-            locale: locale,
+        l10n.text(
+            .mockExaminationDescription,
         )
     }
 }

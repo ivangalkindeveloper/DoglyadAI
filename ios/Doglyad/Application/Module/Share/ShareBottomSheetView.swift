@@ -2,13 +2,16 @@ import DoglyadUI
 import SwiftUI
 
 struct ShareBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ShareViewModel
 
     var body: some View {
         DBottomSheet(
-            title: .shareTitle,
+            title: l10n[
+                .shareTitle,
+            ],
             fraction: viewModel.isUserEmailAvailable && viewModel.isUserEmailButtonVisible ? 0.4 : 0.3,
         ) { toolbarHeight, _ in
             VStack(
@@ -67,7 +70,9 @@ struct ShareBottomSheetView: DView {
                     ) {
                         row(
                             icon: .mail,
-                            title: .buttonShareEmail,
+                            title: l10n[
+                                .buttonShareEmail,
+                            ],
                         )
                     }
                     .disabled(
@@ -86,7 +91,9 @@ struct ShareBottomSheetView: DView {
                 ) {
                     row(
                         icon: .copy,
-                        title: .buttonCopy,
+                        title: l10n[
+                            .buttonCopy,
+                        ],
                     )
                 }
                 .disabled(
@@ -98,7 +105,9 @@ struct ShareBottomSheetView: DView {
                 ) {
                     row(
                         icon: .export,
-                        title: .buttonShare,
+                        title: l10n[
+                            .buttonShare,
+                        ],
                     )
                 }
                 .buttonStyle(

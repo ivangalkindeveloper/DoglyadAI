@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct PermissionCameraBottomSheet: View {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
@@ -13,8 +14,12 @@ struct PermissionCameraBottomSheet: View {
                 subscription: subscriptionViewModel,
                 destination: .permissionCamera,
             ),
-            title: .permissionCameraTitle,
-            description: .permissionCameraDescription,
+            title: l10n[
+                .permissionCameraTitle,
+            ],
+            description: l10n[
+                .permissionCameraDescription,
+            ],
         )
     }
 }

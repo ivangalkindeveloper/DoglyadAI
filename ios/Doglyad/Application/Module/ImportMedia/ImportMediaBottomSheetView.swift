@@ -2,13 +2,16 @@ import DoglyadUI
 import SwiftUI
 
 struct ImportMediaBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ImportMediaViewModel
 
     var body: some View {
         DBottomSheet(
-            title: .importMediaTitle,
+            title: l10n[
+                .importMediaTitle,
+            ],
             fraction: 0.25,
         ) { toolbarHeight, _ in
             VStack(
@@ -19,7 +22,9 @@ struct ImportMediaBottomSheetView: DView {
                 ) {
                     row(
                         icon: .camera,
-                        title: .buttonCamera,
+                        title: l10n[
+                            .buttonCamera,
+                        ],
                     )
                 }
 
@@ -28,7 +33,9 @@ struct ImportMediaBottomSheetView: DView {
                 ) {
                     row(
                         icon: .image,
-                        title: .buttonGallery,
+                        title: l10n[
+                            .buttonGallery,
+                        ],
                     )
                 }
 

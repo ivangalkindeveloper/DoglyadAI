@@ -2,12 +2,15 @@ import DoglyadUI
 import SwiftUI
 
 struct PhotoViewScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: PhotoViewViewModel
 
     var body: some View {
         DScreen(
-            title: .photoViewTitle,
+            title: l10n[
+                .photoViewTitle,
+            ],
             subTitle: viewModel.subTitle,
             onTapBack: viewModel.onTapBack,
             trailing: {
@@ -21,7 +24,9 @@ struct PhotoViewScreenView: DView {
                     )
                     .accessibilityLabel(
                         Text(
-                            .buttonDelete,
+                            l10n[
+                                .buttonDelete,
+                            ],
                         ),
                     )
                 }
@@ -63,9 +68,13 @@ struct PhotoViewScreenView: DView {
                         spacing: size.s16,
                     ) {
                         DText(
-                            .photoViewPage(
-                                current: viewModel.currentPage,
-                                total: viewModel.photos.count,
+                            l10n.resource(
+                                .photoViewPage,
+                                values: ["current": String(
+                                    viewModel.currentPage,
+                                ), "total": String(
+                                    viewModel.photos.count,
+                                )],
                             ),
                         )
                         .dStyle(

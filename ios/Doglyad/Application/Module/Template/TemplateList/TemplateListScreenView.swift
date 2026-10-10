@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct TemplateListScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var container: DependencyContainer
 
@@ -9,7 +10,9 @@ struct TemplateListScreenView: DView {
 
     var body: some View {
         DScreen(
-            title: .templateListTitle,
+            title: l10n[
+                .templateListTitle,
+            ],
             onTapBack: viewModel.onTapBack,
             content: { toolbarInset, bottomInset in
                 ZStack(
@@ -64,7 +67,9 @@ struct TemplateListScreenView: DView {
             },
             bottom: {
                 DButton(
-                    title: .templateListAddButton,
+                    title: l10n[
+                        .templateListAddButton,
+                    ],
                     action: viewModel.onTapAdd,
                 )
                 .dStyle(

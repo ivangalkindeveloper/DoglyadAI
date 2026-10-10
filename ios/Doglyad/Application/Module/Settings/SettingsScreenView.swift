@@ -2,13 +2,16 @@ import DoglyadUI
 import SwiftUI
 
 struct SettingsScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SettingsViewModel
 
     var body: some View {
         DScreen(
-            title: .settingsTitle,
+            title: l10n[
+                .settingsTitle,
+            ],
             onTapBack: viewModel.onTapBack,
         ) { toolbarInset, _ in
             ScrollView(
@@ -22,7 +25,9 @@ struct SettingsScreenView: DView {
                     ) {
                         DListButtonCard(
                             image: .iconHistory,
-                            title: .settingsHistoryTitle,
+                            title: l10n[
+                                .settingsHistoryTitle,
+                            ],
                             description: viewModel.historyDescription(),
                             action: viewModel.onTapHistory,
                         )
@@ -31,25 +36,39 @@ struct SettingsScreenView: DView {
                         )
                         DListButtonCard(
                             image: .iconTemplates,
-                            title: .settingsTemplatesTitle,
-                            description: .settingsTemplatesDescription,
+                            title: l10n[
+                                .settingsTemplatesTitle,
+                            ],
+                            description: l10n[
+                                .settingsTemplatesDescription,
+                            ],
                             action: viewModel.onTapTemplates,
                         )
                         DListButtonCard(
                             image: .iconSettings,
-                            title: .settingsUserSettingsTitle,
-                            description: .settingsUserSettingsDescription,
+                            title: l10n[
+                                .settingsUserSettingsTitle,
+                            ],
+                            description: l10n[
+                                .settingsUserSettingsDescription,
+                            ],
                             action: viewModel.onTapUserSettings,
                         )
                         DListButtonCard(
                             image: .iconMail,
-                            title: .settingsSubscriptionManageTitle,
-                            description: .settingsSubscriptionManageDescription,
+                            title: l10n[
+                                .settingsSubscriptionManageTitle,
+                            ],
+                            description: l10n[
+                                .settingsSubscriptionManageDescription,
+                            ],
                             action: viewModel.onTapSubscription,
                         )
                         DListButtonCard(
                             image: .iconAI,
-                            title: .settingsNeuralModelTitle,
+                            title: l10n[
+                                .settingsNeuralModelTitle,
+                            ],
                             description: LocalizedStringResource(
                                 stringLiteral: viewModel.neuralModel.title,
                             ),
@@ -60,8 +79,12 @@ struct SettingsScreenView: DView {
                         )
                         DListButtonCard(
                             image: .iconAISettings,
-                            title: .settingsNeuralModelSettingsTitle,
-                            description: .settingsNeuralModelSettingsDescription,
+                            title: l10n[
+                                .settingsNeuralModelSettingsTitle,
+                            ],
+                            description: l10n[
+                                .settingsNeuralModelSettingsDescription,
+                            ],
                             action: viewModel.onTapNeuralModelSettings,
                         )
                         .paidBadge(
@@ -69,20 +92,32 @@ struct SettingsScreenView: DView {
                         )
                         DListButtonCard(
                             image: .iconFile,
-                            title: .settingsStorageTitle,
-                            description: .settingsStorageDescription,
+                            title: l10n[
+                                .settingsStorageTitle,
+                            ],
+                            description: l10n[
+                                .settingsStorageDescription,
+                            ],
                             action: viewModel.onTapStorage,
                         )
                         DListButtonCard(
                             image: .iconGuard,
-                            title: .settingsPrivacyPolicyTitle,
-                            description: .settingsPrivacyPolicyDescription,
+                            title: l10n[
+                                .settingsPrivacyPolicyTitle,
+                            ],
+                            description: l10n[
+                                .settingsPrivacyPolicyDescription,
+                            ],
                             action: viewModel.onTapPrivacyPolicy,
                         )
                         DListButtonCard(
                             image: .iconDocuments,
-                            title: .settingsTermsAndConditionsTitle,
-                            description: .settingsTermsAndConditionsDescription,
+                            title: l10n[
+                                .settingsTermsAndConditionsTitle,
+                            ],
+                            description: l10n[
+                                .settingsTermsAndConditionsDescription,
+                            ],
                             action: viewModel.onTapTermsAndConditions,
                         )
                     }
@@ -93,7 +128,9 @@ struct SettingsScreenView: DView {
 
                     DButton(
                         image: .info,
-                        title: .settingsAboutAppTitle,
+                        title: l10n[
+                            .settingsAboutAppTitle,
+                        ],
                         action: viewModel.onTapAboutApp,
                     )
                     .dStyle(

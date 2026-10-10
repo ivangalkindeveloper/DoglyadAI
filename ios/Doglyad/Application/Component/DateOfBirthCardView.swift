@@ -3,6 +3,7 @@ import Foundation
 import SwiftUI
 
 struct DateOfBirthCardView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     let date: Date
@@ -24,7 +25,7 @@ struct DateOfBirthCardView: DView {
                 spacing: .zero,
             ) {
                 DText(
-                    "\(String(localized: .scanPatientDateOfBirthLabel)): \(date.localized())",
+                    "\(String(localized: l10n[.scanPatientDateOfBirthLabel])): \(date.localized())",
                 )
                 .dStyle(
                     font: typography.linkSmall,
@@ -35,7 +36,7 @@ struct DateOfBirthCardView: DView {
                 )
 
                 DText(
-                    "(\(ageCount()) \(String(localized: .scanPatientDateOfBirthAgeLabel)))",
+                    "(\(ageCount()) \(String(localized: l10n[.scanPatientDateOfBirthAgeLabel])))",
                 )
                 .dStyle(
                     font: typography.textXSmall,
@@ -84,4 +85,7 @@ private extension DateOfBirthCardView {
     )
     .padding()
     .dThemeWrapper()
+    .localization(
+        DependencyContainer.previewable.l10n,
+    )
 }

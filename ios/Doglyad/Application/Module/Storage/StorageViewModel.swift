@@ -48,8 +48,12 @@ final class StorageViewModel: DViewModel {
                     } onMainSuccess: { _ in
                         self.messager.show(
                             type: .success,
-                            title: .storageClearProtocolsSuccessMessageTitle,
-                            description: .storageClearProtocolsSuccessMessageDescription,
+                            title: self.container.l10n[
+                                .storageClearProtocolsSuccessMessageTitle,
+                            ],
+                            description: self.container.l10n[
+                                .storageClearProtocolsSuccessMessageDescription,
+                            ],
                         )
                         self.coordinator.pop()
                     }
@@ -73,8 +77,12 @@ final class StorageViewModel: DViewModel {
                     } onMainSuccess: { _ in
                         self.messager.show(
                             type: .success,
-                            title: .storageClearAllSuccessMessageTitle,
-                            description: .storageClearAllSuccessMessageDescription,
+                            title: self.container.l10n[
+                                .storageClearAllSuccessMessageTitle,
+                            ],
+                            description: self.container.l10n[
+                                .storageClearAllSuccessMessageDescription,
+                            ],
                         )
                         self.coordinator.resetToOnBoarding()
                     }

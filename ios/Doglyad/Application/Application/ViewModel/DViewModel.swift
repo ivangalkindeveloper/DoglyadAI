@@ -12,6 +12,7 @@ class DViewModel: Handler<DHttpApiError, DHttpConnectionError>, ObservableObject
     @NestedObservableObject var subscription: SubscriptionViewModel
     let coordinator: Coordinator
     var analytics: AnalyticsManager { container.analytics }
+    var l10n: L10N { container.l10n }
     private let analyticsDestination: AnalyticsRouteDestination
     private let analyticsParameters: AnalyticsParameters
 

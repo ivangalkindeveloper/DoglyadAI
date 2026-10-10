@@ -2,13 +2,16 @@ import DoglyadUI
 import SwiftUI
 
 struct SelectTemplateBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SelectTemplateViewModel
 
     var body: some View {
         DBottomSheet(
-            title: .selectTemplateTitle,
+            title: l10n[
+                .selectTemplateTitle,
+            ],
             fraction: 0.6,
         ) { toolbarHeight, bottomHeight in
             ScrollView(

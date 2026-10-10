@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanSpeechBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ScanSpeechViewModel
@@ -9,18 +10,16 @@ struct ScanSpeechBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             type: viewModel.isReviewVisible ? .default : .blur,
-            title: .speechTitle,
+            title: l10n[
+                .speechTitle,
+            ],
             fraction: viewModel.isReviewVisible ? 0.85 : 0.5,
         ) { toolbarHeight, _ in
             Group {
                 if viewModel.isProposalVisible {
-                    ScanSpeechProposalView(
-                        viewModel: viewModel,
-                    )
+                    ScanSpeechProposalView()
                 } else if viewModel.isReviewVisible {
-                    ScanSpeechReviewView(
-                        viewModel: viewModel,
-                    )
+                    ScanSpeechReviewView()
                 } else if !viewModel.isModelReady {
                     ScanSpeechModelPreparationView(
                         state: viewModel.modelPreparation,
@@ -52,6 +51,9 @@ struct ScanSpeechBottomSheetView: DView {
         )
         .onDisappear(
             perform: viewModel.onDisappear,
+        )
+        .environmentObject(
+            viewModel,
         )
     }
 
@@ -126,7 +128,9 @@ struct ScanSpeechBottomSheetView: DView {
             } else {
                 Group {
                     DText(
-                        .speechProcessDescription,
+                        l10n[
+                            .speechProcessDescription,
+                        ],
                     )
                     .dStyle(
                         font: typography.textSmall,
@@ -143,7 +147,9 @@ struct ScanSpeechBottomSheetView: DView {
                     )
 
                     DText(
-                        .speechProcessSpeechDescription,
+                        l10n[
+                            .speechProcessSpeechDescription,
+                        ],
                     )
                     .dStyle(
                         font: typography.textSmall,

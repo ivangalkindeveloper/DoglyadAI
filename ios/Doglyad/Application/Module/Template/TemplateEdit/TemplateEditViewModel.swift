@@ -192,8 +192,12 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
         )
         messager.show(
             type: .success,
-            title: .templateSavedSuccessTitle,
-            description: .templateSavedSuccessDescription,
+            title: container.l10n[
+                .templateSavedSuccessTitle,
+            ],
+            description: container.l10n[
+                .templateSavedSuccessDescription,
+            ],
         )
         coordinator.pop()
     }
@@ -224,8 +228,12 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
         )
         messager.show(
             type: .success,
-            title: .templateDeletedSuccessTitle,
-            description: .templateDeletedSuccessDescription,
+            title: container.l10n[
+                .templateDeletedSuccessTitle,
+            ],
+            description: container.l10n[
+                .templateDeletedSuccessDescription,
+            ],
         )
         coordinator.pop()
     }

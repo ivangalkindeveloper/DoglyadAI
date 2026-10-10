@@ -93,12 +93,18 @@ final class ReportDetailViewModel: DViewModel {
             .reportDetailCopy,
         )
         UIApplication.pasteboard(
-            report.plainText,
+            report.plainText(
+                l10n: container.l10n,
+            ),
         )
         messager.show(
             type: .success,
-            title: .reportDetailModelCopyMessageTitle,
-            description: .reportDetailModelCopyMessageDescription,
+            title: container.l10n[
+                .reportDetailModelCopyMessageTitle,
+            ],
+            description: container.l10n[
+                .reportDetailModelCopyMessageDescription,
+            ],
         )
     }
 
@@ -220,11 +226,17 @@ final class ReportDetailViewModel: DViewModel {
             }
             self.messager.show(
                 type: .success,
-                title: .reportDetailModelResponseUpdatedMessageTitle,
-                description: .reportDetailModelResponseUpdatedMessageDescription,
+                title: self.container.l10n[
+                    .reportDetailModelResponseUpdatedMessageTitle,
+                ],
+                description: self.container.l10n[
+                    .reportDetailModelResponseUpdatedMessageDescription,
+                ],
             )
         } onUnknownError: { _ in
-            self.messager.showUnknownError()
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
         }
     }
 }

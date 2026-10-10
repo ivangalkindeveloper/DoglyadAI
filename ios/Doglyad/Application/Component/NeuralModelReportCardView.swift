@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct NeuralModelReportCardView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject var theme: DTheme
 
@@ -26,7 +27,9 @@ struct NeuralModelReportCardView: DView {
                         spacing: .zero,
                     ) {
                         DText(
-                            .reportResponseModelLabel,
+                            l10n[
+                                .reportResponseModelLabel,
+                            ],
                         )
                         .dStyle(
                             font: typography.textSmall,
@@ -52,7 +55,9 @@ struct NeuralModelReportCardView: DView {
                         spacing: .zero,
                     ) {
                         DText(
-                            .reportResponseDateLabel,
+                            l10n[
+                                .reportResponseDateLabel,
+                            ],
                         )
                         .dStyle(
                             font: typography.textSmall,
@@ -96,13 +101,17 @@ struct NeuralModelReportCardView: DView {
             )
 
             reportSection(
-                title: .reportDescriptionTitle,
+                title: l10n[
+                    .reportDescriptionTitle,
+                ],
                 text: report.description,
                 collapsedLineLimit: 12,
             )
 
             reportSection(
-                title: .reportConclusionTitle,
+                title: l10n[
+                    .reportConclusionTitle,
+                ],
                 text: report.conclusion,
                 collapsedLineLimit: 8,
             )
@@ -115,7 +124,9 @@ struct NeuralModelReportCardView: DView {
                !recommendations.isEmpty
             {
                 reportSection(
-                    title: .reportRecommendationsTitle,
+                    title: l10n[
+                        .reportRecommendationsTitle,
+                    ],
                     text: recommendations,
                     collapsedLineLimit: 8,
                 )
@@ -175,4 +186,7 @@ struct NeuralModelReportCardView: DView {
     )
     .padding()
     .dThemeWrapper()
+    .localization(
+        DependencyContainer.previewable.l10n,
+    )
 }

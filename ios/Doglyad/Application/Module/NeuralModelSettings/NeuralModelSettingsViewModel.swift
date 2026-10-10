@@ -26,6 +26,40 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
     ) {
         self.messager = messager
         self.onSettingsSaved = onSettingsSaved
+        _temperatureController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                formatters: [
+                    DTextFieldDecimalFormatter(),
+                ],
+                validators: [
+                    DTextFieldDoubleRangeValidator(
+                        validRange: 0 ... 2,
+                        invalidValueErrorText: String(
+                            localized: container.l10n[
+                                .errorInvalidNeuralModelTemperature,
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        )
+        _maxTokensController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                formatters: [
+                    DTextFieldIntegerFormatter(),
+                ],
+                validators: [
+                    DTextFieldIntRangeValidator(
+                        validRange: 1 ... 1024,
+                        invalidValueErrorText: String(
+                            localized: container.l10n[
+                                .errorInvalidNeuralModelMaxTokens,
+                            ],
+                        ),
+                    ),
+                ],
+            ),
+        )
         super.init(
             container: container,
             router: router,
@@ -50,32 +84,8 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
     @Published private(set) var isLoading = false
     @Published var focus: Focus?
     @Published var isMarkdown: Bool = false
-    @NestedObservableObject var temperatureController = DTextFieldController(
-        formatters: [
-            DTextFieldDecimalFormatter(),
-        ],
-        validators: [
-            DTextFieldDoubleRangeValidator(
-                validRange: 0 ... 2,
-                invalidValueErrorText: String(
-                    localized: .errorInvalidNeuralModelTemperature,
-                ),
-            ),
-        ],
-    )
-    @NestedObservableObject var maxTokensController = DTextFieldController(
-        formatters: [
-            DTextFieldIntegerFormatter(),
-        ],
-        validators: [
-            DTextFieldIntRangeValidator(
-                validRange: 1 ... 1024,
-                invalidValueErrorText: String(
-                    localized: .errorInvalidNeuralModelMaxTokens,
-                ),
-            ),
-        ],
-    )
+    @NestedObservableObject var temperatureController: DTextFieldController
+    @NestedObservableObject var maxTokensController: DTextFieldController
 
     var focusList: [DTextFieldFocusValidationItem<Focus>] {
         [
@@ -196,8 +206,12 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
         )
         messager.show(
             type: .success,
-            title: .neuralModelSettingsSavedSuccessMessageTitle,
-            description: .neuralModelSettingsSavedSuccessMessageDescription,
+            title: container.l10n[
+                .neuralModelSettingsSavedSuccessMessageTitle,
+            ],
+            description: container.l10n[
+                .neuralModelSettingsSavedSuccessMessageDescription,
+            ],
         )
         coordinator.pop()
     }

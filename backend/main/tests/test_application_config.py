@@ -283,7 +283,12 @@ def test_startup_rejects_incomplete_localization(tmp_path: Path, monkeypatch: py
         shutil.copyfile(_CONFIG_DIR / name, tmp_path / name)
     for language in ("en", "ru"):
         (tmp_path / language).mkdir()
-        for name in ("l10n.json", "l10n_ultrasound_examination_contextual_strings.json"):
+        for name in (
+            "l10n.json",
+            "l10n_ultrasound_examination_contextual_strings.json",
+            "l10n_application.json",
+            "l10n_voice_parsing.json",
+        ):
             shutil.copyfile(_CONFIG_DIR / language / name, tmp_path / language / name)
 
     if defect == "unsupported_application_locale":

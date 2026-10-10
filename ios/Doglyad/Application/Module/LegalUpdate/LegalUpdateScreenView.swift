@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct LegalUpdateScreenView: DView {
+    @EnvironmentObject private var l10n: L10N
     @Environment(
         \.locale,
     ) private var locale
@@ -11,7 +12,9 @@ struct LegalUpdateScreenView: DView {
 
     var body: some View {
         DScreen(
-            title: .legalUpdateTitle,
+            title: l10n[
+                .legalUpdateTitle,
+            ],
             content: { toolbarHeight, bottomHeight in
                 VStack(
                     alignment: .leading,
@@ -36,7 +39,9 @@ struct LegalUpdateScreenView: DView {
                     Spacer()
 
                     DText(
-                        .legalUpdateDescription,
+                        l10n[
+                            .legalUpdateDescription,
+                        ],
                     )
                     .dStyle(
                         font: typography.textMedium,
@@ -100,7 +105,9 @@ struct LegalUpdateScreenView: DView {
             },
             bottom: {
                 DButton(
-                    title: .buttonAccept,
+                    title: l10n[
+                        .buttonAccept,
+                    ],
                     action: viewModel.onTapAccept,
                     isDisabled: viewModel.isAcceptDisabled,
                 )

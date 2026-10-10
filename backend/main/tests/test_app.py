@@ -11,6 +11,8 @@ def test_app_exposes_v1_routes() -> None:
 
     paths = {getattr(route, "path", None) for route in app.routes}
     assert "/v1/application_config" in paths
+    assert "/v1/l10n" in paths
+    assert "/l10n" not in paths
     assert "/v1/ultrasound/examination_types" in paths
     assert "/v1/ultrasound/examination_neural_models" in paths
     assert "/v1/ultrasound/examination_contextual_strings" not in paths

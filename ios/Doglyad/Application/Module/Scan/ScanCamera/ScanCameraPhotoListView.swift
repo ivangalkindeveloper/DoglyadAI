@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanCameraPhotoListView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanCameraViewModel
@@ -52,8 +53,11 @@ struct ScanCameraPhotoListView: DView {
                     )
 
                     DText(
-                        .scanMaxPhotoDescription(
-                            count: viewModel.photoMaxCount,
+                        l10n.resource(
+                            .scanMaxPhotoDescription,
+                            values: ["count": String(
+                                viewModel.photoMaxCount,
+                            )],
                         ),
                     )
                     .dStyle(

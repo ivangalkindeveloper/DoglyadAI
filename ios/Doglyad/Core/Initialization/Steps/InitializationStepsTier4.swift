@@ -7,6 +7,22 @@ extension InitializationProcess {
     static let stepsTier4 = StepSet(
         async: [
             AsyncInitializationStep<InitializationProcess>(
+                title: "L10N",
+                run: { (process: InitializationProcess) async throws in
+                    let code = await process.language!.currentCode
+                    let localization: Localization = try await process.httpClient!.get(
+                        endPoint: "/l10n",
+                        headers: [DHttpHeader.acceptLanguage: code],
+                    )
+                    let l10n = try L10N(
+                        localization: localization,
+                    )
+                    await MainActor.run {
+                        process.l10n = l10n
+                    }
+                },
+            ),
+            AsyncInitializationStep<InitializationProcess>(
                 title: "Ultrasound examination types",
                 run: { (process: InitializationProcess) async throws in
                     let languageCode = await process.language!.currentCode

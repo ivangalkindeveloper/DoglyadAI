@@ -66,8 +66,12 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
 
     var emptyDescription: LocalizedStringResource {
         searchQuery == nil
-            ? .readyMadeTemplateListEmptyDescription
-            : .readyMadeTemplateListSearchEmptyDescription
+            ? container.l10n[
+                .readyMadeTemplateListEmptyDescription,
+            ]
+            : container.l10n[
+                .readyMadeTemplateListSearchEmptyDescription,
+            ]
     }
 
     override func onInit() {

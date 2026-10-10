@@ -2,8 +2,9 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanSpeechReviewView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-    @ObservedObject var viewModel: ScanSpeechViewModel
+    @EnvironmentObject private var viewModel: ScanSpeechViewModel
 
     var body: some View {
         VStack(
@@ -26,8 +27,12 @@ struct ScanSpeechReviewView: DView {
 
                     DTextField(
                         controller: viewModel.transcriptController,
-                        title: .speechReviewFieldTitle,
-                        placeholder: .speechReviewFieldPlaceholder,
+                        title: l10n[
+                            .speechReviewFieldTitle,
+                        ],
+                        placeholder: l10n[
+                            .speechReviewFieldPlaceholder,
+                        ],
                         mode: DTextFieldMultiLineMode(
                             lineLimit: 6 ... 14,
                         ),
@@ -42,7 +47,9 @@ struct ScanSpeechReviewView: DView {
             )
 
             DButton(
-                title: .speechReviewContinueButton,
+                title: l10n[
+                    .speechReviewContinueButton,
+                ],
                 action: viewModel.onTapContinue,
                 isLoading: viewModel.isLoading,
                 isDisabled: viewModel.isReviewContinueDisabled,
@@ -52,7 +59,9 @@ struct ScanSpeechReviewView: DView {
             )
 
             DButton(
-                title: .speechReviewRecordAgainButton,
+                title: l10n[
+                    .speechReviewRecordAgainButton,
+                ],
                 action: viewModel.onTapRecordAgain,
                 isDisabled: viewModel.isLoading,
             )

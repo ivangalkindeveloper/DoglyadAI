@@ -35,7 +35,7 @@ final class ScanSpeechViewModel: DViewModel {
         speechController = DSpeechFactory.make(
             locale: container.language.currentLocale,
             contextualStrings: contextualStrings,
-            lexiconLocalization: container.voiceLocalization.speech,
+            lexiconLocalization: container.l10n.voice.speech,
         )
         super.init(
             container: container,
@@ -114,22 +114,36 @@ final class ScanSpeechViewModel: DViewModel {
     var isProposalVisible: Bool { dictationProposal != nil }
     var isApplyDisabled: Bool { isLoading || selectedFieldIds.isEmpty }
     var proposalInstructions: LocalizedStringResource {
-        automaticFieldIds.isEmpty ? .speechProposalInstructions : .speechProposalInstructionsWithAutomatic
+        automaticFieldIds.isEmpty ? container.l10n[
+            .speechProposalInstructions,
+        ] : container.l10n[
+            .speechProposalInstructionsWithAutomatic,
+        ]
     }
 
     var reviewStatusDescription: LocalizedStringResource? {
         guard let reviewTranscript else { return nil }
         switch reviewTranscript.completion {
         case .finished:
-            return .speechReviewFinishedDescription
+            return container.l10n[
+                .speechReviewFinishedDescription,
+            ]
         case .timedOut:
-            return .speechReviewTimedOutDescription
+            return container.l10n[
+                .speechReviewTimedOutDescription,
+            ]
         case .interrupted:
-            return .speechReviewInterruptedDescription
+            return container.l10n[
+                .speechReviewInterruptedDescription,
+            ]
         case .failed:
-            return .speechReviewFailedDescription
+            return container.l10n[
+                .speechReviewFailedDescription,
+            ]
         case .cancelled:
-            return .speechReviewCancelledDescription
+            return container.l10n[
+                .speechReviewCancelledDescription,
+            ]
         }
     }
 
@@ -195,9 +209,13 @@ final class ScanSpeechViewModel: DViewModel {
     var processingDescription: LocalizedStringResource? {
         switch speechController.status {
         case .preparing:
-            .speechProcessPreparingDescription
+            container.l10n[
+                .speechProcessPreparingDescription,
+            ]
         case .transcribing:
-            .speechProcessTranscribingDescription
+            container.l10n[
+                .speechProcessTranscribingDescription,
+            ]
         case .recording, .stopped:
             nil
         }
@@ -319,7 +337,7 @@ final class ScanSpeechViewModel: DViewModel {
             examinationTypeTitle: arguments.examinationType.title,
             locale: container.language.currentLocale,
             allowedFields: DNeuralUltrasoundVoiceFieldId.allCases,
-            localization: container.voiceLocalization.dictation,
+            localization: container.l10n.voice.dictation,
         )
         let started = Date()
 
@@ -337,7 +355,7 @@ final class ScanSpeechViewModel: DViewModel {
                 proposal: proposal,
                 transcript: transcript,
                 parsedText: speech,
-                noComplaintsPattern: self.container.voiceLocalization.dictation.pattern(
+                noComplaintsPattern: self.container.l10n.voice.dictation.pattern(
                     .noComplaintsValue,
                 ),
             )
@@ -348,7 +366,9 @@ final class ScanSpeechViewModel: DViewModel {
                     self.showReview(
                         transcript,
                     )
-                    self.messager.showUnknownError()
+                    self.messager.showUnknownError(
+                        l10n: self.container.l10n,
+                    )
                     return
                 }
                 self.automaticFieldIds.formUnion(
@@ -397,7 +417,9 @@ final class ScanSpeechViewModel: DViewModel {
                     transcript,
                 )
             }
-            self.messager.showUnknownError()
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
         }
     }
 
@@ -441,7 +463,9 @@ final class ScanSpeechViewModel: DViewModel {
         guard arguments.onConfirm?(
             selected,
         ) == true else {
-            messager.showUnknownError()
+            messager.showUnknownError(
+                l10n: container.l10n,
+            )
             return
         }
         analytics.actionCompleted(
@@ -458,14 +482,30 @@ final class ScanSpeechViewModel: DViewModel {
         _ id: DNeuralUltrasoundVoiceFieldId,
     ) -> LocalizedStringResource {
         switch id {
-        case .examinationNumber: .scanExaminationNumberLabel
-        case .patientName: .scanPatientNameLabel
-        case .patientGender: .scanPatientGenderLabel
-        case .patientDateOfBirth: .scanPatientDateOfBirthLabel
-        case .patientHeightCM: .scanPatientHeightCMLabel
-        case .patientWeightKG: .scanPatientWeightKGLabel
-        case .patientComplaints: .scanPatientComplaintsLabel
-        case .examinationDescription: .scanExaminationDescriptionLabel
+        case .examinationNumber: container.l10n[
+                .scanExaminationNumberLabel,
+            ]
+        case .patientName: container.l10n[
+                .scanPatientNameLabel,
+            ]
+        case .patientGender: container.l10n[
+                .scanPatientGenderLabel,
+            ]
+        case .patientDateOfBirth: container.l10n[
+                .scanPatientDateOfBirthLabel,
+            ]
+        case .patientHeightCM: container.l10n[
+                .scanPatientHeightCMLabel,
+            ]
+        case .patientWeightKG: container.l10n[
+                .scanPatientWeightKGLabel,
+            ]
+        case .patientComplaints: container.l10n[
+                .scanPatientComplaintsLabel,
+            ]
+        case .examinationDescription: container.l10n[
+                .scanExaminationDescriptionLabel,
+            ]
         }
     }
 
@@ -473,15 +513,33 @@ final class ScanSpeechViewModel: DViewModel {
         _ warning: DNeuralVoiceProposalWarning,
     ) -> LocalizedStringResource {
         switch warning {
-        case .ambiguousDictation: .speechProposalWarningAmbiguous
-        case .sideMismatch: .speechProposalWarningSide
-        case .negationMismatch: .speechProposalWarningNegation
-        case .numberMismatch: .speechProposalWarningNumber
-        case .unitMismatch: .speechProposalWarningUnit
-        case .dateUnverified: .speechProposalWarningDate
-        case .genderUnverified: .speechProposalWarningGender
-        case .identifierMismatch: .speechProposalWarningIdentifier
-        case .textChanged: .speechProposalWarningTextChanged
+        case .ambiguousDictation: container.l10n[
+                .speechProposalWarningAmbiguous,
+            ]
+        case .sideMismatch: container.l10n[
+                .speechProposalWarningSide,
+            ]
+        case .negationMismatch: container.l10n[
+                .speechProposalWarningNegation,
+            ]
+        case .numberMismatch: container.l10n[
+                .speechProposalWarningNumber,
+            ]
+        case .unitMismatch: container.l10n[
+                .speechProposalWarningUnit,
+            ]
+        case .dateUnverified: container.l10n[
+                .speechProposalWarningDate,
+            ]
+        case .genderUnverified: container.l10n[
+                .speechProposalWarningGender,
+            ]
+        case .identifierMismatch: container.l10n[
+                .speechProposalWarningIdentifier,
+            ]
+        case .textChanged: container.l10n[
+                .speechProposalWarningTextChanged,
+            ]
         }
     }
 
@@ -497,10 +555,14 @@ final class ScanSpeechViewModel: DViewModel {
         ):
             switch gender {
             case .male: String(
-                    localized: .scanGenderMaleLabel,
+                    localized: container.l10n[
+                        .scanGenderMaleLabel,
+                    ],
                 )
             case .female: String(
-                    localized: .scanGenderFemaleLabel,
+                    localized: container.l10n[
+                        .scanGenderFemaleLabel,
+                    ],
                 )
             }
         case let .date(

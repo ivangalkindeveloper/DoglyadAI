@@ -17,9 +17,17 @@ final class HistoryViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         subscription: SubscriptionViewModel,
-        sectionBuilder: HistoryDaySectionBuilder = HistoryDaySectionBuilder(),
+        sectionBuilder: HistoryDaySectionBuilder? = nil,
     ) {
-        self.sectionBuilder = sectionBuilder
+        self.sectionBuilder = sectionBuilder ?? HistoryDaySectionBuilder(
+            todayTitle: container.l10n.text(
+                .dateTodayLabel,
+            ),
+            yesterdayTitle: container.l10n.text(
+                .dateYesterdayLabel,
+            ),
+            locale: container.language.currentLocale,
+        )
         historyConfig = container.applicationConfig.history
         super.init(
             container: container,

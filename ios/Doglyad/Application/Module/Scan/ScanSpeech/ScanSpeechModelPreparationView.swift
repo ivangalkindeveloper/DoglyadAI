@@ -3,6 +3,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanSpeechModelPreparationView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     let state: DSpeechModelPreparation
@@ -17,13 +18,17 @@ struct ScanSpeechModelPreparationView: DView {
             switch state {
             case .checking:
                 loadingContent(
-                    description: .speechModelCheckingDescription,
+                    description: l10n[
+                        .speechModelCheckingDescription,
+                    ],
                 )
             case let .downloading(
                 progress,
             ):
                 DText(
-                    .speechModelDownloadDescription,
+                    l10n[
+                        .speechModelDownloadDescription,
+                    ],
                 )
                 .dStyle(
                     font: typography.textSmall,
@@ -53,11 +58,15 @@ struct ScanSpeechModelPreparationView: DView {
                 }
             case .loading:
                 loadingContent(
-                    description: .speechModelLoadingDescription,
+                    description: l10n[
+                        .speechModelLoadingDescription,
+                    ],
                 )
             case .failed:
                 DText(
-                    .speechModelLoadFailedDescription,
+                    l10n[
+                        .speechModelLoadFailedDescription,
+                    ],
                 )
                 .dStyle(
                     font: typography.textSmall,
@@ -65,7 +74,9 @@ struct ScanSpeechModelPreparationView: DView {
                     alignment: .center,
                 )
                 DButton(
-                    title: .speechModelRetryButton,
+                    title: l10n[
+                        .speechModelRetryButton,
+                    ],
                     action: onRetry,
                 )
                 .dStyle(

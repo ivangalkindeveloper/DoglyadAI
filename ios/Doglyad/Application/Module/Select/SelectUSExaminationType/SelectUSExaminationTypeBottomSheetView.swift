@@ -3,13 +3,16 @@ import Foundation
 import SwiftUI
 
 struct SelectUSExaminationTypeBottomSheetView: DView {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SelectUSExaminationTypeViewModel
 
     var body: some View {
         DBottomSheet(
-            title: .usExaminationTypeTitle,
+            title: l10n[
+                .usExaminationTypeTitle,
+            ],
             fraction: 0.8,
         ) { toolbarHeight, bottomHeight in
             ScrollView(
@@ -76,7 +79,9 @@ struct SelectUSExaminationTypeBottomSheetView: DView {
         }
         bottom: {
             DText(
-                .usExaminationTypeAddingDescription,
+                l10n[
+                    .usExaminationTypeAddingDescription,
+                ],
             )
             .dStyle(
                 font: typography.textSmall,
