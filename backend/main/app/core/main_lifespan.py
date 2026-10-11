@@ -7,8 +7,8 @@ from types import TracebackType
 import httpx
 from fastapi import FastAPI
 
-from app.core.app_check import init_app_check
-from app.core.config import load_configs, neural_models
+from app.core.init_app_check import init_app_check
+from app.core.load_configs import load_configs, neural_models
 from app.core.variables import variables
 from app.service import create_model_service
 

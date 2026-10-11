@@ -5,12 +5,8 @@ enum L10NKey: String, CaseIterable, Sendable {
     case aboutVersionLabel
     case applicationNameLabel
     case buttonAccept
-    case buttonManageSubscription
-    case buttonPrivacyPolicy
-    case buttonTermsAndConditions
     case buttonBack
     case buttonCamera
-    case scanCameraEnableButton
     case buttonClear
     case buttonClearAll
     case buttonCollapse
@@ -19,26 +15,26 @@ enum L10NKey: String, CaseIterable, Sendable {
     case buttonDone
     case buttonExpand
     case buttonFill
-    case scanFillDevelopmentButton
     case buttonGallery
     case buttonGenerate
     case buttonGenerateProtocol
+    case buttonManageSubscription
     case buttonNext
     case buttonOpenSettings
+    case buttonPrivacyPolicy
     case buttonRepeatGenerate
     case buttonSave
     case buttonSelect
     case buttonSelectType
+    case buttonSendToEmail
     case buttonShare
     case buttonShareEmail
-    case buttonSendToEmail
     case buttonSpeech
     case buttonStart
-    case reportReceivedOpenReportButton
+    case buttonTermsAndConditions
     case buttonUpdate
     case dateTodayLabel
     case dateYesterdayLabel
-    case subscriptionProLabel
     case errorInvalidEmailDescription
     case errorInvalidNeuralModelMaxTokensDescription
     case errorInvalidNeuralModelTemperatureDescription
@@ -53,10 +49,9 @@ enum L10NKey: String, CaseIterable, Sendable {
     case importMediaTitle
     case legalUpdateDescription
     case legalUpdateTitle
-    case scanDevelopmentExaminationDescription
-    case scanDevelopmentPatientComplaintsDescription
-    case neuralModelModelLabel
     case neuralModelAddingDescription
+    case neuralModelCardAvailableRequestsLabel
+    case neuralModelCardTitleLabel
     case neuralModelComingSoonLabel
     case neuralModelContextLengthDescription
     case neuralModelDescription
@@ -66,6 +61,12 @@ enum L10NKey: String, CaseIterable, Sendable {
     case neuralModelMaxTokensDescription
     case neuralModelMaxTokensLabel
     case neuralModelMaxTokensPlaceholder
+    case neuralModelModelLabel
+    case neuralModelSettingsCardMarkdownLabel
+    case neuralModelSettingsCardMaxTokensLabel
+    case neuralModelSettingsCardModelLabel
+    case neuralModelSettingsCardTemperatureLabel
+    case neuralModelSettingsCardTitleLabel
     case neuralModelSettingsSavedSuccessMessageDescription
     case neuralModelSettingsSavedSuccessMessageTitle
     case neuralModelSettingsTitle
@@ -75,22 +76,22 @@ enum L10NKey: String, CaseIterable, Sendable {
     case neuralModelTemplateDescription
     case neuralModelTemplateLabel
     case neuralModelTemplatePlaceholder
-    case newVersionUpdateDescription
     case newVersionAvailabilityDescription
     case newVersionTitle
+    case newVersionUpdateDescription
     case onBoardingFifthDescription
+    case onBoardingFifthTitle
     case onBoardingFirstDescription
+    case onBoardingFirstTitle
     case onBoardingFourthDescription
-    case onBoardingSecondDescription
-    case onBoardingThirdDescription
+    case onBoardingFourthTitle
     case onBoardingLegalAcceptAndDescription
     case onBoardingLegalAcceptDescription
     case onBoardingPrivacyPolicyLabel
-    case onBoardingTermsAndConditionsLabel
-    case onBoardingFifthTitle
-    case onBoardingFirstTitle
-    case onBoardingFourthTitle
+    case onBoardingSecondDescription
     case onBoardingSecondTitle
+    case onBoardingTermsAndConditionsLabel
+    case onBoardingThirdDescription
     case onBoardingThirdTitle
     case permissionCameraDescription
     case permissionCameraTitle
@@ -98,7 +99,10 @@ enum L10NKey: String, CaseIterable, Sendable {
     case permissionPhotoLibraryTitle
     case permissionSpeechDescription
     case permissionSpeechTitle
+    case photoRemarkTitle
     case photoViewPageLabel
+    case photoViewRemarkButton
+    case photoViewShowRemarksLabel
     case photoViewTitle
     case privacyPolicyTitle
     case readyMadeTemplateListEmptyDescription
@@ -111,39 +115,39 @@ enum L10NKey: String, CaseIterable, Sendable {
     case readyMadeTemplateListTitle
     case reportActualModelResponseTitle
     case reportConclusionTitle
+    case reportDescriptionRemarksTitle
     case reportDescriptionTitle
     case reportDetailModelCopyMessageDescription
     case reportDetailModelCopyMessageTitle
     case reportDetailModelResponseUpdatedMessageDescription
     case reportDetailModelResponseUpdatedMessageTitle
+    case reportDetailPhotoRemarksLabel
     case reportPreviousModelResponsesTitle
     case reportReceivedCopyMessageDescription
     case reportReceivedCopyMessageTitle
+    case reportReceivedOpenReportButton
     case reportRecommendationsTitle
     case reportResponseDateLabel
     case reportResponseModelLabel
     case reportTitle
     case requestLimitExceededDescription
     case requestLimitExceededTitle
+    case scanCameraEnableButton
     case scanCameraTitle
     case scanCaptureDescription
+    case scanDevelopmentExaminationDescription
+    case scanDevelopmentPatientComplaintsDescription
     case scanExaminationDateLabel
     case scanExaminationDefaultNumberLabel
     case scanExaminationDescriptionLabel
     case scanExaminationDescriptionPlaceholder
     case scanExaminationNumberLabel
     case scanExaminationNumberPlaceholder
+    case scanFillDevelopmentButton
     case scanGenderFemaleLabel
     case scanGenderMaleLabel
     case scanImportButton
     case scanMaxPhotoDescription
-    case neuralModelSettingsCardModelLabel
-    case neuralModelCardAvailableRequestsLabel
-    case neuralModelSettingsCardMarkdownLabel
-    case neuralModelSettingsCardMaxTokensLabel
-    case neuralModelSettingsCardTemperatureLabel
-    case neuralModelSettingsCardTitleLabel
-    case neuralModelCardTitleLabel
     case scanNumberPlaceholder
     case scanPatientComplaintsLabel
     case scanPatientComplaintsPlaceholder
@@ -155,39 +159,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanPatientNameLabel
     case scanPatientNamePlaceholder
     case scanPatientWeightKGLabel
-    case scanTemplateCardExaminationTypeMismatchDescription
-    case scanTemplateCardNoTemplateLabel
-    case scanTemplateCardTitleLabel
-    case scanTurnedOffCameraDescription
-    case selectDateOfBirthTitle
-    case selectTemplateTitle
-    case serviceUnavailableDescription
-    case serviceUnavailableTitle
-    case settingsAboutAppButton
-    case settingsHistoryDescription
-    case settingsHistoryEmptyDescription
-    case settingsHistoryTitle
-    case settingsNeuralModelSettingsDescription
-    case settingsNeuralModelSettingsTitle
-    case settingsNeuralModelTitle
-    case settingsPrivacyPolicyDescription
-    case settingsPrivacyPolicyTitle
-    case settingsStorageDescription
-    case settingsStorageTitle
-    case settingsSubscriptionManageDescription
-    case settingsTemplatesDescription
-    case settingsTemplatesTitle
-    case settingsTermsAndConditionsDescription
-    case settingsTermsAndConditionsTitle
-    case settingsTitle
-    case settingsUserSettingsDescription
-    case settingsUserSettingsTitle
-    case shareExaminationCopyMessageDescription
-    case shareExaminationCopyMessageTitle
-    case shareTitle
-    case shareUserEmailSuccessMessageDescription
-    case shareUserEmailSuccessMessageTitle
-    case shareWorkEmailButton
     case scanSpeechModelCheckingDescription
     case scanSpeechModelDownloadDescription
     case scanSpeechModelLoadFailedDescription
@@ -227,6 +198,39 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanSpeechReviewRecordAgainButton
     case scanSpeechReviewTimedOutDescription
     case scanSpeechTitle
+    case scanTemplateCardExaminationTypeMismatchDescription
+    case scanTemplateCardNoTemplateLabel
+    case scanTemplateCardTitleLabel
+    case scanTurnedOffCameraDescription
+    case selectDateOfBirthTitle
+    case selectTemplateTitle
+    case serviceUnavailableDescription
+    case serviceUnavailableTitle
+    case settingsAboutAppButton
+    case settingsHistoryDescription
+    case settingsHistoryEmptyDescription
+    case settingsHistoryTitle
+    case settingsNeuralModelSettingsDescription
+    case settingsNeuralModelSettingsTitle
+    case settingsNeuralModelTitle
+    case settingsPrivacyPolicyDescription
+    case settingsPrivacyPolicyTitle
+    case settingsStorageDescription
+    case settingsStorageTitle
+    case settingsSubscriptionManageDescription
+    case settingsTemplatesDescription
+    case settingsTemplatesTitle
+    case settingsTermsAndConditionsDescription
+    case settingsTermsAndConditionsTitle
+    case settingsTitle
+    case settingsUserSettingsDescription
+    case settingsUserSettingsTitle
+    case shareExaminationCopyMessageDescription
+    case shareExaminationCopyMessageTitle
+    case shareTitle
+    case shareUserEmailSuccessMessageDescription
+    case shareUserEmailSuccessMessageTitle
+    case shareWorkEmailButton
     case storageClearAllDescription
     case storageClearAllSuccessMessageDescription
     case storageClearAllSuccessMessageTitle
@@ -242,8 +246,27 @@ enum L10NKey: String, CaseIterable, Sendable {
     case storageTitle
     case subscriptionChangeTypeDescription
     case subscriptionChangeTypeTitle
+    case subscriptionCustomerCenterManageButton
+    case subscriptionCustomerCenterRefundButton
+    case subscriptionCustomerCenterRestoreButton
+    case subscriptionCustomerCenterSupportButton
     case subscriptionNotConfiguredDescription
     case subscriptionOfferingsUnavailableDescription
+    case subscriptionPaywallAnnualLabel
+    case subscriptionPaywallDescription
+    case subscriptionPaywallLifetimeLabel
+    case subscriptionPaywallMonthlyLabel
+    case subscriptionPaywallPlanLabel
+    case subscriptionPaywallPriceDescription
+    case subscriptionPaywallRestoreButton
+    case subscriptionPaywallRetryButton
+    case subscriptionPaywallSixMonthLabel
+    case subscriptionPaywallTermsDescription
+    case subscriptionPaywallThreeMonthLabel
+    case subscriptionPaywallTitle
+    case subscriptionPaywallTwoMonthLabel
+    case subscriptionPaywallWeeklyLabel
+    case subscriptionProLabel
     case subscriptionSupportCenterDescription
     case subscriptionSupportCenterTitle
     case subscriptionTitle
@@ -270,30 +293,16 @@ enum L10NKey: String, CaseIterable, Sendable {
     case usExaminationTypeAddingDescription
     case usExaminationTypeRecentGroupTitle
     case usExaminationTypeTitle
+    case userSettingsDescriptionRemarksDescription
+    case userSettingsDescriptionRemarksLabel
     case userSettingsEmailDescription
     case userSettingsEmailLabel
     case userSettingsEmailPlaceholder
+    case userSettingsPhotoRemarksDescription
+    case userSettingsPhotoRemarksLabel
     case userSettingsRecommendationsDescription
     case userSettingsRecommendationsLabel
     case userSettingsSavedSuccessMessageDescription
     case userSettingsSavedSuccessMessageTitle
     case userSettingsTitle
-    case subscriptionPaywallTitle
-    case subscriptionPaywallDescription
-    case subscriptionPaywallPlanLabel
-    case subscriptionPaywallLifetimeLabel
-    case subscriptionPaywallAnnualLabel
-    case subscriptionPaywallSixMonthLabel
-    case subscriptionPaywallThreeMonthLabel
-    case subscriptionPaywallTwoMonthLabel
-    case subscriptionPaywallMonthlyLabel
-    case subscriptionPaywallWeeklyLabel
-    case subscriptionPaywallPriceDescription
-    case subscriptionPaywallTermsDescription
-    case subscriptionPaywallRestoreButton
-    case subscriptionPaywallRetryButton
-    case subscriptionCustomerCenterManageButton
-    case subscriptionCustomerCenterRestoreButton
-    case subscriptionCustomerCenterRefundButton
-    case subscriptionCustomerCenterSupportButton
 }

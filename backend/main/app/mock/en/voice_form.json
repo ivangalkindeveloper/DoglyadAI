@@ -1,0 +1,53 @@
+{
+    "transcript": "Examination number 123. Patient John Smith. Male. Date of birth January 15, 1985. Height 180 centimeters. Weight 75 kilograms. Complaints: abdominal pain. Examination description: liver contours are smooth, echogenicity is unchanged.",
+    "generation": [
+        {
+            "field_id": "examination_number",
+            "value": "123",
+            "evidence": "Examination number 123",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_name",
+            "value": "John Smith",
+            "evidence": "Patient John Smith",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_gender",
+            "value": "male",
+            "evidence": "Male",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_date_of_birth",
+            "value": "1985-01-15",
+            "evidence": "Date of birth January 15, 1985",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_height_cm",
+            "value": 180,
+            "evidence": "Height 180 centimeters",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_weight_kg",
+            "value": 75,
+            "evidence": "Weight 75 kilograms",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_complaints",
+            "value": "abdominal pain",
+            "evidence": "Complaints: abdominal pain",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "examination_description",
+            "value": "liver contours are smooth, echogenicity is unchanged.",
+            "evidence": "Examination description: liver contours are smooth, echogenicity is unchanged.",
+            "accuracy": "full"
+        }
+    ]
+}

@@ -19,6 +19,13 @@ class USExaminationData(BaseModel):
     patientComplaints: str | None = None
     examinationDescription: str
 
+    @field_validator("photos")
+    @classmethod
+    def reject_duplicate_photo_ids(cls, value: list[USExaminationScanPhoto]) -> list[USExaminationScanPhoto]:
+        if len({photo.id for photo in value}) != len(value):
+            raise ValueError("Photo IDs must be unique")
+        return value
+
     @field_validator("patientComplaints")
     @classmethod
     def normalize_optional_complaints(cls, value: str | None) -> str | None:

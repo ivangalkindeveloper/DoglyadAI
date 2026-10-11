@@ -51,6 +51,16 @@ final class ReportReceivedViewModel: DModuleViewModel {
         arguments.report.actualModelReport
     }
 
+    var displayedMarkdownText: String {
+        var text = model.markdownText(
+            l10n: l10n,
+        )
+        if let remarks = model.descriptionRemarks {
+            text += "\n\n## \(String(localized: l10n[.reportDescriptionRemarksTitle]))\n\(remarks)"
+        }
+        return text
+    }
+
     var response: String {
         arguments.report.actualModelReport.plainText(
             l10n: container.l10n,
@@ -100,9 +110,7 @@ final class ReportReceivedViewModel: DModuleViewModel {
         isAnimating = true
         defer { isAnimating = false }
 
-        let words = arguments.report.actualModelReport.markdownText(
-            l10n: l10n,
-        ).components(
+        let words = displayedMarkdownText.components(
             separatedBy: " ",
         )
         while nextWordIndex < words.count {

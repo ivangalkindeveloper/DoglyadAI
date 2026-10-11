@@ -4,6 +4,17 @@ struct PhotoViewImageTransform {
     var scale: CGFloat = 1
     var offset: CGSize = .zero
 
+    func position(
+        normalizedPoint: CGPoint,
+        imageSize: CGSize,
+        center: CGPoint,
+    ) -> CGPoint {
+        CGPoint(
+            x: center.x + offset.width + (normalizedPoint.x - 0.5) * imageSize.width * scale,
+            y: center.y + offset.height + (normalizedPoint.y - 0.5) * imageSize.height * scale,
+        )
+    }
+
     func zoomed(
         to newScale: CGFloat,
         around point: CGPoint,

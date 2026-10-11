@@ -19,6 +19,7 @@ enum ScreenType: Hashable {
 }
 
 enum SheetType: Hashable {
+    case photoRemark
     case importMedia
     case scanCamera
     case selectUSExaminationType

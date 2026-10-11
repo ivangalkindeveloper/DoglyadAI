@@ -3,7 +3,8 @@ from __future__ import annotations
 import pytest
 from fastapi import HTTPException
 
-from app.core.config import neural_models, resolve_neural_model
+from app.core.load_configs import neural_models
+from app.core.resolve_neural_model import resolve_neural_model
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,

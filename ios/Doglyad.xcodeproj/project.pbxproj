@@ -192,7 +192,9 @@
 				Component/DDatePicker.swift,
 				Component/DFocusScrollView.swift,
 				Component/DIcon.swift,
+				Component/DIconBadge.swift,
 				Component/DImage.swift,
+				Component/DImageAnnotationMarker.swift,
 				Component/DMarkdown.swift,
 				Component/DPageIndicator.swift,
 				Component/DProgress.swift,
@@ -267,7 +269,9 @@
 				Component/DDatePicker.swift,
 				Component/DFocusScrollView.swift,
 				Component/DIcon.swift,
+				Component/DIconBadge.swift,
 				Component/DImage.swift,
+				Component/DImageAnnotationMarker.swift,
 				Component/DMarkdown.swift,
 				Component/DPageIndicator.swift,
 				Component/DProgress.swift,
@@ -1361,6 +1365,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1379,7 +1384,6 @@
 			baseConfigurationReferenceRelativePath = Config.Development.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDevelopment;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -1790,6 +1794,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1808,7 +1813,6 @@
 			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -2310,6 +2314,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -2373,6 +2378,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LM_SKIP_METADATA_EXTRACTION = YES;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -2391,7 +2397,6 @@
 			baseConfigurationReferenceRelativePath = Config.Local.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconLocal;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -2446,7 +2451,6 @@
 			baseConfigurationReferenceRelativePath = Config.Development.xcconfig;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDevelopment;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
 				CODE_SIGN_STYLE = Automatic;

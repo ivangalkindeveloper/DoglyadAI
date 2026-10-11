@@ -5,10 +5,14 @@ import SwiftData
 public final class USExaminationReportDB {
     public var id: UUID
     public var date: Date
-    @Relationship public var neuralModelSettings: NeuralModelSettingsDB
-    @Relationship public var examinationData: USExaminationDataDB
-    @Relationship public var actualModelReport: USExaminationModelReportDB
-    @Relationship public var previousModelReports: [USExaminationModelReportDB]
+    public var neuralModelSettings: NeuralModelSettingsDB
+    public var examinationData: USExaminationDataDB
+    @Relationship(
+        deleteRule: .cascade,
+    ) public var actualModelReport: USExaminationModelReportDB
+    @Relationship(
+        deleteRule: .cascade,
+    ) public var previousModelReports: [USExaminationModelReportDB]
 
     public init(
         id: UUID = UUID(),

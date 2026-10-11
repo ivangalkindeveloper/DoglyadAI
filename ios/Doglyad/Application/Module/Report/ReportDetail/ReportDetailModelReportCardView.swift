@@ -121,14 +121,25 @@ struct ReportDetailModelReportCardView: DView {
                 size.s16,
             )
 
-            if let recommendations = report.recommendations,
-               !recommendations.isEmpty
-            {
+            if let recommendations = report.recommendations {
                 ReportDetailModelReportSectionView(
                     title: l10n[
                         .reportRecommendationsTitle,
                     ],
                     text: recommendations,
+                    collapsedLineLimit: 8,
+                )
+                .padding(
+                    .top,
+                    size.s16,
+                )
+            }
+            if let descriptionRemarks = report.descriptionRemarks {
+                ReportDetailModelReportSectionView(
+                    title: l10n[
+                        .reportDescriptionRemarksTitle,
+                    ],
+                    text: descriptionRemarks,
                     collapsedLineLimit: 8,
                 )
                 .padding(

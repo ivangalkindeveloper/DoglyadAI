@@ -40,7 +40,7 @@ Modules communicate through closures in the destination's `FeatureArguments`, fo
 
 Build layout from `DoglyadUI` components and styling, using SwiftUI for composition. Use design-system shimmer for loading states. Add missing generic primitives to DoglyadUI; consult its target-membership instructions in `AGENTS.md` when adding files.
 
-Application views shared between modules belong in `ios/Doglyad/Application/Component/`. A view used by one module stays in that module and starts with its feature name. Visual resources come through DoglyadUI or the application asset catalog. Networking uses `DoglyadNetwork`; persistence uses `DoglyadDatabase`.
+Application views shared between modules belong in `ios/Doglyad/Application/Application/View/`. A view used by one module stays in that module and starts with its feature name. Visual resources come through DoglyadUI or the application asset catalog. Networking uses `DoglyadNetwork`; persistence uses `DoglyadDatabase`.
 
 Access backend strings through `L10N` and `L10NKey`. Add English and Russian keys to `backend/main/config/{development,production}/{en,ru}/l10n_application.json` and update `L10NKey`. Use `{featureName}{KeyName}` with the required semantic suffixes; generic buttons use `button`. Local `Localizable.xcstrings` is reserved for bootstrap errors and mandatory major-version updates. Before the first release, migrate server and client keys together without compatibility aliases.
 

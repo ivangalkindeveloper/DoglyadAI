@@ -2,10 +2,11 @@ import DoglyadUI
 import SwiftUI
 
 struct PhotoViewZoomableImage: DView {
+    @EnvironmentObject private var l10n: L10N
+    @EnvironmentObject private var viewModel: PhotoViewViewModel
     @EnvironmentObject var theme: DTheme
 
-    @EnvironmentObject private var viewModel: PhotoViewViewModel
-
+    let photoId: UUID
     let image: UIImage
     let isSelected: Bool
     let contentInsets: EdgeInsets
@@ -50,11 +51,45 @@ struct PhotoViewZoomableImage: DView {
                     x: center.x + displayed.offset.width,
                     y: center.y + displayed.offset.height,
                 )
+                if viewModel.isRemarksVisible {
+                    ForEach(
+                        Array(
+                            viewModel.remarkPoints(
+                                for: photoId,
+                            ).enumerated(),
+                        ),
+                        id: \.element.id,
+                    ) { index, point in
+                        DImageAnnotationMarker(
+                            title: point.title,
+                            accessibilityLabel: l10n.resource(
+                                .photoViewRemarkButton,
+                                values: ["number": String(
+                                    index + 1,
+                                )],
+                            ),
+                            action: { viewModel.onTapRemark(
+                                point,
+                            ) },
+                        )
+                        .position(
+                            displayed.position(
+                                normalizedPoint: CGPoint(
+                                    x: point.x,
+                                    y: point.y,
+                                ),
+                                imageSize: imageSize,
+                                center: center,
+                            ),
+                        )
+                    }
+                }
             }
             .frame(
                 width: proxy.size.width,
                 height: proxy.size.height,
             )
+            .clipped()
             .contentShape(
                 Rectangle(),
             )

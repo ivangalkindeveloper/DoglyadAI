@@ -5,6 +5,19 @@
 Сравнение способов извлечения полей из готового пунктуированного текста:
 [IDEAL_TEXT_EXTRACTION_COMPARISON.md](IDEAL_TEXT_EXTRACTION_COMPARISON.md).
 
+## Подготовка случаев серверного разбора
+
+Скрипты подготовки читают `voiceFormSystemPrompt` из серверных `l10n.json`
+выбранного окружения. При запуске из корня репозитория укажите окружение
+и путь к пакету backend; подготовка не вызывает модель:
+
+```bash
+ENVIRONMENT=development PYTHONPATH=backend/main:. .venv311/bin/python \
+  -m evaluation.voice.free_speech_control build/voice-eval/free-speech-control.jsonl
+ENVIRONMENT=development PYTHONPATH=backend/main:. .venv311/bin/python \
+  -m evaluation.voice.quality_holdout build/voice-eval/quality-holdout.jsonl
+```
+
 ## Сквозная проверка текущего рабочего пути на iPhone
 
 Отдельная проверка Foundation Models от 10 октября завершена без GPU:

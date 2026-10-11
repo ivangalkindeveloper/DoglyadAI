@@ -43,7 +43,7 @@ struct ModuleStateTests {
                 .scan,
             ),
         )
-        weak var weakModel = model
+        weak let weakModel = model
         #expect(
             model?.isSubscriptionActive == false,
         )

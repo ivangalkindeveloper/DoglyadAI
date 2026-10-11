@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Depends, FastAPI
 
-from app.core.app_check import verify_app_check
 from app.core.inference_lifespan import InferenceLifespan
-from app.core.logging import setup_logging
-from app.core.request_id import request_id_middleware
+from app.core.request_id_middleware import request_id_middleware
+from app.core.setup_logging import setup_logging
+from app.core.verify_app_check import verify_app_check
 from app.route.generation import router as generation_router
 
 setup_logging()

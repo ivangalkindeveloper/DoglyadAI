@@ -37,7 +37,7 @@ def test_no_route_is_reachable_without_app_check() -> None:
     # sits under /v1, and /v1 is closed. Anything added outside it would be
     # reachable by whoever can reach the port, which is the thing App Check exists
     # to prevent here.
-    from app.core.app_check import verify_app_check
+    from app.core.verify_app_check import verify_app_check
     from app.main import app
 
     for route in app.routes:
@@ -63,7 +63,7 @@ def test_generation_is_behind_app_check() -> None:
     # the network, so an unverified caller must never get past the router. There is
     # no flag to switch this off — dropping the dependency is the only way to lose
     # it, which is what this test guards.
-    from app.core.app_check import verify_app_check
+    from app.core.verify_app_check import verify_app_check
     from app.main import app
 
     route = next(route for route in app.routes if getattr(route, "path", None) == "/v1/generation")
@@ -74,7 +74,7 @@ def test_generation_is_behind_app_check() -> None:
 def test_missing_token_is_rejected() -> None:
     # Rejected before Firebase is consulted, so this holds even on a service that
     # never finished initializing the SDK.
-    from app.core.app_check import verify_app_check
+    from app.core.verify_app_check import verify_app_check
 
     with pytest.raises(HTTPException) as error:
         asyncio.run(verify_app_check(None))
@@ -85,7 +85,7 @@ def test_missing_token_is_rejected() -> None:
 def test_generate_rejects_another_model() -> None:
     # One VM per model: accepting a different id would use the wrong model.
     from app.model.generation_request import GenerationRequest
-    from app.service.vllm import VLLMService
+    from app.service.vllm_service import VLLMService
 
     async def run() -> None:
         async with httpx.AsyncClient() as client:
@@ -106,7 +106,7 @@ def test_generate_rejects_another_model() -> None:
 def test_generate_forwards_images_and_json_schema() -> None:
     from app.model.generation_image import GenerationImage
     from app.model.generation_request import GenerationRequest
-    from app.service.vllm import VLLMService
+    from app.service.vllm_service import VLLMService
 
     seen: dict[str, object] = {}
     schema = {
@@ -154,7 +154,7 @@ def test_generate_forwards_images_and_json_schema() -> None:
 
 def test_generate_omits_optional_fields_and_accepts_plain_text() -> None:
     from app.model.generation_request import GenerationRequest
-    from app.service.vllm import VLLMService
+    from app.service.vllm_service import VLLMService
 
     seen: dict[str, object] = {}
 

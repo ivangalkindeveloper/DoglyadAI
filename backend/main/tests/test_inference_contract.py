@@ -9,7 +9,7 @@ import pytest
 
 from app.model.inference.inference_generation_image import InferenceGenerationImage
 from app.model.inference.inference_generation_request import InferenceGenerationRequest
-from app.model.inference.inference_response import InferenceGenerationResponse
+from app.model.inference.inference_generation_response import InferenceGenerationResponse
 
 _INFERENCE_DIRECTORY = Path(__file__).resolve().parents[2] / "inference"
 _INFERENCE_CONTRACT_CHECK = """

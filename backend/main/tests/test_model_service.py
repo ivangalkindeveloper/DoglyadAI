@@ -6,14 +6,16 @@ from pathlib import Path
 import httpx
 import pytest
 
+from app.core.neural_model_service_type import NeuralModelServiceType
 from app.core.variables import variables
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
 from app.service import create_model_service
-from app.service.base import ModelService
-from app.service.inference import InferenceService
+from app.service.inference_service import InferenceService
+from app.service.mock_neural_model_service import MockNeuralModelService
+from app.service.neural_model_service import NeuralModelService
 
 _MODEL = USExaminationNeuralModel(
     id="google/medgemma-4b-it",
@@ -64,7 +66,7 @@ def test_startup_fails_without_an_inference_map(
     http_client: httpx.AsyncClient,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    # Every request uses a dedicated GPU VM, so a missing map aborts startup.
+    # Real inference requires a GPU map regardless of the configuration environment.
     monkeypatch.setattr(variables, "inference_endpoints_path", None)
 
     with pytest.raises(RuntimeError):
@@ -113,9 +115,19 @@ def test_the_same_composition_in_every_environment(
     # ENVIRONMENT picks a config directory and nothing else: a report is
     # produced by the same services in development as in production. That is what
     # makes testing against a development backend meaningful.
-    built: list[type[ModelService]] = []
+    built: list[type[NeuralModelService]] = []
     for environment in ("development", "production"):
         monkeypatch.setattr(variables, "environment", environment)
         built.append(type(create_model_service(http_client, [_MODEL])))
 
     assert built[0] is built[1]
+
+
+def test_mock_service_does_not_need_an_inference_map(
+    http_client: httpx.AsyncClient,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setattr(variables, "model_service_type", NeuralModelServiceType.MOCK)
+    monkeypatch.setattr(variables, "inference_endpoints_path", None)
+
+    assert isinstance(create_model_service(http_client, [_MODEL]), MockNeuralModelService)

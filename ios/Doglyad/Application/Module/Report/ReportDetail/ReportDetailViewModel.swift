@@ -91,6 +91,7 @@ final class ReportDetailViewModel: DModuleViewModel {
             .photoView,
             arguments: PhotoViewArguments(
                 getPhotos: { [weak self] in self?.report.examinationData.photos ?? [] },
+                getPhotoRemarks: { [weak self] in self?.report.actualModelReport.photoRemarks ?? [] },
                 observePhotos: { [weak self] observer in self?.$report.map(
                     \.examinationData.photos,
                 ).sink(
@@ -204,6 +205,8 @@ final class ReportDetailViewModel: DModuleViewModel {
                 examinationData: self.report.examinationData,
                 template: self.getSelectedTemplate()?.content,
                 includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations(),
+                isPhotoRemarks: self.container.userSettingsRepository.getIsPhotoRemarks(),
+                isDescriptionRemarks: self.container.userSettingsRepository.getIsDescriptionRemarks(),
             )
             let ultrasoundConfig = self.container.applicationConfig.ultrasound
             let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
@@ -257,5 +260,21 @@ final class ReportDetailViewModel: DModuleViewModel {
     }
 
     var selectedNeuralModelTitle: String { getNeuralModel().title }
+
+    func photoCardConfiguration(
+        for photoId: UUID,
+    ) -> PhotoCardConfiguration {
+        let isPhotoRemarksAvailable = report.actualModelReport.photoRemarks.contains {
+            $0.photoId == photoId && !$0.points.isEmpty
+        }
+        return PhotoCardConfiguration(
+            badge: isPhotoRemarksAvailable ? .warning(
+                accessibilityLabel: container.l10n[
+                    .reportDetailPhotoRemarksLabel,
+                ],
+            ) : nil,
+        )
+    }
+
     var selectedTemplate: USExaminationTemplate? { getSelectedTemplate() }
 }

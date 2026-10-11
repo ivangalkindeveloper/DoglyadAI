@@ -57,6 +57,8 @@ enum DSpeechAnalyzerConfiguration {
             try await request.downloadAndInstall()
         case .unsupported:
             throw DSpeechError.unavailable
+        @unknown default:
+            throw DSpeechError.unavailable
         }
 
         switch await AssetInventory.status(
@@ -65,6 +67,8 @@ enum DSpeechAnalyzerConfiguration {
         case .installed:
             return
         case .supported, .downloading, .unsupported:
+            throw DSpeechError.unavailable
+        @unknown default:
             throw DSpeechError.unavailable
         }
     }

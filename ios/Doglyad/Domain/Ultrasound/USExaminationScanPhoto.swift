@@ -20,8 +20,8 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
         thumbnail: UIImage? = nil,
     ) {
         self.id = id
-        self.image = image
-        self.thumbnail = thumbnail ?? image.thumbnail(
+        self.image = image.uprightImage()
+        self.thumbnail = thumbnail ?? self.image.thumbnail(
             maxDimension: Self.thumbnailMaxDimension,
         )
     }
@@ -49,7 +49,10 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
         let container = try decoder.container(
             keyedBy: CodingKeys.self,
         )
-        id = UUID()
+        id = try container.decode(
+            UUID.self,
+            forKey: .id,
+        )
         let data = try container.decode(
             Data.self,
             forKey: .data,
@@ -57,8 +60,8 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
         let image = UIImage(
             data: data,
         ) ?? UIImage()
-        self.image = image
-        thumbnail = image.thumbnail(
+        self.image = image.uprightImage()
+        thumbnail = self.image.thumbnail(
             maxDimension: Self.thumbnailMaxDimension,
         )
     }
@@ -68,6 +71,10 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
     ) throws {
         var container = encoder.container(
             keyedBy: CodingKeys.self,
+        )
+        try container.encode(
+            id,
+            forKey: .id,
         )
 
         guard let options = encoder.userInfo[
@@ -112,6 +119,7 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
 
 private extension USExaminationScanPhoto {
     enum CodingKeys: String, CodingKey {
+        case id
         case data
     }
 }

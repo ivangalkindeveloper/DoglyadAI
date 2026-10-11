@@ -4,20 +4,21 @@ import logging
 from datetime import UTC, datetime
 
 from fastapi import APIRouter, HTTPException, Request
-from pydantic import ValidationError
 
-from app.core.config import get_application_locale_config, resolve_examination_title, resolve_neural_model
+from app.core.get_application_locale_config import get_application_locale_config
 from app.core.http_header import HttpHeader
 from app.core.limiter import limiter
-from app.core.locale import resolve_language
+from app.core.resolve_examination_title import resolve_examination_title
+from app.core.resolve_language import resolve_language
+from app.core.resolve_neural_model import resolve_neural_model
+from app.model.neural_model.neural_model_service_operation import NeuralModelServiceOperation
 from app.model.ultrasound.us_examination_model_report_response import USExaminationModelReportResponse
-from app.model.ultrasound.us_examination_report import (
-    USExaminationReport,
-    us_examination_report_structured_output,
-)
+from app.model.ultrasound.us_examination_report import USExaminationReport
 from app.model.ultrasound.us_examination_request import USExaminationRequest
-from app.prompt import resolve_prompt_factory
-from app.service import InferenceRequest, ModelService
+from app.prompt import PromptFactory
+from app.schema.us_examination_report_structured_output import us_examination_report_structured_output
+from app.service import NeuralModelService, NeuralModelServiceRequest
+from app.service.validate_report_remarks import validate_report_remarks
 
 logger = logging.getLogger(__name__)
 
@@ -33,7 +34,7 @@ async def generate_report(
     language_code = resolve_language(
         request.headers.get(HttpHeader.ACCEPT_LANGUAGE.value), get_application_locale_config()
     )
-    prompt_factory = resolve_prompt_factory(language_code)
+    prompt_factory = PromptFactory(language_code)
 
     settings = body.neuralModelSettings
     examination = body.examinationData
@@ -52,13 +53,17 @@ async def generate_report(
         len(examination.photos),
     )
 
-    model_service: ModelService = request.app.state.model_service
+    model_service: NeuralModelService = request.app.state.model_service
     response_text = await model_service.call(
-        InferenceRequest(
+        NeuralModelServiceRequest(
+            operation=NeuralModelServiceOperation.GENERATE_REPORT,
+            language_code=language_code,
             model_id=neural_model.id,
             system_prompt=prompt_factory.system_prompt(
                 settings,
                 include_recommendations=body.includeRecommendations,
+                is_photo_remarks=body.isPhotoRemarks and bool(examination.photos),
+                is_description_remarks=body.isDescriptionRemarks,
             ),
             prompt=prompt_factory.build_prompt(
                 examination,
@@ -66,7 +71,11 @@ async def generate_report(
                 body.template,
             ),
             structured_output=us_examination_report_structured_output(
-                include_recommendations=body.includeRecommendations
+                include_recommendations=body.includeRecommendations,
+                is_photo_remarks=body.isPhotoRemarks,
+                is_description_remarks=body.isDescriptionRemarks,
+                photo_ids=[photo.id for photo in examination.photos],
+                language_code=language_code,
             ),
             temperature=settings.temperature,
             max_tokens=settings.maxTokens,
@@ -78,7 +87,8 @@ async def generate_report(
 
     try:
         report = USExaminationReport.model_validate_json(response_text)
-    except ValidationError as error:
+        validate_report_remarks(report, body)
+    except ValueError as error:
         logger.warning("Generated report does not match the response schema: %s", type(error).__name__)
         raise HTTPException(status_code=502, detail="Invalid report from inference service") from error
 

@@ -27,10 +27,14 @@ struct UserSettingsScreen: View {
                 onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 getInitialEmail: { [ultrasoundViewModel] in ultrasoundViewModel.userEmail },
                 getInitialIncludeRecommendations: { [ultrasoundViewModel] in ultrasoundViewModel.includeRecommendations },
-                onSaved: { [ultrasoundViewModel] email, includeRecommendations in
+                getInitialIsPhotoRemarks: { [ultrasoundViewModel] in ultrasoundViewModel.isPhotoRemarks },
+                getInitialIsDescriptionRemarks: { [ultrasoundViewModel] in ultrasoundViewModel.isDescriptionRemarks },
+                onSaved: { [ultrasoundViewModel] email, includeRecommendations, isPhotoRemarks, isDescriptionRemarks in
                     ultrasoundViewModel.saveUserSettings(
                         userEmail: email,
                         includeRecommendations: includeRecommendations,
+                        isPhotoRemarks: isPhotoRemarks,
+                        isDescriptionRemarks: isDescriptionRemarks,
                     )
                 },
             ),

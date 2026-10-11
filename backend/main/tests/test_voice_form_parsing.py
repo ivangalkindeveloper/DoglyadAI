@@ -11,16 +11,19 @@ import pytest
 from fastapi import HTTPException
 from starlette.requests import Request
 
-from app.core.config import load_configs
-from app.model.inference.inference_request import InferenceRequest
+from app.core.language_code import LanguageCode
+from app.core.load_configs import load_configs
+from app.core.resolve_localized_text import resolve_localized_text
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.model.ultrasound.us_voice_form_parse_request import USVoiceFormParseRequest
 from app.route.ultrasound import parse_dictation as route
-from app.service.voice_form_validation import validate_voice_form_generation
+from app.service.validate_voice_form_generation import validate_voice_form_generation
+from tests.support.voice_form_parsing.fake_neural_model_service import FakeNeuralModelService
 
 
 def test_voice_parsing_config_loads_for_both_environments() -> None:
-    from app.core.config import _CONFIG_BASE, get_voice_parsing_config
+    from app.core.get_voice_parsing_config import get_voice_parsing_config
+    from app.core.load_configs import _CONFIG_BASE
     from app.model.ultrasound.us_voice_form_parsing_config import USVoiceFormParsingConfig
 
     for environment in ("development", "production"):
@@ -301,20 +304,10 @@ def test_generation_schema_caps_repeated_items() -> None:
     assert all(set(variant["required"]) == {"field_id", "value", "evidence", "accuracy"} for variant in variants)
 
 
-class FakeModelService:
-    def __init__(self, response: Any) -> None:
-        self.response = response
-        self.request: InferenceRequest | None = None
-
-    async def call(self, request: InferenceRequest) -> str:
-        self.request = request
-        return json.dumps(self.response, ensure_ascii=False)
-
-
 @pytest.mark.parametrize("language,expected_fragment", [("en_US", "Extract only"), ("ru_RU", "Извлеки только")])
 def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(language: str, expected_fragment: str) -> None:
     load_configs()
-    service = FakeModelService(
+    service = FakeNeuralModelService(
         [{"field_id": "patient_weight_kg", "value": 72, "evidence": "вес 72 килограмма", "accuracy": "full"}]
     )
     request = Request(
@@ -348,6 +341,7 @@ def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(language: st
     assert json.loads(service.request.prompt)["transcript"] == body.transcript
     assert json.loads(service.request.structured_output)["type"] == "array"
     assert expected_fragment in service.request.system_prompt
+    assert service.request.system_prompt == resolve_localized_text(LanguageCode(language[:2]), "voiceFormSystemPrompt")
 
 
 def test_route_rejects_unknown_examination_type() -> None:
@@ -358,7 +352,7 @@ def test_route_rejects_unknown_examination_type() -> None:
             "method": "POST",
             "path": "/v1/ultrasound/parse_dictation",
             "headers": [],
-            "app": SimpleNamespace(state=SimpleNamespace(model_service=FakeModelService({}))),
+            "app": SimpleNamespace(state=SimpleNamespace(model_service=FakeNeuralModelService({}))),
             "state": {"request_id": "c" * 32},
         }
     )

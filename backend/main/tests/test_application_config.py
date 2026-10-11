@@ -9,10 +9,13 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-import app.core.config as config_module
-from app.core.config import _CONFIG_DIR, load_configs
-from app.core.locale import SUPPORTED_LANGUAGES, resolve_language
+import app.core.load_configs as config_module
+from app.core.load_configs import _CONFIG_DIR, load_configs
+from app.core.resolve_language import SUPPORTED_LANGUAGES, resolve_language
+from app.core.validate_prompt_localizations import PROMPT_LOCALIZATION_KEYS
 from app.model.application_locale_config import ApplicationLocaleConfig
+from app.model.inference.inference_generation_request import InferenceGenerationRequest
+from app.model.neural_model_settings import NeuralModelSettings
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
@@ -62,7 +65,7 @@ def _collect_locale_references(value: object, references: dict[str, set[str]]) -
 def client() -> Iterator[TestClient]:
     # The test client skips lifespan because Firebase credentials are not available here.
     load_configs()
-    from app.core.app_check import verify_app_check
+    from app.core.verify_app_check import verify_app_check
     from app.main import app
 
     async def allow_app_check() -> None:
@@ -119,6 +122,21 @@ def test_missing_or_unsupported_language_defaults_to_english(client: TestClient)
         assert isinstance(response.json()[0]["title"], str)
 
 
+@pytest.mark.parametrize("environment", ("development", "production"))
+def test_default_report_settings_are_valid_for_generation(environment: str) -> None:
+    application = _document(_CONFIG_DIR.parent / environment, "application.json")
+    settings = NeuralModelSettings.model_validate(application["ultrasound"]["neuralModel"])
+
+    request = InferenceGenerationRequest(
+        modelId="example/model",
+        prompt="Describe the scan",
+        temperature=settings.temperature,
+        maxTokens=settings.maxTokens,
+    )
+
+    assert request.maxTokens == application["ultrasound"]["neuralModel"]["maxTokens"]
+
+
 def test_language_selection_uses_configured_default_and_codes() -> None:
     locale_config = ApplicationLocaleConfig(defaultCode="ru", codes=["ru"])
     assert resolve_language(None, locale_config).value == "ru"
@@ -165,7 +183,7 @@ def test_accept_language_priority(client: TestClient, header: str, expected: str
 
 @pytest.mark.parametrize("path", (*_ENDPOINTS, "/v1/templates/ready_made_list"))
 def test_config_is_protected_by_app_check(client: TestClient, path: str) -> None:
-    from app.core.app_check import verify_app_check
+    from app.core.verify_app_check import verify_app_check
 
     route = next(r for r in client.app.routes if getattr(r, "path", None) == path)
     dependencies = [call.call for call in route.dependant.dependencies]  # type: ignore[attr-defined]
@@ -249,7 +267,8 @@ def test_config_references_complete_locale_catalogs(environment: str) -> None:
     assert all("description" not in model for model in models)
     assert all(template["examinationType"] in set(type_ids) for template in templates)
 
-    assert refs == set(texts["en"])
+    # Server prompt/schema consumers resolve these keys directly from the catalog.
+    assert refs | PROMPT_LOCALIZATION_KEYS == set(texts["en"])
     assert "contextualStringsLocaleKey" not in references
     assert USExaminationNeuralModelAccessibility(models[0]["accessibility"]) is (
         USExaminationNeuralModelAccessibility.AVAILABLE

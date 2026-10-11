@@ -3,6 +3,96 @@ import Foundation
 import Testing
 
 struct PhotoViewImageTransformTests {
+    @Test func annotationCoordinatesFollowImageScaleAndOffset() {
+        let center = CGPoint(
+            x: 200,
+            y: 400,
+        )
+        let imageSize = CGSize(
+            width: 300,
+            height: 200,
+        )
+        let normalized = CGPoint(
+            x: 0.25,
+            y: 0.75,
+        )
+        let initial = PhotoViewImageTransform().position(
+            normalizedPoint: normalized,
+            imageSize: imageSize,
+            center: center,
+        )
+        #expect(
+            initial == CGPoint(
+                x: 125,
+                y: 450,
+            ),
+        )
+        let transform = PhotoViewImageTransform(
+            scale: 3,
+            offset: CGSize(
+                width: 20,
+                height: -40,
+            ),
+        )
+        let result = transform.position(
+            normalizedPoint: normalized,
+            imageSize: imageSize,
+            center: center,
+        )
+        #expect(
+            result == CGPoint(
+                x: -5,
+                y: 510,
+            ),
+        )
+        #expect(
+            transform.position(
+                normalizedPoint: CGPoint(
+                    x: 0.5,
+                    y: 0.5,
+                ),
+                imageSize: imageSize,
+                center: center,
+            ) == CGPoint(
+                x: 220,
+                y: 360,
+            ),
+        )
+    }
+
+    @Test func zoomAroundAnnotationKeepsItAtTheTouchedPosition() {
+        let center = CGPoint(
+            x: 200,
+            y: 400,
+        )
+        let imageSize = CGSize(
+            width: 300,
+            height: 200,
+        )
+        let normalized = CGPoint(
+            x: 0.75,
+            y: 0.25,
+        )
+        let initial = PhotoViewImageTransform()
+        let position = initial.position(
+            normalizedPoint: normalized,
+            imageSize: imageSize,
+            center: center,
+        )
+        let zoomed = initial.zoomed(
+            to: 3,
+            around: position,
+            center: center,
+        )
+        #expect(
+            zoomed.position(
+                normalizedPoint: normalized,
+                imageSize: imageSize,
+                center: center,
+            ) == position,
+        )
+    }
+
     @Test func centerZoomDoesNotDrift() {
         let center = CGPoint(
             x: 200,

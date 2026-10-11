@@ -8,32 +8,7 @@ import pytest
 from app.core.variables import variables
 from app.model.report_email import ReportEmail
 from app.route import send_report_email as route
-
-
-class FakeSMTP:
-    instance: FakeSMTP | None = None
-
-    def __init__(self, host: str, port: int) -> None:
-        self.host = host
-        self.port = port
-        self.login_arguments: tuple[str, str] | None = None
-        self.message: str | None = None
-        self.quit_called = False
-        FakeSMTP.instance = self
-
-    def starttls(self) -> None:
-        return None
-
-    def login(self, sender: str, password: str) -> None:
-        self.login_arguments = (sender, password)
-
-    def sendmail(self, sender: str, recipient: str, message: str) -> None:
-        assert sender == "sender@example.com"
-        assert recipient == "recipient@example.com"
-        self.message = message
-
-    def quit(self) -> None:
-        self.quit_called = True
+from tests.support.send_report_email.fake_smtp import FakeSMTP
 
 
 def test_send_report_email_adds_binary_attachments(monkeypatch: pytest.MonkeyPatch) -> None:

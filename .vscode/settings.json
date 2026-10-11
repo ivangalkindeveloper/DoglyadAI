@@ -1,6 +1,22 @@
 {
     "python.defaultInterpreterPath": "${workspaceFolder}/.venv311/bin/python",
     "python.terminal.activateEnvironment": true,
+    "python.analysis.exclude": [
+        "build",
+        "competition"
+    ],
+    "python.analysis.ignore": [
+        "competition"
+    ],
+    "files.exclude": {
+        "**/competition": true
+    },
+    "files.watcherExclude": {
+        "**/competition/**": true
+    },
+    "search.exclude": {
+        "**/competition/**": true
+    },
     "files.associations": {
         "**/backend/main/app/route/templates/*.py": "python"
     }

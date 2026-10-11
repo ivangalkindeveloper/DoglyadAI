@@ -5,7 +5,7 @@ import asyncio
 import pytest
 from fastapi import HTTPException
 
-from app.core.app_check import APP_CHECK_HEADER, verify_app_check
+from app.core.verify_app_check import APP_CHECK_HEADER, verify_app_check
 
 
 def test_every_v1_route_is_behind_app_check() -> None:

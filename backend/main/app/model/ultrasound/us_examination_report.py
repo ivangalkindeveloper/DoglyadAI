@@ -1,19 +1,18 @@
 from __future__ import annotations
 
-import json
-
 from pydantic import BaseModel, ConfigDict, Field, field_validator
+
+from app.model.ultrasound.us_examination_photo_remarks import USExaminationPhotoRemarks
 
 
 class USExaminationReport(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    description: str = Field(description="Detailed examination findings")
-    conclusion: str = Field(description="Concise interpretation of the findings")
-    recommendations: str | None = Field(
-        default=None,
-        description="Recommended treatment or follow-up actions when requested",
-    )
+    description: str = Field(min_length=1)
+    conclusion: str = Field(min_length=1)
+    recommendations: str | None = None
+    descriptionRemarks: str | None = None
+    photoRemarks: list[USExaminationPhotoRemarks] = Field(default_factory=list)
 
     @field_validator("description", "conclusion")
     @classmethod
@@ -23,16 +22,9 @@ class USExaminationReport(BaseModel):
             raise ValueError("Report sections must not be blank")
         return stripped
 
-    @field_validator("recommendations")
+    @field_validator("recommendations", "descriptionRemarks")
     @classmethod
-    def normalize_optional_recommendations(cls, value: str | None) -> str | None:
+    def normalize_optional_sections(cls, value: str | None) -> str | None:
         if value is None:
             return None
         return value.strip() or None
-
-
-def us_examination_report_structured_output(include_recommendations: bool) -> str:
-    schema = USExaminationReport.model_json_schema()
-    if not include_recommendations:
-        schema["properties"].pop("recommendations", None)
-    return json.dumps(schema, ensure_ascii=False, separators=(",", ":"))

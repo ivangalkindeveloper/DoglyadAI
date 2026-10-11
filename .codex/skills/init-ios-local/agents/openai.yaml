@@ -1,0 +1,3 @@
+interface:
+  display_name: "Prepare local iOS"
+  short_description: "Prepare Doglyad iOS for a local backend run"

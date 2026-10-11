@@ -35,6 +35,15 @@
 Каталоги загружаются и проверяются при старте backend и включаются в Docker image.
 Переводы для приложения присутствуют в `development` и `production`, для `en` и `ru`.
 
+Ключи `report*` в `l10n.json` содержат все инструкции и подписи промпта протокола,
+а также описания его structured output схемы из `app/schema/us_examination_report_structured_output.py`.
+Точка замечания содержит координаты, краткий `title` и развёрнутый `description`.
+Ключ `voiceFormSystemPrompt` содержит системные инструкции серверного разбора
+диктовки из `app/prompt/voice_form_system_prompt.py`; `app/prompt/voice_form_prompt.py` упаковывает входные данные.
+Наличие ключей и совпадение параметров шаблонов RU/EN проверяются при старте
+backend через `PROMPT_LOCALIZATION_KEYS`; в клиентский UI-каталог эти
+инструкции и описания схемы не передаются.
+
 ## Инициализация и использование в iOS
 
 ```mermaid

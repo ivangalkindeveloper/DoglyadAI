@@ -6,7 +6,7 @@ from fastapi import APIRouter
 
 from app.model.generation_request import GenerationRequest
 from app.model.generation_response import GenerationResponse
-from app.service import resolve_vllm_service
+from app.service.resolve_vllm_service import resolve_vllm_service
 
 logger = logging.getLogger(__name__)
 

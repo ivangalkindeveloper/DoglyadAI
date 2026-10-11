@@ -126,6 +126,12 @@ final class RouterBuilder: RouterBuilderProtocol {
                     arguments: route.arguments as! ImportMediaArguments,
                 ),
             )
+        case .photoRemark:
+            AnyView(
+                PhotoRemarkBottomSheet(
+                    arguments: route.arguments as! PhotoRemarkArguments,
+                ),
+            )
         case .scanCamera:
             AnyView(
                 ScanCameraBottomSheet(

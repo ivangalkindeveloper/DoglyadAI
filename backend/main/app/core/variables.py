@@ -4,6 +4,8 @@ from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from app.core.neural_model_service_type import NeuralModelServiceType
+
 
 class Variables(BaseSettings):
     model_config = SettingsConfigDict(extra="ignore")
@@ -19,13 +21,16 @@ class Variables(BaseSettings):
     log_retention_days: int = 365
 
     # Firebase service account used to verify App Check tokens. Verification is
-    # unconditional — every environment reaches a real model — so startup aborts
-    # without this rather than serving unverified callers.
+    # unconditional, including local mock generation.
     firebase_credentials_path: Path | None = None
 
+    # Explicitly selects local fixtures instead of GPU inference. ENVIRONMENT
+    # continues to select configuration documents only.
+    model_service_type: NeuralModelServiceType = NeuralModelServiceType.INFERENCE
+
     # Inference path: one GPU VM per model, each running backend/inference
-    # next to its own vLLM instance. Path to a modelId -> URL map; required in every
-    # environment, because every environment takes this path. See InferenceService.
+    # next to its own vLLM instance. Path to a modelId -> URL map; required when
+    # MODEL_SERVICE_TYPE=inference in every environment. See InferenceService.
     inference_endpoints_path: Path | None = None
     # Timeouts nest outside-in, with each layer wider than the one it wraps:
     #

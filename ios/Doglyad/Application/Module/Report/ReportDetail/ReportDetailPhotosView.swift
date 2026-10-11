@@ -12,6 +12,7 @@ struct ReportDetailPhotosView: DView {
             showsIndicators: false,
         ) {
             HStack(
+                alignment: .bottom,
                 spacing: .zero,
             ) {
                 ForEach(
@@ -19,19 +20,18 @@ struct ReportDetailPhotosView: DView {
                 ) { photo in
                     PhotoCardView(
                         image: photo.thumbnail,
+                        configuration: viewModel.photoCardConfiguration(
+                            for: photo.id,
+                        ),
                         onTap: { viewModel.onTapPhoto(
                             photo,
                         ) },
                     )
                 }
-                .padding(
-                    [.horizontal],
-                    size.s2,
-                )
             }
             .padding(
-                [.horizontal],
-                size.s14,
+                .horizontal,
+                size.s16,
             )
         }
         .padding(

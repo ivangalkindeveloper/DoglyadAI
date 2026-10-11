@@ -43,11 +43,15 @@ struct ScanPhotoListView: DView {
                             ) { photo in
                                 PhotoCardView(
                                     image: photo.thumbnail,
-                                    actionDelete: {
-                                        viewModel.onTapDeletePhoto(
-                                            photo: photo,
-                                        )
-                                    },
+                                    configuration: PhotoCardConfiguration(
+                                        badge: .delete(
+                                            action: {
+                                                viewModel.onTapDeletePhoto(
+                                                    photo: photo,
+                                                )
+                                            },
+                                        ),
+                                    ),
                                     onTap: {
                                         viewModel.onTapPhoto(
                                             photo,

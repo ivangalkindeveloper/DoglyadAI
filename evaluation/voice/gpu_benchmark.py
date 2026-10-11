@@ -16,10 +16,12 @@ from evaluation.voice.server_parse import load_cases, score_response, summarize
 
 
 def prepare(output: Path, *, natural_dates: bool = False, quality_regressions: bool = False) -> None:
-    from app.core.config import load_configs, resolve_examination_title
     from app.core.language_code import LanguageCode
+    from app.core.load_configs import load_configs
+    from app.core.resolve_examination_title import resolve_examination_title
     from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
-    from app.prompt.voice_form import voice_form_prompt, voice_form_system_prompt
+    from app.prompt.voice_form_prompt import voice_form_prompt
+    from app.prompt.voice_form_system_prompt import voice_form_system_prompt
 
     load_configs()
     schema = json.loads(USVoiceFormGeneration.structured_output())
@@ -95,10 +97,10 @@ def score(
     cases_path: Path, results_path: Path, output_path: Path, *, baseline_validator_path: Path | None = None
 ) -> None:
     from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
-    from app.service.voice_form_validation import validate_voice_form_generation
+    from app.service.validate_voice_form_generation import validate_voice_form_generation
 
     validator = validate_voice_form_generation
-    validator_path = ROOT / "backend/main/app/service/voice_form_validation.py"
+    validator_path = ROOT / "backend/main/app/service/validate_voice_form_generation.py"
     if baseline_validator_path is not None:
         spec = importlib.util.spec_from_file_location("voice_benchmark_baseline", baseline_validator_path)
         if spec is None or spec.loader is None:
@@ -157,14 +159,24 @@ def score(
             else {
                 name: file_sha256(ROOT / "backend/main/app/service" / name)
                 for name in (
-                    "voice_form_validation.py",
-                    "voice_form_number_evidence.py",
-                    "voice_form_clinical_text.py",
-                    "voice_form_birth_date.py",
-                    "voice_form_measurement.py",
-                    "voice_form_numbers.py",
-                    "voice_form_gender.py",
-                    "voice_form_name_evidence.py",
+                    "clinical_value_is_supported.py",
+                    "examination_number_markers.py",
+                    "gender_from_evidence.py",
+                    "has_birth_date_cue.py",
+                    "has_content_outside_evidence.py",
+                    "has_examination_number_evidence.py",
+                    "labeled_birth_date.py",
+                    "labeled_clinical_text.py",
+                    "labeled_examination_number.py",
+                    "labeled_measurement.py",
+                    "labeled_patient_gender.py",
+                    "patient_name_metadata_evidence.py",
+                    "repair_patient_name_evidence.py",
+                    "source_birth_date.py",
+                    "source_measurement.py",
+                    "source_number.py",
+                    "source_year.py",
+                    "validate_voice_form_generation.py",
                 )
             }
         ),

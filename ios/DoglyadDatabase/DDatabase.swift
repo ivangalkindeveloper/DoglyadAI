@@ -16,6 +16,8 @@ public final class DDatabase: DDatabaseProtocol {
                 USExaminationDataDB.self,
                 USExaminationScanPhotoDB.self,
                 USExaminationModelReportDB.self,
+                USExaminationPhotoRemarksDB.self,
+                USExaminationPhotoRemarkPointDB.self,
                 USExaminationTemplateDB.self,
                 USExaminationDraftDB.self,
                 USExaminationDraftPhotoDB.self,

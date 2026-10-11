@@ -107,6 +107,6 @@ cd backend/inference
 ../../.venv311/bin/python -m pytest
 ```
 
-Development dependencies are listed in `requirements-dev.txt`. The service intentionally mirrors the `backend/main/` structure (`app/core`, `app/model`, `app/route`, and `app/service`) and keeps local copies of `logging.py` and `app_check.py`. The deployments are independent, while these files are small and change infrequently.
+Development dependencies are listed in `requirements-dev.txt`. The service intentionally mirrors the `backend/main/` structure (`app/core`, `app/model`, `app/route`, and `app/service`) and keeps local copies of `setup_logging.py`, `init_app_check.py`, and `verify_app_check.py`. The deployments are independent, while these files are small and change infrequently.
 
-The two services have almost identical `app_check.py` modules and both enforce validation unconditionally. A shared package would add deployment coupling for very little code.
+The two services have almost identical `init_app_check.py` and `verify_app_check.py` modules and both enforce validation unconditionally. A shared package would add deployment coupling for very little code.

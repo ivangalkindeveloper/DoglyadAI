@@ -53,10 +53,12 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
                 ).lowercased(
                     with: locale,
                 )
-            if nextWord.flatMap { DNeuralDictationUnit.fromWord(
-                $0,
-                localization: localization,
-            ) } == nil {
+            if nextWord.flatMap(
+                { DNeuralDictationUnit.fromWord(
+                    $0,
+                    localization: localization,
+                ) },
+            ) == nil {
                 append(
                     .examinationNumber,
                     .text(

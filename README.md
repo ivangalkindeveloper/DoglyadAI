@@ -136,6 +136,8 @@ The backend is deliberately split into two independently deployable services:
 
 `ENVIRONMENT` selects either `backend/main/config/development` or `backend/main/config/production`. The application downloads the same configuration documents from the deployed main backend so the app and backend cannot disagree about newly published models or examination types.
 
+For local testing without GPU inference, select VS Code's `Backend: Local Mock` profile. It uses development configuration and returns RU/EN fixtures for report generation and server-side dictation parsing, while App Check and the rest of the main backend remain active. See the [local backend guide](backend/main/README.md).
+
 ## Service integrations
 
 - **Firebase App Check** authenticates the iOS client at both backend boundaries.

@@ -1,0 +1,53 @@
+{
+    "transcript": "Номер исследования 123. Пациент Иванов Иван Иванович. Пол мужчина. Дата рождения 15 января 1985 года. Рост 180 сантиметров. Вес 75 килограммов. Жалобы: боль в животе. Описание исследования: контуры печени ровные, эхогенность не изменена.",
+    "generation": [
+        {
+            "field_id": "examination_number",
+            "value": "123",
+            "evidence": "Номер исследования 123",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_name",
+            "value": "Иванов Иван Иванович",
+            "evidence": "Пациент Иванов Иван Иванович",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_gender",
+            "value": "male",
+            "evidence": "Пол мужчина",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_date_of_birth",
+            "value": "1985-01-15",
+            "evidence": "Дата рождения 15 января 1985 года",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_height_cm",
+            "value": 180,
+            "evidence": "Рост 180 сантиметров",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_weight_kg",
+            "value": 75,
+            "evidence": "Вес 75 килограммов",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "patient_complaints",
+            "value": "боль в животе",
+            "evidence": "Жалобы: боль в животе",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "examination_description",
+            "value": "контуры печени ровные, эхогенность не изменена.",
+            "evidence": "Описание исследования: контуры печени ровные, эхогенность не изменена.",
+            "accuracy": "full"
+        }
+    ]
+}

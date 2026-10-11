@@ -1,6 +1,29 @@
 import UIKit
 
 extension UIImage {
+    func uprightImage() -> UIImage {
+        switch imageOrientation {
+        case .up:
+            return self
+        case .upMirrored, .down, .downMirrored, .left, .leftMirrored, .right, .rightMirrored:
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = scale
+            return UIGraphicsImageRenderer(
+                size: size,
+                format: format,
+            ).image { _ in
+                draw(
+                    in: CGRect(
+                        origin: .zero,
+                        size: size,
+                    ),
+                )
+            }
+        @unknown default:
+            return self
+        }
+    }
+
     func resized(
         maxDimension: CGFloat,
     ) -> UIImage {

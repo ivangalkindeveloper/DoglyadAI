@@ -51,7 +51,7 @@
         },
         "scanPhotoMaxNumber": 6,
         "scanPhotoResizeMaxDimension": 128,
-        "scanPhotoCompressionQuality": 0.3,
+        "scanPhotoCompressionQuality": 0.5,
         "defaultPatientDateOfBirthGap": 25,
         "defaultPatientHeightCM": 180,
         "defaultPatientWeightKG": 60

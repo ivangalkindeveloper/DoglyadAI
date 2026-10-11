@@ -4,11 +4,11 @@ from fastapi import APIRouter, Depends, FastAPI
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
-from app.core.app_check import verify_app_check
 from app.core.limiter import limiter
-from app.core.logging import setup_logging
 from app.core.main_lifespan import MainLifespan
-from app.core.request_id import request_id_middleware
+from app.core.request_id_middleware import request_id_middleware
+from app.core.setup_logging import setup_logging
+from app.core.verify_app_check import verify_app_check
 from app.route.application_config import router as application_config_router
 from app.route.l10n import router_v1 as l10n_router_v1
 from app.route.send_report_email import router as send_report_email_router

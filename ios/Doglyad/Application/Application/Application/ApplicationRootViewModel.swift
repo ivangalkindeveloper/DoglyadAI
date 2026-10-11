@@ -19,7 +19,7 @@ final class ApplicationRootViewModel: ObservableObject {
     @MainActor
     func initialize() {
         isLoading = true
-        Task {
+        Task { [self] in
             await DependencyInitializer<InitializationProcess, DependencyContainer>(
                 createProcess: InitializationProcess.init,
                 stepSets: [

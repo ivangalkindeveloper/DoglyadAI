@@ -9,12 +9,14 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-import app.core.config as config
-from app.core.app_check import verify_app_check
+import app.core.load_configs as config
+from app.core.get_application_locale_config import get_application_locale_config
 from app.core.http_header import HttpHeader
 from app.core.language_code import LanguageCode
-from app.core.locale import SUPPORTED_LANGUAGES
+from app.core.resolve_language import SUPPORTED_LANGUAGES
+from app.core.verify_app_check import verify_app_check
 from app.main import app
+from app.prompt.voice_form_system_prompt import voice_form_system_prompt
 
 _ROOT = Path(__file__).resolve().parents[3]
 _CONFIG = _ROOT / "backend/main/config"
@@ -54,9 +56,7 @@ def localized_client() -> Iterator[TestClient]:
 def test_l10n_returns_only_the_selected_language(localized_client: TestClient, header: str | None) -> None:
     headers = {} if header is None else {HttpHeader.ACCEPT_LANGUAGE.value: header}
     response = localized_client.get("/v1/l10n", headers=headers)
-    language = (
-        LanguageCode.RU if header and header.startswith("ru") else config.get_application_locale_config().defaultCode
-    )
+    language = LanguageCode.RU if header and header.startswith("ru") else get_application_locale_config().defaultCode
     if header and header.startswith("en"):
         language = LanguageCode.EN
     directory = config._CONFIG_DIR / language.value
@@ -174,5 +174,49 @@ def test_startup_rejects_broken_l10n(
         catalog["dictation"]["numbers"]["ones"].pop()
     path.write_text(json.dumps(catalog, ensure_ascii=False), encoding="utf-8")
     monkeypatch.setattr(config, "_CONFIG_DIR", tmp_path)
+    with pytest.raises(RuntimeError, match=message):
+        config.load_configs()
+
+
+@pytest.mark.parametrize("environment", ["development", "production"])
+@pytest.mark.parametrize("language", list(LanguageCode))
+def test_voice_prompt_uses_selected_server_catalog(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, environment: str, language: LanguageCode
+) -> None:
+    shutil.copytree(_CONFIG / environment, tmp_path, dirs_exist_ok=True)
+    expected = f"Voice extraction instructions: {environment}/{language.value}"
+    path = tmp_path / language.value / "l10n.json"
+    catalog = _json(path)
+    catalog["voiceFormSystemPrompt"] = expected
+    path.write_text(json.dumps(catalog, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(config, "_CONFIG_DIR", tmp_path)
+    config.load_configs()
+
+    assert voice_form_system_prompt(language) == expected
+
+
+@pytest.mark.parametrize(
+    ("translation", "message"),
+    [
+        (None, "Missing localization key: voiceFormSystemPrompt"),
+        (" ", "Expected non-empty localized text: voiceFormSystemPrompt"),
+        ("Instructions with {unknown}", "Prompt localization placeholders differ: voiceFormSystemPrompt"),
+    ],
+)
+def test_startup_rejects_broken_voice_prompt(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, translation: str | None, message: str
+) -> None:
+    shutil.copytree(_CONFIG / "development", tmp_path, dirs_exist_ok=True)
+    languages = list(LanguageCode) if translation is None else [LanguageCode.RU]
+    for language in languages:
+        path = tmp_path / language.value / "l10n.json"
+        catalog = _json(path)
+        if translation is None:
+            del catalog["voiceFormSystemPrompt"]
+        else:
+            catalog["voiceFormSystemPrompt"] = translation
+        path.write_text(json.dumps(catalog, ensure_ascii=False), encoding="utf-8")
+    monkeypatch.setattr(config, "_CONFIG_DIR", tmp_path)
+
     with pytest.raises(RuntimeError, match=message):
         config.load_configs()

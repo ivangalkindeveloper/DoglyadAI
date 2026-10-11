@@ -1,0 +1,22 @@
+{
+    "report": {
+        "description": "Local mock report. The examination is presented in standard views. This demonstration text lets you review report layout, copying, saving and delivery without calling a neural model.\n\nThe uploaded images and examination notes are not analyzed in this mode.",
+        "conclusion": "Demonstration conclusion for a local test examination.",
+        "recommendations": "Demonstration recommendation: review the examination notes and recorded measurements before completing the report.",
+        "descriptionRemarks": "Demonstration remark: specify the examination conditions and units of measurement. This text lets you check the description remarks section."
+    },
+    "photoRemarkPoints": [
+        {
+            "x": 0.35,
+            "y": 0.4,
+            "title": "Check the measurement",
+            "description": "Demonstration image remark: check the position of the measurement calipers and confirm the units. The point is fixed for UI testing and does not represent image analysis."
+        },
+        {
+            "x": 0.68,
+            "y": 0.62,
+            "title": "Clarify the region boundaries",
+            "description": "Demonstration image remark: check that the region of interest is fully visible. This second point lets you test selecting different remarks on the same image."
+        }
+    ]
+}

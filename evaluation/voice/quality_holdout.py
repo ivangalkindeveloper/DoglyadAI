@@ -189,9 +189,12 @@ PROFILES: dict[str, list[dict[str, Any]]] = {
 
 def prepare(output: Path, *, confirmation: bool = False) -> None:
     from app.core.language_code import LanguageCode
+    from app.core.load_configs import load_configs
     from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
-    from app.prompt.voice_form import voice_form_prompt, voice_form_system_prompt
+    from app.prompt.voice_form_prompt import voice_form_prompt
+    from app.prompt.voice_form_system_prompt import voice_form_system_prompt
 
+    load_configs()
     profiles_by_locale = PROFILES
     version = "qualityHoldout-v3"
     if confirmation:

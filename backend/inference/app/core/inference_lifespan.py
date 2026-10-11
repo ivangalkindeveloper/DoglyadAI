@@ -7,9 +7,9 @@ from types import TracebackType
 import httpx
 from fastapi import FastAPI
 
-from app.core.app_check import init_app_check
+from app.core.init_app_check import init_app_check
 from app.core.variables import variables
-from app.service import init_services
+from app.service.init_services import init_services
 
 logger = logging.getLogger(__name__)
 

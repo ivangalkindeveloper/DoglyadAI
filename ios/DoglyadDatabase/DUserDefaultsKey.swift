@@ -11,4 +11,7 @@ enum DUserDefaultsKey: String, CaseIterable {
     case selectedUSExaminationTemplateId
     case userEmail
     case includeRecommendations
+    case isPhotoRemarks
+    case isDescriptionRemarks
+    case isRemarksVisible
 }

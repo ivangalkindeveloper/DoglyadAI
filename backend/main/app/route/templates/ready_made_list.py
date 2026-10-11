@@ -4,10 +4,11 @@ import logging
 
 from fastapi import APIRouter, Request, Response
 
-from app.core.config import get_application_locale_config, resolve_ready_made_templates
+from app.core.get_application_locale_config import get_application_locale_config
 from app.core.http_header import HttpHeader
 from app.core.limiter import limiter
-from app.core.locale import resolve_language
+from app.core.resolve_language import resolve_language
+from app.core.resolve_ready_made_templates import resolve_ready_made_templates
 from app.model.ultrasound.us_examination_ready_made_template_response import (
     USExaminationReadyMadeTemplateResponse,
 )

@@ -8,6 +8,7 @@ final class PhotoViewViewModel: DModuleViewModel {
     private var isClosing = false
     @Published private(set) var photos: [USExaminationScanPhoto]
     @Published var selectedPhotoID: UUID
+    @Published private(set) var isRemarksVisible: Bool
 
     init(
         container: DependencyContainer,
@@ -20,6 +21,7 @@ final class PhotoViewViewModel: DModuleViewModel {
         arguments: PhotoViewArguments,
     ) {
         self.arguments = arguments
+        isRemarksVisible = container.userSettingsRepository.getIsRemarksVisible()
         let initialPhotos = arguments.getPhotos()
         photos = initialPhotos
         selectedPhotoID = initialPhotos.contains(
@@ -59,6 +61,10 @@ final class PhotoViewViewModel: DModuleViewModel {
         arguments.onDelete != nil
     }
 
+    var isRemarksToggleVisible: Bool { !remarkPoints(
+        for: selectedPhotoID,
+    ).isEmpty }
+
     var sourcePhotos: [USExaminationScanPhoto] {
         arguments.getPhotos()
     }
@@ -86,6 +92,33 @@ final class PhotoViewViewModel: DModuleViewModel {
         )
         synchronizePhotos(
             arguments.getPhotos(),
+        )
+    }
+
+    func remarkPoints(
+        for photoId: UUID,
+    ) -> [USExaminationPhotoRemarkPoint] {
+        arguments.getPhotoRemarks().first { $0.photoId == photoId }?.points ?? []
+    }
+
+    func setRemarksVisibility(
+        _ isVisible: Bool,
+    ) {
+        isRemarksVisible = isVisible
+        container.userSettingsRepository.setIsRemarksVisible(
+            isVisible,
+        )
+    }
+
+    func onTapRemark(
+        _ point: USExaminationPhotoRemarkPoint,
+    ) {
+        coordinator.sheet(
+            .photoRemark,
+            arguments: PhotoRemarkArguments(
+                title: point.title,
+                description: point.description,
+            ),
         )
     }
 

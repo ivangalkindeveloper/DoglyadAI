@@ -15,6 +15,30 @@ final class UserSettingsRepository: UserSettingsRepositoryProtocol {
 }
 
 extension UserSettingsRepository {
+    func getIsPhotoRemarks() -> Bool { database.getIsPhotoRemarks() }
+
+    func setIsPhotoRemarks(
+        _ value: Bool,
+    ) { database.setIsPhotoRemarks(
+        value: value,
+    ) }
+
+    func getIsDescriptionRemarks() -> Bool { database.getIsDescriptionRemarks() }
+
+    func setIsDescriptionRemarks(
+        _ value: Bool,
+    ) { database.setIsDescriptionRemarks(
+        value: value,
+    ) }
+
+    func getIsRemarksVisible() -> Bool { database.getIsRemarksVisible() }
+
+    func setIsRemarksVisible(
+        _ value: Bool,
+    ) { database.setIsRemarksVisible(
+        value: value,
+    ) }
+
     func getUserEmail() -> String? {
         database.getUserEmail()
     }

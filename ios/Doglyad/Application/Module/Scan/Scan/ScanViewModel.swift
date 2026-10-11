@@ -462,9 +462,9 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
             return templates.contains { $0.usExaminationType.id == usExaminationId }
-        } onMainSuccess: { hasTemplates in
+        } onMainSuccess: { [self] hasTemplates in
             guard hasTemplates else {
-                return self.coordinator.screen(
+                return coordinator.screen(
                     .templateAdd,
                     arguments: TemplateAddArguments(
                         onAddSuccess: { [weak self] template in
@@ -476,11 +476,11 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
                 )
             }
 
-            self.coordinator.sheet(
+            coordinator.sheet(
                 .selectTemplate,
                 arguments: SelectTemplateArguments(
                     usExaminationId: usExaminationId,
-                    currentValue: self.getSelectedTemplate(),
+                    currentValue: getSelectedTemplate(),
                     onSelected: { [weak self] template in
                         self?.onTemplateSelected(
                             template,
@@ -870,16 +870,16 @@ private extension ScanViewModel {
             await self.container.permissionManager.isGranted(
                 .camera,
             )
-        } onMainSuccess: { isGranted in
+        } onMainSuccess: { [self] isGranted in
             guard isGranted else {
-                return self.coordinator.sheet(
+                return coordinator.sheet(
                     .permissionCamera,
                 )
             }
 
-            let cameraController = self.cameraController ?? DCameraControllerFactory.make()
+            let cameraController = cameraController ?? DCameraControllerFactory.make()
             self.cameraController = cameraController
-            self.coordinator.sheet(
+            coordinator.sheet(
                 .scanCamera,
                 arguments: ScanCameraArguments(
                     cameraController: cameraController,
@@ -889,7 +889,7 @@ private extension ScanViewModel {
                     onPhotosUpdated: { [weak self] photos in
                         self?.photos = photos
                     },
-                    photoMaxCount: self.photoMaxCount,
+                    photoMaxCount: photoMaxCount,
                 ),
             )
         }
@@ -912,17 +912,17 @@ private extension ScanViewModel {
             await self.container.permissionManager.isGranted(
                 .photoLibrary,
             )
-        } onMainSuccess: { isGranted in
+        } onMainSuccess: { [self] isGranted in
             guard isGranted else {
-                return self.coordinator.sheet(
+                return coordinator.sheet(
                     .permissionPhotoLibrary,
                 )
             }
 
-            self.coordinator.sheet(
+            coordinator.sheet(
                 .photoLibraryPicker,
                 arguments: PhotoLibraryPickerArguments(
-                    selectionLimit: self.gallerySelectionLimit,
+                    selectionLimit: gallerySelectionLimit,
                     onComplete: { [weak self] images in
                         guard let self else { return }
 
@@ -966,15 +966,15 @@ private extension ScanViewModel {
             await self.container.permissionManager.isGranted(
                 .microphone,
             )
-        } onMainSuccess: { isGranted in
+        } onMainSuccess: { [self] isGranted in
             if !isGranted {
-                return self.coordinator.sheet(
+                return coordinator.sheet(
                     .permissionSpeech,
                 )
             }
 
-            let examinationType = self.usExaminationType
-            self.coordinator.sheet(
+            let examinationType = usExaminationType
+            coordinator.sheet(
                 .scanSpeech,
                 arguments: ScanSpeechArguments(
                     examinationType: examinationType,
@@ -1044,6 +1044,8 @@ private extension ScanViewModel {
                 examinationData: examinationData,
                 template: template?.content,
                 includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations(),
+                isPhotoRemarks: self.container.userSettingsRepository.getIsPhotoRemarks(),
+                isDescriptionRemarks: self.container.userSettingsRepository.getIsDescriptionRemarks(),
             )
             let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
                 locale: locale,

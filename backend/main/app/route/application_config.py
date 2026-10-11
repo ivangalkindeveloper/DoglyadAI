@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from fastapi import APIRouter, Request, Response
 
-from app.core.config import resolve_application_config_document
 from app.core.limiter import limiter
-from app.route.config_document import config_document_response
+from app.core.resolve_application_config_document import resolve_application_config_document
+from app.route.config_document_response import config_document_response
 
 router = APIRouter()
 

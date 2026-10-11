@@ -40,6 +40,8 @@ final class UltrasoundRootViewModel: Handler<DHttpApiError, DHttpConnectionError
         template = nil
         userEmail = container.userSettingsRepository.getUserEmail()
         includeRecommendations = container.userSettingsRepository.getIncludeRecommendations()
+        isPhotoRemarks = container.userSettingsRepository.getIsPhotoRemarks()
+        isDescriptionRemarks = container.userSettingsRepository.getIsDescriptionRemarks()
         super.init()
     }
 
@@ -79,13 +81,25 @@ final class UltrasoundRootViewModel: Handler<DHttpApiError, DHttpConnectionError
     @Published var template: USExaminationTemplate?
     @Published var userEmail: String?
     @Published var includeRecommendations: Bool
+    @Published var isPhotoRemarks: Bool
+    @Published var isDescriptionRemarks: Bool
 
     func saveUserSettings(
         userEmail: String?,
         includeRecommendations: Bool,
+        isPhotoRemarks: Bool,
+        isDescriptionRemarks: Bool,
     ) {
         self.userEmail = userEmail
         self.includeRecommendations = includeRecommendations
+        self.isPhotoRemarks = isPhotoRemarks
+        self.isDescriptionRemarks = isDescriptionRemarks
+        container.userSettingsRepository.setIsPhotoRemarks(
+            isPhotoRemarks,
+        )
+        container.userSettingsRepository.setIsDescriptionRemarks(
+            isDescriptionRemarks,
+        )
         container.userSettingsRepository.setUserEmail(
             userEmail,
         )

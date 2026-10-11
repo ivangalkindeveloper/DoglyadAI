@@ -55,7 +55,7 @@ final class NeuralModelSettingsViewModel: DModuleViewModel, DTextFieldFocusValid
                 ],
                 validators: [
                     DTextFieldIntRangeValidator(
-                        validRange: 1 ... 1024,
+                        validRange: 1 ... 4096,
                         invalidValueErrorText: String(
                             localized: container.l10n[
                                 .errorInvalidNeuralModelMaxTokensDescription,

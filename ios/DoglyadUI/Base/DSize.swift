@@ -2,6 +2,7 @@ import Foundation
 import UIKit
 
 public struct DSize {
+    public let s1: CGFloat = 1
     public let s2: CGFloat = 2
     public let s4: CGFloat = 4
     public let s8: CGFloat = 8

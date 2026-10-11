@@ -5,9 +5,9 @@ import pytest
 
 from app.model.ultrasound.us_voice_field_id import USVoiceFieldId
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
-from app.service.voice_form_birth_date import source_birth_date
-from app.service.voice_form_numbers import source_number
-from app.service.voice_form_validation import validate_voice_form_generation
+from app.service.source_birth_date import source_birth_date
+from app.service.source_number import source_number
+from app.service.validate_voice_form_generation import validate_voice_form_generation
 
 
 @pytest.mark.parametrize(

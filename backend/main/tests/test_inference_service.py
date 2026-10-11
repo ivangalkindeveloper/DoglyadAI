@@ -3,18 +3,21 @@ from __future__ import annotations
 import asyncio
 import json
 from typing import Any
+from uuid import UUID
 
 import httpx
 import pytest
 from fastapi import HTTPException
 
-from app.model.inference.inference_request import InferenceRequest
+from app.core.language_code import LanguageCode
+from app.model.neural_model.neural_model_service_operation import NeuralModelServiceOperation
+from app.model.neural_model.neural_model_service_request import NeuralModelServiceRequest
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
 from app.model.ultrasound.us_examination_scan_photo import USExaminationScanPhoto
-from app.service.inference import InferenceService
+from app.service.inference_service import InferenceService
 
 _URL = "http://10.0.0.11:8100/v1/generation"
 _RESPONSE = '{"description":"Description","conclusion":"Conclusion","recommendations":"Recommendations"}'
@@ -35,8 +38,10 @@ def _request(
     photos: list[USExaminationScanPhoto] | None = None,
     token: str | None = "app-check-token",
     request_id: str | None = None,
-) -> InferenceRequest:
-    return InferenceRequest(
+) -> NeuralModelServiceRequest:
+    return NeuralModelServiceRequest(
+        operation=NeuralModelServiceOperation.GENERATE_REPORT,
+        language_code=LanguageCode.EN,
         model_id=model.id,
         system_prompt="system",
         prompt="prompt",
@@ -49,7 +54,7 @@ def _request(
     )
 
 
-def _call(handler: Any, request: InferenceRequest | None = None) -> str:
+def _call(handler: Any, request: NeuralModelServiceRequest | None = None) -> str:
     async def run() -> str:
         async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
             return await InferenceService(client, _ENDPOINTS).call(request or _request())
@@ -90,7 +95,15 @@ def test_request_carries_prompts_images_schema_and_sampling() -> None:
         seen.update(json.loads(request.content))
         return httpx.Response(200, json={"modelId": _MODEL.id, "response": _RESPONSE})
 
-    _call(handler, _request(photos=[USExaminationScanPhoto(data="QUJD"), USExaminationScanPhoto(data="REVG")]))
+    _call(
+        handler,
+        _request(
+            photos=[
+                USExaminationScanPhoto(id=UUID(int=1), data="QUJD"),
+                USExaminationScanPhoto(id=UUID(int=2), data="REVG"),
+            ]
+        ),
+    )
 
     assert seen["modelId"] == _MODEL.id
     assert seen["systemPrompt"] == "system"
@@ -99,6 +112,7 @@ def test_request_carries_prompts_images_schema_and_sampling() -> None:
     assert seen["images"] == [{"data": "QUJD"}, {"data": "REVG"}]
     assert seen["temperature"] == 0.3
     assert seen["maxTokens"] == 512
+    assert set(seen) == {"modelId", "systemPrompt", "prompt", "structuredOutput", "images", "temperature", "maxTokens"}
 
 
 @pytest.mark.parametrize("status_code", [401, 403])

@@ -12,7 +12,7 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
     }
 
     private let messager: DMessager
-    private let onSaved: (String?, Bool) -> Void
+    private let onSaved: (String?, Bool, Bool, Bool) -> Void
 
     init(
         container: DependencyContainer,
@@ -25,11 +25,15 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
         onRequestCountIncremented: @escaping () -> Void,
         getInitialEmail: @escaping () -> String?,
         getInitialIncludeRecommendations: @escaping () -> Bool,
-        onSaved: @escaping (String?, Bool) -> Void,
+        getInitialIsPhotoRemarks: @escaping () -> Bool,
+        getInitialIsDescriptionRemarks: @escaping () -> Bool,
+        onSaved: @escaping (String?, Bool, Bool, Bool) -> Void,
     ) {
         self.messager = messager
         self.onSaved = onSaved
         includeRecommendations = getInitialIncludeRecommendations()
+        isPhotoRemarks = getInitialIsPhotoRemarks()
+        isDescriptionRemarks = getInitialIsDescriptionRemarks()
         _emailController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
@@ -69,6 +73,8 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
     @Published private(set) var isLoading = false
     @Published var focus: Focus?
     @Published var includeRecommendations: Bool
+    @Published var isPhotoRemarks: Bool
+    @Published var isDescriptionRemarks: Bool
     @NestedObservableObject var emailController: DTextFieldController
 
     var focusList: [DTextFieldFocusValidationItem<Focus>] {
@@ -78,10 +84,6 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
                 controller: emailController,
             ),
         ]
-    }
-
-    func toggleIncludeRecommendations() {
-        includeRecommendations.toggle()
     }
 
     func onTapBack() {
@@ -104,6 +106,14 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
             focus = nil
         }
     }
+
+    func toggleIncludeRecommendations() {
+        includeRecommendations.toggle()
+    }
+
+    func togglePhotoRemarks() { isPhotoRemarks.toggle() }
+
+    func toggleDescriptionRemarks() { isDescriptionRemarks.toggle() }
 
     func onTapSave() {
         guard !isLoading else { return }
@@ -130,6 +140,8 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
         onSaved(
             email,
             includeRecommendations,
+            isPhotoRemarks,
+            isDescriptionRemarks,
         )
         messager.show(
             type: .success,

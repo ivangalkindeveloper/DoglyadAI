@@ -133,9 +133,9 @@ router_v1.include_router(<name>_router)
 Follow `ultrasound_conclusion.py`:
 
 - Resolve language with `request.headers.get("accept-language", "en")` and `resolve_prompt_factory(language_code)`.
-- Read the ready service with `model_service: ModelService = request.app.state.model_service`, then call `await model_service.call(...)`. Do not branch by environment; `create_model_service()` composes the same route during lifespan.
-- Use `resolve_neural_model` and `resolve_examination_title` from `app/core/config.py`.
-- Add a new inference implementation as a `ModelService` subclass in `app/service/base.py` and compose it only in `app/service/factory.py`.
+- Read the ready service with `model_service: NeuralModelService = request.app.state.model_service`, then call `await model_service.call(...)`. Do not branch by environment; `create_model_service()` composes the same route during lifespan.
+- Use `resolve_neural_model` and `resolve_examination_title` from `app/core/resolve_neural_model.py` and `app/core/resolve_examination_title.py`.
+- Add a new inference implementation as a `NeuralModelService` subclass of the contract in `app/service/neural_model_service.py` and compose it only in `app/service/create_model_service.py`.
 
 ## Finish
 

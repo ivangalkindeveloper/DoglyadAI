@@ -11,7 +11,8 @@ import pytest
 from fastapi import HTTPException
 from starlette.requests import Request
 
-from app.model.inference.inference_request import InferenceRequest
+from app.core.language_code import LanguageCode
+from app.core.load_configs import load_configs
 from app.model.neural_model_settings import NeuralModelSettings
 from app.model.ultrasound.us_examination_data import USExaminationData
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
@@ -19,53 +20,15 @@ from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
 from app.model.ultrasound.us_examination_request import USExaminationRequest
-from app.prompt.en import PromptFactoryEn
+from app.prompt import PromptFactory
 from app.route.ultrasound import generate_report as route
+from tests.support.ultrasound_report.fake_neural_model_service import FakeNeuralModelService
+from tests.support.ultrasound_report.fake_prompt_factory import FakePromptFactory
 
 
-class FakePromptFactory:
-    def system_prompt(
-        self,
-        settings: NeuralModelSettings,
-        include_recommendations: bool,
-    ) -> str:
-        assert settings.selectedNeuralModelId == "google/medgemma-4b-it"
-        assert include_recommendations is True
-        return "system prompt"
-
-    def build_prompt(
-        self,
-        examination: USExaminationData,
-        examination_title: str,
-        template: str | None = None,
-    ) -> str:
-        assert examination.examinationNumber == "Examination#0"
-        assert examination.patientName == "Patient"
-        assert examination.patientComplaints == "Complaint"
-        assert examination_title == "Echocardiography"
-        assert template == "Template"
-        return "user prompt"
-
-
-class FakeModelService:
-    def __init__(self, invalid_report: bool = False) -> None:
-        self._invalid_report = invalid_report
-
-    async def call(self, request: InferenceRequest) -> str:
-        assert request.system_prompt == "system prompt"
-        assert request.prompt == "user prompt"
-        assert request.app_check_token == "app-check-token"
-        assert request.request_id == "a" * 32
-        schema = json.loads(request.structured_output)
-        assert set(schema["properties"]) == {"description", "conclusion", "recommendations"}
-        assert schema["additionalProperties"] is False
-        return json.dumps(
-            {
-                "description": "Generated description",
-                "conclusion": ["Sensitive generated patient text"] if self._invalid_report else "Generated conclusion",
-                "recommendations": "Generated recommendations",
-            }
-        )
+@pytest.fixture(autouse=True)
+def report_catalogs() -> None:
+    load_configs()
 
 
 @pytest.mark.parametrize("invalid_report", [False, True])
@@ -84,8 +47,9 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
     )
     monkeypatch.setattr(route, "resolve_neural_model", lambda _model_id: model)
     monkeypatch.setattr(route, "resolve_examination_title", lambda _type_id, _language: "Echocardiography")
-    monkeypatch.setattr(route, "resolve_prompt_factory", lambda _language: FakePromptFactory())
+    monkeypatch.setattr(route, "PromptFactory", FakePromptFactory)
 
+    load_configs()
     body = USExaminationRequest(
         neuralModelSettings=NeuralModelSettings(
             selectedNeuralModelId=model.id,
@@ -107,7 +71,7 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
         template="Template",
         includeRecommendations=True,
     )
-    app = SimpleNamespace(state=SimpleNamespace(model_service=FakeModelService(invalid_report=invalid_report)))
+    app = SimpleNamespace(state=SimpleNamespace(model_service=FakeNeuralModelService(invalid_report=invalid_report)))
     request = Request(
         {
             "type": "http",
@@ -140,9 +104,17 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
 
 
 def test_report_schema_can_exclude_optional_recommendations() -> None:
-    from app.model.ultrasound.us_examination_report import us_examination_report_structured_output
+    from app.schema.us_examination_report_structured_output import us_examination_report_structured_output
 
-    schema = json.loads(us_examination_report_structured_output(include_recommendations=False))
+    schema = json.loads(
+        us_examination_report_structured_output(
+            include_recommendations=False,
+            is_photo_remarks=False,
+            is_description_remarks=False,
+            photo_ids=[],
+            language_code=LanguageCode.EN,
+        )
+    )
 
     assert set(schema["properties"]) == {"description", "conclusion"}
     assert set(schema["required"]) == {"description", "conclusion"}
@@ -161,7 +133,7 @@ def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled() -> N
         patientComplaints="   ",
         examinationDescription="Description",
     )
-    factory = PromptFactoryEn()
+    factory = PromptFactory(LanguageCode.EN)
 
     assert examination.patientComplaints is None
     assert "Examination number: Examination#0" in factory.build_prompt(examination, "Echocardiography")
@@ -169,6 +141,8 @@ def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled() -> N
     assert "Do not generate or include recommendations" in factory.system_prompt(
         NeuralModelSettings(),
         include_recommendations=False,
+        is_photo_remarks=False,
+        is_description_remarks=False,
     )
 
 
@@ -184,8 +158,6 @@ def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled() -> N
 )
 @pytest.mark.parametrize("language", ["en", "ru"])
 def test_optional_patient_measurements(measurements: dict[str, float | None], language: str) -> None:
-    from app.prompt.ru import PromptFactoryRu
-
     examination = USExaminationData.model_validate(
         {
             "usExaminationTypeId": "echocardiography",
@@ -198,7 +170,7 @@ def test_optional_patient_measurements(measurements: dict[str, float | None], la
             **measurements,
         }
     )
-    factory = PromptFactoryEn() if language == "en" else PromptFactoryRu()
+    factory = PromptFactory(LanguageCode(language))
     prompt = factory.build_prompt(examination, "Echocardiography")
     height_label = "Patient height:" if language == "en" else "Рост пациента:"
     weight_label = "Patient weight:" if language == "en" else "Вес пациента:"

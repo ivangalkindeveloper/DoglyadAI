@@ -5,6 +5,7 @@ struct PhotoViewScreenView: DView {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: PhotoViewViewModel
+    @State private var controlsHeight: CGFloat = 0
 
     var body: some View {
         DScreen(
@@ -42,12 +43,13 @@ struct PhotoViewScreenView: DView {
                         viewModel.photos,
                     ) { photo in
                         PhotoViewZoomableImage(
+                            photoId: photo.id,
                             image: photo.image,
                             isSelected: photo.id == viewModel.selectedPhotoID,
                             contentInsets: EdgeInsets(
                                 top: toolbarInset + size.s16,
                                 leading: size.s16,
-                                bottom: size.s16,
+                                bottom: controlsHeight + size.s16,
                                 trailing: size.s16,
                             ),
                         )
@@ -64,36 +66,16 @@ struct PhotoViewScreenView: DView {
                 .ignoresSafeArea()
 
                 if viewModel.isPhotoAvailable {
-                    HStack(
-                        spacing: size.s16,
-                    ) {
-                        DText(
-                            l10n.resource(
-                                .photoViewPageLabel,
-                                values: ["current": String(
-                                    viewModel.currentPage,
-                                ), "total": String(
-                                    viewModel.photos.count,
-                                )],
-                            ),
+                    PhotoViewControlsView()
+                        .padding(
+                            size.s16,
                         )
-                        .dStyle(
-                            font: typography.textSmall,
-                            alignment: .center,
-                        )
-                    }
-                    .padding(
-                        size.s16,
-                    )
-                    .background(
-                        DCardBackground(
-                            cornerRadius: size.adaptiveCardCornerRadius,
-                            material: .ultraThinMaterial,
-                        ),
-                    )
-                    .padding(
-                        size.s16,
-                    )
+                        .onGeometryChange(
+                            for: CGFloat.self,
+                            of: { $0.size.height },
+                        ) { height in
+                            controlsHeight = height
+                        }
                 }
             }
         }

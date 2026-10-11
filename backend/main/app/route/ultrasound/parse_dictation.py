@@ -5,22 +5,22 @@ import logging
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import ValidationError
 
-from app.core.config import (
-    get_application_locale_config,
-    get_voice_parsing_config,
-    resolve_examination_title,
-    resolve_neural_model,
-)
+from app.core.get_application_locale_config import get_application_locale_config
+from app.core.get_voice_parsing_config import get_voice_parsing_config
 from app.core.http_header import HttpHeader
 from app.core.limiter import limiter
-from app.core.locale import resolve_language
-from app.model.inference.inference_request import InferenceRequest
+from app.core.resolve_examination_title import resolve_examination_title
+from app.core.resolve_language import resolve_language
+from app.core.resolve_neural_model import resolve_neural_model
+from app.model.neural_model.neural_model_service_operation import NeuralModelServiceOperation
+from app.model.neural_model.neural_model_service_request import NeuralModelServiceRequest
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.model.ultrasound.us_voice_form_parse_request import USVoiceFormParseRequest
 from app.model.ultrasound.us_voice_form_parse_response import USVoiceFormParseResponse
-from app.prompt.voice_form import voice_form_prompt, voice_form_system_prompt
-from app.service import ModelService
-from app.service.voice_form_validation import validate_voice_form_generation
+from app.prompt.voice_form_prompt import voice_form_prompt
+from app.prompt.voice_form_system_prompt import voice_form_system_prompt
+from app.service import NeuralModelService
+from app.service.validate_voice_form_generation import validate_voice_form_generation
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -41,9 +41,11 @@ async def parse_dictation(body: USVoiceFormParseRequest, request: Request) -> US
         len(body.transcript),
     )
 
-    service: ModelService = request.app.state.model_service
+    service: NeuralModelService = request.app.state.model_service
     response_text = await service.call(
-        InferenceRequest(
+        NeuralModelServiceRequest(
+            operation=NeuralModelServiceOperation.PARSE_DICTATION,
+            language_code=language,
             model_id=model.id,
             system_prompt=voice_form_system_prompt(language),
             prompt=voice_form_prompt(title, body.transcript),
