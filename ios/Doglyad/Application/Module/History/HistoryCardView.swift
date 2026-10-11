@@ -16,6 +16,7 @@ struct HistoryCardView: DView {
             action: onTap,
         ) {
             HStack(
+                alignment: .top,
                 spacing: .zero,
             ) {
                 if !examinationData.photos.isEmpty {
@@ -69,6 +70,7 @@ struct HistoryCardView: DView {
                     spacing: .zero,
                 ) {
                     HStack(
+                        alignment: .top,
                         spacing: .zero,
                     ) {
                         DText(
@@ -82,13 +84,18 @@ struct HistoryCardView: DView {
                             size.s8,
                         )
 
+                        Spacer(
+                            minLength: .zero,
+                        )
+
                         DText(
-                            report.date.localizedDateTime(),
+                            report.date.localizedTime(),
                         )
                         .dStyle(
                             font: typography.textSmall,
                             color: color.grayscaleLabel,
                         )
+                        .fixedSize()
                     }
 
                     DText(

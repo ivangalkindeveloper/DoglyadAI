@@ -70,6 +70,7 @@ struct ReportReceivedBottomSheetView: DView {
                         DButton(
                             image: .send,
                             title: viewModel.userEmailButtonTitle,
+                            truncatingTitleSuffix: viewModel.userEmail,
                             badge: viewModel.userEmailButtonBadge,
                             action: viewModel.onTapUserEmail,
                             isLoading: viewModel.isLoading,

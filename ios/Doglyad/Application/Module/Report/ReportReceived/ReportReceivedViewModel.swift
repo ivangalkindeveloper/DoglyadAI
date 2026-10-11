@@ -73,12 +73,9 @@ final class ReportReceivedViewModel: DModuleViewModel {
     }
 
     var userEmailButtonTitle: LocalizedStringResource {
-        container.l10n.resource(
-            .shareWorkEmailButton,
-            values: ["prefix": container.l10n.text(
-                .buttonSendToEmail,
-            ), "email": userEmail ?? ""],
-        )
+        l10n[
+            .buttonSendToEmail,
+        ]
     }
 
     var userEmailButtonBadge: DButtonBadge? {

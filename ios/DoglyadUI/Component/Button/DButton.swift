@@ -5,6 +5,7 @@ public struct DButton: DView {
 
     let image: ImageResource?
     let title: LocalizedStringResource?
+    let truncatingTitleSuffix: String?
     let badge: DButtonBadge?
     let action: () -> Void
     let isLoading: Bool
@@ -13,6 +14,7 @@ public struct DButton: DView {
     public init(
         image: ImageResource? = nil,
         title: LocalizedStringResource? = nil,
+        truncatingTitleSuffix: String? = nil,
         badge: DButtonBadge? = nil,
         action: @escaping () -> Void,
         isLoading: Bool = false,
@@ -20,6 +22,7 @@ public struct DButton: DView {
     ) {
         self.image = image
         self.title = title
+        self.truncatingTitleSuffix = truncatingTitleSuffix
         self.badge = badge
         self.action = action
         self.isLoading = isLoading
@@ -70,7 +73,7 @@ public struct DButton: DView {
                     height: size.s20,
                 )
                 .if(
-                    title != nil,
+                    title != nil || truncatingTitleSuffix != nil,
                 ) { view in
                     view.padding(
                         .trailing,
@@ -91,7 +94,29 @@ public struct DButton: DView {
                     .center,
                 )
                 .lineLimit(
-                    2,
+                    truncatingTitleSuffix == nil ? 2 : 1,
+                )
+                .fixedSize(
+                    horizontal: truncatingTitleSuffix != nil,
+                    vertical: false,
+                )
+            }
+            if let truncatingTitleSuffix {
+                Text(
+                    verbatim: truncatingTitleSuffix,
+                )
+                .font(
+                    typography.linkSmall,
+                )
+                .lineLimit(
+                    1,
+                )
+                .truncationMode(
+                    .middle,
+                )
+                .padding(
+                    .leading,
+                    title == nil ? .zero : size.s4,
                 )
             }
         }
@@ -202,6 +227,16 @@ private struct DTextModifier: ViewModifier {
             )
             .dStyle(
                 .textWeak,
+            )
+
+            DButton(
+                image: .send,
+                title: "Send to",
+                truncatingTitleSuffix: "ekaterinaabramova10@mosmedzdrav.ru",
+                action: {},
+            )
+            .dStyle(
+                .primaryText,
             )
 
             DButton(

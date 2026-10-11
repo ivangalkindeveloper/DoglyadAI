@@ -48,10 +48,10 @@ struct ReadyMadeTemplateListItemCardView: DView {
                 .plain,
             )
 
-            ExpandableMarkdownView(
+            ExpandableTextView(
                 text: template.content,
                 backgroundColor: color.grayscaleBackground,
-                collapsedLineLimit: 4,
+                collapsedLineLimit: 8,
                 onTapContent: action,
             )
         }

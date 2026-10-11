@@ -12,15 +12,21 @@ extension Date {
         )
     }
 
-    func localizedDateTime(
-        locale: Locale = .current,
-    ) -> String {
+    func localizedTime() -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(
             identifier: "en_US_POSIX",
         )
         formatter.dateFormat = "HH:mm"
-        return "\(localized(locale: locale)) \(formatter.string(from: self))"
+        return formatter.string(
+            from: self,
+        )
+    }
+
+    func localizedDateTime(
+        locale: Locale = .current,
+    ) -> String {
+        "\(localized(locale: locale)) \(localizedTime())"
     }
 
     func localizedDayTitle(
