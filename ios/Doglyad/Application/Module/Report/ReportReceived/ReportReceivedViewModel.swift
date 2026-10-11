@@ -1,3 +1,4 @@
+import Combine
 import DoglyadNetwork
 import DoglyadUI
 import Foundation
@@ -7,31 +8,34 @@ import SwiftUI
 import UIKit
 
 @MainActor
-final class ReportReceivedViewModel: DViewModel {
+final class ReportReceivedViewModel: DModuleViewModel {
     private let messager: DMessager
-    private let arguments: ReportReceivedBottomSheetArguments
+    private let arguments: ReportReceivedArguments
     let userEmail: String?
 
     init(
         container: DependencyContainer,
         messager: DMessager,
         router: DRouter,
-        arguments: ReportReceivedBottomSheetArguments,
-        subscription: SubscriptionViewModel,
-        userEmail: String?,
+        arguments: ReportReceivedArguments,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        getUserEmail: @escaping () -> String?,
     ) {
         self.messager = messager
         self.arguments = arguments
-        self.userEmail = userEmail
-        markdownViewModel = ReportReceivedMarkdownViewModel(
-            response: arguments.report.actualModelReport.markdownText(
-                l10n: container.l10n,
-            ),
-        )
+        userEmail = getUserEmail()
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .reportReceived,
             ),
@@ -39,8 +43,9 @@ final class ReportReceivedViewModel: DViewModel {
     }
 
     @Published var isLoading = false
-    // A plain reference keeps per-word updates scoped to ReportReceivedMarkdownView.
-    let markdownViewModel: ReportReceivedMarkdownViewModel
+    @Published private(set) var displayedResponse = ""
+    private var nextWordIndex = 0
+    private var isAnimating = false
 
     var model: USExaminationModelReport {
         arguments.report.actualModelReport
@@ -57,7 +62,7 @@ final class ReportReceivedViewModel: DViewModel {
     }
 
     var isUserEmailButtonVisible: Bool {
-        switch subscription.availability(
+        switch subscriptionAvailability(
             of: .sendingReportByEmail,
         ) {
         case .offered, .available:
@@ -69,26 +74,66 @@ final class ReportReceivedViewModel: DViewModel {
 
     var userEmailButtonTitle: LocalizedStringResource {
         container.l10n.resource(
-            .shareUserEmailTitle,
+            .shareWorkEmailButton,
             values: ["prefix": container.l10n.text(
-                .buttonShareUserEmailPrefix,
+                .buttonSendToEmail,
             ), "email": userEmail ?? ""],
         )
     }
 
     var userEmailButtonBadge: DButtonBadge? {
-        switch subscription.availability(
+        switch subscriptionAvailability(
             of: .sendingReportByEmail,
         ) {
         case .offered:
             DButtonBadge(
                 container.l10n[
-                    .entitlementPro,
+                    .subscriptionProLabel,
                 ],
                 isShimmering: true,
             )
         case .available, .unavailable:
             nil
+        }
+    }
+
+    func animateResponse() async {
+        guard !isAnimating else { return }
+
+        isAnimating = true
+        defer { isAnimating = false }
+
+        let words = arguments.report.actualModelReport.markdownText(
+            l10n: l10n,
+        ).components(
+            separatedBy: " ",
+        )
+        while nextWordIndex < words.count {
+            guard !Task.isCancelled else { return }
+
+            let separator = nextWordIndex == 0 ? "" : " "
+            let word = words[
+                nextWordIndex,
+            ]
+            withAnimation(
+                .easeIn(
+                    duration: 0.3,
+                ),
+            ) {
+                displayedResponse.append(
+                    separator + word,
+                )
+            }
+            nextWordIndex += 1
+
+            guard nextWordIndex < words.count else { return }
+            do {
+                try await Task.sleep(
+                    nanoseconds: 60000000,
+                )
+            } catch {
+                return
+            }
         }
     }
 
@@ -99,7 +144,7 @@ final class ReportReceivedViewModel: DViewModel {
         coordinator.dismissSheet()
         coordinator.screen(
             .reportDetail,
-            arguments: ReportDetailScreenArguments(
+            arguments: ReportDetailArguments(
                 report: arguments.report,
             ),
         )
@@ -127,7 +172,27 @@ final class ReportReceivedViewModel: DViewModel {
         }
     }
 
-    private func sendReportEmail(
+    func onTapCopy() {
+        analytics.buttonTapped(
+            .reportReceivedCopy,
+        )
+        UIApplication.pasteboard(
+            response,
+        )
+        messager.show(
+            type: .success,
+            title: container.l10n[
+                .reportReceivedCopyMessageTitle,
+            ],
+            description: container.l10n[
+                .reportReceivedCopyMessageDescription,
+            ],
+        )
+    }
+}
+
+private extension ReportReceivedViewModel {
+    func sendReportEmail(
         to userEmail: String,
     ) {
         let report = arguments.report
@@ -162,23 +227,5 @@ final class ReportReceivedViewModel: DViewModel {
                 l10n: self.container.l10n,
             )
         }
-    }
-
-    func onTapCopy() {
-        analytics.buttonTapped(
-            .reportReceivedCopy,
-        )
-        UIApplication.pasteboard(
-            response,
-        )
-        messager.show(
-            type: .success,
-            title: container.l10n[
-                .reportReceivedCopyMessageTitle,
-            ],
-            description: container.l10n[
-                .reportReceivedCopyMessageDescription,
-            ],
-        )
     }
 }

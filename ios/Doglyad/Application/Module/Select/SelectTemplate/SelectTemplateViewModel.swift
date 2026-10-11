@@ -1,20 +1,29 @@
+import Combine
 import Foundation
 
 @MainActor
-final class SelectTemplateViewModel: DViewModel {
+final class SelectTemplateViewModel: DModuleViewModel {
     private let arguments: SelectTemplateArguments
 
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         arguments: SelectTemplateArguments,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .selectTemplate,
             ),

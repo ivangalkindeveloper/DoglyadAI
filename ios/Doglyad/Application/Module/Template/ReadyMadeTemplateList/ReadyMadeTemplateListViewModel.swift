@@ -1,3 +1,4 @@
+import Combine
 import DoglyadUI
 import Foundation
 import Handler
@@ -6,7 +7,7 @@ import Router
 import SwiftUI
 
 @MainActor
-final class ReadyMadeTemplateListViewModel: DViewModel {
+final class ReadyMadeTemplateListViewModel: DModuleViewModel {
     enum Focus: Hashable {
         case search
     }
@@ -17,19 +18,27 @@ final class ReadyMadeTemplateListViewModel: DViewModel {
         case success([USExaminationReadyMadeTemplate])
     }
 
-    private let arguments: ReadyMadeTemplateListScreenArguments
+    private let arguments: ReadyMadeTemplateListArguments
 
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
-        arguments: ReadyMadeTemplateListScreenArguments,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        arguments: ReadyMadeTemplateListArguments,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .readyMadeTemplateList,
             ),

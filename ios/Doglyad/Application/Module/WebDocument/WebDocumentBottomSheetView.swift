@@ -40,6 +40,9 @@ struct WebDocumentBottomSheetView: DView {
             theme.animation,
             value: isLoading,
         )
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )

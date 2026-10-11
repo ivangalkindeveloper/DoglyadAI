@@ -1,21 +1,30 @@
+import Combine
 import Foundation
 import Router
 
 @MainActor
-final class SelectNeuralModelViewModel: DViewModel {
+final class SelectNeuralModelViewModel: DModuleViewModel {
     private let arguments: SelectNeuralModelArguments?
 
     init(
         container: DependencyContainer,
         router: DRouter,
         arguments: SelectNeuralModelArguments?,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .selectNeuralModel,
             ),
@@ -42,7 +51,7 @@ final class SelectNeuralModelViewModel: DViewModel {
         case .base:
             false
         case .pro:
-            switch subscription.status?.type {
+            switch subscriptionStatus?.type {
             case .some(
                 .pro,
             ):

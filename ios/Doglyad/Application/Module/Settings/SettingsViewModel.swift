@@ -1,3 +1,4 @@
+import Combine
 import DoglyadNetwork
 import Foundation
 import Handler
@@ -5,22 +6,30 @@ import Router
 import SwiftUI
 
 @MainActor
-final class SettingsViewModel: DViewModel {
+final class SettingsViewModel: DModuleViewModel {
     private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
 
     init(
         container: DependencyContainer,
         router: DRouter,
-        initialNeuralModel: USExaminationNeuralModel,
-        subscription: SubscriptionViewModel,
+        getInitialNeuralModel: @escaping () -> USExaminationNeuralModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void,
     ) {
         self.onNeuralModelSelected = onNeuralModelSelected
-        neuralModel = initialNeuralModel
+        neuralModel = getInitialNeuralModel()
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .settings,
             ),
@@ -94,7 +103,7 @@ final class SettingsViewModel: DViewModel {
         analytics.buttonTapped(
             .settingsSubscription,
             parameters: .subscription(
-                type: subscription.status?.type,
+                type: subscriptionStatus?.type,
             ),
         )
         coordinator.screen(
@@ -158,7 +167,7 @@ final class SettingsViewModel: DViewModel {
         )
         coordinator.sheet(
             .webDocument,
-            arguments: WebDocumentBottomSheetArguments(
+            arguments: WebDocumentArguments(
                 url: container.applicationConfig.privacyPolicyUrl,
                 title: container.l10n[
                     .privacyPolicyTitle,
@@ -173,7 +182,7 @@ final class SettingsViewModel: DViewModel {
         )
         coordinator.sheet(
             .webDocument,
-            arguments: WebDocumentBottomSheetArguments(
+            arguments: WebDocumentArguments(
                 url: container.applicationConfig.termsAndConditionsUrl,
                 title: container.l10n[
                     .termsAndConditionsTitle,

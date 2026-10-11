@@ -30,7 +30,7 @@ struct ScanSpeechProposalView: DView {
                         {
                             DText(
                                 l10n[
-                                    .speechProposalNoFields,
+                                    .scanSpeechProposalNoFieldsDescription,
                                 ],
                             )
                             .dStyle(
@@ -50,7 +50,7 @@ struct ScanSpeechProposalView: DView {
                         if !proposal.rejectedFieldIds.isEmpty {
                             DText(
                                 l10n[
-                                    .speechProposalRejectedTitle,
+                                    .scanSpeechProposalRejectedTitle,
                                 ],
                             )
                             .dStyle(
@@ -76,7 +76,7 @@ struct ScanSpeechProposalView: DView {
                         if !proposal.unmappedFindings.isEmpty {
                             DText(
                                 l10n[
-                                    .speechProposalUnmappedTitle,
+                                    .scanSpeechProposalUnmappedTitle,
                                 ],
                             )
                             .dStyle(
@@ -101,7 +101,7 @@ struct ScanSpeechProposalView: DView {
 
             DButton(
                 title: l10n[
-                    .speechProposalApplyButton,
+                    .scanSpeechProposalApplyButton,
                 ],
                 action: viewModel.onTapApplySelected,
                 isDisabled: viewModel.isApplyDisabled,
@@ -112,7 +112,7 @@ struct ScanSpeechProposalView: DView {
 
             DButton(
                 title: l10n[
-                    .speechProposalBackButton,
+                    .scanSpeechProposalBackButton,
                 ],
                 action: viewModel.onTapBackToTranscript,
                 isDisabled: viewModel.isLoading,

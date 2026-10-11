@@ -19,13 +19,15 @@ struct ScanSpeechProposalCardView: DView {
                 alignment: .top,
                 spacing: size.s12,
             ) {
-                Image(
-                    systemName: viewModel.isSelected(
-                        proposal.id,
-                    ) ? "checkmark.circle.fill" : "circle",
+                DCheckbox(
+                    isChecked: .constant(
+                        viewModel.isSelected(
+                            proposal.id,
+                        ),
+                    ),
                 )
-                .foregroundStyle(
-                    color.grayscaleHeader,
+                .allowsHitTesting(
+                    false,
                 )
 
                 VStack(
@@ -53,7 +55,7 @@ struct ScanSpeechProposalCardView: DView {
                     if proposal.warnings.isEmpty {
                         DText(
                             l10n[
-                                .speechProposalNeedsReview,
+                                .scanSpeechProposalNeedsReviewLabel,
                             ],
                         )
                         .dStyle(
@@ -63,7 +65,7 @@ struct ScanSpeechProposalCardView: DView {
                     } else {
                         DText(
                             l10n[
-                                .speechProposalWarningTitle,
+                                .scanSpeechProposalWarningTitle,
                             ],
                         )
                         .dStyle(
@@ -88,7 +90,7 @@ struct ScanSpeechProposalCardView: DView {
 
                     DText(
                         l10n[
-                            .speechProposalCurrentValueTitle,
+                            .scanSpeechProposalCurrentValueTitle,
                         ],
                     )
                     .dStyle(
@@ -107,7 +109,7 @@ struct ScanSpeechProposalCardView: DView {
 
                     DText(
                         l10n[
-                            .speechProposalSourceTitle,
+                            .scanSpeechProposalSourceTitle,
                         ],
                     )
                     .dStyle(

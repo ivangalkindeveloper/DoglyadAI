@@ -42,7 +42,7 @@ class InferenceService(ModelService):
             logger.error("No GPU VM is configured for model %s", model_id)
             raise HTTPException(status_code=500, detail="Service is not configured")
 
-        headers = {"Content-Type": "application/json"}
+        headers = {HttpHeader.CONTENT_TYPE.value: "application/json"}
         if request.app_check_token:
             # Already verified at the edge; the GPU VM verifies it again because it
             # is exposed on the network and must not serve anyone who merely knows
@@ -98,5 +98,5 @@ class InferenceService(ModelService):
             logger.info("Inference value: model=%s, chars=%d", model_id, len(value))
             return value
         except (ValueError, ValidationError) as error:
-            logger.exception("Failed to parse Inference response: %s", error)
+            logger.warning("Failed to parse Inference response: %s", type(error).__name__)
             raise HTTPException(status_code=502, detail="Invalid response from inference service") from error

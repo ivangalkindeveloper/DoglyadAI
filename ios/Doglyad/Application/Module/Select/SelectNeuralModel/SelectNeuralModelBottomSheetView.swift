@@ -28,7 +28,7 @@ struct SelectNeuralModelBottomSheetView: DView {
                             [
                                 DBadgeItem(
                                     l10n[
-                                        .entitlementPro,
+                                        .subscriptionProLabel,
                                     ],
                                     isVisible: viewModel.isProBadgeVisible(
                                         for: model,
@@ -37,7 +37,7 @@ struct SelectNeuralModelBottomSheetView: DView {
                                 ),
                                 DBadgeItem(
                                     l10n[
-                                        .neuralModelComingSoonBadge,
+                                        .neuralModelComingSoonLabel,
                                     ],
                                     isVisible: viewModel.isComingSoonBadgeVisible(
                                         for: model,
@@ -116,6 +116,9 @@ struct SelectNeuralModelBottomSheetView: DView {
                 size.s16,
             )
         }
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )

@@ -1,7 +1,8 @@
+import Combine
 import Foundation
 
 @MainActor
-final class SelectDateOfBirthViewModel: DViewModel {
+final class SelectDateOfBirthViewModel: DModuleViewModel {
     @Published var date: Date
 
     let fromDate: Date
@@ -12,7 +13,11 @@ final class SelectDateOfBirthViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         arguments: SelectDateOfBirthArguments?,
     ) {
         self.arguments = arguments
@@ -26,7 +31,11 @@ final class SelectDateOfBirthViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .selectDateOfBirth,
             ),

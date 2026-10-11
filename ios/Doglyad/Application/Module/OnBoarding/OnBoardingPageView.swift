@@ -42,10 +42,9 @@ struct OnBoardingPageView<BottomContent: View>: DView {
 
             Spacer()
 
-            Image(
+            DImage(
                 image,
             )
-            .resizable()
             .scaledToFit()
             .frame(
                 maxWidth: .infinity,

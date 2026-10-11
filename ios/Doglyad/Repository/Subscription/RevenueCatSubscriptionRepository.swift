@@ -7,6 +7,7 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
     private let apiKey: String
     private let environment: EnvironmentProtocol
     private let securityDatabase: DSecurityDatabaseProtocol
+    private var packagesById: [String: Package] = [:]
 
     init(
         apiKey: String,
@@ -19,7 +20,12 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
     }
 
     func configure() {
-        Purchases.logLevel = environment.type == .development ? .debug : .info
+        switch environment.type {
+        case .development:
+            Purchases.logLevel = .debug
+        case .production:
+            Purchases.logLevel = .info
+        }
         Purchases.configure(
             withAPIKey: apiKey,
             appUserID: nil,
@@ -36,6 +42,89 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
             from: customerInfo,
             configEntitlements: configEntitlements,
         )
+    }
+
+    func fetchPlans() async throws -> [SubscriptionPlan] {
+        let offerings = try await Purchases.shared.offerings()
+        let packages = offerings.current?.availablePackages ?? []
+        packagesById = Dictionary(
+            uniqueKeysWithValues: packages.map { ($0.identifier, $0) },
+        )
+        return packages.map { package in
+            SubscriptionPlan(
+                id: package.identifier,
+                productId: package.storeProduct.productIdentifier,
+                kind: planKind(
+                    package.packageType,
+                ),
+                price: package.localizedPriceString,
+            )
+        }
+    }
+
+    func purchase(
+        plan: SubscriptionPlan,
+        configEntitlements: [SubscriptionType: SubscriptionEntitlement],
+    ) async throws -> SubscriptionPurchaseOutcome {
+        guard let package = packagesById[
+            plan.id,
+        ],
+            package.storeProduct.productIdentifier == plan.productId
+        else { throw SubscriptionError.offeringsUnavailable }
+        let customerInfo: CustomerInfo? = try await withCheckedThrowingContinuation { continuation in
+            Purchases.shared.purchase(
+                package: package,
+            ) { _, info, error, userCancelled in
+                if userCancelled {
+                    continuation.resume(
+                        returning: nil,
+                    )
+                } else if let error {
+                    continuation.resume(
+                        throwing: error,
+                    )
+                } else if let info {
+                    continuation.resume(
+                        returning: info,
+                    )
+                } else {
+                    continuation.resume(
+                        throwing: SubscriptionError.offeringsUnavailable,
+                    )
+                }
+            }
+        }
+        guard let customerInfo else { return .cancelled }
+        return await .completed(
+            status(
+                from: customerInfo,
+                configEntitlements: configEntitlements,
+            ),
+        )
+    }
+
+    func manageSubscription() async throws {
+        try await Purchases.shared.showManageSubscriptions()
+    }
+
+    func requestRefund() async throws {
+        _ = try await Purchases.shared.beginRefundRequestForActiveEntitlement()
+    }
+
+    private func planKind(
+        _ type: PackageType,
+    ) -> SubscriptionPlanKind {
+        switch type {
+        case .unknown, .custom: .custom
+        case .lifetime: .lifetime
+        case .annual: .annual
+        case .sixMonth: .sixMonth
+        case .threeMonth: .threeMonth
+        case .twoMonth: .twoMonth
+        case .monthly: .monthly
+        case .weekly: .weekly
+        @unknown default: .custom
+        }
     }
 
     func fetchStatus(

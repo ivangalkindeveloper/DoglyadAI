@@ -1,20 +1,29 @@
+import Combine
 import UIKit
 
 @MainActor
-final class PhotoLibraryPickerViewModel: DViewModel {
+final class PhotoLibraryPickerViewModel: DModuleViewModel {
     private let arguments: PhotoLibraryPickerArguments
 
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         arguments: PhotoLibraryPickerArguments,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .photoLibraryPicker,
             ),

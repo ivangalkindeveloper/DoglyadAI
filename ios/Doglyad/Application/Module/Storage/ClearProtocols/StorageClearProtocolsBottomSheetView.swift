@@ -52,6 +52,9 @@ struct StorageClearProtocolsBottomSheetView: DView {
                 size.s16,
             )
         }
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )

@@ -1,10 +1,11 @@
+import Combine
 import DoglyadUI
 import Foundation
 import Router
 import SwiftUI
 
 @MainActor
-final class OnBoardingViewModel: DViewModel {
+final class OnBoardingViewModel: DModuleViewModel {
     enum Page: CaseIterable {
         case first, second, third, fourth, fifth
 
@@ -18,12 +19,20 @@ final class OnBoardingViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
     ) {
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .onBoarding,
             ),
@@ -67,13 +76,90 @@ final class OnBoardingViewModel: DViewModel {
         isLegalAccepted = value
     }
 
+    func legalAttributedText(
+        theme: DTheme,
+        locale: Locale,
+    ) -> AttributedString {
+        let typography: DTypography = theme.typography
+        let color: DColor = theme.color
+
+        var accept = AttributedString(
+            localizedResource(
+                container.l10n[
+                    .onBoardingLegalAcceptDescription,
+                ],
+                locale: locale,
+            ),
+        )
+        accept.font = typography.textSmall
+        accept.foregroundColor = color.grayscaleHeader
+
+        var privacy = AttributedString(
+            localizedResource(
+                container.l10n[
+                    .onBoardingPrivacyPolicyLabel,
+                ],
+                locale: locale,
+            ),
+        )
+        privacy.font = typography.textSmall
+        privacy.foregroundColor = color.primaryDefault
+        privacy.link = URL(
+            string: AttributedLinks.privacy.rawValue,
+        )
+
+        var and = AttributedString(
+            localizedResource(
+                container.l10n[
+                    .onBoardingLegalAcceptAndDescription,
+                ],
+                locale: locale,
+            ),
+        )
+        and.font = typography.textSmall
+        and.foregroundColor = color.grayscaleHeader
+
+        var terms = AttributedString(
+            localizedResource(
+                container.l10n[
+                    .onBoardingTermsAndConditionsLabel,
+                ],
+                locale: locale,
+            ),
+        )
+        terms.font = typography.textSmall
+        terms.foregroundColor = color.primaryDefault
+        terms.link = URL(
+            string: AttributedLinks.terms.rawValue,
+        )
+
+        return accept + privacy + and + terms
+    }
+
+    func onLegalAttributedEnvironment(
+        url: URL,
+    ) -> OpenURLAction.Result {
+        switch AttributedLinks(
+            rawValue: url.absoluteString,
+        ) {
+        case .privacy:
+            onTapPrivacyPolicy()
+            return .handled
+        case .terms:
+            onTapTermsAndConditions()
+            return .handled
+        case .none:
+            return .systemAction
+        }
+    }
+
     func onTapPrivacyPolicy() {
         analytics.buttonTapped(
             .onboardingPrivacyPolicy,
         )
         coordinator.sheet(
             .webDocument,
-            arguments: WebDocumentBottomSheetArguments(
+            arguments: WebDocumentArguments(
                 url: container.applicationConfig.privacyPolicyUrl,
                 title: container.l10n[
                     .privacyPolicyTitle,
@@ -88,13 +174,48 @@ final class OnBoardingViewModel: DViewModel {
         )
         coordinator.sheet(
             .webDocument,
-            arguments: WebDocumentBottomSheetArguments(
+            arguments: WebDocumentArguments(
                 url: container.applicationConfig.termsAndConditionsUrl,
                 title: container.l10n[
                     .termsAndConditionsTitle,
                 ],
             ),
         )
+    }
+
+    func onPressedBack() {
+        analytics.buttonTapped(
+            .onboardingBack,
+            parameters: .onboardingPage(
+                index: page.index,
+            ),
+        )
+        switch page {
+        case .first:
+            break
+        case .second:
+            move(
+                to: .first,
+            )
+        case .third:
+            move(
+                to: .second,
+            )
+        case .fourth:
+            move(
+                to: .third,
+            )
+        case .fifth:
+            move(
+                to: .fourth,
+            )
+        }
+    }
+}
+
+extension OnBoardingViewModel {
+    enum AttributedLinks: String {
+        case privacy, terms
     }
 
     func buttonTitle(
@@ -169,37 +290,10 @@ final class OnBoardingViewModel: DViewModel {
             }
         }
     }
+}
 
-    func onPressedBack() {
-        analytics.buttonTapped(
-            .onboardingBack,
-            parameters: .onboardingPage(
-                index: page.index,
-            ),
-        )
-        switch page {
-        case .first:
-            break
-        case .second:
-            move(
-                to: .first,
-            )
-        case .third:
-            move(
-                to: .second,
-            )
-        case .fourth:
-            move(
-                to: .third,
-            )
-        case .fifth:
-            move(
-                to: .fourth,
-            )
-        }
-    }
-
-    private func move(
+private extension OnBoardingViewModel {
+    func move(
         to page: Page,
     ) {
         switch page {
@@ -210,74 +304,8 @@ final class OnBoardingViewModel: DViewModel {
         }
         self.page = page
     }
-}
 
-extension OnBoardingViewModel {
-    enum AttributedLinks: String {
-        case privacy, terms
-    }
-
-    func legalAttributedText(
-        theme: DTheme,
-        locale: Locale,
-    ) -> AttributedString {
-        let typography: DTypography = theme.typography
-        let color: DColor = theme.color
-
-        var accept = AttributedString(
-            localizedResource(
-                container.l10n[
-                    .onBoardingLegalAcceptDescription,
-                ],
-                locale: locale,
-            ),
-        )
-        accept.font = typography.textSmall
-        accept.foregroundColor = color.grayscaleHeader
-
-        var privacy = AttributedString(
-            localizedResource(
-                container.l10n[
-                    .onBoardingPrivacyPolicyLabel,
-                ],
-                locale: locale,
-            ),
-        )
-        privacy.font = typography.textSmall
-        privacy.foregroundColor = color.primaryDefault
-        privacy.link = URL(
-            string: AttributedLinks.privacy.rawValue,
-        )
-
-        var and = AttributedString(
-            localizedResource(
-                container.l10n[
-                    .onBoardingLegalAcceptAndDescription,
-                ],
-                locale: locale,
-            ),
-        )
-        and.font = typography.textSmall
-        and.foregroundColor = color.grayscaleHeader
-
-        var terms = AttributedString(
-            localizedResource(
-                container.l10n[
-                    .onBoardingTermsAndConditionsLabel,
-                ],
-                locale: locale,
-            ),
-        )
-        terms.font = typography.textSmall
-        terms.foregroundColor = color.primaryDefault
-        terms.link = URL(
-            string: AttributedLinks.terms.rawValue,
-        )
-
-        return accept + privacy + and + terms
-    }
-
-    private func localizedResource(
+    func localizedResource(
         _ resource: LocalizedStringResource,
         locale: Locale,
     ) -> String {
@@ -286,20 +314,5 @@ extension OnBoardingViewModel {
         return String(
             localized: resource,
         )
-    }
-
-    func onLegalAttributedEnvironment(
-        url: URL,
-    ) -> OpenURLAction.Result {
-        switch url.absoluteString {
-        case AttributedLinks.privacy.rawValue:
-            onTapPrivacyPolicy()
-            return .handled
-        case AttributedLinks.terms.rawValue:
-            onTapTermsAndConditions()
-            return .handled
-        default:
-            return .systemAction
-        }
     }
 }

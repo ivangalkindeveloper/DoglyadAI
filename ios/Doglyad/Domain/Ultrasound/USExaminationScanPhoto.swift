@@ -6,12 +6,6 @@ struct ScanPhotoEncodingOptions {
     let compressionQuality: Double
 }
 
-extension CodingUserInfoKey {
-    static let scanPhotoEncodingOptions = CodingUserInfoKey(
-        rawValue: "scanPhotoEncodingOptions",
-    )!
-}
-
 struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
     static let thumbnailMaxDimension: CGFloat = 192
     static let thumbnailCompressionQuality: CGFloat = 0.8

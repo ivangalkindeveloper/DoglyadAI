@@ -93,21 +93,18 @@ struct ScanFormView: DView {
                 size.s4,
             )
 
-            DateOfBirthCardView(
-                date: viewModel.patientDateOfBirth,
-                action: viewModel.onTapPatientDateOfBirth,
-            )
-            .contentTransition(
-                .opacity,
-            )
-            .animation(
-                theme.animation,
-                value: viewModel.patientDateOfBirth,
-            )
-            .padding(
-                .bottom,
-                size.s4,
-            )
+            ScanDateOfBirthCardView()
+                .contentTransition(
+                    .opacity,
+                )
+                .animation(
+                    theme.animation,
+                    value: viewModel.patientDateOfBirth,
+                )
+                .padding(
+                    .bottom,
+                    size.s4,
+                )
 
             DTextField(
                 controller: viewModel.patientHeightCMController,
@@ -212,6 +209,8 @@ struct ScanFormView: DView {
                 )
 
             NeuralModelCardView(
+                modelTitle: viewModel.selectedNeuralModelTitle,
+                availableRequestCount: viewModel.availableRequestCount,
                 onTap: viewModel.onTapNeuralModelSelection,
             )
             .padding(
@@ -219,10 +218,15 @@ struct ScanFormView: DView {
                 size.s16,
             )
 
-            NeuralModelSettingsCardView(
-                feature: .neuralModelSettings,
-                onTap: viewModel.onTapNeuralModelSettings,
-            )
+            if viewModel.isNeuralModelSettingsVisible {
+                NeuralModelSettingsCardView(
+                    settings: viewModel.neuralModelSettings,
+                    availability: viewModel.subscriptionAvailability(
+                        of: .neuralModelSettings,
+                    ),
+                    onTap: viewModel.onTapNeuralModelSettings,
+                )
+            }
 
             DButton(
                 title: l10n[
@@ -237,7 +241,7 @@ struct ScanFormView: DView {
             if viewModel.isFillDevelopmentButtonVisible {
                 DButton(
                     title: l10n[
-                        .buttonFillDevelopment,
+                        .scanFillDevelopmentButton,
                     ],
                     action: viewModel.onTapFillDevelopment,
                 )

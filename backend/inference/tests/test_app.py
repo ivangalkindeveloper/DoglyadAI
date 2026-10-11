@@ -21,9 +21,9 @@ def test_inference_preserves_valid_request_id_and_replaces_invalid_one() -> None
 
     async def run() -> tuple[str, str]:
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
-            valid = await client.get("/openapi.json", headers={"X-Request-ID": "a" * 32})
-            invalid = await client.get("/openapi.json", headers={"X-Request-ID": "client-supplied"})
-        assert valid.status_code == invalid.status_code == 200
+            valid = await client.post("/v1/generation", headers={"X-Request-ID": "a" * 32}, json={})
+            invalid = await client.post("/v1/generation", headers={"X-Request-ID": "client-supplied"}, json={})
+        assert valid.status_code == invalid.status_code == 401
         return valid.headers["X-Request-ID"], invalid.headers["X-Request-ID"]
 
     valid_id, replacement_id = asyncio.run(run())
@@ -42,10 +42,20 @@ def test_no_route_is_reachable_without_app_check() -> None:
 
     for route in app.routes:
         path = str(getattr(route, "path", ""))
-        if not path.startswith("/v1/"):
-            continue
+        assert path.startswith("/v1/"), f"{path} is outside the protected versioned router"
         dependencies = [call.call for call in route.dependant.dependencies]  # type: ignore[attr-defined]
         assert verify_app_check in dependencies, f"{path} is not behind App Check"
+
+
+@pytest.mark.parametrize("path", ["/docs", "/redoc", "/openapi.json"])
+def test_inference_does_not_expose_public_documentation(path: str) -> None:
+    from app.main import app
+
+    async def run() -> httpx.Response:
+        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
+            return await client.get(path)
+
+    assert asyncio.run(run()).status_code == 404
 
 
 def test_generation_is_behind_app_check() -> None:

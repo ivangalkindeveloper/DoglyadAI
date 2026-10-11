@@ -17,7 +17,7 @@ final class DependencyContainer: ObservableObject {
     let ultrasoundReportRepository: UltrasoundReportRepositoryProtocol
     let ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol
     let templateRepository: TemplateRepositoryProtocol
-    let subscriptionRepository: RevenueCatSubscriptionRepository
+    let subscriptionRepository: SubscriptionRepositoryProtocol
     let applicationConfig: ApplicationConfig
     let language: Language
     let l10n: L10N
@@ -44,7 +44,7 @@ final class DependencyContainer: ObservableObject {
         ultrasoundReportRepository: UltrasoundReportRepositoryProtocol,
         ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol,
         templateRepository: TemplateRepositoryProtocol,
-        subscriptionRepository: RevenueCatSubscriptionRepository,
+        subscriptionRepository: SubscriptionRepositoryProtocol,
         applicationConfig: ApplicationConfig,
         language: Language,
         l10n: L10N,

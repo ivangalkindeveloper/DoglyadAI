@@ -16,14 +16,13 @@ struct NewVersionView: DView {
                 ) {
                     Spacer()
 
-                    Image(
+                    DImage(
                         .doglyadAbout,
                     )
-                    .resizable()
                     .scaledToFit()
 
                     DText(
-                        .newVersionDescription0,
+                        .newVersionUpdateDescription,
                     )
                     .dStyle(
                         font: typography.linkSmall,
@@ -35,7 +34,7 @@ struct NewVersionView: DView {
                     )
 
                     DText(
-                        .newVersionDescription1,
+                        .newVersionAvailabilityDescription,
                     )
                     .dStyle(
                         font: typography.textSmall,

@@ -105,7 +105,7 @@ struct DNeuralUltrasoundProposalProcessor {
                     locale: request.locale,
                     localization: localization,
                 )
-                if item.fieldId == .patientDateOfBirth,
+                if item.fieldId.isPatientDateOfBirth,
                    case let .date(
                        generatedDate,
                    ) = generatedValue,

@@ -86,7 +86,7 @@
         }
       }
     },
-    "newVersionDescription0": {
+    "newVersionUpdateDescription": {
       "extractionState": "manual",
       "localizations": {
         "en": {
@@ -103,7 +103,7 @@
         }
       }
     },
-    "newVersionDescription1": {
+    "newVersionAvailabilityDescription": {
       "extractionState": "manual",
       "localizations": {
         "en": {

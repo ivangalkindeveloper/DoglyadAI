@@ -1,3 +1,4 @@
+import Combine
 import DoglyadNetwork
 import DoglyadUI
 import Foundation
@@ -6,7 +7,7 @@ import Router
 import UIKit
 
 @MainActor
-final class ShareViewModel: DViewModel {
+final class ShareViewModel: DModuleViewModel {
     private let messager: DMessager
     private let arguments: ShareArguments
     let userEmail: String?
@@ -16,16 +17,24 @@ final class ShareViewModel: DViewModel {
         messager: DMessager,
         router: DRouter,
         arguments: ShareArguments,
-        subscription: SubscriptionViewModel,
-        userEmail: String?,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        getUserEmail: @escaping () -> String?,
     ) {
         self.messager = messager
         self.arguments = arguments
-        self.userEmail = userEmail
+        userEmail = getUserEmail()
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .share,
             ),
@@ -39,7 +48,7 @@ final class ShareViewModel: DViewModel {
     }
 
     var isUserEmailButtonVisible: Bool {
-        switch subscription.availability(
+        switch subscriptionAvailability(
             of: .sendingReportByEmail,
         ) {
         case .offered, .available:
@@ -51,9 +60,9 @@ final class ShareViewModel: DViewModel {
 
     var userEmailButtonTitle: String {
         container.l10n.text(
-            .shareUserEmailTitle,
+            .shareWorkEmailButton,
             values: ["prefix": container.l10n.text(
-                .buttonShareUserEmailPrefix,
+                .buttonSendToEmail,
             ), "email": userEmail ?? ""],
         )
     }
@@ -93,7 +102,44 @@ final class ShareViewModel: DViewModel {
         }
     }
 
-    private func sendReportEmail(
+    func onTapEmail() {
+        analytics.buttonTapped(
+            .shareCustomEmail,
+        )
+        coordinator.run(
+            .sendingReportByEmail,
+            dismissesSheetOnPaywall: true,
+        ) {
+            self.coordinator.dismissSheet()
+            UIApplication.openMail(
+                subject: self.subject,
+                body: self.shareMessage,
+            )
+        }
+    }
+
+    func onTapCopy() {
+        analytics.buttonTapped(
+            .shareCopy,
+        )
+        coordinator.dismissSheet()
+        UIApplication.pasteboard(
+            shareMessage,
+        )
+        messager.show(
+            type: .success,
+            title: container.l10n[
+                .shareExaminationCopyMessageTitle,
+            ],
+            description: container.l10n[
+                .shareExaminationCopyMessageDescription,
+            ],
+        )
+    }
+}
+
+private extension ShareViewModel {
+    func sendReportEmail(
         to userEmail: String,
     ) {
         let ultrasoundConfig = container.applicationConfig.ultrasound
@@ -128,40 +174,5 @@ final class ShareViewModel: DViewModel {
                 l10n: self.container.l10n,
             )
         }
-    }
-
-    func onTapEmail() {
-        analytics.buttonTapped(
-            .shareCustomEmail,
-        )
-        coordinator.run(
-            .sendingReportByEmail,
-            dismissesSheetOnPaywall: true,
-        ) {
-            self.coordinator.dismissSheet()
-            UIApplication.openMail(
-                subject: self.subject,
-                body: self.shareMessage,
-            )
-        }
-    }
-
-    func onTapCopy() {
-        analytics.buttonTapped(
-            .shareCopy,
-        )
-        coordinator.dismissSheet()
-        UIApplication.pasteboard(
-            shareMessage,
-        )
-        messager.show(
-            type: .success,
-            title: container.l10n[
-                .shareExaminationCopyMessageTitle,
-            ],
-            description: container.l10n[
-                .shareExaminationCopyMessageDescription,
-            ],
-        )
     }
 }

@@ -41,15 +41,13 @@ struct SectionHeaderView: DView {
                     size.s8,
                 )
                 .background(
-                    Capsule()
-                        .fill(
-                            color.grayscaleBackgroundWeak.opacity(
-                                0.5,
-                            ),
-                        )
-                        .fill(
-                            .ultraThinMaterial,
+                    DCardBackground(
+                        cornerRadius: size.s48,
+                        color: color.grayscaleBackgroundWeak.opacity(
+                            0.5,
                         ),
+                        material: .ultraThinMaterial,
+                    ),
                 )
 
             Spacer(

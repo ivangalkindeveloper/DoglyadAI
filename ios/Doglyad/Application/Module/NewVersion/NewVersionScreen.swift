@@ -5,15 +5,23 @@ import SwiftUI
 struct NewVersionScreen: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
-    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
-    let arguments: NewVersionScreenArguments?
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
+    let arguments: NewVersionArguments?
 
     var body: some View {
         NewVersionScreenView(
             viewModel: NewVersionViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel,
+                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
+                    observer,
+                ) },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
+                    status: status,
+                ) },
+                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
+                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
             ),
         )
     }

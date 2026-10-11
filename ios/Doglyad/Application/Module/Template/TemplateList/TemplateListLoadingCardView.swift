@@ -9,23 +9,21 @@ struct TemplateListLoadingCardView: DView {
             alignment: .leading,
             spacing: size.s8,
         ) {
-            Capsule()
-                .fill(
-                    color.grayscaleInput,
-                )
-                .frame(
-                    width: size.s128,
-                    height: size.s14,
-                )
+            DShimmerPlaceholder(
+                cornerRadius: .infinity,
+            )
+            .frame(
+                width: size.s128,
+                height: size.s14,
+            )
 
-            Capsule()
-                .fill(
-                    color.grayscaleInput,
-                )
-                .frame(
-                    width: size.s96,
-                    height: size.s14,
-                )
+            DShimmerPlaceholder(
+                cornerRadius: .infinity,
+            )
+            .frame(
+                width: size.s96,
+                height: size.s14,
+            )
 
             VStack(
                 alignment: .leading,
@@ -35,15 +33,14 @@ struct TemplateListLoadingCardView: DView {
                     0 ..< 4,
                     id: \.self,
                 ) { _ in
-                    Capsule()
-                        .fill(
-                            color.grayscaleInput,
-                        )
-                        .frame(
-                            maxWidth: .infinity,
-                            minHeight: size.s12,
-                            maxHeight: size.s12,
-                        )
+                    DShimmerPlaceholder(
+                        cornerRadius: .infinity,
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                        minHeight: size.s12,
+                        maxHeight: size.s12,
+                    )
                 }
             }
         }

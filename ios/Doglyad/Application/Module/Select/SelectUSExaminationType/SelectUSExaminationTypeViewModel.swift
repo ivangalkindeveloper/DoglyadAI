@@ -1,7 +1,8 @@
+import Combine
 import Foundation
 
 @MainActor
-final class SelectUSExaminationTypeViewModel: DViewModel {
+final class SelectUSExaminationTypeViewModel: DModuleViewModel {
     struct Item: Identifiable {
         let id: String
         let type: USExaminationType
@@ -33,14 +34,22 @@ final class SelectUSExaminationTypeViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         arguments: SelectUSExaminationTypeArguments?,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .selectUSExaminationType,
             ),

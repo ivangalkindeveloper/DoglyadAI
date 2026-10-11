@@ -92,6 +92,12 @@ def test_catalogs_match_client_contract(environment: str, monkeypatch: pytest.Mo
         folder = directory / language.value
         strings = _json(folder / "l10n_application.json")
         assert set(strings) == app_keys, f"UI enum/catalog key drift in {environment}/{language.value}"
+        assert all(
+            re.fullmatch(
+                r"button[A-Z][A-Za-z0-9]*|[a-z][A-Za-z0-9]*(?:Title|Label|Description|Button|Placeholder)", key
+            )
+            for key in strings
+        ), f"UI localization key naming violates the contract in {environment}/{language.value}"
         voice = _json(folder / "l10n_voice_parsing.json")
         assert set(voice) == {"code", "dictation", "speech"}
         assert voice["code"] == language.value
@@ -123,8 +129,8 @@ def test_client_bundles_only_bootstrap_localization() -> None:
         "serviceUnavailableTitle",
         "serviceUnavailableDescription",
         "newVersionTitle",
-        "newVersionDescription0",
-        "newVersionDescription1",
+        "newVersionUpdateDescription",
+        "newVersionAvailabilityDescription",
     }
     fixtures = _ROOT / "ios/DoglyadTests/LocalizationFixtures"
     for language in SUPPORTED_LANGUAGES:
@@ -159,7 +165,7 @@ def test_startup_rejects_broken_l10n(
     elif defect == "empty_text":
         catalog["buttonSpeech"] = " "
     elif defect == "placeholder":
-        catalog["photoViewPage"] = "{current} / {unknown}"
+        catalog["photoViewPageLabel"] = "{current} / {unknown}"
     elif defect == "voice_language":
         catalog["code"] = LanguageCode.EN.value
     elif defect == "voice_structure":

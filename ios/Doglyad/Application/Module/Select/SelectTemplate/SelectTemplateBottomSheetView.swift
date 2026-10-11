@@ -60,6 +60,9 @@ struct SelectTemplateBottomSheetView: DView {
             theme.animation,
             value: viewModel.templates,
         )
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )

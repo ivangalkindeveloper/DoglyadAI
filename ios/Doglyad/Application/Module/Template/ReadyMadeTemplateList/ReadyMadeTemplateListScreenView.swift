@@ -63,21 +63,24 @@ struct ReadyMadeTemplateListScreenView: DView {
             content: { toolbarInset, _ in
                 switch viewModel.state {
                 case .loading:
-                    ProgressView()
-                        .tint(
-                            color.primaryDefault,
-                        )
-                        .frame(
-                            maxWidth: .infinity,
-                            maxHeight: .infinity,
-                        )
-                        .padding(
-                            .top,
-                            toolbarInset,
-                        )
-                        .transition(
-                            .opacity,
-                        )
+                    DShimmerPlaceholder().frame(
+                        width: size.s64,
+                        height: size.s8,
+                    )
+                    .tint(
+                        color.primaryDefault,
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                        maxHeight: .infinity,
+                    )
+                    .padding(
+                        .top,
+                        toolbarInset,
+                    )
+                    .transition(
+                        .opacity,
+                    )
                 case .error:
                     VStack(
                         spacing: size.s16,

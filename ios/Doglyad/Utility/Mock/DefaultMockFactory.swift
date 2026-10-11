@@ -5,7 +5,7 @@ final class DefaultMockFactory: MockFactory {
         l10n: L10N,
     ) -> String {
         l10n.text(
-            .mockPatientComplaints,
+            .scanDevelopmentPatientComplaintsDescription,
         )
     }
 
@@ -13,7 +13,7 @@ final class DefaultMockFactory: MockFactory {
         l10n: L10N,
     ) -> String {
         l10n.text(
-            .mockExaminationDescription,
+            .scanDevelopmentExaminationDescription,
         )
     }
 }

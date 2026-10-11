@@ -36,7 +36,9 @@ extension PermissionManager: PermissionManagerProtocol {
             ) {
             case .authorized, .limited:
                 true
-            default:
+            case .notDetermined, .restricted, .denied:
+                false
+            @unknown default:
                 false
             }
         }

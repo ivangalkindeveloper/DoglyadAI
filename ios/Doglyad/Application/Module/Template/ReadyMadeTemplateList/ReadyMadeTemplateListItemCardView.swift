@@ -13,7 +13,8 @@ struct ReadyMadeTemplateListItemCardView: DView {
             alignment: .leading,
             spacing: size.s8,
         ) {
-            Button(
+            DButtonCard(
+                isPlain: true,
                 action: action,
             ) {
                 VStack(

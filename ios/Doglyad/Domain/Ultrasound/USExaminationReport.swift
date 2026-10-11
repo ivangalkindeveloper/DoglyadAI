@@ -55,9 +55,9 @@ extension USExaminationReport {
         examinationTypesById: [String: USExaminationType],
         l10n: L10N,
     ) -> String {
-        let appName = String(
+        let applicationNameLabel = String(
             localized: l10n[
-                .appName,
+                .applicationNameLabel,
             ],
         )
         let date = date.localized(
@@ -70,7 +70,7 @@ extension USExaminationReport {
                 id: examinationData.usExaminationTypeId,
             ),
         )
-        return "\(appName): \(date) \(patientName) \(examinationType)"
+        return "\(applicationNameLabel): \(date) \(patientName) \(examinationType)"
     }
 
     func shareMessage(

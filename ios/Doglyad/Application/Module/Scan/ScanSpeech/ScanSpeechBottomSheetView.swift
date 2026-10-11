@@ -11,7 +11,7 @@ struct ScanSpeechBottomSheetView: DView {
         DBottomSheet(
             type: viewModel.isReviewVisible ? .default : .blur,
             title: l10n[
-                .speechTitle,
+                .scanSpeechTitle,
             ],
             fraction: viewModel.isReviewVisible ? 0.85 : 0.5,
         ) { toolbarHeight, _ in
@@ -93,16 +93,14 @@ struct ScanSpeechBottomSheetView: DView {
             }
 
             if viewModel.isAudioMeterVisible {
-                ScanSpeechAudioMeterView(
-                    level: viewModel.audioMeterLevel,
-                )
-                .padding(
-                    .bottom,
-                    size.s16,
-                )
-                .transition(
-                    .opacity,
-                )
+                ScanSpeechAudioMeterView()
+                    .padding(
+                        .bottom,
+                        size.s16,
+                    )
+                    .transition(
+                        .opacity,
+                    )
             }
 
             if let processingDescription = viewModel.processingDescription {
@@ -129,7 +127,7 @@ struct ScanSpeechBottomSheetView: DView {
                 Group {
                     DText(
                         l10n[
-                            .speechProcessDescription,
+                            .scanSpeechProcessDescription,
                         ],
                     )
                     .dStyle(
@@ -148,7 +146,7 @@ struct ScanSpeechBottomSheetView: DView {
 
                     DText(
                         l10n[
-                            .speechProcessSpeechDescription,
+                            .scanSpeechProcessSpeechDescription,
                         ],
                     )
                     .dStyle(

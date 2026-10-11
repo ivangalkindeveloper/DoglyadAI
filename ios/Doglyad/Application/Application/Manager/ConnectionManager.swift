@@ -29,7 +29,11 @@ extension ConnectionManager: ConnectionManagerProtocol {
     }
 
     var isConnected: Bool {
-        monitor.currentPath.status == .satisfied
+        switch monitor.currentPath.status {
+        case .satisfied: true
+        case .unsatisfied, .requiresConnection: false
+        @unknown default: false
+        }
     }
 
     func stop() {

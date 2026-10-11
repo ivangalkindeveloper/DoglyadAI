@@ -9,10 +9,9 @@ struct TemplateListEmptyView: DView {
         VStack(
             spacing: .zero,
         ) {
-            Image(
+            DImage(
                 .doglyadFile,
             )
-            .resizable()
             .scaledToFit()
             .frame(
                 maxWidth: .infinity,

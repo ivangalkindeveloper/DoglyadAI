@@ -144,6 +144,21 @@ def test_blank_response_is_rejected() -> None:
     assert error.value.status_code == 502
 
 
+def test_invalid_response_does_not_log_patient_data(caplog: pytest.LogCaptureFixture) -> None:
+    patient_data = "Sensitive generated patient text"
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json={"modelId": _MODEL.id, "response": {"patient": patient_data}})
+
+    with pytest.raises(HTTPException) as error:
+        _call(handler)
+
+    assert error.value.status_code == 502
+    assert "Failed to parse Inference response: ValidationError" in caplog.text
+    assert patient_data not in caplog.text
+    assert all(record.exc_info is None for record in caplog.records)
+
+
 def test_response_from_another_model_is_rejected() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(200, json={"modelId": "google/another-model", "response": _RESPONSE})

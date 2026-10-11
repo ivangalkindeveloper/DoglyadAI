@@ -1,19 +1,28 @@
+import Combine
 import DoglyadUI
 import Foundation
 import Router
 import SwiftUI
 
 @MainActor
-final class LegalUpdateViewModel: DViewModel {
+final class LegalUpdateViewModel: DModuleViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
     ) {
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .legalUpdate,
             ),
@@ -24,71 +33,6 @@ final class LegalUpdateViewModel: DViewModel {
 
     var isAcceptDisabled: Bool {
         isLegalAccepted == false
-    }
-
-    func onLegalAcceptedChanged(
-        _ value: Bool,
-    ) {
-        analytics.buttonTapped(
-            .legalUpdateLegalToggle,
-            parameters: AnalyticsParameters(
-                [
-                    .result: .bool(
-                        value,
-                    ),
-                ],
-            ),
-        )
-        isLegalAccepted = value
-    }
-
-    func onTapPrivacyPolicy() {
-        analytics.buttonTapped(
-            .legalUpdatePrivacyPolicy,
-        )
-        coordinator.sheet(
-            .webDocument,
-            arguments: WebDocumentBottomSheetArguments(
-                url: container.applicationConfig.privacyPolicyUrl,
-                title: container.l10n[
-                    .privacyPolicyTitle,
-                ],
-            ),
-        )
-    }
-
-    func onTapTermsAndConditions() {
-        analytics.buttonTapped(
-            .legalUpdateTermsAndConditions,
-        )
-        coordinator.sheet(
-            .webDocument,
-            arguments: WebDocumentBottomSheetArguments(
-                url: container.applicationConfig.termsAndConditionsUrl,
-                title: container.l10n[
-                    .termsAndConditionsTitle,
-                ],
-            ),
-        )
-    }
-
-    func onTapAccept() {
-        analytics.buttonTapped(
-            .legalUpdateAccept,
-        )
-        container.sharedRepository.acceptLegal(
-            documentDate: container.applicationConfig.legalDate,
-        )
-        coordinator.root(
-            .scan,
-            animated: true,
-        )
-    }
-}
-
-extension LegalUpdateViewModel {
-    enum AttributedLinks: String {
-        case privacy, terms
     }
 
     func legalAttributedText(
@@ -151,7 +95,91 @@ extension LegalUpdateViewModel {
         return accept + privacy + and + terms
     }
 
-    private func localizedResource(
+    func onLegalAcceptedChanged(
+        _ value: Bool,
+    ) {
+        analytics.buttonTapped(
+            .legalUpdateLegalToggle,
+            parameters: AnalyticsParameters(
+                [
+                    .result: .bool(
+                        value,
+                    ),
+                ],
+            ),
+        )
+        isLegalAccepted = value
+    }
+
+    func onLegalAttributedEnvironment(
+        url: URL,
+    ) -> OpenURLAction.Result {
+        switch AttributedLinks(
+            rawValue: url.absoluteString,
+        ) {
+        case .privacy:
+            onTapPrivacyPolicy()
+            return .handled
+        case .terms:
+            onTapTermsAndConditions()
+            return .handled
+        case .none:
+            return .systemAction
+        }
+    }
+
+    func onTapPrivacyPolicy() {
+        analytics.buttonTapped(
+            .legalUpdatePrivacyPolicy,
+        )
+        coordinator.sheet(
+            .webDocument,
+            arguments: WebDocumentArguments(
+                url: container.applicationConfig.privacyPolicyUrl,
+                title: container.l10n[
+                    .privacyPolicyTitle,
+                ],
+            ),
+        )
+    }
+}
+
+extension LegalUpdateViewModel {
+    enum AttributedLinks: String {
+        case privacy, terms
+    }
+
+    func onTapTermsAndConditions() {
+        analytics.buttonTapped(
+            .legalUpdateTermsAndConditions,
+        )
+        coordinator.sheet(
+            .webDocument,
+            arguments: WebDocumentArguments(
+                url: container.applicationConfig.termsAndConditionsUrl,
+                title: container.l10n[
+                    .termsAndConditionsTitle,
+                ],
+            ),
+        )
+    }
+
+    func onTapAccept() {
+        analytics.buttonTapped(
+            .legalUpdateAccept,
+        )
+        container.sharedRepository.acceptLegal(
+            documentDate: container.applicationConfig.legalDate,
+        )
+        coordinator.root(
+            .scan,
+            animated: true,
+        )
+    }
+}
+
+private extension LegalUpdateViewModel {
+    func localizedResource(
         _ resource: LocalizedStringResource,
         locale: Locale,
     ) -> String {
@@ -160,20 +188,5 @@ extension LegalUpdateViewModel {
         return String(
             localized: resource,
         )
-    }
-
-    func onLegalAttributedEnvironment(
-        url: URL,
-    ) -> OpenURLAction.Result {
-        switch url.absoluteString {
-        case AttributedLinks.privacy.rawValue:
-            onTapPrivacyPolicy()
-            return .handled
-        case AttributedLinks.terms.rawValue:
-            onTapTermsAndConditions()
-            return .handled
-        default:
-            return .systemAction
-        }
     }
 }

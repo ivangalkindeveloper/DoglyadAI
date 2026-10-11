@@ -24,7 +24,9 @@ struct ScanBottomView: DView {
                         .primaryChip,
                     )
                     .paidBadge(
-                        .formCompletionViaMicrophone,
+                        viewModel.subscriptionAvailability(
+                            of: .formCompletionViaMicrophone,
+                        ),
                     )
                     .padding(
                         .bottom,
@@ -52,20 +54,20 @@ struct ScanBottomView: DView {
                 size.s16,
             )
             .background(
-                Rectangle()
-                    .fill(
-                        .ultraThinMaterial,
-                    )
-                    .clipShape(
-                        DRoundedCorner(
-                            radius: size.adaptiveCornerRadius,
-                            corners: [.topLeft, .topRight],
-                        ),
-                    )
-                    .ignoresSafeArea(
-                        .container,
-                        edges: .bottom,
+                DCardBackground(
+                    cornerRadius: 0,
+                    material: .ultraThinMaterial,
+                )
+                .clipShape(
+                    DRoundedCorner(
+                        radius: size.adaptiveCornerRadius,
+                        corners: [.topLeft, .topRight],
                     ),
+                )
+                .ignoresSafeArea(
+                    .container,
+                    edges: .bottom,
+                ),
             )
         }
         .animation(

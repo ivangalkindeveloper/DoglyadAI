@@ -69,7 +69,7 @@ struct PhotoViewScreenView: DView {
                     ) {
                         DText(
                             l10n.resource(
-                                .photoViewPage,
+                                .photoViewPageLabel,
                                 values: ["current": String(
                                     viewModel.currentPage,
                                 ), "total": String(
@@ -86,11 +86,9 @@ struct PhotoViewScreenView: DView {
                         size.s16,
                     )
                     .background(
-                        RoundedRectangle(
+                        DCardBackground(
                             cornerRadius: size.adaptiveCardCornerRadius,
-                        )
-                        .fill(
-                            .ultraThinMaterial,
+                            material: .ultraThinMaterial,
                         ),
                     )
                     .padding(
@@ -99,6 +97,9 @@ struct PhotoViewScreenView: DView {
                 }
             }
         }
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )

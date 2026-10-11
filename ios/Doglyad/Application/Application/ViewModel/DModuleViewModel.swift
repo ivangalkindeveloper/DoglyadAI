@@ -1,0 +1,120 @@
+import Combine
+import DoglyadNetwork
+import Foundation
+import Handler
+
+@MainActor
+class DModuleViewModel: Handler<DHttpApiError, DHttpConnectionError>, ObservableObject {
+    private var isInitialized = false
+
+    let container: DependencyContainer
+    let router: DRouter
+    @Published private(set) var subscriptionStatus: SubscriptionStatus?
+    private var presentationObservations: [AnyCancellable] = []
+    private var subscriptionObservation: AnyCancellable?
+    private let getNeuralModelSettings: () -> NeuralModelSettings
+    private let onRequestCountIncremented: () -> Void
+    private let onSubscriptionStatusUpdated: (SubscriptionStatus?) -> Void
+    let coordinator: Coordinator
+    var analytics: AnalyticsManager { container.analytics }
+    var l10n: L10N { container.l10n }
+    private let analyticsDestination: AnalyticsRouteDestination
+    private let analyticsParameters: AnalyticsParameters
+
+    init(
+        container: DependencyContainer,
+        router: DRouter,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        analyticsDestination: AnalyticsRouteDestination,
+        analyticsParameters: AnalyticsParameters = .empty,
+    ) {
+        self.container = container
+        self.router = router
+        subscriptionStatus = getSubscriptionStatus()
+        self.getNeuralModelSettings = getNeuralModelSettings
+        self.onRequestCountIncremented = onRequestCountIncremented
+        self.onSubscriptionStatusUpdated = onSubscriptionStatusUpdated
+        self.analyticsDestination = analyticsDestination
+        self.analyticsParameters = analyticsParameters
+        coordinator = Coordinator(
+            container: container,
+            router: router,
+            getSubscriptionStatus: getSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+        )
+        super.init()
+        subscriptionObservation = observeSubscriptionStatus { [weak self] status in
+            self?.subscriptionStatus = status
+        }
+    }
+
+    final func onAppear() {
+        switch analyticsDestination {
+        case let .screen(
+            screen,
+        ):
+            analytics.screenViewed(
+                screen,
+                parameters: analyticsParameters,
+            )
+        case let .bottomSheet(
+            bottomSheet,
+        ):
+            analytics.bottomSheetViewed(
+                bottomSheet,
+                parameters: analyticsParameters,
+            )
+        }
+
+        guard !isInitialized else { return }
+        isInitialized = true
+        onInit()
+    }
+
+    func onInit() {}
+
+    func observePresentationChanges(
+        _ observeChanges: (@escaping () -> Void) -> AnyCancellable,
+    ) {
+        presentationObservations.append(
+            observeChanges { [weak self] in self?.objectWillChange.send() },
+        )
+    }
+
+    var isNeuralModelSettingsVisible: Bool {
+        switch subscriptionAvailability(
+            of: .neuralModelSettings,
+        ) {
+        case .available, .offered: true
+        case .unavailable: false
+        }
+    }
+
+    var availableRequestCount: Int { subscriptionStatus?.availableCountPerDay ?? 0 }
+    var isSubscriptionActive: Bool { subscriptionStatus != nil }
+    var neuralModelSettings: NeuralModelSettings { getNeuralModelSettings() }
+
+    func subscriptionAvailability(
+        of feature: PaidFeature,
+    ) -> SubscriptionFeatureAvailability {
+        subscriptionStatus?.availability(
+            of: feature,
+        ) ?? .unavailable
+    }
+
+    func incrementRequestCount() {
+        onRequestCountIncremented()
+    }
+
+    func updateSubscriptionStatus(
+        _ status: SubscriptionStatus?,
+    ) {
+        onSubscriptionStatusUpdated(
+            status,
+        )
+    }
+}

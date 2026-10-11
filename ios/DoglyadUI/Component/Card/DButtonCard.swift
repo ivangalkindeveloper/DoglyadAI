@@ -4,15 +4,21 @@ public struct DButtonCard<Content: View>: DView {
     @EnvironmentObject public var theme: DTheme
 
     let backgroundColor: Color?
+    let isPlain: Bool
+    let style: DButtonStyleType
     let action: () -> Void
     let content: () -> Content
 
     public init(
         backgroundColor: Color? = nil,
+        isPlain: Bool = false,
+        style: DButtonStyleType = .card,
         action: @escaping () -> Void,
         @ViewBuilder content: @escaping () -> Content,
     ) {
         self.backgroundColor = backgroundColor
+        self.isPlain = isPlain
+        self.style = style
         self.content = content
         self.action = action
     }
@@ -23,12 +29,23 @@ public struct DButtonCard<Content: View>: DView {
         ) {
             content()
         }
-        .buttonStyle(
-            DButtonStyle(
-                .card,
-                backgroundColor: backgroundColor,
-            ),
-        )
+        .if(
+            isPlain,
+        ) { view in
+            view.buttonStyle(
+                .plain,
+            )
+        }
+        .if(
+            !isPlain,
+        ) { view in
+            view.buttonStyle(
+                DButtonStyle(
+                    style,
+                    backgroundColor: backgroundColor,
+                ),
+            )
+        }
     }
 }
 

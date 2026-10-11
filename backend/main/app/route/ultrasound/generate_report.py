@@ -10,7 +10,7 @@ from app.core.config import get_application_locale_config, resolve_examination_t
 from app.core.http_header import HttpHeader
 from app.core.limiter import limiter
 from app.core.locale import resolve_language
-from app.model.ultrasound.us_examination_model_report import USExaminationModelReport
+from app.model.ultrasound.us_examination_model_report_response import USExaminationModelReportResponse
 from app.model.ultrasound.us_examination_report import (
     USExaminationReport,
     us_examination_report_structured_output,
@@ -24,12 +24,12 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
-@router.post("/generate_report", response_model=USExaminationModelReport)
+@router.post("/generate_report", response_model=USExaminationModelReportResponse)
 @limiter.limit("30/minute")
 async def generate_report(
     body: USExaminationRequest,
     request: Request,
-) -> USExaminationModelReport:
+) -> USExaminationModelReportResponse:
     language_code = resolve_language(
         request.headers.get(HttpHeader.ACCEPT_LANGUAGE.value), get_application_locale_config()
     )
@@ -79,10 +79,10 @@ async def generate_report(
     try:
         report = USExaminationReport.model_validate_json(response_text)
     except ValidationError as error:
-        logger.exception("Generated report does not match the response schema: %s", error)
+        logger.warning("Generated report does not match the response schema: %s", type(error).__name__)
         raise HTTPException(status_code=502, detail="Invalid report from inference service") from error
 
-    return USExaminationModelReport(
+    return USExaminationModelReportResponse(
         date=datetime.now(UTC),
         modelId=neural_model.id,
         **report.model_dump(),

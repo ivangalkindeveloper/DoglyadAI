@@ -11,14 +11,16 @@ from evaluation.voice.score_candidate import score_scenarios
 
 
 def test_guided_pack_follows_the_labels_and_order_shown_in_the_recording_sheet() -> None:
-    catalog = json.loads((ROOT / "ios/Doglyad/Resources/Localizable.xcstrings").read_text(encoding="utf-8"))
     cases = selected_cases()
     assert len(cases) == 124
     assert Counter((case["locale"], case["scenario"]) for case in cases) == {
         (locale, scenario): 31 for locale in ("en", "ru") for scenario in SCENARIOS
     }
     for locale in ("en", "ru"):
-        hint = catalog["strings"]["speechProcessSpeechDescription"]["localizations"][locale]["stringUnit"]["value"]
+        catalog = json.loads(
+            (ROOT / "backend/main/config/development" / locale / "l10n_application.json").read_text(encoding="utf-8")
+        )
+        hint = catalog["scanSpeechProcessSpeechDescription"]
         hinted_labels = [part.split(":", 1)[0].strip(' "«»') for part in hint.split("; ")]
         assert [label.casefold() for label in hinted_labels] == [label.casefold() for label in LABELS[locale]]
     for case in cases:

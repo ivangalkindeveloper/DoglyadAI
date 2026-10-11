@@ -1,3 +1,4 @@
+import Combine
 import DoglyadNetwork
 import Foundation
 import Handler
@@ -5,7 +6,7 @@ import Router
 import SwiftUI
 
 @MainActor
-final class HistoryViewModel: DViewModel {
+final class HistoryViewModel: DModuleViewModel {
     private let sectionBuilder: HistoryDaySectionBuilder
     private let historyConfig: HistoryConfig
 
@@ -16,7 +17,11 @@ final class HistoryViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         sectionBuilder: HistoryDaySectionBuilder? = nil,
     ) {
         self.sectionBuilder = sectionBuilder ?? HistoryDaySectionBuilder(
@@ -32,7 +37,11 @@ final class HistoryViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .history,
             ),
@@ -70,7 +79,7 @@ final class HistoryViewModel: DViewModel {
         )
         coordinator.screen(
             .reportDetail,
-            arguments: ReportDetailScreenArguments(
+            arguments: ReportDetailArguments(
                 report: value,
             ),
         )

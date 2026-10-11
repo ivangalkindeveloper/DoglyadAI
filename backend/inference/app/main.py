@@ -13,6 +13,6 @@ setup_logging()
 router_v1 = APIRouter(prefix="/v1", dependencies=[Depends(verify_app_check)])
 router_v1.include_router(generation_router)
 
-app = FastAPI(lifespan=InferenceLifespan)
+app = FastAPI(lifespan=InferenceLifespan, docs_url=None, redoc_url=None, openapi_url=None)
 app.middleware("http")(request_id_middleware)
 app.include_router(router_v1)

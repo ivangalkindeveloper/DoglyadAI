@@ -13,4 +13,20 @@ extension View {
             l10n.locale,
         )
     }
+
+    func paidBadge(
+        _ availability: SubscriptionFeatureAvailability,
+    ) -> some View {
+        modifier(
+            PaidBadgeModifier(
+                availability: availability,
+            ),
+        )
+    }
+
+    func previewable() -> some View {
+        modifier(
+            PreviewableModifier(),
+        )
+    }
 }

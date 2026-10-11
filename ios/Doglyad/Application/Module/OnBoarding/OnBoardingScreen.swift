@@ -5,15 +5,23 @@ import SwiftUI
 struct OnBoardingScreen: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
-    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
-    let arguments: OnBoardingScreenArguments?
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
+    let arguments: OnBoardingArguments?
 
     var body: some View {
         OnBoardingScreenView(
             viewModel: OnBoardingViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel,
+                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
+                    observer,
+                ) },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
+                    status: status,
+                ) },
+                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
+                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
             ),
         )
     }

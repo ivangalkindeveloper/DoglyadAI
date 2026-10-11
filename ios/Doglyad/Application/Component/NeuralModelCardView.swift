@@ -5,9 +5,8 @@ struct NeuralModelCardView: DView {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
-    @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
-    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
-
+    let modelTitle: String
+    let availableRequestCount: Int
     let onTap: () -> Void
 
     var body: some View {
@@ -17,7 +16,7 @@ struct NeuralModelCardView: DView {
         ) {
             DText(
                 l10n[
-                    .scanNeuralModelTitleLabel,
+                    .neuralModelCardTitleLabel,
                 ],
             )
             .dStyle(
@@ -42,16 +41,16 @@ struct NeuralModelCardView: DView {
                 ) {
                     NeuralModelValueRowView(
                         title: l10n[
-                            .scanNerualModelSettingsModelLabel,
+                            .neuralModelSettingsCardModelLabel,
                         ],
-                        value: ultrasoundViewModel.neuralModel.title,
+                        value: modelTitle,
                     )
 
                     NeuralModelValueRowView(
                         title: l10n[
-                            .scanNeuralModelSettingsAvailableRequestsLabel,
+                            .neuralModelCardAvailableRequestsLabel,
                         ],
-                        value: "\(subscriptionViewModel.availableRequestCount)",
+                        value: "\(availableRequestCount)",
                     )
                 }
                 .frame(

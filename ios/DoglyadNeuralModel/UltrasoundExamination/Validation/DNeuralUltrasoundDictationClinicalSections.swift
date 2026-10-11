@@ -9,10 +9,10 @@ enum DNeuralUltrasoundDictationClinicalSections {
     ) -> [DNeuralUltrasoundProposalGenerationItem] {
         let localization = request.localization
         guard let complaint = items.first(
-            where: { $0.fieldId == .patientComplaints },
+            where: { $0.fieldId.isPatientComplaints },
         ),
             let description = items.first(
-                where: { $0.fieldId == .examinationDescription },
+                where: { $0.fieldId.isExaminationDescription },
             )
         else { return items }
         let complaintValue = complaint.value.replacingOccurrences(

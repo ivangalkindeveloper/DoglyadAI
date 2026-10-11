@@ -38,11 +38,11 @@ struct L10NTests {
         #expect(
             String(
                 localized: l10n.resource(
-                    .photoViewPage,
+                    .photoViewPageLabel,
                     values: ["current": "2", "total": "7"],
                 ),
             ) == l10n.text(
-                .photoViewPage,
+                .photoViewPageLabel,
                 values: ["current": "2", "total": "7"],
             ),
         )
@@ -56,7 +56,7 @@ struct L10NTests {
         let prefix = "💊 100% %@ {email}"
         let email = "doctor+%lld@example.com"
         let value = l10n.text(
-            .shareUserEmailTitle,
+            .shareWorkEmailButton,
             values: ["prefix": prefix, "email": email],
         )
         #expect(
@@ -65,7 +65,7 @@ struct L10NTests {
         #expect(
             String(
                 localized: l10n.resource(
-                    .shareUserEmailTitle,
+                    .shareWorkEmailButton,
                     values: ["prefix": prefix, "email": email],
                 ),
             ) == value,
@@ -115,7 +115,7 @@ struct L10NTests {
     }
 
     @Test
-    func extraServerKeysAllowAnOlderClientToKeepWorking() throws {
+    func unusedServerKeysDoNotChangeKnownTranslations() throws {
         var strings = try strings(
             code: "en",
         )

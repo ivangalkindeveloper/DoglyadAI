@@ -3,23 +3,20 @@ import SwiftUI
 
 struct PaidBadgeModifier: ViewModifier {
     @EnvironmentObject private var l10n: L10N
-    @EnvironmentObject private var subscription: SubscriptionViewModel
 
-    let feature: PaidFeature
+    let availability: SubscriptionFeatureAvailability
 
     @ViewBuilder
     func body(
         content: Content,
     ) -> some View {
-        switch subscription.availability(
-            of: feature,
-        ) {
+        switch availability {
         case .unavailable:
             EmptyView()
         case .offered:
             DBadge(
                 l10n[
-                    .entitlementPro,
+                    .subscriptionProLabel,
                 ],
                 isShimmering: true,
             ) {
@@ -28,17 +25,5 @@ struct PaidBadgeModifier: ViewModifier {
         case .available:
             content
         }
-    }
-}
-
-extension View {
-    func paidBadge(
-        _ feature: PaidFeature,
-    ) -> some View {
-        modifier(
-            PaidBadgeModifier(
-                feature: feature,
-            ),
-        )
     }
 }

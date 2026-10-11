@@ -43,13 +43,13 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DView {
             ),
             URLQueryItem(
                 name: "topInset",
-                value: Self.inset(
+                value: WebDocumentViewModel.insetString(
                     topInset,
                 ),
             ),
             URLQueryItem(
                 name: "bottomInset",
-                value: Self.inset(
+                value: WebDocumentViewModel.insetString(
                     bottomInset,
                 ),
             ),
@@ -71,18 +71,6 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DView {
         context.coordinator.parent = self
         context.coordinator.applyInsets(
             to: webView,
-        )
-    }
-
-    private static func inset(
-        _ value: CGFloat,
-    ) -> String {
-        String(
-            format: "%.2f",
-            max(
-                value,
-                0,
-            ),
         )
     }
 
@@ -109,8 +97,8 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DView {
             appliedBottomInset = bottomInset
             webView.evaluateJavaScript(
                 "window.doglyadSetInsets && window.doglyadSetInsets("
-                    + "\(WebDocumentBottomSheetWebView.inset(topInset)),"
-                    + "\(WebDocumentBottomSheetWebView.inset(bottomInset)))",
+                    + "\(WebDocumentViewModel.insetString(topInset)),"
+                    + "\(WebDocumentViewModel.insetString(bottomInset)))",
             )
         }
 

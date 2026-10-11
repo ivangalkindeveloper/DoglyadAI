@@ -2,7 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ErrorView<Description: View>: DView {
-    @EnvironmentObject private var applicationViewModel: ApplicationViewModel
+    @EnvironmentObject private var applicationViewModel: ApplicationRootViewModel
     @EnvironmentObject var theme: DTheme
 
     private let title: LocalizedStringResource
@@ -26,8 +26,9 @@ struct ErrorView<Description: View>: DView {
     var body: some View {
         if let buttonTitle, let action {
             DScreen { _, bottomInset in
-                content(
-                    bottomInset: bottomInset,
+                content.padding(
+                    .bottom,
+                    bottomInset,
                 )
             } bottom: {
                 DButton(
@@ -44,24 +45,21 @@ struct ErrorView<Description: View>: DView {
             }
         } else {
             DScreen { _, _ in
-                content()
+                content
             }
         }
     }
 
-    private func content(
-        bottomInset: CGFloat = .zero,
-    ) -> some View {
+    private var content: some View {
         VStack(
             alignment: .center,
             spacing: .zero,
         ) {
             Spacer()
 
-            Image(
+            DImage(
                 .doglyadQuestion,
             )
-            .resizable()
             .scaledToFit()
             .frame(
                 maxWidth: .infinity,
@@ -84,15 +82,6 @@ struct ErrorView<Description: View>: DView {
             )
 
             description()
-                .font(
-                    typography.textSmall,
-                )
-                .foregroundStyle(
-                    color.grayscalePlacehold,
-                )
-                .multilineTextAlignment(
-                    .center,
-                )
                 .frame(
                     maxWidth: .infinity,
                 )
@@ -109,10 +98,6 @@ struct ErrorView<Description: View>: DView {
         }
         .padding(
             size.s16,
-        )
-        .padding(
-            .bottom,
-            bottomInset,
         )
     }
 }

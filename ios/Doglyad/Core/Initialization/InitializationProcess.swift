@@ -22,7 +22,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var ultrasoundReportRepository: UltrasoundReportRepositoryProtocol?
     var ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol?
     var templateRepository: TemplateRepositoryProtocol?
-    var subscriptionRepository: RevenueCatSubscriptionRepository?
+    var subscriptionRepository: SubscriptionRepositoryProtocol?
     var applicationConfig: ApplicationConfig?
     var language: Language?
     var l10n: L10N?

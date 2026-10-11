@@ -31,6 +31,7 @@ extension UIApplication {
     static func openMail(
         subject: String,
         body: String,
+        recipient: String? = nil,
     ) {
         let allowed = CharacterSet(
             charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~",
@@ -41,8 +42,15 @@ extension UIApplication {
         let encodedBody = body.addingPercentEncoding(
             withAllowedCharacters: allowed,
         ) ?? ""
+        let encodedRecipient = recipient?.addingPercentEncoding(
+            withAllowedCharacters: allowed.union(
+                CharacterSet(
+                    charactersIn: "@+",
+                ),
+            ),
+        ) ?? ""
         guard let url = URL(
-            string: "mailto:?subject=\(encodedSubject)&body=\(encodedBody)",
+            string: "mailto:\(encodedRecipient)?subject=\(encodedSubject)&body=\(encodedBody)",
         ) else { return }
         shared.open(
             url,

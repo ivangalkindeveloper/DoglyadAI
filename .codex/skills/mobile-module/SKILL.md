@@ -5,229 +5,47 @@ description: Create a mobile application module according to Doglyad conventions
 
 # Create a mobile module
 
-Create and fully connect a module so its structure and style match the existing application.
+Create and connect an iOS feature using the current rules in the repository's `AGENTS.md`. Add Android instructions when the project gains an Android client.
 
-## Platforms
+## Choose the module
 
-- **iOS:** Follow the procedure below.
-- **Android:** Add an equivalent section when an Android project exists. Keep this skill concept cross-platform.
+Determine the PascalCase feature name, whether navigation presents a screen or bottom sheet, and its incoming data and result callbacks. Arguments may be empty. Follow existing grouping under `ios/Doglyad/Application/Module/`.
 
-Detect the platform first. When the repository contains only iOS, proceed without asking an unnecessary platform question.
+Read `Module/Settings/` for a screen or `Module/Select/SelectNeuralModel/` for a bottom sheet. Read `Application/Application/ViewModel/DModuleViewModel.swift` before constructing a view model; its initializer defines the shared lifecycle dependencies.
 
-## Resolve before implementation
+## Required structure
 
-1. Choose a PascalCase module name without a suffix, such as `Profile` or `Statistics`.
-2. Determine whether it is a full-screen `Screen` or a `BottomSheet`.
-3. Define incoming data and callbacks; arguments may be empty.
-4. Determine whether the module depends on repositories or managers from `DependencyContainer`, which affects `onInit()`.
+Every module contains four types, each in its own file:
 
-## iOS: SwiftUI and MVVM
+- `FeatureScreen` or `FeatureBottomSheet`: accepts `FeatureArguments`, creates the feature view model, and passes it to the presentation view.
+- `FeatureArguments`: incoming data and callbacks, conforming to `RouteArgumentsProtocol`; its name does not contain `Screen` or `BottomSheet`.
+- `FeatureScreenView` or `FeatureBottomSheetView`: owns the received model through `@StateObject` and injects the same instance with `.environmentObject`.
+- `FeatureViewModel`: `@MainActor`, inherits from `DModuleViewModel`, and owns presentation logic and interaction methods.
 
-Create modules in `ios/Doglyad/Application/Module/<Name>/`. Register navigation in `ios/Doglyad/Application/Application/Router/RouteType.swift` and `RouterBuilder.swift`.
+Descendant views obtain their feature view model only through private `@EnvironmentObject`. Do not pass it to descendant constructors or store it as `@ObservedObject`. Externally owned controllers are distinct from feature view models.
 
-Before generating code, read `Module/Settings/` for a full-screen reference or `Module/Select/NeuralModel/` for a sheet reference. Treat the templates below as scaffolding only.
+Use `DView` and declare its theme directly as `@EnvironmentObject var theme: DTheme`. Other environment objects are private. Views contain properties, initializers, and declarative layout. Move methods into the feature view model; express reusable rendering through separate view types. Framework-adapter exceptions are defined in `AGENTS.md`.
 
-### Required conventions
+Arrange public interactions in visible order from the top of the screen to the bottom. Initialization and lifecycle methods come first, private helpers last. Let the owning view model determine visibility; presentation views use its flags.
 
-- Make `*Screen` a SwiftUI view that only creates the view model and passes it to `*ScreenView`.
-- Keep `*ScreenView` free of business and presentation logic. Build layout only with `DoglyadUI` components such as `DScreen`, `DBottomSheet`, `DListButtonCard`, `DButton`, `DText`, and `DTheme`.
-- Mark `*ViewModel` with `@MainActor`, inherit from `DViewModel`, and keep all presentation logic there.
-- Pass the entire `DependencyContainer` when the view model needs container dependencies.
-- Never let view models communicate directly. Exchange module data only through closures supplied while constructing the destination view model.
-- Let each module's view model control visibility for that module. Expose computed flags and methods such as `isSpeechButtonVisible` or `isNeuralModelSettingsVisible`; let `*ScreenView` branch only on its own view model.
-- Use `@Published` for scalar state and `@NestedObservableObject` for nested observable controllers. Let the view own its view model with `@StateObject`.
-- Use only `DoglyadNetwork` for networking and `DoglyadDatabase` for persistence.
-- Use `LocalizedStringResource` values from `Localizable.xcstrings`. Add both English and Russian values for new keys.
+## Dependencies and communication
 
-### Full-screen module files
+Pass the whole `DependencyContainer` when the feature needs its repositories or managers. Root view models use the `RootViewModel` suffix (`{FeatureName}RootViewModel`), for example `ApplicationRootViewModel`. Entry views may read root objects from the environment to supply getter, update, and observation closures to the feature view-model initializer. Never pass or store a root view-model instance in a module view model.
 
-Create `<Name>Screen.swift`, `<Name>ScreenView.swift`, `<Name>ViewModel.swift`, and `<Name>ScreenArguments.swift`.
+`DModuleViewModel` receives subscription getter, observer, update, neural-settings getter, and request-count callback closures. Preserve reactive changes using cancellable observation closures, as in `ScanScreen` and `ScanViewModel`. Do not bypass these boundaries through the container.
 
-Create `<Name>ScreenArguments.swift`; leave the body empty when no arguments are required:
+Modules communicate through closures in the destination's `FeatureArguments`, forwarded to its initializer. Do not call or retain another module's view model.
 
-```swift
-import Router
+## UI and localization
 
-final class <Name>ScreenArguments: RouteArgumentsProtocol {
-    // let value: SomeType
-    // let onResult: (SomeType) -> Void
-    // init(...) { ... }
-}
-```
+Build layout from `DoglyadUI` components and styling, using SwiftUI for composition. Use design-system shimmer for loading states. Add missing generic primitives to DoglyadUI; consult its target-membership instructions in `AGENTS.md` when adding files.
 
-Create `<Name>Screen.swift`:
+Application views shared between modules belong in `ios/Doglyad/Application/Component/`. A view used by one module stays in that module and starts with its feature name. Visual resources come through DoglyadUI or the application asset catalog. Networking uses `DoglyadNetwork`; persistence uses `DoglyadDatabase`.
 
-```swift
-import DoglyadUI
-import Router
-import SwiftUI
+Access backend strings through `L10N` and `L10NKey`. Add English and Russian keys to `backend/main/config/{development,production}/{en,ru}/l10n_application.json` and update `L10NKey`. Use `{featureName}{KeyName}` with the required semantic suffixes; generic buttons use `button`. Local `Localizable.xcstrings` is reserved for bootstrap errors and mandatory major-version updates. Before the first release, migrate server and client keys together without compatibility aliases.
 
-struct <Name>Screen: View {
-    @EnvironmentObject private var container: DependencyContainer
-    @EnvironmentObject private var router: DRouter
-    let arguments: <Name>ScreenArguments?
+## Navigation and verification
 
-    var body: some View {
-        <Name>ScreenView(
-            viewModel: <Name>ViewModel(
-                container: container,
-                router: router
-            )
-        )
-    }
-}
+Register the destination in `Application/Application/Router/RouteType.swift` and handle it exhaustively in `RouterBuilder.swift`. Cast mandatory arguments with `as!` and optional inputs with `as?`, following neighboring routes. Navigate through the coordinator with destination arguments carrying callbacks.
 
-#Preview {
-    <Name>Screen(arguments: nil)
-        .previewable()
-}
-```
-
-Create `<Name>ViewModel.swift`:
-
-```swift
-import Foundation
-import Handler
-import Router
-import SwiftUI
-
-@MainActor
-final class <Name>ViewModel: DViewModel {
-    private let container: DependencyContainer
-    private let router: DRouter
-
-    init(
-        container: DependencyContainer,
-        router: DRouter
-    ) {
-        self.container = container
-        self.router = router
-        super.init()
-    }
-
-    // @Published var items: [Some] = []
-
-    // Load data here. onAppear calls onInit only once.
-    // override func onInit() {
-    //     handle {
-    //         await self.container.someRepository.getItems()
-    //     } onMainSuccess: { items in
-    //         self.items = items
-    //     }
-    // }
-
-    func onTapBack() {
-        router.pop()
-    }
-}
-```
-
-Create `<Name>ScreenView.swift`:
-
-```swift
-import DoglyadUI
-import SwiftUI
-
-struct <Name>ScreenView: View {
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
-
-    @StateObject var viewModel: <Name>ViewModel
-
-    var body: some View {
-        DScreen(
-            title: .<nameLocalizedTitleKey>,
-            onTapBack: viewModel.onTapBack
-        ) { toolbarInset in
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: size.s16) {
-                    // Build the layout from DoglyadUI components.
-                }
-                .padding(size.s16)
-                .padding(.top, toolbarInset)
-                .padding(.bottom, size.s32)
-            }
-        }
-        .onAppear {
-            viewModel.onAppear()
-        }
-        .environmentObject(viewModel)
-    }
-}
-```
-
-### Register full-screen navigation
-
-1. Add `case <name>` to `enum ScreenType` in `RouteType.swift`.
-2. Add a branch to `build(route: RouteScreen<ScreenType>)` in `RouterBuilder.swift`:
-
-```swift
-case .<name>:
-    AnyView(
-        <Name>Screen(
-            arguments: route.arguments as? <Name>ScreenArguments
-        )
-    )
-```
-
-Use `as!` only when arguments are mandatory, following `.conclusion`.
-
-3. Navigate from another view model:
-
-```swift
-router.push(route: RouteScreen(type: .<name>))
-router.push(
-    route: RouteScreen(
-        type: .<name>,
-        arguments: <Name>ScreenArguments(...)
-    )
-)
-```
-
-### Bottom sheet variant
-
-Create `<Name>BottomSheet.swift` and `<Name>Arguments.swift`. Sheets are often simple enough to omit separate view and view-model types; follow the nearest existing example.
-
-```swift
-import DoglyadUI
-import Router
-import SwiftUI
-
-struct <Name>BottomSheet: View {
-    @EnvironmentObject private var container: DependencyContainer
-    @EnvironmentObject private var router: DRouter
-    @EnvironmentObject private var theme: DTheme
-    private var size: DSize { theme.size }
-
-    let arguments: <Name>Arguments?
-
-    var body: some View {
-        DBottomSheet(
-            title: .<nameLocalizedTitleKey>,
-            fraction: 0.8
-        ) { toolbarHeight in
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: .zero) {
-                    // Content
-                }
-                .padding(size.s16)
-                .padding(.top, toolbarHeight)
-            }
-        }
-    }
-}
-
-#Preview {
-    <Name>BottomSheet(arguments: nil)
-        .previewable()
-}
-```
-
-Add `case <name>` to `SheetType` and handle it in `build(route: RouteSheet<SheetType>)`. Present it with `router.push(route: RouteSheet(type: .<name>, arguments: ...))` and close it with `router.dismissSheet()`.
-
-## Finish
-
-1. Add English and Russian localization values to `ios/Doglyad/Resources/Localizable.xcstrings`.
-2. Rely on Xcode synchronized groups to discover new files; normally do not edit `project.pbxproj`. Confirm that new types compile.
-3. Run `make format`.
-4. Report the created files and router registration points.
+Run `make format-ios`, `make lint-ios`, and applicable checks from [build-verify](../build-verify/SKILL.md). The synchronized application folder discovers module files automatically; DoglyadUI has membership exception lists. Report feature files, navigation registration, and verification. Do not commit or deploy unless requested.

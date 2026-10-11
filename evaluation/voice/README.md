@@ -172,7 +172,8 @@ build/voice-eval/lexicon-replay device-results.json \
 Во всех наборах ожидаемые поля создаются **до** озвучивания; отсутствующие в
 частичной диктовке поля должны остаться нетронутыми. У каждого набора есть
 чистый и обработанный шумом WAV и свой SHA-256 манифеста. `guided-format`
-проверяет слова и порядок именно из `speechProcessSpeechDescription` в iOS;
+проверяет слова и порядок именно из `scanSpeechProcessSpeechDescription` в серверном
+`backend/main/config/development/<locale>/l10n_application.json`, который использует iOS;
 тест генератора останавливается при изменении подсказки. `reordered-format`
 использует эталон и чистые WAV старого `voice-blind-v3`, но собственный
 манифест и новый шумовой вариант с текущим профилем; старый набор и его отчёты

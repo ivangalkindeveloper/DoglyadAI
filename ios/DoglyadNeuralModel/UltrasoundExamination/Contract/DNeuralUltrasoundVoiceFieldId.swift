@@ -8,6 +8,34 @@
     case patientComplaints
     case examinationDescription
 
+    var isPatientDateOfBirth: Bool {
+        switch self {
+        case .patientDateOfBirth: true
+        case .examinationNumber, .patientName, .patientGender, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription: false
+        }
+    }
+
+    var isPatientComplaints: Bool {
+        switch self {
+        case .patientComplaints: true
+        case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .examinationDescription: false
+        }
+    }
+
+    var isExaminationDescription: Bool {
+        switch self {
+        case .examinationDescription: true
+        case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .patientComplaints: false
+        }
+    }
+
+    var isExaminationNumber: Bool {
+        switch self {
+        case .examinationNumber: true
+        case .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription: false
+        }
+    }
+
     public var wireValue: String {
         switch self {
         case .examinationNumber: "examination_number"

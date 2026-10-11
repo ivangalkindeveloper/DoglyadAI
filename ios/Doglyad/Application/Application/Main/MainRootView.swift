@@ -11,8 +11,8 @@ struct MainRootView: View {
     let dependencyContainer: DependencyContainer
 
     @StateObject private var viewModel: MainRootViewModel
-    @StateObject private var ultrasoundViewModel: UltrasoundViewModel
-    @StateObject private var subscriptionViewModel: SubscriptionViewModel
+    @StateObject private var ultrasoundViewModel: UltrasoundRootViewModel
+    @StateObject private var subscriptionViewModel: SubscriptionRootViewModel
 
     init(
         dependencyContainer: DependencyContainer,
@@ -24,12 +24,12 @@ struct MainRootView: View {
             ),
         )
         _ultrasoundViewModel = StateObject(
-            wrappedValue: UltrasoundViewModel(
+            wrappedValue: UltrasoundRootViewModel(
                 container: dependencyContainer,
             ),
         )
         _subscriptionViewModel = StateObject(
-            wrappedValue: SubscriptionViewModel(
+            wrappedValue: SubscriptionRootViewModel(
                 container: dependencyContainer,
             ),
         )

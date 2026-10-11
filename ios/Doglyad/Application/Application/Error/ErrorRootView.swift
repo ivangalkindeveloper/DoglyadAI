@@ -2,7 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ErrorRootView: DView {
-    @EnvironmentObject private var applicationViewModel: ApplicationViewModel
+    @EnvironmentObject private var applicationViewModel: ApplicationRootViewModel
     @EnvironmentObject var theme: DTheme
 
     let error: Error
@@ -33,10 +33,17 @@ struct ErrorRootView: DView {
                 ErrorView(
                     title: .errorNoInternetConnectionTitle,
                     buttonTitle: .buttonUpdate,
-                    action: retryInitialization,
+                    action: { viewModel.onTapRetry(
+                        onRetryInitialization: applicationViewModel.retryInitialization,
+                    ) },
                 ) {
                     DText(
                         .errorNoInternetConnectionDescription,
+                    )
+                    .dStyle(
+                        font: typography.textSmall,
+                        color: color.grayscalePlacehold,
+                        alignment: .center,
                     )
                 }
             case let .serviceUnavailable(
@@ -51,8 +58,14 @@ struct ErrorRootView: DView {
                         DText(
                             .serviceUnavailableDescription,
                         )
+                        .dStyle(
+                            font: typography.textSmall,
+                            color: color.grayscalePlacehold,
+                            alignment: .center,
+                        )
 
-                        Button(
+                        DButtonCard(
+                            isPlain: true,
                             action: viewModel.onTapServiceUnavailableEmail,
                         ) {
                             DText(
@@ -82,10 +95,17 @@ struct ErrorRootView: DView {
                 ErrorView(
                     title: .errorUnknownTitle,
                     buttonTitle: .buttonUpdate,
-                    action: retryInitialization,
+                    action: { viewModel.onTapRetry(
+                        onRetryInitialization: applicationViewModel.retryInitialization,
+                    ) },
                 ) {
                     DText(
                         .errorUnknownDescription,
+                    )
+                    .dStyle(
+                        font: typography.textSmall,
+                        color: color.grayscalePlacehold,
+                        alignment: .center,
                     )
                 }
             }
@@ -93,11 +113,6 @@ struct ErrorRootView: DView {
         .onAppear(
             perform: viewModel.onAppear,
         )
-    }
-
-    private func retryInitialization() {
-        viewModel.onTapRetry()
-        applicationViewModel.retryInitialization()
     }
 }
 

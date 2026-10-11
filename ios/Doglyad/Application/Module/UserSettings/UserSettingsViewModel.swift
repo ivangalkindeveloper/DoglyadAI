@@ -1,3 +1,4 @@
+import Combine
 import DoglyadUI
 import Foundation
 import NestedObservableObject
@@ -5,7 +6,7 @@ import Router
 import SwiftUI
 
 @MainActor
-final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
+final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
     enum Focus: Hashable {
         case email
     }
@@ -17,14 +18,18 @@ final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
         container: DependencyContainer,
         messager: DMessager,
         router: DRouter,
-        subscription: SubscriptionViewModel,
-        initialEmail: String?,
-        initialIncludeRecommendations: Bool,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        getInitialEmail: @escaping () -> String?,
+        getInitialIncludeRecommendations: @escaping () -> Bool,
         onSaved: @escaping (String?, Bool) -> Void,
     ) {
         self.messager = messager
         self.onSaved = onSaved
-        includeRecommendations = initialIncludeRecommendations
+        includeRecommendations = getInitialIncludeRecommendations()
         _emailController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
@@ -37,7 +42,7 @@ final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
                     DTextFieldEmailValidator(
                         invalidValueErrorText: String(
                             localized: container.l10n[
-                                .errorInvalidEmail,
+                                .errorInvalidEmailDescription,
                             ],
                         ),
                     ),
@@ -47,13 +52,17 @@ final class UserSettingsViewModel: DViewModel, DTextFieldFocusValidating {
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .userSettings,
             ),
         )
         emailController.setText(
-            initialEmail ?? "",
+            getInitialEmail() ?? "",
         )
     }
 

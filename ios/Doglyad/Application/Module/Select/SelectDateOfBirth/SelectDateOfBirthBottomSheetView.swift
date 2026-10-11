@@ -17,13 +17,12 @@ struct SelectDateOfBirthBottomSheetView: DView {
             VStack(
                 spacing: .zero,
             ) {
-                DatePicker(
+                DDatePicker(
                     l10n[
                         .selectDateOfBirthTitle,
                     ],
                     selection: $viewModel.date,
                     in: viewModel.fromDate ... viewModel.toDate,
-                    displayedComponents: [.date],
                 )
                 .labelsHidden()
                 .datePickerStyle(
@@ -61,6 +60,9 @@ struct SelectDateOfBirthBottomSheetView: DView {
                 size.s16,
             )
         }
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )

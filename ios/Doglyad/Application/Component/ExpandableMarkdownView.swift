@@ -54,23 +54,25 @@ struct ExpandableMarkdownView: DView {
             if isExpanded {
                 markdown
 
-                Button(
+                DButtonCard(
+                    isPlain: true,
+                    action: {
+                        withAnimation(
+                            theme.animation,
+                        ) {
+                            isExpanded.toggle()
+                        }
+                    },
+                ) { DText(
                     l10n[
                         .buttonCollapse,
                     ],
-                ) {
-                    withAnimation(
-                        theme.animation,
-                    ) {
-                        isExpanded.toggle()
-                    }
+                )
+                .dStyle(
+                    font: typography.linkSmall,
+                    color: color.primaryDefault,
+                )
                 }
-                .font(
-                    typography.linkSmall,
-                )
-                .foregroundColor(
-                    color.primaryDefault,
-                )
                 .frame(
                     maxWidth: .infinity,
                     alignment: .trailing,
@@ -94,44 +96,29 @@ struct ExpandableMarkdownView: DView {
                     HStack(
                         spacing: .zero,
                     ) {
-                        Rectangle()
-                            .fill(
-                                LinearGradient(
-                                    colors: [
-                                        backgroundColor.opacity(
-                                            0,
-                                        ),
-                                        backgroundColor,
-                                    ],
-                                    startPoint: .leading,
-                                    endPoint: .trailing,
-                                ),
-                            )
-                            .frame(
-                                width: 100,
-                                height: 16,
-                            )
-                            .allowsHitTesting(
-                                false,
-                            )
+                        DTextFade(
+                            backgroundColor: backgroundColor,
+                        )
 
-                        Button(
+                        DButtonCard(
+                            isPlain: true,
+                            action: {
+                                withAnimation(
+                                    theme.animation,
+                                ) {
+                                    isExpanded.toggle()
+                                }
+                            },
+                        ) { DText(
                             l10n[
                                 .buttonNext,
                             ],
-                        ) {
-                            withAnimation(
-                                theme.animation,
-                            ) {
-                                isExpanded.toggle()
-                            }
+                        )
+                        .dStyle(
+                            font: typography.linkSmall,
+                            color: color.primaryDefault,
+                        )
                         }
-                        .font(
-                            typography.linkSmall,
-                        )
-                        .foregroundColor(
-                            color.primaryDefault,
-                        )
                         .background(
                             backgroundColor,
                         )
@@ -144,7 +131,8 @@ struct ExpandableMarkdownView: DView {
     @ViewBuilder
     private var markdown: some View {
         if let onTapContent {
-            Button(
+            DButtonCard(
+                isPlain: true,
                 action: onTapContent,
             ) {
                 markdownContent

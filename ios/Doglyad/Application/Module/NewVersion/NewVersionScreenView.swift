@@ -7,6 +7,9 @@ struct NewVersionScreenView: View {
         NewVersionView(
             onTapUpdate: viewModel.onTapUpdate,
         )
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )

@@ -4,7 +4,7 @@ import SwiftUI
 
 @main
 struct Application: App {
-    @StateObject private var viewModel = ApplicationViewModel()
+    @StateObject private var viewModel = ApplicationRootViewModel()
 
     var body: some Scene {
         WindowGroup {

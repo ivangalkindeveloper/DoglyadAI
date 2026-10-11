@@ -235,7 +235,7 @@ struct ReportDetailScreenView: DView {
                                 color: color.grayscalePlacehold,
                             )
 
-                            ExpandableTextView(
+                            ReportDetailExpandableTextView(
                                 text: examinationData.examinationDescription,
                                 backgroundColor: color.grayscaleBackgroundWeak,
                             )
@@ -257,7 +257,7 @@ struct ReportDetailScreenView: DView {
                                     color: color.grayscalePlacehold,
                                 )
 
-                                ExpandableTextView(
+                                ReportDetailExpandableTextView(
                                     text: patientComplaints,
                                     backgroundColor: color.grayscaleBackgroundWeak,
                                 )
@@ -291,7 +291,7 @@ struct ReportDetailScreenView: DView {
                                 size.s16,
                             )
 
-                            NeuralModelReportCardView(
+                            ReportDetailModelReportCardView(
                                 report: report.actualModelReport,
                                 onTapCopy: { viewModel.onTapCopy(
                                     report: report.actualModelReport,
@@ -316,6 +316,8 @@ struct ReportDetailScreenView: DView {
                             )
 
                             NeuralModelCardView(
+                                modelTitle: viewModel.selectedNeuralModelTitle,
+                                availableRequestCount: viewModel.availableRequestCount,
                                 onTap: viewModel.onTapNeuralModelSelection,
                             )
                             .padding(
@@ -323,10 +325,15 @@ struct ReportDetailScreenView: DView {
                                 size.s16,
                             )
 
-                            NeuralModelSettingsCardView(
-                                feature: .neuralModelSettings,
-                                onTap: viewModel.onTapNeuralModelSettings,
-                            )
+                            if viewModel.isNeuralModelSettingsVisible {
+                                NeuralModelSettingsCardView(
+                                    settings: viewModel.neuralModelSettings,
+                                    availability: viewModel.subscriptionAvailability(
+                                        of: .neuralModelSettings,
+                                    ),
+                                    onTap: viewModel.onTapNeuralModelSettings,
+                                )
+                            }
 
                             DButton(
                                 image: .refresh,
@@ -375,7 +382,7 @@ struct ReportDetailScreenView: DView {
                                     ForEach(
                                         report.previousModelReports,
                                     ) { modelReport in
-                                        NeuralModelReportCardView(
+                                        ReportDetailModelReportCardView(
                                             report: modelReport,
                                             onTapCopy: { viewModel.onTapCopy(
                                                 report: modelReport,

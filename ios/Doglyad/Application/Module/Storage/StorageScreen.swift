@@ -6,8 +6,8 @@ struct StorageScreen: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var router: DRouter
-    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
-    let arguments: StorageScreenArguments?
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
+    let arguments: StorageArguments?
 
     var body: some View {
         StorageScreenView(
@@ -15,7 +15,15 @@ struct StorageScreen: View {
                 container: container,
                 messager: messager,
                 router: router,
-                subscription: subscriptionViewModel,
+                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
+                    observer,
+                ) },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
+                    status: status,
+                ) },
+                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
+                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
             ),
         )
     }

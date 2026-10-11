@@ -6,16 +6,24 @@ struct TemplateEditScreen: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var router: DRouter
-    @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
-    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
-    let arguments: TemplateEditScreenArguments
+    @EnvironmentObject private var ultrasoundViewModel: UltrasoundRootViewModel
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
+    let arguments: TemplateEditArguments
 
     var body: some View {
         TemplateEditScreenView(
             viewModel: TemplateEditViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel,
+                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
+                    observer,
+                ) },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
+                    status: status,
+                ) },
+                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
+                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 messager: messager,
                 arguments: arguments,
                 onSaveTemplate: { [ultrasoundViewModel, arguments] template in
@@ -41,7 +49,7 @@ struct TemplateEditScreen: View {
 
 #Preview {
     TemplateEditScreen(
-        arguments: TemplateEditScreenArguments(
+        arguments: TemplateEditArguments(
             templateId: UUID(),
         ),
     )

@@ -1,3 +1,4 @@
+import Combine
 import DoglyadCamera
 import DoglyadUI
 import NestedObservableObject
@@ -5,24 +6,32 @@ import Router
 import SwiftUI
 
 @MainActor
-final class ScanCameraViewModel: DViewModel {
+final class ScanCameraViewModel: DModuleViewModel {
     private let arguments: ScanCameraArguments
 
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         arguments: ScanCameraArguments,
     ) {
         self.arguments = arguments
         _cameraController = NestedObservableObject(
             wrappedValue: arguments.cameraController,
         )
-        photos = arguments.photos.wrappedValue
+        photos = arguments.getPhotos()
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .scanCamera,
             ),
@@ -34,16 +43,14 @@ final class ScanCameraViewModel: DViewModel {
     @Published private(set) var captureFrame: CGRect = .zero
     @Published private(set) var previewFrame: CGRect = .zero
 
+    func onDisappear() {
+        cameraController.stopSession()
+    }
+
     func updateCaptureFrame(
         _ frame: CGRect,
     ) {
         captureFrame = frame
-    }
-
-    func updatePreviewFrame(
-        _ frame: CGRect,
-    ) {
-        previewFrame = frame
     }
 
     var isCaptureFrameReady: Bool {
@@ -52,23 +59,10 @@ final class ScanCameraViewModel: DViewModel {
         )
     }
 
-    func onTapPhoto(
-        _ photo: USExaminationScanPhoto,
+    func updatePreviewFrame(
+        _ frame: CGRect,
     ) {
-        let photos = arguments.photos
-        coordinator.dismissSheet()
-        coordinator.screen(
-            .photoView,
-            arguments: PhotoViewScreenArguments(
-                photos: photos,
-                initialPhotoID: photo.id,
-                onDelete: { photo in
-                    withAnimation {
-                        photos.wrappedValue.removeAll { $0.id == photo.id }
-                    }
-                },
-            ),
-        )
+        previewFrame = frame
     }
 
     var photoMaxCount: Int {
@@ -83,12 +77,32 @@ final class ScanCameraViewModel: DViewModel {
         cameraController.isRunning && !isPhotoFilling
     }
 
-    func onCameraAppear() {
-        cameraController.startSession()
+    func onTapPhoto(
+        _ photo: USExaminationScanPhoto,
+    ) {
+        let getPhotos = arguments.getPhotos
+        let onPhotosUpdated = arguments.onPhotosUpdated
+        coordinator.dismissSheet()
+        coordinator.screen(
+            .photoView,
+            arguments: PhotoViewArguments(
+                getPhotos: getPhotos,
+                initialPhotoID: photo.id,
+                onDelete: { photo in
+                    withAnimation {
+                        var updatedPhotos = getPhotos()
+                        updatedPhotos.removeAll { $0.id == photo.id }
+                        onPhotosUpdated(
+                            updatedPhotos,
+                        )
+                    }
+                },
+            ),
+        )
     }
 
-    func onDisappear() {
-        cameraController.stopSession()
+    func onCameraAppear() {
+        cameraController.startSession()
     }
 
     func onTapCapture() {
@@ -178,7 +192,9 @@ final class ScanCameraViewModel: DViewModel {
     ) {
         withAnimation {
             self.photos = photos
-            arguments.photos.wrappedValue = photos
+            arguments.onPhotosUpdated(
+                photos,
+            )
         }
     }
 }

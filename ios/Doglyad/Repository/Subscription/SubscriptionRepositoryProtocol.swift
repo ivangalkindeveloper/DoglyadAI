@@ -4,6 +4,17 @@ import Foundation
 protocol SubscriptionRepositoryProtocol: AnyObject {
     func configure()
 
+    func fetchPlans() async throws -> [SubscriptionPlan]
+
+    func purchase(
+        plan: SubscriptionPlan,
+        configEntitlements: [SubscriptionType: SubscriptionEntitlement],
+    ) async throws -> SubscriptionPurchaseOutcome
+
+    func manageSubscription() async throws
+
+    func requestRefund() async throws
+
     func cachedStatus(
         configEntitlements: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus?

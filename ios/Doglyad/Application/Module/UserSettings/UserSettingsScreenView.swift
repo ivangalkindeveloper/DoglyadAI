@@ -119,7 +119,7 @@ struct UserSettingsScreenView: DView {
                                     minLength: size.s16,
                                 )
 
-                                Toggle(
+                                DToggle(
                                     "",
                                     isOn: $viewModel.includeRecommendations,
                                 )
@@ -189,6 +189,9 @@ struct UserSettingsScreenView: DView {
                     size.s16,
                 )
             },
+        )
+        .environmentObject(
+            viewModel,
         )
         .onAppear(
             perform: viewModel.onAppear,

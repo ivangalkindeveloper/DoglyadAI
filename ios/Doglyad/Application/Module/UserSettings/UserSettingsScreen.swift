@@ -5,10 +5,10 @@ import SwiftUI
 struct UserSettingsScreen: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var messager: DMessager
-    @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
+    @EnvironmentObject private var ultrasoundViewModel: UltrasoundRootViewModel
     @EnvironmentObject private var router: DRouter
-    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
-    let arguments: UserSettingsScreenArguments?
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
+    let arguments: UserSettingsArguments?
 
     var body: some View {
         UserSettingsScreenView(
@@ -16,9 +16,17 @@ struct UserSettingsScreen: View {
                 container: container,
                 messager: messager,
                 router: router,
-                subscription: subscriptionViewModel,
-                initialEmail: ultrasoundViewModel.userEmail,
-                initialIncludeRecommendations: ultrasoundViewModel.includeRecommendations,
+                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
+                    observer,
+                ) },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
+                    status: status,
+                ) },
+                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
+                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
+                getInitialEmail: { [ultrasoundViewModel] in ultrasoundViewModel.userEmail },
+                getInitialIncludeRecommendations: { [ultrasoundViewModel] in ultrasoundViewModel.includeRecommendations },
                 onSaved: { [ultrasoundViewModel] email, includeRecommendations in
                     ultrasoundViewModel.saveUserSettings(
                         userEmail: email,

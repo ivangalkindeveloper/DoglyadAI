@@ -25,10 +25,13 @@ struct ShareBottomSheetView: DView {
                             spacing: size.s8,
                         ) {
                             if viewModel.isLoading {
-                                ProgressView()
-                                    .transition(
-                                        .opacity,
-                                    )
+                                DShimmerPlaceholder().frame(
+                                    width: size.s64,
+                                    height: size.s8,
+                                )
+                                .transition(
+                                    .opacity,
+                                )
                             } else {
                                 DIcon(
                                     .send,
@@ -57,7 +60,9 @@ struct ShareBottomSheetView: DView {
                         viewModel.isLoading,
                     )
                     .paidBadge(
-                        .sendingReportByEmail,
+                        viewModel.subscriptionAvailability(
+                            of: .sendingReportByEmail,
+                        ),
                     )
                     .transition(
                         .opacity,
@@ -68,7 +73,7 @@ struct ShareBottomSheetView: DView {
                     DButtonCard(
                         action: viewModel.onTapEmail,
                     ) {
-                        row(
+                        ActionRowView(
                             icon: .mail,
                             title: l10n[
                                 .buttonShareEmail,
@@ -79,7 +84,9 @@ struct ShareBottomSheetView: DView {
                         viewModel.isLoading,
                     )
                     .paidBadge(
-                        .sendingReportByEmail,
+                        viewModel.subscriptionAvailability(
+                            of: .sendingReportByEmail,
+                        ),
                     )
                     .transition(
                         .opacity,
@@ -89,7 +96,7 @@ struct ShareBottomSheetView: DView {
                 DButtonCard(
                     action: viewModel.onTapCopy,
                 ) {
-                    row(
+                    ActionRowView(
                         icon: .copy,
                         title: l10n[
                             .buttonCopy,
@@ -100,10 +107,10 @@ struct ShareBottomSheetView: DView {
                     viewModel.isLoading,
                 )
 
-                ShareLink(
+                DShareLink(
                     item: viewModel.shareMessage,
                 ) {
-                    row(
+                    ActionRowView(
                         icon: .export,
                         title: l10n[
                             .buttonShare,
@@ -138,29 +145,11 @@ struct ShareBottomSheetView: DView {
             theme.animation,
             value: viewModel.isUserEmailButtonVisible,
         )
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )
-    }
-
-    private func row(
-        icon: ImageResource,
-        title: LocalizedStringResource,
-    ) -> some View {
-        HStack(
-            spacing: size.s8,
-        ) {
-            DIcon(
-                icon,
-                color: color.grayscaleHeader,
-            )
-            DText(
-                title,
-            )
-            .dStyle(
-                font: typography.linkSmall,
-            )
-            Spacer()
-        }
     }
 }

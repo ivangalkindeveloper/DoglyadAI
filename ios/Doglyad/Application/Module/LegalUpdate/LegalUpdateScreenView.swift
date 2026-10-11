@@ -22,10 +22,9 @@ struct LegalUpdateScreenView: DView {
                 ) {
                     Spacer()
 
-                    Image(
+                    DImage(
                         .doglyadQuiet,
                     )
-                    .resizable()
                     .scaledToFit()
                     .frame(
                         maxWidth: .infinity,
@@ -61,7 +60,7 @@ struct LegalUpdateScreenView: DView {
                             size.s8,
                         )
 
-                        Text(
+                        DText(
                             viewModel.legalAttributedText(
                                 theme: theme,
                                 locale: locale,
@@ -122,6 +121,9 @@ struct LegalUpdateScreenView: DView {
         .animation(
             theme.animation,
             value: viewModel.isLegalAccepted,
+        )
+        .environmentObject(
+            viewModel,
         )
         .onAppear(
             perform: viewModel.onAppear,

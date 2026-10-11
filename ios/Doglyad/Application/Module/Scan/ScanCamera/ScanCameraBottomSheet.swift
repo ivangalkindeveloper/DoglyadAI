@@ -5,7 +5,7 @@ import SwiftUI
 struct ScanCameraBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
-    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
 
     let arguments: ScanCameraArguments
 
@@ -14,7 +14,15 @@ struct ScanCameraBottomSheet: View {
             viewModel: ScanCameraViewModel(
                 container: container,
                 router: router,
-                subscription: subscriptionViewModel,
+                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
+                    observer,
+                ) },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
+                    status: status,
+                ) },
+                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
+                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 arguments: arguments,
             ),
         )
@@ -27,7 +35,8 @@ struct ScanCameraBottomSheet: View {
     ScanCameraBottomSheet(
         arguments: ScanCameraArguments(
             cameraController: DCameraControllerFactory.make(),
-            photos: $photos,
+            getPhotos: { photos },
+            onPhotosUpdated: { photos = $0 },
             photoMaxCount: 6,
         ),
     )

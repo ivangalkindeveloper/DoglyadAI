@@ -1,27 +1,49 @@
+import Combine
 import Foundation
+import SwiftUI
 
 @MainActor
-final class WebDocumentViewModel: DViewModel {
+final class WebDocumentViewModel: DModuleViewModel {
     let url: URL
     let title: LocalizedStringResource
 
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
-        arguments: WebDocumentBottomSheetArguments,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        arguments: WebDocumentArguments,
     ) {
         url = arguments.url
         title = arguments.title
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .webDocument,
             ),
             analyticsParameters: .document(
                 url: arguments.url,
+            ),
+        )
+    }
+
+    static func insetString(
+        _ value: CGFloat,
+    ) -> String {
+        String(
+            format: "%.2f",
+            max(
+                value,
+                0,
             ),
         )
     }

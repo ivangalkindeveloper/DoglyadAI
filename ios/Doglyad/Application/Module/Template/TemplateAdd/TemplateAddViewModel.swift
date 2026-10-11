@@ -1,3 +1,4 @@
+import Combine
 import DoglyadUI
 import Foundation
 import NestedObservableObject
@@ -5,7 +6,7 @@ import Router
 import SwiftUI
 
 @MainActor
-final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
+final class TemplateAddViewModel: DModuleViewModel, DTextFieldFocusValidating {
     enum Focus: Hashable {
         case name
         case content
@@ -17,7 +18,11 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         messager: DMessager,
         onSaveTemplate: @escaping (USExaminationTemplate) -> Void,
     ) {
@@ -35,7 +40,11 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .templateAdd,
             ),
@@ -146,7 +155,7 @@ final class TemplateAddViewModel: DViewModel, DTextFieldFocusValidating {
         unfocus()
         coordinator.screen(
             .readyMadeTemplateList,
-            arguments: ReadyMadeTemplateListScreenArguments(
+            arguments: ReadyMadeTemplateListArguments(
                 onTemplateSelected: { [weak self] template in
                     self?.onReadyMadeTemplateSelected(
                         template,

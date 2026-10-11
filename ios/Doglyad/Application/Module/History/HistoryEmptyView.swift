@@ -9,10 +9,9 @@ struct HistoryEmptyView: DView {
         VStack(
             spacing: .zero,
         ) {
-            Image(
+            DImage(
                 .doglyadMagnifier,
             )
-            .resizable()
             .scaledToFit()
             .frame(
                 maxWidth: .infinity,

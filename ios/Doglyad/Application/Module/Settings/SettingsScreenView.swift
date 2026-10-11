@@ -57,7 +57,7 @@ struct SettingsScreenView: DView {
                         DListButtonCard(
                             image: .iconMail,
                             title: l10n[
-                                .settingsSubscriptionManageTitle,
+                                .buttonManageSubscription,
                             ],
                             description: l10n[
                                 .settingsSubscriptionManageDescription,
@@ -88,7 +88,9 @@ struct SettingsScreenView: DView {
                             action: viewModel.onTapNeuralModelSettings,
                         )
                         .paidBadge(
-                            .neuralModelSettings,
+                            viewModel.subscriptionAvailability(
+                                of: .neuralModelSettings,
+                            ),
                         )
                         DListButtonCard(
                             image: .iconFile,
@@ -129,7 +131,7 @@ struct SettingsScreenView: DView {
                     DButton(
                         image: .info,
                         title: l10n[
-                            .settingsAboutAppTitle,
+                            .settingsAboutAppButton,
                         ],
                         action: viewModel.onTapAboutApp,
                     )

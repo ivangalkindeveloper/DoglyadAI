@@ -4,6 +4,8 @@ import SwiftUI
 struct PhotoViewZoomableImage: DView {
     @EnvironmentObject var theme: DTheme
 
+    @EnvironmentObject private var viewModel: PhotoViewViewModel
+
     let image: UIImage
     let isSelected: Bool
     let contentInsets: EdgeInsets
@@ -12,14 +14,17 @@ struct PhotoViewZoomableImage: DView {
 
     var body: some View {
         GeometryReader { proxy in
-            let imageSize = fittedImageSize(
+            let imageSize = viewModel.fittedImageSize(
+                image: image,
+                contentInsets: contentInsets,
                 in: proxy.size,
             )
             let center = CGPoint(
                 x: (proxy.size.width + contentInsets.leading - contentInsets.trailing) / 2,
                 y: (proxy.size.height + contentInsets.top - contentInsets.bottom) / 2,
             )
-            let displayed = transformed(
+            let displayed = viewModel.transformed(
+                transform: transform,
                 by: gestureValue,
                 imageSize: imageSize,
                 viewport: proxy.size,
@@ -28,10 +33,9 @@ struct PhotoViewZoomableImage: DView {
 
             ZStack {
                 Color.clear
-                Image(
+                DImage(
                     uiImage: image,
                 )
-                .resizable()
                 .scaledToFit()
                 .frame(
                     width: imageSize.width * displayed.scale,
@@ -67,7 +71,8 @@ struct PhotoViewZoomableImage: DView {
                         state = value
                     }
                     .onEnded { value in
-                        transform = transformed(
+                        transform = viewModel.transformed(
+                            transform: transform,
                             by: value,
                             imageSize: imageSize,
                             viewport: proxy.size,
@@ -85,18 +90,13 @@ struct PhotoViewZoomableImage: DView {
                             duration: 0.25,
                         ),
                     ) {
-                        transform = transform.scale > 1
-                            ? PhotoViewImageTransform()
-                            : transform.zoomed(
-                                to: 2.5,
-                                around: value.location,
-                                center: center,
-                            )
-                            .constrained(
-                                imageSize: imageSize,
-                                viewport: proxy.size,
-                                center: center,
-                            )
+                        transform = viewModel.onDoubleTapPhoto(
+                            transform: transform,
+                            location: value.location,
+                            imageSize: imageSize,
+                            viewport: proxy.size,
+                            center: center,
+                        )
                     }
                 },
             )
@@ -112,54 +112,5 @@ struct PhotoViewZoomableImage: DView {
         .onChange(
             of: isSelected,
         ) { _, _ in transform = PhotoViewImageTransform() }
-    }
-
-    private func transformed(
-        by value: SimultaneousGesture<MagnifyGesture, DragGesture>.Value?,
-        imageSize: CGSize,
-        viewport: CGSize,
-        center: CGPoint,
-    ) -> PhotoViewImageTransform {
-        var result = transform
-        if let pinch = value?.first {
-            result = transform.zoomed(
-                to: transform.scale * pinch.magnification,
-                around: CGPoint(
-                    x: pinch.startAnchor.x * viewport.width,
-                    y: pinch.startAnchor.y * viewport.height,
-                ),
-                center: center,
-            )
-        } else if let drag = value?.second {
-            result.offset.width += drag.translation.width
-            result.offset.height += drag.translation.height
-        }
-        return result.constrained(
-            imageSize: imageSize,
-            viewport: viewport,
-            center: center,
-        )
-    }
-
-    private func fittedImageSize(
-        in viewport: CGSize,
-    ) -> CGSize {
-        guard image.size.width > 0, image.size.height > 0 else { return .zero }
-        let availableWidth = max(
-            viewport.width - contentInsets.leading - contentInsets.trailing,
-            0,
-        )
-        let availableHeight = max(
-            viewport.height - contentInsets.top - contentInsets.bottom,
-            0,
-        )
-        let fitScale = min(
-            availableWidth / image.size.width,
-            availableHeight / image.size.height,
-        )
-        return CGSize(
-            width: image.size.width * fitScale,
-            height: image.size.height * fitScale,
-        )
     }
 }

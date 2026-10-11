@@ -1,3 +1,4 @@
+import Combine
 import DoglyadUI
 import Foundation
 import NestedObservableObject
@@ -5,7 +6,7 @@ import Router
 import SwiftUI
 
 @MainActor
-final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating {
+final class NeuralModelSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
     enum Focus: Hashable {
         case temperature
         case length
@@ -16,12 +17,16 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
 
     init(
         container: DependencyContainer,
-        initialIsMarkdown: Bool,
-        initialTemperature: Double,
-        initialMaxTokens: Int,
+        getInitialIsMarkdown: @escaping () -> Bool,
+        getInitialTemperature: @escaping () -> Double,
+        getInitialMaxTokens: @escaping () -> Int,
         messager: DMessager,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         onSettingsSaved: @escaping (Bool, Double?, Int?) -> Void,
     ) {
         self.messager = messager
@@ -36,7 +41,7 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
                         validRange: 0 ... 2,
                         invalidValueErrorText: String(
                             localized: container.l10n[
-                                .errorInvalidNeuralModelTemperature,
+                                .errorInvalidNeuralModelTemperatureDescription,
                             ],
                         ),
                     ),
@@ -53,7 +58,7 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
                         validRange: 1 ... 1024,
                         invalidValueErrorText: String(
                             localized: container.l10n[
-                                .errorInvalidNeuralModelMaxTokens,
+                                .errorInvalidNeuralModelMaxTokensDescription,
                             ],
                         ),
                     ),
@@ -63,20 +68,24 @@ final class NeuralModelSettingsViewModel: DViewModel, DTextFieldFocusValidating 
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .neuralModelSettings,
             ),
         )
-        isMarkdown = initialIsMarkdown
+        isMarkdown = getInitialIsMarkdown()
         temperatureController.setText(
             String(
-                initialTemperature,
+                getInitialTemperature(),
             ),
         )
         maxTokensController.setText(
             String(
-                initialMaxTokens,
+                getInitialMaxTokens(),
             ),
         )
     }

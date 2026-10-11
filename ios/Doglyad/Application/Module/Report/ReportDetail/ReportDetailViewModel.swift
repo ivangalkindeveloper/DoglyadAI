@@ -1,3 +1,4 @@
+import Combine
 import DoglyadNetwork
 import DoglyadUI
 import Foundation
@@ -7,7 +8,7 @@ import SwiftUI
 import UIKit
 
 @MainActor
-final class ReportDetailViewModel: DViewModel {
+final class ReportDetailViewModel: DModuleViewModel {
     static func actualModelReportCardScrollId(
         toolbarInset: CGFloat,
     ) -> String {
@@ -24,7 +25,12 @@ final class ReportDetailViewModel: DViewModel {
         messager: DMessager,
         router: DRouter,
         initialReport: USExaminationReport,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        observeExaminationChanges: @escaping (@escaping () -> Void) -> AnyCancellable,
         getSelectedTemplate: @escaping () -> USExaminationTemplate?,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void,
@@ -37,10 +43,17 @@ final class ReportDetailViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .reportDetail,
             ),
+        )
+        observePresentationChanges(
+            observeExaminationChanges,
         )
     }
 
@@ -49,22 +62,6 @@ final class ReportDetailViewModel: DViewModel {
 
     var subTitle: String {
         "\(report.examinationData.patientName), \(report.date.localizedDateTime())"
-    }
-
-    func onTapPhoto(
-        _ photo: USExaminationScanPhoto,
-    ) {
-        guard !isLoading else { return }
-        coordinator.screen(
-            .photoView,
-            arguments: PhotoViewScreenArguments(
-                photos: .constant(
-                    report.examinationData.photos,
-                ),
-                initialPhotoID: photo.id,
-                subTitle: subTitle,
-            ),
-        )
     }
 
     func onTapBack() {
@@ -86,25 +83,22 @@ final class ReportDetailViewModel: DViewModel {
         )
     }
 
-    func onTapCopy(
-        report: USExaminationModelReport,
+    func onTapPhoto(
+        _ photo: USExaminationScanPhoto,
     ) {
-        analytics.buttonTapped(
-            .reportDetailCopy,
-        )
-        UIApplication.pasteboard(
-            report.plainText(
-                l10n: container.l10n,
+        guard !isLoading else { return }
+        coordinator.screen(
+            .photoView,
+            arguments: PhotoViewArguments(
+                getPhotos: { [weak self] in self?.report.examinationData.photos ?? [] },
+                observePhotos: { [weak self] observer in self?.$report.map(
+                    \.examinationData.photos,
+                ).sink(
+                    receiveValue: observer,
+                ) ?? AnyCancellable {} },
+                initialPhotoID: photo.id,
+                subTitle: subTitle,
             ),
-        )
-        messager.show(
-            type: .success,
-            title: container.l10n[
-                .reportDetailModelCopyMessageTitle,
-            ],
-            description: container.l10n[
-                .reportDetailModelCopyMessageDescription,
-            ],
         )
     }
 
@@ -174,6 +168,28 @@ final class ReportDetailViewModel: DViewModel {
         }
     }
 
+    func onTapCopy(
+        report: USExaminationModelReport,
+    ) {
+        analytics.buttonTapped(
+            .reportDetailCopy,
+        )
+        UIApplication.pasteboard(
+            report.plainText(
+                l10n: container.l10n,
+            ),
+        )
+        messager.show(
+            type: .success,
+            title: container.l10n[
+                .reportDetailModelCopyMessageTitle,
+            ],
+            description: container.l10n[
+                .reportDetailModelCopyMessageDescription,
+            ],
+        )
+    }
+
     private func performRepeatScan(
         proxy: ScrollViewProxy,
         toolbarInset: CGFloat,
@@ -181,7 +197,7 @@ final class ReportDetailViewModel: DViewModel {
         handle {
             self.isLoading = true
 
-            let neuralModelSettings = self.subscription.neuralModelSettings
+            let neuralModelSettings = self.neuralModelSettings
             let locale = self.container.language.currentLocale
             let request = USExaminationRequest(
                 neuralModelSettings: neuralModelSettings,
@@ -209,7 +225,7 @@ final class ReportDetailViewModel: DViewModel {
             await self.container.ultrasoundReportRepository.updateReport(
                 report: updatedReport,
             )
-            self.subscription.incrementRequestCount()
+            self.incrementRequestCount()
 
             return updatedReport
         } onDefer: {
@@ -239,4 +255,7 @@ final class ReportDetailViewModel: DViewModel {
             )
         }
     }
+
+    var selectedNeuralModelTitle: String { getNeuralModel().title }
+    var selectedTemplate: USExaminationTemplate? { getSelectedTemplate() }
 }

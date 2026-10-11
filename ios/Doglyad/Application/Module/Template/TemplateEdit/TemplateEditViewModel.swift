@@ -1,3 +1,4 @@
+import Combine
 import DoglyadNetwork
 import DoglyadUI
 import Foundation
@@ -7,23 +8,27 @@ import Router
 import SwiftUI
 
 @MainActor
-final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
+final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
     enum Focus: Hashable {
         case name
         case content
     }
 
     private let messager: DMessager
-    private let arguments: TemplateEditScreenArguments
+    private let arguments: TemplateEditArguments
     private let onSaveTemplate: (USExaminationTemplate) -> Void
     private let onDeleteTemplate: (UUID) -> Void
 
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
         messager: DMessager,
-        arguments: TemplateEditScreenArguments,
+        arguments: TemplateEditArguments,
         onSaveTemplate: @escaping (USExaminationTemplate) -> Void,
         onDeleteTemplate: @escaping (UUID) -> Void,
     ) {
@@ -35,7 +40,11 @@ final class TemplateEditViewModel: DViewModel, DTextFieldFocusValidating {
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .templateEdit,
             ),

@@ -1,8 +1,10 @@
+import Combine
 import SwiftUI
 
 @MainActor
-final class PhotoViewViewModel: DViewModel {
-    private let arguments: PhotoViewScreenArguments
+final class PhotoViewViewModel: DModuleViewModel {
+    private let arguments: PhotoViewArguments
+    private var photoObservation: AnyCancellable?
     private var isClosing = false
     @Published private(set) var photos: [USExaminationScanPhoto]
     @Published var selectedPhotoID: UUID
@@ -10,11 +12,15 @@ final class PhotoViewViewModel: DViewModel {
     init(
         container: DependencyContainer,
         router: DRouter,
-        subscription: SubscriptionViewModel,
-        arguments: PhotoViewScreenArguments,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        arguments: PhotoViewArguments,
     ) {
         self.arguments = arguments
-        let initialPhotos = arguments.photos.wrappedValue
+        let initialPhotos = arguments.getPhotos()
         photos = initialPhotos
         selectedPhotoID = initialPhotos.contains(
             where: { $0.id == arguments.initialPhotoID },
@@ -23,11 +29,18 @@ final class PhotoViewViewModel: DViewModel {
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .photoView,
             ),
         )
+        photoObservation = arguments.observePhotos? { [weak self] photos in self?.synchronizePhotos(
+            photos,
+        ) }
     }
 
     var currentPage: Int {
@@ -47,7 +60,33 @@ final class PhotoViewViewModel: DViewModel {
     }
 
     var sourcePhotos: [USExaminationScanPhoto] {
-        arguments.photos.wrappedValue
+        arguments.getPhotos()
+    }
+
+    override func onInit() {
+        synchronizePhotos(
+            arguments.getPhotos(),
+        )
+    }
+
+    func onTapBack() {
+        guard !isClosing else { return }
+        isClosing = true
+        coordinator.pop()
+    }
+
+    func onTapDelete() {
+        guard let onDelete = arguments.onDelete else { return }
+        let current = arguments.getPhotos()
+        guard let photo = current.first(
+            where: { $0.id == selectedPhotoID },
+        ) else { return }
+        onDelete(
+            photo,
+        )
+        synchronizePhotos(
+            arguments.getPhotos(),
+        )
     }
 
     func synchronizePhotos(
@@ -74,29 +113,76 @@ final class PhotoViewViewModel: DViewModel {
         }
     }
 
-    func onTapDelete() {
-        guard let onDelete = arguments.onDelete else { return }
-        let current = arguments.photos.wrappedValue
-        guard let photo = current.first(
-            where: { $0.id == selectedPhotoID },
-        ) else { return }
-        onDelete(
-            photo,
+    func fittedImageSize(
+        image: UIImage,
+        contentInsets: EdgeInsets,
+        in viewport: CGSize,
+    ) -> CGSize {
+        guard image.size.width > 0, image.size.height > 0 else { return .zero }
+        let availableWidth = max(
+            viewport.width - contentInsets.leading - contentInsets.trailing,
+            0,
         )
-        synchronizePhotos(
-            arguments.photos.wrappedValue,
+        let availableHeight = max(
+            viewport.height - contentInsets.top - contentInsets.bottom,
+            0,
+        )
+        let fitScale = min(
+            availableWidth / image.size.width,
+            availableHeight / image.size.height,
+        )
+        return CGSize(
+            width: image.size.width * fitScale,
+            height: image.size.height * fitScale,
         )
     }
 
-    func onTapBack() {
-        guard !isClosing else { return }
-        isClosing = true
-        coordinator.pop()
+    func transformed(
+        transform: PhotoViewImageTransform,
+        by value: SimultaneousGesture<MagnifyGesture, DragGesture>.Value?,
+        imageSize: CGSize,
+        viewport: CGSize,
+        center: CGPoint,
+    ) -> PhotoViewImageTransform {
+        var result = transform
+        if let pinch = value?.first {
+            result = transform.zoomed(
+                to: transform.scale * pinch.magnification,
+                around: CGPoint(
+                    x: pinch.startAnchor.x * viewport.width,
+                    y: pinch.startAnchor.y * viewport.height,
+                ),
+                center: center,
+            )
+        } else if let drag = value?.second {
+            result.offset.width += drag.translation.width
+            result.offset.height += drag.translation.height
+        }
+        return result.constrained(
+            imageSize: imageSize,
+            viewport: viewport,
+            center: center,
+        )
     }
 
-    override func onInit() {
-        synchronizePhotos(
-            arguments.photos.wrappedValue,
-        )
+    func onDoubleTapPhoto(
+        transform: PhotoViewImageTransform,
+        location: CGPoint,
+        imageSize: CGSize,
+        viewport: CGSize,
+        center: CGPoint,
+    ) -> PhotoViewImageTransform {
+        transform.scale > 1
+            ? PhotoViewImageTransform()
+            : transform.zoomed(
+                to: 2.5,
+                around: location,
+                center: center,
+            )
+            .constrained(
+                imageSize: imageSize,
+                viewport: viewport,
+                center: center,
+            )
     }
 }

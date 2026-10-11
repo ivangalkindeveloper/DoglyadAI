@@ -35,10 +35,13 @@ final class ErrorRootViewModel: ObservableObject {
         }
     }
 
-    func onTapRetry() {
+    func onTapRetry(
+        onRetryInitialization: () -> Void = {},
+    ) {
         analytics?.buttonTapped(
             .initializationRetry,
         )
+        onRetryInitialization()
     }
 
     func onTapServiceUnavailableEmail() {

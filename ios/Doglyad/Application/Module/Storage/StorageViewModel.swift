@@ -1,3 +1,4 @@
+import Combine
 import DoglyadNetwork
 import DoglyadUI
 import Foundation
@@ -6,20 +7,28 @@ import Router
 import SwiftUI
 
 @MainActor
-final class StorageViewModel: DViewModel {
+final class StorageViewModel: DModuleViewModel {
     private let messager: DMessager
 
     init(
         container: DependencyContainer,
         messager: DMessager,
         router: DRouter,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
     ) {
         self.messager = messager
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .storage,
             ),

@@ -5,17 +5,13 @@ struct NeuralModelSettingsCardView: DView {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
-    @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
-    @EnvironmentObject private var subscription: SubscriptionViewModel
-
-    let feature: PaidFeature
+    let settings: NeuralModelSettings
+    let availability: SubscriptionFeatureAvailability
     let onTap: () -> Void
 
     @ViewBuilder
     var body: some View {
-        switch subscription.availability(
-            of: feature,
-        ) {
+        switch availability {
         case .unavailable:
             EmptyView()
         case .offered, .available:
@@ -25,7 +21,7 @@ struct NeuralModelSettingsCardView: DView {
             ) {
                 DText(
                     l10n[
-                        .scanNeuralModelSettingsTitleLabel,
+                        .neuralModelSettingsCardTitleLabel,
                     ],
                 )
                 .dStyle(
@@ -49,24 +45,26 @@ struct NeuralModelSettingsCardView: DView {
                         spacing: size.s4,
                     ) {
                         NeuralModelSettingsMarkdownRowView(
-                            isMarkdown: $ultrasoundViewModel.isMarkdown,
-                        )
-
-                        NeuralModelValueRowView(
-                            title: l10n[
-                                .scanNeuralModelSettingsTemperatureLabel,
-                            ],
-                            value: String(
-                                format: "%.2f",
-                                ultrasoundViewModel.temperature,
+                            isMarkdown: .constant(
+                                settings.isMarkdown,
                             ),
                         )
 
                         NeuralModelValueRowView(
                             title: l10n[
-                                .scanNeuralModelSettingsMaxTokensLabel,
+                                .neuralModelSettingsCardTemperatureLabel,
                             ],
-                            value: "\(ultrasoundViewModel.maxTokens)",
+                            value: String(
+                                format: "%.2f",
+                                settings.temperature ?? 0,
+                            ),
+                        )
+
+                        NeuralModelValueRowView(
+                            title: l10n[
+                                .neuralModelSettingsCardMaxTokensLabel,
+                            ],
+                            value: "\(settings.maxTokens ?? 0)",
                         )
                     }
                     .frame(
@@ -75,7 +73,7 @@ struct NeuralModelSettingsCardView: DView {
                     )
                 }
                 .paidBadge(
-                    feature,
+                    availability,
                 )
             }
             .padding(
@@ -106,7 +104,7 @@ private struct NeuralModelSettingsMarkdownRowView: DView {
         ) {
             DText(
                 l10n[
-                    .scanNeuralModelSettingsMarkdownLabel,
+                    .neuralModelSettingsCardMarkdownLabel,
                 ],
             )
             .dStyle(
@@ -114,7 +112,7 @@ private struct NeuralModelSettingsMarkdownRowView: DView {
                 color: color.grayscalePlacehold,
             )
 
-            Toggle(
+            DToggle(
                 "",
                 isOn: $isMarkdown,
             )

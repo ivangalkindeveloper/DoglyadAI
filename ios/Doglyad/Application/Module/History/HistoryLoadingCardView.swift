@@ -8,11 +8,8 @@ struct HistoryLoadingCardView: DView {
         HStack(
             spacing: .zero,
         ) {
-            RoundedRectangle(
+            DShimmerPlaceholder(
                 cornerRadius: size.adaptiveCornerRadius / 4,
-            )
-            .fill(
-                color.grayscaleInput,
             )
             .frame(
                 width: size.s64,
@@ -27,33 +24,30 @@ struct HistoryLoadingCardView: DView {
                 alignment: .leading,
                 spacing: size.s8,
             ) {
-                Capsule()
-                    .fill(
-                        color.grayscaleInput,
-                    )
-                    .frame(
-                        width: size.s128,
-                        height: size.s14,
-                    )
+                DShimmerPlaceholder(
+                    cornerRadius: .infinity,
+                )
+                .frame(
+                    width: size.s128,
+                    height: size.s14,
+                )
 
-                Capsule()
-                    .fill(
-                        color.grayscaleInput,
-                    )
-                    .frame(
-                        width: size.s96,
-                        height: size.s14,
-                    )
+                DShimmerPlaceholder(
+                    cornerRadius: .infinity,
+                )
+                .frame(
+                    width: size.s96,
+                    height: size.s14,
+                )
 
-                Capsule()
-                    .fill(
-                        color.grayscaleInput,
-                    )
-                    .frame(
-                        maxWidth: .infinity,
-                        minHeight: size.s14,
-                        maxHeight: size.s14,
-                    )
+                DShimmerPlaceholder(
+                    cornerRadius: .infinity,
+                )
+                .frame(
+                    maxWidth: .infinity,
+                    minHeight: size.s14,
+                    maxHeight: size.s14,
+                )
             }
             .frame(
                 maxWidth: .infinity,

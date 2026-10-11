@@ -4,16 +4,19 @@ import SwiftUI
 
 final class ScanCameraArguments: RouteArgumentsProtocol {
     let cameraController: DCameraControllerFactory.Controller
-    let photos: Binding<[USExaminationScanPhoto]>
+    let getPhotos: () -> [USExaminationScanPhoto]
+    let onPhotosUpdated: ([USExaminationScanPhoto]) -> Void
     let photoMaxCount: Int
 
     init(
         cameraController: DCameraControllerFactory.Controller,
-        photos: Binding<[USExaminationScanPhoto]>,
+        getPhotos: @escaping () -> [USExaminationScanPhoto],
+        onPhotosUpdated: @escaping ([USExaminationScanPhoto]) -> Void,
         photoMaxCount: Int,
     ) {
         self.cameraController = cameraController
-        self.photos = photos
+        self.getPhotos = getPhotos
+        self.onPhotosUpdated = onPhotosUpdated
         self.photoMaxCount = photoMaxCount
     }
 }

@@ -5,7 +5,7 @@ struct SubscriptionScreenView: DView {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
-    @StateObject var viewModel: SubscriptionScreenViewModel
+    @StateObject var viewModel: SubscriptionViewModel
 
     var body: some View {
         DScreen(

@@ -22,9 +22,6 @@ struct ReportReceivedBottomSheetView: DView {
                         ReportReceivedMarkdownView(
                             textColor: color.grayscaleBackgroundWeak,
                         )
-                        .environmentObject(
-                            viewModel.markdownViewModel,
-                        )
                         .padding(
                             .top,
                             toolbarHeight,
@@ -61,7 +58,7 @@ struct ReportReceivedBottomSheetView: DView {
                 ) {
                     DButton(
                         title: l10n[
-                            .buttonToReport,
+                            .reportReceivedOpenReportButton,
                         ],
                         action: viewModel.onTapReport,
                     )
@@ -113,6 +110,9 @@ struct ReportReceivedBottomSheetView: DView {
         .animation(
             theme.animation,
             value: viewModel.isUserEmailButtonVisible,
+        )
+        .environmentObject(
+            viewModel,
         )
         .onAppear {
             viewModel.onAppear()

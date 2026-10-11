@@ -5,7 +5,7 @@ struct RequestLimitExceededBottomSheetView: DView {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
-    @StateObject var viewModel: RequestLimitViewModel
+    @StateObject var viewModel: RequestLimitExceededViewModel
 
     var body: some View {
         DBottomSheet(
@@ -44,7 +44,7 @@ struct RequestLimitExceededBottomSheetView: DView {
             ) {
                 DButton(
                     title: l10n[
-                        .settingsSubscriptionManageTitle,
+                        .buttonManageSubscription,
                     ],
                     action: viewModel.onTapUpgrade,
                 )
@@ -66,6 +66,9 @@ struct RequestLimitExceededBottomSheetView: DView {
                 size.s16,
             )
         }
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )

@@ -28,10 +28,10 @@ struct ScanSpeechReviewView: DView {
                     DTextField(
                         controller: viewModel.transcriptController,
                         title: l10n[
-                            .speechReviewFieldTitle,
+                            .scanSpeechReviewFieldTitle,
                         ],
                         placeholder: l10n[
-                            .speechReviewFieldPlaceholder,
+                            .scanSpeechReviewFieldPlaceholder,
                         ],
                         mode: DTextFieldMultiLineMode(
                             lineLimit: 6 ... 14,
@@ -48,7 +48,7 @@ struct ScanSpeechReviewView: DView {
 
             DButton(
                 title: l10n[
-                    .speechReviewContinueButton,
+                    .scanSpeechReviewContinueButton,
                 ],
                 action: viewModel.onTapContinue,
                 isLoading: viewModel.isLoading,
@@ -60,7 +60,7 @@ struct ScanSpeechReviewView: DView {
 
             DButton(
                 title: l10n[
-                    .speechReviewRecordAgainButton,
+                    .scanSpeechReviewRecordAgainButton,
                 ],
                 action: viewModel.onTapRecordAgain,
                 isDisabled: viewModel.isLoading,

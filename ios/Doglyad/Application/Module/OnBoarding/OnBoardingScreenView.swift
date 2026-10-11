@@ -91,32 +91,19 @@ struct OnBoardingScreenView: DView {
                 )
             },
         )
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )
     }
 
     private var stepper: some View {
-        HStack(
-            spacing: size.s4,
-        ) {
-            ForEach(
-                Array(
-                    OnBoardingViewModel.Page.allCases.enumerated(),
-                ),
-                id: \.offset,
-            ) { index, _ in
-                Capsule()
-                    .fill(
-                        index <= viewModel.page.index
-                            ? color.primaryDefault
-                            : color.grayscaleLine,
-                    )
-                    .frame(
-                        height: size.s2,
-                    )
-            }
-        }
+        DPageIndicator(
+            count: OnBoardingViewModel.Page.allCases.count,
+            currentIndex: viewModel.page.index,
+        )
     }
 
     @ViewBuilder
@@ -126,33 +113,33 @@ struct OnBoardingScreenView: DView {
             OnBoardingPageView(
                 tag: .first,
                 title: l10n[
-                    .onBoardingTitleFirst,
+                    .onBoardingFirstTitle,
                 ],
                 image: .doglyad,
                 description: l10n[
-                    .onBoardingDescriptionFirst,
+                    .onBoardingFirstDescription,
                 ],
             )
         case .second:
             OnBoardingPageView(
                 tag: .second,
                 title: l10n[
-                    .onBoardingTitleSecond,
+                    .onBoardingSecondTitle,
                 ],
                 image: .doglyadUSMachine,
                 description: l10n[
-                    .onBoardingDescriptionSecond,
+                    .onBoardingSecondDescription,
                 ],
             )
         case .third:
             OnBoardingPageView(
                 tag: .third,
                 title: l10n[
-                    .onBoardingTitleThird,
+                    .onBoardingThirdTitle,
                 ],
                 image: .doglyadQuiet,
                 description: l10n[
-                    .onBoardingDescriptionThird,
+                    .onBoardingThirdDescription,
                 ],
             ) {
                 HStack(
@@ -169,7 +156,7 @@ struct OnBoardingScreenView: DView {
                         size.s8,
                     )
 
-                    Text(
+                    DText(
                         viewModel.legalAttributedText(
                             theme: theme,
                             locale: locale,
@@ -207,22 +194,22 @@ struct OnBoardingScreenView: DView {
             OnBoardingPageView(
                 tag: .fourth,
                 title: l10n[
-                    .onBoardingTitleFourth,
+                    .onBoardingFourthTitle,
                 ],
                 image: .doglyadQuestion,
                 description: l10n[
-                    .onBoardingDescriptionFourth,
+                    .onBoardingFourthDescription,
                 ],
             )
         case .fifth:
             OnBoardingPageView(
                 tag: .fifth,
                 title: l10n[
-                    .onBoardingTitleFifth,
+                    .onBoardingFifthTitle,
                 ],
                 image: .doglyadTable,
                 description: l10n[
-                    .onBoardingDescriptionFifth,
+                    .onBoardingFifthDescription,
                 ],
             )
         }

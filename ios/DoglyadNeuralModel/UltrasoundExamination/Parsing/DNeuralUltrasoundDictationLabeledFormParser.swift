@@ -228,7 +228,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             }
             guard let first = matches.first else { continue }
             if matches.count > 1 {
-                guard id == .patientComplaints, matches.count == 2,
+                guard id.isPatientComplaints, matches.count == 2,
                       source.substring(
                           with: NSRange(
                               location: NSMaxRange(
@@ -254,7 +254,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
 
         found.sort { $0.range.location < $1.range.location }
         guard let first = found.first,
-              first.id == .examinationDescription || found.allSatisfy(
+              first.id.isExaminationDescription || found.allSatisfy(
                   { hasExplicitSeparator(
                       after: $0.range,
                       in: source,
@@ -323,7 +323,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         descriptionStart: Int?,
         localization: DNeuralUltrasoundDictationLocalization,
     ) -> Bool {
-        if id == .patientComplaints {
+        if id.isPatientComplaints {
             let prefix = source.substring(
                 to: match.range.location,
             )
@@ -531,7 +531,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 with: "",
                 options: .regularExpression,
             )
-            if entry.id == .patientComplaints {
+            if entry.id.isPatientComplaints {
                 // The recognizer sometimes emits a false start of the following
                 // "examination description" label as a trailing "exam".
                 rawValue = rawValue.replacingOccurrences(
@@ -655,7 +655,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     .ambiguousDictation,
                 )
             }
-            if entry.id == .examinationNumber,
+            if entry.id.isExaminationNumber,
                rawValue.range(
                    of: #"[.,–—-]"#,
                    options: .regularExpression,
@@ -955,7 +955,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         for id: DNeuralUltrasoundVoiceFieldId,
         localization: DNeuralUltrasoundDictationLocalization,
     ) -> Bool {
-        guard id == .examinationDescription else { return false }
+        guard id.isExaminationDescription else { return false }
         let trimmed = raw.trimmingCharacters(
             in: .whitespacesAndNewlines,
         )
@@ -979,7 +979,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         locale: Locale,
         localization: DNeuralUltrasoundDictationLocalization,
     ) -> Bool {
-        guard id == .examinationDescription else { return false }
+        guard id.isExaminationDescription else { return false }
         let facts = DNeuralUltrasoundDictationTextFacts(
             raw,
             locale: locale,

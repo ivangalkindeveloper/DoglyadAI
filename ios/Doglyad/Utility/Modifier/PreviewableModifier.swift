@@ -2,7 +2,7 @@ import DoglyadUI
 import Router
 import SwiftUI
 
-private struct PreviewableModifier: ViewModifier {
+struct PreviewableModifier: ViewModifier {
     @ViewBuilder
     func body(
         content: Content,
@@ -20,7 +20,7 @@ private struct PreviewableModifier: ViewModifier {
             .dMessage()
             .dThemeWrapper()
             .environmentObject(
-                ApplicationViewModel(),
+                ApplicationRootViewModel(),
             )
             .environmentObject(
                 container,
@@ -29,22 +29,14 @@ private struct PreviewableModifier: ViewModifier {
                 container.l10n,
             )
             .environmentObject(
-                UltrasoundViewModel(
+                UltrasoundRootViewModel(
                     container: container,
                 ),
             )
             .environmentObject(
-                SubscriptionViewModel(
+                SubscriptionRootViewModel(
                     container: container,
                 ),
             )
-    }
-}
-
-extension View {
-    func previewable() -> some View {
-        modifier(
-            PreviewableModifier(),
-        )
     }
 }

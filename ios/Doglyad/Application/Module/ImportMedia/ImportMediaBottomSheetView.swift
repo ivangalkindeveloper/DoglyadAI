@@ -20,7 +20,7 @@ struct ImportMediaBottomSheetView: DView {
                 DButtonCard(
                     action: viewModel.onTapCamera,
                 ) {
-                    row(
+                    ActionRowView(
                         icon: .camera,
                         title: l10n[
                             .buttonCamera,
@@ -31,7 +31,7 @@ struct ImportMediaBottomSheetView: DView {
                 DButtonCard(
                     action: viewModel.onTapGallery,
                 ) {
-                    row(
+                    ActionRowView(
                         icon: .image,
                         title: l10n[
                             .buttonGallery,
@@ -50,32 +50,14 @@ struct ImportMediaBottomSheetView: DView {
                 size.s16,
             )
         }
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )
         .onDisappear(
             perform: viewModel.onDisappear,
         )
-    }
-
-    private func row(
-        icon: ImageResource,
-        title: LocalizedStringResource,
-    ) -> some View {
-        HStack(
-            spacing: size.s8,
-        ) {
-            DIcon(
-                icon,
-                color: color.grayscaleHeader,
-            )
-            DText(
-                title,
-            )
-            .dStyle(
-                font: typography.linkSmall,
-            )
-            Spacer()
-        }
     }
 }

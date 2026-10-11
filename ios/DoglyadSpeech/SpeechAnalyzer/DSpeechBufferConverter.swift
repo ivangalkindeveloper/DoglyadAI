@@ -47,10 +47,13 @@ final class DSpeechBufferConverter: @unchecked Sendable {
             inputStatus.pointee = consumed ? .noDataNow : .haveData
             return consumed ? nil : buffer
         }
-        guard status != .error else {
+        switch status {
+        case .haveData, .inputRanDry, .endOfStream:
+            return output
+        case .error:
+            throw DSpeechError.unavailable
+        @unknown default:
             throw DSpeechError.unavailable
         }
-
-        return output
     }
 }

@@ -20,7 +20,8 @@ struct ScanMediaButtonView: DView {
     }
 
     var body: some View {
-        Button(
+        DButtonCard(
+            isPlain: true,
             action: action,
         ) {
             HStack(
@@ -35,7 +36,7 @@ struct ScanMediaButtonView: DView {
                 if !isCompact {
                     DText(
                         l10n[
-                            .scanImportButtonTitle,
+                            .scanImportButton,
                         ],
                     )
                     .dStyle(
@@ -53,35 +54,15 @@ struct ScanMediaButtonView: DView {
                 maxHeight: .infinity,
             )
             .background {
-                RoundedRectangle(
+                DCardBackground(
                     cornerRadius: cornerRadius,
-                )
-                .fill(
-                    isEnabled ? color.grayscaleBackground : color.grayscaleInput,
-                )
-            }
-            .clipShape(
-                RoundedRectangle(
-                    cornerRadius: cornerRadius,
-                ),
-            )
-            .overlay {
-                RoundedRectangle(
-                    cornerRadius: cornerRadius,
-                )
-                .strokeBorder(
-                    color.primaryDefault,
-                    style: StrokeStyle(
-                        lineWidth: 1,
-                        lineCap: .round,
-                        dash: [size.s8, size.s4],
-                    ),
+                    color: isEnabled ? color.grayscaleBackground : color.grayscaleInput,
+                    borderColor: color.primaryDefault,
+                    lineWidth: 1,
+                    dash: [size.s8, size.s4],
                 )
             }
         }
-        .buttonStyle(
-            ScanMediaButtonStyle(),
-        )
         .frame(
             width: isCompact ? compactButtonSize : nil,
             height: isCompact ? compactButtonSize : buttonHeight,
@@ -107,23 +88,6 @@ struct ScanMediaButtonView: DView {
 
     private var cornerRadius: CGFloat {
         isCompact ? size.adaptiveCornerRadius / 4 : size.adaptiveCardCornerRadius
-    }
-}
-
-private struct ScanMediaButtonStyle: ButtonStyle {
-    func makeBody(
-        configuration: Configuration,
-    ) -> some View {
-        configuration.label
-            .opacity(
-                configuration.isPressed ? 0.6 : 1,
-            )
-            .animation(
-                .easeOut(
-                    duration: 0.1,
-                ),
-                value: configuration.isPressed,
-            )
     }
 }
 

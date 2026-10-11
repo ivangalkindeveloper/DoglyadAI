@@ -85,14 +85,15 @@ extension DNeuralVoiceFieldValue {
             formatter.dateFormat = format
             guard let date = formatter.date(
                 from: text,
-            ),
-                formatter.string(
-                    from: date,
-                ).localizedCaseInsensitiveCompare(
-                    text,
-                ) == .orderedSame
-            else { continue }
-            return date
+            ) else { continue }
+            switch formatter.string(
+                from: date,
+            ).localizedCaseInsensitiveCompare(
+                text,
+            ) {
+            case .orderedSame: return date
+            case .orderedAscending, .orderedDescending: continue
+            }
         }
         return nil
     }

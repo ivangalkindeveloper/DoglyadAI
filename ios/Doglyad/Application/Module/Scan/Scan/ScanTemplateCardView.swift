@@ -6,7 +6,6 @@ struct ScanTemplateCardView: DView {
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
-    @EnvironmentObject private var ultrasoundViewModel: UltrasoundViewModel
 
     var body: some View {
         VStack(
@@ -44,7 +43,7 @@ struct ScanTemplateCardView: DView {
                         alignment: .leading,
                         spacing: size.s4,
                     ) {
-                        if let template = ultrasoundViewModel.template {
+                        if let template = viewModel.selectedTemplate {
                             DText(
                                 template.usExaminationType.localizedTitle,
                             )
@@ -99,7 +98,7 @@ struct ScanTemplateCardView: DView {
                     }
                     .padding(
                         .trailing,
-                        ultrasoundViewModel.template == nil ? .zero : size.s32,
+                        viewModel.selectedTemplate == nil ? .zero : size.s32,
                     )
                     .frame(
                         maxWidth: .infinity,
@@ -107,7 +106,7 @@ struct ScanTemplateCardView: DView {
                     )
                 }
 
-                if ultrasoundViewModel.template != nil {
+                if viewModel.selectedTemplate != nil {
                     DCloseButton(
                         action: viewModel.onTapResetTemplate,
                     )
@@ -121,13 +120,13 @@ struct ScanTemplateCardView: DView {
             }
 
             if viewModel.isSelectedTemplateExaminationTypeMismatch {
-                Text(
+                DText(
                     l10n[
-                        .scanTemplateCardExaminationTypeMismatchError,
+                        .scanTemplateCardExaminationTypeMismatchDescription,
                     ],
                 )
-                .font(
-                    typography.textXSmall,
+                .dStyle(
+                    font: typography.textXSmall,
                 )
                 .foregroundStyle(
                     color.dangerDefault,
@@ -151,7 +150,7 @@ struct ScanTemplateCardView: DView {
         )
         .animation(
             theme.animation,
-            value: ultrasoundViewModel.template,
+            value: viewModel.selectedTemplate,
         )
     }
 }

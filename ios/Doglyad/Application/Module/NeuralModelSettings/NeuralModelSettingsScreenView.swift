@@ -77,7 +77,7 @@ struct NeuralModelSettingsScreenView: DView {
                                     minLength: size.s16,
                                 )
 
-                                Toggle(
+                                DToggle(
                                     "",
                                     isOn: $viewModel.isMarkdown,
                                 )
@@ -233,6 +233,9 @@ struct NeuralModelSettingsScreenView: DView {
                     size.s16,
                 )
             },
+        )
+        .environmentObject(
+            viewModel,
         )
         .onAppear(
             perform: viewModel.onAppear,

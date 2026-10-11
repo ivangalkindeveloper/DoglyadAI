@@ -6,8 +6,8 @@ struct ScanSpeechBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var router: DRouter
-    @EnvironmentObject private var subscriptionViewModel: SubscriptionViewModel
-    let arguments: ScanSpeechBottomSheetArguments
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
+    let arguments: ScanSpeechArguments
 
     var body: some View {
         ScanSpeechBottomSheetView(
@@ -15,7 +15,15 @@ struct ScanSpeechBottomSheet: View {
                 container: container,
                 messager: messager,
                 router: router,
-                subscription: subscriptionViewModel,
+                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
+                    observer,
+                ) },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
+                    status: status,
+                ) },
+                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
+                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 arguments: arguments,
             ),
         )
@@ -24,7 +32,7 @@ struct ScanSpeechBottomSheet: View {
 
 #Preview {
     ScanSpeechBottomSheet(
-        arguments: ScanSpeechBottomSheetArguments(
+        arguments: ScanSpeechArguments(
             examinationType: USExaminationType(
                 id: "",
                 title: "",

@@ -13,17 +13,16 @@ struct AboutBottomSheetView: DView {
     var body: some View {
         DBottomSheet(
             title: l10n[
-                .settingsAboutAppTitle,
+                .settingsAboutAppButton,
             ],
             fraction: 0.6,
         ) { toolbarHeight, bottomHeight in
             VStack(
                 spacing: .zero,
             ) {
-                Image(
+                DImage(
                     .doglyadAbout,
                 )
-                .resizable()
                 .scaledToFit()
                 .frame(
                     maxWidth: .infinity,
@@ -47,7 +46,7 @@ struct AboutBottomSheetView: DView {
                 )
 
                 DText(
-                    "\(localizedResource(l10n[.aboutVersion])): \(viewModel.version)",
+                    viewModel.versionDescription,
                 )
                 .dStyle(
                     font: typography.textSmall,
@@ -67,8 +66,10 @@ struct AboutBottomSheetView: DView {
                 bottomHeight,
             )
         } bottom: {
-            Text(
-                contactAttributedText(),
+            DText(
+                viewModel.contactAttributedText(
+                    theme: theme,
+                ),
             )
             .multilineTextAlignment(
                 .center,
@@ -87,41 +88,11 @@ struct AboutBottomSheetView: DView {
                 },
             )
         }
+        .environmentObject(
+            viewModel,
+        )
         .onAppear(
             perform: viewModel.onAppear,
-        )
-    }
-
-    private func contactAttributedText() -> AttributedString {
-        var description = AttributedString(
-            localizedResource(
-                l10n[
-                    .aboutContactDescription,
-                ],
-            ),
-        )
-        description.font = typography.textSmall
-        description.foregroundColor = color.grayscaleHeader
-
-        var email = AttributedString(
-            viewModel.contactEmail,
-        )
-        email.font = typography.textSmall
-        email.foregroundColor = color.primaryDefault
-        email.link = URL(
-            string: "mailto:\(email)",
-        )
-
-        return description + " " + email
-    }
-
-    private func localizedResource(
-        _ resource: LocalizedStringResource,
-    ) -> String {
-        var resource = resource
-        resource.locale = locale
-        return String(
-            localized: resource,
         )
     }
 }

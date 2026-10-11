@@ -1,7 +1,8 @@
+import Combine
 import Router
 
 @MainActor
-final class ImportMediaViewModel: DViewModel {
+final class ImportMediaViewModel: DModuleViewModel {
     private let arguments: ImportMediaArguments
     private var actionAfterDismiss: (() -> Void)?
 
@@ -9,17 +10,31 @@ final class ImportMediaViewModel: DViewModel {
         container: DependencyContainer,
         router: DRouter,
         arguments: ImportMediaArguments,
-        subscription: SubscriptionViewModel,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
     ) {
         self.arguments = arguments
         super.init(
             container: container,
             router: router,
-            subscription: subscription,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .importMedia,
             ),
         )
+    }
+
+    func onDisappear() {
+        let action = actionAfterDismiss
+        actionAfterDismiss = nil
+        action?()
     }
 
     func onTapCamera() {
@@ -34,11 +49,5 @@ final class ImportMediaViewModel: DViewModel {
 
         actionAfterDismiss = arguments.onTapGallery
         coordinator.dismissSheet()
-    }
-
-    func onDisappear() {
-        let action = actionAfterDismiss
-        actionAfterDismiss = nil
-        action?()
     }
 }

@@ -19,10 +19,9 @@ struct PhotoCardView: DView {
     }
 
     var body: some View {
-        Image(
+        DImage(
             uiImage: image,
         )
-        .resizable()
         .aspectRatio(
             contentMode: .fill,
         )
@@ -53,35 +52,9 @@ struct PhotoCardView: DView {
                 .overlay(
                     alignment: .topTrailing,
                 ) {
-                    Button(
+                    DCloseButton(
+                        style: .destructive,
                         action: actionDelete ?? {},
-                    ) {
-                        ZStack {
-                            Circle().fill(
-                                color.dangerDefaultWeak,
-                            )
-                            Image(
-                                .close,
-                            )
-                            .resizable()
-                            .renderingMode(
-                                .template,
-                            )
-                            .foregroundColor(
-                                color.dangerDefault,
-                            )
-                            .frame(
-                                width: size.s16,
-                                height: size.s16,
-                            )
-                        }
-                    }
-                    .frame(
-                        width: size.s24,
-                        height: size.s24,
-                    )
-                    .buttonStyle(
-                        PlainButtonStyle(),
                     )
                 }
         }

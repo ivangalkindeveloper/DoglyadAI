@@ -143,13 +143,9 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
             .interactiveDismissDisabled(
                 !isCloseButtonVisible,
             )
-            .if(
-                type == .blur,
-            ) {
-                $0.preferredColorScheme(
-                    .dark,
-                )
-            }
+            .preferredColorScheme(
+                preferredColorScheme,
+            )
         }
     }
 
@@ -173,7 +169,7 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
                 )
                 .dStyle(
                     font: typography.linkSmall,
-                    color: type == .blur ? color.grayscaleBackgroundWeak : nil,
+                    color: titleColor,
                     alignment: .center,
                 )
                 .padding(
@@ -233,6 +229,20 @@ public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: 
             Rectangle().fill(
                 .ultraThinMaterial,
             )
+        }
+    }
+
+    private var preferredColorScheme: ColorScheme? {
+        switch type {
+        case .default: nil
+        case .blur: .dark
+        }
+    }
+
+    private var titleColor: Color? {
+        switch type {
+        case .default: nil
+        case .blur: color.grayscaleBackgroundWeak
         }
     }
 }

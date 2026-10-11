@@ -17,9 +17,9 @@ struct ScanSpeechModelPreparationView: DView {
 
             switch state {
             case .checking:
-                loadingContent(
+                ScanSpeechModelLoadingView(
                     description: l10n[
-                        .speechModelCheckingDescription,
+                        .scanSpeechModelCheckingDescription,
                     ],
                 )
             case let .downloading(
@@ -27,7 +27,7 @@ struct ScanSpeechModelPreparationView: DView {
             ):
                 DText(
                     l10n[
-                        .speechModelDownloadDescription,
+                        .scanSpeechModelDownloadDescription,
                     ],
                 )
                 .dStyle(
@@ -36,7 +36,7 @@ struct ScanSpeechModelPreparationView: DView {
                     alignment: .center,
                 )
                 if let progress {
-                    ProgressView(
+                    DProgress(
                         value: progress,
                     )
                     .tint(
@@ -51,21 +51,24 @@ struct ScanSpeechModelPreparationView: DView {
                         alignment: .center,
                     )
                 } else {
-                    ProgressView()
-                        .tint(
-                            color.primaryDefault,
-                        )
+                    DShimmerPlaceholder().frame(
+                        width: size.s64,
+                        height: size.s8,
+                    )
+                    .tint(
+                        color.primaryDefault,
+                    )
                 }
             case .loading:
-                loadingContent(
+                ScanSpeechModelLoadingView(
                     description: l10n[
-                        .speechModelLoadingDescription,
+                        .scanSpeechModelLoadingDescription,
                     ],
                 )
             case .failed:
                 DText(
                     l10n[
-                        .speechModelLoadFailedDescription,
+                        .scanSpeechModelLoadFailedDescription,
                     ],
                 )
                 .dStyle(
@@ -75,7 +78,7 @@ struct ScanSpeechModelPreparationView: DView {
                 )
                 DButton(
                     title: l10n[
-                        .speechModelRetryButton,
+                        .scanSpeechModelRetryButton,
                     ],
                     action: onRetry,
                 )
@@ -94,24 +97,5 @@ struct ScanSpeechModelPreparationView: DView {
         .frame(
             maxWidth: .infinity,
         )
-    }
-
-    private func loadingContent(
-        description: LocalizedStringResource,
-    ) -> some View {
-        Group {
-            ProgressView()
-                .tint(
-                    color.primaryDefault,
-                )
-            DText(
-                description,
-            )
-            .dStyle(
-                font: typography.textSmall,
-                color: color.grayscaleBackgroundWeak,
-                alignment: .center,
-            )
-        }
     }
 }

@@ -148,7 +148,7 @@ struct DraftTests {
 
     @Test @MainActor
     func autosaverDebouncesChangesAndSavesLatestDraft() async throws {
-        let autosaver = DDraftAutosaver<Int>(
+        let autosaver = DraftAutosaver<Int>(
             delay: .milliseconds(
                 20,
             ),
@@ -184,7 +184,7 @@ struct DraftTests {
 
     @Test @MainActor
     func autosaverFlushesOnlyChangedDraft() async throws {
-        let autosaver = DDraftAutosaver<Int>(
+        let autosaver = DraftAutosaver<Int>(
             delay: .milliseconds(
                 20,
             ),
@@ -228,7 +228,7 @@ struct DraftTests {
             initialText: "170",
             formatters: [DTextFieldDecimalFormatter()],
         )
-        let autosaver = DDraftAutosaver<String>(
+        let autosaver = DraftAutosaver<String>(
             delay: .milliseconds(
                 20,
             ),

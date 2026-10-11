@@ -170,7 +170,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
         in text: String,
     ) -> Bool {
         guard let finding = generated?.proposals.first(
-            where: { $0.id == .examinationDescription },
+            where: { $0.id.isExaminationDescription },
         ),
             let complaintRange = text.range(
                 of: quote,

@@ -8,6 +8,7 @@ from types import SimpleNamespace
 from typing import Any
 
 import pytest
+from fastapi import HTTPException
 from starlette.requests import Request
 
 from app.model.inference.inference_request import InferenceRequest
@@ -47,6 +48,9 @@ class FakePromptFactory:
 
 
 class FakeModelService:
+    def __init__(self, invalid_report: bool = False) -> None:
+        self._invalid_report = invalid_report
+
     async def call(self, request: InferenceRequest) -> str:
         assert request.system_prompt == "system prompt"
         assert request.prompt == "user prompt"
@@ -58,13 +62,18 @@ class FakeModelService:
         return json.dumps(
             {
                 "description": "Generated description",
-                "conclusion": "Generated conclusion",
+                "conclusion": ["Sensitive generated patient text"] if self._invalid_report else "Generated conclusion",
                 "recommendations": "Generated recommendations",
             }
         )
 
 
-def test_route_builds_complete_report_with_the_prompt_factory_contract(monkeypatch: pytest.MonkeyPatch) -> None:
+@pytest.mark.parametrize("invalid_report", [False, True])
+def test_route_builds_complete_report_with_the_prompt_factory_contract(
+    monkeypatch: pytest.MonkeyPatch,
+    caplog: pytest.LogCaptureFixture,
+    invalid_report: bool,
+) -> None:
     model = USExaminationNeuralModel(
         id="google/medgemma-4b-it",
         title="MedGemma 4B",
@@ -98,7 +107,7 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(monkeypat
         template="Template",
         includeRecommendations=True,
     )
-    app = SimpleNamespace(state=SimpleNamespace(model_service=FakeModelService()))
+    app = SimpleNamespace(state=SimpleNamespace(model_service=FakeModelService(invalid_report=invalid_report)))
     request = Request(
         {
             "type": "http",
@@ -114,6 +123,14 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(monkeypat
     )
 
     handler: Any = inspect.unwrap(route.generate_report)
+    if invalid_report:
+        with pytest.raises(HTTPException) as error:
+            asyncio.run(handler(body=body, request=request))
+        assert error.value.status_code == 502
+        assert "Generated report does not match the response schema: ValidationError" in caplog.text
+        assert "Sensitive generated patient text" not in caplog.text
+        assert all(record.exc_info is None for record in caplog.records)
+        return
     report = asyncio.run(handler(body=body, request=request))
 
     assert report.modelId == model.id

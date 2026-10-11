@@ -281,7 +281,7 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
             }
         }
         if !fields.contains(
-            where: { $0.id == .patientComplaints },
+            where: \.id.isPatientComplaints,
         ),
             let absence = uniqueMatch(
                 localization.pattern(
