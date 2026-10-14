@@ -1,6 +1,8 @@
+import DoglyadUI
 import SwiftUI
 
 struct PhotoViewScreen: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscription: SubscriptionRootViewModel
@@ -10,6 +12,7 @@ struct PhotoViewScreen: View {
         PhotoViewScreenView(
             viewModel: PhotoViewViewModel(
                 container: container,
+                messager: messager,
                 router: router,
                 getSubscriptionStatus: { [subscription] in subscription.status },
                 observeSubscriptionStatus: { [subscription] observer in subscription.observeStatus(

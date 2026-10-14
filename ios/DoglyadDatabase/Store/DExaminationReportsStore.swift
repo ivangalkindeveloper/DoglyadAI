@@ -7,7 +7,7 @@ public actor DExaminationReportsStore {
         limit: Int,
         offset: Int,
         _ transform: @Sendable ([USExaminationReportDB]) -> T,
-    ) -> T {
+    ) throws -> T {
         guard limit > 0 else {
             return transform(
                 [],
@@ -25,19 +25,19 @@ public actor DExaminationReportsStore {
             offset,
             0,
         )
-        let models = (try? modelContext.fetch(
+        let models = try modelContext.fetch(
             descriptor,
-        )) ?? []
+        )
         return transform(
             models,
         )
     }
 
-    public func fetchExaminationReportsCount() -> Int {
+    public func fetchExaminationReportsCount() throws -> Int {
         let descriptor = FetchDescriptor<USExaminationReportDB>()
-        return (try? modelContext.fetchCount(
+        return try modelContext.fetchCount(
             descriptor,
-        )) ?? 0
+        )
     }
 
     public func setExaminationReport(
@@ -46,7 +46,7 @@ public actor DExaminationReportsStore {
         modelContext.insert(
             value,
         )
-        try modelContext.save()
+        try saveChanges()
     }
 
     public func updateExaminationReport(
@@ -56,16 +56,16 @@ public actor DExaminationReportsStore {
         let descriptor = FetchDescriptor<USExaminationReportDB>(
             predicate: #Predicate<USExaminationReportDB> { $0.id == id },
         )
-        guard let report = try? modelContext.fetch(
+        guard let report = try modelContext.fetch(
             descriptor,
-        ).first else { return }
+        ).first else { throw DDatabaseError.examinationReportNotFound }
         modelContext.delete(
             report,
         )
         modelContext.insert(
             value,
         )
-        try modelContext.save()
+        try saveChanges()
     }
 
     public func clearAllExaminationReports() throws {
@@ -75,14 +75,23 @@ public actor DExaminationReportsStore {
                 order: .forward,
             )],
         )
-        let reports = (try? modelContext.fetch(
+        let reports = try modelContext.fetch(
             descriptor,
-        )) ?? []
+        )
         for report in reports {
             modelContext.delete(
                 report,
             )
         }
-        try modelContext.save()
+        try saveChanges()
+    }
+
+    private func saveChanges() throws {
+        do {
+            try modelContext.save()
+        } catch {
+            modelContext.rollback()
+            throw error
+        }
     }
 }

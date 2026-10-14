@@ -1,17 +1,20 @@
 import Combine
+import DoglyadUI
 import SwiftUI
 
 @MainActor
 final class PhotoViewViewModel: DModuleViewModel {
+    private let messager: DMessager?
     private let arguments: PhotoViewArguments
     private var photoObservation: AnyCancellable?
     private var isClosing = false
     @Published private(set) var photos: [USExaminationScanPhoto]
-    @Published var selectedPhotoID: UUID
+    @Published private(set) var selectedPhotoID: UUID
     @Published private(set) var isRemarksVisible: Bool
 
     init(
         container: DependencyContainer,
+        messager: DMessager? = nil,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
@@ -20,8 +23,9 @@ final class PhotoViewViewModel: DModuleViewModel {
         onRequestCountIncremented: @escaping () -> Void,
         arguments: PhotoViewArguments,
     ) {
+        self.messager = messager
         self.arguments = arguments
-        isRemarksVisible = container.userSettingsRepository.getIsRemarksVisible()
+        isRemarksVisible = container.initialUserSettings.isRemarksVisible
         let initialPhotos = arguments.getPhotos()
         photos = initialPhotos
         selectedPhotoID = initialPhotos.contains(
@@ -73,12 +77,28 @@ final class PhotoViewViewModel: DModuleViewModel {
         synchronizePhotos(
             arguments.getPhotos(),
         )
+        handle {
+            try await self.container.userSettingsRepository.getIsRemarksVisible()
+        } onMainSuccess: { self.isRemarksVisible = $0 } onMainUnknownError: { _ in
+            self.messager?.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 
     func onTapBack() {
         guard !isClosing else { return }
         isClosing = true
         coordinator.pop()
+    }
+
+    func onPhotoSelected(
+        _ photoID: UUID,
+    ) {
+        guard photos.contains(
+            where: { $0.id == photoID },
+        ) else { return }
+        selectedPhotoID = photoID
     }
 
     func onTapDelete() {
@@ -104,10 +124,15 @@ final class PhotoViewViewModel: DModuleViewModel {
     func setRemarksVisibility(
         _ isVisible: Bool,
     ) {
-        isRemarksVisible = isVisible
-        container.userSettingsRepository.setIsRemarksVisible(
-            isVisible,
-        )
+        handle {
+            try await self.container.userSettingsRepository.setIsRemarksVisible(
+                isVisible,
+            )
+        } onMainSuccess: { self.isRemarksVisible = isVisible } onMainUnknownError: { _ in
+            self.messager?.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 
     func onTapRemark(

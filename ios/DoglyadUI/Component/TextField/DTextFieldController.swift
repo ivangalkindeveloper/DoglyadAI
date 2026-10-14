@@ -8,7 +8,7 @@ public final class DTextFieldController: ObservableObject {
     private let isRequired: Bool
     private let formatters: [any DTextFieldFormatter]
     private let validators: [any DTextFieldValidator]
-    private var hasAttemptedValidation = false
+    private var isValidationAttempted = false
 
     public init(
         initialText: String = "",
@@ -47,7 +47,7 @@ public final class DTextFieldController: ObservableObject {
         guard formattedText != text else { return }
 
         text = formattedText
-        if hasAttemptedValidation {
+        if isValidationAttempted {
             updateValidationState()
         } else {
             clearError()
@@ -56,7 +56,7 @@ public final class DTextFieldController: ObservableObject {
 
     @discardableResult
     public func validate() -> Bool {
-        hasAttemptedValidation = true
+        isValidationAttempted = true
         return updateValidationState()
     }
 
@@ -68,7 +68,7 @@ public final class DTextFieldController: ObservableObject {
     }
 
     public func clear() {
-        hasAttemptedValidation = false
+        isValidationAttempted = false
         text = ""
         clearError()
     }

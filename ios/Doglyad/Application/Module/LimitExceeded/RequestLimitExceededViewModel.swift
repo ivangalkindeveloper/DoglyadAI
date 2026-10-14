@@ -31,7 +31,7 @@ final class RequestLimitExceededViewModel: DModuleViewModel {
             .requestLimitUpgrade,
         )
         coordinator.showPaywall(
-            dismissingSheet: true,
+            isSheetDismissalRequired: true,
         )
     }
 

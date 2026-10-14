@@ -10,7 +10,7 @@ enum DUserDefaultsKey: String, CaseIterable {
     case neuralModelMaxTokens
     case selectedUSExaminationTemplateId
     case userEmail
-    case includeRecommendations
+    case isRecommendationsIncluded
     case isPhotoRemarks
     case isDescriptionRemarks
     case isRemarksVisible

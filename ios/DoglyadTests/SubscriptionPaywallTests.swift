@@ -115,11 +115,11 @@ struct SubscriptionPaywallTests {
         arguments: [true, false],
     )
     func loadingRetriesAndRestorationUpdatesSharedState(
-        hasActiveSubscription: Bool,
+        isSubscriptionActive: Bool,
     ) async {
         let repository = TestSubscriptionRepository()
-        repository.failLoading = true
-        repository.hasRestorableSubscription = hasActiveSubscription
+        repository.isLoadingFailed = true
+        repository.isRestorableSubscriptionAvailable = isSubscriptionActive
         let container = makeContainer(
             repository: repository,
         )
@@ -158,7 +158,7 @@ struct SubscriptionPaywallTests {
             ),
         )
 
-        repository.failLoading = false
+        repository.isLoadingFailed = false
         model.onTapRetry()
         await waitUntilIdle(
             model,
@@ -177,13 +177,13 @@ struct SubscriptionPaywallTests {
             model,
         )
         #expect(
-            (root.status != nil) == hasActiveSubscription,
+            (root.status != nil) == isSubscriptionActive,
         )
         #expect(
-            model.isSubscriptionActive == hasActiveSubscription,
+            model.isSubscriptionActive == isSubscriptionActive,
         )
         #expect(
-            router.path.isEmpty == hasActiveSubscription,
+            router.path.isEmpty == isSubscriptionActive,
         )
         #expect(
             refreshes == 1,
@@ -266,8 +266,8 @@ private final class TestSubscriptionRepository: SubscriptionRepositoryProtocol {
     var purchaseResult = SubscriptionPaywallTests.PurchaseResult.cancelled
     var purchaseCount = 0
     var restoreCount = 0
-    var failLoading = false
-    var hasRestorableSubscription = true
+    var isLoadingFailed = false
+    var isRestorableSubscriptionAvailable = true
     let plan = SubscriptionPlan(
         id: "monthly",
         productId: "test.monthly",
@@ -285,9 +285,9 @@ private final class TestSubscriptionRepository: SubscriptionRepositoryProtocol {
         availableCountPerDay: 20,
     )
 
-    func configure() {}
+    func configure() async throws {}
     func fetchPlans() async throws -> [SubscriptionPlan] {
-        if failLoading { throw SubscriptionError.offeringsUnavailable }
+        if isLoadingFailed { throw SubscriptionError.offeringsUnavailable }
         return [plan]
     }
 
@@ -309,7 +309,7 @@ private final class TestSubscriptionRepository: SubscriptionRepositoryProtocol {
         configEntitlements _: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus? {
         restoreCount += 1
-        return hasRestorableSubscription ? status : nil
+        return isRestorableSubscriptionAvailable ? status : nil
     }
 
     func cachedStatus(

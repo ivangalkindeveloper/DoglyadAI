@@ -146,9 +146,11 @@ public struct DScreen<
                 ZStack(
                     alignment: .top,
                 ) {
-                    bodyView(
-                        toolbarHeight - safeAreaInsetTop,
-                        bottomHeight - safeAreaInsetBottom,
+                    DScreenBodyView(
+                        toolbarHeight: toolbarHeight - safeAreaInsetTop,
+                        bottomHeight: bottomHeight - safeAreaInsetBottom,
+                        onTap: onTapBody,
+                        content: content,
                     )
 
                     VStack(
@@ -206,11 +208,15 @@ public struct DScreen<
                     )
 
                     if isShowsToolbar {
-                        toolbarView(
-                            safeAreaInsetTop,
+                        DScreenToolbarView(
+                            safeAreaInsetTop: safeAreaInsetTop,
+                            leadingView: leadingView,
+                            titleView: titleView,
+                            trailingView: trailingView,
+                            toolbarContent: toolbarContent,
                         )
                         .onPreferenceChange(
-                            ToolbarHeightPreferenceKey.self,
+                            DScreenToolbarHeightPreferenceKey.self,
                         ) { value in
                             guard toolbarHeight != value else { return }
                             toolbarHeight = value
@@ -263,82 +269,6 @@ public struct DScreen<
             || !(titleContent is EmptyView)
             || !(trailing is EmptyView)
             || !(toolbarContent is EmptyView)
-    }
-
-    private func bodyView(
-        _ toolbarHeight: CGFloat,
-        _ bottomHeight: CGFloat,
-    ) -> some View {
-        content(
-            toolbarHeight,
-            bottomHeight,
-        )
-        .frame(
-            maxWidth: .infinity,
-            maxHeight: .infinity,
-        )
-        .onTapGesture { onTapBody?() }
-    }
-
-    private func toolbarView(
-        _ safeAreaInsetTop: CGFloat,
-    ) -> some View {
-        VStack(
-            spacing: .zero,
-        ) {
-            VStack(
-                spacing: .zero,
-            ) {
-                HStack(
-                    spacing: .zero,
-                ) {
-                    leadingView
-                    Spacer()
-                    titleView
-                    Spacer()
-                    trailingView
-                }
-                .padding(
-                    .top,
-                    size.s2 + safeAreaInsetTop,
-                )
-                .padding(
-                    .horizontal,
-                    size.adaptiveCornerRadius / 4,
-                )
-
-                toolbarContent
-            }
-            .padding(
-                .bottom,
-                size.adaptiveCornerRadius / 4,
-            )
-        }
-        .frame(
-            maxWidth: .infinity,
-            alignment: .top,
-        )
-        .background {
-            Rectangle()
-                .fill(
-                    .ultraThinMaterial,
-                )
-                .clipShape(
-                    DRoundedCorner(
-                        radius: size.adaptiveCornerRadius,
-                        corners: [.bottomLeft, .bottomRight],
-                    ),
-                )
-        }
-        .overlay {
-            GeometryReader { proxy in
-                Color.clear
-                    .preference(
-                        key: ToolbarHeightPreferenceKey.self,
-                        value: proxy.size.height,
-                    )
-            }
-        }
     }
 
     private var leadingView: some View {
@@ -405,17 +335,6 @@ public struct DScreen<
             width: size.s56,
             height: size.s56,
         )
-    }
-}
-
-private struct ToolbarHeightPreferenceKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-
-    static func reduce(
-        value: inout CGFloat,
-        nextValue: () -> CGFloat,
-    ) {
-        value = nextValue()
     }
 }
 

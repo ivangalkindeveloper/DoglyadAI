@@ -13,14 +13,14 @@ class PromptFactory:
     def system_prompt(
         self,
         settings: NeuralModelSettings,
-        include_recommendations: bool,
+        is_recommendations_included: bool,
         is_photo_remarks: bool,
         is_description_remarks: bool,
     ) -> str:
         prompt = resolve_localized_text(self._language_code, "reportSystemPrompt")
         prompt += resolve_localized_text(
             self._language_code,
-            "reportRecommendationsPrompt" if include_recommendations else "reportNoRecommendationsPrompt",
+            "reportRecommendationsPrompt" if is_recommendations_included else "reportNoRecommendationsPrompt",
         )
         sections = (
             (is_description_remarks, "reportDescriptionRemarksPrompt"),

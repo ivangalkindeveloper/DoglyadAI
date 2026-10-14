@@ -1,17 +1,17 @@
 import Foundation
 
 protocol SharedRepositoryProtocol: AnyObject {
-    func isOnBoardingCompleted() -> Bool
+    func isOnBoardingCompleted() async throws -> Bool
 
     func setOnBoardingCompleted(
-        value: Bool,
-    )
+        isCompleted: Bool,
+    ) async throws
 
-    func getAcceptedLegalDocumentDate() -> Date?
+    func getAcceptedLegalDocumentDate() async throws -> Date?
 
-    func getLegalAcceptedAt() -> Date?
+    func getLegalAcceptedAt() async throws -> Date?
 
     func acceptLegal(
         documentDate: Date,
-    )
+    ) async throws
 }

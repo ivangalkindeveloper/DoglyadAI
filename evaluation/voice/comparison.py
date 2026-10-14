@@ -165,7 +165,7 @@ def run_comparison(mode: str = "quick", *, limit: int | None = None, score_only:
                             "audioPath": str(audio_path),
                             "contextualStrings": terms[case["locale"]][case["examinationTypeId"]],
                             "engine": engine,
-                            "useHints": hints,
+                            "isHintingEnabled": hints,
                         }
                     )
                     lookup[job_id] = (case, variant, engine, hints)

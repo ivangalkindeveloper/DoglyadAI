@@ -29,7 +29,7 @@ struct NeuralModelSettingsScreen: View {
                 getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
                 onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 onSettingsSaved: { [ultrasoundViewModel] isMarkdown, temperature, maxTokens in
-                    ultrasoundViewModel.saveNeuralModelSettings(
+                    try await ultrasoundViewModel.saveNeuralModelSettings(
                         isMarkdown: isMarkdown,
                         temperature: temperature,
                         maxTokens: maxTokens,

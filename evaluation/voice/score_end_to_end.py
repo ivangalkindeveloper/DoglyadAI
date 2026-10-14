@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+
 import argparse
 import json
 import statistics
 from pathlib import Path
 from typing import Any
+
+from evaluation.voice.proposal_field_id import proposal_field_id
 
 from evaluation.voice.asr import word_error_rate
 from evaluation.voice.generate import file_sha256
@@ -23,7 +26,7 @@ def score(source: Path, output: Path) -> dict[str, Any]:
         row = {**case}
         if case["status"] == "ok":
             proposals = case["response"]["proposals"]
-            fields = {WIRE_FIELD_IDS[item["field_id"]]: item["value"] for item in proposals}
+            fields = {WIRE_FIELD_IDS[proposal_field_id(item)]: item["value"] for item in proposals}
             for field, value in fields.items():
                 applied = case["formAfterConfirmation"][field]
                 if field in ("patientHeightCM", "patientWeightKG"):
@@ -38,8 +41,8 @@ def score(source: Path, output: Path) -> dict[str, Any]:
                     raise ValueError(f"{case['id']}: automatic form patch did not apply {field}")
             parse = {
                 "fields": fields,
-                "warnings": {WIRE_FIELD_IDS[item["field_id"]]: item.get("warnings", []) for item in proposals},
-                "accuracies": {WIRE_FIELD_IDS[item["field_id"]]: item["accuracy"] for item in proposals},
+                "warnings": {WIRE_FIELD_IDS[proposal_field_id(item)]: item.get("warnings", []) for item in proposals},
+                "accuracies": {WIRE_FIELD_IDS[proposal_field_id(item)]: item["accuracy"] for item in proposals},
                 "automaticFieldIds": case["automaticFieldIds"],
                 "rejectedFieldIds": case["response"]["rejectedFieldIds"],
             }

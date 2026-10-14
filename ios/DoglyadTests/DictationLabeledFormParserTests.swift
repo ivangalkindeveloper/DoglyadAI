@@ -785,7 +785,7 @@ struct DictationLabeledFormParserTests {
     }
 
     @Test(
-        "Missing labels leave affected values empty and preserve the other fields",
+        "Missing labels leave affected values isEmpty and preserve the other fields",
     )
     func parsesPartialLabeledSpeech() throws {
         let text = "Examination number 020 patient Anna Morgan gender female date of birth April 18, 1993 height 172 cm 80 kg complaint swelling examination, description right lobe 46 mm"

@@ -12,12 +12,12 @@ class FakePromptFactory:
     def system_prompt(
         self,
         settings: NeuralModelSettings,
-        include_recommendations: bool,
+        is_recommendations_included: bool,
         is_photo_remarks: bool,
         is_description_remarks: bool,
     ) -> str:
         assert settings.selectedNeuralModelId == "google/medgemma-4b-it"
-        assert include_recommendations is True
+        assert is_recommendations_included is True
         assert is_photo_remarks is False
         assert is_description_remarks is True
         return "system prompt"

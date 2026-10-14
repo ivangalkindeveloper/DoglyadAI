@@ -9,7 +9,7 @@ struct DNeuralUltrasoundDictationTextFacts {
     let numbers: Set<Double>
     let units: Set<DNeuralDictationUnit>
     let measurements: [DNeuralDictationUnit: Set<Double>]
-    let hasUncertaintyCue: Bool
+    let isUncertaintyCuePresent: Bool
 
     init(
         _ text: String,
@@ -128,7 +128,7 @@ struct DNeuralUltrasoundDictationTextFacts {
         }
         self.measurements = measurements
 
-        hasUncertaintyCue = localization.matches(
+        isUncertaintyCuePresent = localization.matches(
             .uncertainty,
             tokenList.joined(
                 separator: " ",

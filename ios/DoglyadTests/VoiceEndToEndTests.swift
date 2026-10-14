@@ -85,7 +85,7 @@ final class VoiceEndToEndTests: XCTestCase {
         let localeFilter = ProcessInfo.processInfo.environment[
             "VOICE_END_TO_END_LOCALE",
         ]
-        let foundationOnly = ProcessInfo.processInfo.environment[
+        let isFoundationOnly = ProcessInfo.processInfo.environment[
             "VOICE_END_TO_END_REQUIRE_FOUNDATION_MODELS",
         ] == "1"
         if let localeFilter {
@@ -466,7 +466,7 @@ final class VoiceEndToEndTests: XCTestCase {
                 )
                 let transport = DNeuralUltrasoundRetryingTestTransport(
                     base: repository,
-                    foundationOnly: foundationOnly,
+                    isFoundationOnly: isFoundationOnly,
                 )
                 let factory = DNeuralUltrasoundModelFactory(
                     foundationProvider: foundationProvider,
@@ -518,7 +518,7 @@ final class VoiceEndToEndTests: XCTestCase {
                         locale,
                     )
                 }
-                if foundationOnly, !available { throw DNeuralModelError.unavailable }
+                if isFoundationOnly, !available { throw DNeuralModelError.unavailable }
                 let parseStarted = Date()
                 defer {
                     if let error = foundationProvider.recorder?.error {
@@ -712,7 +712,7 @@ final class VoiceEndToEndTests: XCTestCase {
             )
             let report: [String: Any] = ["runId": runID, "fixtureSha256": fixtureHash, "sourceSha256": ProcessInfo.processInfo.environment[
                 "VOICE_SOURCE_SHA256",
-            ] ?? "unrecorded", "inputMode": textOnly ? "ideal-text" : "audio", "modelLabel": "large-v3-v20240930_626MB", "modelLoadSeconds": loadSeconds, "baseURL": client.baseUrl, "appCheckProvider": "AppAttest", "localeFilter": localeFilter ?? "all", "requireFoundationModels": foundationOnly, "results": results]
+            ] ?? "unrecorded", "inputMode": textOnly ? "ideal-text" : "audio", "modelLabel": "large-v3-v20240930_626MB", "modelLoadSeconds": loadSeconds, "baseURL": client.baseUrl, "appCheckProvider": "AppAttest", "localeFilter": localeFilter ?? "all", "requireFoundationModels": isFoundationOnly, "results": results]
             try JSONSerialization.data(
                 withJSONObject: report,
                 options: [.prettyPrinted, .sortedKeys],

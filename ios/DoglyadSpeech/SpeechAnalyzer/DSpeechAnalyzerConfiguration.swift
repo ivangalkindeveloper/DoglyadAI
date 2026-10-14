@@ -6,7 +6,7 @@ enum DSpeechAnalyzerConfiguration {
     static func makeTranscriber(
         locale: Locale,
         isFarField: Bool,
-        includeConfidence: Bool = false,
+        isConfidenceIncluded: Bool = false,
     ) -> DictationTranscriber {
         var contentHints: Set<DictationTranscriber.ContentHint> = []
         if isFarField {
@@ -20,7 +20,7 @@ enum DSpeechAnalyzerConfiguration {
             contentHints: contentHints,
             transcriptionOptions: [.punctuation],
             reportingOptions: [.volatileResults],
-            attributeOptions: includeConfidence ? [.transcriptionConfidence] : [],
+            attributeOptions: isConfidenceIncluded ? [.transcriptionConfidence] : [],
         )
     }
 

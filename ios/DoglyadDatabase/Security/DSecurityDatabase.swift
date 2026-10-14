@@ -20,8 +20,8 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
 
     public func fetchRequestLimit<T: Sendable>(
         _ transform: @Sendable (RequestLimitDB?) -> T,
-    ) -> T {
-        transform(
+    ) throws -> T {
+        try transform(
             readRequestLimit(),
         )
     }
@@ -45,7 +45,7 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
     }
 
     public func incrementRequestCount() throws {
-        let current = readRequestLimit()
+        let current = try readRequestLimit()
         let updated = if let current,
                          Calendar.current.isDateInToday(
                              current.date,
@@ -66,11 +66,11 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
         )
     }
 
-    private func readRequestLimit() -> RequestLimitDB? {
-        guard let data = read(
+    private func readRequestLimit() throws -> RequestLimitDB? {
+        guard let data = try read(
             key: .requestLimit,
         ) else { return nil }
-        return try? decoder.decode(
+        return try decoder.decode(
             RequestLimitDB.self,
             from: data,
         )
@@ -90,7 +90,7 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
 
     private func read(
         key: DKeychainKey,
-    ) -> Data? {
+    ) throws -> Data? {
         var query = baseQuery(
             key: key,
         )
@@ -105,17 +105,39 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
             query as CFDictionary,
             &result,
         )
-        guard status == errSecSuccess else { return nil }
-        return result as? Data
+        switch status {
+        case errSecItemNotFound:
+            return nil
+        case errSecSuccess:
+            guard let data = result as? Data else {
+                throw DSecurityDatabaseError.unhandled(
+                    status: errSecDecode,
+                )
+            }
+            return data
+        default:
+            throw DSecurityDatabaseError.unhandled(
+                status: status,
+            )
+        }
     }
 
     private func write(
         data: Data,
         key: DKeychainKey,
     ) throws {
-        try delete(
-            key: key,
+        let status = SecItemUpdate(
+            baseQuery(
+                key: key,
+            ) as CFDictionary,
+            [kSecValueData as String: data] as CFDictionary,
         )
+        if status == errSecSuccess { return }
+        guard status == errSecItemNotFound else {
+            throw DSecurityDatabaseError.unhandled(
+                status: status,
+            )
+        }
         var query = baseQuery(
             key: key,
         )
@@ -125,13 +147,13 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
         query[
             kSecAttrAccessible as String,
         ] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
-        let status = SecItemAdd(
+        let insertionStatus = SecItemAdd(
             query as CFDictionary,
             nil,
         )
-        guard status == errSecSuccess else {
+        guard insertionStatus == errSecSuccess else {
             throw DSecurityDatabaseError.unhandled(
-                status: status,
+                status: insertionStatus,
             )
         }
     }

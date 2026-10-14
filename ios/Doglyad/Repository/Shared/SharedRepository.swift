@@ -14,15 +14,15 @@ final class SharedRepository: SharedRepositoryProtocol {
 // MARK: OnBoarding -
 
 extension SharedRepository {
-    func isOnBoardingCompleted() -> Bool {
+    func isOnBoardingCompleted() async throws -> Bool {
         database.getOnBoardingCompleted()
     }
 
     func setOnBoardingCompleted(
-        value: Bool,
-    ) {
+        isCompleted: Bool,
+    ) async throws {
         database.setOnBoardingCompleted(
-            value: value,
+            isCompleted: isCompleted,
         )
     }
 }
@@ -30,17 +30,17 @@ extension SharedRepository {
 // MARK: Legal -
 
 extension SharedRepository {
-    func getAcceptedLegalDocumentDate() -> Date? {
+    func getAcceptedLegalDocumentDate() async throws -> Date? {
         database.getAcceptedLegalDocumentDate()
     }
 
-    func getLegalAcceptedAt() -> Date? {
+    func getLegalAcceptedAt() async throws -> Date? {
         database.getLegalAcceptedAt()
     }
 
     func acceptLegal(
         documentDate: Date,
-    ) {
+    ) async throws {
         database.setAcceptedLegal(
             documentDate: documentDate,
             acceptedAt: Date(),

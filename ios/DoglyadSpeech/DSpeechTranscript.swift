@@ -1,7 +1,7 @@
 import Foundation
 
-/// A result of one recording session. Partial text remains available for review,
-/// but only a finished result can be sent directly to the form parser.
+/// A recording result. Usable partial speech can be parsed; field evidence
+/// determines which values require review. Cancelled recordings cannot be applied.
 public struct DSpeechTranscript: Sendable {
     public let rawText: String
     public let correctedText: String
@@ -21,9 +21,14 @@ public struct DSpeechTranscript: Sendable {
     }
 
     public var isReadyForParsing: Bool {
-        isFinal && !correctedText.trimmingCharacters(
-            in: .whitespacesAndNewlines,
-        ).isEmpty
+        switch completion {
+        case .cancelled:
+            false
+        case .finished, .timedOut, .interrupted, .failed:
+            !correctedText.trimmingCharacters(
+                in: .whitespacesAndNewlines,
+            ).isEmpty
+        }
     }
 
     public init(

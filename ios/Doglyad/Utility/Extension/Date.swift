@@ -2,7 +2,7 @@ import Foundation
 
 extension Date {
     func localized(
-        locale: Locale = .current,
+        locale: Locale,
     ) -> String {
         let formatter = DateFormatter()
         formatter.locale = locale
@@ -24,7 +24,7 @@ extension Date {
     }
 
     func localizedDateTime(
-        locale: Locale = .current,
+        locale: Locale,
     ) -> String {
         "\(localized(locale: locale)) \(localizedTime())"
     }
@@ -34,7 +34,7 @@ extension Date {
         yesterdayTitle: String,
         relativeTo now: Date = Date(),
         calendar: Calendar = .autoupdatingCurrent,
-        locale: Locale = .current,
+        locale: Locale,
     ) -> String {
         let day = calendar.startOfDay(
             for: self,

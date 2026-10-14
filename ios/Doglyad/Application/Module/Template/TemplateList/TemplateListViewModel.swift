@@ -80,7 +80,7 @@ private extension TemplateListViewModel {
     func loadTemplates() {
         isLoading = true
         handle {
-            await self.container.templateRepository.getTemplates(
+            try await self.container.templateRepository.getTemplates(
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
         } onDefer: {

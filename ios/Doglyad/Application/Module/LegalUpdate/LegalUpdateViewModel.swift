@@ -6,8 +6,10 @@ import SwiftUI
 
 @MainActor
 final class LegalUpdateViewModel: DModuleViewModel {
+    private let messager: DMessager?
     init(
         container: DependencyContainer,
+        messager: DMessager? = nil,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
@@ -15,6 +17,7 @@ final class LegalUpdateViewModel: DModuleViewModel {
         getNeuralModelSettings: @escaping () -> NeuralModelSettings,
         onRequestCountIncremented: @escaping () -> Void,
     ) {
+        self.messager = messager
         super.init(
             container: container,
             router: router,
@@ -96,19 +99,19 @@ final class LegalUpdateViewModel: DModuleViewModel {
     }
 
     func onLegalAcceptedChanged(
-        _ value: Bool,
+        _ isAccepted: Bool,
     ) {
         analytics.buttonTapped(
             .legalUpdateLegalToggle,
             parameters: AnalyticsParameters(
                 [
                     .result: .bool(
-                        value,
+                        isAccepted,
                     ),
                 ],
             ),
         )
-        isLegalAccepted = value
+        isLegalAccepted = isAccepted
     }
 
     func onLegalAttributedEnvironment(
@@ -168,13 +171,18 @@ extension LegalUpdateViewModel {
         analytics.buttonTapped(
             .legalUpdateAccept,
         )
-        container.sharedRepository.acceptLegal(
-            documentDate: container.applicationConfig.legalDate,
-        )
-        coordinator.root(
+        handle {
+            try await self.container.sharedRepository.acceptLegal(
+                documentDate: self.container.applicationConfig.legalDate,
+            )
+        } onMainSuccess: { _ in self.coordinator.root(
             .scan,
-            animated: true,
-        )
+            isAnimated: true,
+        ) } onMainUnknownError: { _ in
+            self.messager?.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 }
 

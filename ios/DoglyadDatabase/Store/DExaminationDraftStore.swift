@@ -5,8 +5,8 @@ import SwiftData
 public actor DExaminationDraftStore {
     public func fetchDraft<T: Sendable>(
         _ transform: @Sendable (USExaminationDraftDB?) -> T,
-    ) -> T {
-        transform(
+    ) throws -> T {
+        try transform(
             fetchDraft(),
         )
     }
@@ -14,7 +14,7 @@ public actor DExaminationDraftStore {
     public func upsertDraftForm(
         value: USExaminationDraftDB,
     ) throws {
-        if let draft = fetchDraft() {
+        if let draft = try fetchDraft() {
             draft.examinationNumber = value.examinationNumber
             draft.patientName = value.patientName
             draft.patientGenderRawValue = value.patientGenderRawValue
@@ -28,14 +28,14 @@ public actor DExaminationDraftStore {
                 value,
             )
         }
-        try modelContext.save()
+        try saveChanges()
     }
 
     public func replaceDraftPhotos(
         values: [USExaminationDraftPhotoDB],
         currentForm: USExaminationDraftDB,
     ) throws {
-        if let draft = fetchDraft() {
+        if let draft = try fetchDraft() {
             let previousPhotos = draft.photos
             draft.photos = values
             for photo in previousPhotos {
@@ -49,26 +49,35 @@ public actor DExaminationDraftStore {
                 currentForm,
             )
         }
-        try modelContext.save()
+        try saveChanges()
     }
 
     public func clearDraft() throws {
         let descriptor = FetchDescriptor<USExaminationDraftDB>()
-        let drafts = (try? modelContext.fetch(
+        let drafts = try modelContext.fetch(
             descriptor,
-        )) ?? []
+        )
         for draft in drafts {
             modelContext.delete(
                 draft,
             )
         }
-        try modelContext.save()
+        try saveChanges()
     }
 
-    private func fetchDraft() -> USExaminationDraftDB? {
+    private func fetchDraft() throws -> USExaminationDraftDB? {
         let descriptor = FetchDescriptor<USExaminationDraftDB>()
-        return try? modelContext.fetch(
+        return try modelContext.fetch(
             descriptor,
         ).first
+    }
+
+    private func saveChanges() throws {
+        do {
+            try modelContext.save()
+        } catch {
+            modelContext.rollback()
+            throw error
+        }
     }
 }

@@ -69,7 +69,7 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
             examinationDescription="Description",
         ),
         template="Template",
-        includeRecommendations=True,
+        isRecommendationsIncluded=True,
     )
     app = SimpleNamespace(state=SimpleNamespace(model_service=FakeNeuralModelService(invalid_report=invalid_report)))
     request = Request(
@@ -108,7 +108,7 @@ def test_report_schema_can_exclude_optional_recommendations() -> None:
 
     schema = json.loads(
         us_examination_report_structured_output(
-            include_recommendations=False,
+            is_recommendations_included=False,
             is_photo_remarks=False,
             is_description_remarks=False,
             photo_ids=[],
@@ -140,7 +140,7 @@ def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled() -> N
     assert "Patient complaints:" not in factory.build_prompt(examination, "Echocardiography")
     assert "Do not generate or include recommendations" in factory.system_prompt(
         NeuralModelSettings(),
-        include_recommendations=False,
+        is_recommendations_included=False,
         is_photo_remarks=False,
         is_description_remarks=False,
     )

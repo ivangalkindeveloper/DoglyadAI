@@ -12,7 +12,7 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
     }
 
     private let messager: DMessager
-    private let onSaved: (String?, Bool, Bool, Bool) -> Void
+    private let onSaved: (String?, Bool, Bool, Bool) async throws -> Void
 
     init(
         container: DependencyContainer,
@@ -24,14 +24,14 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
         getNeuralModelSettings: @escaping () -> NeuralModelSettings,
         onRequestCountIncremented: @escaping () -> Void,
         getInitialEmail: @escaping () -> String?,
-        getInitialIncludeRecommendations: @escaping () -> Bool,
+        getInitialIsRecommendationsIncluded: @escaping () -> Bool,
         getInitialIsPhotoRemarks: @escaping () -> Bool,
         getInitialIsDescriptionRemarks: @escaping () -> Bool,
-        onSaved: @escaping (String?, Bool, Bool, Bool) -> Void,
+        onSaved: @escaping (String?, Bool, Bool, Bool) async throws -> Void,
     ) {
         self.messager = messager
         self.onSaved = onSaved
-        includeRecommendations = getInitialIncludeRecommendations()
+        isRecommendationsIncluded = getInitialIsRecommendationsIncluded()
         isPhotoRemarks = getInitialIsPhotoRemarks()
         isDescriptionRemarks = getInitialIsDescriptionRemarks()
         _emailController = NestedObservableObject(
@@ -72,7 +72,7 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
 
     @Published private(set) var isLoading = false
     @Published var focus: Focus?
-    @Published var includeRecommendations: Bool
+    @Published var isRecommendationsIncluded: Bool
     @Published var isPhotoRemarks: Bool
     @Published var isDescriptionRemarks: Bool
     @NestedObservableObject var emailController: DTextFieldController
@@ -93,6 +93,12 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
         coordinator.pop()
     }
 
+    func onFocusChanged(
+        _ newFocus: Focus?,
+    ) {
+        focus = newFocus
+    }
+
     func unfocus() {
         focus = nil
     }
@@ -107,8 +113,8 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
         }
     }
 
-    func toggleIncludeRecommendations() {
-        includeRecommendations.toggle()
+    func toggleRecommendationsIncluded() {
+        isRecommendationsIncluded.toggle()
     }
 
     func togglePhotoRemarks() { isPhotoRemarks.toggle() }
@@ -137,21 +143,30 @@ final class UserSettingsViewModel: DModuleViewModel, DTextFieldFocusValidating {
         unfocus()
 
         isLoading = true
-        onSaved(
-            email,
-            includeRecommendations,
-            isPhotoRemarks,
-            isDescriptionRemarks,
-        )
-        messager.show(
-            type: .success,
-            title: container.l10n[
-                .userSettingsSavedSuccessMessageTitle,
-            ],
-            description: container.l10n[
-                .userSettingsSavedSuccessMessageDescription,
-            ],
-        )
-        coordinator.pop()
+        handle {
+            try await self.onSaved(
+                email,
+                self.isRecommendationsIncluded,
+                self.isPhotoRemarks,
+                self.isDescriptionRemarks,
+            )
+        } onDefer: {
+            self.isLoading = false
+        } onMainSuccess: { _ in
+            self.messager.show(
+                type: .success,
+                title: self.container.l10n[
+                    .userSettingsSavedSuccessMessageTitle,
+                ],
+                description: self.container.l10n[
+                    .userSettingsSavedSuccessMessageDescription,
+                ],
+            )
+            self.coordinator.pop()
+        } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 }

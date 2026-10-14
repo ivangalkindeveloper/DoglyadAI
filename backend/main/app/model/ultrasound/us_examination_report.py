@@ -2,14 +2,15 @@ from __future__ import annotations
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
+from app.model.non_blank_string import NonBlankString
 from app.model.ultrasound.us_examination_photo_remarks import USExaminationPhotoRemarks
 
 
 class USExaminationReport(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    description: str = Field(min_length=1)
-    conclusion: str = Field(min_length=1)
+    description: NonBlankString = Field(min_length=1)
+    conclusion: NonBlankString = Field(min_length=1)
     recommendations: str | None = None
     descriptionRemarks: str | None = None
     photoRemarks: list[USExaminationPhotoRemarks] = Field(default_factory=list)

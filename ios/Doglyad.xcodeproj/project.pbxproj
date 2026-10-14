@@ -185,6 +185,7 @@
 				Component/DAudioMeter.swift,
 				Component/DBadge.swift,
 				Component/DBadgeItem.swift,
+				Component/DBadgeItemView.swift,
 				Component/DBottomSheet.swift,
 				Component/DCaptureFrame.swift,
 				Component/DCardBackground.swift,
@@ -199,6 +200,9 @@
 				Component/DPageIndicator.swift,
 				Component/DProgress.swift,
 				Component/DScreen.swift,
+				Component/DScreenBodyView.swift,
+				Component/DScreenToolbarHeightPreferenceKey.swift,
+				Component/DScreenToolbarView.swift,
 				Component/DSegment.swift,
 				Component/DShareLink.swift,
 				Component/DShimmerPlaceholder.swift,
@@ -233,8 +237,10 @@
 				Message/DMessager.swift,
 				Message/DMessageType.swift,
 				Message/DMessageView.swift,
+				Theme/DMarkdownThemeFactory.swift,
 				Theme/DTheme.swift,
 				Theme/DThemeWrapperModifier.swift,
+				Utility/DFocusScrollController.swift,
 				Utility/DInteractivePopGestureController.swift,
 				Utility/DInteractivePopGestureView.swift,
 				Utility/DRoundedCorner.swift,
@@ -243,6 +249,7 @@
 				Utility/Extension/UIScreen.swift,
 				Utility/Extension/View.swift,
 				Utility/Modifier/DShimmerModifier.swift,
+				Utility/Modifier/DShimmerPreviewSurface.swift,
 			);
 			target = 77AC58B12E929E7E0028250A /* Doglyad */;
 		};
@@ -262,6 +269,7 @@
 				Component/DAudioMeter.swift,
 				Component/DBadge.swift,
 				Component/DBadgeItem.swift,
+				Component/DBadgeItemView.swift,
 				Component/DBottomSheet.swift,
 				Component/DCaptureFrame.swift,
 				Component/DCardBackground.swift,
@@ -276,6 +284,9 @@
 				Component/DPageIndicator.swift,
 				Component/DProgress.swift,
 				Component/DScreen.swift,
+				Component/DScreenBodyView.swift,
+				Component/DScreenToolbarHeightPreferenceKey.swift,
+				Component/DScreenToolbarView.swift,
 				Component/DSegment.swift,
 				Component/DShareLink.swift,
 				Component/DShimmerPlaceholder.swift,
@@ -315,8 +326,10 @@
 				"Resources/Montserrat-Medium.ttf",
 				"Resources/Montserrat-Regular.ttf",
 				"Resources/Montserrat-SemiBold.ttf",
+				Theme/DMarkdownThemeFactory.swift,
 				Theme/DTheme.swift,
 				Theme/DThemeWrapperModifier.swift,
+				Utility/DFocusScrollController.swift,
 				Utility/DInteractivePopGestureController.swift,
 				Utility/DInteractivePopGestureView.swift,
 				Utility/DRoundedCorner.swift,
@@ -325,6 +338,7 @@
 				Utility/Extension/UIScreen.swift,
 				Utility/Extension/View.swift,
 				Utility/Modifier/DShimmerModifier.swift,
+				Utility/Modifier/DShimmerPreviewSurface.swift,
 			);
 			target = 7720FEE42E9ACE42002EA89E /* DoglyadUI */;
 		};

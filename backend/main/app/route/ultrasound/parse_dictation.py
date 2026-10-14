@@ -7,6 +7,7 @@ from pydantic import ValidationError
 
 from app.core.get_application_locale_config import get_application_locale_config
 from app.core.get_voice_parsing_config import get_voice_parsing_config
+from app.core.get_voice_source_localization import get_voice_source_localization
 from app.core.http_header import HttpHeader
 from app.core.limiter import limiter
 from app.core.resolve_examination_title import resolve_examination_title
@@ -61,4 +62,6 @@ async def parse_dictation(body: USVoiceFormParseRequest, request: Request) -> US
     except ValidationError as error:
         logger.warning("Voice parse response failed schema validation: %s", type(error).__name__)
         raise HTTPException(status_code=502, detail="Invalid voice parse response") from error
-    return validate_voice_form_generation(generated, body.transcript)
+    return validate_voice_form_generation(
+        generated, body.transcript, localization=get_voice_source_localization(language)
+    )

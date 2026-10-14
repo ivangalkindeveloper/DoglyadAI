@@ -8,15 +8,15 @@ public struct DNeuralUltrasoundDictationLocalization: Decodable, Sendable {
     public let genderPatterns: [String]
     public let numbers: DNeuralDictationNumberLocalization
     public let negativeCorrectionWord: String
-    public let usesDayFirstNumericDates: Bool
-    public let birthEvidenceUsesValue: Bool
+    public let isDayFirstNumericDates: Bool
+    public let isBirthEvidenceValueUsed: Bool
     public let dateFormats: [String]
     public let shortUnits: DNeuralDictationShortUnitLocalization
     public let schema: DNeuralUltrasoundSchemaLocalization
 
     private enum DNeuralUltrasoundCodingKeys: String, CodingKey {
         case patterns, namePatterns, genderPatterns, numbers, negativeCorrectionWord
-        case usesDayFirstNumericDates, birthEvidenceUsesValue, dateFormats, shortUnits, schema
+        case isDayFirstNumericDates, isBirthEvidenceValueUsed, dateFormats, shortUnits, schema
     }
 
     public init(
@@ -45,13 +45,13 @@ public struct DNeuralUltrasoundDictationLocalization: Decodable, Sendable {
             String.self,
             forKey: .negativeCorrectionWord,
         )
-        usesDayFirstNumericDates = try container.decode(
+        isDayFirstNumericDates = try container.decode(
             Bool.self,
-            forKey: .usesDayFirstNumericDates,
+            forKey: .isDayFirstNumericDates,
         )
-        birthEvidenceUsesValue = try container.decode(
+        isBirthEvidenceValueUsed = try container.decode(
             Bool.self,
-            forKey: .birthEvidenceUsesValue,
+            forKey: .isBirthEvidenceValueUsed,
         )
         dateFormats = try container.decode(
             [String].self,

@@ -37,7 +37,10 @@ struct PhotoViewScreenView: DView {
                 alignment: .bottom,
             ) {
                 TabView(
-                    selection: $viewModel.selectedPhotoID,
+                    selection: Binding(
+                        get: { viewModel.selectedPhotoID },
+                        set: viewModel.onPhotoSelected,
+                    ),
                 ) {
                     ForEach(
                         viewModel.photos,

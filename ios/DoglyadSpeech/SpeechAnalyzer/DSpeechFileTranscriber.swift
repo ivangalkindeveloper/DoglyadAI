@@ -12,8 +12,8 @@ public final class DSpeechFileTranscriber {
         fileURL: URL,
         locale: Locale,
         contextualStrings: [String],
-        useHints: Bool = true,
-        useCorrection: Bool = true,
+        isHintingEnabled: Bool = true,
+        isCorrectionEnabled: Bool = true,
         isFarField: Bool = true,
         lexiconLocalization: DSpeechLexiconLocalization,
     ) async throws -> DSpeechFileTranscription {
@@ -26,14 +26,14 @@ public final class DSpeechFileTranscriber {
         let transcriber = DSpeechAnalyzerConfiguration.makeTranscriber(
             locale: resolvedLocale,
             isFarField: isFarField,
-            includeConfidence: true,
+            isConfidenceIncluded: true,
         )
         let analyzer = SpeechAnalyzer(
             modules: [transcriber],
         )
         try await DSpeechAnalyzerConfiguration.setContext(
             on: analyzer,
-            contextualStrings: useHints ? contextualStrings : [],
+            contextualStrings: isHintingEnabled ? contextualStrings : [],
         )
         try await DSpeechAnalyzerConfiguration.installModelIfNeeded(
             transcriber: transcriber,
@@ -74,7 +74,7 @@ public final class DSpeechFileTranscriber {
                 finishAfterFile: true,
             )
             let (rawText, confidenceSpans) = try await resultTask.value
-            let correctedText = useCorrection
+            let correctedText = isCorrectionEnabled
                 ? DSpeechLexiconCorrector(
                     terms: contextualStrings,
                     localization: lexiconLocalization,

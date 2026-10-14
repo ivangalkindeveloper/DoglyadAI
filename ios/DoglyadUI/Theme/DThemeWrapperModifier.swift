@@ -1,6 +1,6 @@
 import SwiftUI
 
-private struct DThemeWrapperModifier: ViewModifier {
+struct DThemeWrapperModifier: ViewModifier {
     @StateObject private var theme = DTheme.light
 
     func body(
@@ -13,13 +13,5 @@ private struct DThemeWrapperModifier: ViewModifier {
             .environmentObject(
                 theme,
             )
-    }
-}
-
-public extension View {
-    func dThemeWrapper() -> some View {
-        modifier(
-            DThemeWrapperModifier(),
-        )
     }
 }

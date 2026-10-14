@@ -553,7 +553,7 @@ struct ScanSpeechConfidencePolicyTests {
     }
 
     @Test(
-        "Editing, incomplete recording and lexicon changes disable automatic filling",
+        "Editing and lexicon changes require review, while completed fields survive interruption",
     )
     func changedSource() throws {
         let proposal = try parsed(
@@ -598,7 +598,9 @@ struct ScanSpeechConfidencePolicyTests {
             ),
         )
         #expect(
-            incomplete.automatic.isEmpty,
+            incomplete.automatic.map(
+                \.id,
+            ) == [.examinationNumber, .patientGender, .patientWeightKG],
         )
 
         let changed = ScanSpeechConfidencePolicy.plan(
@@ -628,6 +630,39 @@ struct ScanSpeechConfidencePolicyTests {
         #expect(
             changed.automatic.allSatisfy { $0.id != .patientGender },
         )
+    }
+
+    @Test
+    func interruptedTrailingFieldNeedsReview() throws {
+        let partialText = "пол: мужчина; вес: 72 кг"
+        let proposal = try parsed(
+            partialText,
+        )
+        for completion: DSpeechCompletion in [.timedOut, .interrupted, .failed] {
+            let transcript = recording(
+                partialText,
+                confidence: 1,
+                completion: completion,
+            )
+            let plan = ScanSpeechConfidencePolicy.plan(
+                proposal: proposal,
+                transcript: transcript,
+                parsedText: partialText,
+                noComplaintsPattern: VoiceLocalizationTestSupport.dictation(
+                    locale: transcript.locale,
+                ).pattern(
+                    .noComplaintsValue,
+                ),
+            )
+            #expect(
+                plan.automatic.map(
+                    \.id,
+                ) == [.patientGender],
+            )
+            #expect(
+                plan.uncertain.contains { $0.id == .patientWeightKG },
+            )
+        }
     }
 
     @Test(

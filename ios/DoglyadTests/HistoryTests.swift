@@ -159,6 +159,21 @@ struct HistoryTests {
             timeIntervalSince1970: 2000000000,
         )
 
+        do {
+            try await store.updateExaminationReport(
+                value: databaseReport(
+                    at: newestDate,
+                ),
+            )
+            Issue.record(
+                "Updating a missing report must fail",
+            )
+        } catch {
+            #expect(
+                error as? DDatabaseError == .examinationReportNotFound,
+            )
+        }
+
         for index in 0 ..< 45 {
             try await store.setExaminationReport(
                 value: databaseReport(
@@ -171,7 +186,7 @@ struct HistoryTests {
             )
         }
 
-        let firstPage = await store.fetchExaminationReports(
+        let firstPage = try await store.fetchExaminationReports(
             limit: 20,
             offset: 0,
         ) {
@@ -179,7 +194,7 @@ struct HistoryTests {
                 \.date,
             )
         }
-        let secondPage = await store.fetchExaminationReports(
+        let secondPage = try await store.fetchExaminationReports(
             limit: 20,
             offset: 20,
         ) {
@@ -187,7 +202,7 @@ struct HistoryTests {
                 \.date,
             )
         }
-        let thirdPage = await store.fetchExaminationReports(
+        let thirdPage = try await store.fetchExaminationReports(
             limit: 20,
             offset: 40,
         ) {
@@ -195,7 +210,7 @@ struct HistoryTests {
                 \.date,
             )
         }
-        let count = await store.fetchExaminationReportsCount()
+        let count = try await store.fetchExaminationReportsCount()
 
         #expect(
             firstPage.count == 20,
@@ -272,7 +287,7 @@ struct HistoryTests {
             value: report,
         )
 
-        let examinations = await store.fetchExaminationReports(
+        let examinations = try await store.fetchExaminationReports(
             limit: 1,
             offset: 0,
         ) {

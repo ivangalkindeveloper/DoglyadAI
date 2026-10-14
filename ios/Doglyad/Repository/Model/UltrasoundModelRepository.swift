@@ -14,49 +14,49 @@ final class UltrasoundModelRepository: UltrasoundModelRepositoryProtocol {
 // MARK: Model -
 
 extension UltrasoundModelRepository {
-    func getSelectedModelId() -> String? {
+    func getSelectedModelId() async throws -> String? {
         database.getSelectedUSExaminationNeuralModelId()
     }
 
     func setSelectedModelId(
         id: String,
-    ) {
+    ) async throws {
         database.setSelectedUSExaminationNeuralModelId(
             value: id,
         )
     }
 
-    func getIsMarkdown() -> Bool {
+    func getIsMarkdown() async throws -> Bool {
         database.getNeuralModelIsMarkdown()
     }
 
     func setIsMarkdown(
-        _ value: Bool,
-    ) {
+        _ isMarkdown: Bool,
+    ) async throws {
         database.setNeuralModelIsMarkdown(
-            value: value,
+            isMarkdown: isMarkdown,
         )
     }
 
-    func getTemperature() -> Double? {
+    func getTemperature() async throws -> Double? {
         database.getNeuralModelTemperature()
     }
 
     func setTemperature(
         _ value: Double?,
-    ) {
+    ) async throws {
         database.setNeuralModelTemperature(
             value: value,
         )
     }
 
-    func getMaxTokens() -> Int? {
+    func getMaxTokens() async throws -> Int? {
         database.getNeuralModelMaxTokens()
     }
 
     func setMaxTokens(
         _ value: Int?,
-    ) {
+    ) async throws {
         database.setNeuralModelMaxTokens(
             value: value,
         )

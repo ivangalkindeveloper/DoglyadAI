@@ -1,7 +1,9 @@
+import DoglyadUI
 import Router
 import SwiftUI
 
 struct SelectTemplateBottomSheet: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
@@ -12,6 +14,7 @@ struct SelectTemplateBottomSheet: View {
         SelectTemplateBottomSheetView(
             viewModel: SelectTemplateViewModel(
                 container: container,
+                messager: messager,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
                 observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(

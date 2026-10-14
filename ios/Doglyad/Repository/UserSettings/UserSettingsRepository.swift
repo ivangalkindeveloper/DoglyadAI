@@ -15,51 +15,51 @@ final class UserSettingsRepository: UserSettingsRepositoryProtocol {
 }
 
 extension UserSettingsRepository {
-    func getIsPhotoRemarks() -> Bool { database.getIsPhotoRemarks() }
+    func getIsPhotoRemarks() async throws -> Bool { database.getIsPhotoRemarks() }
 
     func setIsPhotoRemarks(
-        _ value: Bool,
-    ) { database.setIsPhotoRemarks(
-        value: value,
+        _ isEnabled: Bool,
+    ) async throws { database.setIsPhotoRemarks(
+        isEnabled: isEnabled,
     ) }
 
-    func getIsDescriptionRemarks() -> Bool { database.getIsDescriptionRemarks() }
+    func getIsDescriptionRemarks() async throws -> Bool { database.getIsDescriptionRemarks() }
 
     func setIsDescriptionRemarks(
-        _ value: Bool,
-    ) { database.setIsDescriptionRemarks(
-        value: value,
+        _ isEnabled: Bool,
+    ) async throws { database.setIsDescriptionRemarks(
+        isEnabled: isEnabled,
     ) }
 
-    func getIsRemarksVisible() -> Bool { database.getIsRemarksVisible() }
+    func getIsRemarksVisible() async throws -> Bool { database.getIsRemarksVisible() }
 
     func setIsRemarksVisible(
-        _ value: Bool,
-    ) { database.setIsRemarksVisible(
-        value: value,
+        _ isVisible: Bool,
+    ) async throws { database.setIsRemarksVisible(
+        isVisible: isVisible,
     ) }
 
-    func getUserEmail() -> String? {
+    func getUserEmail() async throws -> String? {
         database.getUserEmail()
     }
 
     func setUserEmail(
         _ email: String?,
-    ) {
+    ) async throws {
         database.setUserEmail(
             value: email,
         )
     }
 
-    func getIncludeRecommendations() -> Bool {
-        database.getIncludeRecommendations()
+    func getIsRecommendationsIncluded() async throws -> Bool {
+        database.getIsRecommendationsIncluded()
     }
 
-    func setIncludeRecommendations(
-        _ value: Bool,
-    ) {
-        database.setIncludeRecommendations(
-            value: value,
+    func setIsRecommendationsIncluded(
+        _ isIncluded: Bool,
+    ) async throws {
+        database.setIsRecommendationsIncluded(
+            isIncluded: isIncluded,
         )
     }
 }

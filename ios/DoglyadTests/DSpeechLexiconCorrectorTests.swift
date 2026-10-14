@@ -7,7 +7,7 @@ import Testing
 /// anywhere the substitution could invert the meaning.
 struct DSpeechLexiconCorrectorTests {
     /// Regression examples of dangerous pairs: opposites differing by a prefix
-    /// or a couple of letters. The current per-type hints also include single words.
+    /// or a couple of letters. The current per-type isHintingEnabled also include single words.
     private static let terms = [
         "анэхогенное образование",
         "гиперэхогенное образование",
@@ -409,7 +409,7 @@ struct DSpeechLexiconCorrectorTests {
         "An empty lexicon makes the corrector an identity function",
     )
     func emptyLexiconIsIdentity() {
-        let empty = DSpeechLexiconCorrector(
+        let emptyCorrector = DSpeechLexiconCorrector(
             terms: [],
             localization: VoiceLocalizationTestSupport.speech(
                 locale: Locale(
@@ -418,7 +418,7 @@ struct DSpeechLexiconCorrectorTests {
             ),
         )
         #expect(
-            empty.correct(
+            emptyCorrector.correct(
                 "анехогенное образование",
             ) == "анехогенное образование",
         )

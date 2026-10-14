@@ -77,7 +77,7 @@ def score_response(expected: dict[str, Any], response: dict[str, Any], locale: s
     actual: dict[str, Any] = {}
     accuracies: dict[str, str] = {}
     for proposal in response["proposals"]:
-        field_id = WIRE_FIELD_IDS[proposal["field_id"]]
+        field_id = WIRE_FIELD_IDS[proposal["fieldId"]]
         if field_id not in FIELDS or field_id in actual:
             raise ValueError(f"Unknown or duplicate response field: {field_id}")
         value: Any = proposal["value"]

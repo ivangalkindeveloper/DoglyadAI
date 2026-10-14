@@ -78,7 +78,7 @@ def _report_request(
             patientDateOfBirth=datetime(1985, 1, 15, tzinfo=UTC),
             examinationDescription="Test description",
         ),
-        includeRecommendations=is_recommendations,
+        isRecommendationsIncluded=is_recommendations,
         isPhotoRemarks=is_photo_remarks,
         isDescriptionRemarks=is_description_remarks,
     )
@@ -203,10 +203,10 @@ def test_mock_voice_scenario_passes_the_real_source_validator(
 
     assert response.status_code == 200, response.text
     result = USVoiceFormParseResponse.model_validate(response.json())
-    assert {item.field_id for item in result.proposals} == set(USVoiceFieldId)
+    assert {item.fieldId for item in result.proposals} == set(USVoiceFieldId)
     assert result.rejectedFieldIds == []
     assert result.unmappedFindings == []
-    values = {item.field_id: item.value for item in result.proposals}
+    values = {item.fieldId: item.value for item in result.proposals}
     assert values[USVoiceFieldId.PATIENT_NAME] == fixture.generation.root[1].value
     assert values[USVoiceFieldId.PATIENT_DATE_OF_BIRTH] == "1985-01-15"
     assert values[USVoiceFieldId.PATIENT_GENDER] == "male"

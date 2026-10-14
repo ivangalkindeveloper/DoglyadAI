@@ -46,8 +46,8 @@ public struct DBadge<Content: View>: DView {
                             let badge = visibleBadges[
                                 index,
                             ]
-                            badgeView(
-                                badge,
+                            DBadgeItemView(
+                                badge: badge,
                             )
                             .if(
                                 badge.isShimmering,
@@ -65,41 +65,6 @@ public struct DBadge<Content: View>: DView {
     private var visibleBadges: [DBadgeItem] {
         badges.filter(
             \.isVisible,
-        )
-    }
-
-    private func badgeView(
-        _ badge: DBadgeItem,
-    ) -> some View {
-        Text(
-            badge.title,
-        )
-        .font(
-            typography.linkXSmall,
-        )
-        .foregroundStyle(
-            color.grayscaleBackground,
-        )
-        .lineLimit(
-            1,
-        )
-        .fixedSize(
-            horizontal: true,
-            vertical: false,
-        )
-        .padding(
-            .horizontal,
-            size.s8,
-        )
-        .padding(
-            .vertical,
-            size.s2,
-        )
-        .background(
-            Capsule()
-                .fill(
-                    color.gradientPrimary,
-                ),
         )
     }
 }

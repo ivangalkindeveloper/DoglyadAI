@@ -23,14 +23,16 @@ struct MainRootView: View {
                 container: dependencyContainer,
             ),
         )
+        let ultrasoundViewModel = UltrasoundRootViewModel(
+            container: dependencyContainer,
+        )
         _ultrasoundViewModel = StateObject(
-            wrappedValue: UltrasoundRootViewModel(
-                container: dependencyContainer,
-            ),
+            wrappedValue: ultrasoundViewModel,
         )
         _subscriptionViewModel = StateObject(
             wrappedValue: SubscriptionRootViewModel(
                 container: dependencyContainer,
+                getStoredNeuralModelSettings: { [ultrasoundViewModel] in ultrasoundViewModel.storedNeuralModelSettings },
             ),
         )
     }

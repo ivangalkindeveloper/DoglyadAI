@@ -6,11 +6,11 @@ public final class DTextFieldDecimalFormatter: DTextFieldFormatter {
         ".,",
     )
 
-    private let allowsNegative: Bool
+    private let isNegativeAllowed: Bool
     private let maxFractionLength: Int?
 
     public init(
-        allowsNegative: Bool = false,
+        isNegativeAllowed: Bool = false,
         maxFractionLength: Int? = nil,
     ) {
         if let maxFractionLength {
@@ -18,7 +18,7 @@ public final class DTextFieldDecimalFormatter: DTextFieldFormatter {
                 maxFractionLength >= 0,
             )
         }
-        self.allowsNegative = allowsNegative
+        self.isNegativeAllowed = isNegativeAllowed
         self.maxFractionLength = maxFractionLength
     }
 
@@ -27,7 +27,7 @@ public final class DTextFieldDecimalFormatter: DTextFieldFormatter {
         proposedValue: String,
     ) -> String {
         var result = ""
-        var hasDecimalSeparator = false
+        var isDecimalSeparatorPresent = false
         var fractionLength = 0
 
         for character in proposedValue {
@@ -35,7 +35,7 @@ public final class DTextFieldDecimalFormatter: DTextFieldFormatter {
                 character,
             ) {
                 if let maxFractionLength,
-                   hasDecimalSeparator,
+                   isDecimalSeparatorPresent,
                    fractionLength >= maxFractionLength
                 {
                     continue
@@ -43,13 +43,13 @@ public final class DTextFieldDecimalFormatter: DTextFieldFormatter {
                 result.append(
                     character,
                 )
-                if hasDecimalSeparator {
+                if isDecimalSeparatorPresent {
                     fractionLength += 1
                 }
             } else if Self.decimalSeparators.contains(
                 character,
             ),
-                !hasDecimalSeparator,
+                !isDecimalSeparatorPresent,
                 maxFractionLength != 0
             {
                 if result.isEmpty || result == "-" {
@@ -60,8 +60,8 @@ public final class DTextFieldDecimalFormatter: DTextFieldFormatter {
                 result.append(
                     ".",
                 )
-                hasDecimalSeparator = true
-            } else if character == "-", allowsNegative, result.isEmpty {
+                isDecimalSeparatorPresent = true
+            } else if character == "-", isNegativeAllowed, result.isEmpty {
                 result.append(
                     character,
                 )

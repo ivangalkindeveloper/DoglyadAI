@@ -1,11 +1,13 @@
 import SwiftUI
+internal import Shimmer
+internal import SwiftMessages
 
 public extension View {
     @ViewBuilder func `if`(
-        _ condition: Bool,
+        _ isConditionSatisfied: Bool,
         transform: (Self) -> some View,
     ) -> some View {
-        if condition {
+        if isConditionSatisfied {
             transform(
                 self,
             )
@@ -43,5 +45,29 @@ public extension View {
                 self,
             )
         }
+    }
+
+    func dThemeWrapper() -> some View {
+        modifier(
+            DThemeWrapperModifier(),
+        )
+    }
+
+    func dMessage() -> some View {
+        modifier(
+            DMessageModifier(),
+        )
+    }
+
+    func dShimmer(
+        isShimmering: Bool = true,
+        cornerRadius: CGFloat = .infinity,
+    ) -> some View {
+        modifier(
+            DShimmerModifier(
+                isShimmering: isShimmering,
+                cornerRadius: cornerRadius,
+            ),
+        )
     }
 }

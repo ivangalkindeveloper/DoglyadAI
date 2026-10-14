@@ -81,8 +81,8 @@ def test_score_counts_wrong_and_unspoken_values() -> None:
         {"patientWeightKG": 72},
         {
             "proposals": [
-                {"field_id": "patient_weight_kg", "value": 73, "evidence": "вес 73 кг", "accuracy": "full"},
-                {"field_id": "patient_gender", "value": "male", "evidence": "male", "accuracy": "full"},
+                {"fieldId": "patient_weight_kg", "value": 73, "evidence": "вес 73 кг", "accuracy": "full"},
+                {"fieldId": "patient_gender", "value": "male", "evidence": "male", "accuracy": "full"},
             ],
             "rejectedFieldIds": [],
             "unmappedFindings": [],
@@ -97,8 +97,8 @@ def test_score_counts_wrong_and_unspoken_values() -> None:
 def test_duplicate_server_field_fails_scoring() -> None:
     response = {
         "proposals": [
-            {"field_id": "patient_gender", "value": "male", "accuracy": "full"},
-            {"field_id": "patient_gender", "value": "female", "accuracy": "full"},
+            {"fieldId": "patient_gender", "value": "male", "accuracy": "full"},
+            {"fieldId": "patient_gender", "value": "female", "accuracy": "full"},
         ],
         "rejectedFieldIds": [],
     }
@@ -131,7 +131,7 @@ def test_summary_reports_strict_and_spoken_equivalent_results() -> None:
         {
             "proposals": [
                 {
-                    "field_id": "examination_description",
+                    "fieldId": "examination_description",
                     "value": "Left ventricle fifty four millimeters.",
                     "evidence": "Left ventricle fifty four millimeters.",
                     "accuracy": "full",
@@ -209,7 +209,7 @@ def test_server_retry_records_each_attempt(
             return httpx.Response(
                 200,
                 json={
-                    "proposals": [{"field_id": "patient_weight_kg", "value": 72, "accuracy": "full"}],
+                    "proposals": [{"fieldId": "patient_weight_kg", "value": 72, "accuracy": "full"}],
                     "rejectedFieldIds": [],
                 },
             )

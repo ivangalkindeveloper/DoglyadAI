@@ -1,27 +1,27 @@
 protocol UltrasoundModelRepositoryProtocol: AnyObject {
     // MARK: Model -
 
-    func getSelectedModelId() -> String?
+    func getSelectedModelId() async throws -> String?
 
     func setSelectedModelId(
         id: String,
-    )
+    ) async throws
 
-    func getIsMarkdown() -> Bool
+    func getIsMarkdown() async throws -> Bool
 
     func setIsMarkdown(
-        _ value: Bool,
-    )
+        _ isMarkdown: Bool,
+    ) async throws
 
-    func getTemperature() -> Double?
+    func getTemperature() async throws -> Double?
 
     func setTemperature(
         _ value: Double?,
-    )
+    ) async throws
 
-    func getMaxTokens() -> Int?
+    func getMaxTokens() async throws -> Int?
 
     func setMaxTokens(
         _ value: Int?,
-    )
+    ) async throws
 }

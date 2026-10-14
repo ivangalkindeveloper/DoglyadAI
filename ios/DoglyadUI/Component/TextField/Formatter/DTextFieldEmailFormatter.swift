@@ -13,15 +13,15 @@ public final class DTextFieldEmailFormatter: DTextFieldFormatter {
         proposedValue: String,
     ) -> String {
         var result = ""
-        var hasAtSign = false
+        var isAtSignPresent = false
 
         for character in proposedValue {
-            if character == "@", !hasAtSign {
+            if character == "@", !isAtSignPresent {
                 result.append(
                     character,
                 )
-                hasAtSign = true
-            } else if hasAtSign {
+                isAtSignPresent = true
+            } else if isAtSignPresent {
                 if Self.domainCharacters.contains(
                     character,
                 ) {

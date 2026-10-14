@@ -14,13 +14,8 @@ enum ScanSpeechReviewPolicy {
         guard !trimmed.isEmpty else { return nil }
 
         switch transcript.completion {
-        case .finished:
+        case .finished, .timedOut, .interrupted, .failed:
             return visibleText
-        case .timedOut, .interrupted, .failed:
-            let original = transcript.correctedText.trimmingCharacters(
-                in: .whitespacesAndNewlines,
-            )
-            return trimmed == original ? nil : visibleText
         case .cancelled:
             return nil
         }

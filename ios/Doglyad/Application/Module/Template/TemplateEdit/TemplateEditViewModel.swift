@@ -16,8 +16,8 @@ final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
 
     private let messager: DMessager
     private let arguments: TemplateEditArguments
-    private let onSaveTemplate: (USExaminationTemplate) -> Void
-    private let onDeleteTemplate: (UUID) -> Void
+    private let onSaveTemplate: (USExaminationTemplate) async throws -> Void
+    private let onDeleteTemplate: (UUID) async throws -> Void
 
     init(
         container: DependencyContainer,
@@ -29,8 +29,8 @@ final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
         onRequestCountIncremented: @escaping () -> Void,
         messager: DMessager,
         arguments: TemplateEditArguments,
-        onSaveTemplate: @escaping (USExaminationTemplate) -> Void,
-        onDeleteTemplate: @escaping (UUID) -> Void,
+        onSaveTemplate: @escaping (USExaminationTemplate) async throws -> Void,
+        onDeleteTemplate: @escaping (UUID) async throws -> Void,
     ) {
         self.messager = messager
         self.arguments = arguments
@@ -53,13 +53,19 @@ final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
 
     override func onInit() {
         handle {
-            await self.container.templateRepository.getTemplate(
+            try await self.container.templateRepository.getTemplate(
                 id: self.arguments.templateId,
                 usExaminationTypesById: self.container.usExaminationTypesById,
-            )!
+            )
         } onDefer: {
             self.isLoading = false
         } onMainSuccess: { template in
+            guard let template else {
+                self.messager.showUnknownError(
+                    l10n: self.container.l10n,
+                )
+                return
+            }
             self.usExaminationType = self.container.usExaminationTypesById[
                 template.usExaminationType.id,
             ]
@@ -69,6 +75,10 @@ final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
             )
             self.templateController.setText(
                 template.content,
+            )
+        } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
             )
         }
     }
@@ -103,6 +113,12 @@ final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
         coordinator.pop()
     }
 
+    func onFocusChanged(
+        _ newFocus: Focus?,
+    ) {
+        focus = newFocus
+    }
+
     func unfocus() {
         focus = nil
     }
@@ -119,7 +135,7 @@ final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
         }
     }
 
-    var canFocusPreviousField: Bool {
+    var isPreviousFieldFocusable: Bool {
         switch focus {
         case .name, .none:
             false
@@ -128,7 +144,7 @@ final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
         }
     }
 
-    var canFocusNextField: Bool {
+    var isNextFieldFocusable: Bool {
         switch focus {
         case .name:
             true
@@ -196,19 +212,28 @@ final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
             content: content,
         )
         isLoading = true
-        onSaveTemplate(
-            template,
-        )
-        messager.show(
-            type: .success,
-            title: container.l10n[
-                .templateSavedSuccessTitle,
-            ],
-            description: container.l10n[
-                .templateSavedSuccessDescription,
-            ],
-        )
-        coordinator.pop()
+        handle {
+            try await self.onSaveTemplate(
+                template,
+            )
+        } onDefer: {
+            self.isLoading = false
+        } onMainSuccess: { _ in
+            self.messager.show(
+                type: .success,
+                title: self.container.l10n[
+                    .templateSavedSuccessTitle,
+                ],
+                description: self.container.l10n[
+                    .templateSavedSuccessDescription,
+                ],
+            )
+            self.coordinator.pop()
+        } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 
     func onTapDelete() {
@@ -232,18 +257,27 @@ final class TemplateEditViewModel: DModuleViewModel, DTextFieldFocusValidating {
         isLoading = true
         unfocus()
 
-        onDeleteTemplate(
-            arguments.templateId,
-        )
-        messager.show(
-            type: .success,
-            title: container.l10n[
-                .templateDeletedSuccessTitle,
-            ],
-            description: container.l10n[
-                .templateDeletedSuccessDescription,
-            ],
-        )
-        coordinator.pop()
+        handle {
+            try await self.onDeleteTemplate(
+                self.arguments.templateId,
+            )
+        } onDefer: {
+            self.isLoading = false
+        } onMainSuccess: { _ in
+            self.messager.show(
+                type: .success,
+                title: self.container.l10n[
+                    .templateDeletedSuccessTitle,
+                ],
+                description: self.container.l10n[
+                    .templateDeletedSuccessDescription,
+                ],
+            )
+            self.coordinator.pop()
+        } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 }

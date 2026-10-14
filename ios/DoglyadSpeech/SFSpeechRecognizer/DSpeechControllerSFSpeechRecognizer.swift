@@ -43,8 +43,8 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     private var session = DSpeechSessionGate()
     private var finalizationTimeoutTask: Task<Void, Never>?
     private var finalizationCompletion: DSpeechCompletion = .finished
-    private var hadUnfinalizedSegment = false
-    private var hasTap = false
+    private var isSegmentUnfinalized = false
+    private var isTapInstalled = false
 
     /// Marks an active session: tells a restart on the duration limit (keep going)
     /// apart from a stop by the user (do not restart).
@@ -110,7 +110,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         lastPartial = ""
         audioMeter = 0.0
         finalizationCompletion = .finished
-        hadUnfinalizedSegment = false
+        isSegmentUnfinalized = false
 
         do {
             let route = try DSpeechAudioSession.activate()
@@ -141,7 +141,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
                     buffer,
                 )
             }
-            hasTap = true
+            isTapInstalled = true
 
             isRunning = true
             startTask(
@@ -179,14 +179,14 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         // Stationary noise suppression (the scanner's hum), echo cancellation,
         // automatic gain. Needed when the phone lies off to the side, and not needed
         // on a headset where the microphone is at the mouth anyway.
-        let useVoiceProcessing = switch route {
+        let isVoiceProcessingEnabled = switch route {
         case .builtIn:
             true
         case .headset:
             false
         }
         try? inputNode.setVoiceProcessingEnabled(
-            useVoiceProcessing,
+            isVoiceProcessingEnabled,
         )
 
         var recordingFormat = inputNode.outputFormat(
@@ -224,11 +224,11 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
 
         isRunning = false
         audioEngine.stop()
-        if hasTap {
+        if isTapInstalled {
             audioEngine.inputNode.removeTap(
                 onBus: 0,
             )
-            hasTap = false
+            isTapInstalled = false
         }
         relay.detach()
         meter.reset()
@@ -249,7 +249,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         case .finished:
             switch finalizationCompletion {
             case .finished:
-                hadUnfinalizedSegment ? .interrupted : .finished
+                isSegmentUnfinalized ? .interrupted : .finished
             case .timedOut, .interrupted, .cancelled, .failed:
                 finalizationCompletion
             }
@@ -348,11 +348,11 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     private func teardown() {
         isRunning = false
         audioEngine.stop()
-        if hasTap {
+        if isTapInstalled {
             audioEngine.inputNode.removeTap(
                 onBus: 0,
             )
-            hasTap = false
+            isTapInstalled = false
         }
         recognitionTask?.cancel()
         recognitionTask = nil
@@ -461,7 +461,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
             return
         }
         // The task ended without a final — keep the last draft and continue.
-        hadUnfinalizedSegment = true
+        isSegmentUnfinalized = true
         commitCurrentSegment(
             lastPartial,
         )

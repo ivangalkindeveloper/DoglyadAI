@@ -1,13 +1,16 @@
 import Combine
+import DoglyadUI
 import Foundation
 import Router
 
 @MainActor
 final class SelectNeuralModelViewModel: DModuleViewModel {
+    private let messager: DMessager?
     private let arguments: SelectNeuralModelArguments?
 
     init(
         container: DependencyContainer,
+        messager: DMessager? = nil,
         router: DRouter,
         arguments: SelectNeuralModelArguments?,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
@@ -16,6 +19,7 @@ final class SelectNeuralModelViewModel: DModuleViewModel {
         getNeuralModelSettings: @escaping () -> NeuralModelSettings,
         onRequestCountIncremented: @escaping () -> Void,
     ) {
+        self.messager = messager
         self.arguments = arguments
         super.init(
             container: container,
@@ -99,11 +103,17 @@ final class SelectNeuralModelViewModel: DModuleViewModel {
                 ],
             ),
         )
-        coordinator.selectNeuralModel(
-            model,
-        ) { [weak self] model in
-            self?.arguments?.onSelected(
+        handle {
+            try await self.coordinator.selectNeuralModel(
                 model,
+            ) { [weak self] model in
+                try await self?.arguments?.onSelected(
+                    model,
+                )
+            }
+        } onMainUnknownError: { _ in
+            self.messager?.showUnknownError(
+                l10n: self.container.l10n,
             )
         }
     }

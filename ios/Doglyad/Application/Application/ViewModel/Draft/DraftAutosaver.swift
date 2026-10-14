@@ -6,42 +6,40 @@ final class DraftAutosaver<Draft> {
     private let delay: RunLoop.SchedulerTimeType.Stride
     private var cancellables = Set<AnyCancellable>()
     private var writeTask: Task<Void, Never>?
-    private var hasPendingChanges = false
+    private var pendingWrites: [() async throws -> Void] = []
+    private var lastError: Error?
+    private var isPendingChangesPresent = false
     private var makeDraft: (() -> Draft?)?
-    private var saveDraft: ((Draft) async -> Void)?
+    private var saveDraft: ((Draft) async throws -> Void)?
+    private var onFailure: ((Error) -> Void)?
 
     init(
         delay: RunLoop.SchedulerTimeType.Stride = .seconds(
             1,
         ),
-    ) {
-        self.delay = delay
-    }
+    ) { self.delay = delay }
 
     func start(
         publishers: [AnyPublisher<Void, Never>],
         makeDraft: @escaping () -> Draft?,
-        saveDraft: @escaping (Draft) async -> Void,
+        saveDraft: @escaping (Draft) async throws -> Void,
+        onFailure: @escaping (Error) -> Void,
     ) {
         stop()
         self.makeDraft = makeDraft
         self.saveDraft = saveDraft
-
+        self.onFailure = onFailure
         Publishers.MergeMany(
             publishers,
         )
         .handleEvents(
-            receiveOutput: { [weak self] in
-                self?.hasPendingChanges = true
-            },
+            receiveOutput: { [weak self] in self?.isPendingChangesPresent = true },
         )
         .debounce(
             for: delay,
             scheduler: RunLoop.main,
         )
-        .sink { [weak self] _ in
-            self?.savePendingDraft()
-        }
+        .sink { [weak self] _ in self?.savePendingDraft() }
         .store(
             in: &cancellables,
         )
@@ -49,45 +47,57 @@ final class DraftAutosaver<Draft> {
 
     func flush() {
         savePendingDraft()
+        startWritingIfNeeded()
     }
 
     func enqueue(
-        operation: @escaping () async -> Void,
+        operation: @escaping () async throws -> Void,
     ) {
-        let previousTask = writeTask
-        writeTask = Task {
-            await previousTask?.value
-            guard !Task.isCancelled else { return }
-
-            await operation()
-        }
+        pendingWrites.append(
+            operation,
+        )
+        startWritingIfNeeded()
     }
 
     func stop() {
+        savePendingDraft()
         cancellables.removeAll()
-        hasPendingChanges = false
         makeDraft = nil
         saveDraft = nil
     }
 
-    func waitForPendingSave() async {
+    func waitForPendingSave() async throws {
+        startWritingIfNeeded()
         await writeTask?.value
-        writeTask = nil
+        if let lastError { throw lastError }
+    }
+
+    private func startWritingIfNeeded() {
+        guard writeTask == nil, !pendingWrites.isEmpty else { return }
+        writeTask = Task { [weak self] in
+            guard let self else { return }
+            defer { writeTask = nil }
+            while let operation = pendingWrites.first {
+                do {
+                    try await operation()
+                    pendingWrites.removeFirst()
+                    lastError = nil
+                } catch {
+                    lastError = error
+                    onFailure?(
+                        error,
+                    )
+                    return
+                }
+            }
+        }
     }
 
     private func savePendingDraft() {
-        guard hasPendingChanges,
-              let draft = makeDraft?(),
-              let saveDraft
-        else {
-            return
-        }
-
-        hasPendingChanges = false
-        enqueue {
-            await saveDraft(
-                draft,
-            )
-        }
+        guard isPendingChangesPresent, let draft = makeDraft?(), let saveDraft else { return }
+        isPendingChangesPresent = false
+        enqueue { try await saveDraft(
+            draft,
+        ) }
     }
 }

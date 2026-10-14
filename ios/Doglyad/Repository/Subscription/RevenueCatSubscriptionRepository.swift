@@ -19,7 +19,7 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
         self.securityDatabase = securityDatabase
     }
 
-    func configure() {
+    func configure() async throws {
         switch environment.type {
         case .development:
             Purchases.logLevel = .debug
@@ -38,7 +38,7 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
         configEntitlements: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus? {
         guard let customerInfo = Purchases.shared.cachedCustomerInfo else { return nil }
-        return await status(
+        return try await status(
             from: customerInfo,
             configEntitlements: configEntitlements,
         )
@@ -95,7 +95,7 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
             }
         }
         guard let customerInfo else { return .cancelled }
-        return await .completed(
+        return try await .completed(
             status(
                 from: customerInfo,
                 configEntitlements: configEntitlements,
@@ -131,7 +131,7 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
         configEntitlements: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus? {
         let customerInfo = try await Purchases.shared.customerInfo()
-        return await status(
+        return try await status(
             from: customerInfo,
             configEntitlements: configEntitlements,
         )
@@ -141,7 +141,7 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
         configEntitlements: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus? {
         let customerInfo = try await Purchases.shared.restorePurchases()
-        return await status(
+        return try await status(
             from: customerInfo,
             configEntitlements: configEntitlements,
         )
@@ -150,9 +150,9 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
     func incrementRequestCount(
         configEntitlements: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus? {
-        try? await securityDatabase.incrementRequestCount()
+        try await securityDatabase.incrementRequestCount()
         let customerInfo = try await Purchases.shared.customerInfo()
-        return await status(
+        return try await status(
             from: customerInfo,
             configEntitlements: configEntitlements,
         )
@@ -161,7 +161,7 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
     private func status(
         from customerInfo: CustomerInfo,
         configEntitlements: [SubscriptionType: SubscriptionEntitlement],
-    ) async -> SubscriptionStatus? {
+    ) async throws -> SubscriptionStatus? {
         guard let subscriptionType = customerInfo.entitlements.active.keys
             .compactMap(
                 { SubscriptionType(
@@ -180,7 +180,7 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
         else {
             return nil
         }
-        let availableCountPerDay = await remainingRequestCount(
+        let availableCountPerDay = try await remainingRequestCount(
             limit: entitlement.requestCountPerDay,
         )
         return SubscriptionStatus(
@@ -192,8 +192,8 @@ final class RevenueCatSubscriptionRepository: SubscriptionRepositoryProtocol {
 
     private func remainingRequestCount(
         limit: Int,
-    ) async -> Int {
-        await securityDatabase.fetchRequestLimit { requestLimit in
+    ) async throws -> Int {
+        try await securityDatabase.fetchRequestLimit { requestLimit in
             guard let requestLimit,
                   Calendar.current.isDateInToday(
                       requestLimit.date,

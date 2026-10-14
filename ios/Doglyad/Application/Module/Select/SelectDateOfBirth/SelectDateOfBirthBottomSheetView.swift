@@ -21,7 +21,10 @@ struct SelectDateOfBirthBottomSheetView: DView {
                     l10n[
                         .selectDateOfBirthTitle,
                     ],
-                    selection: $viewModel.date,
+                    selection: Binding(
+                        get: { viewModel.date },
+                        set: viewModel.onDateChanged,
+                    ),
                     in: viewModel.fromDate ... viewModel.toDate,
                 )
                 .labelsHidden()

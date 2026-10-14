@@ -10,7 +10,7 @@ class USExaminationRequest(BaseModel):
     neuralModelSettings: NeuralModelSettings
     examinationData: USExaminationData
     template: str | None = None
-    includeRecommendations: bool = True
+    isRecommendationsIncluded: bool = True
     isPhotoRemarks: bool = True
     isDescriptionRemarks: bool = True
 

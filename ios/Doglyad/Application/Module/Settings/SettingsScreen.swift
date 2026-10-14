@@ -25,7 +25,7 @@ struct SettingsScreen: View {
                 getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
                 onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 onNeuralModelSelected: { [ultrasoundViewModel] model in
-                    ultrasoundViewModel.saveNeuralModel(
+                    try await ultrasoundViewModel.saveNeuralModel(
                         model,
                     )
                 },

@@ -27,8 +27,8 @@ struct TemplateAddScreenView: DView {
                         doneAccessibilityLabel: l10n[
                             .buttonDone,
                         ],
-                        onTapUp: viewModel.canFocusPreviousField ? { viewModel.onTapToolbarUp() } : nil,
-                        onTapDown: viewModel.canFocusNextField ? { viewModel.onTapToolbarDown() } : nil,
+                        onTapUp: viewModel.isPreviousFieldFocusable ? { viewModel.onTapToolbarUp() } : nil,
+                        onTapDown: viewModel.isNextFieldFocusable ? { viewModel.onTapToolbarDown() } : nil,
                         onTapDone: viewModel.unfocus,
                         trailButtons: [
                             DToolbarButton(
@@ -240,7 +240,9 @@ struct TemplateAddScreenView: DView {
             initial: true,
         ) { _, newValue in
             guard viewModel.focus != newValue else { return }
-            viewModel.focus = newValue
+            viewModel.onFocusChanged(
+                newValue,
+            )
         }
         .onChange(
             of: viewModel.focus,

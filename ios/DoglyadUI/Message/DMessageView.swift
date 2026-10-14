@@ -1,7 +1,7 @@
 import SwiftUI
 internal import SwiftMessages
 
-private struct DMessageModifier: ViewModifier {
+struct DMessageModifier: ViewModifier {
     @EnvironmentObject private var theme: DTheme
 
     @StateObject var messager = DMessager()
@@ -29,13 +29,5 @@ private struct DMessageModifier: ViewModifier {
             .environmentObject(
                 messager,
             )
-    }
-}
-
-public extension View {
-    func dMessage() -> some View {
-        modifier(
-            DMessageModifier(),
-        )
     }
 }

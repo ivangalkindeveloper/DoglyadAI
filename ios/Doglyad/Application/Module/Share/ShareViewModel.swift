@@ -94,7 +94,7 @@ final class ShareViewModel: DModuleViewModel {
         guard let userEmail else { return }
         coordinator.run(
             .sendingReportByEmail,
-            dismissesSheetOnPaywall: true,
+            isSheetDismissedOnPaywall: true,
         ) {
             self.sendReportEmail(
                 to: userEmail,
@@ -108,7 +108,7 @@ final class ShareViewModel: DModuleViewModel {
         )
         coordinator.run(
             .sendingReportByEmail,
-            dismissesSheetOnPaywall: true,
+            isSheetDismissedOnPaywall: true,
         ) {
             self.coordinator.dismissSheet()
             UIApplication.openMail(

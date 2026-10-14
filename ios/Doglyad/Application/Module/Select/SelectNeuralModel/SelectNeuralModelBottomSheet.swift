@@ -1,7 +1,9 @@
+import DoglyadUI
 import Router
 import SwiftUI
 
 struct SelectNeuralModelBottomSheet: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
@@ -11,6 +13,7 @@ struct SelectNeuralModelBottomSheet: View {
         SelectNeuralModelBottomSheetView(
             viewModel: SelectNeuralModelViewModel(
                 container: container,
+                messager: messager,
                 router: router,
                 arguments: arguments,
                 getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },

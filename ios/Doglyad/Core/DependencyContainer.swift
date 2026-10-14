@@ -28,6 +28,8 @@ final class DependencyContainer: ObservableObject {
     let usExaminationNeuralModels: [USExaminationNeuralModel]
     let usExaminationNeuralModelsById: [String: USExaminationNeuralModel]
     let usExaminationNeuralModelDefault: USExaminationNeuralModel
+    let initialUserSettings: UserSettings
+    let initialNeuralModelSettings: NeuralModelSettings
     let initialSubscriptionStatus: SubscriptionStatus?
     let initialRoute: RouteScreen<ScreenType>
     let version: String
@@ -56,6 +58,8 @@ final class DependencyContainer: ObservableObject {
         usExaminationNeuralModelDefault: USExaminationNeuralModel,
         examinationNeuralModelFactory: DNeuralUltrasoundModelFactory,
         initialSubscriptionStatus: SubscriptionStatus?,
+        initialUserSettings: UserSettings = .initial,
+        initialNeuralModelSettings: NeuralModelSettings? = nil,
         initialRoute: RouteScreen<ScreenType>,
         version: String,
     ) {
@@ -81,6 +85,13 @@ final class DependencyContainer: ObservableObject {
         self.usExaminationNeuralModelsById = usExaminationNeuralModelsById
         self.usExaminationNeuralModelDefault = usExaminationNeuralModelDefault
         self.examinationNeuralModelFactory = examinationNeuralModelFactory
+        self.initialUserSettings = initialUserSettings
+        self.initialNeuralModelSettings = initialNeuralModelSettings ?? NeuralModelSettings(
+            selectedNeuralModelId: usExaminationNeuralModelDefault.id,
+            isMarkdown: false,
+            temperature: applicationConfig.ultrasound.neuralModel.temperature,
+            maxTokens: applicationConfig.ultrasound.neuralModel.maxTokens,
+        )
         self.initialSubscriptionStatus = initialSubscriptionStatus
         self.initialRoute = initialRoute
         self.version = version

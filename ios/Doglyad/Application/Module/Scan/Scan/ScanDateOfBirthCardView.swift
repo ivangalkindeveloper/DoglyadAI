@@ -19,7 +19,7 @@ struct ScanDateOfBirthCardView: DView {
                 spacing: .zero,
             ) {
                 DText(
-                    "\(String(localized: l10n[.scanPatientDateOfBirthLabel])): \(date.localized())",
+                    "\(String(localized: l10n[.scanPatientDateOfBirthLabel])): \(date.localized(locale: l10n.locale))",
                 )
                 .dStyle(
                     font: typography.linkSmall,

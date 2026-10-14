@@ -13,11 +13,11 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
     private let leading: Leading
     private let trailing: Trailing
 
-    @FocusState private var internalFocus: Bool
+    @FocusState private var isInternallyFocused: Bool
     @State private var inputText: String
 
     private var isFocused: Bool {
-        focus?.isFocused ?? internalFocus
+        focus?.isFocused ?? isInternallyFocused
     }
 
     public init(
@@ -138,7 +138,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
                                 )
                             } else {
                                 field.focused(
-                                    $internalFocus,
+                                    $isInternallyFocused,
                                 )
                             }
                         }
@@ -210,7 +210,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
         )
         .onTapGesture {
             guard focus == nil, isFocused == false else { return }
-            internalFocus = true
+            isInternallyFocused = true
         }
         .onChange(
             of: inputText,

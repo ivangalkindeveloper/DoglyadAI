@@ -26,13 +26,13 @@ struct UserSettingsScreen: View {
                 getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
                 onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 getInitialEmail: { [ultrasoundViewModel] in ultrasoundViewModel.userEmail },
-                getInitialIncludeRecommendations: { [ultrasoundViewModel] in ultrasoundViewModel.includeRecommendations },
+                getInitialIsRecommendationsIncluded: { [ultrasoundViewModel] in ultrasoundViewModel.isRecommendationsIncluded },
                 getInitialIsPhotoRemarks: { [ultrasoundViewModel] in ultrasoundViewModel.isPhotoRemarks },
                 getInitialIsDescriptionRemarks: { [ultrasoundViewModel] in ultrasoundViewModel.isDescriptionRemarks },
-                onSaved: { [ultrasoundViewModel] email, includeRecommendations, isPhotoRemarks, isDescriptionRemarks in
-                    ultrasoundViewModel.saveUserSettings(
+                onSaved: { [ultrasoundViewModel] email, isRecommendationsIncluded, isPhotoRemarks, isDescriptionRemarks in
+                    try await ultrasoundViewModel.saveUserSettings(
                         userEmail: email,
-                        includeRecommendations: includeRecommendations,
+                        isRecommendationsIncluded: isRecommendationsIncluded,
                         isPhotoRemarks: isPhotoRemarks,
                         isDescriptionRemarks: isDescriptionRemarks,
                     )

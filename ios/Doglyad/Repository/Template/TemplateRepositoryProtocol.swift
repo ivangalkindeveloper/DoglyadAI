@@ -1,13 +1,13 @@
 import Foundation
 
 protocol TemplateRepositoryProtocol: AnyObject {
-    func getSelectedTemplateId() -> UUID?
+    func getSelectedTemplateId() async throws -> UUID?
 
     func setSelectedTemplateId(
         id: UUID,
-    )
+    ) async throws
 
-    func clearSelectedTemplateId()
+    func clearSelectedTemplateId() async throws
 
     func getReadyMadeTemplates(
         languageCode: String,
@@ -15,18 +15,18 @@ protocol TemplateRepositoryProtocol: AnyObject {
 
     func getTemplates(
         usExaminationTypesById: [String: USExaminationType],
-    ) async -> [USExaminationTemplate]
+    ) async throws -> [USExaminationTemplate]
 
     func getTemplate(
         id: UUID,
         usExaminationTypesById: [String: USExaminationType],
-    ) async -> USExaminationTemplate?
+    ) async throws -> USExaminationTemplate?
 
     func saveTemplate(
         template: USExaminationTemplate,
-    ) async
+    ) async throws
 
     func deleteTemplate(
         id: UUID,
-    ) async
+    ) async throws
 }

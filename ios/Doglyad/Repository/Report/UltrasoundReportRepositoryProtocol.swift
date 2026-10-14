@@ -3,21 +3,21 @@ import DoglyadNeuralModel
 import Foundation
 
 protocol UltrasoundReportRepositoryProtocol: AnyObject, DNeuralUltrasoundServerTransportProtocol {
-    func getSelectedExaminationTypeId() -> String?
+    func getSelectedExaminationTypeId() async throws -> String?
 
     func setSelectedExaminationTypeId(
         id: String,
-    )
+    ) async throws
 
-    func getRecentExaminationTypeIds() -> [String]
+    func getRecentExaminationTypeIds() async throws -> [String]
 
     func setRecentExaminationTypeIds(
         _ ids: [String],
-    )
+    ) async throws
 
     func recordRecentExaminationTypeId(
         _ id: String,
-    )
+    ) async throws
 
     func generateReport(
         locale: Locale,
@@ -28,19 +28,19 @@ protocol UltrasoundReportRepositoryProtocol: AnyObject, DNeuralUltrasoundServerT
     func getReports(
         limit: Int,
         offset: Int,
-    ) async -> [USExaminationReport]
+    ) async throws -> [USExaminationReport]
 
-    func getReportsCount() async -> Int
+    func getReportsCount() async throws -> Int
 
     func setReport(
         report: USExaminationReport,
-    ) async
+    ) async throws
 
     func updateReport(
         report: USExaminationReport,
-    ) async
+    ) async throws
 
-    func clearAllReports() async
+    func clearAllReports() async throws
 
-    @MainActor func clearAll() async
+    @MainActor func clearAll() async throws
 }

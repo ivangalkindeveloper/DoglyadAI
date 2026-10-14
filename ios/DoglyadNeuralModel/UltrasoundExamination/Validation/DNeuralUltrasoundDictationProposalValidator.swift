@@ -163,7 +163,7 @@ enum DNeuralUltrasoundDictationProposalValidator {
             locale: request.locale,
             localization: localization,
         )
-        if context.hasUncertaintyCue || hasNumericSelfCorrection(
+        if context.isUncertaintyCuePresent || hasNumericSelfCorrection(
             segment,
             locale: request.locale,
             localization: localization,

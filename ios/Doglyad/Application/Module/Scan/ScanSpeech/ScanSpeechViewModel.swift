@@ -65,6 +65,22 @@ final class ScanSpeechViewModel: DModuleViewModel {
 
     @Published var isLoading = false
     var modelPreparation: DSpeechModelPreparation { speechController.modelPreparation }
+
+    var modelPreparationLoadingDescription: LocalizedStringResource? {
+        switch modelPreparation {
+        case .checking:
+            container.l10n[
+                .scanSpeechModelCheckingDescription,
+            ]
+        case .loading:
+            container.l10n[
+                .scanSpeechModelLoadingDescription,
+            ]
+        case .downloading, .failed, .ready:
+            nil
+        }
+    }
+
     var isModelReady: Bool {
         switch modelPreparation {
         case .ready:
@@ -223,8 +239,8 @@ final class ScanSpeechViewModel: DModuleViewModel {
         }
     }
 
-    /// A finished, nonempty result starts extraction automatically. Other results
-    /// first go to text review; field confidence is checked after extraction.
+    /// Usable speech starts extraction automatically, including interrupted
+    /// recordings. Confidence is checked separately for each extracted field.
 
     func onTapRecordAgain() {
         guard isSheetPresented, !isLoading, reviewTranscript != nil, dictationProposal == nil else { return }
@@ -402,8 +418,12 @@ final class ScanSpeechViewModel: DModuleViewModel {
         case let .date(
             date,
         ): date.formatted(
-                date: .abbreviated,
-                time: .omitted,
+                Date.FormatStyle(
+                    date: .abbreviated,
+                    time: .omitted,
+                ).locale(
+                    l10n.locale,
+                ),
             )
         case let .number(
             number,

@@ -1,8 +1,10 @@
 import Combine
+import DoglyadUI
 import Foundation
 
 @MainActor
 final class SelectUSExaminationTypeViewModel: DModuleViewModel {
+    private let messager: DMessager?
     struct Item: Identifiable {
         let id: String
         let type: USExaminationType
@@ -33,6 +35,7 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel {
 
     init(
         container: DependencyContainer,
+        messager: DMessager? = nil,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
@@ -41,6 +44,7 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel {
         onRequestCountIncremented: @escaping () -> Void,
         arguments: SelectUSExaminationTypeArguments?,
     ) {
+        self.messager = messager
         self.arguments = arguments
         super.init(
             container: container,
@@ -63,12 +67,21 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel {
         )
     }
 
+    @Published private(set) var recentTypeIds: [String] = []
+
+    override func onInit() {
+        handle { try await self.container.ultrasoundReportRepository.getRecentExaminationTypeIds() }
+            onMainSuccess: { ids in self.recentTypeIds = ids } onMainUnknownError: { _ in
+                self.messager?.showUnknownError(
+                    l10n: self.container.l10n,
+                )
+            }
+    }
+
     var sections: [Section] {
-        let recentTypes = container.ultrasoundReportRepository
-            .getRecentExaminationTypeIds()
-            .compactMap { container.usExaminationTypesById[
-                $0,
-            ] }
+        let recentTypes = recentTypeIds.compactMap { container.usExaminationTypesById[
+            $0,
+        ] }
         let recentSections: [Section] = if recentTypes.isEmpty {
             []
         } else {
@@ -105,12 +118,17 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel {
         analytics.buttonTapped(
             .selectUSExaminationType,
         )
-        container.ultrasoundReportRepository.recordRecentExaminationTypeId(
-            type.id,
-        )
-        coordinator.dismissSheet()
-        arguments?.onSelected(
-            type,
-        )
+        handle {
+            try await self.container.ultrasoundReportRepository.recordRecentExaminationTypeId(
+                type.id,
+            )
+            try await self.arguments?.onSelected(
+                type,
+            )
+        } onMainSuccess: { _ in self.coordinator.dismissSheet() } onMainUnknownError: { _ in
+            self.messager?.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 }

@@ -3,12 +3,12 @@ public final class DTextFieldIntegerFormatter: DTextFieldFormatter {
         "0123456789",
     )
 
-    private let allowsNegative: Bool
+    private let isNegativeAllowed: Bool
 
     public init(
-        allowsNegative: Bool = false,
+        isNegativeAllowed: Bool = false,
     ) {
-        self.allowsNegative = allowsNegative
+        self.isNegativeAllowed = isNegativeAllowed
     }
 
     public func format(
@@ -23,7 +23,7 @@ public final class DTextFieldIntegerFormatter: DTextFieldFormatter {
                 result.append(
                     character,
                 )
-            } else if character == "-", allowsNegative, result.isEmpty {
+            } else if character == "-", isNegativeAllowed, result.isEmpty {
                 result.append(
                     character,
                 )

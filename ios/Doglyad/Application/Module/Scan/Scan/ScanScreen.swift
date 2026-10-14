@@ -32,18 +32,18 @@ struct ScanScreen: View {
                     ultrasoundViewModel.template
                 },
                 onTemplateSelected: { [ultrasoundViewModel] template in
-                    ultrasoundViewModel.selectTemplate(
+                    try await ultrasoundViewModel.selectTemplate(
                         template,
                     )
                 },
                 onTemplateReset: { [ultrasoundViewModel] in
-                    ultrasoundViewModel.resetTemplate()
+                    try await ultrasoundViewModel.resetTemplate()
                 },
                 getNeuralModel: { [ultrasoundViewModel] in
                     ultrasoundViewModel.neuralModel
                 },
                 onNeuralModelSelected: { [ultrasoundViewModel] model in
-                    ultrasoundViewModel.saveNeuralModel(
+                    try await ultrasoundViewModel.saveNeuralModel(
                         model,
                     )
                 },

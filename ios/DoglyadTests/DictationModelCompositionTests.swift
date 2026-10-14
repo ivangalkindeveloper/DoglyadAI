@@ -490,7 +490,7 @@ private final class TransportStub: DNeuralUltrasoundServerTransportProtocol {
     private(set) var text: String?
 
     init(
-        json: String = #"{"proposals":[{"field_id":"patient_weight_kg","value":68,"evidence":"Вес 68 кг","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#,
+        json: String = #"{"proposals":[{"fieldId":"patient_weight_kg","value":68,"evidence":"Вес 68 кг","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#,
     ) throws {
         response = try JSONDecoder().decode(
             DNeuralUltrasoundVoiceFormParseResponseDTO.self,

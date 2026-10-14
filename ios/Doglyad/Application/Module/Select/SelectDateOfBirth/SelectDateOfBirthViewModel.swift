@@ -3,7 +3,7 @@ import Foundation
 
 @MainActor
 final class SelectDateOfBirthViewModel: DModuleViewModel {
-    @Published var date: Date
+    @Published private(set) var date: Date
 
     let fromDate: Date
     let toDate: Date
@@ -47,6 +47,12 @@ final class SelectDateOfBirthViewModel: DModuleViewModel {
                 ],
             ),
         )
+    }
+
+    func onDateChanged(
+        _ newDate: Date,
+    ) {
+        date = newDate
     }
 
     func onTapSelect() {

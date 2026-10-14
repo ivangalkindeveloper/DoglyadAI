@@ -100,7 +100,7 @@ final class VoiceCandidateTests: XCTestCase {
         let asrEngineOnly = ProcessInfo.processInfo.environment[
             "VOICE_ASR_ENGINE_ONLY",
         ]
-        let noFarFieldHint = ProcessInfo.processInfo.environment[
+        let isFarFieldHintDisabled = ProcessInfo.processInfo.environment[
             "VOICE_ASR_NO_FAR_FIELD_HINT",
         ] == "1"
         let strategy = try XCTUnwrap(
@@ -170,24 +170,24 @@ final class VoiceCandidateTests: XCTestCase {
             let factory = try XCTUnwrap(
                 activeFactory,
             )
-            let foundationModelsAvailable: Bool
+            let isFoundationModelsAvailable: Bool
             let foundationModelsAvailability: String
-            let foundationModelsSupportsLocale: Bool
+            let isFoundationModelsLocaleSupported: Bool
             if #available(iOS 26.0, *) {
                 let systemModel = SystemLanguageModel.default
                 foundationModelsAvailability = String(
                     describing: systemModel.availability,
                 )
-                foundationModelsSupportsLocale = systemModel.supportsLocale(
+                isFoundationModelsLocaleSupported = systemModel.supportsLocale(
                     locale,
                 )
-                foundationModelsAvailable = DNeuralUltrasoundModelFoundationModels.isAvailable(
+                isFoundationModelsAvailable = DNeuralUltrasoundModelFoundationModels.isAvailable(
                     locale: locale,
                 )
             } else {
-                foundationModelsAvailable = false
+                isFoundationModelsAvailable = false
                 foundationModelsAvailability = "unsupportedOS"
-                foundationModelsSupportsLocale = false
+                isFoundationModelsLocaleSupported = false
             }
             let typeId = try string(
                 testCase,
@@ -237,13 +237,13 @@ final class VoiceCandidateTests: XCTestCase {
                         "VOICE_ASR_CONFIDENCE_ONLY",
                     ] == "1"
                     for engine in ["speechAnalyzer", "sfSpeechRecognizer"] {
-                        for hints in [false, true] {
-                            let key = "\(engine)/hints=\(hints)"
-                            if let asrEngineOnly, engine != asrEngineOnly || !hints {
+                        for isHintingEnabled in [false, true] {
+                            let key = "\(engine)/hints=\(isHintingEnabled)"
+                            if let asrEngineOnly, engine != asrEngineOnly || !isHintingEnabled {
                                 asr[
                                     key,
                                 ] = ["status": "skipped", "reason": "Another ASR engine selected"]
-                            } else if confidenceOnly, engine != "speechAnalyzer" || !hints {
+                            } else if confidenceOnly, engine != "speechAnalyzer" || !isHintingEnabled {
                                 asr[
                                     key,
                                 ] = ["status": "skipped", "reason": "Confidence-only run"]
@@ -255,8 +255,8 @@ final class VoiceCandidateTests: XCTestCase {
                                     locale: locale,
                                     terms: terms,
                                     engine: engine,
-                                    hints: hints,
-                                    noFarFieldHint: noFarFieldHint,
+                                    isHintingEnabled: isHintingEnabled,
+                                    isFarFieldHintDisabled: isFarFieldHintDisabled,
                                 )
                             }
                         }
@@ -324,7 +324,7 @@ final class VoiceCandidateTests: XCTestCase {
                 nil
             }
             if case .foundationModels = strategy, !asrOnly, activeFoundation == nil,
-               foundationModelsAvailable, #available(iOS 26.0, *)
+               isFoundationModelsAvailable, #available(iOS 26.0, *)
             {
                 activeFoundation = try DNeuralUltrasoundFoundationProposalGenerator(
                     proposalPrompt: string(
@@ -399,9 +399,9 @@ final class VoiceCandidateTests: XCTestCase {
                     "parseStrategy": strategy.rawValue,
                     "parseInputText": parsingText,
                     "asr": asr,
-                    "foundationModelsAvailable": foundationModelsAvailable,
+                    "foundationModelsAvailable": isFoundationModelsAvailable,
                     "foundationModelsAvailability": foundationModelsAvailability,
-                    "foundationModelsSupportsLocale": foundationModelsSupportsLocale,
+                    "foundationModelsSupportsLocale": isFoundationModelsLocaleSupported,
                     "goldTextParse": goldTextParse,
                     "recognizedTextParse": recognizedTextParse,
                 ],
@@ -427,8 +427,8 @@ final class VoiceCandidateTests: XCTestCase {
         locale: Locale,
         terms: [String],
         engine: String,
-        hints: Bool,
-        noFarFieldHint: Bool,
+        isHintingEnabled: Bool,
+        isFarFieldHintDisabled: Bool,
     ) async -> [String: Any] {
         let started = Date()
         do {
@@ -442,8 +442,8 @@ final class VoiceCandidateTests: XCTestCase {
                     fileURL: fileURL,
                     locale: locale,
                     contextualStrings: terms,
-                    useHints: hints,
-                    isFarField: !noFarFieldHint,
+                    isHintingEnabled: isHintingEnabled,
+                    isFarField: !isFarFieldHintDisabled,
                     lexiconLocalization: VoiceLocalizationTestSupport.speech(
                         locale: locale,
                     ),
@@ -453,7 +453,7 @@ final class VoiceCandidateTests: XCTestCase {
                     fileURL: fileURL,
                     locale: locale,
                     contextualStrings: terms,
-                    useHints: hints,
+                    isHintingEnabled: isHintingEnabled,
                     lexiconLocalization: VoiceLocalizationTestSupport.speech(
                         locale: locale,
                     ),

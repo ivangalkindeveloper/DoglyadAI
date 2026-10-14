@@ -29,6 +29,7 @@ from app.model.ultrasound.us_examination_type_group import USExaminationTypeGrou
 from app.model.ultrasound.us_examination_type_group_response import USExaminationTypeGroupResponse
 from app.model.ultrasound.us_examination_type_response import USExaminationTypeResponse
 from app.model.ultrasound.us_voice_form_parsing_config import USVoiceFormParsingConfig
+from app.model.ultrasound.us_voice_source_localization import USVoiceSourceLocalization
 
 logger = logging.getLogger(__name__)
 
@@ -46,6 +47,7 @@ _l10n: L10n | None = None
 _contextual_strings: USExaminationContextualStrings | None = None
 _voice_parsing_config: USVoiceFormParsingConfig | None = None
 _application_localizations: dict[LanguageCode, L10nResponse] = {}
+_voice_source_localizations: dict[LanguageCode, USVoiceSourceLocalization] = {}
 
 
 def _load_json(path: Path) -> Any:
@@ -179,6 +181,30 @@ def load_configs() -> None:
             )
             for language in SUPPORTED_LANGUAGES
         }
+        source_localizations: dict[LanguageCode, USVoiceSourceLocalization] = {}
+        for language, catalog in application_localizations.items():
+            voice = catalog.voice
+            dictation = voice["dictation"]
+            speech = voice["speech"]
+            if not isinstance(dictation, dict) or not isinstance(speech, dict):
+                raise ValueError("Invalid voice catalog")
+            numbers = dictation["numbers"]
+            if not isinstance(numbers, dict):
+                raise ValueError("Invalid number catalog")
+            ones, tens, digits = numbers["ones"], numbers["tens"], numbers["digits"]
+            if not isinstance(ones, list) or not isinstance(tens, list) or not isinstance(digits, dict):
+                raise ValueError("Invalid number vocabulary")
+            number_words = {word: index for index, word in enumerate(ones) if isinstance(word, str) and word}
+            number_words.update({word: index * 10 for index, word in enumerate(tens) if isinstance(word, str) and word})
+            number_words.update({word: int(value) for word, value in digits.items() if isinstance(value, str)})
+            source_localizations[language] = USVoiceSourceLocalization.model_validate(
+                {
+                    **_load_json_object(_CONFIG_DIR / language.value / "l10n_voice_source_validation.json"),
+                    "numberWords": number_words,
+                    "digitWords": digits,
+                    "characterReplacements": speech["literalCharacterReplacements"],
+                }
+            )
         validate_application_localizations(application_localizations)
         validate_prompt_localizations(l10n)
 
@@ -224,6 +250,8 @@ def load_configs() -> None:
     _voice_parsing_config = voice_parsing_config
     _application_localizations.clear()
     _application_localizations.update(application_localizations)
+    _voice_source_localizations.clear()
+    _voice_source_localizations.update(source_localizations)
 
 
 def _catalog() -> L10n:

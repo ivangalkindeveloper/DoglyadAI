@@ -70,7 +70,7 @@ enum DNeuralUltrasoundDictationClinicalSections {
         var boundary = [observation, descriptionStart].compactMap(
             \.self,
         ).filter { $0 > start.lowerBound }.min()
-        var recoveredDescription = false
+        var isDescriptionRecovered = false
         if boundary == nil,
            let descriptionRange = uniqueRange(
                descriptionValue,
@@ -95,7 +95,7 @@ enum DNeuralUltrasoundDictationClinicalSections {
                         options: [.regularExpression, .caseInsensitive],
                     ) != nil
             }?.lowerBound
-            recoveredDescription = boundary != nil
+            isDescriptionRecovered = boundary != nil
         }
         guard let boundary else { return items }
         let stopPattern = DNeuralUltrasoundDictationFollowingFieldCue.recordPattern(
@@ -131,7 +131,7 @@ enum DNeuralUltrasoundDictationClinicalSections {
                     accuracy: .questionable,
                 )
             case .examinationDescription:
-                guard recoveredDescription, let range = uniqueRange(
+                guard isDescriptionRecovered, let range = uniqueRange(
                     descriptionValue,
                     in: request.text,
                 ) else { return item }

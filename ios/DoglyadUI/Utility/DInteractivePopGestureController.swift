@@ -3,7 +3,7 @@ import UIKit
 final class DInteractivePopGestureController: UIViewController, UIGestureRecognizerDelegate {
     private weak var installedNavigationController: UINavigationController?
     private weak var previousDelegate: UIGestureRecognizerDelegate?
-    private var previousIsEnabled: Bool?
+    private var isPreviouslyEnabled: Bool?
 
     override func loadView() {
         let view = UIView(
@@ -15,10 +15,10 @@ final class DInteractivePopGestureController: UIViewController, UIGestureRecogni
     }
 
     override func viewDidAppear(
-        _ animated: Bool,
+        _ isAnimated: Bool,
     ) {
         super.viewDidAppear(
-            animated,
+            isAnimated,
         )
         installInteractivePopGesture()
     }
@@ -50,7 +50,7 @@ final class DInteractivePopGestureController: UIViewController, UIGestureRecogni
             restoreInteractivePopGesture()
             installedNavigationController = navigationController
             previousDelegate = gestureRecognizer.delegate
-            previousIsEnabled = gestureRecognizer.isEnabled
+            isPreviouslyEnabled = gestureRecognizer.isEnabled
         }
 
         gestureRecognizer.delegate = self
@@ -65,18 +65,18 @@ final class DInteractivePopGestureController: UIViewController, UIGestureRecogni
         else {
             self.installedNavigationController = nil
             previousDelegate = nil
-            previousIsEnabled = nil
+            isPreviouslyEnabled = nil
             return
         }
 
         gestureRecognizer.delegate = previousDelegate
-        if let previousIsEnabled {
-            gestureRecognizer.isEnabled = previousIsEnabled
+        if let isPreviouslyEnabled {
+            gestureRecognizer.isEnabled = isPreviouslyEnabled
         }
 
         self.installedNavigationController = nil
         previousDelegate = nil
-        previousIsEnabled = nil
+        isPreviouslyEnabled = nil
     }
 
     func gestureRecognizerShouldBegin(

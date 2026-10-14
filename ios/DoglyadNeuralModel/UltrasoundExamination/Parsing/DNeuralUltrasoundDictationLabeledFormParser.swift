@@ -8,18 +8,18 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         let id: DNeuralUltrasoundVoiceFieldId
         let quote: String
         let rawValue: String
-        let recoveredWithoutLabel: Bool
+        let isRecoveredWithoutLabel: Bool
 
         init(
             id: DNeuralUltrasoundVoiceFieldId,
             quote: String,
             rawValue: String,
-            recoveredWithoutLabel: Bool = false,
+            isRecoveredWithoutLabel: Bool = false,
         ) {
             self.id = id
             self.quote = quote
             self.rawValue = rawValue
-            self.recoveredWithoutLabel = recoveredWithoutLabel
+            self.isRecoveredWithoutLabel = isRecoveredWithoutLabel
         }
     }
 
@@ -542,7 +542,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     options: [.regularExpression, .caseInsensitive],
                 )
             }
-            var recoveredMeasurementBoundary = false
+            var isMeasurementBoundaryRecovered = false
             switch entry.id {
             case .patientHeightCM, .patientWeightKG:
                 if let leading = leadingMeasurement(
@@ -551,7 +551,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     localization: localization,
                 ) {
                     rawValue = leading
-                    recoveredMeasurementBoundary = true
+                    isMeasurementBoundaryRecovered = true
                 }
             case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
                  .patientComplaints, .examinationDescription:
@@ -567,7 +567,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                  .patientHeightCM, .patientWeightKG, .patientComplaints:
                 rawValue
             }
-            let hasNumericSelfCorrection = correctedNumber != rawValue
+            let isNumericSelfCorrectionPresent = correctedNumber != rawValue
             switch entry.id {
             case .examinationDescription:
                 rawValue = DNeuralUltrasoundDictationDescriptionNormalizer.normalize(
@@ -624,7 +624,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                  .patientWeightKG, .patientComplaints, .examinationDescription:
                 break
             }
-            if hasNumericSelfCorrection, !warnings.contains(
+            if isNumericSelfCorrectionPresent, !warnings.contains(
                 .ambiguousDictation,
             ) {
                 warnings.append(
@@ -641,14 +641,14 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     .ambiguousDictation,
                 )
             }
-            if entry.recoveredWithoutLabel, !warnings.contains(
+            if entry.isRecoveredWithoutLabel, !warnings.contains(
                 .ambiguousDictation,
             ) {
                 warnings.append(
                     .ambiguousDictation,
                 )
             }
-            if recoveredMeasurementBoundary, !warnings.contains(
+            if isMeasurementBoundaryRecovered, !warnings.contains(
                 .ambiguousDictation,
             ) {
                 warnings.append(
@@ -693,14 +693,14 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         in values: [DNeuralUltrasoundLabeledValue],
         localization: DNeuralUltrasoundDictationLocalization,
     ) -> [DNeuralUltrasoundLabeledValue] {
-        let hasComplaint = values.contains { entry in
+        let isComplaintPresent = values.contains { entry in
             switch entry.id {
             case .patientComplaints: true
             case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
                  .patientHeightCM, .patientWeightKG, .examinationDescription: false
             }
         }
-        guard !hasComplaint else { return values }
+        guard !isComplaintPresent else { return values }
         var result: [DNeuralUltrasoundLabeledValue] = []
         for (index, entry) in values.enumerated() {
             result.append(
@@ -751,7 +751,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                         ],
                     ),
                     rawValue: complaint,
-                    recoveredWithoutLabel: true,
+                    isRecoveredWithoutLabel: true,
                 ),
             )
         }
@@ -851,7 +851,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                             at: 1,
                         ),
                     ),
-                    recoveredWithoutLabel: true,
+                    isRecoveredWithoutLabel: true,
                 ),
             )
         }
@@ -985,7 +985,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             locale: locale,
             localization: localization,
         )
-        if facts.hasUncertaintyCue { return true }
+        if facts.isUncertaintyCuePresent { return true }
         let normalized = raw.folding(
             options: [.caseInsensitive, .diacriticInsensitive],
             locale: locale,
@@ -1091,7 +1091,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             ) {
                 return value
             }
-            if localization.usesDayFirstNumericDates,
+            if localization.isDayFirstNumericDates,
                let parts = captures(
                    #"^([0-9]{1,2})\.([0-9]{1,2})\.([0-9]{4})$"#,
                    in: dateText,

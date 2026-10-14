@@ -1,7 +1,6 @@
 {
   "code": "en",
   "dictation": {
-    "birthEvidenceUsesValue": false,
     "dateFormats": [
       "MMMM d, yyyy",
       "MMMM d yyyy",
@@ -17,6 +16,8 @@
       "\\bborn\\s+(?:19|20)\\d{2}-\\d{2}-\\d{2}\\s*,\\s*is\\s+(male|female)\\b",
       "\\bdate\\s+of\\s+birth\\s+(?:19|20)\\d{2}-\\d{2}-\\d{2}\\s*;\\s*(male|female)\\b"
     ],
+    "isBirthEvidenceValueUsed": false,
+    "isDayFirstNumericDates": false,
     "namePatterns": [
       "\\bpatient(?:\\s+is\\s+|\\s*:\\s*)([\\p{L}]+(?:\\s+[\\p{L}]+){1,2})\\s*[,.;]",
       "\\bcase\\s+\\d+\\s*:\\s*([\\p{L}]+\\s+[\\p{L}]+)\\s+is\\s+the\\s+patient\\b",
@@ -209,8 +210,7 @@
       "milliliter": "ml",
       "millimeter": "mm",
       "velocity": "cm/s"
-    },
-    "usesDayFirstNumericDates": false
+    }
   },
   "speech": {
     "ignoredPhoneticCharacters": "",

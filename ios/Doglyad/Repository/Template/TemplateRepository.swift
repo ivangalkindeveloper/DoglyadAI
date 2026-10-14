@@ -14,19 +14,19 @@ final class TemplateRepository: TemplateRepositoryProtocol {
         self.httpClient = httpClient
     }
 
-    func getSelectedTemplateId() -> UUID? {
+    func getSelectedTemplateId() async throws -> UUID? {
         database.getSelectedUSExaminationTemplateId()
     }
 
     func setSelectedTemplateId(
         id: UUID,
-    ) {
+    ) async throws {
         database.setSelectedUSExaminationTemplateId(
             value: id,
         )
     }
 
-    func clearSelectedTemplateId() {
+    func clearSelectedTemplateId() async throws {
         database.removeSelectedUSExaminationTemplateId()
     }
 
@@ -41,8 +41,8 @@ final class TemplateRepository: TemplateRepositoryProtocol {
 
     func getTemplates(
         usExaminationTypesById: [String: USExaminationType],
-    ) async -> [USExaminationTemplate] {
-        await database.examinationTemplates.fetchExaminationTemplates { dbs in
+    ) async throws -> [USExaminationTemplate] {
+        try await database.examinationTemplates.fetchExaminationTemplates { dbs in
             dbs.compactMap { db in
                 guard let type = usExaminationTypesById[
                     db.usExaminationTypeId,
@@ -58,8 +58,8 @@ final class TemplateRepository: TemplateRepositoryProtocol {
     func getTemplate(
         id: UUID,
         usExaminationTypesById: [String: USExaminationType],
-    ) async -> USExaminationTemplate? {
-        let templates = await getTemplates(
+    ) async throws -> USExaminationTemplate? {
+        let templates = try await getTemplates(
             usExaminationTypesById: usExaminationTypesById,
         )
         return templates.first { $0.id == id }
@@ -67,16 +67,16 @@ final class TemplateRepository: TemplateRepositoryProtocol {
 
     func saveTemplate(
         template: USExaminationTemplate,
-    ) async {
-        try? await database.examinationTemplates.upsertExaminationTemplate(
+    ) async throws {
+        try await database.examinationTemplates.upsertExaminationTemplate(
             value: template.toDB(),
         )
     }
 
     func deleteTemplate(
         id: UUID,
-    ) async {
-        try? await database.examinationTemplates.deleteExaminationTemplate(
+    ) async throws {
+        try await database.examinationTemplates.deleteExaminationTemplate(
             id: id,
         )
     }

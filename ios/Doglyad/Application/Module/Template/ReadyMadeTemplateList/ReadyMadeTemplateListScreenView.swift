@@ -215,7 +215,9 @@ struct ReadyMadeTemplateListScreenView: DView {
             initial: true,
         ) { _, newValue in
             guard viewModel.focus != newValue else { return }
-            viewModel.focus = newValue
+            viewModel.onFocusChanged(
+                newValue,
+            )
         }
         .onChange(
             of: viewModel.focus,

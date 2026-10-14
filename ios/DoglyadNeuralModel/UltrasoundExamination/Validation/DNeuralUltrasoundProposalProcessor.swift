@@ -92,7 +92,7 @@ struct DNeuralUltrasoundProposalProcessor {
                 continue
             }
             let value: DNeuralVoiceFieldValue
-            let correctedDate: Bool
+            let isDateCorrected: Bool
             do {
                 let generatedValue = try DNeuralVoiceFieldValue.parse(
                     fieldId: item.fieldId,
@@ -118,10 +118,10 @@ struct DNeuralUltrasoundProposalProcessor {
                     value = .date(
                         spokenDate,
                     )
-                    correctedDate = spokenDate != generatedDate
+                    isDateCorrected = spokenDate != generatedDate
                 } else {
                     value = generatedValue
-                    correctedDate = false
+                    isDateCorrected = false
                 }
             } catch DNeuralUltrasoundDictationProposalError.invalidValue {
                 // Keep the other verified proposals usable. The rejected source
@@ -140,7 +140,7 @@ struct DNeuralUltrasoundProposalProcessor {
                 sourceQuote: sourceQuote,
                 request: request,
             )
-            if correctedDate, !warnings.contains(
+            if isDateCorrected, !warnings.contains(
                 .ambiguousDictation,
             ) {
                 warnings.append(

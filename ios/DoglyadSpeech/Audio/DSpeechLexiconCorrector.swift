@@ -31,7 +31,7 @@ public struct DSpeechLexiconCorrector: Sendable {
         let text: String
         let normalized: [Character]
         let wordEndings: [String]
-        let hasNegation: Bool
+        let isNegated: Bool
         let sides: Set<DSpeechLexiconSide>
     }
 
@@ -76,7 +76,7 @@ public struct DSpeechLexiconCorrector: Sendable {
                         in: text,
                         localization: localization,
                     ),
-                    hasNegation: Self.hasNegation(
+                    isNegated: Self.isNegated(
                         text,
                         localization: localization,
                     ),
@@ -217,7 +217,7 @@ public struct DSpeechLexiconCorrector: Sendable {
         )
         guard limit > 0 else { return nil }
 
-        let hasNegation = Self.hasNegation(
+        let isNegated = Self.isNegated(
             window,
             localization: localization,
         )
@@ -235,7 +235,7 @@ public struct DSpeechLexiconCorrector: Sendable {
 
         for term in candidates {
             // Negation and side are immutable clinical facts.
-            guard term.hasNegation == hasNegation, term.sides == sides else { continue }
+            guard term.isNegated == isNegated, term.sides == sides else { continue }
             // Preserve inflection rather than forcing a canonical dictionary
             // ending: nodules != nodule; щитовидной железы != щитовидная железа.
             // This deliberately leaves misspelled endings for review.
@@ -340,7 +340,7 @@ public struct DSpeechLexiconCorrector: Sendable {
         return result
     }
 
-    private static func hasNegation(
+    private static func isNegated(
         _ text: String,
         localization: DSpeechLexiconLocalization,
     ) -> Bool {

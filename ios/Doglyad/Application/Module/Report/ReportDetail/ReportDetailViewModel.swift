@@ -18,7 +18,7 @@ final class ReportDetailViewModel: DModuleViewModel {
     private let messager: DMessager
     private let getSelectedTemplate: () -> USExaminationTemplate?
     private let getNeuralModel: () -> USExaminationNeuralModel
-    private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
+    private let onNeuralModelSelected: (USExaminationNeuralModel) async throws -> Void
 
     init(
         container: DependencyContainer,
@@ -33,7 +33,7 @@ final class ReportDetailViewModel: DModuleViewModel {
         observeExaminationChanges: @escaping (@escaping () -> Void) -> AnyCancellable,
         getSelectedTemplate: @escaping () -> USExaminationTemplate?,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
-        onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void,
+        onNeuralModelSelected: @escaping (USExaminationNeuralModel) async throws -> Void,
     ) {
         self.messager = messager
         self.getSelectedTemplate = getSelectedTemplate
@@ -61,7 +61,7 @@ final class ReportDetailViewModel: DModuleViewModel {
     @Published var isLoading = false
 
     var subTitle: String {
-        "\(report.examinationData.patientName), \(report.date.localizedDateTime())"
+        "\(report.examinationData.patientName), \(report.date.localizedDateTime(locale: l10n.locale))"
     }
 
     func onTapBack() {
@@ -119,7 +119,7 @@ final class ReportDetailViewModel: DModuleViewModel {
             arguments: SelectNeuralModelArguments(
                 currentValue: getNeuralModel(),
                 onSelected: { [weak self] model in
-                    self?.onNeuralModelSelected(
+                    try await self?.onNeuralModelSelected(
                         model,
                     )
                 },
@@ -200,11 +200,11 @@ final class ReportDetailViewModel: DModuleViewModel {
 
             let neuralModelSettings = self.neuralModelSettings
             let locale = self.container.language.currentLocale
-            let request = USExaminationRequest(
+            let request = try await USExaminationRequest(
                 neuralModelSettings: neuralModelSettings,
                 examinationData: self.report.examinationData,
                 template: self.getSelectedTemplate()?.content,
-                includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations(),
+                isRecommendationsIncluded: self.container.userSettingsRepository.getIsRecommendationsIncluded(),
                 isPhotoRemarks: self.container.userSettingsRepository.getIsPhotoRemarks(),
                 isDescriptionRemarks: self.container.userSettingsRepository.getIsDescriptionRemarks(),
             )
@@ -225,7 +225,7 @@ final class ReportDetailViewModel: DModuleViewModel {
                 actualModelReport: modelReport,
                 previousModelReports: [self.report.actualModelReport] + self.report.previousModelReports,
             )
-            await self.container.ultrasoundReportRepository.updateReport(
+            try await self.container.ultrasoundReportRepository.updateReport(
                 report: updatedReport,
             )
             self.incrementRequestCount()

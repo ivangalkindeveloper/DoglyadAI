@@ -2,7 +2,7 @@ import Foundation
 
 @MainActor
 protocol SubscriptionRepositoryProtocol: AnyObject {
-    func configure()
+    func configure() async throws
 
     func fetchPlans() async throws -> [SubscriptionPlan]
 

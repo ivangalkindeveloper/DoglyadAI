@@ -101,6 +101,12 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel {
         loadTemplates()
     }
 
+    func onFocusChanged(
+        _ newFocus: Focus?,
+    ) {
+        focus = newFocus
+    }
+
     func unfocus() {
         focus = nil
     }

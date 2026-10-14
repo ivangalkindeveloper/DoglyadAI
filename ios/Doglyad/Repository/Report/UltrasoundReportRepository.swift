@@ -17,25 +17,25 @@ final class UltrasoundReportRepository: UltrasoundReportRepositoryProtocol {
 }
 
 extension UltrasoundReportRepository {
-    func getSelectedExaminationTypeId() -> String? {
+    func getSelectedExaminationTypeId() async throws -> String? {
         database.getSelectedUSExaminationTypeId()
     }
 
     func setSelectedExaminationTypeId(
         id: String,
-    ) {
+    ) async throws {
         database.setSelectedUSExaminationTypeId(
             value: id,
         )
     }
 
-    func getRecentExaminationTypeIds() -> [String] {
+    func getRecentExaminationTypeIds() async throws -> [String] {
         database.getRecentUSExaminationTypeIds()
     }
 
     func setRecentExaminationTypeIds(
         _ ids: [String],
-    ) {
+    ) async throws {
         database.setRecentUSExaminationTypeIds(
             values: Array(
                 ids.prefix(
@@ -47,8 +47,8 @@ extension UltrasoundReportRepository {
 
     func recordRecentExaminationTypeId(
         _ id: String,
-    ) {
-        setRecentExaminationTypeIds(
+    ) async throws {
+        try await setRecentExaminationTypeIds(
             RecentUSExaminationTypes.recording(
                 id,
                 in: getRecentExaminationTypeIds(),
@@ -98,8 +98,8 @@ extension UltrasoundReportRepository {
     func getReports(
         limit: Int,
         offset: Int,
-    ) async -> [USExaminationReport] {
-        await database.examinationReports.fetchExaminationReports(
+    ) async throws -> [USExaminationReport] {
+        try await database.examinationReports.fetchExaminationReports(
             limit: limit,
             offset: offset,
         ) { models in
@@ -109,33 +109,33 @@ extension UltrasoundReportRepository {
         }
     }
 
-    func getReportsCount() async -> Int {
-        await database.examinationReports.fetchExaminationReportsCount()
+    func getReportsCount() async throws -> Int {
+        try await database.examinationReports.fetchExaminationReportsCount()
     }
 
     func setReport(
         report: USExaminationReport,
-    ) async {
-        try? await database.examinationReports.setExaminationReport(
+    ) async throws {
+        try await database.examinationReports.setExaminationReport(
             value: report.toDB(),
         )
     }
 
     func updateReport(
         report: USExaminationReport,
-    ) async {
-        try? await database.examinationReports.updateExaminationReport(
+    ) async throws {
+        try await database.examinationReports.updateExaminationReport(
             value: report.toDB(),
         )
     }
 
-    func clearAllReports() async {
-        try? await database.examinationReports.clearAllExaminationReports()
+    func clearAllReports() async throws {
+        try await database.examinationReports.clearAllExaminationReports()
     }
 }
 
 extension UltrasoundReportRepository {
-    @MainActor func clearAll() async {
-        await database.clearAll()
+    @MainActor func clearAll() async throws {
+        try await database.clearAll()
     }
 }

@@ -117,14 +117,12 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
     }
 }
 
-private extension USExaminationScanPhoto {
+extension USExaminationScanPhoto {
     enum CodingKeys: String, CodingKey {
         case id
         case data
     }
-}
 
-extension USExaminationScanPhoto {
     static func fromDB(
         _ db: USExaminationScanPhotoDB,
     ) -> USExaminationScanPhoto {
@@ -143,6 +141,37 @@ extension USExaminationScanPhoto {
         USExaminationScanPhotoDB(
             id: id,
             data: image.pngData() ?? Data(),
+            thumbnailData: thumbnail.jpegData(
+                compressionQuality: Self.thumbnailCompressionQuality,
+            ),
+        )
+    }
+
+    static func fromDraftDB(
+        _ db: USExaminationDraftPhotoDB,
+    ) -> USExaminationScanPhoto? {
+        guard let image = UIImage(
+            data: db.data,
+        ) else { return nil }
+
+        return USExaminationScanPhoto(
+            id: db.id,
+            image: image,
+            thumbnail: db.thumbnailData.flatMap { UIImage(
+                data: $0,
+            ) },
+        )
+    }
+
+    func toDraftDB(
+        position: Int,
+    ) -> USExaminationDraftPhotoDB? {
+        guard let data = image.pngData() else { return nil }
+
+        return USExaminationDraftPhotoDB(
+            id: id,
+            position: position,
+            data: data,
             thumbnailData: thumbnail.jpegData(
                 compressionQuality: Self.thumbnailCompressionQuality,
             ),

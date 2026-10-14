@@ -120,7 +120,11 @@ def test_catalogs_match_client_contract(environment: str, monkeypatch: pytest.Mo
 def test_client_bundles_only_bootstrap_localization() -> None:
     resources = _ROOT / "ios/Doglyad/Resources"
     assert not list((resources / "Localization").rglob("*.json"))
-    assert set(_json(resources / "Localizable.xcstrings")["strings"]) == {
+    strings = _json(resources / "Localizable.xcstrings")["strings"]
+    for key in ("", "%@"):
+        if key in strings:
+            assert not strings[key].get("localizations"), "Technical extraction keys must not contain translations"
+    assert set(strings) - {"", "%@"} == {
         "buttonUpdate",
         "errorNoInternetConnectionTitle",
         "errorNoInternetConnectionDescription",

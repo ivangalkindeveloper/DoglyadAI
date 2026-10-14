@@ -20,7 +20,7 @@ struct ReportDetailModelReportSectionView: DView {
                 color: color.grayscalePlacehold,
             )
 
-            ExpandableMarkdownView(
+            ReportDetailExpandableMarkdownView(
                 text: text,
                 backgroundColor: color.grayscaleBackground,
                 collapsedLineLimit: collapsedLineLimit,

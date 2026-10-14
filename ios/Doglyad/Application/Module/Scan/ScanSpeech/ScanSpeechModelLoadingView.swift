@@ -2,8 +2,8 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanSpeechModelLoadingView: DView {
+    @EnvironmentObject private var viewModel: ScanSpeechViewModel
     @EnvironmentObject var theme: DTheme
-    let description: LocalizedStringResource
 
     var body: some View {
         Group {
@@ -14,14 +14,16 @@ struct ScanSpeechModelLoadingView: DView {
             .tint(
                 color.primaryDefault,
             )
-            DText(
-                description,
-            )
-            .dStyle(
-                font: typography.textSmall,
-                color: color.grayscaleBackgroundWeak,
-                alignment: .center,
-            )
+            if let description = viewModel.modelPreparationLoadingDescription {
+                DText(
+                    description,
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscaleBackgroundWeak,
+                    alignment: .center,
+                )
+            }
         }
     }
 }

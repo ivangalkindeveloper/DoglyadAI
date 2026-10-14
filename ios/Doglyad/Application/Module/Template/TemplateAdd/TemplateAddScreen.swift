@@ -26,14 +26,12 @@ struct TemplateAddScreen: View {
                 onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 messager: messager,
                 onSaveTemplate: { [ultrasoundViewModel, arguments] template in
-                    ultrasoundViewModel.saveTemplate(
+                    try await ultrasoundViewModel.saveTemplate(
                         template,
-                        onChanged: {
-                            arguments?.onTemplatesChanged?()
-                            arguments?.onAddSuccess?(
-                                template,
-                            )
-                        },
+                    )
+                    arguments?.onTemplatesChanged?()
+                    try await arguments?.onAddSuccess?(
+                        template,
                     )
                 },
             ),

@@ -54,53 +54,6 @@ public struct DShimmerModifier: ViewModifier {
     }
 }
 
-public extension View {
-    func dShimmer(
-        isShimmering: Bool = true,
-        cornerRadius: CGFloat = .infinity,
-    ) -> some View {
-        modifier(
-            DShimmerModifier(
-                isShimmering: isShimmering,
-                cornerRadius: cornerRadius,
-            ),
-        )
-    }
-}
-
-private func shimmerSurface(
-    _ label: String,
-    cornerRadius: CGFloat,
-    height: CGFloat = 56,
-) -> some View {
-    RoundedRectangle(
-        cornerRadius: cornerRadius,
-    )
-    .fill(
-        LinearGradient(
-            colors: [.blue, .indigo],
-            startPoint: .leading,
-            endPoint: .trailing,
-        ),
-    )
-    .frame(
-        height: height,
-    )
-    .overlay {
-        Text(
-            label,
-        )
-        .font(
-            .footnote.weight(
-                .semibold,
-            ),
-        )
-        .foregroundStyle(
-            .white,
-        )
-    }
-}
-
 #Preview(
     "Chip (capsule)",
 ) {
@@ -135,8 +88,8 @@ private func shimmerSurface(
 #Preview(
     "Card",
 ) {
-    shimmerSurface(
-        "Premium card",
+    DShimmerPreviewSurface(
+        label: "Premium card",
         cornerRadius: 24,
         height: 120,
     )
@@ -152,28 +105,28 @@ private func shimmerSurface(
     VStack(
         spacing: 24,
     ) {
-        shimmerSurface(
-            "cornerRadius 0",
+        DShimmerPreviewSurface(
+            label: "cornerRadius 0",
             cornerRadius: 0,
         )
-        shimmerSurface(
-            "cornerRadius 0",
+        DShimmerPreviewSurface(
+            label: "cornerRadius 0",
             cornerRadius: 0,
         )
         .dShimmer(
             cornerRadius: 0,
         )
 
-        shimmerSurface(
-            "cornerRadius 12",
+        DShimmerPreviewSurface(
+            label: "cornerRadius 12",
             cornerRadius: 12,
         )
         .dShimmer(
             cornerRadius: 12,
         )
 
-        shimmerSurface(
-            "cornerRadius 28",
+        DShimmerPreviewSurface(
+            label: "cornerRadius 28",
             cornerRadius: 28,
         )
         .dShimmer(

@@ -68,7 +68,9 @@ struct ReportDetailModelReportCardView: DView {
                         )
 
                         DText(
-                            report.date.localized(),
+                            report.date.localized(
+                                locale: l10n.locale,
+                            ),
                         )
                         .dStyle(
                             font: typography.linkSmall,

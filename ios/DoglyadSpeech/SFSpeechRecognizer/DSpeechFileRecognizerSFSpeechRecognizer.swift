@@ -15,8 +15,8 @@ public final class DSpeechFileRecognizerSFSpeechRecognizer {
         fileURL: URL,
         locale: Locale,
         contextualStrings: [String],
-        useHints: Bool = true,
-        useCorrection: Bool = true,
+        isHintingEnabled: Bool = true,
+        isCorrectionEnabled: Bool = true,
         lexiconLocalization: DSpeechLexiconLocalization,
     ) async throws -> DSpeechFileTranscription {
         let authorization: SFSpeechRecognizerAuthorizationStatus = switch SFSpeechRecognizer.authorizationStatus() {
@@ -65,7 +65,7 @@ public final class DSpeechFileRecognizerSFSpeechRecognizer {
         request.shouldReportPartialResults = false
         request.addsPunctuation = true
         request.taskHint = .dictation
-        request.contextualStrings = useHints ? contextualStrings : []
+        request.contextualStrings = isHintingEnabled ? contextualStrings : []
 
         let rawText = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<String, any Error>) in
             self.continuation = continuation
@@ -107,7 +107,7 @@ public final class DSpeechFileRecognizerSFSpeechRecognizer {
                 )
             }
         }
-        let correctedText = useCorrection
+        let correctedText = isCorrectionEnabled
             ? DSpeechLexiconCorrector(
                 terms: contextualStrings,
                 localization: lexiconLocalization,

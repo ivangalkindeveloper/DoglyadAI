@@ -53,7 +53,7 @@ final class StorageViewModel: DModuleViewModel {
                     guard let self else { return }
 
                     handle {
-                        await self.container.ultrasoundReportRepository.clearAllReports()
+                        try await self.container.ultrasoundReportRepository.clearAllReports()
                     } onMainSuccess: { _ in
                         self.messager.show(
                             type: .success,
@@ -82,7 +82,7 @@ final class StorageViewModel: DModuleViewModel {
                     guard let self else { return }
 
                     handle {
-                        await self.container.ultrasoundReportRepository.clearAll()
+                        try await self.container.ultrasoundReportRepository.clearAll()
                     } onMainSuccess: { _ in
                         self.messager.show(
                             type: .success,

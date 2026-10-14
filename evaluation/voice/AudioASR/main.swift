@@ -9,7 +9,7 @@ private struct Job: Decodable {
     let contextualStrings: [String]
     let correctionStrings: [String]?
     let engine: String?
-    let useHints: Bool?
+    let isHintingEnabled: Bool?
     let isFarField: Bool?
     let lexiconLocalization: DSpeechLexiconLocalization
 }
@@ -42,7 +42,7 @@ private func recognize(_ job: Job) async -> Result {
                 fileURL: URL(fileURLWithPath: job.audioPath),
                 locale: requestedLocale,
                 contextualStrings: job.contextualStrings,
-                useHints: job.useHints ?? true,
+                isHintingEnabled: job.isHintingEnabled ?? true,
                 lexiconLocalization: job.lexiconLocalization
             )
             return Result(id: job.id, status: "ok", rawText: result.rawText,
@@ -83,7 +83,7 @@ private func recognize(_ job: Job) async -> Result {
     )
     let analyzer = SpeechAnalyzer(modules: [transcriber])
     do {
-        if job.useHints ?? true, !job.contextualStrings.isEmpty {
+        if job.isHintingEnabled ?? true, !job.contextualStrings.isEmpty {
             let context = AnalysisContext()
             context.contextualStrings[.general] = job.contextualStrings
             try await analyzer.setContext(context)

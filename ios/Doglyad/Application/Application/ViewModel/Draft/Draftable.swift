@@ -7,26 +7,30 @@ protocol Draftable: AnyObject {
 
     var draftAutosaver: DraftAutosaver<DraftSnapshot> { get }
 
-    func loadDraft() async -> Draft?
+    func loadDraft() async throws -> Draft?
 
     func applyDraft(
         _ draft: Draft,
     )
 
-    func clearDraft() async
+    func clearDraft() async throws
 
     func makeDraftSnapshot() -> DraftSnapshot
 
     func saveDraftSnapshot(
         _ draft: DraftSnapshot,
-    ) async
+    ) async throws
+
+    func onDraftSaveFailed(
+        _ error: Error,
+    )
 
     func draftChangePublishers() -> [AnyPublisher<Void, Never>]
 }
 
 extension Draftable {
-    func restoreDraft() async -> Bool {
-        guard let draft = await loadDraft() else { return false }
+    func restoreDraft() async throws -> Bool {
+        guard let draft = try await loadDraft() else { return false }
 
         applyDraft(
             draft,
@@ -42,10 +46,13 @@ extension Draftable {
             },
             saveDraft: { [weak self] draft in
                 guard let self else { return }
-                await saveDraftSnapshot(
+                try await saveDraftSnapshot(
                     draft,
                 )
             },
+            onFailure: { [weak self] error in self?.onDraftSaveFailed(
+                error,
+            ) },
         )
     }
 
@@ -57,7 +64,7 @@ extension Draftable {
         draftAutosaver.flush()
     }
 
-    func waitForPendingDraftSave() async {
-        await draftAutosaver.waitForPendingSave()
+    func waitForPendingDraftSave() async throws {
+        try await draftAutosaver.waitForPendingSave()
     }
 }

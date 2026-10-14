@@ -5,16 +5,16 @@ import SwiftData
 public actor DExaminationTemplatesStore {
     public func fetchExaminationTemplates<T: Sendable>(
         _ transform: @Sendable ([USExaminationTemplateDB]) -> T,
-    ) -> T {
+    ) throws -> T {
         let descriptor = FetchDescriptor<USExaminationTemplateDB>(
             sortBy: [SortDescriptor(
                 \.usExaminationTypeId,
                 order: .forward,
             )],
         )
-        let models = (try? modelContext.fetch(
+        let models = try modelContext.fetch(
             descriptor,
-        )) ?? []
+        )
         return transform(
             models,
         )
@@ -27,7 +27,7 @@ public actor DExaminationTemplatesStore {
         let descriptor = FetchDescriptor<USExaminationTemplateDB>(
             predicate: #Predicate<USExaminationTemplateDB> { $0.id == id },
         )
-        if let existing = try? modelContext.fetch(
+        if let existing = try modelContext.fetch(
             descriptor,
         ).first {
             existing.usExaminationTypeId = value.usExaminationTypeId
@@ -38,7 +38,7 @@ public actor DExaminationTemplatesStore {
                 value,
             )
         }
-        try modelContext.save()
+        try saveChanges()
     }
 
     public func deleteExaminationTemplate(
@@ -47,13 +47,13 @@ public actor DExaminationTemplatesStore {
         let descriptor = FetchDescriptor<USExaminationTemplateDB>(
             predicate: #Predicate<USExaminationTemplateDB> { $0.id == id },
         )
-        guard let item = try? modelContext.fetch(
+        guard let item = try modelContext.fetch(
             descriptor,
         ).first else { return }
         modelContext.delete(
             item,
         )
-        try modelContext.save()
+        try saveChanges()
     }
 
     public func clearAllExaminationTemplates() throws {
@@ -63,14 +63,23 @@ public actor DExaminationTemplatesStore {
                 order: .forward,
             )],
         )
-        let items = (try? modelContext.fetch(
+        let items = try modelContext.fetch(
             descriptor,
-        )) ?? []
+        )
         for item in items {
             modelContext.delete(
                 item,
             )
         }
-        try modelContext.save()
+        try saveChanges()
+    }
+
+    private func saveChanges() throws {
+        do {
+            try modelContext.save()
+        } catch {
+            modelContext.rollback()
+            throw error
+        }
     }
 }

@@ -1,7 +1,6 @@
 {
   "code": "ru",
   "dictation": {
-    "birthEvidenceUsesValue": true,
     "dateFormats": [
       "d MMMM yyyy",
       "d MMMM yyyy 'года'"
@@ -15,6 +14,8 @@
       "\\bпол\\s+(мужчина|женщина)\\b",
       "\\bродил(?:ся|ась)\\s+(?:19|20)\\d{2}-\\d{2}-\\d{2}\\s*,\\s*(мужчина|женщина)\\b"
     ],
+    "isBirthEvidenceValueUsed": true,
+    "isDayFirstNumericDates": true,
     "namePatterns": [
       "\\b(?:пациент|пациента|осматриваю|о\\s+пациенте)\\s+([\\p{L}]+\\s+[\\p{L}]+)\\s*[,.:]\\s*(?:(?:пол\\s+)?(?:мужчина|женщина)|дата\\s+рождения)\\b",
       "\\b(?:для|о\\s+пациенте)\\s+([\\p{L}]+\\s+[\\p{L}]+)\\s*[.]\\s*пол\\b",
@@ -208,8 +209,7 @@
       "milliliter": "мл",
       "millimeter": "мм",
       "velocity": "см/с"
-    },
-    "usesDayFirstNumericDates": true
+    }
   },
   "speech": {
     "ignoredPhoneticCharacters": "ьъ",

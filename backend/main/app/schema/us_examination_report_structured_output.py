@@ -28,7 +28,7 @@ _POINT_DESCRIPTIONS: dict[str, str] = {
 
 
 def us_examination_report_structured_output(
-    include_recommendations: bool,
+    is_recommendations_included: bool,
     *,
     is_photo_remarks: bool,
     is_description_remarks: bool,
@@ -38,7 +38,7 @@ def us_examination_report_structured_output(
     schema = USExaminationReport.model_json_schema()
     properties = schema["properties"]
     optional_fields = {
-        "recommendations": include_recommendations,
+        "recommendations": is_recommendations_included,
         "descriptionRemarks": is_description_remarks,
         "photoRemarks": is_photo_remarks and bool(photo_ids),
     }

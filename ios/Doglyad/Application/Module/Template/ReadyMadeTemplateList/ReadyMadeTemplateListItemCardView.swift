@@ -48,7 +48,7 @@ struct ReadyMadeTemplateListItemCardView: DView {
                 .plain,
             )
 
-            ExpandableTextView(
+            ReadyMadeTemplateListExpandableTextView(
                 text: template.content,
                 backgroundColor: color.grayscaleBackground,
                 collapsedLineLimit: 8,

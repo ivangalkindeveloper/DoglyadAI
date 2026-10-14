@@ -12,8 +12,9 @@ final class TemplateAddViewModel: DModuleViewModel, DTextFieldFocusValidating {
         case content
     }
 
+    private let templateId = UUID()
     private let messager: DMessager
-    private let onSaveTemplate: (USExaminationTemplate) -> Void
+    private let onSaveTemplate: (USExaminationTemplate) async throws -> Void
 
     init(
         container: DependencyContainer,
@@ -24,19 +25,11 @@ final class TemplateAddViewModel: DModuleViewModel, DTextFieldFocusValidating {
         getNeuralModelSettings: @escaping () -> NeuralModelSettings,
         onRequestCountIncremented: @escaping () -> Void,
         messager: DMessager,
-        onSaveTemplate: @escaping (USExaminationTemplate) -> Void,
+        onSaveTemplate: @escaping (USExaminationTemplate) async throws -> Void,
     ) {
         self.messager = messager
         self.onSaveTemplate = onSaveTemplate
-        if let selectedTypeId = container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
-           let selectedType = container.usExaminationTypesById[
-               selectedTypeId,
-           ]
-        {
-            usExaminationType = selectedType
-        } else {
-            usExaminationType = container.usExaminationTypeDefault
-        }
+        usExaminationType = container.usExaminationTypeDefault
         super.init(
             container: container,
             router: router,
@@ -51,7 +44,19 @@ final class TemplateAddViewModel: DModuleViewModel, DTextFieldFocusValidating {
         )
     }
 
-    @Published private(set) var isLoading = false
+    override func onInit() {
+        handle {
+            try await self.container.ultrasoundReportRepository.getSelectedExaminationTypeId()
+        } onDefer: { self.isLoading = false } onMainSuccess: { id in
+            if let id, let type = self.container.usExaminationTypesById[
+                id,
+            ] { self.usExaminationType = type }
+        } onMainUnknownError: { _ in self.messager.showUnknownError(
+            l10n: self.l10n,
+        ) }
+    }
+
+    @Published private(set) var isLoading = true
     @Published var focus: Focus?
     @Published var usExaminationType: USExaminationType
     @NestedObservableObject var nameController = DTextFieldController(
@@ -81,6 +86,12 @@ final class TemplateAddViewModel: DModuleViewModel, DTextFieldFocusValidating {
         coordinator.pop()
     }
 
+    func onFocusChanged(
+        _ newFocus: Focus?,
+    ) {
+        focus = newFocus
+    }
+
     func unfocus() {
         focus = nil
     }
@@ -97,7 +108,7 @@ final class TemplateAddViewModel: DModuleViewModel, DTextFieldFocusValidating {
         }
     }
 
-    var canFocusPreviousField: Bool {
+    var isPreviousFieldFocusable: Bool {
         switch focus {
         case .name, .none:
             false
@@ -106,7 +117,7 @@ final class TemplateAddViewModel: DModuleViewModel, DTextFieldFocusValidating {
         }
     }
 
-    var canFocusNextField: Bool {
+    var isNextFieldFocusable: Bool {
         switch focus {
         case .name:
             true
@@ -185,24 +196,34 @@ final class TemplateAddViewModel: DModuleViewModel, DTextFieldFocusValidating {
         unfocus()
 
         let template = USExaminationTemplate(
+            id: templateId,
             usExaminationType: usExaminationType,
             name: name,
             content: content,
         )
         isLoading = true
-        onSaveTemplate(
-            template,
-        )
-        messager.show(
-            type: .success,
-            title: container.l10n[
-                .templateSavedSuccessTitle,
-            ],
-            description: container.l10n[
-                .templateSavedSuccessDescription,
-            ],
-        )
-        coordinator.pop()
+        handle {
+            try await self.onSaveTemplate(
+                template,
+            )
+        } onDefer: {
+            self.isLoading = false
+        } onMainSuccess: { _ in
+            self.messager.show(
+                type: .success,
+                title: self.container.l10n[
+                    .templateSavedSuccessTitle,
+                ],
+                description: self.container.l10n[
+                    .templateSavedSuccessDescription,
+                ],
+            )
+            self.coordinator.pop()
+        } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 
     private func onReadyMadeTemplateSelected(

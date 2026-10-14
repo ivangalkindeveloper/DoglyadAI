@@ -284,37 +284,26 @@ struct ReportRemarksTests {
     }
 
     @Test
-    func photoViewerRestoresVisibilityAndShowsOnlyCurrentPhotoRemarks() {
+    func photoViewerRestoresVisibilityAndShowsOnlyCurrentPhotoRemarks() async throws {
         let container = DependencyContainer.previewable
         let settings = container.userSettingsRepository
-        let initialIsPhotoRemarks = settings.getIsPhotoRemarks()
-        let initialIsDescriptionRemarks = settings.getIsDescriptionRemarks()
-        let initialIsRemarksVisible = settings.getIsRemarksVisible()
-        defer {
-            settings.setIsPhotoRemarks(
-                initialIsPhotoRemarks,
-            )
-            settings.setIsDescriptionRemarks(
-                initialIsDescriptionRemarks,
-            )
-            settings.setIsRemarksVisible(
-                initialIsRemarksVisible,
-            )
-        }
-        settings.setIsPhotoRemarks(
+        let initialIsPhotoRemarks = try await settings.getIsPhotoRemarks()
+        let initialIsDescriptionRemarks = try await settings.getIsDescriptionRemarks()
+        let initialIsRemarksVisible = try await settings.getIsRemarksVisible()
+        try await settings.setIsPhotoRemarks(
             false,
         )
-        settings.setIsDescriptionRemarks(
+        try await settings.setIsDescriptionRemarks(
             false,
         )
-        settings.setIsRemarksVisible(
+        try await settings.setIsRemarksVisible(
             false,
         )
         #expect(
-            !settings.getIsPhotoRemarks(),
+            try await !settings.getIsPhotoRemarks(),
         )
         #expect(
-            !settings.getIsDescriptionRemarks(),
+            try await !settings.getIsDescriptionRemarks(),
         )
         let root = SubscriptionRootViewModel(
             container: container,
@@ -346,6 +335,8 @@ struct ReportRemarksTests {
             root: root,
             arguments: arguments,
         )
+        model.onInit()
+        await model.lastTask?.value
         #expect(
             !model.isRemarksVisible,
         )
@@ -365,22 +356,27 @@ struct ReportRemarksTests {
         model.setRemarksVisibility(
             true,
         )
+        await model.lastTask?.value
         #expect(
-            settings.getIsRemarksVisible(),
+            try await settings.getIsRemarksVisible(),
         )
         model.setRemarksVisibility(
             false,
         )
+        await model.lastTask?.value
         #expect(
             !model.isRemarksVisible,
         )
         #expect(
-            !settings.getIsRemarksVisible(),
+            try await !settings.getIsRemarksVisible(),
         )
         model.setRemarksVisibility(
             true,
         )
-        model.selectedPhotoID = second.id
+        await model.lastTask?.value
+        model.onPhotoSelected(
+            second.id,
+        )
         #expect(
             !model.isRemarksToggleVisible,
         )
@@ -392,6 +388,8 @@ struct ReportRemarksTests {
             root: root,
             arguments: arguments,
         )
+        reopened.onInit()
+        await reopened.lastTask?.value
         #expect(
             reopened.isRemarksVisible,
         )
@@ -406,6 +404,15 @@ struct ReportRemarksTests {
         )
         #expect(
             (model.router.sheet?.arguments as? PhotoRemarkArguments)?.description == point.description,
+        )
+        try await settings.setIsPhotoRemarks(
+            initialIsPhotoRemarks,
+        )
+        try await settings.setIsDescriptionRemarks(
+            initialIsDescriptionRemarks,
+        )
+        try await settings.setIsRemarksVisible(
+            initialIsRemarksVisible,
         )
     }
 

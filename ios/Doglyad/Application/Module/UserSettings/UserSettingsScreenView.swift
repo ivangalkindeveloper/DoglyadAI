@@ -107,8 +107,10 @@ struct UserSettingsScreenView: DView {
                             description: l10n[
                                 .userSettingsRecommendationsDescription,
                             ],
-                            isOn: $viewModel.includeRecommendations,
-                            action: viewModel.toggleIncludeRecommendations,
+                            isOn: .constant(
+                                viewModel.isRecommendationsIncluded,
+                            ),
+                            action: viewModel.toggleRecommendationsIncluded,
                         )
                         .padding(
                             .bottom,
@@ -122,7 +124,9 @@ struct UserSettingsScreenView: DView {
                             description: l10n[
                                 .userSettingsPhotoRemarksDescription,
                             ],
-                            isOn: $viewModel.isPhotoRemarks,
+                            isOn: .constant(
+                                viewModel.isPhotoRemarks,
+                            ),
                             action: viewModel.togglePhotoRemarks,
                         )
                         .padding(
@@ -137,7 +141,9 @@ struct UserSettingsScreenView: DView {
                             description: l10n[
                                 .userSettingsDescriptionRemarksDescription,
                             ],
-                            isOn: $viewModel.isDescriptionRemarks,
+                            isOn: .constant(
+                                viewModel.isDescriptionRemarks,
+                            ),
                             action: viewModel.toggleDescriptionRemarks,
                         )
                     }
@@ -190,7 +196,9 @@ struct UserSettingsScreenView: DView {
             initial: true,
         ) { _, newValue in
             guard viewModel.focus != newValue else { return }
-            viewModel.focus = newValue
+            viewModel.onFocusChanged(
+                newValue,
+            )
         }
         .onChange(
             of: viewModel.focus,

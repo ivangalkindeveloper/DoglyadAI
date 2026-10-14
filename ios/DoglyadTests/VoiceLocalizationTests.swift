@@ -57,7 +57,7 @@ struct VoiceLocalizationTests {
         arguments: [false, true],
     )
     func detectsKeyDrift(
-        extraKey: Bool,
+        isExtraKeyPresent: Bool,
     ) throws {
         var catalog = try catalogJSON(
             code: "en",
@@ -72,7 +72,7 @@ struct VoiceLocalizationTests {
                 "patterns",
             ] as? [String: String],
         )
-        if extraKey {
+        if isExtraKeyPresent {
             patterns[
                 "unregisteredRule",
             ] = "^test$"

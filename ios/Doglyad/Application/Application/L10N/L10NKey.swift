@@ -137,6 +137,8 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanCaptureDescription
     case scanDevelopmentExaminationDescription
     case scanDevelopmentPatientComplaintsDescription
+    case scanDraftSaveErrorMessageDescription
+    case scanDraftSaveErrorMessageTitle
     case scanExaminationDateLabel
     case scanExaminationDefaultNumberLabel
     case scanExaminationDescriptionLabel

@@ -61,7 +61,7 @@ async def generate_report(
             model_id=neural_model.id,
             system_prompt=prompt_factory.system_prompt(
                 settings,
-                include_recommendations=body.includeRecommendations,
+                is_recommendations_included=body.isRecommendationsIncluded,
                 is_photo_remarks=body.isPhotoRemarks and bool(examination.photos),
                 is_description_remarks=body.isDescriptionRemarks,
             ),
@@ -71,7 +71,7 @@ async def generate_report(
                 body.template,
             ),
             structured_output=us_examination_report_structured_output(
-                include_recommendations=body.includeRecommendations,
+                is_recommendations_included=body.isRecommendationsIncluded,
                 is_photo_remarks=body.isPhotoRemarks,
                 is_description_remarks=body.isDescriptionRemarks,
                 photo_ids=[photo.id for photo in examination.photos],

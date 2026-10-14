@@ -76,7 +76,7 @@ struct DraftTests {
             currentForm: form.toDB(),
         )
 
-        let snapshot = await store.fetchDraft { draft in
+        let snapshot = try await store.fetchDraft { draft in
             guard let draft else { return Snapshot.empty }
             let value = USExaminationDraft.fromDB(
                 draft,
@@ -117,7 +117,7 @@ struct DraftTests {
         try await store.upsertDraftForm(
             value: updatedForm.toDB(),
         )
-        let updatedSnapshot = await store.fetchDraft { draft in
+        let updatedSnapshot = try await store.fetchDraft { draft in
             guard let draft else { return Snapshot.empty }
             let value = USExaminationDraft.fromDB(
                 draft,
@@ -140,7 +140,7 @@ struct DraftTests {
         )
 
         try await store.clearDraft()
-        let isEmpty = await store.fetchDraft { $0 == nil }
+        let isEmpty = try await store.fetchDraft { $0 == nil }
         #expect(
             isEmpty,
         )
@@ -165,6 +165,9 @@ struct DraftTests {
                     draft,
                 )
             },
+            onFailure: { _ in Issue.record(
+                "Unexpected autosave failure",
+            ) },
         )
 
         currentDraft = 1
@@ -175,7 +178,7 @@ struct DraftTests {
         try await Task.sleep(
             nanoseconds: 60000000,
         )
-        await autosaver.waitForPendingSave()
+        try await autosaver.waitForPendingSave()
 
         #expect(
             savedDrafts == [2],
@@ -201,10 +204,13 @@ struct DraftTests {
                     draft,
                 )
             },
+            onFailure: { _ in Issue.record(
+                "Unexpected autosave failure",
+            ) },
         )
 
         autosaver.flush()
-        await autosaver.waitForPendingSave()
+        try await autosaver.waitForPendingSave()
         #expect(
             savedDrafts.isEmpty,
         )
@@ -212,13 +218,79 @@ struct DraftTests {
         currentDraft = 1
         changes.send()
         autosaver.flush()
-        await autosaver.waitForPendingSave()
+        try await autosaver.waitForPendingSave()
         try await Task.sleep(
             nanoseconds: 60000000,
         )
-        await autosaver.waitForPendingSave()
+        try await autosaver.waitForPendingSave()
         #expect(
             savedDrafts == [1],
+        )
+    }
+
+    @Test @MainActor
+    func failedAutosaveRetainsDraftAndRetriesInOrder() async throws {
+        let autosaver = DraftAutosaver<Int>()
+        let changes = PassthroughSubject<Void, Never>()
+        var draft = 1
+        var isStorageAvailable = false
+        var savedDrafts: [Int] = []
+        var failures = 0
+        autosaver.start(
+            publishers: [changes.eraseToAnyPublisher()],
+            makeDraft: { draft },
+            saveDraft: { value in
+                guard isStorageAvailable else { throw CocoaError(
+                    .fileWriteUnknown,
+                ) }
+                savedDrafts.append(
+                    value,
+                )
+            },
+            onFailure: { _ in failures += 1 },
+        )
+        changes.send()
+        autosaver.flush()
+        do {
+            try await autosaver.waitForPendingSave()
+            Issue.record(
+                "A failed write must propagate its error",
+            )
+        } catch {
+            #expect(
+                savedDrafts.isEmpty,
+            )
+            #expect(
+                failures == 1,
+            )
+        }
+
+        isStorageAvailable = true
+        draft = 2
+        changes.send()
+        autosaver.stop()
+        try await autosaver.waitForPendingSave()
+        #expect(
+            savedDrafts == [1, 2],
+        )
+    }
+
+    @Test @MainActor
+    func autosaverSerializesFormAndPhotoWrites() async throws {
+        let autosaver = DraftAutosaver<Int>()
+        var writes: [Int] = []
+        autosaver.enqueue {
+            await Task.yield()
+            writes.append(
+                1,
+            )
+        }
+        autosaver.enqueue { writes.append(
+            2,
+        ) }
+        try await autosaver.waitForPendingSave()
+        #expect(
+            writes == [1, 2],
         )
     }
 
@@ -248,6 +320,9 @@ struct DraftTests {
                     draft,
                 )
             },
+            onFailure: { _ in Issue.record(
+                "Unexpected autosave failure",
+            ) },
         )
 
         controller.setText(
@@ -256,7 +331,7 @@ struct DraftTests {
         try await Task.sleep(
             nanoseconds: 60000000,
         )
-        await autosaver.waitForPendingSave()
+        try await autosaver.waitForPendingSave()
 
         #expect(
             savedDrafts == ["185"],

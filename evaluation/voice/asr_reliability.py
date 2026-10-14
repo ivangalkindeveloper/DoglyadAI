@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+
 import argparse
 import json
 import math
@@ -8,6 +9,8 @@ import statistics
 import unicodedata
 from pathlib import Path
 from typing import Any
+
+from evaluation.voice.proposal_field_id import proposal_field_id
 
 
 def normalized(text: str) -> str:
@@ -99,9 +102,9 @@ def compare_recheck(data: dict[str, Any]) -> dict[str, Any]:
         if isinstance(row.get("asrRecheckSeconds"), (int, float)):
             times.append(row["asrRecheckSeconds"])
         for proposal in row["response"]["proposals"]:
-            field = WIRE_FIELD_IDS[proposal["field_id"]]
-            if proposal["field_id"] not in scalar_ids:
-                if proposal["field_id"] != "patient_complaints" or without_outer_punctuation(
+            field = WIRE_FIELD_IDS[proposal_field_id(proposal)]
+            if proposal_field_id(proposal) not in scalar_ids:
+                if proposal_field_id(proposal) != "patient_complaints" or without_outer_punctuation(
                     str(proposal["value"]).casefold()
                 ) not in {"no complaints", "жалоб нет", "нет жалоб", "жалобы отсутствуют"}:
                     continue
@@ -167,7 +170,7 @@ def analyze(path: Path) -> dict[str, Any]:
         for proposal in row["response"]["proposals"]:
             from evaluation.voice.score_candidate import WIRE_FIELD_IDS
 
-            field = WIRE_FIELD_IDS[proposal["field_id"]]
+            field = WIRE_FIELD_IDS[proposal_field_id(proposal)]
             if field not in row["automaticFieldIds"]:
                 continue
             signals = field_signals(row, proposal["evidence"])

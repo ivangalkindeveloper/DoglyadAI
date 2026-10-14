@@ -7,7 +7,7 @@ import SwiftUI
 
 @MainActor
 final class SettingsViewModel: DModuleViewModel {
-    private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
+    private let onNeuralModelSelected: (USExaminationNeuralModel) async throws -> Void
 
     init(
         container: DependencyContainer,
@@ -18,7 +18,7 @@ final class SettingsViewModel: DModuleViewModel {
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getNeuralModelSettings: @escaping () -> NeuralModelSettings,
         onRequestCountIncremented: @escaping () -> Void,
-        onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void,
+        onNeuralModelSelected: @escaping (USExaminationNeuralModel) async throws -> Void,
     ) {
         self.onNeuralModelSelected = onNeuralModelSelected
         neuralModel = getInitialNeuralModel()
@@ -41,7 +41,7 @@ final class SettingsViewModel: DModuleViewModel {
 
     override func onInit() {
         handle {
-            await self.container.ultrasoundReportRepository.getReportsCount()
+            try await self.container.ultrasoundReportRepository.getReportsCount()
         } onMainSuccess: { reportsCount in
             self.reportsCount = reportsCount
         }
@@ -130,10 +130,10 @@ final class SettingsViewModel: DModuleViewModel {
                     guard let self else { return }
                     guard neuralModel != model else { return }
 
-                    neuralModel = model
-                    onNeuralModelSelected(
+                    try await onNeuralModelSelected(
                         model,
                     )
+                    neuralModel = model
                 },
             ),
         )

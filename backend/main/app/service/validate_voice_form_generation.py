@@ -9,6 +9,7 @@ from app.model.ultrasound.us_voice_field_proposal import USVoiceFieldProposal
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.model.ultrasound.us_voice_form_parse_response import USVoiceFormParseResponse
 from app.model.ultrasound.us_voice_numeric_field_generation import USVoiceNumericFieldGeneration
+from app.model.ultrasound.us_voice_source_localization import USVoiceSourceLocalization
 from app.model.ultrasound.us_voice_text_field_generation import USVoiceTextFieldGeneration
 from app.service.clinical_value_is_supported import clinical_value_is_supported
 from app.service.gender_from_evidence import gender_from_evidence
@@ -50,8 +51,7 @@ def _valid_typed_value(proposal: USVoiceTextFieldGeneration | USVoiceNumericFiel
 
 
 def validate_voice_form_generation(
-    generated: USVoiceFormGeneration,
-    transcript: str,
+    generated: USVoiceFormGeneration, transcript: str, *, localization: USVoiceSourceLocalization
 ) -> USVoiceFormParseResponse:
     proposals: list[USVoiceFieldProposal] = []
     rejected: list[USVoiceFieldId] = []
@@ -63,18 +63,20 @@ def validate_voice_form_generation(
             for item in generated.root
             if item.field_id is USVoiceFieldId.EXAMINATION_DESCRIPTION
             and isinstance(item.value, str)
-            and clinical_value_is_supported(item.value, item.evidence)
+            and clinical_value_is_supported(item.value, item.evidence, localization=localization)
         ),
         None,
     )
-    clinical_text = labeled_clinical_text(transcript, description_evidence=description_evidence)
-    number_section = labeled_examination_number(transcript)
-    birthday_section = labeled_birth_date(transcript)
-    gender_section = labeled_patient_gender(transcript)
+    clinical_text = labeled_clinical_text(
+        transcript, description_evidence=description_evidence, localization=localization
+    )
+    number_section = labeled_examination_number(transcript, localization=localization)
+    birthday_section = labeled_birth_date(transcript, localization=localization)
+    gender_section = labeled_patient_gender(transcript, localization=localization)
     measurements = {
         field: section
         for field in (USVoiceFieldId.PATIENT_HEIGHT_CM, USVoiceFieldId.PATIENT_WEIGHT_KG)
-        if (section := labeled_measurement(transcript, field)) is not None
+        if (section := labeled_measurement(transcript, field, localization=localization)) is not None
     }
 
     for proposal in generated.root:
@@ -82,12 +84,12 @@ def validate_voice_form_generation(
             continue
         if proposal.field_id in seen:
             rejected.append(proposal.field_id)
-            proposals = [item for item in proposals if item.field_id != proposal.field_id]
+            proposals = [item for item in proposals if item.fieldId != proposal.field_id]
             continue
         seen.add(proposal.field_id)
         quote = proposal.evidence
         if proposal.field_id is USVoiceFieldId.PATIENT_NAME and folded_text.count(quote.casefold()) != 1:
-            quote = repair_patient_name_evidence(transcript, str(proposal.value)) or quote
+            quote = repair_patient_name_evidence(transcript, str(proposal.value), localization=localization) or quote
         folded_quote = quote.casefold()
         if not quote.strip() or folded_text.count(folded_quote) != 1 or not _valid_typed_value(proposal):
             rejected.append(proposal.field_id)
@@ -99,20 +101,22 @@ def validate_voice_form_generation(
         if proposal.field_id is USVoiceFieldId.PATIENT_GENDER and gender_section is not None:
             continue
         if proposal.field_id is USVoiceFieldId.EXAMINATION_NUMBER and not has_examination_number_evidence(
-            transcript, quote, str(proposal.value)
+            transcript, quote, str(proposal.value), localization=localization
         ):
             rejected.append(proposal.field_id)
             continue
-        checked = USVoiceFieldProposal.model_validate(proposal.model_dump())
+        checked = USVoiceFieldProposal(
+            fieldId=proposal.field_id, value=proposal.value, evidence=proposal.evidence, accuracy=proposal.accuracy
+        )
         checked.evidence = quote
         if proposal.field_id is USVoiceFieldId.PATIENT_GENDER:
-            gender = gender_from_evidence(quote)
+            gender = gender_from_evidence(quote, localization=localization)
             if gender is None:
                 rejected.append(proposal.field_id)
                 continue
             checked.value = gender
         if proposal.field_id in {USVoiceFieldId.PATIENT_HEIGHT_CM, USVoiceFieldId.PATIENT_WEIGHT_KG}:
-            measurement = source_measurement(quote, proposal.field_id)
+            measurement = source_measurement(quote, proposal.field_id, localization=localization)
             if measurement is None:
                 rejected.append(proposal.field_id)
                 continue
@@ -124,7 +128,7 @@ def validate_voice_form_generation(
             rejected.append(proposal.field_id)
             continue
         if proposal.field_id in {USVoiceFieldId.PATIENT_COMPLAINTS, USVoiceFieldId.EXAMINATION_DESCRIPTION}:
-            if not clinical_value_is_supported(str(checked.value), quote):
+            if not clinical_value_is_supported(str(checked.value), quote, localization=localization):
                 rejected.append(proposal.field_id)
                 continue
             # A matching excerpt alone does not prove that the model kept all
@@ -132,10 +136,10 @@ def validate_voice_form_generation(
             # Explicit source sections are copied above without model rewriting.
             checked.accuracy = USVoiceFieldAccuracy.QUESTIONABLE
         if proposal.field_id is USVoiceFieldId.PATIENT_DATE_OF_BIRTH:
-            if not has_birth_date_cue(transcript, quote):
+            if not has_birth_date_cue(transcript, quote, localization=localization):
                 rejected.append(proposal.field_id)
                 continue
-            birthday = source_birth_date(quote)
+            birthday = source_birth_date(quote, localization=localization)
             if birthday is None:
                 checked.accuracy = USVoiceFieldAccuracy.QUESTIONABLE
             else:
@@ -150,7 +154,7 @@ def validate_voice_form_generation(
             value, evidence = scalar_section
             proposals.append(
                 USVoiceFieldProposal(
-                    field_id=field,
+                    fieldId=field,
                     value=value,
                     evidence=evidence,
                     accuracy=USVoiceFieldAccuracy.FULL,
@@ -159,7 +163,7 @@ def validate_voice_form_generation(
     for field, (measurement, evidence) in measurements.items():
         proposals.append(
             USVoiceFieldProposal(
-                field_id=field,
+                fieldId=field,
                 value=measurement,
                 evidence=evidence,
                 accuracy=USVoiceFieldAccuracy.FULL,
@@ -175,22 +179,27 @@ def validate_voice_form_generation(
     excluded_evidence.extend(
         repaired_name_quote
         for item in proposals
-        if item.field_id is USVoiceFieldId.PATIENT_NAME
-        and (repaired_name_quote := patient_name_metadata_evidence(transcript, str(item.value))) is not None
+        if item.fieldId is USVoiceFieldId.PATIENT_NAME
+        and (
+            repaired_name_quote := patient_name_metadata_evidence(
+                transcript, str(item.value), localization=localization
+            )
+        )
+        is not None
     )
     excluded_evidence.extend(
-        item.evidence for item in clinical_text.values() if item.field_id is USVoiceFieldId.PATIENT_COMPLAINTS
+        item.evidence for item in clinical_text.values() if item.fieldId is USVoiceFieldId.PATIENT_COMPLAINTS
     )
     for item in proposals[:]:
-        if item.field_id is USVoiceFieldId.EXAMINATION_DESCRIPTION and not has_content_outside_evidence(
+        if item.fieldId is USVoiceFieldId.EXAMINATION_DESCRIPTION and not has_content_outside_evidence(
             item.evidence, excluded_evidence
         ):
             proposals.remove(item)
-            rejected.append(item.field_id)
+            rejected.append(item.fieldId)
     return USVoiceFormParseResponse(
         proposals=[*proposals, *clinical_text.values()],
         rejectedFieldIds=list(
-            dict.fromkeys(field for field in rejected if field not in {item.field_id for item in proposals})
+            dict.fromkeys(field for field in rejected if field not in {item.fieldId for item in proposals})
         ),
         unmappedFindings=[],
     )

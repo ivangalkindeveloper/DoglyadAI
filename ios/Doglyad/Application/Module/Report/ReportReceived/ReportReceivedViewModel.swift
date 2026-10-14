@@ -169,7 +169,7 @@ final class ReportReceivedViewModel: DModuleViewModel {
         guard let userEmail: String = userEmail else { return }
         coordinator.run(
             .sendingReportByEmail,
-            dismissesSheetOnPaywall: true,
+            isSheetDismissedOnPaywall: true,
         ) {
             self.sendReportEmail(
                 to: userEmail,

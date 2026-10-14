@@ -35,7 +35,7 @@ def run_fleurs_asr() -> dict[str, Any]:
                         "audioPath": str(path),
                         "contextualStrings": [],
                         "engine": "speechAnalyzer",
-                        "useHints": hints,
+                        "isHintingEnabled": hints,
                     }
                 )
                 lookup[job_id] = (locale, entry, version)

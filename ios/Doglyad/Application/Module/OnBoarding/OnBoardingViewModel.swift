@@ -6,6 +6,7 @@ import SwiftUI
 
 @MainActor
 final class OnBoardingViewModel: DModuleViewModel {
+    private let messager: DMessager?
     enum Page: CaseIterable {
         case first, second, third, fourth, fifth
 
@@ -18,6 +19,7 @@ final class OnBoardingViewModel: DModuleViewModel {
 
     init(
         container: DependencyContainer,
+        messager: DMessager? = nil,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
@@ -25,6 +27,7 @@ final class OnBoardingViewModel: DModuleViewModel {
         getNeuralModelSettings: @escaping () -> NeuralModelSettings,
         onRequestCountIncremented: @escaping () -> Void,
     ) {
+        self.messager = messager
         super.init(
             container: container,
             router: router,
@@ -61,19 +64,19 @@ final class OnBoardingViewModel: DModuleViewModel {
     }
 
     func onLegalAcceptedChanged(
-        _ value: Bool,
+        _ isAccepted: Bool,
     ) {
         analytics.buttonTapped(
             .onboardingLegalToggle,
             parameters: AnalyticsParameters(
                 [
                     .result: .bool(
-                        value,
+                        isAccepted,
                     ),
                 ],
             ),
         )
-        isLegalAccepted = value
+        isLegalAccepted = isAccepted
     }
 
     func legalAttributedText(
@@ -268,25 +271,28 @@ extension OnBoardingViewModel {
                     onSelected: { [weak self] type in
                         guard let self else { return }
 
+                        try await container.ultrasoundReportRepository.setSelectedExaminationTypeId(
+                            id: type.id,
+                        )
                         move(
                             to: .fifth,
-                        )
-                        container.ultrasoundReportRepository.setSelectedExaminationTypeId(
-                            id: type.id,
                         )
                     },
                 ),
             )
         case .fifth:
-            container.sharedRepository.setOnBoardingCompleted(
-                value: true,
-            )
-            // Record which revision of the documents the user accepted.
-            container.sharedRepository.acceptLegal(
-                documentDate: container.applicationConfig.legalDate,
-            )
             handle {
+                try await self.container.sharedRepository.acceptLegal(
+                    documentDate: self.container.applicationConfig.legalDate,
+                )
+                try await self.container.sharedRepository.setOnBoardingCompleted(
+                    isCompleted: true,
+                )
                 try await self.coordinator.navigateAfterOnBoarding()
+            } onMainUnknownError: { _ in
+                self.messager?.showUnknownError(
+                    l10n: self.container.l10n,
+                )
             }
         }
     }

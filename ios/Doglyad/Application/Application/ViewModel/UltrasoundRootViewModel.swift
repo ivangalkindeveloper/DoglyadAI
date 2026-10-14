@@ -12,36 +12,20 @@ final class UltrasoundRootViewModel: Handler<DHttpApiError, DHttpConnectionError
     ) {
         self.container = container
 
-        let ultrasoundModelRepository = container.ultrasoundModelRepository
-        if let id = ultrasoundModelRepository.getSelectedModelId(),
-           let model = container.usExaminationNeuralModelsById[
-               id,
-           ]
-        {
-            neuralModel = model
-        } else {
-            neuralModel = container.usExaminationNeuralModelDefault
-        }
-
-        isMarkdown = ultrasoundModelRepository.getIsMarkdown()
-
-        let ultrasoundConfig = container.applicationConfig.ultrasound
-        if let temperature = ultrasoundModelRepository.getTemperature() {
-            self.temperature = temperature
-        } else {
-            temperature = ultrasoundConfig.neuralModel.temperature
-        }
-        if let maxTokens = ultrasoundModelRepository.getMaxTokens() {
-            self.maxTokens = maxTokens
-        } else {
-            maxTokens = ultrasoundConfig.neuralModel.maxTokens
-        }
-
+        let settings = container.initialNeuralModelSettings
+        neuralModel = settings.selectedNeuralModelId.flatMap { container.usExaminationNeuralModelsById[
+            $0,
+        ] }
+            ?? container.usExaminationNeuralModelDefault
+        isMarkdown = settings.isMarkdown
+        temperature = settings.temperature ?? container.applicationConfig.ultrasound.neuralModel.temperature
+        maxTokens = settings.maxTokens ?? container.applicationConfig.ultrasound.neuralModel.maxTokens
         template = nil
-        userEmail = container.userSettingsRepository.getUserEmail()
-        includeRecommendations = container.userSettingsRepository.getIncludeRecommendations()
-        isPhotoRemarks = container.userSettingsRepository.getIsPhotoRemarks()
-        isDescriptionRemarks = container.userSettingsRepository.getIsDescriptionRemarks()
+        let userSettings = container.initialUserSettings
+        userEmail = userSettings.email
+        isRecommendationsIncluded = userSettings.isRecommendationsIncluded
+        isPhotoRemarks = userSettings.isPhotoRemarks
+        isDescriptionRemarks = userSettings.isDescriptionRemarks
         super.init()
     }
 
@@ -52,26 +36,17 @@ final class UltrasoundRootViewModel: Handler<DHttpApiError, DHttpConnectionError
     }
 
     func onAppear() {
-        let templateRepository = container.templateRepository
-        guard let selectedTemplateId = templateRepository.getSelectedTemplateId() else {
-            template = nil
-            return
-        }
-
         handle {
-            await templateRepository.getTemplate(
-                id: selectedTemplateId,
+            let repository = self.container.templateRepository
+            guard let id = try await repository.getSelectedTemplateId() else { return nil as USExaminationTemplate? }
+            let template = try await repository.getTemplate(
+                id: id,
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
-        } onMainSuccess: { template in
-            guard templateRepository.getSelectedTemplateId() == selectedTemplateId else { return }
-            guard let template else {
-                templateRepository.clearSelectedTemplateId()
-                self.template = nil
-                return
-            }
-            self.template = template
-        }
+            guard try await repository.getSelectedTemplateId() == id else { return self.template }
+            if template == nil { try await repository.clearSelectedTemplateId() }
+            return template
+        } onMainSuccess: { template in self.template = template }
     }
 
     @Published var neuralModel: USExaminationNeuralModel
@@ -80,110 +55,110 @@ final class UltrasoundRootViewModel: Handler<DHttpApiError, DHttpConnectionError
     @Published var maxTokens: Int
     @Published var template: USExaminationTemplate?
     @Published var userEmail: String?
-    @Published var includeRecommendations: Bool
+    @Published var isRecommendationsIncluded: Bool
     @Published var isPhotoRemarks: Bool
     @Published var isDescriptionRemarks: Bool
 
+    var storedNeuralModelSettings: NeuralModelSettings {
+        NeuralModelSettings(
+            selectedNeuralModelId: neuralModel.id,
+            isMarkdown: isMarkdown,
+            temperature: temperature,
+            maxTokens: maxTokens,
+        )
+    }
+
     func saveUserSettings(
         userEmail: String?,
-        includeRecommendations: Bool,
+        isRecommendationsIncluded: Bool,
         isPhotoRemarks: Bool,
         isDescriptionRemarks: Bool,
-    ) {
-        self.userEmail = userEmail
-        self.includeRecommendations = includeRecommendations
-        self.isPhotoRemarks = isPhotoRemarks
-        self.isDescriptionRemarks = isDescriptionRemarks
-        container.userSettingsRepository.setIsPhotoRemarks(
+    ) async throws {
+        let repository = container.userSettingsRepository
+        try await repository.setIsPhotoRemarks(
             isPhotoRemarks,
         )
-        container.userSettingsRepository.setIsDescriptionRemarks(
+        try await repository.setIsDescriptionRemarks(
             isDescriptionRemarks,
         )
-        container.userSettingsRepository.setUserEmail(
+        try await repository.setUserEmail(
             userEmail,
         )
-        container.userSettingsRepository.setIncludeRecommendations(
-            includeRecommendations,
+        try await repository.setIsRecommendationsIncluded(
+            isRecommendationsIncluded,
         )
+        self.userEmail = userEmail
+        self.isRecommendationsIncluded = isRecommendationsIncluded
+        self.isPhotoRemarks = isPhotoRemarks
+        self.isDescriptionRemarks = isDescriptionRemarks
     }
 
     func saveNeuralModel(
         _ model: USExaminationNeuralModel,
-    ) {
-        neuralModel = model
-        container.ultrasoundModelRepository.setSelectedModelId(
+    ) async throws {
+        try await container.ultrasoundModelRepository.setSelectedModelId(
             id: model.id,
         )
+        neuralModel = model
     }
 
     func selectTemplate(
         _ template: USExaminationTemplate,
-    ) {
-        self.template = template
-        container.templateRepository.setSelectedTemplateId(
+    ) async throws {
+        try await container.templateRepository.setSelectedTemplateId(
             id: template.id,
         )
+        self.template = template
     }
 
-    func resetTemplate() {
+    func resetTemplate() async throws {
+        try await container.templateRepository.clearSelectedTemplateId()
         template = nil
-        container.templateRepository.clearSelectedTemplateId()
     }
 
     func saveNeuralModelSettings(
         isMarkdown: Bool,
         temperature: Double?,
         maxTokens: Int?,
-    ) {
-        self.isMarkdown = isMarkdown
-        container.ultrasoundModelRepository.setIsMarkdown(
+    ) async throws {
+        let repository = container.ultrasoundModelRepository
+        try await repository.setIsMarkdown(
             isMarkdown,
         )
-
-        if let temperature {
-            self.temperature = temperature
-            container.ultrasoundModelRepository.setTemperature(
-                temperature,
-            )
-        }
-
-        if let maxTokens {
-            self.maxTokens = maxTokens
-            container.ultrasoundModelRepository.setMaxTokens(
-                maxTokens,
-            )
-        }
+        if let temperature { try await repository.setTemperature(
+            temperature,
+        ) }
+        if let maxTokens { try await repository.setMaxTokens(
+            maxTokens,
+        ) }
+        self.isMarkdown = isMarkdown
+        if let temperature { self.temperature = temperature }
+        if let maxTokens { self.maxTokens = maxTokens }
     }
 
     func saveTemplate(
         _ template: USExaminationTemplate,
         onChanged: @escaping () -> Void = {},
-    ) {
-        Task { @MainActor in
-            await container.templateRepository.saveTemplate(
-                template: template,
-            )
-            if self.template?.id == template.id {
-                self.template = template
-            }
-            onChanged()
-        }
+    ) async throws {
+        try await container.templateRepository.saveTemplate(
+            template: template,
+        )
+        if self.template?.id == template.id { self.template = template }
+        onChanged()
     }
 
     func deleteTemplate(
         id: UUID,
         onChanged: @escaping () -> Void = {},
-    ) {
-        Task { @MainActor in
-            await container.templateRepository.deleteTemplate(
-                id: id,
-            )
-            if template?.id == id || container.templateRepository.getSelectedTemplateId() == id {
-                template = nil
-                container.templateRepository.clearSelectedTemplateId()
-            }
-            onChanged()
+    ) async throws {
+        try await container.templateRepository.deleteTemplate(
+            id: id,
+        )
+        let selectedId = try await container.templateRepository.getSelectedTemplateId()
+        if template?.id == id || selectedId == id {
+            try await container.templateRepository.clearSelectedTemplateId()
+            template = nil
         }
+        onChanged()
     }
 }

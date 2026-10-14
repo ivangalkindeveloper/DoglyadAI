@@ -1,12 +1,15 @@
 import Combine
+import DoglyadUI
 import Foundation
 
 @MainActor
 final class SelectTemplateViewModel: DModuleViewModel {
+    private let messager: DMessager?
     private let arguments: SelectTemplateArguments
 
     init(
         container: DependencyContainer,
+        messager: DMessager? = nil,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
@@ -15,6 +18,7 @@ final class SelectTemplateViewModel: DModuleViewModel {
         onRequestCountIncremented: @escaping () -> Void,
         arguments: SelectTemplateArguments,
     ) {
+        self.messager = messager
         self.arguments = arguments
         super.init(
             container: container,
@@ -42,13 +46,17 @@ final class SelectTemplateViewModel: DModuleViewModel {
     override func onInit() {
         let usExaminationId = arguments.usExaminationId
         handle {
-            let templates = await self.container.templateRepository.getTemplates(
+            let templates = try await self.container.templateRepository.getTemplates(
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
             guard let usExaminationId else { return templates }
             return templates.filter { $0.usExaminationType.id == usExaminationId }
         } onMainSuccess: { templates in
             self.templates = templates
+        } onMainUnknownError: { _ in
+            self.messager?.showUnknownError(
+                l10n: self.container.l10n,
+            )
         }
     }
 
@@ -64,9 +72,13 @@ final class SelectTemplateViewModel: DModuleViewModel {
         analytics.buttonTapped(
             .selectTemplate,
         )
-        coordinator.dismissSheet()
-        arguments.onSelected(
+        handle { try await self.arguments.onSelected(
             template,
-        )
+        ) }
+        onMainSuccess: { _ in self.coordinator.dismissSheet() } onMainUnknownError: { _ in
+            self.messager?.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 }

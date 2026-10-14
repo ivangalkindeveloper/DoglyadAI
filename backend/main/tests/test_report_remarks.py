@@ -68,7 +68,7 @@ def test_schema_and_prompt_match_requested_remarks(
     examination = _examination(is_photos_available)
     schema = json.loads(
         us_examination_report_structured_output(
-            include_recommendations=False,
+            is_recommendations_included=False,
             is_photo_remarks=is_photo_remarks,
             is_description_remarks=is_description_remarks,
             photo_ids=[photo.id for photo in examination.photos],
@@ -82,7 +82,7 @@ def test_schema_and_prompt_match_requested_remarks(
     factory = PromptFactory(language_code)
     system = factory.system_prompt(
         NeuralModelSettings(),
-        include_recommendations=False,
+        is_recommendations_included=False,
         is_photo_remarks=is_photo_remarks and is_photos_available,
         is_description_remarks=is_description_remarks,
     )

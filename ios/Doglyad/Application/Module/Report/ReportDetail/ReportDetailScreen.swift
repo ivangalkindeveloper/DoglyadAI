@@ -36,7 +36,7 @@ struct ReportDetailScreen: View {
                     ultrasoundViewModel.neuralModel
                 },
                 onNeuralModelSelected: { [ultrasoundViewModel] model in
-                    ultrasoundViewModel.saveNeuralModel(
+                    try await ultrasoundViewModel.saveNeuralModel(
                         model,
                     )
                 },

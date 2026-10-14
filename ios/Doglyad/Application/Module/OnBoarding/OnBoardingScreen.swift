@@ -3,6 +3,7 @@ import Router
 import SwiftUI
 
 struct OnBoardingScreen: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
@@ -12,6 +13,7 @@ struct OnBoardingScreen: View {
         OnBoardingScreenView(
             viewModel: OnBoardingViewModel(
                 container: container,
+                messager: messager,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
                 observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(

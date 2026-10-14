@@ -38,14 +38,14 @@ final class DSpeechBufferConverter: @unchecked Sendable {
         }
 
         var error: NSError?
-        var consumed = false
+        var isInputConsumed = false
         let status = converter.convert(
             to: output,
             error: &error,
         ) { _, inputStatus in
-            defer { consumed = true }
-            inputStatus.pointee = consumed ? .noDataNow : .haveData
-            return consumed ? nil : buffer
+            defer { isInputConsumed = true }
+            inputStatus.pointee = isInputConsumed ? .noDataNow : .haveData
+            return isInputConsumed ? nil : buffer
         }
         switch status {
         case .haveData, .inputRanDry, .endOfStream:

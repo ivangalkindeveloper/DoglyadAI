@@ -124,7 +124,7 @@ struct DictationSessionTests {
     }
 
     @Test(
-        "Only finished nonempty dictation can be parsed",
+        "Usable interrupted dictation can be parsed; cancellation cannot",
     )
     func guardsParsingAfterTimeoutOrInterruption() {
         let incomplete: [DSpeechCompletion] = [.timedOut, .interrupted, .cancelled, .failed]
@@ -141,8 +141,12 @@ struct DictationSessionTests {
             #expect(
                 !transcript.isFinal,
             )
+            let isExpectedReady = switch completion {
+            case .cancelled: false
+            case .finished, .timedOut, .interrupted, .failed: true
+            }
             #expect(
-                !transcript.isReadyForParsing,
+                transcript.isReadyForParsing == isExpectedReady,
             )
         }
 

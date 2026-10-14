@@ -3,7 +3,7 @@ import Foundation
 public protocol DSecurityDatabaseProtocol: Sendable {
     func fetchRequestLimit<T: Sendable>(
         _ transform: @Sendable (RequestLimitDB?) -> T,
-    ) async -> T
+    ) async throws -> T
 
     func setRequestLimit(
         value: RequestLimitDB,

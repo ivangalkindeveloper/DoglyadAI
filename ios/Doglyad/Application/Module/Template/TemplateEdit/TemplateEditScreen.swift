@@ -27,7 +27,7 @@ struct TemplateEditScreen: View {
                 messager: messager,
                 arguments: arguments,
                 onSaveTemplate: { [ultrasoundViewModel, arguments] template in
-                    ultrasoundViewModel.saveTemplate(
+                    try await ultrasoundViewModel.saveTemplate(
                         template,
                         onChanged: {
                             arguments.onTemplatesChanged?()
@@ -35,7 +35,7 @@ struct TemplateEditScreen: View {
                     )
                 },
                 onDeleteTemplate: { [ultrasoundViewModel, arguments] id in
-                    ultrasoundViewModel.deleteTemplate(
+                    try await ultrasoundViewModel.deleteTemplate(
                         id: id,
                         onChanged: {
                             arguments.onTemplatesChanged?()

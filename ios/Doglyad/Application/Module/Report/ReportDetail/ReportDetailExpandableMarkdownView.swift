@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ExpandableTextView: DView {
+struct ReportDetailExpandableMarkdownView: DView {
     @EnvironmentObject var theme: DTheme
 
     let text: String
@@ -28,16 +28,8 @@ struct ExpandableTextView: DView {
             collapsedLineLimit: collapsedLineLimit,
             onTapContent: onTapContent,
         ) {
-            DText(
-                text,
-            )
-            .dStyle(
-                font: typography.textMedium,
-                color: color.grayscaleHeader,
-                alignment: .leading,
-            )
-            .lineSpacing(
-                16 * 0.15,
+            DMarkdown(
+                content: text,
             )
         }
     }
@@ -48,16 +40,16 @@ struct ExpandableTextView: DView {
         alignment: .leading,
         spacing: 24,
     ) {
-        ExpandableTextView(
-            text: "Short plain text, including literal **asterisks**.",
+        ReportDetailExpandableMarkdownView(
+            text: "Short **Markdown** content.",
             backgroundColor: .white,
         )
 
-        ExpandableTextView(
+        ReportDetailExpandableMarkdownView(
             text: """
-            This is long plain text that should be truncated after several lines. \
-            Markdown characters such as **bold** and [links](https://example.com) remain literal text. \
-            The expanded view shows the entire text, and short content has no expand or collapse button.
+            This is **long** Markdown content that should be truncated after several lines. \
+            The expanded view shows all markup. The collapsed view shows a gradient and an expand button. \
+            Short content remains fully visible without an expand or collapse button.
             """,
             backgroundColor: .white,
         )

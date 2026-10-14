@@ -46,8 +46,29 @@ enum ScanSpeechConfidencePolicy {
         parsedText: String,
         noComplaintsPattern: String,
     ) -> Bool {
-        guard transcript.isFinal, parsedText == transcript.correctedText,
+        guard transcript.isReadyForParsing, parsedText == transcript.correctedText,
               field.warnings.isEmpty else { return false }
+        if !transcript.isFinal {
+            guard let quoteRange = uniqueRange(
+                for: field.sourceQuote,
+                in: parsedText,
+            ) else { return false }
+            let suffix = parsedText[
+                quoteRange.upperBound...,
+            ].trimmingCharacters(
+                in: .whitespacesAndNewlines,
+            )
+            let quote = field.sourceQuote.trimmingCharacters(
+                in: .whitespacesAndNewlines,
+            )
+            // An interruption can cut off the last field. Earlier complete fields
+            // retain their normal per-field audio checks; the trailing fragment is reviewed.
+            guard !suffix.isEmpty || quote.last.map(
+                { ".!?;".contains(
+                    $0,
+                ) },
+            ) == true else { return false }
+        }
         switch field.accuracy {
         case .full:
             break
@@ -223,7 +244,7 @@ enum ScanSpeechConfidencePolicy {
             rawText.utf16,
         )
         var minimum = 1.0
-        var found = false
+        var isEvidenceFound = false
         for offset in range.location ..< NSMaxRange(
             range,
         ) {
@@ -248,9 +269,9 @@ enum ScanSpeechConfidencePolicy {
                     0,
                 ].confidence,
             )
-            found = true
+            isEvidenceFound = true
         }
-        return found ? minimum : nil
+        return isEvidenceFound ? minimum : nil
     }
 
     private static func uniqueRange(

@@ -49,7 +49,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                     // An undelimited label can swallow the next clinical
                     // section. Prefer a warning-free, explicitly bounded
                     // subquote, while still surfacing the disagreement.
-                    let boundedComplaint: Bool = switch candidate.id {
+                    let isComplaintBounded: Bool = switch candidate.id {
                     case .patientComplaints:
                         !DNeuralUltrasoundDictationTextFacts(
                             current.sourceQuote,
@@ -77,7 +77,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                          .patientHeightCM, .patientWeightKG, .examinationDescription: false
                     }
                     if !current.warnings.isEmpty,
-                       (isExplicit && candidate.warnings.isEmpty) || boundedComplaint,
+                       (isExplicit && candidate.warnings.isEmpty) || isComplaintBounded,
                        current.sourceQuote.contains(
                            candidate.sourceQuote,
                        )

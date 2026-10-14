@@ -7,14 +7,14 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
 
     private let focus: Focus?
     private let axes: Axis.Set
-    private let showsIndicators: Bool
+    private let isIndicatorsVisible: Bool
     private let anchor: UnitPoint
     private let content: Content
 
     public init(
         focus: Focus?,
         axes: Axis.Set = .vertical,
-        showsIndicators: Bool = false,
+        isIndicatorsVisible: Bool = false,
         anchor: UnitPoint = UnitPoint(
             x: 0.5,
             y: 0.35,
@@ -23,7 +23,7 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
     ) {
         self.focus = focus
         self.axes = axes
-        self.showsIndicators = showsIndicators
+        self.isIndicatorsVisible = isIndicatorsVisible
         self.anchor = anchor
         self.content = content()
     }
@@ -33,7 +33,7 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
             ScrollViewReader { proxy in
                 ScrollView(
                     axes,
-                    showsIndicators: showsIndicators,
+                    showsIndicators: isIndicatorsVisible,
                 ) {
                     content
                         .padding(
@@ -45,18 +45,22 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
                     of: focus,
                 ) { _, newValue in
                     guard let newValue else { return }
-                    scroll(
+                    DFocusScrollController.scroll(
                         to: newValue,
                         proxy: proxy,
+                        anchor: anchor,
+                        animation: theme.animation,
                     )
                 }
                 .onChange(
                     of: keyboardHeight,
                 ) { oldValue, newValue in
                     guard newValue > oldValue, let focus else { return }
-                    scroll(
+                    DFocusScrollController.scroll(
                         to: focus,
                         proxy: proxy,
+                        anchor: anchor,
+                        animation: theme.animation,
                     )
                 }
                 .onReceive(
@@ -89,20 +93,6 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
                     }
                 }
             }
-        }
-    }
-
-    private func scroll(
-        to focus: Focus,
-        proxy: ScrollViewProxy,
-    ) {
-        withAnimation(
-            theme.animation,
-        ) {
-            proxy.scrollTo(
-                focus,
-                anchor: anchor,
-            )
         }
     }
 }

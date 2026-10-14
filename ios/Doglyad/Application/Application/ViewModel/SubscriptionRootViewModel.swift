@@ -6,11 +6,14 @@ import Handler
 @MainActor
 final class SubscriptionRootViewModel: Handler<DHttpApiError, DHttpConnectionError>, ObservableObject {
     private let container: DependencyContainer
+    private let getStoredNeuralModelSettings: () -> NeuralModelSettings
 
     init(
         container: DependencyContainer,
+        getStoredNeuralModelSettings: (() -> NeuralModelSettings)? = nil,
     ) {
         self.container = container
+        self.getStoredNeuralModelSettings = getStoredNeuralModelSettings ?? { container.initialNeuralModelSettings }
         status = container.initialSubscriptionStatus
         super.init()
     }
@@ -55,18 +58,18 @@ final class SubscriptionRootViewModel: Handler<DHttpApiError, DHttpConnectionErr
 
     var neuralModelSettings: NeuralModelSettings {
         let neuralModelConfig = container.applicationConfig.ultrasound.neuralModel
-        let ultrasoundModelRepository = container.ultrasoundModelRepository
+        let settings = getStoredNeuralModelSettings()
         switch neuralModelSettingsAvailability {
         case .available:
             return NeuralModelSettings(
-                selectedNeuralModelId: ultrasoundModelRepository.getSelectedModelId(),
-                isMarkdown: ultrasoundModelRepository.getIsMarkdown(),
-                temperature: ultrasoundModelRepository.getTemperature() ?? neuralModelConfig.temperature,
-                maxTokens: ultrasoundModelRepository.getMaxTokens() ?? neuralModelConfig.maxTokens,
+                selectedNeuralModelId: settings.selectedNeuralModelId,
+                isMarkdown: settings.isMarkdown,
+                temperature: settings.temperature ?? neuralModelConfig.temperature,
+                maxTokens: settings.maxTokens ?? neuralModelConfig.maxTokens,
             )
         case .offered, .unavailable:
             return NeuralModelSettings(
-                selectedNeuralModelId: ultrasoundModelRepository.getSelectedModelId(),
+                selectedNeuralModelId: settings.selectedNeuralModelId,
                 isMarkdown: false,
                 temperature: neuralModelConfig.temperature,
                 maxTokens: neuralModelConfig.maxTokens,

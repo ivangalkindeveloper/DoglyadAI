@@ -23,10 +23,10 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
 
     private let messager: DMessager
     private let getSelectedTemplate: () -> USExaminationTemplate?
-    private let onTemplateSelected: (USExaminationTemplate) -> Void
-    private let onTemplateReset: () -> Void
+    private let onTemplateSelected: (USExaminationTemplate) async throws -> Void
+    private let onTemplateReset: () async throws -> Void
     private let getNeuralModel: () -> USExaminationNeuralModel
-    private let onNeuralModelSelected: (USExaminationNeuralModel) -> Void
+    private let onNeuralModelSelected: (USExaminationNeuralModel) async throws -> Void
     let draftAutosaver = DraftAutosaver<USExaminationDraftForm>(
         delay: .seconds(
             1,
@@ -34,6 +34,8 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
     )
     private var draftPhotosCancellable: AnyCancellable?
     private var draftLifecycleCancellable: AnyCancellable?
+    private var pendingReport: USExaminationReport?
+    private var pendingReportDraft: USExaminationDraftForm?
     private var cameraController: DCameraControllerFactory.Controller?
 
     private enum DraftInitializationResult {
@@ -52,10 +54,10 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
         onRequestCountIncremented: @escaping () -> Void,
         observeExaminationChanges: @escaping (@escaping () -> Void) -> AnyCancellable,
         getSelectedTemplate: @escaping () -> USExaminationTemplate?,
-        onTemplateSelected: @escaping (USExaminationTemplate) -> Void,
-        onTemplateReset: @escaping () -> Void,
+        onTemplateSelected: @escaping (USExaminationTemplate) async throws -> Void,
+        onTemplateReset: @escaping () async throws -> Void,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
-        onNeuralModelSelected: @escaping (USExaminationNeuralModel) -> Void,
+        onNeuralModelSelected: @escaping (USExaminationNeuralModel) async throws -> Void,
     ) {
         self.messager = messager
         self.getSelectedTemplate = getSelectedTemplate
@@ -178,23 +180,23 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
     }
 
     override func onInit() {
-        if let usExaminationTypeId = container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
-           let usExaminationType = container.usExaminationTypesById[
-               usExaminationTypeId,
-           ]
-        {
-            self.usExaminationType = usExaminationType
-        }
-
         handle {
-            let draft = await self.loadDraft()
+            if let usExaminationTypeId = try await self.container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
+               let usExaminationType = self.container.usExaminationTypesById[
+                   usExaminationTypeId,
+               ]
+            {
+                self.usExaminationType = usExaminationType
+            }
+
+            let draft = try await self.loadDraft()
             if let draft {
                 return DraftInitializationResult.draft(
                     draft,
                 )
             }
 
-            let reportsCount = await self.container.ultrasoundReportRepository.getReportsCount()
+            let reportsCount = try await self.container.ultrasoundReportRepository.getReportsCount()
             return DraftInitializationResult.defaults(
                 reportsCount: reportsCount,
             )
@@ -242,7 +244,7 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
         )
     }
 
-    var canFocusPreviousField: Bool {
+    var isPreviousFieldFocusable: Bool {
         switch focus {
         case .examinationNumber, .none:
             false
@@ -251,7 +253,7 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
         }
     }
 
-    var canFocusNextField: Bool {
+    var isNextFieldFocusable: Bool {
         switch focus {
         case .examinationNumber, .patientName, .patientHeightCM, .patientWeightKG, .patientComplaints:
             true
@@ -272,10 +274,10 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
                     guard let self else { return }
                     guard self.usExaminationType != usExaminationType else { return }
 
-                    self.usExaminationType = usExaminationType
-                    container.ultrasoundReportRepository.setSelectedExaminationTypeId(
+                    try await container.ultrasoundReportRepository.setSelectedExaminationTypeId(
                         id: usExaminationType.id,
                     )
+                    self.usExaminationType = usExaminationType
                 },
             ),
         )
@@ -313,6 +315,12 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
         case .examinationDescription, .none:
             break
         }
+    }
+
+    func onFocusChanged(
+        _ newFocus: Focus?,
+    ) {
+        focus = newFocus
     }
 
     func unfocus() {
@@ -458,7 +466,7 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
         )
         let usExaminationId = usExaminationType.id
         handle {
-            let templates = await self.container.templateRepository.getTemplates(
+            let templates = try await self.container.templateRepository.getTemplates(
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
             return templates.contains { $0.usExaminationType.id == usExaminationId }
@@ -468,7 +476,7 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
                     .templateAdd,
                     arguments: TemplateAddArguments(
                         onAddSuccess: { [weak self] template in
-                            self?.onTemplateSelected(
+                            try await self?.onTemplateSelected(
                                 template,
                             )
                         },
@@ -482,7 +490,7 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
                     usExaminationId: usExaminationId,
                     currentValue: getSelectedTemplate(),
                     onSelected: { [weak self] template in
-                        self?.onTemplateSelected(
+                        try await self?.onTemplateSelected(
                             template,
                         )
                     },
@@ -500,7 +508,11 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
         analytics.buttonTapped(
             .scanResetTemplate,
         )
-        onTemplateReset()
+        handle { try await self.onTemplateReset() } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.l10n,
+            )
+        }
     }
 
     func onTapNeuralModelSelection() {
@@ -519,7 +531,7 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
             arguments: SelectNeuralModelArguments(
                 currentValue: getNeuralModel(),
                 onSelected: { [weak self] model in
-                    self?.onNeuralModelSelected(
+                    try await self?.onNeuralModelSelected(
                         model,
                     )
                 },
@@ -557,11 +569,14 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
         )
         isLoading = true
         unfocus()
-        clearForm()
         handle {
-            await self.clearDraftAndReset()
+            try await self.clearDraftAndReset()
         } onDefer: {
             self.isLoading = false
+        } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
         }
     }
 
@@ -635,6 +650,11 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
                 ],
             ),
         )
+        if pendingReport != nil {
+            unfocus()
+            performScan()
+            return
+        }
         if let invalidFocus = firstInvalidFocus() {
             focus = invalidFocus
             return
@@ -656,8 +676,8 @@ final class ScanViewModel: DModuleViewModel, DTextFieldFocusValidating, Draftabl
 }
 
 extension ScanViewModel {
-    func loadDraft() async -> USExaminationDraft? {
-        await container.ultrasoundDraftRepository.getDraft()
+    func loadDraft() async throws -> USExaminationDraft? {
+        try await container.ultrasoundDraftRepository.getDraft()
     }
 
     func applyDraft(
@@ -691,8 +711,8 @@ extension ScanViewModel {
         )
     }
 
-    func clearDraft() async {
-        await container.ultrasoundDraftRepository.clearDraft()
+    func clearDraft() async throws {
+        try await container.ultrasoundDraftRepository.clearDraft()
     }
 
     func makeDraftSnapshot() -> USExaminationDraftForm {
@@ -728,8 +748,12 @@ extension ScanViewModel {
                 )
             }
         case .patientDateOfBirth: patientDateOfBirth.formatted(
-                date: .abbreviated,
-                time: .omitted,
+                Date.FormatStyle(
+                    date: .abbreviated,
+                    time: .omitted,
+                ).locale(
+                    l10n.locale,
+                ),
             )
         case .patientHeightCM: patientHeightCMController.text
         case .patientWeightKG: patientWeightKGController.text
@@ -740,9 +764,23 @@ extension ScanViewModel {
 
     func saveDraftSnapshot(
         _ draft: USExaminationDraftForm,
-    ) async {
-        await container.ultrasoundDraftRepository.saveForm(
+    ) async throws {
+        try await container.ultrasoundDraftRepository.saveForm(
             draft,
+        )
+    }
+
+    func onDraftSaveFailed(
+        _: Error,
+    ) {
+        messager.show(
+            type: .error,
+            title: l10n[
+                .scanDraftSaveErrorMessageTitle,
+            ],
+            description: l10n[
+                .scanDraftSaveErrorMessageDescription,
+            ],
         )
     }
 
@@ -823,7 +861,7 @@ private extension ScanViewModel {
         draftAutosaver.enqueue { [weak self] in
             guard let self else { return }
 
-            await container.ultrasoundDraftRepository.savePhotos(
+            try await container.ultrasoundDraftRepository.savePhotos(
                 photos,
                 currentForm: currentForm,
             )
@@ -834,7 +872,7 @@ private extension ScanViewModel {
         let backgroundTask = UIApplication.shared.beginBackgroundTask()
         handle {
             self.flushPendingDraftSave()
-            await self.waitForPendingDraftSave()
+            try await self.waitForPendingDraftSave()
         } onDefer: {
             guard backgroundTask != .invalid else { return }
 
@@ -1004,12 +1042,15 @@ private extension ScanViewModel {
     }
 
     func performScan() {
-        guard let examinationNumber = examinationNumberController.value,
-              let patientName = patientNameController.value,
-              let examinationDescription = examinationDescriptionController.value
-        else {
-            return
-        }
+        guard !isLoading else { return }
+        guard pendingReport != nil || (
+            examinationNumberController.value != nil
+                && patientNameController.value != nil
+                && examinationDescriptionController.value != nil
+        ) else { return }
+        let examinationNumber = examinationNumberController.value ?? ""
+        let patientName = patientNameController.value ?? ""
+        let examinationDescription = examinationDescriptionController.value ?? ""
 
         let patientHeight = patientHeightCMController.value.flatMap { Double(
             $0,
@@ -1020,54 +1061,77 @@ private extension ScanViewModel {
 
         isLoading = true
         handle {
-            let neuralModelSettings = self.neuralModelSettings
-            let patientComplaints = self.patientComplaintsController.value?
-                .trimmingCharacters(
-                    in: .whitespacesAndNewlines,
+            let report: USExaminationReport
+            if let pendingReport = self.pendingReport {
+                report = pendingReport
+            } else {
+                self.pendingReportDraft = self.makeDraftSnapshot()
+                let neuralModelSettings = self.neuralModelSettings
+                let patientComplaints = self.patientComplaintsController.value?
+                    .trimmingCharacters(
+                        in: .whitespacesAndNewlines,
+                    )
+                let examinationData = USExaminationData(
+                    usExaminationTypeId: self.usExaminationType.id,
+                    photos: self.photos,
+                    examinationNumber: examinationNumber,
+                    patientName: patientName,
+                    patientGender: self.patientGender,
+                    patientDateOfBirth: self.patientDateOfBirth,
+                    patientHeight: patientHeight,
+                    patientWeight: patientWeight,
+                    patientComplaints: patientComplaints?.isEmpty == false ? patientComplaints : nil,
+                    examinationDescription: examinationDescription,
                 )
-            let examinationData = USExaminationData(
-                usExaminationTypeId: self.usExaminationType.id,
-                photos: self.photos,
-                examinationNumber: examinationNumber,
-                patientName: patientName,
-                patientGender: self.patientGender,
-                patientDateOfBirth: self.patientDateOfBirth,
-                patientHeight: patientHeight,
-                patientWeight: patientWeight,
-                patientComplaints: patientComplaints?.isEmpty == false ? patientComplaints : nil,
-                examinationDescription: examinationDescription,
-            )
-            let template = self.getSelectedTemplate()
-            let locale = self.container.language.currentLocale
-            let request = USExaminationRequest(
-                neuralModelSettings: neuralModelSettings,
-                examinationData: examinationData,
-                template: template?.content,
-                includeRecommendations: self.container.userSettingsRepository.getIncludeRecommendations(),
-                isPhotoRemarks: self.container.userSettingsRepository.getIsPhotoRemarks(),
-                isDescriptionRemarks: self.container.userSettingsRepository.getIsDescriptionRemarks(),
-            )
-            let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
-                locale: locale,
-                request: request,
-                scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
-                    resizeMaxDimension: self.ultrasoundConfig.scanPhotoResizeMaxDimension,
-                    compressionQuality: self.ultrasoundConfig.scanPhotoCompressionQuality,
-                ),
-            )
-            let report = USExaminationReport(
-                date: Date(),
-                neuralModelSettings: neuralModelSettings,
-                examinationData: examinationData,
-                actualModelReport: modelReport,
-                previousModelReports: [],
-            )
-            await self.container.ultrasoundReportRepository.setReport(
+                let template = self.getSelectedTemplate()
+                let locale = self.container.language.currentLocale
+                let request = try await USExaminationRequest(
+                    neuralModelSettings: neuralModelSettings,
+                    examinationData: examinationData,
+                    template: template?.content,
+                    isRecommendationsIncluded: self.container.userSettingsRepository.getIsRecommendationsIncluded(),
+                    isPhotoRemarks: self.container.userSettingsRepository.getIsPhotoRemarks(),
+                    isDescriptionRemarks: self.container.userSettingsRepository.getIsDescriptionRemarks(),
+                )
+                let modelReport = try await self.container.ultrasoundReportRepository.generateReport(
+                    locale: locale,
+                    request: request,
+                    scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
+                        resizeMaxDimension: self.ultrasoundConfig.scanPhotoResizeMaxDimension,
+                        compressionQuality: self.ultrasoundConfig.scanPhotoCompressionQuality,
+                    ),
+                )
+                report = USExaminationReport(
+                    date: Date(),
+                    neuralModelSettings: neuralModelSettings,
+                    examinationData: examinationData,
+                    actualModelReport: modelReport,
+                    previousModelReports: [],
+                )
+                self.pendingReport = report
+            }
+            try await self.container.ultrasoundReportRepository.setReport(
                 report: report,
             )
+            self.pendingReport = nil
             self.incrementRequestCount()
-            await self.clearDraftAndReset()
-
+            if self.pendingReportDraft == self.makeDraftSnapshot(),
+               report.examinationData.photos.map(
+                   \.id,
+               ) == self.photos.map(
+                   \.id,
+               )
+            {
+                do {
+                    try await self.clearDraftAndReset()
+                } catch {
+                    // The report is already saved. Keep the draft if its cleanup failed.
+                    self.onDraftSaveFailed(
+                        error,
+                    )
+                }
+            }
+            self.pendingReportDraft = nil
             return report
         } onDefer: {
             self.isLoading = false
@@ -1078,23 +1142,24 @@ private extension ScanViewModel {
                     report: report,
                 ),
             )
-        } onUnknownError: { _ in
+        } onMainUnknownError: { _ in
             self.messager.showUnknownError(
                 l10n: self.container.l10n,
             )
         }
     }
 
-    func clearDraftAndReset() async {
+    func clearDraftAndReset() async throws {
         stopDraftObservation()
-        await waitForPendingDraftSave()
-        await clearDraft()
-
-        let reportsCount = await container.ultrasoundReportRepository.getReportsCount()
+        defer { startDraftObservation() }
+        let reportsCount = try await container.ultrasoundReportRepository.getReportsCount()
+        try await waitForPendingDraftSave()
+        try await clearDraft()
         applyDefaultValues(
             reportsCount: reportsCount,
         )
-        startDraftObservation()
+        pendingReport = nil
+        pendingReportDraft = nil
     }
 
     func applyDefaultValues(

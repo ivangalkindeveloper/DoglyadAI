@@ -307,6 +307,7 @@ def test_startup_rejects_incomplete_localization(tmp_path: Path, monkeypatch: py
             "l10n_ultrasound_examination_contextual_strings.json",
             "l10n_application.json",
             "l10n_voice_parsing.json",
+            "l10n_voice_source_validation.json",
         ):
             shutil.copyfile(_CONFIG_DIR / language / name, tmp_path / language / name)
 

@@ -75,7 +75,9 @@ struct ReportDetailScreenView: DView {
                             )
 
                             DText(
-                                report.date.localizedDateTime(),
+                                report.date.localizedDateTime(
+                                    locale: l10n.locale,
+                                ),
                             )
                             .dStyle(
                                 font: typography.textSmall,
@@ -161,7 +163,9 @@ struct ReportDetailScreenView: DView {
                             )
 
                             DText(
-                                examinationData.patientDateOfBirth.localized(),
+                                examinationData.patientDateOfBirth.localized(
+                                    locale: l10n.locale,
+                                ),
                             )
                             .dStyle(
                                 font: typography.textSmall,

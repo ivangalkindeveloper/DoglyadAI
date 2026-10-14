@@ -84,12 +84,12 @@ struct L10NTests {
         arguments: [false, true],
     )
     func missingOrEmptyKnownKeyRejectsTheCatalog(
-        empty: Bool,
+        isEmpty: Bool,
     ) throws {
         var strings = try strings(
             code: "en",
         )
-        if empty {
+        if isEmpty {
             strings[
                 L10NKey.buttonSpeech.rawValue,
             ] = " \n "

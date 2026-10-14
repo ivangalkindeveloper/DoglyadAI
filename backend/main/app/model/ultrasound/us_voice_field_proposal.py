@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator
 
+from app.model.non_blank_string import NonBlankString
 from app.model.ultrasound.us_voice_field_accuracy import USVoiceFieldAccuracy
 from app.model.ultrasound.us_voice_field_id import USVoiceFieldId
 
@@ -9,9 +10,9 @@ from app.model.ultrasound.us_voice_field_id import USVoiceFieldId
 class USVoiceFieldProposal(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    field_id: USVoiceFieldId
-    value: str | float
-    evidence: str = Field(min_length=1)
+    fieldId: USVoiceFieldId
+    value: NonBlankString | float
+    evidence: NonBlankString
     accuracy: USVoiceFieldAccuracy
 
     @field_validator("value", mode="before")

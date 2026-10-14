@@ -135,7 +135,7 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
                 in: text,
             )
         {
-            let quote = localization.birthEvidenceUsesValue ? match.value : match.quote
+            let quote = localization.isBirthEvidenceValueUsed ? match.value : match.quote
             if let date = date(
                 match.value,
                 quote: quote,
@@ -256,18 +256,18 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
             // ASR may erase "on ultrasound" / "на УЗИ". In that case the
             // remainder can contain the examination itself, not a complaint.
             // Leave the field untouched rather than copying a mixed section.
-            let hasMissingBoundary = complaint.range(
+            let isMissingBoundary = complaint.range(
                 of: localization.pattern(
                     .missingComplaintBoundary,
                 ),
                 options: .regularExpression,
             ) != nil
-            let hasExplicitEnd = text.range(
+            let isExplicitEndPresent = text.range(
                 of: observationCue,
                 options: [.regularExpression, .caseInsensitive],
             ) != nil
-            if !complaint.isEmpty, !hasMissingBoundary,
-               hasExplicitEnd || complaint.split(
+            if !complaint.isEmpty, !isMissingBoundary,
+               isExplicitEndPresent || complaint.split(
                    whereSeparator: \.isWhitespace,
                ).count <= 12
             {

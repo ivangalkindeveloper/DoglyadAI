@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import pytest
+
 from evaluation.voice.asr_reliability import compare_recheck, field_signals, without_outer_punctuation
 
 
@@ -45,7 +47,8 @@ def test_segment_gap_inside_evidence_cannot_supply_a_signal() -> None:
     assert field_signals(row, row["rawText"]) is None
 
 
-def test_ablation_includes_fields_excluded_by_an_unstable_repeat() -> None:
+@pytest.mark.parametrize("field_key", ["fieldId", "field_id"])
+def test_ablation_includes_fields_excluded_by_an_unstable_repeat(field_key: str) -> None:
     row = {
         "id": "example",
         "pack": "guided-format",
@@ -58,7 +61,7 @@ def test_ablation_includes_fields_excluded_by_an_unstable_repeat() -> None:
         "asrRechecks": [{"repeatedText": "Weight 182 kg."}],
         "response": {
             "proposals": [
-                {"field_id": "patient_weight_kg", "value": 82, "evidence": "Weight 82 kg.", "accuracy": "full"}
+                {field_key: "patient_weight_kg", "value": 82, "evidence": "Weight 82 kg.", "accuracy": "full"}
             ]
         },
         "score": {"matches": {"patientWeightKG": True}},
@@ -83,8 +86,8 @@ def test_ablation_keeps_decoder_and_review_gates() -> None:
         "asrRechecks": [{"repeatedText": "Patient Alex. Weight 82 kg."}],
         "response": {
             "proposals": [
-                {"field_id": "patient_name", "value": "Alex", "evidence": "Patient Alex.", "accuracy": "full"},
-                {"field_id": "patient_weight_kg", "value": 82, "evidence": "Weight 82 kg.", "accuracy": "questionable"},
+                {"fieldId": "patient_name", "value": "Alex", "evidence": "Patient Alex.", "accuracy": "full"},
+                {"fieldId": "patient_weight_kg", "value": 82, "evidence": "Weight 82 kg.", "accuracy": "questionable"},
             ]
         },
         "score": {"matches": {"patientName": True, "patientWeightKG": True}},

@@ -67,7 +67,7 @@ struct HistoryScreenView: DView {
                                 }
                             }
 
-                            if viewModel.hasMoreOffset {
+                            if viewModel.isMoreOffsetAvailable {
                                 HistoryOffsetLoadingView()
                                     .transition(
                                         .opacity,
@@ -136,7 +136,7 @@ struct HistoryScreenView: DView {
         )
         .animation(
             theme.animation,
-            value: viewModel.hasMoreOffset,
+            value: viewModel.isMoreOffsetAvailable,
         )
         .onAppear(
             perform: viewModel.onAppear,

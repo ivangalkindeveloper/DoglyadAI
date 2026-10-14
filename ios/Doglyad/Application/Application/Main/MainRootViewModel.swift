@@ -10,13 +10,13 @@ final class MainRootViewModel: ObservableObject {
         self.container = container
     }
 
-    private var hasCheckedReviewRequest = false
+    private var isReviewRequestChecked = false
 
     func onAppear(
         requestReview: @escaping @MainActor () -> Void,
     ) {
-        guard !hasCheckedReviewRequest else { return }
-        hasCheckedReviewRequest = true
+        guard !isReviewRequestChecked else { return }
+        isReviewRequestChecked = true
 
         Task {
             await requestReviewIfEligible(
@@ -28,10 +28,9 @@ final class MainRootViewModel: ObservableObject {
     private func requestReviewIfEligible(
         requestReview: @MainActor () -> Void,
     ) async {
-        let reportsCount = await container.ultrasoundReportRepository.getReportsCount()
-        guard !Task.isCancelled, reportsCount > 0 else { return }
-
         do {
+            let reportsCount = try await container.ultrasoundReportRepository.getReportsCount()
+            guard !Task.isCancelled, reportsCount > 0 else { return }
             try await Task.sleep(
                 for: .seconds(
                     2,

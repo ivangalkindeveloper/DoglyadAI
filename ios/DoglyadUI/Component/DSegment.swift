@@ -70,12 +70,12 @@ public struct DSegmentButtonStyle: ButtonStyle {
     private var size: DSize { theme.size }
     private var typography: DTypography { theme.typography }
 
-    let condition: Bool
+    let isConditionSatisfied: Bool
 
     public init(
-        _ condition: Bool,
+        _ isConditionSatisfied: Bool,
     ) {
-        self.condition = condition
+        self.isConditionSatisfied = isConditionSatisfied
     }
 
     public func makeBody(
@@ -110,7 +110,7 @@ public struct DSegmentButtonStyle: ButtonStyle {
 
     @ViewBuilder
     var background: some View {
-        if condition {
+        if isConditionSatisfied {
             Capsule()
                 .fill(
                     color.gradientPrimaryWeak,
@@ -124,7 +124,7 @@ public struct DSegmentButtonStyle: ButtonStyle {
     }
 
     var foregroundColor: Color {
-        condition ? color.grayscaleBackground : color.grayscaleHeader
+        isConditionSatisfied ? color.grayscaleBackground : color.grayscaleHeader
     }
 }
 

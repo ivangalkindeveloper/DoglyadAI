@@ -4,15 +4,15 @@ import Foundation
 /// The device benchmark retries requests; the production transport keeps its existing policy.
 final class DNeuralUltrasoundRetryingTestTransport: DNeuralUltrasoundServerTransportProtocol {
     private let base: any DNeuralUltrasoundServerTransportProtocol
-    private let foundationOnly: Bool
+    private let isFoundationOnly: Bool
     private(set) var calls = 0
 
     init(
         base: any DNeuralUltrasoundServerTransportProtocol,
-        foundationOnly: Bool,
+        isFoundationOnly: Bool,
     ) {
         self.base = base
-        self.foundationOnly = foundationOnly
+        self.isFoundationOnly = isFoundationOnly
     }
 
     func parseDictation(
@@ -20,7 +20,7 @@ final class DNeuralUltrasoundRetryingTestTransport: DNeuralUltrasoundServerTrans
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
-        guard !foundationOnly else { throw DNeuralModelError.unavailable }
+        guard !isFoundationOnly else { throw DNeuralModelError.unavailable }
         for attempt in 1 ... 3 {
             try Task.checkCancellation()
             calls += 1

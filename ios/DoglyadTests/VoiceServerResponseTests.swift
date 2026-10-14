@@ -15,7 +15,7 @@ struct VoiceServerResponseTests {
         ] {
             let data = try JSONSerialization.data(
                 withJSONObject: [
-                    "proposals": [["field_id": "patient_name", "value": name, "evidence": evidence, "accuracy": "full"]],
+                    "proposals": [["fieldId": "patient_name", "value": name, "evidence": evidence, "accuracy": "full"]],
                     "rejectedFieldIds": [],
                     "unmappedFindings": [],
                 ],
@@ -61,7 +61,7 @@ struct VoiceServerResponseTests {
     func serverResponseIsRevalidatedAndNotAppliedAutomatically() throws {
         let text = "вес 72 килограмма"
         let data = Data(
-            #"{"proposals":[{"field_id":"patient_weight_kg","value":72,"evidence":"вес 72 килограмма","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8,
+            #"{"proposals":[{"fieldId":"patient_weight_kg","value":72,"evidence":"вес 72 килограмма","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8,
         )
         let response = try JSONDecoder().decode(
             DNeuralUltrasoundVoiceFormParseResponseDTO.self,
@@ -121,7 +121,7 @@ struct VoiceServerResponseTests {
     @Test
     func serverResponseCannotAddFieldWithoutVerbatimQuote() throws {
         let data = Data(
-            #"{"proposals":[{"field_id":"patient_name","value":"Иванов Иван","evidence":"пациент Иванов Иван","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8,
+            #"{"proposals":[{"fieldId":"patient_name","value":"Иванов Иван","evidence":"пациент Иванов Иван","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8,
         )
         let response = try JSONDecoder().decode(
             DNeuralUltrasoundVoiceFormParseResponseDTO.self,
@@ -164,7 +164,7 @@ struct VoiceServerResponseTests {
     func whisperServerReview() throws {
         let text = "Вес 68 кг. Жалобы: Боль справа."
         let data = Data(
-            #"{"proposals":[{"field_id":"patient_weight_kg","value":68,"evidence":"Вес 68 кг","accuracy":"full"},{"field_id":"patient_complaints","value":"Боль справа.","evidence":"Жалобы: Боль справа.","accuracy":"questionable"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8,
+            #"{"proposals":[{"fieldId":"patient_weight_kg","value":68,"evidence":"Вес 68 кг","accuracy":"full"},{"fieldId":"patient_complaints","value":"Боль справа.","evidence":"Жалобы: Боль справа.","accuracy":"questionable"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8,
         )
         let request = DNeuralUltrasoundDictationParseRequest(
             text: text,

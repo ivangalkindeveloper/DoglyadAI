@@ -7,7 +7,7 @@ public struct DNeuralUltrasoundVoiceFieldProposalDTO: Decodable, Sendable {
     public let accuracy: DNeuralVoiceFieldAccuracy
 
     private enum DNeuralUltrasoundCodingKeys: String, CodingKey {
-        case fieldId = "field_id"
+        case fieldId
         case value
         case sourceQuote = "evidence"
         case accuracy

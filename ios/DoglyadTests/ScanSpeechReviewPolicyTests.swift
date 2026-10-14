@@ -21,9 +21,9 @@ struct ScanSpeechReviewPolicyTests {
     }
 
     @Test(
-        "An incomplete dictation requires a real correction",
+        "An incomplete dictation can use its unchanged transcript",
     )
-    func incompleteRequiresCorrection() {
+    func incompletePreservesUsableText() {
         let partial = transcript(
             completion: .timedOut,
         )
@@ -40,10 +40,10 @@ struct ScanSpeechReviewPolicyTests {
             visibleText: "Правая почка 12 мм, конкрементов нет",
         )
         #expect(
-            unchanged == nil,
+            unchanged == "Правая почка 12 мм",
         )
         #expect(
-            whitespaceOnly == nil,
+            whitespaceOnly == "  Правая почка 12 мм  ",
         )
         #expect(
             corrected == "Правая почка 12 мм, конкрементов нет",
@@ -54,7 +54,7 @@ struct ScanSpeechReviewPolicyTests {
         "Empty text and cancelled recordings cannot continue",
     )
     func refusesEmptyAndCancelled() {
-        let empty = ScanSpeechReviewPolicy.textForParsing(
+        let emptyResult = ScanSpeechReviewPolicy.textForParsing(
             transcript: transcript(
                 completion: .finished,
             ),
@@ -67,7 +67,7 @@ struct ScanSpeechReviewPolicyTests {
             visibleText: "Правая почка 12 мм",
         )
         #expect(
-            empty == nil,
+            emptyResult == nil,
         )
         #expect(
             cancelled == nil,

@@ -13,7 +13,7 @@ final class NeuralModelSettingsViewModel: DModuleViewModel, DTextFieldFocusValid
     }
 
     private let messager: DMessager
-    private let onSettingsSaved: (Bool, Double?, Int?) -> Void
+    private let onSettingsSaved: (Bool, Double?, Int?) async throws -> Void
 
     init(
         container: DependencyContainer,
@@ -27,7 +27,7 @@ final class NeuralModelSettingsViewModel: DModuleViewModel, DTextFieldFocusValid
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getNeuralModelSettings: @escaping () -> NeuralModelSettings,
         onRequestCountIncremented: @escaping () -> Void,
-        onSettingsSaved: @escaping (Bool, Double?, Int?) -> Void,
+        onSettingsSaved: @escaping (Bool, Double?, Int?) async throws -> Void,
     ) {
         self.messager = messager
         self.onSettingsSaved = onSettingsSaved
@@ -109,11 +109,17 @@ final class NeuralModelSettingsViewModel: DModuleViewModel, DTextFieldFocusValid
         ]
     }
 
+    func onFocusChanged(
+        _ newFocus: Focus?,
+    ) {
+        focus = newFocus
+    }
+
     func unfocus() {
         focus = nil
     }
 
-    var canFocusPreviousField: Bool {
+    var isPreviousFieldFocusable: Bool {
         switch focus {
         case .temperature, .none:
             false
@@ -122,7 +128,7 @@ final class NeuralModelSettingsViewModel: DModuleViewModel, DTextFieldFocusValid
         }
     }
 
-    var canFocusNextField: Bool {
+    var isNextFieldFocusable: Bool {
         switch focus {
         case .temperature:
             true
@@ -204,24 +210,33 @@ final class NeuralModelSettingsViewModel: DModuleViewModel, DTextFieldFocusValid
         unfocus()
         isLoading = true
 
-        onSettingsSaved(
-            isMarkdown,
-            temperatureController.value.flatMap { Double(
-                $0,
-            ) },
-            maxTokensController.value.flatMap { Int(
-                $0,
-            ) },
-        )
-        messager.show(
-            type: .success,
-            title: container.l10n[
-                .neuralModelSettingsSavedSuccessMessageTitle,
-            ],
-            description: container.l10n[
-                .neuralModelSettingsSavedSuccessMessageDescription,
-            ],
-        )
-        coordinator.pop()
+        handle {
+            try await self.onSettingsSaved(
+                self.isMarkdown,
+                self.temperatureController.value.flatMap { Double(
+                    $0,
+                ) },
+                self.maxTokensController.value.flatMap { Int(
+                    $0,
+                ) },
+            )
+        } onDefer: {
+            self.isLoading = false
+        } onMainSuccess: { _ in
+            self.messager.show(
+                type: .success,
+                title: self.container.l10n[
+                    .neuralModelSettingsSavedSuccessMessageTitle,
+                ],
+                description: self.container.l10n[
+                    .neuralModelSettingsSavedSuccessMessageDescription,
+                ],
+            )
+            self.coordinator.pop()
+        } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 }

@@ -62,9 +62,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     private var timeoutTask: Task<Void, Never>?
     private var finalizationContinuation: CheckedContinuation<Void, Never>?
     private var session = DSpeechSessionGate()
-    private var hasTap = false
-    private var wasTimedOut = false
-    private var recognizerFailed = false
+    private var isTapInstalled = false
+    private var isTimedOut = false
+    private var isRecognizerFailed = false
 
     /// Accumulated finalized text: the "draft" chunk of the current phrase is appended
     /// to it so that speech is visible on screen in real time.
@@ -102,8 +102,8 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         lastTranscript = nil
         audioMeter = 0.0
         finalizedText = AttributedString()
-        wasTimedOut = false
-        recognizerFailed = false
+        isTimedOut = false
+        isRecognizerFailed = false
 
         startTask = Task { [weak self] in
             do {
@@ -137,11 +137,11 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
               ) else { return lastTranscript }
 
         audioEngine.stop()
-        if hasTap {
+        if isTapInstalled {
             audioEngine.inputNode.removeTap(
                 onBus: 0,
             )
-            hasTap = false
+            isTapInstalled = false
         }
         meter.reset()
         status = .stopped
@@ -172,7 +172,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
                     guard let self, session.acceptsResult(
                         for: sessionID,
                     ) else { return }
-                    recognizerFailed = true
+                    isRecognizerFailed = true
                 }
                 await recognizerTask?.value
                 self?.finishFinalizationWait(
@@ -189,7 +189,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
                     for: sessionID,
                 ),
                     finalizationContinuation != nil else { return }
-                wasTimedOut = true
+                isTimedOut = true
                 finalization.cancel()
                 recognizerTask?.cancel()
                 Task { await analyzer?.cancelAndFinishNow() }
@@ -212,7 +212,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
 
         let completion: DSpeechCompletion = switch requestedCompletion {
         case .finished:
-            wasTimedOut ? .timedOut : (recognizerFailed ? .interrupted : .finished)
+            isTimedOut ? .timedOut : (isRecognizerFailed ? .interrupted : .finished)
         case .timedOut, .interrupted, .cancelled, .failed:
             requestedCompletion
         }
@@ -273,11 +273,11 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         transcriber = nil
 
         audioEngine.stop()
-        if hasTap {
+        if isTapInstalled {
             audioEngine.inputNode.removeTap(
                 onBus: 0,
             )
-            hasTap = false
+            isTapInstalled = false
         }
         meter.reset()
         audioMeter = 0.0
@@ -346,7 +346,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         let transcriber = DSpeechAnalyzerConfiguration.makeTranscriber(
             locale: resolvedLocale,
             isFarField: isFarField,
-            includeConfidence: true,
+            isConfidenceIncluded: true,
         )
         self.transcriber = transcriber
 
@@ -399,7 +399,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
                 guard let self, session.acceptsResult(
                     for: sessionID,
                 ) else { return }
-                recognizerFailed = true
+                isRecognizerFailed = true
             }
             guard let self, session.acceptsResult(
                 for: sessionID,
@@ -444,7 +444,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
                 ),
             )
         }
-        hasTap = true
+        isTapInstalled = true
 
         audioEngine.prepare()
         try audioEngine.start()
@@ -466,14 +466,14 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         // Stationary noise suppression (the scanner's hum), echo cancellation,
         // automatic gain. Needed when the phone lies off to the side, and not needed
         // on a headset where the microphone is at the mouth anyway.
-        let useVoiceProcessing = switch route {
+        let isVoiceProcessingEnabled = switch route {
         case .builtIn:
             true
         case .headset:
             false
         }
         try? inputNode.setVoiceProcessingEnabled(
-            useVoiceProcessing,
+            isVoiceProcessingEnabled,
         )
 
         var recordingFormat = inputNode.outputFormat(

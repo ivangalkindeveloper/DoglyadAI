@@ -2,7 +2,7 @@ import FirebaseAnalytics
 
 @MainActor
 final class AnalyticsManager {
-    private static var didLogApplicationOpened = false
+    private static var isApplicationOpenedLogged = false
 
     private let isEnabled: Bool
 
@@ -16,8 +16,8 @@ final class AnalyticsManager {
         environment: EnvironmentType,
         appVersion: String,
     ) {
-        guard isEnabled, !Self.didLogApplicationOpened else { return }
-        Self.didLogApplicationOpened = true
+        guard isEnabled, !Self.isApplicationOpenedLogged else { return }
+        Self.isApplicationOpenedLogged = true
 
         log(
             event: .applicationOpened,

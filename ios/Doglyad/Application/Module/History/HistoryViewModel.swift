@@ -54,7 +54,7 @@ final class HistoryViewModel: DModuleViewModel {
 
     @Published private(set) var sections: [HistoryDaySection] = []
     @Published private(set) var isLoading = true
-    @Published private(set) var hasMoreOffset = false
+    @Published private(set) var isMoreOffsetAvailable = false
 
     var pageSize: Int {
         historyConfig.pageSize
@@ -91,7 +91,7 @@ final class HistoryViewModel: DModuleViewModel {
 
     private func loadInitialPage() {
         handle {
-            await self.container.ultrasoundReportRepository.getReports(
+            try await self.container.ultrasoundReportRepository.getReports(
                 limit: self.pageSize,
                 offset: 0,
             )
@@ -105,11 +105,11 @@ final class HistoryViewModel: DModuleViewModel {
     }
 
     private func loadNextOffset() {
-        guard hasMoreOffset, offsetLoadingTask == nil else { return }
+        guard isMoreOffsetAvailable, offsetLoadingTask == nil else { return }
 
         let requestedOffset = offset
         offsetLoadingTask = handle {
-            await self.container.ultrasoundReportRepository.getReports(
+            try await self.container.ultrasoundReportRepository.getReports(
                 limit: self.pageSize,
                 offset: requestedOffset,
             )
@@ -126,7 +126,7 @@ final class HistoryViewModel: DModuleViewModel {
         _ reports: [USExaminationReport],
     ) {
         offset += reports.count
-        hasMoreOffset = reports.count == pageSize
+        isMoreOffsetAvailable = reports.count == pageSize
 
         let uniqueReports = reports.filter {
             loadedReportIds.insert(
