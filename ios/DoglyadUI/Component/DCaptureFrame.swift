@@ -1,7 +1,8 @@
 import SwiftUI
 
-public struct DCaptureFrame: DView {
+public struct DCaptureFrame: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
+
     public init() {}
     public var body: some View {
         GeometryReader { geometry in

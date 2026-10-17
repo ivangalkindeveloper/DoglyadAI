@@ -2,7 +2,7 @@ import DoglyadUI
 import SwiftUI
 import WebKit
 
-struct WebDocumentBottomSheetWebView: UIViewRepresentable, DView {
+struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
     @Environment(
         \.locale,
     ) private var locale
@@ -11,7 +11,8 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DView {
     let url: URL
     let topInset: CGFloat
     let bottomInset: CGFloat
-    @Binding var isLoading: Bool
+    let onLoaded: () -> Void
+    let onFailed: (Error) -> Void
 
     func makeCoordinator() -> Coordinator {
         Coordinator(
@@ -131,15 +132,27 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DView {
             applyInsets(
                 to: webView,
             )
-            parent.isLoading = false
+            parent.onLoaded()
         }
 
         func webView(
             _: WKWebView,
             didFail _: WKNavigation!,
-            withError _: Error,
+            withError error: Error,
         ) {
-            parent.isLoading = false
+            parent.onFailed(
+                error,
+            )
+        }
+
+        func webView(
+            _: WKWebView,
+            didFailProvisionalNavigation _: WKNavigation!,
+            withError error: Error,
+        ) {
+            parent.onFailed(
+                error,
+            )
         }
     }
 }

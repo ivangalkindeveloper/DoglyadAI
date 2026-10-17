@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DIcon: DView {
+public struct DIcon: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     let resource: ImageResource

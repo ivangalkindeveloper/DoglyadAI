@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct TemplateDeleteBottomSheetView: DView {
+struct TemplateDeleteBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 

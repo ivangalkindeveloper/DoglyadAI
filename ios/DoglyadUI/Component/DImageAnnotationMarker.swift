@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DImageAnnotationMarker: DView {
+public struct DImageAnnotationMarker: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     let title: String
     let accessibilityLabel: LocalizedStringResource

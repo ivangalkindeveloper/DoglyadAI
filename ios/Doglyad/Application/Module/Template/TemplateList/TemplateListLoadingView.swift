@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct TemplateListLoadingView: DView {
+struct TemplateListLoadingView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     private let cardCount = 5

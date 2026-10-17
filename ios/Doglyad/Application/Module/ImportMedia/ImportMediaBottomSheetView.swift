@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ImportMediaBottomSheetView: DView {
+struct ImportMediaBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 

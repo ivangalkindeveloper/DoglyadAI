@@ -41,6 +41,10 @@ struct SubscriptionPaywallTests {
             onRefresh: { refreshes += 1 },
         )
 
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
         model.onTapPlan(
             repository.plan,
         )
@@ -54,9 +58,12 @@ struct SubscriptionPaywallTests {
         #expect(
             repository.purchaseCount == 1,
         )
-        #expect(
-            !model.isLoading,
-        )
+        switch model.state {
+        case _ as SubscriptionPaywallLoadingState, _ as SubscriptionPaywallPurchasingState, _ as SubscriptionPaywallRestoringState: Issue.record(
+                "Purchase must leave its processing state",
+            )
+        default: break
+        }
         switch result {
         case .cancelled:
             #expect(
@@ -65,9 +72,12 @@ struct SubscriptionPaywallTests {
             #expect(
                 !router.path.isEmpty,
             )
-            #expect(
-                model.errorDescription == nil,
-            )
+            switch model.state {
+            case _ as SubscriptionPaywallContentState: break
+            default: Issue.record(
+                    "A completed or cancelled purchase must retain loaded plans",
+                )
+            }
             #expect(
                 updates == 0,
             )
@@ -81,9 +91,12 @@ struct SubscriptionPaywallTests {
             #expect(
                 router.path.isEmpty,
             )
-            #expect(
-                model.errorDescription == nil,
-            )
+            switch model.state {
+            case _ as SubscriptionPaywallContentState: break
+            default: Issue.record(
+                    "A completed or cancelled purchase must retain loaded plans",
+                )
+            }
             #expect(
                 updates == 1,
             )
@@ -97,11 +110,22 @@ struct SubscriptionPaywallTests {
             #expect(
                 !router.path.isEmpty,
             )
-            #expect(
-                model.errorDescription == container.l10n.text(
-                    .errorUnknownDescription,
-                ),
-            )
+            switch model.state {
+            case let state as SubscriptionPaywallFailedState:
+                #expect(
+                    state.errorDescription == container.l10n.text(
+                        .errorUnknownDescription,
+                    ),
+                )
+                #expect(
+                    model.plans.map(
+                        \.id,
+                    ) == [repository.plan.id],
+                )
+            default: Issue.record(
+                    "Expected a purchase failure with the loaded plans",
+                )
+            }
             #expect(
                 updates == 0,
             )
@@ -149,28 +173,34 @@ struct SubscriptionPaywallTests {
         await waitUntilIdle(
             model,
         )
-        #expect(
-            model.plans.isEmpty,
-        )
-        #expect(
-            model.errorDescription == container.l10n.text(
-                .subscriptionOfferingsUnavailableDescription,
-            ),
-        )
+        switch model.state {
+        case let state as SubscriptionPaywallFailedState:
+            #expect(
+                state.errorDescription == container.l10n.text(
+                    .subscriptionOfferingsUnavailableDescription,
+                ),
+            )
+        default: Issue.record(
+                "Expected an offerings load failure",
+            )
+        }
 
         repository.isLoadingFailed = false
         model.onTapRetry()
         await waitUntilIdle(
             model,
         )
-        #expect(
-            model.plans.map(
-                \.id,
-            ) == [repository.plan.id],
-        )
-        #expect(
-            model.errorDescription == nil,
-        )
+        switch model.state {
+        case _ as SubscriptionPaywallContentState:
+            #expect(
+                model.plans.map(
+                    \.id,
+                ) == [repository.plan.id],
+            )
+        default: Issue.record(
+                "Retry must publish the loaded plans",
+            )
+        }
 
         model.onTapRestore()
         await waitUntilIdle(
@@ -180,7 +210,7 @@ struct SubscriptionPaywallTests {
             (root.status != nil) == isSubscriptionActive,
         )
         #expect(
-            model.isSubscriptionActive == isSubscriptionActive,
+            (model.subscriptionStatus != nil) == isSubscriptionActive,
         )
         #expect(
             router.path.isEmpty == isSubscriptionActive,
@@ -196,8 +226,11 @@ struct SubscriptionPaywallTests {
     private func waitUntilIdle(
         _ model: SubscriptionPaywallViewModel,
     ) async {
-        for await loading in model.$isLoading.values {
-            if !loading { return }
+        for await state in model.$state.values {
+            switch state {
+            case _ as SubscriptionPaywallLoadingState, _ as SubscriptionPaywallPurchasingState, _ as SubscriptionPaywallRestoringState: continue
+            default: return
+            }
         }
     }
 
@@ -220,7 +253,7 @@ struct SubscriptionPaywallTests {
             )
             onUpdate()
             },
-            getNeuralModelSettings: { root.neuralModelSettings },
+            getNeuralModelSettings: { root.resolveNeuralModelSettings() },
             onRequestCountIncremented: {},
             arguments: SubscriptionPaywallArguments(),
             onRefreshStatus: onRefresh,

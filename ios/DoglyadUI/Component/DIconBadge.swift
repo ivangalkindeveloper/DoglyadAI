@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DIconBadge: DView {
+public struct DIconBadge: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     let resource: ImageResource
     let iconColor: Color

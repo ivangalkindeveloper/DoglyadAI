@@ -1,30 +1,33 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanSpeechProposalView: DView {
+struct ScanSpeechProposalView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
 
     var body: some View {
-        VStack(
-            spacing: size.s16,
-        ) {
-            ScrollView {
-                VStack(
-                    alignment: .leading,
-                    spacing: size.s12,
-                ) {
-                    DText(
-                        viewModel.proposalInstructions,
-                    )
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscaleHeader,
-                    )
+        switch viewModel.state {
+        case let state as ScanSpeechProposalReviewState:
+            let proposal = state.proposal
 
-                    if let proposal = viewModel.dictationProposal {
-                        if viewModel.reviewProposals.isEmpty,
+            VStack(
+                spacing: size.s16,
+            ) {
+                ScrollView {
+                    VStack(
+                        alignment: .leading,
+                        spacing: size.s12,
+                    ) {
+                        DText(
+                            viewModel.proposalInstructions,
+                        )
+                        .dStyle(
+                            font: typography.textSmall,
+                            color: color.grayscaleHeader,
+                        )
+
+                        if state.reviewProposals.isEmpty,
                            proposal.rejectedFieldIds.isEmpty,
                            proposal.unmappedFindings.isEmpty
                         {
@@ -40,7 +43,7 @@ struct ScanSpeechProposalView: DView {
                         }
 
                         ForEach(
-                            viewModel.reviewProposals,
+                            state.reviewProposals,
                         ) { field in
                             ScanSpeechProposalCardView(
                                 proposal: field,
@@ -97,32 +100,34 @@ struct ScanSpeechProposalView: DView {
                         }
                     }
                 }
+
+                DButton(
+                    title: l10n[
+                        .scanSpeechProposalApplyButton,
+                    ],
+                    action: viewModel.onTapApplySelected,
+                    isDisabled: state.selectedFieldIds.isEmpty,
+                )
+                .dStyle(
+                    .primaryButton,
+                )
+
+                DButton(
+                    title: l10n[
+                        .scanSpeechProposalBackButton,
+                    ],
+                    action: viewModel.onTapBackToTranscript,
+                )
+                .dStyle(
+                    .primaryText,
+                )
             }
-
-            DButton(
-                title: l10n[
-                    .scanSpeechProposalApplyButton,
-                ],
-                action: viewModel.onTapApplySelected,
-                isDisabled: viewModel.isApplyDisabled,
+            .padding(
+                size.s16,
             )
-            .dStyle(
-                .primaryButton,
-            )
-
-            DButton(
-                title: l10n[
-                    .scanSpeechProposalBackButton,
-                ],
-                action: viewModel.onTapBackToTranscript,
-                isDisabled: viewModel.isLoading,
-            )
-            .dStyle(
-                .primaryText,
+        default: DUnexpectedStateView(
+                state: viewModel.state,
             )
         }
-        .padding(
-            size.s16,
-        )
     }
 }

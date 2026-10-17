@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct NeuralModelSettingsCardView: DView {
+struct NeuralModelSettingsCardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
@@ -84,7 +84,7 @@ struct NeuralModelSettingsCardView: DView {
     }
 }
 
-private struct NeuralModelSettingsMarkdownRowView: DView {
+private struct NeuralModelSettingsMarkdownRowView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     private static let switchNativeHeight: CGFloat = 31
     private static let switchNativeWidth: CGFloat = 51

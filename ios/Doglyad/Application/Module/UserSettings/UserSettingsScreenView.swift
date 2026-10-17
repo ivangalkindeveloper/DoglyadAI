@@ -1,14 +1,19 @@
 import DoglyadUI
 import SwiftUI
 
-struct UserSettingsScreenView: DView {
+struct UserSettingsScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: UserSettingsViewModel
-    @FocusState private var focus: UserSettingsViewModel.Focus?
+    @FocusState private var focus: UserSettingsFocus?
 
     var body: some View {
+        let isProcessing = switch viewModel.state {
+        case _ as UserSettingsLoadingState: true
+        default: false
+        }
+
         DScreen(
             title: l10n[
                 .userSettingsTitle,
@@ -44,7 +49,7 @@ struct UserSettingsScreenView: DView {
                         ],
                     )
                     .disabled(
-                        viewModel.isLoading,
+                        isProcessing,
                     )
                 }
             },
@@ -75,7 +80,7 @@ struct UserSettingsScreenView: DView {
                             autocapitalization: .never,
                         )
                         .id(
-                            UserSettingsViewModel.Focus.email,
+                            UserSettingsFocus.email,
                         )
                         .padding(
                             .bottom,
@@ -159,7 +164,7 @@ struct UserSettingsScreenView: DView {
                         bottomInset,
                     )
                     .disabled(
-                        viewModel.isLoading,
+                        isProcessing,
                     )
                 }
             },
@@ -169,7 +174,7 @@ struct UserSettingsScreenView: DView {
                         .buttonSave,
                     ],
                     action: viewModel.onTapSave,
-                    isLoading: viewModel.isLoading,
+                    isLoading: isProcessing,
                 )
                 .dStyle(
                     .primaryButton,

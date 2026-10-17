@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct LegalUpdateScreenView: DView {
+struct LegalUpdateScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @Environment(
         \.locale,
@@ -11,6 +11,15 @@ struct LegalUpdateScreenView: DView {
     @StateObject var viewModel: LegalUpdateViewModel
 
     var body: some View {
+        let isDisabled: Bool = switch viewModel.state {
+        case _ as LegalUpdateLoadingState: true
+        default: !viewModel.isLegalAccepted
+        }
+        let isProcessing = switch viewModel.state {
+        case _ as LegalUpdateLoadingState: true
+        default: false
+        }
+
         DScreen(
             title: l10n[
                 .legalUpdateTitle,
@@ -108,7 +117,8 @@ struct LegalUpdateScreenView: DView {
                         .buttonAccept,
                     ],
                     action: viewModel.onTapAccept,
-                    isDisabled: viewModel.isAcceptDisabled,
+                    isLoading: isProcessing,
+                    isDisabled: isDisabled,
                 )
                 .dStyle(
                     .primaryButton,
@@ -117,10 +127,6 @@ struct LegalUpdateScreenView: DView {
                     size.s16,
                 )
             },
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.isLegalAccepted,
         )
         .environmentObject(
             viewModel,

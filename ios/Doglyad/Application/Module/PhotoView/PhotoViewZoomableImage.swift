@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct PhotoViewZoomableImage: DView {
+struct PhotoViewZoomableImage: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: PhotoViewViewModel
     @EnvironmentObject var theme: DTheme
@@ -51,7 +51,8 @@ struct PhotoViewZoomableImage: DView {
                     x: center.x + displayed.offset.width,
                     y: center.y + displayed.offset.height,
                 )
-                if viewModel.isRemarksVisible {
+                switch viewModel.isRemarksVisible {
+                case true:
                     ForEach(
                         Array(
                             viewModel.remarkPoints(
@@ -83,6 +84,7 @@ struct PhotoViewZoomableImage: DView {
                             ),
                         )
                     }
+                case false: EmptyView()
                 }
             }
             .frame(

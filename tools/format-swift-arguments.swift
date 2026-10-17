@@ -2,9 +2,59 @@ import Foundation
 import SwiftParser
 import SwiftSyntax
 
+/// Move only class members, preserving property initialization order and method order.
+final class ClassMemberOrder: SyntaxRewriter {
+    override func visit(_ node: StringLiteralExprSyntax) -> ExprSyntax {
+        ExprSyntax(node)
+    }
+
+    override func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
+        var result = super.visit(node).cast(ClassDeclSyntax.self)
+        let members = result.memberBlock.members
+        // Conditional members may contain stored properties with ordered initializers.
+        guard !members.contains(where: { $0.decl.is(IfConfigDeclSyntax.self) }) else {
+            return DeclSyntax(result)
+        }
+        let properties = members.filter { $0.decl.is(VariableDeclSyntax.self) }
+        let initializers = members.filter { $0.decl.is(InitializerDeclSyntax.self) }
+        let remaining = members.filter {
+            !$0.decl.is(VariableDeclSyntax.self) && !$0.decl.is(InitializerDeclSyntax.self)
+        }
+        result.memberBlock.members = MemberBlockItemListSyntax(
+            Array(properties) + Array(initializers) + Array(remaining)
+        )
+        return DeclSyntax(result)
+    }
+}
+
 /// Enforces line breaks for argument lists that SwiftFormat leaves on one line.
 /// SwiftFormat runs afterward to apply the project's indentation and spacing.
 final class ArgumentLineBreaks: SyntaxRewriter {
+    override func visit(_ node: MemberBlockItemListSyntax) -> MemberBlockItemListSyntax {
+        let members = super.visit(node)
+        return MemberBlockItemListSyntax(members.enumerated().map { index, member in
+            var result = member
+            if index > 0, result.decl.is(InitializerDeclSyntax.self) {
+                result.leadingTrivia = startingAfterBlankLine(result.leadingTrivia)
+            }
+            return result
+        })
+    }
+
+    override func visit(_ node: InitializerDeclSyntax) -> DeclSyntax {
+        var result = super.visit(node).cast(InitializerDeclSyntax.self)
+        if var body = result.body, !body.statements.isEmpty {
+            body.statements = CodeBlockItemListSyntax(body.statements.map { statement in
+                var result = statement
+                result.leadingTrivia = startingOnNewLine(result.leadingTrivia)
+                return result
+            })
+            body.rightBrace.leadingTrivia = startingOnNewLine(body.rightBrace.leadingTrivia)
+            result.body = body
+        }
+        return DeclSyntax(result)
+    }
+
     override func visit(_ node: StringLiteralExprSyntax) -> ExprSyntax {
         // Preserve literal content and interpolation: line breaks can invalidate
         // single-line strings or change the indentation of multiline strings.
@@ -89,6 +139,21 @@ final class ArgumentLineBreaks: SyntaxRewriter {
         }
         return .newline + trivia
     }
+
+    private func startingAfterBlankLine(_ trivia: Trivia) -> Trivia {
+        var lineBreaks = 0
+        for piece in trivia {
+            switch piece {
+            case let .newlines(count), let .carriageReturns(count), let .carriageReturnLineFeeds(count):
+                lineBreaks += count
+            case .spaces, .tabs:
+                continue
+            default:
+                return lineBreaks >= 2 ? trivia : .newlines(2 - lineBreaks) + trivia
+            }
+        }
+        return lineBreaks >= 2 ? trivia : .newlines(2 - lineBreaks) + trivia
+    }
 }
 
 enum FormatError: Error, CustomStringConvertible {
@@ -123,10 +188,14 @@ func significantContent(_ tree: SourceFileSyntax) -> [String] {
 func formatted(_ source: String, path: String) throws -> String {
     let before = Parser.parse(source: source)
     guard !before.hasError else { throw FormatError.invalidSyntax(path) }
-    let rewritten = ArgumentLineBreaks().rewrite(before).description
+    let ordered = ClassMemberOrder().rewrite(before)
+    guard significantContent(before).sorted() == significantContent(ordered.cast(SourceFileSyntax.self)).sorted() else {
+        throw FormatError.changedTokens(path)
+    }
+    let rewritten = ArgumentLineBreaks().rewrite(ordered).description
     let after = Parser.parse(source: rewritten)
     guard !after.hasError else { throw FormatError.invalidSyntax(path) }
-    guard significantContent(before) == significantContent(after) else {
+    guard significantContent(ordered.cast(SourceFileSyntax.self)) == significantContent(after) else {
         throw FormatError.changedTokens(path)
     }
     return rewritten
@@ -147,12 +216,12 @@ do {
         }
         for (path, result) in changes {
             if check {
-                print("Argument wrapping required: \(path)")
+                print("Swift layout changes required: \(path)")
             } else {
                 try result.write(toFile: path, atomically: true, encoding: .utf8)
             }
         }
-        print("Argument wrapping: \(changes.count) files \(check ? "need changes" : "formatted").")
+        print("Swift layout: \(changes.count) files \(check ? "need changes" : "formatted").")
         if check, !changes.isEmpty { exit(1) }
     }
 } catch {

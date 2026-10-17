@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ActionRowView: DView {
+struct ActionRowView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let icon: ImageResource
     let title: LocalizedStringResource

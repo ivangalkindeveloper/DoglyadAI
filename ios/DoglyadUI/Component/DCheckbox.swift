@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DCheckbox: DView {
+public struct DCheckbox: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     @Binding var isChecked: Bool

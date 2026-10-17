@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DAudioMeter: DView {
+public struct DAudioMeter: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let level: Float
     private static let profile: [CGFloat] = [0.3, 0.55, 0.8, 1.0, 0.7, 0.85, 1.0, 0.75, 0.5, 0.3]

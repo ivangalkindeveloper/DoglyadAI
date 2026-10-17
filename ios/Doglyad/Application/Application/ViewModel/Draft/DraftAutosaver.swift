@@ -17,7 +17,9 @@ final class DraftAutosaver<Draft> {
         delay: RunLoop.SchedulerTimeType.Stride = .seconds(
             1,
         ),
-    ) { self.delay = delay }
+    ) {
+        self.delay = delay
+    }
 
     func start(
         publishers: [AnyPublisher<Void, Never>],

@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReportDetailPhotosView: DView {
+struct ReportDetailPhotosView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ReportDetailViewModel
@@ -36,7 +36,7 @@ struct ReportDetailPhotosView: DView {
         }
         .padding(
             .bottom,
-            size.s16,
+            viewModel.report.examinationData.photos.isEmpty ? .zero : size.s16,
         )
     }
 }

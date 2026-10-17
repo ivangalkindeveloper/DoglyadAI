@@ -5,6 +5,23 @@ import FoundationModels
 /// Historical nullable-contract baseline, excluded from the application framework.
 @available(iOS 26.0, *)
 final class DNeuralUltrasoundLegacyModelFoundationModels {
+    private let systemPrompt: String
+    private let localization: DNeuralUltrasoundSchemaLocalization
+    private let options: GenerationOptions
+
+    init(
+        systemPrompt: String,
+        parameters: DNeuralGenerationParameters,
+        localization: DNeuralUltrasoundSchemaLocalization,
+    ) {
+        self.systemPrompt = systemPrompt
+        self.localization = localization
+        options = GenerationOptions(
+            temperature: parameters.temperature,
+            maximumResponseTokens: parameters.maxTokens,
+        )
+    }
+
     @FoundationModels.Generable
     struct DNeuralUltrasoundResponse {
         let patientName: String?
@@ -71,23 +88,6 @@ final class DNeuralUltrasoundLegacyModelFoundationModels {
     enum DNeuralUltrasoundGender {
         case male
         case female
-    }
-
-    private let systemPrompt: String
-    private let localization: DNeuralUltrasoundSchemaLocalization
-    private let options: GenerationOptions
-
-    init(
-        systemPrompt: String,
-        parameters: DNeuralGenerationParameters,
-        localization: DNeuralUltrasoundSchemaLocalization,
-    ) {
-        self.systemPrompt = systemPrompt
-        self.localization = localization
-        options = GenerationOptions(
-            temperature: parameters.temperature,
-            maximumResponseTokens: parameters.maxTokens,
-        )
     }
 
     func parseSpeech(

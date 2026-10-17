@@ -5,7 +5,9 @@ public struct DTextFade: View {
 
     public init(
         backgroundColor: Color,
-    ) { self.backgroundColor = backgroundColor }
+    ) {
+        self.backgroundColor = backgroundColor
+    }
 
     public var body: some View {
         Rectangle()

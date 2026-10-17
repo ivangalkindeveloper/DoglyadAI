@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DToolbarButton: DView {
+public struct DToolbarButton: DViewProtocol {
     public enum Style {
         case grayscaleHeader
         case primaryDefault

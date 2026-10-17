@@ -4,13 +4,12 @@ import Foundation
 import Handler
 
 @MainActor
-class DModuleViewModel: Handler<DHttpApiError, DHttpConnectionError>, ObservableObject {
+class DModuleViewModel<State>: DStateViewModel<State> {
     private var isInitialized = false
 
     let container: DependencyContainer
     let router: DRouter
     @Published private(set) var subscriptionStatus: SubscriptionStatus?
-    private var presentationObservations: [AnyCancellable] = []
     private var subscriptionObservation: AnyCancellable?
     private let getNeuralModelSettings: () -> NeuralModelSettings
     private let onRequestCountIncremented: () -> Void
@@ -21,7 +20,11 @@ class DModuleViewModel: Handler<DHttpApiError, DHttpConnectionError>, Observable
     private let analyticsDestination: AnalyticsRouteDestination
     private let analyticsParameters: AnalyticsParameters
 
+    var availableRequestCount: Int { subscriptionStatus?.availableCountPerDay ?? 0 }
+    var neuralModelSettings: NeuralModelSettings { getNeuralModelSettings() }
+
     init(
+        state: State,
         container: DependencyContainer,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
@@ -46,9 +49,15 @@ class DModuleViewModel: Handler<DHttpApiError, DHttpConnectionError>, Observable
             getSubscriptionStatus: getSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
         )
-        super.init()
+        super.init(
+            state: state,
+        )
         subscriptionObservation = observeSubscriptionStatus { [weak self] status in
-            self?.subscriptionStatus = status
+            guard let self else { return }
+            subscriptionStatus = status
+            onSubscriptionChanged(
+                status,
+            )
         }
     }
 
@@ -77,26 +86,9 @@ class DModuleViewModel: Handler<DHttpApiError, DHttpConnectionError>, Observable
 
     func onInit() {}
 
-    func observePresentationChanges(
-        _ observeChanges: (@escaping () -> Void) -> AnyCancellable,
-    ) {
-        presentationObservations.append(
-            observeChanges { [weak self] in self?.objectWillChange.send() },
-        )
-    }
-
-    var isNeuralModelSettingsVisible: Bool {
-        switch subscriptionAvailability(
-            of: .neuralModelSettings,
-        ) {
-        case .available, .offered: true
-        case .unavailable: false
-        }
-    }
-
-    var availableRequestCount: Int { subscriptionStatus?.availableCountPerDay ?? 0 }
-    var isSubscriptionActive: Bool { subscriptionStatus != nil }
-    var neuralModelSettings: NeuralModelSettings { getNeuralModelSettings() }
+    func onSubscriptionChanged(
+        _: SubscriptionStatus?,
+    ) {}
 
     func subscriptionAvailability(
         of feature: PaidFeature,

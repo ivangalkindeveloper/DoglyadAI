@@ -1,13 +1,13 @@
 import SwiftUI
 
-public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView {
+public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     @ObservedObject private var controller: DTextFieldController
     private let focus: DTextFieldFocus<Focus>?
     private let title: LocalizedStringResource
     private let placeholder: LocalizedStringResource
-    private let mode: any DTextFieldMode
+    private let mode: any DTextFieldModeProtocol
     private let keyboardType: UIKeyboardType
     private let autocapitalization: TextInputAutocapitalization?
     private let leading: Leading
@@ -25,7 +25,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
         focus: DTextFieldFocus<Focus>? = nil,
         title: LocalizedStringResource,
         placeholder: LocalizedStringResource,
-        mode: any DTextFieldMode = DTextFieldSingleLineMode(),
+        mode: any DTextFieldModeProtocol = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
@@ -49,7 +49,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DView 
         controller: DTextFieldController,
         title: LocalizedStringResource,
         placeholder: LocalizedStringResource,
-        mode: any DTextFieldMode = DTextFieldSingleLineMode(),
+        mode: any DTextFieldModeProtocol = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },

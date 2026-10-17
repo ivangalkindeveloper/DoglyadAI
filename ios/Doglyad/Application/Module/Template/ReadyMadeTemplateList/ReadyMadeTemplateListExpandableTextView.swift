@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReadyMadeTemplateListExpandableTextView: DView {
+struct ReadyMadeTemplateListExpandableTextView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     let text: String

@@ -1,14 +1,19 @@
 import DoglyadUI
 import SwiftUI
 
-struct TemplateAddScreenView: DView {
+struct TemplateAddScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: TemplateAddViewModel
-    @FocusState private var focus: TemplateAddViewModel.Focus?
+    @FocusState private var focus: TemplateAddFocus?
 
     var body: some View {
+        let isProcessing = switch viewModel.state {
+        case _ as TemplateAddLoadingState: true
+        default: false
+        }
+
         DScreen(
             title: l10n[
                 .templateAddTitle,
@@ -46,7 +51,7 @@ struct TemplateAddScreenView: DView {
                         ],
                     )
                     .disabled(
-                        viewModel.isLoading,
+                        isProcessing,
                     )
                 }
             },
@@ -67,10 +72,6 @@ struct TemplateAddScreenView: DView {
                         )
                         .contentTransition(
                             .opacity,
-                        )
-                        .animation(
-                            theme.animation,
-                            value: viewModel.usExaminationType.id,
                         )
                         .padding(
                             .bottom,
@@ -94,7 +95,7 @@ struct TemplateAddScreenView: DView {
                             ),
                         )
                         .id(
-                            TemplateAddViewModel.Focus.name,
+                            TemplateAddFocus.name,
                         )
                         .padding(
                             .bottom,
@@ -116,7 +117,7 @@ struct TemplateAddScreenView: DView {
                             mode: DTextFieldMultiLineMode(),
                         )
                         .id(
-                            TemplateAddViewModel.Focus.content,
+                            TemplateAddFocus.content,
                         )
                         .padding(
                             .bottom,
@@ -206,7 +207,7 @@ struct TemplateAddScreenView: DView {
                         bottomInset + size.s16,
                     )
                     .disabled(
-                        viewModel.isLoading,
+                        isProcessing,
                     )
                 }
                 .scrollDismissesKeyboard(
@@ -219,7 +220,7 @@ struct TemplateAddScreenView: DView {
                         .buttonSave,
                     ],
                     action: viewModel.onTapSave,
-                    isLoading: viewModel.isLoading,
+                    isLoading: isProcessing,
                 )
                 .dStyle(
                     .primaryButton,

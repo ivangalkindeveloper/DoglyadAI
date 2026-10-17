@@ -2,14 +2,15 @@ import DoglyadCamera
 import DoglyadUI
 import SwiftUI
 
-struct ScanCameraPreviewView: DView {
+struct ScanCameraPreviewView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanCameraViewModel
 
     var body: some View {
         Group {
-            if viewModel.cameraController.isLoading {
+            switch viewModel.state {
+            case _ as ScanCameraPreparingState:
                 color.grayscaleBackground
                     .dShimmer(
                         cornerRadius: .zero,
@@ -17,7 +18,7 @@ struct ScanCameraPreviewView: DView {
                     .transition(
                         .opacity,
                     )
-            } else {
+            default:
                 DCameraView(
                     controller: viewModel.cameraController,
                 )
@@ -38,9 +39,5 @@ struct ScanCameraPreviewView: DView {
             }
         }
         .ignoresSafeArea()
-        .animation(
-            theme.animation,
-            value: viewModel.cameraController.isLoading,
-        )
     }
 }

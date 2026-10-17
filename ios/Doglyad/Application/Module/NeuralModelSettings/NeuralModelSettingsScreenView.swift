@@ -1,14 +1,19 @@
 import DoglyadUI
 import SwiftUI
 
-struct NeuralModelSettingsScreenView: DView {
+struct NeuralModelSettingsScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: NeuralModelSettingsViewModel
-    @FocusState private var focus: NeuralModelSettingsViewModel.Focus?
+    @FocusState private var focus: NeuralModelSettingsFocus?
 
     var body: some View {
+        let isProcessing = switch viewModel.state {
+        case _ as NeuralModelSettingsLoadingState: true
+        default: false
+        }
+
         DScreen(
             title: l10n[
                 .neuralModelSettingsTitle,
@@ -46,7 +51,7 @@ struct NeuralModelSettingsScreenView: DView {
                         ],
                     )
                     .disabled(
-                        viewModel.isLoading,
+                        isProcessing,
                     )
                 }
             },
@@ -140,7 +145,7 @@ struct NeuralModelSettingsScreenView: DView {
                             keyboardType: .decimalPad,
                         )
                         .id(
-                            NeuralModelSettingsViewModel.Focus.temperature,
+                            NeuralModelSettingsFocus.temperature,
                         )
                         .padding(
                             .bottom,
@@ -183,7 +188,7 @@ struct NeuralModelSettingsScreenView: DView {
                             keyboardType: .numberPad,
                         )
                         .id(
-                            NeuralModelSettingsViewModel.Focus.length,
+                            NeuralModelSettingsFocus.length,
                         )
                         .padding(
                             .bottom,
@@ -216,7 +221,7 @@ struct NeuralModelSettingsScreenView: DView {
                         bottomInset,
                     )
                     .disabled(
-                        viewModel.isLoading,
+                        isProcessing,
                     )
                 }
             },
@@ -226,7 +231,7 @@ struct NeuralModelSettingsScreenView: DView {
                         .buttonSave,
                     ],
                     action: viewModel.onTapSave,
-                    isLoading: viewModel.isLoading,
+                    isLoading: isProcessing,
                 )
                 .dStyle(
                     .primaryButton,

@@ -40,6 +40,9 @@ struct RepositoryOperationTests {
             onRequestCountIncremented: {},
             arguments: arguments,
         )
+        model.emit(
+            SelectTemplateContentState(),
+        )
         model.coordinator.sheet(
             .selectTemplate,
             arguments: arguments,

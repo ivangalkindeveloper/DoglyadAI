@@ -2,7 +2,7 @@ import DoglyadUI
 import SwiftUI
 import UIKit
 
-struct ExpandableContentView<Content: View>: DView {
+struct ExpandableContentView<Content: View>: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 

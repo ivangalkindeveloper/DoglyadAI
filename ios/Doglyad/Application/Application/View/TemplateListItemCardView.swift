@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct TemplateListItemCardView: DView {
+struct TemplateListItemCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     let template: USExaminationTemplate

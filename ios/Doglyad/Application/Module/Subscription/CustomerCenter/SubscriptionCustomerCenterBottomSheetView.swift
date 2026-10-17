@@ -1,12 +1,17 @@
 import DoglyadUI
 import SwiftUI
 
-struct SubscriptionCustomerCenterBottomSheetView: DView {
+struct SubscriptionCustomerCenterBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: SubscriptionCustomerCenterViewModel
 
     var body: some View {
+        let isProcessing = switch viewModel.state {
+        case _ as SubscriptionCustomerCenterLoadingState: true
+        default: false
+        }
+
         DBottomSheet(
             title: l10n[
                 .subscriptionSupportCenterTitle,
@@ -23,7 +28,8 @@ struct SubscriptionCustomerCenterBottomSheetView: DView {
                 ).dStyle(
                     font: typography.textSmall,
                 )
-                if viewModel.isSubscriptionActive {
+                switch viewModel.subscriptionStatus {
+                case .some:
                     DButton(
                         title: l10n[
                             .subscriptionCustomerCenterManageButton,
@@ -32,6 +38,7 @@ struct SubscriptionCustomerCenterBottomSheetView: DView {
                     ).dStyle(
                         .primaryButton,
                     )
+                case .none: EmptyView()
                 }
                 DButton(
                     title: l10n[
@@ -41,7 +48,8 @@ struct SubscriptionCustomerCenterBottomSheetView: DView {
                 ).dStyle(
                     .textWeak,
                 )
-                if viewModel.isSubscriptionActive {
+                switch viewModel.subscriptionStatus {
+                case .some:
                     DButton(
                         title: l10n[
                             .subscriptionCustomerCenterRefundButton,
@@ -50,6 +58,7 @@ struct SubscriptionCustomerCenterBottomSheetView: DView {
                     ).dStyle(
                         .textWeak,
                     )
+                case .none: EmptyView()
                 }
                 DButton(
                     title: l10n[
@@ -59,21 +68,26 @@ struct SubscriptionCustomerCenterBottomSheetView: DView {
                 ).dStyle(
                     .textWeak,
                 )
-                if viewModel.isLoading { DShimmerPlaceholder().frame(
-                    height: size.s8,
-                ) }
-                if let error = viewModel.errorDescription {
+                switch viewModel.state {
+                case _ as SubscriptionCustomerCenterLoadingState: DShimmerPlaceholder().frame(
+                        height: size.s8,
+                    )
+                default: EmptyView()
+                }
+                switch viewModel.state {
+                case let state as SubscriptionCustomerCenterFailedState:
                     DText(
-                        error,
+                        state.errorDescription,
                     ).dStyle(
                         font: typography.textSmall,
                         color: color.dangerDefault,
                     )
+                default: EmptyView()
                 }
                 Spacer()
             }
             .disabled(
-                viewModel.isLoading,
+                isProcessing,
             )
             .padding(
                 size.s16,

@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct NeuralModelValueRowView: DView {
+struct NeuralModelValueRowView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     let title: LocalizedStringResource

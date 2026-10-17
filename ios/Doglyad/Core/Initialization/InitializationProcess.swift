@@ -9,13 +9,11 @@ import Router
 
 @MainActor
 final class InitializationProcess: DependencyInitializationProcess {
-    typealias T = DependencyContainer
-
     var analytics: AnalyticsManager?
     var environment: EnvironmentProtocol?
     var connectionManager: ConnectionManagerProtocol?
     var permissionManager: PermissionManagerProtocol?
-    var mockFactory: MockFactory?
+    var mockFactory: MockFactoryProtocol?
     var database: DDatabase?
     var securityDatabase: DSecurityDatabaseProtocol?
     var httpClient: DHttpClientProtocol?
@@ -74,6 +72,8 @@ final class InitializationProcess: DependencyInitializationProcess {
             version: version!,
         )
     }
+
+    typealias T = DependencyContainer
 }
 
 extension InitializationProcess {

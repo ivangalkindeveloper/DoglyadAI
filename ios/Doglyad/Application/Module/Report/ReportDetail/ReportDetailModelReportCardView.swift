@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReportDetailModelReportCardView: DView {
+struct ReportDetailModelReportCardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject var theme: DTheme

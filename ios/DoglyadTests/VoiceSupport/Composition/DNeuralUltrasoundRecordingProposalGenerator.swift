@@ -9,7 +9,9 @@ final class DNeuralUltrasoundRecordingProposalGenerator: DNeuralUltrasoundPropos
 
     init(
         base: any DNeuralUltrasoundProposalGeneratorProtocol,
-    ) { self.base = base }
+    ) {
+        self.base = base
+    }
 
     func prewarm() { base.prewarm() }
 

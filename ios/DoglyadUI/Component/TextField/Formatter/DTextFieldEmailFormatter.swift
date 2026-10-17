@@ -1,4 +1,4 @@
-public final class DTextFieldEmailFormatter: DTextFieldFormatter {
+public final class DTextFieldEmailFormatter: DTextFieldFormatterProtocol {
     private static let localPartCharacters = Set(
         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.!#$%&'*+-/=?^_`{|}~",
     )

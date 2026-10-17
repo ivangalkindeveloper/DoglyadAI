@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct HistoryCardView: DView {
+struct HistoryCardView: DViewProtocol {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject var theme: DTheme
 

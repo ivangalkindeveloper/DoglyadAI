@@ -1,7 +1,7 @@
 internal import MarkdownUI
 import SwiftUI
 
-public struct DMarkdown: DView {
+public struct DMarkdown: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     private let content: String

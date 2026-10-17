@@ -1,12 +1,12 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanFormView: DView {
+struct ScanFormView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
-    let focus: FocusState<ScanViewModel.Focus?>.Binding
+    let focus: FocusState<ScanFocus?>.Binding
 
     var body: some View {
         VStack(
@@ -31,7 +31,7 @@ struct ScanFormView: DView {
                 keyboardType: .default,
             )
             .id(
-                ScanViewModel.Focus.examinationNumber,
+                ScanFocus.examinationNumber,
             )
             .padding(
                 .vertical,
@@ -56,7 +56,7 @@ struct ScanFormView: DView {
                 keyboardType: .default,
             )
             .id(
-                ScanViewModel.Focus.patientName,
+                ScanFocus.patientName,
             )
             .padding(
                 .bottom,
@@ -97,10 +97,6 @@ struct ScanFormView: DView {
                 .contentTransition(
                     .opacity,
                 )
-                .animation(
-                    theme.animation,
-                    value: viewModel.patientDateOfBirth,
-                )
                 .padding(
                     .bottom,
                     size.s4,
@@ -124,7 +120,7 @@ struct ScanFormView: DView {
                 keyboardType: .decimalPad,
             )
             .id(
-                ScanViewModel.Focus.patientHeightCM,
+                ScanFocus.patientHeightCM,
             )
             .padding(
                 .bottom,
@@ -149,7 +145,7 @@ struct ScanFormView: DView {
                 keyboardType: .decimalPad,
             )
             .id(
-                ScanViewModel.Focus.patientWeightKG,
+                ScanFocus.patientWeightKG,
             )
             .padding(
                 .bottom,
@@ -172,7 +168,7 @@ struct ScanFormView: DView {
                 keyboardType: .default,
             )
             .id(
-                ScanViewModel.Focus.patientComplaints,
+                ScanFocus.patientComplaints,
             )
             .padding(
                 .bottom,
@@ -195,7 +191,7 @@ struct ScanFormView: DView {
                 keyboardType: .default,
             )
             .id(
-                ScanViewModel.Focus.examinationDescription,
+                ScanFocus.examinationDescription,
             )
             .padding(
                 .bottom,
@@ -218,7 +214,10 @@ struct ScanFormView: DView {
                 size.s16,
             )
 
-            if viewModel.isNeuralModelSettingsVisible {
+            switch viewModel.subscriptionAvailability(
+                of: .neuralModelSettings,
+            ) {
+            case .available, .offered:
                 NeuralModelSettingsCardView(
                     settings: viewModel.neuralModelSettings,
                     availability: viewModel.subscriptionAvailability(
@@ -226,6 +225,7 @@ struct ScanFormView: DView {
                     ),
                     onTap: viewModel.onTapNeuralModelSettings,
                 )
+            case .unavailable: EmptyView()
             }
 
             DButton(
@@ -238,7 +238,8 @@ struct ScanFormView: DView {
                 .primaryText,
             )
 
-            if viewModel.isFillDevelopmentButtonVisible {
+            switch viewModel.environmentType {
+            case .development:
                 DButton(
                     title: l10n[
                         .scanFillDevelopmentButton,
@@ -248,6 +249,7 @@ struct ScanFormView: DView {
                 .dStyle(
                     .primaryText,
                 )
+            case .production: EmptyView()
             }
         }
         .padding(

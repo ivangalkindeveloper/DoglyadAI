@@ -1,0 +1,2 @@
+@MainActor
+protocol PhotoRemarkStateProtocol: AnyObject {}

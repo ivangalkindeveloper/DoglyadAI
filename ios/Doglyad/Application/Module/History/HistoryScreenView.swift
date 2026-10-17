@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct HistoryScreenView: DView {
+struct HistoryScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
@@ -22,19 +22,20 @@ struct HistoryScreenView: DView {
                         spacing: .zero,
                         pinnedViews: [.sectionHeaders],
                     ) {
-                        if viewModel.isLoading {
+                        switch (viewModel.state, viewModel.sections.isEmpty) {
+                        case (_ as HistoryLoadingState, true):
                             HistoryLoadingView(
                                 cardCount: viewModel.pageSize,
                             )
                             .transition(
                                 .opacity,
                             )
-                        } else if viewModel.sections.isEmpty {
+                        case (_ as HistoryEmptyState, true):
                             HistoryEmptyView()
                                 .transition(
                                     .opacity,
                                 )
-                        } else {
+                        case (_, false):
                             ForEach(
                                 viewModel.sections,
                             ) { section in
@@ -67,15 +68,28 @@ struct HistoryScreenView: DView {
                                 }
                             }
 
-                            if viewModel.isMoreOffsetAvailable {
-                                HistoryOffsetLoadingView()
-                                    .transition(
+                            switch viewModel.state {
+                            case _ as HistoryFailedState:
+                                LoadingErrorView(
+                                    onRetry: viewModel.onOffsetAppear,
+                                )
+                            default:
+                                switch viewModel.nextOffset {
+                                case .some:
+                                    HistoryOffsetLoadingView().transition(
                                         .opacity,
-                                    )
-                                    .onAppear {
-                                        viewModel.onOffsetAppear()
-                                    }
+                                    ).onAppear { viewModel.onOffsetAppear() }
+                                case .none: EmptyView()
+                                }
                             }
+                        case (_ as HistoryFailedState, true):
+                            LoadingErrorView(
+                                onRetry: viewModel.onTapRetry,
+                            )
+                        default:
+                            DUnexpectedStateView(
+                                state: viewModel.state,
+                            )
                         }
                     }
                     .padding(
@@ -98,7 +112,8 @@ struct HistoryScreenView: DView {
                 )
             },
             bottom: {
-                if viewModel.isEmpty {
+                switch viewModel.state {
+                case _ as HistoryEmptyState:
                     DButton(
                         title: l10n[
                             .buttonBack,
@@ -119,24 +134,9 @@ struct HistoryScreenView: DView {
                             with: .opacity,
                         ),
                     )
+                default: EmptyView()
                 }
             },
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.isLoading,
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.sections.flatMap { section in
-                section.reports.map(
-                    \.id,
-                )
-            },
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.isMoreOffsetAvailable,
         )
         .onAppear(
             perform: viewModel.onAppear,

@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct HistoryLoadingCardView: DView {
+struct HistoryLoadingCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     var body: some View {

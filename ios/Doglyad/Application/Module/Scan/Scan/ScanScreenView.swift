@@ -1,14 +1,41 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanScreenView: DView {
+struct ScanScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ScanViewModel
-    @FocusState private var focus: ScanViewModel.Focus?
+    @FocusState private var focus: ScanFocus?
 
     var body: some View {
+        let speechToolbarButton: DToolbarButton? = switch viewModel.subscriptionAvailability(
+            of: .formCompletionViaMicrophone,
+        ) {
+        case .available, .offered:
+            DToolbarButton(
+                accessibilityLabel: l10n[
+                    .buttonSpeech,
+                ],
+                style: .primaryDefault,
+                badge: viewModel.speechButtonBadge,
+                content: .icon(
+                    .microphone,
+                ),
+                action: viewModel.onTapSpeech,
+            )
+        case .unavailable: nil
+        }
+
+        let isProcessing = switch viewModel.state {
+        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState: true
+        default: false
+        }
+        let isMediaSelectionDisabled = switch (viewModel.state, viewModel.isPhotoLimitReached) {
+        case (_ as ScanInitializingState, _), (_ as ScanGeneratingState, _), (_ as ScanLoadingState, _), (_ as ScanClearingState, _), (_, true): true
+        default: false
+        }
+
         DScreen(
             leading: {
                 DButton(
@@ -19,7 +46,7 @@ struct ScanScreenView: DView {
                     .circle,
                 )
                 .disabled(
-                    viewModel.isLoading,
+                    isProcessing,
                 )
             },
             titleContent: {
@@ -32,14 +59,10 @@ struct ScanScreenView: DView {
                     .primaryChip,
                 )
                 .disabled(
-                    viewModel.isLoading,
+                    isProcessing,
                 )
                 .contentTransition(
                     .opacity,
-                )
-                .animation(
-                    theme.animation,
-                    value: viewModel.usExaminationType.id,
                 )
             },
             onTapBody: viewModel.unfocus,
@@ -59,19 +82,7 @@ struct ScanScreenView: DView {
                         onTapDown: viewModel.isNextFieldFocusable ? { viewModel.onTapToolbarDown() } : nil,
                         onTapDone: viewModel.unfocus,
                         trailButtons: [
-                            viewModel.isSpeechButtonVisible
-                                ? DToolbarButton(
-                                    accessibilityLabel: l10n[
-                                        .buttonSpeech,
-                                    ],
-                                    style: .primaryDefault,
-                                    badge: viewModel.speechButtonBadge,
-                                    content: .icon(
-                                        .microphone,
-                                    ),
-                                    action: viewModel.onTapSpeech,
-                                )
-                                : nil,
+                            speechToolbarButton,
                             DToolbarButton(
                                 accessibilityLabel: l10n[
                                     .buttonGenerate,
@@ -89,7 +100,7 @@ struct ScanScreenView: DView {
                         ),
                     )
                     .disabled(
-                        viewModel.isLoading,
+                        isProcessing,
                     )
                 }
             },
@@ -97,61 +108,65 @@ struct ScanScreenView: DView {
                 ZStack(
                     alignment: .bottom,
                 ) {
-                    DFocusScrollView(
-                        focus: focus,
-                    ) {
-                        VStack(
-                            alignment: .leading,
-                            spacing: .zero,
+                    switch viewModel.state {
+                    case _ as ScanInitializationFailedState:
+                        LoadingErrorView(
+                            onRetry: viewModel.onTapRetryInitialization,
+                        )
+                    default:
+                        DFocusScrollView(
+                            focus: focus,
                         ) {
-                            if viewModel.isPhotoEmptyStateVisible {
-                                ScanMediaButtonView(
-                                    action: viewModel.onTapImport,
-                                )
-                                .disabled(
-                                    viewModel.isMediaSelectionDisabled,
-                                )
-                                .padding(
-                                    .horizontal,
-                                    size.s16,
-                                )
-                                .padding(
-                                    .bottom,
-                                    size.s4,
-                                )
-                                .transition(
-                                    .move(
-                                        edge: .top,
+                            VStack(
+                                alignment: .leading,
+                                spacing: .zero,
+                            ) {
+                                switch viewModel.photos.isEmpty {
+                                case true:
+                                    ScanMediaButtonView(
+                                        action: viewModel.onTapImport,
                                     )
-                                    .combined(
-                                        with: .opacity,
-                                    ),
+                                    .disabled(
+                                        isMediaSelectionDisabled,
+                                    )
+                                    .padding(
+                                        .horizontal,
+                                        size.s16,
+                                    )
+                                    .padding(
+                                        .bottom,
+                                        size.s4,
+                                    )
+                                    .transition(
+                                        .move(
+                                            edge: .top,
+                                        )
+                                        .combined(
+                                            with: .opacity,
+                                        ),
+                                    )
+                                case false: EmptyView()
+                                }
+
+                                ScanPhotoListView()
+
+                                ScanFormView(
+                                    focus: $focus,
                                 )
                             }
-
-                            ScanPhotoListView()
-
-                            ScanFormView(
-                                focus: $focus,
+                            .padding(
+                                .top,
+                                toolbarHeight + size.s16,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s136 * 2,
                             )
                         }
-                        .padding(
-                            .top,
-                            toolbarHeight + size.s16,
-                        )
-                        .padding(
-                            .bottom,
-                            size.s136 * 2,
-                        )
-                        .animation(
-                            theme.animation,
-                            value: viewModel.photos,
+                        .disabled(
+                            isProcessing,
                         )
                     }
-                    .disabled(
-                        viewModel.isLoading,
-                    )
-
                     ScanBottomView()
                 }
             },

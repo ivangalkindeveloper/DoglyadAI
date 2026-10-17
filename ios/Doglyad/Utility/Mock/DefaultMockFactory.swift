@@ -1,6 +1,6 @@
 import Foundation
 
-final class DefaultMockFactory: MockFactory {
+final class DefaultMockFactory: MockFactoryProtocol {
     func fillPatientComplaints(
         l10n: L10N,
     ) -> String {

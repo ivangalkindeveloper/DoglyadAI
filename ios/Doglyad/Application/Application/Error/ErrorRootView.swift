@@ -1,18 +1,16 @@
 import DoglyadUI
 import SwiftUI
 
-struct ErrorRootView: DView {
+struct ErrorRootView: DViewProtocol {
     @EnvironmentObject private var applicationViewModel: ApplicationRootViewModel
     @EnvironmentObject var theme: DTheme
 
-    let error: Error
     @StateObject private var viewModel: ErrorRootViewModel
 
     init(
         error: Error,
         analytics: AnalyticsManager?,
     ) {
-        self.error = error
         _viewModel = StateObject(
             wrappedValue: ErrorRootViewModel(
                 error: error,
@@ -22,14 +20,13 @@ struct ErrorRootView: DView {
     }
 
     var body: some View {
-        let error = error as? InitializationError
         Group {
-            switch error {
-            case .newVersion:
+            switch viewModel.state {
+            case _ as ErrorRootNewVersionState:
                 NewVersionView(
                     onTapUpdate: viewModel.onTapNewVersionUpdate,
                 )
-            case .noInternetConnection:
+            case _ as ErrorRootOfflineState:
                 ErrorView(
                     title: .errorNoInternetConnectionTitle,
                     buttonTitle: .buttonUpdate,
@@ -46,9 +43,7 @@ struct ErrorRootView: DView {
                         alignment: .center,
                     )
                 }
-            case let .serviceUnavailable(
-                email,
-            ):
+            case let state as ErrorRootServiceUnavailableState:
                 ErrorView(
                     title: .serviceUnavailableTitle,
                 ) {
@@ -69,7 +64,7 @@ struct ErrorRootView: DView {
                             action: viewModel.onTapServiceUnavailableEmail,
                         ) {
                             DText(
-                                email,
+                                state.email,
                             )
                             .dStyle(
                                 font: typography.linkSmall,
@@ -86,12 +81,7 @@ struct ErrorRootView: DView {
                         )
                     }
                 }
-            case .usExaminationTypesEmpty,
-                 .usExaminationNeuralModelsEmpty,
-                 .some(
-                     .common,
-                 ),
-                 .none:
+            case _ as ErrorRootUnknownState:
                 ErrorView(
                     title: .errorUnknownTitle,
                     buttonTitle: .buttonUpdate,
@@ -108,6 +98,9 @@ struct ErrorRootView: DView {
                         alignment: .center,
                     )
                 }
+            default: DUnexpectedStateView(
+                    state: viewModel.state,
+                )
             }
         }
         .onAppear(

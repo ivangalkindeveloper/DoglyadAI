@@ -5,7 +5,7 @@ public enum DBottomSheetType {
     case blur
 }
 
-public struct DBottomSheet<Content, Bottom>: DView where Content: View, Bottom: View {
+public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, Bottom: View {
     @Environment(
         \.dismiss,
     ) private var dismiss

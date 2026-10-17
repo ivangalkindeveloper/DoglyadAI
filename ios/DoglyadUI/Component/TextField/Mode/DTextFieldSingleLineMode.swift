@@ -1,6 +1,6 @@
 import SwiftUI
 
-public final class DTextFieldSingleLineMode: DTextFieldMode {
+public final class DTextFieldSingleLineMode: DTextFieldModeProtocol {
     public let axis: Axis = .horizontal
     public let lineLimit: ClosedRange<Int> = 1 ... 1
     public let submitLabel: SubmitLabel

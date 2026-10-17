@@ -6,15 +6,19 @@ public final class DTextFieldController: ObservableObject {
     @Published private(set) var errorText: String?
 
     private let isRequired: Bool
-    private let formatters: [any DTextFieldFormatter]
-    private let validators: [any DTextFieldValidator]
+    private let formatters: [any DTextFieldFormatterProtocol]
+    private let validators: [any DTextFieldValidatorProtocol]
     private var isValidationAttempted = false
+
+    public var value: String? {
+        text.isEmpty ? nil : text
+    }
 
     public init(
         initialText: String = "",
         isRequired: Bool = false,
-        formatters: [any DTextFieldFormatter] = [],
-        validators: [any DTextFieldValidator] = [],
+        formatters: [any DTextFieldFormatterProtocol] = [],
+        validators: [any DTextFieldValidatorProtocol] = [],
     ) {
         self.isRequired = isRequired
         self.formatters = formatters
@@ -28,10 +32,6 @@ public final class DTextFieldController: ObservableObject {
             )
         }
         text = formattedText
-    }
-
-    public var value: String? {
-        text.isEmpty ? nil : text
     }
 
     public func setText(

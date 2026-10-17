@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct PhotoViewScreenView: DView {
+struct PhotoViewScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: PhotoViewViewModel
@@ -15,7 +15,8 @@ struct PhotoViewScreenView: DView {
             subTitle: viewModel.subTitle,
             onTapBack: viewModel.onTapBack,
             trailing: {
-                if viewModel.isDeleteButtonVisible {
+                switch viewModel.isDeletionAvailable {
+                case true:
                     DButton(
                         image: .delete,
                         action: viewModel.onTapDelete,
@@ -30,6 +31,7 @@ struct PhotoViewScreenView: DView {
                             ],
                         ),
                     )
+                case false: EmptyView()
                 }
             },
         ) { toolbarInset, _ in
@@ -68,7 +70,8 @@ struct PhotoViewScreenView: DView {
                 )
                 .ignoresSafeArea()
 
-                if viewModel.isPhotoAvailable {
+                switch viewModel.state {
+                case _ as PhotoViewContentState:
                     PhotoViewControlsView()
                         .padding(
                             size.s16,
@@ -79,6 +82,10 @@ struct PhotoViewScreenView: DView {
                         ) { height in
                             controlsHeight = height
                         }
+                case _ as PhotoViewEmptyState: EmptyView()
+                default: DUnexpectedStateView(
+                        state: viewModel.state,
+                    )
                 }
             }
         }

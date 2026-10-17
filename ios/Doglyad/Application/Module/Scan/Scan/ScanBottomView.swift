@@ -1,18 +1,33 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanBottomView: DView {
+struct ScanBottomView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
 
     var body: some View {
+        let isGenerationDisabled = switch viewModel.state {
+        case _ as ScanInitializationFailedState: true
+        default: false
+        }
+
+        let isProcessing = switch viewModel.state {
+        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState: true
+        default: false
+        }
+
         VStack(
             spacing: .zero,
         ) {
-            if viewModel.isSpeechButtonVisible {
-                if !viewModel.isLoading {
+            switch viewModel.subscriptionAvailability(
+                of: .formCompletionViaMicrophone,
+            ) {
+            case .available, .offered:
+                switch viewModel.state {
+                case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: EmptyView()
+                default:
                     DButton(
                         image: .microphone,
                         title: l10n[
@@ -38,6 +53,7 @@ struct ScanBottomView: DView {
                         ),
                     )
                 }
+            case .unavailable: EmptyView()
             }
 
             DButton(
@@ -45,7 +61,8 @@ struct ScanBottomView: DView {
                     .buttonGenerateProtocol,
                 ],
                 action: viewModel.onTapScan,
-                isLoading: viewModel.isLoading,
+                isLoading: isProcessing,
+                isDisabled: isGenerationDisabled,
             )
             .dStyle(
                 .primaryButton,
@@ -70,13 +87,5 @@ struct ScanBottomView: DView {
                 ),
             )
         }
-        .animation(
-            theme.animation,
-            value: viewModel.isLoading,
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.isSpeechButtonVisible,
-        )
     }
 }

@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanMediaButtonView: DView {
+struct ScanMediaButtonView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @Environment(
         \.isEnabled,

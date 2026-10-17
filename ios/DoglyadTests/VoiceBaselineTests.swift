@@ -6,6 +6,16 @@ import UIKit
 import XCTest
 
 final class VoiceBaselineTests: XCTestCase {
+    private var platformName: String {
+        #if targetEnvironment(
+            simulator,
+        )
+        "iOS Simulator"
+        #else
+        "iOS"
+        #endif
+    }
+
     @MainActor
     func testVoiceBaseline() async throws {
         guard ProcessInfo.processInfo.environment[
@@ -404,16 +414,6 @@ final class VoiceBaselineTests: XCTestCase {
             to: destination,
             options: .atomic,
         )
-    }
-
-    private var platformName: String {
-        #if targetEnvironment(
-            simulator,
-        )
-        "iOS Simulator"
-        #else
-        "iOS"
-        #endif
     }
 
     private func requireDictionary(

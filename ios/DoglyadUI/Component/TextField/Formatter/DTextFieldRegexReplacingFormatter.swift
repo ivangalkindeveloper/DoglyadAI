@@ -1,6 +1,6 @@
 import Foundation
 
-public final class DTextFieldRegexReplacingFormatter: DTextFieldFormatter {
+public final class DTextFieldRegexReplacingFormatter: DTextFieldFormatterProtocol {
     private let regularExpression: NSRegularExpression
     private let replacementTemplate: String
 

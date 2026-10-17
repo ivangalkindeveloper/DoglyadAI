@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct SectionHeaderView: DView {
+struct SectionHeaderView: DViewProtocol {
     private enum Title {
         case localized(LocalizedStringResource)
         case verbatim(String)

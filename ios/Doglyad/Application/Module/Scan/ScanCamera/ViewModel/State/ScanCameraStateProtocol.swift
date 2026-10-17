@@ -1,0 +1,2 @@
+@MainActor
+protocol ScanCameraStateProtocol: AnyObject {}

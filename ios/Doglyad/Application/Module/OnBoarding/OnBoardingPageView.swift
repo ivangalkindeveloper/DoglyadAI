@@ -1,17 +1,17 @@
 import DoglyadUI
 import SwiftUI
 
-struct OnBoardingPageView<BottomContent: View>: DView {
+struct OnBoardingPageView<BottomContent: View>: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
-    let tag: OnBoardingViewModel.Page
+    let tag: Int
     let title: LocalizedStringResource
     let image: ImageResource
     let description: LocalizedStringResource
     let bottomContent: BottomContent
 
     init(
-        tag: OnBoardingViewModel.Page,
+        tag: Int,
         title: LocalizedStringResource,
         image: ImageResource,
         description: LocalizedStringResource,
@@ -65,9 +65,7 @@ struct OnBoardingPageView<BottomContent: View>: DView {
                 alignment: .leading,
             )
 
-            if !(bottomContent is EmptyView) {
-                bottomContent
-            }
+            bottomContent
         }
         .frame(
             maxWidth: .infinity,

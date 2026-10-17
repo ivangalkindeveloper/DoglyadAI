@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct AboutBottomSheetView: DView {
+struct AboutBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @Environment(
         \.locale,

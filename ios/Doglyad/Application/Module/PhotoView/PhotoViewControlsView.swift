@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct PhotoViewControlsView: DView {
+struct PhotoViewControlsView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: PhotoViewViewModel
@@ -28,7 +28,10 @@ struct PhotoViewControlsView: DView {
                 alignment: .center,
             )
 
-            if viewModel.isRemarksToggleVisible {
+            switch viewModel.remarkPoints(
+                for: viewModel.selectedPhotoID,
+            ).isEmpty {
+            case false:
                 HStack(
                     spacing: size.s16,
                 ) {
@@ -50,6 +53,7 @@ struct PhotoViewControlsView: DView {
                     )
                     .labelsHidden()
                 }
+            case true: EmptyView()
             }
         }
         .padding(

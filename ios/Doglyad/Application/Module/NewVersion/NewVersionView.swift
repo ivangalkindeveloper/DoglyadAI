@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct NewVersionView: DView {
+struct NewVersionView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     let onTapUpdate: () -> Void

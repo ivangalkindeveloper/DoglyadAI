@@ -1,4 +1,4 @@
-public final class DTextFieldDecimalFormatter: DTextFieldFormatter {
+public final class DTextFieldDecimalFormatter: DTextFieldFormatterProtocol {
     private static let digits = Set(
         "0123456789",
     )

@@ -1,4 +1,4 @@
-public final class DTextFieldDoubleRangeValidator: DTextFieldValidator {
+public final class DTextFieldDoubleRangeValidator: DTextFieldValidatorProtocol {
     private let validRange: ClosedRange<Double>
     private let invalidValueErrorText: String
 

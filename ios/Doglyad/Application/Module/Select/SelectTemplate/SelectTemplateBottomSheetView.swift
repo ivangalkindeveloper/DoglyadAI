@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct SelectTemplateBottomSheetView: DView {
+struct SelectTemplateBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
@@ -21,19 +21,36 @@ struct SelectTemplateBottomSheetView: DView {
                     alignment: .leading,
                     spacing: size.s4,
                 ) {
-                    ForEach(
-                        viewModel.templates,
-                    ) { template in
-                        TemplateListItemCardView(
-                            template: template,
-                            action: {
-                                viewModel.onTemplateTap(
-                                    template,
-                                )
-                            },
-                            isSelected: viewModel.isSelected(
-                                template,
-                            ),
+                    let isLoading = switch viewModel.state { case _ as SelectTemplateLoadingState: true
+                    default: false }
+                    switch (viewModel.state, viewModel.templates.isEmpty) {
+                    case (_, false):
+                        ForEach(
+                            viewModel.templates,
+                        ) { template in
+                            TemplateListItemCardView(
+                                template: template,
+                                action: {
+                                    viewModel.onTemplateTap(
+                                        template,
+                                    )
+                                },
+                                isSelected: viewModel.currentTemplateID == template.id,
+                            )
+                        }.disabled(
+                            isLoading,
+                        )
+                    case (_ as SelectTemplateLoadingState, true):
+                        TemplateListLoadingView()
+                    case (_ as SelectTemplateEmptyState, true):
+                        TemplateListEmptyView()
+                    case (_ as SelectTemplateFailedState, true):
+                        LoadingErrorView(
+                            onRetry: viewModel.onTapRetry,
+                        )
+                    default:
+                        DUnexpectedStateView(
+                            state: viewModel.state,
                         )
                     }
                 }
@@ -56,10 +73,6 @@ struct SelectTemplateBottomSheetView: DView {
                 for: .scrollContent,
             )
         }
-        .animation(
-            theme.animation,
-            value: viewModel.templates,
-        )
         .environmentObject(
             viewModel,
         )

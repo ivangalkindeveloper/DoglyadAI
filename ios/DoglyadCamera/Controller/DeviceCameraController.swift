@@ -5,7 +5,7 @@ import ImageIO
 import UIKit
 
 @MainActor
-public final class DeviceCameraController: DCameraController {
+public final class DeviceCameraController: DCameraControllerProtocol {
     @Published public private(set) var isLoading = true
     @Published public private(set) var isRunning = false
     @Published public private(set) var isCapturing = false

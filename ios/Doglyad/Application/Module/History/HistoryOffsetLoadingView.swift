@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct HistoryOffsetLoadingView: DView {
+struct HistoryOffsetLoadingView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     private let cardCount = 3

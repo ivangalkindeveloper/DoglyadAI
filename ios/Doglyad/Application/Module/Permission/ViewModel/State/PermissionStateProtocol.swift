@@ -1,0 +1,2 @@
+@MainActor
+protocol PermissionStateProtocol: AnyObject {}

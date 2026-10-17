@@ -1,12 +1,10 @@
 import DoglyadUI
 import SwiftUI
 
-struct WebDocumentBottomSheetView: DView {
+struct WebDocumentBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: WebDocumentViewModel
-
-    @State private var isLoading = true
 
     var body: some View {
         DBottomSheet(
@@ -18,10 +16,12 @@ struct WebDocumentBottomSheetView: DView {
                     url: viewModel.url,
                     topInset: toolbarHeight,
                     bottomInset: bottomHeight,
-                    isLoading: $isLoading,
+                    onLoaded: viewModel.onDocumentLoaded,
+                    onFailed: viewModel.onDocumentFailed,
                 )
 
-                if isLoading {
+                switch viewModel.state {
+                case _ as WebDocumentLoadingState:
                     color.grayscaleBackground
                         .frame(
                             maxWidth: .infinity,
@@ -30,16 +30,17 @@ struct WebDocumentBottomSheetView: DView {
                         .dShimmer(
                             cornerRadius: 0,
                         )
+                case _ as WebDocumentLoadedState, _ as WebDocumentFailedState:
+                    EmptyView()
+                default: DUnexpectedStateView(
+                        state: viewModel.state,
+                    )
                 }
             }
             .edgesIgnoringSafeArea(
                 .bottom,
             )
         }
-        .animation(
-            theme.animation,
-            value: isLoading,
-        )
         .environmentObject(
             viewModel,
         )

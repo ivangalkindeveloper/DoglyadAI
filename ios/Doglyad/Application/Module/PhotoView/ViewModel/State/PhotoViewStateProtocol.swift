@@ -1,0 +1,2 @@
+@MainActor
+protocol PhotoViewStateProtocol: AnyObject {}

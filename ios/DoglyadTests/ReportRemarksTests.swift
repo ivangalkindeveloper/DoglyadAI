@@ -337,11 +337,16 @@ struct ReportRemarksTests {
         )
         model.onInit()
         await model.lastTask?.value
+        switch model.isRemarksVisible {
+        case false: break
+        default: Issue.record(
+                "Expected hidden photo remarks",
+            )
+        }
         #expect(
-            !model.isRemarksVisible,
-        )
-        #expect(
-            model.isRemarksToggleVisible,
+            !model.remarkPoints(
+                for: model.selectedPhotoID,
+            ).isEmpty,
         )
         #expect(
             model.remarkPoints(
@@ -364,9 +369,12 @@ struct ReportRemarksTests {
             false,
         )
         await model.lastTask?.value
-        #expect(
-            !model.isRemarksVisible,
-        )
+        switch model.isRemarksVisible {
+        case false: break
+        default: Issue.record(
+                "Expected hidden photo remarks",
+            )
+        }
         #expect(
             try await !settings.getIsRemarksVisible(),
         )
@@ -378,11 +386,16 @@ struct ReportRemarksTests {
             second.id,
         )
         #expect(
-            !model.isRemarksToggleVisible,
+            model.remarkPoints(
+                for: model.selectedPhotoID,
+            ).isEmpty,
         )
-        #expect(
-            model.isRemarksVisible,
-        )
+        switch model.isRemarksVisible {
+        case true: break
+        default: Issue.record(
+                "Expected visible photo remarks",
+            )
+        }
         let reopened = makeViewer(
             container: container,
             root: root,
@@ -390,9 +403,12 @@ struct ReportRemarksTests {
         )
         reopened.onInit()
         await reopened.lastTask?.value
-        #expect(
-            reopened.isRemarksVisible,
-        )
+        switch reopened.isRemarksVisible {
+        case true: break
+        default: Issue.record(
+                "The saved visibility must survive reopening",
+            )
+        }
         model.onTapRemark(
             point,
         )
@@ -436,7 +452,7 @@ struct ReportRemarksTests {
             onSubscriptionStatusUpdated: { root.update(
                 status: $0,
             ) },
-            getNeuralModelSettings: { root.neuralModelSettings },
+            getNeuralModelSettings: { root.resolveNeuralModelSettings() },
             onRequestCountIncremented: {},
             arguments: arguments,
         )

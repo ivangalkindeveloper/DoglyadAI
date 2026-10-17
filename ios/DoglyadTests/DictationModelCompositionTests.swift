@@ -443,7 +443,9 @@ private final class ProviderStub: DNeuralUltrasoundFoundationModelProviderProtoc
 
     init(
         model: any DNeuralUltrasoundModelProtocol,
-    ) { self.model = model }
+    ) {
+        self.model = model
+    }
 
     func makeModel() throws -> any DNeuralUltrasoundModelProtocol {
         creations += 1

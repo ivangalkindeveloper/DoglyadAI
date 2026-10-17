@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DFocusScrollView<Focus: Hashable, Content: View>: DView {
+public struct DFocusScrollView<Focus: Hashable, Content: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     @State private var keyboardHeight: CGFloat = .zero

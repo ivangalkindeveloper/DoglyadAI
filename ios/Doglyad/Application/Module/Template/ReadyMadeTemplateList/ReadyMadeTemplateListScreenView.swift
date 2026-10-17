@@ -1,12 +1,12 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReadyMadeTemplateListScreenView: DView {
+struct ReadyMadeTemplateListScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ReadyMadeTemplateListViewModel
-    @FocusState private var focus: ReadyMadeTemplateListViewModel.Focus?
+    @FocusState private var focus: ReadyMadeTemplateListFocus?
 
     var body: some View {
         DScreen(
@@ -15,9 +15,10 @@ struct ReadyMadeTemplateListScreenView: DView {
             ],
             onTapBack: viewModel.onTapBack,
             toolbarContent: {
-                if case .success = viewModel.state {
+                switch viewModel.state {
+                case _ as ReadyMadeTemplateListContentState:
                     DTextField(
-                        controller: viewModel.searchController,
+                        controller: viewModel.controller,
                         focus: DTextFieldFocus(
                             value: .search,
                             state: $focus,
@@ -41,6 +42,11 @@ struct ReadyMadeTemplateListScreenView: DView {
                         .horizontal,
                         size.s16,
                     )
+                case _ as ReadyMadeTemplateListLoadingState, _ as ReadyMadeTemplateListFailedState:
+                    EmptyView()
+                default: DUnexpectedStateView(
+                        state: viewModel.state,
+                    )
                 }
             },
             onTapBody: viewModel.unfocus,
@@ -62,7 +68,7 @@ struct ReadyMadeTemplateListScreenView: DView {
             },
             content: { toolbarInset, _ in
                 switch viewModel.state {
-                case .loading:
+                case _ as ReadyMadeTemplateListLoadingState:
                     DShimmerPlaceholder().frame(
                         width: size.s64,
                         height: size.s8,
@@ -81,7 +87,7 @@ struct ReadyMadeTemplateListScreenView: DView {
                     .transition(
                         .opacity,
                     )
-                case .error:
+                case _ as ReadyMadeTemplateListFailedState:
                     VStack(
                         spacing: size.s16,
                     ) {
@@ -131,7 +137,7 @@ struct ReadyMadeTemplateListScreenView: DView {
                     .transition(
                         .opacity,
                     )
-                case .success:
+                case _ as ReadyMadeTemplateListContentState:
                     ScrollView(
                         showsIndicators: false,
                     ) {
@@ -193,16 +199,11 @@ struct ReadyMadeTemplateListScreenView: DView {
                     .transition(
                         .opacity,
                     )
+                default: DUnexpectedStateView(
+                        state: viewModel.state,
+                    )
                 }
             },
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.state,
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.filteredTemplates,
         )
         .onAppear(
             perform: viewModel.onAppear,

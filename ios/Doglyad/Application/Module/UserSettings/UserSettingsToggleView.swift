@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct UserSettingsToggleView: DView {
+struct UserSettingsToggleView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let title: LocalizedStringResource
     let description: LocalizedStringResource

@@ -1,0 +1,2 @@
+@MainActor
+protocol WebDocumentStateProtocol: AnyObject {}

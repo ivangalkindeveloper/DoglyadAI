@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanCameraFrameView: DView {
+struct ScanCameraFrameView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let onFrameChanged: (CGRect) -> Void
 

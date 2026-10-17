@@ -1,30 +1,45 @@
 import DoglyadUI
 import SwiftUI
 
-struct ShareBottomSheetView: DView {
+struct ShareBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ShareViewModel
 
     var body: some View {
+        let isProcessing = switch viewModel.state {
+        case _ as ShareSendingState: true
+        default: false
+        }
+        let fraction: CGFloat = switch (viewModel.userEmail, viewModel.subscriptionAvailability(
+            of: .sendingReportByEmail,
+        )) {
+        case (.some, .available), (.some, .offered): 0.4
+        default: 0.3
+        }
+
         DBottomSheet(
             title: l10n[
                 .shareTitle,
             ],
-            fraction: viewModel.isUserEmailAvailable && viewModel.isUserEmailButtonVisible ? 0.4 : 0.3,
+            fraction: fraction,
         ) { toolbarHeight, _ in
             VStack(
                 spacing: size.s8,
             ) {
-                if viewModel.isUserEmailAvailable, viewModel.isUserEmailButtonVisible {
+                switch (viewModel.userEmail, viewModel.subscriptionAvailability(
+                    of: .sendingReportByEmail,
+                )) {
+                case (.some, .available), (.some, .offered):
                     DButtonCard(
                         action: viewModel.onTapUserEmail,
                     ) {
                         HStack(
                             spacing: size.s8,
                         ) {
-                            if viewModel.isLoading {
+                            switch viewModel.state {
+                            case _ as ShareSendingState:
                                 DShimmerPlaceholder().frame(
                                     width: size.s64,
                                     height: size.s8,
@@ -32,7 +47,7 @@ struct ShareBottomSheetView: DView {
                                 .transition(
                                     .opacity,
                                 )
-                            } else {
+                            default:
                                 DIcon(
                                     .send,
                                     color: color.grayscaleHeader,
@@ -57,7 +72,7 @@ struct ShareBottomSheetView: DView {
                         }
                     }
                     .disabled(
-                        viewModel.isLoading,
+                        isProcessing,
                     )
                     .paidBadge(
                         viewModel.subscriptionAvailability(
@@ -67,9 +82,13 @@ struct ShareBottomSheetView: DView {
                     .transition(
                         .opacity,
                     )
+                default: EmptyView()
                 }
 
-                if viewModel.isUserEmailButtonVisible {
+                switch viewModel.subscriptionAvailability(
+                    of: .sendingReportByEmail,
+                ) {
+                case .available, .offered:
                     DButtonCard(
                         action: viewModel.onTapEmail,
                     ) {
@@ -81,7 +100,7 @@ struct ShareBottomSheetView: DView {
                         )
                     }
                     .disabled(
-                        viewModel.isLoading,
+                        isProcessing,
                     )
                     .paidBadge(
                         viewModel.subscriptionAvailability(
@@ -91,6 +110,7 @@ struct ShareBottomSheetView: DView {
                     .transition(
                         .opacity,
                     )
+                case .unavailable: EmptyView()
                 }
 
                 DButtonCard(
@@ -104,7 +124,7 @@ struct ShareBottomSheetView: DView {
                     )
                 }
                 .disabled(
-                    viewModel.isLoading,
+                    isProcessing,
                 )
 
                 DShareLink(
@@ -123,7 +143,7 @@ struct ShareBottomSheetView: DView {
                     ),
                 )
                 .disabled(
-                    viewModel.isLoading,
+                    isProcessing,
                 )
 
                 Spacer()
@@ -137,14 +157,6 @@ struct ShareBottomSheetView: DView {
                 size.s16,
             )
         }
-        .animation(
-            theme.animation,
-            value: viewModel.isLoading,
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.isUserEmailButtonVisible,
-        )
         .environmentObject(
             viewModel,
         )

@@ -23,7 +23,7 @@ struct UserSettingsScreen: View {
                 onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
                     status: status,
                 ) },
-                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.neuralModelSettings },
+                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.resolveNeuralModelSettings() },
                 onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 getInitialEmail: { [ultrasoundViewModel] in ultrasoundViewModel.userEmail },
                 getInitialIsRecommendationsIncluded: { [ultrasoundViewModel] in ultrasoundViewModel.isRecommendationsIncluded },

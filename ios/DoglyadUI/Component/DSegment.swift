@@ -17,7 +17,7 @@ public struct DSegmentItem<T: Equatable>: Identifiable {
     }
 }
 
-public struct DSegment<T: Equatable>: DView {
+public struct DSegment<T: Equatable>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     let currentValue: T?

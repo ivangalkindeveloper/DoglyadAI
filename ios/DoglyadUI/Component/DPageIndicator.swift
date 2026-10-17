@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DPageIndicator: DView {
+public struct DPageIndicator: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let count: Int
     private let currentIndex: Int

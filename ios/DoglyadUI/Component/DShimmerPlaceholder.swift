@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DShimmerPlaceholder: DView {
+public struct DShimmerPlaceholder: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let cornerRadius: CGFloat?
 

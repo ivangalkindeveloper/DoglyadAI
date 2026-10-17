@@ -1,0 +1,2 @@
+@MainActor
+protocol SelectUSExaminationTypeStateProtocol: AnyObject {}

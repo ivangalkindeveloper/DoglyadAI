@@ -1,0 +1,2 @@
+@MainActor
+protocol SelectNeuralModelStateProtocol: AnyObject {}

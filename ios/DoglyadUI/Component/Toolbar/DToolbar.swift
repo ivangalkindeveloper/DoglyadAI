@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DToolbar: DView {
+public struct DToolbar: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     private let upAccessibilityLabel: LocalizedStringResource

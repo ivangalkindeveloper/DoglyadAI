@@ -16,6 +16,16 @@ private enum VoiceParseStrategy: String {
 }
 
 final class VoiceCandidateTests: XCTestCase {
+    private var platformName: String {
+        #if targetEnvironment(
+            simulator,
+        )
+        "iOS Simulator"
+        #else
+        "iOS"
+        #endif
+    }
+
     @MainActor
     func testVoiceCandidate() async throws {
         guard ProcessInfo.processInfo.environment[
@@ -749,16 +759,6 @@ final class VoiceCandidateTests: XCTestCase {
             to: destination,
             options: .atomic,
         )
-    }
-
-    private var platformName: String {
-        #if targetEnvironment(
-            simulator,
-        )
-        "iOS Simulator"
-        #else
-        "iOS"
-        #endif
     }
 
     private func dictionary(

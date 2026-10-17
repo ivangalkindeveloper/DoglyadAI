@@ -10,7 +10,7 @@ final class DependencyContainer: ObservableObject {
     let environment: EnvironmentProtocol
     let connectionManager: ConnectionManagerProtocol
     let permissionManager: PermissionManagerProtocol
-    let mockFactory: MockFactory
+    let mockFactory: MockFactoryProtocol
     let sharedRepository: SharedRepositoryProtocol
     let userSettingsRepository: UserSettingsRepositoryProtocol
     let ultrasoundModelRepository: UltrasoundModelRepositoryProtocol
@@ -39,7 +39,7 @@ final class DependencyContainer: ObservableObject {
         environment: EnvironmentProtocol,
         connectionManager: ConnectionManagerProtocol,
         permissionManager: PermissionManagerProtocol,
-        mockFactory: MockFactory,
+        mockFactory: MockFactoryProtocol,
         sharedRepository: SharedRepositoryProtocol,
         userSettingsRepository: UserSettingsRepositoryProtocol,
         ultrasoundModelRepository: UltrasoundModelRepositoryProtocol,

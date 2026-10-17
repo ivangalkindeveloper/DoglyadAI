@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct OnBoardingScreenView: DView {
+struct OnBoardingScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @Environment(
         \.locale,
@@ -11,21 +11,34 @@ struct OnBoardingScreenView: DView {
     @StateObject var viewModel: OnBoardingViewModel
 
     var body: some View {
+        let isDisabled: Bool = switch viewModel.state {
+        case let state as OnBoardingLegalState: !state.isLegalAccepted
+        case _ as OnBoardingCompletingState: true
+        default: false
+        }
+        let isProcessing = switch viewModel.state {
+        case _ as OnBoardingCompletingState: true
+        default: false
+        }
+
         DScreen(
             content: { _, bottomHeight in
                 VStack(
                     alignment: .leading,
                     spacing: .zero,
                 ) {
-                    stepper
-                        .padding(
-                            .bottom,
-                            size.s16,
-                        )
+                    DPageIndicator(
+                        count: 5,
+                        currentIndex: viewModel.state.index,
+                    )
+                    .padding(
+                        .bottom,
+                        size.s16,
+                    )
 
-                    currentPage
+                    OnBoardingCurrentPageView()
                         .id(
-                            viewModel.page,
+                            viewModel.state.index,
                         )
                         .transition(
                             .opacity,
@@ -42,16 +55,14 @@ struct OnBoardingScreenView: DView {
                     .bottom,
                     bottomHeight,
                 )
-                .animation(
-                    .easeInOut,
-                    value: viewModel.page,
-                )
             },
             bottom: {
                 HStack(
                     spacing: size.s8,
                 ) {
-                    if viewModel.isBackButtonVisible {
+                    switch viewModel.state {
+                    case _ as OnBoardingFirstState, _ as OnBoardingCompletingState: EmptyView()
+                    default:
                         DButton(
                             image: .back,
                             action: viewModel.onPressedBack,
@@ -68,11 +79,12 @@ struct OnBoardingScreenView: DView {
                     }
 
                     DButton(
-                        title: viewModel.buttonTitle(
-                            viewModel.page,
-                        ),
+                        title: l10n[
+                            viewModel.state.primaryButtonTitleKey,
+                        ],
                         action: viewModel.onPressedNext,
-                        isDisabled: viewModel.isLegalDisabled,
+                        isLoading: isProcessing,
+                        isDisabled: isDisabled,
                     )
                     .dStyle(
                         .primaryButton,
@@ -81,14 +93,7 @@ struct OnBoardingScreenView: DView {
                 .padding(
                     size.s16,
                 )
-                .animation(
-                    .easeInOut,
-                    value: viewModel.page,
-                )
-                .animation(
-                    theme.animation,
-                    value: viewModel.isLegalAccepted,
-                )
+
             },
         )
         .environmentObject(
@@ -97,121 +102,5 @@ struct OnBoardingScreenView: DView {
         .onAppear(
             perform: viewModel.onAppear,
         )
-    }
-
-    private var stepper: some View {
-        DPageIndicator(
-            count: OnBoardingViewModel.Page.allCases.count,
-            currentIndex: viewModel.page.index,
-        )
-    }
-
-    @ViewBuilder
-    private var currentPage: some View {
-        switch viewModel.page {
-        case .first:
-            OnBoardingPageView(
-                tag: .first,
-                title: l10n[
-                    .onBoardingFirstTitle,
-                ],
-                image: .doglyad,
-                description: l10n[
-                    .onBoardingFirstDescription,
-                ],
-            )
-        case .second:
-            OnBoardingPageView(
-                tag: .second,
-                title: l10n[
-                    .onBoardingSecondTitle,
-                ],
-                image: .doglyadUSMachine,
-                description: l10n[
-                    .onBoardingSecondDescription,
-                ],
-            )
-        case .third:
-            OnBoardingPageView(
-                tag: .third,
-                title: l10n[
-                    .onBoardingThirdTitle,
-                ],
-                image: .doglyadQuiet,
-                description: l10n[
-                    .onBoardingThirdDescription,
-                ],
-            ) {
-                HStack(
-                    alignment: .center,
-                ) {
-                    DCheckbox(
-                        isChecked: Binding(
-                            get: { viewModel.isLegalAccepted },
-                            set: viewModel.onLegalAcceptedChanged,
-                        ),
-                    )
-                    .padding(
-                        .trailing,
-                        size.s8,
-                    )
-
-                    DText(
-                        viewModel.legalAttributedText(
-                            theme: theme,
-                            locale: locale,
-                        ),
-                    )
-                    .multilineTextAlignment(
-                        .leading,
-                    )
-                    .tint(
-                        color.grayscaleHeader,
-                    )
-                    .environment(
-                        \.openURL,
-                        OpenURLAction { url in
-                            viewModel.onLegalAttributedEnvironment(
-                                url: url,
-                            )
-                        },
-                    )
-                }
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: .leading,
-                )
-                .padding(
-                    .top,
-                    size.s16,
-                )
-                .padding(
-                    .horizontal,
-                    size.s16,
-                )
-            }
-        case .fourth:
-            OnBoardingPageView(
-                tag: .fourth,
-                title: l10n[
-                    .onBoardingFourthTitle,
-                ],
-                image: .doglyadQuestion,
-                description: l10n[
-                    .onBoardingFourthDescription,
-                ],
-            )
-        case .fifth:
-            OnBoardingPageView(
-                tag: .fifth,
-                title: l10n[
-                    .onBoardingFifthTitle,
-                ],
-                image: .doglyadTable,
-                description: l10n[
-                    .onBoardingFifthDescription,
-                ],
-            )
-        }
     }
 }

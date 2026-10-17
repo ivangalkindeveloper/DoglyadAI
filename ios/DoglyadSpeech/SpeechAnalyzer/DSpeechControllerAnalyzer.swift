@@ -24,17 +24,6 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         3,
     )
 
-    /// Whether the transcriber supports the given locale. Asynchronous because the
-    /// locale list is delivered via `await`. The factory asks this before choosing an
-    /// implementation and falls back to `SFSpeechRecognizer` on an uncovered locale.
-    public static func isSupported(
-        locale: Locale,
-    ) async -> Bool {
-        await DictationTranscriber.supportedLocale(
-            equivalentTo: locale,
-        ) != nil
-    }
-
     private let locale: Locale
     /// Examination vocabulary: specific terms the recognizer otherwise consistently
     /// mishears.
@@ -86,6 +75,17 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
             terms: contextualStrings,
             localization: lexiconLocalization,
         )
+    }
+
+    /// Whether the transcriber supports the given locale. Asynchronous because the
+    /// locale list is delivered via `await`. The factory asks this before choosing an
+    /// implementation and falls back to `SFSpeechRecognizer` on an uncovered locale.
+    public static func isSupported(
+        locale: Locale,
+    ) async -> Bool {
+        await DictationTranscriber.supportedLocale(
+            equivalentTo: locale,
+        ) != nil
     }
 
     public func start() {

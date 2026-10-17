@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DListButtonCard: DView {
+public struct DListButtonCard: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     let image: ImageResource?

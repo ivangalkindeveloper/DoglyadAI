@@ -1,13 +1,18 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReportReceivedBottomSheetView: DView {
+struct ReportReceivedBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ReportReceivedViewModel
 
     var body: some View {
+        let isSending = switch viewModel.state {
+        case _ as ReportReceivedSendingState: true
+        default: false
+        }
+
         DBottomSheet(
             type: .blur,
             title: l10n[
@@ -66,14 +71,17 @@ struct ReportReceivedBottomSheetView: DView {
                         .primaryButton,
                     )
 
-                    if viewModel.isUserEmailAvailable, viewModel.isUserEmailButtonVisible {
+                    switch (viewModel.userEmail, viewModel.subscriptionAvailability(
+                        of: .sendingReportByEmail,
+                    )) {
+                    case (.some, .available), (.some, .offered):
                         DButton(
                             image: .send,
                             title: viewModel.userEmailButtonTitle,
                             truncatingTitleSuffix: viewModel.userEmail,
                             badge: viewModel.userEmailButtonBadge,
                             action: viewModel.onTapUserEmail,
-                            isLoading: viewModel.isLoading,
+                            isLoading: isSending,
                         )
                         .dStyle(
                             .textWeak,
@@ -81,6 +89,7 @@ struct ReportReceivedBottomSheetView: DView {
                         .transition(
                             .opacity,
                         )
+                    default: EmptyView()
                     }
 
                     DButton(
@@ -107,10 +116,6 @@ struct ReportReceivedBottomSheetView: DView {
                     size.s16,
                 )
             },
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.isUserEmailButtonVisible,
         )
         .environmentObject(
             viewModel,

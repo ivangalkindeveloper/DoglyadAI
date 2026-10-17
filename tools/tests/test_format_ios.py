@@ -74,6 +74,79 @@ print(text, raw, pattern)
         self.assertIn("empty()", result)
         self.assertIn("(Int, String) -> Void", result)
 
+    def test_initializer_spacing_and_body(self) -> None:
+        result = self.format(
+            "final class ActiveState {\n"
+            "let status: Int\n"
+            "init(status: Int) { self.status = status }\n"
+            "}\n"
+        )
+        self.assertEqual(
+            result,
+            "final class ActiveState {\n"
+            "    let status: Int\n"
+            "\n"
+            "    init(\n"
+            "        status: Int,\n"
+            "    ) {\n"
+            "        self.status = status\n"
+            "    }\n"
+            "}\n",
+        )
+        self.assertEqual(self.format(result), result)
+
+    def test_class_member_order_preserves_properties_methods_and_comments(self) -> None:
+        source = (
+            "class Example {\n"
+            "func firstMethod() {}\n"
+            "// First property\n"
+            "let first = 1\n"
+            "/// Creates an example.\n"
+            "init(value: Int) { self.value = value }\n"
+            "private let second = 2\n"
+            "/// Selected value.\n"
+            "let value: Int\n"
+            "func secondMethod() {}\n"
+            "}\n"
+        )
+        result = self.format(source)
+        declarations = [
+            "let first = 1",
+            "private let second = 2",
+            "let value: Int",
+            "init(",
+            "func firstMethod()",
+            "func secondMethod()",
+        ]
+        positions = [result.index(declaration) for declaration in declarations]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("/// Selected value.\n    let value", result)
+        self.assertIn("\n\n    /// Creates an example.\n    init(", result)
+        self.assertIn("// First property\n    let first", result)
+        for comment in (
+            "// First property",
+            "/// Creates an example.",
+            "/// Selected value.",
+        ):
+            self.assertEqual(result.count(comment), 1)
+        self.assertEqual(self.format(result), result)
+
+    def test_conditional_members_preserve_initialization_order(self) -> None:
+        result = self.format(
+            "class Example {\n"
+            "let first = 1\n"
+            "#if DEBUG\n"
+            "let second = 2\n"
+            "#endif\n"
+            "init() {}\n"
+            "let third = 3\n"
+            "}\n"
+        )
+        self.assertLess(result.index("let first"), result.index("let second"))
+        self.assertLess(result.index("let second"), result.index("init()"))
+        self.assertLess(result.index("init()"), result.index("let third"))
+        self.assertEqual(self.format(result), result)
+
     def test_result_is_stable(self) -> None:
         first = self.format('fill(name: "Ivan", weight: scalar(value: 82))\n')
         self.assertEqual(self.format(first), first)
@@ -86,6 +159,11 @@ func run() {
     let text = "weight: \\(scalar(value: 82))"
     let values = [82]
     print(values[0], text)
+}
+class Model {
+    func currentValue() -> Int { value }
+    init(value: Int) { self.value = value }
+    let value: Int
 }
 """
         result = self.format(source)

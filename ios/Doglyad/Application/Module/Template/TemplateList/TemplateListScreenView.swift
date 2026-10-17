@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct TemplateListScreenView: DView {
+struct TemplateListScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var container: DependencyContainer
@@ -25,19 +25,20 @@ struct TemplateListScreenView: DView {
                             alignment: .leading,
                             spacing: size.s4,
                         ) {
-                            if viewModel.isLoading {
+                            switch viewModel.state {
+                            case _ as TemplateListLoadingState:
                                 TemplateListLoadingView()
                                     .transition(
                                         .opacity,
                                     )
-                            } else if viewModel.templates.isEmpty {
+                            case _ as TemplateListEmptyState:
                                 TemplateListEmptyView()
                                     .transition(
                                         .opacity,
                                     )
-                            } else {
+                            case let state as TemplateListContentState:
                                 ForEach(
-                                    viewModel.templates,
+                                    state.templates,
                                 ) { template in
                                     TemplateListItemCardView(
                                         template: template,
@@ -48,6 +49,14 @@ struct TemplateListScreenView: DView {
                                         },
                                     )
                                 }
+                            case _ as TemplateListFailedState:
+                                LoadingErrorView(
+                                    onRetry: viewModel.onTapRetry,
+                                )
+                            default:
+                                DUnexpectedStateView(
+                                    state: viewModel.state,
+                                )
                             }
                         }
                         .padding(
@@ -79,14 +88,6 @@ struct TemplateListScreenView: DView {
                     size.s16,
                 )
             },
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.isLoading,
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.templates,
         )
         .onAppear {
             viewModel.onAppear()

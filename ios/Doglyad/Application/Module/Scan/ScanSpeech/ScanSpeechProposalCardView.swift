@@ -2,13 +2,20 @@ import DoglyadNeuralModel
 import DoglyadUI
 import SwiftUI
 
-struct ScanSpeechProposalCardView: DView {
+struct ScanSpeechProposalCardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     let proposal: DNeuralUltrasoundVoiceFieldProposal
 
     var body: some View {
+        let isSelected: Bool = switch viewModel.state {
+        case let state as ScanSpeechProposalReviewState: state.selectedFieldIds.contains(
+                proposal.id,
+            )
+        default: false
+        }
+
         DButtonCard(
             backgroundColor: color.warningBackground,
             action: { viewModel.onTapProposal(
@@ -21,9 +28,7 @@ struct ScanSpeechProposalCardView: DView {
             ) {
                 DCheckbox(
                     isChecked: .constant(
-                        viewModel.isSelected(
-                            proposal.id,
-                        ),
+                        isSelected,
                     ),
                 )
                 .allowsHitTesting(

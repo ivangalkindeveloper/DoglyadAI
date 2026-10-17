@@ -1,6 +1,6 @@
 import Foundation
 
-public final class DTextFieldRegexValidator: DTextFieldValidator {
+public final class DTextFieldRegexValidator: DTextFieldValidatorProtocol {
     private let regularExpression: NSRegularExpression
     private let invalidValueErrorText: String
 

@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Progress with a known total. Indeterminate content loading uses shimmer.
-public struct DProgress: DView {
+public struct DProgress: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let value: Double
 

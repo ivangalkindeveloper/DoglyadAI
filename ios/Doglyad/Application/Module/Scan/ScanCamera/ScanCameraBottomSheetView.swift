@@ -1,13 +1,18 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanCameraBottomSheetView: DView {
+struct ScanCameraBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ScanCameraViewModel
 
     var body: some View {
+        let isCapturing = switch viewModel.state {
+        case _ as ScanCameraCapturingState: true
+        default: false
+        }
+
         DBottomSheet(
             type: .blur,
             title: l10n[
@@ -23,7 +28,9 @@ struct ScanCameraBottomSheetView: DView {
                 VStack(
                     spacing: .zero,
                 ) {
-                    if !viewModel.cameraController.isLoading {
+                    switch viewModel.state {
+                    case _ as ScanCameraPreparingState: Spacer()
+                    default:
                         ScanCameraFrameView(
                             onFrameChanged: viewModel.updateCaptureFrame,
                         )
@@ -32,20 +39,20 @@ struct ScanCameraBottomSheetView: DView {
                             maxHeight: .infinity,
                             alignment: .center,
                         )
-                    } else {
-                        Spacer()
                     }
 
-                    if viewModel.isCaptureAvailable {
+                    switch viewModel.state {
+                    case _ as ScanCameraReadyState, _ as ScanCameraCapturingState:
                         DButton(
                             image: .camera,
                             action: viewModel.onTapCapture,
-                            isLoading: viewModel.cameraController.isCapturing,
+                            isLoading: isCapturing,
                             isDisabled: !viewModel.isCaptureFrameReady,
                         )
                         .dStyle(
                             .primaryCircle,
                         )
+                    default: EmptyView()
                     }
                 }
                 .padding(
@@ -68,7 +75,8 @@ struct ScanCameraBottomSheetView: DView {
             VStack(
                 spacing: size.s8,
             ) {
-                if viewModel.isCaptureAvailable {
+                switch viewModel.state {
+                case _ as ScanCameraReadyState, _ as ScanCameraCapturingState:
                     DText(
                         l10n[
                             .scanCaptureDescription,
@@ -87,6 +95,7 @@ struct ScanCameraBottomSheetView: DView {
                         .bottom,
                         viewModel.photos.isEmpty ? nil : .zero,
                     )
+                default: EmptyView()
                 }
 
                 ScanCameraPhotoListView()

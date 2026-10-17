@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct PhotoCardView: DView {
+struct PhotoCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     let image: UIImage

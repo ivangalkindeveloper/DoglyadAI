@@ -21,7 +21,7 @@ struct PhotoViewScreen: View {
                 onSubscriptionStatusUpdated: { [subscription] status in subscription.update(
                     status: status,
                 ) },
-                getNeuralModelSettings: { [subscription] in subscription.neuralModelSettings },
+                getNeuralModelSettings: { [subscription] in subscription.resolveNeuralModelSettings() },
                 onRequestCountIncremented: { [subscription] in subscription.incrementRequestCount() },
                 arguments: arguments,
             ),

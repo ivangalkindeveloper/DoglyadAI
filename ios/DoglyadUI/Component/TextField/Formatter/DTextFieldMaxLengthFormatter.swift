@@ -1,4 +1,4 @@
-public final class DTextFieldMaxLengthFormatter: DTextFieldFormatter {
+public final class DTextFieldMaxLengthFormatter: DTextFieldFormatterProtocol {
     private let maxLength: Int
 
     public init(

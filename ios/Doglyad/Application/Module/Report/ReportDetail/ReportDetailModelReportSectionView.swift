@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReportDetailModelReportSectionView: DView {
+struct ReportDetailModelReportSectionView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let title: LocalizedStringResource
     let text: String

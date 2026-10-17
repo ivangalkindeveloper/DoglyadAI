@@ -1,0 +1,2 @@
+@MainActor
+protocol PhotoLibraryPickerStateProtocol: AnyObject {}

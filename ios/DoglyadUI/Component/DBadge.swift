@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DBadge<Content: View>: DView {
+public struct DBadge<Content: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     let badges: [DBadgeItem]

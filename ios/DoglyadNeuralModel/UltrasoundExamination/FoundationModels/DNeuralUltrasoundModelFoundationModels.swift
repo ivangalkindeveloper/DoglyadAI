@@ -2,16 +2,6 @@ import Foundation
 import FoundationModels
 
 public final class DNeuralUltrasoundModelFoundationModels: DNeuralUltrasoundModelProtocol {
-    public static func isAvailable(
-        locale: Locale,
-    ) -> Bool {
-        guard #available(iOS 26.0, *) else { return false }
-        let model = SystemLanguageModel.default
-        return model.isAvailable && model.supportsLocale(
-            locale,
-        )
-    }
-
     private let generator: any DNeuralUltrasoundProposalGeneratorProtocol
 
     @available(iOS 26.0, *)
@@ -31,6 +21,16 @@ public final class DNeuralUltrasoundModelFoundationModels: DNeuralUltrasoundMode
         generator: any DNeuralUltrasoundProposalGeneratorProtocol,
     ) {
         self.generator = generator
+    }
+
+    public static func isAvailable(
+        locale: Locale,
+    ) -> Bool {
+        guard #available(iOS 26.0, *) else { return false }
+        let model = SystemLanguageModel.default
+        return model.isAvailable && model.supportsLocale(
+            locale,
+        )
     }
 
     public func prewarm() {

@@ -1,0 +1,2 @@
+@MainActor
+protocol UserSettingsStateProtocol: AnyObject {}

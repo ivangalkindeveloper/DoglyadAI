@@ -1,6 +1,6 @@
 import SwiftUI
 
-public final class DTextFieldMultiLineMode: DTextFieldMode {
+public final class DTextFieldMultiLineMode: DTextFieldModeProtocol {
     public let axis: Axis = .vertical
     public let lineLimit: ClosedRange<Int>
     public let submitLabel: SubmitLabel = .return

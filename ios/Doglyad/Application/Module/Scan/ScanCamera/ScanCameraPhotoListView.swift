@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanCameraPhotoListView: DView {
+struct ScanCameraPhotoListView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
@@ -82,9 +82,5 @@ struct ScanCameraPhotoListView: DView {
                 )
             }
         }
-        .animation(
-            theme.animation,
-            value: viewModel.photos,
-        )
     }
 }

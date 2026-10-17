@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DToggle: DView {
+public struct DToggle: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let title: LocalizedStringResource
     @Binding private var isOn: Bool

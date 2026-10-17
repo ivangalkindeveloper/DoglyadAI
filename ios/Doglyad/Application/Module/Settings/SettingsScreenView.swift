@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct SettingsScreenView: DView {
+struct SettingsScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
@@ -23,17 +23,31 @@ struct SettingsScreenView: DView {
                     VStack(
                         spacing: size.s8,
                     ) {
-                        DListButtonCard(
-                            image: .iconHistory,
-                            title: l10n[
-                                .settingsHistoryTitle,
-                            ],
-                            description: viewModel.historyDescription(),
-                            action: viewModel.onTapHistory,
-                        )
-                        .contentTransition(
-                            .opacity,
-                        )
+                        switch viewModel.state {
+                        case _ as SettingsLoadingState:
+                            DShimmerPlaceholder().frame(
+                                height: size.s64,
+                            )
+                        case _ as SettingsContentState:
+                            DListButtonCard(
+                                image: .iconHistory,
+                                title: l10n[
+                                    .settingsHistoryTitle,
+                                ],
+                                description: viewModel.historyDescription,
+                                action: viewModel.onTapHistory,
+                            )
+                            .contentTransition(
+                                .opacity,
+                            )
+                        case _ as SettingsFailedState:
+                            LoadingErrorView(
+                                onRetry: viewModel.onTapRetry,
+                            )
+                        default: DUnexpectedStateView(
+                                state: viewModel.state,
+                            )
+                        }
                         DListButtonCard(
                             image: .iconTemplates,
                             title: l10n[
@@ -153,14 +167,6 @@ struct SettingsScreenView: DView {
                 .padding(
                     .bottom,
                     size.s32,
-                )
-                .animation(
-                    theme.animation,
-                    value: viewModel.reportsCount,
-                )
-                .animation(
-                    theme.animation,
-                    value: viewModel.neuralModel.id,
                 )
             }
         }

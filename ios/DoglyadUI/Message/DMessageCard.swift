@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DMessageCard: DView {
+struct DMessageCard: DViewProtocol {
     let theme: DTheme
     let message: DMessage
 

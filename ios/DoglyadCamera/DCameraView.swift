@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DCameraView<Controller: DCameraController>: UIViewRepresentable {
+public struct DCameraView<Controller: DCameraControllerProtocol>: UIViewRepresentable {
     private let controller: Controller
 
     public init(

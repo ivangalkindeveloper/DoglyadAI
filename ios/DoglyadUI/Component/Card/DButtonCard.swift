@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DButtonCard<Content: View>: DView {
+public struct DButtonCard<Content: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     let backgroundColor: Color?

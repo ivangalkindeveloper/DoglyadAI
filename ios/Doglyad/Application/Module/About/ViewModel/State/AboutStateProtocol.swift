@@ -1,0 +1,2 @@
+@MainActor
+protocol AboutStateProtocol: AnyObject {}

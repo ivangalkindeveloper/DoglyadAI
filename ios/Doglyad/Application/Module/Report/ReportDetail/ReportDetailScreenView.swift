@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReportDetailScreenView: DView {
+struct ReportDetailScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject var theme: DTheme
@@ -16,6 +16,11 @@ struct ReportDetailScreenView: DView {
     }
 
     var body: some View {
+        let isProcessing = switch viewModel.state {
+        case _ as ReportDetailGeneratingState, _ as ReportDetailLoadingState: true
+        default: false
+        }
+
         DScreen(
             title: l10n[
                 .reportTitle,
@@ -329,7 +334,10 @@ struct ReportDetailScreenView: DView {
                                 size.s16,
                             )
 
-                            if viewModel.isNeuralModelSettingsVisible {
+                            switch viewModel.subscriptionAvailability(
+                                of: .neuralModelSettings,
+                            ) {
+                            case .available, .offered:
                                 NeuralModelSettingsCardView(
                                     settings: viewModel.neuralModelSettings,
                                     availability: viewModel.subscriptionAvailability(
@@ -337,6 +345,7 @@ struct ReportDetailScreenView: DView {
                                     ),
                                     onTap: viewModel.onTapNeuralModelSettings,
                                 )
+                            case .unavailable: EmptyView()
                             }
 
                             DButton(
@@ -350,7 +359,7 @@ struct ReportDetailScreenView: DView {
                                         toolbarInset: toolbarInset,
                                     )
                                 },
-                                isLoading: viewModel.isLoading,
+                                isLoading: isProcessing,
                             )
                             .dStyle(
                                 .primaryButton,
@@ -419,16 +428,6 @@ struct ReportDetailScreenView: DView {
                 }
             }
         }
-        .animation(
-            theme.animation,
-            value: viewModel.report.actualModelReport.id,
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.report.previousModelReports.map(
-                \.id,
-            ),
-        )
         .onAppear(
             perform: viewModel.onAppear,
         )

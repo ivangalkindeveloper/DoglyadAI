@@ -7,7 +7,7 @@ struct ReportReceivedMarkdownView: View {
 
     var body: some View {
         DMarkdown(
-            content: viewModel.displayedResponse,
+            content: viewModel.responseText,
             textColor: textColor,
         )
         .task {

@@ -8,7 +8,7 @@ public struct DScreen<
     Content: View,
     Bottom: View,
     KeyboardToolbar: View,
->: DView {
+>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     @State private var toolbarHeight: CGFloat = 0

@@ -1,62 +1,70 @@
 import DoglyadUI
 import SwiftUI
 
-struct SubscriptionScreenView: DView {
+struct SubscriptionScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SubscriptionViewModel
 
     var body: some View {
-        DScreen(
-            title: l10n[
-                .subscriptionTitle,
-            ],
-            onTapBack: viewModel.onTapBack,
-        ) { toolbarInset, _ in
-            ScrollView(
-                showsIndicators: false,
-            ) {
-                VStack(
-                    spacing: size.s8,
+        switch viewModel.state {
+        case _ as SubscriptionActiveState, _ as SubscriptionInactiveState:
+            DScreen(
+                title: l10n[
+                    .subscriptionTitle,
+                ],
+                onTapBack: viewModel.onTapBack,
+            ) { toolbarInset, _ in
+                ScrollView(
+                    showsIndicators: false,
                 ) {
-                    DListButtonCard(
-                        title: l10n[
-                            .subscriptionChangeTypeTitle,
-                        ],
-                        description: l10n[
-                            .subscriptionChangeTypeDescription,
-                        ],
-                        action: viewModel.onTapChangeType,
+                    VStack(
+                        spacing: size.s8,
+                    ) {
+                        DListButtonCard(
+                            title: l10n[
+                                .subscriptionChangeTypeTitle,
+                            ],
+                            description: l10n[
+                                .subscriptionChangeTypeDescription,
+                            ],
+                            action: viewModel.onTapChangeType,
+                        )
+                        DListButtonCard(
+                            title: l10n[
+                                .subscriptionSupportCenterTitle,
+                            ],
+                            description: l10n[
+                                .subscriptionSupportCenterDescription,
+                            ],
+                            action: viewModel.onTapSupportCenter,
+                        )
+                    }
+                    .padding(
+                        size.s16,
                     )
-                    DListButtonCard(
-                        title: l10n[
-                            .subscriptionSupportCenterTitle,
-                        ],
-                        description: l10n[
-                            .subscriptionSupportCenterDescription,
-                        ],
-                        action: viewModel.onTapSupportCenter,
+                    .padding(
+                        .top,
+                        toolbarInset,
+                    )
+                    .padding(
+                        .bottom,
+                        size.s32,
                     )
                 }
-                .padding(
-                    size.s16,
-                )
-                .padding(
-                    .top,
-                    toolbarInset,
-                )
-                .padding(
-                    .bottom,
-                    size.s32,
-                )
             }
+            .onAppear {
+                viewModel.onAppear()
+            }
+            .environmentObject(
+                viewModel,
+            )
+
+        default:
+            DUnexpectedStateView(
+                state: viewModel.state,
+            )
         }
-        .onAppear {
-            viewModel.onAppear()
-        }
-        .environmentObject(
-            viewModel,
-        )
     }
 }

@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct PhotoRemarkBottomSheetView: DView {
+struct PhotoRemarkBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var l10n: L10N
     @StateObject var viewModel: PhotoRemarkViewModel

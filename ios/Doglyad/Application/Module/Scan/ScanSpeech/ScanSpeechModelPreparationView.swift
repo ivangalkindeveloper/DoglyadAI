@@ -1,18 +1,25 @@
+import DoglyadSpeech
 import DoglyadUI
 import SwiftUI
 
-struct ScanSpeechModelPreparationView: DView {
+struct ScanSpeechModelPreparationView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     @EnvironmentObject var theme: DTheme
 
     var body: some View {
+        let preparation: DSpeechModelPreparation = switch viewModel.state {
+        case let state as ScanSpeechPreparingModelState: state.preparation
+        case _ as ScanSpeechModelPreparationFailedState: .failed
+        default: .ready
+        }
+
         VStack(
             spacing: size.s16,
         ) {
             Spacer()
 
-            switch viewModel.modelPreparation {
+            switch preparation {
             case .checking, .loading:
                 ScanSpeechModelLoadingView()
             case let .downloading(

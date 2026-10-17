@@ -1,17 +1,25 @@
 import DoglyadUI
 import SwiftUI
 
-struct SubscriptionPaywallScreenView: DView {
+struct SubscriptionPaywallScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: SubscriptionPaywallViewModel
 
     var body: some View {
+        let isProcessing = switch viewModel.state {
+        case _ as SubscriptionPaywallRestoringState, _ as SubscriptionPaywallPurchasingState, _ as SubscriptionPaywallLoadingState: true
+        default: false
+        }
+        let onClose: (() -> Void)? = switch viewModel.isDismissible {
+        case true: viewModel.onTapClose
+        case false: nil
+        }
         DScreen(
             title: l10n[
                 .subscriptionPaywallTitle,
             ],
-            onTapBack: viewModel.closeAction,
+            onTapBack: onClose,
         ) { topInset, _ in
             ScrollView {
                 VStack(
@@ -25,22 +33,14 @@ struct SubscriptionPaywallScreenView: DView {
                     ).dStyle(
                         font: typography.textSmall,
                     )
-                    if viewModel.isLoading, viewModel.plans.isEmpty {
-                        DShimmerPlaceholder().frame(
-                            height: size.s64,
-                        )
-                        DShimmerPlaceholder().frame(
-                            height: size.s64,
-                        )
-                    }
-                    plans
-                    errorContent
+                    SubscriptionPaywallPlansView()
+                    SubscriptionPaywallErrorView()
                     DButton(
                         title: l10n[
                             .subscriptionPaywallRestoreButton,
                         ],
                         action: viewModel.onTapRestore,
-                        isLoading: viewModel.isLoading,
+                        isLoading: isProcessing,
                     ).dStyle(
                         .textWeak,
                     )
@@ -68,11 +68,9 @@ struct SubscriptionPaywallScreenView: DView {
                     ).dStyle(
                         .textWeak,
                     )
-                }
-                .padding(
+                }.padding(
                     size.s16,
-                )
-                .padding(
+                ).padding(
                     .top,
                     topInset,
                 )
@@ -84,48 +82,5 @@ struct SubscriptionPaywallScreenView: DView {
         .environmentObject(
             viewModel,
         )
-    }
-
-    private var plans: some View {
-        ForEach(
-            viewModel.plans,
-        ) { plan in
-            DListButtonCard(
-                title: viewModel.planTitle(
-                    plan,
-                ),
-                description: viewModel.planPrice(
-                    plan,
-                ),
-                action: { viewModel.onTapPlan(
-                    plan,
-                ) },
-            )
-            .disabled(
-                viewModel.isLoading,
-            )
-        }
-    }
-
-    @ViewBuilder
-    private var errorContent: some View {
-        if let error = viewModel.errorDescription {
-            DText(
-                error,
-            ).dStyle(
-                font: typography.textSmall,
-                color: color.dangerDefault,
-            )
-            DButton(
-                title: l10n[
-                    .subscriptionPaywallRetryButton,
-                ],
-                action: viewModel.onTapRetry,
-            ).dStyle(
-                .textWeak,
-            ).disabled(
-                viewModel.isLoading,
-            )
-        }
     }
 }

@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ErrorView<Description: View>: DView {
+struct ErrorView<Description: View>: DViewProtocol {
     @EnvironmentObject private var applicationViewModel: ApplicationRootViewModel
     @EnvironmentObject var theme: DTheme
 
@@ -22,82 +22,37 @@ struct ErrorView<Description: View>: DView {
         self.description = description
     }
 
-    @ViewBuilder
     var body: some View {
-        if let buttonTitle, let action {
-            DScreen { _, bottomInset in
-                content.padding(
-                    .bottom,
-                    bottomInset,
-                )
-            } bottom: {
-                DButton(
-                    title: buttonTitle,
-                    action: action,
-                    isLoading: applicationViewModel.isLoading,
-                )
-                .dStyle(
-                    .primaryButton,
-                )
-                .padding(
-                    size.s16,
-                )
-            }
-        } else {
-            DScreen { _, _ in
-                content
-            }
+        let isInitializing = switch applicationViewModel.state {
+        case _ as ApplicationRootInitializingState: true
+        default: false
         }
-    }
-
-    private var content: some View {
-        VStack(
-            alignment: .center,
-            spacing: .zero,
-        ) {
-            Spacer()
-
-            DImage(
-                .doglyadQuestion,
-            )
-            .scaledToFit()
-            .frame(
-                maxWidth: .infinity,
-                alignment: .center,
-            )
-            .padding(
-                size.s16,
-            )
-
-            DText(
-                title,
-            )
-            .dStyle(
-                font: typography.linkMedium,
-                alignment: .center,
-            )
-            .padding(
+        DScreen { _, bottomInset in
+            ErrorInitializationView(
+                title: title,
+                description: description,
+            ).padding(
                 .bottom,
-                size.s16,
+                bottomInset,
             )
-
-            description()
-                .frame(
-                    maxWidth: .infinity,
-                )
-                .padding(
-                    .horizontal,
-                    size.s14,
-                )
-                .padding(
-                    .bottom,
+        } bottom: {
+            switch (buttonTitle, action) {
+            case let (.some(
+                title,
+            ), .some(
+                action,
+            )):
+                DButton(
+                    title: title,
+                    action: action,
+                    isLoading: isInitializing,
+                ).dStyle(
+                    .primaryButton,
+                ).padding(
                     size.s16,
                 )
-
-            Spacer()
+            default: EmptyView()
+            }
         }
-        .padding(
-            size.s16,
-        )
     }
 }

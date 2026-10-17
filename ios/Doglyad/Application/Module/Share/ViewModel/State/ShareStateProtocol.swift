@@ -1,0 +1,2 @@
+@MainActor
+protocol ShareStateProtocol: AnyObject {}

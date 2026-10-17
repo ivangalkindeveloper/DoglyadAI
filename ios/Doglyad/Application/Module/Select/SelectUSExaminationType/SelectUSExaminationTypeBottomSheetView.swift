@@ -2,13 +2,18 @@ import DoglyadUI
 import Foundation
 import SwiftUI
 
-struct SelectUSExaminationTypeBottomSheetView: DView {
+struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: SelectUSExaminationTypeViewModel
 
     var body: some View {
+        let isSelecting = switch viewModel.state {
+        case _ as SelectUSExaminationTypeSelectingState: true
+        default: false
+        }
+
         DBottomSheet(
             title: l10n[
                 .usExaminationTypeTitle,
@@ -23,6 +28,13 @@ struct SelectUSExaminationTypeBottomSheetView: DView {
                     spacing: .zero,
                     pinnedViews: [.sectionHeaders],
                 ) {
+                    switch viewModel.state {
+                    case _ as SelectUSExaminationTypeFailedState:
+                        LoadingErrorView(
+                            onRetry: viewModel.onTapRetry,
+                        )
+                    default: EmptyView()
+                    }
                     ForEach(
                         viewModel.sections,
                     ) { section in
@@ -58,6 +70,9 @@ struct SelectUSExaminationTypeBottomSheetView: DView {
                         }
                     }
                 }
+                .disabled(
+                    isSelecting,
+                )
                 .padding(
                     .top,
                     size.s16,

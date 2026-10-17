@@ -1,6 +1,6 @@
 import Foundation
 
-public final class DTextFieldEmailValidator: DTextFieldValidator {
+public final class DTextFieldEmailValidator: DTextFieldValidatorProtocol {
     private let regexValidator: DTextFieldRegexValidator
 
     public init(

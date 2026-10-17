@@ -1,48 +1,46 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanSpeechBottomSheetView: DView {
+struct ScanSpeechBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: ScanSpeechViewModel
 
     var body: some View {
+        let sheetType: DBottomSheetType = switch viewModel.state {
+        case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechProposalReviewState: .default
+        default: .blur
+        }
+        let fraction: CGFloat = switch viewModel.state {
+        case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechProposalReviewState: 0.85
+        default: 0.5
+        }
         DBottomSheet(
-            type: viewModel.isReviewVisible ? .default : .blur,
+            type: sheetType,
             title: l10n[
                 .scanSpeechTitle,
             ],
-            fraction: viewModel.isReviewVisible ? 0.85 : 0.5,
+            fraction: fraction,
         ) { toolbarHeight, _ in
             Group {
-                if viewModel.isProposalVisible {
-                    ScanSpeechProposalView()
-                } else if viewModel.isReviewVisible {
-                    ScanSpeechReviewView()
-                } else if !viewModel.isModelReady {
+                switch viewModel.state {
+                case _ as ScanSpeechPreparingModelState, _ as ScanSpeechModelPreparationFailedState:
                     ScanSpeechModelPreparationView()
-                } else {
+                case _ as ScanSpeechReadyState, _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState:
                     ScanSpeechRecordingView()
+                case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState:
+                    ScanSpeechReviewView()
+                case _ as ScanSpeechProposalReviewState:
+                    ScanSpeechProposalView()
+                default: DUnexpectedStateView(
+                        state: viewModel.state,
+                    )
                 }
-            }
-            .padding(
+            }.padding(
                 .top,
                 toolbarHeight,
             )
         }
-        .animation(
-            theme.animation,
-            value: viewModel.speechController.status,
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.isReviewVisible,
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.isModelReady,
-        )
         .onAppear(
             perform: viewModel.onAppear,
         )

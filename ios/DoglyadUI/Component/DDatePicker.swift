@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DDatePicker: DView {
+public struct DDatePicker: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let title: LocalizedStringResource
     private let range: ClosedRange<Date>

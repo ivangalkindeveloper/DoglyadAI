@@ -1,0 +1,2 @@
+@MainActor
+protocol SubscriptionCustomerCenterStateProtocol: AnyObject {}

@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ReportDetailExpandableMarkdownView: DView {
+struct ReportDetailExpandableMarkdownView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     let text: String

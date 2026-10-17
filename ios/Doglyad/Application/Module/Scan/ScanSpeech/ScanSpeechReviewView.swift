@@ -1,76 +1,76 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanSpeechReviewView: DView {
+struct ScanSpeechReviewView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
 
     var body: some View {
-        VStack(
-            spacing: size.s16,
-        ) {
-            ScrollView {
-                VStack(
-                    alignment: .leading,
-                    spacing: size.s16,
-                ) {
-                    if let reviewStatusDescription = viewModel.reviewStatusDescription {
+        let isProcessing = switch viewModel.state {
+        case _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechPreparingModelState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState: true
+        default: false
+        }
+        switch viewModel.state {
+        case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechAutomaticParsingState, _ as ScanSpeechProposalReviewState:
+            VStack(
+                spacing: size.s16,
+            ) {
+                ScrollView {
+                    VStack(
+                        alignment: .leading,
+                        spacing: size.s16,
+                    ) {
                         DText(
-                            reviewStatusDescription,
-                        )
-                        .dStyle(
+                            viewModel.transcriptStatusDescription,
+                        ).dStyle(
                             font: typography.textSmall,
                             color: color.grayscaleHeader,
                         )
+                        DTextField(
+                            controller: viewModel.transcriptController,
+                            title: l10n[
+                                .scanSpeechReviewFieldTitle,
+                            ],
+                            placeholder: l10n[
+                                .scanSpeechReviewFieldPlaceholder,
+                            ],
+                            mode: DTextFieldMultiLineMode(
+                                lineLimit: 6 ... 14,
+                            ),
+                        )
+                        .disabled(
+                            isProcessing,
+                        )
                     }
-
-                    DTextField(
-                        controller: viewModel.transcriptController,
-                        title: l10n[
-                            .scanSpeechReviewFieldTitle,
-                        ],
-                        placeholder: l10n[
-                            .scanSpeechReviewFieldPlaceholder,
-                        ],
-                        mode: DTextFieldMultiLineMode(
-                            lineLimit: 6 ... 14,
-                        ),
-                    )
-                    .disabled(
-                        viewModel.isLoading,
-                    )
-                }
-            }
-            .scrollDismissesKeyboard(
-                .interactively,
+                }.scrollDismissesKeyboard(
+                    .interactively,
+                )
+                DButton(
+                    title: l10n[
+                        .scanSpeechReviewContinueButton,
+                    ],
+                    action: viewModel.onTapContinue,
+                    isLoading: isProcessing,
+                    isDisabled: isProcessing || viewModel.textForParsing == nil,
+                ).dStyle(
+                    .primaryButton,
+                )
+                DButton(
+                    title: l10n[
+                        .scanSpeechReviewRecordAgainButton,
+                    ],
+                    action: viewModel.onTapRecordAgain,
+                    isDisabled: isProcessing,
+                ).dStyle(
+                    .primaryText,
+                )
+            }.padding(
+                size.s16,
             )
-
-            DButton(
-                title: l10n[
-                    .scanSpeechReviewContinueButton,
-                ],
-                action: viewModel.onTapContinue,
-                isLoading: viewModel.isLoading,
-                isDisabled: viewModel.isReviewContinueDisabled,
-            )
-            .dStyle(
-                .primaryButton,
-            )
-
-            DButton(
-                title: l10n[
-                    .scanSpeechReviewRecordAgainButton,
-                ],
-                action: viewModel.onTapRecordAgain,
-                isDisabled: viewModel.isLoading,
-            )
-            .dStyle(
-                .primaryText,
+        default: DUnexpectedStateView(
+                state: viewModel.state,
             )
         }
-        .padding(
-            size.s16,
-        )
     }
 }

@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct DShareLink<Content: View>: DView {
+public struct DShareLink<Content: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let item: String
     private let content: Content

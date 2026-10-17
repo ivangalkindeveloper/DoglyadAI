@@ -6,10 +6,12 @@
         "competition"
     ],
     "python.analysis.ignore": [
+        "build",
         "competition"
     ],
     "files.exclude": {
-        "**/competition": true
+        "**/build": true,
+        "**/competition": true,
     },
     "files.watcherExclude": {
         "**/competition/**": true

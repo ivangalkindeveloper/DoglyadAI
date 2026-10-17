@@ -1,13 +1,22 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanTemplateCardView: DView {
+struct ScanTemplateCardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
 
     var body: some View {
+        let backgroundColor: Color? = switch viewModel.isTemplateCompatible {
+        case false: color.dangerBackground
+        case true: nil
+        }
+        let trailingInset: CGFloat = switch viewModel.template {
+        case .none: .zero
+        case .some: size.s32
+        }
+
         VStack(
             alignment: .leading,
             spacing: .zero,
@@ -34,16 +43,17 @@ struct ScanTemplateCardView: DView {
                 alignment: .topTrailing,
             ) {
                 DButtonCard(
-                    backgroundColor: viewModel.isSelectedTemplateExaminationTypeMismatch
-                        ? color.dangerBackground
-                        : nil,
+                    backgroundColor: backgroundColor,
                     action: viewModel.onTapSelectedTemplate,
                 ) {
                     VStack(
                         alignment: .leading,
                         spacing: size.s4,
                     ) {
-                        if let template = viewModel.selectedTemplate {
+                        switch viewModel.template {
+                        case let .some(
+                            template,
+                        ):
                             DText(
                                 template.usExaminationType.localizedTitle,
                             )
@@ -73,7 +83,7 @@ struct ScanTemplateCardView: DView {
                             .lineLimit(
                                 4,
                             )
-                        } else {
+                        case .none:
                             DText(
                                 viewModel.usExaminationType.localizedTitle,
                             )
@@ -98,7 +108,7 @@ struct ScanTemplateCardView: DView {
                     }
                     .padding(
                         .trailing,
-                        viewModel.selectedTemplate == nil ? .zero : size.s32,
+                        trailingInset,
                     )
                     .frame(
                         maxWidth: .infinity,
@@ -106,7 +116,8 @@ struct ScanTemplateCardView: DView {
                     )
                 }
 
-                if viewModel.selectedTemplate != nil {
+                switch viewModel.template {
+                case .some:
                     DCloseButton(
                         action: viewModel.onTapResetTemplate,
                     )
@@ -116,10 +127,12 @@ struct ScanTemplateCardView: DView {
                     .transition(
                         .opacity,
                     )
+                case .none: EmptyView()
                 }
             }
 
-            if viewModel.isSelectedTemplateExaminationTypeMismatch {
+            switch viewModel.isTemplateCompatible {
+            case false:
                 DText(
                     l10n[
                         .scanTemplateCardExaminationTypeMismatchDescription,
@@ -142,15 +155,8 @@ struct ScanTemplateCardView: DView {
                 .transition(
                     .opacity,
                 )
+            case true: EmptyView()
             }
         }
-        .animation(
-            theme.animation,
-            value: viewModel.isSelectedTemplateExaminationTypeMismatch,
-        )
-        .animation(
-            theme.animation,
-            value: viewModel.selectedTemplate,
-        )
     }
 }

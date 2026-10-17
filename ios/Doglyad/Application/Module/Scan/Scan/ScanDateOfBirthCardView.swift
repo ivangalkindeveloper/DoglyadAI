@@ -2,7 +2,7 @@ import DoglyadUI
 import Foundation
 import SwiftUI
 
-struct ScanDateOfBirthCardView: DView {
+struct ScanDateOfBirthCardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 

@@ -3,7 +3,7 @@ import CoreImage
 import UIKit
 
 @MainActor
-public final class SimulatorCameraController: DCameraController {
+public final class SimulatorCameraController: DCameraControllerProtocol {
     @Published public private(set) var isLoading = false
     @Published public private(set) var isRunning = false
     @Published public private(set) var isCapturing = false

@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct DScreenToolbarView<Leading: View, Title: View, Trailing: View, Content: View>: DView {
+struct DScreenToolbarView<Leading: View, Title: View, Trailing: View, Content: View>: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let safeAreaInsetTop: CGFloat
     let leadingView: Leading
