@@ -15,13 +15,8 @@ class DModuleViewModel<State>: DStateViewModel<State> {
     private let onRequestCountIncremented: () -> Void
     private let onSubscriptionStatusUpdated: (SubscriptionStatus?) -> Void
     let coordinator: Coordinator
-    var analytics: AnalyticsManager { container.analytics }
-    var l10n: L10N { container.l10n }
     private let analyticsDestination: AnalyticsRouteDestination
     private let analyticsParameters: AnalyticsParameters
-
-    var availableRequestCount: Int { subscriptionStatus?.availableCountPerDay ?? 0 }
-    var neuralModelSettings: NeuralModelSettings { getNeuralModelSettings() }
 
     init(
         state: State,
@@ -60,6 +55,12 @@ class DModuleViewModel<State>: DStateViewModel<State> {
             )
         }
     }
+
+    var analytics: AnalyticsManager { container.analytics }
+    var l10n: L10N { container.l10n }
+
+    var availableRequestCount: Int { subscriptionStatus?.availableCountPerDay ?? 0 }
+    var neuralModelSettings: NeuralModelSettings { getNeuralModelSettings() }
 
     final func onAppear() {
         switch analyticsDestination {

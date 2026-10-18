@@ -7,6 +7,7 @@ struct HistoryCardView: DViewProtocol {
 
     let report: USExaminationReport
     let onTap: () -> Void
+
     private var examinationData: USExaminationData {
         report.examinationData
     }

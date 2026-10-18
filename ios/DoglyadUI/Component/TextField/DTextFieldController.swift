@@ -10,10 +10,6 @@ public final class DTextFieldController: ObservableObject {
     private let validators: [any DTextFieldValidatorProtocol]
     private var isValidationAttempted = false
 
-    public var value: String? {
-        text.isEmpty ? nil : text
-    }
-
     public init(
         initialText: String = "",
         isRequired: Bool = false,
@@ -32,6 +28,10 @@ public final class DTextFieldController: ObservableObject {
             )
         }
         text = formattedText
+    }
+
+    public var value: String? {
+        text.isEmpty ? nil : text
     }
 
     public func setText(

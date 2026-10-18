@@ -11,36 +11,6 @@ final class NeuralModelSettingsViewModel: DModuleViewModel<any NeuralModelSettin
     @Published var isMarkdown: Bool = false
     @NestedObservableObject var temperatureController: DTextFieldController
     @NestedObservableObject var maxTokensController: DTextFieldController
-    var focusList: [DTextFieldFocusValidationItem<NeuralModelSettingsFocus>] {
-        [
-            DTextFieldFocusValidationItem(
-                focus: .temperature,
-                controller: temperatureController,
-            ),
-            DTextFieldFocusValidationItem(
-                focus: .length,
-                controller: maxTokensController,
-            ),
-        ]
-    }
-
-    var isPreviousFieldFocusable: Bool {
-        switch focus {
-        case .temperature, .none:
-            false
-        case .length:
-            true
-        }
-    }
-
-    var isNextFieldFocusable: Bool {
-        switch focus {
-        case .temperature:
-            true
-        case .length, .none:
-            false
-        }
-    }
 
     private let messager: DMessager
     private let onSettingsSaved: (Bool, Double?, Int?) async throws -> Void
@@ -123,6 +93,37 @@ final class NeuralModelSettingsViewModel: DModuleViewModel<any NeuralModelSettin
                 getInitialMaxTokens(),
             ),
         )
+    }
+
+    var focusList: [DTextFieldFocusValidationItem<NeuralModelSettingsFocus>] {
+        [
+            DTextFieldFocusValidationItem(
+                focus: .temperature,
+                controller: temperatureController,
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .length,
+                controller: maxTokensController,
+            ),
+        ]
+    }
+
+    var isPreviousFieldFocusable: Bool {
+        switch focus {
+        case .temperature, .none:
+            false
+        case .length:
+            true
+        }
+    }
+
+    var isNextFieldFocusable: Bool {
+        switch focus {
+        case .temperature:
+            true
+        case .length, .none:
+            false
+        }
     }
 
     func onFocusChanged(

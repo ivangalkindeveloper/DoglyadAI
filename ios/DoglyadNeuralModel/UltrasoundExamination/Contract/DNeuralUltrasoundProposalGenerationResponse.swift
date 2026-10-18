@@ -6,6 +6,22 @@ struct DNeuralUltrasoundProposalGenerationResponse: Codable, Sendable {
 }
 
 extension DNeuralUltrasoundProposalGenerationResponse {
+    init(
+        serverResponse: DNeuralUltrasoundVoiceFormParseResponseDTO,
+    ) {
+        self.init(
+            proposals: serverResponse.proposals.map {
+                DNeuralUltrasoundProposalGenerationItem(
+                    fieldId: $0.fieldId,
+                    value: $0.value,
+                    sourceQuote: $0.sourceQuote,
+                    accuracy: $0.accuracy,
+                )
+            },
+            unmappedFindings: serverResponse.unmappedFindings,
+        )
+    }
+
     @available(iOS 26.0, *)
     static func fromFoundationModels(
         _ response: [DNeuralUltrasoundFoundationProposalItem],
@@ -35,22 +51,6 @@ extension DNeuralUltrasoundProposalGenerationResponse {
         return Self(
             proposals: proposals,
             unmappedFindings: unmappedFindings,
-        )
-    }
-
-    init(
-        serverResponse: DNeuralUltrasoundVoiceFormParseResponseDTO,
-    ) {
-        self.init(
-            proposals: serverResponse.proposals.map {
-                DNeuralUltrasoundProposalGenerationItem(
-                    fieldId: $0.fieldId,
-                    value: $0.value,
-                    sourceQuote: $0.sourceQuote,
-                    accuracy: $0.accuracy,
-                )
-            },
-            unmappedFindings: serverResponse.unmappedFindings,
         )
     }
 }

@@ -13,17 +13,6 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
 
     @Published var neuralModel: USExaminationNeuralModel
 
-    var historyDescription: LocalizedStringResource {
-        reportsCount == 0 ? l10n[
-            .settingsHistoryEmptyDescription,
-        ] : l10n.resource(
-            .settingsHistoryDescription,
-            values: ["count": String(
-                reportsCount,
-            )],
-        )
-    }
-
     private let onNeuralModelSelected: (USExaminationNeuralModel) async throws -> Void
 
     init(
@@ -53,6 +42,17 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
             analyticsDestination: .screen(
                 .settings,
             ),
+        )
+    }
+
+    var historyDescription: LocalizedStringResource {
+        reportsCount == 0 ? l10n[
+            .settingsHistoryEmptyDescription,
+        ] : l10n.resource(
+            .settingsHistoryDescription,
+            values: ["count": String(
+                reportsCount,
+            )],
         )
     }
 

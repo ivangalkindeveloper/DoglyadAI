@@ -98,9 +98,7 @@ struct ErrorRootView: DViewProtocol {
                         alignment: .center,
                     )
                 }
-            default: DUnexpectedStateView(
-                    state: viewModel.state,
-                )
+            default: EmptyView()
             }
         }
         .onAppear(

@@ -2,16 +2,19 @@ import Foundation
 
 protocol UserSettingsRepositoryProtocol: AnyObject {
     func getIsPhotoRemarks() async throws -> Bool
+
     func setIsPhotoRemarks(
         _ isEnabled: Bool,
     ) async throws
 
     func getIsDescriptionRemarks() async throws -> Bool
+
     func setIsDescriptionRemarks(
         _ isEnabled: Bool,
     ) async throws
 
     func getIsRemarksVisible() async throws -> Bool
+
     func setIsRemarksVisible(
         _ isVisible: Bool,
     ) async throws

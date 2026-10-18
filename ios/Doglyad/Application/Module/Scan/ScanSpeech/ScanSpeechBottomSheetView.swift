@@ -7,39 +7,51 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
     @StateObject var viewModel: ScanSpeechViewModel
 
     var body: some View {
-        let sheetType: DBottomSheetType = switch viewModel.state {
-        case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechProposalReviewState: .default
-        default: .blur
-        }
         let fraction: CGFloat = switch viewModel.state {
-        case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechProposalReviewState: 0.85
+        case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechReviewProposalState: 0.9
         default: 0.5
         }
         DBottomSheet(
-            type: sheetType,
+            type: .blur,
             title: l10n[
                 .scanSpeechTitle,
             ],
             fraction: fraction,
-        ) { toolbarHeight, _ in
-            Group {
-                switch viewModel.state {
-                case _ as ScanSpeechPreparingModelState, _ as ScanSpeechModelPreparationFailedState:
-                    ScanSpeechModelPreparationView()
-                case _ as ScanSpeechReadyState, _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState:
-                    ScanSpeechRecordingView()
-                case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState:
-                    ScanSpeechReviewView()
-                case _ as ScanSpeechProposalReviewState:
-                    ScanSpeechProposalView()
-                default: DUnexpectedStateView(
-                        state: viewModel.state,
-                    )
-                }
-            }.padding(
-                .top,
-                toolbarHeight,
-            )
+        ) { toolbarHeight, bottomHeight in
+            switch viewModel.state {
+            case _ as ScanSpeechPreparingModelState, _ as ScanSpeechModelPreparationFailedState:
+                ScanSpeechModelPreparationView(
+                    toolbarHeight: toolbarHeight,
+                    bottomHeight: bottomHeight,
+                )
+            case _ as ScanSpeechReadyState, _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState:
+                ScanSpeechRecordingView(
+                    toolbarHeight: toolbarHeight,
+                    bottomHeight: bottomHeight,
+                )
+            case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState:
+                ScanSpeechReviewParsingView(
+                    toolbarHeight: toolbarHeight,
+                    bottomHeight: bottomHeight,
+                )
+            case let state as ScanSpeechReviewProposalState:
+                ScanSpeechReviewProposalView(
+                    state: state,
+                    toolbarHeight: toolbarHeight,
+                    bottomHeight: bottomHeight,
+                )
+            default: EmptyView()
+            }
+        } bottom: {
+            switch viewModel.state {
+            case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState:
+                ScanSpeechReviewParsingBottomView()
+            case let state as ScanSpeechReviewProposalState:
+                ScanSpeechReviewProposalBottomView(
+                    state: state,
+                )
+            default: EmptyView()
+            }
         }
         .onAppear(
             perform: viewModel.onAppear,

@@ -245,6 +245,10 @@ enum L10NKey: String, CaseIterable, Sendable {
     case storageClearProtocolsTitle
     case storageClearProtocolsWarningDescription
     case storageClearProtocolsWarningTitle
+    case storageDeleteSpeechModelButton
+    case storageDeleteSpeechModelDescription
+    case storageDeleteSpeechModelSuccessMessageDescription
+    case storageDeleteSpeechModelSuccessMessageTitle
     case storageTitle
     case subscriptionChangeTypeDescription
     case subscriptionChangeTypeTitle

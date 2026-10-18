@@ -34,6 +34,17 @@ struct StorageScreenView: DViewProtocol {
                         ],
                         action: viewModel.onTapClearProtocols,
                     )
+                    if viewModel.isSpeechModelAvailable {
+                        DListButtonCard(
+                            title: l10n[
+                                .storageDeleteSpeechModelButton,
+                            ],
+                            description: l10n[
+                                .storageDeleteSpeechModelDescription,
+                            ],
+                            action: viewModel.onTapDeleteSpeechModel,
+                        )
+                    }
                     DListButtonCard(
                         title: l10n[
                             .storageClearAllTitle,
@@ -62,6 +73,9 @@ struct StorageScreenView: DViewProtocol {
         }
         .onAppear(
             perform: viewModel.onAppear,
+        )
+        .onDisappear(
+            perform: viewModel.onDisappear,
         )
         .environmentObject(
             viewModel,

@@ -1,22 +1,6 @@
 import Foundation
 
 extension Bundle {
-    enum KeyString: String {
-        case ENVIRONMENT
-        case BASE_URL
-        case REVENUECAT_API_KEY
-        case CFBundleShortVersionString
-        case CFBundleVersion
-    }
-
-    static func dictionaryString(
-        _ key: KeyString,
-    ) -> String {
-        main.object(
-            forInfoDictionaryKey: key.rawValue,
-        ) as! String
-    }
-
     static var shortVersion: Version {
         let parts = dictionaryString(
             .CFBundleShortVersionString,
@@ -41,5 +25,21 @@ extension Bundle {
                 2,
             ],
         )
+    }
+
+    enum KeyString: String {
+        case ENVIRONMENT
+        case BASE_URL
+        case REVENUECAT_API_KEY
+        case CFBundleShortVersionString
+        case CFBundleVersion
+    }
+
+    static func dictionaryString(
+        _ key: KeyString,
+    ) -> String {
+        main.object(
+            forInfoDictionaryKey: key.rawValue,
+        ) as! String
     }
 }

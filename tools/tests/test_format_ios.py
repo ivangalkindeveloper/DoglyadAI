@@ -147,6 +147,118 @@ print(text, raw, pattern)
         self.assertLess(result.index("init()"), result.index("let third"))
         self.assertEqual(self.format(result), result)
 
+    def test_computed_properties_follow_initializers_and_precede_methods(self) -> None:
+        result = self.format(
+            "class Example {\n"
+            "func firstMethod() {}\n"
+            "/// Derived value.\n"
+            "var doubled: Int { value * 2 }\n"
+            "var value = 1 { willSet {} didSet {} }\n"
+            "var selected: Int { get { value } set { value = newValue } }\n"
+            "let callback: () -> Int = { 3 }\n"
+            "init() {}\n"
+            "subscript(index: Int) -> Int { value + index }\n"
+            "func secondMethod() {}\n"
+            "}\n"
+        )
+        declarations = [
+            "var value = 1",
+            "let callback:",
+            "init()",
+            "var doubled:",
+            "var selected:",
+            "subscript(",
+            "func firstMethod()",
+            "func secondMethod()",
+        ]
+        positions = [result.index(declaration) for declaration in declarations]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("\n\n    init()", result)
+        self.assertIn("\n\n    /// Derived value.\n    var doubled:", result)
+        self.assertIn("\n\n    func firstMethod()", result)
+        self.assertIn("\n\n    func secondMethod()", result)
+        self.assertEqual(self.format(result), result)
+
+    def test_blank_lines_between_empty_methods_and_initializers(self) -> None:
+        result = self.format(
+            "class Example {\n"
+            "init() {}\n"
+            "init(value: Int) {}\n"
+            "func first() {}\n"
+            "/// Second action.\n"
+            "@MainActor func second() {}\n"
+            "deinit {}\n"
+            "}\n"
+        )
+        self.assertIn("init() {}\n\n    init(", result)
+        self.assertIn("\n\n    func first()", result)
+        self.assertIn(
+            "\n\n    /// Second action.\n    @MainActor func second()", result
+        )
+        self.assertIn("\n\n    deinit", result)
+        self.assertEqual(self.format(result), result)
+
+    def test_accessors_without_initializers_follow_fields(self) -> None:
+        result = self.format(
+            "class Example {\n"
+            "var count: Int { 1 }\n"
+            "static let shared = Example()\n"
+            "static var isAvailable: Bool { true }\n"
+            "}\n"
+        )
+        self.assertLess(result.index("static let shared"), result.index("var count:"))
+        self.assertIn("static let shared = Example()\n\n    var count:", result)
+        self.assertEqual(self.format(result), result)
+
+    def test_nested_classes_have_independent_member_order(self) -> None:
+        result = self.format(
+            "class Outer {\n"
+            "var value: Int { 1 }\n"
+            "init() {}\n"
+            "class Inner {\n"
+            "func read() -> Int { value }\n"
+            "var value: Int { stored }\n"
+            "init() {}\n"
+            "let stored = 2\n"
+            "}\n"
+            "}\n"
+        )
+        self.assertLess(result.index("init()"), result.index("var value:"))
+        inner = result[result.index("class Inner") :]
+        declarations = ["let stored", "init()", "var value:", "func read()"]
+        positions = [inner.index(declaration) for declaration in declarations]
+        self.assertEqual(positions, sorted(positions))
+        self.assertEqual(self.format(result), result)
+
+    def test_extensions_follow_member_order_without_merging_blocks(self) -> None:
+        result = self.format(
+            "class Example {}\n"
+            "extension Example {\n"
+            "func first() {}\n"
+            "/// Stored configuration.\n"
+            "static let firstValue = 1\n"
+            "var value: Int { 1 }\n"
+            "static let secondValue = 2\n"
+            "convenience init(value: Int) { self.init() }\n"
+            "func second() {}\n"
+            "}\n"
+            "extension Example { func third() {} }\n"
+        )
+        declarations = [
+            "static let firstValue",
+            "static let secondValue",
+            "convenience init(",
+            "var value:",
+            "func first()",
+            "func second()",
+            "func third()",
+        ]
+        positions = [result.index(declaration) for declaration in declarations]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("/// Stored configuration.\n    static let firstValue", result)
+        self.assertEqual(result.count("extension Example"), 2)
+        self.assertEqual(self.format(result), result)
+
     def test_result_is_stable(self) -> None:
         first = self.format('fill(name: "Ivan", weight: scalar(value: 82))\n')
         self.assertEqual(self.format(first), first)
@@ -162,8 +274,10 @@ func run() {
 }
 class Model {
     func currentValue() -> Int { value }
+    var selected: Int { get { value } set { value = newValue } }
     init(value: Int) { self.value = value }
-    let value: Int
+    var value: Int { willSet {} didSet {} }
+    subscript(index: Int) -> Int { value + index }
 }
 """
         result = self.format(source)

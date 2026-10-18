@@ -12,6 +12,35 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
 
     @NestedObservableObject var controller = DTextFieldController()
 
+    private let arguments: ReadyMadeTemplateListArguments
+
+    init(
+        container: DependencyContainer,
+        router: DRouter,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        arguments: ReadyMadeTemplateListArguments,
+    ) {
+        self.arguments = arguments
+
+        super.init(
+            state: ReadyMadeTemplateListLoadingState(),
+            container: container,
+            router: router,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
+            analyticsDestination: .screen(
+                .readyMadeTemplateList,
+            ),
+        )
+    }
+
     var query: String? {
         guard let value = controller.value?
             .trimmingCharacters(
@@ -23,8 +52,6 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
         }
         return value
     }
-
-    private let arguments: ReadyMadeTemplateListArguments
 
     var filteredTemplates: [USExaminationReadyMadeTemplate] {
         let templates: [USExaminationReadyMadeTemplate]
@@ -61,33 +88,6 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
     }
 
     private var typesById: [String: USExaminationType] { container.usExaminationTypesById }
-
-    init(
-        container: DependencyContainer,
-        router: DRouter,
-        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
-        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
-        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
-        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
-        onRequestCountIncremented: @escaping () -> Void,
-        arguments: ReadyMadeTemplateListArguments,
-    ) {
-        self.arguments = arguments
-
-        super.init(
-            state: ReadyMadeTemplateListLoadingState(),
-            container: container,
-            router: router,
-            getSubscriptionStatus: getSubscriptionStatus,
-            observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
-            getNeuralModelSettings: getNeuralModelSettings,
-            onRequestCountIncremented: onRequestCountIncremented,
-            analyticsDestination: .screen(
-                .readyMadeTemplateList,
-            ),
-        )
-    }
 
     override func onInit() {
         loadTemplates()

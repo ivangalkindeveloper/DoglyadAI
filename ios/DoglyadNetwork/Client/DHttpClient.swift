@@ -22,10 +22,6 @@ public final class DHttpClient: DHttpClientProtocol {
         return decoder
     }()
 
-    private var baseApiUrl: String {
-        baseUrl + baseVersionPrefix
-    }
-
     public init(
         baseUrl: String,
         baseVersionPrefix: String,
@@ -41,6 +37,10 @@ public final class DHttpClient: DHttpClientProtocol {
             timeoutIntervalForRequest: 300,
             timeoutIntervalForResource: 300,
         )
+    }
+
+    private var baseApiUrl: String {
+        baseUrl + baseVersionPrefix
     }
 
     public func updateConfiguration(

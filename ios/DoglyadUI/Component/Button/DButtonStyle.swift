@@ -16,6 +16,7 @@ public struct DButtonStyle: ButtonStyle {
     @Environment(
         \.isEnabled,
     ) private var isEnabled
+
     private var color: DColor { theme.color }
     private var size: DSize { theme.size }
 

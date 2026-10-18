@@ -6,15 +6,13 @@ struct ScanSpeechProposalCardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
+    let state: ScanSpeechReviewProposalState
     let proposal: DNeuralUltrasoundVoiceFieldProposal
 
     var body: some View {
-        let isSelected: Bool = switch viewModel.state {
-        case let state as ScanSpeechProposalReviewState: state.selectedFieldIds.contains(
-                proposal.id,
-            )
-        default: false
-        }
+        let isSelected = state.selectedFieldIds.contains(
+            proposal.id,
+        )
 
         DButtonCard(
             backgroundColor: color.warningBackground,
@@ -46,6 +44,7 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                     )
                     .dStyle(
                         font: typography.linkSmall,
+                        color: color.grayscaleBackgroundWeak,
                     )
 
                     DText(
@@ -55,6 +54,7 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                     )
                     .dStyle(
                         font: typography.textSmall,
+                        color: color.grayscaleBackgroundWeak,
                     )
 
                     if proposal.warnings.isEmpty {
@@ -100,7 +100,7 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                     )
                     .dStyle(
                         font: typography.textXSmall,
-                        color: color.grayscalePlacehold,
+                        color: color.grayscaleBackgroundWeak,
                     )
                     DText(
                         viewModel.currentValue(
@@ -109,7 +109,7 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                     )
                     .dStyle(
                         font: typography.textSmall,
-                        color: color.grayscaleHeader,
+                        color: color.grayscaleBackgroundWeak,
                     )
 
                     DText(
@@ -119,14 +119,14 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                     )
                     .dStyle(
                         font: typography.textXSmall,
-                        color: color.grayscalePlacehold,
+                        color: color.grayscaleBackgroundWeak,
                     )
                     DText(
                         proposal.sourceQuote,
                     )
                     .dStyle(
                         font: typography.textSmall,
-                        color: color.grayscaleHeader,
+                        color: color.grayscaleBackgroundWeak,
                     )
                 }
                 .frame(

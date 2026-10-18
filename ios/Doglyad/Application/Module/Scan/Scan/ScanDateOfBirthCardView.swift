@@ -7,6 +7,7 @@ struct ScanDateOfBirthCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     @EnvironmentObject private var viewModel: ScanViewModel
+
     private var date: Date { viewModel.patientDateOfBirth }
 
     var body: some View {

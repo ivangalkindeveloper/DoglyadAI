@@ -8,16 +8,6 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     private let container: DependencyContainer
     private let getStoredNeuralModelSettings: () -> NeuralModelSettings
 
-    var status: SubscriptionStatus? {
-        switch state {
-        case let state as SubscriptionRootActiveState: state.status
-        case _ as SubscriptionRootInactiveState: nil
-        default: preconditionFailure(
-                "Unexpected subscription root state",
-            )
-        }
-    }
-
     init(
         container: DependencyContainer,
         getStoredNeuralModelSettings: (() -> NeuralModelSettings)? = nil,
@@ -35,6 +25,16 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         super.init(
             state: state,
         )
+    }
+
+    var status: SubscriptionStatus? {
+        switch state {
+        case let state as SubscriptionRootActiveState: state.status
+        case _ as SubscriptionRootInactiveState: nil
+        default: preconditionFailure(
+                "Unexpected subscription root state",
+            )
+        }
     }
 
     func observeStatus(

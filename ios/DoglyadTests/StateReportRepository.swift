@@ -10,13 +10,17 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     private(set) var reports: [USExaminationReport] = []
 
     func getSelectedExaminationTypeId() async throws -> String? { nil }
+
     func setSelectedExaminationTypeId(
         id _: String,
     ) async throws {}
+
     func getRecentExaminationTypeIds() async throws -> [String] { [] }
+
     func setRecentExaminationTypeIds(
         _: [String],
     ) async throws {}
+
     func recordRecentExaminationTypeId(
         _: String,
     ) async throws {}
@@ -46,6 +50,7 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
         limit _: Int,
         offset _: Int,
     ) async throws -> [USExaminationReport] { reports }
+
     func getReportsCount() async throws -> Int { reports.count }
 
     func setReport(
@@ -69,5 +74,6 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     }
 
     func clearAllReports() async throws { reports.removeAll() }
+
     func clearAll() async throws { reports.removeAll() }
 }

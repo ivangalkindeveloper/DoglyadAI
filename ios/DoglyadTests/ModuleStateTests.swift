@@ -453,17 +453,17 @@ struct ModuleStateTests {
             unmappedFindings: ["Unmapped finding"],
             rejectedFieldIds: [.patientHeightCM],
         )
-        let initial = ScanSpeechProposalReviewState(
+        let initial = ScanSpeechReviewProposalState(
             proposal: proposal,
             reviewProposals: reviewProposals,
         )
         model.emit(
             initial,
         )
-        var snapshots: [ScanSpeechProposalReviewState] = []
+        var snapshots: [ScanSpeechReviewProposalState] = []
         let observation = model.$state.dropFirst().sink { state in
             switch state {
-            case let state as ScanSpeechProposalReviewState: snapshots.append(
+            case let state as ScanSpeechReviewProposalState: snapshots.append(
                     state,
                 )
             default: break

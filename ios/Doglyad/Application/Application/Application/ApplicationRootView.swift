@@ -19,9 +19,7 @@ struct ApplicationRootView: View {
                             error: failure.error,
                             analytics: viewModel.analytics,
                         )
-                    case .none: DUnexpectedStateView(
-                            state: viewModel.state,
-                        )
+                    case .none: EmptyView()
                     }
                 case let (.main, state as ApplicationRootReadyState):
                     MainRootView(
@@ -32,9 +30,7 @@ struct ApplicationRootView: View {
                         error: state.error,
                         analytics: viewModel.analytics,
                     )
-                default: DUnexpectedStateView(
-                        state: viewModel.state,
-                    )
+                default: EmptyView()
                 }
             }
             .id(

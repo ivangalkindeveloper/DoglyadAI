@@ -34,7 +34,13 @@ struct SubscriptionPaywallScreenView: DViewProtocol {
                         font: typography.textSmall,
                     )
                     SubscriptionPaywallPlansView()
-                    SubscriptionPaywallErrorView()
+                    switch viewModel.state {
+                    case let state as SubscriptionPaywallFailedState:
+                        SubscriptionPaywallErrorView(
+                            state: state,
+                        )
+                    default: EmptyView()
+                    }
                     DButton(
                         title: l10n[
                             .subscriptionPaywallRestoreButton,

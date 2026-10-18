@@ -1,5 +1,6 @@
 import Combine
 import DoglyadNetwork
+import DoglyadSpeech
 import DoglyadUI
 import Foundation
 import Handler
@@ -8,7 +9,10 @@ import SwiftUI
 
 @MainActor
 final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
+    @Published private(set) var isSpeechModelAvailable = false
     private let messager: DMessager
+    private var speechModelObservation: AnyCancellable?
+    private var presentationID: UUID? = UUID()
 
     init(
         container: DependencyContainer,
@@ -34,6 +38,13 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                 .storage,
             ),
         )
+        speechModelObservation = DSpeechWhisperKitModel.shared.$state.sink { [weak self] _ in
+            self?.isSpeechModelAvailable = DSpeechWhisperKitModel.shared.isDownloaded
+        }
+    }
+
+    func onDisappear() {
+        presentationID = nil
     }
 
     func onTapBack() {
@@ -90,6 +101,50 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                 },
             ),
         )
+    }
+
+    func onTapDeleteSpeechModel() {
+        guard isSpeechModelAvailable, let id = presentationID else { return }
+        switch state {
+        case _ as StorageLoadingState: return
+        default: break
+        }
+
+        analytics.buttonTapped(
+            .storageDeleteSpeechModel,
+        )
+        let loading = StorageLoadingState()
+        emit(
+            loading,
+        )
+        handle {
+            try await DSpeechWhisperKitModel.shared.deleteDownloadedModel()
+        } onMainSuccess: { _ in
+            guard self.presentationID == id, self.state === loading else { return }
+            self.emit(
+                StorageReadyState(),
+            )
+            self.messager.show(
+                type: .success,
+                title: self.l10n[
+                    .storageDeleteSpeechModelSuccessMessageTitle,
+                ],
+                description: self.l10n[
+                    .storageDeleteSpeechModelSuccessMessageDescription,
+                ],
+            )
+            self.coordinator.pop()
+        } onMainUnknownError: { error in
+            guard self.presentationID == id, self.state === loading else { return }
+            self.emit(
+                StorageFailedState(
+                    error: error,
+                ),
+            )
+            self.messager.showUnknownError(
+                l10n: self.l10n,
+            )
+        }
     }
 
     func onTapClearAll() {

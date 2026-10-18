@@ -4,6 +4,7 @@ public struct DCaptureFrame: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
     public init() {}
+
     public var body: some View {
         GeometryReader { geometry in
             let width = geometry.size.width

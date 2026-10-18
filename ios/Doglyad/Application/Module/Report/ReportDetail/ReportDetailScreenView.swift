@@ -7,6 +7,7 @@ struct ReportDetailScreenView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ReportDetailViewModel
+
     private var report: USExaminationReport {
         viewModel.report
     }

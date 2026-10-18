@@ -5,13 +5,13 @@ final class DNeuralUltrasoundRecordingFoundationProvider: DNeuralUltrasoundFound
     private let base: DNeuralUltrasoundFoundationModelProvider
     private(set) var recorder: DNeuralUltrasoundRecordingProposalGenerator?
 
-    var isAvailable: Bool { base.isAvailable }
-
     init(
         base: DNeuralUltrasoundFoundationModelProvider,
     ) {
         self.base = base
     }
+
+    var isAvailable: Bool { base.isAvailable }
 
     func makeModel() throws -> any DNeuralUltrasoundModelProtocol {
         guard #available(iOS 26.0, *) else { throw DNeuralModelError.unavailable }

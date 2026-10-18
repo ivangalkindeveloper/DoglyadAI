@@ -5,6 +5,7 @@ struct ErrorInitializationView<Description: View>: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let title: LocalizedStringResource
     let description: () -> Description
+
     var body: some View {
         VStack(
             alignment: .center,

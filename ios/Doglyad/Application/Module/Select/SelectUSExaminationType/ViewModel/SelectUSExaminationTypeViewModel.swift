@@ -12,34 +12,6 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
 
     @Published var currentValue: USExaminationType?
 
-    var sections: [SelectUSExaminationTypeSection] {
-        let recentTypes = recentTypeIds.compactMap { typesById[
-            $0,
-        ] }
-        let recentSections: [SelectUSExaminationTypeSection] = if recentTypes.isEmpty {
-            []
-        } else {
-            [
-                SelectUSExaminationTypeSection(
-                    id: "recent",
-                    title: l10n[
-                        .usExaminationTypeRecentGroupTitle,
-                    ],
-                    types: recentTypes,
-                ),
-            ]
-        }
-
-        let configuredSections = groups.map { group in
-            SelectUSExaminationTypeSection(
-                id: group.id,
-                title: group.localizedTitle,
-                types: group.examinationTypes,
-            )
-        }
-        return recentSections + configuredSections
-    }
-
     private let messager: DMessager?
 
     private let arguments: SelectUSExaminationTypeArguments?
@@ -83,6 +55,34 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
                 ],
             ),
         )
+    }
+
+    var sections: [SelectUSExaminationTypeSection] {
+        let recentTypes = recentTypeIds.compactMap { typesById[
+            $0,
+        ] }
+        let recentSections: [SelectUSExaminationTypeSection] = if recentTypes.isEmpty {
+            []
+        } else {
+            [
+                SelectUSExaminationTypeSection(
+                    id: "recent",
+                    title: l10n[
+                        .usExaminationTypeRecentGroupTitle,
+                    ],
+                    types: recentTypes,
+                ),
+            ]
+        }
+
+        let configuredSections = groups.map { group in
+            SelectUSExaminationTypeSection(
+                id: group.id,
+                title: group.localizedTitle,
+                types: group.examinationTypes,
+            )
+        }
+        return recentSections + configuredSections
     }
 
     func isSelected(

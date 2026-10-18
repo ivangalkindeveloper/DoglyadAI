@@ -49,9 +49,7 @@ struct SelectTemplateBottomSheetView: DViewProtocol {
                             onRetry: viewModel.onTapRetry,
                         )
                     default:
-                        DUnexpectedStateView(
-                            state: viewModel.state,
-                        )
+                        EmptyView()
                     }
                 }
                 .padding(

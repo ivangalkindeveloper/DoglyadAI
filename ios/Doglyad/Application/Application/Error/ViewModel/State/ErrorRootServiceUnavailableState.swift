@@ -4,6 +4,12 @@ import Foundation
 final class ErrorRootServiceUnavailableState: ErrorRootStateProtocol {
     let error: Error
 
+    init(
+        error: Error,
+    ) {
+        self.error = error
+    }
+
     var email: String {
         switch error as? InitializationError {
         case let .serviceUnavailable(
@@ -13,11 +19,5 @@ final class ErrorRootServiceUnavailableState: ErrorRootStateProtocol {
                 "Expected serviceUnavailable",
             )
         }
-    }
-
-    init(
-        error: Error,
-    ) {
-        self.error = error
     }
 }

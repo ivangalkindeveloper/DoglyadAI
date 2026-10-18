@@ -62,9 +62,7 @@ struct SubscriptionScreenView: DViewProtocol {
             )
 
         default:
-            DUnexpectedStateView(
-                state: viewModel.state,
-            )
+            EmptyView()
         }
     }
 }

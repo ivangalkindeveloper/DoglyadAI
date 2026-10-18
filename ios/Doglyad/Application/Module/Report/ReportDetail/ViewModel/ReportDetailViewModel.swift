@@ -16,14 +16,6 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
 
     @Published var template: USExaminationTemplate?
 
-    var subTitle: String {
-        "\(report.examinationData.patientName), \(report.date.localizedDateTime(locale: l10n.locale))"
-    }
-
-    var selectedNeuralModelTitle: String { neuralModel.title }
-
-    var selectedTemplate: USExaminationTemplate? { template }
-
     private let messager: DMessager
     private let getSelectedTemplate: () -> USExaminationTemplate?
     private let getNeuralModel: () -> USExaminationNeuralModel
@@ -73,6 +65,14 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
             template = getSelectedTemplate()
         }
     }
+
+    var subTitle: String {
+        "\(report.examinationData.patientName), \(report.date.localizedDateTime(locale: l10n.locale))"
+    }
+
+    var selectedNeuralModelTitle: String { neuralModel.title }
+
+    var selectedTemplate: USExaminationTemplate? { template }
 
     func photoCardConfiguration(
         for photoId: UUID,

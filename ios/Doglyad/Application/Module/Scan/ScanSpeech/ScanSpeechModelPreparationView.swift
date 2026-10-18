@@ -7,6 +7,9 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     @EnvironmentObject var theme: DTheme
 
+    let toolbarHeight: CGFloat
+    let bottomHeight: CGFloat
+
     var body: some View {
         let preparation: DSpeechModelPreparation = switch viewModel.state {
         case let state as ScanSpeechPreparingModelState: state.preparation
@@ -20,8 +23,18 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
             Spacer()
 
             switch preparation {
-            case .checking, .loading:
-                ScanSpeechModelLoadingView()
+            case .checking:
+                DText(
+                    l10n[
+                        .scanSpeechModelCheckingDescription,
+                    ],
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscaleBackgroundWeak,
+                    alignment: .center,
+                )
+                .dShimmer()
             case let .downloading(
                 progress,
             ):
@@ -36,12 +49,6 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
                     alignment: .center,
                 )
                 if let progress {
-                    DProgress(
-                        value: progress,
-                    )
-                    .tint(
-                        color.primaryDefault,
-                    )
                     DText(
                         "\(Int(progress * 100))%",
                     )
@@ -50,15 +57,23 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
                         color: color.grayscaleBackgroundWeak,
                         alignment: .center,
                     )
-                } else {
-                    DShimmerPlaceholder().frame(
-                        width: size.s64,
-                        height: size.s8,
+                    DProgress(
+                        value: progress,
                     )
-                    .tint(
-                        color.primaryDefault,
-                    )
+                    .dShimmer()
                 }
+            case .loading:
+                DText(
+                    l10n[
+                        .scanSpeechModelLoadingDescription,
+                    ],
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscaleBackgroundWeak,
+                    alignment: .center,
+                )
+                .dShimmer()
             case .failed:
                 DText(
                     l10n[
@@ -67,7 +82,7 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
                 )
                 .dStyle(
                     font: typography.textSmall,
-                    color: color.grayscaleBackgroundWeak,
+                    color: color.warningDefaultStrong,
                     alignment: .center,
                 )
                 DButton(
@@ -87,6 +102,14 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
         }
         .padding(
             size.s16,
+        )
+        .padding(
+            .top,
+            toolbarHeight,
+        )
+        .padding(
+            .bottom,
+            bottomHeight,
         )
         .frame(
             maxWidth: .infinity,

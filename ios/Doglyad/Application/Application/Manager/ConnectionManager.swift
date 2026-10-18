@@ -22,18 +22,18 @@ final class ConnectionManager {
 }
 
 extension ConnectionManager: ConnectionManagerProtocol {
-    func start() {
-        monitor.start(
-            queue: queue,
-        )
-    }
-
     var isConnected: Bool {
         switch monitor.currentPath.status {
         case .satisfied: true
         case .unsatisfied, .requiresConnection: false
         @unknown default: false
         }
+    }
+
+    func start() {
+        monitor.start(
+            queue: queue,
+        )
     }
 
     func stop() {

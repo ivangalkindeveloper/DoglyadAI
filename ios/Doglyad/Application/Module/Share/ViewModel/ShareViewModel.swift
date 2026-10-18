@@ -15,28 +15,6 @@ final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
 
     private let examinationTypesById: [String: USExaminationType]
 
-    var userEmailButtonTitle: String {
-        l10n.text(
-            .shareWorkEmailButton,
-            values: ["prefix": l10n.text(
-                .buttonSendToEmail,
-            ), "email": userEmail ?? ""],
-        )
-    }
-
-    var subject: String {
-        report.shareSubject(
-            examinationTypesById: examinationTypesById,
-            l10n: l10n,
-        )
-    }
-
-    var shareMessage: String {
-        report.shareMessage(
-            l10n: l10n,
-        )
-    }
-
     private let messager: DMessager
 
     init(
@@ -70,6 +48,28 @@ final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
             analyticsDestination: .bottomSheet(
                 .share,
             ),
+        )
+    }
+
+    var userEmailButtonTitle: String {
+        l10n.text(
+            .shareWorkEmailButton,
+            values: ["prefix": l10n.text(
+                .buttonSendToEmail,
+            ), "email": userEmail ?? ""],
+        )
+    }
+
+    var subject: String {
+        report.shareSubject(
+            examinationTypesById: examinationTypesById,
+            l10n: l10n,
+        )
+    }
+
+    var shareMessage: String {
+        report.shareMessage(
+            l10n: l10n,
         )
     }
 

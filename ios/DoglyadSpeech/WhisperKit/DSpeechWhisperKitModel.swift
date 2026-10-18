@@ -3,19 +3,76 @@ import Foundation
 import WhisperKit
 
 @MainActor
-final class DSpeechWhisperKitModel: ObservableObject {
-    static let shared = DSpeechWhisperKitModel()
+public final class DSpeechWhisperKitModel: ObservableObject {
+    public static let shared = DSpeechWhisperKitModel()
 
     private static let variant = "large-v3-v20240930_626MB"
     private static let folderKey = "DoglyadSpeech.whisperTurboModelFolder"
+    private let directory: URL
+    private let defaults: UserDefaults
+    private let fileManager: FileManager
     private var model: WhisperKit?
     private var preparationTask: Task<Void, Never>?
+    private var isDeletingModel = false
 
-    @Published private(set) var state: DSpeechModelPreparation = .checking
+    @Published public private(set) var state: DSpeechModelPreparation = .checking
 
-    private init() {}
+    init(
+        directory: URL? = nil,
+        defaults: UserDefaults = .standard,
+        fileManager: FileManager = .default,
+    ) {
+        self.directory = directory ?? fileManager.urls(
+            for: .applicationSupportDirectory,
+            in: .userDomainMask,
+        )[
+            0,
+        ].appendingPathComponent(
+            "WhisperKit",
+            isDirectory: true,
+        )
+        self.defaults = defaults
+        self.fileManager = fileManager
+    }
+
+    public var isDownloaded: Bool {
+        if model != nil { return true }
+        guard let folder = defaults.string(
+            forKey: Self.folderKey,
+        ) else { return false }
+        return hasModelFiles(
+            at: folder,
+        )
+    }
+
+    public func deleteDownloadedModel() async throws {
+        try Task.checkCancellation()
+        guard !isDeletingModel else { throw DSpeechError.unavailable }
+        isDeletingModel = true
+        defer { isDeletingModel = false }
+
+        let preparation = preparationTask
+        preparation?.cancel()
+        await preparation?.value
+        try Task.checkCancellation()
+
+        do {
+            try fileManager.removeItem(
+                at: directory,
+            )
+        } catch let error as CocoaError where error.code == .fileNoSuchFile {
+            // An already absent model is a successful, idempotent deletion.
+        }
+        await model?.unloadModels()
+        model = nil
+        defaults.removeObject(
+            forKey: Self.folderKey,
+        )
+        state = .checking
+    }
 
     func prepare() {
+        guard !isDeletingModel else { return }
         if model != nil {
             state = .ready
             return
@@ -30,25 +87,20 @@ final class DSpeechWhisperKitModel: ObservableObject {
     }
 
     func load() async throws -> WhisperKit {
+        try Task.checkCancellation()
+        guard !isDeletingModel else { throw DSpeechError.unavailable }
         prepare()
         let task = preparationTask
         await task?.value
-        guard let model else { throw DSpeechError.unavailable }
+        try Task.checkCancellation()
+        guard !isDeletingModel, let model else { throw DSpeechError.unavailable }
         return model
     }
 
     private func prepareModel() async {
         do {
-            let directory = FileManager.default.urls(
-                for: .applicationSupportDirectory,
-                in: .userDomainMask,
-            )[
-                0,
-            ].appendingPathComponent(
-                "WhisperKit",
-                isDirectory: true,
-            )
-            try FileManager.default.createDirectory(
+            try Task.checkCancellation()
+            try fileManager.createDirectory(
                 at: directory,
                 withIntermediateDirectories: true,
             )
@@ -59,11 +111,11 @@ final class DSpeechWhisperKitModel: ObservableObject {
                 backupValues,
             )
 
-            let cachedFolder = UserDefaults.standard.string(
+            let cachedFolder = defaults.string(
                 forKey: Self.folderKey,
             )
             let folder: URL
-            if let cachedFolder, Self.hasModelFiles(
+            if let cachedFolder, hasModelFiles(
                 at: cachedFolder,
             ) {
                 folder = URL(
@@ -93,14 +145,15 @@ final class DSpeechWhisperKitModel: ObservableObject {
                         }
                     },
                 )
-                UserDefaults.standard.set(
+                try Task.checkCancellation()
+                defaults.set(
                     folder.path,
                     forKey: Self.folderKey,
                 )
             }
 
             state = .loading
-            model = try await WhisperKit(
+            let loadedModel = try await WhisperKit(
                 WhisperKitConfig(
                     modelFolder: folder.path,
                     tokenizerFolder: directory,
@@ -110,6 +163,8 @@ final class DSpeechWhisperKitModel: ObservableObject {
                     download: false,
                 ),
             )
+            try Task.checkCancellation()
+            model = loadedModel
             state = .ready
         } catch {
             state = .failed
@@ -131,7 +186,7 @@ final class DSpeechWhisperKitModel: ObservableObject {
         )
     }
 
-    private static func hasModelFiles(
+    private func hasModelFiles(
         at folder: String,
     ) -> Bool {
         ["AudioEncoder", "TextDecoder", "MelSpectrogram"].allSatisfy { name in
@@ -141,7 +196,7 @@ final class DSpeechWhisperKitModel: ObservableObject {
                 ).appendingPathComponent(
                     "\(name).\(ext)",
                 )
-                return FileManager.default.fileExists(
+                return fileManager.fileExists(
                     atPath: url.path,
                 )
             }

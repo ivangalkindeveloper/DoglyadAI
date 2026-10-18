@@ -15,10 +15,6 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
 
     private var offsetLoadingTask: Task<Void, Never>?
 
-    var pageSize: Int {
-        historyConfig.pageSize
-    }
-
     init(
         container: DependencyContainer,
         router: DRouter,
@@ -52,6 +48,10 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
                 .history,
             ),
         )
+    }
+
+    var pageSize: Int {
+        historyConfig.pageSize
     }
 
     override func onInit() {

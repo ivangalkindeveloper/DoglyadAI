@@ -87,9 +87,7 @@ struct HistoryScreenView: DViewProtocol {
                                 onRetry: viewModel.onTapRetry,
                             )
                         default:
-                            DUnexpectedStateView(
-                                state: viewModel.state,
-                            )
+                            EmptyView()
                         }
                     }
                     .padding(

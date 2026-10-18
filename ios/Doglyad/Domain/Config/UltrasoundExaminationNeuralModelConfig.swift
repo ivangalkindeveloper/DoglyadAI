@@ -19,10 +19,6 @@ extension UltrasoundExaminationNeuralModelConfig {
 }
 
 extension UltrasoundExaminationNeuralModelConfig {
-    private enum CodingKeys: String, CodingKey {
-        case temperature, maxTokens, maxContextTokens, prompt, proposalPrompt
-    }
-
     init(
         from decoder: Decoder,
     ) throws {
@@ -49,5 +45,9 @@ extension UltrasoundExaminationNeuralModelConfig {
             String.self,
             forKey: .proposalPrompt,
         ) ?? ""
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case temperature, maxTokens, maxContextTokens, prompt, proposalPrompt
     }
 }

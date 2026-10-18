@@ -83,9 +83,7 @@ struct PhotoViewScreenView: DViewProtocol {
                             controlsHeight = height
                         }
                 case _ as PhotoViewEmptyState: EmptyView()
-                default: DUnexpectedStateView(
-                        state: viewModel.state,
-                    )
+                default: EmptyView()
                 }
             }
         }

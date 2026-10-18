@@ -14,6 +14,44 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
 
     let userEmail: String?
 
+    @Published private(set) var responseText = ""
+    private var nextWordIndex = 0
+    private let messager: DMessager
+
+    private var animationRunID: UUID?
+
+    init(
+        container: DependencyContainer,
+        messager: DMessager,
+        router: DRouter,
+        arguments: ReportReceivedArguments,
+        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
+        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
+        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        onRequestCountIncremented: @escaping () -> Void,
+        getUserEmail: @escaping () -> String?,
+    ) {
+        self.messager = messager
+
+        report = (arguments.report)
+        userEmail = getUserEmail()
+
+        super.init(
+            state: ReportReceivedDefaultState(),
+            container: container,
+            router: router,
+            getSubscriptionStatus: getSubscriptionStatus,
+            observeSubscriptionStatus: observeSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
+            getNeuralModelSettings: getNeuralModelSettings,
+            onRequestCountIncremented: onRequestCountIncremented,
+            analyticsDestination: .bottomSheet(
+                .reportReceived,
+            ),
+        )
+    }
+
     var model: USExaminationModelReport {
         report.actualModelReport
     }
@@ -54,44 +92,6 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         case .available, .unavailable:
             nil
         }
-    }
-
-    @Published private(set) var responseText = ""
-    private var nextWordIndex = 0
-    private let messager: DMessager
-
-    private var animationRunID: UUID?
-
-    init(
-        container: DependencyContainer,
-        messager: DMessager,
-        router: DRouter,
-        arguments: ReportReceivedArguments,
-        getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
-        observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
-        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
-        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
-        onRequestCountIncremented: @escaping () -> Void,
-        getUserEmail: @escaping () -> String?,
-    ) {
-        self.messager = messager
-
-        report = (arguments.report)
-        userEmail = getUserEmail()
-
-        super.init(
-            state: ReportReceivedDefaultState(),
-            container: container,
-            router: router,
-            getSubscriptionStatus: getSubscriptionStatus,
-            observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
-            getNeuralModelSettings: getNeuralModelSettings,
-            onRequestCountIncremented: onRequestCountIncremented,
-            analyticsDestination: .bottomSheet(
-                .reportReceived,
-            ),
-        )
     }
 
     func animateResponse() async {

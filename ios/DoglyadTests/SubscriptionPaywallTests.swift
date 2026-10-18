@@ -319,6 +319,7 @@ private final class TestSubscriptionRepository: SubscriptionRepositoryProtocol {
     )
 
     func configure() async throws {}
+
     func fetchPlans() async throws -> [SubscriptionPlan] {
         if isLoadingFailed { throw SubscriptionError.offeringsUnavailable }
         return [plan]
@@ -348,12 +349,16 @@ private final class TestSubscriptionRepository: SubscriptionRepositoryProtocol {
     func cachedStatus(
         configEntitlements _: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus? { nil }
+
     func fetchStatus(
         configEntitlements _: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus? { status }
+
     func incrementRequestCount(
         configEntitlements _: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus? { status }
+
     func manageSubscription() async throws {}
+
     func requestRefund() async throws {}
 }

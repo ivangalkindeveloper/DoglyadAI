@@ -7,19 +7,6 @@ struct SubscriptionStatus: Equatable {
 }
 
 extension SubscriptionStatus {
-    func availability(
-        of feature: PaidFeature,
-    ) -> SubscriptionFeatureAvailability {
-        switch feature {
-        case .neuralModelSettings:
-            neuralModelSettings
-        case .formCompletionViaMicrophone:
-            formCompletionViaMicrophone
-        case .sendingReportByEmail:
-            sendingReportByEmail
-        }
-    }
-
     var requestCountPerDay: Int {
         entitlement.requestCountPerDay
     }
@@ -34,5 +21,18 @@ extension SubscriptionStatus {
 
     var neuralModelSettings: SubscriptionFeatureAvailability {
         entitlement.neuralModelSettings
+    }
+
+    func availability(
+        of feature: PaidFeature,
+    ) -> SubscriptionFeatureAvailability {
+        switch feature {
+        case .neuralModelSettings:
+            neuralModelSettings
+        case .formCompletionViaMicrophone:
+            formCompletionViaMicrophone
+        case .sendingReportByEmail:
+            sendingReportByEmail
+        }
     }
 }

@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct DCloseButton: DViewProtocol {
     public enum Style { case regular, destructive }
+
     @EnvironmentObject public var theme: DTheme
 
     let action: () -> Void

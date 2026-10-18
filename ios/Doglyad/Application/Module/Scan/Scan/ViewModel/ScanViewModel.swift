@@ -12,9 +12,6 @@ import UIKit
 
 @MainActor
 final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFocusValidatingProtocol, DraftableProtocol {
-    var isPhotoLimitReached: Bool { photos.count >= photoMaxCount }
-    var isTemplateCompatible: Bool { template.map { $0.usExaminationType.id == usExaminationType.id } ?? true }
-
     @Published var usExaminationType: USExaminationType
 
     @Published var photos: [USExaminationScanPhoto] = []
@@ -51,85 +48,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     private let config: UltrasoundConfig
 
-    var photoMaxCount: Int { config.scanPhotoMaxNumber }
-
-    var selectedNeuralModelTitle: String { neuralModel.title }
-
-    var defaultPatientDateOfBirth: Date {
-        Calendar.current.date(
-            byAdding: .year,
-            value: -config.defaultPatientDateOfBirthGap,
-            to: Date(),
-        )!
-    }
-
-    var focusList: [DTextFieldFocusValidationItem<ScanFocus>] {
-        [
-            DTextFieldFocusValidationItem(
-                focus: .examinationNumber,
-                controller: examinationNumberController,
-            ),
-            DTextFieldFocusValidationItem(
-                focus: .patientName,
-                controller: patientNameController,
-            ),
-            DTextFieldFocusValidationItem(
-                focus: .patientHeightCM,
-                controller: patientHeightCMController,
-            ),
-            DTextFieldFocusValidationItem(
-                focus: .patientWeightKG,
-                controller: patientWeightKGController,
-            ),
-            DTextFieldFocusValidationItem(
-                focus: .examinationDescription,
-                controller: examinationDescriptionController,
-            ),
-        ]
-    }
-
-    var isPreviousFieldFocusable: Bool {
-        switch focus {
-        case .examinationNumber, .none:
-            false
-        case .patientName, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription:
-            true
-        }
-    }
-
-    var isNextFieldFocusable: Bool {
-        switch focus {
-        case .examinationNumber, .patientName, .patientHeightCM, .patientWeightKG, .patientComplaints:
-            true
-        case .examinationDescription, .none:
-            false
-        }
-    }
-
-    var speechButtonBadge: DButtonBadge? {
-        switch subscriptionAvailability(
-            of: .formCompletionViaMicrophone,
-        ) {
-        case .offered:
-            DButtonBadge(
-                l10n[
-                    .subscriptionProLabel,
-                ],
-                isShimmering: true,
-            )
-        case .available, .unavailable:
-            nil
-        }
-    }
-
-    var patientAge: Int {
-        Calendar.current.dateComponents(
-            [.year],
-            from: patientDateOfBirth,
-            to: Date(),
-        ).year ?? 0
-    }
-
     private let messager: DMessager
     private let getSelectedTemplate: () -> USExaminationTemplate?
     private let onTemplateSelected: (USExaminationTemplate) async throws -> Void
@@ -145,17 +63,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
     private var draftLifecycleCancellable: AnyCancellable?
     private var cameraController: DCameraControllerFactory.Controller?
     private var examinationObservation: AnyCancellable?
-
-    private var ultrasoundConfig: UltrasoundConfig {
-        container.applicationConfig.ultrasound
-    }
-
-    private var gallerySelectionLimit: Int {
-        max(
-            photoMaxCount - photos.count,
-            0,
-        )
-    }
 
     init(
         container: DependencyContainer,
@@ -246,6 +153,99 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             neuralModel = getNeuralModel()
             template = getSelectedTemplate()
         }
+    }
+
+    var isPhotoLimitReached: Bool { photos.count >= photoMaxCount }
+    var isTemplateCompatible: Bool { template.map { $0.usExaminationType.id == usExaminationType.id } ?? true }
+
+    var photoMaxCount: Int { config.scanPhotoMaxNumber }
+
+    var selectedNeuralModelTitle: String { neuralModel.title }
+
+    var defaultPatientDateOfBirth: Date {
+        Calendar.current.date(
+            byAdding: .year,
+            value: -config.defaultPatientDateOfBirthGap,
+            to: Date(),
+        )!
+    }
+
+    var focusList: [DTextFieldFocusValidationItem<ScanFocus>] {
+        [
+            DTextFieldFocusValidationItem(
+                focus: .examinationNumber,
+                controller: examinationNumberController,
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .patientName,
+                controller: patientNameController,
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .patientHeightCM,
+                controller: patientHeightCMController,
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .patientWeightKG,
+                controller: patientWeightKGController,
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .examinationDescription,
+                controller: examinationDescriptionController,
+            ),
+        ]
+    }
+
+    var isPreviousFieldFocusable: Bool {
+        switch focus {
+        case .examinationNumber, .none:
+            false
+        case .patientName, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription:
+            true
+        }
+    }
+
+    var isNextFieldFocusable: Bool {
+        switch focus {
+        case .examinationNumber, .patientName, .patientHeightCM, .patientWeightKG, .patientComplaints:
+            true
+        case .examinationDescription, .none:
+            false
+        }
+    }
+
+    var speechButtonBadge: DButtonBadge? {
+        switch subscriptionAvailability(
+            of: .formCompletionViaMicrophone,
+        ) {
+        case .offered:
+            DButtonBadge(
+                l10n[
+                    .subscriptionProLabel,
+                ],
+                isShimmering: true,
+            )
+        case .available, .unavailable:
+            nil
+        }
+    }
+
+    var patientAge: Int {
+        Calendar.current.dateComponents(
+            [.year],
+            from: patientDateOfBirth,
+            to: Date(),
+        ).year ?? 0
+    }
+
+    private var ultrasoundConfig: UltrasoundConfig {
+        container.applicationConfig.ultrasound
+    }
+
+    private var gallerySelectionLimit: Int {
+        max(
+            photoMaxCount - photos.count,
+            0,
+        )
     }
 
     private enum DraftInitializationResult {

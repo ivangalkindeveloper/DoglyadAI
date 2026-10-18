@@ -9,23 +9,8 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
     @Published var selectedPhotoID: UUID
     @Published private(set) var isRemarksVisible: Bool
     private let getPhotoRemarks: () -> [USExaminationPhotoRemarks]
-    var isDeletionAvailable: Bool { arguments.onDelete != nil }
     private let subtitle: String?
     private let getSourcePhotos: () -> [USExaminationScanPhoto]
-
-    var currentPage: Int {
-        photos.firstIndex(
-            where: { $0.id == selectedPhotoID },
-        ).map { $0 + 1 } ?? 0
-    }
-
-    var subTitle: String? {
-        subtitle
-    }
-
-    var sourcePhotos: [USExaminationScanPhoto] {
-        getSourcePhotos()
-    }
 
     private let messager: DMessager?
     private let arguments: PhotoViewArguments
@@ -73,6 +58,22 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         photoObservation = arguments.observePhotos? { [weak self] updatedPhotos in self?.synchronizePhotos(
             updatedPhotos,
         ) }
+    }
+
+    var isDeletionAvailable: Bool { arguments.onDelete != nil }
+
+    var currentPage: Int {
+        photos.firstIndex(
+            where: { $0.id == selectedPhotoID },
+        ).map { $0 + 1 } ?? 0
+    }
+
+    var subTitle: String? {
+        subtitle
+    }
+
+    var sourcePhotos: [USExaminationScanPhoto] {
+        getSourcePhotos()
     }
 
     func remarkPoints(

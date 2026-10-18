@@ -21,37 +21,6 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
 
     let templateId = UUID()
 
-    var focusList: [DTextFieldFocusValidationItem<TemplateAddFocus>] {
-        [
-            DTextFieldFocusValidationItem(
-                focus: .name,
-                controller: nameController,
-            ),
-            DTextFieldFocusValidationItem(
-                focus: .content,
-                controller: templateController,
-            ),
-        ]
-    }
-
-    var isPreviousFieldFocusable: Bool {
-        switch focus {
-        case .name, .none:
-            false
-        case .content:
-            true
-        }
-    }
-
-    var isNextFieldFocusable: Bool {
-        switch focus {
-        case .name:
-            true
-        case .content, .none:
-            false
-        }
-    }
-
     private let messager: DMessager
     private let onSaveTemplate: (USExaminationTemplate) async throws -> Void
 
@@ -86,6 +55,37 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
         )
         _ = nameController
         _ = templateController
+    }
+
+    var focusList: [DTextFieldFocusValidationItem<TemplateAddFocus>] {
+        [
+            DTextFieldFocusValidationItem(
+                focus: .name,
+                controller: nameController,
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .content,
+                controller: templateController,
+            ),
+        ]
+    }
+
+    var isPreviousFieldFocusable: Bool {
+        switch focus {
+        case .name, .none:
+            false
+        case .content:
+            true
+        }
+    }
+
+    var isNextFieldFocusable: Bool {
+        switch focus {
+        case .name:
+            true
+        case .content, .none:
+            false
+        }
     }
 
     override func onInit() {

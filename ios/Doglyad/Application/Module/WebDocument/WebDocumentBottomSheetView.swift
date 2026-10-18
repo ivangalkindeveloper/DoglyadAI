@@ -32,9 +32,7 @@ struct WebDocumentBottomSheetView: DViewProtocol {
                         )
                 case _ as WebDocumentLoadedState, _ as WebDocumentFailedState:
                     EmptyView()
-                default: DUnexpectedStateView(
-                        state: viewModel.state,
-                    )
+                default: EmptyView()
                 }
             }
             .edgesIgnoringSafeArea(

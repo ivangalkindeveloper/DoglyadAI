@@ -1,7 +1,7 @@
 import DoglyadNeuralModel
 
 @MainActor
-final class ScanSpeechProposalReviewState: ScanSpeechStateProtocol {
+final class ScanSpeechReviewProposalState: ScanSpeechStateProtocol {
     let proposal: DNeuralUltrasoundDictationProposal
     let reviewProposals: [DNeuralUltrasoundVoiceFieldProposal]
     let selectedFieldIds: Set<DNeuralUltrasoundVoiceFieldId>

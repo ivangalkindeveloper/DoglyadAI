@@ -15,15 +15,6 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
     @Published var isPhotoRemarks: Bool
     @Published var isDescriptionRemarks: Bool
 
-    var storedNeuralModelSettings: NeuralModelSettings {
-        NeuralModelSettings(
-            selectedNeuralModelId: neuralModel.id,
-            isMarkdown: isMarkdown,
-            temperature: temperature,
-            maxTokens: maxTokens,
-        )
-    }
-
     private let container: DependencyContainer
     private let changes = PassthroughSubject<Void, Never>()
 
@@ -49,6 +40,15 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
 
         super.init(
             state: UltrasoundRootState(),
+        )
+    }
+
+    var storedNeuralModelSettings: NeuralModelSettings {
+        NeuralModelSettings(
+            selectedNeuralModelId: neuralModel.id,
+            isMarkdown: isMarkdown,
+            temperature: temperature,
+            maxTokens: maxTokens,
         )
     }
 

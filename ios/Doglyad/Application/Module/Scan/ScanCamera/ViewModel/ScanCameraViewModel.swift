@@ -18,12 +18,6 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
 
     let photoMaxCount: Int
 
-    var isCaptureFrameReady: Bool {
-        !captureFrame.isEmpty && !previewFrame.isEmpty && previewFrame.contains(
-            captureFrame,
-        )
-    }
-
     private let arguments: ScanCameraArguments
     private var cameraObservation: AnyCancellable?
     private var presentationID: UUID?
@@ -60,6 +54,12 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
             ),
         )
         _ = cameraController
+    }
+
+    var isCaptureFrameReady: Bool {
+        !captureFrame.isEmpty && !previewFrame.isEmpty && previewFrame.contains(
+            captureFrame,
+        )
     }
 
     func onDisappear() {

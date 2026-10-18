@@ -78,6 +78,7 @@ enum AnalyticsButton: String {
     case storageClearAllConfirm = "storage_clear_all_confirm"
     case storageClearProtocols = "storage_clear_protocols"
     case storageClearProtocolsConfirm = "storage_clear_protocols_confirm"
+    case storageDeleteSpeechModel = "storage_delete_speech_model"
     case subscriptionBack = "subscription_back"
     case subscriptionChangeType = "subscription_change_type"
     case subscriptionCustomerCenter = "subscription_customer_center"

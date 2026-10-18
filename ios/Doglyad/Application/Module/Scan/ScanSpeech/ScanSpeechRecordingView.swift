@@ -6,6 +6,9 @@ struct ScanSpeechRecordingView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     @EnvironmentObject var theme: DTheme
 
+    let toolbarHeight: CGFloat
+    let bottomHeight: CGFloat
+
     var body: some View {
         let icon: ImageResource = switch viewModel.state {
         case _ as ScanSpeechReadyState: .play
@@ -24,10 +27,12 @@ struct ScanSpeechRecordingView: DViewProtocol {
             ]
         default: nil
         }
+
         VStack(
             spacing: .zero,
         ) {
             Spacer()
+
             switch viewModel.state {
             case _ as ScanSpeechRecordingState:
                 switch viewModel.controller.text {
@@ -64,6 +69,7 @@ struct ScanSpeechRecordingView: DViewProtocol {
                 )
             default: EmptyView()
             }
+
             switch description {
             case let .some(
                 description,
@@ -119,6 +125,7 @@ struct ScanSpeechRecordingView: DViewProtocol {
                     .opacity,
                 )
             }
+
             Spacer()
             DButton(
                 image: icon,
@@ -128,7 +135,19 @@ struct ScanSpeechRecordingView: DViewProtocol {
                 .primaryCircle,
             )
         }.padding(
+            .horizontal,
             size.s16,
+        )
+        .padding(
+            .top,
+            toolbarHeight + size.s16,
+        )
+        .padding(
+            .bottom,
+            max(
+                .zero,
+                bottomHeight,
+            ) + size.s16,
         )
     }
 }

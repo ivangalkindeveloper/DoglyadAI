@@ -44,9 +44,7 @@ struct SettingsScreenView: DViewProtocol {
                             LoadingErrorView(
                                 onRetry: viewModel.onTapRetry,
                             )
-                        default: DUnexpectedStateView(
-                                state: viewModel.state,
-                            )
+                        default: EmptyView()
                         }
                         DListButtonCard(
                             image: .iconTemplates,

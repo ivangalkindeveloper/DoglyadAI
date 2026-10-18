@@ -2,7 +2,40 @@ import Foundation
 import SwiftParser
 import SwiftSyntax
 
-/// Move only class members, preserving property initialization order and method order.
+enum ClassMemberGroup: Int, CaseIterable {
+    case field
+    case initializer
+    case accessor
+    case method
+
+    init(_ declaration: DeclSyntax) {
+        if let property = declaration.as(VariableDeclSyntax.self) {
+            let isComputed = property.bindings.contains { binding in
+                guard let block = binding.accessorBlock else { return false }
+                switch block.accessors {
+                case .getter:
+                    return true
+                case let .accessors(accessors):
+                    return accessors.contains {
+                        $0.accessorSpecifier.tokenKind != .keyword(.willSet)
+                            && $0.accessorSpecifier.tokenKind != .keyword(.didSet)
+                    }
+                @unknown default:
+                    return true
+                }
+            }
+            self = isComputed ? .accessor : .field
+        } else if declaration.is(InitializerDeclSyntax.self) {
+            self = .initializer
+        } else if declaration.is(SubscriptDeclSyntax.self) {
+            self = .accessor
+        } else {
+            self = .method
+        }
+    }
+}
+
+/// Move whole class/extension members, preserving field initialization and method order.
 final class ClassMemberOrder: SyntaxRewriter {
     override func visit(_ node: StringLiteralExprSyntax) -> ExprSyntax {
         ExprSyntax(node)
@@ -10,20 +43,26 @@ final class ClassMemberOrder: SyntaxRewriter {
 
     override func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
         var result = super.visit(node).cast(ClassDeclSyntax.self)
-        let members = result.memberBlock.members
+        result.memberBlock.members = ordered(result.memberBlock.members)
+        return DeclSyntax(result)
+    }
+
+    override func visit(_ node: ExtensionDeclSyntax) -> DeclSyntax {
+        var result = super.visit(node).cast(ExtensionDeclSyntax.self)
+        result.memberBlock.members = ordered(result.memberBlock.members)
+        return DeclSyntax(result)
+    }
+
+    private func ordered(_ members: MemberBlockItemListSyntax) -> MemberBlockItemListSyntax {
         // Conditional members may contain stored properties with ordered initializers.
         guard !members.contains(where: { $0.decl.is(IfConfigDeclSyntax.self) }) else {
-            return DeclSyntax(result)
+            return members
         }
-        let properties = members.filter { $0.decl.is(VariableDeclSyntax.self) }
-        let initializers = members.filter { $0.decl.is(InitializerDeclSyntax.self) }
-        let remaining = members.filter {
-            !$0.decl.is(VariableDeclSyntax.self) && !$0.decl.is(InitializerDeclSyntax.self)
-        }
-        result.memberBlock.members = MemberBlockItemListSyntax(
-            Array(properties) + Array(initializers) + Array(remaining)
+        return MemberBlockItemListSyntax(
+            ClassMemberGroup.allCases.flatMap { group in
+                members.filter { ClassMemberGroup($0.decl) == group }
+            }
         )
-        return DeclSyntax(result)
     }
 }
 
@@ -34,11 +73,21 @@ final class ArgumentLineBreaks: SyntaxRewriter {
         let members = super.visit(node)
         return MemberBlockItemListSyntax(members.enumerated().map { index, member in
             var result = member
-            if index > 0, result.decl.is(InitializerDeclSyntax.self) {
-                result.leadingTrivia = startingAfterBlankLine(result.leadingTrivia)
+            if index > 0 {
+                let previous = members[members.index(members.startIndex, offsetBy: index - 1)]
+                let isGroupBoundary = ClassMemberGroup(previous.decl) != ClassMemberGroup(result.decl)
+                if isGroupBoundary || isCallable(previous.decl) || isCallable(result.decl) {
+                    result.leadingTrivia = startingAfterBlankLine(result.leadingTrivia)
+                }
             }
             return result
         })
+    }
+
+    private func isCallable(_ declaration: DeclSyntax) -> Bool {
+        declaration.is(FunctionDeclSyntax.self)
+            || declaration.is(InitializerDeclSyntax.self)
+            || declaration.is(DeinitializerDeclSyntax.self)
     }
 
     override func visit(_ node: InitializerDeclSyntax) -> DeclSyntax {

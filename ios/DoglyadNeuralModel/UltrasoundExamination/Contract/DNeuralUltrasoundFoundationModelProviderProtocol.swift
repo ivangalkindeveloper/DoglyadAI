@@ -2,5 +2,6 @@
 @MainActor
 protocol DNeuralUltrasoundFoundationModelProviderProtocol {
     var isAvailable: Bool { get }
+
     func makeModel() throws -> any DNeuralUltrasoundModelProtocol
 }

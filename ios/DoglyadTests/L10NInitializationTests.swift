@@ -86,6 +86,7 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
     private let lock = NSLock()
     private var paths: [String] = []
     private var capturedHeaders: [String: String]?
+
     var requestedPaths: [String] { lock.withLock { paths } }
     var headers: [String: String]? { lock.withLock { capturedHeaders } }
 

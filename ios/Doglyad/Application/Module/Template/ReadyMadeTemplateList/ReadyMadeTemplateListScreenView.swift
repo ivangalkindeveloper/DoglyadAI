@@ -44,9 +44,7 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                     )
                 case _ as ReadyMadeTemplateListLoadingState, _ as ReadyMadeTemplateListFailedState:
                     EmptyView()
-                default: DUnexpectedStateView(
-                        state: viewModel.state,
-                    )
+                default: EmptyView()
                 }
             },
             onTapBody: viewModel.unfocus,
@@ -199,9 +197,7 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                     .transition(
                         .opacity,
                     )
-                default: DUnexpectedStateView(
-                        state: viewModel.state,
-                    )
+                default: EmptyView()
                 }
             },
         )

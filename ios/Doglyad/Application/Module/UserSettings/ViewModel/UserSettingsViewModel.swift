@@ -17,15 +17,6 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
 
     @NestedObservableObject var emailController: DTextFieldController
 
-    var focusList: [DTextFieldFocusValidationItem<UserSettingsFocus>] {
-        [
-            DTextFieldFocusValidationItem(
-                focus: .email,
-                controller: emailController,
-            ),
-        ]
-    }
-
     private let messager: DMessager
     private let onSaved: (String?, Bool, Bool, Bool) async throws -> Void
 
@@ -87,6 +78,15 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
         emailController.setText(
             getInitialEmail() ?? "",
         )
+    }
+
+    var focusList: [DTextFieldFocusValidationItem<UserSettingsFocus>] {
+        [
+            DTextFieldFocusValidationItem(
+                focus: .email,
+                controller: emailController,
+            ),
+        ]
     }
 
     func onTapBack() {

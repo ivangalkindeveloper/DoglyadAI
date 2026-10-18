@@ -8,6 +8,7 @@ struct OnBoardingCurrentPageView: DViewProtocol {
     ) private var locale
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: OnBoardingViewModel
+
     var body: some View {
         switch viewModel.state {
         case _ as OnBoardingFirstState:
@@ -32,7 +33,7 @@ struct OnBoardingCurrentPageView: DViewProtocol {
                     .onBoardingSecondDescription,
                 ],
             )
-        case _ as OnBoardingLegalState:
+        case let state as OnBoardingLegalState:
             OnBoardingPageView(
                 tag: 2,
                 title: l10n[
@@ -48,12 +49,7 @@ struct OnBoardingCurrentPageView: DViewProtocol {
                 ) {
                     DCheckbox(
                         isChecked: Binding(
-                            get: {
-                                switch viewModel.state {
-                                case let state as OnBoardingLegalState: state.isLegalAccepted
-                                default: false
-                                }
-                            },
+                            get: { state.isLegalAccepted },
                             set: viewModel.onLegalAcceptedChanged,
                         ),
                     )
@@ -118,9 +114,7 @@ struct OnBoardingCurrentPageView: DViewProtocol {
                     .onBoardingFifthDescription,
                 ],
             )
-        default: DUnexpectedStateView(
-                state: viewModel.state,
-            )
+        default: EmptyView()
         }
     }
 }

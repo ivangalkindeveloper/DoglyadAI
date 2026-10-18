@@ -50,22 +50,6 @@ extension ApplicationConfig {
 }
 
 extension ApplicationConfig {
-    private enum CodingKeys: String, CodingKey {
-        case isServiceAvailable
-        case appStoreId
-        case locale
-        case actualVersion
-        case contactEmail
-        case appleUpdateUrl
-        case legalDate
-        case privacyPolicyUrl
-        case termsAndConditionsUrl
-        case network
-        case entitlements
-        case ultrasound
-        case history
-    }
-
     init(
         from decoder: Decoder,
     ) throws {
@@ -131,6 +115,22 @@ extension ApplicationConfig {
             HistoryConfig.self,
             forKey: .history,
         ) ?? .default
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case isServiceAvailable
+        case appStoreId
+        case locale
+        case actualVersion
+        case contactEmail
+        case appleUpdateUrl
+        case legalDate
+        case privacyPolicyUrl
+        case termsAndConditionsUrl
+        case network
+        case entitlements
+        case ultrasound
+        case history
     }
 
     func encode(

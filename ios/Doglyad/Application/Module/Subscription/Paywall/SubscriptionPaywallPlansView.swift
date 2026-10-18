@@ -4,6 +4,7 @@ import SwiftUI
 struct SubscriptionPaywallPlansView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: SubscriptionPaywallViewModel
+
     var body: some View {
         let displayedState: any SubscriptionPaywallStateProtocol = switch viewModel.state {
         case let state as SubscriptionPaywallRestoringState: state.previousState
@@ -40,9 +41,7 @@ struct SubscriptionPaywallPlansView: DViewProtocol {
                     isProcessing,
                 )
             }
-        default: DUnexpectedStateView(
-                state: displayedState,
-            )
+        default: EmptyView()
         }
     }
 }
