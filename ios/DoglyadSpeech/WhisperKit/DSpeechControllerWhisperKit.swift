@@ -16,11 +16,11 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
     private var transcriptionTask: Task<DSpeechWhisperKitTranscription, Error>?
     private var session = DSpeechSessionGate()
 
-    @Published public private(set) var status: DSpeechRecordingStatus = .stopped
+    @Published public private(set) var recordingStatus: DSpeechRecordingStatus = .stopped
     @Published public private(set) var text: String?
     @Published public private(set) var audioMeter: Float = 0
     @Published public private(set) var lastTranscript: DSpeechTranscript?
-    @Published public private(set) var modelPreparation: DSpeechModelPreparation = .checking
+    @Published public private(set) var modelPreparationStatus: DSpeechModelPreparationStatus = .checking
 
     public init(
         locale: Locale,
@@ -33,7 +33,7 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
             localization: lexiconLocalization,
         )
         modelCancellable = modelStore.$state.sink { [weak self] state in
-            self?.modelPreparation = state
+            self?.modelPreparationStatus = state
         }
     }
 
@@ -42,17 +42,17 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
     }
 
     public func start() {
-        switch status {
+        switch recordingStatus {
         case .stopped:
             break
         case .preparing, .recording, .transcribing:
             return
         }
-        guard case .ready = modelPreparation else { return }
+        guard case .ready = modelPreparationStatus else { return }
         guard let sessionID = session.start() else { return }
 
         removeStaleRecordings()
-        status = .preparing
+        recordingStatus = .preparing
         text = nil
         lastTranscript = nil
         audioMeter = 0
@@ -87,7 +87,7 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         self.recorder = nil
         stopMeter()
         DSpeechAudioSession.deactivate()
-        status = .transcribing
+        recordingStatus = .transcribing
         defer {
             try? FileManager.default.removeItem(
                 at: audioURL,
@@ -139,7 +139,7 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         )
         text = correctedText.isEmpty ? nil : correctedText
         lastTranscript = transcript
-        status = .stopped
+        recordingStatus = .stopped
         return transcript
     }
 
@@ -159,7 +159,7 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
             self.audioURL = nil
         }
         audioMeter = 0
-        status = .stopped
+        recordingStatus = .stopped
         return nil
     }
 
@@ -189,7 +189,7 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
             throw DSpeechError.unavailable
         }
         self.recorder = recorder
-        status = .recording
+        recordingStatus = .recording
         meterTimer = Timer.scheduledTimer(
             withTimeInterval: 0.05,
             repeats: true,
@@ -272,6 +272,6 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
             engine: .whisperKit,
             completion: .failed,
         )
-        status = .stopped
+        recordingStatus = .stopped
     }
 }

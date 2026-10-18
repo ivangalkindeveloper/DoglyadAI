@@ -14,7 +14,7 @@ struct ScanFormView: DViewProtocol {
             spacing: .zero,
         ) {
             DTextField(
-                controller: viewModel.examinationNumberController,
+                inputTextController: viewModel.examinationNumberTextController,
                 focus: DTextFieldFocus(
                     value: .examinationNumber,
                     state: focus,
@@ -39,7 +39,7 @@ struct ScanFormView: DViewProtocol {
             )
 
             DTextField(
-                controller: viewModel.patientNameController,
+                inputTextController: viewModel.patientNameTextController,
                 focus: DTextFieldFocus(
                     value: .patientName,
                     state: focus,
@@ -103,7 +103,7 @@ struct ScanFormView: DViewProtocol {
                 )
 
             DTextField(
-                controller: viewModel.patientHeightCMController,
+                inputTextController: viewModel.patientHeightCMTextController,
                 focus: DTextFieldFocus(
                     value: .patientHeightCM,
                     state: focus,
@@ -128,7 +128,7 @@ struct ScanFormView: DViewProtocol {
             )
 
             DTextField(
-                controller: viewModel.patientWeightKGController,
+                inputTextController: viewModel.patientWeightKGTextController,
                 focus: DTextFieldFocus(
                     value: .patientWeightKG,
                     state: focus,
@@ -153,7 +153,7 @@ struct ScanFormView: DViewProtocol {
             )
 
             DTextField(
-                controller: viewModel.patientComplaintsController,
+                inputTextController: viewModel.patientComplaintsTextController,
                 focus: DTextFieldFocus(
                     value: .patientComplaints,
                     state: focus,
@@ -176,7 +176,7 @@ struct ScanFormView: DViewProtocol {
             )
 
             DTextField(
-                controller: viewModel.examinationDescriptionController,
+                inputTextController: viewModel.examinationDescriptionTextController,
                 focus: DTextFieldFocus(
                     value: .examinationDescription,
                     state: focus,

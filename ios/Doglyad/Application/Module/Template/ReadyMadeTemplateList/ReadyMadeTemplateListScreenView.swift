@@ -18,7 +18,7 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                 switch viewModel.state {
                 case _ as ReadyMadeTemplateListContentState:
                     DTextField(
-                        controller: viewModel.controller,
+                        inputTextController: viewModel.searchTextController,
                         focus: DTextFieldFocus(
                             value: .search,
                             state: $focus,

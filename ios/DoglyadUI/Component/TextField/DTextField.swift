@@ -3,7 +3,7 @@ import SwiftUI
 public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
-    @ObservedObject private var controller: DTextFieldController
+    @ObservedObject private var inputTextController: DTextFieldController
     private let focus: DTextFieldFocus<Focus>?
     private let title: LocalizedStringResource
     private let placeholder: LocalizedStringResource
@@ -21,7 +21,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
     }
 
     public init(
-        controller: DTextFieldController,
+        inputTextController: DTextFieldController,
         focus: DTextFieldFocus<Focus>? = nil,
         title: LocalizedStringResource,
         placeholder: LocalizedStringResource,
@@ -31,7 +31,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
     ) {
-        self.controller = controller
+        self.inputTextController = inputTextController
         self.focus = focus
         self.title = title
         self.placeholder = placeholder
@@ -41,12 +41,12 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         self.leading = leading()
         self.trailing = trailing()
         _inputText = State(
-            initialValue: controller.text,
+            initialValue: inputTextController.text,
         )
     }
 
     public init(
-        controller: DTextFieldController,
+        inputTextController: DTextFieldController,
         title: LocalizedStringResource,
         placeholder: LocalizedStringResource,
         mode: any DTextFieldModeProtocol = DTextFieldSingleLineMode(),
@@ -56,7 +56,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
     ) where Focus == Bool {
         self.init(
-            controller: controller,
+            inputTextController: inputTextController,
             focus: nil,
             title: title,
             placeholder: placeholder,
@@ -181,7 +181,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
                 )
             }
 
-            if let error = controller.errorText, !error.isEmpty {
+            if let error = inputTextController.errorText, !error.isEmpty {
                 Text(
                     error,
                 )
@@ -215,14 +215,14 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         .onChange(
             of: inputText,
         ) { _, proposedText in
-            controller.setText(
+            inputTextController.setText(
                 proposedText,
             )
-            guard inputText != controller.text else { return }
-            inputText = controller.text
+            guard inputText != inputTextController.text else { return }
+            inputText = inputTextController.text
         }
         .onChange(
-            of: controller.text,
+            of: inputTextController.text,
         ) { _, text in
             guard inputText != text else { return }
             inputText = text
@@ -233,40 +233,40 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         )
         .animation(
             theme.animation,
-            value: controller.isError,
+            value: inputTextController.isError,
         )
         .animation(
             theme.animation,
-            value: controller.errorText,
+            value: inputTextController.errorText,
         )
     }
 }
 
 private extension DTextField {
     var fillColor: Color {
-        if controller.isError || controller.errorText != nil { return color.dangerBackground }
+        if inputTextController.isError || inputTextController.errorText != nil { return color.dangerBackground }
         return color.grayscaleBackground
     }
 
     var titleColor: Color {
-        if controller.isError || controller.errorText != nil { return color.dangerDefault }
+        if inputTextController.isError || inputTextController.errorText != nil { return color.dangerDefault }
         return isFocused ? color.primaryDefault : color.grayscalePlacehold
     }
 
     var borderColor: Color {
-        if controller.isError || controller.errorText != nil { return color.dangerDefault }
+        if inputTextController.isError || inputTextController.errorText != nil { return color.dangerDefault }
         return isFocused ? color.primaryDefault : .clear
     }
 }
 
 #Preview {
     @Previewable let sampleText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-    @Previewable @State var controller = DTextFieldController()
+    @Previewable @State var inputTextController = DTextFieldController()
 
     VStack {
         Spacer()
         DTextField(
-            controller: controller,
+            inputTextController: inputTextController,
             title: "Some title",
             placeholder: "Some placeholder for filling...",
             mode: DTextFieldMultiLineMode(),
@@ -275,14 +275,14 @@ private extension DTextField {
         Button(
             "Show error",
         ) {
-            controller.showError(
+            inputTextController.showError(
                 text: "Some Error",
             )
         }
         Button(
             "Set sample text",
         ) {
-            controller.setText(
+            inputTextController.setText(
                 sampleText,
             )
         }

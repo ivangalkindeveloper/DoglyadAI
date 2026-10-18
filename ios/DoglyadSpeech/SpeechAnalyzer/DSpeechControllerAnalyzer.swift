@@ -59,7 +59,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     /// to it so that speech is visible on screen in real time.
     private var finalizedText = AttributedString()
 
-    @Published public var status: DSpeechRecordingStatus = .stopped
+    @Published public var recordingStatus: DSpeechRecordingStatus = .stopped
     @Published public var text: String?
     @Published public var audioMeter: Float = 0.0
     @Published public private(set) var lastTranscript: DSpeechTranscript?
@@ -89,7 +89,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     }
 
     public func start() {
-        switch status {
+        switch recordingStatus {
         case .stopped:
             break
         case .preparing, .recording, .transcribing:
@@ -97,7 +97,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         }
         guard let sessionID = session.start() else { return }
 
-        status = .preparing
+        recordingStatus = .preparing
         text = nil
         lastTranscript = nil
         audioMeter = 0.0
@@ -144,7 +144,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
             isTapInstalled = false
         }
         meter.reset()
-        status = .stopped
+        recordingStatus = .stopped
 
         startTask?.cancel()
         startTask = nil
@@ -281,7 +281,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         }
         meter.reset()
         audioMeter = 0.0
-        status = .stopped
+        recordingStatus = .stopped
         DSpeechAudioSession.deactivate()
 
         let rawText = text ?? String(
@@ -449,7 +449,7 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         audioEngine.prepare()
         try audioEngine.start()
 
-        status = .recording
+        recordingStatus = .recording
     }
 
     /// Prepares the input node and returns a format that is safe to install a tap on.

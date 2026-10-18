@@ -128,7 +128,7 @@ struct NeuralModelSettingsScreenView: DViewProtocol {
                         )
 
                         DTextField(
-                            controller: viewModel.temperatureController,
+                            inputTextController: viewModel.temperatureTextController,
                             focus: DTextFieldFocus(
                                 value: .temperature,
                                 state: $focus,
@@ -171,7 +171,7 @@ struct NeuralModelSettingsScreenView: DViewProtocol {
                         )
 
                         DTextField(
-                            controller: viewModel.maxTokensController,
+                            inputTextController: viewModel.maxTokensTextController,
                             focus: DTextFieldFocus(
                                 value: .length,
                                 state: $focus,

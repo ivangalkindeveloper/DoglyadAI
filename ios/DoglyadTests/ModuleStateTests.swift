@@ -529,12 +529,12 @@ struct ModuleStateTests {
             messager: DMessager(),
             onSaveTemplate: { _ in },
         )
-        let controller = model.nameController
+        let inputTextController = model.nameTextController
         var transitions = 0
         var changes = 0
         let stateObservation = model.$state.dropFirst().sink { _ in transitions += 1 }
         let changeObservation = model.objectWillChange.sink { changes += 1 }
-        controller.setText(
+        inputTextController.setText(
             "Entered name",
         )
         #expect(
@@ -550,7 +550,7 @@ struct ModuleStateTests {
             transitions == 1,
         )
         changes = 0
-        controller.setText(
+        inputTextController.setText(
             "Edited name",
         )
         #expect(
@@ -560,10 +560,10 @@ struct ModuleStateTests {
             transitions == 1,
         )
         #expect(
-            model.nameController === controller,
+            model.nameTextController === inputTextController,
         )
         #expect(
-            model.nameController.text == "Edited name",
+            model.nameTextController.text == "Edited name",
         )
         stateObservation.cancel()
         changeObservation.cancel()

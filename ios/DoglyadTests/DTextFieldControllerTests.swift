@@ -4,100 +4,100 @@ import Testing
 struct DTextFieldControllerTests {
     @Test
     func returnsNilForEmptyText() {
-        let controller = DTextFieldController()
+        let inputTextController = DTextFieldController()
 
         #expect(
-            controller.value == nil,
+            inputTextController.value == nil,
         )
     }
 
     @Test
     func returnsCurrentNonEmptyText() {
-        let controller = DTextFieldController(
+        let inputTextController = DTextFieldController(
             initialText: "Value",
         )
 
         #expect(
-            controller.value == "Value",
+            inputTextController.value == "Value",
         )
     }
 
     @Test
     func appliesFormattersToInitialAndUpdatedText() {
-        let controller = DTextFieldController(
+        let inputTextController = DTextFieldController(
             initialText: "12a",
             formatters: [DTextFieldIntegerFormatter()],
         )
 
         #expect(
-            controller.text == "12",
+            inputTextController.text == "12",
         )
 
-        controller.setText(
+        inputTextController.setText(
             "34b",
         )
 
         #expect(
-            controller.text == "34",
+            inputTextController.text == "34",
         )
     }
 
     @Test
     func revalidatesTextAfterFirstValidationAttempt() {
-        let controller = DTextFieldController(
+        let inputTextController = DTextFieldController(
             isRequired: true,
         )
 
         #expect(
-            !controller.validate(),
+            !inputTextController.validate(),
         )
         #expect(
-            controller.isError,
+            inputTextController.isError,
         )
         #expect(
-            controller.errorText == nil,
+            inputTextController.errorText == nil,
         )
 
-        controller.setText(
+        inputTextController.setText(
             "Value",
         )
 
         #expect(
-            !controller.isError,
+            !inputTextController.isError,
         )
         #expect(
-            controller.errorText == nil,
+            inputTextController.errorText == nil,
         )
 
-        controller.setText(
+        inputTextController.setText(
             "",
         )
 
         #expect(
-            controller.isError,
+            inputTextController.isError,
         )
         #expect(
-            controller.errorText == nil,
+            inputTextController.errorText == nil,
         )
     }
 
     @Test
     func clearResetsTextAndValidationState() {
-        let controller = DTextFieldController(
+        let inputTextController = DTextFieldController(
             isRequired: true,
         )
-        controller.validate()
+        inputTextController.validate()
 
-        controller.clear()
+        inputTextController.clear()
 
         #expect(
-            controller.value == nil,
+            inputTextController.value == nil,
         )
         #expect(
-            !controller.isError,
+            !inputTextController.isError,
         )
         #expect(
-            controller.errorText == nil,
+            inputTextController.errorText == nil,
         )
     }
 }

@@ -1,5 +1,5 @@
 @MainActor
-final class ApplicationRootInitializingState: ApplicationRootStateProtocol {
+final class ApplicationRootInitializingState: ApplicationRootStateProtocol, @MainActor Equatable {
     let id: ApplicationRootViewType
     let previousFailure: ApplicationRootFailedState?
 
@@ -8,5 +8,13 @@ final class ApplicationRootInitializingState: ApplicationRootStateProtocol {
     ) {
         self.previousFailure = previousFailure
         id = previousFailure?.id ?? .splash
+    }
+
+    static func == (
+        lhs: ApplicationRootInitializingState,
+        rhs: ApplicationRootInitializingState,
+    ) -> Bool {
+        lhs.id == rhs.id
+            && lhs.previousFailure == rhs.previousFailure
     }
 }

@@ -1,3 +1,3 @@
-enum L10NError: Error {
+enum L10NError: Error, Equatable {
     case missingKey(L10NKey)
 }

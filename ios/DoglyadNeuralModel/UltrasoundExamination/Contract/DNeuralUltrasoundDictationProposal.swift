@@ -1,6 +1,6 @@
 import Foundation
 
-public struct DNeuralUltrasoundDictationProposal: Sendable {
+public struct DNeuralUltrasoundDictationProposal: Equatable, Sendable {
     public let source: DNeuralDictationProposalSource
     public let proposals: [DNeuralUltrasoundVoiceFieldProposal]
     public let unmappedFindings: [String]

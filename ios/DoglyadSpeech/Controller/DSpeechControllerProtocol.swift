@@ -3,7 +3,7 @@ import Foundation
 
 /// A speech-to-text controller.
 ///
-/// An observable object: the scanning screen subscribes to `status`, `text` and
+/// An observable object: the scanning screen subscribes to `recordingStatus`, `text` and
 /// `audioMeter` to reflect the progress of dictation. The concrete implementation is
 /// chosen by ``DSpeechFactory``.
 ///
@@ -20,11 +20,11 @@ public protocol DSpeechControllerProtocol: ObservableObject
         lexiconLocalization: DSpeechLexiconLocalization,
     )
 
-    var status: DSpeechRecordingStatus { get }
+    var recordingStatus: DSpeechRecordingStatus { get }
     var text: String? { get }
     var audioMeter: Float { get }
     var lastTranscript: DSpeechTranscript? { get }
-    var modelPreparation: DSpeechModelPreparation { get }
+    var modelPreparationStatus: DSpeechModelPreparationStatus { get }
 
     func prepareModel()
 
@@ -44,7 +44,7 @@ public protocol DSpeechControllerProtocol: ObservableObject
 }
 
 public extension DSpeechControllerProtocol {
-    var modelPreparation: DSpeechModelPreparation { .ready }
+    var modelPreparationStatus: DSpeechModelPreparationStatus { .ready }
 
     func prepareModel() {}
 }

@@ -1,5 +1,5 @@
 @MainActor
-final class ApplicationRootReadyState: ApplicationRootStateProtocol {
+final class ApplicationRootReadyState: ApplicationRootStateProtocol, @MainActor Equatable {
     let id = ApplicationRootViewType.main
     let container: DependencyContainer
 
@@ -7,5 +7,13 @@ final class ApplicationRootReadyState: ApplicationRootStateProtocol {
         container: DependencyContainer,
     ) {
         self.container = container
+    }
+
+    static func == (
+        lhs: ApplicationRootReadyState,
+        rhs: ApplicationRootReadyState,
+    ) -> Bool {
+        lhs.id == rhs.id
+            && lhs.container === rhs.container
     }
 }

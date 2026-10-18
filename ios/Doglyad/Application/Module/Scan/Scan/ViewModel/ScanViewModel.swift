@@ -18,11 +18,11 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     @Published var focus: ScanFocus? = nil
 
-    @NestedObservableObject var examinationNumberController = DTextFieldController(
+    @NestedObservableObject var examinationNumberTextController = DTextFieldController(
         isRequired: true,
     )
 
-    @NestedObservableObject var patientNameController = DTextFieldController(
+    @NestedObservableObject var patientNameTextController = DTextFieldController(
         isRequired: true,
     )
 
@@ -30,13 +30,13 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     @Published var patientDateOfBirth: Date = .init()
 
-    @NestedObservableObject var patientHeightCMController: DTextFieldController
+    @NestedObservableObject var patientHeightCMTextController: DTextFieldController
 
-    @NestedObservableObject var patientWeightKGController: DTextFieldController
+    @NestedObservableObject var patientWeightKGTextController: DTextFieldController
 
-    @NestedObservableObject var patientComplaintsController = DTextFieldController()
+    @NestedObservableObject var patientComplaintsTextController = DTextFieldController()
 
-    @NestedObservableObject var examinationDescriptionController = DTextFieldController(
+    @NestedObservableObject var examinationDescriptionTextController = DTextFieldController(
         isRequired: true,
     )
 
@@ -93,7 +93,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         config = container.applicationConfig.ultrasound
 
         usExaminationType = container.usExaminationTypeDefault
-        _patientHeightCMController = NestedObservableObject(
+        _patientHeightCMTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldDecimalFormatter(),
@@ -110,7 +110,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                 ],
             ),
         )
-        _patientWeightKGController = NestedObservableObject(
+        _patientWeightKGTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldDecimalFormatter(),
@@ -141,12 +141,12 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                 .scan,
             ),
         )
-        _ = examinationNumberController
-        _ = patientNameController
-        _ = patientHeightCMController
-        _ = patientWeightKGController
-        _ = patientComplaintsController
-        _ = examinationDescriptionController
+        _ = examinationNumberTextController
+        _ = patientNameTextController
+        _ = patientHeightCMTextController
+        _ = patientWeightKGTextController
+        _ = patientComplaintsTextController
+        _ = examinationDescriptionTextController
 
         examinationObservation = observeExaminationChanges { [weak self] in
             guard let self else { return }
@@ -174,23 +174,23 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         [
             DTextFieldFocusValidationItem(
                 focus: .examinationNumber,
-                controller: examinationNumberController,
+                inputTextController: examinationNumberTextController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .patientName,
-                controller: patientNameController,
+                inputTextController: patientNameTextController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .patientHeightCM,
-                controller: patientHeightCMController,
+                inputTextController: patientHeightCMTextController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .patientWeightKG,
-                controller: patientWeightKGController,
+                inputTextController: patientWeightKGTextController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .examinationDescription,
-                controller: examinationDescriptionController,
+                inputTextController: examinationDescriptionTextController,
             ),
         ]
     }
@@ -636,12 +636,12 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         analytics.buttonTapped(
             .scanFill,
         )
-        patientComplaintsController.setText(
+        patientComplaintsTextController.setText(
             container.mockFactory.fillPatientComplaints(
                 l10n: container.l10n,
             ),
         )
-        examinationDescriptionController.setText(
+        examinationDescriptionTextController.setText(
             container.mockFactory.fillExaminationDescription(
                 l10n: container.l10n,
             ),
@@ -710,24 +710,24 @@ extension ScanViewModel {
                 photoMaxCount,
             ),
         )
-        examinationNumberController.setText(
+        examinationNumberTextController.setText(
             draftForm.examinationNumber,
         )
-        patientNameController.setText(
+        patientNameTextController.setText(
             draftForm.patientName,
         )
         patientGender = draftForm.patientGender
         patientDateOfBirth = draftForm.patientDateOfBirth
-        patientHeightCMController.setText(
+        patientHeightCMTextController.setText(
             draftForm.patientHeightCM,
         )
-        patientWeightKGController.setText(
+        patientWeightKGTextController.setText(
             draftForm.patientWeightKG,
         )
-        patientComplaintsController.setText(
+        patientComplaintsTextController.setText(
             draftForm.patientComplaints,
         )
-        examinationDescriptionController.setText(
+        examinationDescriptionTextController.setText(
             draftForm.examinationDescription,
         )
     }
@@ -738,14 +738,14 @@ extension ScanViewModel {
 
     func makeDraftSnapshot() -> USExaminationDraftForm {
         USExaminationDraftForm(
-            examinationNumber: examinationNumberController.text,
-            patientName: patientNameController.text,
+            examinationNumber: examinationNumberTextController.text,
+            patientName: patientNameTextController.text,
             patientGender: patientGender,
             patientDateOfBirth: patientDateOfBirth,
-            patientHeightCM: patientHeightCMController.text,
-            patientWeightKG: patientWeightKGController.text,
-            patientComplaints: patientComplaintsController.text,
-            examinationDescription: examinationDescriptionController.text,
+            patientHeightCM: patientHeightCMTextController.text,
+            patientWeightKG: patientWeightKGTextController.text,
+            patientComplaints: patientComplaintsTextController.text,
+            examinationDescription: examinationDescriptionTextController.text,
         )
     }
 
@@ -753,8 +753,8 @@ extension ScanViewModel {
         _ id: DNeuralUltrasoundVoiceFieldId,
     ) -> String {
         switch id {
-        case .examinationNumber: examinationNumberController.text
-        case .patientName: patientNameController.text
+        case .examinationNumber: examinationNumberTextController.text
+        case .patientName: patientNameTextController.text
         case .patientGender:
             switch patientGender {
             case .male: String(
@@ -776,10 +776,10 @@ extension ScanViewModel {
                     l10n.locale,
                 ),
             )
-        case .patientHeightCM: patientHeightCMController.text
-        case .patientWeightKG: patientWeightKGController.text
-        case .patientComplaints: patientComplaintsController.text
-        case .examinationDescription: examinationDescriptionController.text
+        case .patientHeightCM: patientHeightCMTextController.text
+        case .patientWeightKG: patientWeightKGTextController.text
+        case .patientComplaints: patientComplaintsTextController.text
+        case .examinationDescription: examinationDescriptionTextController.text
         }
     }
 
@@ -807,11 +807,11 @@ extension ScanViewModel {
 
     func draftChangePublishers() -> [AnyPublisher<Void, Never>] {
         [
-            examinationNumberController.$text
+            examinationNumberTextController.$text
                 .dropFirst()
                 .map { _ in () }
                 .eraseToAnyPublisher(),
-            patientNameController.$text
+            patientNameTextController.$text
                 .dropFirst()
                 .map { _ in () }
                 .eraseToAnyPublisher(),
@@ -823,19 +823,19 @@ extension ScanViewModel {
                 .dropFirst()
                 .map { _ in () }
                 .eraseToAnyPublisher(),
-            patientHeightCMController.$text
+            patientHeightCMTextController.$text
                 .dropFirst()
                 .map { _ in () }
                 .eraseToAnyPublisher(),
-            patientWeightKGController.$text
+            patientWeightKGTextController.$text
                 .dropFirst()
                 .map { _ in () }
                 .eraseToAnyPublisher(),
-            patientComplaintsController.$text
+            patientComplaintsTextController.$text
                 .dropFirst()
                 .map { _ in () }
                 .eraseToAnyPublisher(),
-            examinationDescriptionController.$text
+            examinationDescriptionTextController.$text
                 .dropFirst()
                 .map { _ in () }
                 .eraseToAnyPublisher(),
@@ -1069,9 +1069,9 @@ private extension ScanViewModel {
         default: break
         }
 
-        guard let number = examinationNumberController.value,
-              let patientName = patientNameController.value,
-              let description = examinationDescriptionController.value else { return }
+        guard let number = examinationNumberTextController.value,
+              let patientName = patientNameTextController.value,
+              let description = examinationDescriptionTextController.value else { return }
         let snapshot = makeDraftSnapshot()
         let examinationData = USExaminationData(
             usExaminationTypeId: usExaminationType.id,
@@ -1080,13 +1080,13 @@ private extension ScanViewModel {
             patientName: patientName,
             patientGender: patientGender,
             patientDateOfBirth: patientDateOfBirth,
-            patientHeight: patientHeightCMController.value.flatMap(
+            patientHeight: patientHeightCMTextController.value.flatMap(
                 Double.init,
             ),
-            patientWeight: patientWeightKGController.value.flatMap(
+            patientWeight: patientWeightKGTextController.value.flatMap(
                 Double.init,
             ),
-            patientComplaints: patientComplaintsController.value,
+            patientComplaints: patientComplaintsTextController.value,
             examinationDescription: description,
         )
         let settings = neuralModelSettings
@@ -1213,7 +1213,7 @@ private extension ScanViewModel {
         reportsCount: Int,
     ) {
         photos.removeAll()
-        examinationNumberController.setText(
+        examinationNumberTextController.setText(
             String(
                 localized: container.l10n.resource(
                     .scanExaminationDefaultNumberLabel,
@@ -1223,7 +1223,7 @@ private extension ScanViewModel {
                 ),
             ),
         )
-        patientNameController.setText(
+        patientNameTextController.setText(
             String(
                 localized: container.l10n.resource(
                     .scanPatientDefaultNameLabel,
@@ -1235,21 +1235,21 @@ private extension ScanViewModel {
         )
         patientGender = .male
         patientDateOfBirth = defaultPatientDateOfBirth
-        patientHeightCMController.clear()
-        patientWeightKGController.clear()
-        patientComplaintsController.clear()
-        examinationDescriptionController.clear()
+        patientHeightCMTextController.clear()
+        patientWeightKGTextController.clear()
+        patientComplaintsTextController.clear()
+        examinationDescriptionTextController.clear()
     }
 
     func clearForm() {
         photos.removeAll()
-        examinationNumberController.clear()
-        patientNameController.clear()
+        examinationNumberTextController.clear()
+        patientNameTextController.clear()
         patientGender = .male
         patientDateOfBirth = defaultPatientDateOfBirth
-        patientHeightCMController.clear()
-        patientWeightKGController.clear()
-        patientComplaintsController.clear()
-        examinationDescriptionController.clear()
+        patientHeightCMTextController.clear()
+        patientWeightKGTextController.clear()
+        patientComplaintsTextController.clear()
+        examinationDescriptionTextController.clear()
     }
 }

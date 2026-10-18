@@ -4,9 +4,9 @@ import Foundation
 
 extension AnalyticsParameters {
     static func speechToggle(
-        status: DSpeechRecordingStatus,
+        recordingStatus: DSpeechRecordingStatus,
     ) -> Self {
-        let source = switch status {
+        let source = switch recordingStatus {
         case .preparing: "preparing"
         case .recording: "recording"
         case .transcribing: "transcribing"

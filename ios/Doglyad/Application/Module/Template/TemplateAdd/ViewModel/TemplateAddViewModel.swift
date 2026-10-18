@@ -11,11 +11,11 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
 
     @Published var usExaminationType: USExaminationType
 
-    @NestedObservableObject var nameController = DTextFieldController(
+    @NestedObservableObject var nameTextController = DTextFieldController(
         isRequired: true,
     )
 
-    @NestedObservableObject var templateController = DTextFieldController(
+    @NestedObservableObject var templateTextController = DTextFieldController(
         isRequired: true,
     )
 
@@ -53,19 +53,19 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
                 .templateAdd,
             ),
         )
-        _ = nameController
-        _ = templateController
+        _ = nameTextController
+        _ = templateTextController
     }
 
     var focusList: [DTextFieldFocusValidationItem<TemplateAddFocus>] {
         [
             DTextFieldFocusValidationItem(
                 focus: .name,
-                controller: nameController,
+                inputTextController: nameTextController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .content,
-                controller: templateController,
+                inputTextController: templateTextController,
             ),
         ]
     }
@@ -209,8 +209,8 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
             return
         }
 
-        guard let name = nameController.value,
-              let content = templateController.value
+        guard let name = nameTextController.value,
+              let content = templateTextController.value
         else {
             return
         }
@@ -269,12 +269,12 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
         ) else { return }
 
         usExaminationType = examinationType
-        nameController.setText(
+        nameTextController.setText(
             String(
                 localized: template.localizedTitle,
             ),
         )
-        templateController.setText(
+        templateTextController.setText(
             template.content,
         )
     }

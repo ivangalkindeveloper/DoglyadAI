@@ -1,4 +1,4 @@
-@frozen public enum DSpeechModelPreparation: Equatable {
+@frozen public enum DSpeechModelPreparationStatus: Equatable {
     case checking
     case downloading(progress: Double?)
     case loading

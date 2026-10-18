@@ -11,7 +11,7 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
     let bottomHeight: CGFloat
 
     var body: some View {
-        let preparation: DSpeechModelPreparation = switch viewModel.state {
+        let preparation: DSpeechModelPreparationStatus = switch viewModel.state {
         case let state as ScanSpeechPreparingModelState: state.preparation
         case _ as ScanSpeechModelPreparationFailedState: .failed
         default: .ready

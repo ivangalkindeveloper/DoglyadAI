@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-final class ReportDetailSaveFailedState: ReportDetailStateProtocol {
+final class ReportDetailSaveFailedState: ReportDetailStateProtocol, @MainActor Equatable {
     let candidate: USExaminationReport
     let error: Error
 
@@ -11,5 +11,15 @@ final class ReportDetailSaveFailedState: ReportDetailStateProtocol {
     ) {
         self.candidate = candidate
         self.error = error
+    }
+
+    static func == (
+        lhs: ReportDetailSaveFailedState,
+        rhs: ReportDetailSaveFailedState,
+    ) -> Bool {
+        lhs === rhs || lhs.candidate == rhs.candidate
+            && lhs.error.isEqual(
+                to: rhs.error,
+            )
     }
 }

@@ -2,19 +2,20 @@ import Combine
 import DoglyadNeuralModel
 import DoglyadSpeech
 import DoglyadUI
+import Foundation
 import NestedObservableObject
 import SwiftUI
 
 @MainActor
 final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
-    @NestedObservableObject var transcriptController = DTextFieldController()
+    @NestedObservableObject var transcriptTextController = DTextFieldController()
     private(set) var originalTranscript: DSpeechTranscript?
-    let controller: any DSpeechControllerProtocol
+    let speechController: any DSpeechControllerProtocol
     @Published var automaticFieldIds = Set<DNeuralUltrasoundVoiceFieldId>()
     private let messager: DMessager
     private let arguments: ScanSpeechArguments
     private var speechCancellable: AnyCancellable?
-    private var presentationID: UUID? = UUID()
+    private var isPresentationActive = true
 
     init(
         container: DependencyContainer,
@@ -30,12 +31,11 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         self.messager = messager
         self.arguments = arguments
         let contextualStrings = arguments.examinationType.contextualStrings
-        let speechController = DSpeechFactory.make(
+        speechController = DSpeechFactory.make(
             locale: container.language.currentLocale,
             contextualStrings: contextualStrings,
             lexiconLocalization: container.l10n.voice.speech,
         )
-        controller = speechController
 
         super.init(
             state: ScanSpeechPreparingModelState(
@@ -57,10 +57,19 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
 
     var textForParsing: String? {
         guard let originalTranscript else { return nil }
-        return ScanSpeechReviewPolicy.textForParsing(
-            transcript: originalTranscript,
-            visibleText: transcriptController.text,
+        let visibleText = transcriptTextController.text
+        // Trimming only controls availability; preserve the editor text for parsing.
+        let trimmed = visibleText.trimmingCharacters(
+            in: .whitespacesAndNewlines,
         )
+        guard !trimmed.isEmpty else { return nil }
+
+        switch originalTranscript.completion {
+        case .finished, .timedOut, .interrupted, .failed:
+            return visibleText
+        case .cancelled:
+            return nil
+        }
     }
 
     var transcriptStatusDescription: LocalizedStringResource {
@@ -95,14 +104,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     override func onInit() {
-        controller.prepareModel()
+        speechController.prepareModel()
         refreshSpeechState()
     }
 
     func onDisappear() {
-        presentationID = nil
+        isPresentationActive = false
         cancelLastTask()
-        controller.cancel()
+        speechController.cancel()
     }
 
     func onTapBack() {
@@ -112,34 +121,34 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         if automaticFieldIds.isEmpty { analytics.actionCompleted(
             .voiceFlowCancelled,
         ) }
-        onDisappear()
+        isPresentationActive = false
         coordinator.dismissSheet()
     }
 
     func onTapRetryModelPreparation() {
-        guard presentationID != nil else { return }
-        controller.prepareModel()
+        guard isPresentationActive else { return }
+        speechController.prepareModel()
         refreshSpeechState()
     }
 
     func onTapSpeech() {
-        guard presentationID != nil else { return }
+        guard isPresentationActive else { return }
         switch state {
         case _ as ScanSpeechReadyState:
             analytics.buttonTapped(
                 .speechToggle,
                 parameters: .speechToggle(
-                    status: controller.status,
+                    recordingStatus: speechController.recordingStatus,
                 ),
             )
-            controller.start()
+            speechController.start()
             container.examinationNeuralModelFactory.prewarm()
             refreshSpeechState()
         case _ as ScanSpeechRecordingState:
             analytics.buttonTapped(
                 .speechToggle,
                 parameters: .speechToggle(
-                    status: controller.status,
+                    recordingStatus: speechController.recordingStatus,
                 ),
             )
             stopSpeech()
@@ -148,14 +157,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     func onTapRecordAgain() {
-        guard presentationID != nil else { return }
+        guard isPresentationActive else { return }
         switch state {
-        case _ as ScanSpeechTranscriptReviewState: break
+        case _ as ScanSpeechReviewTranscriptState: break
         default: return
         }
 
-        controller.start()
-        switch controller.status {
+        speechController.start()
+        switch speechController.recordingStatus {
         case .preparing, .recording, .transcribing:
             emit(
                 ScanSpeechReadyState(),
@@ -167,9 +176,9 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     func onTapContinue() {
-        guard presentationID != nil else { return }
+        guard isPresentationActive else { return }
         switch state {
-        case _ as ScanSpeechTranscriptReviewState:
+        case _ as ScanSpeechReviewTranscriptState:
             guard let speech = textForParsing, let originalTranscript else { return }
             if speech != originalTranscript.correctedText { analytics.actionCompleted(
                 .voiceTranscriptEdited,
@@ -190,7 +199,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     func onTapProposal(
         _ id: DNeuralUltrasoundVoiceFieldId,
     ) {
-        guard presentationID != nil else { return }
+        guard isPresentationActive else { return }
         switch state {
         case let state as ScanSpeechReviewProposalState:
             emit(
@@ -207,16 +216,16 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     func onTapBackToTranscript() {
-        guard presentationID != nil else { return }
+        guard isPresentationActive else { return }
         switch state {
         case _ as ScanSpeechReviewProposalState:
-            showReview()
+            showTranscriptReview()
         default: break
         }
     }
 
     func onTapApplySelected() {
-        guard presentationID != nil else { return }
+        guard isPresentationActive else { return }
         switch state {
         case let state as ScanSpeechReviewProposalState:
             guard !state.selectedFieldIds.isEmpty else { return }
@@ -237,7 +246,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                     source: .reviewed,
                 ),
             )
-            onDisappear()
+            isPresentationActive = false
             coordinator.dismissSheet()
         default: break
         }
@@ -357,33 +366,33 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     private func observeSpeechController() {
-        speechCancellable = controller.objectWillChange.sink { [weak self] _ in
+        speechCancellable = speechController.objectWillChange.sink { [weak self] _ in
             Task { @MainActor [weak self] in self?.refreshSpeechState() }
         }
     }
 
     private func refreshSpeechState() {
-        guard presentationID != nil else { return }
+        guard isPresentationActive else { return }
         switch state {
-        case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechAutomaticParsingState, _ as ScanSpeechReviewProposalState: return
+        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechAutomaticParsingState, _ as ScanSpeechReviewProposalState: return
         default: break
         }
 
         let next: any ScanSpeechStateProtocol
-        switch controller.modelPreparation {
+        switch speechController.modelPreparationStatus {
         case .checking, .downloading, .loading:
             next = ScanSpeechPreparingModelState(
-                preparation: controller.modelPreparation,
+                preparation: speechController.modelPreparationStatus,
             )
         case .failed:
             next = ScanSpeechModelPreparationFailedState()
         case .ready:
-            switch controller.status {
+            switch speechController.recordingStatus {
             case .preparing: next = ScanSpeechPreparingRecordingState()
             case .recording: next = ScanSpeechRecordingState()
             case .transcribing: next = ScanSpeechTranscribingState()
             case .stopped:
-                if let transcript = controller.lastTranscript { processTranscript(
+                if let transcript = speechController.lastTranscript { processTranscript(
                     transcript,
                 )
                 return
@@ -391,36 +400,28 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 next = ScanSpeechReadyState()
             }
         }
-        // Audio meter and interim text changes already flow through the self.
-        switch (state, next) {
-        case (_ as ScanSpeechReadyState, _ as ScanSpeechReadyState),
-             (_ as ScanSpeechRecordingState, _ as ScanSpeechRecordingState),
-             (_ as ScanSpeechPreparingRecordingState, _ as ScanSpeechPreparingRecordingState),
-             (_ as ScanSpeechTranscribingState, _ as ScanSpeechTranscribingState),
-             (_ as ScanSpeechModelPreparationFailedState, _ as ScanSpeechModelPreparationFailedState): return
-        default: emit(
-                next,
-            )
-        }
+        emit(
+            next,
+        )
     }
 
     private func stopSpeech() {
-        let controller = controller
-        let id = presentationID
+        let speechController = speechController
         emit(
             ScanSpeechTranscribingState(),
         )
         Task { [weak self] in
-            let transcript = await controller.stop()
-            guard let self, let id, presentationID == id else { return }
+            let transcript = await speechController.stop()
+            guard let self, isPresentationActive else { return }
             switch state {
-            case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechAutomaticParsingState, _ as ScanSpeechReviewProposalState: return
+            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechAutomaticParsingState, _ as ScanSpeechReviewProposalState: return
             default: break
             }
-            guard let transcript else { emit(
-                ScanSpeechReadyState(),
-            )
-            return
+            guard let transcript else {
+                emit(
+                    ScanSpeechReadyState(),
+                )
+                return
             }
             processTranscript(
                 transcript,
@@ -432,10 +433,11 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         _ original: DSpeechTranscript,
     ) {
         originalTranscript = original
-        transcriptController.setText(
+        transcriptTextController.setText(
             original.correctedText,
         )
-        guard original.isReadyForParsing else { showReview()
+        guard original.isReadyForParsing else {
+            showTranscriptReview()
             return
         }
         let parsing = ScanSpeechAutomaticParsingState(
@@ -449,9 +451,9 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         )
     }
 
-    private func showReview() {
+    private func showTranscriptReview() {
         emit(
-            ScanSpeechTranscriptReviewState(),
+            ScanSpeechReviewTranscriptState(),
         )
         analytics.actionCompleted(
             .voiceDictationReviewed,
@@ -475,18 +477,13 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             localization: l10n.voice.dictation,
         )
         let started = Date()
-        let id = presentationID
         handle {
             let model = try factory.model()
             return try await model.parseProposals(
                 request: request,
             )
         } onMainSuccess: { proposal in
-            guard let id, self.presentationID == id, ObjectIdentifier(
-                self.state,
-            ) == ObjectIdentifier(
-                parsing,
-            ) else { return }
+            guard self.isPresentationActive, self.state === parsing else { return }
             let plan = ScanSpeechConfidencePolicy.plan(
                 proposal: proposal,
                 transcript: originalTranscript,
@@ -499,7 +496,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 guard self.arguments.onConfirm?(
                     plan.automatic,
                 ) == true else {
-                    self.showReview()
+                    self.showTranscriptReview()
                     self.messager.showUnknownError(
                         l10n: self.l10n,
                     )
@@ -525,15 +522,16 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                     startedAt: started,
                 ),
             )
-            if plan.uncertain.isEmpty, proposal.rejectedFieldIds.isEmpty, proposal.unmappedFindings.isEmpty, !plan.automatic.isEmpty {
-                self.onDisappear()
+            switch plan.decision {
+            case .complete:
+                self.isPresentationActive = false
                 self.coordinator.dismissSheet()
-            } else if proposal.proposals.isEmpty, proposal.rejectedFieldIds.isEmpty, proposal.unmappedFindings.isEmpty {
-                self.showReview()
-            } else {
+            case .reviewTranscript:
+                self.showTranscriptReview()
+            case .reviewProposals:
                 self.emit(
                     ScanSpeechReviewProposalState(
-                        proposal: proposal,
+                        proposal: plan.proposal,
                         reviewProposals: plan.uncertain,
                     ),
                 )
@@ -541,31 +539,23 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         } onMainApiError: { error in self.onParsingFailed(
             error,
             parsing: parsing,
-            presentationID: id,
         ) }
         onMainConnectionError: { error in self.onParsingFailed(
             error,
             parsing: parsing,
-            presentationID: id,
         ) }
         onMainUnknownError: { error in self.onParsingFailed(
             error,
             parsing: parsing,
-            presentationID: id,
         ) }
     }
 
     private func onParsingFailed(
         _: Error,
         parsing: any ScanSpeechParsingStateProtocol,
-        presentationID id: UUID?,
     ) {
-        guard let id, presentationID == id, ObjectIdentifier(
-            state,
-        ) == ObjectIdentifier(
-            parsing,
-        ) else { return }
-        showReview()
+        guard isPresentationActive, state === parsing else { return }
+        showTranscriptReview()
         messager.showUnknownError(
             l10n: l10n,
         )

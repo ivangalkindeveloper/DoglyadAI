@@ -1,6 +1,6 @@
 import Foundation
 
-enum InitializationError: Error {
+enum InitializationError: Error, Equatable {
     case noInternetConnection
     case serviceUnavailable(email: String)
     case newVersion(appleUpdateUrl: URL, appStoreId: String)

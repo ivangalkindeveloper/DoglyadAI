@@ -296,7 +296,7 @@ struct DraftTests {
 
     @Test @MainActor
     func autosaverObservesFormattedTextFieldControllerChanges() async throws {
-        let controller = DTextFieldController(
+        let inputTextController = DTextFieldController(
             initialText: "170",
             formatters: [DTextFieldDecimalFormatter()],
         )
@@ -309,12 +309,12 @@ struct DraftTests {
 
         autosaver.start(
             publishers: [
-                controller.$text
+                inputTextController.$text
                     .dropFirst()
                     .map { _ in () }
                     .eraseToAnyPublisher(),
             ],
-            makeDraft: { controller.text },
+            makeDraft: { inputTextController.text },
             saveDraft: { draft in
                 savedDrafts.append(
                     draft,
@@ -325,7 +325,7 @@ struct DraftTests {
             ) },
         )
 
-        controller.setText(
+        inputTextController.setText(
             "185",
         )
         try await Task.sleep(

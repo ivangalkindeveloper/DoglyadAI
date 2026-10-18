@@ -57,7 +57,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     /// Waiting for the final result after `stop()`.
     private var finalizationContinuation: CheckedContinuation<String, Never>?
 
-    @Published public var status: DSpeechRecordingStatus = .stopped
+    @Published public var recordingStatus: DSpeechRecordingStatus = .stopped
     @Published public var text: String?
     @Published public var audioMeter: Float = 0.0
     @Published public private(set) var lastTranscript: DSpeechTranscript?
@@ -79,7 +79,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     }
 
     public func start() {
-        switch status {
+        switch recordingStatus {
         case .stopped:
             break
         case .preparing, .recording, .transcribing:
@@ -103,7 +103,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         }
         guard let sessionID = session.start() else { return }
 
-        status = .preparing
+        recordingStatus = .preparing
         text = nil
         lastTranscript = nil
         finalizedText = ""
@@ -151,7 +151,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
             audioEngine.prepare()
             try audioEngine.start()
 
-            status = .recording
+            recordingStatus = .recording
         } catch {
             session.cancel()
             lastTranscript = DSpeechTranscript(
@@ -232,7 +232,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         }
         relay.detach()
         meter.reset()
-        status = .stopped
+        recordingStatus = .stopped
 
         let result = await finalize()
         guard session.finish(
@@ -361,7 +361,7 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         finalizationTimeoutTask = nil
         relay.reset()
         audioMeter = 0.0
-        status = .stopped
+        recordingStatus = .stopped
         DSpeechAudioSession.deactivate()
     }
 

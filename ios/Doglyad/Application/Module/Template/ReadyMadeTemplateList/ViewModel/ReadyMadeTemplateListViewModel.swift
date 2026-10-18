@@ -10,7 +10,7 @@ import SwiftUI
 final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTemplateListStateProtocol> {
     @Published var focus: ReadyMadeTemplateListFocus?
 
-    @NestedObservableObject var controller = DTextFieldController()
+    @NestedObservableObject var searchTextController = DTextFieldController()
 
     private let arguments: ReadyMadeTemplateListArguments
 
@@ -42,7 +42,7 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
     }
 
     var query: String? {
-        guard let value = controller.value?
+        guard let value = searchTextController.value?
             .trimmingCharacters(
                 in: .whitespacesAndNewlines,
             ),

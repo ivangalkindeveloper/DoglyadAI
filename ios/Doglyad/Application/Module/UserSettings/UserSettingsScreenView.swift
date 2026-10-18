@@ -62,7 +62,7 @@ struct UserSettingsScreenView: DViewProtocol {
                         spacing: .zero,
                     ) {
                         DTextField(
-                            controller: viewModel.emailController,
+                            inputTextController: viewModel.emailTextController,
                             focus: DTextFieldFocus(
                                 value: .email,
                                 state: $focus,

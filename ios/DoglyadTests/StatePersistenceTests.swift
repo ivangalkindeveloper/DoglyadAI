@@ -38,19 +38,19 @@ struct StatePersistenceTests {
             onNeuralModelSelected: { _ in },
         )
         let form = model
-        let examinationController = model.examinationDescriptionController
-        form.examinationNumberController.setText(
+        let examinationTextController = model.examinationDescriptionTextController
+        form.examinationNumberTextController.setText(
             "12",
         )
-        form.patientNameController.setText(
+        form.patientNameTextController.setText(
             "Patient",
         )
-        form.examinationDescriptionController.setText(
+        form.examinationDescriptionTextController.setText(
             "Original examination",
         )
         let snapshot = model.makeDraftSnapshot()
-        let patientNameController = model.patientNameController
-        patientNameController.setText(
+        let patientNameTextController = model.patientNameTextController
+        patientNameTextController.setText(
             "Changed name",
         )
         model.applyDraft(
@@ -63,7 +63,7 @@ struct StatePersistenceTests {
             model.makeDraftSnapshot() == snapshot,
         )
         #expect(
-            model.patientNameController === patientNameController,
+            model.patientNameTextController === patientNameTextController,
         )
         let report = USExaminationReport(
             date: Date(),
@@ -110,14 +110,14 @@ struct StatePersistenceTests {
                 state.snapshot == snapshot,
             )
             #expect(
-                model.examinationDescriptionController === examinationController,
+                model.examinationDescriptionTextController === examinationTextController,
             )
         default: Issue.record(
                 "A failed save must retain the generated report",
             )
         }
         #expect(
-            form.examinationDescriptionController.text == "Original examination",
+            form.examinationDescriptionTextController.text == "Original examination",
         )
         #expect(
             drafts.clearCount == 0,
@@ -156,7 +156,7 @@ struct StatePersistenceTests {
             requestCountUpdates == 1,
         )
         #expect(
-            form.examinationDescriptionController.text.isEmpty,
+            form.examinationDescriptionTextController.text.isEmpty,
         )
         #expect(
             router.sheet?.type == .reportReceived,
@@ -195,8 +195,8 @@ struct StatePersistenceTests {
             ) },
         )
         let form = model
-        let emailController = model.emailController
-        form.emailController.setText(
+        let emailTextController = model.emailTextController
+        form.emailTextController.setText(
             "doctor@example.com",
         )
         model.togglePhotoRemarks()
@@ -205,10 +205,10 @@ struct StatePersistenceTests {
         switch model.state {
         case _ as UserSettingsFailedState:
             #expect(
-                model.emailController === emailController,
+                model.emailTextController === emailTextController,
             )
             #expect(
-                model.emailController.text == "doctor@example.com",
+                model.emailTextController.text == "doctor@example.com",
             )
             #expect(
                 model.isPhotoRemarks,

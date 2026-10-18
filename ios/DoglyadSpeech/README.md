@@ -22,12 +22,14 @@
 
 `DSpeechFactory` всегда создаёт `DSpeechControllerWhisperKit`. SpeechAnalyzer и SFSpeechRecognizer сохранены для сравнений, автоматически вместо Whisper не выбираются.
 
+Контроллер публикует два отдельных статуса: `modelPreparationStatus: DSpeechModelPreparationStatus` описывает подготовку модели, а `recordingStatus: DSpeechRecordingStatus` — запись и распознавание речи. Подготовка запускается через `prepareModel()`.
+
 ```mermaid
 flowchart TD
     Input["ScanSpeechViewModel<br/>locale = ru<br/>contextualStrings = «щитовидная железа», …"] --> Factory[DSpeechFactory]
     Factory --> Controller[DSpeechControllerWhisperKit]
     Controller --> Model[DSpeechWhisperKitModel: общий кэш]
-    Model --> Prepare[DSpeechModelPreparation]
+    Model --> Prepare[DSpeechModelPreparationStatus]
     Prepare -->|"checking → downloading: 0.42 → loading → ready"| UI[ScanSpeechViewModel]
     Model -->|файлов нет| Download[Скачивание Turbo + прогресс]
     Download --> Load[Загрузка Core ML и токенизатора]
@@ -170,7 +172,7 @@ DSpeechLexiconCorrector получает rawText:
 | Тип | Назначение |
 |---|---|
 | `DSpeechRecordingStatus` | Этап записи: подготовка, запись, распознавание, остановка. |
-| `DSpeechModelPreparation` | Проверка модели, скачивание с прогрессом, загрузка, готовность либо ошибка. |
+| `DSpeechModelPreparationStatus` | Проверка модели, скачивание с прогрессом, загрузка, готовность либо ошибка. |
 | `DSpeechTranscript` | Исходный/исправленный текст, локаль, движок, причина завершения и признаки качества. `isReadyForParsing` проверяет финальность и непустой текст. |
 | `DSpeechEngine` | Происхождение текста: WhisperKit, SpeechAnalyzer, SFSpeechRecognizer. |
 | `DSpeechCompletion` | Нормальное завершение, таймаут, прерывание, ошибка или отмена. |

@@ -1,7 +1,7 @@
 import DoglyadDatabase
 import Foundation
 
-struct USExaminationModelReport: Identifiable, Codable, Sendable {
+struct USExaminationModelReport: Identifiable, Codable, Equatable, Sendable {
     var id: UUID = .init()
     let date: Date
     let modelId: String

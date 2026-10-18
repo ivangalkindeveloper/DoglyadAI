@@ -35,7 +35,7 @@ struct ScanSpeechRecordingView: DViewProtocol {
 
             switch viewModel.state {
             case _ as ScanSpeechRecordingState:
-                switch viewModel.controller.text {
+                switch viewModel.speechController.text {
                 case let .some(
                     text,
                 ):
@@ -135,19 +135,15 @@ struct ScanSpeechRecordingView: DViewProtocol {
                 .primaryCircle,
             )
         }.padding(
-            .horizontal,
             size.s16,
         )
         .padding(
             .top,
-            toolbarHeight + size.s16,
+            toolbarHeight,
         )
         .padding(
             .bottom,
-            max(
-                .zero,
-                bottomHeight,
-            ) + size.s16,
+            bottomHeight,
         )
     }
 }

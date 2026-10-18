@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-final class ErrorRootServiceUnavailableState: ErrorRootStateProtocol {
+final class ErrorRootServiceUnavailableState: ErrorRootStateProtocol, @MainActor Equatable {
     let error: Error
 
     init(
@@ -19,5 +19,14 @@ final class ErrorRootServiceUnavailableState: ErrorRootStateProtocol {
                 "Expected serviceUnavailable",
             )
         }
+    }
+
+    static func == (
+        lhs: ErrorRootServiceUnavailableState,
+        rhs: ErrorRootServiceUnavailableState,
+    ) -> Bool {
+        lhs === rhs || lhs.error.isEqual(
+            to: rhs.error,
+        )
     }
 }

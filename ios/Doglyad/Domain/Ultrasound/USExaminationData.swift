@@ -1,7 +1,7 @@
 import DoglyadDatabase
 import Foundation
 
-struct USExaminationData: Codable {
+struct USExaminationData: Codable, Equatable {
     let usExaminationTypeId: String
     let photos: [USExaminationScanPhoto]
     let examinationNumber: String

@@ -1,7 +1,7 @@
 import DoglyadDatabase
 import Foundation
 
-struct USExaminationPhotoRemarkPoint: Identifiable, Codable, Sendable {
+struct USExaminationPhotoRemarkPoint: Identifiable, Codable, Equatable, Sendable {
     var id: UUID = .init()
     let x: Double
     let y: Double

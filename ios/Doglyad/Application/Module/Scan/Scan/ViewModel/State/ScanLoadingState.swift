@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-final class ScanLoadingState: ScanStateProtocol {
+final class ScanLoadingState: ScanStateProtocol, @MainActor Equatable {
     let snapshot: USExaminationDraftForm
     let report: USExaminationReport
 
@@ -11,5 +11,13 @@ final class ScanLoadingState: ScanStateProtocol {
     ) {
         self.snapshot = snapshot
         self.report = report
+    }
+
+    static func == (
+        lhs: ScanLoadingState,
+        rhs: ScanLoadingState,
+    ) -> Bool {
+        lhs.snapshot == rhs.snapshot
+            && lhs.report == rhs.report
     }
 }

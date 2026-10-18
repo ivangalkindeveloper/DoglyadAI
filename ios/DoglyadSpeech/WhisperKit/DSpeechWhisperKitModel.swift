@@ -15,7 +15,7 @@ public final class DSpeechWhisperKitModel: ObservableObject {
     private var preparationTask: Task<Void, Never>?
     private var isDeletingModel = false
 
-    @Published public private(set) var state: DSpeechModelPreparation = .checking
+    @Published public private(set) var state: DSpeechModelPreparationStatus = .checking
 
     init(
         directory: URL? = nil,

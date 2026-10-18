@@ -79,7 +79,7 @@ struct TemplateAddScreenView: DViewProtocol {
                         )
 
                         DTextField(
-                            controller: viewModel.nameController,
+                            inputTextController: viewModel.nameTextController,
                             focus: DTextFieldFocus(
                                 value: .name,
                                 state: $focus,
@@ -103,7 +103,7 @@ struct TemplateAddScreenView: DViewProtocol {
                         )
 
                         DTextField(
-                            controller: viewModel.templateController,
+                            inputTextController: viewModel.templateTextController,
                             focus: DTextFieldFocus(
                                 value: .content,
                                 state: $focus,

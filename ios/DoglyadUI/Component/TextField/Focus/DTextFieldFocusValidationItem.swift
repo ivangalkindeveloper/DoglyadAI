@@ -1,12 +1,12 @@
 public struct DTextFieldFocusValidationItem<Focus: Hashable> {
     public let focus: Focus
-    public let controller: DTextFieldController
+    public let inputTextController: DTextFieldController
 
     public init(
         focus: Focus,
-        controller: DTextFieldController,
+        inputTextController: DTextFieldController,
     ) {
         self.focus = focus
-        self.controller = controller
+        self.inputTextController = inputTextController
     }
 }

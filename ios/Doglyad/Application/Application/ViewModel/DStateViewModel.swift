@@ -16,15 +16,23 @@ class DStateViewModel<State>: Handler<DHttpApiError, DHttpConnectionError>, Obse
     }
 
     final func emit(
-        _ state: State,
+        _ newState: State,
         animation: Animation? = .easeInOut(
             duration: 0.35,
         ),
     ) {
+        if let currentState = state as? any Equatable,
+           currentState.isEqual(
+               to: newState,
+           )
+        {
+            return
+        }
+
         withAnimation(
             animation,
         ) {
-            self.state = state
+            state = newState
         }
     }
 }

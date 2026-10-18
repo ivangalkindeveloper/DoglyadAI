@@ -101,19 +101,15 @@ struct ScanSpeechReviewProposalView: DViewProtocol {
                 }
             }
             .padding(
-                .horizontal,
                 size.s16,
             )
             .padding(
                 .top,
-                toolbarHeight + size.s16,
+                toolbarHeight,
             )
             .padding(
                 .bottom,
-                max(
-                    .zero,
-                    bottomHeight,
-                ) + size.s16,
+                bottomHeight,
             )
         }
     }

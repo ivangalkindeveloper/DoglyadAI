@@ -95,9 +95,10 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     func onTapPhoto(
         _ photo: USExaminationScanPhoto,
     ) {
+        guard presentationID != nil else { return }
         let getPhotos = arguments.getPhotos
         let onPhotosUpdated = arguments.onPhotosUpdated
-        onDisappear()
+        presentationID = nil
         coordinator.dismissSheet()
         coordinator.screen(
             .photoView,
@@ -118,6 +119,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     }
 
     func onTapCapture() {
+        guard presentationID != nil else { return }
         switch state {
         case _ as ScanCameraReadyState: break
         default: return

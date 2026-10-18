@@ -12,7 +12,7 @@ public extension DTextFieldFocusValidatingProtocol {
         var firstInvalidFocus: Focus?
 
         for item in focusList {
-            if !item.controller.validate(), firstInvalidFocus == nil {
+            if !item.inputTextController.validate(), firstInvalidFocus == nil {
                 firstInvalidFocus = item.focus
             }
         }

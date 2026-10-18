@@ -1,7 +1,7 @@
 import DoglyadDatabase
 import Foundation
 
-struct USExaminationPhotoRemarks: Codable, Sendable {
+struct USExaminationPhotoRemarks: Codable, Equatable, Sendable {
     let photoId: UUID
     let points: [USExaminationPhotoRemarkPoint]
 }

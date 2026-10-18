@@ -34,6 +34,7 @@ enum ScanSpeechConfidencePolicy {
             }
         }
         return ScanSpeechReviewPlan(
+            proposal: proposal,
             automatic: automatic,
             uncertain: uncertain,
         )

@@ -1,7 +1,7 @@
 import DoglyadDatabase
 import Foundation
 
-struct USExaminationReport: Identifiable, Codable {
+struct USExaminationReport: Identifiable, Codable, Equatable {
     var id: UUID = .init()
     let date: Date
     let neuralModelSettings: NeuralModelSettings

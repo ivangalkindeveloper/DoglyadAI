@@ -9,8 +9,8 @@ import SwiftUI
 final class NeuralModelSettingsViewModel: DModuleViewModel<any NeuralModelSettingsStateProtocol>, DTextFieldFocusValidatingProtocol {
     @Published var focus: NeuralModelSettingsFocus?
     @Published var isMarkdown: Bool = false
-    @NestedObservableObject var temperatureController: DTextFieldController
-    @NestedObservableObject var maxTokensController: DTextFieldController
+    @NestedObservableObject var temperatureTextController: DTextFieldController
+    @NestedObservableObject var maxTokensTextController: DTextFieldController
 
     private let messager: DMessager
     private let onSettingsSaved: (Bool, Double?, Int?) async throws -> Void
@@ -32,7 +32,7 @@ final class NeuralModelSettingsViewModel: DModuleViewModel<any NeuralModelSettin
         self.messager = messager
         self.onSettingsSaved = onSettingsSaved
 
-        _temperatureController = NestedObservableObject(
+        _temperatureTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldDecimalFormatter(),
@@ -49,7 +49,7 @@ final class NeuralModelSettingsViewModel: DModuleViewModel<any NeuralModelSettin
                 ],
             ),
         )
-        _maxTokensController = NestedObservableObject(
+        _maxTokensTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldIntegerFormatter(),
@@ -80,15 +80,15 @@ final class NeuralModelSettingsViewModel: DModuleViewModel<any NeuralModelSettin
                 .neuralModelSettings,
             ),
         )
-        _ = temperatureController
-        _ = maxTokensController
+        _ = temperatureTextController
+        _ = maxTokensTextController
         isMarkdown = getInitialIsMarkdown()
-        temperatureController.setText(
+        temperatureTextController.setText(
             String(
                 getInitialTemperature(),
             ),
         )
-        maxTokensController.setText(
+        maxTokensTextController.setText(
             String(
                 getInitialMaxTokens(),
             ),
@@ -99,11 +99,11 @@ final class NeuralModelSettingsViewModel: DModuleViewModel<any NeuralModelSettin
         [
             DTextFieldFocusValidationItem(
                 focus: .temperature,
-                controller: temperatureController,
+                inputTextController: temperatureTextController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .length,
-                controller: maxTokensController,
+                inputTextController: maxTokensTextController,
             ),
         ]
     }
@@ -217,10 +217,10 @@ final class NeuralModelSettingsViewModel: DModuleViewModel<any NeuralModelSettin
         handle {
             try await self.onSettingsSaved(
                 self.isMarkdown,
-                self.temperatureController.value.flatMap { Double(
+                self.temperatureTextController.value.flatMap { Double(
                     $0,
                 ) },
-                self.maxTokensController.value.flatMap { Int(
+                self.maxTokensTextController.value.flatMap { Int(
                     $0,
                 ) },
             )

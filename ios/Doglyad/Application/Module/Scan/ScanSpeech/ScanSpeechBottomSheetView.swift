@@ -8,7 +8,7 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
 
     var body: some View {
         let fraction: CGFloat = switch viewModel.state {
-        case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechReviewProposalState: 0.9
+        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechReviewProposalState: 0.9
         default: 0.5
         }
         DBottomSheet(
@@ -29,8 +29,8 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
                     toolbarHeight: toolbarHeight,
                     bottomHeight: bottomHeight,
                 )
-            case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState:
-                ScanSpeechReviewParsingView(
+            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState:
+                ScanSpeechReviewTranscriptView(
                     toolbarHeight: toolbarHeight,
                     bottomHeight: bottomHeight,
                 )
@@ -44,8 +44,8 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
             }
         } bottom: {
             switch viewModel.state {
-            case _ as ScanSpeechTranscriptReviewState, _ as ScanSpeechReviewParsingState:
-                ScanSpeechReviewParsingBottomView()
+            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState:
+                ScanSpeechReviewTranscriptBottomView()
             case let state as ScanSpeechReviewProposalState:
                 ScanSpeechReviewProposalBottomView(
                     state: state,

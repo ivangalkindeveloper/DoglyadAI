@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanSpeechReviewParsingBottomView: DViewProtocol {
+struct ScanSpeechReviewTranscriptBottomView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     @EnvironmentObject var theme: DTheme

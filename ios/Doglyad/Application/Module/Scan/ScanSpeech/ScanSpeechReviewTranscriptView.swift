@@ -1,7 +1,7 @@
 import DoglyadUI
 import SwiftUI
 
-struct ScanSpeechReviewParsingView: DViewProtocol {
+struct ScanSpeechReviewTranscriptView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
@@ -27,7 +27,7 @@ struct ScanSpeechReviewParsingView: DViewProtocol {
                     color: color.grayscaleBackgroundWeak,
                 )
                 DTextField(
-                    controller: viewModel.transcriptController,
+                    inputTextController: viewModel.transcriptTextController,
                     title: l10n[
                         .scanSpeechReviewFieldTitle,
                     ],
@@ -43,19 +43,15 @@ struct ScanSpeechReviewParsingView: DViewProtocol {
                 )
             }
             .padding(
-                .horizontal,
                 size.s16,
             )
             .padding(
                 .top,
-                toolbarHeight + size.s16,
+                toolbarHeight,
             )
             .padding(
                 .bottom,
-                max(
-                    .zero,
-                    bottomHeight,
-                ) + size.s16,
+                bottomHeight,
             )
         }
         .scrollDismissesKeyboard(

@@ -42,10 +42,9 @@ SOURCE_FILES = (
     ROOT / "ios/DoglyadTests/VoiceCandidateTests.swift",
     ROOT / "ios/DoglyadTests/DictationLabeledFormParserTests.swift",
     ROOT / "ios/DoglyadTests/VoiceSupport/NaturalLanguage/DNeuralUltrasoundDictationNaturalLanguageParser.swift",
-    ROOT / "ios/Doglyad/Application/Module/Scan/Scan/ScanViewModel.swift",
-    ROOT / "ios/Doglyad/Application/Module/Scan/ScanSpeech/ScanSpeechViewModel.swift",
-    ROOT / "ios/Doglyad/Application/Module/Scan/ScanSpeech/ScanSpeechReviewPolicy.swift",
-    ROOT / "ios/Doglyad/Application/Module/Scan/ScanSpeech/ScanSpeechConfidencePolicy.swift",
+    ROOT / "ios/Doglyad/Application/Module/Scan/Scan/ViewModel/ScanViewModel.swift",
+    ROOT / "ios/Doglyad/Application/Module/Scan/ScanSpeech/ViewModel/ScanSpeechViewModel.swift",
+    ROOT / "ios/Doglyad/Application/Module/Scan/ScanSpeech/ViewModel/ScanSpeechConfidencePolicy.swift",
     ROOT / "ios/Doglyad/Application/Module/Scan/Scan/ScanFormPatch.swift",
 )
 

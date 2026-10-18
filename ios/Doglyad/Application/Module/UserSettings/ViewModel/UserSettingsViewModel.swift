@@ -15,7 +15,7 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
 
     @Published var isDescriptionRemarks: Bool
 
-    @NestedObservableObject var emailController: DTextFieldController
+    @NestedObservableObject var emailTextController: DTextFieldController
 
     private let messager: DMessager
     private let onSaved: (String?, Bool, Bool, Bool) async throws -> Void
@@ -41,7 +41,7 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
         isRecommendationsIncluded = getInitialIsRecommendationsIncluded()
         isPhotoRemarks = getInitialIsPhotoRemarks()
         isDescriptionRemarks = getInitialIsDescriptionRemarks()
-        _emailController = NestedObservableObject(
+        _emailTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldEmailFormatter(),
@@ -74,8 +74,8 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
                 .userSettings,
             ),
         )
-        _ = emailController
-        emailController.setText(
+        _ = emailTextController
+        emailTextController.setText(
             getInitialEmail() ?? "",
         )
     }
@@ -84,7 +84,7 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
         [
             DTextFieldFocusValidationItem(
                 focus: .email,
-                controller: emailController,
+                inputTextController: emailTextController,
             ),
         ]
     }
@@ -130,7 +130,7 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
         default: break
         }
 
-        let email = emailController.value
+        let email = emailTextController.value
         analytics.buttonTapped(
             .userSettingsSave,
             parameters: AnalyticsParameters(

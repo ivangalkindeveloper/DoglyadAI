@@ -1,7 +1,7 @@
 import DoglyadDatabase
 import Foundation
 
-struct NeuralModelSettings: Codable {
+struct NeuralModelSettings: Codable, Equatable {
     let selectedNeuralModelId: String?
     let isMarkdown: Bool
     let temperature: Double?

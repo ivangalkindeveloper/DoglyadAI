@@ -10,13 +10,40 @@
         "competition"
     ],
     "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true,
+        "**/*.pyo": true,
+        "**/.hypothesis": true,
+        "**/.mypy_cache": true,
+        "**/.pyre": true,
+        "**/.pytest_cache": true,
+        "**/.pytype": true,
+        "**/.ruff_cache": true,
         "**/build": true,
-        "**/competition": true,
+        "**/competition": true
     },
     "files.watcherExclude": {
+        "**/__pycache__/**": true,
+        "**/*.pyc": true,
+        "**/*.pyo": true,
+        "**/.hypothesis/**": true,
+        "**/.mypy_cache/**": true,
+        "**/.pyre/**": true,
+        "**/.pytest_cache/**": true,
+        "**/.pytype/**": true,
+        "**/.ruff_cache/**": true,
         "**/competition/**": true
     },
     "search.exclude": {
+        "**/__pycache__/**": true,
+        "**/*.pyc": true,
+        "**/*.pyo": true,
+        "**/.hypothesis/**": true,
+        "**/.mypy_cache/**": true,
+        "**/.pyre/**": true,
+        "**/.pytest_cache/**": true,
+        "**/.pytype/**": true,
+        "**/.ruff_cache/**": true,
         "**/competition/**": true
     },
     "files.associations": {

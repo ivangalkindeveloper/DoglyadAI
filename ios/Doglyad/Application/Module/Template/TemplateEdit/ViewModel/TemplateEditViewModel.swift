@@ -13,11 +13,11 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
 
     @Published var usExaminationType: USExaminationType
 
-    @NestedObservableObject var nameController = DTextFieldController(
+    @NestedObservableObject var nameTextController = DTextFieldController(
         isRequired: true,
     )
 
-    @NestedObservableObject var templateController = DTextFieldController(
+    @NestedObservableObject var templateTextController = DTextFieldController(
         isRequired: true,
     )
 
@@ -59,19 +59,19 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
                 .templateEdit,
             ),
         )
-        _ = nameController
-        _ = templateController
+        _ = nameTextController
+        _ = templateTextController
     }
 
     var focusList: [DTextFieldFocusValidationItem<TemplateEditFocus>] {
         [
             DTextFieldFocusValidationItem(
                 focus: .name,
-                controller: nameController,
+                inputTextController: nameTextController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .content,
-                controller: templateController,
+                inputTextController: templateTextController,
             ),
         ]
     }
@@ -128,10 +128,10 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
                 template.usExaminationType.id,
             ]
                 ?? self.container.usExaminationTypeDefault
-            self.nameController.setText(
+            self.nameTextController.setText(
                 template.name,
             )
-            self.templateController.setText(
+            self.templateTextController.setText(
                 template.content,
             )
         } onMainUnknownError: { error in
@@ -229,8 +229,8 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             return
         }
 
-        guard let name = nameController.value,
-              let content = templateController.value
+        guard let name = nameTextController.value,
+              let content = templateTextController.value
         else {
             return
         }
