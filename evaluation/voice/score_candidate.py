@@ -128,7 +128,6 @@ def score_fields(
         "warnedFields": [field for field in FIELDS if warnings.get(field)],
         "fullFields": [field for field in FIELDS if accuracies.get(field) == "full"],
         "wrongFullFields": [field for field in wrong if accuracies.get(field) == "full"],
-        "rejectedFields": parse.get("rejectedFieldIds", []),
         "automaticFields": [field for field in FIELDS if field in automatic],
         "wrongAutomaticFields": [field for field in FIELDS if field in automatic and not matches[field]],
         "falseAutomaticFields": [field for field in FIELDS if field in automatic and field not in expected],

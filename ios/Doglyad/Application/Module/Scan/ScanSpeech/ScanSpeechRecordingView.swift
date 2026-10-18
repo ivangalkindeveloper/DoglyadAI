@@ -10,14 +10,6 @@ struct ScanSpeechRecordingView: DViewProtocol {
     let bottomHeight: CGFloat
 
     var body: some View {
-        let icon: ImageResource = switch viewModel.state {
-        case _ as ScanSpeechReadyState: .play
-        default: .check
-        }
-        let isProcessing = switch viewModel.state {
-        case _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechPreparingModelState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState: true
-        default: false
-        }
         let description: LocalizedStringResource? = switch viewModel.state {
         case _ as ScanSpeechPreparingRecordingState: l10n[
                 .scanSpeechProcessPreparingDescription,
@@ -127,13 +119,6 @@ struct ScanSpeechRecordingView: DViewProtocol {
             }
 
             Spacer()
-            DButton(
-                image: icon,
-                action: viewModel.onTapSpeech,
-                isLoading: isProcessing,
-            ).dStyle(
-                .primaryCircle,
-            )
         }.padding(
             size.s16,
         )

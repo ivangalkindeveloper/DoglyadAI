@@ -422,7 +422,6 @@ struct ModuleStateTests {
             onRequestCountIncremented: {},
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
-                getCurrentValue: { _ in "" },
                 onConfirm: { proposals in
                     appliedFieldIds = proposals.map(
                         \.id,
@@ -450,8 +449,6 @@ struct ModuleStateTests {
         let proposal = DNeuralUltrasoundDictationProposal(
             source: .serverModel,
             proposals: reviewProposals,
-            unmappedFindings: ["Unmapped finding"],
-            rejectedFieldIds: [.patientHeightCM],
         )
         let initial = ScanSpeechReviewProposalState(
             proposal: proposal,
@@ -500,8 +497,6 @@ struct ModuleStateTests {
             snapshots.allSatisfy {
                 $0.reviewProposals == reviewProposals
                     && $0.proposal.proposals == proposal.proposals
-                    && $0.proposal.unmappedFindings == proposal.unmappedFindings
-                    && $0.proposal.rejectedFieldIds == proposal.rejectedFieldIds
             },
         )
         model.onTapApplySelected()

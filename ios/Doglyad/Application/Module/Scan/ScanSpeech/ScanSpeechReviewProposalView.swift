@@ -11,25 +11,14 @@ struct ScanSpeechReviewProposalView: DViewProtocol {
     let bottomHeight: CGFloat
 
     var body: some View {
-        let proposal = state.proposal
-
-        ScrollView {
+        ScrollView(
+            showsIndicators: false,
+        ) {
             VStack(
                 alignment: .leading,
-                spacing: size.s12,
+                spacing: size.s4,
             ) {
-                DText(
-                    viewModel.proposalInstructions,
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscaleBackgroundWeak,
-                )
-
-                if state.reviewProposals.isEmpty,
-                   proposal.rejectedFieldIds.isEmpty,
-                   proposal.unmappedFindings.isEmpty
-                {
+                if state.reviewProposals.isEmpty {
                     DText(
                         l10n[
                             .scanSpeechProposalNoFieldsDescription,
@@ -39,63 +28,29 @@ struct ScanSpeechReviewProposalView: DViewProtocol {
                         font: typography.textSmall,
                         color: color.grayscaleBackgroundWeak,
                     )
-                }
-
-                ForEach(
-                    state.reviewProposals,
-                ) { field in
-                    ScanSpeechProposalCardView(
-                        state: state,
-                        proposal: field,
+                    .padding(
+                        .bottom,
+                        size.s8,
                     )
-                }
-
-                if !proposal.rejectedFieldIds.isEmpty {
+                } else {
                     DText(
-                        l10n[
-                            .scanSpeechProposalRejectedTitle,
-                        ],
+                        viewModel.proposalInstructions,
                     )
                     .dStyle(
-                        font: typography.linkSmall,
-                        color: color.warningDefaultStrong,
-                    )
-                    ForEach(
-                        proposal.rejectedFieldIds,
-                        id: \.self,
-                    ) { fieldId in
-                        DText(
-                            viewModel.fieldTitle(
-                                fieldId,
-                            ),
-                        )
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.grayscaleBackgroundWeak,
-                        )
-                    }
-                }
-
-                if !proposal.unmappedFindings.isEmpty {
-                    DText(
-                        l10n[
-                            .scanSpeechProposalUnmappedTitle,
-                        ],
-                    )
-                    .dStyle(
-                        font: typography.linkSmall,
+                        font: typography.textSmall,
                         color: color.grayscaleBackgroundWeak,
                     )
+                    .padding(
+                        .bottom,
+                        size.s8,
+                    )
+
                     ForEach(
-                        proposal.unmappedFindings,
-                        id: \.self,
-                    ) { finding in
-                        DText(
-                            finding,
-                        )
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.grayscaleBackgroundWeak,
+                        state.reviewProposals,
+                    ) { field in
+                        ScanSpeechProposalCardView(
+                            state: state,
+                            proposal: field,
                         )
                     }
                 }
@@ -114,3 +69,49 @@ struct ScanSpeechReviewProposalView: DViewProtocol {
         }
     }
 }
+
+#if DEBUG
+    #Preview(
+        "Несколько полей",
+    ) {
+        ScanSpeechProposalPreviewView(
+            scenario: .multipleFields,
+            layout: .review,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+
+    #Preview(
+        "Частичный результат",
+    ) {
+        ScanSpeechProposalPreviewView(
+            scenario: .partialResult,
+            layout: .review,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+
+    #Preview(
+        "Длинный клинический текст",
+    ) {
+        ScanSpeechProposalPreviewView(
+            scenario: .clinicalText,
+            layout: .review,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+
+    #Preview(
+        "Ничего не распознано",
+    ) {
+        ScanSpeechProposalPreviewView(
+            scenario: .empty,
+            layout: .review,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+#endif

@@ -172,14 +172,11 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanSpeechProcessTranscribingDescription
     case scanSpeechProposalApplyButton
     case scanSpeechProposalBackButton
-    case scanSpeechProposalCurrentValueTitle
     case scanSpeechProposalInstructionsDescription
     case scanSpeechProposalInstructionsWithAutomaticDescription
     case scanSpeechProposalNeedsReviewLabel
     case scanSpeechProposalNoFieldsDescription
-    case scanSpeechProposalRejectedTitle
     case scanSpeechProposalSourceTitle
-    case scanSpeechProposalUnmappedTitle
     case scanSpeechProposalWarningAmbiguousDescription
     case scanSpeechProposalWarningDateDescription
     case scanSpeechProposalWarningGenderDescription
@@ -188,8 +185,9 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanSpeechProposalWarningNumberDescription
     case scanSpeechProposalWarningSideDescription
     case scanSpeechProposalWarningTextChangedDescription
-    case scanSpeechProposalWarningTitle
     case scanSpeechProposalWarningUnitDescription
+    case scanSpeechRecordingParseButton
+    case scanSpeechRecordingStartButton
     case scanSpeechReviewCancelledDescription
     case scanSpeechReviewContinueButton
     case scanSpeechReviewFailedDescription

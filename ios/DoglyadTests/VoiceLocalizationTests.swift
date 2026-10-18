@@ -264,8 +264,6 @@ struct VoiceLocalizationTests {
                         sourceQuote: text,
                     ),
                 ],
-                unmappedFindings: [],
-                rejectedFieldIds: [],
             )
             let plan = ScanSpeechConfidencePolicy.plan(
                 proposal: proposal,

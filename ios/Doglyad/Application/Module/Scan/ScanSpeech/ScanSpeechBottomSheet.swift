@@ -38,7 +38,6 @@ struct ScanSpeechBottomSheet: View {
                 title: "",
                 contextualStrings: [],
             ),
-            getCurrentValue: { _ in "" },
             onConfirm: nil,
         ),
     )

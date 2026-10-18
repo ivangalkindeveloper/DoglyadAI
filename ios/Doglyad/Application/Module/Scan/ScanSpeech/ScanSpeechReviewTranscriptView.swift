@@ -15,7 +15,9 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
         default: false
         }
 
-        ScrollView {
+        ScrollView(
+            showsIndicators: false,
+        ) {
             VStack(
                 alignment: .leading,
                 spacing: size.s16,
@@ -59,3 +61,45 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
         )
     }
 }
+
+#if DEBUG
+    #Preview(
+        "Диктовка готова",
+    ) {
+        ScanSpeechTranscriptPreviewView(
+            scenario: .finished,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+
+    #Preview(
+        "Длинная прерванная запись",
+    ) {
+        ScanSpeechTranscriptPreviewView(
+            scenario: .interrupted,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+
+    #Preview(
+        "Речь не распознана",
+    ) {
+        ScanSpeechTranscriptPreviewView(
+            scenario: .failed,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+
+    #Preview(
+        "Разбор диктовки",
+    ) {
+        ScanSpeechTranscriptPreviewView(
+            scenario: .parsing,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+#endif

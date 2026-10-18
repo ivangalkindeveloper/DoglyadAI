@@ -329,11 +329,11 @@ struct DictationModelCompositionTests {
     }
 
     @Test(
-        "Server metadata and literal unmatched findings survive shared processing",
+        "Server results preserve independently extracted fields and their sources",
     )
-    func serverMetadata() async throws {
+    func emptyServerResponsePreservesExtractedFields() async throws {
         let transport = try TransportStub(
-            json: #"{"proposals":[],"rejectedFieldIds":["patient_date_of_birth"],"unmappedFindings":["Нужно уточнить анамнез."]}"#,
+            json: #"{"proposals":[]}"#,
         )
         let result = try await DNeuralUltrasoundModelServer(
             transport: transport,
@@ -351,10 +351,7 @@ struct DictationModelCompositionTests {
             ),
         )
         #expect(
-            result.rejectedFieldIds == [.patientDateOfBirth],
-        )
-        #expect(
-            result.unmappedFindings == ["Нужно уточнить анамнез."],
+            !result.proposals.contains { $0.id == .patientDateOfBirth },
         )
         #expect(
             result.fieldSources[
@@ -477,7 +474,6 @@ private final class GeneratorStub: DNeuralUltrasoundProposalGeneratorProtocol {
                 sourceQuote: "Вес 68 кг",
                 accuracy: .full,
             )],
-            unmappedFindings: [],
         )
     }
 }
@@ -492,7 +488,7 @@ private final class TransportStub: DNeuralUltrasoundServerTransportProtocol {
     private(set) var text: String?
 
     init(
-        json: String = #"{"proposals":[{"fieldId":"patient_weight_kg","value":68,"evidence":"Вес 68 кг","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#,
+        json: String = #"{"proposals":[{"fieldId":"patient_weight_kg","value":68,"evidence":"Вес 68 кг","accuracy":"full"}]}"#,
     ) throws {
         response = try JSONDecoder().decode(
             DNeuralUltrasoundVoiceFormParseResponseDTO.self,

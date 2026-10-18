@@ -7,6 +7,31 @@ struct DSpeechWhisperKitModelTests {
     private let folderKey = "DoglyadSpeech.whisperTurboModelFolder"
 
     @Test
+    func cancelledInferenceDoesNotLoadOrDownloadTheModel() async throws {
+        try await withStore { model, _, _ in
+            let task = Task {
+                try await model.performInference { _ in
+                    Issue.record(
+                        "Cancelled inference must not start",
+                    )
+                }
+            }
+            task.cancel()
+            await #expect(
+                throws: CancellationError.self,
+            ) {
+                try await task.value
+            }
+            #expect(
+                model.state == .checking,
+            )
+            #expect(
+                !model.isDownloaded,
+            )
+        }
+    }
+
+    @Test
     func availabilityRequiresAllDownloadedModelComponents() async throws {
         try await withStore { model, directory, defaults in
             #expect(

@@ -44,6 +44,8 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
             }
         } bottom: {
             switch viewModel.state {
+            case _ as ScanSpeechReadyState, _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState:
+                ScanSpeechRecordingBottomView()
             case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState:
                 ScanSpeechReviewTranscriptBottomView()
             case let state as ScanSpeechReviewProposalState:

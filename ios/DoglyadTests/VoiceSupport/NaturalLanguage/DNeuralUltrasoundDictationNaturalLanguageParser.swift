@@ -24,9 +24,6 @@ enum DNeuralUltrasoundDictationNaturalLanguageParser {
         guard !baseline.proposals.contains(
             where: { $0.id == .patientName },
         ),
-            !baseline.rejectedFieldIds.contains(
-                .patientName,
-            ),
             request.allowedFields.contains(
                 .patientName,
             ),
@@ -38,8 +35,6 @@ enum DNeuralUltrasoundDictationNaturalLanguageParser {
         let naturalLanguage = DNeuralUltrasoundDictationProposal(
             source: .explicitFacts,
             proposals: [name],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         return DNeuralUltrasoundDictationProposalReconciler.reconcile(
             request: request,

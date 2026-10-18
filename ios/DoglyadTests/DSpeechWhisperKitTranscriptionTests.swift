@@ -4,6 +4,132 @@ import Testing
 import WhisperKit
 
 struct DSpeechWhisperKitTranscriptionTests {
+    @Test
+    func previewJoinsConfirmedAndDraftSegmentsWithoutDecoderTokens() {
+        let text = DSpeechWhisperKitTranscription.previewText(
+            unconfirmedSegments: [
+                TranscriptionSegment(
+                    text: "<|startoftranscript|> Вес 70 кг. ",
+                ),
+                TranscriptionSegment(
+                    text: "<|1.20|> Рост 175 см.<|endoftext|>",
+                ),
+            ],
+        )
+        #expect(
+            text == "Вес 70 кг. Рост 175 см.",
+        )
+        #expect(
+            DSpeechWhisperKitTranscription.previewText(
+                unconfirmedSegments: [TranscriptionSegment(
+                    text: "<|endoftext|>  ",
+                )],
+            ) == nil,
+        )
+    }
+
+    @Test
+    func promotingDraftSegmentsDoesNotRepeatTheirText() {
+        let first = TranscriptionSegment(
+            start: 0,
+            end: 1,
+            text: "Weight 70 kg.",
+        )
+        let second = TranscriptionSegment(
+            start: 1,
+            end: 2,
+            text: "Height 175 cm.",
+        )
+        let text = DSpeechWhisperKitTranscription.previewText(
+            confirmedSegments: [first],
+            unconfirmedSegments: [first, second],
+        )
+        #expect(
+            text == "Weight 70 kg. Height 175 cm.",
+        )
+    }
+
+    @Test
+    func recheckSamplesIncludeContextAndStayInsideTheRecording() {
+        let audio = (0 ..< WhisperKit.sampleRate).map { Float(
+            $0,
+        ) }
+        let samples = DSpeechWhisperKitTranscription.samples(
+            for: TranscriptionSegment(
+                start: 0.1,
+                end: 0.2,
+                text: "Weight",
+            ),
+            in: audio,
+        )
+        #expect(
+            samples.first == 0,
+        )
+        #expect(
+            samples.last == 8799,
+        )
+        #expect(
+            samples.count == 8800,
+        )
+        #expect(
+            DSpeechWhisperKitTranscription.samples(
+                for: TranscriptionSegment(
+                    start: 0.8,
+                    end: 1.2,
+                    text: "Weight",
+                ),
+                in: audio,
+            ).last == Float(
+                WhisperKit.sampleRate - 1,
+            ),
+        )
+    }
+
+    @Test(
+        arguments: [
+            (Float.nan, Float(
+                1,
+            )),
+            (Float(
+                0,
+            ), Float.infinity),
+            (Float(
+                2,
+            ), Float(
+                1,
+            )),
+            (Float(
+                1,
+            ), Float(
+                1,
+            )),
+            (Float(
+                10,
+            ), Float(
+                11,
+            )),
+        ],
+    )
+    func invalidOrOutOfBoundsSegmentsDoNotProduceRecheckEvidence(
+        start: Float,
+        end: Float,
+    ) {
+        let samples = DSpeechWhisperKitTranscription.samples(
+            for: TranscriptionSegment(
+                start: start,
+                end: end,
+                text: "Weight",
+            ),
+            in: [Float](
+                repeating: 0,
+                count: WhisperKit.sampleRate,
+            ),
+        )
+        #expect(
+            samples.isEmpty,
+        )
+    }
+
     @Test(
         "Decoder special tokens never change UTF-16 source offsets",
     )

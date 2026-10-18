@@ -28,14 +28,12 @@ struct DNeuralUltrasoundProposalProcessor {
     func process(
         generated: DNeuralUltrasoundProposalGenerationResponse,
         source: DNeuralDictationProposalSource,
-        rejectedFieldIds: [DNeuralUltrasoundVoiceFieldId] = [],
     ) throws -> DNeuralUltrasoundDictationProposal {
         try reconcile(
             generated: Self.validate(
                 generated: generated,
                 request: request,
                 source: source,
-                rejectedFieldIds: rejectedFieldIds,
             ),
         )
     }
@@ -55,13 +53,10 @@ struct DNeuralUltrasoundProposalProcessor {
         generated: DNeuralUltrasoundProposalGenerationResponse,
         request: DNeuralUltrasoundDictationParseRequest,
         source: DNeuralDictationProposalSource = .localModel,
-        rejectedFieldIds: [DNeuralUltrasoundVoiceFieldId] = [],
     ) throws -> DNeuralUltrasoundDictationProposal {
         let localization = request.localization
         var seen = Set<DNeuralUltrasoundVoiceFieldId>()
         var verified: [DNeuralUltrasoundVoiceFieldProposal] = []
-        var rejectedQuotes: [String] = []
-        var rejected: [DNeuralUltrasoundVoiceFieldId] = []
 
         for item in DNeuralUltrasoundDictationClinicalSections.complete(
             generated.proposals,
@@ -86,9 +81,6 @@ struct DNeuralUltrasoundProposalProcessor {
                 in: request.text,
                 locale: request.locale,
             ) else {
-                rejected.append(
-                    item.fieldId,
-                )
                 continue
             }
             let value: DNeuralVoiceFieldValue
@@ -124,14 +116,8 @@ struct DNeuralUltrasoundProposalProcessor {
                     isDateCorrected = false
                 }
             } catch DNeuralUltrasoundDictationProposalError.invalidValue {
-                // Keep the other verified proposals usable. The rejected source
-                // remains visible to the physician and cannot change the form.
-                rejected.append(
-                    item.fieldId,
-                )
-                rejectedQuotes.append(
-                    sourceQuote,
-                )
+                // Keep the other verified proposals usable without changing
+                // the form with an invalid value.
                 continue
             }
             var warnings = DNeuralUltrasoundDictationProposalValidator.warnings(
@@ -157,12 +143,6 @@ struct DNeuralUltrasoundProposalProcessor {
                 sourceQuote: sourceQuote,
                 request: request,
             ) {
-                rejected.append(
-                    item.fieldId,
-                )
-                rejectedQuotes.append(
-                    sourceQuote,
-                )
                 continue
             }
             verified.append(
@@ -176,31 +156,9 @@ struct DNeuralUltrasoundProposalProcessor {
             )
         }
 
-        var seenFindings = Set<String>()
-        let unmappedFindings = (generated.unmappedFindings + rejectedQuotes).filter {
-            !$0.trimmingCharacters(
-                in: .whitespacesAndNewlines,
-            ).isEmpty
-                && request.text.contains(
-                    $0,
-                )
-                && seenFindings.insert(
-                    $0,
-                ).inserted
-        }
         return DNeuralUltrasoundDictationProposal(
             source: source,
             proposals: verified,
-            unmappedFindings: unmappedFindings,
-            rejectedFieldIds: (rejected + rejectedFieldIds).reduce(
-                into: [],
-            ) { result, id in
-                if !result.contains(
-                    id,
-                ) { result.append(
-                    id,
-                ) }
-            },
         )
     }
 

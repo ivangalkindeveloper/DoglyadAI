@@ -40,15 +40,11 @@ def test_template_responses_reject_blank_required_text(field: str, blank: str) -
 
 def test_voice_response_uses_field_id_camel_case_without_alias() -> None:
     proposal = {"fieldId": "patient_weight_kg", "value": 72, "evidence": "weight 72", "accuracy": "full"}
-    result = USVoiceFormParseResponse.model_validate(
-        {"proposals": [proposal], "rejectedFieldIds": [], "unmappedFindings": []}
-    )
-    assert result.model_dump(mode="json")["proposals"][0] == proposal
+    result = USVoiceFormParseResponse.model_validate({"proposals": [proposal]})
+    assert result.model_dump(mode="json") == {"proposals": [proposal]}
     proposal["field_id"] = proposal.pop("fieldId")
     with pytest.raises(ValidationError):
-        USVoiceFormParseResponse.model_validate(
-            {"proposals": [proposal], "rejectedFieldIds": [], "unmappedFindings": []}
-        )
+        USVoiceFormParseResponse.model_validate({"proposals": [proposal]})
 
 
 @pytest.mark.parametrize("field", ["value", "evidence"])
@@ -61,6 +57,4 @@ def test_voice_response_rejects_blank_required_text(field: str) -> None:
     }
     proposal[field] = " \n "
     with pytest.raises(ValidationError):
-        USVoiceFormParseResponse.model_validate(
-            {"proposals": [proposal], "rejectedFieldIds": [], "unmappedFindings": []}
-        )
+        USVoiceFormParseResponse.model_validate({"proposals": [proposal]})

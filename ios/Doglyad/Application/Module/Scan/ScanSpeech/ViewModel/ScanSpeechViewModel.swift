@@ -27,11 +27,12 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         getNeuralModelSettings: @escaping () -> NeuralModelSettings,
         onRequestCountIncremented: @escaping () -> Void,
         arguments: ScanSpeechArguments,
+        speechController: (any DSpeechControllerProtocol)? = nil,
     ) {
         self.messager = messager
         self.arguments = arguments
         let contextualStrings = arguments.examinationType.contextualStrings
-        speechController = DSpeechFactory.make(
+        self.speechController = speechController ?? DSpeechFactory.make(
             locale: container.language.currentLocale,
             contextualStrings: contextualStrings,
             lexiconLocalization: container.l10n.voice.speech,
@@ -357,17 +358,13 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         }
     }
 
-    func currentValue(
-        _ id: DNeuralUltrasoundVoiceFieldId,
-    ) -> String {
-        arguments.getCurrentValue(
-            id,
-        )
-    }
-
     private func observeSpeechController() {
         speechCancellable = speechController.objectWillChange.sink { [weak self] _ in
-            Task { @MainActor [weak self] in self?.refreshSpeechState() }
+            Task { @MainActor [weak self] in
+                guard let self, isPresentationActive else { return }
+                objectWillChange.send()
+                refreshSpeechState()
+            }
         }
     }
 

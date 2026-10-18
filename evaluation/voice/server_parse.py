@@ -89,7 +89,6 @@ def score_response(expected: dict[str, Any], response: dict[str, Any], locale: s
         "fields": actual,
         "warnings": {},
         "accuracies": accuracies,
-        "rejectedFieldIds": response["rejectedFieldIds"],
     }
     return score_fields(expected, parsed, locale=locale, normalize_description=True)
 

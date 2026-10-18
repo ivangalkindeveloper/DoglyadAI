@@ -45,8 +45,6 @@ struct ScanSpeechConfidencePolicyTests {
                     sourceQuote: "Пол мужчина.",
                 ),
             ],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         let plan = ScanSpeechConfidencePolicy.plan(
             proposal: proposal,
@@ -100,8 +98,6 @@ struct ScanSpeechConfidencePolicyTests {
                     sourceQuote: "male",
                 ),
             ],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         func transcript(
             score: Double,
@@ -369,8 +365,6 @@ struct ScanSpeechConfidencePolicyTests {
                 ),
                 sourceQuote: raw,
             )],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         let plan = ScanSpeechConfidencePolicy.plan(
             proposal: proposal,
@@ -403,8 +397,6 @@ struct ScanSpeechConfidencePolicyTests {
         let model = DNeuralUltrasoundDictationProposal(
             source: .localModel,
             proposals: labeled.proposals,
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         let modelPlan = ScanSpeechConfidencePolicy.plan(
             proposal: model,
@@ -437,8 +429,6 @@ struct ScanSpeechConfidencePolicyTests {
                 sourceQuote: first.sourceQuote,
                 warnings: [.ambiguousDictation],
             )],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         let warnedPlan = ScanSpeechConfidencePolicy.plan(
             proposal: warned,
@@ -476,8 +466,6 @@ struct ScanSpeechConfidencePolicyTests {
                 sourceQuote: raw,
                 accuracy: .questionable,
             )],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         let plan = ScanSpeechConfidencePolicy.plan(
             proposal: proposal,
@@ -515,8 +503,6 @@ struct ScanSpeechConfidencePolicyTests {
         let mixed = DNeuralUltrasoundDictationProposal(
             source: .localModel,
             proposals: labeled.proposals,
-            unmappedFindings: [],
-            rejectedFieldIds: [],
             fieldSources: [
                 .examinationNumber: .labeledDictation,
                 .patientGender: .localModel,

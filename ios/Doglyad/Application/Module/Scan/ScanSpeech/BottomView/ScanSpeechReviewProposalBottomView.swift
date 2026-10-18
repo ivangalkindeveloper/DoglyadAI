@@ -12,16 +12,17 @@ struct ScanSpeechReviewProposalBottomView: DViewProtocol {
         VStack(
             spacing: size.s16,
         ) {
-            DButton(
-                title: l10n[
-                    .scanSpeechProposalApplyButton,
-                ],
-                action: viewModel.onTapApplySelected,
-                isDisabled: state.selectedFieldIds.isEmpty,
-            )
-            .dStyle(
-                .primaryButton,
-            )
+            if !state.selectedFieldIds.isEmpty {
+                DButton(
+                    title: l10n[
+                        .scanSpeechProposalApplyButton,
+                    ],
+                    action: viewModel.onTapApplySelected,
+                )
+                .dStyle(
+                    .primaryButton,
+                )
+            }
 
             DButton(
                 title: l10n[
@@ -30,7 +31,7 @@ struct ScanSpeechReviewProposalBottomView: DViewProtocol {
                 action: viewModel.onTapBackToTranscript,
             )
             .dStyle(
-                .primaryText,
+                .textWeak,
             )
         }
         .padding(

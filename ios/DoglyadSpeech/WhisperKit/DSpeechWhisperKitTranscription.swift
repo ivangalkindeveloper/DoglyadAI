@@ -94,32 +94,175 @@ struct DSpeechWhisperKitTranscription: Sendable {
             started,
         )
         let checkStarted = Date()
+        let repeatedTexts = try await recheck(
+            results: results,
+            model: model,
+            language: language,
+        ) { segment in
+            try AudioProcessor.loadAudioAsFloatArray(
+                fromPath: audioPath,
+                startTime: max(
+                    0,
+                    Double(
+                        segment.start,
+                    ) - 0.35,
+                ),
+                endTime: min(
+                    duration,
+                    Double(
+                        segment.end,
+                    ) + 0.35,
+                ),
+            )
+        }
+        return Self(
+            results: results,
+            repeatedTexts: repeatedTexts,
+            decodingSeconds: decodingSeconds,
+            recheckSeconds: Date().timeIntervalSince(
+                checkStarted,
+            ),
+        )
+    }
+
+    static func previewText(
+        confirmedSegments: [TranscriptionSegment] = [],
+        unconfirmedSegments: [TranscriptionSegment],
+    ) -> String? {
+        // SDK callbacks can promote confirmed segments before replacing the old
+        // draft array. Audio timestamps prevent that transient overlap appearing twice.
+        let drafts = unconfirmedSegments.filter { segment in
+            guard let confirmedEnd = confirmedSegments.last?.end else { return true }
+            return segment.end > confirmedEnd
+        }
+        let text = (confirmedSegments + drafts).map { segment in
+            segment.text.replacingOccurrences(
+                of: #"<\|[^|]*\|>"#,
+                with: "",
+                options: .regularExpression,
+            ).trimmingCharacters(
+                in: .whitespacesAndNewlines,
+            )
+        }.filter { !$0.isEmpty }.joined(
+            separator: " ",
+        )
+        return text.isEmpty ? nil : text
+    }
+
+    static func transcribe(
+        model: WhisperKit,
+        audioArray: [Float],
+        language: String,
+    ) async throws -> Self {
+        try Task.checkCancellation()
+        let started = Date()
+        let duration = Double(
+            audioArray.count,
+        ) / Double(
+            WhisperKit.sampleRate,
+        )
+        let results = try await model.transcribe(
+            audioArray: audioArray,
+            decodeOptions: DecodingOptions(
+                language: language,
+                chunkingStrategy: duration > 30 ? .vad : nil,
+            ),
+        )
+        let decodingSeconds = Date().timeIntervalSince(
+            started,
+        )
+        let checkStarted = Date()
+        let repeatedTexts = try await recheck(
+            results: results,
+            model: model,
+            language: language,
+        ) { segment in
+            samples(
+                for: segment,
+                in: audioArray,
+            )
+        }
+        return Self(
+            results: results,
+            repeatedTexts: repeatedTexts,
+            decodingSeconds: decodingSeconds,
+            recheckSeconds: Date().timeIntervalSince(
+                checkStarted,
+            ),
+        )
+    }
+
+    static func samples(
+        for segment: TranscriptionSegment,
+        in audioArray: [Float],
+    ) -> [Float] {
+        guard segment.start.isFinite, segment.end.isFinite, segment.end > segment.start else { return [] }
+        let rate = Double(
+            WhisperKit.sampleRate,
+        )
+        let duration = Double(
+            audioArray.count,
+        ) / rate
+        let start = Int(
+            min(
+                duration,
+                max(
+                    0,
+                    Double(
+                        segment.start,
+                    ) - 0.35,
+                ),
+            ) * rate,
+        )
+        let end = min(
+            audioArray.count,
+            Int(
+                min(
+                    duration,
+                    max(
+                        0,
+                        Double(
+                            segment.end,
+                        ) + 0.35,
+                    ),
+                ) * rate,
+            ),
+        )
+        guard end > start else { return [] }
+        return Array(
+            audioArray[
+                start ..< end,
+            ],
+        )
+    }
+
+    private static func recheck(
+        results: [TranscriptionResult],
+        model: WhisperKit,
+        language: String,
+        samplesForSegment: (TranscriptionSegment) throws -> [Float],
+    ) async throws -> [String] {
         var repeatedTexts: [String] = []
         for segment in results.flatMap(
             \.segments,
         ) {
             try Task.checkCancellation()
-            guard segment.end > segment.start else { repeatedTexts.append(
-                "",
-            )
-            continue
+            guard segment.start.isFinite, segment.end.isFinite, segment.end > segment.start else {
+                repeatedTexts.append(
+                    "",
+                )
+                continue
             }
             do {
-                let samples = try AudioProcessor.loadAudioAsFloatArray(
-                    fromPath: audioPath,
-                    startTime: max(
-                        0,
-                        Double(
-                            segment.start,
-                        ) - 0.35,
-                    ),
-                    endTime: min(
-                        duration,
-                        Double(
-                            segment.end,
-                        ) + 0.35,
-                    ),
+                let samples = try samplesForSegment(
+                    segment,
                 )
+                guard !samples.isEmpty else {
+                    repeatedTexts.append(
+                        "",
+                    )
+                    continue
+                }
                 let repeated = try await model.transcribe(
                     audioArray: samples,
                     decodeOptions: DecodingOptions(
@@ -136,20 +279,12 @@ struct DSpeechWhisperKitTranscription: Sendable {
             } catch is CancellationError {
                 throw CancellationError()
             } catch {
-                // Failure to verify a fragment must not discard the recording.
-                // Its missing evidence sends affected fields to confirmation.
+                // Missing recheck evidence requires confirmation of the affected fields.
                 repeatedTexts.append(
                     "",
                 )
             }
         }
-        return Self(
-            results: results,
-            repeatedTexts: repeatedTexts,
-            decodingSeconds: decodingSeconds,
-            recheckSeconds: Date().timeIntervalSince(
-                checkStarted,
-            ),
-        )
+        return repeatedTexts
     }
 }

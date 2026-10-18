@@ -86,10 +86,12 @@ final class DictationResponseReplayTests: XCTestCase {
                 signature(
                     local,
                 ) as NSDictionary,
-                try XCTUnwrap(
-                    item[
-                        "expectedLocal",
-                    ] as? NSDictionary,
+                try currentSignature(
+                    XCTUnwrap(
+                        item[
+                            "expectedLocal",
+                        ] as? [String: Any],
+                    ),
                 ),
                 "Local processing changed: \(item["id"] ?? index)",
             )
@@ -97,10 +99,12 @@ final class DictationResponseReplayTests: XCTestCase {
                 signature(
                     server,
                 ) as NSDictionary,
-                try XCTUnwrap(
-                    item[
-                        "expectedServer",
-                    ] as? NSDictionary,
+                try currentSignature(
+                    XCTUnwrap(
+                        item[
+                            "expectedServer",
+                        ] as? [String: Any],
+                    ),
                 ),
                 "Server processing changed: \(item["id"] ?? index)",
             )
@@ -143,16 +147,27 @@ final class DictationResponseReplayTests: XCTestCase {
                     ),
                 ] as [String: Any]
             },
-            "rejected": result.rejectedFieldIds.map(
-                \.wireValue,
-            ),
-            "unmapped": result.unmappedFindings,
             "fieldSources": Dictionary(
                 uniqueKeysWithValues: result.fieldSources.map { ($0.key.wireValue, String(
                     describing: $0.value,
                 )) },
             ),
         ]
+    }
+
+    // Recorded runs retain their original schema. Compare only the fields
+    // represented by the current proposal contract.
+    private func currentSignature(
+        _ recorded: [String: Any],
+    ) -> NSDictionary {
+        var result = recorded
+        result.removeValue(
+            forKey: "rejected",
+        )
+        result.removeValue(
+            forKey: "unmapped",
+        )
+        return result as NSDictionary
     }
 }
 

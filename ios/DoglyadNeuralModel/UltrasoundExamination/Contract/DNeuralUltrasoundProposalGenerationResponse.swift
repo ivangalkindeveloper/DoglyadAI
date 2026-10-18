@@ -2,7 +2,6 @@
 
 struct DNeuralUltrasoundProposalGenerationResponse: Codable, Sendable {
     let proposals: [DNeuralUltrasoundProposalGenerationItem]
-    let unmappedFindings: [String]
 }
 
 extension DNeuralUltrasoundProposalGenerationResponse {
@@ -18,7 +17,6 @@ extension DNeuralUltrasoundProposalGenerationResponse {
                     accuracy: $0.accuracy,
                 )
             },
-            unmappedFindings: serverResponse.unmappedFindings,
         )
     }
 
@@ -27,14 +25,10 @@ extension DNeuralUltrasoundProposalGenerationResponse {
         _ response: [DNeuralUltrasoundFoundationProposalItem],
     ) -> Self {
         var proposals: [DNeuralUltrasoundProposalGenerationItem] = []
-        var unmappedFindings: [String] = []
         for item in response {
             guard let fieldId = DNeuralUltrasoundVoiceFieldId(
                 wireValue: item.field_id,
             ) else {
-                unmappedFindings.append(
-                    item.evidence,
-                )
                 continue
             }
             proposals.append(
@@ -50,7 +44,6 @@ extension DNeuralUltrasoundProposalGenerationResponse {
         }
         return Self(
             proposals: proposals,
-            unmappedFindings: unmappedFindings,
         )
     }
 }

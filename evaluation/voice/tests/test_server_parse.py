@@ -84,8 +84,6 @@ def test_score_counts_wrong_and_unspoken_values() -> None:
                 {"fieldId": "patient_weight_kg", "value": 73, "evidence": "вес 73 кг", "accuracy": "full"},
                 {"fieldId": "patient_gender", "value": "male", "evidence": "male", "accuracy": "full"},
             ],
-            "rejectedFieldIds": [],
-            "unmappedFindings": [],
         },
         "en",
     )
@@ -100,7 +98,6 @@ def test_duplicate_server_field_fails_scoring() -> None:
             {"fieldId": "patient_gender", "value": "male", "accuracy": "full"},
             {"fieldId": "patient_gender", "value": "female", "accuracy": "full"},
         ],
-        "rejectedFieldIds": [],
     }
     with pytest.raises(ValueError, match="duplicate"):
         score_response({}, response, "en")
@@ -137,7 +134,6 @@ def test_summary_reports_strict_and_spoken_equivalent_results() -> None:
                     "accuracy": "full",
                 }
             ],
-            "rejectedFieldIds": [],
         },
         "en",
     )
@@ -210,7 +206,6 @@ def test_server_retry_records_each_attempt(
                 200,
                 json={
                     "proposals": [{"fieldId": "patient_weight_kg", "value": 72, "accuracy": "full"}],
-                    "rejectedFieldIds": [],
                 },
             )
         return httpx.Response(status)

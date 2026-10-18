@@ -31,8 +31,6 @@ struct DictationProposalReconcilerTests {
                 ),
                 sourceQuote: "Examination number 007",
             )],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         let explicit = [DNeuralUltrasoundVoiceFieldProposal(
             id: .patientWeightKG,
@@ -85,8 +83,6 @@ struct DictationProposalReconcilerTests {
                 ),
                 sourceQuote: "Examination number 007",
             )],
-            unmappedFindings: [],
-            rejectedFieldIds: [.examinationDescription],
         )
         let generated = DNeuralUltrasoundDictationProposal(
             source: .localModel,
@@ -106,8 +102,6 @@ struct DictationProposalReconcilerTests {
                     sourceQuote: "left kidney: 35 mm. No abnormality.",
                 ),
             ],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
 
         let result = DNeuralUltrasoundDictationProposalReconciler.reconcile(
@@ -131,9 +125,6 @@ struct DictationProposalReconcilerTests {
             result.proposals.first { $0.id == .examinationDescription }?.value == .text(
                 "left kidney: 35 mm. No abnormality.",
             ),
-        )
-        #expect(
-            result.rejectedFieldIds.isEmpty,
         )
         switch result.fieldSources[
             .examinationDescription,
@@ -179,8 +170,6 @@ struct DictationProposalReconcilerTests {
                 ),
                 sourceQuote: "The patient reports tenderness.",
             )],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         let result = DNeuralUltrasoundDictationProposalReconciler.reconcile(
             request: request,

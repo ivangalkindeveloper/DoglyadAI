@@ -174,7 +174,7 @@ if [ "$ROLE" = inference ]; then
         log "NVIDIA Container Toolkit already present, skipping package installation"
     else
         log "installing the NVIDIA Container Toolkit"
-        TOOLKIT_VERSION="$(apt-cache policy nvidia-container-toolkit | awk '/Candidate:/ { print $2; exit }')"
+        TOOLKIT_VERSION="$(apt-cache policy nvidia-container-toolkit | awk '/Candidate:/ && !is_printed { print $2; is_printed=1 }')"
         if [ -z "$TOOLKIT_VERSION" ] || [ "$TOOLKIT_VERSION" = "(none)" ]; then
             log "adding the NVIDIA Container Toolkit repository"
             download \
@@ -193,7 +193,7 @@ if [ "$ROLE" = inference ]; then
                 >/etc/apt/sources.list.d/nvidia-container-toolkit.list
 
             apt-get -o DPkg::Lock::Timeout=300 update
-            TOOLKIT_VERSION="$(apt-cache policy nvidia-container-toolkit | awk '/Candidate:/ { print $2; exit }')"
+            TOOLKIT_VERSION="$(apt-cache policy nvidia-container-toolkit | awk '/Candidate:/ && !is_printed { print $2; is_printed=1 }')"
             if [ -z "$TOOLKIT_VERSION" ] || [ "$TOOLKIT_VERSION" = "(none)" ]; then
                 fail "no candidate version found for nvidia-container-toolkit"
             fi

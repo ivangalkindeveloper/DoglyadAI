@@ -16,75 +16,46 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
         case _ as ScanSpeechModelPreparationFailedState: .failed
         default: .ready
         }
+        let descriptionKey: L10NKey? = switch preparation {
+        case .checking: .scanSpeechModelCheckingDescription
+        case .downloading: .scanSpeechModelDownloadDescription
+        case .loading: .scanSpeechModelLoadingDescription
+        case .failed: .scanSpeechModelLoadFailedDescription
+        case .ready: nil
+        }
+        let descriptionColor: Color = switch preparation {
+        case .checking, .downloading, .loading, .ready: color.grayscaleBackgroundWeak
+        case .failed: color.warningDefaultStrong
+        }
+        let progress: Double? = switch preparation {
+        case .checking: 0
+        case let .downloading(
+            progress,
+        ): progress ?? 0
+        case .loading: 1
+        case .ready, .failed: nil
+        }
 
         VStack(
             spacing: size.s16,
         ) {
             Spacer()
 
+            if let descriptionKey {
+                DText(
+                    l10n[
+                        descriptionKey,
+                    ],
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: descriptionColor,
+                    alignment: .center,
+                )
+            }
+
             switch preparation {
-            case .checking:
-                DText(
-                    l10n[
-                        .scanSpeechModelCheckingDescription,
-                    ],
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscaleBackgroundWeak,
-                    alignment: .center,
-                )
-                .dShimmer()
-            case let .downloading(
-                progress,
-            ):
-                DText(
-                    l10n[
-                        .scanSpeechModelDownloadDescription,
-                    ],
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscaleBackgroundWeak,
-                    alignment: .center,
-                )
-                if let progress {
-                    DText(
-                        "\(Int(progress * 100))%",
-                    )
-                    .dStyle(
-                        font: typography.linkSmall,
-                        color: color.grayscaleBackgroundWeak,
-                        alignment: .center,
-                    )
-                    DProgress(
-                        value: progress,
-                    )
-                    .dShimmer()
-                }
-            case .loading:
-                DText(
-                    l10n[
-                        .scanSpeechModelLoadingDescription,
-                    ],
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscaleBackgroundWeak,
-                    alignment: .center,
-                )
-                .dShimmer()
             case .failed:
-                DText(
-                    l10n[
-                        .scanSpeechModelLoadFailedDescription,
-                    ],
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.warningDefaultStrong,
-                    alignment: .center,
-                )
                 DButton(
                     title: l10n[
                         .scanSpeechModelRetryButton,
@@ -94,8 +65,23 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
                 .dStyle(
                     .primaryButton,
                 )
-            case .ready:
+            case .checking, .downloading, .loading, .ready:
                 EmptyView()
+            }
+
+            if let progress {
+                DText(
+                    "\(Int(progress * 100))%",
+                )
+                .dStyle(
+                    font: typography.linkSmall,
+                    color: color.grayscaleBackgroundWeak,
+                    alignment: .center,
+                )
+                DProgress(
+                    value: progress,
+                )
+                .dShimmer()
             }
 
             Spacer()

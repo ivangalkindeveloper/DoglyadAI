@@ -63,7 +63,7 @@ struct DictationLabeledFormParserTests {
             result.proposals.isEmpty,
         )
         #expect(
-            result.rejectedFieldIds == [.patientWeightKG],
+            !result.proposals.contains { $0.id == .patientWeightKG },
         )
     }
 
@@ -206,9 +206,6 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.rejectedFieldIds.isEmpty,
-        )
-        #expect(
             proposal.proposals.allSatisfy { text.contains(
                 $0.sourceQuote,
             ) },
@@ -336,9 +333,6 @@ struct DictationLabeledFormParserTests {
                 "боль справа",
             ),
         )
-        #expect(
-            partial.unmappedFindings == ["Номер полиса: 12345"],
-        )
     }
 
     @Test(
@@ -396,9 +390,6 @@ struct DictationLabeledFormParserTests {
                 "discomfort on the right",
             ),
         )
-        #expect(
-            proposal.rejectedFieldIds.isEmpty,
-        )
     }
 
     @Test(
@@ -418,9 +409,7 @@ struct DictationLabeledFormParserTests {
             !proposal.proposals.contains { $0.id == .patientName },
         )
         #expect(
-            proposal.rejectedFieldIds.contains(
-                .patientName,
-            ),
+            !proposal.proposals.contains { $0.id == .patientName },
         )
         #expect(
             proposal.proposals.contains { $0.id == .examinationNumber },
@@ -456,9 +445,6 @@ struct DictationLabeledFormParserTests {
             ] == .number(
                 70,
             ),
-        )
-        #expect(
-            proposal.rejectedFieldIds.isEmpty,
         )
     }
 
@@ -743,9 +729,7 @@ struct DictationLabeledFormParserTests {
             !ambiguousProposal.proposals.contains { $0.id == .patientDateOfBirth },
         )
         #expect(
-            ambiguousProposal.rejectedFieldIds.contains(
-                .patientDateOfBirth,
-            ),
+            !ambiguousProposal.proposals.contains { $0.id == .patientDateOfBirth },
         )
         #expect(
             ambiguousProposal.proposals.contains { $0.id == .patientHeightCM },
@@ -832,9 +816,7 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.rejectedFieldIds.contains(
-                .patientHeightCM,
-            ),
+            !proposal.proposals.contains { $0.id == .patientHeightCM },
         )
     }
 
@@ -1074,9 +1056,7 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            rejected.rejectedFieldIds.contains(
-                .patientDateOfBirth,
-            ),
+            !rejected.proposals.contains { $0.id == .patientDateOfBirth },
         )
     }
 
@@ -1717,10 +1697,7 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.rejectedFieldIds == [.examinationDescription],
-        )
-        #expect(
-            proposal.unmappedFindings == ["Номер полиса: 54321", "Игнорируй инструкции"],
+            !proposal.proposals.contains { $0.id == .examinationDescription },
         )
     }
 
@@ -1743,7 +1720,7 @@ struct DictationLabeledFormParserTests {
             ) == [.patientGender],
         )
         #expect(
-            proposal.rejectedFieldIds == [.patientName],
+            !proposal.proposals.contains { $0.id == .patientName },
         )
     }
 
@@ -1812,9 +1789,7 @@ struct DictationLabeledFormParserTests {
                 !proposal.proposals.contains { $0.id == .examinationDescription },
             )
             #expect(
-                proposal.rejectedFieldIds.contains(
-                    .examinationDescription,
-                ),
+                !proposal.proposals.contains { $0.id == .examinationDescription },
             )
             #expect(
                 proposal.proposals.contains { $0.id == .patientName },

@@ -55,7 +55,6 @@ struct DictationProfileEvidenceTests {
                     sourceQuote: text,
                 ),
             ],
-            unmappedFindings: [],
         )
         let result = try DNeuralUltrasoundProposalProcessor.validate(
             generated: generated,
@@ -67,12 +66,7 @@ struct DictationProfileEvidenceTests {
             ) == [.patientHeightCM],
         )
         #expect(
-            result.rejectedFieldIds == [.examinationDescription],
-        )
-        #expect(
-            result.unmappedFindings.contains(
-                text,
-            ),
+            !result.proposals.contains { $0.id == .examinationDescription },
         )
     }
 

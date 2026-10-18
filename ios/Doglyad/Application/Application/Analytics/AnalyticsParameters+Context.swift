@@ -65,9 +65,6 @@ extension AnalyticsParameters {
                         0,
                     ) { $0 + $1.warnings.count },
                 ),
-                .rejectedCount: .int(
-                    proposal.rejectedFieldIds.count,
-                ),
                 .durationMs: .int(
                     Int(
                         completedAt.timeIntervalSince(

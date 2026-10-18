@@ -693,7 +693,6 @@ struct DictationProposalValidatorTests {
                     value: "female",
                     sourceQuote: quote,
                 )],
-                unmappedFindings: [],
             )
             let result = try DNeuralUltrasoundProposalProcessor.validate(
                 generated: generated,
@@ -703,7 +702,7 @@ struct DictationProposalValidatorTests {
                 result.proposals.isEmpty,
             )
             #expect(
-                result.rejectedFieldIds == [.patientGender],
+                !result.proposals.contains { $0.id == .patientGender },
             )
         }
         let patient = try proposal(
@@ -790,7 +789,6 @@ struct DictationProposalValidatorTests {
                     value: text,
                     sourceQuote: text,
                 )],
-                unmappedFindings: [],
             )
             let result = try DNeuralUltrasoundProposalProcessor.validate(
                 generated: generated,
@@ -800,7 +798,7 @@ struct DictationProposalValidatorTests {
                 result.proposals.isEmpty,
             )
             #expect(
-                result.rejectedFieldIds == [.examinationDescription],
+                !result.proposals.contains { $0.id == .examinationDescription },
             )
         }
     }
@@ -886,7 +884,6 @@ struct DictationProposalValidatorTests {
                 value: value,
                 sourceQuote: quote,
             )],
-            unmappedFindings: [],
         )
         return try #require(
             DNeuralUltrasoundProposalProcessor.validate(

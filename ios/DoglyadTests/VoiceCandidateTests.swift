@@ -521,8 +521,6 @@ final class VoiceCandidateTests: XCTestCase {
                 ) ?? DNeuralUltrasoundDictationProposal(
                     source: .labeledDictation,
                     proposals: [],
-                    unmappedFindings: [],
-                    rejectedFieldIds: [],
                 )
             case .explicitRules:
                 proposal = DNeuralUltrasoundDictationProposalReconciler.reconcile(
@@ -603,10 +601,6 @@ final class VoiceCandidateTests: XCTestCase {
                 "sourceQuotes": quotes,
                 "warnings": warnings,
                 "accuracies": accuracies,
-                "unmappedFindings": proposal.unmappedFindings,
-                "rejectedFieldIds": proposal.rejectedFieldIds.map(
-                    \.rawValue,
-                ),
                 "elapsedSeconds": Date().timeIntervalSince(
                     started,
                 ),

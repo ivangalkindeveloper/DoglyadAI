@@ -533,7 +533,7 @@ final class VoiceEndToEndTests: XCTestCase {
                             "rawFoundationResponse",
                         ] = ["proposals": generated.proposals.map { item in
                             ["field_id": item.fieldId.wireValue, "value": item.value, "evidence": item.sourceQuote, "accuracy": item.accuracy.rawValue]
-                        }, "unmappedFindings": generated.unmappedFindings] as [String: Any]
+                        }] as [String: Any]
                         if let checked = try? DNeuralUltrasoundProposalProcessor.validate(
                             generated: generated,
                             request: request,
@@ -542,11 +542,6 @@ final class VoiceEndToEndTests: XCTestCase {
                                 "validatedFoundationProposals",
                             ] = checked.proposals.map(
                                 self.proposalJSON,
-                            )
-                            row[
-                                "foundationRejectedFieldIds",
-                            ] = checked.rejectedFieldIds.map(
-                                \.wireValue,
                             )
                         }
                     }
@@ -660,9 +655,7 @@ final class VoiceEndToEndTests: XCTestCase {
                     "response",
                 ] = ["proposals": proposal.proposals.map(
                     proposalJSON,
-                ), "rejectedFieldIds": proposal.rejectedFieldIds.map(
-                    \.wireValue,
-                ), "unmappedFindings": proposal.unmappedFindings]
+                )]
                 row[
                     "automaticFieldIds",
                 ] = plan.automatic.map(

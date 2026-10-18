@@ -59,8 +59,7 @@ def test_validator_returns_sparse_supported_fields_and_rejects_bad_quotes() -> N
 
     assert [item.fieldId.value for item in response.proposals] == ["patient_name", "patient_weight_kg"]
     assert [item.value for item in response.proposals] == ["Иванов Иван", 72]
-    assert [item.value for item in response.rejectedFieldIds] == ["patient_height_cm"]
-    assert response.unmappedFindings == []
+    assert all(item.fieldId.value != "patient_height_cm" for item in response.proposals)
 
 
 def test_validator_rejects_duplicate_field_without_choosing_one() -> None:
@@ -74,7 +73,7 @@ def test_validator_rejects_duplicate_field_without_choosing_one() -> None:
         generated, "male or female", localization=voice_source_localization_test_support("male or female")
     )
     assert response.proposals == []
-    assert [item.value for item in response.rejectedFieldIds] == ["patient_gender"]
+    assert all(item.fieldId.value != "patient_gender" for item in response.proposals)
 
 
 def test_empty_generation_leaves_form_unchanged() -> None:
@@ -84,7 +83,6 @@ def test_empty_generation_leaves_form_unchanged() -> None:
         localization=voice_source_localization_test_support("Никаких данных формы"),
     )
     assert response.proposals == []
-    assert response.rejectedFieldIds == []
 
 
 def test_questionable_accuracy_survives_validation() -> None:
@@ -125,8 +123,6 @@ def test_measurement_cannot_be_used_as_examination_number(transcript: str, evide
     )
     numbers = [item for item in response.proposals if item.fieldId.value == "examination_number"]
     assert all(item.value != value for item in numbers)
-    if not numbers:
-        assert [item.value for item in response.rejectedFieldIds] == ["examination_number"]
 
 
 @pytest.mark.parametrize(
@@ -159,7 +155,7 @@ def test_explicit_study_identifier_is_kept(transcript: str, evidence: str, value
     response = validate_voice_form_generation(
         generated, transcript, localization=voice_source_localization_test_support(transcript)
     )
-    assert response.rejectedFieldIds == []
+
     assert response.proposals[0].value == value
 
 
@@ -208,7 +204,6 @@ def test_labeled_clinical_sections_survive_model_omission(transcript: str, compl
     assert actual["examination_description"].value == description
     assert description in actual["examination_description"].evidence
     assert all(item.accuracy.value == "full" for item in actual.values())
-    assert response.rejectedFieldIds == []
 
 
 def test_labeled_text_replaces_shortening_and_stops_before_other_fields() -> None:

@@ -117,7 +117,7 @@ flowchart TD
     Evidence --> Profile[DNeuralUltrasoundDictationProfileEvidence]
     Validator --> Evidence[DNeuralUltrasoundProposalProcessor: назначение цитаты конкретному полю]
     Evidence --> Accepted[DNeuralUltrasoundVoiceFieldProposal + DNeuralVoiceProposalWarning]
-    Evidence --> Rejected[rejectedFieldIds / unmappedFindings]
+    Evidence --> Discarded[Неподтверждённые предложения исключаются]
 ```
 
 Метки и явные факты тоже используют `DNeuralVoiceFieldValue`, `DNeuralUltrasoundDictationDescriptionNormalizer`, `DNeuralUltrasoundDictationNumericCorrection`, словари чисел и тот же `DNeuralUltrasoundDictationProposalValidator`. Это вспомогательные проверки одного общего пути, а не отдельные нейросети.
@@ -162,7 +162,7 @@ flowchart TD
     Server --> HTTP["Транспорт приложения → main<br/>transcript + usExaminationTypeId<br/>Accept-Language: ru"]
     HTTP --> GPU[main → inference → google/medgemma-4b-it]
     Generator --> Raw["Единый внутренний ответ<br/>field_id / value / evidence / accuracy"]
-    GPU --> DTO["DTO<br/>+ rejectedFieldIds + unmappedFindings"]
+    GPU --> DTO["DTO<br/>proposals"]
     DTO --> Raw
     Raw --> Processor[DNeuralUltrasoundProposalProcessor]
     Request --> Processor
@@ -209,7 +209,7 @@ flowchart TD
 ]
 ```
 
-Массив — контракт **генерации**. HTTP-ответ main оборачивает его в `proposals` и добавляет `rejectedFieldIds` и `unmappedFindings`. Foundation Models возвращает `value` строкой, например `"178"`; серверный DTO принимает рост/вес JSON-числом и переводит в промежуточную строку `"178.0"`. Затем обе ветки создают одно типизированное значение `.number(178)`.
+Массив — контракт **генерации**. HTTP-ответ main возвращает только проверенные предложения в `proposals`. Foundation Models возвращает `value` строкой, например `"178"`; серверный DTO принимает рост/вес JSON-числом и переводит в промежуточную строку `"178.0"`. Затем обе ветки создают одно типизированное значение `.number(178)`.
 
 ### 3. Проверка и преобразование одного значения
 
@@ -264,8 +264,6 @@ DNeuralUltrasoundDictationProposal
     patientWeightKG: number(82), quote «Вес: 82 кг.», full, warnings []
     examinationDescription: text(«Щитовидная железа без узлов.»), full, warnings []
   fieldSources: все три поля → labeledDictation
-  rejectedFieldIds: []
-  unmappedFindings: []
 ```
 
 Если метки дают рост `178`, а модель — `181`, объединение сохраняет первое подтверждённое значение и добавляет `.ambiguousDictation` / `.questionable`. Для клинических текстов есть дополнительное правило: явно ограниченный фрагмент может заменить предложение, захватившее соседнее поле, но разногласие всё равно остаётся причиной подтверждения.
@@ -275,7 +273,7 @@ DNeuralUltrasoundDictationProposal
 | Вход / ответ модели | Что меняется в данных |
 |---|---|
 | В тексте `Вес: 82 кг.`, модель вернула `81` с этой цитатой | Валидатор добавляет `.numberMismatch`. Предложение нельзя считать точным; после объединения с явным весом расхождение остаётся видимым. |
-| Модель цитирует `Печень без особенностей.`, которой нет в тексте | `DNeuralUltrasoundProposalProcessor` исключает это поле и добавляет ID в `rejectedFieldIds`. Выдуманная цитата не добавляется в `unmappedFindings`. |
+| Модель цитирует `Печень без особенностей.`, которой нет в тексте | `DNeuralUltrasoundProposalProcessor` исключает это поле из результата. |
 | Размер узла `4 мм` выдан за номер исследования | Проверка назначения цитаты выявляет отсутствие подтверждённого номера; неподдержанное поле исключается. |
 | Одинаковый ID пришёл дважды или ID вне `allowedFields` | Ошибка контракта `DNeuralUltrasoundDictationProposalError`; такой ответ не применяется как обычный набор полей. |
 | Пропущены имя, пол, дата рождения, номер и жалобы | Для них нет `DNeuralUltrasoundVoiceFieldProposal`. Их текущие значения в форме сохраняются. |

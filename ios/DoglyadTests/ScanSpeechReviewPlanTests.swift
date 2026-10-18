@@ -51,48 +51,14 @@ struct ScanSpeechReviewPlanTests {
         )
     }
 
-    @Test(
-        arguments: [false, true],
-    )
-    func rejectedFieldsRequireReview(
-        isAutomaticIncluded: Bool,
-    ) {
-        let plan = makePlan(
-            automatic: isAutomaticIncluded ? [weight] : [],
-            rejectedFieldIds: [.patientDateOfBirth],
-        )
-        #expect(
-            plan.decision == .reviewProposals,
-        )
-    }
-
-    @Test(
-        arguments: [false, true],
-    )
-    func unmappedFindingsRequireReview(
-        isAutomaticIncluded: Bool,
-    ) {
-        let plan = makePlan(
-            automatic: isAutomaticIncluded ? [weight] : [],
-            unmappedFindings: ["Additional dictated finding"],
-        )
-        #expect(
-            plan.decision == .reviewProposals,
-        )
-    }
-
     private func makePlan(
         automatic: [DNeuralUltrasoundVoiceFieldProposal] = [],
         uncertain: [DNeuralUltrasoundVoiceFieldProposal] = [],
-        rejectedFieldIds: [DNeuralUltrasoundVoiceFieldId] = [],
-        unmappedFindings: [String] = [],
     ) -> ScanSpeechReviewPlan {
         ScanSpeechReviewPlan(
             proposal: DNeuralUltrasoundDictationProposal(
                 source: .serverModel,
                 proposals: automatic + uncertain,
-                unmappedFindings: unmappedFindings,
-                rejectedFieldIds: rejectedFieldIds,
             ),
             automatic: automatic,
             uncertain: uncertain,

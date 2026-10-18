@@ -16,8 +16,6 @@ struct VoiceServerResponseTests {
             let data = try JSONSerialization.data(
                 withJSONObject: [
                     "proposals": [["fieldId": "patient_name", "value": name, "evidence": evidence, "accuracy": "full"]],
-                    "rejectedFieldIds": [],
-                    "unmappedFindings": [],
                 ],
             )
             let request = DNeuralUltrasoundDictationParseRequest(
@@ -44,15 +42,11 @@ struct VoiceServerResponseTests {
                 ),
                 request: request,
                 source: .serverModel,
-                rejectedFieldIds: response.rejectedFieldIds,
             )
             #expect(
                 proposal.proposals.first?.value == .text(
                     name,
                 ),
-            )
-            #expect(
-                proposal.rejectedFieldIds.isEmpty,
             )
         }
     }
@@ -61,7 +55,7 @@ struct VoiceServerResponseTests {
     func serverResponseIsRevalidatedAndNotAppliedAutomatically() throws {
         let text = "вес 72 килограмма"
         let data = Data(
-            #"{"proposals":[{"fieldId":"patient_weight_kg","value":72,"evidence":"вес 72 килограмма","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8,
+            #"{"proposals":[{"fieldId":"patient_weight_kg","value":72,"evidence":"вес 72 килограмма","accuracy":"full"}]}"#.utf8,
         )
         let response = try JSONDecoder().decode(
             DNeuralUltrasoundVoiceFormParseResponseDTO.self,
@@ -87,7 +81,6 @@ struct VoiceServerResponseTests {
             ),
             request: request,
             source: .serverModel,
-            rejectedFieldIds: response.rejectedFieldIds,
         )
         let transcript = DSpeechTranscript(
             rawText: text,
@@ -121,7 +114,7 @@ struct VoiceServerResponseTests {
     @Test
     func serverResponseCannotAddFieldWithoutVerbatimQuote() throws {
         let data = Data(
-            #"{"proposals":[{"fieldId":"patient_name","value":"Иванов Иван","evidence":"пациент Иванов Иван","accuracy":"full"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8,
+            #"{"proposals":[{"fieldId":"patient_name","value":"Иванов Иван","evidence":"пациент Иванов Иван","accuracy":"full"}]}"#.utf8,
         )
         let response = try JSONDecoder().decode(
             DNeuralUltrasoundVoiceFormParseResponseDTO.self,
@@ -147,14 +140,13 @@ struct VoiceServerResponseTests {
             ),
             request: request,
             source: .serverModel,
-            rejectedFieldIds: response.rejectedFieldIds,
         )
 
         #expect(
             proposal.proposals.isEmpty,
         )
         #expect(
-            proposal.rejectedFieldIds == [.patientName],
+            !proposal.proposals.contains { $0.id == .patientName },
         )
     }
 
@@ -164,7 +156,7 @@ struct VoiceServerResponseTests {
     func whisperServerReview() throws {
         let text = "Вес 68 кг. Жалобы: Боль справа."
         let data = Data(
-            #"{"proposals":[{"fieldId":"patient_weight_kg","value":68,"evidence":"Вес 68 кг","accuracy":"full"},{"fieldId":"patient_complaints","value":"Боль справа.","evidence":"Жалобы: Боль справа.","accuracy":"questionable"}],"rejectedFieldIds":[],"unmappedFindings":[]}"#.utf8,
+            #"{"proposals":[{"fieldId":"patient_weight_kg","value":68,"evidence":"Вес 68 кг","accuracy":"full"},{"fieldId":"patient_complaints","value":"Боль справа.","evidence":"Жалобы: Боль справа.","accuracy":"questionable"}]}"#.utf8,
         )
         let request = DNeuralUltrasoundDictationParseRequest(
             text: text,
@@ -190,7 +182,6 @@ struct VoiceServerResponseTests {
             ),
             request: request,
             source: .serverModel,
-            rejectedFieldIds: response.rejectedFieldIds,
         )
         let transcript = DSpeechTranscript(
             rawText: text,

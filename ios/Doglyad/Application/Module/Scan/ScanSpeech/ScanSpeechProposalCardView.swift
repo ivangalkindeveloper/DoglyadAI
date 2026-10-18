@@ -13,9 +13,16 @@ struct ScanSpeechProposalCardView: DViewProtocol {
         let isSelected = state.selectedFieldIds.contains(
             proposal.id,
         )
+        let warnings = proposal.warnings.isEmpty
+            ? [l10n[
+                .scanSpeechProposalNeedsReviewLabel,
+            ]]
+            : proposal.warnings.map { viewModel.warningText(
+                $0,
+            ) }
 
         DButtonCard(
-            backgroundColor: color.warningBackground,
+            backgroundColor: color.grayscaleHeader,
             action: { viewModel.onTapProposal(
                 proposal.id,
             ) },
@@ -57,77 +64,59 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                         color: color.grayscaleBackgroundWeak,
                     )
 
-                    if proposal.warnings.isEmpty {
-                        DText(
-                            l10n[
-                                .scanSpeechProposalNeedsReviewLabel,
-                            ],
-                        )
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.warningDefaultStrong,
-                        )
-                    } else {
-                        DText(
-                            l10n[
-                                .scanSpeechProposalWarningTitle,
-                            ],
-                        )
-                        .dStyle(
-                            font: typography.linkSmall,
-                            color: color.warningDefaultStrong,
-                        )
+                    VStack(
+                        alignment: .leading,
+                        spacing: 0,
+                    ) {
                         ForEach(
-                            proposal.warnings,
+                            warnings.indices,
                             id: \.self,
-                        ) { warning in
-                            DText(
-                                viewModel.warningText(
-                                    warning,
-                                ),
-                            )
-                            .dStyle(
-                                font: typography.textSmall,
-                                color: color.warningDefaultStrong,
-                            )
+                        ) { index in
+                            HStack(
+                                alignment: .firstTextBaseline,
+                                spacing: size.s8,
+                            ) {
+                                DText(
+                                    "•",
+                                )
+                                .dStyle(
+                                    font: typography.textSmall,
+                                    color: color.warningDefaultStrong,
+                                )
+                                DText(
+                                    warnings[
+                                        index,
+                                    ],
+                                )
+                                .dStyle(
+                                    font: typography.textSmall,
+                                    color: color.warningDefaultStrong,
+                                )
+                            }
                         }
                     }
 
-                    DText(
-                        l10n[
-                            .scanSpeechProposalCurrentValueTitle,
-                        ],
-                    )
-                    .dStyle(
-                        font: typography.textXSmall,
-                        color: color.grayscaleBackgroundWeak,
-                    )
-                    DText(
-                        viewModel.currentValue(
-                            proposal.id,
-                        ),
-                    )
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscaleBackgroundWeak,
-                    )
-
-                    DText(
-                        l10n[
-                            .scanSpeechProposalSourceTitle,
-                        ],
-                    )
-                    .dStyle(
-                        font: typography.textXSmall,
-                        color: color.grayscaleBackgroundWeak,
-                    )
-                    DText(
-                        proposal.sourceQuote,
-                    )
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscaleBackgroundWeak,
-                    )
+                    VStack(
+                        alignment: .leading,
+                        spacing: 0,
+                    ) {
+                        DText(
+                            l10n[
+                                .scanSpeechProposalSourceTitle,
+                            ],
+                        )
+                        .dStyle(
+                            font: typography.textXSmall,
+                            color: color.grayscaleBackgroundWeak,
+                        )
+                        DText(
+                            proposal.sourceQuote,
+                        )
+                        .dStyle(
+                            font: typography.textSmall,
+                            color: color.grayscaleBackgroundWeak,
+                        )
+                    }
                 }
                 .frame(
                     maxWidth: .infinity,
@@ -137,3 +126,54 @@ struct ScanSpeechProposalCardView: DViewProtocol {
         }
     }
 }
+
+#if DEBUG
+    #Preview(
+        "Нужно проверить",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ScanSpeechProposalPreviewView(
+            scenario: .patientName,
+            layout: .card,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+
+    #Preview(
+        "Выбрано",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ScanSpeechProposalPreviewView(
+            scenario: .patientName,
+            layout: .card,
+            isSelected: true,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+
+    #Preview(
+        "Число и единицы",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ScanSpeechProposalPreviewView(
+            scenario: .measurement,
+            layout: .card,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+
+    #Preview(
+        "Сторона и отрицание",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ScanSpeechProposalPreviewView(
+            scenario: .clinicalText,
+            layout: .card,
+        )
+        .dMessage()
+        .dThemeWrapper()
+    }
+#endif

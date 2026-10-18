@@ -6,10 +6,10 @@ struct ScanSpeechReviewPlan {
     let uncertain: [DNeuralUltrasoundVoiceFieldProposal]
 
     var decision: ScanSpeechReviewDecision {
-        if uncertain.isEmpty, proposal.rejectedFieldIds.isEmpty, proposal.unmappedFindings.isEmpty, !automatic.isEmpty {
+        if uncertain.isEmpty, !automatic.isEmpty {
             return .complete
         }
-        if proposal.proposals.isEmpty, proposal.rejectedFieldIds.isEmpty, proposal.unmappedFindings.isEmpty {
+        if proposal.proposals.isEmpty {
             return .reviewTranscript
         }
         return .reviewProposals

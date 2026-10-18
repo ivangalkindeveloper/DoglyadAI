@@ -44,7 +44,6 @@ def score(source: Path, output: Path) -> dict[str, Any]:
                 "warnings": {WIRE_FIELD_IDS[proposal_field_id(item)]: item.get("warnings", []) for item in proposals},
                 "accuracies": {WIRE_FIELD_IDS[proposal_field_id(item)]: item["accuracy"] for item in proposals},
                 "automaticFieldIds": case["automaticFieldIds"],
-                "rejectedFieldIds": case["response"]["rejectedFieldIds"],
             }
             row["score"] = score_fields(
                 case["expectedFields"], parse, locale=case["locale"], normalize_description=True

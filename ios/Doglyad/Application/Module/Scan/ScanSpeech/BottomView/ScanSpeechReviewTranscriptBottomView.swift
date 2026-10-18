@@ -21,7 +21,7 @@ struct ScanSpeechReviewTranscriptBottomView: DViewProtocol {
                 ],
                 action: viewModel.onTapContinue,
                 isLoading: isProcessing,
-                isDisabled: isProcessing || viewModel.textForParsing == nil,
+                isDisabled: viewModel.textForParsing == nil,
             )
             .dStyle(
                 .primaryButton,
@@ -35,7 +35,7 @@ struct ScanSpeechReviewTranscriptBottomView: DViewProtocol {
                 isDisabled: isProcessing,
             )
             .dStyle(
-                .primaryText,
+                .textWeak,
             )
         }
         .padding(

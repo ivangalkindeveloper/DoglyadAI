@@ -161,8 +161,6 @@ struct StatePublicationTests {
         let proposal = DNeuralUltrasoundDictationProposal(
             source: .serverModel,
             proposals: [field],
-            unmappedFindings: [],
-            rejectedFieldIds: [],
         )
         let model = DStateViewModel<any ScanSpeechStateProtocol>(
             state: ScanSpeechReviewProposalState(
@@ -190,8 +188,6 @@ struct StatePublicationTests {
         let updated = DNeuralUltrasoundDictationProposal(
             source: proposal.source,
             proposals: proposal.proposals,
-            unmappedFindings: ["Additional finding"],
-            rejectedFieldIds: [],
             fieldSources: [.patientWeightKG: .explicitFacts],
         )
         model.emit(

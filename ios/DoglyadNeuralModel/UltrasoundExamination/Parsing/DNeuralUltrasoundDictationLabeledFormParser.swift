@@ -154,8 +154,6 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 from: found,
                 source: source,
             ),
-            unmapped: [],
-            preRejected: [],
             request: request,
         )
     }
@@ -285,8 +283,6 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 from: found,
                 source: source,
             ),
-            unmapped: [],
-            preRejected: [],
             request: request,
         )
     }
@@ -423,7 +419,6 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         guard parts.count > 1 else { return nil }
 
         var values: [DNeuralUltrasoundLabeledValue] = []
-        var unmapped: [String] = []
         for part in parts {
             let source = part as NSString
             let range = NSRange(
@@ -459,10 +454,6 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 values.append(
                     labeled,
                 )
-            } else {
-                unmapped.append(
-                    part,
-                )
             }
         }
 
@@ -475,37 +466,21 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         ).mapValues(
             \.count,
         )
-        var seenDuplicates = Set<DNeuralUltrasoundVoiceFieldId>()
-        let duplicates = values.map(
-            \.id,
-        ).filter {
-            counts[
-                $0,
-                default: 0,
-            ] > 1 && seenDuplicates.insert(
-                $0,
-            ).inserted
-        }
         let unique = values.filter { counts[
             $0.id,
         ] == 1 }
         return makeProposal(
             values: unique,
-            unmapped: unmapped,
-            preRejected: duplicates,
             request: request,
         )
     }
 
     private static func makeProposal(
         values: [DNeuralUltrasoundLabeledValue],
-        unmapped: [String],
-        preRejected: [DNeuralUltrasoundVoiceFieldId],
         request: DNeuralUltrasoundDictationParseRequest,
     ) -> DNeuralUltrasoundDictationProposal {
         let localization = request.localization
         var proposals: [DNeuralUltrasoundVoiceFieldProposal] = []
-        var rejected = preRejected
         for entry in recoveringUnlabeledGender(
             in: recoveringMisheardComplaintLabel(
                 in: values,
@@ -597,9 +572,6 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     localization: localization,
                 )
             else {
-                rejected.append(
-                    entry.id,
-                )
                 continue
             }
             var warnings = DNeuralUltrasoundDictationProposalValidator.warnings(
@@ -615,9 +587,6 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     in: request.text,
                     localization: localization,
                 ) {
-                    rejected.append(
-                        entry.id,
-                    )
                     continue
                 }
             case .examinationNumber, .patientName, .patientDateOfBirth, .patientHeightCM,
@@ -680,8 +649,6 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         return DNeuralUltrasoundDictationProposal(
             source: .labeledDictation,
             proposals: proposals,
-            unmappedFindings: unmapped,
-            rejectedFieldIds: rejected,
         )
     }
 

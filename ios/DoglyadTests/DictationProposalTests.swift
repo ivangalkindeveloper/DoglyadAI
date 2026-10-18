@@ -137,7 +137,6 @@ struct DictationProposalTests {
                 sourceQuote: text,
                 accuracy: .questionable,
             )],
-            unmappedFindings: [],
         )
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
             generated: generated,
@@ -183,7 +182,6 @@ struct DictationProposalTests {
                 value: $0.1,
                 sourceQuote: $0.2,
             ) },
-            unmappedFindings: [],
         )
 
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
@@ -263,7 +261,6 @@ struct DictationProposalTests {
                     sourceQuote: "Рост 174 см",
                 ),
             ],
-            unmappedFindings: [],
         )
 
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
@@ -319,7 +316,6 @@ struct DictationProposalTests {
                     ) ? "123456" : "007",
                     sourceQuote: text,
                 )],
-                unmappedFindings: [],
             )
             let proposal = try DNeuralUltrasoundProposalProcessor.validate(
                 generated: generated,
@@ -329,10 +325,7 @@ struct DictationProposalTests {
                 proposal.proposals.isEmpty,
             )
             #expect(
-                proposal.rejectedFieldIds == [.examinationNumber],
-            )
-            #expect(
-                proposal.unmappedFindings == [text],
+                !proposal.proposals.contains { $0.id == .examinationNumber },
             )
         }
     }
@@ -394,7 +387,6 @@ struct DictationProposalTests {
                     sourceQuote: "report swelling",
                 ),
             ],
-            unmappedFindings: [],
         )
 
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
@@ -408,7 +400,7 @@ struct DictationProposalTests {
             ) == [.examinationNumber, .patientWeightKG, .patientComplaints],
         )
         #expect(
-            proposal.rejectedFieldIds == [.patientName, .patientGender, .patientDateOfBirth, .patientHeightCM],
+            !proposal.proposals.contains { $0.id == .patientName || $0.id == .patientGender || $0.id == .patientDateOfBirth || $0.id == .patientHeightCM },
         )
     }
 
@@ -443,7 +435,7 @@ struct DictationProposalTests {
             rejected.proposals.isEmpty,
         )
         #expect(
-            rejected.rejectedFieldIds == [.patientName],
+            !rejected.proposals.contains { $0.id == .patientName },
         )
 
         let patientRequest = DNeuralUltrasoundDictationParseRequest(
@@ -531,7 +523,7 @@ struct DictationProposalTests {
             generated.proposals.isEmpty,
         )
         #expect(
-            generated.rejectedFieldIds == [.patientName],
+            !generated.proposals.contains { $0.id == .patientName },
         )
     }
 
@@ -581,9 +573,6 @@ struct DictationProposalTests {
             proposal.proposals.map(
                 \.id,
             ) == [.patientWeightKG],
-        )
-        #expect(
-            proposal.unmappedFindings == ["Right kidney 12 mm"],
         )
     }
 
@@ -668,7 +657,6 @@ struct DictationProposalTests {
                     sourceQuote: "Lesion mass 72 kg",
                 ),
             ],
-            unmappedFindings: [],
         )
 
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
@@ -680,7 +668,7 @@ struct DictationProposalTests {
             proposal.proposals.isEmpty,
         )
         #expect(
-            proposal.rejectedFieldIds == [.patientHeightCM, .patientWeightKG],
+            !proposal.proposals.contains { $0.id == .patientHeightCM || $0.id == .patientWeightKG },
         )
     }
 
@@ -846,7 +834,7 @@ struct DictationProposalTests {
             rejected.proposals.isEmpty,
         )
         #expect(
-            rejected.rejectedFieldIds == [.examinationDescription],
+            !rejected.proposals.contains { $0.id == .examinationDescription },
         )
         let whitespace = response(
             fieldId: .examinationDescription,
@@ -861,7 +849,7 @@ struct DictationProposalTests {
             emptyQuote.proposals.isEmpty,
         )
         #expect(
-            emptyQuote.rejectedFieldIds == [.examinationDescription],
+            !emptyQuote.proposals.contains { $0.id == .examinationDescription },
         )
     }
 
@@ -896,7 +884,6 @@ struct DictationProposalTests {
                     sourceQuote: "рост сто семьдесят семь сантиметров",
                 ),
             ],
-            unmappedFindings: [],
         )
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
             generated: generated,
@@ -1088,7 +1075,7 @@ struct DictationProposalTests {
             proposal.proposals.isEmpty,
         )
         #expect(
-            proposal.rejectedFieldIds == [.examinationNumber],
+            !proposal.proposals.contains { $0.id == .examinationNumber },
         )
     }
 
@@ -1202,7 +1189,6 @@ struct DictationProposalTests {
                     sourceQuote: "On ultrasound, left ventricle: forty one, no, thirty eight millimeters.",
                 ),
             ],
-            unmappedFindings: [],
         )
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
             generated: generated,
@@ -1278,7 +1264,6 @@ struct DictationProposalTests {
                     sourceQuote: "Left kidney 12 mm",
                 ),
             ],
-            unmappedFindings: [],
         )
 
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
@@ -1291,7 +1276,7 @@ struct DictationProposalTests {
             ) == [.patientName],
         )
         #expect(
-            proposal.rejectedFieldIds == [.examinationDescription],
+            !proposal.proposals.contains { $0.id == .examinationDescription },
         )
     }
 
@@ -1323,7 +1308,6 @@ struct DictationProposalTests {
         )
         let duplicate = DNeuralUltrasoundProposalGenerationResponse(
             proposals: [item, item],
-            unmappedFindings: [],
         )
         #expect(
             throws: DNeuralUltrasoundDictationProposalError.self,
@@ -1448,7 +1432,6 @@ struct DictationProposalTests {
                     sourceQuote: "Date of birth October 23, 1974",
                 ),
             ],
-            unmappedFindings: [],
         )
 
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
@@ -1461,10 +1444,7 @@ struct DictationProposalTests {
             ) == [.patientName],
         )
         #expect(
-            proposal.unmappedFindings == ["Date of birth October 23, 1974"],
-        )
-        #expect(
-            proposal.rejectedFieldIds == [.patientDateOfBirth],
+            !proposal.proposals.contains { $0.id == .patientDateOfBirth },
         )
     }
 
@@ -1498,7 +1478,6 @@ struct DictationProposalTests {
                 value: value,
                 sourceQuote: quote,
             )],
-            unmappedFindings: [],
         )
     }
 }

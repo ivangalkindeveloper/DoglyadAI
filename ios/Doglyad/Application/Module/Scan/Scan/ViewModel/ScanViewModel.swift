@@ -749,40 +749,6 @@ extension ScanViewModel {
         )
     }
 
-    func currentVoiceFieldValue(
-        _ id: DNeuralUltrasoundVoiceFieldId,
-    ) -> String {
-        switch id {
-        case .examinationNumber: examinationNumberTextController.text
-        case .patientName: patientNameTextController.text
-        case .patientGender:
-            switch patientGender {
-            case .male: String(
-                    localized: container.l10n[
-                        .scanGenderMaleLabel,
-                    ],
-                )
-            case .female: String(
-                    localized: container.l10n[
-                        .scanGenderFemaleLabel,
-                    ],
-                )
-            }
-        case .patientDateOfBirth: patientDateOfBirth.formatted(
-                Date.FormatStyle(
-                    date: .abbreviated,
-                    time: .omitted,
-                ).locale(
-                    l10n.locale,
-                ),
-            )
-        case .patientHeightCM: patientHeightCMTextController.text
-        case .patientWeightKG: patientWeightKGTextController.text
-        case .patientComplaints: patientComplaintsTextController.text
-        case .examinationDescription: examinationDescriptionTextController.text
-        }
-    }
-
     func saveDraftSnapshot(
         _ draft: USExaminationDraftForm,
     ) async throws {
@@ -1032,11 +998,6 @@ private extension ScanViewModel {
                 .scanSpeech,
                 arguments: ScanSpeechArguments(
                     examinationType: examinationType,
-                    getCurrentValue: { [weak self] fieldId in
-                        self?.currentVoiceFieldValue(
-                            fieldId,
-                        ) ?? ""
-                    },
                     onConfirm: { [weak self] proposals in
                         guard let self, usExaminationType.id == examinationType.id,
                               let updatedForm = ScanFormPatch.apply(

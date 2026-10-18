@@ -119,6 +119,13 @@ extension DependencyContainer {
 extension DependencyContainer {
     @MainActor
     static var previewable: DependencyContainer {
+        makePreviewable()
+    }
+
+    @MainActor
+    static func makePreviewable(
+        l10n: L10N? = nil,
+    ) -> DependencyContainer {
         let environment = EnvironmentBase(
             type: .development,
             baseUrl: URL(
@@ -159,7 +166,7 @@ extension DependencyContainer {
         let applicationConfig = ApplicationConfig.default
         let language = Language(
             localeConfig: applicationConfig.locale,
-            preferredLanguageIdentifiers: Locale.preferredLanguages,
+            preferredLanguageIdentifiers: l10n.map { [$0.locale.identifier] } ?? Locale.preferredLanguages,
         )
 
         return DependencyContainer(
@@ -179,7 +186,7 @@ extension DependencyContainer {
             subscriptionRepository: subscriptionRepository,
             applicationConfig: applicationConfig,
             language: language,
-            l10n: L10N.previewable(
+            l10n: l10n ?? L10N.previewable(
                 code: language.currentCode,
             ),
             usExaminationTypeGroups: [],

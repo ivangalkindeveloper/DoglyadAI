@@ -13,6 +13,8 @@ public final class DSpeechWhisperKitModel: ObservableObject {
     private let fileManager: FileManager
     private var model: WhisperKit?
     private var preparationTask: Task<Void, Never>?
+    private var inferenceTail: Task<Void, Never>?
+    private var inferenceCancellations: [UUID: () -> Void] = [:]
     private var isDeletingModel = false
 
     @Published public private(set) var state: DSpeechModelPreparationStatus = .checking
@@ -53,7 +55,12 @@ public final class DSpeechWhisperKitModel: ObservableObject {
 
         let preparation = preparationTask
         preparation?.cancel()
+        let pendingInference = inferenceTail
+        for cancel in inferenceCancellations.values {
+            cancel()
+        }
         await preparation?.value
+        await pendingInference?.value
         try Task.checkCancellation()
 
         do {
@@ -95,6 +102,36 @@ public final class DSpeechWhisperKitModel: ObservableObject {
         try Task.checkCancellation()
         guard !isDeletingModel, let model else { throw DSpeechError.unavailable }
         return model
+    }
+
+    /// Serializes use of the shared decoder across recording controllers and final passes.
+    func performInference<Result>(
+        _ operation: @escaping @MainActor (WhisperKit) async throws -> Result,
+    ) async throws -> Result {
+        try Task.checkCancellation()
+        guard !isDeletingModel else { throw DSpeechError.unavailable }
+        let previous = inferenceTail
+        let task = Task {
+            await previous?.value
+            try Task.checkCancellation()
+            let model = try await load()
+            return try await operation(
+                model,
+            )
+        }
+        let id = UUID()
+        inferenceCancellations[
+            id,
+        ] = { task.cancel() }
+        inferenceTail = Task { _ = await task.result }
+        defer { inferenceCancellations[
+            id,
+        ] = nil }
+        return try await withTaskCancellationHandler {
+            try await task.value
+        } onCancel: {
+            task.cancel()
+        }
     }
 
     private func prepareModel() async {

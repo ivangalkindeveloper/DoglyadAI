@@ -29,7 +29,6 @@ public final class DNeuralUltrasoundModelServer: DNeuralUltrasoundModelProtocol 
                 serverResponse: response,
             ),
             source: .serverModel,
-            rejectedFieldIds: response.rejectedFieldIds,
         )
     }
 }

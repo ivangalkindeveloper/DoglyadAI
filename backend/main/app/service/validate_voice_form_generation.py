@@ -54,7 +54,6 @@ def validate_voice_form_generation(
     generated: USVoiceFormGeneration, transcript: str, *, localization: USVoiceSourceLocalization
 ) -> USVoiceFormParseResponse:
     proposals: list[USVoiceFieldProposal] = []
-    rejected: list[USVoiceFieldId] = []
     seen: set[USVoiceFieldId] = set()
     folded_text = transcript.casefold()
     description_evidence = next(
@@ -83,7 +82,6 @@ def validate_voice_form_generation(
         if proposal.field_id in clinical_text or proposal.field_id in measurements:
             continue
         if proposal.field_id in seen:
-            rejected.append(proposal.field_id)
             proposals = [item for item in proposals if item.fieldId != proposal.field_id]
             continue
         seen.add(proposal.field_id)
@@ -92,7 +90,6 @@ def validate_voice_form_generation(
             quote = repair_patient_name_evidence(transcript, str(proposal.value), localization=localization) or quote
         folded_quote = quote.casefold()
         if not quote.strip() or folded_text.count(folded_quote) != 1 or not _valid_typed_value(proposal):
-            rejected.append(proposal.field_id)
             continue
         if proposal.field_id is USVoiceFieldId.EXAMINATION_NUMBER and number_section is not None:
             continue
@@ -103,7 +100,6 @@ def validate_voice_form_generation(
         if proposal.field_id is USVoiceFieldId.EXAMINATION_NUMBER and not has_examination_number_evidence(
             transcript, quote, str(proposal.value), localization=localization
         ):
-            rejected.append(proposal.field_id)
             continue
         checked = USVoiceFieldProposal(
             fieldId=proposal.field_id, value=proposal.value, evidence=proposal.evidence, accuracy=proposal.accuracy
@@ -112,24 +108,20 @@ def validate_voice_form_generation(
         if proposal.field_id is USVoiceFieldId.PATIENT_GENDER:
             gender = gender_from_evidence(quote, localization=localization)
             if gender is None:
-                rejected.append(proposal.field_id)
                 continue
             checked.value = gender
         if proposal.field_id in {USVoiceFieldId.PATIENT_HEIGHT_CM, USVoiceFieldId.PATIENT_WEIGHT_KG}:
             measurement = source_measurement(quote, proposal.field_id, localization=localization)
             if measurement is None:
-                rejected.append(proposal.field_id)
                 continue
             checked.value = measurement
         if proposal.field_id is USVoiceFieldId.PATIENT_NAME and (
             str(proposal.value).casefold() not in folded_quote
             or any(folded_quote in item.evidence.casefold() for item in clinical_text.values())
         ):
-            rejected.append(proposal.field_id)
             continue
         if proposal.field_id in {USVoiceFieldId.PATIENT_COMPLAINTS, USVoiceFieldId.EXAMINATION_DESCRIPTION}:
             if not clinical_value_is_supported(str(checked.value), quote, localization=localization):
-                rejected.append(proposal.field_id)
                 continue
             # A matching excerpt alone does not prove that the model kept all
             # relevant clinical sentences or normalized a correction correctly.
@@ -137,7 +129,6 @@ def validate_voice_form_generation(
             checked.accuracy = USVoiceFieldAccuracy.QUESTIONABLE
         if proposal.field_id is USVoiceFieldId.PATIENT_DATE_OF_BIRTH:
             if not has_birth_date_cue(transcript, quote, localization=localization):
-                rejected.append(proposal.field_id)
                 continue
             birthday = source_birth_date(quote, localization=localization)
             if birthday is None:
@@ -195,11 +186,6 @@ def validate_voice_form_generation(
             item.evidence, excluded_evidence
         ):
             proposals.remove(item)
-            rejected.append(item.fieldId)
     return USVoiceFormParseResponse(
         proposals=[*proposals, *clinical_text.values()],
-        rejectedFieldIds=list(
-            dict.fromkeys(field for field in rejected if field not in {item.fieldId for item in proposals})
-        ),
-        unmappedFindings=[],
     )

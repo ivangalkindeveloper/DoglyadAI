@@ -134,14 +134,6 @@ enum DNeuralUltrasoundDictationProposalReconciler {
             }
         }
 
-        let rejected = Set(
-            (labeled?.rejectedFieldIds ?? []) + (generated?.rejectedFieldIds ?? []),
-        )
-        var seenFindings = Set<String>()
-        let findings = ((labeled?.unmappedFindings ?? []) + (generated?.unmappedFindings ?? []))
-            .filter { seenFindings.insert(
-                $0,
-            ).inserted }
         let source: DNeuralDictationProposalSource = if let generated {
             generated.source
         } else if labeled?.proposals.isEmpty == false {
@@ -154,12 +146,6 @@ enum DNeuralUltrasoundDictationProposalReconciler {
             proposals: request.allowedFields.compactMap { byId[
                 $0,
             ] },
-            unmappedFindings: findings,
-            rejectedFieldIds: request.allowedFields.filter { rejected.contains(
-                $0,
-            ) && byId[
-                $0,
-            ] == nil },
             fieldSources: sources,
         )
     }

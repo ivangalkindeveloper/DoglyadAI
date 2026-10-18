@@ -2,7 +2,6 @@ import DoglyadUI
 import SwiftUI
 
 struct ReportDetailExpandableTextView: DViewProtocol {
-    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
     let text: String
@@ -19,117 +18,145 @@ struct ReportDetailExpandableTextView: DViewProtocol {
         self.collapsedLineLimit = collapsedLineLimit
     }
 
-    @State private var isExpanded = false
-
     var body: some View {
-        VStack(
-            alignment: .leading,
-            spacing: size.s4,
+        ExpandableContentView(
+            text: text,
+            backgroundColor: backgroundColor,
+            collapsedLineLimit: collapsedLineLimit,
+            collapsedFontSize: 14,
+            collapsedLineSpacing: 0,
+            onTapContent: nil,
         ) {
-            if isExpanded {
-                DText(
-                    text,
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    alignment: .leading,
-                )
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: .leading,
-                )
-                DButtonCard(
-                    isPlain: true,
-                    action: {
-                        withAnimation(
-                            theme.animation,
-                        ) {
-                            isExpanded.toggle()
-                        }
-                    },
-                ) { DText(
-                    l10n[
-                        .buttonCollapse,
-                    ],
-                )
-                .dStyle(
-                    font: typography.linkSmall,
-                    color: color.primaryDefault,
-                )
-                }
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: .trailing,
-                )
-            } else {
-                DText(
-                    text,
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    alignment: .leading,
-                )
-                .lineLimit(
-                    collapsedLineLimit,
-                )
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: .leading,
-                )
-                .overlay(
-                    alignment: .bottomTrailing,
-                ) {
-                    HStack(
-                        spacing: .zero,
-                    ) {
-                        DTextFade(
-                            backgroundColor: backgroundColor,
-                        )
-
-                        DButtonCard(
-                            isPlain: true,
-                            action: {
-                                withAnimation(
-                                    theme.animation,
-                                ) {
-                                    isExpanded.toggle()
-                                }
-                            },
-                        ) { DText(
-                            l10n[
-                                .buttonNext,
-                            ],
-                        )
-                        .dStyle(
-                            font: typography.linkSmall,
-                            color: color.primaryDefault,
-                        )
-                        }
-                        .background(
-                            backgroundColor,
-                        )
-                    }
-                }
-            }
+            DText(
+                text,
+            )
+            .dStyle(
+                font: typography.textSmall,
+                alignment: .leading,
+            )
         }
     }
 }
 
-#Preview {
-    ReportDetailExpandableTextView(
-        text: """
-        This is long text that should be truncated after a specified number of lines. \
-        The collapsed state should end with an ellipsis and a “More” button, \
-        placed on the same line as the end of the truncated text. \
-        Tapping the button expands the entire text.
-        """,
-        backgroundColor: Color(
-            .white,
-        ),
-    )
-    .padding()
-    .dThemeWrapper()
-    .localization(
-        DependencyContainer.previewable.l10n,
-    )
-}
+#if DEBUG
+    private struct ReportDetailExpandableTextPreviewView: DViewProtocol {
+        @EnvironmentObject var theme: DTheme
+
+        private let fixture: ExpandableContentPreviewFixture
+        let scenario: ExpandableContentPreviewFixture.Scenario
+
+        init(
+            scenario: ExpandableContentPreviewFixture.Scenario,
+        ) {
+            fixture = ExpandableContentPreviewFixture(
+                scenario: scenario,
+            )
+            self.scenario = scenario
+        }
+
+        var body: some View {
+            ReportDetailExpandableTextView(
+                text: fixture.text,
+                backgroundColor: color.grayscaleBackgroundWeak,
+                collapsedLineLimit: fixture.collapsedLineLimit,
+            )
+            .id(
+                scenario,
+            )
+            .padding(
+                size.s16,
+            )
+            .frame(
+                width: fixture.width,
+                alignment: .leading,
+            )
+            .background {
+                DCardBackground(
+                    cornerRadius: size.s16,
+                    color: color.grayscaleBackgroundWeak,
+                )
+            }
+            .padding(
+                size.s16,
+            )
+        }
+    }
+
+    #Preview(
+        "Одна строка — лимит 3",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ReportDetailExpandableTextPreviewView(
+            scenario: .short,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Три строки — лимит 3",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ReportDetailExpandableTextPreviewView(
+            scenario: .threeLines,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Четыре строки — лимит 3",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ReportDetailExpandableTextPreviewView(
+            scenario: .fourLines,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Длинный текст — ширина 360",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ReportDetailExpandableTextPreviewView(
+            scenario: .long,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Длинный текст — ширина 260",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ReportDetailExpandableTextPreviewView(
+            scenario: .narrow,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Длинный текст — лимит 1",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ReportDetailExpandableTextPreviewView(
+            scenario: .singleLineLimit,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+#endif

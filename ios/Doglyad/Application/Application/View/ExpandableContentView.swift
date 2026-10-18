@@ -9,6 +9,8 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
     private let text: String
     private let backgroundColor: Color
     private let collapsedLineLimit: Int
+    private let collapsedFontSize: CGFloat
+    private let collapsedLineSpacing: CGFloat
     private let onTapContent: (() -> Void)?
     private let content: Content
 
@@ -19,23 +21,26 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
         text: String,
         backgroundColor: Color,
         collapsedLineLimit: Int,
+        collapsedFontSize: CGFloat = 16,
+        collapsedLineSpacing: CGFloat = 16 * 0.15,
         onTapContent: (() -> Void)?,
         @ViewBuilder content: () -> Content,
     ) {
         self.text = text
         self.backgroundColor = backgroundColor
         self.collapsedLineLimit = collapsedLineLimit
+        self.collapsedFontSize = collapsedFontSize
+        self.collapsedLineSpacing = collapsedLineSpacing
         self.onTapContent = onTapContent
         self.content = content()
     }
 
     private var collapsedHeight: CGFloat {
-        let fontSize: CGFloat = 16
         let font = UIFont(
             name: DFontFamily.MontserratRegular.rawValue,
-            size: fontSize,
+            size: collapsedFontSize,
         ) ?? UIFont.systemFont(
-            ofSize: fontSize,
+            ofSize: collapsedFontSize,
         )
         let lineCount = CGFloat(
             max(
@@ -44,7 +49,7 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
             ),
         )
         return ceil(
-            font.lineHeight * lineCount + fontSize * 0.15 * (lineCount - 1),
+            font.lineHeight * lineCount + collapsedLineSpacing * (lineCount - 1),
         )
     }
 
@@ -162,3 +167,158 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
             )
     }
 }
+
+#if DEBUG
+    private struct ExpandableContentPreviewView: DViewProtocol {
+        @EnvironmentObject var theme: DTheme
+
+        private let fixture: ExpandableContentPreviewFixture
+        let scenario: ExpandableContentPreviewFixture.Scenario
+
+        init(
+            scenario: ExpandableContentPreviewFixture.Scenario,
+        ) {
+            fixture = ExpandableContentPreviewFixture(
+                scenario: scenario,
+            )
+            self.scenario = scenario
+        }
+
+        var body: some View {
+            ExpandableContentView(
+                text: fixture.text,
+                backgroundColor: color.grayscaleInput,
+                collapsedLineLimit: fixture.collapsedLineLimit,
+                onTapContent: nil,
+            ) {
+                if fixture.isMarkdown {
+                    DMarkdown(
+                        content: fixture.text,
+                    )
+                } else {
+                    DText(
+                        fixture.text,
+                    )
+                    .dStyle(
+                        font: typography.textMedium,
+                        color: color.grayscaleHeader,
+                        alignment: .leading,
+                    )
+                    .lineSpacing(
+                        16 * 0.15,
+                    )
+                }
+            }
+            .id(
+                scenario,
+            )
+            .padding(
+                size.s16,
+            )
+            .frame(
+                width: fixture.width,
+                alignment: .leading,
+            )
+            .background {
+                DCardBackground(
+                    cornerRadius: size.s16,
+                    color: color.grayscaleInput,
+                )
+            }
+            .padding(
+                size.s16,
+            )
+        }
+    }
+
+    #Preview(
+        "Одна строка — лимит 3",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ExpandableContentPreviewView(
+            scenario: .short,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Три строки — лимит 3",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ExpandableContentPreviewView(
+            scenario: .threeLines,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Четыре строки — лимит 3",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ExpandableContentPreviewView(
+            scenario: .fourLines,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Длинный текст — ширина 360",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ExpandableContentPreviewView(
+            scenario: .long,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Длинный текст — ширина 260",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ExpandableContentPreviewView(
+            scenario: .narrow,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Длинный текст — лимит 1",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ExpandableContentPreviewView(
+            scenario: .singleLineLimit,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+
+    #Preview(
+        "Markdown — лимит 3",
+        traits: .sizeThatFitsLayout,
+    ) {
+        ExpandableContentPreviewView(
+            scenario: .markdown,
+        )
+        .dThemeWrapper()
+        .localization(
+            L10NPreviewFactory.make(),
+        )
+    }
+#endif

@@ -15,7 +15,6 @@ struct DictationClinicalSectionsTests {
                         value,
                         quote,
                     )],
-                    unmappedFindings: [],
                 ),
                 request: request(
                     quote,
@@ -25,7 +24,7 @@ struct DictationClinicalSectionsTests {
                 result.proposals.isEmpty,
             )
             #expect(
-                result.rejectedFieldIds == [.examinationDescription],
+                !result.proposals.contains { $0.id == .examinationDescription },
             )
         }
     }
@@ -51,7 +50,6 @@ struct DictationClinicalSectionsTests {
                     "Right kidney measures 110 mm. No calculi.",
                 ),
             ],
-            unmappedFindings: [],
         )
         let result = try DNeuralUltrasoundProposalProcessor.validate(
             generated: generated,
@@ -89,7 +87,6 @@ struct DictationClinicalSectionsTests {
                         "On ultrasound no free fluid.",
                     ),
                 ],
-                unmappedFindings: [],
             ),
             request: request(
                 text,
@@ -148,7 +145,6 @@ struct DictationClinicalSectionsTests {
                         text,
                     ),
                 ],
-                unmappedFindings: [],
             ),
             request: request(
                 text,

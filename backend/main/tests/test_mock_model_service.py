@@ -204,8 +204,7 @@ def test_mock_voice_scenario_passes_the_real_source_validator(
     assert response.status_code == 200, response.text
     result = USVoiceFormParseResponse.model_validate(response.json())
     assert {item.fieldId for item in result.proposals} == set(USVoiceFieldId)
-    assert result.rejectedFieldIds == []
-    assert result.unmappedFindings == []
+
     values = {item.fieldId: item.value for item in result.proposals}
     assert values[USVoiceFieldId.PATIENT_NAME] == fixture.generation.root[1].value
     assert values[USVoiceFieldId.PATIENT_DATE_OF_BIRTH] == "1985-01-15"

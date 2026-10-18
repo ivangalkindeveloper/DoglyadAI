@@ -11,7 +11,6 @@ enum AnalyticsParameter: String, Hashable {
     case itemCount = "item_count"
     case modelId = "model_id"
     case productId = "product_id"
-    case rejectedCount = "rejected_count"
     case result
     case screen = "screen_name"
     case selectionLimit = "selection_limit"
