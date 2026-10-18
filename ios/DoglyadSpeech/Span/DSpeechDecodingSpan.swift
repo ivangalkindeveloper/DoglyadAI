@@ -9,6 +9,7 @@ public struct DSpeechDecodingSpan: Sendable {
     public let temperature: Double
     public let compressionRatio: Double
     public let recheckedText: String?
+    public let isSpeechDetected: Bool?
 
     public init(
         utf16Start: Int,
@@ -17,6 +18,7 @@ public struct DSpeechDecodingSpan: Sendable {
         temperature: Double,
         compressionRatio: Double,
         recheckedText: String?,
+        isSpeechDetected: Bool? = nil,
     ) {
         self.utf16Start = utf16Start
         self.utf16Length = utf16Length
@@ -24,6 +26,7 @@ public struct DSpeechDecodingSpan: Sendable {
         self.temperature = temperature
         self.compressionRatio = compressionRatio
         self.recheckedText = recheckedText
+        self.isSpeechDetected = isSpeechDetected
     }
 
     public func isStable(

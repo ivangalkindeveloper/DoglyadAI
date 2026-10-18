@@ -30,7 +30,7 @@ struct DictationClinicalSectionsTests {
     }
 
     @Test(
-        "A separately cited finding preserves the following negative complaint sentence",
+        "A short model complaint is preserved with a warning about the missing continuation",
     )
     func completesComplaint() throws {
         let text = "He complains of painful urination. No visible blood. Right kidney measures 110 mm. No calculi."
@@ -60,7 +60,7 @@ struct DictationClinicalSectionsTests {
         )
         #expect(
             complaint.value == .text(
-                "painful urination. No visible blood.",
+                "painful urination",
             ),
         )
         #expect(
@@ -102,32 +102,34 @@ struct DictationClinicalSectionsTests {
     )
     func stopsBeforeMetadata() throws {
         let text = "Complaints: Pain at night. Patient: Helen Carter. On ultrasound no free fluid."
-        let result = DNeuralUltrasoundDictationClinicalSections.complete(
-            [
-                item(
-                    .patientComplaints,
-                    "Pain at night.",
-                    "Complaints: Pain at night.",
-                ),
-                item(
-                    .examinationDescription,
-                    "no free fluid.",
-                    "On ultrasound no free fluid.",
-                ),
-            ],
+        let result = try DNeuralUltrasoundProposalProcessor.validate(
+            generated: .init(
+                proposals: [
+                    item(
+                        .patientComplaints,
+                        "Pain at night.",
+                        "Complaints: Pain at night.",
+                    ),
+                    item(
+                        .examinationDescription,
+                        "no free fluid.",
+                        "On ultrasound no free fluid.",
+                    ),
+                ],
+            ),
             request: request(
                 text,
             ),
         )
         #expect(
-            result[
-                0,
-            ].value == "Pain at night.",
+            result.proposals.first { $0.id == .patientComplaints }?.value == .text(
+                "Pain at night.",
+            ),
         )
     }
 
     @Test(
-        "A measured finding copied after complaints is separated and requires review",
+        "Mixed model sections remain visible for physician review",
     )
     func separatesMixedDescription() throws {
         let text = "The patient complains of upper abdominal pain. No vomiting. Pancreatic head measures 22 mm. No free fluid."
@@ -152,12 +154,12 @@ struct DictationClinicalSectionsTests {
         )
         #expect(
             result.proposals.first { $0.id == .patientComplaints }?.value == .text(
-                "upper abdominal pain. No vomiting.",
+                "upper abdominal pain",
             ),
         )
         #expect(
             result.proposals.first { $0.id == .examinationDescription }?.value == .text(
-                "Pancreatic head measures 22 mm. No free fluid.",
+                text,
             ),
         )
         #expect(

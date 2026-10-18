@@ -7,6 +7,7 @@ from app.model.ultrasound.us_voice_field_accuracy import USVoiceFieldAccuracy
 from app.model.ultrasound.us_voice_field_id import USVoiceFieldId
 from app.model.ultrasound.us_voice_field_proposal import USVoiceFieldProposal
 from app.model.ultrasound.us_voice_source_localization import USVoiceSourceLocalization
+from app.service.clinical_value_is_supported import clinical_value_is_supported
 from app.service.examination_number_markers import examination_number_markers
 from app.service.source_number import source_number
 
@@ -26,7 +27,10 @@ def _clinical_value(value: str, *, localization: USVoiceSourceLocalization) -> s
 
 
 def labeled_clinical_text(
-    transcript: str, *, description_evidence: str | None = None, localization: USVoiceSourceLocalization
+    transcript: str,
+    *,
+    description_evidence: str | None = None,
+    localization: USVoiceSourceLocalization,
 ) -> dict[USVoiceFieldId, USVoiceFieldProposal]:
     """Preserve clinical sections of explicitly labelled form dictation.
 
@@ -89,6 +93,10 @@ def labeled_clinical_text(
             fieldId=field,
             value=value,
             evidence=transcript[marker.start() : end].strip(),
-            accuracy=USVoiceFieldAccuracy.FULL if is_explicit and value == body else USVoiceFieldAccuracy.QUESTIONABLE,
+            accuracy=(
+                USVoiceFieldAccuracy.FULL
+                if is_explicit and clinical_value_is_supported(value, body, localization=localization, is_complete=True)
+                else USVoiceFieldAccuracy.QUESTIONABLE
+            ),
         )
     return result

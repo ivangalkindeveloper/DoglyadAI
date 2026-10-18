@@ -112,6 +112,7 @@
       "followingPatientCue": "\\b(?:patient\\s*[:.,—–-]|gender\\b|date\\s+of\\s+birth)",
       "followingRecordBoundary": "record\\s+(?:marked|carries\\s+number)",
       "gramValue": "^(?:g|gram|grams)$",
+      "groupedNumericBirthDate": "^(?<month>[0-9]{1,2})\\s+(?<day>0\\s+[1-9]|1\\s+[0-2]|[0-9]{1,2})\\s+(?<year>(?:19|20)[0-9]{2})$",
       "heightAlias": "^(?:high|hi)$",
       "heightAliasPrefix": "^(?:high|hi)[\\s,.:]",
       "heightEvidenceCue": "\\bheight\\b",
@@ -216,7 +217,13 @@
     "ignoredPhoneticCharacters": "",
     "leftSidePattern": "^left$",
     "literalCharacterReplacements": {},
+    "medicalTermCorrections": {
+      "anechoeic": "anechoic",
+      "gall blader": "gall bladder",
+      "hyperechoeic": "hyperechoic"
+    },
     "negationPattern": "^(?:no|not|without)$",
+    "nonClinicalSuffixPattern": "(?<![\\p{L}\\p{N}])(?:to\\s+be\\s+continued|thanks?\\s+for\\s+watching|subscribe\\s+to\\s+(?:the|my)\\s+channel)[.!?…\\s]*$",
     "phoneticCharacterReplacements": {},
     "rightSidePattern": "^right$"
   }

@@ -23,12 +23,89 @@ enum DNeuralUltrasoundDictationProposalReconciler {
             if let current = byId[
                 candidate.id,
             ] {
+                let isGenerated = switch source {
+                case .localModel, .serverModel: true
+                case .labeledDictation, .explicitFacts: false
+                }
+                let isClinical = switch candidate.id {
+                case .patientComplaints, .examinationDescription: true
+                case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG: false
+                }
+                if isGenerated, isClinical {
+                    let isEquivalent = equivalent(
+                        current.value,
+                        candidate.value,
+                        fieldId: candidate.id,
+                        request: request,
+                    )
+                    var warnings = candidate.warnings
+                    if !isEquivalent, !warnings.contains(
+                        .textChanged,
+                    ) {
+                        warnings.append(
+                            .textChanged,
+                        )
+                    }
+                    if !isEquivalent, !warnings.contains(
+                        .ambiguousDictation,
+                    ) {
+                        warnings.append(
+                            .ambiguousDictation,
+                        )
+                    }
+                    byId[
+                        candidate.id,
+                    ] = DNeuralUltrasoundVoiceFieldProposal(
+                        id: candidate.id,
+                        value: candidate.value,
+                        sourceQuote: candidate.sourceQuote,
+                        accuracy: warnings.isEmpty ? candidate.accuracy : .questionable,
+                        warnings: warnings,
+                    )
+                    sources[
+                        candidate.id,
+                    ] = source
+                    return
+                }
                 guard !equivalent(
                     current.value,
                     candidate.value,
                     fieldId: candidate.id,
-                    locale: request.locale,
+                    request: request,
                 ) else {
+                    switch candidate.id {
+                    case .patientComplaints, .examinationDescription:
+                        // Deterministic sources may retain equivalent formatting.
+                        if candidate.warnings.isEmpty,
+                           case let .text(
+                               formatted,
+                           ) = candidate.value,
+                           case let .text(
+                               original,
+                           ) = current.value,
+                           formatted.count(
+                               where: { ".,;:!?".contains(
+                                   $0,
+                               ) },
+                           ) >= original.filter(
+                               { ".,;:!?".contains(
+                                   $0,
+                               ) },
+                           ).count
+                        {
+                            byId[
+                                candidate.id,
+                            ] = DNeuralUltrasoundVoiceFieldProposal(
+                                id: current.id,
+                                value: candidate.value,
+                                sourceQuote: current.sourceQuote,
+                                accuracy: current.accuracy,
+                                warnings: current.warnings,
+                            )
+                        }
+                    case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG:
+                        break
+                    }
                     return
                 }
                 var warnings = current.warnings
@@ -143,9 +220,31 @@ enum DNeuralUltrasoundDictationProposalReconciler {
         }
         return DNeuralUltrasoundDictationProposal(
             source: source,
-            proposals: request.allowedFields.compactMap { byId[
-                $0,
-            ] },
+            proposals: request.allowedFields.compactMap { id in
+                guard let field = byId[
+                    id,
+                ] else { return nil }
+                switch id {
+                case .patientName:
+                    guard case let .text(
+                        name,
+                    ) = field.value else { return field }
+                    return DNeuralUltrasoundVoiceFieldProposal(
+                        id: id,
+                        value: .text(
+                            DNeuralVoiceFieldValue.normalizedPatientName(
+                                name,
+                                locale: request.locale,
+                            ),
+                        ),
+                        sourceQuote: field.sourceQuote,
+                        accuracy: field.accuracy,
+                        warnings: field.warnings,
+                    )
+                case .examinationNumber, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription:
+                    return field
+                }
+            },
             fieldSources: sources,
         )
     }
@@ -180,7 +279,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
         _ first: DNeuralVoiceFieldValue,
         _ second: DNeuralVoiceFieldValue,
         fieldId: DNeuralUltrasoundVoiceFieldId,
-        locale: Locale,
+        request: DNeuralUltrasoundDictationParseRequest,
     ) -> Bool {
         if first == second { return true }
         switch fieldId {
@@ -198,19 +297,14 @@ enum DNeuralUltrasoundDictationProposalReconciler {
         func normalized(
             _ text: String,
         ) -> String {
-            text.trimmingCharacters(
-                in: .whitespacesAndNewlines.union(
-                    .punctuationCharacters,
+            DNeuralUltrasoundDictationTextFacts.matches(
+                #"[+-]?\d+(?:[.,]\d+)?|[^\W\d_]+|[<>≤≥±×/%]+"#,
+                in: text.folding(
+                    options: .caseInsensitive,
+                    locale: request.locale,
                 ),
-            )
-            .split(
-                whereSeparator: \.isWhitespace,
             ).joined(
                 separator: " ",
-            )
-            .folding(
-                options: .caseInsensitive,
-                locale: locale,
             )
         }
         return normalized(

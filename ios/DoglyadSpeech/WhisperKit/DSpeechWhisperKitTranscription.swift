@@ -6,12 +6,14 @@ struct DSpeechWhisperKitTranscription: Sendable {
     let decodingSpans: [DSpeechDecodingSpan]
     let segments: [TranscriptionSegment]
     let repeatedTexts: [String]
+    let speechActivity: [Bool?]
     let decodingSeconds: TimeInterval
     let recheckSeconds: TimeInterval
 
     init(
         results: [TranscriptionResult],
         repeatedTexts: [String] = [],
+        speechActivity: [Bool?] = [],
         decodingSeconds: TimeInterval = 0,
         recheckSeconds: TimeInterval = 0,
     ) {
@@ -19,6 +21,7 @@ struct DSpeechWhisperKitTranscription: Sendable {
             \.segments,
         )
         self.repeatedTexts = repeatedTexts
+        self.speechActivity = speechActivity
         self.decodingSeconds = decodingSeconds
         self.recheckSeconds = recheckSeconds
         rawText = results.map(
@@ -70,6 +73,9 @@ struct DSpeechWhisperKitTranscription: Sendable {
                     recheckedText: index < repeatedTexts.count ? repeatedTexts[
                         index,
                     ] : nil,
+                    isSpeechDetected: index < speechActivity.count ? speechActivity[
+                        index,
+                    ] : nil,
                 ),
             )
         }
@@ -94,7 +100,7 @@ struct DSpeechWhisperKitTranscription: Sendable {
             started,
         )
         let checkStarted = Date()
-        let repeatedTexts = try await recheck(
+        let rechecked = try await recheck(
             results: results,
             model: model,
             language: language,
@@ -117,7 +123,8 @@ struct DSpeechWhisperKitTranscription: Sendable {
         }
         return Self(
             results: results,
-            repeatedTexts: repeatedTexts,
+            repeatedTexts: rechecked.texts,
+            speechActivity: rechecked.activity,
             decodingSeconds: decodingSeconds,
             recheckSeconds: Date().timeIntervalSince(
                 checkStarted,
@@ -172,7 +179,7 @@ struct DSpeechWhisperKitTranscription: Sendable {
             started,
         )
         let checkStarted = Date()
-        let repeatedTexts = try await recheck(
+        let rechecked = try await recheck(
             results: results,
             model: model,
             language: language,
@@ -184,7 +191,8 @@ struct DSpeechWhisperKitTranscription: Sendable {
         }
         return Self(
             results: results,
-            repeatedTexts: repeatedTexts,
+            repeatedTexts: rechecked.texts,
+            speechActivity: rechecked.activity,
             decodingSeconds: decodingSeconds,
             recheckSeconds: Date().timeIntervalSince(
                 checkStarted,
@@ -241,8 +249,9 @@ struct DSpeechWhisperKitTranscription: Sendable {
         model: WhisperKit,
         language: String,
         samplesForSegment: (TranscriptionSegment) throws -> [Float],
-    ) async throws -> [String] {
+    ) async throws -> (texts: [String], activity: [Bool?]) {
         var repeatedTexts: [String] = []
+        var activity: [Bool?] = []
         for segment in results.flatMap(
             \.segments,
         ) {
@@ -251,6 +260,9 @@ struct DSpeechWhisperKitTranscription: Sendable {
                 repeatedTexts.append(
                     "",
                 )
+                activity.append(
+                    nil,
+                )
                 continue
             }
             do {
@@ -258,6 +270,32 @@ struct DSpeechWhisperKitTranscription: Sendable {
                     segment,
                 )
                 guard !samples.isEmpty else {
+                    repeatedTexts.append(
+                        "",
+                    )
+                    activity.append(
+                        nil,
+                    )
+                    continue
+                }
+                let isSpeechDetected = hasAudioActivity(
+                    samples,
+                )
+                guard samples.allSatisfy(
+                    \.isFinite,
+                ) else {
+                    activity.append(
+                        nil,
+                    )
+                    repeatedTexts.append(
+                        "",
+                    )
+                    continue
+                }
+                activity.append(
+                    isSpeechDetected,
+                )
+                guard isSpeechDetected else {
                     repeatedTexts.append(
                         "",
                     )
@@ -283,8 +321,28 @@ struct DSpeechWhisperKitTranscription: Sendable {
                 repeatedTexts.append(
                     "",
                 )
+                if activity.count < repeatedTexts.count { activity.append(
+                    nil,
+                ) }
             }
         }
-        return repeatedTexts
+        return (repeatedTexts, activity)
+    }
+
+    static func hasAudioActivity(
+        _ samples: [Float],
+    ) -> Bool {
+        // WhisperKit currently leaves noSpeechProb at zero. This conservative
+        // energy check is evidence of activity, not proof that words are correct.
+        guard !samples.isEmpty, samples.allSatisfy(
+            \.isFinite,
+        ) else { return false }
+        return EnergyVAD(
+            energyThreshold: 0.002,
+        ).voiceActivity(
+            in: samples,
+        ).contains(
+            true,
+        )
     }
 }

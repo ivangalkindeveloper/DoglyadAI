@@ -204,7 +204,7 @@ def test_patient_sex_requires_source_support_and_is_not_fetal_sex(text: str) -> 
         ("Пациентка жалуется на", "Сухой кашель. Кровохарканья нет."),
     ],
 )
-def test_final_complaint_section_preserves_continuation(intro: str, complaints: str) -> None:
+def test_final_complaint_model_shortening_is_retained_for_review(intro: str, complaints: str) -> None:
     description = "No pleural fluid. Diaphragm moves on both sides."
     text = f"{description} {intro} {complaints}"
     generated = USVoiceFormGeneration.model_validate(
@@ -229,7 +229,8 @@ def test_final_complaint_section_preserves_continuation(intro: str, complaints: 
             generated, text, localization=voice_source_localization_test_support(text)
         ).proposals
     }
-    assert fields[USVoiceFieldId.PATIENT_COMPLAINTS].value == complaints
+    assert fields[USVoiceFieldId.PATIENT_COMPLAINTS].value == "Dry cough"
+    assert fields[USVoiceFieldId.PATIENT_COMPLAINTS].evidence == f"{intro} {complaints}"
     assert fields[USVoiceFieldId.PATIENT_COMPLAINTS].accuracy.value == "questionable"
     assert fields[USVoiceFieldId.EXAMINATION_DESCRIPTION].value == description
 
@@ -294,7 +295,7 @@ def test_whole_transcript_quote_does_not_hide_findings_as_complaints() -> None:
     assert fields[USVoiceFieldId.EXAMINATION_DESCRIPTION] == description
 
 
-def test_final_complaint_label_stops_at_unlabelled_model_findings() -> None:
+def test_model_complaint_value_is_retained_with_separately_cited_findings() -> None:
     complaints = "Dry cough. No hemoptysis."
     description = "No pleural fluid. Diaphragm moves on both sides."
     text = f"Complaints: {complaints} {description}"
@@ -310,7 +311,7 @@ def test_final_complaint_label_stops_at_unlabelled_model_findings() -> None:
             generated, text, localization=voice_source_localization_test_support(text)
         ).proposals
     }
-    assert fields[USVoiceFieldId.PATIENT_COMPLAINTS] == complaints
+    assert fields[USVoiceFieldId.PATIENT_COMPLAINTS] == "Dry cough"
     assert fields[USVoiceFieldId.EXAMINATION_DESCRIPTION] == description
 
 
@@ -327,7 +328,9 @@ def test_complaint_only_recording_cannot_duplicate_the_text_as_findings() -> Non
     )
     assert len(response.proposals) == 1
     assert response.proposals[0].fieldId is USVoiceFieldId.PATIENT_COMPLAINTS
-    assert response.proposals[0].value == "Left calf pain after exercise. No redness or fever."
+    assert response.proposals[0].value == text
+    assert response.proposals[0].evidence == text
+    assert response.proposals[0].accuracy.value == "questionable"
 
 
 def test_name_quote_is_repaired_only_from_a_literal_labelled_name() -> None:

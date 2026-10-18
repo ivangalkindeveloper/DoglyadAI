@@ -101,8 +101,7 @@ let proposal = try await model.parseProposals(
 
 ```mermaid
 flowchart TD
-    Item[Предложение модели / сервера] --> Sections[DNeuralUltrasoundDictationClinicalSections: полнота клинических фрагментов]
-    Sections --> Quote[DNeuralUltrasoundProposalProcessor: цитата действительно есть в тексте]
+    Item[Предложение модели / сервера] --> Quote[DNeuralUltrasoundProposalProcessor: цитата действительно есть в тексте]
     Quote --> Normalize[DNeuralUltrasoundProposalProcessor.normalizedValue]
     Normalize --> Correction[DNeuralUltrasoundDictationObservationCue / DNeuralUltrasoundDictationNumericCorrection]
     Normalize --> Spoken[DNeuralSpokenCardinal / DNeuralSpokenDigitSequence]
@@ -113,16 +112,22 @@ flowchart TD
     TextFacts --> Units[DNeuralDictationUnit]
     Validator --> Date[DNeuralUltrasoundDictationSpokenBirthDate / DNeuralSpokenDigitSequence]
     Validator --> Number[DNeuralSpokenCardinal]
-    Sections --> Cues[Observation / Section / FollowingField cues]
+    Evidence --> Cues[Observation / Section / FollowingField cues]
     Evidence --> Profile[DNeuralUltrasoundDictationProfileEvidence]
     Validator --> Evidence[DNeuralUltrasoundProposalProcessor: назначение цитаты конкретному полю]
     Evidence --> Accepted[DNeuralUltrasoundVoiceFieldProposal + DNeuralVoiceProposalWarning]
-    Evidence --> Discarded[Неподтверждённые предложения исключаются]
+    Evidence --> Discarded[Неверная цитата, тип или назначение поля: предложение исключается]
 ```
 
 Метки и явные факты тоже используют `DNeuralVoiceFieldValue`, `DNeuralUltrasoundDictationDescriptionNormalizer`, `DNeuralUltrasoundDictationNumericCorrection`, словари чисел и тот же `DNeuralUltrasoundDictationProposalValidator`. Это вспомогательные проверки одного общего пути, а не отдельные нейросети.
 
 Технические предупреждения и `accuracy: questionable` — причины подтверждения. `accuracy: full` от модели не является достаточным основанием для автозаполнения: приложение отдельно проверяет происхождение текста и акустические признаки. Непроизнесённые поля не получают предложения и сохраняют своё текущее значение.
+
+После объединения ФИО получает нормализованный регистр без изменения букв и разделителей; смешанный регистр внутри слова сохраняется. Полные числовые даты с разделёнными цифрами, например `23 0 8 2014 год`, проверяются по календарю и порядку компонентов из каталога. Неполная или неверная дата не восстанавливается догадкой.
+
+Для жалоб и описания сохраняется предложенное моделью значение и его исходная цитата. Отличия слов, чисел, единиц, отрицаний, сторон и полноты текста превращаются в предупреждения и `questionable`; они не заменяют значение модели исходным разделом. Метки и явные факты дополняют клинические поля, которые модель пропустила. Цитата должна существовать в транскрипте, а тип и назначение поля по-прежнему проверяются.
+
+Main добавляет в GPU-промпты разбора речи и генерации протокола локализованные `contextualStrings` выбранного исследования. Оба используют общий `medicalTermCorrectionPrompt`, который объясняет назначение справочника для исправления терминов и запрещает добавлять из него находки. Для сохранения исправления не нужна заранее известная пара опечатки и термина. `medicalTermCorrections` используется только клиентским корректором до разбора; модуль проверки ответа модели от него не зависит.
 
 ## Сквозной пример данных
 
@@ -266,7 +271,7 @@ DNeuralUltrasoundDictationProposal
   fieldSources: все три поля → labeledDictation
 ```
 
-Если метки дают рост `178`, а модель — `181`, объединение сохраняет первое подтверждённое значение и добавляет `.ambiguousDictation` / `.questionable`. Для клинических текстов есть дополнительное правило: явно ограниченный фрагмент может заменить предложение, захватившее соседнее поле, но разногласие всё равно остаётся причиной подтверждения.
+Если метки дают рост `178`, а модель — `181`, объединение сохраняет первое подтверждённое значение и добавляет `.ambiguousDictation` / `.questionable`. Для клинического текста выбирается значение модели с её цитатой; расхождения с исходным разбором становятся предупреждениями и требуют проверки врачом.
 
 ### 5. Примеры ошибок и сохранения смысла
 
@@ -278,22 +283,7 @@ DNeuralUltrasoundDictationProposal
 | Одинаковый ID пришёл дважды или ID вне `allowedFields` | Ошибка контракта `DNeuralUltrasoundDictationProposalError`; такой ответ не применяется как обычный набор полей. |
 | Пропущены имя, пол, дата рождения, номер и жалобы | Для них нет `DNeuralUltrasoundVoiceFieldProposal`. Их текущие значения в форме сохраняются. |
 
-Пример восстановления обрезанных жалоб:
-
-```text
-request.text:
-Жалобы: Боль в правом подреберье. Усиливается после еды. Описание исследования: Печень без очаговых изменений.
-
-Модель вернула жалобы:
-Боль в правом подреберье.
-
-DNeuralUltrasoundDictationClinicalSections нашёл отдельную границу описания и восстановил из исходной строки:
-Боль в правом подреберье. Усиливается после еды.
-
-accuracy → questionable: восстановленная граница требует подтверждения.
-```
-
-`DNeuralUltrasoundDictationClinicalSections` не дописывает предполагаемые симптомы: берёт только существующий непрерывный фрагмент `request.text`. Разбор не должен превращать отсутствие жалоб в отсутствие патологии и не должен терять отрицание `«без»` в описании.
+Если модель вернула только первое предложение жалоб, приложение сохраняет этот вариант и отмечает неполноту для проверки. Оно не дописывает продолжение в ответ модели. Если модель вообще не вернула поле жалоб, исходный разбор может заполнить его полностью из транскрипта.
 
 ### 6. Выход модуля → приложение → форма
 
@@ -374,7 +364,6 @@ flowchart LR
 | `DNeuralUltrasoundDictationProposalReconciler` | Объединяет метки → факты → модель. Сохраняет происхождение и помечает расхождения. |
 | `DNeuralUltrasoundDictationProposalValidator` | Сравнивает значение с цитатой и её окружением; обнаруживает явные противоречия и неполные границы. |
 | `DNeuralUltrasoundDictationTextFacts` | Выделяет проверяемые токены, стороны, отрицания, числа, единицы и признаки сомнения. |
-| `DNeuralUltrasoundDictationClinicalSections` | Дополняет обрезанный клинический фрагмент только исходным текстом; восстановленная граница требует подтверждения. |
 | `DNeuralUltrasoundDictationProfileEvidence` | Отличает цитату только с данными пациента от настоящего описания исследования. |
 | `DNeuralUltrasoundDictationIdentifierCue` | Получает локализованный паттерн явного указания номера исследования. |
 | `DNeuralUltrasoundDictationObservationCue` | Получает границу начала УЗИ-описания и удаляет вводную фразу из значения. |

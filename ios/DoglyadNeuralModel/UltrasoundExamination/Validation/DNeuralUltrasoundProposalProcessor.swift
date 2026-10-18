@@ -58,10 +58,7 @@ struct DNeuralUltrasoundProposalProcessor {
         var seen = Set<DNeuralUltrasoundVoiceFieldId>()
         var verified: [DNeuralUltrasoundVoiceFieldProposal] = []
 
-        for item in DNeuralUltrasoundDictationClinicalSections.complete(
-            generated.proposals,
-            request: request,
-        ) {
+        for item in generated.proposals {
             guard request.allowedFields.contains(
                 item.fieldId,
             ) else {
@@ -150,7 +147,8 @@ struct DNeuralUltrasoundProposalProcessor {
                     id: item.fieldId,
                     value: value,
                     sourceQuote: sourceQuote,
-                    accuracy: item.accuracy,
+                    accuracy: (item.fieldId.isPatientComplaints || item.fieldId.isExaminationDescription)
+                        && !warnings.isEmpty ? .questionable : item.accuracy,
                     warnings: warnings,
                 ),
             )
@@ -353,17 +351,6 @@ struct DNeuralUltrasoundProposalProcessor {
                     localization: localization,
                 ).units.isEmpty
         case .patientComplaints:
-            if warnings.contains(
-                .textChanged,
-            ), case let .text(
-                text,
-            ) = value,
-                text.range(
-                    of: localization.pattern(
-                        .unsupportedEmptyComplaint,
-                    ),
-                    options: .regularExpression,
-                ) != nil { return true }
             let complaintCue = sourceQuote.range(
                 of: DNeuralUltrasoundDictationSectionCue.complaint(
                     localization: localization,

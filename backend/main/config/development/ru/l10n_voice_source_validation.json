@@ -190,6 +190,7 @@
     "decimalSeparator": "\\s+запятая\\s+",
     "fetalCue": "\\b(?:плод|плода|эмбрион)\\b",
     "genderLabel": "\\bпол\\s*:?\\s*(?P<gender>{genderWord})\\b",
+    "groupedNumericBirthDate": "(?<!\\d)(?P<day>[0-9]{1,2})\\s+(?P<month>0\\s+[1-9]|1\\s+[0-2]|[0-9]{1,2})\\s+(?P<year>(?:19|20)[0-9]{2})(?!\\d)",
     "height": "\\bрост\\s*(?:(?:составляет|равен)\\s*)?:?\\s*(?P<value>{numberPhrase}(?:\\s+запятая\\s+{numberPhrase})?)\\s*(?P<unit>\\w*)",
     "kilograms": "^(?:кг|килограмм\\w*)$",
     "measurementUnit": "\\b(?:мм|см|мл|кг|миллимет\\w*|сантимет\\w*|миллилит\\w*|килограм\\w*)\\b",

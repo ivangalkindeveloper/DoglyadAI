@@ -189,14 +189,16 @@ def test_voice_prompt_uses_selected_server_catalog(
 ) -> None:
     shutil.copytree(_CONFIG / environment, tmp_path, dirs_exist_ok=True)
     expected = f"Voice extraction instructions: {environment}/{language.value}"
+    correction = f"Medical terminology instructions: {environment}/{language.value}"
     path = tmp_path / language.value / "l10n.json"
     catalog = _json(path)
     catalog["voiceFormSystemPrompt"] = expected
+    catalog["medicalTermCorrectionPrompt"] = correction
     path.write_text(json.dumps(catalog, ensure_ascii=False), encoding="utf-8")
     monkeypatch.setattr(config, "_CONFIG_DIR", tmp_path)
     config.load_configs()
 
-    assert voice_form_system_prompt(language) == expected
+    assert voice_form_system_prompt(language) == expected + " " + correction
 
 
 @pytest.mark.parametrize(

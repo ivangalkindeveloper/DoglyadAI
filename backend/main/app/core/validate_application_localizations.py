@@ -13,6 +13,7 @@ _WORD_MAPS = frozenset(
         "voice.dictation.numbers.digits",
         "voice.speech.literalCharacterReplacements",
         "voice.speech.phoneticCharacterReplacements",
+        "voice.speech.medicalTermCorrections",
     }
 )
 

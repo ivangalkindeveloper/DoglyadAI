@@ -7,12 +7,17 @@ from app.model.l10n import L10n
 
 PROMPT_LOCALIZATION_KEYS: frozenset[str] = frozenset(
     {
+        "medicalTermCorrectionPrompt",
+        "reportComplaintsSectionPattern",
         "reportConclusionSchemaDescription",
+        "reportConclusionSectionPattern",
         "reportDescriptionRemarksPrompt",
         "reportDescriptionRemarksSchemaDescription",
         "reportDescriptionSchemaDescription",
+        "reportDictatedConclusionPrompt",
         "reportExaminationDescriptionPrompt",
         "reportExaminationPrompt",
+        "reportMeasurementPattern",
         "reportNoRecommendationsPrompt",
         "reportPatientComplaintsPrompt",
         "reportPatientHeightPrompt",
@@ -42,6 +47,8 @@ _PLACEHOLDER = re.compile(r"\{([A-Za-z][A-Za-z0-9]*)\}")
 
 def validate_prompt_localizations(catalog: L10n) -> None:
     for language in catalog.root:
+        for key in ("reportConclusionSectionPattern", "reportComplaintsSectionPattern", "reportMeasurementPattern"):
+            re.compile(catalog.text(language, key), re.IGNORECASE)
         for key in PROMPT_LOCALIZATION_KEYS:
             text = catalog.text(language, key)
             reference = catalog.text(LanguageCode.EN, key)

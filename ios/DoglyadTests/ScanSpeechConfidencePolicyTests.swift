@@ -6,6 +6,77 @@ import Testing
 
 struct ScanSpeechConfidencePolicyTests {
     @Test(
+        "A model correction remains visible in physician review with its original quote",
+    )
+    func modelCorrectionIsRetainedInReview() throws {
+        let raw = "Описание исследования: эхагенная взвесь."
+        let locale = Locale(
+            identifier: "ru",
+        )
+        let proposal = try DNeuralUltrasoundProposalProcessor(
+            request: DNeuralUltrasoundDictationParseRequest(
+                text: raw,
+                examinationTypeId: "bladder",
+                examinationTypeTitle: "Unit-test examination",
+                locale: locale,
+                allowedFields: DNeuralUltrasoundVoiceFieldId.allCases,
+                localization: VoiceLocalizationTestSupport.dictation(
+                    locale: locale,
+                ),
+            ),
+        ).process(
+            generated: DNeuralUltrasoundProposalGenerationResponse(
+                proposals: [DNeuralUltrasoundProposalGenerationItem(
+                    fieldId: .examinationDescription,
+                    value: "Эхогенная взвесь.",
+                    sourceQuote: "эхагенная взвесь",
+                    accuracy: .full,
+                )],
+            ),
+            source: .serverModel,
+        )
+        let transcript = DSpeechTranscript(
+            rawText: raw,
+            correctedText: raw,
+            locale: locale,
+            engine: .whisperKit,
+            completion: .finished,
+        )
+        let plan = ScanSpeechConfidencePolicy.plan(
+            proposal: proposal,
+            transcript: transcript,
+            parsedText: raw,
+            noComplaintsPattern: VoiceLocalizationTestSupport.dictation(
+                locale: locale,
+            ).pattern(
+                .noComplaintsValue,
+            ),
+        )
+        #expect(
+            plan.automatic.isEmpty,
+        )
+        let field = try #require(
+            plan.uncertain.first,
+        )
+        #expect(
+            field.value == .text(
+                "Эхогенная взвесь.",
+            ),
+        )
+        #expect(
+            field.sourceQuote == "эхагенная взвесь",
+        )
+        #expect(
+            field.accuracy == .questionable,
+        )
+        #expect(
+            field.warnings.contains(
+                .textChanged,
+            ),
+        )
+    }
+
+    @Test(
         "Repeat stability cannot certify medical prose, while clear scalar fields still apply",
     )
     func medicalProseNeedsReview() {

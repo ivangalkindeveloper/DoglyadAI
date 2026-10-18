@@ -30,6 +30,31 @@ def test_repeated_quote_or_missing_segments_cannot_supply_a_signal() -> None:
     assert field_signals({"rawText": "No pain.", "asrSegments": []}, "No pain.") is None
 
 
+def test_recorded_silence_blocks_automatic_filling_even_with_a_stable_repeat() -> None:
+    row = {
+        "id": "silence-example",
+        "pack": "guided-format",
+        "locale": "en",
+        "status": "ok",
+        "rawText": "Weight 82 kg.",
+        "automaticFieldIds": [],
+        "asrSegments": [{"text": "Weight 82 kg.", "avgLogprob": -0.1, "temperature": 0, "compressionRatio": 1.1}],
+        "asrRechecks": [{"repeatedText": "Weight 82 kg."}],
+        "asrSpeechActivity": [False],
+        "response": {
+            "proposals": [
+                {"fieldId": "patient_weight_kg", "value": 82, "evidence": "Weight 82 kg.", "accuracy": "full"}
+            ]
+        },
+        "score": {"matches": {"patientWeightKG": False}},
+    }
+    signals = field_signals(row, row["rawText"])
+    assert signals is not None and signals["isSpeechDetected"] is False
+    result = compare_recheck({"results": [row]})
+    assert result["withRecheck"]["automaticFields"] == 0
+    assert result["observedPolicyMismatchFields"] == 0
+
+
 def test_absence_gate_preserves_the_swift_unicode_punctuation_behavior() -> None:
     assert without_outer_punctuation("– жалоб нет.") == "жалоб нет"
     assert without_outer_punctuation("− жалоб нет") == "− жалоб нет"

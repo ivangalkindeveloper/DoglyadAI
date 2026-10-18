@@ -26,6 +26,21 @@ enum DNeuralUltrasoundDictationSpokenBirthDate {
                 .punctuationCharacters,
             ),
         )
+        if digitsText.range(
+            of: localization.pattern(
+                .groupedNumericBirthDate,
+            ),
+            options: [.regularExpression, .caseInsensitive],
+        ) != nil,
+            let parsed = try? DNeuralVoiceFieldValue.parse(
+                fieldId: .patientDateOfBirth,
+                text: digitsText,
+                locale: locale,
+                localization: localization,
+            ),
+            case let .date(
+                date,
+            ) = parsed { return date }
         // Recognizers may join adjacent dictated groups, for example
         // "1972-0802" or "2005, 0907". A four-digit year at the beginning
         // and a valid month/day make this year-first reading checkable.

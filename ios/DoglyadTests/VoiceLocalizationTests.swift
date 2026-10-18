@@ -421,7 +421,7 @@ struct VoiceLocalizationTests {
             into: Set<String>(),
         ) { result, item in
             // Number dictionaries and phonetic maps have language-dependent words.
-            if ["digits", "literalCharacterReplacements", "phoneticCharacterReplacements"].contains(
+            if ["digits", "literalCharacterReplacements", "medicalTermCorrections", "phoneticCharacterReplacements"].contains(
                 item.key,
             ) {
                 result.insert(

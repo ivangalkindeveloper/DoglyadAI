@@ -73,6 +73,7 @@
     "decimalSeparator": "\\s+point\\s+",
     "fetalCue": "\\b(?:fetal|fetus|foetus)\\b",
     "genderLabel": "\\b(?:gender|sex)\\s*(?:is\\s*)?:?\\s*(?P<gender>{genderWord})\\b",
+    "groupedNumericBirthDate": "(?<!\\d)(?P<month>[0-9]{1,2})\\s+(?P<day>0\\s+[1-9]|1\\s+[0-2]|[0-9]{1,2})\\s+(?P<year>(?:19|20)[0-9]{2})(?!\\d)",
     "height": "\\bheight\\s*(?:(?:is|of)\\s*)?:?\\s*(?P<value>{numberPhrase}(?:\\s+point\\s+{numberPhrase})?)\\s*(?P<unit>\\w*)|\\b(?P<tall>{numberPhrase})\\s+(?:centimeters?|centimetres?)\\s+tall\\b",
     "kilograms": "^(?:kg|kilograms?)$",
     "measurementUnit": "\\b(?:mm|cm|ml|kg|millimet\\w*|centimet\\w*|millilit\\w*|kilogram\\w*)\\b",

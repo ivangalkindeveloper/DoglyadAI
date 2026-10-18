@@ -257,7 +257,9 @@
         "ureter",
         "calculus",
         "color Doppler",
-        "wall trabeculation"
+        "wall trabeculation",
+        "anechoic contents",
+        "hyperechoic suspension"
     ],
     "bladderWithResidualUrineDetermination": [
         "residual urine",
@@ -309,7 +311,9 @@
         "bladder volume",
         "ureter",
         "calculus",
-        "acoustic shadowing"
+        "acoustic shadowing",
+        "anechoic contents",
+        "hyperechoic suspension"
     ],
     "brachiocephalicVessels": [
         "common carotid artery",

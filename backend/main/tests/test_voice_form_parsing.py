@@ -13,6 +13,7 @@ from starlette.requests import Request
 
 from app.core.language_code import LanguageCode
 from app.core.load_configs import load_configs
+from app.core.resolve_examination_contextual_strings import resolve_examination_contextual_strings
 from app.core.resolve_localized_text import resolve_localized_text
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.model.ultrasound.us_voice_form_parse_request import USVoiceFormParseRequest
@@ -172,7 +173,7 @@ def test_full_clinical_text_is_preserved_in_response() -> None:
         f"Жалобы: Жалоб нет. Описание исследования: {description}",
         localization=voice_source_localization_test_support(f"Жалобы: Жалоб нет. Описание исследования: {description}"),
     )
-    assert [item.value for item in response.proposals] == ["Жалоб нет.", description]
+    assert [item.value for item in response.proposals] == ["Жалоб нет", description]
 
 
 @pytest.mark.parametrize(
@@ -206,7 +207,7 @@ def test_labeled_clinical_sections_survive_model_omission(transcript: str, compl
     assert all(item.accuracy.value == "full" for item in actual.values())
 
 
-def test_labeled_text_replaces_shortening_and_stops_before_other_fields() -> None:
+def test_shortened_model_values_are_retained_for_review_without_affecting_other_fields() -> None:
     description = "Правый желудочек: 37 мм. Дополнительных изменений не выявлено."
     transcript = f"Описание исследования: {description} Вес: 82 кг. Жалобы: Жалоб нет. Пациент: Иванов Иван."
     generated = USVoiceFormGeneration.model_validate(
@@ -226,10 +227,11 @@ def test_labeled_text_replaces_shortening_and_stops_before_other_fields() -> Non
     )
     actual = {item.fieldId.value: item.value for item in response.proposals}
     assert actual == {
-        "examination_description": description,
-        "patient_complaints": "Жалоб нет.",
+        "examination_description": "Правый желудочек: 37 мм.",
+        "patient_complaints": "нет",
         "patient_weight_kg": 82,
     }
+    assert all(item.accuracy.value == "questionable" for item in response.proposals if isinstance(item.value, str))
 
 
 def test_repeated_clinical_labels_are_not_chosen_automatically() -> None:
@@ -255,7 +257,7 @@ def test_free_speech_with_later_explicit_labels_preserves_the_sections() -> None
     }
 
 
-def test_natural_ultrasound_cue_restores_sentences_omitted_by_the_model() -> None:
+def test_natural_ultrasound_cue_marks_model_omissions_for_review() -> None:
     generated = USVoiceFormGeneration.model_validate(
         [
             {
@@ -271,7 +273,8 @@ def test_natural_ultrasound_cue_restores_sentences_omitted_by_the_model() -> Non
         "На УЗИ: Печень не увеличена. Очаговых изменений нет.",
         localization=voice_source_localization_test_support("На УЗИ: Печень не увеличена. Очаговых изменений нет."),
     )
-    assert response.proposals[0].value == "Печень не увеличена. Очаговых изменений нет."
+    assert response.proposals[0].value == "Печень не увеличена."
+    assert response.proposals[0].accuracy.value == "questionable"
     assert response.proposals[0].accuracy.value == "questionable"
 
 
@@ -340,10 +343,16 @@ def test_generation_schema_caps_repeated_items() -> None:
     assert schema["type"] == "array"
     assert schema["maxItems"] == 8
     variants = [schema["$defs"][item["$ref"].split("/")[-1]] for item in schema["items"]["anyOf"]]
-    by_field = {field: variant for variant in variants for field in variant["properties"]["field_id"]["enum"]}
+    by_field = {
+        field: variant
+        for variant in variants
+        for field in variant["properties"]["field_id"].get("enum", [variant["properties"]["field_id"].get("const")])
+    }
     assert by_field["patient_weight_kg"]["properties"]["value"]["type"] == "number"
     assert by_field["patient_height_cm"]["properties"]["value"]["type"] == "number"
     assert by_field["patient_name"]["properties"]["value"]["type"] == "string"
+    assert by_field["patient_gender"]["properties"]["value"]["enum"] == ["male", "female"]
+    assert by_field["patient_date_of_birth"]["properties"]["value"]["pattern"] == r"^\d{4}-\d{2}-\d{2}$"
     assert all(set(variant["required"]) == {"field_id", "value", "evidence", "accuracy"} for variant in variants)
 
 
@@ -383,9 +392,16 @@ def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(language: st
     assert service.request.app_check_token == "token"
     assert service.request.request_id == "b" * 32
     assert json.loads(service.request.prompt)["transcript"] == body.transcript
+    assert json.loads(service.request.prompt)["contextualStrings"] == resolve_examination_contextual_strings(
+        body.usExaminationTypeId, LanguageCode(language[:2])
+    )
     assert json.loads(service.request.structured_output)["type"] == "array"
     assert expected_fragment in service.request.system_prompt
-    assert service.request.system_prompt == resolve_localized_text(LanguageCode(language[:2]), "voiceFormSystemPrompt")
+    assert service.request.system_prompt == (
+        resolve_localized_text(LanguageCode(language[:2]), "voiceFormSystemPrompt")
+        + " "
+        + resolve_localized_text(LanguageCode(language[:2]), "medicalTermCorrectionPrompt")
+    )
 
 
 def test_route_rejects_unknown_examination_type() -> None:

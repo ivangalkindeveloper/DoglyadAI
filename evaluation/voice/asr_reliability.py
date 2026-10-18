@@ -39,6 +39,7 @@ def field_signals(row: dict[str, Any], evidence: str) -> dict[str, Any] | None:
     covering = []
     covered: set[int] = set()
     checks = row.get("asrRechecks", [])
+    activity = row.get("asrSpeechActivity", [])
     for index, segment in enumerate(row.get("asrSegments", [])):
         text = re.sub(r"<\|[^|]*\|>", "", segment["text"]).strip()
         if not text:
@@ -57,6 +58,7 @@ def field_signals(row: dict[str, Any], evidence: str) -> dict[str, Any] | None:
         covering.append(
             {
                 **segment,
+                "isSpeechDetected": activity[index] if index < len(activity) else None,
                 "consistent": index < len(checks)
                 and f" {overlap} " in f" {normalized(checks[index]['repeatedText'])} ",
             }
@@ -71,6 +73,13 @@ def field_signals(row: dict[str, Any], evidence: str) -> dict[str, Any] | None:
         "maximumCompressionRatio": max(item["compressionRatio"] for item in covering),
         "minimumCompressionRatio": min(item["compressionRatio"] for item in covering),
         "consistentOnRecheck": all(item["consistent"] for item in covering),
+        "isSpeechDetected": (
+            False
+            if any(item["isSpeechDetected"] is False for item in covering)
+            else True
+            if all(item["isSpeechDetected"] is True for item in covering)
+            else None
+        ),
     }
 
 
@@ -126,6 +135,7 @@ def compare_recheck(data: dict[str, Any]) -> dict[str, Any]:
                 or signal["maximumTemperature"] != 0
                 or signal["minimumCompressionRatio"] <= 0
                 or signal["maximumCompressionRatio"] > 2.4
+                or signal["isSpeechDetected"] is False
             ):
                 continue
             if signal["consistentOnRecheck"]:

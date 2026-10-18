@@ -187,6 +187,7 @@ enum ScanSpeechConfidencePolicy {
                 intersection,
             ) <= raw.length,
                 span.averageLogProbability.isFinite, span.averageLogProbability >= -0.3,
+                span.isSpeechDetected != false,
                 span.temperature == 0, span.compressionRatio.isFinite,
                 span.compressionRatio > 0, span.compressionRatio <= 2.4,
                 span.isStable(

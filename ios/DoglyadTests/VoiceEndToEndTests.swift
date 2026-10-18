@@ -359,7 +359,7 @@ final class VoiceEndToEndTests: XCTestCase {
                     )
                     raw = transcription.rawText
                     decodingSpans = transcription.decodingSpans
-                    for key in ["asrSegments", "asrRechecks", "asrRecheckSeconds", "asrSeconds"] {
+                    for key in ["asrSegments", "asrRechecks", "asrRecheckSeconds", "asrSeconds", "asrSpeechActivity"] {
                         row[
                             key,
                         ] = cached[
@@ -396,6 +396,9 @@ final class VoiceEndToEndTests: XCTestCase {
                         ] as [String: Any]
                     }
                     row[
+                        "asrSpeechActivity",
+                    ] = transcription.speechActivity.map { $0.map { $0 as Any } ?? NSNull() }
+                    row[
                         "asrRechecks",
                     ] = zip(
                         transcription.segments,
@@ -415,13 +418,15 @@ final class VoiceEndToEndTests: XCTestCase {
                         "asrDecodingSeconds",
                     ] = transcription.decodingSeconds
                 }
-                let text = textOnly ? raw : DSpeechLexiconCorrector(
+                let corrector = DSpeechLexiconCorrector(
                     terms: type.contextualStrings,
                     localization: VoiceLocalizationTestSupport.speech(
                         locale: locale,
                     ),
-                ).correct(
+                )
+                let text = textOnly ? raw : corrector.correct(
                     raw,
+                    decodingSpans: decodingSpans,
                 )
                 row[
                     "rawText",
@@ -828,6 +833,9 @@ final class VoiceEndToEndTests: XCTestCase {
                 timings: TranscriptionTimings(),
             )],
             repeatedTexts: repeatedTexts,
+            speechActivity: (row[
+                "asrSpeechActivity",
+            ] as? [Any] ?? []).map { $0 as? Bool },
             decodingSeconds: decoding,
             recheckSeconds: recheck,
         )

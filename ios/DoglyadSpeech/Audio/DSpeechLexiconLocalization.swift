@@ -8,10 +8,13 @@ public struct DSpeechLexiconLocalization: Decodable, Sendable {
     public let literalCharacterReplacements: [String: String]
     public let phoneticCharacterReplacements: [String: String]
     public let ignoredPhoneticCharacters: String
+    public let medicalTermCorrections: [String: String]
+    public let nonClinicalSuffixPattern: String
 
     private enum DSpeechLexiconCodingKeys: String, CodingKey {
         case negationPattern, leftSidePattern, rightSidePattern
         case literalCharacterReplacements, phoneticCharacterReplacements, ignoredPhoneticCharacters
+        case medicalTermCorrections, nonClinicalSuffixPattern
     }
 
     public init(
@@ -44,8 +47,16 @@ public struct DSpeechLexiconLocalization: Decodable, Sendable {
             String.self,
             forKey: .ignoredPhoneticCharacters,
         )
+        medicalTermCorrections = try container.decode(
+            [String: String].self,
+            forKey: .medicalTermCorrections,
+        )
+        nonClinicalSuffixPattern = try container.decode(
+            String.self,
+            forKey: .nonClinicalSuffixPattern,
+        )
 
-        for expression in [negationPattern, leftSidePattern, rightSidePattern] {
+        for expression in [negationPattern, leftSidePattern, rightSidePattern, nonClinicalSuffixPattern] {
             _ = try NSRegularExpression(
                 pattern: expression,
                 options: .caseInsensitive,

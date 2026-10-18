@@ -239,6 +239,7 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         transcriptionTask = nil
         let correctedText = corrector.correct(
             rawText,
+            decodingSpans: decodingSpans,
         )
         let transcript = DSpeechTranscript(
             rawText: rawText,

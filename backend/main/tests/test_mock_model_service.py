@@ -224,7 +224,7 @@ def test_mock_voice_does_not_return_missing_or_ambiguous_evidence(
         language_code=language,
         model_id=_MODEL_ID,
         system_prompt="",
-        prompt=voice_form_prompt("Title", transcript),
+        prompt=voice_form_prompt("Title", transcript, []),
         structured_output=USVoiceFormGeneration.structured_output(),
     )
 

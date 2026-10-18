@@ -181,7 +181,7 @@ struct DictationProposalReconcilerTests {
             result.proposals[
                 0,
             ].value == .text(
-                "tenderness",
+                "Tenderness",
             ),
         )
         #expect(

@@ -39,6 +39,7 @@ class USVoiceSourceLocalization(BaseModel):
             "decimalSeparator",
             "fetalCue",
             "genderLabel",
+            "groupedNumericBirthDate",
             "height",
             "kilograms",
             "measurementUnit",

@@ -5,4 +5,8 @@ from app.core.resolve_localized_text import resolve_localized_text
 
 
 def voice_form_system_prompt(language: LanguageCode) -> str:
-    return resolve_localized_text(language, "voiceFormSystemPrompt")
+    return (
+        resolve_localized_text(language, "voiceFormSystemPrompt")
+        + " "
+        + resolve_localized_text(language, "medicalTermCorrectionPrompt")
+    )

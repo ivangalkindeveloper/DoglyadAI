@@ -18,6 +18,7 @@ from app.model.ultrasound.us_examination_request import USExaminationRequest
 from app.prompt import PromptFactory
 from app.schema.us_examination_report_structured_output import us_examination_report_structured_output
 from app.service import NeuralModelService, NeuralModelServiceRequest
+from app.service.validate_report_content import validate_report_content
 from app.service.validate_report_remarks import validate_report_remarks
 
 logger = logging.getLogger(__name__)
@@ -87,6 +88,7 @@ async def generate_report(
 
     try:
         report = USExaminationReport.model_validate_json(response_text)
+        validate_report_content(report, examination, language_code=language_code)
         validate_report_remarks(report, body)
     except ValueError as error:
         logger.warning("Generated report does not match the response schema: %s", type(error).__name__)

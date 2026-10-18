@@ -12,6 +12,19 @@ def source_birth_date(evidence: str, *, localization: USVoiceSourceLocalization)
     if localization.pattern("uncertainDate").search(evidence):
         return None
     values: list[str] = []
+    for match in localization.pattern("groupedNumericBirthDate").finditer(evidence):
+        prefix, suffix = evidence[: match.start()].rstrip(), evidence[match.end() :].lstrip()
+        if (prefix and prefix[-1].isdigit()) or (suffix and suffix[0].isdigit()):
+            return None
+        try:
+            value = date(
+                int(match["year"]),
+                int("".join(match["month"].split())),
+                int("".join(match["day"].split())),
+            )
+        except ValueError:
+            return None
+        values.append(value.isoformat())
     for match in localization.pattern("numericBirthDate").finditer(evidence):
         try:
             value = (

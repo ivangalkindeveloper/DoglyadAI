@@ -33,6 +33,7 @@ public enum DNeuralUltrasoundDictationLocalizationKey: String, CaseIterable, Sen
     case followingPatientCue
     case followingRecordBoundary
     case gramValue
+    case groupedNumericBirthDate
     case heightAlias
     case heightAliasPrefix
     case heightEvidenceCue

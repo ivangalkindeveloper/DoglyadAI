@@ -10,6 +10,7 @@ from app.core.get_voice_parsing_config import get_voice_parsing_config
 from app.core.get_voice_source_localization import get_voice_source_localization
 from app.core.http_header import HttpHeader
 from app.core.limiter import limiter
+from app.core.resolve_examination_contextual_strings import resolve_examination_contextual_strings
 from app.core.resolve_examination_title import resolve_examination_title
 from app.core.resolve_language import resolve_language
 from app.core.resolve_neural_model import resolve_neural_model
@@ -32,6 +33,7 @@ router = APIRouter()
 async def parse_dictation(body: USVoiceFormParseRequest, request: Request) -> USVoiceFormParseResponse:
     language = resolve_language(request.headers.get(HttpHeader.ACCEPT_LANGUAGE.value), get_application_locale_config())
     title = resolve_examination_title(body.usExaminationTypeId, language)
+    contextual_strings = resolve_examination_contextual_strings(body.usExaminationTypeId, language)
     config = get_voice_parsing_config()
     model = resolve_neural_model(config.modelId)
     logger.info(
@@ -49,7 +51,7 @@ async def parse_dictation(body: USVoiceFormParseRequest, request: Request) -> US
             language_code=language,
             model_id=model.id,
             system_prompt=voice_form_system_prompt(language),
-            prompt=voice_form_prompt(title, body.transcript),
+            prompt=voice_form_prompt(title, body.transcript, contextual_strings),
             structured_output=USVoiceFormGeneration.structured_output(),
             temperature=0,
             max_tokens=config.maxTokens,
@@ -63,5 +65,7 @@ async def parse_dictation(body: USVoiceFormParseRequest, request: Request) -> US
         logger.warning("Voice parse response failed schema validation: %s", type(error).__name__)
         raise HTTPException(status_code=502, detail="Invalid voice parse response") from error
     return validate_voice_form_generation(
-        generated, body.transcript, localization=get_voice_source_localization(language)
+        generated,
+        body.transcript,
+        localization=get_voice_source_localization(language),
     )

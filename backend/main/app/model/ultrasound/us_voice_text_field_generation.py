@@ -14,8 +14,6 @@ class USVoiceTextFieldGeneration(BaseModel):
     field_id: Literal[
         USVoiceFieldId.EXAMINATION_NUMBER,
         USVoiceFieldId.PATIENT_NAME,
-        USVoiceFieldId.PATIENT_GENDER,
-        USVoiceFieldId.PATIENT_DATE_OF_BIRTH,
         USVoiceFieldId.PATIENT_COMPLAINTS,
         USVoiceFieldId.EXAMINATION_DESCRIPTION,
     ]

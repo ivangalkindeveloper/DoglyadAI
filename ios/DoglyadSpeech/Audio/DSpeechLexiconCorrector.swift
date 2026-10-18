@@ -3,8 +3,8 @@ import Foundation
 /// Normalizes recognized text to the canonical examination vocabulary.
 ///
 /// The recognizer can confuse similar-sounding medical words. The parsing model can
-/// no longer repair such misses because it does not know what was actually said. Before
-/// parsing, the text is therefore compared with a dictionary of canonical terms.
+/// use the same examination vocabulary for a second correction pass. Before
+/// parsing, the text is compared with a dictionary of canonical terms.
 ///
 /// Comparison uses a phonetic skeleton rather than raw spelling because recognition
 /// errors usually follow sound instead of orthography.
@@ -45,12 +45,54 @@ public struct DSpeechLexiconCorrector: Sendable {
     private let termsByWordCount: [Int: [DSpeechLexiconTerm]]
     private let maximumWordCount: Int
     private let localization: DSpeechLexiconLocalization
+    private let medicalTermCorrections: [String: String]
 
     public init(
         terms: [String],
         localization: DSpeechLexiconLocalization,
     ) {
         self.localization = localization
+        let vocabulary = Set(
+            terms.flatMap { Self.literalWords(
+                in: $0,
+                localization: localization,
+            ) },
+        )
+        medicalTermCorrections = localization.medicalTermCorrections.filter { original, replacement in
+            let words = Self.literalWords(
+                in: replacement,
+                localization: localization,
+            )
+            return !words.isEmpty && words.allSatisfy { vocabulary.contains(
+                $0,
+            ) }
+                && !original.contains(
+                    where: \.isNumber,
+                ) && !replacement.contains(
+                    where: \.isNumber,
+                )
+                && Self.isNegated(
+                    original,
+                    localization: localization,
+                ) == Self.isNegated(
+                    replacement,
+                    localization: localization,
+                )
+                && Self.sides(
+                    in: original,
+                    localization: localization,
+                ) == Self.sides(
+                    in: replacement,
+                    localization: localization,
+                )
+                && Self.wordEndings(
+                    in: original,
+                    localization: localization,
+                ) == Self.wordEndings(
+                    in: replacement,
+                    localization: localization,
+                )
+        }
         var grouped: [Int: [DSpeechLexiconTerm]] = [:]
 
         for text in terms {
@@ -94,7 +136,14 @@ public struct DSpeechLexiconCorrector: Sendable {
 
     public func correct(
         _ text: String,
+        decodingSpans: [DSpeechDecodingSpan] = [],
     ) -> String {
+        let text = correctMedicalTerms(
+            in: removingUnsupportedSuffix(
+                from: text,
+                spans: decodingSpans,
+            ),
+        )
         guard maximumWordCount > 1 else { return text }
 
         let words = text.split(
@@ -193,6 +242,111 @@ public struct DSpeechLexiconCorrector: Sendable {
             }
         }
         return result as String
+    }
+
+    private func correctMedicalTerms(
+        in text: String,
+    ) -> String {
+        var result = text
+        for original in medicalTermCorrections.keys.sorted(
+            by: { $0.count == $1.count ? $0 < $1 : $0.count > $1.count },
+        ) {
+            guard let replacement = medicalTermCorrections[
+                original,
+            ],
+                let expression = try? NSRegularExpression(
+                    pattern: #"(?<![\p{L}\p{N}])"# + NSRegularExpression.escapedPattern(
+                        for: original,
+                    ) + #"(?![\p{L}\p{N}])"#,
+                    options: .caseInsensitive,
+                ) else { continue }
+            let source = result as NSString
+            let corrected = NSMutableString(
+                string: result,
+            )
+            for match in expression.matches(
+                in: result,
+                range: NSRange(
+                    location: 0,
+                    length: source.length,
+                ),
+            ).reversed() {
+                corrected.replaceCharacters(
+                    in: match.range,
+                    with: Self.render(
+                        replacement,
+                        preservingPunctuationOf: source.substring(
+                            with: match.range,
+                        ),
+                    ),
+                )
+            }
+            result = corrected as String
+        }
+        return result
+    }
+
+    private func removingUnsupportedSuffix(
+        from text: String,
+        spans: [DSpeechDecodingSpan],
+    ) -> String {
+        guard let expression = try? NSRegularExpression(
+            pattern: localization.nonClinicalSuffixPattern,
+            options: .caseInsensitive,
+        ),
+            let match = expression.firstMatch(
+                in: text,
+                range: NSRange(
+                    text.startIndex...,
+                    in: text,
+                ),
+            ),
+            NSMaxRange(
+                match.range,
+            ) == (text as NSString).length else { return text }
+        var covered = IndexSet()
+        for span in spans {
+            guard span.utf16Start >= 0, span.utf16Length > 0,
+                  span.utf16Start <= (text as NSString).length,
+                  span.utf16Length <= (text as NSString).length - span.utf16Start else { return text }
+            let intersection = NSIntersectionRange(
+                match.range,
+                NSRange(
+                    location: span.utf16Start,
+                    length: span.utf16Length,
+                ),
+            )
+            if intersection.length > 0 {
+                guard span.isSpeechDetected == false else { return text }
+                covered.insert(
+                    integersIn: intersection.location ..< NSMaxRange(
+                        intersection,
+                    ),
+                )
+            }
+        }
+        let source = text as NSString
+        for index in match.range.location ..< NSMaxRange(
+            match.range,
+        ) {
+            let character = source.substring(
+                with: NSRange(
+                    location: index,
+                    length: 1,
+                ),
+            )
+            if character.rangeOfCharacter(
+                from: .alphanumerics,
+            ) != nil, !covered.contains(
+                index,
+            ) { return text }
+        }
+        guard !covered.isEmpty else { return text }
+        return source.substring(
+            to: match.range.location,
+        ).trimmingCharacters(
+            in: .whitespacesAndNewlines,
+        )
     }
 
     /// The nearest term, if it is close enough and noticeably closer than the rest.

@@ -19,6 +19,7 @@ def prepare(output: Path, *, natural_dates: bool = False, quality_regressions: b
     from app.core.language_code import LanguageCode
     from app.core.load_configs import load_configs
     from app.core.resolve_examination_title import resolve_examination_title
+    from app.core.resolve_examination_contextual_strings import resolve_examination_contextual_strings
     from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
     from app.prompt.voice_form_prompt import voice_form_prompt
     from app.prompt.voice_form_system_prompt import voice_form_system_prompt
@@ -58,6 +59,7 @@ def prepare(output: Path, *, natural_dates: bool = False, quality_regressions: b
                     "prompt": voice_form_prompt(
                         resolve_examination_title(case["examinationTypeId"], language),
                         text,
+                        resolve_examination_contextual_strings(case["examinationTypeId"], language),
                     ),
                     "schema": schema,
                 }
@@ -82,7 +84,9 @@ def prepare(output: Path, *, natural_dates: bool = False, quality_regressions: b
                     "scenario": "quality-regression",
                     "birthDateStyle": None,
                     "prompt": voice_form_prompt(
-                        json.loads(template["prompt"])["examinationType"], fixture["inputText"]
+                        json.loads(template["prompt"])["examinationType"],
+                        fixture["inputText"],
+                        json.loads(template["prompt"])["contextualStrings"],
                     ),
                 }
             )
@@ -96,10 +100,14 @@ def prepare(output: Path, *, natural_dates: bool = False, quality_regressions: b
 def score(
     cases_path: Path, results_path: Path, output_path: Path, *, baseline_validator_path: Path | None = None
 ) -> None:
+    from app.core.get_voice_source_localization import get_voice_source_localization
+    from app.core.language_code import LanguageCode
+    from app.core.load_configs import load_configs
     from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
     from app.service.validate_voice_form_generation import validate_voice_form_generation
 
     validator = validate_voice_form_generation
+    load_configs()
     validator_path = ROOT / "backend/main/app/service/validate_voice_form_generation.py"
     if baseline_validator_path is not None:
         spec = importlib.util.spec_from_file_location("voice_benchmark_baseline", baseline_validator_path)
@@ -136,7 +144,15 @@ def score(
                 generated = USVoiceFormGeneration.model_validate_json(result["content"])
                 if result.get("finishReason") == "length":
                     raise ValueError("Model output was truncated by the token limit")
-                validated = validator(generated, case["inputText"])
+                validated = (
+                    validator(generated, case["inputText"])
+                    if baseline_validator_path is not None
+                    else validator(
+                        generated,
+                        case["inputText"],
+                        localization=get_voice_source_localization(LanguageCode(case["locale"])),
+                    )
+                )
                 response = validated.model_dump(mode="json")
                 row["generatedProposals"] = generated.model_dump(mode="json")
                 row["response"] = response

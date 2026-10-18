@@ -31,6 +31,7 @@ def prepare(output: Path, fixtures: Path) -> None:
                 "prompt": voice_form_prompt(
                     "Ультразвуковое исследование" if language is LanguageCode.RU else "Ultrasound examination",
                     case["inputText"],
+                    [],
                 ),
                 "schema": json.loads(USVoiceFormGeneration.structured_output()),
             }

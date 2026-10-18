@@ -57,6 +57,42 @@ extension DNeuralVoiceFieldValue {
         }
     }
 
+    static func normalizedPatientName(
+        _ name: String,
+        locale: Locale,
+    ) -> String {
+        guard let expression = try? NSRegularExpression(
+            pattern: #"[\p{L}]+"#,
+        ) else { return name }
+        let result = NSMutableString(
+            string: name,
+        )
+        for match in expression.matches(
+            in: name,
+            range: NSRange(
+                name.startIndex...,
+                in: name,
+            ),
+        ).reversed() {
+            let word = (name as NSString).substring(
+                with: match.range,
+            )
+            if word == word.lowercased(
+                with: locale,
+            ) || word == word.uppercased(
+                with: locale,
+            ) {
+                result.replaceCharacters(
+                    in: match.range,
+                    with: word.capitalized(
+                        with: locale,
+                    ),
+                )
+            }
+        }
+        return result as String
+    }
+
     private static func parseCompleteDate(
         _ text: String,
         locale: Locale,
@@ -70,6 +106,60 @@ extension DNeuralVoiceFieldValue {
             from: date,
         ) == text {
             return date
+        }
+
+        if let expression = try? NSRegularExpression(
+            pattern: localization.pattern(
+                .groupedNumericBirthDate,
+            ),
+            options: .caseInsensitive,
+        ),
+            let match = expression.firstMatch(
+                in: text,
+                range: NSRange(
+                    text.startIndex...,
+                    in: text,
+                ),
+            ),
+            match.range == NSRange(
+                text.startIndex...,
+                in: text,
+            )
+        {
+            let source = text as NSString
+            let parts = ["year", "month", "day"].compactMap { name -> Int? in
+                let range = match.range(
+                    withName: name,
+                )
+                guard range.location != NSNotFound else { return nil }
+                return Int(
+                    source.substring(
+                        with: range,
+                    ).filter(
+                        \.isNumber,
+                    ),
+                )
+            }
+            if parts.count == 3 {
+                let literal = String(
+                    format: "%04d-%02d-%02d",
+                    parts[
+                        0,
+                    ],
+                    parts[
+                        1,
+                    ],
+                    parts[
+                        2,
+                    ],
+                )
+                if let date = iso.date(
+                    from: literal,
+                ), iso.string(
+                    from: date,
+                ) == literal { return date }
+            }
+            return nil
         }
 
         let formatter = DateFormatter()

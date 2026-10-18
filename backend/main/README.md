@@ -33,6 +33,14 @@ Fixtures live in [`app/mock/`](app/mock/), with one `report.json` and `voice_for
 
 The mock service does not call a GPU VM or read `INFERENCE_ENDPOINTS_PATH`. Firebase credentials and valid App Check tokens are still required. Configuration, localization, templates, rate limiting and report email delivery remain real, including SMTP.
 
+Voice generation uses field-specific constraints for canonical gender and ISO date strings. Source validation independently verifies the actual date and gender, normalizes patient-name case, and retains valid, transcript-cited model proposals for clinical text. Differences from independently extracted source sections mark those proposals for physician review. Quoted evidence stays verbatim.
+
+For dictation parsing and report generation, main resolves the selected examination's localized `contextualStrings` from its own configuration and includes them in the GPU prompt. Both system prompts include the same localized `medicalTermCorrectionPrompt`: the vocabulary helps repair misrecognized medical terms and supplies no patient findings. Numbers, units, negations, laterality, identities and dates must remain unchanged; ambiguous terms must be retained.
+
+During dictation parsing, a nonblank clinical `value` with valid verbatim `evidence` is retained even when it changes words, measurements, negations or laterality; differences receive `questionable` accuracy for physician review. Source extraction fills clinical fields omitted by the model. `medicalTermCorrections` belongs only to the client's preprocessing corrector and never limits the model's proposed corrections. Report validation permits medical term repairs while retaining its checks on explicit measurements and misplaced sections.
+
+Report prompts separate an explicitly dictated conclusion from findings. Templates supply structure, not evidence of normality. Content validation removes a misplaced conclusion or complaint section only when its complete text is independently supported by the corresponding section. It retains following findings and rejects changed or missing explicit length/volume measurements; unsupported section removal also fails validation. These checks supplement generation and do not establish the clinical accuracy of an image interpretation.
+
 ## Voice test scenarios
 
 The `transcript` in each `voice_form.json` is a sample dictation, and `generation` contains its expected model proposals. You can dictate the whole sample or a fragment with the same evidence text. It is a deterministic fixture matcher, not a replacement speech parser.

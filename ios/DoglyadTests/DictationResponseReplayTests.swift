@@ -83,10 +83,12 @@ final class DictationResponseReplayTests: XCTestCase {
                 request: request,
             )
             XCTAssertEqual(
-                signature(
-                    local,
-                ) as NSDictionary,
-                try currentSignature(
+                metadataSignature(
+                    signature(
+                        local,
+                    ),
+                ),
+                try metadataSignature(
                     XCTUnwrap(
                         item[
                             "expectedLocal",
@@ -96,10 +98,12 @@ final class DictationResponseReplayTests: XCTestCase {
                 "Local processing changed: \(item["id"] ?? index)",
             )
             XCTAssertEqual(
-                signature(
-                    server,
-                ) as NSDictionary,
-                try currentSignature(
+                metadataSignature(
+                    signature(
+                        server,
+                    ),
+                ),
+                try metadataSignature(
                     XCTUnwrap(
                         item[
                             "expectedServer",
@@ -108,6 +112,17 @@ final class DictationResponseReplayTests: XCTestCase {
                 ),
                 "Server processing changed: \(item["id"] ?? index)",
             )
+            for result in [local, server] {
+                assertClinicalModelValues(
+                    result,
+                    response: response,
+                    caseId: String(
+                        describing: item[
+                            "id",
+                        ] ?? index,
+                    ),
+                )
+            }
         }
     }
 
@@ -155,9 +170,10 @@ final class DictationResponseReplayTests: XCTestCase {
         ]
     }
 
-    // Recorded runs retain their original schema. Compare only the fields
-    // represented by the current proposal contract.
-    private func currentSignature(
+    // Keep historical metadata expectations. Clinical fields now preserve the
+    // model response instead of the old source-text replacement; check that
+    // contract directly without rewriting recorded evaluation outputs.
+    private func metadataSignature(
         _ recorded: [String: Any],
     ) -> NSDictionary {
         var result = recorded
@@ -167,7 +183,84 @@ final class DictationResponseReplayTests: XCTestCase {
         result.removeValue(
             forKey: "unmapped",
         )
+        let clinicalFields = Set(
+            ["patient_complaints", "examination_description"],
+        )
+        result[
+            "proposals",
+        ] = (recorded[
+            "proposals",
+        ] as? [[String: Any]])?.filter {
+            !clinicalFields.contains(
+                $0[
+                    "field",
+                ] as? String ?? "",
+            )
+        }
+        result[
+            "fieldSources",
+        ] = (recorded[
+            "fieldSources",
+        ] as? [String: String])?.filter {
+            !clinicalFields.contains(
+                $0.key,
+            )
+        }
         return result as NSDictionary
+    }
+
+    private func assertClinicalModelValues(
+        _ result: DNeuralUltrasoundDictationProposal,
+        response: DNeuralUltrasoundVoiceFormParseResponseDTO,
+        caseId: String,
+    ) {
+        let expected = response.proposals.filter {
+            $0.fieldId.isPatientComplaints || $0.fieldId.isExaminationDescription
+        }
+        let actual = result.proposals.filter {
+            $0.id.isPatientComplaints || $0.id.isExaminationDescription
+        }
+        XCTAssertEqual(
+            actual.count,
+            expected.count,
+            caseId,
+        )
+        for item in expected {
+            guard let proposal = actual.first(
+                where: { $0.id == item.fieldId },
+            ) else {
+                XCTFail(
+                    "Missing model clinical field: \(caseId), \(item.fieldId)",
+                )
+                continue
+            }
+            XCTAssertEqual(
+                proposal.value,
+                .text(
+                    item.value,
+                ),
+                caseId,
+            )
+            XCTAssertEqual(
+                proposal.sourceQuote,
+                item.sourceQuote,
+                caseId,
+            )
+            XCTAssertEqual(
+                result.fieldSources[
+                    item.fieldId,
+                ],
+                result.source,
+                caseId,
+            )
+            if item.value != item.sourceQuote || item.accuracy == .questionable || !proposal.warnings.isEmpty {
+                XCTAssertEqual(
+                    proposal.accuracy,
+                    .questionable,
+                    caseId,
+                )
+            }
+        }
     }
 }
 

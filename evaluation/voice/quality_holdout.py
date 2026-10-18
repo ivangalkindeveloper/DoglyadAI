@@ -271,7 +271,7 @@ def prepare(output: Path, *, confirmation: bool = False) -> None:
                         schema=json.loads(USVoiceFormGeneration.structured_output()),
                         systemPrompt=voice_form_system_prompt(LanguageCode(locale)),
                         prompt=voice_form_prompt(
-                            "Ultrasound examination" if locale == "en" else "Ультразвуковое исследование", text
+                            "Ultrasound examination" if locale == "en" else "Ультразвуковое исследование", text, []
                         ),
                     )
                 )
