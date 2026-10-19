@@ -24,7 +24,7 @@ struct ShareBottomSheet: View {
                 onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
                     status: status,
                 ) },
-                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.resolveNeuralModelSettings() },
+                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
                 onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 getUserEmail: { [ultrasoundViewModel] in ultrasoundViewModel.userEmail },
             ),
@@ -37,7 +37,7 @@ struct ShareBottomSheet: View {
         arguments: ShareArguments(
             report: USExaminationReport(
                 date: Date(),
-                neuralModelSettings: NeuralModelSettings(
+                settingsAI: SettingsAI(
                     selectedNeuralModelId: "google/medgemma-1.5-4b-it",
                     isMarkdown: false,
                     temperature: nil,

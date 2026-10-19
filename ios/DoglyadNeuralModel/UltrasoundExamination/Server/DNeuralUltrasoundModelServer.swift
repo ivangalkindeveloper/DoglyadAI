@@ -17,6 +17,7 @@ public final class DNeuralUltrasoundModelServer: DNeuralUltrasoundModelProtocol 
     ) async throws -> DNeuralUltrasoundDictationProposal {
         try Task.checkCancellation()
         let response = try await transport.parseDictation(
+            selectedNeuralModelId: request.selectedNeuralModelId,
             locale: request.locale,
             examinationTypeId: request.examinationTypeId,
             transcript: request.text,

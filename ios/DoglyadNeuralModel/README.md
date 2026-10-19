@@ -53,18 +53,18 @@ flowchart TD
 
 Раньше строка передавалась в локальную модель и её nullable-ответ использовался для заполнения формы. Теперь ответ содержит отдельные предложения: `field_id`, `value`, `evidence`, `accuracy`. Прежде чем предложить значение врачу, клиент проверяет исходную цитату, тип значения, числа, единицы, отрицания, стороны и границы полей. Явные метки/факты помогают дополнить ответ модели; разногласия требуют подтверждения.
 
-**Рабочие модели:** FoundationModels, если доступна для языка диктовки; иначе серверная MedGemma.
+**Рабочие модели:** выбранный в `SettingsAI.transcriptParserType` FoundationModels либо серверный парсер. Сервер использует `selectedNeuralModelId` — ту же модель, которая выбрана для генерации протоколов. Первоначальный выбор — FoundationModels при доступности, иначе сервер.
 
 ## Рабочая схема
 
 ```mermaid
 flowchart TD
-    App["ScanSpeechViewModel<br/>correctedText: Рост: 178 см. Вес: 82 кг."] --> Factory["DNeuralUltrasoundModelFactory.model<br/>проверяет поддержку текущего языка"]
-    Factory -->|"Apple-модель доступна"| FM[DNeuralUltrasoundModelFoundationModels]
-    Factory -->|"Apple-модель недоступна"| Server[DNeuralUltrasoundModelServer]
+    App["ScanSpeechViewModel<br/>correctedText: Рост: 178 см. Вес: 82 кг."] --> Factory["DNeuralUltrasoundModelFactory.model<br/>явный выбор из SettingsAI"]
+    Factory -->|"выбран FoundationModels и доступен"| FM[DNeuralUltrasoundModelFoundationModels]
+    Factory -->|"выбран сервер"| Server[DNeuralUltrasoundModelServer]
     FM --> Generator["DNeuralUltrasoundFoundationProposalGenerator<br/>промпт + схема → LanguageModelSession"]
     Server --> Transport["DNeuralUltrasoundServerTransportProtocol<br/>repository приложения → DoglyadNetwork"]
-    Transport --> Backend[main → inference → MedGemma]
+    Transport --> Backend[main → inference → выбранная модель протоколов]
     Generator --> Raw["DNeuralUltrasoundProposalGenerationResponse<br/>height: 178; evidence: Рост: 178 см."]
     Backend --> DTO[DNeuralUltrasoundVoiceFormParseResponseDTO]
     DTO --> Raw
@@ -84,16 +84,22 @@ flowchart TD
     Review --> Scan
 ```
 
-Фабрика создаёт реализацию; модель получает один ответ от своего источника и передаёт его общему обработчику. `model()` синхронный: создание Swift-объекта не загружает отдельные веса. Apple-сессия прогревается через `prewarm()`, каждый разбор получает отдельную сессию. Серверный прогрев не отправляет запрос.
+Фабрика создаёт реализацию; модель получает один ответ от своего источника и передаёт его общему обработчику. `model(isFoundationModels:)` синхронный: создание Swift-объекта не загружает отдельные веса. Apple-сессия прогревается через `prewarm()`, каждый разбор получает отдельную сессию. Серверный прогрев не отправляет запрос.
 
 ```swift
-let model = try container.examinationNeuralModelFactory.model()
+let isFoundationModels = switch settingsAI.transcriptParserType {
+case .foundationModels: true
+case .server: false
+}
+let model = try container.examinationNeuralModelFactory.model(
+    isFoundationModels: isFoundationModels,
+)
 let proposal = try await model.parseProposals(
     request: request,
 )
 ```
 
-Вьюмодель не передаёт признак доступности или замыкания для локального/серверного пути. Фабрика пересматривает доступность при каждом выборе, кеширует локальный экземпляр и освобождает его при предупреждении о памяти. Provider отвечает только за системную доступность/язык и создание локальной реализации. Отсутствующий локальный промпт оставляет доступным серверный путь.
+Вьюмодель передаёт явный выбор парсера из SettingsAI. `isFoundationModelsAvailable` используется шторкой выбора и проверяется фабрикой перед запуском локальной модели. Недоступный FoundationModels нельзя выбрать; если он стал недоступен после сохранения, запуск сообщает об ошибке без смены выбранного парсера. Фабрика кеширует локальный экземпляр и освобождает его при выборе сервера или предупреждении о памяти. Provider отвечает за системную готовность, язык и создание локальной реализации.
 
 Общий обработчик не выполняет HTTP и не выбирает модель. Локальная реализация при ошибке генерации/проверки возвращает явно найденные поля, если они есть; иначе передаёт ошибку. Отмена всегда прерывает разбор. Ошибка выбранной FM не запускает второй запрос на сервер. Серверная реализация передаёт ошибку запроса/контракта вызывающему коду.
 
@@ -143,6 +149,7 @@ Main добавляет в GPU-промпты разбора речи и ген�
 
 | Поле | Значение | Зачем передаётся |
 |---|---|---|
+| `selectedNeuralModelId` | ID модели генерации протоколов | Выбирает GPU-модель серверного разбора; не является данными пациента. |
 | `text` | Строка выше — `correctedText` после ASR, либо текст после правки врачом | Единственный текст, из которого разрешено извлекать значения и цитаты. |
 | `examinationTypeId` | `"thyroidGland"` | Стабильный ID выбранного исследования для обращения к backend. |
 | `examinationTypeTitle` | `"Щитовидная железа"` | Локализованное название из `USExaminationType.title`, полученное с backend; контекст локальной модели. |
@@ -157,15 +164,15 @@ Main добавляет в GPU-промпты разбора речи и ген�
 ```mermaid
 flowchart TD
     Request["DNeuralUltrasoundDictationParseRequest<br/>текст + тип + локаль + разрешённые поля"] --> Check["DNeuralUltrasoundModelFactory<br/>Foundation provider: системная готовность + supportsLocale"]
-    Check -->|"доступна"| FM[DNeuralUltrasoundModelFoundationModels]
+    Check -->|"выбран FoundationModels и доступен"| FM[DNeuralUltrasoundModelFoundationModels]
     Instructions["proposalPrompt из backend"] --> Generator[DNeuralUltrasoundFoundationProposalGenerator]
     FM --> Generator
     Request --> Wrapper["userPrompt<br/>Щитовидная железа + ru + полный text"]
     Wrapper --> Generator
     Schema[Локализованная схема из request.localization.schema] --> Generator
-    Check -->|"недоступна"| Server[DNeuralUltrasoundModelServer]
-    Server --> HTTP["Транспорт приложения → main<br/>transcript + usExaminationTypeId<br/>Accept-Language: ru"]
-    HTTP --> GPU[main → inference → google/medgemma-4b-it]
+    Check -->|"выбран сервер"| Server[DNeuralUltrasoundModelServer]
+    Server --> HTTP["Транспорт приложения → main<br/>transcript + usExaminationTypeId<br/>selectedNeuralModelId + Accept-Language: ru"]
+    HTTP --> GPU[main → inference → selectedNeuralModelId]
     Generator --> Raw["Единый внутренний ответ<br/>field_id / value / evidence / accuracy"]
     GPU --> DTO["DTO<br/>proposals"]
     DTO --> Raw
@@ -409,7 +416,7 @@ flowchart LR
 
 ## Проверка композиции
 
-`DictationModelCompositionTests` подставляет provider, генератор и транспорт через протоколы. Проверяет приоритет FM, переключение доступности, кеш/освобождение, один вызов, ошибки, отмену и серверные метаданные.
+`DictationModelCompositionTests` подставляет provider, генератор и транспорт через протоколы. Проверяет явный выбор FM/сервера, изменение доступности, кеш/освобождение, один вызов, ошибки, отмену и передачу выбранной модели в серверных метаданных.
 
 `DictationResponseReplayTests` сравнивает обработку с зафиксированным результатом до рефакторинга: 372 диктовки (три набора × RU/EN × 31 тип × полная/частичная форма), для локального и серверного источников. Сравниваются значения, исходные цитаты, accuracy, warnings, отклонения, нераспределённые фрагменты и происхождение каждого поля. Это повторная обработка фиксированных ответов, не новый замер нейросетей.
 

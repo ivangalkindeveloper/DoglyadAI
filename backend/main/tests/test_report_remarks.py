@@ -16,7 +16,7 @@ from starlette.requests import Request
 from app.core.language_code import LanguageCode
 from app.core.load_configs import load_configs
 from app.core.resolve_localized_text import resolve_localized_text
-from app.model.neural_model_settings import NeuralModelSettings
+from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
 from app.model.ultrasound.us_examination_report import USExaminationReport
 from app.model.ultrasound.us_examination_request import USExaminationRequest
@@ -81,7 +81,7 @@ def test_schema_and_prompt_match_requested_remarks(
     assert ("photoRemarks" in schema["required"]) is (is_photo_remarks and is_photos_available)
     factory = PromptFactory(language_code)
     system = factory.system_prompt(
-        NeuralModelSettings(),
+        SettingsAI(),
         is_recommendations_included=False,
         is_photo_remarks=is_photo_remarks and is_photos_available,
         is_description_remarks=is_description_remarks,
@@ -127,7 +127,7 @@ def test_report_prompt_uses_catalog_templates_and_preserves_input(language_code:
         ("reportTemplatePrompt", "Template {value}"),
     ):
         assert resolve_localized_text(language_code, key).format(value=value) in prompt
-    settings = NeuralModelSettings(isMarkdown=False, maxTokens=512)
+    settings = SettingsAI(isMarkdown=False, maxTokens=512)
     system = factory.system_prompt(settings, True, True, True)
     assert system.startswith(resolve_localized_text(language_code, "reportSystemPrompt"))
     assert resolve_localized_text(language_code, "reportTokenLimitPrompt").format(maxTokens=512) in system
@@ -146,9 +146,7 @@ def test_request_rejects_duplicate_photo_ids() -> None:
 
 @pytest.mark.parametrize("value", ["", " \n\t ", None])
 def test_blank_optional_template_is_omitted_from_prompt(value: str | None) -> None:
-    request = USExaminationRequest(
-        neuralModelSettings=NeuralModelSettings(), examinationData=_examination(), template=value
-    )
+    request = USExaminationRequest(settingsAI=SettingsAI(), examinationData=_examination(), template=value)
     assert request.template is None
     prompt = PromptFactory(LanguageCode.EN).build_prompt(request.examinationData, "Title", request.template)
     assert "Report template:" not in prompt
@@ -162,7 +160,7 @@ def _generate(
     is_photos_available: bool = True,
 ) -> tuple[USExaminationReport, FakeRemarksService]:
     body = USExaminationRequest(
-        neuralModelSettings=NeuralModelSettings(selectedNeuralModelId="google/medgemma-4b-it"),
+        settingsAI=SettingsAI(selectedNeuralModelId="google/medgemma-4b-it"),
         examinationData=_examination(is_photos_available),
         isPhotoRemarks=is_photo_remarks,
         isDescriptionRemarks=is_description_remarks,

@@ -22,7 +22,7 @@ struct ScanSpeechBottomSheet: View {
                 onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
                     status: status,
                 ) },
-                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.resolveNeuralModelSettings() },
+                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
                 onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 arguments: arguments,
             ),

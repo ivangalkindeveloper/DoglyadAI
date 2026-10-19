@@ -16,9 +16,6 @@ from app.model.l10n import L10n
 from app.model.l10n_response import L10nResponse
 from app.model.ultrasound.us_examination_contextual_strings import USExaminationContextualStrings
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
-from app.model.ultrasound.us_examination_neural_model_accessibility import (
-    USExaminationNeuralModelAccessibility,
-)
 from app.model.ultrasound.us_examination_neural_model_response import USExaminationNeuralModelResponse
 from app.model.ultrasound.us_examination_ready_made_template import USExaminationReadyMadeTemplate
 from app.model.ultrasound.us_examination_ready_made_template_response import (
@@ -210,10 +207,6 @@ def load_configs() -> None:
 
         types = {item.id: item for group in groups for item in group.examinationTypes}
         models = {item.id: item for item in model_configs}
-        if voice_parsing_config.modelId not in models:
-            raise ValueError(f"Unknown voice parsing model: {voice_parsing_config.modelId}")
-        if models[voice_parsing_config.modelId].accessibility is not USExaminationNeuralModelAccessibility.AVAILABLE:
-            raise ValueError(f"Voice parsing model is unavailable: {voice_parsing_config.modelId}")
         _check_unique_ids([group.id for group in groups], "examination group")
         _check_unique_ids([item.id for group in groups for item in group.examinationTypes], "examination type")
         _check_unique_ids([item.id for item in model_configs], "neural model")

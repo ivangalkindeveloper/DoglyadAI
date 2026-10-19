@@ -18,7 +18,7 @@ from app.model.mock.mock_report_fixture import MockReportFixture
 from app.model.mock.mock_voice_form_fixture import MockVoiceFormFixture
 from app.model.neural_model.neural_model_service_operation import NeuralModelServiceOperation
 from app.model.neural_model.neural_model_service_request import NeuralModelServiceRequest
-from app.model.neural_model_settings import NeuralModelSettings
+from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
 from app.model.ultrasound.us_examination_model_report_response import USExaminationModelReportResponse
 from app.model.ultrasound.us_examination_request import USExaminationRequest
@@ -66,7 +66,7 @@ def _report_request(
     is_photos_available: bool = True,
 ) -> USExaminationRequest:
     return USExaminationRequest(
-        neuralModelSettings=NeuralModelSettings(selectedNeuralModelId=_MODEL_ID),
+        settingsAI=SettingsAI(selectedNeuralModelId=_MODEL_ID),
         examinationData=USExaminationData(
             usExaminationTypeId="echocardiography",
             photos=[USExaminationScanPhoto(id=photo_id, data="QUJD") for photo_id in _PHOTO_IDS]
@@ -146,7 +146,7 @@ def test_mock_report_does_not_invent_photos(client: TestClient, monkeypatch: pyt
 
 
 @pytest.mark.parametrize("max_tokens", [None, 4096], ids=["application-default", "inference-limit"])
-def test_mock_report_accepts_client_neural_model_settings(
+def test_mock_report_accepts_client_settings_ai(
     client: TestClient, monkeypatch: pytest.MonkeyPatch, max_tokens: int | None
 ) -> None:
     _authorize(monkeypatch)
@@ -158,7 +158,7 @@ def test_mock_report_accepts_client_neural_model_settings(
         is_description_remarks=True,
         is_recommendations=True,
     ).model_dump(mode="json")
-    body["neuralModelSettings"].update(settings)
+    body["settingsAI"].update(settings)
 
     response = client.post("/v1/ultrasound/generate_report", json=body)
 
@@ -176,12 +176,12 @@ def test_mock_report_rejects_token_limits_outside_inference_range(
         is_description_remarks=True,
         is_recommendations=True,
     ).model_dump(mode="json")
-    body["neuralModelSettings"]["maxTokens"] = max_tokens
+    body["settingsAI"]["maxTokens"] = max_tokens
 
     response = client.post("/v1/ultrasound/generate_report", json=body)
 
     assert response.status_code == 422
-    assert response.json()["detail"][0]["loc"] == ["body", "neuralModelSettings", "maxTokens"]
+    assert response.json()["detail"][0]["loc"] == ["body", "settingsAI", "maxTokens"]
 
 
 @pytest.mark.parametrize("language", list(LanguageCode))

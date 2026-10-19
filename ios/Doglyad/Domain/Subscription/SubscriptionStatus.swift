@@ -19,16 +19,30 @@ extension SubscriptionStatus {
         entitlement.sendingReportByEmail
     }
 
-    var neuralModelSettings: SubscriptionFeatureAvailability {
-        entitlement.neuralModelSettings
+    var settingsAI: SubscriptionFeatureAvailability {
+        entitlement.settingsAI
+    }
+
+    var isReportGenerationSettingsAvailable: Bool {
+        switch type {
+        case .base:
+            false
+        case .pro:
+            switch settingsAI {
+            case .available:
+                true
+            case .offered, .unavailable:
+                false
+            }
+        }
     }
 
     func availability(
         of feature: PaidFeature,
     ) -> SubscriptionFeatureAvailability {
         switch feature {
-        case .neuralModelSettings:
-            neuralModelSettings
+        case .settingsAI:
+            settingsAI
         case .formCompletionViaMicrophone:
             formCompletionViaMicrophone
         case .sendingReportByEmail:

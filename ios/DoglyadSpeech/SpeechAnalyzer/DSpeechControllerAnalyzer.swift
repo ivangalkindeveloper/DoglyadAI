@@ -78,8 +78,8 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     }
 
     /// Whether the transcriber supports the given locale. Asynchronous because the
-    /// locale list is delivered via `await`. The factory asks this before choosing an
-    /// implementation and falls back to `SFSpeechRecognizer` on an uncovered locale.
+    /// locale list is delivered via `await`. The factory uses it to offer the
+    /// supported Apple engine and to validate an explicit SpeechAnalyzer choice.
     public static func isSupported(
         locale: Locale,
     ) async -> Bool {

@@ -7,7 +7,7 @@ enum ScreenType: Hashable {
     case history
     case reportDetail
     case settings
-    case neuralModelSettings
+    case settingsAI
     case templateList
     case readyMadeTemplateList
     case templateAdd
@@ -23,6 +23,8 @@ enum SheetType: Hashable {
     case importMedia
     case scanCamera
     case selectUSExaminationType
+    case selectTranscriber
+    case selectTranscriptParser
     case selectNeuralModel
     case selectTemplate
     case selectDateOfBirth

@@ -34,7 +34,7 @@ def test_voice_parsing_config_loads_for_both_environments() -> None:
         config = USVoiceFormParsingConfig.model_validate_json(
             (_CONFIG_BASE / environment / "voice_form_parsing.json").read_text(encoding="utf-8")
         )
-        assert config.modelId == "google/medgemma-4b-it"
+        assert config.maxTokens == 2048
     load_configs()
     assert get_voice_parsing_config().maxTokens == 2048
 
@@ -354,6 +354,43 @@ def test_generation_schema_caps_repeated_items() -> None:
     assert by_field["patient_gender"]["properties"]["value"]["enum"] == ["male", "female"]
     assert by_field["patient_date_of_birth"]["properties"]["value"]["pattern"] == r"^\d{4}-\d{2}-\d{2}$"
     assert all(set(variant["required"]) == {"field_id", "value", "evidence", "accuracy"} for variant in variants)
+
+
+def test_selected_report_model_is_used_for_server_parsing(monkeypatch: pytest.MonkeyPatch) -> None:
+    load_configs()
+    selected_id = "test/selected-report-model"
+    original = route.resolve_neural_model("google/medgemma-4b-it")
+    model = original.model_copy(update={"id": selected_id})
+
+    def resolve(model_id: str | None) -> Any:
+        assert model_id == selected_id
+        return model
+
+    monkeypatch.setattr(route, "resolve_neural_model", resolve)
+    service = FakeNeuralModelService([])
+    request = Request(
+        {
+            "type": "http",
+            "method": "POST",
+            "path": "/v1/ultrasound/parse_dictation",
+            "headers": [],
+            "app": SimpleNamespace(state=SimpleNamespace(model_service=service)),
+            "state": {"request_id": "e" * 32},
+        }
+    )
+    handler: Any = inspect.unwrap(route.parse_dictation)
+    asyncio.run(
+        handler(
+            body=USVoiceFormParseRequest(
+                selectedNeuralModelId=selected_id, usExaminationTypeId="bladder", transcript="Стенка 2 мм."
+            ),
+            request=request,
+        )
+    )
+    assert service.request is not None
+    assert service.request.model_id == selected_id
+    assert service.request.temperature == 0
+    assert service.request.max_tokens == 2048
 
 
 @pytest.mark.parametrize("language,expected_fragment", [("en_US", "Extract only"), ("ru_RU", "Извлеки только")])

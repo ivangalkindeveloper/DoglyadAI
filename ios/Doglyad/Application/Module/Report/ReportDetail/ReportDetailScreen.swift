@@ -24,7 +24,7 @@ struct ReportDetailScreen: View {
                 onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
                     status: status,
                 ) },
-                getNeuralModelSettings: { [subscriptionViewModel] in subscriptionViewModel.resolveNeuralModelSettings() },
+                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
                 onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
                 observeExaminationChanges: { [ultrasoundViewModel] observer in ultrasoundViewModel.observeChanges(
                     observer,
@@ -50,7 +50,7 @@ struct ReportDetailScreen: View {
         arguments: ReportDetailArguments(
             report: USExaminationReport(
                 date: Date(),
-                neuralModelSettings: NeuralModelSettings(
+                settingsAI: SettingsAI(
                     selectedNeuralModelId: "google/medgemma-1.5-4b-it",
                     isMarkdown: false,
                     temperature: nil,

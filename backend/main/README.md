@@ -54,3 +54,11 @@ English sample:
 > Examination number 123. Patient John Smith. Male. Date of birth January 15, 1985. Height 180 centimeters. Weight 75 kilograms. Complaints: abdominal pain. Examination description: liver contours are smooth, echogenicity is unchanged.
 
 The fixtures affect server-side parsing only. If the iOS app selects Apple Foundation Models for on-device parsing, that operation does not reach this backend.
+
+## AI settings and parser selection
+
+The current client/report contract uses `settingsAI` (`SettingsAI`), including report generation parameters, `transcriberType` and `transcriptParserType`. The iOS `SettingsAIRepository` persists the complete settings as one encoded value. Transcription defaults to WhisperKit; the initial parser is FoundationModels when available for the current device and locale, otherwise server parsing. Subsequent runs honor the saved choice.
+
+`POST /v1/ultrasound/parse_dictation` accepts `selectedNeuralModelId` alongside `usExaminationTypeId` and `transcript`. It resolves that model through the same published model catalog as report generation. A missing selection uses the catalog's default model. `voice_form_parsing.json` contains the parsing token limit only; parsing keeps its own prompt, schema and temperature of zero. Audio stays on the client.
+
+The SettingsAI screen and its entry cards are available independently of Pro. In iOS, `entitlement.settingsAI` applies only to report-generation controls: Markdown, temperature and token limit require an active Pro subscription with this entitlement available. Speech choices stay editable. Saving speech choices without Pro preserves stored report-generation preferences; generation uses the default report parameters until Pro access is available. Mapping `SettingsAIDB` to the domain trims speech identifiers and defaults missing, blank or unknown values to WhisperKit and server parsing without throwing.

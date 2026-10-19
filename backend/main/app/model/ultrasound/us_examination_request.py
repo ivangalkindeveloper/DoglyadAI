@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from pydantic import BaseModel, field_validator
 
-from app.model.neural_model_settings import NeuralModelSettings
+from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
 
 
 class USExaminationRequest(BaseModel):
-    neuralModelSettings: NeuralModelSettings
+    settingsAI: SettingsAI
     examinationData: USExaminationData
     template: str | None = None
     isRecommendationsIncluded: bool = True

@@ -41,7 +41,7 @@ extension ApplicationConfig {
                 requestCountPerDay: 10,
                 formCompletionViaMicrophone: .unavailable,
                 sendingReportByEmail: .unavailable,
-                neuralModelSettings: .unavailable,
+                settingsAI: .unavailable,
             ),
         ],
         ultrasound: .default,

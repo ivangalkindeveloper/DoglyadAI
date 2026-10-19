@@ -25,7 +25,7 @@
                 getSubscriptionStatus: { nil },
                 observeSubscriptionStatus: { _ in AnyCancellable {} },
                 onSubscriptionStatusUpdated: { _ in },
-                getNeuralModelSettings: { container.initialNeuralModelSettings },
+                getSettingsAI: { container.initialSettingsAI },
                 onRequestCountIncremented: {},
                 arguments: ScanSpeechArguments(
                     examinationType: container.usExaminationTypeDefault,

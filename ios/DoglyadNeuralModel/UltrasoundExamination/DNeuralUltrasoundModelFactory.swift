@@ -42,17 +42,24 @@ public final class DNeuralUltrasoundModelFactory {
         }
     }
 
+    public var isFoundationModelsAvailable: Bool { foundationProvider.isAvailable }
+
     deinit {
         if let memoryWarningObserver { NotificationCenter.default.removeObserver(
             memoryWarningObserver,
         ) }
     }
 
-    /// Checked on every selection: Foundation Models can become ready or unavailable at runtime.
-    public func model() throws -> any DNeuralUltrasoundModelProtocol {
-        guard foundationProvider.isAvailable else {
+    public func model(
+        isFoundationModels: Bool,
+    ) throws -> any DNeuralUltrasoundModelProtocol {
+        guard isFoundationModels else {
             foundationModel = nil
             return serverModel
+        }
+        guard foundationProvider.isAvailable else {
+            foundationModel = nil
+            throw DNeuralModelError.unavailable
         }
         if let foundationModel { return foundationModel }
         let model = try foundationProvider.makeModel()
@@ -60,9 +67,13 @@ public final class DNeuralUltrasoundModelFactory {
         return model
     }
 
-    public func prewarm() {
+    public func prewarm(
+        isFoundationModels: Bool,
+    ) {
         Task { [weak self] in
-            guard let model = try? self?.model() else { return }
+            guard let model = try? self?.model(
+                isFoundationModels: isFoundationModels,
+            ) else { return }
             model.prewarm()
         }
     }

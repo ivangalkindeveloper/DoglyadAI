@@ -37,6 +37,7 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     }
 
     func parseDictation(
+        selectedNeuralModelId _: String?,
         locale _: Locale,
         examinationTypeId _: String,
         transcript _: String,

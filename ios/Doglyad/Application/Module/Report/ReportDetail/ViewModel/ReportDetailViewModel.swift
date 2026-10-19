@@ -30,7 +30,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
-        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        getSettingsAI: @escaping () -> SettingsAI,
         onRequestCountIncremented: @escaping () -> Void,
         observeExaminationChanges: @escaping (@escaping () -> Void) -> AnyCancellable,
         getSelectedTemplate: @escaping () -> USExaminationTemplate?,
@@ -53,7 +53,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
-            getNeuralModelSettings: getNeuralModelSettings,
+            getSettingsAI: getSettingsAI,
             onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .reportDetail,
@@ -161,17 +161,13 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         )
     }
 
-    func onTapNeuralModelSettings() {
+    func onTapSettingsAI() {
         analytics.buttonTapped(
-            .reportDetailNeuralModelSettings,
+            .reportDetailSettingsAI,
         )
-        coordinator.run(
-            .neuralModelSettings,
-        ) {
-            self.coordinator.screen(
-                .neuralModelSettings,
-            )
-        }
+        coordinator.screen(
+            .settingsAI,
+        )
     }
 
     func onTapRepeatScan(
@@ -250,9 +246,9 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
             ReportDetailGeneratingState(),
         )
         handle {
-            let settings = self.neuralModelSettings
+            let settings = self.settingsAI
             let request = try await USExaminationRequest(
-                neuralModelSettings: settings,
+                settingsAI: settings,
                 examinationData: original.examinationData,
                 template: self.getSelectedTemplate()?.content,
                 isRecommendationsIncluded: self.container.userSettingsRepository.getIsRecommendationsIncluded(),
@@ -271,7 +267,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
             return USExaminationReport(
                 id: original.id,
                 date: original.date,
-                neuralModelSettings: settings,
+                settingsAI: settings,
                 examinationData: original.examinationData,
                 actualModelReport: response,
                 previousModelReports: [original.actualModelReport] + original.previousModelReports,

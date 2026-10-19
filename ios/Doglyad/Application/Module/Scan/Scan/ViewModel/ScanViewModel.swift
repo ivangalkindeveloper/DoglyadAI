@@ -71,7 +71,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
-        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        getSettingsAI: @escaping () -> SettingsAI,
         onRequestCountIncremented: @escaping () -> Void,
         observeExaminationChanges: @escaping (@escaping () -> Void) -> AnyCancellable,
         getSelectedTemplate: @escaping () -> USExaminationTemplate?,
@@ -135,7 +135,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
-            getNeuralModelSettings: getNeuralModelSettings,
+            getSettingsAI: getSettingsAI,
             onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .scan,
@@ -588,17 +588,13 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         )
     }
 
-    func onTapNeuralModelSettings() {
+    func onTapSettingsAI() {
         analytics.buttonTapped(
-            .scanNeuralModelSettings,
+            .scanSettingsAI,
         )
-        coordinator.run(
-            .neuralModelSettings,
-        ) {
-            self.coordinator.screen(
-                .neuralModelSettings,
-            )
-        }
+        coordinator.screen(
+            .settingsAI,
+        )
     }
 
     func onTapClear() {
@@ -1050,7 +1046,7 @@ private extension ScanViewModel {
             patientComplaints: patientComplaintsTextController.value,
             examinationDescription: description,
         )
-        let settings = neuralModelSettings
+        let settings = settingsAI
         let template = getSelectedTemplate()?.content
         emit(
             ScanGeneratingState(
@@ -1059,7 +1055,7 @@ private extension ScanViewModel {
         )
         handle {
             let request = try await USExaminationRequest(
-                neuralModelSettings: settings,
+                settingsAI: settings,
                 examinationData: examinationData,
                 template: template,
                 isRecommendationsIncluded: self.container.userSettingsRepository.getIsRecommendationsIncluded(),
@@ -1076,7 +1072,7 @@ private extension ScanViewModel {
             )
             return USExaminationReport(
                 date: Date(),
-                neuralModelSettings: settings,
+                settingsAI: settings,
                 examinationData: examinationData,
                 actualModelReport: response,
                 previousModelReports: [],

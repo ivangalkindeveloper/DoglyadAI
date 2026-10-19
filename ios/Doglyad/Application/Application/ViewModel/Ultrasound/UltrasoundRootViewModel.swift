@@ -9,6 +9,8 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
     @Published var isMarkdown: Bool
     @Published var temperature: Double
     @Published var maxTokens: Int
+    @Published var transcriberType: TranscriberType
+    @Published var transcriptParserType: TranscriptParserType
     @Published var template: USExaminationTemplate?
     @Published var userEmail: String?
     @Published var isRecommendationsIncluded: Bool
@@ -23,7 +25,7 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
     ) {
         self.container = container
 
-        let settings = container.initialNeuralModelSettings
+        let settings = container.initialSettingsAI
         neuralModel = settings.selectedNeuralModelId.flatMap { container.usExaminationNeuralModelsById[
             $0,
         ] }
@@ -31,6 +33,8 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         isMarkdown = settings.isMarkdown
         temperature = settings.temperature ?? container.applicationConfig.ultrasound.neuralModel.temperature
         maxTokens = settings.maxTokens ?? container.applicationConfig.ultrasound.neuralModel.maxTokens
+        transcriberType = settings.transcriberType
+        transcriptParserType = settings.transcriptParserType
         template = nil
         let userSettings = container.initialUserSettings
         userEmail = userSettings.email
@@ -43,8 +47,10 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         )
     }
 
-    var storedNeuralModelSettings: NeuralModelSettings {
-        NeuralModelSettings(
+    var storedSettingsAI: SettingsAI {
+        SettingsAI(
+            transcriberType: transcriberType,
+            transcriptParserType: transcriptParserType,
             selectedNeuralModelId: neuralModel.id,
             isMarkdown: isMarkdown,
             temperature: temperature,
@@ -103,8 +109,15 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
     func saveNeuralModel(
         _ model: USExaminationNeuralModel,
     ) async throws {
-        try await container.ultrasoundModelRepository.setSelectedModelId(
-            id: model.id,
+        try await container.settingsAIRepository.saveSettings(
+            SettingsAI(
+                transcriberType: transcriberType,
+                transcriptParserType: transcriptParserType,
+                selectedNeuralModelId: model.id,
+                isMarkdown: isMarkdown,
+                temperature: temperature,
+                maxTokens: maxTokens,
+            ),
         )
         neuralModel = model
         changes.send()
@@ -126,24 +139,29 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         changes.send()
     }
 
-    func saveNeuralModelSettings(
+    func saveSettingsAI(
+        transcriberType: TranscriberType,
+        transcriptParserType: TranscriptParserType,
         isMarkdown: Bool,
         temperature: Double?,
         maxTokens: Int?,
     ) async throws {
-        let repository = container.ultrasoundModelRepository
-        try await repository.setIsMarkdown(
-            isMarkdown,
+        let settings = SettingsAI(
+            transcriberType: transcriberType,
+            transcriptParserType: transcriptParserType,
+            selectedNeuralModelId: neuralModel.id,
+            isMarkdown: isMarkdown,
+            temperature: temperature ?? self.temperature,
+            maxTokens: maxTokens ?? self.maxTokens,
         )
-        if let temperature { try await repository.setTemperature(
-            temperature,
-        ) }
-        if let maxTokens { try await repository.setMaxTokens(
-            maxTokens,
-        ) }
-        self.isMarkdown = isMarkdown
-        if let temperature { self.temperature = temperature }
-        if let maxTokens { self.maxTokens = maxTokens }
+        try await container.settingsAIRepository.saveSettings(
+            settings,
+        )
+        self.isMarkdown = settings.isMarkdown
+        self.temperature = settings.temperature ?? self.temperature
+        self.maxTokens = settings.maxTokens ?? self.maxTokens
+        self.transcriberType = settings.transcriberType
+        self.transcriptParserType = settings.transcriptParserType
         changes.send()
     }
 

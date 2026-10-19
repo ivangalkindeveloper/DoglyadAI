@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from app.core.language_code import LanguageCode
-from app.model.neural_model_settings import NeuralModelSettings
+from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
 
 
@@ -11,7 +11,7 @@ class FakePromptFactory:
 
     def system_prompt(
         self,
-        settings: NeuralModelSettings,
+        settings: SettingsAI,
         is_recommendations_included: bool,
         is_photo_remarks: bool,
         is_description_remarks: bool,

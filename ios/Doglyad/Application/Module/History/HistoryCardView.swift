@@ -140,7 +140,7 @@ struct HistoryCardView: DViewProtocol {
     HistoryCardView(
         report: USExaminationReport(
             date: Date(),
-            neuralModelSettings: NeuralModelSettings(
+            settingsAI: SettingsAI(
                 selectedNeuralModelId: "google/medgemma-1.5-4b-it",
                 isMarkdown: false,
                 temperature: nil,

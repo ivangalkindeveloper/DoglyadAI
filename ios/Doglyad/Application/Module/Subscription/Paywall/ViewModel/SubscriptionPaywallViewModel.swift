@@ -15,7 +15,7 @@ final class SubscriptionPaywallViewModel: DModuleViewModel<any SubscriptionPaywa
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
-        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        getSettingsAI: @escaping () -> SettingsAI,
         onRequestCountIncremented: @escaping () -> Void,
         arguments: SubscriptionPaywallArguments?,
         onRefreshStatus: @escaping () async -> Void,
@@ -30,7 +30,7 @@ final class SubscriptionPaywallViewModel: DModuleViewModel<any SubscriptionPaywa
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
-            getNeuralModelSettings: getNeuralModelSettings,
+            getSettingsAI: getSettingsAI,
             onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .subscriptionPaywall,

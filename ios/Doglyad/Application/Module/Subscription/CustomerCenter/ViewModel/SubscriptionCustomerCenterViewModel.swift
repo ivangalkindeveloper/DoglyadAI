@@ -13,7 +13,7 @@ final class SubscriptionCustomerCenterViewModel: DModuleViewModel<any Subscripti
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
-        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        getSettingsAI: @escaping () -> SettingsAI,
         onRequestCountIncremented: @escaping () -> Void,
         arguments: SubscriptionCustomerCenterArguments?,
         onRefreshStatus: @escaping () async -> Void,
@@ -27,7 +27,7 @@ final class SubscriptionCustomerCenterViewModel: DModuleViewModel<any Subscripti
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
-            getNeuralModelSettings: getNeuralModelSettings,
+            getSettingsAI: getSettingsAI,
             onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .subscriptionCustomerCenter,

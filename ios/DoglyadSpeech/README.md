@@ -20,7 +20,7 @@
 
 ## Текущий рабочий путь
 
-`DSpeechFactory` всегда создаёт `DSpeechControllerWhisperKit`. SpeechAnalyzer и SFSpeechRecognizer сохранены для сравнений, автоматически вместо Whisper не выбираются.
+`SettingsAI.transcriberType` хранит отдельный выбор: `speechAnalyzer`, `sfSpeechRecognizer` или `whisperKit`. Шторка показывает WhisperKit и один доступный движок Apple для текущего языка: SpeechAnalyzer имеет приоритет; иначе предлагается SFSpeechRecognizer, если поддерживается локальное распознавание. Если доступных движков Apple нет, остаётся WhisperKit. Доступность обновляется при открытии и возврате приложения на передний план. Асинхронная `DSpeechFactory.make(engine:locale:contextualStrings:lexiconLocalization:)` создаёт именно выбранный движок через общий `DSpeechEngine`. Если выбранный движок стал недоступен, возвращается ошибка подготовки с возможностью повторить попытку. Выбор хранится через `SettingsAIRepository`; по умолчанию используется WhisperKit.
 
 Контроллер публикует два отдельных статуса: `modelPreparationStatus: DSpeechModelPreparationStatus` описывает подготовку модели, а `recordingStatus: DSpeechRecordingStatus` — запись и распознавание речи. Подготовка запускается через `prepareModel()`.
 
@@ -33,7 +33,9 @@
 ```mermaid
 flowchart TD
     Input["ScanSpeechViewModel<br/>locale = ru<br/>contextualStrings = «щитовидная железа», …"] --> Factory[DSpeechFactory]
-    Factory --> Controller[DSpeechControllerWhisperKit]
+    Factory -->|WhisperKit| Controller[DSpeechControllerWhisperKit]
+    Factory -->|SpeechAnalyzer| Analyzer[DSpeechControllerAnalyzer]
+    Factory -->|SFSpeechRecognizer| Recognizer[DSpeechControllerSFSpeechRecognizer]
     Controller --> Model[DSpeechWhisperKitModel: общий кэш]
     Model --> Prepare[DSpeechModelPreparationStatus]
     Prepare -->|"checking → downloading: 0.42 → loading → ready"| UI[ScanSpeechViewModel]
@@ -167,7 +169,7 @@ DSpeechLexiconCorrector получает rawText:
 
 | Тип | Назначение |
 |---|---|
-| `DSpeechFactory` | Создаёт выбранный рабочий контроллер — WhisperKit. |
+| `DSpeechFactory` | Определяет доступный движок Apple и создаёт явно выбранный контроллер через DSpeechEngine. |
 | `DSpeechControllerProtocol` | Общий наблюдаемый интерфейс: подготовка, старт, остановка, отмена, состояние и результат. |
 | `DSpeechControllerWhisperKit` | Управляет потоком, публикует предпросмотр, останавливает микрофон и собирает проверенный итоговый результат. |
 | `DSpeechWhisperKitAudioProcessor` | Адаптер захвата WhisperKit: настройки аудиосессии приложения, синхронизированные буферы и относительная энергия звука. |
@@ -243,7 +245,7 @@ flowchart TD
 | `DSpeechControllerSFSpeechRecognizer` | PCM-буферы → `DSpeechAudioRelay` → `SFSpeechAudioBufferRecognitionRequest` → `bestTranscription.formattedString` | Исходный и исправленный текст в `DSpeechTranscript(engine: .sfSpeechRecognizer, …)`. **Текущая реализация оставляет оба массива spans пустыми**, хотя SDK отдельно предоставляет оценки сегментов. |
 | `DSpeechFileTranscriber` / `DSpeechFileRecognizerSFSpeechRecognizer` | URL готового аудиофайла, локаль и фразы исследования | `DSpeechFileTranscription(rawText, correctedText, confidenceSpans)`: файловый SpeechAnalyzer добавляет spans из `AttributedString`, файловый SFSpeechRecognizer сейчас оставляет `confidenceSpans = []`. |
 
-В отличие от `decodingSpans`, `confidenceSpans` содержат только диапазон исходного текста и оценку Apple в пределах `0…1`. `0.96` не означает гарантированные 96% медицинской точности. Рабочая фабрика не выбирает эти Apple-реализации вместо WhisperKit.
+В отличие от `decodingSpans`, `confidenceSpans` содержат только диапазон исходного текста и оценку Apple в пределах `0…1`. `0.96` не означает гарантированные 96% медицинской точности. Рабочая фабрика использует эти реализации при выборе варианта Apple в SettingsAI.
 
 Вложенные `DSpeechLexiconCorrector.DSpeechLexiconTerm` и `.DSpeechLexiconSide` хранят подготовленную словарную фразу и её сторону. `DSpeechLexiconCodingKeys` задают технические JSON-имена.
 

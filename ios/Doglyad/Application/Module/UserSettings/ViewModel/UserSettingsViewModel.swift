@@ -27,7 +27,7 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
-        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        getSettingsAI: @escaping () -> SettingsAI,
         onRequestCountIncremented: @escaping () -> Void,
         getInitialEmail: @escaping () -> String?,
         getInitialIsRecommendationsIncluded: @escaping () -> Bool,
@@ -68,7 +68,7 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
-            getNeuralModelSettings: getNeuralModelSettings,
+            getSettingsAI: getSettingsAI,
             onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .screen(
                 .userSettings,

@@ -37,7 +37,7 @@ async def generate_report(
     )
     prompt_factory = PromptFactory(language_code)
 
-    settings = body.neuralModelSettings
+    settings = body.settingsAI
     examination = body.examinationData
 
     neural_model = resolve_neural_model(settings.selectedNeuralModelId)

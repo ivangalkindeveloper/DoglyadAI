@@ -19,7 +19,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var httpClient: DHttpClientProtocol?
     var sharedRepository: SharedRepositoryProtocol?
     var userSettingsRepository: UserSettingsRepositoryProtocol?
-    var ultrasoundModelRepository: UltrasoundModelRepositoryProtocol?
+    var settingsAIRepository: SettingsAIRepositoryProtocol?
     var ultrasoundReportRepository: UltrasoundReportRepositoryProtocol?
     var ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol?
     var templateRepository: TemplateRepositoryProtocol?
@@ -36,7 +36,7 @@ final class InitializationProcess: DependencyInitializationProcess {
     var examinationNeuralModelFactory: DNeuralUltrasoundModelFactory?
     var initialUltrasoundReportsCount: Int?
     var initialUserSettings: UserSettings?
-    var initialNeuralModelSettings: NeuralModelSettings?
+    var initialSettingsAI: SettingsAI?
     var initialSubscriptionStatus: SubscriptionStatus?
     var initialRoute: RouteScreen<ScreenType>?
     var version: String?
@@ -50,7 +50,7 @@ final class InitializationProcess: DependencyInitializationProcess {
             mockFactory: mockFactory!,
             sharedRepository: sharedRepository!,
             userSettingsRepository: userSettingsRepository!,
-            ultrasoundModelRepository: ultrasoundModelRepository!,
+            settingsAIRepository: settingsAIRepository!,
             ultrasoundReportRepository: ultrasoundReportRepository!,
             ultrasoundDraftRepository: ultrasoundDraftRepository!,
             templateRepository: templateRepository!,
@@ -67,7 +67,7 @@ final class InitializationProcess: DependencyInitializationProcess {
             examinationNeuralModelFactory: examinationNeuralModelFactory!,
             initialSubscriptionStatus: initialSubscriptionStatus,
             initialUserSettings: initialUserSettings!,
-            initialNeuralModelSettings: initialNeuralModelSettings!,
+            initialSettingsAI: initialSettingsAI!,
             initialRoute: initialRoute!,
             version: version!,
         )
@@ -336,7 +336,7 @@ extension InitializationProcess {
                         process.sharedRepository = SharedRepository(
                             database: process.database!,
                         )
-                        process.ultrasoundModelRepository = UltrasoundModelRepository(
+                        process.settingsAIRepository = SettingsAIRepository(
                             database: process.database!,
                         )
                         process.ultrasoundReportRepository = UltrasoundReportRepository(
@@ -403,7 +403,8 @@ extension InitializationProcess {
 
     private func prepareStoredState() async throws {
         let reportRepository = ultrasoundReportRepository!
-        let modelRepository = ultrasoundModelRepository!
+        let settingsRepository = settingsAIRepository!
+        let storedSettings = try await settingsRepository.getSettings()
         let userRepository = userSettingsRepository!
         let sharedRepository = sharedRepository!
         let applicationConfig = applicationConfig!
@@ -425,7 +426,8 @@ extension InitializationProcess {
                 id: usExaminationTypeDefault!.id,
             )
         }
-        let selectedId = try await modelRepository.getSelectedModelId()
+        let selectedId = storedSettings?.selectedNeuralModelId
+        var resolvedModelId = selectedId
         let selected = selectedId.flatMap { usExaminationNeuralModelsById![
             $0,
         ] }
@@ -460,16 +462,21 @@ extension InitializationProcess {
                 case .pro: return false
                 }
             }
-            try await modelRepository.setSelectedModelId(
-                id: (firstBaseModel ?? usExaminationNeuralModelDefault!).id,
-            )
+            resolvedModelId = (firstBaseModel ?? usExaminationNeuralModelDefault!).id
         }
-        initialNeuralModelSettings = try await NeuralModelSettings(
-            selectedNeuralModelId: modelRepository.getSelectedModelId(),
-            isMarkdown: modelRepository.getIsMarkdown(),
-            temperature: modelRepository.getTemperature(),
-            maxTokens: modelRepository.getMaxTokens(),
+        let settings = SettingsAI(
+            transcriberType: storedSettings?.transcriberType ?? .whisperKit,
+            transcriptParserType: storedSettings?.transcriptParserType
+                ?? (examinationNeuralModelFactory!.isFoundationModelsAvailable ? .foundationModels : .server),
+            selectedNeuralModelId: resolvedModelId,
+            isMarkdown: storedSettings?.isMarkdown ?? false,
+            temperature: storedSettings?.temperature,
+            maxTokens: storedSettings?.maxTokens,
         )
+        if settings != storedSettings { try await settingsRepository.saveSettings(
+            settings,
+        ) }
+        initialSettingsAI = settings
         initialUserSettings = try await UserSettings(
             email: userRepository.getUserEmail(),
             isRecommendationsIncluded: userRepository.getIsRecommendationsIncluded(),

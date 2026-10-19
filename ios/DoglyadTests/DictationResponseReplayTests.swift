@@ -268,6 +268,7 @@ private struct ReplayTransport: DNeuralUltrasoundServerTransportProtocol {
     let response: DNeuralUltrasoundVoiceFormParseResponseDTO
 
     func parseDictation(
+        selectedNeuralModelId _: String?,
         locale _: Locale,
         examinationTypeId _: String,
         transcript _: String,

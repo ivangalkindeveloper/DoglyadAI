@@ -1,6 +1,7 @@
 import Foundation
 
 public struct DNeuralUltrasoundDictationParseRequest: Sendable {
+    public let selectedNeuralModelId: String?
     public let text: String
     public let examinationTypeId: String
     public let examinationTypeTitle: String
@@ -9,6 +10,7 @@ public struct DNeuralUltrasoundDictationParseRequest: Sendable {
     public let localization: DNeuralUltrasoundDictationLocalization
 
     public init(
+        selectedNeuralModelId: String? = nil,
         text: String,
         examinationTypeId: String,
         examinationTypeTitle: String,
@@ -16,6 +18,7 @@ public struct DNeuralUltrasoundDictationParseRequest: Sendable {
         allowedFields: [DNeuralUltrasoundVoiceFieldId],
         localization: DNeuralUltrasoundDictationLocalization,
     ) {
+        self.selectedNeuralModelId = selectedNeuralModelId
         self.text = text
         self.examinationTypeId = examinationTypeId
         self.examinationTypeTitle = examinationTypeTitle

@@ -3,7 +3,7 @@ enum AnalyticsScreen: String {
     case history
     case initializationError = "initialization_error"
     case legalUpdate = "legal_update"
-    case neuralModelSettings = "neural_model_settings"
+    case settingsAI = "settings_ai"
     case newVersion = "new_version"
     case onBoarding = "onboarding"
     case reportDetail = "report_detail"

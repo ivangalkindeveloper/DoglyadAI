@@ -28,7 +28,7 @@ Before generating code, read `app/route/ultrasound_conclusion.py` for an inferen
 
 - Put `from __future__ import annotations` at the beginning of each Python file and add type annotations everywhere.
 - Use snake_case for functions and variables and CamelCase for classes and Pydantic models.
-- Keep Pydantic fields in camelCase because they are part of the iOS contract, for example `neuralModelSettings`, `recipientEmail`, and `modelId`. Do not add aliases to convert them to snake_case.
+- Keep Pydantic fields in camelCase because they are part of the iOS contract, for example `settingsAI`, `recipientEmail`, and `modelId`. Do not add aliases to convert them to snake_case.
 - Use `async def` for handlers. Reuse `request.app.state.http_client` for external HTTP instead of creating a client per request. Run blocking I/O such as SMTP through `asyncio.to_thread`.
 - Read configuration and secrets only through `variables` from `app/core/variables.py`. Never hardcode values or modify `backend/main/secrets/`.
 - Raise `HTTPException(status_code=..., detail=...)` for API errors and use a module-level `logger`.

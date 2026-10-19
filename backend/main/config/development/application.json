@@ -28,13 +28,13 @@
             "requestCountPerDay": 15,
             "formCompletionViaMicrophone": "Offered",
             "sendingReportByEmail": "Offered",
-            "neuralModelSettings": "Offered"
+            "settingsAI": "Offered"
         },
         "pro": {
             "requestCountPerDay": 40,
             "formCompletionViaMicrophone": "Available",
             "sendingReportByEmail": "Available",
-            "neuralModelSettings": "Available"
+            "settingsAI": "Available"
         }
     },
     "ultrasound": {

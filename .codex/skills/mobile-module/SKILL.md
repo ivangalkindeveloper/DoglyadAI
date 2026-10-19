@@ -11,7 +11,7 @@ Create and connect an iOS feature using the current rules in the repository's `A
 
 Determine the PascalCase feature name, whether navigation presents a screen or bottom sheet, and its incoming data and result callbacks. Arguments may be empty. Follow existing grouping under `ios/Doglyad/Application/Module/`.
 
-Read `Module/Settings/` for a screen or `Module/Select/SelectNeuralModel/` for a bottom sheet. Read `Application/Application/ViewModel/DModuleViewModel.swift` before constructing a view model; its initializer defines the shared lifecycle dependencies.
+Read `Module/Settings/Settings/` for a screen or `Module/Select/SelectNeuralModel/` for a bottom sheet. Read `Application/Application/ViewModel/DModuleViewModel.swift` before constructing a view model; its initializer defines the shared lifecycle dependencies.
 
 ## Required structure
 

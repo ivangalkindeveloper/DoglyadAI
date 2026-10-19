@@ -512,7 +512,9 @@ final class VoiceCandidateTests: XCTestCase {
             let proposal: DNeuralUltrasoundDictationProposal
             switch strategy {
             case .production:
-                proposal = try await factory.model().parseProposals(
+                proposal = try await factory.model(
+                    isFoundationModels: factory.isFoundationModelsAvailable,
+                ).parseProposals(
                     request: request,
                 )
             case .exactLabels:

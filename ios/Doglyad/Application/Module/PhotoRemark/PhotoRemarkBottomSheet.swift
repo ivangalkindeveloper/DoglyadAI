@@ -19,7 +19,7 @@ struct PhotoRemarkBottomSheet: View {
                 onSubscriptionStatusUpdated: { [subscription] status in subscription.update(
                     status: status,
                 ) },
-                getNeuralModelSettings: { [subscription] in subscription.resolveNeuralModelSettings() },
+                getSettingsAI: { [subscription] in subscription.resolveSettingsAI() },
                 onRequestCountIncremented: { [subscription] in subscription.incrementRequestCount() },
             ),
         )

@@ -1,5 +1,5 @@
 struct USExaminationRequest: Codable {
-    let neuralModelSettings: NeuralModelSettings
+    let settingsAI: SettingsAI
     let examinationData: USExaminationData
     let template: String?
     let isRecommendationsIncluded: Bool

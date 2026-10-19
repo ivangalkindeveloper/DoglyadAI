@@ -21,7 +21,9 @@ struct DictationModelCompositionTests {
                 transport: transport,
             ),
         )
-        let result = try await factory.model().parseProposals(
+        let result = try await factory.model(
+            isFoundationModels: factory.isFoundationModelsAvailable,
+        ).parseProposals(
             request: request(),
         )
         #expect(
@@ -61,7 +63,9 @@ struct DictationModelCompositionTests {
                 transport: transport,
             ),
         )
-        let result = try await factory.model().parseProposals(
+        let result = try await factory.model(
+            isFoundationModels: factory.isFoundationModelsAvailable,
+        ).parseProposals(
             request: request(),
         )
         #expect(
@@ -115,8 +119,12 @@ struct DictationModelCompositionTests {
             foundationProvider: provider,
             serverModel: server,
         )
-        let first = try factory.model() as AnyObject
-        let second = try factory.model() as AnyObject
+        let first = try factory.model(
+            isFoundationModels: factory.isFoundationModelsAvailable,
+        ) as AnyObject
+        let second = try factory.model(
+            isFoundationModels: factory.isFoundationModelsAvailable,
+        ) as AnyObject
         #expect(
             first === second,
         )
@@ -125,15 +133,21 @@ struct DictationModelCompositionTests {
         )
         provider.isAvailable = false
         #expect(
-            try factory.model() as AnyObject === server,
+            try factory.model(
+                isFoundationModels: factory.isFoundationModelsAvailable,
+            ) as AnyObject === server,
         )
         provider.isAvailable = true
-        _ = try factory.model()
+        _ = try factory.model(
+            isFoundationModels: factory.isFoundationModelsAvailable,
+        )
         #expect(
             provider.creations == 2,
         )
         factory.unload()
-        _ = try factory.model()
+        _ = try factory.model(
+            isFoundationModels: factory.isFoundationModelsAvailable,
+        )
         #expect(
             provider.creations == 3,
         )
@@ -177,7 +191,9 @@ struct DictationModelCompositionTests {
                 transport: transport,
             ),
         )
-        let result = try await factory.model().parseProposals(
+        let result = try await factory.model(
+            isFoundationModels: factory.isFoundationModelsAvailable,
+        ).parseProposals(
             request: request(),
         )
         #expect(
@@ -240,7 +256,9 @@ struct DictationModelCompositionTests {
         await #expect(
             throws: CancellationError.self,
         ) {
-            try await factory.model().parseProposals(
+            try await factory.model(
+                isFoundationModels: factory.isFoundationModelsAvailable,
+            ).parseProposals(
                 request: request(),
             )
         }
@@ -379,7 +397,9 @@ struct DictationModelCompositionTests {
         )
         #expect(
             throws: TestFailure.failed,
-        ) { try factory.model() }
+        ) { try factory.model(
+            isFoundationModels: factory.isFoundationModelsAvailable,
+        ) }
         #expect(
             provider.creations == 1,
         )
@@ -406,17 +426,88 @@ struct DictationModelCompositionTests {
             serverTransport: transport,
         )
         #expect(
-            try factory.model() is DNeuralUltrasoundModelServer,
+            try factory.model(
+                isFoundationModels: factory.isFoundationModelsAvailable,
+            ) is DNeuralUltrasoundModelServer,
+        )
+    }
+
+    @Test(
+        "Explicit server choice uses the selected report model even when Foundation Models is available",
+    )
+    func explicitServerChoice() async throws {
+        let generator = GeneratorStub()
+        let provider = ProviderStub(
+            model: DNeuralUltrasoundModelFoundationModels(
+                generator: generator,
+            ),
+        )
+        let transport = try TransportStub()
+        let factory = DNeuralUltrasoundModelFactory(
+            foundationProvider: provider,
+            serverModel: DNeuralUltrasoundModelServer(
+                transport: transport,
+            ),
+        )
+        let result = try await factory.model(
+            isFoundationModels: false,
+        ).parseProposals(
+            request: request(
+                selectedNeuralModelId: "test/selected-report-model",
+            ),
+        )
+        #expect(
+            result.source == .serverModel,
+        )
+        #expect(
+            transport.selectedNeuralModelId == "test/selected-report-model",
+        )
+        #expect(
+            generator.calls == 0,
+        )
+        #expect(
+            provider.creations == 0,
+        )
+    }
+
+    @Test(
+        "Unavailable selected Foundation Models reports unavailability without switching parsers",
+    )
+    func unavailableExplicitFoundationChoice() throws {
+        let provider = ProviderStub(
+            model: DNeuralUltrasoundModelFoundationModels(
+                generator: GeneratorStub(),
+            ),
+        )
+        provider.isAvailable = false
+        let transport = try TransportStub()
+        let factory = DNeuralUltrasoundModelFactory(
+            foundationProvider: provider,
+            serverModel: DNeuralUltrasoundModelServer(
+                transport: transport,
+            ),
+        )
+        #expect(
+            throws: DNeuralModelError.unavailable,
+        ) {
+            try factory.model(
+                isFoundationModels: true,
+            )
+        }
+        #expect(
+            transport.calls == 0,
         )
     }
 
     private func request(
+        selectedNeuralModelId: String? = nil,
         text: String = "Пациент: Анна Петрова. Вес 68 кг.",
     ) -> DNeuralUltrasoundDictationParseRequest {
         let locale = Locale(
             identifier: "ru",
         )
         return DNeuralUltrasoundDictationParseRequest(
+            selectedNeuralModelId: selectedNeuralModelId,
             text: text,
             examinationTypeId: "abdominalCavity",
             examinationTypeTitle: "Брюшная полость",
@@ -484,6 +575,7 @@ private final class TransportStub: DNeuralUltrasoundServerTransportProtocol {
     var cancelBeforeReturning = false
     private(set) var calls = 0
     private(set) var locale: Locale?
+    private(set) var selectedNeuralModelId: String?
     private(set) var typeID: String?
     private(set) var text: String?
 
@@ -499,11 +591,13 @@ private final class TransportStub: DNeuralUltrasoundServerTransportProtocol {
     }
 
     func parseDictation(
+        selectedNeuralModelId: String?,
         locale: Locale,
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
         calls += 1
+        self.selectedNeuralModelId = selectedNeuralModelId
         self.locale = locale
         typeID = examinationTypeId
         text = transcript

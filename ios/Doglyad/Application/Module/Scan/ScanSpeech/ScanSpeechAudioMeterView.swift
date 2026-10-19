@@ -6,7 +6,7 @@ struct ScanSpeechAudioMeterView: View {
 
     var body: some View {
         DAudioMeter(
-            level: viewModel.speechController.audioMeter,
+            level: viewModel.speechController?.audioMeter ?? 0,
         )
     }
 }

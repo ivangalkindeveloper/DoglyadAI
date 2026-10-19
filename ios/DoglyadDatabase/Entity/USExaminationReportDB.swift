@@ -5,7 +5,7 @@ import SwiftData
 public final class USExaminationReportDB {
     public var id: UUID
     public var date: Date
-    public var neuralModelSettings: NeuralModelSettingsDB
+    public var settingsAI: SettingsAIDB
     public var examinationData: USExaminationDataDB
     @Relationship(
         deleteRule: .cascade,
@@ -17,14 +17,14 @@ public final class USExaminationReportDB {
     public init(
         id: UUID = UUID(),
         date: Date,
-        neuralModelSettings: NeuralModelSettingsDB,
+        settingsAI: SettingsAIDB,
         examinationData: USExaminationDataDB,
         actualModelReport: USExaminationModelReportDB,
         previousModelReports: [USExaminationModelReportDB],
     ) {
         self.id = id
         self.date = date
-        self.neuralModelSettings = neuralModelSettings
+        self.settingsAI = settingsAI
         self.examinationData = examinationData
         self.actualModelReport = actualModelReport
         self.previousModelReports = previousModelReports

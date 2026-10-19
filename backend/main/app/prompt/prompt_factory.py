@@ -5,7 +5,7 @@ import json
 from app.core.language_code import LanguageCode
 from app.core.resolve_examination_contextual_strings import resolve_examination_contextual_strings
 from app.core.resolve_localized_text import resolve_localized_text
-from app.model.neural_model_settings import NeuralModelSettings
+from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
 from app.service.split_dictated_report_sections import split_dictated_report_sections
 
@@ -16,7 +16,7 @@ class PromptFactory:
 
     def system_prompt(
         self,
-        settings: NeuralModelSettings,
+        settings: SettingsAI,
         is_recommendations_included: bool,
         is_photo_remarks: bool,
         is_description_remarks: bool,

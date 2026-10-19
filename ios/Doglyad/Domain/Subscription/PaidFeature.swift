@@ -1,7 +1,7 @@
 import Foundation
 
 enum PaidFeature {
-    case neuralModelSettings
+    case settingsAI
     case formCompletionViaMicrophone
     case sendingReportByEmail
 }

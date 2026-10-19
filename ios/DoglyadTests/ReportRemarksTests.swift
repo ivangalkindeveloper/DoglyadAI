@@ -137,7 +137,7 @@ struct ReportRemarksTests {
     func reportHistoryPersistsRemarksAndCascadesTheirDeletion() throws {
         let schema = Schema(
             [
-                NeuralModelSettingsDB.self,
+                SettingsAIDB.self,
                 USExaminationReportDB.self,
                 USExaminationDataDB.self,
                 USExaminationScanPhotoDB.self,
@@ -201,7 +201,7 @@ struct ReportRemarksTests {
         ).image { _ in }
         let report = USExaminationReport(
             date: Date(),
-            neuralModelSettings: NeuralModelSettings(
+            settingsAI: SettingsAI(
                 selectedNeuralModelId: "current",
                 isMarkdown: false,
                 temperature: nil,
@@ -452,7 +452,7 @@ struct ReportRemarksTests {
             onSubscriptionStatusUpdated: { root.update(
                 status: $0,
             ) },
-            getNeuralModelSettings: { root.resolveNeuralModelSettings() },
+            getSettingsAI: { root.resolveSettingsAI() },
             onRequestCountIncremented: {},
             arguments: arguments,
         )

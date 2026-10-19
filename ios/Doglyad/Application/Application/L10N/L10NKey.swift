@@ -36,10 +36,10 @@ enum L10NKey: String, CaseIterable, Sendable {
     case dateTodayLabel
     case dateYesterdayLabel
     case errorInvalidEmailDescription
-    case errorInvalidNeuralModelMaxTokensDescription
-    case errorInvalidNeuralModelTemperatureDescription
     case errorInvalidPatientHeightDescription
     case errorInvalidPatientWeightDescription
+    case errorInvalidSettingsAIMaxTokensDescription
+    case errorInvalidSettingsAITemperatureDescription
     case errorNoInternetConnectionDescription
     case errorNoInternetConnectionTitle
     case errorUnknownDescription
@@ -56,23 +56,7 @@ enum L10NKey: String, CaseIterable, Sendable {
     case neuralModelContextLengthDescription
     case neuralModelDescription
     case neuralModelDetailsDescription
-    case neuralModelMarkdownDescription
-    case neuralModelMarkdownLabel
-    case neuralModelMaxTokensDescription
-    case neuralModelMaxTokensLabel
-    case neuralModelMaxTokensPlaceholder
     case neuralModelModelLabel
-    case neuralModelSettingsCardMarkdownLabel
-    case neuralModelSettingsCardMaxTokensLabel
-    case neuralModelSettingsCardModelLabel
-    case neuralModelSettingsCardTemperatureLabel
-    case neuralModelSettingsCardTitleLabel
-    case neuralModelSettingsSavedSuccessMessageDescription
-    case neuralModelSettingsSavedSuccessMessageTitle
-    case neuralModelSettingsTitle
-    case neuralModelTemperatureDescription
-    case neuralModelTemperatureLabel
-    case neuralModelTemperaturePlaceholder
     case neuralModelTemplateDescription
     case neuralModelTemplateLabel
     case neuralModelTemplatePlaceholder
@@ -204,17 +188,50 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanTurnedOffCameraDescription
     case selectDateOfBirthTitle
     case selectTemplateTitle
+    case selectNeuralModelTitle
+    case selectTranscriberSFSpeechRecognizerDescription
+    case selectTranscriberSFSpeechRecognizerTitle
+    case selectTranscriberSpeechAnalyzerDescription
+    case selectTranscriberSpeechAnalyzerTitle
+    case selectTranscriberTitle
+    case selectTranscriberWhisperKitDescription
+    case selectTranscriberWhisperKitTitle
+    case selectTranscriptParserFoundationModelsDescription
+    case selectTranscriptParserFoundationModelsTitle
+    case selectTranscriptParserServerDescription
+    case selectTranscriptParserServerTitle
+    case selectTranscriptParserTitle
     case serviceUnavailableDescription
     case serviceUnavailableTitle
+    case settingsAICardMarkdownLabel
+    case settingsAICardMaxTokensLabel
+    case settingsAICardModelLabel
+    case settingsAICardTemperatureLabel
+    case settingsAICardTitleLabel
+    case settingsAIMarkdownDescription
+    case settingsAIMarkdownLabel
+    case settingsAIMaxTokensDescription
+    case settingsAIMaxTokensLabel
+    case settingsAIMaxTokensPlaceholder
+    case settingsAINeuralModelTitle
+    case settingsAIReportGenerationTitle
+    case settingsAISavedSuccessMessageDescription
+    case settingsAISavedSuccessMessageTitle
+    case settingsAISpeechTitle
+    case settingsAITemperatureDescription
+    case settingsAITemperatureLabel
+    case settingsAITemperaturePlaceholder
+    case settingsAITitle
+    case settingsAITranscriberTitle
+    case settingsAITranscriptParserTitle
     case settingsAboutAppButton
     case settingsHistoryDescription
     case settingsHistoryEmptyDescription
     case settingsHistoryTitle
-    case settingsNeuralModelSettingsDescription
-    case settingsNeuralModelSettingsTitle
-    case settingsNeuralModelTitle
     case settingsPrivacyPolicyDescription
     case settingsPrivacyPolicyTitle
+    case settingsSettingsAIDescription
+    case settingsSettingsAITitle
     case settingsStorageDescription
     case settingsStorageTitle
     case settingsSubscriptionManageDescription

@@ -551,7 +551,9 @@ final class VoiceEndToEndTests: XCTestCase {
                         }
                     }
                 }
-                let model = try factory.model()
+                let model = try factory.model(
+                    isFoundationModels: factory.isFoundationModelsAvailable,
+                )
                 let proposal = try await model.parseProposals(
                     request: request,
                 )

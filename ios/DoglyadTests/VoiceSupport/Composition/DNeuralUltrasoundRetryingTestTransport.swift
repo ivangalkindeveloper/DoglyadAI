@@ -16,6 +16,7 @@ final class DNeuralUltrasoundRetryingTestTransport: DNeuralUltrasoundServerTrans
     }
 
     func parseDictation(
+        selectedNeuralModelId: String?,
         locale: Locale,
         examinationTypeId: String,
         transcript: String,
@@ -26,6 +27,7 @@ final class DNeuralUltrasoundRetryingTestTransport: DNeuralUltrasoundServerTrans
             calls += 1
             do {
                 return try await base.parseDictation(
+                    selectedNeuralModelId: selectedNeuralModelId,
                     locale: locale,
                     examinationTypeId: examinationTypeId,
                     transcript: transcript,

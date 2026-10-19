@@ -153,6 +153,8 @@ extension L10N {
                 ),
             ],
             "speech": [
+                "medicalTermCorrections": [:],
+                "nonClinicalSuffixPattern": emptyPattern,
                 "negationPattern": emptyPattern,
                 "leftSidePattern": emptyPattern,
                 "rightSidePattern": emptyPattern,

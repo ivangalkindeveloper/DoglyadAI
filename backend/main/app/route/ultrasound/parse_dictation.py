@@ -35,7 +35,7 @@ async def parse_dictation(body: USVoiceFormParseRequest, request: Request) -> US
     title = resolve_examination_title(body.usExaminationTypeId, language)
     contextual_strings = resolve_examination_contextual_strings(body.usExaminationTypeId, language)
     config = get_voice_parsing_config()
-    model = resolve_neural_model(config.modelId)
+    model = resolve_neural_model(body.selectedNeuralModelId)
     logger.info(
         "Voice parse request: model=%s, language=%s, examination_type=%s, transcript_chars=%d",
         model.id,

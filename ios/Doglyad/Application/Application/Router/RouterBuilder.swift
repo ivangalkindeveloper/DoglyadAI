@@ -59,10 +59,10 @@ final class RouterBuilder: RouterBuilderProtocol {
                     arguments: route.arguments as? SettingsArguments,
                 ),
             )
-        case .neuralModelSettings:
+        case .settingsAI:
             AnyView(
-                NeuralModelSettingsScreen(
-                    arguments: route.arguments as? NeuralModelSettingsArguments,
+                SettingsAIScreen(
+                    arguments: route.arguments as? SettingsAIArguments,
                 ),
             )
         case .templateList:
@@ -142,6 +142,18 @@ final class RouterBuilder: RouterBuilderProtocol {
             AnyView(
                 SelectUSExaminationTypeBottomSheet(
                     arguments: route.arguments as? SelectUSExaminationTypeArguments,
+                ),
+            )
+        case .selectTranscriber:
+            AnyView(
+                SelectTranscriberBottomSheet(
+                    arguments: route.arguments as! SelectTranscriberArguments,
+                ),
+            )
+        case .selectTranscriptParser:
+            AnyView(
+                SelectTranscriptParserBottomSheet(
+                    arguments: route.arguments as! SelectTranscriptParserArguments,
                 ),
             )
         case .selectNeuralModel:

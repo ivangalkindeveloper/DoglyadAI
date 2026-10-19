@@ -78,6 +78,15 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         )
     }
 
+    public static func isSupported(
+        locale: Locale,
+    ) -> Bool {
+        guard let recognizer = SFSpeechRecognizer(
+            locale: locale,
+        ) else { return false }
+        return recognizer.isAvailable && recognizer.supportsOnDeviceRecognition
+    }
+
     public func start() {
         switch recordingStatus {
         case .stopped:

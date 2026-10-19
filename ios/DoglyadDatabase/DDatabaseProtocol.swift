@@ -3,10 +3,9 @@ import Foundation
 public protocol DDatabaseProtocol: AnyObject,
     DDatabaseOnBoardingProtocol,
     DDatabaseLegalProtocol,
-    DDatabaseNeuralModelSettingsProtocol,
+    DDatabaseSettingsAIProtocol,
     DDatabaseUSExaminationTemplateProtocol,
     DDatabaseUSExaminationTypeProtocol,
-    DDatabaseUSExaminationNeuralModelProtocol,
     DDatabaseUserSettingsProtocol,
     DDatabaseClearProtocol
 {

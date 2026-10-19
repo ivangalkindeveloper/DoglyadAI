@@ -41,7 +41,7 @@ struct NeuralModelCardView: DViewProtocol {
                 ) {
                     NeuralModelValueRowView(
                         title: l10n[
-                            .neuralModelSettingsCardModelLabel,
+                            .settingsAICardModelLabel,
                         ],
                         value: modelTitle,
                     )

@@ -44,10 +44,10 @@ struct ScanSpeechObservationTests {
             model.state === recording,
         )
         #expect(
-            model.speechController.text == "Weight 70 kg",
+            model.speechController?.text == "Weight 70 kg",
         )
         #expect(
-            model.speechController.audioMeter == 0.7,
+            model.speechController?.audioMeter == 0.7,
         )
     }
 
@@ -101,7 +101,7 @@ struct ScanSpeechObservationTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: {},
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,

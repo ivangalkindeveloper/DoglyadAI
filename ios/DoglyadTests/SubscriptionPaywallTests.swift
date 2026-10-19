@@ -253,7 +253,7 @@ struct SubscriptionPaywallTests {
             )
             onUpdate()
             },
-            getNeuralModelSettings: { root.resolveNeuralModelSettings() },
+            getSettingsAI: { root.resolveSettingsAI() },
             onRequestCountIncremented: {},
             arguments: SubscriptionPaywallArguments(),
             onRefreshStatus: onRefresh,
@@ -272,7 +272,7 @@ struct SubscriptionPaywallTests {
             mockFactory: base.mockFactory,
             sharedRepository: base.sharedRepository,
             userSettingsRepository: base.userSettingsRepository,
-            ultrasoundModelRepository: base.ultrasoundModelRepository,
+            settingsAIRepository: base.settingsAIRepository,
             ultrasoundReportRepository: base.ultrasoundReportRepository,
             ultrasoundDraftRepository: base.ultrasoundDraftRepository,
             templateRepository: base.templateRepository,
@@ -313,7 +313,7 @@ private final class TestSubscriptionRepository: SubscriptionRepositoryProtocol {
             requestCountPerDay: 20,
             formCompletionViaMicrophone: .available,
             sendingReportByEmail: .available,
-            neuralModelSettings: .available,
+            settingsAI: .available,
         ),
         availableCountPerDay: 20,
     )

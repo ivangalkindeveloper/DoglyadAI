@@ -10,7 +10,7 @@ import SwiftUI
 final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     @NestedObservableObject var transcriptTextController = DTextFieldController()
     private(set) var originalTranscript: DSpeechTranscript?
-    let speechController: any DSpeechControllerProtocol
+    @Published private(set) var speechController: (any DSpeechControllerProtocol)?
     @Published var automaticFieldIds = Set<DNeuralUltrasoundVoiceFieldId>()
     private let messager: DMessager
     private let arguments: ScanSpeechArguments
@@ -24,19 +24,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
-        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        getSettingsAI: @escaping () -> SettingsAI,
         onRequestCountIncremented: @escaping () -> Void,
         arguments: ScanSpeechArguments,
         speechController: (any DSpeechControllerProtocol)? = nil,
     ) {
         self.messager = messager
         self.arguments = arguments
-        let contextualStrings = arguments.examinationType.contextualStrings
-        self.speechController = speechController ?? DSpeechFactory.make(
-            locale: container.language.currentLocale,
-            contextualStrings: contextualStrings,
-            lexiconLocalization: container.l10n.voice.speech,
-        )
+        self.speechController = speechController
 
         super.init(
             state: ScanSpeechPreparingModelState(
@@ -47,7 +42,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
-            getNeuralModelSettings: getNeuralModelSettings,
+            getSettingsAI: getSettingsAI,
             onRequestCountIncremented: onRequestCountIncremented,
             analyticsDestination: .bottomSheet(
                 .scanSpeech,
@@ -104,15 +99,54 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         ]
     }
 
+    private var isFoundationModels: Bool {
+        switch settingsAI.transcriptParserType {
+        case .foundationModels:
+            true
+        case .server:
+            false
+        }
+    }
+
     override func onInit() {
-        speechController.prepareModel()
-        refreshSpeechState()
+        if let speechController {
+            speechController.prepareModel()
+            refreshSpeechState()
+            return
+        }
+        let engine = settingsAI.transcriberType.speechEngine
+        emit(
+            ScanSpeechPreparingModelState(
+                preparation: .checking,
+            ),
+        )
+        handle {
+            let controller = try await DSpeechFactory.make(
+                engine: engine,
+                locale: self.container.language.currentLocale,
+                contextualStrings: self.arguments.examinationType.contextualStrings,
+                lexiconLocalization: self.l10n.voice.speech,
+            )
+            try Task.checkCancellation()
+            return controller
+        } onMainSuccess: { controller in
+            guard self.isPresentationActive else { return }
+            self.speechController = controller
+            self.observeSpeechController()
+            controller.prepareModel()
+            self.refreshSpeechState()
+        } onMainUnknownError: { _ in
+            guard self.isPresentationActive else { return }
+            self.emit(
+                ScanSpeechModelPreparationFailedState(),
+            )
+        }
     }
 
     func onDisappear() {
         isPresentationActive = false
         cancelLastTask()
-        speechController.cancel()
+        speechController?.cancel()
     }
 
     func onTapBack() {
@@ -128,12 +162,16 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
 
     func onTapRetryModelPreparation() {
         guard isPresentationActive else { return }
+        guard let speechController else {
+            onInit()
+            return
+        }
         speechController.prepareModel()
         refreshSpeechState()
     }
 
     func onTapSpeech() {
-        guard isPresentationActive else { return }
+        guard isPresentationActive, let speechController else { return }
         switch state {
         case _ as ScanSpeechReadyState:
             analytics.buttonTapped(
@@ -143,7 +181,9 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 ),
             )
             speechController.start()
-            container.examinationNeuralModelFactory.prewarm()
+            container.examinationNeuralModelFactory.prewarm(
+                isFoundationModels: isFoundationModels,
+            )
             refreshSpeechState()
         case _ as ScanSpeechRecordingState:
             analytics.buttonTapped(
@@ -164,13 +204,16 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         default: return
         }
 
+        guard let speechController else { return }
         speechController.start()
         switch speechController.recordingStatus {
         case .preparing, .recording, .transcribing:
             emit(
                 ScanSpeechReadyState(),
             )
-            container.examinationNeuralModelFactory.prewarm()
+            container.examinationNeuralModelFactory.prewarm(
+                isFoundationModels: isFoundationModels,
+            )
             refreshSpeechState()
         case .stopped: break
         }
@@ -359,6 +402,8 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     private func observeSpeechController() {
+        speechCancellable?.cancel()
+        guard let speechController else { return }
         speechCancellable = speechController.objectWillChange.sink { [weak self] _ in
             Task { @MainActor [weak self] in
                 guard let self, isPresentationActive else { return }
@@ -376,6 +421,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         }
 
         let next: any ScanSpeechStateProtocol
+        guard let speechController else { return }
         switch speechController.modelPreparationStatus {
         case .checking, .downloading, .loading:
             next = ScanSpeechPreparingModelState(
@@ -403,7 +449,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     private func stopSpeech() {
-        let speechController = speechController
+        guard let speechController else { return }
         emit(
             ScanSpeechTranscribingState(),
         )
@@ -466,6 +512,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         guard let originalTranscript else { return }
         let factory = container.examinationNeuralModelFactory
         let request = DNeuralUltrasoundDictationParseRequest(
+            selectedNeuralModelId: settingsAI.selectedNeuralModelId,
             text: parsing.parsedText,
             examinationTypeId: arguments.examinationType.id,
             examinationTypeTitle: arguments.examinationType.title,
@@ -475,7 +522,9 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         )
         let started = Date()
         handle {
-            let model = try factory.model()
+            let model = try factory.model(
+                isFoundationModels: self.isFoundationModels,
+            )
             return try await model.parseProposals(
                 request: request,
             )

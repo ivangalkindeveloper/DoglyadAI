@@ -4,7 +4,7 @@ import Foundation
 struct USExaminationReport: Identifiable, Codable, Equatable {
     var id: UUID = .init()
     let date: Date
-    let neuralModelSettings: NeuralModelSettings
+    let settingsAI: SettingsAI
     let examinationData: USExaminationData
     let actualModelReport: USExaminationModelReport
     let previousModelReports: [USExaminationModelReport]
@@ -13,7 +13,7 @@ struct USExaminationReport: Identifiable, Codable, Equatable {
 private extension USExaminationReport {
     enum CodingKeys: String, CodingKey {
         case date,
-             neuralModelSettings,
+             settingsAI,
              examinationData,
              actualModelReport,
              previousModelReports
@@ -121,11 +121,11 @@ extension USExaminationReport {
     static func fromDB(
         _ db: USExaminationReportDB,
     ) -> USExaminationReport {
-        USExaminationReport(
+        try USExaminationReport(
             id: db.id,
             date: db.date,
-            neuralModelSettings: NeuralModelSettings.fromDB(
-                db.neuralModelSettings,
+            settingsAI: SettingsAI.fromDB(
+                db.settingsAI,
             ),
             examinationData: USExaminationData.fromDB(
                 db.examinationData,
@@ -143,7 +143,7 @@ extension USExaminationReport {
         USExaminationReportDB(
             id: id,
             date: date,
-            neuralModelSettings: neuralModelSettings.toDB(),
+            settingsAI: settingsAI.toDB(),
             examinationData: examinationData.toDB(),
             actualModelReport: actualModelReport.toDB(),
             previousModelReports: previousModelReports.map { $0.toDB() },

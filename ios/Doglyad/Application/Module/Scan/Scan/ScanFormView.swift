@@ -214,19 +214,10 @@ struct ScanFormView: DViewProtocol {
                 size.s16,
             )
 
-            switch viewModel.subscriptionAvailability(
-                of: .neuralModelSettings,
-            ) {
-            case .available, .offered:
-                NeuralModelSettingsCardView(
-                    settings: viewModel.neuralModelSettings,
-                    availability: viewModel.subscriptionAvailability(
-                        of: .neuralModelSettings,
-                    ),
-                    onTap: viewModel.onTapNeuralModelSettings,
-                )
-            case .unavailable: EmptyView()
-            }
+            SettingsAICardView(
+                settings: viewModel.settingsAI,
+                onTap: viewModel.onTapSettingsAI,
+            )
 
             DButton(
                 title: l10n[

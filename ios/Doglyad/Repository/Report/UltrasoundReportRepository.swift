@@ -62,11 +62,13 @@ extension UltrasoundReportRepository {
     static let voiceParseEndpoint = "/ultrasound/parse_dictation"
 
     func parseDictation(
+        selectedNeuralModelId: String?,
         locale: Locale,
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
         let request = USVoiceFormParseRequestDTO(
+            selectedNeuralModelId: selectedNeuralModelId,
             usExaminationTypeId: examinationTypeId,
             transcript: transcript,
         )

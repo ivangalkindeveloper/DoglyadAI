@@ -15,7 +15,7 @@ from app.core.resolve_language import SUPPORTED_LANGUAGES, resolve_language
 from app.core.validate_prompt_localizations import PROMPT_LOCALIZATION_KEYS
 from app.model.application_locale_config import ApplicationLocaleConfig
 from app.model.inference.inference_generation_request import InferenceGenerationRequest
-from app.model.neural_model_settings import NeuralModelSettings
+from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
@@ -125,7 +125,7 @@ def test_missing_or_unsupported_language_defaults_to_english(client: TestClient)
 @pytest.mark.parametrize("environment", ("development", "production"))
 def test_default_report_settings_are_valid_for_generation(environment: str) -> None:
     application = _document(_CONFIG_DIR.parent / environment, "application.json")
-    settings = NeuralModelSettings.model_validate(application["ultrasound"]["neuralModel"])
+    settings = SettingsAI.model_validate(application["ultrasound"]["neuralModel"])
 
     request = InferenceGenerationRequest(
         modelId="example/model",

@@ -16,7 +16,7 @@ struct SelectNeuralModelBottomSheetView: DViewProtocol {
 
         DBottomSheet(
             title: l10n[
-                .settingsNeuralModelTitle,
+                .selectNeuralModelTitle,
             ],
             fraction: 0.8,
         ) { toolbarHeight, bottomHeight in

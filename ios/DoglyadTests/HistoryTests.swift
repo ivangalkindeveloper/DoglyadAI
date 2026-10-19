@@ -137,7 +137,7 @@ struct HistoryTests {
     func databaseFetchesReportPagesNewestFirst() async throws {
         let schema = Schema(
             [
-                NeuralModelSettingsDB.self,
+                SettingsAIDB.self,
                 USExaminationReportDB.self,
                 USExaminationDataDB.self,
                 USExaminationScanPhotoDB.self,
@@ -261,7 +261,7 @@ struct HistoryTests {
     func reportWithoutMeasurementsCanBeStoredAndEncoded() async throws {
         let schema = Schema(
             [
-                NeuralModelSettingsDB.self,
+                SettingsAIDB.self,
                 USExaminationReportDB.self,
                 USExaminationDataDB.self,
                 USExaminationScanPhotoDB.self,
@@ -367,7 +367,7 @@ struct HistoryTests {
     ) -> USExaminationReport {
         USExaminationReport(
             date: date,
-            neuralModelSettings: NeuralModelSettings(
+            settingsAI: SettingsAI(
                 selectedNeuralModelId: nil,
                 isMarkdown: false,
                 temperature: nil,
@@ -401,7 +401,7 @@ struct HistoryTests {
     ) -> USExaminationReportDB {
         USExaminationReportDB(
             date: date,
-            neuralModelSettings: NeuralModelSettingsDB(
+            settingsAI: SettingsAIDB(
                 selectedNeuralModelId: nil,
                 temperature: nil,
                 maxTokens: nil,

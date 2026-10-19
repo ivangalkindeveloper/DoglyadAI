@@ -11,7 +11,7 @@ class DModuleViewModel<State>: DStateViewModel<State> {
     let router: DRouter
     @Published private(set) var subscriptionStatus: SubscriptionStatus?
     private var subscriptionObservation: AnyCancellable?
-    private let getNeuralModelSettings: () -> NeuralModelSettings
+    private let getSettingsAI: () -> SettingsAI
     private let onRequestCountIncremented: () -> Void
     private let onSubscriptionStatusUpdated: (SubscriptionStatus?) -> Void
     let coordinator: Coordinator
@@ -25,7 +25,7 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
-        getNeuralModelSettings: @escaping () -> NeuralModelSettings,
+        getSettingsAI: @escaping () -> SettingsAI,
         onRequestCountIncremented: @escaping () -> Void,
         analyticsDestination: AnalyticsRouteDestination,
         analyticsParameters: AnalyticsParameters = .empty,
@@ -33,7 +33,7 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         self.container = container
         self.router = router
         subscriptionStatus = getSubscriptionStatus()
-        self.getNeuralModelSettings = getNeuralModelSettings
+        self.getSettingsAI = getSettingsAI
         self.onRequestCountIncremented = onRequestCountIncremented
         self.onSubscriptionStatusUpdated = onSubscriptionStatusUpdated
         self.analyticsDestination = analyticsDestination
@@ -60,7 +60,7 @@ class DModuleViewModel<State>: DStateViewModel<State> {
     var l10n: L10N { container.l10n }
 
     var availableRequestCount: Int { subscriptionStatus?.availableCountPerDay ?? 0 }
-    var neuralModelSettings: NeuralModelSettings { getNeuralModelSettings() }
+    var settingsAI: SettingsAI { getSettingsAI() }
 
     final func onAppear() {
         switch analyticsDestination {

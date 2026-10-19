@@ -27,7 +27,7 @@ struct ReportEmailTests {
             date: Date(
                 timeIntervalSince1970: 0,
             ),
-            neuralModelSettings: NeuralModelSettings(
+            settingsAI: SettingsAI(
                 selectedNeuralModelId: "test",
                 isMarkdown: false,
                 temperature: nil,

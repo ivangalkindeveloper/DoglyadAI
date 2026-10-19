@@ -28,7 +28,7 @@ struct StatePersistenceTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: { requestCountUpdates += 1 },
             observeExaminationChanges: { _ in AnyCancellable {} },
             getSelectedTemplate: { nil },
@@ -67,7 +67,7 @@ struct StatePersistenceTests {
         )
         let report = USExaminationReport(
             date: Date(),
-            neuralModelSettings: container.initialNeuralModelSettings,
+            settingsAI: container.initialSettingsAI,
             examinationData: USExaminationData(
                 usExaminationTypeId: form.usExaminationType.id,
                 photos: [],
@@ -184,7 +184,7 @@ struct StatePersistenceTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: {},
             getInitialEmail: { nil },
             getInitialIsRecommendationsIncluded: { false },

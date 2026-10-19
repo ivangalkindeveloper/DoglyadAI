@@ -46,7 +46,7 @@ struct ModuleStateTests {
             onSubscriptionStatusUpdated: { root.update(
                 status: $0,
             ) },
-            getNeuralModelSettings: { root.resolveNeuralModelSettings() },
+            getSettingsAI: { root.resolveSettingsAI() },
             onRequestCountIncremented: { requestCountUpdates += 1 },
             arguments: nil,
             onRefreshStatus: {},
@@ -57,7 +57,7 @@ struct ModuleStateTests {
         )
         #expect(
             model?.subscriptionAvailability(
-                of: .neuralModelSettings,
+                of: .settingsAI,
             ) == .unavailable,
         )
 
@@ -67,7 +67,7 @@ struct ModuleStateTests {
                 requestCountPerDay: 20,
                 formCompletionViaMicrophone: .available,
                 sendingReportByEmail: .available,
-                neuralModelSettings: .available,
+                settingsAI: .available,
             ),
             availableCountPerDay: 17,
         )
@@ -82,7 +82,7 @@ struct ModuleStateTests {
         )
         #expect(
             model?.subscriptionAvailability(
-                of: .neuralModelSettings,
+                of: .settingsAI,
             ) == .available,
         )
         #expect(
@@ -103,7 +103,7 @@ struct ModuleStateTests {
         )
         #expect(
             model?.subscriptionAvailability(
-                of: .neuralModelSettings,
+                of: .settingsAI,
             ) == .unavailable,
         )
         model = nil
@@ -138,7 +138,7 @@ struct ModuleStateTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: {},
             observeExaminationChanges: { observer in
                 let observation = changes.sink { _ in observer() }
@@ -235,7 +235,7 @@ struct ModuleStateTests {
             onSubscriptionStatusUpdated: { root.update(
                 status: $0,
             ) },
-            getNeuralModelSettings: { root.resolveNeuralModelSettings() },
+            getSettingsAI: { root.resolveSettingsAI() },
             onRequestCountIncremented: {},
             arguments: arguments,
         )
@@ -298,7 +298,7 @@ struct ModuleStateTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: {},
             arguments: SelectDateOfBirthArguments(
                 currentValue: initialDate,
@@ -342,7 +342,7 @@ struct ModuleStateTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: {},
         )
         let initial = OnBoardingLegalState()
@@ -418,7 +418,7 @@ struct ModuleStateTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: {},
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
@@ -519,7 +519,7 @@ struct ModuleStateTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: {},
             messager: DMessager(),
             onSaveTemplate: { _ in },
@@ -597,7 +597,7 @@ struct ModuleStateTests {
         )
         let report = USExaminationReport(
             date: Date(),
-            neuralModelSettings: container.initialNeuralModelSettings,
+            settingsAI: container.initialSettingsAI,
             examinationData: examination,
             actualModelReport: USExaminationModelReport(
                 date: Date(),
@@ -624,7 +624,7 @@ struct ModuleStateTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: {},
             observeExaminationChanges: { _ in AnyCancellable {} },
             getSelectedTemplate: { nil },
@@ -652,14 +652,14 @@ struct ModuleStateTests {
             getSubscriptionStatus: { nil },
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
-            getNeuralModelSettings: { container.initialNeuralModelSettings },
+            getSettingsAI: { container.initialSettingsAI },
             onRequestCountIncremented: {},
             arguments: arguments,
         )
         source.report = USExaminationReport(
             id: report.id,
             date: report.date,
-            neuralModelSettings: report.neuralModelSettings,
+            settingsAI: report.settingsAI,
             examinationData: examination,
             actualModelReport: USExaminationModelReport(
                 date: Date(),

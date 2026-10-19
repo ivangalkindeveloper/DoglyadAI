@@ -11,6 +11,8 @@ enum AnalyticsBottomSheet: String {
     case scanCamera = "scan_camera"
     case scanSpeech = "scan_speech"
     case selectDateOfBirth = "select_date_of_birth"
+    case selectTranscriber = "select_transcriber"
+    case selectTranscriptParser = "select_transcript_parser"
     case selectNeuralModel = "select_neural_model"
     case selectTemplate = "select_template"
     case selectUSExaminationType = "select_us_examination_type"

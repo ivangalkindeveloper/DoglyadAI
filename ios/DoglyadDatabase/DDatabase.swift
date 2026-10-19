@@ -11,7 +11,7 @@ public final class DDatabase: DDatabaseProtocol {
     public init() throws {
         let schema = Schema(
             [
-                NeuralModelSettingsDB.self,
+                SettingsAIDB.self,
                 USExaminationReportDB.self,
                 USExaminationDataDB.self,
                 USExaminationScanPhotoDB.self,
@@ -38,7 +38,7 @@ public final class DDatabase: DDatabaseProtocol {
     }
 }
 
-extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseNeuralModelSettingsProtocol, DDatabaseOnBoardingProtocol, DDatabaseUSExaminationNeuralModelProtocol, DDatabaseUSExaminationTemplateProtocol, DDatabaseUSExaminationTypeProtocol, DDatabaseUserSettingsProtocol {
+extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSettingsAIProtocol, DDatabaseOnBoardingProtocol, DDatabaseUSExaminationTemplateProtocol, DDatabaseUSExaminationTypeProtocol, DDatabaseUserSettingsProtocol {
     func getBool(
         _ key: DUserDefaultsKey,
     ) -> Bool {
@@ -140,61 +140,23 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseNe
         )
     }
 
-    public func getNeuralModelIsMarkdown() -> Bool {
-        getBool(
-            .neuralModelIsMarkdown,
-        )
+    public func getSettingsAIData() throws -> Data? {
+        guard let value = defaults.object(
+            forKey: DUserDefaultsKey.settingsAI.rawValue,
+        ) else { return nil }
+        guard let data = value as? Data else { throw CocoaError(
+            .coderReadCorrupt,
+        ) }
+        return data
     }
 
-    public func setNeuralModelIsMarkdown(
-        isMarkdown: Bool,
+    public func setSettingsAIData(
+        _ value: Data,
     ) {
         setValue(
-            isMarkdown,
-            .neuralModelIsMarkdown,
+            value,
+            .settingsAI,
         )
-    }
-
-    public func getNeuralModelTemperature() -> Double? {
-        getDouble(
-            .neuralModelTemperature,
-        )
-    }
-
-    public func setNeuralModelTemperature(
-        value: Double?,
-    ) {
-        if let value {
-            setValue(
-                value,
-                .neuralModelTemperature,
-            )
-        } else {
-            removeValue(
-                .neuralModelTemperature,
-            )
-        }
-    }
-
-    public func getNeuralModelMaxTokens() -> Int? {
-        getInt(
-            .neuralModelMaxTokens,
-        )
-    }
-
-    public func setNeuralModelMaxTokens(
-        value: Int?,
-    ) {
-        if let value {
-            setValue(
-                value,
-                .neuralModelMaxTokens,
-            )
-        } else {
-            removeValue(
-                .neuralModelMaxTokens,
-            )
-        }
     }
 
     public func getOnBoardingCompleted() -> Bool {
@@ -209,21 +171,6 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseNe
         setValue(
             isCompleted,
             .isOnBoardingCompleted,
-        )
-    }
-
-    public func getSelectedUSExaminationNeuralModelId() -> String? {
-        getString(
-            .selectedUSExaminationNeuralModelId,
-        )
-    }
-
-    public func setSelectedUSExaminationNeuralModelId(
-        value: String,
-    ) {
-        setValue(
-            value,
-            .selectedUSExaminationNeuralModelId,
         )
     }
 

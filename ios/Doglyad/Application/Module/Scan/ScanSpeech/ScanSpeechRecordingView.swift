@@ -27,7 +27,7 @@ struct ScanSpeechRecordingView: DViewProtocol {
 
             switch viewModel.state {
             case _ as ScanSpeechRecordingState:
-                switch viewModel.speechController.text {
+                switch viewModel.speechController?.text {
                 case let .some(
                     text,
                 ):

@@ -13,7 +13,7 @@ final class DependencyContainer: ObservableObject {
     let mockFactory: MockFactoryProtocol
     let sharedRepository: SharedRepositoryProtocol
     let userSettingsRepository: UserSettingsRepositoryProtocol
-    let ultrasoundModelRepository: UltrasoundModelRepositoryProtocol
+    let settingsAIRepository: SettingsAIRepositoryProtocol
     let ultrasoundReportRepository: UltrasoundReportRepositoryProtocol
     let ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol
     let templateRepository: TemplateRepositoryProtocol
@@ -29,7 +29,7 @@ final class DependencyContainer: ObservableObject {
     let usExaminationNeuralModelsById: [String: USExaminationNeuralModel]
     let usExaminationNeuralModelDefault: USExaminationNeuralModel
     let initialUserSettings: UserSettings
-    let initialNeuralModelSettings: NeuralModelSettings
+    let initialSettingsAI: SettingsAI
     let initialSubscriptionStatus: SubscriptionStatus?
     let initialRoute: RouteScreen<ScreenType>
     let version: String
@@ -42,7 +42,7 @@ final class DependencyContainer: ObservableObject {
         mockFactory: MockFactoryProtocol,
         sharedRepository: SharedRepositoryProtocol,
         userSettingsRepository: UserSettingsRepositoryProtocol,
-        ultrasoundModelRepository: UltrasoundModelRepositoryProtocol,
+        settingsAIRepository: SettingsAIRepositoryProtocol,
         ultrasoundReportRepository: UltrasoundReportRepositoryProtocol,
         ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol,
         templateRepository: TemplateRepositoryProtocol,
@@ -59,7 +59,7 @@ final class DependencyContainer: ObservableObject {
         examinationNeuralModelFactory: DNeuralUltrasoundModelFactory,
         initialSubscriptionStatus: SubscriptionStatus?,
         initialUserSettings: UserSettings = .initial,
-        initialNeuralModelSettings: NeuralModelSettings? = nil,
+        initialSettingsAI: SettingsAI? = nil,
         initialRoute: RouteScreen<ScreenType>,
         version: String,
     ) {
@@ -70,7 +70,7 @@ final class DependencyContainer: ObservableObject {
         self.mockFactory = mockFactory
         self.sharedRepository = sharedRepository
         self.userSettingsRepository = userSettingsRepository
-        self.ultrasoundModelRepository = ultrasoundModelRepository
+        self.settingsAIRepository = settingsAIRepository
         self.ultrasoundReportRepository = ultrasoundReportRepository
         self.ultrasoundDraftRepository = ultrasoundDraftRepository
         self.templateRepository = templateRepository
@@ -86,7 +86,7 @@ final class DependencyContainer: ObservableObject {
         self.usExaminationNeuralModelDefault = usExaminationNeuralModelDefault
         self.examinationNeuralModelFactory = examinationNeuralModelFactory
         self.initialUserSettings = initialUserSettings
-        self.initialNeuralModelSettings = initialNeuralModelSettings ?? NeuralModelSettings(
+        self.initialSettingsAI = initialSettingsAI ?? SettingsAI(
             selectedNeuralModelId: usExaminationNeuralModelDefault.id,
             isMarkdown: false,
             temperature: applicationConfig.ultrasound.neuralModel.temperature,
@@ -144,7 +144,7 @@ extension DependencyContainer {
             database: database,
             httpClient: httpClient,
         )
-        let ultrasoundModelRepository = UltrasoundModelRepository(
+        let settingsAIRepository = SettingsAIRepository(
             database: database,
         )
         let ultrasoundReportRepository = UltrasoundReportRepository(
@@ -179,7 +179,7 @@ extension DependencyContainer {
             mockFactory: DefaultMockFactory(),
             sharedRepository: sharedRepository,
             userSettingsRepository: userSettingsRepository,
-            ultrasoundModelRepository: ultrasoundModelRepository,
+            settingsAIRepository: settingsAIRepository,
             ultrasoundReportRepository: ultrasoundReportRepository,
             ultrasoundDraftRepository: ultrasoundDraftRepository,
             templateRepository: templateRepository,

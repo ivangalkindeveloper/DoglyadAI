@@ -25,7 +25,7 @@ Detect the platform first. When the repository contains only iOS, proceed withou
 
 Create modules in `ios/Doglyad/Application/Module/<Name>/`. Register navigation in `ios/Doglyad/Application/Application/Router/RouteType.swift` and `RouterBuilder.swift`.
 
-Before generating code, read `Module/Settings/` for a full-screen reference or `Module/Select/NeuralModel/` for a sheet reference. Treat the templates below as scaffolding only.
+Before generating code, read `Module/Settings/Settings/` for a full-screen reference or `Module/Select/NeuralModel/` for a sheet reference. Treat the templates below as scaffolding only.
 
 ### Required conventions
 
@@ -34,7 +34,7 @@ Before generating code, read `Module/Settings/` for a full-screen reference or `
 - Mark `*ViewModel` with `@MainActor`, inherit from `DViewModel`, and keep all presentation logic there.
 - Pass the entire `DependencyContainer` when the view model needs container dependencies.
 - Never let view models communicate directly. Exchange module data only through closures supplied while constructing the destination view model.
-- Let each module's view model control visibility for that module. Expose computed flags and methods such as `isSpeechButtonVisible` or `isNeuralModelSettingsVisible`; let `*ScreenView` branch only on its own view model.
+- Let each module's view model control visibility for that module. Expose computed flags and methods such as `isSpeechButtonVisible` or `isSettingsAIVisible`; let `*ScreenView` branch only on its own view model.
 - Use `@Published` for scalar state and `@NestedObservableObject` for nested observable controllers. Let the view own its view model with `@StateObject`.
 - Use only `DoglyadNetwork` for networking and `DoglyadDatabase` for persistence.
 - Use `LocalizedStringResource` values from `Localizable.xcstrings`. Add both English and Russian values for new keys.

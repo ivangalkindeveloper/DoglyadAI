@@ -6,14 +6,14 @@ import Handler
 @MainActor
 final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootStateProtocol> {
     private let container: DependencyContainer
-    private let getStoredNeuralModelSettings: () -> NeuralModelSettings
+    private let getStoredSettingsAI: () -> SettingsAI
 
     init(
         container: DependencyContainer,
-        getStoredNeuralModelSettings: (() -> NeuralModelSettings)? = nil,
+        getStoredSettingsAI: (() -> SettingsAI)? = nil,
     ) {
         self.container = container
-        self.getStoredNeuralModelSettings = getStoredNeuralModelSettings ?? { container.initialNeuralModelSettings }
+        self.getStoredSettingsAI = getStoredSettingsAI ?? { container.initialSettingsAI }
         let state: any SubscriptionRootStateProtocol = switch container.initialSubscriptionStatus {
         case let .some(
             status,
@@ -53,27 +53,27 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         )
     }
 
-    func resolveNeuralModelSettings() -> NeuralModelSettings {
+    func resolveSettingsAI() -> SettingsAI {
         let neuralModelConfig = container.applicationConfig.ultrasound.neuralModel
-        let settings = getStoredNeuralModelSettings()
-        switch status?.availability(
-            of: .neuralModelSettings,
-        ) ?? .unavailable {
-        case .available:
-            return NeuralModelSettings(
+        let settings = getStoredSettingsAI()
+        if status?.isReportGenerationSettingsAvailable == true {
+            return SettingsAI(
+                transcriberType: settings.transcriberType,
+                transcriptParserType: settings.transcriptParserType,
                 selectedNeuralModelId: settings.selectedNeuralModelId,
                 isMarkdown: settings.isMarkdown,
                 temperature: settings.temperature ?? neuralModelConfig.temperature,
                 maxTokens: settings.maxTokens ?? neuralModelConfig.maxTokens,
             )
-        case .offered, .unavailable:
-            return NeuralModelSettings(
-                selectedNeuralModelId: settings.selectedNeuralModelId,
-                isMarkdown: false,
-                temperature: neuralModelConfig.temperature,
-                maxTokens: neuralModelConfig.maxTokens,
-            )
         }
+        return SettingsAI(
+            transcriberType: settings.transcriberType,
+            transcriptParserType: settings.transcriptParserType,
+            selectedNeuralModelId: settings.selectedNeuralModelId,
+            isMarkdown: false,
+            temperature: neuralModelConfig.temperature,
+            maxTokens: neuralModelConfig.maxTokens,
+        )
     }
 
     func refreshStatus() async {

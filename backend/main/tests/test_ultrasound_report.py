@@ -16,7 +16,7 @@ from app.core.language_code import LanguageCode
 from app.core.load_configs import load_configs
 from app.core.resolve_examination_contextual_strings import resolve_examination_contextual_strings
 from app.core.resolve_localized_text import resolve_localized_text
-from app.model.neural_model_settings import NeuralModelSettings
+from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
@@ -57,7 +57,7 @@ def test_report_uses_selected_context_and_the_same_term_correction_rules_as_dict
         call=AsyncMock(return_value=json.dumps({"description": corrected, "conclusion": corrected}))
     )
     body = USExaminationRequest(
-        neuralModelSettings=NeuralModelSettings(selectedNeuralModelId="google/medgemma-4b-it"),
+        settingsAI=SettingsAI(selectedNeuralModelId="google/medgemma-4b-it"),
         examinationData=USExaminationData(
             usExaminationTypeId="bladder",
             photos=[],
@@ -115,7 +115,7 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
 
     load_configs()
     body = USExaminationRequest(
-        neuralModelSettings=NeuralModelSettings(
+        settingsAI=SettingsAI(
             selectedNeuralModelId=model.id,
             temperature=0.3,
             maxTokens=512,
@@ -203,7 +203,7 @@ def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled() -> N
     assert "Examination number: Examination#0" in factory.build_prompt(examination, "Echocardiography")
     assert "Patient complaints:" not in factory.build_prompt(examination, "Echocardiography")
     assert "Do not generate or include recommendations" in factory.system_prompt(
-        NeuralModelSettings(),
+        SettingsAI(),
         is_recommendations_included=False,
         is_photo_remarks=False,
         is_description_remarks=False,
