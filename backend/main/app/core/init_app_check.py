@@ -1,13 +1,16 @@
 from __future__ import annotations
 
+import logging
+
 import firebase_admin
 from firebase_admin import credentials
 
-from app.core.variables import variables
-from app.core.verify_app_check import logger
+from app.core.variables import Variables
+
+logger = logging.getLogger(__name__)
 
 
-def init_app_check() -> None:
+def init_app_check(variables: Variables) -> None:
     """Initializes the Firebase Admin SDK for verifying App Check tokens.
 
     Called once at application startup. Verification cannot be switched off in

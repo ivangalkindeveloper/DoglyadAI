@@ -1,14 +1,12 @@
 from __future__ import annotations
 
 import asyncio
-import logging
 
-from fastapi import Header, HTTPException, status
+from fastapi import Header
 from firebase_admin import app_check
 
 from app.core.http_header import HttpHeader
-
-logger = logging.getLogger(__name__)
+from app.error import InvalidAppCheckTokenError, MissingAppCheckTokenError
 
 APP_CHECK_HEADER = HttpHeader.FIREBASE_APP_CHECK.value
 
@@ -27,15 +25,8 @@ async def verify_app_check(
     Raises 401 when the token is missing or fails verification.
     """
     if not x_firebase_app_check:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Missing App Check token",
-        )
+        raise MissingAppCheckTokenError()
     try:
         await asyncio.to_thread(app_check.verify_token, x_firebase_app_check)
     except ValueError as error:
-        logger.warning("Invalid App Check token: %s", error)
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid App Check token",
-        ) from error
+        raise InvalidAppCheckTokenError() from error

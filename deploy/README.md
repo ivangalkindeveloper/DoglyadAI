@@ -7,6 +7,16 @@
 
 Bootstrap installs system dependencies but deliberately does not start the service. Machine-specific configuration and secrets are transferred separately and never placed in cloud-init or provider metadata.
 
+## Image checks and non-root runtime
+
+The image workflow runs Ruff lint/format checks, mypy and pytest independently for both services. The main check also runs deployment-tool tests and shell syntax checks. These run for backend/deployment pull requests and pushes to `master`, and for manual image builds. Publishing remains manual; neither image can be published unless both services pass.
+
+Before publishing each image, `deploy/verify_backend_image.py` starts it without network access using synthetic Firebase credentials and temporary storage. It checks UID/GID `10001:10001`, credential reads, rejection of credential writes, log writes and the unauthenticated `401` boundary. It uses main's local mock generation implementation and does not load a GPU model or contact Firebase. This is a runtime-permission check, not an authorized generation test.
+
+Both Python backend images run as UID/GID `10001:10001`. Existing root-era bind mounts are prepared during rollout staging by a short-lived root container, before replacing the backend. `deploy/prepare_backend_storage.py` preserves host owners, assigns group `10001`, sets secrets directories/files to `0750`/`0640` and logs directories/files to `2770`/`0660`. It rejects symbolic links and special files. Credentials stay mounted read-only in the application. The updater checks that the new running backend UID is nonzero; rollback to an older image remains possible. No vLLM or Caddy runtime changes are made.
+
+`sync-secrets.sh` applies the same permissions before startup. Source-based `make start-backend-*` uses `deploy/start-backend.sh`; direct `docker compose up` requires already-prepared bind mounts. The temporary helpers require Docker access; the long-running backend process does not run as root.
+
 ## Initialize a new VM from a Mac
 
 You need the VM's public address, SSH access, and either `root` or passwordless `sudo`:
@@ -47,7 +57,6 @@ VLLM_LIMIT_MM_PER_PROMPT=6
 VLLM_MAX_NUM_SEQS=16
 VLLM_GPU_MEMORY_UTILIZATION=0.90
 VLLM_TENSOR_PARALLEL_SIZE=1
-VLLM_REQUEST_TIMEOUT_SECONDS=120
 INFERENCE_BACKEND_BIND=<tailscale ip>
 INFERENCE_BACKEND_PORT=8100
 ```
@@ -161,3 +170,5 @@ When the provider supports user data, attach one of these files while creating t
 - `deploy/cloud-init/inference.yaml`.
 
 Both call the same `bootstrap.sh`. If the provider does not support user data, use the local `make init-vm-*` command; the resulting machine configuration is the same.
+
+Python HTTP timeouts and request policies are baked into each backend image in `config/server.json` (main uses its selected environment directory). The default operation deadlines are 130 seconds for main → inference and 120 seconds for inference → vLLM; the latter includes capacity queue waiting. Environment files retain secrets and machine addresses.

@@ -7,18 +7,22 @@ from copy import deepcopy
 from pathlib import Path
 
 import pytest
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-import app.core.load_configs as config_module
-from app.core.load_configs import _CONFIG_DIR, load_configs
+from app.core.configuration_loader import ConfigurationLoader
 from app.core.resolve_language import SUPPORTED_LANGUAGES, resolve_language
 from app.core.validate_prompt_localizations import PROMPT_LOCALIZATION_KEYS
+from app.core.variables import Variables
 from app.model.application_locale_config import ApplicationLocaleConfig
 from app.model.inference.inference_generation_request import InferenceGenerationRequest
 from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
 )
+
+_CONFIG_DIR = Variables(environment="development").configuration_directory
+_CONFIG_BASE = _CONFIG_DIR.parent
 
 _ENDPOINTS = {
     "/v1/application_config": "application.json",
@@ -61,12 +65,10 @@ def _collect_locale_references(value: object, references: dict[str, set[str]]) -
             _collect_locale_references(child, references)
 
 
-@pytest.fixture(scope="module")
-def client() -> Iterator[TestClient]:
+@pytest.fixture
+def client(app: FastAPI) -> Iterator[TestClient]:
     # The test client skips lifespan because Firebase credentials are not available here.
-    load_configs()
     from app.core.verify_app_check import verify_app_check
-    from app.main import app
 
     async def allow_app_check() -> None:
         return None
@@ -147,14 +149,20 @@ def test_language_selection_uses_configured_default_and_codes() -> None:
 def test_application_config_response_uses_configured_default(
     client: TestClient, monkeypatch: pytest.MonkeyPatch
 ) -> None:
-    application = deepcopy(config_module._application_config)
+    from dataclasses import replace
+
+    from app.core.get_configuration import get_configuration
+    from app.core.get_configuration_response_service import get_configuration_response_service
+    from app.service.configuration_response_service import ConfigurationResponseService
+
+    current = client.app.state.container.configuration
+    application = deepcopy(current.application)
     application["locale"]["defaultCode"] = "ru"
-    monkeypatch.setattr(config_module, "_application_config", application)
-    monkeypatch.setattr(
-        config_module,
-        "_locale_config",
-        ApplicationLocaleConfig(defaultCode="ru", codes=["en", "ru"]),
+    updated = replace(
+        current, application=application, locale=ApplicationLocaleConfig(defaultCode="ru", codes=["en", "ru"])
     )
+    client.app.dependency_overrides[get_configuration] = lambda: updated
+    client.app.dependency_overrides[get_configuration_response_service] = lambda: ConfigurationResponseService(updated)
     response = client.get("/v1/application_config", headers={"Accept-Language": "fr-FR"})
     ru_texts = _locale_document(_CONFIG_DIR, "ru", "l10n.json")
     prompt_key = _document(_CONFIG_DIR, "application.json")["ultrasound"]["examinationNeuralModel"]["promptLocaleKey"]
@@ -298,7 +306,7 @@ def test_config_references_complete_locale_catalogs(environment: str) -> None:
     ),
 )
 def test_startup_rejects_incomplete_localization(tmp_path: Path, monkeypatch: pytest.MonkeyPatch, defect: str) -> None:
-    for name in (*_ENDPOINTS.values(), "ready_made_templates.json", "voice_form_parsing.json"):
+    for name in (*_ENDPOINTS.values(), "ready_made_templates.json", "server.json"):
         shutil.copyfile(_CONFIG_DIR / name, tmp_path / name)
     for language in ("en", "ru"):
         (tmp_path / language).mkdir()
@@ -367,6 +375,6 @@ def test_startup_rejects_incomplete_localization(tmp_path: Path, monkeypatch: py
         if defect != "contextual_strings_unknown_type":
             path.write_text(json.dumps(catalog, ensure_ascii=False), encoding="utf-8")
 
-    monkeypatch.setattr(config_module, "_CONFIG_DIR", tmp_path)
+    loader = ConfigurationLoader(tmp_path)
     with pytest.raises(RuntimeError, match=expected_error):
-        load_configs()
+        loader.load()

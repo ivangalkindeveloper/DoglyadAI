@@ -6,19 +6,19 @@ import re
 
 import httpx
 import pytest
-from fastapi import HTTPException
+from fastapi import FastAPI
+
+from app.core.variables import Variables
+from app.error import ApiError
+from app.model.inference_server_config import InferenceServerConfig
 
 
-def test_app_exposes_routes() -> None:
-    from app.main import app
-
+def test_app_exposes_routes(app: FastAPI) -> None:
     paths = {getattr(route, "path", None) for route in app.routes}
     assert "/v1/generation" in paths
 
 
-def test_inference_preserves_valid_request_id_and_replaces_invalid_one() -> None:
-    from app.main import app
-
+def test_inference_preserves_valid_request_id_and_replaces_invalid_one(app: FastAPI) -> None:
     async def run() -> tuple[str, str]:
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             valid = await client.post("/v1/generation", headers={"X-Request-ID": "a" * 32}, json={})
@@ -32,13 +32,12 @@ def test_inference_preserves_valid_request_id_and_replaces_invalid_one() -> None
     assert replacement_id != valid_id
 
 
-def test_no_route_is_reachable_without_app_check() -> None:
+def test_no_route_is_reachable_without_app_check(app: FastAPI) -> None:
     # This service has no unauthenticated surface at all: every route it serves
     # sits under /v1, and /v1 is closed. Anything added outside it would be
     # reachable by whoever can reach the port, which is the thing App Check exists
     # to prevent here.
     from app.core.verify_app_check import verify_app_check
-    from app.main import app
 
     for route in app.routes:
         path = str(getattr(route, "path", ""))
@@ -48,9 +47,7 @@ def test_no_route_is_reachable_without_app_check() -> None:
 
 
 @pytest.mark.parametrize("path", ["/docs", "/redoc", "/openapi.json"])
-def test_inference_does_not_expose_public_documentation(path: str) -> None:
-    from app.main import app
-
+def test_inference_does_not_expose_public_documentation(app: FastAPI, path: str) -> None:
     async def run() -> httpx.Response:
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             return await client.get(path)
@@ -58,13 +55,12 @@ def test_inference_does_not_expose_public_documentation(path: str) -> None:
     assert asyncio.run(run()).status_code == 404
 
 
-def test_generation_is_behind_app_check() -> None:
+def test_generation_is_behind_app_check(app: FastAPI) -> None:
     # The one control this service has: it holds the model and is reachable over
     # the network, so an unverified caller must never get past the router. There is
     # no flag to switch this off — dropping the dependency is the only way to lose
     # it, which is what this test guards.
     from app.core.verify_app_check import verify_app_check
-    from app.main import app
 
     route = next(route for route in app.routes if getattr(route, "path", None) == "/v1/generation")
     dependencies = [call.call for call in route.dependant.dependencies]  # type: ignore[attr-defined]
@@ -76,34 +72,34 @@ def test_missing_token_is_rejected() -> None:
     # never finished initializing the SDK.
     from app.core.verify_app_check import verify_app_check
 
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         asyncio.run(verify_app_check(None))
 
     assert error.value.status_code == 401
 
 
-def test_generate_rejects_another_model() -> None:
+def test_generate_rejects_another_model(server_config: InferenceServerConfig) -> None:
     # One VM per model: accepting a different id would use the wrong model.
     from app.model.generation_request import GenerationRequest
     from app.service.vllm_service import VLLMService
 
     async def run() -> None:
         async with httpx.AsyncClient() as client:
-            service = VLLMService(client)
+            service = VLLMService(client, Variables(), server_config)
             request = GenerationRequest(
                 modelId="example/other-model",
                 systemPrompt="system",
                 prompt="prompt",
                 structuredOutput='{"type":"object"}',
             )
-            with pytest.raises(HTTPException) as error:
+            with pytest.raises(ApiError) as error:
                 await service.generate(request)
             assert error.value.status_code == 400
 
     asyncio.run(run())
 
 
-def test_generate_forwards_images_and_json_schema() -> None:
+def test_generate_forwards_images_and_json_schema(server_config: InferenceServerConfig) -> None:
     from app.model.generation_image import GenerationImage
     from app.model.generation_request import GenerationRequest
     from app.service.vllm_service import VLLMService
@@ -128,7 +124,7 @@ def test_generate_forwards_images_and_json_schema() -> None:
 
     async def run() -> str:
         async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
-            service = VLLMService(client)
+            service = VLLMService(client, Variables(), server_config)
             return await service.generate(
                 GenerationRequest(
                     modelId="example/served-model",
@@ -152,7 +148,7 @@ def test_generate_forwards_images_and_json_schema() -> None:
     }
 
 
-def test_generate_omits_optional_fields_and_accepts_plain_text() -> None:
+def test_generate_omits_optional_fields_and_accepts_plain_text(server_config: InferenceServerConfig) -> None:
     from app.model.generation_request import GenerationRequest
     from app.service.vllm_service import VLLMService
 
@@ -167,7 +163,7 @@ def test_generate_omits_optional_fields_and_accepts_plain_text() -> None:
 
     async def run() -> str:
         async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
-            service = VLLMService(client)
+            service = VLLMService(client, Variables(), server_config)
             return await service.generate(
                 GenerationRequest(
                     modelId="example/served-model",

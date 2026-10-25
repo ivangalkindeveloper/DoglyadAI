@@ -1,0 +1,19 @@
+{
+    "default_max_body_bytes": 65536,
+    "vllm": {
+        "connect_timeout_seconds": 5,
+        "read_timeout_seconds": 120,
+        "write_timeout_seconds": 20,
+        "pool_timeout_seconds": 2,
+        "operation_timeout_seconds": 120
+    },
+    "generation": {
+        "max_body_bytes": 50331648,
+        "max_images": 6,
+        "max_image_bytes": 4194304,
+        "max_concurrent_requests": 16,
+        "max_waiting_requests": 16,
+        "queue_timeout_seconds": 2,
+        "retry_after_seconds": 5
+    }
+}

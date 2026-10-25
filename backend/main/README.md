@@ -2,6 +2,8 @@
 
 The main backend runs FastAPI through Uvicorn on port `8000`. VS Code launch profiles run it directly on the Mac using `debugpy`, with `--host 0.0.0.0` so a physical iPhone can connect over the local network.
 
+Docker runs the backend as UID/GID `10001:10001`. `make start-backend-main-development` and `make start-backend-main-production` build the image, prepare mounted directory permissions with a temporary root helper, and start the backend. The helper preserves host file owners, grants the application group read access to credentials and write access to logs, and removes world access. Credentials remain mounted read-only. VS Code launches continue to run as the local user.
+
 ## Launch profiles
 
 | VS Code profile | Configuration | Generation |
@@ -59,6 +61,34 @@ The fixtures affect server-side parsing only. If the iOS app selects Apple Found
 
 The current client/report contract uses `settingsAI` (`SettingsAI`), including report generation parameters, `transcriberType` and `transcriptParserType`. The iOS `SettingsAIRepository` persists the complete settings as one encoded value. Transcription defaults to WhisperKit; the initial parser is FoundationModels when available for the current device and locale, otherwise server parsing. Subsequent runs honor the saved choice.
 
-`POST /v1/ultrasound/parse_dictation` accepts `selectedNeuralModelId` alongside `usExaminationTypeId` and `transcript`. It resolves that model through the same published model catalog as report generation. A missing selection uses the catalog's default model. `voice_form_parsing.json` contains the parsing token limit only; parsing keeps its own prompt, schema and temperature of zero. Audio stays on the client.
+`POST /v1/ultrasound/parse_dictation` accepts `selectedNeuralModelId` alongside `usExaminationTypeId` and `transcript`. It resolves that model through the same published model catalog as report generation. A missing selection uses the catalog's default model. The server-only `server.json` contains the parsing token limit under `voice_form_parsing`; parsing keeps its own prompt, schema and temperature of zero. Audio stays on the client.
 
 The SettingsAI screen and its entry cards are available independently of Pro. In iOS, `entitlement.settingsAI` applies only to report-generation controls: Markdown, temperature and token limit require an active Pro subscription with this entitlement available. Speech choices stay editable. Saving speech choices without Pro preserves stored report-generation preferences; generation uses the default report parameters until Pro access is available. Mapping `SettingsAIDB` to the domain trims speech identifiers and defaults missing, blank or unknown values to WhisperKit and server parsing without throwing.
+
+
+## Application composition and dependencies
+
+`app.main` creates a FastAPI application with `create_app()`. Every application gets its own settings and rate limiter. `MainLifespan` loads a complete `Configuration`, initializes App Check, creates one shared `httpx.AsyncClient`, selects the model service, and composes `MainContainer`. The client closes after shutdown and on any startup failure.
+
+HTTP handlers receive services and the request language through FastAPI `Depends`. `ReportGenerationService`, `DictationParsingService`, `ConfigurationResponseService` and `ReportEmailService` own their respective operations. Their dependencies are passed through constructors; language, App Check token and request ID remain per-request method arguments. `ConfigurationLoader` returns data instead of publishing module-global dictionaries. `PromptFactory`, `ReportValidator` and `VoiceFormValidator` receive their configuration or localization explicitly.
+
+## Server configuration
+
+Report requests accept only `male` or `female` for `patientGender`, matching the iOS enum and voice parsing contract. Optional `patientHeight` (cm) and `patientWeight` (kg) accept finite positive JSON numbers or `null`; zero, negatives, booleans and numeric strings return `422` with the affected field location. No arbitrary upper medical bounds are imposed.
+
+Each environment has `config/<environment>/server.json`, baked into the image alongside the application documents. This file is server-only and is never returned by configuration endpoints. Restart or redeploy after editing it. `Variables` supplies environment selection, paths, credentials, SMTP connection details and model-service selection. Operational timeouts are configured in JSON rather than `INFERENCE_REQUEST_TIMEOUT_SECONDS`.
+
+- `endpoints`: the exact `/v1` paths, requests per minute per client IP, and maximum HTTP body sizes in bytes. Startup rejects missing or unknown paths. Rate counters are per application process; the deployment uses one Uvicorn worker.
+- `inference`: HTTPX connect, read, write and pool timeouts plus an overall operation deadline. The 130-second operation deadline bounds the outgoing inference call and maps expiry to `504`. Inference overload remains `503` with `Retry-After`.
+- `max_image_bytes`: maximum decoded bytes per Base64 image (4 MiB). Image count comes from `application.json` → `ultrasound.scanPhotoMaxNumber` (currently six). Invalid Base64 is rejected before generation.
+- `max_transcript_characters` and `voice_form_parsing.maxTokens`: transcript and generation limits for voice parsing.
+- `email`: SMTP socket timeout (15 seconds), attachment count, per-attachment bytes and total decoded attachment bytes. TLS verifies the SMTP server certificate and hostname. SMTP exceptions are logged by category without addresses or remote replies. Session shutdown errors do not turn an accepted send into a failed operation. SMTP acceptance does not establish delivery to the final mailbox or deduplicate separate client requests.
+
+The report and email body limit is 40 MiB. Six images of up to 4 MiB occupy about 32 MiB after Base64 encoding, leaving roughly 8 MiB for text and JSON. Examination number, patient name, complaints, description and template have no new individual character limits and are never truncated. All fields contribute to the actual UTF-8 body size, including JSON escaping. The 40 MiB bound is a resource safeguard; the selected model's context capacity remains a separate engine constraint.
+
+`RequestBodyLimitMiddleware` checks both declared and actually received bytes before JSON parsing, including requests with chunked bodies or incorrect `Content-Length`. Oversized HTTP bodies or decoded images return `413`; excessive photo counts and invalid encodings return `422`. This protection works with a direct Uvicorn launch and does not require Caddy. Local VS Code and `make start-backend-main-*` launches use Uvicorn directly; the separate `deploy/` VM composition still includes Caddy.
+
+
+## API error contract
+
+See [ERRORS.md](ERRORS.md). Expected failures are classes in `app/error/`, with code, description and status defined in the class. `ApiErrorHandler` formats errors from services, validation and body-limit middleware. `ApiErrorMiddleware` catches unexpected failures before they escape to the ASGI server's logger. Responses contain `code`, `detail`, `requestId`, and optional validation `fields`; `requestId` matches `X-Request-ID`. The current iOS transport handles HTTP failure statuses and does not decode the former FastAPI error body.

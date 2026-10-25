@@ -5,18 +5,20 @@ from __future__ import annotations
 import fcntl
 import json
 import os
-from pathlib import Path
 import re
 import shutil
 import subprocess
 import sys
 import time
+from pathlib import Path
 
 ROOT = Path("/opt/doglyad")
 
 
-def run(*args: str, timeout: int = 120) -> str:
-    result = subprocess.run(args, text=True, capture_output=True, timeout=timeout)
+def run(*args: str, timeout: int = 120, input_text: str | None = None) -> str:
+    result = subprocess.run(
+        args, input=input_text, text=True, capture_output=True, timeout=timeout
+    )
     if result.returncode:
         raise RuntimeError(f"{args[0]} failed, exit {result.returncode}")
     return result.stdout.strip()
@@ -109,7 +111,8 @@ import json, os
 from urllib.parse import urlsplit
 from urllib.request import ProxyHandler, build_opener, Request
 from urllib.error import HTTPError
-from app.core.variables import variables
+from app.core.variables import Variables
+variables = Variables()
 mapping = json.load(open(variables.inference_endpoints_path))
 expected = json.loads(__import__('sys').argv[1])
 assert not expected or set(mapping) <= set(expected), 'Inventory omits mapped models'
@@ -118,7 +121,8 @@ for url in mapping.values():
     if base.endswith('/v1'): base = base[:-3]
     assert urlsplit(base).scheme == 'http', 'Expected private HTTP inference URL'
     try:
-        build_opener(ProxyHandler({})).open(Request(base + '/v1/generation', data=b'{}', headers={'Content-Type':'application/json'}), timeout=10)
+        request = Request(base + '/v1/generation', data=b'{}', headers={'Content-Type':'application/json'})
+        build_opener(ProxyHandler({})).open(request, timeout=10)
     except HTTPError as error:
         assert error.code == 401, 'Unexpected inference response'
     else:
@@ -126,7 +130,9 @@ for url in mapping.values():
 """
 
 
-def wait_ready(target: dict, image_id: str, companion: str) -> dict:
+def wait_ready(
+    target: dict, image_id: str, companion: str, *, is_non_root_required: bool = False
+) -> dict:
     for attempt in range(12):
         try:
             first = check(target)
@@ -138,6 +144,11 @@ def wait_ready(target: dict, image_id: str, companion: str) -> dict:
                 and second["companion"] == companion
                 and first["restarts"] == second["restarts"]
             ):
+                if (
+                    is_non_root_required
+                    and run("docker", "exec", second["container"], "id", "-u") == "0"
+                ):
+                    raise RuntimeError("Backend is running as root")
                 return second
         except (RuntimeError, subprocess.TimeoutExpired):
             pass
@@ -199,6 +210,27 @@ def main(payload: dict) -> dict:
             ):
                 raise ValueError("Invalid deployment image")
             run("docker", "pull", image, timeout=600)
+            # Existing installations used root-only credentials and root-owned
+            # logs. Prepare bind mounts before switching to the non-root image.
+            run(
+                "docker",
+                "run",
+                "--rm",
+                "-i",
+                "--network",
+                "none",
+                "--user",
+                "0:0",
+                "--entrypoint",
+                "python",
+                "-v",
+                f"{ROOT}/secrets:/storage/secrets:rw",
+                "-v",
+                f"{ROOT}/logs:/storage/logs:rw",
+                image,
+                "-",
+                input_text=payload["storage_script"],
+            )
             if service == "backend_main":
                 # Validate the new model catalog against this VM's existing mappings.
                 validation = """
@@ -253,7 +285,9 @@ visit(models)
             compose(
                 "up", "-d", "--no-deps", "--pull", "never", "--force-recreate", service
             )
-            return wait_ready(target, image_id, state["companion"])
+            return wait_ready(
+                target, image_id, state["companion"], is_non_root_required=True
+            )
         if action == "rollback":
             shutil.copy2(snapshot / "env", ".env")
             # Use the recorded local image ID, even if the old tag has moved.

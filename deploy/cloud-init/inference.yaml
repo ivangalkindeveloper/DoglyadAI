@@ -62,7 +62,6 @@ final_message: |
        VLLM_MAX_NUM_SEQS=16
        VLLM_GPU_MEMORY_UTILIZATION=0.90
        VLLM_TENSOR_PARALLEL_SIZE=1
-       VLLM_REQUEST_TIMEOUT_SECONDS=120
        INFERENCE_BACKEND_BIND=<tailscale address of this machine>
        INFERENCE_BACKEND_PORT=8100
        EOF

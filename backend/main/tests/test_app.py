@@ -4,11 +4,10 @@ import asyncio
 import re
 
 import httpx
+from fastapi import FastAPI
 
 
-def test_app_exposes_v1_routes() -> None:
-    from app.main import app
-
+def test_app_exposes_v1_routes(app: FastAPI) -> None:
     paths = {getattr(route, "path", None) for route in app.routes}
     assert "/v1/application_config" in paths
     assert "/v1/l10n" in paths
@@ -24,9 +23,7 @@ def test_app_exposes_v1_routes() -> None:
     assert "/v1/ultrasound_report" not in paths
 
 
-def test_main_generates_a_request_id_for_each_request() -> None:
-    from app.main import app
-
+def test_main_generates_a_request_id_for_each_request(app: FastAPI) -> None:
     async def run() -> tuple[str, str]:
         async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
             first = await client.get("/openapi.json", headers={"X-Request-ID": "client-supplied"})

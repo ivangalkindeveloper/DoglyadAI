@@ -18,7 +18,6 @@
 #   VLLM_MAX_NUM_SEQS=<n>
 #   VLLM_GPU_MEMORY_UTILIZATION=<0..1>
 #   VLLM_TENSOR_PARALLEL_SIZE=<gpus>    must equal the number of cards
-#   VLLM_REQUEST_TIMEOUT_SECONDS=<s>    must stay under the backend's own timeout
 #   INFERENCE_BACKEND_BIND=<address>    the private address to listen on
 #   INFERENCE_BACKEND_PORT=<port>
 #
@@ -94,7 +93,6 @@ services:
       # once: the engine takes it as a command-line argument, the service compares
       # incoming requests against it.
       SERVED_MODEL_ID: ${SERVED_MODEL_ID}
-      VLLM_REQUEST_TIMEOUT_SECONDS: ${VLLM_REQUEST_TIMEOUT_SECONDS:-120}
       # Application logs are written to ./logs with daily rotation, kept for a year.
       # They contain no request payloads — only technical metadata.
       LOG_DIR: /app/logs

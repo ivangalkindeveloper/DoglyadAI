@@ -1,0 +1,55 @@
+{
+    "default_max_body_bytes": 65536,
+    "endpoints": {
+        "/v1/application_config": {
+            "requests_per_minute": 60,
+            "max_body_bytes": 65536
+        },
+        "/v1/l10n": {
+            "requests_per_minute": 30,
+            "max_body_bytes": 65536
+        },
+        "/v1/ultrasound/examination_types": {
+            "requests_per_minute": 60,
+            "max_body_bytes": 65536
+        },
+        "/v1/ultrasound/examination_neural_models": {
+            "requests_per_minute": 60,
+            "max_body_bytes": 65536
+        },
+        "/v1/templates/ready_made_list": {
+            "requests_per_minute": 30,
+            "max_body_bytes": 65536
+        },
+        "/v1/ultrasound/generate_report": {
+            "requests_per_minute": 30,
+            "max_body_bytes": 41943040
+        },
+        "/v1/ultrasound/parse_dictation": {
+            "requests_per_minute": 30,
+            "max_body_bytes": 262144
+        },
+        "/v1/send_report_email": {
+            "requests_per_minute": 30,
+            "max_body_bytes": 41943040
+        }
+    },
+    "inference": {
+        "connect_timeout_seconds": 5,
+        "read_timeout_seconds": 130,
+        "write_timeout_seconds": 20,
+        "pool_timeout_seconds": 2,
+        "operation_timeout_seconds": 130
+    },
+    "email": {
+        "socket_timeout_seconds": 15,
+        "max_attachment_bytes": 4194304,
+        "max_total_attachment_bytes": 25165824,
+        "max_attachments": 6
+    },
+    "voice_form_parsing": {
+        "maxTokens": 2048
+    },
+    "max_image_bytes": 4194304,
+    "max_transcript_characters": 8000
+}

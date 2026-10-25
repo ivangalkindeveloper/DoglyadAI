@@ -1,13 +1,23 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 
 import httpx
-from fastapi import HTTPException
 from pydantic import ValidationError
 
 from app.core.http_header import HttpHeader
-from app.core.variables import variables
+from app.error import (
+    AppCheckAccessDeniedError,
+    InferenceBusyError,
+    InferenceResponseError,
+    InferenceTimeoutError,
+    InferenceUnavailableError,
+    InvalidAppCheckTokenError,
+    InvalidInferenceResponseError,
+    ServiceNotConfiguredError,
+)
+from app.model.http_client_config import HttpClientConfig
 from app.model.inference.inference_generation_image import InferenceGenerationImage
 from app.model.inference.inference_generation_request import InferenceGenerationRequest
 from app.model.inference.inference_generation_response import InferenceGenerationResponse
@@ -29,18 +39,18 @@ class InferenceService(NeuralModelService):
         self,
         http_client: httpx.AsyncClient,
         generation_endpoints: dict[str, str],
+        http_config: HttpClientConfig,
     ) -> None:
         self._http_client = http_client
         self._urls = generation_endpoints
-        self._timeout = variables.inference_request_timeout_seconds
+        self._http_config = http_config
         logger.info("Inference service configured for models: %s", ", ".join(sorted(self._urls)) or "none")
 
     async def call(self, request: NeuralModelServiceRequest) -> str:
         model_id = request.model_id
         url = self._urls.get(model_id)
         if not url:
-            logger.error("No GPU VM is configured for model %s", model_id)
-            raise HTTPException(status_code=500, detail="Service is not configured")
+            raise ServiceNotConfiguredError()
 
         headers = {HttpHeader.CONTENT_TYPE.value: "application/json"}
         if request.app_check_token:
@@ -69,34 +79,38 @@ class InferenceService(NeuralModelService):
         )
 
         try:
-            response = await self._http_client.post(
-                url,
-                headers=headers,
-                json=payload.model_dump(exclude_none=True),
-                timeout=self._timeout,
-            )
+            async with asyncio.timeout(self._http_config.operation_timeout_seconds):
+                response = await self._http_client.post(
+                    url,
+                    headers=headers,
+                    json=payload.model_dump(exclude_none=True),
+                    timeout=self._http_config.timeout(),
+                )
+        except (TimeoutError, httpx.TimeoutException) as error:
+            raise InferenceTimeoutError() from error
         except httpx.HTTPError as error:
-            logger.exception("Inference request failed: %s", error)
-            raise HTTPException(status_code=502, detail="Inference service is unavailable") from error
+            raise InferenceUnavailableError() from error
 
         logger.info("Inference response: status=%d", response.status_code)
         if response.status_code >= 400:
-            # The response body may echo the request — log the status only.
-            logger.error("Inference request returned error status %d", response.status_code)
             # 401/403 mean the App Check token did not pass on the GPU VM. Keep the
             # status so the caller is told to re-authenticate.
-            if response.status_code in (401, 403):
-                raise HTTPException(status_code=response.status_code, detail="App Check verification failed")
-            raise HTTPException(status_code=502, detail="Inference service returned an error")
+            if response.status_code == 503:
+                raise InferenceBusyError.from_retry_after(response.headers.get("Retry-After"))
+            if response.status_code == 504:
+                raise InferenceTimeoutError()
+            if response.status_code == 401:
+                raise InvalidAppCheckTokenError()
+            if response.status_code == 403:
+                raise AppCheckAccessDeniedError()
+            raise InferenceResponseError()
 
         try:
             parsed = InferenceGenerationResponse.model_validate(response.json())
             if parsed.modelId != model_id:
-                logger.error("Inference model mismatch: requested=%s, received=%s", model_id, parsed.modelId)
-                raise ValueError("Inference service returned a different model ID")
+                raise InvalidInferenceResponseError()
             value = parsed.value()
             logger.info("Inference value: model=%s, chars=%d", model_id, len(value))
             return value
         except (ValueError, ValidationError) as error:
-            logger.warning("Failed to parse Inference response: %s", type(error).__name__)
-            raise HTTPException(status_code=502, detail="Invalid response from inference service") from error
+            raise InvalidInferenceResponseError() from error

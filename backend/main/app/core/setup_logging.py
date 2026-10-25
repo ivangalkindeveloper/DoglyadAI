@@ -5,12 +5,12 @@ import sys
 from logging.handlers import TimedRotatingFileHandler
 
 from app.core.request_id_log_filter import RequestIdLogFilter
-from app.core.variables import variables
+from app.core.variables import Variables
 
 _FORMAT = "%(asctime)s %(levelname)s %(name)s request_id=%(request_id)s: %(message)s"
 
 
-def setup_logging() -> None:
+def setup_logging(variables: Variables) -> None:
     """Configures stdout output and, when LOG_DIR is set, daily file rotation.
 
     Logs never contain patient data — only technical metadata, so long

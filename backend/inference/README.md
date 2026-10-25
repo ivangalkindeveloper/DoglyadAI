@@ -55,7 +55,7 @@ Response:
 
 `modelId` is compared with `SERVED_MODEL_ID`. A mismatch returns `400` instead of silently generating with a different model.
 
-A rate limiter is unnecessary here because the only client is the main backend, which already limits requests by client address. A limiter at this layer would group every caller under the main backend's single IP address.
+Client-IP rate limits live in main. This service applies separate body, image and generation-capacity limits from `config/server.json`; requests from both main environments share the same model capacity.
 
 ## Deployment on managed VMs
 
@@ -73,12 +73,14 @@ The commands below build from the repository using `backend/inference/docker-com
 4. Start the stack:
 
 ```bash
-make start-backend-inference        # docker compose --env-file backend/inference/secrets/.env -f backend/inference/docker-compose.yml up --build -d
+make start-backend-inference        # builds, prepares storage permissions, starts Compose
 make start-backend-inference-logs
 make stop-backend-inference
 ```
 
 `--env-file` is required. Compose substitutes `${VAR}` references in `docker-compose.yml` only from its own environment file; values from a service's `env_file:` section are not available for Compose-file interpolation.
+
+The inference backend image runs as UID/GID `10001:10001`. The startup command uses a temporary root helper to prepare credentials and log-directory permissions before starting this non-root process. Credentials remain read-only inside the backend. The third-party vLLM container retains its existing runtime configuration.
 
 The first start downloads weights from Hugging Face (about 8 GB for a 4B model) and takes several minutes. The `huggingface` volume persists weights across restarts, so the download happens only once. The vLLM health check uses `start_period: 900s` to avoid marking the container unhealthy while the model is loading.
 
@@ -110,3 +112,23 @@ cd backend/inference
 Development dependencies are listed in `requirements-dev.txt`. The service intentionally mirrors the `backend/main/` structure (`app/core`, `app/model`, `app/route`, and `app/service`) and keeps local copies of `setup_logging.py`, `init_app_check.py`, and `verify_app_check.py`. The deployments are independent, while these files are small and change infrequently.
 
 The two services have almost identical `init_app_check.py` and `verify_app_check.py` modules and both enforce validation unconditionally. A shared package would add deployment coupling for very little code.
+
+
+## Dependency lifecycle and server settings
+
+`create_app()` reads server settings and installs the body-size middleware. `InferenceLifespan` initializes App Check and creates a shared HTTPX client and `VLLMService`. The handler receives this service with `Depends(get_vllm_service)`; there is no module-global service registry. The HTTP client closes on shutdown and on any startup failure.
+
+`config/server.json` ships in the image (`CONFIG_DIR` can select a different directory). It is independent of main's environment configuration and is not exposed through an API. It contains:
+
+- `vllm`: connect, read, write and pool timeouts plus an overall 120-second operation deadline. This deadline includes queue waiting and HTTP generation; expiry returns `504`.
+- `generation`: maximum body size (48 MiB, allowing transport/prompt overhead above main's 40 MiB input), image count (six), decoded image size (4 MiB), concurrent operations (16), waiting requests (16), queue wait (2 seconds), and `Retry-After` (5 seconds).
+- `default_max_body_bytes`: body limit for unrecognized paths.
+
+Capacity checks are per service process. Run one worker per model VM, as the supplied Uvicorn command does. The 16 concurrent slots match the current vLLM scheduling configuration; actual throughput depends on the model and GPU. A full queue or an expired queue wait returns `503`. Queue slots are released after completion, errors and cancellation. These limits are separate from client subscription quotas. An HTTP deadline bounds this service's wait; engine-side cancellation of a generation is controlled by vLLM.
+
+`VLLM_REQUEST_TIMEOUT_SECONDS` no longer controls the Python service; edit `vllm` in `server.json`. Network addresses, served model ID and Firebase credentials still come from environment settings.
+
+
+## API errors
+
+Inference follows the shared [API error contract](../main/ERRORS.md): `code`, `detail`, `requestId`, and optional validation `fields`. Error definitions live in its own `app/error/`; each definition owns its public description and status. The same `ApiErrorHandler` formats route, validation and body-limit failures. An outer `ApiErrorMiddleware` sanitizes unexpected errors before they reach the server logger. Public errors omit provider response bodies, prompts, images, App Check tokens and raw exception text. Cancellation continues to propagate and release capacity slots. Shared schema and error metadata are checked against main by contract tests.

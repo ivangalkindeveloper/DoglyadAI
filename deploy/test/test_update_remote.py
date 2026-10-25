@@ -2,10 +2,10 @@ from __future__ import annotations
 
 import json
 import os
-from pathlib import Path
 import sys
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
@@ -76,6 +76,57 @@ class RemoteTransactionTests(unittest.TestCase):
             with self.assertRaisesRegex(RuntimeError, "environment"):
                 remote.check({"role": "development"})
         http.assert_not_called()
+
+    def test_stage_prepares_storage_before_new_image_validation(self) -> None:
+        with patch.object(remote, "check", return_value=self.state):
+            self.action("prepare")
+        image = "ghcr.io/ivangalkindeveloper/doglyad-main@sha256:" + "c" * 64
+        with patch.object(remote, "run", return_value="") as run:
+            self.action(
+                "stage", image=image, models=[], storage_script="storage fixture"
+            )
+        calls = run.call_args_list
+        self.assertEqual(calls[0].args[:2], ("docker", "pull"))
+        preparation = calls[1]
+        self.assertIn("0:0", preparation.args)
+        self.assertIn(f"{self.root}/secrets:/storage/secrets:rw", preparation.args)
+        self.assertEqual(preparation.kwargs["input_text"], "storage fixture")
+        self.assertIn(f"{self.root}/secrets:/app/secrets:ro", calls[2].args)
+
+    def test_new_running_root_container_fails_readiness(self) -> None:
+        state = {
+            "container": "backend",
+            "image": "image",
+            "companion": "caddy",
+            "restarts": 0,
+        }
+        with (
+            patch.object(remote, "check", return_value=state),
+            patch.object(remote, "run", return_value="0"),
+            patch.object(remote.time, "sleep"),
+            self.assertRaises(RuntimeError),
+        ):
+            remote.wait_ready(self.target, "image", "caddy", is_non_root_required=True)
+
+    def test_new_non_root_container_passes_readiness(self) -> None:
+        state = {
+            "container": "backend",
+            "image": "image",
+            "companion": "caddy",
+            "restarts": 0,
+        }
+        with (
+            patch.object(remote, "check", return_value=state),
+            patch.object(remote, "run", return_value="10001") as run,
+            patch.object(remote.time, "sleep"),
+        ):
+            self.assertEqual(
+                remote.wait_ready(
+                    self.target, "image", "caddy", is_non_root_required=True
+                ),
+                state,
+            )
+        run.assert_called_once_with("docker", "exec", "backend", "id", "-u")
 
 
 if __name__ == "__main__":

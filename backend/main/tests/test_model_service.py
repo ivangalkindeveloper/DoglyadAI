@@ -6,8 +6,9 @@ from pathlib import Path
 import httpx
 import pytest
 
+from app.core.configuration import Configuration
 from app.core.neural_model_service_type import NeuralModelServiceType
-from app.core.variables import variables
+from app.core.variables import Variables
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
@@ -33,7 +34,7 @@ def http_client() -> httpx.AsyncClient:
 
 
 @pytest.fixture
-def inference_endpoints(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
+def inference_endpoints(variables: Variables, tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     path = tmp_path / "inference_endpoints.json"
     path.write_text(json.dumps({_MODEL.id: "http://10.0.0.11:8100"}), encoding="utf-8")
     monkeypatch.setattr(variables, "inference_endpoints_path", path)
@@ -41,13 +42,20 @@ def inference_endpoints(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path
 
 
 def test_model_service_uses_dedicated_gpu_vms(
+    configuration: Configuration,
+    variables: Variables,
     http_client: httpx.AsyncClient,
     inference_endpoints: Path,
 ) -> None:
-    assert isinstance(create_model_service(http_client, [_MODEL]), InferenceService)
+    assert isinstance(
+        create_model_service(http_client, [_MODEL], variables=variables, http_config=configuration.server.inference),
+        InferenceService,
+    )
 
 
 def test_model_service_replaces_a_legacy_route_with_generation(
+    configuration: Configuration,
+    variables: Variables,
     http_client: httpx.AsyncClient,
     inference_endpoints: Path,
 ) -> None:
@@ -56,13 +64,17 @@ def test_model_service_replaces_a_legacy_route_with_generation(
         encoding="utf-8",
     )
 
-    service = create_model_service(http_client, [_MODEL])
+    service = create_model_service(
+        http_client, [_MODEL], variables=variables, http_config=configuration.server.inference
+    )
 
     assert isinstance(service, InferenceService)
     assert service._urls[_MODEL.id] == "http://10.0.0.11:8100/v1/generation"
 
 
 def test_startup_fails_without_an_inference_map(
+    configuration: Configuration,
+    variables: Variables,
     http_client: httpx.AsyncClient,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -70,20 +82,24 @@ def test_startup_fails_without_an_inference_map(
     monkeypatch.setattr(variables, "inference_endpoints_path", None)
 
     with pytest.raises(RuntimeError):
-        create_model_service(http_client, [_MODEL])
+        create_model_service(http_client, [_MODEL], variables=variables, http_config=configuration.server.inference)
 
 
 def test_startup_fails_when_available_model_has_no_vm(
+    configuration: Configuration,
+    variables: Variables,
     http_client: httpx.AsyncClient,
     inference_endpoints: Path,
 ) -> None:
     inference_endpoints.write_text("{}", encoding="utf-8")
 
     with pytest.raises(RuntimeError, match="No GPU VM configured for available models"):
-        create_model_service(http_client, [_MODEL])
+        create_model_service(http_client, [_MODEL], variables=variables, http_config=configuration.server.inference)
 
 
 def test_coming_soon_model_does_not_need_a_vm(
+    configuration: Configuration,
+    variables: Variables,
     http_client: httpx.AsyncClient,
     inference_endpoints: Path,
 ) -> None:
@@ -94,20 +110,29 @@ def test_coming_soon_model_does_not_need_a_vm(
         }
     )
 
-    assert isinstance(create_model_service(http_client, [_MODEL, coming_soon]), InferenceService)
+    assert isinstance(
+        create_model_service(
+            http_client, [_MODEL, coming_soon], variables=variables, http_config=configuration.server.inference
+        ),
+        InferenceService,
+    )
 
 
 def test_startup_fails_for_an_invalid_vm_url(
+    configuration: Configuration,
+    variables: Variables,
     http_client: httpx.AsyncClient,
     inference_endpoints: Path,
 ) -> None:
     inference_endpoints.write_text(json.dumps({_MODEL.id: "not-a-url"}), encoding="utf-8")
 
     with pytest.raises(RuntimeError, match="Invalid GPU VM URL"):
-        create_model_service(http_client, [_MODEL])
+        create_model_service(http_client, [_MODEL], variables=variables, http_config=configuration.server.inference)
 
 
 def test_the_same_composition_in_every_environment(
+    configuration: Configuration,
+    variables: Variables,
     http_client: httpx.AsyncClient,
     inference_endpoints: Path,
     monkeypatch: pytest.MonkeyPatch,
@@ -118,16 +143,27 @@ def test_the_same_composition_in_every_environment(
     built: list[type[NeuralModelService]] = []
     for environment in ("development", "production"):
         monkeypatch.setattr(variables, "environment", environment)
-        built.append(type(create_model_service(http_client, [_MODEL])))
+        built.append(
+            type(
+                create_model_service(
+                    http_client, [_MODEL], variables=variables, http_config=configuration.server.inference
+                )
+            )
+        )
 
     assert built[0] is built[1]
 
 
 def test_mock_service_does_not_need_an_inference_map(
+    configuration: Configuration,
+    variables: Variables,
     http_client: httpx.AsyncClient,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(variables, "model_service_type", NeuralModelServiceType.MOCK)
     monkeypatch.setattr(variables, "inference_endpoints_path", None)
 
-    assert isinstance(create_model_service(http_client, [_MODEL]), MockNeuralModelService)
+    assert isinstance(
+        create_model_service(http_client, [_MODEL], variables=variables, http_config=configuration.server.inference),
+        MockNeuralModelService,
+    )

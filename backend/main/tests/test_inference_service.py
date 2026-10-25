@@ -7,9 +7,12 @@ from uuid import UUID
 
 import httpx
 import pytest
-from fastapi import HTTPException
 
+from app.core.configuration import Configuration
+from app.core.configuration_loader import ConfigurationLoader
 from app.core.language_code import LanguageCode
+from app.core.variables import Variables
+from app.error import ApiError
 from app.model.neural_model.neural_model_service_operation import NeuralModelServiceOperation
 from app.model.neural_model.neural_model_service_request import NeuralModelServiceRequest
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
@@ -55,9 +58,13 @@ def _request(
 
 
 def _call(handler: Any, request: NeuralModelServiceRequest | None = None) -> str:
+    configuration = ConfigurationLoader(Variables(environment="development").configuration_directory).load()
+
     async def run() -> str:
         async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
-            return await InferenceService(client, _ENDPOINTS).call(request or _request())
+            return await InferenceService(client, _ENDPOINTS, configuration.server.inference).call(
+                request or _request()
+            )
 
     return asyncio.run(run())
 
@@ -122,7 +129,7 @@ def test_auth_status_is_preserved(status_code: int) -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(status_code, json={"detail": "no"})
 
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _call(handler)
 
     assert error.value.status_code == status_code
@@ -132,7 +139,7 @@ def test_upstream_error_becomes_502() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(500, json={"detail": "boom"})
 
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _call(handler)
 
     assert error.value.status_code == 502
@@ -142,7 +149,7 @@ def test_unreachable_vm_becomes_502() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         raise httpx.ConnectError("refused")
 
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _call(handler)
 
     assert error.value.status_code == 502
@@ -152,7 +159,7 @@ def test_blank_response_is_rejected() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(200, json={"modelId": _MODEL.id, "response": "   "})
 
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _call(handler)
 
     assert error.value.status_code == 502
@@ -164,11 +171,11 @@ def test_invalid_response_does_not_log_patient_data(caplog: pytest.LogCaptureFix
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(200, json={"modelId": _MODEL.id, "response": {"patient": patient_data}})
 
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _call(handler)
 
     assert error.value.status_code == 502
-    assert "Failed to parse Inference response: ValidationError" in caplog.text
+    assert type(error.value.__cause__).__name__ == "ValidationError"
     assert patient_data not in caplog.text
     assert all(record.exc_info is None for record in caplog.records)
 
@@ -177,7 +184,7 @@ def test_response_from_another_model_is_rejected() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
         return httpx.Response(200, json={"modelId": "google/another-model", "response": _RESPONSE})
 
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _call(handler)
 
     assert error.value.status_code == 502
@@ -196,7 +203,34 @@ def test_model_without_a_vm_is_not_sent_anywhere() -> None:
         descriptionLocaleKey="unsupportedModelDescription",
     )
 
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _call(handler, _request(model=other))
 
     assert error.value.status_code == 500
+
+
+def test_operation_deadline_cancels_slow_transport(configuration: Configuration) -> None:
+    async def handler(request: httpx.Request) -> httpx.Response:
+        await asyncio.sleep(1)
+        raise AssertionError("The operation should have been cancelled")
+
+    async def run() -> None:
+        config = configuration.server.inference.model_copy(update={"operation_timeout_seconds": 0.01})
+        async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+            with pytest.raises(ApiError) as raised:
+                await InferenceService(client, _ENDPOINTS, config).call(_request())
+        assert raised.value.status_code == 504
+
+    asyncio.run(run())
+
+
+@pytest.mark.parametrize("status", [503, 504])
+def test_busy_and_timeout_statuses_are_preserved(status: int) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(status, headers={"Retry-After": "7"})
+
+    with pytest.raises(ApiError) as raised:
+        _call(handler)
+    assert raised.value.status_code == status
+    if status == 503:
+        assert raised.value.headers == {"Retry-After": "7"}

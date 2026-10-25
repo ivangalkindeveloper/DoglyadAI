@@ -130,18 +130,16 @@ upload-ios-release-production:
 		-allowProvisioningUpdates
 
 start-backend-main-development:
-	ENV_FILE=secrets/.env.development \
-	docker compose -f backend/main/docker-compose.yml up --build -d
+	ENV_FILE=secrets/.env.development bash deploy/start-backend.sh main
 start-backend-main-production:
-	ENV_FILE=secrets/.env.production \
-	docker compose -f backend/main/docker-compose.yml up --build -d
+	ENV_FILE=secrets/.env.production bash deploy/start-backend.sh main
 start-backend-main-logs:
 	docker compose -f backend/main/docker-compose.yml logs -f
 stop-backend-main:
 	docker compose -f backend/main/docker-compose.yml down
 
 start-backend-inference:
-	docker compose --env-file backend/inference/secrets/.env -f backend/inference/docker-compose.yml up --build -d
+	bash deploy/start-backend.sh inference
 start-backend-inference-logs:
 	docker compose --env-file backend/inference/secrets/.env -f backend/inference/docker-compose.yml logs -f
 stop-backend-inference:

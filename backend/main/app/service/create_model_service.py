@@ -9,7 +9,8 @@ from typing import assert_never
 import httpx
 
 from app.core.neural_model_service_type import NeuralModelServiceType
-from app.core.variables import variables
+from app.core.variables import Variables
+from app.model.http_client_config import HttpClientConfig
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
@@ -65,12 +66,14 @@ def _generation_endpoint(url: str) -> str:
 def create_model_service(
     http_client: httpx.AsyncClient,
     configured_models: Iterable[USExaminationNeuralModel],
+    variables: Variables,
+    http_config: HttpClientConfig,
 ) -> NeuralModelService:
     """Selects generation once at startup, independently of the config environment."""
     logger.info("Model service type: %s", variables.model_service_type.value)
     match variables.model_service_type:
         case NeuralModelServiceType.INFERENCE:
-            return _create_inference_service(http_client, configured_models)
+            return _create_inference_service(http_client, configured_models, variables, http_config)
         case NeuralModelServiceType.MOCK:
             return MockNeuralModelService()
     assert_never(variables.model_service_type)
@@ -79,6 +82,8 @@ def create_model_service(
 def _create_inference_service(
     http_client: httpx.AsyncClient,
     configured_models: Iterable[USExaminationNeuralModel],
+    variables: Variables,
+    http_config: HttpClientConfig,
 ) -> InferenceService:
     """Validates the GPU endpoint map before serving the first real request."""
     if not variables.inference_endpoints_path:
@@ -94,4 +99,4 @@ def _create_inference_service(
     missing_model_ids = available_model_ids - generation_endpoints.keys()
     if missing_model_ids:
         raise RuntimeError(f"No GPU VM configured for available models: {', '.join(sorted(missing_model_ids))}")
-    return InferenceService(http_client, generation_endpoints)
+    return InferenceService(http_client, generation_endpoints, http_config)

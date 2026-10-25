@@ -17,14 +17,12 @@ from evaluation.voice.server_parse import load_cases, score_response, summarize
 
 def prepare(output: Path, *, natural_dates: bool = False, quality_regressions: bool = False) -> None:
     from app.core.language_code import LanguageCode
-    from app.core.load_configs import load_configs
-    from app.core.resolve_examination_title import resolve_examination_title
-    from app.core.resolve_examination_contextual_strings import resolve_examination_contextual_strings
+    from app.core.configuration_loader import ConfigurationLoader
+    from app.core.variables import Variables
     from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
-    from app.prompt.voice_form_prompt import voice_form_prompt
-    from app.prompt.voice_form_system_prompt import voice_form_system_prompt
+    from app.prompt.prompt_factory import PromptFactory
 
-    load_configs()
+    configuration = ConfigurationLoader(Variables().configuration_directory).load()
     schema = json.loads(USVoiceFormGeneration.structured_output())
     rows: list[dict[str, Any]] = []
     for pack, corpus_name, folder in PACKS:
@@ -55,11 +53,11 @@ def prepare(output: Path, *, natural_dates: bool = False, quality_regressions: b
                     "inputText": text,
                     "inputVersion": NATURAL_DATE_VERSION if natural_dates else "legacy-digit-dates-v1",
                     "birthDateStyle": date_style,
-                    "systemPrompt": voice_form_system_prompt(language),
-                    "prompt": voice_form_prompt(
-                        resolve_examination_title(case["examinationTypeId"], language),
+                    "systemPrompt": PromptFactory(language, configuration).voice_system_prompt(),
+                    "prompt": PromptFactory(LanguageCode.EN, configuration).voice_prompt(
+                        configuration.resolve_examination_title(case["examinationTypeId"], language),
                         text,
-                        resolve_examination_contextual_strings(case["examinationTypeId"], language),
+                        configuration.resolve_examination_contextual_strings(case["examinationTypeId"], language),
                     ),
                     "schema": schema,
                 }
@@ -83,7 +81,7 @@ def prepare(output: Path, *, natural_dates: bool = False, quality_regressions: b
                     "pack": "quality-regression",
                     "scenario": "quality-regression",
                     "birthDateStyle": None,
-                    "prompt": voice_form_prompt(
+                    "prompt": PromptFactory(LanguageCode.EN, configuration).voice_prompt(
                         json.loads(template["prompt"])["examinationType"],
                         fixture["inputText"],
                         json.loads(template["prompt"])["contextualStrings"],
@@ -100,22 +98,22 @@ def prepare(output: Path, *, natural_dates: bool = False, quality_regressions: b
 def score(
     cases_path: Path, results_path: Path, output_path: Path, *, baseline_validator_path: Path | None = None
 ) -> None:
-    from app.core.get_voice_source_localization import get_voice_source_localization
     from app.core.language_code import LanguageCode
-    from app.core.load_configs import load_configs
+    from app.core.configuration_loader import ConfigurationLoader
+    from app.core.variables import Variables
     from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
-    from app.service.validate_voice_form_generation import validate_voice_form_generation
+    from app.service.voice_form_validator import VoiceFormValidator
 
-    validator = validate_voice_form_generation
-    load_configs()
-    validator_path = ROOT / "backend/main/app/service/validate_voice_form_generation.py"
+    baseline_validator = None
+    configuration = ConfigurationLoader(Variables().configuration_directory).load()
+    validator_path = ROOT / "backend/main/app/service/voice_form_validator.py"
     if baseline_validator_path is not None:
         spec = importlib.util.spec_from_file_location("voice_benchmark_baseline", baseline_validator_path)
         if spec is None or spec.loader is None:
             raise ValueError("Cannot load the frozen baseline validator")
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
-        validator = module.validate_voice_form_generation
+        baseline_validator = module.validate_voice_form_generation
         validator_path = baseline_validator_path
 
     cases = {
@@ -145,13 +143,11 @@ def score(
                 if result.get("finishReason") == "length":
                     raise ValueError("Model output was truncated by the token limit")
                 validated = (
-                    validator(generated, case["inputText"])
+                    baseline_validator(generated, case["inputText"])
                     if baseline_validator_path is not None
-                    else validator(
-                        generated,
-                        case["inputText"],
-                        localization=get_voice_source_localization(LanguageCode(case["locale"])),
-                    )
+                    else VoiceFormValidator(
+                        configuration.voice_source_localization(LanguageCode(case["locale"]))
+                    ).validate(generated, case["inputText"])
                 )
                 response = validated.model_dump(mode="json")
                 row["generatedProposals"] = generated.model_dump(mode="json")
@@ -192,7 +188,7 @@ def score(
                     "source_measurement.py",
                     "source_number.py",
                     "source_year.py",
-                    "validate_voice_form_generation.py",
+                    "voice_form_validator.py",
                 )
             }
         ),

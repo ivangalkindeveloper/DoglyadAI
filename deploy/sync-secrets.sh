@@ -89,6 +89,18 @@ tar -C "$(dirname "$LOCAL_SECRETS")" -czf - "$(basename "$LOCAL_SECRETS")" |
     "
 
 echo "==> applying on the VM"
+# The application runs as UID/GID 10001. A short-lived root helper adjusts the
+# mounted directories; the backend itself never starts with root privileges.
+"${SSH_COMMAND[@]}" "$TARGET" "
+    set -e
+    cd '$REMOTE_DIR'
+    mkdir -p logs
+    docker compose run --rm --no-deps --user 0:0 \\
+        --volume '$REMOTE_DIR/secrets:/storage/secrets:rw' \\
+        --volume '$REMOTE_DIR/logs:/storage/logs:rw' \\
+        --entrypoint python '$SERVICE' -
+" < "$REPO_ROOT/deploy/prepare_backend_storage.py"
+
 "${SSH_COMMAND[@]}" "$TARGET" "
     set -e
     cd '$REMOTE_DIR'

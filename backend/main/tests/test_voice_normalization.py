@@ -6,7 +6,7 @@ import pytest
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.service.normalize_patient_name import normalize_patient_name
 from app.service.source_birth_date import source_birth_date
-from app.service.validate_voice_form_generation import validate_voice_form_generation
+from app.service.voice_form_validator import VoiceFormValidator
 from tests.support.voice_form_parsing.voice_source_localization_test_support import (
     voice_source_localization_test_support,
 )
@@ -64,9 +64,7 @@ def test_source_date_overrides_wrong_model_date_and_name_retains_evidence() -> N
     )
     fields = {
         item.fieldId.value: item
-        for item in validate_voice_form_generation(
-            generated, text, localization=voice_source_localization_test_support(text)
-        ).proposals
+        for item in VoiceFormValidator(voice_source_localization_test_support(text)).validate(generated, text).proposals
     }
     assert fields["patient_name"].value == "Сидорова Анна Львовна"
     assert fields["patient_date_of_birth"].value == "2014-08-23"
@@ -99,9 +97,7 @@ def test_model_clinical_value_is_retained_and_changed_content_requires_review(
     generated = USVoiceFormGeneration.model_validate(
         [{"field_id": "examination_description", "value": formatted, "evidence": raw, "accuracy": "full"}]
     )
-    response = validate_voice_form_generation(
-        generated, text, localization=voice_source_localization_test_support(text)
-    )
+    response = VoiceFormValidator(voice_source_localization_test_support(text)).validate(generated, text)
     field = next(item for item in response.proposals if item.fieldId.value == "examination_description")
     assert field.value == formatted
     assert field.accuracy.value == ("full" if is_unchanged else "questionable")

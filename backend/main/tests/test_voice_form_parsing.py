@@ -2,41 +2,39 @@ from __future__ import annotations
 
 # ruff: noqa: RUF001
 import asyncio
-import inspect
 import json
 from types import SimpleNamespace
 from typing import Any
 
 import pytest
-from fastapi import HTTPException
 from starlette.requests import Request
 
+from app.core.configuration import Configuration
 from app.core.language_code import LanguageCode
-from app.core.load_configs import load_configs
-from app.core.resolve_examination_contextual_strings import resolve_examination_contextual_strings
-from app.core.resolve_localized_text import resolve_localized_text
+from app.core.variables import Variables
+from app.error import ApiError
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.model.ultrasound.us_voice_form_parse_request import USVoiceFormParseRequest
-from app.route.ultrasound import parse_dictation as route
-from app.service.validate_voice_form_generation import validate_voice_form_generation
+from app.service.dictation_parsing_service import DictationParsingService
+from app.service.voice_form_validator import VoiceFormValidator
 from tests.support.voice_form_parsing.fake_neural_model_service import FakeNeuralModelService
 from tests.support.voice_form_parsing.voice_source_localization_test_support import (
     voice_source_localization_test_support,
 )
 
+_CONFIG_DIR = Variables(environment="development").configuration_directory
+_CONFIG_BASE = _CONFIG_DIR.parent
 
-def test_voice_parsing_config_loads_for_both_environments() -> None:
-    from app.core.get_voice_parsing_config import get_voice_parsing_config
-    from app.core.load_configs import _CONFIG_BASE
+
+def test_voice_parsing_config_loads_for_both_environments(configuration: Configuration) -> None:
     from app.model.ultrasound.us_voice_form_parsing_config import USVoiceFormParsingConfig
 
     for environment in ("development", "production"):
-        config = USVoiceFormParsingConfig.model_validate_json(
-            (_CONFIG_BASE / environment / "voice_form_parsing.json").read_text(encoding="utf-8")
+        config = USVoiceFormParsingConfig.model_validate(
+            json.loads((_CONFIG_BASE / environment / "server.json").read_text(encoding="utf-8"))["voice_form_parsing"]
         )
         assert config.maxTokens == 2048
-    load_configs()
-    assert get_voice_parsing_config().maxTokens == 2048
+    assert configuration.server.voice_form_parsing.maxTokens == 2048
 
 
 def test_validator_returns_sparse_supported_fields_and_rejects_bad_quotes() -> None:
@@ -54,9 +52,7 @@ def test_validator_returns_sparse_supported_fields_and_rejects_bad_quotes() -> N
         ]
     )
 
-    response = validate_voice_form_generation(
-        generated, transcript, localization=voice_source_localization_test_support(transcript)
-    )
+    response = VoiceFormValidator(voice_source_localization_test_support(transcript)).validate(generated, transcript)
 
     assert [item.fieldId.value for item in response.proposals] == ["patient_name", "patient_weight_kg"]
     assert [item.value for item in response.proposals] == ["Иванов Иван", 72]
@@ -70,18 +66,16 @@ def test_validator_rejects_duplicate_field_without_choosing_one() -> None:
             {"field_id": "patient_gender", "value": "female", "evidence": "female", "accuracy": "full"},
         ]
     )
-    response = validate_voice_form_generation(
-        generated, "male or female", localization=voice_source_localization_test_support("male or female")
+    response = VoiceFormValidator(voice_source_localization_test_support("male or female")).validate(
+        generated, "male or female"
     )
     assert response.proposals == []
     assert all(item.fieldId.value != "patient_gender" for item in response.proposals)
 
 
 def test_empty_generation_leaves_form_unchanged() -> None:
-    response = validate_voice_form_generation(
-        USVoiceFormGeneration.model_validate([]),
-        "Никаких данных формы",
-        localization=voice_source_localization_test_support("Никаких данных формы"),
+    response = VoiceFormValidator(voice_source_localization_test_support("Никаких данных формы")).validate(
+        USVoiceFormGeneration.model_validate([]), "Никаких данных формы"
     )
     assert response.proposals == []
 
@@ -90,8 +84,8 @@ def test_questionable_accuracy_survives_validation() -> None:
     generated = USVoiceFormGeneration.model_validate(
         [{"field_id": "patient_name", "value": "Иванов", "evidence": "пациент Иванов", "accuracy": "questionable"}]
     )
-    response = validate_voice_form_generation(
-        generated, "пациент Иванов", localization=voice_source_localization_test_support("пациент Иванов")
+    response = VoiceFormValidator(voice_source_localization_test_support("пациент Иванов")).validate(
+        generated, "пациент Иванов"
     )
     assert response.proposals[0].accuracy.value == "questionable"
 
@@ -119,9 +113,7 @@ def test_measurement_cannot_be_used_as_examination_number(transcript: str, evide
     generated = USVoiceFormGeneration.model_validate(
         [{"field_id": "examination_number", "value": value, "evidence": evidence, "accuracy": "full"}]
     )
-    response = validate_voice_form_generation(
-        generated, transcript, localization=voice_source_localization_test_support(transcript)
-    )
+    response = VoiceFormValidator(voice_source_localization_test_support(transcript)).validate(generated, transcript)
     numbers = [item for item in response.proposals if item.fieldId.value == "examination_number"]
     assert all(item.value != value for item in numbers)
 
@@ -153,9 +145,7 @@ def test_explicit_study_identifier_is_kept(transcript: str, evidence: str, value
     generated = USVoiceFormGeneration.model_validate(
         [{"field_id": "examination_number", "value": value, "evidence": evidence, "accuracy": "full"}]
     )
-    response = validate_voice_form_generation(
-        generated, transcript, localization=voice_source_localization_test_support(transcript)
-    )
+    response = VoiceFormValidator(voice_source_localization_test_support(transcript)).validate(generated, transcript)
 
     assert response.proposals[0].value == value
 
@@ -168,11 +158,9 @@ def test_full_clinical_text_is_preserved_in_response() -> None:
             {"field_id": "examination_description", "value": description, "evidence": description, "accuracy": "full"},
         ]
     )
-    response = validate_voice_form_generation(
-        generated,
-        f"Жалобы: Жалоб нет. Описание исследования: {description}",
-        localization=voice_source_localization_test_support(f"Жалобы: Жалоб нет. Описание исследования: {description}"),
-    )
+    response = VoiceFormValidator(
+        voice_source_localization_test_support(f"Жалобы: Жалоб нет. Описание исследования: {description}")
+    ).validate(generated, f"Жалобы: Жалоб нет. Описание исследования: {description}")
     assert [item.value for item in response.proposals] == ["Жалоб нет", description]
 
 
@@ -194,10 +182,8 @@ def test_full_clinical_text_is_preserved_in_response() -> None:
     ],
 )
 def test_labeled_clinical_sections_survive_model_omission(transcript: str, complaints: str, description: str) -> None:
-    response = validate_voice_form_generation(
-        USVoiceFormGeneration.model_validate([]),
-        transcript,
-        localization=voice_source_localization_test_support(transcript),
+    response = VoiceFormValidator(voice_source_localization_test_support(transcript)).validate(
+        USVoiceFormGeneration.model_validate([]), transcript
     )
     actual = {item.fieldId.value: item for item in response.proposals}
     assert set(actual) == {"patient_complaints", "examination_description"}
@@ -222,9 +208,7 @@ def test_shortened_model_values_are_retained_for_review_without_affecting_other_
             {"field_id": "patient_weight_kg", "value": 82, "evidence": "Вес: 82 кг.", "accuracy": "full"},
         ]
     )
-    response = validate_voice_form_generation(
-        generated, transcript, localization=voice_source_localization_test_support(transcript)
-    )
+    response = VoiceFormValidator(voice_source_localization_test_support(transcript)).validate(generated, transcript)
     actual = {item.fieldId.value: item.value for item in response.proposals}
     assert actual == {
         "examination_description": "Правый желудочек: 37 мм.",
@@ -235,21 +219,20 @@ def test_shortened_model_values_are_retained_for_review_without_affecting_other_
 
 
 def test_repeated_clinical_labels_are_not_chosen_automatically() -> None:
-    response = validate_voice_form_generation(
-        USVoiceFormGeneration.model_validate([]),
-        "Жалобы: боль справа. Жалобы: боли нет.",
-        localization=voice_source_localization_test_support("Жалобы: боль справа. Жалобы: боли нет."),
-    )
+    response = VoiceFormValidator(
+        voice_source_localization_test_support("Жалобы: боль справа. Жалобы: боли нет.")
+    ).validate(USVoiceFormGeneration.model_validate([]), "Жалобы: боль справа. Жалобы: боли нет.")
     assert response.proposals == []
 
 
 def test_free_speech_with_later_explicit_labels_preserves_the_sections() -> None:
-    response = validate_voice_form_generation(
+    response = VoiceFormValidator(
+        voice_source_localization_test_support(
+            "На приёме Иванов. Жалобы: боль справа. Описание исследования: печень не увеличена."
+        )
+    ).validate(
         USVoiceFormGeneration.model_validate([]),
         "На приёме Иванов. Жалобы: боль справа. Описание исследования: печень не увеличена.",
-        localization=voice_source_localization_test_support(
-            "На приёме Иванов. Жалобы: боль справа. Описание исследования: печень не увеличена."
-        ),
     )
     assert {item.fieldId.value: item.value for item in response.proposals} == {
         "patient_complaints": "боль справа.",
@@ -268,11 +251,9 @@ def test_natural_ultrasound_cue_marks_model_omissions_for_review() -> None:
             }
         ]
     )
-    response = validate_voice_form_generation(
-        generated,
-        "На УЗИ: Печень не увеличена. Очаговых изменений нет.",
-        localization=voice_source_localization_test_support("На УЗИ: Печень не увеличена. Очаговых изменений нет."),
-    )
+    response = VoiceFormValidator(
+        voice_source_localization_test_support("На УЗИ: Печень не увеличена. Очаговых изменений нет.")
+    ).validate(generated, "На УЗИ: Печень не увеличена. Очаговых изменений нет.")
     assert response.proposals[0].value == "Печень не увеличена."
     assert response.proposals[0].accuracy.value == "questionable"
     assert response.proposals[0].accuracy.value == "questionable"
@@ -284,11 +265,9 @@ def test_explicit_numeric_self_correction_keeps_the_model_normalization() -> Non
     generated = USVoiceFormGeneration.model_validate(
         [{"field_id": "examination_description", "value": value, "evidence": source, "accuracy": "questionable"}]
     )
-    response = validate_voice_form_generation(
-        generated,
-        f"Жалобы: Жалоб нет. Описание исследования: {source}",
-        localization=voice_source_localization_test_support(f"Жалобы: Жалоб нет. Описание исследования: {source}"),
-    )
+    response = VoiceFormValidator(
+        voice_source_localization_test_support(f"Жалобы: Жалоб нет. Описание исследования: {source}")
+    ).validate(generated, f"Жалобы: Жалоб нет. Описание исследования: {source}")
     proposal = next(item for item in response.proposals if item.fieldId.value == "examination_description")
     assert proposal.value == value
     assert source in proposal.evidence
@@ -303,10 +282,8 @@ def test_natural_birth_date_proposal_is_accepted(source: str) -> None:
     generated = USVoiceFormGeneration.model_validate(
         [{"field_id": "patient_date_of_birth", "value": "1978-08-01", "evidence": source, "accuracy": "full"}]
     )
-    response = validate_voice_form_generation(
-        generated,
-        f"Дата рождения: {source}.",
-        localization=voice_source_localization_test_support(f"Дата рождения: {source}."),
+    response = VoiceFormValidator(voice_source_localization_test_support(f"Дата рождения: {source}.")).validate(
+        generated, f"Дата рождения: {source}."
     )
     assert response.proposals[0].value == "1978-08-01"
     assert response.proposals[0].accuracy.value == "full"
@@ -316,10 +293,8 @@ def test_iso_birth_date_does_not_need_model_conversion() -> None:
     generated = USVoiceFormGeneration.model_validate(
         [{"field_id": "patient_date_of_birth", "value": "1978-08-01", "evidence": "1978-08-01", "accuracy": "full"}]
     )
-    response = validate_voice_form_generation(
-        generated,
-        "Дата рождения: 1978-08-01.",
-        localization=voice_source_localization_test_support("Дата рождения: 1978-08-01."),
+    response = VoiceFormValidator(voice_source_localization_test_support("Дата рождения: 1978-08-01.")).validate(
+        generated, "Дата рождения: 1978-08-01."
     )
     assert response.proposals[0].accuracy.value == "full"
 
@@ -356,17 +331,18 @@ def test_generation_schema_caps_repeated_items() -> None:
     assert all(set(variant["required"]) == {"field_id", "value", "evidence", "accuracy"} for variant in variants)
 
 
-def test_selected_report_model_is_used_for_server_parsing(monkeypatch: pytest.MonkeyPatch) -> None:
-    load_configs()
+def test_selected_report_model_is_used_for_server_parsing(
+    configuration: Configuration, monkeypatch: pytest.MonkeyPatch
+) -> None:
     selected_id = "test/selected-report-model"
-    original = route.resolve_neural_model("google/medgemma-4b-it")
+    original = configuration.resolve_neural_model("google/medgemma-4b-it")
     model = original.model_copy(update={"id": selected_id})
 
     def resolve(model_id: str | None) -> Any:
         assert model_id == selected_id
         return model
 
-    monkeypatch.setattr(route, "resolve_neural_model", resolve)
+    monkeypatch.setitem(configuration.neural_models, model.id, model)
     service = FakeNeuralModelService([])
     request = Request(
         {
@@ -378,13 +354,15 @@ def test_selected_report_model_is_used_for_server_parsing(monkeypatch: pytest.Mo
             "state": {"request_id": "e" * 32},
         }
     )
-    handler: Any = inspect.unwrap(route.parse_dictation)
+    handler: Any = DictationParsingService(configuration, request.app.state.model_service).parse
     asyncio.run(
         handler(
             body=USVoiceFormParseRequest(
                 selectedNeuralModelId=selected_id, usExaminationTypeId="bladder", transcript="Стенка 2 мм."
             ),
-            request=request,
+            language=configuration.language(request.headers.get("Accept-Language")),
+            app_check_token=request.headers.get("X-Firebase-AppCheck"),
+            request_id=request.state.request_id,
         )
     )
     assert service.request is not None
@@ -394,8 +372,9 @@ def test_selected_report_model_is_used_for_server_parsing(monkeypatch: pytest.Mo
 
 
 @pytest.mark.parametrize("language,expected_fragment", [("en_US", "Extract only"), ("ru_RU", "Извлеки только")])
-def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(language: str, expected_fragment: str) -> None:
-    load_configs()
+def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(
+    configuration: Configuration, language: str, expected_fragment: str
+) -> None:
     transcript = "weight 72 kilograms" if language == "en_US" else "вес 72 килограмма"
     service = FakeNeuralModelService(
         [{"field_id": "patient_weight_kg", "value": 72, "evidence": transcript, "accuracy": "full"}]
@@ -417,9 +396,16 @@ def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(language: st
         usExaminationTypeId="echocardiography",
         transcript=transcript,
     )
-    handler: Any = inspect.unwrap(route.parse_dictation)
+    handler: Any = DictationParsingService(configuration, request.app.state.model_service).parse
 
-    response = asyncio.run(handler(body=body, request=request))
+    response = asyncio.run(
+        handler(
+            body=body,
+            language=configuration.language(request.headers.get("Accept-Language")),
+            app_check_token=request.headers.get("X-Firebase-AppCheck"),
+            request_id=request.state.request_id,
+        )
+    )
 
     assert response.proposals[0].value == 72
     assert service.request is not None
@@ -429,20 +415,19 @@ def test_route_sends_text_only_to_gpu_and_returns_checked_proposals(language: st
     assert service.request.app_check_token == "token"
     assert service.request.request_id == "b" * 32
     assert json.loads(service.request.prompt)["transcript"] == body.transcript
-    assert json.loads(service.request.prompt)["contextualStrings"] == resolve_examination_contextual_strings(
-        body.usExaminationTypeId, LanguageCode(language[:2])
-    )
+    assert json.loads(service.request.prompt)[
+        "contextualStrings"
+    ] == configuration.resolve_examination_contextual_strings(body.usExaminationTypeId, LanguageCode(language[:2]))
     assert json.loads(service.request.structured_output)["type"] == "array"
     assert expected_fragment in service.request.system_prompt
     assert service.request.system_prompt == (
-        resolve_localized_text(LanguageCode(language[:2]), "voiceFormSystemPrompt")
+        configuration.text(LanguageCode(language[:2]), "voiceFormSystemPrompt")
         + " "
-        + resolve_localized_text(LanguageCode(language[:2]), "medicalTermCorrectionPrompt")
+        + configuration.text(LanguageCode(language[:2]), "medicalTermCorrectionPrompt")
     )
 
 
-def test_route_rejects_unknown_examination_type() -> None:
-    load_configs()
+def test_route_rejects_unknown_examination_type(configuration: Configuration) -> None:
     request = Request(
         {
             "type": "http",
@@ -453,12 +438,14 @@ def test_route_rejects_unknown_examination_type() -> None:
             "state": {"request_id": "c" * 32},
         }
     )
-    handler: Any = inspect.unwrap(route.parse_dictation)
-    with pytest.raises(HTTPException) as error:
+    handler: Any = DictationParsingService(configuration, request.app.state.model_service).parse
+    with pytest.raises(ApiError) as error:
         asyncio.run(
             handler(
                 body=USVoiceFormParseRequest(usExaminationTypeId="unknown", transcript="hello"),
-                request=request,
+                language=configuration.language(request.headers.get("Accept-Language")),
+                app_check_token=request.headers.get("X-Firebase-AppCheck"),
+                request_id=request.state.request_id,
             )
         )
     assert error.value.status_code == 400

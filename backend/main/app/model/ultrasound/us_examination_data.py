@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import Literal
 
-from pydantic import BaseModel, field_validator
+from pydantic import BaseModel, Field, field_validator
 
 from app.model.ultrasound.us_examination_scan_photo import USExaminationScanPhoto
 
@@ -12,10 +13,10 @@ class USExaminationData(BaseModel):
     photos: list[USExaminationScanPhoto]
     examinationNumber: str
     patientName: str
-    patientGender: str
+    patientGender: Literal["male", "female"]
     patientDateOfBirth: datetime
-    patientHeight: float | None = None
-    patientWeight: float | None = None
+    patientHeight: float | None = Field(default=None, gt=0, allow_inf_nan=False, strict=True)
+    patientWeight: float | None = Field(default=None, gt=0, allow_inf_nan=False, strict=True)
     patientComplaints: str | None = None
     examinationDescription: str
 

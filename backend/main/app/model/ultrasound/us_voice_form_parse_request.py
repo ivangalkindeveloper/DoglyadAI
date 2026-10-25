@@ -10,7 +10,7 @@ class USVoiceFormParseRequest(BaseModel):
 
     selectedNeuralModelId: NonBlankString | None = None
     usExaminationTypeId: str = Field(min_length=1, max_length=128)
-    transcript: str = Field(min_length=1, max_length=8000)
+    transcript: str = Field(min_length=1)
 
     @field_validator("transcript")
     @classmethod

@@ -189,12 +189,12 @@ PROFILES: dict[str, list[dict[str, Any]]] = {
 
 def prepare(output: Path, *, confirmation: bool = False) -> None:
     from app.core.language_code import LanguageCode
-    from app.core.load_configs import load_configs
+    from app.core.configuration_loader import ConfigurationLoader
+    from app.core.variables import Variables
     from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
-    from app.prompt.voice_form_prompt import voice_form_prompt
-    from app.prompt.voice_form_system_prompt import voice_form_system_prompt
+    from app.prompt.prompt_factory import PromptFactory
 
-    load_configs()
+    configuration = ConfigurationLoader(Variables().configuration_directory).load()
     profiles_by_locale = PROFILES
     version = "qualityHoldout-v3"
     if confirmation:
@@ -269,8 +269,8 @@ def prepare(output: Path, *, confirmation: bool = False) -> None:
                         inputText=text,
                         expectedFields=fields,
                         schema=json.loads(USVoiceFormGeneration.structured_output()),
-                        systemPrompt=voice_form_system_prompt(LanguageCode(locale)),
-                        prompt=voice_form_prompt(
+                        systemPrompt=PromptFactory(LanguageCode(locale), configuration).voice_system_prompt(),
+                        prompt=PromptFactory(LanguageCode.EN, configuration).voice_prompt(
                             "Ultrasound examination" if locale == "en" else "Ультразвуковое исследование", text, []
                         ),
                     )

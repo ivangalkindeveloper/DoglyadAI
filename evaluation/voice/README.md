@@ -775,7 +775,7 @@ python3 -m evaluation.voice.run_ios --candidate --mode extended --variant noisy
 `backend/inference` использует действующий `/v1/generation`. Аудио в этом
 эксперименте не передаётся на сервер. `selectedNeuralModelId` выбирает ту же
 модель, что используется для генерации протоколов; без явного ID используется
-модель по умолчанию. `voice_form_parsing.json` задаёт только лимит токенов разбора.
+модель по умолчанию. Серверный `config/<environment>/server.json` задаёт лимит токенов разбора в `voice_form_parsing.maxTokens` и остальные параметры обработки запросов.
 
 Для сравнения с прямым разбором готовой пунктуированной строки один запуск
 обрабатывает все три набора (по 62 случая на EN и RU). Вход `ideal-text` —

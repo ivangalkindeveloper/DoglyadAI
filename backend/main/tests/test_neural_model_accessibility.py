@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 import pytest
-from fastapi import HTTPException
 
-from app.core.load_configs import neural_models
-from app.core.resolve_neural_model import resolve_neural_model
+from app.core.configuration import Configuration
+from app.error import ApiError
 from app.model.ultrasound.us_examination_neural_model import USExaminationNeuralModel
 from app.model.ultrasound.us_examination_neural_model_accessibility import (
     USExaminationNeuralModelAccessibility,
@@ -22,11 +21,11 @@ def _model(accessibility: USExaminationNeuralModelAccessibility) -> USExaminatio
     )
 
 
-def test_available_model_can_be_resolved(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_available_model_can_be_resolved(configuration: Configuration, monkeypatch: pytest.MonkeyPatch) -> None:
     model = _model(USExaminationNeuralModelAccessibility.AVAILABLE)
-    monkeypatch.setitem(neural_models, model.id, model)
+    monkeypatch.setitem(configuration.neural_models, model.id, model)
 
-    assert resolve_neural_model(model.id) is model
+    assert configuration.resolve_neural_model(model.id) is model
 
 
 @pytest.mark.parametrize(
@@ -37,14 +36,15 @@ def test_available_model_can_be_resolved(monkeypatch: pytest.MonkeyPatch) -> Non
     ),
 )
 def test_inaccessible_model_is_rejected_before_generation(
+    configuration: Configuration,
     accessibility: USExaminationNeuralModelAccessibility,
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     model = _model(accessibility)
-    monkeypatch.setitem(neural_models, model.id, model)
+    monkeypatch.setitem(configuration.neural_models, model.id, model)
 
-    with pytest.raises(HTTPException) as error:
-        resolve_neural_model(model.id)
+    with pytest.raises(ApiError) as error:
+        configuration.resolve_neural_model(model.id)
 
     assert error.value.status_code == 400
-    assert error.value.detail == f"Neural model is not available: {model.id}"
+    assert error.value.description == "Neural model is not available"

@@ -1,21 +1,20 @@
 from __future__ import annotations
 
-import logging
+from typing import Annotated
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
+from app.core.get_vllm_service import get_vllm_service
 from app.model.generation_request import GenerationRequest
 from app.model.generation_response import GenerationResponse
-from app.service.resolve_vllm_service import resolve_vllm_service
-
-logger = logging.getLogger(__name__)
+from app.service.vllm_service import VLLMService
 
 router = APIRouter()
 
 
 @router.post("/generation", response_model=GenerationResponse)
-async def generation(body: GenerationRequest) -> GenerationResponse:
-    """Generates structured content with the model deployed on this VM."""
-    service = resolve_vllm_service()
+async def generation(
+    body: GenerationRequest, service: Annotated[VLLMService, Depends(get_vllm_service)]
+) -> GenerationResponse:
     value = await service.generate(body)
     return GenerationResponse(modelId=service.model_id, response=value)

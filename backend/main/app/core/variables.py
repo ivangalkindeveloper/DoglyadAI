@@ -32,20 +32,11 @@ class Variables(BaseSettings):
     # next to its own vLLM instance. Path to a modelId -> URL map; required when
     # MODEL_SERVICE_TYPE=inference in every environment. See InferenceService.
     inference_endpoints_path: Path | None = None
-    # Timeouts nest outside-in, with each layer wider than the one it wraps:
-    #
-    #   iOS client                    300  application.json -> network.timeoutIntervalForRequest
-    #   INFERENCE_REQUEST_TIMEOUT     130  this backend waiting on the GPU VM
-    #   VLLM_REQUEST_TIMEOUT          120  the VM waiting on its local engine
-    #
-    # The inner timeout must stay below the outer one so the caller does not close
-    # a connection while the wrapped generation is still running.
-    inference_request_timeout_seconds: int = 130
-
     email_sender: str | None = None
     email_password: str | None = None
     email_smtp_host: str | None = None
     email_smtp_port: int | None = None
 
-
-variables = Variables()
+    @property
+    def configuration_directory(self) -> Path:
+        return (self.config_dir or Path(__file__).resolve().parents[2] / "config") / self.environment

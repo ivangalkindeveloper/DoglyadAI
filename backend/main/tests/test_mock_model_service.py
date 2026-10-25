@@ -6,13 +6,16 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import UUID
 
+import httpx
 import pytest
+from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from app.core import main_lifespan
+from app.core.configuration import Configuration
 from app.core.language_code import LanguageCode
 from app.core.neural_model_service_type import NeuralModelServiceType
-from app.core.variables import variables
+from app.core.variables import Variables
 from app.core.verify_app_check import verify_app_check
 from app.model.mock.mock_report_fixture import MockReportFixture
 from app.model.mock.mock_voice_form_fixture import MockVoiceFormFixture
@@ -26,7 +29,7 @@ from app.model.ultrasound.us_examination_scan_photo import USExaminationScanPhot
 from app.model.ultrasound.us_voice_field_id import USVoiceFieldId
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.model.ultrasound.us_voice_form_parse_response import USVoiceFormParseResponse
-from app.prompt.voice_form_prompt import voice_form_prompt
+from app.prompt.prompt_factory import PromptFactory
 from app.service.mock_neural_model_service import MockNeuralModelService
 
 _FIXTURES_DIR = Path(__file__).resolve().parents[1] / "app" / "mock"
@@ -35,23 +38,29 @@ _MODEL_ID = "google/medgemma-4b-it"
 
 
 @pytest.fixture
-def client(monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
-    from app.main import app
-
+def client(variables: Variables, app: FastAPI, monkeypatch: pytest.MonkeyPatch) -> Iterator[TestClient]:
     initialized: list[bool] = []
     monkeypatch.setattr(variables, "model_service_type", NeuralModelServiceType.MOCK)
     monkeypatch.setattr(variables, "inference_endpoints_path", None)
-    monkeypatch.setattr(main_lifespan, "init_app_check", lambda: initialized.append(True))
+    monkeypatch.setattr(main_lifespan, "init_app_check", lambda settings: initialized.append(True))
+    original_client = httpx.AsyncClient
+    clients: list[httpx.AsyncClient] = []
+
+    def create_client(*args: object, **kwargs: object) -> httpx.AsyncClient:
+        client = original_client(*args, **kwargs)
+        clients.append(client)
+        return client
+
+    monkeypatch.setattr(main_lifespan.httpx, "AsyncClient", create_client)
     with TestClient(app) as test_client:
-        assert isinstance(app.state.model_service, MockNeuralModelService)
+        assert isinstance(app.state.container.model_service, MockNeuralModelService)
         yield test_client
     assert initialized == [True]
-    assert app.state.http_client.is_closed
+    assert len(clients) == 1
+    assert clients[0].is_closed
 
 
-def _authorize(monkeypatch: pytest.MonkeyPatch) -> None:
-    from app.main import app
-
+def _authorize(monkeypatch: pytest.MonkeyPatch, app: FastAPI) -> None:
     async def verified() -> None:
         pass
 
@@ -103,7 +112,7 @@ def test_mock_report_respects_flags_language_and_uploaded_ids(
     is_description_remarks: bool,
     is_recommendations: bool,
 ) -> None:
-    _authorize(monkeypatch)
+    _authorize(monkeypatch, client.app)
     body = _report_request(
         is_photo_remarks=is_photo_remarks,
         is_description_remarks=is_description_remarks,
@@ -131,7 +140,7 @@ def test_mock_report_respects_flags_language_and_uploaded_ids(
 
 
 def test_mock_report_does_not_invent_photos(client: TestClient, monkeypatch: pytest.MonkeyPatch) -> None:
-    _authorize(monkeypatch)
+    _authorize(monkeypatch, client.app)
     body = _report_request(
         is_photo_remarks=True,
         is_description_remarks=True,
@@ -149,7 +158,7 @@ def test_mock_report_does_not_invent_photos(client: TestClient, monkeypatch: pyt
 def test_mock_report_accepts_client_settings_ai(
     client: TestClient, monkeypatch: pytest.MonkeyPatch, max_tokens: int | None
 ) -> None:
-    _authorize(monkeypatch)
+    _authorize(monkeypatch, client.app)
     settings = client.get("/v1/application_config").json()["ultrasound"]["neuralModel"]
     if max_tokens is not None:
         settings["maxTokens"] = max_tokens
@@ -170,7 +179,7 @@ def test_mock_report_accepts_client_settings_ai(
 def test_mock_report_rejects_token_limits_outside_inference_range(
     client: TestClient, monkeypatch: pytest.MonkeyPatch, max_tokens: int
 ) -> None:
-    _authorize(monkeypatch)
+    _authorize(monkeypatch, client.app)
     body = _report_request(
         is_photo_remarks=True,
         is_description_remarks=True,
@@ -181,7 +190,7 @@ def test_mock_report_rejects_token_limits_outside_inference_range(
     response = client.post("/v1/ultrasound/generate_report", json=body)
 
     assert response.status_code == 422
-    assert response.json()["detail"][0]["loc"] == ["body", "settingsAI", "maxTokens"]
+    assert response.json()["fields"][0]["location"] == ["body", "settingsAI", "maxTokens"]
 
 
 @pytest.mark.parametrize("language", list(LanguageCode))
@@ -190,7 +199,7 @@ def test_mock_voice_scenario_passes_the_real_source_validator(
     monkeypatch: pytest.MonkeyPatch,
     language: LanguageCode,
 ) -> None:
-    _authorize(monkeypatch)
+    _authorize(monkeypatch, client.app)
     fixture = MockVoiceFormFixture.model_validate_json(
         (_FIXTURES_DIR / language.value / "voice_form.json").read_text(encoding="utf-8")
     )
@@ -216,6 +225,7 @@ def test_mock_voice_scenario_passes_the_real_source_validator(
 @pytest.mark.parametrize("language", list(LanguageCode))
 @pytest.mark.parametrize("transcript", ["Unrelated input", "Patient John Smith. Patient John Smith."])
 def test_mock_voice_does_not_return_missing_or_ambiguous_evidence(
+    configuration: Configuration,
     language: LanguageCode,
     transcript: str,
 ) -> None:
@@ -224,7 +234,7 @@ def test_mock_voice_does_not_return_missing_or_ambiguous_evidence(
         language_code=language,
         model_id=_MODEL_ID,
         system_prompt="",
-        prompt=voice_form_prompt("Title", transcript, []),
+        prompt=PromptFactory(LanguageCode.EN, configuration).voice_prompt("Title", transcript, []),
         structured_output=USVoiceFormGeneration.structured_output(),
     )
 

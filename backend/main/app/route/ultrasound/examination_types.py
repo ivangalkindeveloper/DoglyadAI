@@ -1,15 +1,21 @@
 from __future__ import annotations
 
-from fastapi import APIRouter, Request, Response
+from typing import Annotated
 
-from app.core.limiter import limiter
-from app.core.resolve_examination_types_document import resolve_examination_types_document
+from fastapi import APIRouter, Depends, Response
+
+from app.core.get_configuration_response_service import get_configuration_response_service
+from app.core.get_request_language import get_request_language
+from app.core.language_code import LanguageCode
 from app.route.config_document_response import config_document_response
+from app.service.configuration_response_service import ConfigurationResponseService
 
 router = APIRouter()
 
 
 @router.get("/examination_types")
-@limiter.limit("60/minute")
-async def examination_types(request: Request) -> Response:
-    return config_document_response(request, resolve_examination_types_document)
+async def examination_types(
+    service: Annotated[ConfigurationResponseService, Depends(get_configuration_response_service)],
+    language: Annotated[LanguageCode, Depends(get_request_language)],
+) -> Response:
+    return config_document_response(service.examination_types_document(language), language)

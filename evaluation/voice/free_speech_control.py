@@ -12,12 +12,12 @@ from evaluation.voice.generate import file_sha256
 
 def prepare(output: Path, fixtures: Path) -> None:
     from app.core.language_code import LanguageCode
-    from app.core.load_configs import load_configs
+    from app.core.configuration_loader import ConfigurationLoader
+    from app.core.variables import Variables
     from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
-    from app.prompt.voice_form_prompt import voice_form_prompt
-    from app.prompt.voice_form_system_prompt import voice_form_system_prompt
+    from app.prompt.prompt_factory import PromptFactory
 
-    load_configs()
+    configuration = ConfigurationLoader(Variables().configuration_directory).load()
     rows: list[dict[str, Any]] = []
     for case in json.loads(fixtures.read_text(encoding="utf-8")):
         language = LanguageCode(case["locale"])
@@ -27,8 +27,8 @@ def prepare(output: Path, fixtures: Path) -> None:
                 "pack": "free-speech-control",
                 "scenario": "free-speech-control",
                 "inputVersion": fixtures.stem,
-                "systemPrompt": voice_form_system_prompt(language),
-                "prompt": voice_form_prompt(
+                "systemPrompt": PromptFactory(language, configuration).voice_system_prompt(),
+                "prompt": PromptFactory(LanguageCode.EN, configuration).voice_prompt(
                     "Ультразвуковое исследование" if language is LanguageCode.RU else "Ultrasound examination",
                     case["inputText"],
                     [],
@@ -60,7 +60,7 @@ def prepare(output: Path, fixtures: Path) -> None:
             "source_measurement.py",
             "source_number.py",
             "source_year.py",
-            "validate_voice_form_generation.py",
+            "voice_form_validator.py",
         )
     ]
     manifest = {
@@ -69,7 +69,7 @@ def prepare(output: Path, fixtures: Path) -> None:
         "expectedFields": sum(len(row["expectedFields"]) for row in rows),
         "cases": len(rows),
         "sourcesSha256": {path.name: file_sha256(path) for path in sources},
-        "promptSha256": file_sha256(ROOT / "backend/main/app/prompt/voice_form_system_prompt.py"),
+        "promptSha256": file_sha256(ROOT / "backend/main/app/prompt/prompt_factory.py"),
         "inputsAndGoldSha256": hashlib.sha256(
             json.dumps(rows, ensure_ascii=False, sort_keys=True).encode("utf-8")
         ).hexdigest(),

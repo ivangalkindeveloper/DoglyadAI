@@ -53,3 +53,31 @@ def test_main_and_inference_generation_contract(include_optional_fields: bool) -
     response = InferenceGenerationResponse.model_validate_json(result.stdout)
     assert response.modelId == request.modelId
     assert json.loads(response.value()) == {"description": "ok"}
+
+
+def test_main_and_inference_error_schema_and_shared_metadata_match() -> None:
+    import app.error as errors
+    from app.model.api_error_response import ApiErrorResponse
+
+    script = """
+import json
+import app.error as errors
+from app.model.api_error_response import ApiErrorResponse
+metadata = {name: [error.code, error.description, error.status_code]
+            for name in errors.__all__ if (error := getattr(errors, name))}
+print(json.dumps({"schema": ApiErrorResponse.model_json_schema(), "metadata": metadata}))
+"""
+    result = subprocess.run(
+        [sys.executable, "-c", script],
+        text=True,
+        capture_output=True,
+        check=True,
+        cwd=_INFERENCE_DIRECTORY,
+        timeout=10,
+    )
+    contract = json.loads(result.stdout)
+    assert contract["schema"] == ApiErrorResponse.model_json_schema()
+    for name, expected in contract["metadata"].items():
+        if name in errors.__all__:
+            error = getattr(errors, name)
+            assert [error.code, error.description, error.status_code] == expected

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import asyncio
-import inspect
 import json
 from datetime import UTC, datetime
 from types import SimpleNamespace
@@ -9,29 +8,25 @@ from typing import Any
 from uuid import UUID
 
 import pytest
-from fastapi import HTTPException
 from pydantic import ValidationError
 from starlette.requests import Request
 
+from app.core.configuration import Configuration
+from app.core.configuration_loader import ConfigurationLoader
 from app.core.language_code import LanguageCode
-from app.core.load_configs import load_configs
-from app.core.resolve_localized_text import resolve_localized_text
+from app.core.variables import Variables
+from app.error import ApiError
 from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
 from app.model.ultrasound.us_examination_report import USExaminationReport
 from app.model.ultrasound.us_examination_request import USExaminationRequest
 from app.model.ultrasound.us_examination_scan_photo import USExaminationScanPhoto
 from app.prompt import PromptFactory
-from app.route.ultrasound import generate_report as route
 from app.schema.us_examination_report_structured_output import us_examination_report_structured_output
+from app.service.report_generation_service import ReportGenerationService
 from tests.support.report_remarks.fake_remarks_service import FakeRemarksService
 
 _PHOTO_ID = UUID("f082b889-b644-49c3-9f17-c31fe2407d98")
-
-
-@pytest.fixture(autouse=True)
-def report_catalogs() -> None:
-    load_configs()
 
 
 def _examination(is_photos_available: bool = True) -> USExaminationData:
@@ -60,6 +55,7 @@ def _remarks() -> list[dict[str, Any]]:
 @pytest.mark.parametrize("is_description_remarks", [False, True])
 @pytest.mark.parametrize("is_photos_available", [False, True])
 def test_schema_and_prompt_match_requested_remarks(
+    configuration: Configuration,
     language_code: LanguageCode,
     is_photo_remarks: bool,
     is_description_remarks: bool,
@@ -73,13 +69,14 @@ def test_schema_and_prompt_match_requested_remarks(
             is_description_remarks=is_description_remarks,
             photo_ids=[photo.id for photo in examination.photos],
             language_code=language_code,
+            localization=configuration.l10n,
         )
     )
     assert ("descriptionRemarks" in schema["properties"]) is is_description_remarks
     assert ("descriptionRemarks" in schema["required"]) is is_description_remarks
     assert ("photoRemarks" in schema["properties"]) is (is_photo_remarks and is_photos_available)
     assert ("photoRemarks" in schema["required"]) is (is_photo_remarks and is_photos_available)
-    factory = PromptFactory(language_code)
+    factory = PromptFactory(language_code, configuration)
     system = factory.system_prompt(
         SettingsAI(),
         is_recommendations_included=False,
@@ -102,22 +99,24 @@ def test_schema_and_prompt_match_requested_remarks(
 
 
 @pytest.mark.parametrize("language_code", list(LanguageCode))
-def test_prompt_binds_supplied_ids_to_image_order(language_code: LanguageCode) -> None:
+def test_prompt_binds_supplied_ids_to_image_order(configuration: Configuration, language_code: LanguageCode) -> None:
     examination = _examination()
     second_id = UUID(int=2)
     examination.photos.append(USExaminationScanPhoto(id=second_id, data="REVG"))
-    prompt = PromptFactory(language_code).build_prompt(examination, "Title")
+    prompt = PromptFactory(language_code, configuration).build_prompt(examination, "Title")
     assert f"1: {_PHOTO_ID}\n2: {second_id}" in prompt
 
 
 @pytest.mark.parametrize("language_code", list(LanguageCode))
-def test_report_prompt_uses_catalog_templates_and_preserves_input(language_code: LanguageCode) -> None:
+def test_report_prompt_uses_catalog_templates_and_preserves_input(
+    configuration: Configuration, language_code: LanguageCode
+) -> None:
     examination = _examination()
     examination.patientHeight = 170.0
     examination.patientWeight = 65.0
     examination.patientComplaints = "Pain {value}"
     examination.examinationDescription = "Findings {patientName}"
-    factory = PromptFactory(language_code)
+    factory = PromptFactory(language_code, configuration)
     prompt = factory.build_prompt(examination, "Title", "Template {value}")
     for key, value in (
         ("reportPatientHeightPrompt", 170.0),
@@ -126,13 +125,13 @@ def test_report_prompt_uses_catalog_templates_and_preserves_input(language_code:
         ("reportExaminationDescriptionPrompt", examination.examinationDescription),
         ("reportTemplatePrompt", "Template {value}"),
     ):
-        assert resolve_localized_text(language_code, key).format(value=value) in prompt
+        assert configuration.text(language_code, key).format(value=value) in prompt
     settings = SettingsAI(isMarkdown=False, maxTokens=512)
     system = factory.system_prompt(settings, True, True, True)
-    assert system.startswith(resolve_localized_text(language_code, "reportSystemPrompt"))
-    assert resolve_localized_text(language_code, "reportTokenLimitPrompt").format(maxTokens=512) in system
-    assert resolve_localized_text(language_code, "reportPlainTextPrompt") in system
-    assert resolve_localized_text(language_code, "reportRecommendationsPrompt") in system
+    assert system.startswith(configuration.text(language_code, "reportSystemPrompt"))
+    assert configuration.text(language_code, "reportTokenLimitPrompt").format(maxTokens=512) in system
+    assert configuration.text(language_code, "reportPlainTextPrompt") in system
+    assert configuration.text(language_code, "reportRecommendationsPrompt") in system
     assert "title" in system and "description" in system
 
 
@@ -145,10 +144,12 @@ def test_request_rejects_duplicate_photo_ids() -> None:
 
 
 @pytest.mark.parametrize("value", ["", " \n\t ", None])
-def test_blank_optional_template_is_omitted_from_prompt(value: str | None) -> None:
+def test_blank_optional_template_is_omitted_from_prompt(configuration: Configuration, value: str | None) -> None:
     request = USExaminationRequest(settingsAI=SettingsAI(), examinationData=_examination(), template=value)
     assert request.template is None
-    prompt = PromptFactory(LanguageCode.EN).build_prompt(request.examinationData, "Title", request.template)
+    prompt = PromptFactory(LanguageCode.EN, configuration).build_prompt(
+        request.examinationData, "Title", request.template
+    )
     assert "Report template:" not in prompt
 
 
@@ -159,6 +160,7 @@ def _generate(
     is_description_remarks: bool = True,
     is_photos_available: bool = True,
 ) -> tuple[USExaminationReport, FakeRemarksService]:
+    configuration = ConfigurationLoader(Variables(environment="development").configuration_directory).load()
     body = USExaminationRequest(
         settingsAI=SettingsAI(selectedNeuralModelId="google/medgemma-4b-it"),
         examinationData=_examination(is_photos_available),
@@ -176,8 +178,15 @@ def _generate(
             "state": {"request_id": "a" * 32},
         }
     )
-    handler: Any = inspect.unwrap(route.generate_report)
-    return asyncio.run(handler(body=body, request=request)), service
+    handler: Any = ReportGenerationService(configuration, request.app.state.model_service).generate
+    return asyncio.run(
+        handler(
+            body=body,
+            language_code=configuration.language(request.headers.get("Accept-Language")),
+            app_check_token=request.headers.get("X-Firebase-AppCheck"),
+            request_id=request.state.request_id,
+        )
+    ), service
 
 
 def test_route_returns_remarks_with_original_photo_id_and_token() -> None:
@@ -209,7 +218,7 @@ def test_no_remarks_are_valid_for_any_flags(is_photo_remarks: bool, is_descripti
 def test_route_rejects_invalid_point_coordinates(coordinate: str, value: float) -> None:
     remarks = _remarks()
     remarks[0]["points"][0][coordinate] = value
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _generate({"photoRemarks": remarks})
     assert error.value.status_code == 502
 
@@ -230,7 +239,7 @@ def test_route_rejects_invalid_remarks_without_logging_text(defect: str, caplog:
         remarks[0]["points"] = []
     else:
         remarks[0]["points"][0]["extra"] = "Sensitive generated patient text"
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _generate({"photoRemarks": remarks})
     assert error.value.status_code == 502
     assert "Sensitive generated patient text" not in caplog.text
@@ -260,6 +269,6 @@ def test_photo_remark_strings_are_trimmed() -> None:
     ],
 )
 def test_route_rejects_unrequested_remarks(value: dict[str, Any], options: dict[str, bool]) -> None:
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         _generate(value, **options)
     assert error.value.status_code == 502

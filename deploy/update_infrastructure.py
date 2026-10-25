@@ -4,7 +4,6 @@ from __future__ import annotations
 
 import argparse
 import json
-from pathlib import Path
 import re
 import shlex
 import signal
@@ -12,6 +11,7 @@ import subprocess
 import sys
 import time
 import uuid
+from pathlib import Path
 from urllib.parse import quote
 
 REPO = "ivangalkindeveloper/DoglyadAI"
@@ -67,6 +67,8 @@ def inventory(path: Path) -> list[dict[str, str]]:
 
 
 def remote(target: dict[str, str], action: str, release: str, **values: object) -> dict:
+    if action == "stage":
+        values["storage_script"] = (DIRECTORY / "prepare_backend_storage.py").read_text()
     payload = json.dumps(dict(action=action, release=release, target=target, **values))
     invocation = "python3 - " + shlex.quote(payload)
     output = command(

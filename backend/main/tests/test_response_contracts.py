@@ -4,10 +4,10 @@ import re
 from typing import Any
 
 import pytest
+from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from pydantic import TypeAdapter, ValidationError
 
-from app.main import app
 from app.model.ultrasound.us_examination_ready_made_template_response import USExaminationReadyMadeTemplateResponse
 from app.model.ultrasound.us_voice_form_parse_response import USVoiceFormParseResponse
 
@@ -23,7 +23,7 @@ def _assert_camel_case_properties(value: Any) -> None:
             _assert_camel_case_properties(nested)
 
 
-def test_every_modeled_http_response_has_camel_case_properties() -> None:
+def test_every_modeled_http_response_has_camel_case_properties(app: FastAPI) -> None:
     for route in app.routes:
         if isinstance(route, APIRoute) and route.response_model is not None:
             _assert_camel_case_properties(TypeAdapter(route.response_model).json_schema())

@@ -6,7 +6,7 @@ from app.model.ultrasound.us_examination_data import USExaminationData
 
 
 class FakePromptFactory:
-    def __init__(self, language_code: LanguageCode) -> None:
+    def __init__(self, language_code: LanguageCode, configuration: object) -> None:
         assert language_code is LanguageCode.EN
 
     def system_prompt(

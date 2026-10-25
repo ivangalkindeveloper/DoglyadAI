@@ -3,17 +3,17 @@ from __future__ import annotations
 import asyncio
 
 import pytest
-from fastapi import HTTPException
+from fastapi import FastAPI
 
 from app.core.verify_app_check import APP_CHECK_HEADER, verify_app_check
+from app.error import ApiError
 
 
-def test_every_v1_route_is_behind_app_check() -> None:
+def test_every_v1_route_is_behind_app_check(app: FastAPI) -> None:
     # Guards the wiring, not just the intent: dropping `dependencies=` from the
     # router in app/main.py would otherwise leave every other test green. There is
     # no environment in which this is relaxed — the backend has no unauthenticated
     # surface beyond what FastAPI itself serves.
-    from app.main import app
 
     routes = [route for route in app.routes if str(getattr(route, "path", "")).startswith("/v1/")]
     assert routes
@@ -26,7 +26,7 @@ def test_every_v1_route_is_behind_app_check() -> None:
 def test_missing_token_is_rejected() -> None:
     # Rejected at the edge before any service is resolved. The GPU VM performs a
     # second independent verification when the request reaches it.
-    with pytest.raises(HTTPException) as error:
+    with pytest.raises(ApiError) as error:
         asyncio.run(verify_app_check(None))
 
     assert error.value.status_code == 401

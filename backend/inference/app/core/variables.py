@@ -29,11 +29,8 @@ class Variables(BaseSettings):
     # Local vLLM OpenAI-compatible server, reachable only from inside the VM's
     # Docker network — it is never exposed publicly.
     vllm_base_url: str = "http://vllm:8000"
-    # The innermost timeout of the chain, so it has to stay under the backend's
-    # INFERENCE_REQUEST_TIMEOUT_SECONDS (130). Set it higher and the backend hangs
-    # up on a generation this service is still running: the GPU time is spent and
-    # the result is thrown away.
-    vllm_request_timeout_seconds: int = 120
+    config_dir: Path | None = None
 
-
-variables = Variables()
+    @property
+    def configuration_directory(self) -> Path:
+        return self.config_dir or Path(__file__).resolve().parents[2] / "config"
