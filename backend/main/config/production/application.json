@@ -52,11 +52,38 @@
         "scanPhotoMaxNumber": 6,
         "scanPhotoResizeMaxDimension": 128,
         "scanPhotoCompressionQuality": 0.5,
-        "defaultPatientDateOfBirthGap": 25,
-        "defaultPatientHeightCM": 180,
-        "defaultPatientWeightKG": 60
+        "defaultPatientDateOfBirthGap": 25
     },
     "history": {
         "pageSize": 20
+    },
+    "scan": {
+        "examinationNumberMaxLength": 64,
+        "patientNameMaxLength": 256,
+        "patientHeightCMMaxLength": 6,
+        "patientWeightKGMaxLength": 6,
+        "patientComplaintsMaxLength": 4000,
+        "examinationDescriptionMaxLength": 8000
+    },
+    "scanSpeech": {
+        "transcriptMaxLength": 8000
+    },
+    "templateAdd": {
+        "nameMaxLength": 120,
+        "contentMaxLength": 8000
+    },
+    "templateEdit": {
+        "nameMaxLength": 120,
+        "contentMaxLength": 8000
+    },
+    "readyMadeTemplateList": {
+        "searchMaxLength": 200
+    },
+    "userSettings": {
+        "emailMaxLength": 254
+    },
+    "settingsAI": {
+        "temperatureMaxLength": 8,
+        "maxTokensMaxLength": 4
     }
 }

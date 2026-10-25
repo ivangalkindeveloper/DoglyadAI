@@ -10,6 +10,7 @@ from app.model.ultrasound.us_examination_neural_model_response import USExaminat
 from app.model.ultrasound.us_examination_ready_made_template_response import USExaminationReadyMadeTemplateResponse
 from app.model.ultrasound.us_examination_type_group_response import USExaminationTypeGroupResponse
 from app.model.ultrasound.us_examination_type_response import USExaminationTypeResponse
+from app.service.text_length_validator import TextLengthValidator
 
 
 class ConfigurationResponseService:
@@ -21,7 +22,14 @@ class ConfigurationResponseService:
             self.application(language)
             self.examination_types(language)
             self.neural_models(language)
-            self.ready_made_templates(language)
+            modules = self._configuration.modules
+            for template in self.ready_made_templates(language):
+                if not TextLengthValidator.is_within_limit(
+                    template.title, min(modules.templateAdd.nameMaxLength, modules.templateEdit.nameMaxLength)
+                ) or not TextLengthValidator.is_within_limit(
+                    template.content, min(modules.templateAdd.contentMaxLength, modules.templateEdit.contentMaxLength)
+                ):
+                    raise ValueError("Ready-made template exceeds a module input limit")
 
     def application_document(self, language: LanguageCode) -> str:
         return json.dumps(self.application(language), ensure_ascii=False)

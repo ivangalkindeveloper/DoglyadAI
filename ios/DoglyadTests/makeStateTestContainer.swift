@@ -5,6 +5,7 @@ func makeStateTestContainer(
     reportRepository: UltrasoundReportRepositoryProtocol,
     draftRepository: UltrasoundDraftRepositoryProtocol,
     settingsAIRepository: (any SettingsAIRepositoryProtocol)? = nil,
+    applicationConfig: ApplicationConfig? = nil,
 ) -> DependencyContainer {
     let base = DependencyContainer.previewable
     return DependencyContainer(
@@ -20,7 +21,7 @@ func makeStateTestContainer(
         ultrasoundDraftRepository: draftRepository,
         templateRepository: base.templateRepository,
         subscriptionRepository: base.subscriptionRepository,
-        applicationConfig: base.applicationConfig,
+        applicationConfig: applicationConfig ?? base.applicationConfig,
         language: base.language,
         l10n: base.l10n,
         usExaminationTypeGroups: base.usExaminationTypeGroups,

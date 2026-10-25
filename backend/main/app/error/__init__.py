@@ -29,9 +29,9 @@ from app.error.report_measurements_mismatch_error import ReportMeasurementsMisma
 from app.error.request_body_too_large_error import RequestBodyTooLargeError
 from app.error.resource_not_found_error import ResourceNotFoundError
 from app.error.service_not_configured_error import ServiceNotConfiguredError
+from app.error.text_too_long_error import TextTooLongError
 from app.error.too_many_attachments_error import TooManyAttachmentsError
 from app.error.too_many_images_error import TooManyImagesError
-from app.error.transcript_too_long_error import TranscriptTooLongError
 from app.error.unexpected_report_remarks_error import UnexpectedReportRemarksError
 from app.error.unknown_examination_type_error import UnknownExaminationTypeError
 from app.error.unknown_neural_model_error import UnknownNeuralModelError
@@ -67,9 +67,9 @@ __all__ = [
     "RequestBodyTooLargeError",
     "ResourceNotFoundError",
     "ServiceNotConfiguredError",
+    "TextTooLongError",
     "TooManyAttachmentsError",
     "TooManyImagesError",
-    "TranscriptTooLongError",
     "UnexpectedReportRemarksError",
     "UnknownExaminationTypeError",
     "UnknownNeuralModelError",

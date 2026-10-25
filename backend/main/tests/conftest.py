@@ -43,6 +43,6 @@ def app(configuration: Configuration, variables: Variables) -> FastAPI:
         model_service=model_service,
         report_generation=ReportGenerationService(configuration, model_service),
         dictation_parsing=DictationParsingService(configuration, model_service),
-        report_email=ReportEmailService(variables, configuration.server.email),
+        report_email=ReportEmailService(variables, configuration.server.email, configuration.modules.userSettings),
     )
     return application

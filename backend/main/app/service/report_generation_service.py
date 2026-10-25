@@ -15,6 +15,7 @@ from app.schema.us_examination_report_structured_output import us_examination_re
 from app.service import NeuralModelService, NeuralModelServiceRequest
 from app.service.image_request_validator import ImageRequestValidator
 from app.service.report_validator import ReportValidator
+from app.service.text_length_validator import TextLengthValidator
 
 logger = logging.getLogger(__name__)
 
@@ -34,10 +35,25 @@ class ReportGenerationService:
         app_check_token: str | None = None,
         request_id: str | None = None,
     ) -> USExaminationModelReportResponse:
+        examination = body.examinationData
+        limits = self._configuration.modules.scan
+        for field, maximum in (
+            ("examinationNumber", limits.examinationNumberMaxLength),
+            ("patientName", limits.patientNameMaxLength),
+            ("patientComplaints", limits.patientComplaintsMaxLength),
+            ("examinationDescription", limits.examinationDescriptionMaxLength),
+        ):
+            TextLengthValidator.validate(getattr(examination, field), maximum, ["body", "examinationData", field])
+        # Either editor can supply a saved template. Both independently configured
+        # creation/editing limits must remain usable during report generation.
+        template_maximum = max(
+            self._configuration.modules.templateAdd.contentMaxLength,
+            self._configuration.modules.templateEdit.contentMaxLength,
+        )
+        TextLengthValidator.validate(body.template, template_maximum, ["body", "template"])
         self._images.validate([photo.data for photo in body.examinationData.photos])
         prompt_factory = PromptFactory(language_code, self._configuration)
         settings = body.settingsAI
-        examination = body.examinationData
 
         neural_model = self._configuration.resolve_neural_model(settings.selectedNeuralModelId)
         examination_title = self._configuration.resolve_examination_title(

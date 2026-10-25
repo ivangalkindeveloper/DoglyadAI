@@ -101,6 +101,13 @@ struct CoordinatorTests {
             entitlements: defaultConfig.entitlements,
             ultrasound: defaultConfig.ultrasound,
             history: defaultConfig.history,
+            scan: defaultConfig.scan,
+            scanSpeech: defaultConfig.scanSpeech,
+            templateAdd: defaultConfig.templateAdd,
+            templateEdit: defaultConfig.templateEdit,
+            readyMadeTemplateList: defaultConfig.readyMadeTemplateList,
+            userSettings: defaultConfig.userSettings,
+            settingsAI: defaultConfig.settingsAI,
         )
     }
 }

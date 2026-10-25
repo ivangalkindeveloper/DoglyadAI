@@ -16,6 +16,13 @@ struct ApplicationConfig: Codable {
     let entitlements: [SubscriptionType: SubscriptionEntitlement]
     let ultrasound: UltrasoundConfig
     let history: HistoryConfig
+    let scan: ScanConfig
+    let scanSpeech: ScanSpeechConfig
+    let templateAdd: TemplateAddConfig
+    let templateEdit: TemplateEditConfig
+    let readyMadeTemplateList: ReadyMadeTemplateListConfig
+    let userSettings: UserSettingsConfig
+    let settingsAI: SettingsAIConfig
 }
 
 extension ApplicationConfig {
@@ -46,6 +53,13 @@ extension ApplicationConfig {
         ],
         ultrasound: .default,
         history: .default,
+        scan: .default,
+        scanSpeech: .default,
+        templateAdd: .default,
+        templateEdit: .default,
+        readyMadeTemplateList: .default,
+        userSettings: .default,
+        settingsAI: .default,
     )
 }
 
@@ -115,6 +129,60 @@ extension ApplicationConfig {
             HistoryConfig.self,
             forKey: .history,
         ) ?? .default
+        scan = try container.decode(
+            ScanConfig.self,
+            forKey: .scan,
+        )
+        scanSpeech = try container.decode(
+            ScanSpeechConfig.self,
+            forKey: .scanSpeech,
+        )
+        templateAdd = try container.decode(
+            TemplateAddConfig.self,
+            forKey: .templateAdd,
+        )
+        templateEdit = try container.decode(
+            TemplateEditConfig.self,
+            forKey: .templateEdit,
+        )
+        readyMadeTemplateList = try container.decode(
+            ReadyMadeTemplateListConfig.self,
+            forKey: .readyMadeTemplateList,
+        )
+        userSettings = try container.decode(
+            UserSettingsConfig.self,
+            forKey: .userSettings,
+        )
+        settingsAI = try container.decode(
+            SettingsAIConfig.self,
+            forKey: .settingsAI,
+        )
+        guard [
+            scan.examinationNumberMaxLength,
+            scan.patientNameMaxLength,
+            scan.patientHeightCMMaxLength,
+            scan.patientWeightKGMaxLength,
+            scan.patientComplaintsMaxLength,
+            scan.examinationDescriptionMaxLength,
+            scanSpeech.transcriptMaxLength,
+            templateAdd.nameMaxLength,
+            templateAdd.contentMaxLength,
+            templateEdit.nameMaxLength,
+            templateEdit.contentMaxLength,
+            readyMadeTemplateList.searchMaxLength,
+            userSettings.emailMaxLength,
+            settingsAI.temperatureMaxLength,
+            settingsAI.maxTokensMaxLength,
+        ].allSatisfy(
+            { $0 > 0 },
+        ) else {
+            throw DecodingError.dataCorrupted(
+                .init(
+                    codingPath: decoder.codingPath,
+                    debugDescription: "Module input limits must be positive",
+                ),
+            )
+        }
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -131,6 +199,13 @@ extension ApplicationConfig {
         case entitlements
         case ultrasound
         case history
+        case scan
+        case scanSpeech
+        case templateAdd
+        case templateEdit
+        case readyMadeTemplateList
+        case userSettings
+        case settingsAI
     }
 
     func encode(
@@ -186,6 +261,34 @@ extension ApplicationConfig {
         try container.encode(
             history,
             forKey: .history,
+        )
+        try container.encode(
+            scan,
+            forKey: .scan,
+        )
+        try container.encode(
+            scanSpeech,
+            forKey: .scanSpeech,
+        )
+        try container.encode(
+            templateAdd,
+            forKey: .templateAdd,
+        )
+        try container.encode(
+            templateEdit,
+            forKey: .templateEdit,
+        )
+        try container.encode(
+            readyMadeTemplateList,
+            forKey: .readyMadeTemplateList,
+        )
+        try container.encode(
+            userSettings,
+            forKey: .userSettings,
+        )
+        try container.encode(
+            settingsAI,
+            forKey: .settingsAI,
         )
 
         let rawEntitlements = Dictionary(

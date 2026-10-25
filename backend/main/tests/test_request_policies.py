@@ -51,13 +51,14 @@ def body() -> dict[str, object]:
 
 
 @pytest.mark.parametrize("field", ["examinationNumber", "patientName", "patientComplaints", "examinationDescription"])
-def test_long_text_fields_with_six_photos_reach_model_without_truncation(
+def test_text_fields_at_configured_limit_with_six_photos_reach_model_without_truncation(
     app: FastAPI,
     configuration: Configuration,
     body: dict[str, object],
     field: str,
 ) -> None:
-    value = ("Длинный текст без чисел. " * 2000).strip()
+    maximum = getattr(configuration.modules.scan, field + "MaxLength")
+    value = "x" * maximum
     examination = body["examinationData"]
     assert isinstance(examination, dict)
     examination[field] = value

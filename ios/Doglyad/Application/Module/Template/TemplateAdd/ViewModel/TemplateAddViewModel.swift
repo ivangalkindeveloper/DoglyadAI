@@ -11,13 +11,9 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
 
     @Published var usExaminationType: USExaminationType
 
-    @NestedObservableObject var nameTextController = DTextFieldController(
-        isRequired: true,
-    )
+    @NestedObservableObject var nameTextController: DTextFieldController
 
-    @NestedObservableObject var templateTextController = DTextFieldController(
-        isRequired: true,
-    )
+    @NestedObservableObject var templateTextController: DTextFieldController
 
     let templateId = UUID()
 
@@ -39,6 +35,49 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
         self.onSaveTemplate = onSaveTemplate
 
         usExaminationType = container.usExaminationTypeDefault
+
+        _nameTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                isRequired: true,
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.templateAdd.nameMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.templateAdd.nameMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.templateAdd.nameMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
+        _templateTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                isRequired: true,
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.templateAdd.contentMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.templateAdd.contentMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.templateAdd.contentMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
 
         super.init(
             state: TemplateAddLoadingState(),
@@ -269,12 +308,12 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
         ) else { return }
 
         usExaminationType = examinationType
-        nameTextController.setText(
+        nameTextController.restoreText(
             String(
                 localized: template.localizedTitle,
             ),
         )
-        templateTextController.setText(
+        templateTextController.restoreText(
             template.content,
         )
     }

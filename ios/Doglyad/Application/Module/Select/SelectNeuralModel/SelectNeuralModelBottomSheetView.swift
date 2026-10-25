@@ -57,14 +57,14 @@ struct SelectNeuralModelBottomSheetView: DViewProtocol {
                                 description: l10n.resource(
                                     .neuralModelDetailsDescription,
                                     values: [
-                                        "id": model.id,
-                                        "contextLabel": l10n.text(
+                                        .id: model.id,
+                                        .contextLabel: l10n.text(
                                             .neuralModelContextLengthDescription,
                                         ),
-                                        "contextLength": String(
+                                        .contextLength: String(
                                             model.contextLength,
                                         ),
-                                        "description": model.description,
+                                        .description: model.description,
                                     ],
                                 ),
                                 action: {

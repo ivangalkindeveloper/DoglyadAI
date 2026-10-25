@@ -52,6 +52,9 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldDecimalFormatter(),
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.settingsAI.temperatureMaxLength,
+                    ),
                 ],
                 validators: [
                     DTextFieldDoubleRangeValidator(
@@ -62,6 +65,15 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
                             ],
                         ),
                     ),
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.settingsAI.temperatureMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.settingsAI.temperatureMaxLength,
+                            )],
+                        ),
+                    ),
                 ],
             ),
         )
@@ -69,6 +81,9 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldIntegerFormatter(),
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.settingsAI.maxTokensMaxLength,
+                    ),
                 ],
                 validators: [
                     DTextFieldIntRangeValidator(
@@ -77,6 +92,15 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
                             localized: container.l10n[
                                 .errorInvalidSettingsAIMaxTokensDescription,
                             ],
+                        ),
+                    ),
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.settingsAI.maxTokensMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.settingsAI.maxTokensMaxLength,
+                            )],
                         ),
                     ),
                 ],
@@ -99,12 +123,12 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
         _ = temperatureTextController
         _ = maxTokensTextController
         isMarkdown = getInitialIsMarkdown()
-        temperatureTextController.setText(
+        temperatureTextController.restoreText(
             String(
                 getInitialTemperature(),
             ),
         )
-        maxTokensTextController.setText(
+        maxTokensTextController.restoreText(
             String(
                 getInitialMaxTokens(),
             ),

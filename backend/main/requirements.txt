@@ -4,4 +4,5 @@ httpx==0.28.1
 pydantic==2.13.3
 pydantic-settings==2.7.1
 limits==5.8.0
+regex==2025.11.3
 uvicorn[standard]==0.46.0

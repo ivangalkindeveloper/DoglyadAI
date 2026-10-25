@@ -16,5 +16,4 @@ class MainServerConfig(BaseModel):
     email: EmailConfig
     voice_form_parsing: USVoiceFormParsingConfig
     max_image_bytes: int = Field(gt=0)
-    max_transcript_characters: int = Field(gt=0)
     default_max_body_bytes: int = Field(gt=0)

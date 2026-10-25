@@ -40,7 +40,7 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
             .settingsHistoryEmptyDescription,
         ] : l10n.resource(
             .settingsHistoryDescription,
-            values: ["count": String(
+            values: [.count: String(
                 reportsCount,
             )],
         )

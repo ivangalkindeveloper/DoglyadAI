@@ -34,6 +34,7 @@
   "buttonUpdate": "Update",
   "dateTodayLabel": "Today",
   "dateYesterdayLabel": "Yesterday",
+  "errorFieldLengthExceededDescription": "Maximum {maxLength} characters.",
   "errorInvalidEmailDescription": "Enter a valid email address",
   "errorInvalidPatientHeightDescription": "Enter a valid patient height",
   "errorInvalidPatientWeightDescription": "Enter a valid patient weight",

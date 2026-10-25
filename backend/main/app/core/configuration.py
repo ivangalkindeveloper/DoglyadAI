@@ -7,6 +7,7 @@ from app.core.language_code import LanguageCode
 from app.core.resolve_language import resolve_language
 from app.error import NeuralModelUnavailableError, UnknownExaminationTypeError, UnknownNeuralModelError
 from app.model.application_locale_config import ApplicationLocaleConfig
+from app.model.application_module_config import ApplicationModuleConfig
 from app.model.l10n import L10n
 from app.model.l10n_response import L10nResponse
 from app.model.main_server_config import MainServerConfig
@@ -24,6 +25,7 @@ class Configuration:
     server: MainServerConfig
     application: dict[str, Any]
     locale: ApplicationLocaleConfig
+    modules: ApplicationModuleConfig
     l10n: L10n
     contextual_strings: USExaminationContextualStrings
     neural_models: dict[str, USExaminationNeuralModel]

@@ -30,7 +30,7 @@ struct L10NTests {
         #expect(
             l10n.text(
                 .scanPatientDefaultNameLabel,
-                values: ["count": "12"],
+                values: [.count: "12"],
             ).hasSuffix(
                 "#12",
             ),
@@ -39,11 +39,11 @@ struct L10NTests {
             String(
                 localized: l10n.resource(
                     .photoViewPageLabel,
-                    values: ["current": "2", "total": "7"],
+                    values: [.current: "2", .total: "7"],
                 ),
             ) == l10n.text(
                 .photoViewPageLabel,
-                values: ["current": "2", "total": "7"],
+                values: [.current: "2", .total: "7"],
             ),
         )
     }
@@ -57,7 +57,7 @@ struct L10NTests {
         let email = "doctor+%lld@example.com"
         let value = l10n.text(
             .shareWorkEmailButton,
-            values: ["prefix": prefix, "email": email],
+            values: [.prefix: prefix, .email: email],
         )
         #expect(
             value == "\(prefix) \(email)",
@@ -66,7 +66,7 @@ struct L10NTests {
             String(
                 localized: l10n.resource(
                     .shareWorkEmailButton,
-                    values: ["prefix": prefix, "email": email],
+                    values: [.prefix: prefix, .email: email],
                 ),
             ) == value,
         )
@@ -77,6 +77,39 @@ struct L10NTests {
             ).contains(
                 "{{organ}}",
             ),
+        )
+    }
+
+    @Test(
+        arguments: ["en", "ru"],
+    )
+    func fieldLengthMessageUsesTheTypedParameter(
+        code: String,
+    ) throws {
+        let l10n = try VoiceLocalizationTestSupport.l10n(
+            code: code,
+        )
+        let text = l10n.text(
+            .errorFieldLengthExceededDescription,
+            values: [.maxLength: "256"],
+        )
+        #expect(
+            text.contains(
+                "256",
+            ),
+        )
+        #expect(
+            !text.contains(
+                "{maxLength}",
+            ),
+        )
+        #expect(
+            String(
+                localized: l10n.resource(
+                    .errorFieldLengthExceededDescription,
+                    values: [.maxLength: "256"],
+                ),
+            ) == text,
         )
     }
 

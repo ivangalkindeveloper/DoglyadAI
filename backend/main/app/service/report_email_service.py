@@ -17,16 +17,22 @@ from app.error import (
 )
 from app.model.email_config import EmailConfig
 from app.model.report_email import ReportEmail
+from app.model.user_settings_config import UserSettingsConfig
+from app.service.text_length_validator import TextLengthValidator
 
 logger = logging.getLogger(__name__)
 
 
 class ReportEmailService:
-    def __init__(self, variables: Variables, config: EmailConfig) -> None:
+    def __init__(self, variables: Variables, config: EmailConfig, user_settings: UserSettingsConfig) -> None:
         self._variables = variables
         self._config = config
+        self._user_settings = user_settings
 
     async def send(self, body: ReportEmail) -> None:
+        TextLengthValidator.validate(
+            body.recipientEmail, self._user_settings.emailMaxLength, ["body", "recipientEmail"]
+        )
         sizes = [len(attachment.data) for attachment in body.attachments]
         if len(sizes) > self._config.max_attachments:
             raise TooManyAttachmentsError()

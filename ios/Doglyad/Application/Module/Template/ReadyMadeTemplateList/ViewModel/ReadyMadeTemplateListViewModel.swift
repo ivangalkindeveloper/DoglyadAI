@@ -10,7 +10,7 @@ import SwiftUI
 final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTemplateListStateProtocol> {
     @Published var focus: ReadyMadeTemplateListFocus?
 
-    @NestedObservableObject var searchTextController = DTextFieldController()
+    @NestedObservableObject var searchTextController: DTextFieldController
 
     private let arguments: ReadyMadeTemplateListArguments
 
@@ -25,6 +25,27 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
         arguments: ReadyMadeTemplateListArguments,
     ) {
         self.arguments = arguments
+
+        _searchTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.readyMadeTemplateList.searchMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.readyMadeTemplateList.searchMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.readyMadeTemplateList.searchMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
 
         super.init(
             state: ReadyMadeTemplateListLoadingState(),

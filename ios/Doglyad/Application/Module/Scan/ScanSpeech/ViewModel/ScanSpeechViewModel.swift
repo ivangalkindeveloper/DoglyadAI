@@ -8,7 +8,7 @@ import SwiftUI
 
 @MainActor
 final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
-    @NestedObservableObject var transcriptTextController = DTextFieldController()
+    @NestedObservableObject var transcriptTextController: DTextFieldController
     private(set) var originalTranscript: DSpeechTranscript?
     @Published private(set) var speechController: (any DSpeechControllerProtocol)?
     @Published var automaticFieldIds = Set<DNeuralUltrasoundVoiceFieldId>()
@@ -32,6 +32,27 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         self.messager = messager
         self.arguments = arguments
         self.speechController = speechController
+
+        _transcriptTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.scanSpeech.transcriptMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.scanSpeech.transcriptMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.scanSpeech.transcriptMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
 
         super.init(
             state: ScanSpeechPreparingModelState(
@@ -223,6 +244,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         guard isPresentationActive else { return }
         switch state {
         case _ as ScanSpeechReviewTranscriptState:
+            guard transcriptTextController.validate() else { return }
             guard let speech = textForParsing, let originalTranscript else { return }
             if speech != originalTranscript.correctedText { analytics.actionCompleted(
                 .voiceTranscriptEdited,
@@ -476,15 +498,15 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         _ original: DSpeechTranscript,
     ) {
         originalTranscript = original
-        transcriptTextController.setText(
+        transcriptTextController.restoreText(
             original.correctedText,
         )
-        guard original.isReadyForParsing else {
+        guard original.isReadyForParsing, transcriptTextController.validate() else {
             showTranscriptReview()
             return
         }
         let parsing = ScanSpeechAutomaticParsingState(
-            parsedText: original.correctedText,
+            parsedText: transcriptTextController.text,
         )
         emit(
             parsing,

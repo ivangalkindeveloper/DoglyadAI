@@ -41,12 +41,13 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
         isRecommendationsIncluded = getInitialIsRecommendationsIncluded()
         isPhotoRemarks = getInitialIsPhotoRemarks()
         isDescriptionRemarks = getInitialIsDescriptionRemarks()
+
         _emailTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldEmailFormatter(),
                     DTextFieldMaxLengthFormatter(
-                        maxLength: 254,
+                        maxLength: container.applicationConfig.userSettings.emailMaxLength,
                     ),
                 ],
                 validators: [
@@ -55,6 +56,15 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
                             localized: container.l10n[
                                 .errorInvalidEmailDescription,
                             ],
+                        ),
+                    ),
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.userSettings.emailMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.userSettings.emailMaxLength,
+                            )],
                         ),
                     ),
                 ],
@@ -75,7 +85,7 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
             ),
         )
         _ = emailTextController
-        emailTextController.setText(
+        emailTextController.restoreText(
             getInitialEmail() ?? "",
         )
     }

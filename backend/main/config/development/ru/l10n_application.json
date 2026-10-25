@@ -34,6 +34,7 @@
   "buttonUpdate": "Обновить",
   "dateTodayLabel": "Сегодня",
   "dateYesterdayLabel": "Вчера",
+  "errorFieldLengthExceededDescription": "Максимум {maxLength} символов.",
   "errorInvalidEmailDescription": "Введите корректный адрес электронной почты",
   "errorInvalidPatientHeightDescription": "Введите корректный рост пациента",
   "errorInvalidPatientWeightDescription": "Введите корректный вес пациента",

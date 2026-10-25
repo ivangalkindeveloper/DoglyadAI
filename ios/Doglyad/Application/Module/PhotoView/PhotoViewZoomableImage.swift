@@ -65,7 +65,7 @@ struct PhotoViewZoomableImage: DViewProtocol {
                             title: point.title,
                             accessibilityLabel: l10n.resource(
                                 .photoViewRemarkButton,
-                                values: ["number": String(
+                                values: [.number: String(
                                     index + 1,
                                 )],
                             ),

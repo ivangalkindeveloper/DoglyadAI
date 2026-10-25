@@ -81,10 +81,29 @@ Each environment has `config/<environment>/server.json`, baked into the image al
 - `endpoints`: the exact `/v1` paths, requests per minute per client IP, and maximum HTTP body sizes in bytes. Startup rejects missing or unknown paths. Rate counters are per application process; the deployment uses one Uvicorn worker.
 - `inference`: HTTPX connect, read, write and pool timeouts plus an overall operation deadline. The 130-second operation deadline bounds the outgoing inference call and maps expiry to `504`. Inference overload remains `503` with `Retry-After`.
 - `max_image_bytes`: maximum decoded bytes per Base64 image (4 MiB). Image count comes from `application.json` → `ultrasound.scanPhotoMaxNumber` (currently six). Invalid Base64 is rejected before generation.
-- `max_transcript_characters` and `voice_form_parsing.maxTokens`: transcript and generation limits for voice parsing.
+- `voice_form_parsing.maxTokens`: generation token limit for voice parsing. The transcript length comes from the public `application.json` module configuration.
 - `email`: SMTP socket timeout (15 seconds), attachment count, per-attachment bytes and total decoded attachment bytes. TLS verifies the SMTP server certificate and hostname. SMTP exceptions are logged by category without addresses or remote replies. Session shutdown errors do not turn an accepted send into a failed operation. SMTP acceptance does not establish delivery to the final mailbox or deduplicate separate client requests.
 
-The report and email body limit is 40 MiB. Six images of up to 4 MiB occupy about 32 MiB after Base64 encoding, leaving roughly 8 MiB for text and JSON. Examination number, patient name, complaints, description and template have no new individual character limits and are never truncated. All fields contribute to the actual UTF-8 body size, including JSON escaping. The 40 MiB bound is a resource safeguard; the selected model's context capacity remains a separate engine constraint.
+The report and email body limit is 40 MiB. Six images of up to 4 MiB occupy about 32 MiB after Base64 encoding, leaving roughly 8 MiB for text and JSON. All fields contribute to the actual UTF-8 body size, including JSON escaping. This body bound and the selected model's token/context capacity are separate from per-field character limits.
+
+## Module configuration and input lengths
+
+Both environments publish independent `scan`, `scanSpeech`, `templateAdd`, `templateEdit`, `readyMadeTemplateList`, `userSettings` and `settingsAI` sections in `application.json`. These sections belong to their modules and may gain other settings. `ApplicationModuleConfig` validates this subset without creating a second model for the complete application document. Every configured maximum is a required positive integer; there are no runtime fallbacks for missing module sections.
+
+| Module | Maximum characters |
+|---|---|
+| `scan` | Examination number 64; patient name 256; height/weight input 6 each; complaints 4000; examination description 8000 |
+| `scanSpeech` | Transcript 8000 |
+| `templateAdd`, `templateEdit` | Independently configured name 120 and content 8000 |
+| `readyMadeTemplateList` | Search input 200 |
+| `userSettings` | Email input 254 |
+| `settingsAI` | Temperature input 8; max-token input 4 |
+
+Main checks examination strings, transcript, email recipient and selected template before model execution or SMTP. `TextLengthValidator` counts extended Unicode grapheme clusters through pinned `regex`, matching the client formatter's whole-character counting for combining marks and emoji. Overflows return `422 textTooLong` with safe `fields` locations, without truncating server input. Numeric API values retain their numeric constraints; their input-string limits apply in the editor. Generation accepts template content up to the larger of the two independent editor limits. Published ready-made templates must fit both editors, checked at startup.
+
+iOS creates each controller with `DTextFieldMaxLengthFormatter` last and a length validator using its module configuration. Ordinary entry and `setText` obey the formatter. `restoreText` preserves saved drafts, templates, preferences and recognized speech, displaying validation errors when a newly lowered limit is exceeded. Draft snapshots retain the full source; automatic and manual dictation parsing validate the editor before running. Bootstrap/preview `ApplicationConfig.default` uses unbounded placeholders while the service is unavailable; successful server decoding requires all real module limits.
+
+The unused `defaultPatientHeightCM` and `defaultPatientWeightKG` settings have been removed; new examinations still leave both fields empty. Configurations are baked into backend images: change the environment's JSON, deploy the backend and reload application configuration. No iOS rebuild is needed for changing the published limits.
 
 `RequestBodyLimitMiddleware` checks both declared and actually received bytes before JSON parsing, including requests with chunked bodies or incorrect `Content-Length`. Oversized HTTP bodies or decoded images return `413`; excessive photo counts and invalid encodings return `422`. This protection works with a direct Uvicorn launch and does not require Caddy. Local VS Code and `make start-backend-main-*` launches use Uvicorn directly; the separate `deploy/` VM composition still includes Caddy.
 

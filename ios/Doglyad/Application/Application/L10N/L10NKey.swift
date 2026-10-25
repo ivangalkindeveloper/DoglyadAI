@@ -35,6 +35,7 @@ enum L10NKey: String, CaseIterable, Sendable {
     case buttonUpdate
     case dateTodayLabel
     case dateYesterdayLabel
+    case errorFieldLengthExceededDescription
     case errorInvalidEmailDescription
     case errorInvalidPatientHeightDescription
     case errorInvalidPatientWeightDescription
@@ -187,8 +188,8 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanTemplateCardTitleLabel
     case scanTurnedOffCameraDescription
     case selectDateOfBirthTitle
-    case selectTemplateTitle
     case selectNeuralModelTitle
+    case selectTemplateTitle
     case selectTranscriberSFSpeechRecognizerDescription
     case selectTranscriberSFSpeechRecognizerTitle
     case selectTranscriberSpeechAnalyzerDescription

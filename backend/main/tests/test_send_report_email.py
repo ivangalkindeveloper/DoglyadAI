@@ -24,7 +24,7 @@ def service(variables: Variables, configuration: Configuration, monkeypatch: pyt
     monkeypatch.setattr(variables, "email_smtp_host", "smtp.example.com")
     monkeypatch.setattr(variables, "email_smtp_port", 587)
     monkeypatch.setattr("app.service.report_email_service.smtplib.SMTP", FakeSMTP)
-    return ReportEmailService(variables, configuration.server.email)
+    return ReportEmailService(variables, configuration.server.email, configuration.modules.userSettings)
 
 
 @pytest.fixture

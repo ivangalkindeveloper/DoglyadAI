@@ -14,10 +14,10 @@ struct PhotoViewControlsView: DViewProtocol {
                 l10n.resource(
                     .photoViewPageLabel,
                     values: [
-                        "current": String(
+                        .current: String(
                             viewModel.currentPage,
                         ),
-                        "total": String(
+                        .total: String(
                             viewModel.photos.count,
                         ),
                     ],

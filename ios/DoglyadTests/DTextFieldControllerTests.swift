@@ -100,4 +100,61 @@ struct DTextFieldControllerTests {
             inputTextController.errorText == nil,
         )
     }
+
+    @Test
+    func restoredTextIsRetainedAndValidatedBeforeEditing() {
+        let inputTextController = DTextFieldController(
+            formatters: [DTextFieldMaxLengthFormatter(
+                maxLength: 3,
+            )],
+            validators: [DTextFieldLengthValidator(
+                validRange: 0 ... 3,
+                invalidValueErrorText: "Too long",
+            )],
+        )
+        inputTextController.restoreText(
+            "Original text",
+        )
+
+        #expect(
+            inputTextController.text == "Original text",
+        )
+        #expect(
+            inputTextController.isError,
+        )
+        #expect(
+            inputTextController.errorText == "Too long",
+        )
+
+        inputTextController.setText(
+            "1234",
+        )
+
+        #expect(
+            inputTextController.text == "123",
+        )
+        #expect(
+            !inputTextController.isError,
+        )
+    }
+
+    @Test
+    func maxLengthFormatterFollowsOtherFormattersAndRetainsWholeCharacters() {
+        let inputTextController = DTextFieldController(
+            formatters: [
+                DTextFieldRegexReplacingFormatter(
+                    pattern: #"\s+"#,
+                ),
+                DTextFieldMaxLengthFormatter(
+                    maxLength: 2,
+                ),
+            ],
+        )
+        inputTextController.setText(
+            " 👨‍👩‍👧‍👦 е\u{301} x",
+        )
+        #expect(
+            inputTextController.text == "👨‍👩‍👧‍👦е\u{301}",
+        )
+    }
 }

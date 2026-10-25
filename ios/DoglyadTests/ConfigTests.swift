@@ -39,18 +39,23 @@ struct ConfigTests {
 
     @Test
     func missingConfigSectionsUseDefaults() throws {
-        let data = Data(
-            """
-            {
-                "appStoreId": "test",
-                "locale": {"defaultCode": "en", "codes": ["en", "ru"]},
-                "contactEmail": "test@doglyad.ru",
-                "appleUpdateUrl": "https://apps.apple.com/app/id",
-                "privacyPolicyUrl": "https://doglyad.ru/privacy",
-                "termsAndConditionsUrl": "https://doglyad.ru/terms",
-                "entitlements": {}
-            }
-            """.utf8,
+        var document = try #require(
+            JSONSerialization.jsonObject(
+                with: JSONEncoder().encode(
+                    ApplicationConfig.default,
+                ),
+            ) as? [String: Any],
+        )
+        for key in ["isServiceAvailable", "actualVersion", "legalDate", "network", "ultrasound", "history"] {
+            document.removeValue(
+                forKey: key,
+            )
+        }
+        document[
+            "locale",
+        ] = ["defaultCode": "en", "codes": ["en", "ru"]]
+        let data = try JSONSerialization.data(
+            withJSONObject: document,
         )
 
         let config = try JSONDecoder().decode(

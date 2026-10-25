@@ -42,7 +42,7 @@ class ApiErrorHandler:
 
     async def handle(self, request: Request, error: Exception) -> JSONResponse:
         if isinstance(error, ApiError):
-            return self.response(error, request)
+            return self.response(error, request, fields=error.fields)
         if isinstance(error, RequestValidationError):
             fields = [self._validation_issue(issue) for issue in error.errors()]
             return self.response(InvalidRequestError(), request, fields=fields)

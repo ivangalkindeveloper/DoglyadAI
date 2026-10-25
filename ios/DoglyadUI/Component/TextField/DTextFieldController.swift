@@ -54,6 +54,20 @@ public final class DTextFieldController: ObservableObject {
         }
     }
 
+    /// Restores existing data without discarding text when configured limits change.
+    /// Validation displays the affected field error; ordinary edits still use formatters.
+    public func restoreText(
+        _ storedValue: String,
+    ) {
+        text = storedValue
+        isValidationAttempted = !storedValue.isEmpty
+        if isValidationAttempted {
+            updateValidationState()
+        } else {
+            clearError()
+        }
+    }
+
     @discardableResult
     public func validate() -> Bool {
         isValidationAttempted = true

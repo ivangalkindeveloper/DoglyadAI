@@ -83,7 +83,7 @@ final class SubscriptionPaywallViewModel: DModuleViewModel<any SubscriptionPaywa
     ) -> LocalizedStringResource {
         l10n.resource(
             .subscriptionPaywallPriceDescription,
-            values: ["price": plan.price],
+            values: [.price: plan.price],
         )
     }
 

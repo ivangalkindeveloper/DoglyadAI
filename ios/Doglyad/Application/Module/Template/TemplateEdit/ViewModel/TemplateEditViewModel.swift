@@ -13,13 +13,9 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
 
     @Published var usExaminationType: USExaminationType
 
-    @NestedObservableObject var nameTextController = DTextFieldController(
-        isRequired: true,
-    )
+    @NestedObservableObject var nameTextController: DTextFieldController
 
-    @NestedObservableObject var templateTextController = DTextFieldController(
-        isRequired: true,
-    )
+    @NestedObservableObject var templateTextController: DTextFieldController
 
     private let messager: DMessager
     private let arguments: TemplateEditArguments
@@ -45,6 +41,49 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
         self.onDeleteTemplate = onDeleteTemplate
 
         usExaminationType = container.usExaminationTypeDefault
+
+        _nameTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                isRequired: true,
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.templateEdit.nameMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.templateEdit.nameMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.templateEdit.nameMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
+        _templateTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                isRequired: true,
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.templateEdit.contentMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.templateEdit.contentMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.templateEdit.contentMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
 
         super.init(
             state: TemplateEditLoadingState(),
@@ -128,10 +167,10 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
                 template.usExaminationType.id,
             ]
                 ?? self.container.usExaminationTypeDefault
-            self.nameTextController.setText(
+            self.nameTextController.restoreText(
                 template.name,
             )
-            self.templateTextController.setText(
+            self.templateTextController.restoreText(
                 template.content,
             )
         } onMainUnknownError: { error in

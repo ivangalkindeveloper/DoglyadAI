@@ -93,12 +93,16 @@ DText(l10n[.buttonSpeech])
 DButton(title: l10n[.buttonDone], action: onConfirm)
 
 // Готовая строка для валидатора, письма или другой модели.
-let text = container.l10n.text(.scanPatientDefaultNameLabel, values: ["count": "12"])
+let text = container.l10n.text(.scanPatientDefaultNameLabel, values: [.count: "12"])
 // ru: Пациент#12; en: Patient#12.
 ```
 
 Подстановки используют именованные `{count}`, `{current}`, `{total}` и другие
-параметры. Вставленные данные остаются буквальным текстом: `%`, Unicode и фигурные
+параметры из `L10NParameter`. Методы `text` и `resource` принимают
+`values: [L10NParameter: String]`: в клиентском коде используются `.count`,
+`.maxLength` и другие enum-cases. Их `rawValue` совпадают с именами в JSON;
+проверки контрактов требуют, чтобы все UI-параметры каталогов были объявлены в enum.
+Вставленные данные остаются буквальным текстом: `%`, Unicode и фигурные
 скобки пациента не исполняются как формат/вложенный шаблон. `{{organ}}` внутри примера
 медицинского шаблона также остаётся текстом. `LocalizedStringResource` применяется
 только как адаптер к существующим компонентам DoglyadUI; перевод берётся из `L10N`.

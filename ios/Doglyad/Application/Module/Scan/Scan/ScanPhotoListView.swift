@@ -84,7 +84,7 @@ struct ScanPhotoListView: DViewProtocol {
                     DText(
                         l10n.resource(
                             .scanMaxPhotoDescription,
-                            values: ["count": String(
+                            values: [.count: String(
                                 viewModel.photoMaxCount,
                             )],
                         ),

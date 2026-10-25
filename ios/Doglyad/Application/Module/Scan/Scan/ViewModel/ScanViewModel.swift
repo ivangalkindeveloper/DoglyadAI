@@ -18,13 +18,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     @Published var focus: ScanFocus? = nil
 
-    @NestedObservableObject var examinationNumberTextController = DTextFieldController(
-        isRequired: true,
-    )
+    @NestedObservableObject var examinationNumberTextController: DTextFieldController
 
-    @NestedObservableObject var patientNameTextController = DTextFieldController(
-        isRequired: true,
-    )
+    @NestedObservableObject var patientNameTextController: DTextFieldController
 
     @Published var patientGender = PatientGender.male
 
@@ -34,11 +30,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     @NestedObservableObject var patientWeightKGTextController: DTextFieldController
 
-    @NestedObservableObject var patientComplaintsTextController = DTextFieldController()
+    @NestedObservableObject var patientComplaintsTextController: DTextFieldController
 
-    @NestedObservableObject var examinationDescriptionTextController = DTextFieldController(
-        isRequired: true,
-    )
+    @NestedObservableObject var examinationDescriptionTextController: DTextFieldController
 
     @Published var neuralModel: USExaminationNeuralModel
 
@@ -93,10 +87,97 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         config = container.applicationConfig.ultrasound
 
         usExaminationType = container.usExaminationTypeDefault
+
+        _examinationNumberTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                isRequired: true,
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.scan.examinationNumberMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.scan.examinationNumberMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.scan.examinationNumberMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
+        _patientNameTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                isRequired: true,
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.scan.patientNameMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.scan.patientNameMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.scan.patientNameMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
+        _patientComplaintsTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.scan.patientComplaintsMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.scan.patientComplaintsMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.scan.patientComplaintsMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
+        _examinationDescriptionTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                isRequired: true,
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.scan.examinationDescriptionMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.scan.examinationDescriptionMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.scan.examinationDescriptionMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
         _patientHeightCMTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldDecimalFormatter(),
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.scan.patientHeightCMMaxLength,
+                    ),
                 ],
                 validators: [
                     DTextFieldDoubleRangeValidator(
@@ -107,6 +188,15 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                             ],
                         ),
                     ),
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.scan.patientHeightCMMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.scan.patientHeightCMMaxLength,
+                            )],
+                        ),
+                    ),
                 ],
             ),
         )
@@ -114,6 +204,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             wrappedValue: DTextFieldController(
                 formatters: [
                     DTextFieldDecimalFormatter(),
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.scan.patientWeightKGMaxLength,
+                    ),
                 ],
                 validators: [
                     DTextFieldDoubleRangeValidator(
@@ -122,6 +215,15 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                             localized: container.l10n[
                                 .errorInvalidPatientWeightDescription,
                             ],
+                        ),
+                    ),
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.scan.patientWeightKGMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.scan.patientWeightKGMaxLength,
+                            )],
                         ),
                     ),
                 ],
@@ -187,6 +289,10 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             DTextFieldFocusValidationItem(
                 focus: .patientWeightKG,
                 inputTextController: patientWeightKGTextController,
+            ),
+            DTextFieldFocusValidationItem(
+                focus: .patientComplaints,
+                inputTextController: patientComplaintsTextController,
             ),
             DTextFieldFocusValidationItem(
                 focus: .examinationDescription,
@@ -706,24 +812,24 @@ extension ScanViewModel {
                 photoMaxCount,
             ),
         )
-        examinationNumberTextController.setText(
+        examinationNumberTextController.restoreText(
             draftForm.examinationNumber,
         )
-        patientNameTextController.setText(
+        patientNameTextController.restoreText(
             draftForm.patientName,
         )
         patientGender = draftForm.patientGender
         patientDateOfBirth = draftForm.patientDateOfBirth
-        patientHeightCMTextController.setText(
+        patientHeightCMTextController.restoreText(
             draftForm.patientHeightCM,
         )
-        patientWeightKGTextController.setText(
+        patientWeightKGTextController.restoreText(
             draftForm.patientWeightKG,
         )
-        patientComplaintsTextController.setText(
+        patientComplaintsTextController.restoreText(
             draftForm.patientComplaints,
         )
-        examinationDescriptionTextController.setText(
+        examinationDescriptionTextController.restoreText(
             draftForm.examinationDescription,
         )
     }
@@ -1174,7 +1280,7 @@ private extension ScanViewModel {
             String(
                 localized: container.l10n.resource(
                     .scanExaminationDefaultNumberLabel,
-                    values: ["count": String(
+                    values: [.count: String(
                         reportsCount,
                     )],
                 ),
@@ -1184,7 +1290,7 @@ private extension ScanViewModel {
             String(
                 localized: container.l10n.resource(
                     .scanPatientDefaultNameLabel,
-                    values: ["count": String(
+                    values: [.count: String(
                         reportsCount,
                     )],
                 ),

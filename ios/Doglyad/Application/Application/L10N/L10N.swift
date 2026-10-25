@@ -47,7 +47,7 @@ final class L10N: ObservableObject, Sendable {
 
     func text(
         _ key: L10NKey,
-        values: [String: String] = [:],
+        values: [L10NParameter: String] = [:],
     ) -> String {
         let template = strings[
             key,
@@ -71,12 +71,15 @@ final class L10N: ObservableObject, Sendable {
                 ),
                 in: template,
             ),
-                let replacement = values[
-                    String(
+                let parameter = L10NParameter(
+                    rawValue: String(
                         template[
                             nameRange,
                         ],
                     ),
+                ),
+                let replacement = values[
+                    parameter,
                 ],
                 let range = Range(
                     match.range,
@@ -92,7 +95,7 @@ final class L10N: ObservableObject, Sendable {
 
     func resource(
         _ key: L10NKey,
-        values: [String: String] = [:],
+        values: [L10NParameter: String] = [:],
     ) -> LocalizedStringResource {
         // A dynamic interpolation transports the literal server string through
         // DoglyadUI's existing resource API without looking up that string as a key.

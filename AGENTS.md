@@ -129,6 +129,7 @@ This service runs on a GPU VM, one VM per model. See [`backend/inference/README.
 | `ios/Doglyad/Core/Initialization/` | Initialization through the `DependencyInitializer` package. `InitializationProcess` is filled by `StepSet` values in `stepsTier1…stepsTier5`, each with synchronous and asynchronous steps; Tier 5 awaits repository reads and provides the initial settings snapshots; `toContainer` produces the final `DependencyContainer`. |
 | `ios/Doglyad/Core/Environment/` | `EnvironmentProtocol` and `EnvironmentType` for development and production configuration |
 | `ios/Doglyad/Domain/` | Domain models: `Ultrasound/`, `Config/`, `Localization/`, `Subscription/`, `SettingsAI`, `TranscriberType`, `TranscriptParserType`, and `PatientGender` |
+| `ios/Doglyad/Domain/Config/*Config.swift`, `backend/main/app/model/*_config.py` | Independent module settings for Scan, ScanSpeech, template creation/editing/list, UserSettings and SettingsAI. Input maxima come from the matching public `application.json` section. `ApplicationModuleConfig` validates the backend subset; client decoding requires each module section. |
 | `ios/Doglyad/Repository/` | Repository protocols and implementations for reports, drafts and draft photos, AI settings, shared data, RevenueCat subscriptions, ready-made and saved templates, and user settings. `Report/` also contains the application HTTP transport for server voice parsing. |
 | `ios/Doglyad/Utility/` | Framework and package extensions in `Extension/`, mock data and factories in `Mock/`, view modifiers in `Modifier/`, and integration classes tightly coupled to external packages, such as `AppCheckProviderFactory` and `AppCheckHttpInterceptor` in `AppCheck/` |
 | `ios/Doglyad/Utility/Extension/` | Extensions of types from frameworks and external packages used by the client |
@@ -198,7 +199,7 @@ Use the following pattern catalog when evaluating a design. Apply relevant patte
 | `Placeholder` | Field placeholder specific to a feature | `scanPatientNamePlaceholder` |
 
 - **Shared buttons:** Use the shared `button` prefix for generic actions that are not tied to a feature, for example `buttonAccept` and `buttonBack`. Reuse these keys across features. When the button phrase belongs to a particular feature, use that feature's prefix and the `Button` suffix instead.
-- **Catalog usage:** UI accesses `L10N` with `L10NKey`; views receive it through `.localization(container.l10n)` and `@EnvironmentObject`, and non-UI code receives it through arguments. Select one catalog using `Language.currentLocale` and inject it through arguments. Do not embed or mix localized RU/EN matching rules in Swift models, parsers, or policies. Technical identifiers, protocol syntax, and test input data are not translations.
+- **Catalog usage:** UI accesses `L10N` with `L10NKey`; named substitutions use `L10NParameter` through `values: [L10NParameter: String]`. Views receive the catalog through `.localization(container.l10n)` and `@EnvironmentObject`, and non-UI code receives it through arguments. Select one catalog using `Language.currentLocale` and inject it through arguments. Do not embed or mix localized RU/EN matching rules in Swift models, parsers, or policies. Technical identifiers, protocol syntax, and test input data are not translations.
 
 ### Python backend
 

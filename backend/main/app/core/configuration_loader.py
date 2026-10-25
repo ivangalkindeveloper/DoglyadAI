@@ -11,6 +11,7 @@ from app.core.resolve_language import SUPPORTED_LANGUAGES
 from app.core.validate_application_localizations import validate_application_localizations
 from app.core.validate_prompt_localizations import validate_prompt_localizations
 from app.model.application_locale_config import ApplicationLocaleConfig
+from app.model.application_module_config import ApplicationModuleConfig
 from app.model.l10n import L10n
 from app.model.l10n_response import L10nResponse
 from app.model.main_server_config import MainServerConfig
@@ -36,6 +37,7 @@ class ConfigurationLoader:
             server = server if server is not None else self.load_server()
             application = self._load_json_object(self._directory / "application.json")
             locale_config = ApplicationLocaleConfig.model_validate(application.get("locale"))
+            modules = ApplicationModuleConfig.model_validate(application)
             groups = [
                 USExaminationTypeGroup.model_validate(item)
                 for item in self._load_json_array(self._directory / "ultrasound_examination_types.json")
@@ -120,6 +122,7 @@ class ConfigurationLoader:
                 server=server,
                 application=application,
                 locale=locale_config,
+                modules=modules,
                 l10n=l10n,
                 contextual_strings=contextual_strings,
                 neural_models=models,

@@ -89,6 +89,7 @@ def test_catalogs_match_client_contract(environment: str, monkeypatch: pytest.Mo
     loader = ConfigurationLoader(directory)
     loader.load()
     app_keys = _swift_cases(_ROOT / "ios/Doglyad/Application/Application/L10N/L10NKey.swift")
+    parameters = _swift_cases(_ROOT / "ios/Doglyad/Application/Application/L10N/L10NParameter.swift")
     neural = _ROOT / "ios/DoglyadNeuralModel"
     dictation = neural / "UltrasoundExamination/Localization"
     pattern_keys = _swift_cases(dictation / "DNeuralUltrasoundDictationLocalizationKey.swift")
@@ -96,6 +97,13 @@ def test_catalogs_match_client_contract(environment: str, monkeypatch: pytest.Mo
         folder = directory / language.value
         strings = _json(folder / "l10n_application.json")
         assert set(strings) == app_keys, f"UI enum/catalog key drift in {environment}/{language.value}"
+        for key, text in strings.items():
+            assert isinstance(text, str)
+            # Double braces belong to medical-template content, not UI substitution.
+            names = re.findall(r"(?<!\{)\{([A-Za-z][A-Za-z0-9]*)\}(?!\})", text)
+            assert set(names) <= parameters, (
+                f"Unknown UI localization parameter in {environment}/{language.value}/{key}"
+            )
         assert all(
             re.fullmatch(
                 r"button[A-Z][A-Za-z0-9]*|[a-z][A-Za-z0-9]*(?:Title|Label|Description|Button|Placeholder)", key

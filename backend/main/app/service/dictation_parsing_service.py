@@ -6,7 +6,7 @@ from pydantic import ValidationError
 
 from app.core.configuration import Configuration
 from app.core.language_code import LanguageCode
-from app.error import InvalidDictationResponseError, TranscriptTooLongError
+from app.error import InvalidDictationResponseError
 from app.model.neural_model.neural_model_service_operation import NeuralModelServiceOperation
 from app.model.neural_model.neural_model_service_request import NeuralModelServiceRequest
 from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
@@ -14,6 +14,7 @@ from app.model.ultrasound.us_voice_form_parse_request import USVoiceFormParseReq
 from app.model.ultrasound.us_voice_form_parse_response import USVoiceFormParseResponse
 from app.prompt.prompt_factory import PromptFactory
 from app.service import NeuralModelService
+from app.service.text_length_validator import TextLengthValidator
 from app.service.voice_form_validator import VoiceFormValidator
 
 logger = logging.getLogger(__name__)
@@ -32,8 +33,9 @@ class DictationParsingService:
         app_check_token: str | None = None,
         request_id: str | None = None,
     ) -> USVoiceFormParseResponse:
-        if len(body.transcript) > self._configuration.server.max_transcript_characters:
-            raise TranscriptTooLongError()
+        TextLengthValidator.validate(
+            body.transcript, self._configuration.modules.scanSpeech.transcriptMaxLength, ["body", "transcript"]
+        )
         prompt_factory = PromptFactory(language, self._configuration)
         title = self._configuration.resolve_examination_title(body.usExaminationTypeId, language)
         contextual_strings = self._configuration.resolve_examination_contextual_strings(

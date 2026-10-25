@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import ClassVar
 
+from app.model.api_validation_issue_response import ApiValidationIssueResponse
+
 
 class ApiError(Exception):
     """An expected API failure. Public descriptions contain no request or provider data."""
@@ -15,4 +17,8 @@ class ApiError(Exception):
 
     @property
     def headers(self) -> dict[str, str] | None:
+        return None
+
+    @property
+    def fields(self) -> list[ApiValidationIssueResponse] | None:
         return None

@@ -54,9 +54,9 @@ final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
     var userEmailButtonTitle: String {
         l10n.text(
             .shareWorkEmailButton,
-            values: ["prefix": l10n.text(
+            values: [.prefix: l10n.text(
                 .buttonSendToEmail,
-            ), "email": userEmail ?? ""],
+            ), .email: userEmail ?? ""],
         )
     }
 

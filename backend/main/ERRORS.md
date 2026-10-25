@@ -29,7 +29,7 @@ Input validation adds `fields`:
 }
 ```
 
-Validation responses contain declared field locations and safe descriptions. They omit input values, raw validation messages, error context and arbitrary unknown key names. `fields` is omitted for other errors. OpenAPI documents `ApiErrorResponse` for error statuses.
+Validation responses contain declared field locations and safe descriptions. They omit input values, raw validation messages, error context and arbitrary unknown key names. Configured string-limit failures use `422 textTooLong` and the same safe `fields` structure. Expected error classes may supply field issues through `ApiError.fields`; `fields` is omitted when no issues are supplied. OpenAPI documents `ApiErrorResponse` for error statuses.
 
 ## Ownership
 
