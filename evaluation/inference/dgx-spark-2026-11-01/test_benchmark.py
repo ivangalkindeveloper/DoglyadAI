@@ -48,3 +48,19 @@ def test_structured_fixture_has_distinct_case_identity() -> None:
     assert expected_first["caseId"] in first["messages"][0]["content"][0]["text"]
     assert expected_second["liverSizeMm"] != expected_first["liverSizeMm"]
     assert second["response_format"]["json_schema"]["schema"]["additionalProperties"] is False
+
+
+@pytest.mark.parametrize("is_matching", [True, False])
+def test_structured_result_cannot_cross_request_identity(is_matching: bool) -> None:
+    def handler(request: httpx.Request) -> httpx.Response:
+        text = json.dumps({"caseId": "synthetic-1" if is_matching else "synthetic-2", "liverSizeMm": 131,
+                           "hasFreeFluid": False, "description": "synthetic", "conclusion": "synthetic"})
+        events = [{"choices": [{"delta": {"content": text}, "finish_reason": "stop"}]},
+                  {"choices": [], "usage": {"prompt_tokens": 10, "completion_tokens": 50}}]
+        return httpx.Response(200, text="".join("data: "+json.dumps(e)+"\n\n" for e in events)+"data: [DONE]\n\n")
+
+    async def run() -> dict:
+        async with httpx.AsyncClient(base_url="http://test", transport=httpx.MockTransport(handler)) as client:
+            return await benchmark._request(client, "json", 1, "unique")
+
+    assert asyncio.run(run())["is_success"] is is_matching

@@ -126,7 +126,8 @@ def main() -> None:
     _command(["docker", "cp", str(directory/"service_probe.py"), f"{BACKEND}:/tmp/dgx_service_probe.py"])
 
     def stop(signum: int, frame: object) -> None:
-        raise InterruptedError(f"Signal {signum}")
+        # Bypass the per-variant Exception handler and enter outer restoration.
+        raise KeyboardInterrupt(f"Signal {signum}")
 
     signal.signal(signal.SIGTERM, stop)
     signal.signal(signal.SIGINT, stop)
