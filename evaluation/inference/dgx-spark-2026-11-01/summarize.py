@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import statistics
 from pathlib import Path
 
 
@@ -22,6 +23,17 @@ def main() -> None:
         result = json.loads(path.read_text())
         samples = [r for b in result["batches"] for r in b["samples"]]
         structured = [r for r in samples if r["case"] not in ("short", "long")]
+        summaries = []
+        for recorded in result["summaries"]:
+            summary = {k: v for k, v in recorded.items() if not k.startswith("decode_tokens_per_second")}
+            measured = [r for b in result["batches"]
+                        if b["is_measured"] and b["case"] == summary["case"] and b["concurrency"] == summary["concurrency"]
+                        for r in b["samples"] if r["is_success"]]
+            # The last visible text chunk can precede the final special tokens.
+            # Use the full stream completion, never the last nonempty content.
+            rates = sorted((r["output_tokens"]-1)/(r["total_seconds"]-r["ttft_seconds"]) for r in measured)
+            summary["stream_decode_tokens_per_second_p50"] = statistics.median(rates)
+            summaries.append(summary)
         output["variants"][variant] = {
             "is_complete": "finished_at" in result,
             "total_requests_including_warmup": len(samples),
@@ -29,9 +41,9 @@ def main() -> None:
             "structured_requests": len(structured),
             "valid_structured_requests": sum(r.get("is_schema_valid", False) and r.get("is_case_match", False) for r in structured),
             "fixed_prompt_tokens": {case: sorted({r["input_tokens"] for r in samples if r["case"] == case and "input_tokens" in r}) for case in ("short", "long")},
-            "summaries": result["summaries"],
+            "summaries": summaries,
         }
-        for summary in result["summaries"]:
+        for summary in summaries:
             rows.append({"variant": variant, **summary})
         telemetry_path = directory/f"{variant}.telemetry.jsonl"
         if telemetry_path.exists():
