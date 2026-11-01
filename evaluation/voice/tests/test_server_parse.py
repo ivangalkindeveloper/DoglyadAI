@@ -7,8 +7,8 @@ from pathlib import Path
 import httpx
 import pytest
 
-from evaluation.voice import server_parse
-from evaluation.voice.server_parse import load_cases, score_response, summarize, summary_markdown
+from evaluation.voice.runners import server_parse
+from evaluation.voice.runners.server_parse import load_cases, score_response, summarize, summary_markdown
 
 
 def test_load_cases_replays_only_matching_iphone_transcripts(tmp_path: Path) -> None:

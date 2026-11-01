@@ -12,7 +12,10 @@ APP_CHECK_HEADER = HttpHeader.FIREBASE_APP_CHECK.value
 
 
 async def verify_app_check(
-    x_firebase_app_check: str | None = Header(default=None, alias=APP_CHECK_HEADER),
+    x_firebase_app_check: str | None = Header(
+        default=None,
+        alias=APP_CHECK_HEADER,
+    ),
 ) -> None:
     """Verifies the App Check token from the `X-Firebase-AppCheck` header.
 
@@ -24,6 +27,9 @@ async def verify_app_check(
     if not x_firebase_app_check:
         raise MissingAppCheckTokenError()
     try:
-        await asyncio.to_thread(app_check.verify_token, x_firebase_app_check)
+        await asyncio.to_thread(
+            app_check.verify_token,
+            x_firebase_app_check,
+        )
     except ValueError as error:
         raise InvalidAppCheckTokenError() from error

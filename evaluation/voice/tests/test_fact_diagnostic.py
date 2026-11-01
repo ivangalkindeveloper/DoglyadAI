@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from evaluation.voice import fact_diagnostic
-from evaluation.voice.generate import file_sha256
+from evaluation.voice.analysis import fact_diagnostic
+from evaluation.voice.datasets.generate import file_sha256
 
 
 def test_fact_diagnostic_checks_hash_and_flags_lost_side(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:

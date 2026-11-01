@@ -5,7 +5,7 @@ import Testing
 
 struct SecurityDatabaseTests {
     @Test
-    func requestLimitDistinguishesMissingDataAndUpdatesExistingRecord() async throws {
+    func billingIdentityDistinguishesMissingDataAndUpdatesExistingRecord() async throws {
         let service = "doglyad.tests.\(UUID())"
         let store = DSecurityDatabase(
             service: service,
@@ -16,38 +16,44 @@ struct SecurityDatabaseTests {
             ) as CFDictionary,
         ) }
         #expect(
-            try await store.fetchRequestLimit { $0 } == nil,
+            try await store.fetchBillingIdentity() == nil,
         )
-
-        let date = Date()
-        try await store.setRequestLimit(
-            value: RequestLimitDB(
-                count: 1,
-                date: date,
+        let ownerId = UUID()
+        try await store.setBillingIdentity(
+            value: BillingIdentityDB(
+                ownerId: ownerId,
+                accessToken: "first-secret",
             ),
         )
-        try await store.incrementRequestCount()
-        #expect(
-            try await store.fetchRequestLimit { $0?.count } == 2,
-        )
-        let replacement = RequestLimitDB(
-            count: 7,
-            date: date,
-        )
-        try await store.setRequestLimit(
-            value: replacement,
+        let initial = try #require(
+            await store.fetchBillingIdentity(),
         )
         #expect(
-            try await store.fetchRequestLimit { $0 } == replacement,
+            initial.ownerId == ownerId,
         )
-        try await store.clearRequestLimit()
         #expect(
-            try await store.fetchRequestLimit { $0 } == nil,
+            initial.accessToken == "first-secret",
+        )
+        let restoredOwnerId = UUID()
+        try await store.setBillingIdentity(
+            value: BillingIdentityDB(
+                ownerId: restoredOwnerId,
+                accessToken: "restored-secret",
+            ),
+        )
+        let restored = try #require(
+            await store.fetchBillingIdentity(),
+        )
+        #expect(
+            restored.ownerId == restoredOwnerId,
+        )
+        #expect(
+            restored.accessToken == "restored-secret",
         )
     }
 
     @Test
-    func corruptedLimitThrowsAndCannotBeResetByIncrement() async throws {
+    func corruptedBillingIdentityThrowsAndIsNotSilentlyReplaced() async throws {
         let service = "doglyad.tests.\(UUID())"
         let invalidData = Data(
             "invalid JSON".utf8,
@@ -73,23 +79,13 @@ struct SecurityDatabaseTests {
             service: service,
         )
         do {
-            _ = try await store.fetchRequestLimit { $0 }
+            _ = try await store.fetchBillingIdentity()
             Issue.record(
-                "Corrupted data must throw instead of appearing absent",
+                "Corrupted identity must throw instead of registering a new billing owner",
             )
         } catch is DecodingError {} catch {
             Issue.record(
                 "Unexpected read error: \(error)",
-            )
-        }
-        do {
-            try await store.incrementRequestCount()
-            Issue.record(
-                "A failed read must not reset the counter",
-            )
-        } catch is DecodingError {} catch {
-            Issue.record(
-                "Unexpected increment error: \(error)",
             )
         }
         var read = query(
@@ -116,7 +112,7 @@ struct SecurityDatabaseTests {
         [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: service,
-            kSecAttrAccount as String: DKeychainKey.requestLimit.rawValue,
+            kSecAttrAccount as String: DKeychainKey.billingIdentity.rawValue,
         ]
     }
 }

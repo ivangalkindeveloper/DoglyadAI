@@ -20,7 +20,7 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         getAvailableAppleEngine: @escaping @MainActor (Locale) async -> DSpeechEngine? = { locale in
             await DSpeechFactory.availableAppleEngine(
                 locale: locale,
@@ -38,7 +38,7 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .selectTranscriber,
             ),

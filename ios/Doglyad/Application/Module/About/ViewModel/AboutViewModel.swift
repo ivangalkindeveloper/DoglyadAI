@@ -15,7 +15,7 @@ final class AboutViewModel: DModuleViewModel<any AboutStateProtocol> {
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         contactEmail = container.applicationConfig.contactEmail
         version = container.version
@@ -28,7 +28,7 @@ final class AboutViewModel: DModuleViewModel<any AboutStateProtocol> {
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .about,
             ),

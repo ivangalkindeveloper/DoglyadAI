@@ -12,13 +12,21 @@ class ApiError(Exception):
     description: ClassVar[str] = "Internal server error"
     status_code: int = 500
 
-    def __init__(self) -> None:
-        super().__init__(self.description)
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__(
+            self.description,
+        )
 
     @property
-    def headers(self) -> dict[str, str] | None:
+    def headers(
+        self,
+    ) -> dict[str, str] | None:
         return None
 
     @property
-    def fields(self) -> list[ApiValidationIssueResponse] | None:
+    def fields(
+        self,
+    ) -> list[ApiValidationIssueResponse] | None:
         return None

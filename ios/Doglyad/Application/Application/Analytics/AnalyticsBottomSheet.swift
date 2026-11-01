@@ -19,7 +19,6 @@ enum AnalyticsBottomSheet: String {
     case share
     case storageClearAll = "storage_clear_all"
     case storageClearProtocols = "storage_clear_protocols"
-    case subscriptionCustomerCenter = "subscription_customer_center"
     case templateDelete = "template_delete"
     case webDocument = "web_document"
 }

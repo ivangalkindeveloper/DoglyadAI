@@ -6,6 +6,8 @@ from app.model.ultrasound.us_voice_field_proposal import USVoiceFieldProposal
 
 
 class USVoiceFormParseResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
     proposals: list[USVoiceFieldProposal]

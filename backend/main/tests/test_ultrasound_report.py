@@ -10,9 +10,9 @@ from unittest.mock import AsyncMock
 import pytest
 from starlette.requests import Request
 
-from app.core.configuration import Configuration
-from app.core.language_code import LanguageCode
-from app.core.variables import Variables
+from app.core.configuration.configuration import Configuration
+from app.core.configuration.variables import Variables
+from app.core.localization.language_code import LanguageCode
 from app.error import ApiError
 from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
@@ -22,12 +22,14 @@ from app.model.ultrasound.us_examination_neural_model_accessibility import (
 )
 from app.model.ultrasound.us_examination_request import USExaminationRequest
 from app.prompt import PromptFactory
-from app.service import report_generation_service as report_generation_module
-from app.service.report_generation_service import ReportGenerationService
+from app.service.report import report_generation_service as report_generation_module
+from app.service.report.report_generation_service import ReportGenerationService
 from tests.support.ultrasound_report.fake_neural_model_service import FakeNeuralModelService
 from tests.support.ultrasound_report.fake_prompt_factory import FakePromptFactory
 
-_CONFIG_DIR = Variables(environment="development").configuration_directory
+_CONFIG_DIR = Variables(
+    environment="development",
+).configuration_directory
 _CONFIG_BASE = _CONFIG_DIR.parent
 
 
@@ -47,20 +49,34 @@ _CONFIG_BASE = _CONFIG_DIR.parent
     ],
 )
 def test_report_uses_selected_context_and_the_same_term_correction_rules_as_dictation(
-    configuration: Configuration, language: LanguageCode, raw: str, corrected: str
+    configuration: Configuration,
+    language: LanguageCode,
+    raw: str,
+    corrected: str,
 ) -> None:
     service = SimpleNamespace(
-        call=AsyncMock(return_value=json.dumps({"description": corrected, "conclusion": corrected}))
+        call=AsyncMock(
+            return_value=json.dumps(
+                {"description": corrected, "conclusion": corrected},
+            ),
+        ),
     )
     body = USExaminationRequest(
-        settingsAI=SettingsAI(selectedNeuralModelId="google/medgemma-4b-it"),
+        settingsAI=SettingsAI(
+            selectedNeuralModelId="google/medgemma-4b-it",
+        ),
         examinationData=USExaminationData(
             usExaminationTypeId="bladder",
             photos=[],
             examinationNumber="UNIT-42",
             patientName="Test Patient",
             patientGender="female",
-            patientDateOfBirth=datetime(1991, 1, 1, tzinfo=UTC),
+            patientDateOfBirth=datetime(
+                1991,
+                1,
+                1,
+                tzinfo=UTC,
+            ),
             examinationDescription=raw,
         ),
         isRecommendationsIncluded=False,
@@ -71,36 +87,73 @@ def test_report_uses_selected_context_and_the_same_term_correction_rules_as_dict
             "method": "POST",
             "path": "/v1/ultrasound/generate_report",
             "headers": [(b"accept-language", language.value.encode())],
-            "app": SimpleNamespace(state=SimpleNamespace(model_service=service)),
+            "app": SimpleNamespace(
+                state=SimpleNamespace(
+                    model_service=service,
+                ),
+            ),
             "state": {"request_id": "c" * 32},
-        }
+        },
     )
-    handler: Any = ReportGenerationService(configuration, request.app.state.model_service).generate
+    handler: Any = ReportGenerationService(
+        configuration,
+        request.app.state.model_service,
+    ).generate
     report = asyncio.run(
         handler(
             body=body,
-            language_code=configuration.language(request.headers.get("Accept-Language")),
-            app_check_token=request.headers.get("X-Firebase-AppCheck"),
+            language_code=configuration.language(
+                request.headers.get(
+                    "Accept-Language",
+                ),
+            ),
+            app_check_token=request.headers.get(
+                "X-Firebase-AppCheck",
+            ),
             request_id=request.state.request_id,
-        )
+        ),
     )
     generation = service.call.call_args.args[0]
     context = json.loads(
-        next(line for line in generation.prompt.splitlines() if line.startswith('{"contextualStrings":'))
+        next(
+            (
+                line
+                for line in generation.prompt.splitlines()
+                if line.startswith(
+                    '{"contextualStrings":',
+                )
+            ),
+        ),
     )
-    assert context["contextualStrings"] == configuration.resolve_examination_contextual_strings("bladder", language)
+    assert context["contextualStrings"] == configuration.resolve_examination_contextual_strings(
+        "bladder",
+        language,
+    )
     assert context["contextualStrings"] != configuration.resolve_examination_contextual_strings(
-        "thyroidGland", language
+        "thyroidGland",
+        language,
     )
-    correction_prompt = configuration.text(language, "medicalTermCorrectionPrompt")
+    correction_prompt = configuration.text(
+        language,
+        "medicalTermCorrectionPrompt",
+    )
     assert correction_prompt in generation.system_prompt
-    assert correction_prompt in PromptFactory(language, configuration).voice_system_prompt()
+    assert (
+        correction_prompt
+        in PromptFactory(
+            language,
+            configuration,
+        ).voice_system_prompt()
+    )
     assert raw in generation.prompt
     assert report.description == corrected
     assert report.conclusion == corrected
 
 
-@pytest.mark.parametrize("invalid_report", [False, True])
+@pytest.mark.parametrize(
+    "invalid_report",
+    [False, True],
+)
 def test_route_builds_complete_report_with_the_prompt_factory_contract(
     configuration: Configuration,
     monkeypatch: pytest.MonkeyPatch,
@@ -115,8 +168,16 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
         contextLength=128000,
         descriptionLocaleKey="googleMedGemma4BDescription",
     )
-    monkeypatch.setitem(configuration.neural_models, model.id, model)
-    monkeypatch.setattr(report_generation_module, "PromptFactory", FakePromptFactory)
+    monkeypatch.setitem(
+        configuration.neural_models,
+        model.id,
+        model,
+    )
+    monkeypatch.setattr(
+        report_generation_module,
+        "PromptFactory",
+        FakePromptFactory,
+    )
 
     body = USExaminationRequest(
         settingsAI=SettingsAI(
@@ -130,7 +191,12 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
             examinationNumber="Examination#0",
             patientName="Patient",
             patientGender="female",
-            patientDateOfBirth=datetime(1990, 1, 1, tzinfo=UTC),
+            patientDateOfBirth=datetime(
+                1990,
+                1,
+                1,
+                tzinfo=UTC,
+            ),
             patientHeight=170,
             patientWeight=65,
             patientComplaints="Complaint",
@@ -139,7 +205,13 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
         template="Template",
         isRecommendationsIncluded=True,
     )
-    app = SimpleNamespace(state=SimpleNamespace(model_service=FakeNeuralModelService(invalid_report=invalid_report)))
+    app = SimpleNamespace(
+        state=SimpleNamespace(
+            model_service=FakeNeuralModelService(
+                invalid_report=invalid_report,
+            ),
+        ),
+    )
     request = Request(
         {
             "type": "http",
@@ -151,32 +223,56 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
             ],
             "app": app,
             "state": {"request_id": "a" * 32},
-        }
+        },
     )
 
-    handler: Any = ReportGenerationService(configuration, request.app.state.model_service).generate
+    handler: Any = ReportGenerationService(
+        configuration,
+        request.app.state.model_service,
+    ).generate
     if invalid_report:
-        with pytest.raises(ApiError) as error:
+        with pytest.raises(
+            ApiError,
+        ) as error:
             asyncio.run(
                 handler(
                     body=body,
-                    language_code=configuration.language(request.headers.get("Accept-Language")),
-                    app_check_token=request.headers.get("X-Firebase-AppCheck"),
+                    language_code=configuration.language(
+                        request.headers.get(
+                            "Accept-Language",
+                        ),
+                    ),
+                    app_check_token=request.headers.get(
+                        "X-Firebase-AppCheck",
+                    ),
                     request_id=request.state.request_id,
-                )
+                ),
             )
         assert error.value.status_code == 502
-        assert type(error.value.__cause__).__name__ == "ValidationError"
+        assert (
+            type(
+                error.value.__cause__,
+            ).__name__
+            == "ValidationError"
+        )
         assert "Sensitive generated patient text" not in caplog.text
-        assert all(record.exc_info is None for record in caplog.records)
+        assert all(
+            (record.exc_info is None for record in caplog.records),
+        )
         return
     report = asyncio.run(
         handler(
             body=body,
-            language_code=configuration.language(request.headers.get("Accept-Language")),
-            app_check_token=request.headers.get("X-Firebase-AppCheck"),
+            language_code=configuration.language(
+                request.headers.get(
+                    "Accept-Language",
+                ),
+            ),
+            app_check_token=request.headers.get(
+                "X-Firebase-AppCheck",
+            ),
             request_id=request.state.request_id,
-        )
+        ),
     )
 
     assert report.modelId == model.id
@@ -185,7 +281,9 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
     assert report.recommendations == "Generated recommendations"
 
 
-def test_report_schema_can_exclude_optional_recommendations(configuration: Configuration) -> None:
+def test_report_schema_can_exclude_optional_recommendations(
+    configuration: Configuration,
+) -> None:
     from app.schema.us_examination_report_structured_output import us_examination_report_structured_output
 
     schema = json.loads(
@@ -196,31 +294,51 @@ def test_report_schema_can_exclude_optional_recommendations(configuration: Confi
             photo_ids=[],
             language_code=LanguageCode.EN,
             localization=configuration.l10n,
-        )
+        ),
     )
 
-    assert set(schema["properties"]) == {"description", "conclusion"}
-    assert set(schema["required"]) == {"description", "conclusion"}
+    assert set(
+        schema["properties"],
+    ) == {"description", "conclusion"}
+    assert set(
+        schema["required"],
+    ) == {"description", "conclusion"}
 
 
-def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled(configuration: Configuration) -> None:
+def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled(
+    configuration: Configuration,
+) -> None:
     examination = USExaminationData(
         usExaminationTypeId="echocardiography",
         photos=[],
         examinationNumber="Examination#0",
         patientName="Patient",
         patientGender="female",
-        patientDateOfBirth=datetime(1990, 1, 1, tzinfo=UTC),
+        patientDateOfBirth=datetime(
+            1990,
+            1,
+            1,
+            tzinfo=UTC,
+        ),
         patientHeight=170,
         patientWeight=65,
         patientComplaints="   ",
         examinationDescription="Description",
     )
-    factory = PromptFactory(LanguageCode.EN, configuration)
+    factory = PromptFactory(
+        LanguageCode.EN,
+        configuration,
+    )
 
     assert examination.patientComplaints is None
-    assert "Examination number: Examination#0" in factory.build_prompt(examination, "Echocardiography")
-    assert "Patient complaints:" not in factory.build_prompt(examination, "Echocardiography")
+    assert "Examination number: Examination#0" in factory.build_prompt(
+        examination,
+        "Echocardiography",
+    )
+    assert "Patient complaints:" not in factory.build_prompt(
+        examination,
+        "Echocardiography",
+    )
     assert "Do not generate or include recommendations" in factory.system_prompt(
         SettingsAI(),
         is_recommendations_included=False,
@@ -239,9 +357,14 @@ def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled(config
         {"patientHeight": 170, "patientWeight": 65},
     ],
 )
-@pytest.mark.parametrize("language", ["en", "ru"])
+@pytest.mark.parametrize(
+    "language",
+    ["en", "ru"],
+)
 def test_optional_patient_measurements(
-    configuration: Configuration, measurements: dict[str, float | None], language: str
+    configuration: Configuration,
+    measurements: dict[str, float | None],
+    language: str,
 ) -> None:
     examination = USExaminationData.model_validate(
         {
@@ -253,15 +376,27 @@ def test_optional_patient_measurements(
             "patientDateOfBirth": "1990-01-01T00:00:00Z",
             "examinationDescription": "Description",
             **measurements,
-        }
+        },
     )
-    factory = PromptFactory(LanguageCode(language), configuration)
-    prompt = factory.build_prompt(examination, "Echocardiography")
+    factory = PromptFactory(
+        LanguageCode(
+            language,
+        ),
+        configuration,
+    )
+    prompt = factory.build_prompt(
+        examination,
+        "Echocardiography",
+    )
     height_label = "Patient height:" if language == "en" else "Рост пациента:"
     weight_label = "Patient weight:" if language == "en" else "Вес пациента:"
 
-    assert examination.patientHeight == measurements.get("patientHeight")
-    assert examination.patientWeight == measurements.get("patientWeight")
+    assert examination.patientHeight == measurements.get(
+        "patientHeight",
+    )
+    assert examination.patientWeight == measurements.get(
+        "patientWeight",
+    )
     assert (height_label in prompt) == (examination.patientHeight is not None)
     assert (weight_label in prompt) == (examination.patientWeight is not None)
     assert "None" not in prompt

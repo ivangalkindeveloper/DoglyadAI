@@ -14,9 +14,14 @@ class USExaminationRequest(BaseModel):
     isPhotoRemarks: bool = True
     isDescriptionRemarks: bool = True
 
-    @field_validator("template")
+    @field_validator(
+        "template",
+    )
     @classmethod
-    def normalize_optional_template(cls, value: str | None) -> str | None:
+    def normalize_optional_template(
+        cls,
+        value: str | None,
+    ) -> str | None:
         if value is None:
             return None
         return value.strip() or None

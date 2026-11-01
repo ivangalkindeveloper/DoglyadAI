@@ -7,8 +7,12 @@ from app.model.ultrasound.us_examination_type import USExaminationType
 
 
 class USExaminationTypeGroup(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
     id: NonBlankString
     titleLocaleKey: NonBlankString
-    examinationTypes: list[USExaminationType] = Field(min_length=1)
+    examinationTypes: list[USExaminationType] = Field(
+        min_length=1,
+    )

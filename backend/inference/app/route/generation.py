@@ -12,9 +12,23 @@ from app.service.vllm_service import VLLMService
 router = APIRouter()
 
 
-@router.post("/generation", response_model=GenerationResponse)
+@router.post(
+    "/generation",
+    response_model=GenerationResponse,
+)
 async def generation(
-    body: GenerationRequest, service: Annotated[VLLMService, Depends(get_vllm_service)]
+    body: GenerationRequest,
+    service: Annotated[
+        VLLMService,
+        Depends(
+            get_vllm_service,
+        ),
+    ],
 ) -> GenerationResponse:
-    value = await service.generate(body)
-    return GenerationResponse(modelId=service.model_id, response=value)
+    value = await service.generate(
+        body,
+    )
+    return GenerationResponse(
+        modelId=body.modelId,
+        response=value,
+    )

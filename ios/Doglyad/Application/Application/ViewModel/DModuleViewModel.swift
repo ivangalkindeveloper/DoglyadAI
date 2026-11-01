@@ -10,9 +10,11 @@ class DModuleViewModel<State>: DStateViewModel<State> {
     let container: DependencyContainer
     let router: DRouter
     @Published private(set) var subscriptionStatus: SubscriptionStatus?
+    var operationTask: Task<Void, Never>?
     private var subscriptionObservation: AnyCancellable?
+    private let observeSubscriptionStatus: (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable
     private let getSettingsAI: () -> SettingsAI
-    private let onRequestCountIncremented: () -> Void
+    private let onRefreshSubscriptionStatus: () async -> Void
     private let onSubscriptionStatusUpdated: (SubscriptionStatus?) -> Void
     let coordinator: Coordinator
     private let analyticsDestination: AnalyticsRouteDestination
@@ -26,15 +28,16 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         analyticsDestination: AnalyticsRouteDestination,
         analyticsParameters: AnalyticsParameters = .empty,
     ) {
         self.container = container
         self.router = router
         subscriptionStatus = getSubscriptionStatus()
+        self.observeSubscriptionStatus = observeSubscriptionStatus
         self.getSettingsAI = getSettingsAI
-        self.onRequestCountIncremented = onRequestCountIncremented
+        self.onRefreshSubscriptionStatus = onRefreshSubscriptionStatus
         self.onSubscriptionStatusUpdated = onSubscriptionStatusUpdated
         self.analyticsDestination = analyticsDestination
         self.analyticsParameters = analyticsParameters
@@ -47,13 +50,6 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         super.init(
             state: state,
         )
-        subscriptionObservation = observeSubscriptionStatus { [weak self] status in
-            guard let self else { return }
-            subscriptionStatus = status
-            onSubscriptionChanged(
-                status,
-            )
-        }
     }
 
     var analytics: AnalyticsManager { container.analytics }
@@ -80,6 +76,15 @@ class DModuleViewModel<State>: DStateViewModel<State> {
             )
         }
 
+        if subscriptionObservation == nil {
+            subscriptionObservation = observeSubscriptionStatus { [weak self] status in
+                guard let self else { return }
+                subscriptionStatus = status
+                onSubscriptionChanged(
+                    status,
+                )
+            }
+        }
         guard !isInitialized else { return }
         isInitialized = true
         onInit()
@@ -87,20 +92,31 @@ class DModuleViewModel<State>: DStateViewModel<State> {
 
     func onInit() {}
 
+    func onDisappear() {
+        cancelOperationTask()
+        subscriptionObservation?.cancel()
+        subscriptionObservation = nil
+    }
+
+    final func cancelOperationTask() {
+        operationTask?.cancel()
+        operationTask = nil
+    }
+
     func onSubscriptionChanged(
         _: SubscriptionStatus?,
     ) {}
 
     func subscriptionAvailability(
-        of feature: PaidFeature,
+        of feature: SubscriptionPaidFeature,
     ) -> SubscriptionFeatureAvailability {
         subscriptionStatus?.availability(
             of: feature,
         ) ?? .unavailable
     }
 
-    func incrementRequestCount() {
-        onRequestCountIncremented()
+    func refreshStatus() async {
+        await onRefreshSubscriptionStatus()
     }
 
     func updateSubscriptionStatus(

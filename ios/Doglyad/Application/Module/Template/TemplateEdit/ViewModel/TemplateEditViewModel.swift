@@ -29,7 +29,7 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         messager: DMessager,
         arguments: TemplateEditArguments,
         onSaveTemplate: @escaping (USExaminationTemplate) async throws -> Void,
@@ -93,7 +93,7 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .screen(
                 .templateEdit,
             ),

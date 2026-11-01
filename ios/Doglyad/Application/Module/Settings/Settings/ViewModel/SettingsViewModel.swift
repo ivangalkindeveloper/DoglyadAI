@@ -18,7 +18,7 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         super.init(
             state: SettingsLoadingState(),
@@ -28,7 +28,7 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .screen(
                 .settings,
             ),
@@ -126,7 +126,7 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
             ),
         )
         coordinator.screen(
-            .subscription,
+            .manageSubscription,
         )
     }
 

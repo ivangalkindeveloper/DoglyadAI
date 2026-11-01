@@ -1,8 +1,13 @@
 .PHONY: \
+	sync-harness \
+	check-harness \
+	check-architecture \
 	venv \
 	pip-install \
 	pip-install-dev \
 	format \
+	format-backend \
+	lint-backend \
 	format-ios \
 	lint-ios \
 	init-ios-local \
@@ -13,6 +18,8 @@
 	upload-ios-release-development \
 	upload-ios-release-production \
 	start-backend-main-development \
+	start-local-billing \
+	stop-local-billing \
 	start-backend-main-production \
 	start-backend-main-logs \
 	stop-backend-main \
@@ -20,6 +27,7 @@
 	sync-secrets-main-production \
 	update-infrastructure \
 	check-infrastructure \
+	render-inference \
 	start-backend-inference \
 	start-backend-inference-logs \
 	stop-backend-inference \
@@ -50,6 +58,7 @@ IOS_XCODE_PATH := /usr/bin:/bin:/usr/sbin:/sbin:$(PATH)
 
 # Prefer the project venv so `make format` works without activating it first.
 RUFF ?= $(shell if [ -x "$(CURDIR)/.venv311/bin/ruff" ]; then echo "$(CURDIR)/.venv311/bin/ruff"; else echo ruff; fi)
+BACKEND_FORMAT_PYTHON ?= $(shell if [ -x "$(CURDIR)/.venv311/bin/python" ]; then echo "$(CURDIR)/.venv311/bin/python"; else echo python3; fi)
 
 venv:
 	python3.11 -m venv .venv311
@@ -61,9 +70,22 @@ pip-install:
 pip-install-dev:
 	pip3 install -r backend/main/requirements-dev.txt
 
-format: format-ios
-	cd backend/main && "$(RUFF)" format app tests
-	cd backend/inference && "$(RUFF)" format app tests
+sync-harness:
+	python3 tools/sync_harness.py
+
+check-harness:
+	python3 tools/sync_harness.py --check
+
+check-architecture:
+	python3 harness/checks/architecture.py
+
+format: format-ios format-backend
+
+format-backend:
+	"$(BACKEND_FORMAT_PYTHON)" tools/format_python.py --ruff "$(RUFF)"
+
+lint-backend:
+	"$(BACKEND_FORMAT_PYTHON)" tools/format_python.py --check --ruff "$(RUFF)"
 
 format-ios:
 	python3 tools/format_ios.py
@@ -129,6 +151,12 @@ upload-ios-release-production:
 		-exportOptionsPlist "$(IOS_EXPORT_OPTIONS_PLIST)" \
 		-allowProvisioningUpdates
 
+start-local-billing:
+	"$(BACKEND_FORMAT_PYTHON)" tools/local_billing_database.py
+
+stop-local-billing:
+	"$(BACKEND_FORMAT_PYTHON)" tools/local_billing_database.py --stop
+
 start-backend-main-development:
 	ENV_FILE=secrets/.env.development bash deploy/start-backend.sh main
 start-backend-main-production:
@@ -162,6 +190,11 @@ sync-secrets-inference:
 INFRASTRUCTURE_INVENTORY ?= deploy/secrets/infrastructure.json
 INFRASTRUCTURE_REF ?= master
 INFRASTRUCTURE_SCOPE ?= all
+INFERENCE_PROFILE ?= deploy/inference/profiles/dgx-spark.json
+INFERENCE_OUTPUT ?= build/inference/dgx-spark
+
+render-inference:
+	python3 deploy/inference/render.py --profile "$(INFERENCE_PROFILE)" --output "$(INFERENCE_OUTPUT)"
 
 update-infrastructure:
 	bash deploy/update-infrastructure.sh --inventory "$(INFRASTRUCTURE_INVENTORY)" --ref "$(INFRASTRUCTURE_REF)" --scope "$(INFRASTRUCTURE_SCOPE)"
@@ -170,44 +203,44 @@ check-infrastructure:
 	bash deploy/update-infrastructure.sh --inventory "$(INFRASTRUCTURE_INVENTORY)" --scope "$(INFRASTRUCTURE_SCOPE)" --check
 
 voice-eval-text:
-	python3 -m evaluation.voice.generate
+	python3 -m evaluation.voice.datasets.generate
 
 voice-eval-audio:
-	python3 -m evaluation.voice.audio --mode quick
+	python3 -m evaluation.voice.audio.audio --mode quick
 
 voice-eval-audio-extended:
-	python3 -m evaluation.voice.audio --mode extended
+	python3 -m evaluation.voice.audio.audio --mode extended
 
 voice-eval-audio-v2:
-	python3 -m evaluation.voice.audio_v2
+	python3 -m evaluation.voice.audio.audio_v2
 
 voice-eval-guided-format-audio:
-	python3 -m evaluation.voice.guided_format
+	python3 -m evaluation.voice.audio.guided_format
 
 voice-eval-reordered-format-audio:
-	python3 -m evaluation.voice.reordered_format
+	python3 -m evaluation.voice.audio.reordered_format
 
 voice-eval-freeform-audio:
-	python3 -m evaluation.voice.freeform_audio
+	python3 -m evaluation.voice.audio.freeform_audio
 
 voice-eval-asr-macos: voice-eval-audio
-	python3 -m evaluation.voice.asr --mode quick
+	python3 -m evaluation.voice.runners.asr --mode quick
 
 voice-eval-asr-compare: voice-eval-audio
-	python3 -m evaluation.voice.comparison --mode quick
+	python3 -m evaluation.voice.analysis.comparison --mode quick
 
 voice-eval-fleurs:
-	python3 -m evaluation.voice.fleurs --locale both
-	python3 -m evaluation.voice.fleurs_eval
+	python3 -m evaluation.voice.audio.fleurs --locale both
+	python3 -m evaluation.voice.runners.fleurs_eval
 
 voice-eval-ios: voice-eval-audio
-	python3 -m evaluation.voice.run_ios
+	python3 -m evaluation.voice.runners.run_ios
 
 voice-eval-ios-candidate: voice-eval-audio
-	python3 -m evaluation.voice.run_ios --candidate
+	python3 -m evaluation.voice.runners.run_ios --candidate
 
 voice-eval-verify:
-	python3 -m evaluation.voice.verify
+	python3 -m evaluation.voice.runners.verify
 
 voice-eval-report:
-	python3 -m evaluation.voice.report --strict
+	python3 -m evaluation.voice.analysis.report --strict

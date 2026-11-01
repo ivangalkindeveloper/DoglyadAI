@@ -24,7 +24,7 @@ struct UserSettingsScreen: View {
                     status: status,
                 ) },
                 getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
                 getInitialEmail: { [ultrasoundViewModel] in ultrasoundViewModel.userEmail },
                 getInitialIsRecommendationsIncluded: { [ultrasoundViewModel] in ultrasoundViewModel.isRecommendationsIncluded },
                 getInitialIsPhotoRemarks: { [ultrasoundViewModel] in ultrasoundViewModel.isPhotoRemarks },

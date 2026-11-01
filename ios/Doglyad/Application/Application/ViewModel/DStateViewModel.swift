@@ -29,10 +29,22 @@ class DStateViewModel<State>: Handler<DHttpApiError, DHttpConnectionError>, Obse
             return
         }
 
-        withAnimation(
-            animation,
+        animate(
+            animation: animation,
         ) {
             state = newState
         }
+    }
+
+    final func animate(
+        animation: Animation? = .easeInOut(
+            duration: 0.35,
+        ),
+        _ updates: () -> Void,
+    ) {
+        withAnimation(
+            animation,
+            updates,
+        )
     }
 }

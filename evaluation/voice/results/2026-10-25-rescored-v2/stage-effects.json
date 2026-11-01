@@ -1,0 +1,1350 @@
+{
+  "metric": "normalized textual agreement with original unreviewed gold",
+  "note": "Paired gains AND losses; validated model output versus rules/merge. Historical data do not isolate every validator decision; these are observed pipeline-stage differences, not a causal attribution to a model alone.",
+  "groups": {
+    "whisperKit/en/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 45,
+      "lostFields": 407,
+      "gainedForms": 5,
+      "lostForms": 174,
+      "rightFailedCases": 1
+    },
+    "whisperKit/en/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 45,
+      "lostFields": 120,
+      "gainedForms": 5,
+      "lostForms": 77,
+      "rightFailedCases": 1
+    },
+    "whisperKit/en/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 287,
+      "lostFields": 0,
+      "gainedForms": 97,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "whisperKit/en/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 46,
+      "lostFields": 414,
+      "gainedForms": 5,
+      "lostForms": 161,
+      "rightFailedCases": 2
+    },
+    "whisperKit/en/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 46,
+      "lostFields": 110,
+      "gainedForms": 5,
+      "lostForms": 65,
+      "rightFailedCases": 2
+    },
+    "whisperKit/en/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 304,
+      "lostFields": 0,
+      "gainedForms": 96,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "whisperKit/ru/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 13,
+      "lostFields": 478,
+      "gainedForms": 2,
+      "lostForms": 231,
+      "rightFailedCases": 0
+    },
+    "whisperKit/ru/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 13,
+      "lostFields": 241,
+      "gainedForms": 2,
+      "lostForms": 210,
+      "rightFailedCases": 0
+    },
+    "whisperKit/ru/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 237,
+      "lostFields": 0,
+      "gainedForms": 21,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "whisperKit/ru/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 16,
+      "lostFields": 495,
+      "gainedForms": 3,
+      "lostForms": 236,
+      "rightFailedCases": 1
+    },
+    "whisperKit/ru/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 16,
+      "lostFields": 216,
+      "gainedForms": 3,
+      "lostForms": 174,
+      "rightFailedCases": 1
+    },
+    "whisperKit/ru/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 279,
+      "lostFields": 0,
+      "gainedForms": 62,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "whisperKit/en/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 18,
+      "lostFields": 58,
+      "gainedForms": 2,
+      "lostForms": 13,
+      "rightFailedCases": 0
+    },
+    "whisperKit/en/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 18,
+      "lostFields": 7,
+      "gainedForms": 2,
+      "lostForms": 3,
+      "rightFailedCases": 0
+    },
+    "whisperKit/en/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 51,
+      "lostFields": 0,
+      "gainedForms": 10,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "whisperKit/en/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 14,
+      "lostFields": 70,
+      "gainedForms": 1,
+      "lostForms": 16,
+      "rightFailedCases": 0
+    },
+    "whisperKit/en/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 14,
+      "lostFields": 20,
+      "gainedForms": 2,
+      "lostForms": 9,
+      "rightFailedCases": 0
+    },
+    "whisperKit/en/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 50,
+      "lostFields": 0,
+      "gainedForms": 8,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "whisperKit/ru/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 12,
+      "lostFields": 67,
+      "gainedForms": 1,
+      "lostForms": 12,
+      "rightFailedCases": 5
+    },
+    "whisperKit/ru/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 12,
+      "lostFields": 33,
+      "gainedForms": 1,
+      "lostForms": 9,
+      "rightFailedCases": 5
+    },
+    "whisperKit/ru/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 34,
+      "lostFields": 0,
+      "gainedForms": 3,
+      "lostForms": 0,
+      "rightFailedCases": 5
+    },
+    "whisperKit/ru/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 12,
+      "lostFields": 67,
+      "gainedForms": 3,
+      "lostForms": 11,
+      "rightFailedCases": 1
+    },
+    "whisperKit/ru/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 12,
+      "lostFields": 30,
+      "gainedForms": 3,
+      "lostForms": 8,
+      "rightFailedCases": 1
+    },
+    "whisperKit/ru/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 37,
+      "lostFields": 0,
+      "gainedForms": 3,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "sfSpeechRecognizer/en/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 91,
+      "lostFields": 139,
+      "gainedForms": 4,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "sfSpeechRecognizer/en/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 90,
+      "lostFields": 15,
+      "gainedForms": 4,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "sfSpeechRecognizer/en/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 124,
+      "lostFields": 1,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "sfSpeechRecognizer/en/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 85,
+      "lostFields": 172,
+      "gainedForms": 1,
+      "lostForms": 1,
+      "rightFailedCases": 4
+    },
+    "sfSpeechRecognizer/en/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 84,
+      "lostFields": 33,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 4
+    },
+    "sfSpeechRecognizer/en/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 139,
+      "lostFields": 1,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 4
+    },
+    "sfSpeechRecognizer/ru/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 32,
+      "lostFields": 120,
+      "gainedForms": 8,
+      "lostForms": 72,
+      "rightFailedCases": 0
+    },
+    "sfSpeechRecognizer/ru/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 32,
+      "lostFields": 106,
+      "gainedForms": 8,
+      "lostForms": 67,
+      "rightFailedCases": 0
+    },
+    "sfSpeechRecognizer/ru/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 14,
+      "lostFields": 0,
+      "gainedForms": 5,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "sfSpeechRecognizer/ru/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 32,
+      "lostFields": 138,
+      "gainedForms": 7,
+      "lostForms": 68,
+      "rightFailedCases": 0
+    },
+    "sfSpeechRecognizer/ru/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 32,
+      "lostFields": 93,
+      "gainedForms": 7,
+      "lostForms": 51,
+      "rightFailedCases": 0
+    },
+    "sfSpeechRecognizer/ru/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 45,
+      "lostFields": 0,
+      "gainedForms": 17,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "sfSpeechRecognizer/en/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 13,
+      "lostFields": 4,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "sfSpeechRecognizer/en/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 13,
+      "lostFields": 4,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "sfSpeechRecognizer/en/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "sfSpeechRecognizer/en/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 14,
+      "lostFields": 1,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "sfSpeechRecognizer/en/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 14,
+      "lostFields": 0,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "sfSpeechRecognizer/en/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 1,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "sfSpeechRecognizer/ru/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 52,
+      "lostFields": 7,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "sfSpeechRecognizer/ru/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 52,
+      "lostFields": 6,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "sfSpeechRecognizer/ru/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 1,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "sfSpeechRecognizer/ru/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 48,
+      "lostFields": 6,
+      "gainedForms": 4,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "sfSpeechRecognizer/ru/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 48,
+      "lostFields": 4,
+      "gainedForms": 5,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "sfSpeechRecognizer/ru/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 2,
+      "lostFields": 0,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "speechAnalyzer/en/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 143,
+      "lostFields": 174,
+      "gainedForms": 4,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/en/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 134,
+      "lostFields": 25,
+      "gainedForms": 4,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/en/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 149,
+      "lostFields": 9,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/en/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 136,
+      "lostFields": 208,
+      "gainedForms": 1,
+      "lostForms": 1,
+      "rightFailedCases": 4
+    },
+    "speechAnalyzer/en/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 127,
+      "lostFields": 44,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 4
+    },
+    "speechAnalyzer/en/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 164,
+      "lostFields": 9,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 4
+    },
+    "speechAnalyzer/ru/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 38,
+      "lostFields": 140,
+      "gainedForms": 6,
+      "lostForms": 95,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/ru/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 37,
+      "lostFields": 128,
+      "gainedForms": 6,
+      "lostForms": 87,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/ru/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 12,
+      "lostFields": 1,
+      "gainedForms": 8,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/ru/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 39,
+      "lostFields": 158,
+      "gainedForms": 7,
+      "lostForms": 87,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/ru/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 38,
+      "lostFields": 105,
+      "gainedForms": 7,
+      "lostForms": 61,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/ru/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 53,
+      "lostFields": 1,
+      "gainedForms": 26,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/en/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 23,
+      "lostFields": 10,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "speechAnalyzer/en/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 23,
+      "lostFields": 4,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "speechAnalyzer/en/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 6,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "speechAnalyzer/en/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 21,
+      "lostFields": 6,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/en/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 21,
+      "lostFields": 0,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/en/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 6,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "speechAnalyzer/ru/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 57,
+      "lostFields": 8,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "speechAnalyzer/ru/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 57,
+      "lostFields": 7,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "speechAnalyzer/ru/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 1,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "speechAnalyzer/ru/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 48,
+      "lostFields": 9,
+      "gainedForms": 4,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "speechAnalyzer/ru/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 48,
+      "lostFields": 7,
+      "gainedForms": 5,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "speechAnalyzer/ru/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 2,
+      "lostFields": 0,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "gigaam/en/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 34,
+      "lostFields": 14,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 5
+    },
+    "gigaam/en/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 34,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 5
+    },
+    "gigaam/en/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 14,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 5
+    },
+    "gigaam/en/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 26,
+      "lostFields": 17,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 6
+    },
+    "gigaam/en/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 26,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 6
+    },
+    "gigaam/en/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 17,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 6
+    },
+    "gigaam/ru/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 46,
+      "lostFields": 458,
+      "gainedForms": 3,
+      "lostForms": 108,
+      "rightFailedCases": 2
+    },
+    "gigaam/ru/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 42,
+      "lostFields": 229,
+      "gainedForms": 4,
+      "lostForms": 89,
+      "rightFailedCases": 2
+    },
+    "gigaam/ru/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 229,
+      "lostFields": 4,
+      "gainedForms": 20,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "gigaam/ru/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 69,
+      "lostFields": 528,
+      "gainedForms": 3,
+      "lostForms": 105,
+      "rightFailedCases": 0
+    },
+    "gigaam/ru/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 65,
+      "lostFields": 210,
+      "gainedForms": 3,
+      "lostForms": 66,
+      "rightFailedCases": 0
+    },
+    "gigaam/ru/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 318,
+      "lostFields": 4,
+      "gainedForms": 39,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "gigaam/en/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "gigaam/en/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "gigaam/en/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "gigaam/en/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "gigaam/en/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "gigaam/en/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "gigaam/ru/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 15,
+      "lostFields": 36,
+      "gainedForms": 1,
+      "lostForms": 3,
+      "rightFailedCases": 2
+    },
+    "gigaam/ru/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 15,
+      "lostFields": 20,
+      "gainedForms": 1,
+      "lostForms": 3,
+      "rightFailedCases": 2
+    },
+    "gigaam/ru/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 16,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "gigaam/ru/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 19,
+      "lostFields": 38,
+      "gainedForms": 5,
+      "lostForms": 1,
+      "rightFailedCases": 0
+    },
+    "gigaam/ru/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 19,
+      "lostFields": 18,
+      "gainedForms": 7,
+      "lostForms": 1,
+      "rightFailedCases": 0
+    },
+    "gigaam/ru/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 20,
+      "lostFields": 0,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "medasr/en/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 271,
+      "lostFields": 106,
+      "gainedForms": 68,
+      "lostForms": 9,
+      "rightFailedCases": 3
+    },
+    "medasr/en/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 271,
+      "lostFields": 31,
+      "gainedForms": 68,
+      "lostForms": 7,
+      "rightFailedCases": 3
+    },
+    "medasr/en/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 75,
+      "lostFields": 0,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 3
+    },
+    "medasr/en/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 271,
+      "lostFields": 134,
+      "gainedForms": 45,
+      "lostForms": 16,
+      "rightFailedCases": 1
+    },
+    "medasr/en/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 271,
+      "lostFields": 52,
+      "gainedForms": 45,
+      "lostForms": 15,
+      "rightFailedCases": 1
+    },
+    "medasr/en/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 82,
+      "lostFields": 0,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "medasr/ru/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 25
+    },
+    "medasr/ru/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 25
+    },
+    "medasr/ru/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 25
+    },
+    "medasr/ru/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 33
+    },
+    "medasr/ru/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 33
+    },
+    "medasr/ru/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 33
+    },
+    "medasr/en/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 49,
+      "lostFields": 7,
+      "gainedForms": 3,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "medasr/en/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 49,
+      "lostFields": 4,
+      "gainedForms": 4,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "medasr/en/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 3,
+      "lostFields": 0,
+      "gainedForms": 1,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "medasr/en/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 40,
+      "lostFields": 10,
+      "gainedForms": 3,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "medasr/en/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 40,
+      "lostFields": 7,
+      "gainedForms": 3,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "medasr/en/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 3,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "medasr/ru/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "medasr/ru/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "medasr/ru/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "medasr/ru/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 9
+    },
+    "medasr/ru/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 9
+    },
+    "medasr/ru/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 0,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 9
+    },
+    "nemotron/en/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 191,
+      "lostFields": 193,
+      "gainedForms": 6,
+      "lostForms": 13,
+      "rightFailedCases": 0
+    },
+    "nemotron/en/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 191,
+      "lostFields": 51,
+      "gainedForms": 7,
+      "lostForms": 9,
+      "rightFailedCases": 0
+    },
+    "nemotron/en/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 142,
+      "lostFields": 0,
+      "gainedForms": 5,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "nemotron/en/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 168,
+      "lostFields": 289,
+      "gainedForms": 1,
+      "lostForms": 21,
+      "rightFailedCases": 8
+    },
+    "nemotron/en/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 168,
+      "lostFields": 76,
+      "gainedForms": 3,
+      "lostForms": 12,
+      "rightFailedCases": 8
+    },
+    "nemotron/en/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 213,
+      "lostFields": 0,
+      "gainedForms": 11,
+      "lostForms": 0,
+      "rightFailedCases": 8
+    },
+    "nemotron/ru/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 88,
+      "lostFields": 246,
+      "gainedForms": 0,
+      "lostForms": 17,
+      "rightFailedCases": 11
+    },
+    "nemotron/ru/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 88,
+      "lostFields": 84,
+      "gainedForms": 0,
+      "lostForms": 12,
+      "rightFailedCases": 11
+    },
+    "nemotron/ru/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 162,
+      "lostFields": 0,
+      "gainedForms": 5,
+      "lostForms": 0,
+      "rightFailedCases": 11
+    },
+    "nemotron/ru/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 80,
+      "lostFields": 301,
+      "gainedForms": 0,
+      "lostForms": 16,
+      "rightFailedCases": 13
+    },
+    "nemotron/ru/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 80,
+      "lostFields": 76,
+      "gainedForms": 0,
+      "lostForms": 9,
+      "rightFailedCases": 13
+    },
+    "nemotron/ru/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 225,
+      "lostFields": 0,
+      "gainedForms": 7,
+      "lostForms": 0,
+      "rightFailedCases": 13
+    },
+    "nemotron/en/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 63,
+      "lostFields": 8,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "nemotron/en/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 63,
+      "lostFields": 6,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "nemotron/en/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 2,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "nemotron/en/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 51,
+      "lostFields": 26,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "nemotron/en/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 51,
+      "lostFields": 14,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "nemotron/en/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 12,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "nemotron/ru/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 41,
+      "lostFields": 11,
+      "gainedForms": 0,
+      "lostForms": 1,
+      "rightFailedCases": 1
+    },
+    "nemotron/ru/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 40,
+      "lostFields": 7,
+      "gainedForms": 0,
+      "lostForms": 1,
+      "rightFailedCases": 1
+    },
+    "nemotron/ru/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 4,
+      "lostFields": 1,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 1
+    },
+    "nemotron/ru/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 44,
+      "lostFields": 8,
+      "gainedForms": 0,
+      "lostForms": 1,
+      "rightFailedCases": 0
+    },
+    "nemotron/ru/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 43,
+      "lostFields": 5,
+      "gainedForms": 0,
+      "lostForms": 1,
+      "rightFailedCases": 0
+    },
+    "nemotron/ru/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 3,
+      "lostFields": 1,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "canary/en/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 34,
+      "lostFields": 329,
+      "gainedForms": 6,
+      "lostForms": 126,
+      "rightFailedCases": 0
+    },
+    "canary/en/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 34,
+      "lostFields": 82,
+      "gainedForms": 7,
+      "lostForms": 71,
+      "rightFailedCases": 0
+    },
+    "canary/en/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 247,
+      "lostFields": 0,
+      "gainedForms": 56,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "canary/en/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 29,
+      "lostFields": 321,
+      "gainedForms": 2,
+      "lostForms": 117,
+      "rightFailedCases": 0
+    },
+    "canary/en/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 29,
+      "lostFields": 65,
+      "gainedForms": 3,
+      "lostForms": 52,
+      "rightFailedCases": 0
+    },
+    "canary/en/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 256,
+      "lostFields": 0,
+      "gainedForms": 66,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "canary/ru/dictation/explicitRules->medgemma": {
+      "cases": 372,
+      "gainedFields": 35,
+      "lostFields": 321,
+      "gainedForms": 3,
+      "lostForms": 166,
+      "rightFailedCases": 0
+    },
+    "canary/ru/dictation/explicitRules->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 35,
+      "lostFields": 182,
+      "gainedForms": 3,
+      "lostForms": 105,
+      "rightFailedCases": 0
+    },
+    "canary/ru/dictation/medgemma->productionMedgemma": {
+      "cases": 372,
+      "gainedFields": 139,
+      "lostFields": 0,
+      "gainedForms": 61,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "canary/ru/dictation/explicitRules->medgemma15": {
+      "cases": 372,
+      "gainedFields": 33,
+      "lostFields": 323,
+      "gainedForms": 0,
+      "lostForms": 156,
+      "rightFailedCases": 0
+    },
+    "canary/ru/dictation/explicitRules->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 33,
+      "lostFields": 146,
+      "gainedForms": 0,
+      "lostForms": 80,
+      "rightFailedCases": 0
+    },
+    "canary/ru/dictation/medgemma15->productionMedgemma15": {
+      "cases": 372,
+      "gainedFields": 177,
+      "lostFields": 0,
+      "gainedForms": 76,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "canary/en/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 19,
+      "lostFields": 47,
+      "gainedForms": 2,
+      "lostForms": 14,
+      "rightFailedCases": 0
+    },
+    "canary/en/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 19,
+      "lostFields": 5,
+      "gainedForms": 2,
+      "lostForms": 3,
+      "rightFailedCases": 0
+    },
+    "canary/en/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 42,
+      "lostFields": 0,
+      "gainedForms": 11,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    },
+    "canary/en/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 13,
+      "lostFields": 58,
+      "gainedForms": 2,
+      "lostForms": 14,
+      "rightFailedCases": 2
+    },
+    "canary/en/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 13,
+      "lostFields": 15,
+      "gainedForms": 2,
+      "lostForms": 6,
+      "rightFailedCases": 2
+    },
+    "canary/en/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 43,
+      "lostFields": 0,
+      "gainedForms": 8,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "canary/ru/natural/explicitRules->medgemma": {
+      "cases": 58,
+      "gainedFields": 7,
+      "lostFields": 10,
+      "gainedForms": 4,
+      "lostForms": 1,
+      "rightFailedCases": 2
+    },
+    "canary/ru/natural/explicitRules->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 7,
+      "lostFields": 9,
+      "gainedForms": 4,
+      "lostForms": 1,
+      "rightFailedCases": 2
+    },
+    "canary/ru/natural/medgemma->productionMedgemma": {
+      "cases": 58,
+      "gainedFields": 1,
+      "lostFields": 0,
+      "gainedForms": 0,
+      "lostForms": 0,
+      "rightFailedCases": 2
+    },
+    "canary/ru/natural/explicitRules->medgemma15": {
+      "cases": 58,
+      "gainedFields": 7,
+      "lostFields": 9,
+      "gainedForms": 2,
+      "lostForms": 1,
+      "rightFailedCases": 0
+    },
+    "canary/ru/natural/explicitRules->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 7,
+      "lostFields": 5,
+      "gainedForms": 4,
+      "lostForms": 1,
+      "rightFailedCases": 0
+    },
+    "canary/ru/natural/medgemma15->productionMedgemma15": {
+      "cases": 58,
+      "gainedFields": 4,
+      "lostFields": 0,
+      "gainedForms": 2,
+      "lostForms": 0,
+      "rightFailedCases": 0
+    }
+  }
+}

@@ -1,0 +1,11 @@
+schemaVersion: 1
+enabledWorkflows:
+  - simulator
+  - ui-automation
+  - debugging
+sentryDisabled: true
+sessionDefaults:
+  projectPath: ./ios/Doglyad.xcodeproj
+  scheme: Doglyad-Debug-Local
+  simulatorName: iPhone 17
+  derivedDataPath: ./build/mcp/DerivedData

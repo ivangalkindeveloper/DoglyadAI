@@ -7,7 +7,9 @@ from app.model.non_blank_string import NonBlankString
 
 
 class ApiErrorResponse(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
     code: NonBlankString
     detail: NonBlankString

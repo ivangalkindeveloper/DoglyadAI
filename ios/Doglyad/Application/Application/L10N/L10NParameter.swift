@@ -4,6 +4,7 @@ enum L10NParameter: String, CaseIterable, Sendable {
     case contextLength
     case count
     case current
+    case date
     case description
     case email
     case id

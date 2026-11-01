@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import Counter
 
 from evaluation.voice.common import FIELD_IDS, LABELS
-from evaluation.voice.voice_blind_v3 import PARTIAL_FIELDS, make_cases, spoken_segments
+from evaluation.voice.datasets.voice_blind_v3 import PARTIAL_FIELDS, make_cases, spoken_segments
 
 
 def test_reordered_pack_keeps_form_labels_but_never_uses_the_sheet_order() -> None:

@@ -11,8 +11,9 @@ enum AnalyticsScreen: String {
     case scan
     case settings
     case storage
-    case subscription
-    case subscriptionPaywall = "subscription_paywall"
+    case subscriptionRecovery = "subscription_recovery"
+    case manageSubscription = "manage_subscription"
+    case paywall = "subscription_paywall"
     case templateAdd = "template_add"
     case templateEdit = "template_edit"
     case templateList = "template_list"

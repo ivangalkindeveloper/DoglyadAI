@@ -8,10 +8,19 @@ class RateLimitExceededError(ApiError):
     description = "Too many requests"
     status_code = 429
 
-    def __init__(self, retry_after_seconds: int = 60) -> None:
+    def __init__(
+        self,
+        retry_after_seconds: int = 60,
+    ) -> None:
         self._retry_after_seconds = retry_after_seconds
         super().__init__()
 
     @property
-    def headers(self) -> dict[str, str]:
-        return {"Retry-After": str(self._retry_after_seconds)}
+    def headers(
+        self,
+    ) -> dict[str, str]:
+        return {
+            "Retry-After": str(
+                self._retry_after_seconds,
+            )
+        }

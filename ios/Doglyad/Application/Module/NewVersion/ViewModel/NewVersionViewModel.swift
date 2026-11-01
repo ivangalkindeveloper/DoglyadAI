@@ -11,7 +11,7 @@ final class NewVersionViewModel: DModuleViewModel<any NewVersionStateProtocol> {
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         super.init(
             state: NewVersionState(),
@@ -21,7 +21,7 @@ final class NewVersionViewModel: DModuleViewModel<any NewVersionStateProtocol> {
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .screen(
                 .newVersion,
             ),

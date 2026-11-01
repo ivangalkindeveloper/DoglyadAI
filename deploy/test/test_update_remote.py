@@ -66,16 +66,147 @@ class RemoteTransactionTests(unittest.TestCase):
             self.action("unlock")
         self.assertTrue((self.root / ".infrastructure-update-lock").exists())
 
+    def prepare_multi_host(self) -> bytes:
+        (self.root / ".env").write_text(
+            "INFERENCE_BACKEND_IMAGE=sha256:" + "a" * 64 + "\n"
+        )
+        (self.root / "profile.json").write_text('{"version":1}')
+        (self.root / "config").mkdir()
+        (self.root / "config/server.json").write_text("{}")
+        self.target = {
+            "role": "inference",
+            "ssh": "gpu",
+            "architecture": "arm64",
+            "models": {"model/a": "engine_a", "model/b": "engine_b"},
+            "profile_fingerprint": "a" * 64,
+        }
+        self.state["companion"] = {
+            name: {"id": name, "image": "vllm", "restarts": 0}
+            for name in ["engine_a", "engine_b"]
+        }
+        with patch.object(remote, "check", return_value=self.state):
+            self.action("prepare")
+        return (self.root / ".env").read_bytes()
+
+    def test_multi_model_update_and_recovery_preserve_all_engine_snapshots(
+        self,
+    ) -> None:
+        original = self.prepare_multi_host()
+        image = "ghcr.io/ivangalkindeveloper/doglyad-inference@sha256:" + "c" * 64
+        with (
+            patch.object(
+                remote, "run", return_value=json.dumps([{"Id": "new-image"}])
+            ) as run,
+            patch.object(remote, "compose") as compose,
+            patch.object(remote, "wait_ready", return_value={}) as ready,
+        ):
+            self.action("update", image=image, sha="d" * 40)
+            # Recovery can use the stored normalized profile target, without a local profile file.
+            self.target = {"role": "inference", "ssh": "gpu"}
+            self.action("rollback")
+        self.assertEqual((self.root / ".env").read_bytes(), original)
+        for call in ready.call_args_list:
+            self.assertEqual(call.args[2], self.state["companion"])
+            self.assertEqual(len(call.args[0]["models"]), 2)
+        starts = [call.args for call in compose.call_args_list if call.args[0] == "up"]
+        self.assertEqual(len(starts), 1)
+        self.assertEqual(starts[0][-1], "backend_inference")
+        self.assertIn("--no-deps", starts[0])
+        rollback = run.call_args_list[-1].args
+        self.assertEqual(rollback[-1], "backend_inference")
+        self.assertIn("--no-deps", rollback)
+
+    def test_changed_host_profile_blocks_update_and_rollback_before_mutation(
+        self,
+    ) -> None:
+        original = self.prepare_multi_host()
+        (self.root / "profile.json").write_text('{"version":2}')
+        with (
+            patch.object(remote, "run") as run,
+            patch.object(remote, "compose") as compose,
+        ):
+            for action in ["update", "rollback"]:
+                with self.assertRaisesRegex(RuntimeError, "configuration changed"):
+                    self.action(action)
+            run.assert_not_called()
+            compose.assert_not_called()
+        self.assertEqual((self.root / ".env").read_bytes(), original)
+
+    def test_published_release_replaces_local_spark_image_and_rollback_restores_it(
+        self,
+    ) -> None:
+        original = "INFERENCE_BACKEND_IMAGE=sha256:" + "a" * 64 + "\n"
+        (self.root / ".env").write_text(original)
+        with patch.object(remote, "check", return_value=self.state):
+            self.action("prepare")
+        image = "ghcr.io/ivangalkindeveloper/doglyad-inference@sha256:" + "c" * 64
+        with (
+            patch.object(remote, "run", return_value=json.dumps([{"Id": "new-image"}])),
+            patch.object(remote, "compose"),
+            patch.object(remote, "wait_ready", return_value={}),
+        ):
+            self.action("update", image=image, sha="d" * 40)
+            self.assertIn(
+                f"INFERENCE_BACKEND_IMAGE={image}\n", (self.root / ".env").read_text()
+            )
+            self.action("rollback")
+        self.assertEqual((self.root / ".env").read_text(), original)
+
     def test_environment_mismatch_fails_before_request(self) -> None:
         running = {"State": {"Running": True}}
         with (
             patch.object(remote, "container", return_value=running),
+            patch.object(remote, "run", return_value="x86_64"),
             patch.object(remote, "compose"),
             patch.object(remote, "http") as http,
         ):
             with self.assertRaisesRegex(RuntimeError, "environment"):
                 remote.check({"role": "development"})
         http.assert_not_called()
+
+    def test_architecture_mismatch_fails_before_compose(self) -> None:
+        with (
+            patch.object(remote, "run", return_value="aarch64"),
+            patch.object(remote, "compose") as compose,
+        ):
+            with self.assertRaisesRegex(RuntimeError, "architecture"):
+                remote.check({"role": "inference", "architecture": "amd64"})
+        compose.assert_not_called()
+
+    def test_dgx_directory_selects_its_own_storage(self) -> None:
+        self.target = {
+            "role": "inference",
+            "ssh": "spark",
+            "model": "model",
+            "architecture": "arm64",
+            "directory": "/opt/doglyad/medgemma-4b",
+        }
+        with (
+            patch.object(remote.os, "chdir") as chdir,
+            patch.object(remote, "check", return_value=self.state),
+        ):
+            self.action("prepare")
+        chdir.assert_called_once_with(Path(self.target["directory"]))
+        image = "ghcr.io/ivangalkindeveloper/doglyad-inference@sha256:" + "c" * 64
+        with (
+            patch.object(remote.os, "chdir"),
+            patch.object(remote, "run", return_value="") as run,
+        ):
+            self.action("stage", image=image, models=[], storage_script="fixture")
+        self.assertIn(
+            "/opt/doglyad/medgemma-4b/secrets:/storage/secrets:rw",
+            run.call_args_list[1].args,
+        )
+        self.assertIn(
+            "/opt/doglyad/medgemma-4b/logs:/storage/logs:rw", run.call_args_list[1].args
+        )
+
+    def test_invalid_stack_directory_does_not_change_working_directory(self) -> None:
+        self.target["directory"] = "/opt/doglyad/../other"
+        with patch.object(remote.os, "chdir") as chdir:
+            with self.assertRaisesRegex(ValueError, "directory"):
+                self.action("check")
+        chdir.assert_not_called()
 
     def test_stage_prepares_storage_before_new_image_validation(self) -> None:
         with patch.object(remote, "check", return_value=self.state):

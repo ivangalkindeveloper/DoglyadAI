@@ -14,7 +14,10 @@ from app.model.user_settings_config import UserSettingsConfig
 class ApplicationModuleConfig(BaseModel):
     """Typed module sections of application.json; the full document stays unmodeled."""
 
-    model_config = ConfigDict(extra="ignore", frozen=True)
+    model_config = ConfigDict(
+        extra="ignore",
+        frozen=True,
+    )
 
     scan: ScanConfig
     scanSpeech: ScanSpeechConfig

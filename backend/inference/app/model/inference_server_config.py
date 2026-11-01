@@ -7,8 +7,13 @@ from app.model.http_client_config import HttpClientConfig
 
 
 class InferenceServerConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True)
+    model_config = ConfigDict(
+        extra="forbid",
+        frozen=True,
+    )
 
     vllm: HttpClientConfig
     generation: GenerationConfig
-    default_max_body_bytes: int = Field(gt=0)
+    default_max_body_bytes: int = Field(
+        gt=0,
+    )

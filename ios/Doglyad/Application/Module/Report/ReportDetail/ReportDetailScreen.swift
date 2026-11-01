@@ -25,7 +25,7 @@ struct ReportDetailScreen: View {
                     status: status,
                 ) },
                 getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
                 observeExaminationChanges: { [ultrasoundViewModel] observer in ultrasoundViewModel.observeChanges(
                     observer,
                 ) },

@@ -14,6 +14,39 @@ from pathlib import Path
 
 ROOT = Path("/opt/doglyad")
 
+PROFILE_CHECK = """
+import json, sys
+from pathlib import Path
+from host_profile import HostProfile
+from compose_document import compose_document
+profile = HostProfile.load(Path('profile.json'))
+assert profile.fingerprint == sys.argv[1], 'Host profile differs from inventory'
+document = compose_document(profile)
+assert json.loads(Path('docker-compose.yml').read_text()) == document, 'Generated Compose differs from profile'
+print(json.dumps({service: {key: document['services'][service][key] for key in ['command', 'image']}
+                  for service in profile.models.values()}))
+"""
+
+ENGINE_CHECK = """
+import json, sys
+from urllib.request import ProxyHandler, build_opener
+from app.core.variables import Variables
+expected = json.loads(sys.argv[1])
+variables = Variables()
+routes = getattr(variables, 'model_endpoints', None)
+if routes is None:
+    # Older single-model images predate the host routing property.
+    routes = {variables.served_model_id: str(variables.vllm_base_url).rstrip('/')}
+assert routes == expected, 'Backend routes differ from host models'
+opener = build_opener(ProxyHandler({}))
+for model_id, base in routes.items():
+    with opener.open(base + '/health', timeout=5) as response:
+        assert response.status == 200
+    with opener.open(base + '/v1/models', timeout=5) as response:
+        document = json.load(response)
+    assert {item['id'] for item in document['data']} == {model_id}, 'Engine serves another model'
+"""
+
 
 def run(*args: str, timeout: int = 120, input_text: str | None = None) -> str:
     result = subprocess.run(
@@ -69,28 +102,113 @@ def http(url: str, post: bool = False) -> None:
 
 
 def check(target: dict) -> dict:
+    architecture = {"x86_64": "amd64", "aarch64": "arm64"}.get(run("uname", "-m"))
+    if architecture != target.get("architecture", "amd64"):
+        raise RuntimeError("Host architecture does not match inventory")
     cfg = values()
     compose("config", "--quiet")
     inference = target["role"] == "inference"
     service = "backend_inference" if inference else "backend_main"
-    companion = container("vllm" if inference else "caddy")
     backend = container(service)
-    if not backend["State"]["Running"] or not companion["State"]["Running"]:
+    if not backend["State"]["Running"]:
         raise RuntimeError("Container not running")
     if inference:
-        if cfg.get("SERVED_MODEL_ID") != target["model"]:
+        models = target.get("models", {target.get("model"): "vllm"})
+        if (
+            not models
+            or any(
+                not isinstance(model, str)
+                or not model
+                or not isinstance(engine, str)
+                or not re.fullmatch(r"[a-z][a-z0-9_-]*", engine)
+                for model, engine in models.items()
+            )
+            or len(set(models.values())) != len(models)
+        ):
+            raise RuntimeError("Invalid model engine mapping")
+        expected_engines = {}
+        if "profile_fingerprint" in target:
+            expected_engines = json.loads(
+                run("python3", "-c", PROFILE_CHECK, target["profile_fingerprint"])
+            )
+            if set(expected_engines) != set(models.values()):
+                raise RuntimeError("Profile engines differ from inventory")
+        elif cfg.get("SERVED_MODEL_ID") != target["model"]:
             raise RuntimeError("Served model does not match inventory")
         if cfg.get("INFERENCE_BACKEND_BIND") != run("tailscale", "ip", "-4"):
             raise RuntimeError(
                 "Inference is not bound to the current Tailscale address"
             )
-        if companion["State"].get("Health", {}).get("Status") != "healthy":
-            raise RuntimeError("vLLM is not healthy")
+        bindings = backend["HostConfig"].get("PortBindings", {})
+        expected_binding = {
+            "8000/tcp": [
+                {
+                    "HostIp": cfg["INFERENCE_BACKEND_BIND"],
+                    "HostPort": cfg.get("INFERENCE_BACKEND_PORT", "8100"),
+                }
+            ]
+        }
+        if (
+            bindings != expected_binding
+            or backend["HostConfig"].get("NetworkMode") == "host"
+        ):
+            raise RuntimeError(
+                "Running inference API port binding differs from private configuration"
+            )
+        companions = {}
+        for engine in models.values():
+            item = container(engine)
+            if engine in expected_engines:
+                expected = expected_engines[engine]
+                image_id = run(
+                    "docker",
+                    "image",
+                    "inspect",
+                    "--format",
+                    "{{.Id}}",
+                    expected["image"],
+                )
+                if (
+                    item["Config"]["Cmd"] != expected["command"]
+                    or item["Image"] != image_id
+                ):
+                    raise RuntimeError(
+                        "Running engine parameters/image differ from profile; apply the generated stack first"
+                    )
+            if (
+                not item["State"]["Running"]
+                or item["State"].get("Health", {}).get("Status") != "healthy"
+            ):
+                raise RuntimeError("A configured vLLM engine is not healthy")
+            if (
+                item["HostConfig"].get("PortBindings")
+                or item["HostConfig"].get("NetworkMode") == "host"
+            ):
+                raise RuntimeError("vLLM engines must not publish ports")
+            companions[engine] = {
+                "id": item["Id"],
+                "image": item["Image"],
+                "restarts": item["RestartCount"],
+            }
+        routes = {model: f"http://{engine}:8000" for model, engine in models.items()}
+        run(
+            "docker",
+            "exec",
+            backend["Id"],
+            "python",
+            "-c",
+            ENGINE_CHECK,
+            json.dumps(routes),
+            timeout=max(120, 15 * len(models)),
+        )
         http(
             f"http://{cfg['INFERENCE_BACKEND_BIND']}:{cfg.get('INFERENCE_BACKEND_PORT', '8100')}/v1/generation",
             True,
         )
     else:
+        companion = container("caddy")
+        if not companion["State"]["Running"]:
+            raise RuntimeError("Caddy is not running")
         if cfg.get("ENV_FILE") != f"secrets/.env.{target['role']}":
             raise RuntimeError("Main environment does not match inventory")
         domain = cfg.get("DOMAIN", "")
@@ -98,10 +216,11 @@ def check(target: dict) -> dict:
             raise RuntimeError("Invalid public domain")
         http(f"https://{domain}/v1/application_config")
         http(f"https://{domain}/v1/ultrasound/generate_report", True)
+        companions = companion["Id"]
     return {
         "image": backend["Image"],
         "container": backend["Id"],
-        "companion": companion["Id"],
+        "companion": companions,
         "restarts": backend["RestartCount"],
     }
 
@@ -111,7 +230,7 @@ import json, os
 from urllib.parse import urlsplit
 from urllib.request import ProxyHandler, build_opener, Request
 from urllib.error import HTTPError
-from app.core.variables import Variables
+from app.core.configuration.variables import Variables
 variables = Variables()
 mapping = json.load(open(variables.inference_endpoints_path))
 expected = json.loads(__import__('sys').argv[1])
@@ -130,8 +249,19 @@ for url in mapping.values():
 """
 
 
+def _companions_match(current: str | dict, expected: str | dict) -> bool:
+    # Old single-engine snapshots recorded only a container ID. Keep recovery possible.
+    if isinstance(expected, str) and isinstance(current, dict):
+        return len(current) == 1 and next(iter(current.values()))["id"] == expected
+    return current == expected
+
+
 def wait_ready(
-    target: dict, image_id: str, companion: str, *, is_non_root_required: bool = False
+    target: dict,
+    image_id: str,
+    companion: str | dict,
+    *,
+    is_non_root_required: bool = False,
 ) -> dict:
     for attempt in range(12):
         try:
@@ -141,7 +271,8 @@ def wait_ready(
             if (
                 first["container"] == second["container"]
                 and second["image"] == image_id
-                and second["companion"] == companion
+                and _companions_match(first["companion"], companion)
+                and _companions_match(second["companion"], companion)
                 and first["restarts"] == second["restarts"]
             ):
                 if (
@@ -157,10 +288,18 @@ def wait_ready(
 
 
 def main(payload: dict) -> dict:
-    os.chdir(ROOT)
+    action, release, target = payload["action"], payload["release"], payload["target"]
+    root = ROOT
+    if "directory" in target:
+        directory = target["directory"]
+        if not re.fullmatch(r"/opt/doglyad(?:/[A-Za-z0-9_-]+)*", directory):
+            raise ValueError("Invalid deployment directory")
+        root = Path(directory)
+        if root.resolve() != root:
+            raise ValueError("Deployment directory must not contain symbolic links")
+    os.chdir(root)
     # The machine file, not the SSH login environment, selects the image.
     os.environ.pop("TAG", None)
-    action, release, target = payload["action"], payload["release"], payload["target"]
     if not re.fullmatch(r"[0-9a-f]{32}", release):
         raise ValueError("Invalid release identifier")
     service = "backend_inference" if target["role"] == "inference" else "backend_main"
@@ -191,7 +330,11 @@ def main(payload: dict) -> dict:
             snapshot.mkdir(mode=0o700)
             shutil.copy2(".env", snapshot / "env")
             shutil.copy2("docker-compose.yml", snapshot / "compose")
+            if "profile_fingerprint" in target:
+                shutil.copy2("profile.json", snapshot / "profile.json")
+                shutil.copy2("config/server.json", snapshot / "server.json")
             (snapshot / "state.json").write_text(json.dumps(state))
+            (snapshot / "target.json").write_text(json.dumps(target))
             return state
         if not lock.exists() and action == "unlock":
             return {"lock": "absent"}
@@ -202,6 +345,23 @@ def main(payload: dict) -> dict:
             lock.rmdir()
             return {"lock": "released"}
         state = json.loads((snapshot / "state.json").read_text())
+        if (snapshot / "target.json").exists():
+            recorded = json.loads((snapshot / "target.json").read_text())
+            if recorded["role"] != target["role"] or recorded.get(
+                "directory", "/opt/doglyad"
+            ) != target.get("directory", "/opt/doglyad"):
+                raise RuntimeError("Recovery target differs from deployment snapshot")
+            target = recorded
+        if action in {"update", "rollback"} and "profile_fingerprint" in target:
+            for current, saved in (
+                ("docker-compose.yml", "compose"),
+                ("profile.json", "profile.json"),
+                ("config/server.json", "server.json"),
+            ):
+                if Path(current).read_bytes() != (snapshot / saved).read_bytes():
+                    raise RuntimeError(
+                        "Generated host configuration changed during rollout"
+                    )
         if action == "stage":
             image = payload["image"]
             if not re.fullmatch(
@@ -224,9 +384,9 @@ def main(payload: dict) -> dict:
                 "--entrypoint",
                 "python",
                 "-v",
-                f"{ROOT}/secrets:/storage/secrets:rw",
+                f"{root}/secrets:/storage/secrets:rw",
                 "-v",
-                f"{ROOT}/logs:/storage/logs:rw",
+                f"{root}/logs:/storage/logs:rw",
                 image,
                 "-",
                 input_text=payload["storage_script"],
@@ -256,7 +416,7 @@ visit(models)
                     "--entrypoint",
                     "python",
                     "-v",
-                    f"{ROOT}/secrets:/app/secrets:ro",
+                    f"{root}/secrets:/app/secrets:ro",
                     image,
                     "-c",
                     validation,
@@ -277,6 +437,15 @@ visit(models)
             tag = sha + "@" + image.split("@", 1)[1]
             lines = Path(".env").read_text().splitlines()
             lines = [line for line in lines if not line.startswith("TAG=")]
+            # Spark can start with a locally verified ARM64 image. Subsequent
+            # fleet releases replace that explicit image with the published digest.
+            if any(line.startswith("INFERENCE_BACKEND_IMAGE=") for line in lines):
+                lines = [
+                    line
+                    for line in lines
+                    if not line.startswith("INFERENCE_BACKEND_IMAGE=")
+                ]
+                lines.append(f"INFERENCE_BACKEND_IMAGE={image}")
             temporary = snapshot / "new-env"
             temporary.write_text("\n".join([*lines, f"TAG={tag}", ""]))
             os.chmod(temporary, 0o600)

@@ -66,7 +66,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         observeExaminationChanges: @escaping (@escaping () -> Void) -> AnyCancellable,
         getSelectedTemplate: @escaping () -> USExaminationTemplate?,
         onTemplateSelected: @escaping (USExaminationTemplate) async throws -> Void,
@@ -238,7 +238,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .screen(
                 .scan,
             ),
@@ -1168,14 +1168,21 @@ private extension ScanViewModel {
                 isPhotoRemarks: self.container.userSettingsRepository.getIsPhotoRemarks(),
                 isDescriptionRemarks: self.container.userSettingsRepository.getIsDescriptionRemarks(),
             )
-            let response = try await self.container.ultrasoundReportRepository.generateReport(
-                locale: self.container.language.currentLocale,
-                request: request,
-                scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
-                    resizeMaxDimension: self.ultrasoundConfig.scanPhotoResizeMaxDimension,
-                    compressionQuality: self.ultrasoundConfig.scanPhotoCompressionQuality,
-                ),
-            )
+            let response: USExaminationModelReport
+            do {
+                response = try await self.container.ultrasoundReportRepository.generateReport(
+                    locale: self.container.language.currentLocale,
+                    request: request,
+                    scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
+                        resizeMaxDimension: self.ultrasoundConfig.scanPhotoResizeMaxDimension,
+                        compressionQuality: self.ultrasoundConfig.scanPhotoCompressionQuality,
+                    ),
+                )
+            } catch {
+                await self.refreshStatus()
+                throw error
+            }
+            await self.refreshStatus()
             return USExaminationReport(
                 date: Date(),
                 settingsAI: settings,
@@ -1213,7 +1220,6 @@ private extension ScanViewModel {
             try await self.container.ultrasoundReportRepository.setReport(
                 report: report,
             )
-            self.incrementRequestCount()
             if snapshot == self.makeDraftSnapshot(), report.examinationData.photos.map(
                 \.id,
             ) == self.photos.map(

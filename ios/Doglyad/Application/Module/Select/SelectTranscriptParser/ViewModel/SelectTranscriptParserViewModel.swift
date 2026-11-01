@@ -20,7 +20,7 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         self.arguments = arguments
         currentValue = arguments.currentValue
@@ -33,7 +33,7 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .selectTranscriptParser,
             ),

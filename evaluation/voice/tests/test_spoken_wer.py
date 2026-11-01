@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from evaluation.voice.spoken_wer import spoken_normalized_wer
+from evaluation.voice.scoring.spoken_wer import spoken_normalized_wer
 
 
 def test_numeric_display_and_unit_abbreviation_do_not_count_as_word_errors() -> None:

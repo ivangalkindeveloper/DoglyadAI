@@ -1,6 +1,8 @@
 # Created by venv; see https://docs.python.org/3/library/venv.html
 
 **/.DS_Store
+**/xcuserdata/
+*.xcuserstate
 
 **/__pycache__
 **/.pytest_cache
@@ -32,3 +34,11 @@
 /build/
 
 /competition/
+
+# Generated from harness/ by make sync-harness.
+/.codex/
+/.claude/
+/.agents/
+/.mcp.json
+/.mobilebuildmcp/
+/CLAUDE.md

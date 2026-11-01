@@ -5,7 +5,7 @@ from pathlib import Path
 
 from pytest import MonkeyPatch
 
-from evaluation.voice import report
+from evaluation.voice.analysis import report
 
 
 def test_running_evaluation_cannot_publish_previous_results(tmp_path: Path) -> None:

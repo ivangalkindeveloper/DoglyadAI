@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "MobileBuildMCP": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "--yes",
+        "--cache",
+        "./build/mcp/npm-cache",
+        "mobilebuildmcp@2.7.1",
+        "mcp"
+      ],
+      "env": {
+        "MOBILEBUILDMCP_SENTRY_DISABLED": "true"
+      },
+      "startup_timeout_sec": 120,
+      "tool_timeout_sec": 600
+    }
+  }
+}

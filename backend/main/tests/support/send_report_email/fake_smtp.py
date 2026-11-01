@@ -6,7 +6,12 @@ import ssl
 class FakeSMTP:
     instance: FakeSMTP | None = None
 
-    def __init__(self, host: str, port: int, timeout: float) -> None:
+    def __init__(
+        self,
+        host: str,
+        port: int,
+        timeout: float,
+    ) -> None:
         self.host = host
         self.port = port
         self.timeout = timeout
@@ -17,19 +22,36 @@ class FakeSMTP:
         self.is_closed = False
         FakeSMTP.instance = self
 
-    def starttls(self, *, context: ssl.SSLContext) -> None:
+    def starttls(
+        self,
+        *,
+        context: ssl.SSLContext,
+    ) -> None:
         self.context = context
 
-    def login(self, sender: str, password: str) -> None:
+    def login(
+        self,
+        sender: str,
+        password: str,
+    ) -> None:
         self.login_arguments = (sender, password)
 
-    def sendmail(self, sender: str, recipient: str, message: str) -> None:
+    def sendmail(
+        self,
+        sender: str,
+        recipient: str,
+        message: str,
+    ) -> None:
         assert sender == "sender@example.com"
         assert recipient == "recipient@example.com"
         self.message = message
 
-    def quit(self) -> None:
+    def quit(
+        self,
+    ) -> None:
         self.is_quit_called = True
 
-    def close(self) -> None:
+    def close(
+        self,
+    ) -> None:
         self.is_closed = True

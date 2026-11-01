@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from evaluation.voice.oracle_diagnostic import compare
-from evaluation.voice.score_candidate import FIELDS
+from evaluation.voice.analysis.oracle_diagnostic import compare
+from evaluation.voice.scoring.score_candidate import FIELDS
 
 
 def _summary(*, oracle: bool, matches: dict[str, bool], manifest: str = "audio") -> dict:

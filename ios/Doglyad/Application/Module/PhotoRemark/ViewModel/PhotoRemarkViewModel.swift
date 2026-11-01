@@ -14,7 +14,7 @@ final class PhotoRemarkViewModel: DModuleViewModel<any PhotoRemarkStateProtocol>
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         title = arguments.title
         description = arguments.description
@@ -26,7 +26,7 @@ final class PhotoRemarkViewModel: DModuleViewModel<any PhotoRemarkStateProtocol>
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .photoRemark,
             ),

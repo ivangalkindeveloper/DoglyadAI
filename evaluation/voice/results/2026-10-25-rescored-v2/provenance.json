@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 2,
+  "scorerVersion": "voice-evaluation-2.0",
+  "isNewInferenceRun": false,
+  "historicalBaseline": "evaluation/voice/results/2026-10-25-asr-extraction/baseline.json",
+  "historicalBaselineSha256": "ed9d37fdef974d4b165523677f1a83b5f23953c236ffcc02cb90f469958b73c0",
+  "caseScores": {
+    "path": "build/voice-eval/asr-matrix-2026-10-24/score-v2-20261025/case-scores.jsonl",
+    "sha256": "23b80cb14dcae418ca19f99ffa4c7e60be29cbe867c8b2300148d823b0719efc",
+    "bytes": 171285887
+  },
+  "medicalReviewPacket": "build/voice-eval/medical-review-v2",
+  "checksums": {
+    "asr.csv": "1cb932dd13eddb03546d3eebbb4d09a6fd31134e337dbfccf064f3b18ee17e2b",
+    "conditions.json": "e2132d5971221b9e85a5a0d6d3aeae8b03102df7fb9f3b9dca1b3efb1704a795",
+    "extraction.csv": "2651252a4056b818928acaee313f4795411b37dfdda6f293f85c6322e2627137",
+    "scorer-changes.json": "932d530c553136eaecfeaba1c8ce4d3010b8abdeda55ab1a4cefb57bd94febfb",
+    "scorer-source.json": "19cd64e67aa8e064b160e309dd3197b93e048f31e938b69f1aaddcf8dfefcdb7",
+    "stage-effects.json": "09d0da742425b6e1b602798f14e9d2e329f5222c8c8acdbf525abe1a7de0bd73",
+    "summary.json": "cdc8f9ddad03de6a82d73087c8330b59b0af59ee1d41b4179959f220d5f455d8"
+  }
+}

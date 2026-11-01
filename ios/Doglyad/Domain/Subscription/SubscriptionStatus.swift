@@ -1,9 +1,13 @@
 import Foundation
 
 struct SubscriptionStatus: Equatable {
+    let planId: String
     let type: SubscriptionType
     let entitlement: SubscriptionEntitlement
     let availableCountPerDay: Int
+    var source: SubscriptionSource?
+    var expiresAt: Date?
+    var isAutoRenewing: Bool = false
 }
 
 extension SubscriptionStatus {
@@ -38,7 +42,7 @@ extension SubscriptionStatus {
     }
 
     func availability(
-        of feature: PaidFeature,
+        of feature: SubscriptionPaidFeature,
     ) -> SubscriptionFeatureAvailability {
         switch feature {
         case .settingsAI:

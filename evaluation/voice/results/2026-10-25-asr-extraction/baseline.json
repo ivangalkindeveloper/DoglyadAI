@@ -1,0 +1,407 @@
+{
+  "schemaVersion": 1,
+  "runId": "2026-10-25-asr-extraction",
+  "measurementDates": [
+    "2026-10-24",
+    "2026-10-25"
+  ],
+  "sourceArtifactRoot": "build/voice-eval/asr-matrix-2026-10-24",
+  "isASRComplete": true,
+  "isExtractionComplete": true,
+  "methods": [
+    "exactLabels",
+    "explicitRules",
+    "naturalLanguage",
+    "medgemma",
+    "productionMedgemma",
+    "medgemma15",
+    "productionMedgemma15"
+  ],
+  "isFoundationExcludedByUser": true,
+  "partialFoundationRows": 4061,
+  "backendSourceRevision": "98ca96f3163457598a9871d7fefc2b21186fe3fe",
+  "backendMainAppHashes": {
+    "backend/main/app/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend/main/app/core/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend/main/app/core/get_application_locale_config.py": "3d243cbb059afef953d85daf4b2e9c57ba903c65c1fb9550e253df0ce4500177",
+    "backend/main/app/core/get_voice_parsing_config.py": "80452eaf625181190153b472d281ee1b7ca49dded064d00cac721ded3843654b",
+    "backend/main/app/core/get_voice_source_localization.py": "cffcb05a753b746fe8e2426dd7577942271f40f3aa6bcf2c5cb961e492096e10",
+    "backend/main/app/core/http_header.py": "4611cea4fef44d91e9ec4e26ad23d9842aaa4e9a9d835a6c7778ddda7095b271",
+    "backend/main/app/core/init_app_check.py": "9a4e3914461e853b1fece2cdc52d05c21caf347b1f654a06073782cc64f0fb63",
+    "backend/main/app/core/language_code.py": "0835a99287ddbb01d56bf9a231c61b777a5bc53f689f4e19fb104415ed8967f8",
+    "backend/main/app/core/limiter.py": "f0e46e30d9dc21e55db55e716ea04af1e883df87463674babb996641a7bc224f",
+    "backend/main/app/core/load_configs.py": "948beac05de2b182f0ebc5a493dfd3dd62a392c5cc60d4dc16c2409294d8b15c",
+    "backend/main/app/core/main_lifespan.py": "e4e13aab550e62ddf202708fe821381ed54646935946eed1f27348949e8a934c",
+    "backend/main/app/core/neural_model_service_type.py": "db7d195d9aba0cb1efb8c53a5d701bdd212d938d505e422fe81f518410f999db",
+    "backend/main/app/core/request_id_log_filter.py": "8bbe21c1183f0e170952cb5f969bb6d191ba0b47b70f20cd382e734e46e04817",
+    "backend/main/app/core/request_id_middleware.py": "87806b952f4a0382a3ebc9d5f2ece6d6a71c8bd2668ac5982cc122f70d20770b",
+    "backend/main/app/core/resolve_application_config_document.py": "c3b98d80d3c189153487aecf0dfdea3866f9ed6473df1b583b4f202be54750df",
+    "backend/main/app/core/resolve_examination_contextual_strings.py": "8994e787d06d43850326bd337f7cabd1514862ac788b57faf1f8a64aab33d60a",
+    "backend/main/app/core/resolve_examination_title.py": "a7b0bf2599fe2d065f7d2ce5e44995c3a90a5030ab5686b1a10574cd118b21fa",
+    "backend/main/app/core/resolve_examination_types_document.py": "5eb7c5a800d2f476d14bdc9535eddf62c19ffdfd8b975a56e35fc40f1bd264e6",
+    "backend/main/app/core/resolve_l10n_document.py": "67a9a96bd026756978f1bc63edf59fb8952ae922da52ca6a116594ffb8d13d25",
+    "backend/main/app/core/resolve_language.py": "579d1faabd755a9d67457212675f239fdf6f41465c758731f41a24b43feef075",
+    "backend/main/app/core/resolve_localized_text.py": "b5bf3797a1cfed078470c3125dbb8a6ef31048fbfbf3a403e9b58a60a603f60a",
+    "backend/main/app/core/resolve_neural_model.py": "359a17e5044cf5b7f409469e8a24de0c865e61a9badc872053275dd2b62db4cd",
+    "backend/main/app/core/resolve_neural_models_document.py": "845ea7fb4aeedd40f3743a379023c974a0bcef11e72ee134952e90b41a4c4370",
+    "backend/main/app/core/resolve_ready_made_templates.py": "2811e87f8168455de62b92fcbfea4e4bf7019dadfabf6a6efc3a82afc65f1225",
+    "backend/main/app/core/setup_logging.py": "613e84890b8a1c9776be8259ffbea6e8f6132f1711a36aceef7764a58b8ddf8e",
+    "backend/main/app/core/validate_application_localizations.py": "f4313bc6689e99a3eb0367f4123b334b41b1b855dbae2d9f41247cf32db4331e",
+    "backend/main/app/core/validate_prompt_localizations.py": "8c07e12b2785a6f8009c23f0a877e231c67200706c28545f309e4c88e7eb23cd",
+    "backend/main/app/core/variables.py": "560d6491202ae9d2e0046e2d6b8bbe8c4254d42cade5f382dc3551dc498506ec",
+    "backend/main/app/core/verify_app_check.py": "a6300c58b21201a4006096792333a3a81f8b323c330b1ba9702927281972c6c4",
+    "backend/main/app/main.py": "79e5446e1a587c14c9532799c296132f656574927cf1f97b245dea8ea30d65c9",
+    "backend/main/app/mock/en/report.json": "348701a3446b430695aff52b6c82039b78664b68dd422a45fb1b9739e5c29c30",
+    "backend/main/app/mock/en/voice_form.json": "41f161307d8bb3c2fd696b54288b5433cebc257856c1bf50cd79b090a179abd5",
+    "backend/main/app/mock/ru/report.json": "3e64323e79f3f7186d2226ceec8ec03b5f42dccf2bccd9d9fbba8f0237213310",
+    "backend/main/app/mock/ru/voice_form.json": "43d8afc0f1e4d694342498da73ef75018fab13fc594e8105bec41392e8f32484",
+    "backend/main/app/model/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend/main/app/model/application_locale_config.py": "0b290c881e91c8f113cd81cfdcc774f4a8a19765e8871661b5dab1edb9481a63",
+    "backend/main/app/model/inference/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
+    "backend/main/app/model/inference/inference_generation_image.py": "d124dc2b209217bf66011ee67b386e7958b2c6784c3d46e651073598fe05775c",
+    "backend/main/app/model/inference/inference_generation_request.py": "79d7fe7e529c3aed3df8cd86786ba41ed4f9e7a26f123e1d14ad4cb82c5b6040",
+    "backend/main/app/model/inference/inference_generation_response.py": "90b9411e1360dc9105da6e1d998291cf37c12e93f04cec66283bbb29638cd6dd",
+    "backend/main/app/model/l10n.py": "5d88590f1ec08e1fc2f306da2c6e9cd4de2d0725752cfdbb75953a7b48b9dc8e",
+    "backend/main/app/model/l10n_response.py": "bb847556f044bafe89e6967e5a5ca5dfe3569e0c8887381529596fec0f8174b2",
+    "backend/main/app/model/mock/mock_report_fixture.py": "99014fdba452921264a773de131482784ef356c637d0bd78800b25f6b8df2d91",
+    "backend/main/app/model/mock/mock_voice_form_fixture.py": "1848258b4d235d9a131f4b644da75f4dee4dacb55e76c77e5325b00f77c36d64",
+    "backend/main/app/model/neural_model/neural_model_service_operation.py": "fe0d4586eb66efd0f381d10f15f48415c75c46ff13fffb98b2f191492ee06f5b",
+    "backend/main/app/model/neural_model/neural_model_service_request.py": "f31440cbb47213122e6ad645e187950944bfa6eb03af20e5cd01c318bbffbf43",
+    "backend/main/app/model/non_blank_string.py": "19b6697bb632d19b09187a871e38271da1aa1ecbb5b98d80acd7c454039fd125",
+    "backend/main/app/model/report_email.py": "d116033a0ead730e10c7f6b093a999907543c96a77eb9adfe75f5cb34e668d44",
+    "backend/main/app/model/report_email_attachment.py": "549161a0b92c1d4edd94f11a006aeae73581d705b4ef4485f2c11bd0e49dca20",
+    "backend/main/app/model/settings_ai.py": "e80da52de455c200dbfee20fc959cc5b758f06fb369f8db7573b2401705c8369",
+    "backend/main/app/model/transcriber_type.py": "121265148bcdc929581be80cef5020b6f01f60140e5a9c349a938cb22cf7e55e",
+    "backend/main/app/model/transcript_parser_type.py": "9997b2aab11bd0d0954d7910e9c9eb341d84eb8f7a3b54b84663d1c9f6d3c886",
+    "backend/main/app/model/ultrasound/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend/main/app/model/ultrasound/us_dictated_report_sections.py": "c186dcb51ce7f4417d5be635379614e05bd97c62fcdebdd7d27a0bf57dcea18d",
+    "backend/main/app/model/ultrasound/us_examination_contextual_strings.py": "2b434e9036e4da017fff3bbaffb3a5b2b8e16c8ec3a8f907b7c12f9494113948",
+    "backend/main/app/model/ultrasound/us_examination_data.py": "424595374230826f9d011557b21a955cb68676defcba691ea2eca53afea78619",
+    "backend/main/app/model/ultrasound/us_examination_model_report_response.py": "e0822924e13545bd484b257782bab65e01040b6e9edee5bdc4c98fe95a3bfeb9",
+    "backend/main/app/model/ultrasound/us_examination_neural_model.py": "d7c4155fd08e8faa2bf98dfc4b757f1425014ba9226790a278a6c8ac5f146004",
+    "backend/main/app/model/ultrasound/us_examination_neural_model_accessibility.py": "65fdb0b559d8b31cdecb5cc613e654fcb9208eb008d8fd7b599973195c1c6fef",
+    "backend/main/app/model/ultrasound/us_examination_neural_model_response.py": "912c8c7428622af04257e7411b0d62deb09f3395f28e0509bbf2b65d808b38a8",
+    "backend/main/app/model/ultrasound/us_examination_photo_remark_point.py": "198d5c96ed6378114b8d25ad124c56d3c79a92278dbda78bf86bc3a319842e45",
+    "backend/main/app/model/ultrasound/us_examination_photo_remarks.py": "17780537def83090f0ab5589f469b8239b9d8b39e9ff684c3a8f8dc6e2e38c28",
+    "backend/main/app/model/ultrasound/us_examination_ready_made_template.py": "f28119d72c24ee1eda7f776b79940b4399c7055e537ad4320274e1602ff6e06c",
+    "backend/main/app/model/ultrasound/us_examination_ready_made_template_response.py": "8eab7857f4fe26c4576cf29b790fb4dc8f2564884248721c8422fe7b68d0af5b",
+    "backend/main/app/model/ultrasound/us_examination_report.py": "e9e53a75731c96765b6f064416ada10d81330d1d7756706c0d46596b020e48b1",
+    "backend/main/app/model/ultrasound/us_examination_request.py": "9dd95919e97fb92aedf19533557132e85c544cafd9b685ef34835178c410eb73",
+    "backend/main/app/model/ultrasound/us_examination_scan_photo.py": "4bd31274bde55ff14da3f48612386e63dd9fbf199afc0409f53eddbb79872ea8",
+    "backend/main/app/model/ultrasound/us_examination_type.py": "c793ad3bf89e62cae6ffefdbe5ab91f786a487159d922e1c3bc9f5095dab8f37",
+    "backend/main/app/model/ultrasound/us_examination_type_group.py": "77a2d4ef6212876ed9cd7c3e4232279c8c98be8c516d98f190b6acdd057c22fd",
+    "backend/main/app/model/ultrasound/us_examination_type_group_response.py": "7e81e79fe4c7d80d85812fc06f1c533d4457b1eea8c1ae26e73d0e0e87e60980",
+    "backend/main/app/model/ultrasound/us_examination_type_response.py": "407eeb4f53b49bfa934b75573e7329555b52170d598e1544f6fd4acb11abfcb7",
+    "backend/main/app/model/ultrasound/us_voice_birth_date_field_generation.py": "cf402af11022c9cab5521d86a1d9109a4f09f985fa48b0d471385c048e86b518",
+    "backend/main/app/model/ultrasound/us_voice_field_accuracy.py": "569b9caa478bab40620a6901faf3b95f1caa68b7047fe693dff189164694583f",
+    "backend/main/app/model/ultrasound/us_voice_field_id.py": "e6e565d7863d6acc0db5bf2d621662cc8610c3429d100c7b9e3057889527dd43",
+    "backend/main/app/model/ultrasound/us_voice_field_proposal.py": "8ee76033cff5d9c5968603439188dfb27518535216d9113f90eba3c95eda6f58",
+    "backend/main/app/model/ultrasound/us_voice_form_generation.py": "5025f460ed117cc69229527998c777758e9b4659bf74d39683eca13aebbeaf95",
+    "backend/main/app/model/ultrasound/us_voice_form_parse_request.py": "9b46c2df6652911d4e457c3e1ebe7c5a372408ca4c4c483e91fb8dc1e000519f",
+    "backend/main/app/model/ultrasound/us_voice_form_parse_response.py": "1b2d0769dccef8478920c8aa3a4a6ad2f4cab05890a91afc0d276554cdfa7706",
+    "backend/main/app/model/ultrasound/us_voice_form_parsing_config.py": "6a644d07b1557f05808ff5e0109d4d02bcc56e52f4e266a3696f73895a731ad9",
+    "backend/main/app/model/ultrasound/us_voice_gender_field_generation.py": "055edc7430ee814d7647f6017048ea22e68c51ccc351af51a5e96da5df338904",
+    "backend/main/app/model/ultrasound/us_voice_numeric_field_generation.py": "090fbc467e7963eba87523402f036c9bc2e81153bef7e79472a63c6fd3cb4351",
+    "backend/main/app/model/ultrasound/us_voice_source_localization.py": "b25aa71fcebcd0851ca857f67903bb1eb4db46d15d3e1bbdcfac03e77d8eb961",
+    "backend/main/app/model/ultrasound/us_voice_text_field_generation.py": "2832bd499c154650dbc1b73410501992d9d55ae23c2d9e19684fb94753b9d440",
+    "backend/main/app/prompt/__init__.py": "dcde16e8be5ccc7caac3577cd1158b0760e76981486270149bc14e613cfa4b49",
+    "backend/main/app/prompt/prompt_factory.py": "8f9d63293958de2ff437235673e3cd441397f6c327d906acb4a8dc6f969b29e1",
+    "backend/main/app/prompt/voice_form_prompt.py": "499dcd650c3fccdcb4a76ddea47c0ef9e1cb3d43ef62702e15ea6ef128b080fc",
+    "backend/main/app/prompt/voice_form_system_prompt.py": "d9f68e94c0f1ef5cc15d22d59c98a8f848c9175469de057768174ebd588e7809",
+    "backend/main/app/route/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "backend/main/app/route/application_config.py": "3a19cf59c8f3bc91abab644dae03f77a7c47f7f6e53d0c572ac214c0e99c86a7",
+    "backend/main/app/route/config_document_response.py": "d71e7fce5c609825e439df50ef630cb979873d7faf6f8f05d10f8a25c6269815",
+    "backend/main/app/route/l10n.py": "4f1727ba524dc9509ed8c65c3d8850a10b1ede018873761fa01a114159f50d6c",
+    "backend/main/app/route/send_report_email.py": "94cebae4a48d4ee87926eaa9912f41b1a26082ec7624f376e9c4da6ef9142783",
+    "backend/main/app/route/templates/__init__.py": "cf22f7e72616862c585d294e42631910e34f3510cc8ab23a42fb60deb14dc4c8",
+    "backend/main/app/route/templates/ready_made_list.py": "eec292470bc76c5f96e575f34466cb7db596dbb5b659f1a38ea99f6ae80223cc",
+    "backend/main/app/route/ultrasound/__init__.py": "332faf19366bca87ea7949fc79a8b9fd1c951ae7fed869207905150342ec0d35",
+    "backend/main/app/route/ultrasound/examination_neural_models.py": "91c7fb8497858f5c7c1d1c11aa4b30342ee2740f82dc446c75cfdec1ac059cfd",
+    "backend/main/app/route/ultrasound/examination_types.py": "a37b36bb7cdb2ff6cc1e5086b3b589917be333d9d343dae9a731706540bbda83",
+    "backend/main/app/route/ultrasound/generate_report.py": "42be10eb8a4837851704bc763b51b6f7ee5110fbe36bc5091fd965ef223a5e1d",
+    "backend/main/app/route/ultrasound/parse_dictation.py": "85706f75a86e98990ca0553512ed2c412fd18a4b42331f2d1faa56b375df6ac1",
+    "backend/main/app/schema/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
+    "backend/main/app/schema/us_examination_report_structured_output.py": "013bb61d3eae8d84f2a02957d4f9d229b02e8a301a6bb525ef8d60d52a2f7482",
+    "backend/main/app/service/__init__.py": "a635523ea4aa8dbd53737ebc2bd03b8893eadd8d05a32c5682250584e49762b0",
+    "backend/main/app/service/clinical_value_is_supported.py": "9697214c0552a64092f427bc73df3c3aa41b11f03497aa97691a7a30c27c1b93",
+    "backend/main/app/service/create_model_service.py": "185d769d335378cbedc89abd9a541e85bfa52de3b52fe144fa7da80ccdac2606",
+    "backend/main/app/service/examination_number_markers.py": "d19897d369ebd6b0724d5e5d79fd30b7ea94d5fa2fdb3ab44601110a7e0f0861",
+    "backend/main/app/service/gender_from_evidence.py": "32889727239fe41d35b0af8e79e6db1c1bf271cd62ec740b28b4169ce379d701",
+    "backend/main/app/service/has_birth_date_cue.py": "ed097e0df05cbc4cf0672024f63fec8383f8a37b9fb3ce637d15229b8ae88a92",
+    "backend/main/app/service/has_content_outside_evidence.py": "a107a0e3fb0fd37e18a22fecb2b2f2475d1391ef769fee88956c6caf30a0782f",
+    "backend/main/app/service/has_examination_identifier_evidence.py": "995d887bd2f713828b5c8c9333b56526472ebe3c16dd01161cd3c581adb57f9e",
+    "backend/main/app/service/has_examination_number_evidence.py": "8d49a236af96ec39dbccabfc299cf804df27794d6fac8b118dc59d01f7952b66",
+    "backend/main/app/service/inference_service.py": "4c27cfdb892393d53e6425d7311f9b5009cbf7962fad9ec3a8af4d69a8de106b",
+    "backend/main/app/service/labeled_birth_date.py": "d368f949218866cfaa1582c9f92bfaa00296559c0f08f4674f1ba7422cadc78d",
+    "backend/main/app/service/labeled_clinical_text.py": "9945e3ca7f64a9742f0744eaeec50dc9a24ab6a54eb27ef8d34cc8a220bfc0f0",
+    "backend/main/app/service/labeled_examination_number.py": "835c20d9aaef1bc53409483f40e2eb92b4ce718fa4e660356af635666e57c537",
+    "backend/main/app/service/labeled_measurement.py": "597d3a92ec126d4a7308c61673d11d5ecfd84f9720f57b8d4aeeb8dd2c09e896",
+    "backend/main/app/service/labeled_patient_gender.py": "eb6ca41b7ed253a1f1d8c7efe834b53d0e4dd4854a30f7adf39d90c74191bf56",
+    "backend/main/app/service/mock_neural_model_service.py": "0e37ebd7786401453286e9aae3043028b00885638e0ed65eb40c79b7e1b425e5",
+    "backend/main/app/service/neural_model_service.py": "c05d764fb1df510f804580df29e2d5a051157033c38e6b015091c2971c15c850",
+    "backend/main/app/service/normalize_patient_name.py": "f53eca31b7f27caa0997673fc5f167afca04b613d0e425a7d784381bcd2ecaf2",
+    "backend/main/app/service/patient_name_metadata_evidence.py": "92bade5c42fc4382c1112271c73aa0e637435ef345ebf52bb08c471c732c097c",
+    "backend/main/app/service/repair_patient_name_evidence.py": "c88ab9a3e644fd88de9b4c0ca07f04e59bb183a5dc274015d0572bf88c244214",
+    "backend/main/app/service/source_birth_date.py": "7b013af44c9d2d5ce191770f77870b99bbce100e52ee1a2823921f4ee8667cc1",
+    "backend/main/app/service/source_measurement.py": "dfa56b384d7e7d9d446bbd41b26d7a131cb677a9479ac6cf105bd3bc365ee381",
+    "backend/main/app/service/source_number.py": "81fa9370f8a628c333ea567d22406169b9a5422fa17f1f9714ddfecf16b8d46c",
+    "backend/main/app/service/source_year.py": "5bbf1d7edbb29e47c6a731049f50f4a5a99c2efaaa99a58e41579de11e59b351",
+    "backend/main/app/service/split_dictated_report_sections.py": "874454f47a47f047770137ed3061bd9ff8bb051a86ea5bc7434ef9f2741af8ac",
+    "backend/main/app/service/validate_report_content.py": "860b472ccfb35e152bb7feebd311bd1a8848926c0c6e7e5ebb2d03608e3ea939",
+    "backend/main/app/service/validate_report_remarks.py": "4df97b97530396c31080a72502dfaeeb73747d3ad9fedb552e8501fa86c56656",
+    "backend/main/app/service/validate_voice_form_generation.py": "7be4115da6b1c715d634e91cec0630f90b641dcc450f8d177e812dc95c5d6769"
+  },
+  "isBackendBaselineBeforeConcurrentRefactor": true,
+  "manifestSha256": "2c02f372ab58450718de738d53b41eae15a87bd17dc482dd22fda1ce04402125",
+  "cohorts": {
+    "perRecognizer": 1510,
+    "perLanguage": {
+      "ru": 758,
+      "en": 752
+    },
+    "dictationPerLanguage": 372,
+    "naturalPerLanguage": 58,
+    "clinicalPerLanguage": 430,
+    "terminology": {
+      "ru": 328,
+      "en": 322
+    },
+    "uniqueContextualPhrases": {
+      "ru": 1213,
+      "en": 1200
+    }
+  },
+  "counts": {
+    "asrMeasurements": 10570,
+    "asrFailures": 4,
+    "successfulASRInputs": 10566,
+    "methodOutcomesOnSuccessfulASRInputs": 73962
+  },
+  "nativeASR": {
+    "device": "physical iPhone 17",
+    "os": "iOS 27.0.1",
+    "whisperKitModel": "production Turbo, 626 MB",
+    "isSingleBuildSpeedComparison": false,
+    "whisperKitPrimaryBuilds": {
+      "Debug": 168,
+      "Release-Development": 1226
+    }
+  },
+  "serverASR": [
+    {
+      "model": "gigaam",
+      "modelId": "ai-sage/GigaAM-v3",
+      "manifestSha256": "947f321630a7dd03a13df4f7172ffc75f6f6707180276fb6cccaefad09637152",
+      "sourceSha256": "a9dca1e300c2a6026e2f9e4c8aedc52b60de6c7d67c9d61970a9580f6c65d520",
+      "device": "cpu",
+      "threads": 4,
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "packages": {
+        "torch": "2.8.0",
+        "transformers": "4.57.1",
+        "numpy": "2.3.5",
+        "soundfile": "0.13.1"
+      },
+      "revision": "7655ad717f8122257385bb4b2f373db3697e8680",
+      "startedAt": "2026-10-24T16:08:58.655205+00:00"
+    },
+    {
+      "model": "medasr",
+      "modelId": "google/medasr",
+      "manifestSha256": "947f321630a7dd03a13df4f7172ffc75f6f6707180276fb6cccaefad09637152",
+      "sourceSha256": "a9dca1e300c2a6026e2f9e4c8aedc52b60de6c7d67c9d61970a9580f6c65d520",
+      "device": "cpu",
+      "threads": 4,
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "packages": {
+        "torch": "2.10.0",
+        "transformers": "5.20.2",
+        "numpy": "2.4.6",
+        "soundfile": "0.13.1"
+      },
+      "revision": "ae1e4845b4b07479735d93e1e591e566435b7104",
+      "startedAt": "2026-10-24T15:42:56.801707+00:00"
+    },
+    {
+      "model": "nemotron",
+      "modelId": "nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "manifestSha256": "947f321630a7dd03a13df4f7172ffc75f6f6707180276fb6cccaefad09637152",
+      "sourceSha256": "a9dca1e300c2a6026e2f9e4c8aedc52b60de6c7d67c9d61970a9580f6c65d520",
+      "device": "cpu",
+      "threads": 4,
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "packages": {
+        "torch": "2.10.0",
+        "transformers": "5.20.2",
+        "numpy": "2.4.6",
+        "soundfile": "0.13.1"
+      },
+      "revision": "ea30d66debe3740a08b573244286791d423d6b3e",
+      "startedAt": "2026-10-24T15:50:45.527019+00:00"
+    },
+    {
+      "model": "canary",
+      "modelId": "nvidia/canary-1b-v2",
+      "manifestSha256": "947f321630a7dd03a13df4f7172ffc75f6f6707180276fb6cccaefad09637152",
+      "sourceSha256": "a9dca1e300c2a6026e2f9e4c8aedc52b60de6c7d67c9d61970a9580f6c65d520",
+      "device": "mps",
+      "threads": 4,
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "packages": {
+        "torch": "2.10.0",
+        "transformers": "5.20.2",
+        "numpy": "2.4.6",
+        "soundfile": "0.13.1"
+      },
+      "revision": "d455706339a6b32e1aa40f82c713a482a0c938e2",
+      "startedAt": "2026-10-24T16:08:56.639358+00:00"
+    }
+  ],
+  "generation": {
+    "modelRevisions": {
+      "google/medgemma-4b-it": "290cda5eeccbee130f987c4ad74a59ae6f196408",
+      "google/medgemma-1.5-4b-it": "91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b"
+    },
+    "gpu": "NVIDIA A10",
+    "gpuMemoryMiB": 23028,
+    "vllmVersion": "0.27.1",
+    "vllmImage": "vllm/vllm-openai:v0.27.1@sha256:c2f3b1b964e47809b722b5e75b61b1e7b39a50f70388cf2bf2418f16a9f31da2",
+    "temperature": 0,
+    "maxTokens": 2048,
+    "maxModelLen": 16384,
+    "maxNumSeqs": 16,
+    "gpuMemoryUtilization": 0.9,
+    "tensorParallelSize": 1,
+    "isPrefixCachingEnabled": true,
+    "structuredOutput": {
+      "backend": "xgrammar",
+      "disable_any_whitespace": true
+    },
+    "imageLimit": 0,
+    "route": "local main -> SSH tunnel -> GPU inference -> vLLM",
+    "isAppCheckVerifiedAtBothBackends": true,
+    "requestIntervalSeconds": 2.1,
+    "maxConcurrency": 4,
+    "cacheKey": [
+      "locale",
+      "examinationTypeId",
+      "correctedText"
+    ],
+    "isCacheSharedAcrossModels": false,
+    "outcomes": {
+      "google/medgemma-4b-it": {
+        "ok": 10226,
+        "failed": 340,
+        "invalidGeneration": 89,
+        "backendInternalError": 251
+      },
+      "google/medgemma-1.5-4b-it": {
+        "ok": 10066,
+        "failed": 500,
+        "invalidGeneration": 168,
+        "backendInternalError": 332
+      }
+    }
+  },
+  "metrics": {
+    "asrTableWER": "arithmetic mean per-clip meanNormalizedWER; failures use empty transcript",
+    "termRetention": "literal phrase containment, clean and noisy combined",
+    "extractionTableCohort": "clinical/both (430 per language)",
+    "fieldAccuracy": "equivalentCorrectFields / expectedFields",
+    "formAccuracy": "equivalentExactForms / cases",
+    "confirmation": "uncertain values confirmed without editing",
+    "isAutomaticPolicySupportedForServerASR": false,
+    "isSyntheticAudio": true,
+    "referenceKind": "intended TTS words, not human-verified audio"
+  },
+  "rawArtifacts": [
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/whisperKit/results.jsonl",
+      "sha256": "f47d66d939b1baef6731ce0e28213dec1565f283ff09e0f6a8510b528d0b365d",
+      "bytes": 7061705
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/sfSpeechRecognizer/results.jsonl",
+      "sha256": "5fee48db71b7dd8e028c18750a50360483ea6f2739f9373e05d7bf199c88f254",
+      "bytes": 5181470
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/speechAnalyzer/results.jsonl",
+      "sha256": "8eef2c00ce9c1fa5f13635e2e770d3f2133c66fac9dc354f74505c068aa470dc",
+      "bytes": 7407596
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/gigaam.jsonl",
+      "sha256": "df22faac2c70022b104d908e45b8af719697cfbd57104e1146bc73793cf99b83",
+      "bytes": 1190616
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/medasr.jsonl",
+      "sha256": "4c5dd354e41ed375cfb6ef4ee412cdf7c031bccb232bfbddb85742d205d03e63",
+      "bytes": 994384
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/nemotron.jsonl",
+      "sha256": "8ea5b701c9e4a26b3b0d242daadfb8582cb0283549c9118dab001d3e42890a37",
+      "bytes": 1306191
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/canary.jsonl",
+      "sha256": "ab28e34bcda0099ae6dd8e982bcbeb6c6072f72d74c11d099c3c31e3abad5bae",
+      "bytes": 1233246
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/whisperKit/results.jsonl",
+      "sha256": "291f0839995ba88d5ea9fa27fa8f7ff1ba13225743ad6c54d6f09a9fc983a2ff",
+      "bytes": 700921
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/sfSpeechRecognizer/results.jsonl",
+      "sha256": "8cefec530589c8212dbbee0c93a878bee5d1f40bf286118992784e6055e7c224",
+      "bytes": 459139
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/speechAnalyzer/results.jsonl",
+      "sha256": "7ea3381465b8d3c4888102e887117d7a71f813ae25cbd41f1212d413b1341e63",
+      "bytes": 863832
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/gigaam.jsonl",
+      "sha256": "844f90ed6db91d41f6005e758257427a83309b7caed4ca28d42f98f192c8f59b",
+      "bytes": 123446
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/medasr.jsonl",
+      "sha256": "e68382d56b33e655b36d3bbea36256014f552c6b3d6a7732252c42ef5ee546fe",
+      "bytes": 99279
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/nemotron.jsonl",
+      "sha256": "47d69282b77f44a3c5d6e77103536cd1f156a303132225e00f1dbd280f99a099",
+      "bytes": 150048
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/canary.jsonl",
+      "sha256": "bd89ae70412b0ac2a32454d7e469b0099270c841f2feef9260eedcadc0a72c67",
+      "bytes": 129576
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/extraction/rules/results.jsonl",
+      "sha256": "eb215afa7999d49bca68e2ff2666e26b90c11e7513f2f4ae9d92d818d88fcd64",
+      "bytes": 92120219
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/extraction/server/results.jsonl",
+      "sha256": "0a202cdffc8457f83149addac423752379f0047f7780e334b74d6835363573a6",
+      "bytes": 104181428
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/extraction/server15/results.jsonl",
+      "sha256": "ce1a7ae2dc433391790c575c8767f9dfed380bf4089c8a646542af12e67575f9",
+      "bytes": 108292160
+    }
+  ],
+  "localArchive": "raw-artifacts.tar.gz",
+  "isLocalArchiveGitIgnored": true,
+  "localArchiveBytes": 899624490
+}

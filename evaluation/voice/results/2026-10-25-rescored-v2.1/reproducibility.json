@@ -1,0 +1,39 @@
+{
+  "scorerVersion": "voice-evaluation-2.1",
+  "isNewInferenceRun": false,
+  "isByteIdentical": true,
+  "runs": [
+    "build/voice-eval/asr-matrix-2026-10-24/score-v2.1-final-20261025",
+    "build/voice-eval/asr-matrix-2026-10-24/score-v2.1-recheck-20261025"
+  ],
+  "files": {
+    "asr.csv": {
+      "sha256": "1cb932dd13eddb03546d3eebbb4d09a6fd31134e337dbfccf064f3b18ee17e2b",
+      "bytes": 45611
+    },
+    "case-scores.jsonl": {
+      "sha256": "8ab53f1010441035aa6160e269732b09046401f3bfd9a79abc46328bcc954862",
+      "bytes": 196939039
+    },
+    "conditions.json": {
+      "sha256": "e2132d5971221b9e85a5a0d6d3aeae8b03102df7fb9f3b9dca1b3efb1704a795",
+      "bytes": 3412
+    },
+    "extraction.csv": {
+      "sha256": "2651252a4056b818928acaee313f4795411b37dfdda6f293f85c6322e2627137",
+      "bytes": 155822
+    },
+    "scorer-changes.json": {
+      "sha256": "f22f42e28424f89745d0c5ac13fd92000ec24440e9206d9e2d6c355cdf83bc2c",
+      "bytes": 342746
+    },
+    "stage-effects.json": {
+      "sha256": "09d0da742425b6e1b602798f14e9d2e329f5222c8c8acdbf525abe1a7de0bd73",
+      "bytes": 36047
+    },
+    "summary.json": {
+      "sha256": "e3c55e10c4d971b3eaabb6701b2fe270c97e68a4afed295f2bab095150658eaf",
+      "bytes": 1675125
+    }
+  }
+}

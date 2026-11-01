@@ -1,0 +1,94 @@
+# Optional overlay for docker-compose.main.yml. See backend/main/BILLING.md.
+x-billing-app: &billing-app
+  image: ghcr.io/ivangalkindeveloper/doglyad-main:${TAG:-latest}
+  volumes:
+    - ./secrets:/app/secrets:ro
+    - ./logs:/app/logs
+  env_file:
+    - secrets/.env
+    - ${ENV_FILE:?ENV_FILE is required}
+  environment: &billing-environment
+    BILLING_DATABASE_URL: ${BILLING_DATABASE_URL:?BILLING_DATABASE_URL is required}
+    LOG_DIR: /app/logs
+  restart: unless-stopped
+  logging:
+    driver: json-file
+    options:
+      max-size: 20m
+      max-file: "5"
+  depends_on:
+    billing_migrate:
+      condition: service_completed_successfully
+
+services:
+  backend_main:
+    environment:
+      BILLING_DATABASE_URL: ${BILLING_DATABASE_URL:?BILLING_DATABASE_URL is required}
+    depends_on:
+      billing_migrate:
+        condition: service_completed_successfully
+
+  billing_database:
+    build:
+      context: ./billing
+    image: doglyad-billing-postgres:17
+    environment:
+      POSTGRES_DB: billing
+      POSTGRES_USER: doglyad
+      POSTGRES_PASSWORD: ${BILLING_DATABASE_PASSWORD:?BILLING_DATABASE_PASSWORD is required}
+      POSTGRES_INITDB_ARGS: --data-checksums --auth-host=scram-sha-256
+    volumes:
+      - billing_database:/var/lib/postgresql/data
+      - ./secrets/pgbackrest.conf:/etc/pgbackrest/pgbackrest.conf:ro
+    command:
+      - postgres
+      - -c
+      - archive_mode=on
+      - -c
+      - archive_command=pgbackrest --stanza=billing archive-push %p
+      - -c
+      - archive_timeout=60s
+    healthcheck:
+      test: [CMD-SHELL, pg_isready -U doglyad -d billing]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: 20m
+        max-file: "5"
+
+  billing_migrate:
+    <<: *billing-app
+    command: [alembic, upgrade, head]
+    restart: "no"
+    depends_on:
+      billing_database:
+        condition: service_healthy
+
+  billing_gateway:
+    <<: *billing-app
+    command: [uvicorn, app.payment_main:app, --host, 0.0.0.0, --port, "8000", --proxy-headers, --forwarded-allow-ips, "*", --no-access-log]
+    environment:
+      <<: *billing-environment
+      LOG_DIR: /app/logs/billing-gateway
+    expose: ["8000"]
+
+  billing_worker:
+    <<: *billing-app
+    command: [python, -m, app.billing_worker]
+    environment:
+      <<: *billing-environment
+      LOG_DIR: /app/logs/billing-worker
+
+  caddy:
+    volumes:
+      - ./billing/Caddyfile:/etc/caddy/Caddyfile:ro
+    depends_on:
+      - backend_main
+      - billing_gateway
+
+volumes:
+  billing_database:

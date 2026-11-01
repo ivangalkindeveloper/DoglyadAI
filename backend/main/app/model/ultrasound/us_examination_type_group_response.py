@@ -9,4 +9,6 @@ from app.model.ultrasound.us_examination_type_response import USExaminationTypeR
 class USExaminationTypeGroupResponse(BaseModel):
     id: NonBlankString
     title: NonBlankString
-    examinationTypes: list[USExaminationTypeResponse] = Field(min_length=1)
+    examinationTypes: list[USExaminationTypeResponse] = Field(
+        min_length=1,
+    )

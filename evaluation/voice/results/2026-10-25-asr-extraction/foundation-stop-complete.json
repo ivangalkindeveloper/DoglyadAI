@@ -1,0 +1,10 @@
+{
+  "isStoppedByUser": true,
+  "isNativeTestSuccessful": false,
+  "isCompleteMatrix": false,
+  "finishedAt": "2026-10-25T11:13:05.286114+00:00",
+  "partialResults": "/Users/ivangalkin/Development/My projects/Doglyad/build/voice-eval/asr-matrix-2026-10-24/extraction/foundation/results.jsonl",
+  "partialSha256": "9284400727a727334e569269db00bf0ac487a66f51371cd9b517045797ae408f",
+  "rows": 4061,
+  "note": "Explicit user cancellation; no more Foundation Models quality runs. Preserve original partial results and cancellation logs."
+}

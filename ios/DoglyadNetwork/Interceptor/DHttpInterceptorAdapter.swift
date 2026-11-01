@@ -2,14 +2,15 @@ import Foundation
 internal import Alamofire
 
 /// A bridge between the Alamofire-agnostic `DHttpInterceptorProtocol` and
-/// Alamofire's `RequestInterceptor`. Wraps the async `adapt` into a completion API.
+/// Alamofire's `RequestInterceptor`. Applies adapters in order and bridges the
+/// async operations to a completion API. A failure stops subsequent adapters.
 struct DHttpInterceptorAdapter: RequestInterceptor {
-    private let interceptor: DHttpInterceptorProtocol
+    private let interceptors: [any DHttpInterceptorProtocol]
 
     init(
-        interceptor: DHttpInterceptorProtocol,
+        interceptors: [any DHttpInterceptorProtocol],
     ) {
-        self.interceptor = interceptor
+        self.interceptors = interceptors
     }
 
     func adapt(
@@ -19,9 +20,12 @@ struct DHttpInterceptorAdapter: RequestInterceptor {
     ) {
         Task {
             do {
-                let adapted = try await interceptor.adapt(
-                    urlRequest,
-                )
+                var adapted = urlRequest
+                for interceptor in interceptors {
+                    adapted = try await interceptor.adapt(
+                        adapted,
+                    )
+                }
                 completion(
                     .success(
                         adapted,

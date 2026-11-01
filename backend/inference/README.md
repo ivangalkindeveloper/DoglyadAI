@@ -1,12 +1,12 @@
 # backend/inference — GPU inference service
 
-This standalone service is deployed **on a GPU VM** beside the model runtime. It runs a local vLLM instance, accepts ready-to-use prompts, images, and a JSON Schema from the coordinating backend, and returns structured generated content.
+This standalone service is deployed **once per GPU host** beside its model runtimes. It routes ready-to-use prompts, images, and a JSON Schema to the configured local vLLM engine and returns generated content.
 
 ## Architecture
 
 ```text
                               ┌─────────────────────────────────────────────┐
-                              │ GPU VM (one VM per model)                  │
+                              │ GPU host (one or more models)              │
                               │                                            │
 iOS ──► backend/main ────────►│ backend/inference ──► vLLM (localhost)     │
         (non-GPU VM)          │ App Check             configured model    │
@@ -14,11 +14,11 @@ iOS ──► backend/main ────────►│ backend/inference ─�
 ```
 
 - **backend/main** ([`../main`](../main)) runs on a non-GPU VM. It builds prompts, selects a model, and routes the request. It does not run inference.
-- **backend/inference** (this service) runs once per model VM. It validates App Check and calls its local vLLM instance.
+- **backend/inference** (this service) runs once per GPU host. It validates App Check and selects a private vLLM engine by `modelId`.
 
 Prompts, localization, and templates remain in the main backend. This service receives final text and has no product-domain knowledge.
 
-The main backend selects a VM by model ID through `backend/main/secrets/inference_endpoints.json`. Every model in the published configuration must have a mapping; a missing entry is a configuration error.
+The main backend selects an inference service by model ID through `backend/main/secrets/inference_endpoints.json`. Every published model must have a mapping; models on the same host share a service URL.
 
 ## Why App Check is verified again
 
@@ -53,11 +53,27 @@ Response:
 { "modelId": "example/model", "response": "..." }
 ```
 
-`modelId` is compared with `SERVED_MODEL_ID`. A mismatch returns `400` instead of silently generating with a different model.
+`modelId` selects an entry in the configured engine map. An unknown ID returns `400` without an upstream request. Caller-supplied model IDs can never supply a destination URL.
+
+Single-model deployments retain `SERVED_MODEL_ID` and `VLLM_BASE_URL`.
+For multiple models, clear `SERVED_MODEL_ID` and supply `VLLM_ENDPOINTS` as JSON:
+
+```json
+{"example/model-a":"http://engine-a:8000","example/model-b":"http://engine-b:8000"}
+```
+
+These are trusted host settings. Startup rejects an empty map, ambiguous single/multi-model settings, blank IDs, non-HTTP URLs, URL credentials, query strings and fragments. Engines remain private inside Docker. A shared HTTP client serves all routes; each model has its own bounded queue.
 
 Client-IP rate limits live in main. This service applies separate body, image and generation-capacity limits from `config/server.json`; requests from both main environments share the same model capacity.
 
 ## Deployment on managed VMs
+
+For a DGX Spark, use [the ARM64 deployment guide](../../deploy/dgx-spark/README.md).
+One Compose project contains a shared inference service and three private vLLM
+engines. App Check remains mandatory.
+New host deployments can use [host profiles and the Compose generator](../../deploy/inference/README.md).
+Each profile generates its own engine definitions and `VLLM_ENDPOINTS`; profiles
+can contain one or several models. Generation does not start or update containers.
 
 Use [deploy/README.md](../../deploy/README.md) for provisioning and the central `make check-infrastructure` / `make update-infrastructure` commands for existing servers. Those commands use published GHCR images and preserve the running vLLM container during backend updates.
 
@@ -104,12 +120,15 @@ The key values account for model parameters and available GPU memory:
 ```bash
 cd backend/inference
 ../../.venv311/bin/python -m ruff check app tests
-../../.venv311/bin/python -m ruff format app tests
+../../.venv311/bin/python ../../tools/format_python.py .
+../../.venv311/bin/python ../../tools/format_python.py --check .
 ../../.venv311/bin/python -m mypy
 ../../.venv311/bin/python -m pytest
 ```
 
 Development dependencies are listed in `requirements-dev.txt`. The service intentionally mirrors the `backend/main/` structure (`app/core`, `app/model`, `app/route`, and `app/service`) and keeps local copies of `setup_logging.py`, `init_app_check.py`, and `verify_app_check.py`. The deployments are independent, while these files are small and change infrequently.
+
+The formatter combines LibCST with Ruff to put every parameter and call argument on a separate line, including single arguments. From the repository root, use `make format-backend` and `make lint-backend` for both services; see [tools/README.md](../../tools/README.md).
 
 The two services have almost identical `init_app_check.py` and `verify_app_check.py` modules and both enforce validation unconditionally. A shared package would add deployment coupling for very little code.
 
@@ -124,9 +143,9 @@ The two services have almost identical `init_app_check.py` and `verify_app_check
 - `generation`: maximum body size (48 MiB, allowing transport/prompt overhead above main's 40 MiB input), image count (six), decoded image size (4 MiB), concurrent operations (16), waiting requests (16), queue wait (2 seconds), and `Retry-After` (5 seconds).
 - `default_max_body_bytes`: body limit for unrecognized paths.
 
-Capacity checks are per service process. Run one worker per model VM, as the supplied Uvicorn command does. The 16 concurrent slots match the current vLLM scheduling configuration; actual throughput depends on the model and GPU. A full queue or an expired queue wait returns `503`. Queue slots are released after completion, errors and cancellation. These limits are separate from client subscription quotas. An HTTP deadline bounds this service's wait; engine-side cancellation of a generation is controlled by vLLM.
+Capacity checks are per model and per service process. Run one worker per GPU host, as the supplied Uvicorn command does. The default 16 concurrent slots apply separately to each model; DGX overrides this to one running and one waiting request per model. Actual throughput depends on the model and GPU. A full queue or an expired queue wait returns `503`. Queue slots are released after completion, errors and cancellation. These limits are separate from client subscription quotas. An HTTP deadline bounds this service's wait; engine-side cancellation of a generation is controlled by vLLM.
 
-`VLLM_REQUEST_TIMEOUT_SECONDS` no longer controls the Python service; edit `vllm` in `server.json`. Network addresses, served model ID and Firebase credentials still come from environment settings.
+`VLLM_REQUEST_TIMEOUT_SECONDS` no longer controls the Python service; edit `vllm` in `server.json`. Engine routes and Firebase credentials still come from environment settings.
 
 
 ## API errors

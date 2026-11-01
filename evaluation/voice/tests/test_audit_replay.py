@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from evaluation.voice import audit_replay
-from evaluation.voice.generate import file_sha256
+from evaluation.voice.analysis import audit_replay
+from evaluation.voice.datasets.generate import file_sha256
 
 
 def _write(path: Path, value: object) -> None:

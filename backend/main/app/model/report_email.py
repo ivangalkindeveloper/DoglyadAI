@@ -9,4 +9,6 @@ class ReportEmail(BaseModel):
     recipientEmail: str
     subject: str
     body: str
-    attachments: list[ReportEmailAttachment] = Field(default_factory=list)
+    attachments: list[ReportEmailAttachment] = Field(
+        default_factory=list,
+    )

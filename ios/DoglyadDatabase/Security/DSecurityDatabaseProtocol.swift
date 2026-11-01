@@ -1,15 +1,9 @@
 import Foundation
 
 public protocol DSecurityDatabaseProtocol: Sendable {
-    func fetchRequestLimit<T: Sendable>(
-        _ transform: @Sendable (RequestLimitDB?) -> T,
-    ) async throws -> T
+    func fetchBillingIdentity() async throws -> BillingIdentityDB?
 
-    func setRequestLimit(
-        value: RequestLimitDB,
+    func setBillingIdentity(
+        value: BillingIdentityDB,
     ) async throws
-
-    func clearRequestLimit() async throws
-
-    func incrementRequestCount() async throws
 }

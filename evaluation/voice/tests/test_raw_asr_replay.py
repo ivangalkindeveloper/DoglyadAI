@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from evaluation.voice.generate import file_sha256
-from evaluation.voice.raw_asr_replay import export_raw_replay
+from evaluation.voice.datasets.generate import file_sha256
+from evaluation.voice.runners.raw_asr_replay import export_raw_replay
 
 
 def test_raw_replay_uses_uncorrected_text_and_retains_confidence_spans(tmp_path: Path) -> None:

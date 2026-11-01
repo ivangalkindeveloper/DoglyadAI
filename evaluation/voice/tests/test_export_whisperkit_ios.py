@@ -5,8 +5,8 @@ from pathlib import Path
 
 from pytest import MonkeyPatch
 
-from evaluation.voice import export_whisperkit_ios
-from evaluation.voice.generate import file_sha256
+from evaluation.voice.runners import export_whisperkit_ios
+from evaluation.voice.datasets.generate import file_sha256
 
 
 def test_export_preserves_model_identity(tmp_path: Path, monkeypatch: MonkeyPatch) -> None:

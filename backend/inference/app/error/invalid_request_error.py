@@ -43,5 +43,11 @@ class InvalidRequestError(ApiError):
     }
 
     @classmethod
-    def field_description(cls, code: str) -> str:
-        return cls._field_descriptions.get(code, "Invalid field value")
+    def field_description(
+        cls,
+        code: str,
+    ) -> str:
+        return cls._field_descriptions.get(
+            code,
+            "Invalid field value",
+        )

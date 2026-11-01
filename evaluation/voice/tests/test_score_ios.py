@@ -3,9 +3,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from evaluation.voice.generate import OUTPUT_DIR as TEXT_OUTPUT_DIR
-from evaluation.voice.generate import file_sha256, write_corpus
-from evaluation.voice.score_ios import _equal, _score_fields, score_ios_report
+from evaluation.voice.datasets.generate import OUTPUT_DIR as TEXT_OUTPUT_DIR
+from evaluation.voice.datasets.generate import file_sha256, write_corpus
+from evaluation.voice.scoring.score_ios import _equal, _score_fields, score_ios_report
 
 
 def test_missing_field_is_not_counted_as_a_correct_proposal() -> None:

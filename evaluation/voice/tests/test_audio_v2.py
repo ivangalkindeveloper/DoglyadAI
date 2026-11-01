@@ -7,11 +7,11 @@ from pathlib import Path
 
 import pytest
 
-from evaluation.voice.audio import select_cases
-from evaluation.voice.audio_script_v2 import make_audio_script, make_audio_segments
-from evaluation.voice.audio_v2 import FIELD_PAUSE_MS, merge_segments
-from evaluation.voice.generate import file_sha256, make_corpus
-import evaluation.voice.audio_reference as audio_reference
+from evaluation.voice.audio.audio import select_cases
+from evaluation.voice.audio.audio_script_v2 import make_audio_script, make_audio_segments
+from evaluation.voice.audio.audio_v2 import FIELD_PAUSE_MS, merge_segments
+from evaluation.voice.datasets.generate import file_sha256, make_corpus
+import evaluation.voice.audio.audio_reference as audio_reference
 
 
 def test_v2_scripts_are_complete_dictations_without_spoken_semicolons() -> None:

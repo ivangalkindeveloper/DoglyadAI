@@ -1,0 +1,14 @@
+{
+  "isComplete": true,
+  "summary": "/Users/ivangalkin/Development/My projects/Doglyad/build/voice-eval/asr-matrix-2026-10-24/score/summary.json",
+  "methods": [
+    "exactLabels",
+    "explicitRules",
+    "naturalLanguage",
+    "medgemma",
+    "productionMedgemma",
+    "medgemma15",
+    "productionMedgemma15"
+  ],
+  "isFoundationExcludedByUser": true
+}

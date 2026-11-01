@@ -9,7 +9,9 @@ from app.model.ultrasound.us_voice_field_id import USVoiceFieldId
 
 
 class USVoiceTextFieldGeneration(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
     field_id: Literal[
         USVoiceFieldId.EXAMINATION_NUMBER,
@@ -18,5 +20,7 @@ class USVoiceTextFieldGeneration(BaseModel):
         USVoiceFieldId.EXAMINATION_DESCRIPTION,
     ]
     value: str
-    evidence: str = Field(min_length=1)
+    evidence: str = Field(
+        min_length=1,
+    )
     accuracy: USVoiceFieldAccuracy

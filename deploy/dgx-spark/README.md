@@ -1,0 +1,245 @@
+# DGX Spark: один inference-сервис и три MedGemma
+
+Один Compose project в `/opt/doglyad/inference` содержит четыре контейнера:
+общий `backend_inference` и три vLLM. Backend проверяет App Check и выбирает
+движок по `modelId`. Все модели используют один приватный API.
+
+```text
+main backend → DGX Tailscale :8100 → App Check → modelId
+                                               ├─ vllm_medgemma_4b:8000
+                                               ├─ vllm_medgemma_15_4b:8000
+                                               └─ vllm_medgemma_27b:8000
+```
+
+У vLLM нет опубликованных портов. Профиль
+[`dgx-spark.json`](../inference/profiles/dgx-spark.json) задаёт состав и параметры
+моделей. Генератор формирует Compose и `VLLM_ENDPOINTS` из этого профиля.
+Неизвестный ID возвращает `400`.
+Каждая модель имеет отдельную очередь: один выполняемый и один ожидающий запрос.
+Сбой или занятая очередь одной модели не занимают очередь другой. Перезапуск
+общего backend временно прерывает доступ ко всем моделям.
+
+## Что установить и сохранить
+
+Сохраните штатные DGX OS, драйвер NVIDIA, CUDA, Container Toolkit, Docker и DGX
+Dashboard. Проверьте Compose, SSH и доступ пользователя к Docker. Установите
+Tailscale и добавьте DGX в сеть проекта. Предпочтителен Ethernet; Wi-Fi также
+подходит при устойчивом соединении. Отключите автоматический сон для работы сервера.
+
+vLLM, PyTorch и Python-зависимости работают в контейнерах. Системный `pip`
+для них не нужен. Не используйте amd64 bootstrap `make init-vm-inference`
+на ARM64 DGX. После проверки штатных компонентов можно выполнить на DGX:
+
+```bash
+sudo bash prepare-host.sh YOUR_LOGIN_USER
+```
+
+Скрипт поддерживает DGX OS на Ubuntu 24.04 ARM64, устанавливает Tailscale из
+подписанного репозитория, добавляет пользователя в Docker и создаёт
+`/opt/doglyad/inference`. Авторизация Tailscale выполняется отдельно.
+Не удаляйте драйвер, firmware, NVIDIA/DGX metapackages и Container Toolkit.
+Удаление своих ненужных образов и остановленных контейнеров допустимо после
+проверки их назначения. Не удаляйте volume с весами.
+
+Для SSH используйте вывод `whoami` и локальный адрес из `hostname -I`.
+Проверьте `systemctl is-active ssh`. На Mac настройте SSH-ключ и, при желании,
+alias `doglyad-spark`. Пароли и приватные ключи не отправляйте в чат или Git.
+
+## Файлы и образы
+
+На Mac из корня проекта выполните `make render-inference`. Проверьте файлы
+в `build/inference/dgx-spark/` и перенесите их в каталог развёртывания.
+Генерация не запускает контейнеры. Общая инструкция и формат профиля:
+[`deploy/inference/README.md`](../inference/README.md).
+
+В `/opt/doglyad/inference` должны находиться:
+
+```text
+docker-compose.yml
+start.sh
+start.py
+host_profile.py
+compose_document.py
+profile.json
+.env                         заполненная .env.example
+config/server.json
+secrets/.env                 существующий HF_TOKEN для движков/загрузчика
+secrets/firebase_credentials.json
+logs/
+```
+
+Используйте один `COMPOSE_PROJECT_NAME=doglyad-dgx`.
+Заполните `INFERENCE_BACKEND_IMAGE` и
+`INFERENCE_BACKEND_BIND` в машинном `.env`. Адрес должен совпадать с
+`tailscale ip -4`. Порт API по умолчанию 8100. На роутере проброс портов не нужен.
+Образ vLLM и параметры моделей заданы в исходном профиле.
+
+Для GB10 проверены ARM64, BF16 CUDA и этот образ vLLM:
+
+```text
+vllm/vllm-openai:v0.28.0@sha256:2a7cde230b59f3ce6cab33dd245ba6bee41aa87b38c9fe84f966ff24016813ce
+```
+
+Для backend используйте проверенный ARM64 image digest. Для первоначальной
+локальной миграции допустим перенос проверенного образа через `docker save` /
+`docker load` с закреплением его image ID на DGX. Проверка образа:
+
+```bash
+.venv311/bin/python deploy/verify_backend_image.py IMAGE inference
+```
+
+Она проверяет запуск с UID/GID 10001, права credentials/logs и обязательный
+App Check на синтетических данных. Локально переданный образ не является
+опубликованным GHCR-релизом. CI поддерживает ARM64; публикация — отдельное действие.
+
+Секреты доставляйте отдельно от исходников. Подготовьте их права штатным
+`deploy/prepare_backend_storage.py`: secrets 750/640, группа 10001;
+logs 2770/660. Backend монтирует только Firebase JSON для чтения.
+Каталог `config` должен иметь права 755, `server.json` — 644.
+
+Общий внешний volume сохраняет ранее скачанные веса:
+
+```bash
+docker volume create doglyad-dgx-huggingface
+```
+
+Не меняйте его имя при миграции. Не запускайте старые и новые GPU-контейнеры
+одновременно: они загрузят вторые копии тех же моделей.
+
+## Параметры и запуск
+
+| Модель | Сервис | KV-кэш | Доля для стартовой проверки памяти |
+|---|---|---:|---:|
+| MedGemma 4B | `vllm_medgemma_4b` | 4 GiB | 0.15 |
+| MedGemma 1.5 4B | `vllm_medgemma_15_4b` | 4 GiB | 0.15 |
+| MedGemma 27B | `vllm_medgemma_27b` | 8 GiB | 0.55 |
+
+Общие параметры: BF16, рабочий контекст 16384, максимум шесть изображений,
+один одновременный запрос на модель, eager mode, prefix caching.
+Кэш ограничен явно; `gpu-memory-utilization` используется отдельно при старте.
+На Spark CPU и GPU используют общую RAM: CPU offload не добавляет физическую память.
+
+Справочное поле `contextLength` в каталоге приложения описывает окно самой
+модели для пользователя. Оно не задаёт рабочий лимит vLLM.
+Рабочий лимит задаётся через `models[].maxModelLen` в профиле хоста.
+
+При необходимости сначала скачайте веса без GPU:
+
+```bash
+DOWNLOAD_MODEL_ID=google/medgemma-27b-it docker compose --profile download run --rm model_download
+```
+
+Загрузчик ограничен 8 GiB RAM без дополнительного swap и четырьмя CPU.
+Файлы скачиваются по одному, ускоренный режим Xet выключен. Эти лимиты
+не ограничивают память vLLM.
+
+На DGX из каталога развёртывания:
+
+```bash
+bash start.sh
+```
+
+Скрипт запускает 4B, дожидается healthy, затем добавляет 1.5 4B и 27B.
+Общий backend создаётся после готовности движков. Для перезапуска всех четырёх:
+
+```bash
+bash start.sh --restart
+```
+
+Не используйте обычный `docker compose up -d` для холодного старта трёх движков:
+он запускает их одновременно. Для просмотра состояния используйте
+`docker compose ps`; технические логи не должны содержать тексты запросов.
+
+При переходе со старой схемы остановите старые три backend и три vLLM перед
+`bash start.sh`. Сохраните каталоги `medgemma-4b`, `medgemma-15-4b`,
+`medgemma-27b` до завершения проверки. После успеха старые остановленные
+контейнеры можно удалить без удаления volume. Для отката сначала остановите новый
+стек, затем последовательно запустите старые стеки и восстановите endpoint map
+и SSH-туннель из сохранённой конфигурации.
+
+## Локальный main и SSH-туннель
+
+Для локального main используйте профиль VS Code `Backend: Local Inference`.
+Облачные VM для этого не нужны. Если другой VPN мешает Tailscale на Mac,
+используйте один SSH-туннель, оставляя этот VPN включённым:
+
+```bash
+ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
+  -o ServerAliveCountMax=3 \
+  -L 127.0.0.1:18100:DGX_TAILSCALE_IP:8100 doglyad-spark
+```
+
+Без alias укажите `USER@DGX_LAN_IP`, `-i PATH_TO_EXISTING_KEY` и
+`-o IdentitiesOnly=yes`. Порт 18100 доступен только самому Mac.
+
+Все три записи локального `backend/main/secrets/inference_endpoints.json`
+указывают на один API:
+
+```json
+{
+  "google/medgemma-4b-it": "http://127.0.0.1:18100",
+  "google/medgemma-1.5-4b-it": "http://127.0.0.1:18100",
+  "google/medgemma-27b-it": "http://127.0.0.1:18100"
+}
+```
+
+Для облачного main вместо loopback нужен один адрес
+`http://DGX_TAILSCALE_IP:8100` во всех трёх записях. Не доставляйте локальный
+loopback map на VM. Существующие модели и лимиты доступа сохраняются.
+После изменения map или каталога перезапустите main.
+
+Проверьте API без токена:
+
+```bash
+curl --noproxy '*' -sS -o /dev/null -w '%{http_code}\n' \
+  --connect-timeout 5 --max-time 10 \
+  -H 'Content-Type: application/json' --data '{}' \
+  http://127.0.0.1:18100/v1/generation
+```
+
+Ожидается 401. Это проверяет связь и App Check, но не генерацию.
+Для каждого vLLM отдельно проверьте внутренние `/health` и `/v1/models`.
+Успешная генерация, изображения, скорость и полный путь через приложение —
+отдельные проверки с действующим App Check. Не отключайте защиту.
+Таймауты сохраняются: `300 > 130 > 120` секунд.
+
+## Перезагрузка и диагностика
+
+Docker может запустить backend раньше появления адреса Tailscale. Тогда
+публикация порта завершается ошибкой. Дождитесь правильного `tailscale ip -4`
+и выполните `bash start.sh --restart`. Скрипт последовательно восстановит
+движки и пересоздаст API. Автоматический порядок запуска после перезагрузки
+на уровне systemd пока не настроен.
+
+На этой машине с ядром `7.0.0-1024-nvidia` и драйвером `580.178.04`
+зарегистрирован сбой GPU с Xid 13/154/109 и потерей изображения.
+В [обсуждении NVIDIA](https://forums.developer.nvidia.com/t/dgx-spark-repeatedly-rebooting-after-most-recent-update/387397)
+есть похожие случаи. Работа без монитора проверяется как временная мера;
+причина на этой машине не доказана. Docker healthy после Xid сам по себе
+не подтверждает исправность GPU. Проверяйте журнал ядра.
+
+При первом совместном запуске до объединения backend было занято около
+97 GiB RAM и 10 GiB swap, доступно около 24 GiB RAM. Это замер простоя.
+Объединение backend не освобождает память весов и KV-кэша.
+Генерация и длительная устойчивость под нагрузкой ещё не проверены.
+
+Штатные драйвер, ядро и настройки Wi-Fi при этой миграции не меняются.
+При нестабильном Wi-Fi предпочтителен Ethernet. Изменение энергосбережения
+адаптера — отдельное действие администратора.
+
+## Последующие обновления
+
+Обновление общего backend затрагивает все модели. Веса и три vLLM при
+обновлении только backend можно сохранить работающими.
+После перехода на сгенерированный стек добавьте DGX в общий inventory одной
+записью с `profile: "../inference/profiles/dgx-spark.json"` и
+`directory: "/opt/doglyad/inference"`. Скрипт обновления проверяет все три
+движка и сохраняет их при обновлении backend. Подробности и порядок отката
+описаны в [руководстве профилей](../inference/README.md).
+
+## Источники
+
+- [Аппаратная конфигурация DGX Spark](https://docs.nvidia.com/dgx/dgx-spark/hardware.html).
+- [Обновления DGX OS](https://docs.nvidia.com/dgx/dgx-spark/os-and-component-update.html).
+- [Запуск vLLM на Spark](https://build.nvidia.com/spark/vllm/intermediate).
+- [Контракт inference-сервиса](../../backend/inference/README.md).

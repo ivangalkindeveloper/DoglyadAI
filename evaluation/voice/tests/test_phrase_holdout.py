@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from evaluation.voice.common import FIELD_IDS
-from evaluation.voice.generate import make_corpus
-from evaluation.voice.phrase_holdout import spoken_segments
+from evaluation.voice.datasets.generate import make_corpus
+from evaluation.voice.datasets.phrase_holdout import spoken_segments
 
 
 def test_phrase_holdout_uses_distinct_control_values_and_eight_complete_fields() -> None:

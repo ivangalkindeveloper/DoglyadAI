@@ -101,7 +101,7 @@ struct ModuleInputLimitTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
                 onConfirm: { _ in true },
@@ -176,7 +176,7 @@ struct ModuleInputLimitTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             observeExaminationChanges: { _ in AnyCancellable {} },
             getSelectedTemplate: { nil },
             onTemplateSelected: { _ in },

@@ -14,7 +14,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case buttonDelete
     case buttonDone
     case buttonExpand
-    case buttonFill
     case buttonGallery
     case buttonGenerate
     case buttonGenerateProtocol
@@ -50,17 +49,51 @@ enum L10NKey: String, CaseIterable, Sendable {
     case importMediaTitle
     case legalUpdateDescription
     case legalUpdateTitle
+    case buttonRetry
+    case manageSubscriptionCurrentLabel
+    case manageSubscriptionActiveLabel
+    case manageSubscriptionPaidUntilDescription
+    case manageSubscriptionAutoRenewOnDescription
+    case manageSubscriptionAutoRenewOffDescription
+    case manageSubscriptionActionsTitle
+    case manageSubscriptionAccessTitle
+    case manageSubscriptionRestoreDescription
+    case manageSubscriptionAppleManageDescription
+    case manageSubscriptionCancelRenewalDescription
+    case manageSubscriptionRenewalStoppedDescription
+    case manageSubscriptionRecoveryButton
+    case manageSubscriptionEmptyTitle
+    case manageSubscriptionEmptyDescription
+    case manageSubscriptionNoPurchasesDescription
+    case manageSubscriptionLoadFailedDescription
+    case subscriptionRecoveryTitle
+    case subscriptionRecoveryDescription
+    case subscriptionRecoverySaveTitle
+    case subscriptionRecoveryCreateButton
+    case subscriptionRecoveryCreateDescription
+    case subscriptionRecoveryCopyButton
+    case subscriptionRecoveryRestoreTitle
+    case subscriptionRecoveryRestoreDescription
+    case subscriptionRecoveryKeyLabel
+    case subscriptionRecoveryKeyPlaceholder
+    case subscriptionRecoveryRestoreButton
+    case subscriptionRecoveryFailedDescription
+    case manageSubscriptionCancelRenewalButton
+    case manageSubscriptionChangeTypeButton
+    case manageSubscriptionChangeTypeDescription
+    case manageSubscriptionManageButton
+    case manageSubscriptionRecoveryDescription
+    case manageSubscriptionRefundButton
+    case manageSubscriptionRestoreButton
+    case manageSubscriptionSupportButton
+    case manageSubscriptionUpdatingDescription
+    case manageSubscriptionTitle
     case neuralModelAddingDescription
     case neuralModelCardAvailableRequestsLabel
     case neuralModelCardTitleLabel
     case neuralModelComingSoonLabel
     case neuralModelContextLengthDescription
-    case neuralModelDescription
     case neuralModelDetailsDescription
-    case neuralModelModelLabel
-    case neuralModelTemplateDescription
-    case neuralModelTemplateLabel
-    case neuralModelTemplatePlaceholder
     case newVersionAvailabilityDescription
     case newVersionTitle
     case newVersionUpdateDescription
@@ -78,6 +111,18 @@ enum L10NKey: String, CaseIterable, Sendable {
     case onBoardingTermsAndConditionsLabel
     case onBoardingThirdDescription
     case onBoardingThirdTitle
+    case paywallAnnualLabel
+    case paywallCancelDescription
+    case paywallContinueButton
+    case paywallDescription
+    case paywallEmptyPlansDescription
+    case paywallMonthlyLabel
+    case paywallPlanTitle
+    case paywallRestoreButton
+    case paywallRetryButton
+    case paywallSixMonthLabel
+    case paywallTitle
+    case paywallWeeklyLabel
     case permissionCameraDescription
     case permissionCameraTitle
     case permissionPhotoLibraryDescription
@@ -117,7 +162,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case reportTitle
     case requestLimitExceededDescription
     case requestLimitExceededTitle
-    case scanCameraEnableButton
     case scanCameraTitle
     case scanCaptureDescription
     case scanDevelopmentExaminationDescription
@@ -186,7 +230,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanTemplateCardExaminationTypeMismatchDescription
     case scanTemplateCardNoTemplateLabel
     case scanTemplateCardTitleLabel
-    case scanTurnedOffCameraDescription
     case selectDateOfBirthTitle
     case selectNeuralModelTitle
     case selectTemplateTitle
@@ -266,32 +309,18 @@ enum L10NKey: String, CaseIterable, Sendable {
     case storageDeleteSpeechModelSuccessMessageDescription
     case storageDeleteSpeechModelSuccessMessageTitle
     case storageTitle
-    case subscriptionChangeTypeDescription
-    case subscriptionChangeTypeTitle
-    case subscriptionCustomerCenterManageButton
-    case subscriptionCustomerCenterRefundButton
-    case subscriptionCustomerCenterRestoreButton
-    case subscriptionCustomerCenterSupportButton
-    case subscriptionNotConfiguredDescription
+    case subscriptionBaseLabel
     case subscriptionOfferingsUnavailableDescription
-    case subscriptionPaywallAnnualLabel
-    case subscriptionPaywallDescription
-    case subscriptionPaywallLifetimeLabel
-    case subscriptionPaywallMonthlyLabel
-    case subscriptionPaywallPlanLabel
-    case subscriptionPaywallPriceDescription
-    case subscriptionPaywallRestoreButton
-    case subscriptionPaywallRetryButton
-    case subscriptionPaywallSixMonthLabel
-    case subscriptionPaywallTermsDescription
-    case subscriptionPaywallThreeMonthLabel
-    case subscriptionPaywallTitle
-    case subscriptionPaywallTwoMonthLabel
-    case subscriptionPaywallWeeklyLabel
+    case subscriptionPaymentCodeLabel
+    case subscriptionPaymentCompleteDescription
+    case subscriptionPaymentConsentDescription
+    case subscriptionPaymentContinueButton
+    case subscriptionPaymentPayButton
+    case subscriptionPaymentRefreshButton
+    case subscriptionPaymentReturnButton
+    case subscriptionPaymentTitle
+    case subscriptionPendingDescription
     case subscriptionProLabel
-    case subscriptionSupportCenterDescription
-    case subscriptionSupportCenterTitle
-    case subscriptionTitle
     case templateAddReadyMadeTemplatesButton
     case templateAddTitle
     case templateContentDescription

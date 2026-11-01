@@ -1,0 +1,11 @@
+[Unit]
+Description=Doglyad billing full backup and WAL validation
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/doglyad
+EnvironmentFile=-/opt/doglyad/secrets/backup-monitor.env
+ExecStart=/bin/bash /opt/doglyad/billing/backup.sh
+TimeoutStartSec=7200

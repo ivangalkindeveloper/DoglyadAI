@@ -25,7 +25,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: ScanSpeechArguments,
         speechController: (any DSpeechControllerProtocol)? = nil,
     ) {
@@ -64,7 +64,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .scanSpeech,
             ),
@@ -142,29 +142,28 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             ),
         )
         handle {
-            let controller = try await DSpeechFactory.make(
+            try await DSpeechFactory.make(
                 engine: engine,
                 locale: self.container.language.currentLocale,
                 contextualStrings: self.arguments.examinationType.contextualStrings,
                 lexiconLocalization: self.l10n.voice.speech,
             )
-            try Task.checkCancellation()
-            return controller
         } onMainSuccess: { controller in
-            guard self.isPresentationActive else { return }
+            guard !Task.isCancelled, self.isPresentationActive else { return }
             self.speechController = controller
             self.observeSpeechController()
             controller.prepareModel()
             self.refreshSpeechState()
         } onMainUnknownError: { _ in
-            guard self.isPresentationActive else { return }
+            guard !Task.isCancelled, self.isPresentationActive else { return }
             self.emit(
                 ScanSpeechModelPreparationFailedState(),
             )
         }
     }
 
-    func onDisappear() {
+    override func onDisappear() {
+        super.onDisappear()
         isPresentationActive = false
         cancelLastTask()
         speechController?.cancel()

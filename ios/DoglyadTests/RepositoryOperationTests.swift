@@ -37,7 +37,7 @@ struct RepositoryOperationTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )
         model.emit(

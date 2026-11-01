@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from evaluation.voice.asr_reliability import compare_recheck, field_signals, without_outer_punctuation
+from evaluation.voice.analysis.asr_reliability import compare_recheck, field_signals, without_outer_punctuation
 
 
 def test_special_tokens_and_cross_segment_evidence_are_mapped() -> None:

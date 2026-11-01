@@ -29,7 +29,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: ScanCameraArguments,
     ) {
         self.arguments = arguments
@@ -48,7 +48,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .scanCamera,
             ),
@@ -62,7 +62,8 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
         )
     }
 
-    func onDisappear() {
+    override func onDisappear() {
+        super.onDisappear()
         presentationID = nil
         cameraObservation?.cancel()
         cameraObservation = nil

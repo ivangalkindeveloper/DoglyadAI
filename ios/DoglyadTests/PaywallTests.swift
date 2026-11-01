@@ -1,0 +1,1197 @@
+import Combine
+@testable import Doglyad
+import Foundation
+import Router
+import Testing
+
+@MainActor
+struct PaywallTests {
+    enum PurchaseResult: CaseIterable { case cancelled, completed, failed, pending }
+
+    @Test
+    func closeIgnoresSubscriptionUpdatesBeforeTheDisappearEvent() async {
+        let repository = SubscriptionTestRepository()
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        model.onTapClose()
+        router.push(
+            route: RouteScreen(
+                type: .settings,
+            ),
+        )
+        root.update(
+            status: repository.status,
+        )
+        model.onTapClose()
+        model.onTapContinue()
+        model.onTapRestore()
+        model.onTapCheckPayment()
+        #expect(
+            router.path.count == 1,
+        )
+        #expect(
+            !model.isContinueEnabled && model.operationTask == nil,
+        )
+        model.onDisappear()
+    }
+
+    @Test
+    func externalRestorationPreservesThePresentedDocument() async {
+        let repository = SubscriptionTestRepository()
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        let document = RouteSheet(
+            type: SheetType.webDocument,
+        )
+        router.push(
+            route: document,
+        )
+        root.update(
+            status: repository.status,
+        )
+        #expect(
+            router.path.isEmpty && router.sheet?.id == document.id,
+        )
+        model.onDisappear()
+    }
+
+    @Test
+    func hiddenPaywallIgnoresSubscriptionChangesAndReobservesOnReturn() async {
+        let repository = SubscriptionTestRepository()
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        router.pop()
+        model.onDisappear()
+        router.push(
+            route: RouteScreen(
+                type: .settings,
+            ),
+        )
+        root.update(
+            status: repository.status,
+        )
+        #expect(
+            router.path.count == 1 && model.subscriptionStatus == nil,
+        )
+        router.pop()
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        model.onAppear()
+        #expect(
+            router.path.isEmpty && model.subscriptionStatus?.type == .pro,
+        )
+        model.onDisappear()
+    }
+
+    @Test
+    func selectionIsLocalAndContinuePurchasesOnlyTheSelectedPlan() async {
+        let repository = SubscriptionTestRepository()
+        let proMonthly = makePlan(
+            type: .pro,
+            period: .monthly,
+        )
+        let proAnnual = makePlan(
+            type: .pro,
+            period: .annual,
+        )
+        let baseAnnual = makePlan(
+            type: .base,
+            period: .annual,
+        )
+        repository.availablePlans = [proMonthly, makePlan(
+            type: .base,
+            period: .weekly,
+        ), proAnnual, baseAnnual]
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: DRouter(
+                initialRoute: RouteScreen(
+                    type: .scan,
+                ),
+            ),
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.selectedType == .pro && (model.state as? PaywallContentState)?.selectedPlan == proAnnual,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.displayedPlans == [proAnnual, proMonthly],
+        )
+        model.onTapPlan(
+            proMonthly,
+        )
+        model.onSelectType(
+            .pro,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.selectedPlan == proMonthly && repository.purchaseCount == 0,
+        )
+        model.onSelectType(
+            .base,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.selectedPlan == baseAnnual && (model.state as? PaywallContentState)?.selectedTier?.features.count == 1,
+        )
+        model.onTapPlan(
+            proMonthly,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.selectedPlan == baseAnnual && repository.purchaseCount == 0,
+        )
+        model.onSelectType(
+            .pro,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.selectedTier?.features.count == 3,
+        )
+        model.onTapPlan(
+            proMonthly,
+        )
+        model.onTapContinue()
+        model.onTapContinue()
+        await waitUntilIdle(
+            model,
+        )
+        #expect(
+            repository.purchaseCount == 1 && repository.purchasedPlan == proMonthly,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.selectedPlan == proMonthly,
+        )
+    }
+
+    @Test
+    func unavailableTierAndEmptyCatalogCannotStartAPurchase() async {
+        let repository = SubscriptionTestRepository()
+        let baseAnnual = makePlan(
+            type: .base,
+            period: .annual,
+        )
+        repository.availablePlans = [baseAnnual]
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: DRouter(
+                initialRoute: RouteScreen(
+                    type: .scan,
+                ),
+            ),
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.selectedType == .base && (model.state as? PaywallContentState)?.selectedPlan == baseAnnual,
+        )
+        model.onSelectType(
+            .pro,
+        )
+        model.onTapContinue()
+        #expect(
+            (model.state as? PaywallContentState)?.selectedPlan == nil && !model.isContinueEnabled && repository.purchaseCount == 0,
+        )
+        model.onSelectType(
+            .base,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.selectedPlan == baseAnnual,
+        )
+        repository.availablePlans = []
+        model.onTapRetry()
+        await waitUntilIdle(
+            model,
+        )
+        model.onTapContinue()
+        #expect(
+            (model.state as? PaywallContentState)?.selectedPlan == nil && !model.isContinueEnabled && repository.purchaseCount == 0,
+        )
+    }
+
+    @Test
+    func paywallOwnsPlansAndResolvesTheProviderAgainOnRetry() async {
+        let backend = SubscriptionTestBackendRepository()
+        let apple = SubscriptionTestRepository(
+            backend: backend,
+        )
+        let yooKassa = SubscriptionTestRepository(
+            backend: backend,
+            source: .yookassa,
+        )
+        var countryCode = "USA"
+        var reads = 0
+        let container = makeSubscriptionTestContainer(
+            backend: backend,
+            storeKit: apple,
+            yooKassa: yooKassa,
+            getStorefrontCountryCode: {
+                reads += 1
+                return countryCode
+            },
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: DRouter(
+                initialRoute: RouteScreen(
+                    type: .scan,
+                ),
+            ),
+            onUpdate: {},
+        )
+        #expect(
+            reads == 0,
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.plans == [apple.plan] && reads == 1,
+        )
+        countryCode = "RUS"
+        #expect(
+            (model.state as? PaywallContentState)?.plans == [apple.plan] && reads == 1,
+        )
+        model.onTapRetry()
+        await waitUntilIdle(
+            model,
+        )
+        #expect(
+            (model.state as? PaywallContentState)?.plans == [yooKassa.plan] && reads == 2,
+        )
+        #expect(
+            root.status == nil,
+        )
+    }
+
+    @Test
+    func refreshingStatusReturnsAfterPublishingServerStatus() async {
+        let repository = SubscriptionTestRepository()
+        let root = SubscriptionRootViewModel(
+            container: makeContainer(
+                repository: repository,
+            ),
+        )
+        #expect(
+            root.status == nil,
+        )
+        repository.backend.isAccessAvailable = true
+        await root.refreshStatus()
+        #expect(
+            root.status == repository.status,
+        )
+    }
+
+    @Test
+    func rootStartsObservationOnlyOnceFromLifecycle() async {
+        let repository = SubscriptionTestRepository()
+        let root = SubscriptionRootViewModel(
+            container: makeContainer(
+                repository: repository,
+            ),
+        )
+        await Task.yield()
+        #expect(
+            repository.observationCount == 0,
+        )
+        root.onInit()
+        root.onInit()
+        for _ in 0 ..< 100 {
+            if repository.observationCount == 1 { break }
+            await Task.yield()
+        }
+        #expect(
+            repository.observationCount == 1,
+        )
+        repository.changes.send(
+            .success(
+                (),
+            ),
+        )
+        for _ in 0 ..< 100 {
+            if root.status != nil { break }
+            await Task.yield()
+        }
+        #expect(
+            root.status?.type == .pro,
+        )
+    }
+
+    @Test(
+        arguments: PurchaseResult.allCases,
+    )
+    func purchaseUpdatesStateAndDismissesOnlyWhenCompleted(
+        _ result: PurchaseResult,
+    ) async {
+        let repository = SubscriptionTestRepository()
+        repository.purchaseResult = result
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        var updates = 0
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: { updates += 1 },
+        )
+
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        model.onTapPlan(
+            repository.plan,
+        )
+        model.onTapContinue()
+        model.onTapPlan(
+            repository.plan,
+        )
+        model.onTapContinue()
+        await waitUntilIdle(
+            model,
+        )
+
+        #expect(
+            repository.purchaseCount == 1,
+        )
+        switch model.state {
+        case _ as PaywallLoadingState, _ as PaywallPurchasingState, _ as PaywallRestoringState: Issue.record(
+                "Purchase must leave its processing state",
+            )
+        default: break
+        }
+        switch result {
+        case .cancelled:
+            #expect(
+                root.status == nil,
+            )
+            #expect(
+                !router.path.isEmpty,
+            )
+            switch model.state {
+            case _ as PaywallContentState: break
+            default: Issue.record(
+                    "A completed or cancelled purchase must retain loaded plans",
+                )
+            }
+            #expect(
+                updates == 0,
+            )
+        case .completed:
+            #expect(
+                root.status?.type == .pro,
+            )
+            #expect(
+                router.path.isEmpty,
+            )
+            switch model.state {
+            case _ as PaywallContentState: break
+            default: Issue.record(
+                    "A completed or cancelled purchase must retain loaded plans",
+                )
+            }
+            #expect(
+                updates == 1,
+            )
+        case .pending:
+            #expect(
+                root.status == nil,
+            )
+            #expect(
+                !router.path.isEmpty,
+            )
+            #expect(
+                updates == 0,
+            )
+            switch model.state {
+            case _ as PaywallPendingState: break
+            default: Issue.record(
+                    "Pending payment must await a verified backend result",
+                )
+            }
+        case .failed:
+            #expect(
+                root.status == nil,
+            )
+            #expect(
+                !router.path.isEmpty,
+            )
+            switch model.state {
+            case let state as PaywallOperationFailedState:
+                #expect(
+                    state.errorDescription == container.l10n.text(
+                        .errorUnknownDescription,
+                    ),
+                )
+                #expect(
+                    (model.state as? PaywallContentState)?.plans.map(
+                        \.id,
+                    ) == [repository.plan.id],
+                )
+            default: Issue.record(
+                    "Expected a purchase failure with the loaded plans",
+                )
+            }
+            #expect(
+                updates == 0,
+            )
+        }
+    }
+
+    @Test(
+        arguments: [true, false],
+    )
+    func loadingRetriesAndRestorationUpdatesSharedState(
+        isSubscriptionActive: Bool,
+    ) async {
+        let repository = SubscriptionTestRepository()
+        repository.isLoadingFailed = true
+        repository.isRestorableSubscriptionAvailable = isSubscriptionActive
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: {},
+        )
+
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        switch model.state {
+        case let state as PaywallLoadingFailedState:
+            #expect(
+                state.errorDescription == container.l10n.text(
+                    .subscriptionOfferingsUnavailableDescription,
+                ),
+            )
+        default: Issue.record(
+                "Expected an offerings load failure",
+            )
+        }
+
+        repository.isLoadingFailed = false
+        model.onTapRetry()
+        await waitUntilIdle(
+            model,
+        )
+        switch model.state {
+        case _ as PaywallContentState:
+            #expect(
+                (model.state as? PaywallContentState)?.plans.map(
+                    \.id,
+                ) == [repository.plan.id],
+            )
+        default: Issue.record(
+                "Retry must publish the loaded plans",
+            )
+        }
+
+        model.onTapRestore()
+        await waitUntilIdle(
+            model,
+        )
+        #expect(
+            (root.status != nil) == isSubscriptionActive,
+        )
+        #expect(
+            (model.subscriptionStatus != nil) == isSubscriptionActive,
+        )
+        #expect(
+            router.path.isEmpty == isSubscriptionActive,
+        )
+        #expect(
+            repository.restoreCount == 1,
+        )
+    }
+
+    @Test
+    func pendingPurchaseCompletesFromVerifiedRepositoryUpdate() async {
+        let repository = SubscriptionTestRepository()
+        repository.purchaseResult = .pending
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        model.onTapPlan(
+            repository.plan,
+        )
+        model.onTapContinue()
+        await waitUntilIdle(
+            model,
+        )
+        switch model.state {
+        case _ as PaywallPendingState: break
+        default: Issue.record(
+                "Expected a pending purchase",
+            )
+        }
+        #expect(
+            repository.observationCount == 1,
+        )
+        repository.changes.send(
+            .success(
+                (),
+            ),
+        )
+        for _ in 0 ..< 100 {
+            if router.path.isEmpty { break }
+            await Task.yield()
+        }
+        #expect(
+            root.status?.type == .pro,
+        )
+        #expect(
+            router.path.isEmpty,
+        )
+    }
+
+    @Test
+    func pendingPurchaseDoesNotCompleteFromUnrelatedBaseAccess() async {
+        let repository = SubscriptionTestRepository()
+        repository.purchaseResult = .pending
+        repository.status = SubscriptionStatus(
+            planId: "monthly",
+            type: .base,
+            entitlement: repository.status.entitlement,
+            availableCountPerDay: 15,
+            source: .yookassa,
+        )
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        model.onTapPlan(
+            repository.plan,
+        )
+        model.onTapContinue()
+        await waitUntilIdle(
+            model,
+        )
+        repository.backend.isAccessAvailable = true
+        model.onTapCheckPayment()
+        await waitUntilIdle(
+            model,
+        )
+        model.onTapRestore()
+        await waitUntilIdle(
+            model,
+        )
+        #expect(
+            model.state is PaywallPendingState && repository.restoreCount == 0,
+        )
+        #expect(
+            root.status?.type == .base,
+        )
+        #expect(
+            !router.path.isEmpty,
+        )
+    }
+
+    @Test(
+        arguments: [false, true],
+    )
+    func restoredIdentityClosesPaywallOnlyForPreviouslyUnsubscribedOwner(
+        isAlreadySubscribed: Bool,
+    ) async {
+        let repository = SubscriptionTestRepository()
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        if isAlreadySubscribed { root.update(
+            status: repository.status,
+        ) }
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        let refreshed = SubscriptionStatus(
+            planId: "monthly",
+            type: .pro,
+            entitlement: repository.status.entitlement,
+            availableCountPerDay: 19,
+        )
+        root.update(
+            status: refreshed,
+        )
+        #expect(
+            router.path.isEmpty == !isAlreadySubscribed,
+        )
+    }
+
+    @Test
+    func canceledExternalPaymentReloadsPlansInsteadOfRemainingPending() async {
+        let repository = SubscriptionTestRepository(
+            source: .yookassa,
+        )
+        repository.purchaseResult = .pending
+        let id = UUID()
+        repository.preparedPaymentID = id
+        repository.backend.payments[
+            id,
+        ] = BillingPaymentResponse(
+            id: id,
+            planId: "monthly",
+            status: .pending,
+            confirmationUrl: nil,
+            paymentMethodType: "bank_card",
+        )
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        model.onTapPlan(
+            repository.plan,
+        )
+        model.onTapContinue()
+        await waitUntilIdle(
+            model,
+        )
+        repository.backend.payments[
+            id,
+        ] = BillingPaymentResponse(
+            id: id,
+            planId: "monthly",
+            status: .canceled,
+            confirmationUrl: nil,
+            paymentMethodType: "bank_card",
+        )
+        model.onTapCheckPayment()
+        await waitUntilIdle(
+            model,
+        )
+        switch model.state {
+        case _ as PaywallContentState: break
+        default: Issue.record(
+                "Canceled checkout must return to the available plans",
+            )
+        }
+        #expect(
+            root.status == nil && (model.state as? PaywallContentState)?.plans == [repository.plan],
+        )
+    }
+
+    @Test
+    func snapshotsRetainSelectionAndServerMetadataAcrossPurchasePhases() async throws {
+        let repository = SubscriptionTestRepository()
+        repository.tiers = [SubscriptionTier(
+            id: .pro,
+            title: "Custom tier",
+            features: ["Server benefit"],
+        )]
+        let annual = makePlan(
+            type: .pro,
+            period: .annual,
+        )
+        repository.availablePlans = [annual, repository.plan]
+        repository.purchaseResult = .failed
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: DRouter(
+                initialRoute: RouteScreen(
+                    type: .scan,
+                ),
+            ),
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        let original = try #require(
+            model.state as? PaywallDefaultState,
+        )
+        model.onTapPlan(
+            repository.plan,
+        )
+        let selected = try #require(
+            model.state as? PaywallDefaultState,
+        )
+        #expect(
+            original.selectedPlan == annual,
+        )
+        #expect(
+            selected.selectedPlan == repository.plan,
+        )
+        #expect(
+            selected.selectedTier?.title == "Custom tier" && selected.selectedTier?.features == ["Server benefit"],
+        )
+        model.onTapContinue()
+        let purchasing = try #require(
+            model.state as? PaywallPurchasingState,
+        )
+        #expect(
+            purchasing.selectedPlan == repository.plan && purchasing.plans == original.plans,
+        )
+        model.onTapPlan(
+            annual,
+        )
+        #expect(
+            model.state === purchasing && !model.isContinueEnabled,
+        )
+        await waitUntilIdle(
+            model,
+        )
+        let failed = try #require(
+            model.state as? PaywallOperationFailedState,
+        )
+        #expect(
+            failed.previousState === selected && failed.selectedPlan == repository.plan,
+        )
+        repository.purchaseResult = .cancelled
+        model.onTapContinue()
+        await waitUntilIdle(
+            model,
+        )
+        let cancelled = try #require(
+            model.state as? PaywallDefaultState,
+        )
+        #expect(
+            cancelled.selectedPlan == repository.plan && original.selectedPlan == annual,
+        )
+        model.onDisappear()
+    }
+
+    @Test
+    func restoreFailureRetainsSelectionAndDisappearanceCancelsTheOperation() async throws {
+        let repository = SubscriptionTestRepository()
+        repository.availablePlans = [makePlan(
+            type: .pro,
+            period: .annual,
+        ), repository.plan]
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: DRouter(
+                initialRoute: RouteScreen(
+                    type: .scan,
+                ),
+            ),
+            onUpdate: {},
+        )
+        model.onAppear()
+        await waitUntilIdle(
+            model,
+        )
+        model.onTapPlan(
+            repository.plan,
+        )
+        let selected = try #require(
+            model.state as? PaywallDefaultState,
+        )
+        repository.onRestore = { throw SubscriptionError.offeringsUnavailable }
+        model.onTapRestore()
+        await waitUntilIdle(
+            model,
+        )
+        let failed = try #require(
+            model.state as? PaywallOperationFailedState,
+        )
+        #expect(
+            failed.previousState === selected && failed.selectedPlan == repository.plan,
+        )
+        repository.onRestore = { try await Task.sleep(
+            for: .seconds(
+                60,
+            ),
+        ) }
+        model.onTapRestore()
+        #expect(
+            model.state is PaywallRestoringState,
+        )
+        let operation = model.operationTask
+        model.onDisappear()
+        await operation?.value
+        #expect(
+            model.state === failed && model.operationTask == nil,
+        )
+        model.onAppear()
+        repository.onRestore = nil
+        model.onTapRetry()
+        await waitUntilIdle(
+            model,
+        )
+        let retried = try #require(
+            model.state as? PaywallDefaultState,
+        )
+        #expect(
+            retried.selectedPlan == repository.plan,
+        )
+        model.onDisappear()
+    }
+
+    @Test(
+        arguments: [false, true],
+    )
+    func cancelledCatalogDiscardsLateSuccessAndFailure(
+        isFailure: Bool,
+    ) async {
+        let repository = SubscriptionTestRepository()
+        repository.isLoadingFailed = isFailure
+        var response: CheckedContinuation<Void, Never>?
+        repository.onFetchCatalog = { await withCheckedContinuation { response = $0 } }
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: DRouter(
+                initialRoute: RouteScreen(
+                    type: .scan,
+                ),
+            ),
+            onUpdate: {},
+        )
+        model.onAppear()
+        while response == nil {
+            await Task.yield()
+        }
+        let loading = model.state
+        let task = model.lastTask
+        task?.cancel()
+        response?.resume()
+        await task?.value
+        #expect(
+            model.state === loading && !model.isContinueEnabled,
+        )
+        model.onDisappear()
+    }
+
+    @Test
+    func closeIgnoresALateCatalogResponse() async throws {
+        let repository = SubscriptionTestRepository()
+        var response: CheckedContinuation<Void, Never>?
+        repository.onFetchCatalog = { await withCheckedContinuation { response = $0 } }
+        let container = makeContainer(
+            repository: repository,
+        )
+        let root = SubscriptionRootViewModel(
+            container: container,
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .paywall,
+            ),
+        )
+        let model = makeModel(
+            container: container,
+            root: root,
+            router: router,
+            onUpdate: {},
+        )
+        model.onAppear()
+        while response == nil {
+            await Task.yield()
+        }
+        let loading = model.state
+        model.onTapClose()
+        router.push(
+            route: RouteScreen(
+                type: .settings,
+            ),
+        )
+        response?.resume()
+        await model.lastTask?.value
+        #expect(
+            model.state === loading && router.path.count == 1,
+        )
+        #expect(
+            !model.isContinueEnabled,
+        )
+        model.onDisappear()
+    }
+
+    private func makePlan(
+        type: SubscriptionType,
+        period: SubscriptionPeriod,
+    ) -> SubscriptionPlan {
+        SubscriptionPlan(
+            id: "\(type.rawValue)-\(period.rawValue)",
+            source: .apple,
+            type: type,
+            period: period,
+            title: "Test subscription",
+            price: "$9.99",
+        )
+    }
+
+    private func waitUntilIdle(
+        _ model: PaywallViewModel,
+    ) async {
+        for await state in model.$state.values {
+            switch state {
+            case _ as PaywallLoadingState, _ as PaywallPurchasingState, _ as PaywallRestoringState: continue
+            default: return
+            }
+        }
+    }
+
+    private func makeModel(
+        container: DependencyContainer,
+        root: SubscriptionRootViewModel,
+        router: DRouter,
+        onUpdate: @escaping () -> Void,
+    ) -> PaywallViewModel {
+        root.onInit()
+        return PaywallViewModel(
+            container: container,
+            router: router,
+            getSubscriptionStatus: { root.status },
+            observeSubscriptionStatus: { root.observeStatus(
+                $0,
+            ) },
+            onSubscriptionStatusUpdated: { root.update(
+                status: $0,
+            )
+            onUpdate()
+            },
+            getSettingsAI: { root.resolveSettingsAI() },
+            onRefreshSubscriptionStatus: {},
+            arguments: PaywallArguments(),
+            purchase: { try await root.purchase(
+                plan: $0,
+            ) },
+            restorePurchases: { try await root.restorePurchases() },
+            checkPurchase: { try await root.checkPurchase() },
+        )
+    }
+
+    private func makeContainer(
+        repository: SubscriptionTestRepository,
+    ) -> DependencyContainer {
+        makeSubscriptionTestContainer(
+            backend: repository.backend,
+            storeKit: repository,
+            yooKassa: repository,
+        )
+    }
+}

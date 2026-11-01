@@ -15,7 +15,7 @@ final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol>
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: WebDocumentArguments,
     ) {
         url = arguments.url
@@ -29,7 +29,7 @@ final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol>
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .webDocument,
             ),

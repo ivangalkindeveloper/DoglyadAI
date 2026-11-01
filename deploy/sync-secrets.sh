@@ -6,7 +6,7 @@
 # VM only through this script.
 #
 #   deploy/sync-secrets.sh main USER@HOST
-#   deploy/sync-secrets.sh inference USER@HOST
+#   deploy/sync-secrets.sh inference USER@HOST [DIRECTORY]
 #
 # No host defaults on purpose: sending secrets to a guessed machine is not a
 # mistake worth making convenient, and this file carries no addresses of its own.
@@ -33,7 +33,15 @@ case "$TARGET" in
 esac
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-REMOTE_DIR="/opt/doglyad"
+REMOTE_DIR="${3:-/opt/doglyad}"
+if [[ ! "$REMOTE_DIR" =~ ^/opt/doglyad(/[A-Za-z0-9_-]+)*$ ]]; then
+    echo "Invalid deployment directory: expected /opt/doglyad or a child directory" >&2
+    exit 1
+fi
+if [ "$ROLE" != inference ] && [ "$REMOTE_DIR" != /opt/doglyad ]; then
+    echo "Only inference supports a custom deployment directory" >&2
+    exit 1
+fi
 
 # Everything that differs between the two deployments. The service names are
 # symmetrical on purpose, so only the checks really diverge.

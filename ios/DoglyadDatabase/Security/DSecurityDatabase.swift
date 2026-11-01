@@ -16,63 +16,24 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
         self.service = service
     }
 
-    // MARK: - Request limit CRUD
-
-    public func fetchRequestLimit<T: Sendable>(
-        _ transform: @Sendable (RequestLimitDB?) -> T,
-    ) throws -> T {
-        try transform(
-            readRequestLimit(),
-        )
-    }
-
-    public func setRequestLimit(
-        value: RequestLimitDB,
-    ) throws {
-        let data = try encoder.encode(
-            value,
-        )
-        try write(
-            data: data,
-            key: .requestLimit,
-        )
-    }
-
-    public func clearRequestLimit() throws {
-        try delete(
-            key: .requestLimit,
-        )
-    }
-
-    public func incrementRequestCount() throws {
-        let current = try readRequestLimit()
-        let updated = if let current,
-                         Calendar.current.isDateInToday(
-                             current.date,
-                         )
-        {
-            RequestLimitDB(
-                count: current.count + 1,
-                date: current.date,
-            )
-        } else {
-            RequestLimitDB(
-                count: 1,
-                date: Date(),
-            )
-        }
-        try setRequestLimit(
-            value: updated,
-        )
-    }
-
-    private func readRequestLimit() throws -> RequestLimitDB? {
+    public func fetchBillingIdentity() throws -> BillingIdentityDB? {
         guard let data = try read(
-            key: .requestLimit,
+            key: .billingIdentity,
         ) else { return nil }
         return try decoder.decode(
-            RequestLimitDB.self,
+            BillingIdentityDB.self,
             from: data,
+        )
+    }
+
+    public func setBillingIdentity(
+        value: BillingIdentityDB,
+    ) throws {
+        try write(
+            data: encoder.encode(
+                value,
+            ),
+            key: .billingIdentity,
         )
     }
 
@@ -154,21 +115,6 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
         guard insertionStatus == errSecSuccess else {
             throw DSecurityDatabaseError.unhandled(
                 status: insertionStatus,
-            )
-        }
-    }
-
-    private func delete(
-        key: DKeychainKey,
-    ) throws {
-        let status = SecItemDelete(
-            baseQuery(
-                key: key,
-            ) as CFDictionary,
-        )
-        guard status == errSecSuccess || status == errSecItemNotFound else {
-            throw DSecurityDatabaseError.unhandled(
-                status: status,
             )
         }
     }

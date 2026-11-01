@@ -39,7 +39,7 @@ extension UltrasoundReportRepository {
         database.setRecentUSExaminationTypeIds(
             values: Array(
                 ids.prefix(
-                    RecentUSExaminationTypes.maximumCount,
+                    USExaminationRecentTypes.maximumCount,
                 ),
             ),
         )
@@ -49,7 +49,7 @@ extension UltrasoundReportRepository {
         _ id: String,
     ) async throws {
         try await setRecentExaminationTypeIds(
-            RecentUSExaminationTypes.recording(
+            USExaminationRecentTypes.recording(
                 id,
                 in: getRecentExaminationTypeIds(),
             ),
@@ -67,7 +67,7 @@ extension UltrasoundReportRepository {
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
-        let request = USVoiceFormParseRequestDTO(
+        let request = USVoiceFormParseRequest(
             selectedNeuralModelId: selectedNeuralModelId,
             usExaminationTypeId: examinationTypeId,
             transcript: transcript,

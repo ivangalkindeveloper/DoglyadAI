@@ -13,5 +13,13 @@ class InferenceGenerationRequest(BaseModel):
     systemPrompt: str | None = None
     structuredOutput: str | None = None
     images: list[InferenceGenerationImage] | None = None
-    temperature: float | None = Field(default=None, ge=0.0, le=2.0)
-    maxTokens: int | None = Field(default=None, gt=0, le=4096)
+    temperature: float | None = Field(
+        default=None,
+        ge=0.0,
+        le=2.0,
+    )
+    maxTokens: int | None = Field(
+        default=None,
+        gt=0,
+        le=4096,
+    )

@@ -7,10 +7,19 @@ from app.model.neural_model.neural_model_service_request import NeuralModelServi
 
 
 class FakeNeuralModelService:
-    def __init__(self, response: Any) -> None:
+    def __init__(
+        self,
+        response: Any,
+    ) -> None:
         self.response = response
         self.request: NeuralModelServiceRequest | None = None
 
-    async def call(self, request: NeuralModelServiceRequest) -> str:
+    async def call(
+        self,
+        request: NeuralModelServiceRequest,
+    ) -> str:
         self.request = request
-        return json.dumps(self.response, ensure_ascii=False)
+        return json.dumps(
+            self.response,
+            ensure_ascii=False,
+        )

@@ -4,9 +4,9 @@ import json
 
 import pytest
 
-from evaluation.voice import compare_voice_holdout
-from evaluation.voice.generate import file_sha256
-from evaluation.voice.score_candidate import FIELDS
+from evaluation.voice.analysis import compare_voice_holdout
+from evaluation.voice.datasets.generate import file_sha256
+from evaluation.voice.scoring.score_candidate import FIELDS
 
 
 def _summary(mode: str, manifest_sha: str) -> dict:

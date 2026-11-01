@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Медицинские тесткейсы</title>
+<style>
+body{max-width:960px;margin:32px auto;padding:0 20px;font:16px/1.55 system-ui;color:#172735;background:#f7fafc}
+h1{font-size:28px}h2{font-size:21px}h3{font-size:18px}p{white-space:pre-wrap}
+.toolbar,.case{background:white;border:1px solid #d0dde5;border-radius:12px;padding:20px;margin:16px 0}
+.instructions{background:#edf5f9;border:1px solid #b9cdd7;border-radius:12px;padding:18px 20px;margin:20px 0}.instructions li{margin:12px 0}.instructions p:last-child{margin-bottom:0}
+.toolbar{position:sticky;top:0;z-index:1;box-shadow:0 3px 10px #17273512}
+button,input,select,textarea{font:inherit;box-sizing:border-box}input,select,textarea{border:1px solid #9aaebb;border-radius:6px;padding:8px;max-width:100%;background:white}
+textarea{width:100%;min-height:85px}label{display:block;margin:12px 0}label>span{display:block;margin-bottom:5px}
+button{border:0;border-radius:6px;background:#164d6a;color:white;padding:10px 15px;cursor:pointer;margin:4px}
+.packet-link{display:block;background:white;border:1px solid #9aaebb;border-radius:12px;padding:20px;margin:16px 0;color:#164d6a;text-decoration:none}.packet-link strong{display:block;font-size:19px}.packet-link span{display:block;margin-top:5px;color:#526673}.packet-link:hover{border-color:#164d6a;background:#edf5f9}
+summary{cursor:pointer;font-weight:650}audio{width:100%;margin:8px 0}.muted,small{color:#526673}small{overflow-wrap:anywhere}
+.row{display:flex;gap:16px;flex-wrap:wrap}.row>label{flex:1;min-width:160px}.gold{border-left:3px solid #b9cdd7;padding-left:18px;margin:14px 0}
+[hidden]{display:none!important}:focus-visible{outline:3px solid #c18100;outline-offset:3px}
+@media(max-width:600px){.toolbar{position:static}body{padding:0 12px}.case{padding:14px}}
+</style>
+<h1>Медицинские тесткейсы</h1>
+<p>Эта страница помогает проверить тестовые материалы, на которых сравнивают программы распознавания медицинской речи и заполнения формы исследования. Задача врача — оценить естественность диктовки, её медицинский смысл и правильность выделенных из речи сведений.</p>
+<section id="choose-packet">
+  <p>Сначала выберите набор тесткейсов. На открывшейся странице появятся записи или текстовые сценарии и поля для ваших замечаний.</p>
+  <a class="packet-link" href="../../../build/voice-eval/medical-review-current-ru/review.html"><strong>Тесткейсы с аудио — начать проверку</strong><span>244 тесткейса с аудио на русском языке. Сначала послушайте запись, затем откройте предполагаемый текст и поля.</span></a>
+  <a class="packet-link" href="../../../build/voice-eval/medical-review-pilot-ru/review.html"><strong>Текстовые тесткейсы</strong><span>32 тесткейса на русском языке. Аудио пока нет: проверяем естественность текста, медицинский смысл и ожидаемые поля.</span></a>
+  <p class="muted">Для передачи врачу скопируйте всю папку выбранного набора: страницу review.html вместе с подпапкой audio, если она есть.</p>
+</section>
+<details class="instructions" open>
+  <summary>Инструкция для врача — как проверить и сохранить ответы</summary>
+  <ol>
+    <li><strong>Выберите набор.</strong> «Тесткейсы с аудио — начать проверку» открывает тесткейсы с синтезированным аудио. «Текстовые тесткейсы» — заготовки диктовок без аудио. Если набор уже открыт, переходите к следующему шагу.</li>
+    <li><strong>Укажите рецензента и дату.</strong> В поле фильтра можно ввести название исследования, например «почки». Нажмите на название тесткейса, чтобы раскрыть его. Начните с исследований своей специализации; все тесткейсы за один раз проходить не нужно.</li>
+    <li><strong>Прослушайте запись кнопкой ▶.</strong> Сначала запишите услышанное и отметьте неразборчивые места. Если записей несколько, укажите, какую проверяли. В тесткейсах без аудио оценивайте текстовый сценарий.</li>
+    <li><strong>Нажмите «Открыть предполагаемый текст и поля».</strong> Сравните их с записью: мог ли врач так говорить, согласованы ли медицинские факты, соответствует ли текст слышимой речи и правильно ли заполнены поля. Отметьте пропущенные или придуманные сведения. Если аудио нет, для вопроса о соответствии записи выберите «Не применимо».</li>
+    <li><strong>Оставьте замечания.</strong> Укажите, что нужно исправить и почему. Для полей удобно писать: «поле → правильное значение → цитата из речи». Если информации недостаточно, отметьте неопределённость. В конце выберите состояние тесткейса, например «Первый проход завершён».</li>
+    <li><strong>Сохраните работу.</strong> Нажмите «Сохранить всё» вверху страницы или «Сохранить тесткейс» под замечаниями: текущие ответы и данные рецензента сохранятся в этом браузере и автоматически восстановятся при следующем открытии этого набора. Можно сохранять незаконченные ответы.</li>
+    <li><strong>Передайте результаты или сделайте резервную копию.</strong> «Скачать копию ответов» сохраняет файл в папку загрузок. Его можно передать разработчику или открыть на другом компьютере кнопкой «Загрузить ответы из файла». После загрузки нажмите «Сохранить всё», чтобы продолжить с этими ответами при следующем открытии.</li>
+  </ol>
+  <p><strong>Перед закрытием страницы нажмите «Сохранить всё» и дождитесь сообщения об успешном сохранении.</strong> Для хранения копии вне браузера скачайте файл. При смене браузера, перемещении HTML или очистке данных браузера используйте этот файл для восстановления. Автоматической отправки данных нет.</p>
+  <p class="muted">Инструкцию можно свернуть нажатием на её заголовок и открыть снова в любой момент.</p>
+</details>
+<noscript><p>Для заполнения и сохранения ответов в браузере должен быть включён JavaScript.</p></noscript>
+<div id="review-workspace" hidden>
+<p>Здесь исходные тесткейсы без названий систем и их ответов. Сначала послушайте запись и запишите, что услышали; затем откройте предполагаемую транскрипцию и поля. Синтетические примеры и чтение сценария требуют отдельной оценки естественности.</p>
+<p>Это рабочие заметки врача. Сохранение ответов не присваивает эталону статус проверенного. Исправления и итоговую разметку затем оформляем отдельной версией набора.</p>
+<div class="toolbar">
+  <div class="row">
+    <label><span>Рецензент (имя или условный ID)</span><input id="reviewer" autocomplete="off"></label>
+    <label><span>Дата проверки</span><input id="date" type="date"></label>
+    <label><span>Фильтр по типу или тексту</span><input id="filter" type="search" placeholder="Например, почки"></label>
+  </div>
+  <button id="save" type="button">Сохранить всё</button>
+  <button id="download" type="button">Скачать копию ответов</button>
+  <button id="restore" type="button">Загрузить ответы из файла</button>
+  <input id="upload" type="file" accept="application/json,.json" hidden>
+  <p id="status" role="status" aria-live="polite">Для продолжения позже нажмите «Сохранить всё». Сохранённые ответы загрузятся автоматически в этом браузере.</p>
+  <small id="counts"></small>
+</div>
+<main id="items"></main>
+</div>
+<script id="review-data" type="application/json">__REVIEW_DATA__</script>
+<script>
+"use strict";
+(() => {
+let data;
+try {
+  data = JSON.parse(document.getElementById("review-data").textContent);
+  if(!data?.manifest?.manifestSha256 || !Array.isArray(data.items)) return;
+} catch { return; }
+const answers = {};
+let isDirty = false;
+let isStorageBlocked = false;
+let lastStoredValue = null;
+const storageKey = "doglyad.medicalReview.v1:" + data.manifest.manifestSha256 + ":" + data.items.map(item => item.reviewId).sort().join(",");
+const labels = {patientName:"Имя пациента",patientDateOfBirth:"Дата рождения",patientGender:"Пол",patientHeightCM:"Рост, см",patientWeightKG:"Вес, кг",patientComplaints:"Жалобы",examinationNumber:"Номер исследования",examinationDescription:"Описание исследования"};
+const status = document.getElementById("status");
+function changed() { isDirty = true; status.textContent = "Есть несохранённые изменения. Нажмите «Сохранить всё» или «Скачать копию ответов»."; }
+function draftSnapshot() {
+  return {schemaVersion:1, kind:"medicalReviewDraft", manifestSha256:data.manifest.manifestSha256, reviewerId:document.getElementById("reviewer").value.trim(), reviewedAt:document.getElementById("date").value, isClinicallyValidated:false, answers};
+}
+function validateDraft(draft) {
+  const ids = new Set(data.items.map(item => item.reviewId));
+  const keys = new Set(["heardText","speechNaturalness","clinicalCoherence","audioReference","goldFields","revisedReferenceText","fieldCorrections","notes","workStatus"]);
+  if(draft?.schemaVersion !== 1 || draft.kind !== "medicalReviewDraft" || draft.manifestSha256 !== data.manifest.manifestSha256 || typeof draft.reviewerId !== "string" || typeof draft.reviewedAt !== "string" || !draft.answers || typeof draft.answers !== "object" || Array.isArray(draft.answers)) throw new Error("Файл относится к другому набору или имеет неверный формат.");
+  for(const [id, value] of Object.entries(draft.answers)) {
+    if(!ids.has(id) || !value || typeof value !== "object" || Array.isArray(value) || Object.entries(value).some(([key, text]) => !keys.has(key) || typeof text !== "string")) throw new Error("В файле есть неизвестный тесткейс или неверный ответ.");
+  }
+}
+function applyDraft(draft) {
+  validateDraft(draft);
+  for(const id of Object.keys(answers)) delete answers[id]; Object.assign(answers, draft.answers);
+  document.getElementById("reviewer").value = draft.reviewerId; document.getElementById("date").value = draft.reviewedAt;
+  for(const input of document.querySelectorAll("[data-item]")) input.value = answers[input.dataset.item]?.[input.dataset.key] || "";
+}
+function saveDraft() {
+  if(isStorageBlocked) { status.textContent = "Сохранение в браузере недоступно. Скачайте копию ответов, чтобы не потерять работу."; return false; }
+  try {
+    if(window.localStorage.getItem(storageKey) !== lastStoredValue) {
+      status.textContent = "Ответы изменены в другой вкладке. Скачайте свою копию перед повторным открытием страницы; сохранённая версия не заменена.";
+      return false;
+    }
+    const serialized = JSON.stringify(draftSnapshot());
+    window.localStorage.setItem(storageKey, serialized);
+    lastStoredValue = serialized;
+    isDirty = false;
+    status.textContent = "Все ответы сохранены в этом браузере. При следующем открытии набора они восстановятся автоматически.";
+    return true;
+  } catch {
+    status.textContent = "Не удалось сохранить ответы в браузере. Текущие ответы остаются в форме; скачайте их копию. Предыдущая сохранённая версия не заменена.";
+    return false;
+  }
+}
+function el(tag, text, parent) { const node = document.createElement(tag); if(text !== undefined) node.textContent = text; if(parent) parent.append(node); return node; }
+function control(parent, title, kind, item, key, options) {
+  const label = el("label", undefined, parent); el("span", title, label);
+  const input = el(kind === "select" ? "select" : "textarea", undefined, label);
+  input.dataset.item = item.reviewId; input.dataset.key = key;
+  if(options) for(const [value, name] of options) { const option = el("option", name, input); option.value = value; }
+  input.value = answers[item.reviewId]?.[key] || "";
+  input.addEventListener("input", () => { (answers[item.reviewId] ||= {})[key] = input.value; changed(); });
+}
+const verdicts = [["","Не проверено"],["yes","Да"],["revise","Нужны исправления"],["uncertain","Недостаточно контекста / не уверен"],["notApplicable","Не применимо"]];
+function render(item, parent) {
+  const sources = {synthetic:"Синтетический сценарий",doctorRecording:"Запись врача",legacyUnreviewed:"Старый набор без новой разметки происхождения"};
+  const modes = {textOnly:"текст без аудио",tts:"синтез речи",readScript:"чтение текста врачом",scenarioDictation:"свободная диктовка по сценарию",liveExamination:"речь во время исследования",unspecified:"не указан"};
+  el("p", (sources[item.sourceKind] || "Источник не размечен") + " · Вид записи: " + (modes[item.recordingMode] || "не указан"), parent).className = "muted";
+  if(item.clinicalContext) el("p", "Контекст: " + (typeof item.clinicalContext === "string" ? item.clinicalContext : JSON.stringify(item.clinicalContext, null, 2)), parent);
+  el("h3", "1. Прослушивание", parent);
+  if(!item.audio.length) el("p", "Аудио для этого тесткейса пока нет: оцениваем только текстовый сценарий.", parent);
+  for(const clip of item.audio) {
+    el("small", clip.id + " · " + (clip.variant || "исходная запись"), parent);
+    const audio = el("audio", undefined, parent); audio.controls = true; audio.preload = "none"; audio.src = clip.reviewAudioURL;
+  }
+  control(parent, "Услышанный текст, неразборчивые участки и таймкоды (укажите ID записи, если их несколько)", "text", item, "heardText");
+  const gold = el("details", undefined, parent); gold.className = "gold";
+  el("summary", "2. Открыть предполагаемый текст и поля", gold);
+  el("h3", "Предполагаемая транскрипция", gold); el("p", item.referenceText, gold);
+  for(const [key, value] of Object.entries(item.expectedFields)) el("p", (labels[key] || key) + ": " + value, gold);
+  const list = el("ol", undefined, gold); for(const question of item.reviewQuestions) el("li", question, list);
+  control(parent, "Так естественно говорит врач во время исследования?", "select", item, "speechNaturalness", verdicts);
+  control(parent, "Согласованы ли медицинские факты и контекст?", "select", item, "clinicalCoherence", verdicts);
+  control(parent, "Предполагаемый текст соответствует слышимой речи во всех проверенных вариантах?", "select", item, "audioReference", verdicts);
+  control(parent, "Поля формы правильно и полно следуют из речи?", "select", item, "goldFields", verdicts);
+  control(parent, "Исправленный текст (заполняйте только если нужна правка)", "text", item, "revisedReferenceText");
+  control(parent, "Поправки к полям: поле → правильное значение → цитата. Что сохранить, что уточнить, чего не заполнять?", "text", item, "fieldCorrections");
+  control(parent, "Другие замечания: орган, сторона, число, единица, отрицание, неопределённость, отсутствующий контекст; какие варианты аудио проверены", "text", item, "notes");
+  control(parent, "Состояние этого тесткейса", "select", item, "workStatus", [["","Ещё не проверено"],["inProgress","Проверка начата"],["reviewed","Первый проход завершён"],["exclude","Предлагаю исключить из клинического набора"]]);
+  const save = el("button", "Сохранить тесткейс", parent); save.type = "button";
+  const saved = el("p", "", parent); saved.className = "muted"; saved.setAttribute("role", "status");
+  save.addEventListener("click", () => { saved.textContent = saveDraft() ? "Ответы сохранены. Можно закрыть страницу и продолжить позже." : status.textContent; });
+}
+for(const [index, item] of data.items.entries()) {
+  const box = el("details", undefined, document.getElementById("items")); box.className = "case";
+  box.dataset.search = (item.examinationTitle + " " + item.examinationTypeId + " " + item.locale + " " + item.referenceText).toLocaleLowerCase();
+  el("summary", `${index + 1}. ${item.examinationTitle} / ${item.locale} — ${item.reviewId.slice(0,8)}`, box);
+  box.addEventListener("toggle", () => { if(box.open && !box.dataset.rendered) { box.dataset.rendered = "true"; render(item, box); } });
+}
+document.getElementById("counts").textContent = `${data.items.length} тесткейсов · ${data.manifest.cases} исходных записей. Без автоматической отправки данных.`;
+document.getElementById("filter").addEventListener("input", event => {
+  const query = event.target.value.toLocaleLowerCase().trim(); for(const box of document.querySelectorAll(".case")) box.hidden = !box.dataset.search.includes(query);
+});
+for(const id of ["reviewer","date"]) document.getElementById(id).addEventListener("input", changed);
+document.getElementById("save").addEventListener("click", () => saveDraft());
+document.getElementById("download").addEventListener("click", () => {
+  const draft = draftSnapshot();
+  const url = URL.createObjectURL(new Blob([JSON.stringify(draft,null,2) + "\n"], {type:"application/json"}));
+  const link = el("a", undefined, document.body); link.href = url; link.download = `medical-review-${draft.reviewedAt || "draft"}.json`; link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
+  status.textContent = "Копия передана браузеру для скачивания. Проверьте файл в «Загрузках». Для автоматического восстановления нажмите «Сохранить всё».";
+});
+document.getElementById("restore").addEventListener("click", () => document.getElementById("upload").click());
+document.getElementById("upload").addEventListener("change", async event => {
+  try {
+    const file = event.target.files[0]; if(!file) return;
+    const draft = JSON.parse(await file.text());
+    validateDraft(draft);
+    if(isDirty && !window.confirm("Загрузка заменит текущие несохранённые ответы. Продолжить?")) return;
+    applyDraft(draft);
+    isDirty = true; status.textContent = "Ответы загружены из файла. Нажмите «Сохранить всё», чтобы восстанавливать их автоматически при открытии.";
+  } catch(error) { status.textContent = "Не удалось загрузить ответы: " + (error instanceof SyntaxError ? "файл повреждён или имеет другой формат. Выберите сохранённую копию ответов." : error.message); }
+  finally { event.target.value = ""; }
+});
+window.addEventListener("beforeunload", event => { if(isDirty) { event.preventDefault(); event.returnValue = ""; } });
+try {
+  const stored = window.localStorage.getItem(storageKey);
+  if(stored !== null) {
+    applyDraft(JSON.parse(stored));
+    status.textContent = "Последнее сохранённое состояние ответов восстановлено. Можно продолжать проверку.";
+  }
+  lastStoredValue = stored;
+} catch {
+  isStorageBlocked = true;
+  status.textContent = "Не удалось восстановить ответы: хранилище браузера недоступно или сохранённая запись повреждена. Существующая запись не изменена. Используйте загрузку и скачивание файла ответов.";
+}
+document.getElementById("choose-packet").hidden = true;
+document.getElementById("review-workspace").hidden = false;
+})();
+</script>
+</html>

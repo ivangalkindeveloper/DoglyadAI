@@ -11,7 +11,14 @@ from app.model.inference.inference_generation_image import InferenceGenerationIm
 from app.model.inference.inference_generation_request import InferenceGenerationRequest
 from app.model.inference.inference_generation_response import InferenceGenerationResponse
 
-_INFERENCE_DIRECTORY = Path(__file__).resolve().parents[2] / "inference"
+_INFERENCE_DIRECTORY = (
+    Path(
+        __file__,
+    )
+    .resolve()
+    .parents[2]
+    / "inference"
+)
 _INFERENCE_CONTRACT_CHECK = """
 import json
 import sys
@@ -27,22 +34,35 @@ print(response.model_dump_json())
 """
 
 
-@pytest.mark.parametrize("include_optional_fields", [False, True])
-def test_main_and_inference_generation_contract(include_optional_fields: bool) -> None:
+@pytest.mark.parametrize(
+    "include_optional_fields",
+    [False, True],
+)
+def test_main_and_inference_generation_contract(
+    include_optional_fields: bool,
+) -> None:
     kwargs: dict[str, object] = {"modelId": "example/model", "prompt": "Describe the scan"}
     if include_optional_fields:
         kwargs.update(
             systemPrompt="Follow the schema",
             structuredOutput='{"type":"object"}',
-            images=[InferenceGenerationImage(data="QUJD")],
+            images=[
+                InferenceGenerationImage(
+                    data="QUJD",
+                )
+            ],
             temperature=0.3,
             maxTokens=512,
         )
-    request = InferenceGenerationRequest.model_validate(kwargs)
+    request = InferenceGenerationRequest.model_validate(
+        kwargs,
+    )
 
     result = subprocess.run(
         [sys.executable, "-c", _INFERENCE_CONTRACT_CHECK],
-        input=request.model_dump_json(exclude_none=True),
+        input=request.model_dump_json(
+            exclude_none=True,
+        ),
         text=True,
         capture_output=True,
         check=True,
@@ -50,9 +70,13 @@ def test_main_and_inference_generation_contract(include_optional_fields: bool) -
         timeout=10,
     )
 
-    response = InferenceGenerationResponse.model_validate_json(result.stdout)
+    response = InferenceGenerationResponse.model_validate_json(
+        result.stdout,
+    )
     assert response.modelId == request.modelId
-    assert json.loads(response.value()) == {"description": "ok"}
+    assert json.loads(
+        response.value(),
+    ) == {"description": "ok"}
 
 
 def test_main_and_inference_error_schema_and_shared_metadata_match() -> None:
@@ -75,9 +99,14 @@ print(json.dumps({"schema": ApiErrorResponse.model_json_schema(), "metadata": me
         cwd=_INFERENCE_DIRECTORY,
         timeout=10,
     )
-    contract = json.loads(result.stdout)
+    contract = json.loads(
+        result.stdout,
+    )
     assert contract["schema"] == ApiErrorResponse.model_json_schema()
     for name, expected in contract["metadata"].items():
         if name in errors.__all__:
-            error = getattr(errors, name)
+            error = getattr(
+                errors,
+                name,
+            )
             assert [error.code, error.description, error.status_code] == expected

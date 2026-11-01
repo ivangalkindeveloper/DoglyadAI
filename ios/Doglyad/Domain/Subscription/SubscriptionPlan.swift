@@ -2,7 +2,9 @@ import Foundation
 
 struct SubscriptionPlan: Identifiable, Equatable {
     let id: String
-    let productId: String
-    let kind: SubscriptionPlanKind
+    let source: SubscriptionSource
+    let type: SubscriptionType
+    let period: SubscriptionPeriod
+    let title: String
     let price: String
 }

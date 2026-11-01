@@ -453,7 +453,7 @@ struct ReportRemarksTests {
                 status: $0,
             ) },
             getSettingsAI: { root.resolveSettingsAI() },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )
     }

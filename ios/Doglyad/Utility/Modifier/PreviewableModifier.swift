@@ -3,14 +3,17 @@ import Router
 import SwiftUI
 
 struct PreviewableModifier: ViewModifier {
+    let container: DependencyContainer?
+    let router: DRouter?
+
     @ViewBuilder
     func body(
         content: Content,
     ) -> some View {
-        let container = DependencyContainer.previewable
+        let container = container ?? DependencyContainer.previewable
         content
             .environmentObject(
-                DRouter(
+                router ?? DRouter(
                     initialRoute: RouteScreen(
                         type: .onBoarding,
                         arguments: nil,

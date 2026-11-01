@@ -24,7 +24,7 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: SelectUSExaminationTypeArguments?,
     ) {
         self.messager = messager
@@ -43,7 +43,7 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .selectUSExaminationType,
             ),

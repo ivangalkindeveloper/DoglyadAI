@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from evaluation.voice.common import FIELD_IDS
-from evaluation.voice.freeform_development import PARTIAL_FIELDS, make_cases
+from evaluation.voice.datasets.freeform_development import PARTIAL_FIELDS, make_cases
 
 
 def test_freeform_cases_are_balanced_and_preserve_only_spoken_fields() -> None:

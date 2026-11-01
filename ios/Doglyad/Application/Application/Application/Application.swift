@@ -11,6 +11,11 @@ struct Application: App {
                 .onAppear {
                     viewModel.initialize()
                 }
+                .onOpenURL { url in
+                    viewModel.onOpenURL(
+                        url,
+                    )
+                }
                 .dThemeWrapper()
                 .environmentObject(
                     viewModel,

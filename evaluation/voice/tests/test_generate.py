@@ -5,9 +5,9 @@ import json
 from collections import Counter
 from pathlib import Path
 
-from evaluation.voice.adversarial import generate_cases as generate_adversarial_cases
+from evaluation.voice.datasets.adversarial import generate_cases as generate_adversarial_cases
 from evaluation.voice.common import FIELD_IDS, MEASUREMENT_PROFILES, _side_of, load_catalog
-from evaluation.voice.generate import jsonl_bytes, make_corpus, write_corpus
+from evaluation.voice.datasets.generate import jsonl_bytes, make_corpus, write_corpus
 
 REGRESSION_SHA256 = "c044605a4a1a795872d76d29f11baefe815c39763c49db2acd1cc5ebc2078a55"
 CONTROL_SHA256 = "8f893aae8411112ecdbc26781605c84d36e356ee29c439254db49c7bcbf1f9e6"

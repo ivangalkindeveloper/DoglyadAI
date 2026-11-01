@@ -7,17 +7,17 @@ import wave
 from collections import Counter
 from pathlib import Path
 
-from evaluation.voice.asr import word_error_rate
+from evaluation.voice.runners.asr import word_error_rate
 import pytest
 
-from evaluation.voice.audio import (
+from evaluation.voice.audio.audio import (
     SWIFT_SOURCE,
     add_reproducible_noise,
     reuse_existing_audio,
     select_cases,
     wav_metadata,
 )
-from evaluation.voice.generate import file_sha256, make_corpus
+from evaluation.voice.datasets.generate import file_sha256, make_corpus
 
 
 def test_audio_selection_covers_every_type_and_locale() -> None:

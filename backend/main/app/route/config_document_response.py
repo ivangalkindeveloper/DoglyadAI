@@ -2,11 +2,14 @@ from __future__ import annotations
 
 from fastapi import Response
 
-from app.core.http_header import HttpHeader
-from app.core.language_code import LanguageCode
+from app.core.http.http_header import HttpHeader
+from app.core.localization.language_code import LanguageCode
 
 
-def config_document_response(content: str, language: LanguageCode) -> Response:
+def config_document_response(
+    content: str,
+    language: LanguageCode,
+) -> Response:
     return Response(
         content=content,
         media_type="application/json",

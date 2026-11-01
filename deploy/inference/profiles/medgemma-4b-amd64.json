@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "projectName": "doglyad-gpu",
+  "architecture": "amd64",
+  "vllmImage": "vllm/vllm-openai:v0.28.0@sha256:2286e8533ca8b6bc777594bae30524f1426ba46ca21797524e06df6a94b06635",
+  "weightsVolume": {
+    "name": "doglyad-gpu-huggingface",
+    "isExternal": false
+  },
+  "serverConfig": "../../dgx-spark/config/server.json",
+  "models": [
+    {
+      "modelId": "google/medgemma-4b-it",
+      "service": "vllm",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 1,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": true,
+      "isPrefixCachingEnabled": true,
+      "gpuMemoryUtilization": 0.9,
+      "kvCacheMemoryBytes": 4294967296
+    }
+  ]
+}

@@ -4,11 +4,21 @@ import asyncio
 import re
 
 import httpx
+import pytest
 from fastapi import FastAPI
 
 
-def test_app_exposes_v1_routes(app: FastAPI) -> None:
-    paths = {getattr(route, "path", None) for route in app.routes}
+def test_app_exposes_v1_routes(
+    app: FastAPI,
+) -> None:
+    paths = {
+        getattr(
+            route,
+            "path",
+            None,
+        )
+        for route in app.routes
+    }
     assert "/v1/application_config" in paths
     assert "/v1/l10n" in paths
     assert "/l10n" not in paths
@@ -23,15 +33,60 @@ def test_app_exposes_v1_routes(app: FastAPI) -> None:
     assert "/v1/ultrasound_report" not in paths
 
 
-def test_main_generates_a_request_id_for_each_request(app: FastAPI) -> None:
+def test_main_generates_a_request_id_for_each_request(
+    app: FastAPI,
+) -> None:
     async def run() -> tuple[str, str]:
-        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app), base_url="http://test") as client:
-            first = await client.get("/openapi.json", headers={"X-Request-ID": "client-supplied"})
-            second = await client.get("/openapi.json")
-        assert first.status_code == second.status_code == 200
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(
+                app=app,
+            ),
+            base_url="http://test",
+        ) as client:
+            first = await client.get(
+                "/not-configured",
+                headers={"X-Request-ID": "client-supplied"},
+            )
+            second = await client.get(
+                "/not-configured",
+            )
+        assert first.status_code == second.status_code == 404
         return first.headers["X-Request-ID"], second.headers["X-Request-ID"]
 
-    first_id, second_id = asyncio.run(run())
-    assert re.fullmatch(r"[0-9a-f]{32}", first_id)
-    assert re.fullmatch(r"[0-9a-f]{32}", second_id)
+    first_id, second_id = asyncio.run(
+        run(),
+    )
+    assert re.fullmatch(
+        r"[0-9a-f]{32}",
+        first_id,
+    )
+    assert re.fullmatch(
+        r"[0-9a-f]{32}",
+        second_id,
+    )
     assert first_id != second_id
+
+
+@pytest.mark.parametrize(
+    "path",
+    ["/docs", "/redoc", "/openapi.json"],
+)
+def test_main_does_not_expose_public_documentation(
+    app: FastAPI,
+    path: str,
+) -> None:
+    async def run() -> httpx.Response:
+        async with httpx.AsyncClient(
+            transport=httpx.ASGITransport(
+                app=app,
+            ),
+            base_url="http://test",
+        ) as client:
+            return await client.get(
+                path,
+            )
+
+    response = asyncio.run(
+        run(),
+    )
+    assert response.status_code == 404

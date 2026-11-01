@@ -204,9 +204,9 @@ struct StatePublicationTests {
 
     @Test
     func preservedStatesCompareTheirContentsThroughTheFeatureProtocol() {
-        let model = DStateViewModel<any SubscriptionPaywallStateProtocol>(
-            state: SubscriptionPaywallRestoringState(
-                previousState: SubscriptionPaywallFailedState(
+        let model = DStateViewModel<any PaywallStateProtocol>(
+            state: PaywallRestoringState(
+                previousState: PaywallLoadingFailedState(
                     errorDescription: "First failure",
                 ),
             ),
@@ -216,21 +216,123 @@ struct StatePublicationTests {
         defer { observation.cancel() }
 
         model.emit(
-            SubscriptionPaywallRestoringState(
-                previousState: SubscriptionPaywallFailedState(
+            PaywallRestoringState(
+                previousState: PaywallLoadingFailedState(
                     errorDescription: "First failure",
                 ),
             ),
         )
         model.emit(
-            SubscriptionPaywallRestoringState(
-                previousState: SubscriptionPaywallFailedState(
+            PaywallRestoringState(
+                previousState: PaywallLoadingFailedState(
                     errorDescription: "Second failure",
                 ),
             ),
         )
         #expect(
             publications == 1,
+        )
+    }
+
+    @Test
+    func paywallPublishesSelectionPhaseAndFailureDataThroughItsBaseState() {
+        let tier = SubscriptionTier(
+            id: .pro,
+            title: "Server title",
+            features: ["Server benefit"],
+        )
+        let first = SubscriptionPlan(
+            id: "monthly",
+            source: .apple,
+            type: .pro,
+            period: .monthly,
+            title: "Month",
+            price: "$9",
+        )
+        let second = SubscriptionPlan(
+            id: "annual",
+            source: .apple,
+            type: .pro,
+            period: .annual,
+            title: "Year",
+            price: "$99",
+        )
+        let content = PaywallDefaultState(
+            tiers: [tier],
+            plans: [first, second],
+            selectedType: .pro,
+            selectedPlanID: first.id,
+        )
+        let model = DStateViewModel<any PaywallStateProtocol>(
+            state: content,
+        )
+        var publications = 0
+        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
+        defer { observation.cancel() }
+        model.emit(
+            PaywallDefaultState(
+                copying: content,
+            ),
+        )
+        #expect(
+            publications == 0,
+        )
+        let selected = PaywallDefaultState(
+            tiers: [tier],
+            plans: [first, second],
+            selectedType: .pro,
+            selectedPlanID: second.id,
+        )
+        model.emit(
+            selected,
+        )
+        model.emit(
+            PaywallPurchasingState(
+                content: selected,
+                plan: second,
+            ),
+        )
+        model.emit(
+            PaywallPurchasingState(
+                content: selected,
+                plan: second,
+            ),
+        )
+        model.emit(
+            PaywallPendingState(
+                content: selected,
+                plan: second,
+            ),
+        )
+        model.emit(
+            PaywallPendingState(
+                content: selected,
+                plan: first,
+            ),
+        )
+        model.emit(
+            PaywallOperationFailedState(
+                previousState: selected,
+                errorDescription: "First",
+            ),
+        )
+        model.emit(
+            PaywallOperationFailedState(
+                previousState: selected,
+                errorDescription: "First",
+            ),
+        )
+        model.emit(
+            PaywallOperationFailedState(
+                previousState: selected,
+                errorDescription: "Second",
+            ),
+        )
+        #expect(
+            publications == 6,
+        )
+        #expect(
+            content.selectedPlan == first && selected.selectedPlan == second,
         )
     }
 

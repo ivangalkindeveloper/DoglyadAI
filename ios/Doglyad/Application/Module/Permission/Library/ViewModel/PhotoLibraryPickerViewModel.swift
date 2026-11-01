@@ -14,7 +14,7 @@ final class PhotoLibraryPickerViewModel: DModuleViewModel<any PhotoLibraryPicker
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: PhotoLibraryPickerArguments,
     ) {
         selectionLimit = arguments.selectionLimit
@@ -27,7 +27,7 @@ final class PhotoLibraryPickerViewModel: DModuleViewModel<any PhotoLibraryPicker
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .photoLibraryPicker,
             ),

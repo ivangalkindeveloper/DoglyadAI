@@ -9,14 +9,22 @@ Docker runs the backend as UID/GID `10001:10001`. `make start-backend-main-devel
 | VS Code profile | Configuration | Generation |
 |---|---|---|
 | `Backend: Development` | `config/development` | Real GPU inference |
+| `Backend: Local Inference` | `config/development`, local billing database | Real GPU inference, including DGX Spark |
 | `Backend: Local Mock` | `config/development` | Local RU/EN fixtures |
 | `Backend: Production` | `config/production` | Real GPU inference |
 
 Each profile's prelaunch task merges the existing shared `secrets/.env` and selected `secrets/.env.development` or `secrets/.env.production` into the ignored `secrets/.env.running`. `Variables` reads process environment values; it does not load an environment file itself.
 
-`ENVIRONMENT` selects configuration documents only. `MODEL_SERVICE_TYPE` independently selects `inference` or `mock`; the default is `inference`. The launch profiles set this value explicitly so switching back to Development or Production restores real inference.
+`ENVIRONMENT` selects configuration documents and the YooKassa payment mode: `development` accepts only test shops/payments, `production` accepts only live shops/payments. The temporary `IS_YOOKASSA_LIVE_ENABLED=false` launch gate still blocks real charges. `MODEL_SERVICE_TYPE` independently selects `inference` or `mock`; the default is `inference`. The launch profiles set this value explicitly so switching back to Development or Production restores real inference.
 
-To use mocks:
+For a local main backend connected to DGX, select `Backend: Local Inference`
+instead. This profile prepares the same local PostgreSQL database as Local Mock,
+but routes generation through the existing `INFERENCE_ENDPOINTS_PATH` map.
+The Mac must reach the DGX Tailscale address, or use local ports forwarded through
+SSH when another VPN prevents Tailscale from connecting. See the
+[DGX setup guide](../../deploy/dgx-spark/README.md). Cloud main VMs are not required.
+
+To use local fixture generation:
 
 1. Stop the running backend instance so port `8000` is free.
 2. Select `Backend: Local Mock` in VS Code's Run and Debug panel and start it.
@@ -26,12 +34,12 @@ Startup logs contain `Model service type: mock` and `Mock model service configur
 
 ## What is mocked
 
-`create_model_service()` creates one `MockNeuralModelService` at startup. Both generation routes keep their normal prompts, schemas, validation and response models. The internal `NeuralModelServiceRequest` identifies the operation and resolved language; this metadata is not added to the GPU HTTP request or client API.
+`NeuralModelServiceFactory.create()` creates one `MockNeuralModelService` at startup. Both generation routes keep their normal prompts, schemas, validation and response models. The internal `NeuralModelServiceRequest` identifies the operation and resolved language; this metadata is not added to the GPU HTTP request or client API.
 
-- `POST /v1/ultrasound/generate_report` returns the selected language's demonstration report. Recommendations and description remarks follow the request flags. Photo remarks appear only when requested and photos are present: each uploaded photo receives two fixed points using its actual ID.
+- `POST /v1/ultrasound/generate_report` returns the selected language's demonstration report. Explicit measurement fragments from the examination notes are appended verbatim, using the same localized pattern as content validation. Values from the report template are not copied. Recommendations and description remarks follow the request flags. Photo remarks appear only when requested and photos are present: each uploaded photo receives two fixed points using its actual ID.
 - `POST /v1/ultrasound/parse_dictation` returns fixture proposals whose evidence appears exactly once in the supplied transcript, ignoring case. The normal source validator still checks the result. Unmatched input receives no canned proposals; existing source-based validation can still extract explicitly labeled fields from that input.
 
-Fixtures live in [`app/mock/`](app/mock/), with one `report.json` and `voice_form.json` per language. They are loaded and validated at startup; restart the backend after editing them. They are included in the main-backend image through the existing `COPY app` step.
+Fixtures live in [`mock/`](mock/), beside `config`, with one `report.json` and `voice_form.json` per language. They are loaded and validated at startup; restart the backend after editing them. Docker copies them separately with `COPY mock /app/mock`.
 
 The mock service does not call a GPU VM or read `INFERENCE_ENDPOINTS_PATH`. Firebase credentials and valid App Check tokens are still required. Configuration, localization, templates, rate limiting and report email delivery remain real, including SMTP.
 
@@ -68,7 +76,19 @@ The SettingsAI screen and its entry cards are available independently of Pro. In
 
 ## Application composition and dependencies
 
-`app.main` creates a FastAPI application with `create_app()`. Every application gets its own settings and rate limiter. `MainLifespan` loads a complete `Configuration`, initializes App Check, creates one shared `httpx.AsyncClient`, selects the model service, and composes `MainContainer`. The client closes after shutdown and on any startup failure.
+`app.main` creates its HTTP application through `ApplicationFactory.create_main()`;
+`app.payment_main` uses `create_payment()`. Every application gets independent settings,
+request policies and rate limits. `MainLifespan` owns its HTTP client/database resources,
+loads `Configuration`, calls `AppCheck.initialize()` and delegates service composition
+to `ServiceFactory`. `ServiceDependencies` retrieves these ready instances from
+`MainContainer`; it does not construct services per request. Resources close on shutdown
+and startup failure.
+
+`python -m app.billing_worker` starts the independent `BillingWorker`. It uses its own
+HTTP client and `BillingDatabase` with the same configured PostgreSQL ledger. It creates
+only billing services through `ServiceFactory`; it does not build FastAPI routes,
+initialize Firebase, select a model or construct SMTP services. Cancellation closes
+both its connection pool and HTTP client. See [BILLING.md](BILLING.md).
 
 HTTP handlers receive services and the request language through FastAPI `Depends`. `ReportGenerationService`, `DictationParsingService`, `ConfigurationResponseService` and `ReportEmailService` own their respective operations. Their dependencies are passed through constructors; language, App Check token and request ID remain per-request method arguments. `ConfigurationLoader` returns data instead of publishing module-global dictionaries. `PromptFactory`, `ReportValidator` and `VoiceFormValidator` receive their configuration or localization explicitly.
 
@@ -111,3 +131,8 @@ The unused `defaultPatientHeightCM` and `defaultPatientWeightKG` settings have b
 ## API error contract
 
 See [ERRORS.md](ERRORS.md). Expected failures are classes in `app/error/`, with code, description and status defined in the class. `ApiErrorHandler` formats errors from services, validation and body-limit middleware. `ApiErrorMiddleware` catches unexpected failures before they escape to the ASGI server's logger. Responses contain `code`, `detail`, `requestId`, and optional validation `fields`; `requestId` matches `X-Request-ID`. The current iOS transport handles HTTP failure statuses and does not decode the former FastAPI error body.
+
+## Billing
+
+StoreKit 2, YooKassa, anonymous identities, PostgreSQL migrations and launch prerequisites: [BILLING.md](BILLING.md).
+Backup and restoration templates: [deploy/billing/README.md](../../deploy/billing/README.md).

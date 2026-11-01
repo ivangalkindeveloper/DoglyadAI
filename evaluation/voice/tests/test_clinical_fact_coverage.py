@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from evaluation.voice.clinical_fact_coverage import clinical_description_coverage
+from evaluation.voice.analysis.clinical_fact_coverage import clinical_description_coverage
 
 
 def test_prefix_does_not_hide_complete_clinical_content() -> None:

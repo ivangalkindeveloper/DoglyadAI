@@ -193,7 +193,7 @@ final class VoiceEndToEndTests: XCTestCase {
                 .BASE_URL,
             ),
             baseVersionPrefix: "/v1",
-            interceptor: AppCheckHttpInterceptor(),
+            interceptors: [AppCheckHttpInterceptor()],
         )
         let repository = try UltrasoundReportRepository(
             database: DDatabase(),

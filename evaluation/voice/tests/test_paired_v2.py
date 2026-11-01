@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 
-import evaluation.voice.paired_v2 as paired_v2
-from evaluation.voice.paired_v2 import compare_v2
-from evaluation.voice.generate import file_sha256
+import evaluation.voice.analysis.paired_v2 as paired_v2
+from evaluation.voice.analysis.paired_v2 import compare_v2
+from evaluation.voice.datasets.generate import file_sha256
 
 
 def _summary(*, candidate: bool, audio_hash: str = "same") -> dict[str, object]:

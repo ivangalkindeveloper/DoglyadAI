@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-import evaluation.voice.v2_gate as v2_gate
-from evaluation.voice.generate import file_sha256
+import evaluation.voice.analysis.v2_gate as v2_gate
+from evaluation.voice.datasets.generate import file_sha256
 
 
 def _summary(variant: str, audio_hash: str, *, count: int = 124) -> dict[str, object]:

@@ -1,12 +1,16 @@
 from __future__ import annotations
 
-from app.core.language_code import LanguageCode
+from app.core.localization.language_code import LanguageCode
 from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
 
 
 class FakePromptFactory:
-    def __init__(self, language_code: LanguageCode, configuration: object) -> None:
+    def __init__(
+        self,
+        language_code: LanguageCode,
+        configuration: object,
+    ) -> None:
         assert language_code is LanguageCode.EN
 
     def system_prompt(

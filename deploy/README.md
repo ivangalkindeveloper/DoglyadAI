@@ -1,5 +1,9 @@
 # Virtual machine deployment
 
+For a physical ARM64 NVIDIA DGX Spark, use [the DGX Spark guide](dgx-spark/README.md).
+Do not run the amd64 VM bootstrap on DGX OS. The Spark deployment uses one Compose
+directory, one inference API, and three private vLLM engines sharing one GPU.
+
 `deploy/` prepares a clean Ubuntu `amd64` VM for one of two services:
 
 - `main` — the non-GPU main backend;
@@ -109,7 +113,7 @@ The endpoint map is loaded when the main backend starts, so `sync-secrets.sh` re
 
 ## Update all backend services
 
-The local, Git-ignored `deploy/secrets/infrastructure.json` is the single fleet inventory. Do not commit or publish it. It lists both main environments and every inference VM with its exact model ID. Keep its targets current; SSH aliases must exist on the machine running deployment, and direct SSH targets must support non-interactive authentication. Private keys and passwords belong outside this file. Check the inventory with `make check-infrastructure` before rollout.
+The local, Git-ignored `deploy/secrets/infrastructure.json` is the single fleet inventory. Do not commit or publish it. It lists both main environments and every inference host. New hosts reference a [host profile](inference/README.md) containing their model/engine list; existing single-model targets retain their `model` field. Keep its targets current; SSH aliases must exist on the machine running deployment, and direct SSH targets must support non-interactive authentication. Private keys and passwords belong outside this file. Check the inventory with `make check-infrastructure` before rollout.
 
 ```bash
 make check-infrastructure
@@ -118,7 +122,22 @@ make update-infrastructure
 
 These commands invoke `bash deploy/update-infrastructure.sh`. Requires local Python 3.10+, authenticated GitHub CLI with workflow-dispatch access, Docker CLI with GHCR access, and non-interactive SSH. VMs need Python 3, Docker Compose, curl, and write access to `/opt/doglyad`; inference also needs Tailscale. `--check` performs read-only readiness and private-route checks without starting a build.
 
-Commit and push the intended code first. The script does not publish local changes. The updated `build.yml` with its `deployment_id` input must exist on GitHub before the first launch. It correlates a fresh build using a unique run title, requires both image jobs to succeed, verifies amd64 manifests, and deploys the resulting digests. A branch change before dispatch aborts deployment. Build wait defaults to one hour (`--build-timeout` in seconds).
+Commit and push the intended code first. The script does not publish local changes. The updated `build.yml` with its `deployment_id` input must exist on GitHub before the first launch. It correlates a fresh build using a unique run title, requires all checks and both image publication jobs to succeed, verifies each target architecture, and deploys the resulting digests. A branch change before dispatch aborts deployment. Build wait defaults to one hour (`--build-timeout` in seconds).
+
+Inventory targets default to `architecture: amd64` and `directory: /opt/doglyad`.
+Profile-based targets derive architecture and all model IDs from `profile`, whose
+path is relative to the inventory file. One target can contain several local engines
+and one shared backend. For DGX use `profile: ../inference/profiles/dgx-spark.json`
+and `directory: /opt/doglyad/inference`, after applying the generated stack.
+Do not duplicate `model` or `models` alongside `profile`. A model ID must remain
+unique across the fleet; replica balancing is not implemented.
+
+Legacy inference targets also support `architecture: arm64` and separate,
+non-overlapping directories on one SSH host. Each directory has its own Compose
+file, `.env`, secrets and logs. Locks, snapshots, updates and rollback are scoped
+to that directory. The workflow builds
+and checks inference on native amd64 and ARM64 runners before publishing its
+multi-platform manifest. Main remains amd64.
 
 ```bash
 make update-infrastructure INFRASTRUCTURE_INVENTORY=/path/to/infrastructure.json INFRASTRUCTURE_REF=master
@@ -133,7 +152,7 @@ make update-infrastructure INFRASTRUCTURE_SCOPE=main
 
 This selects the explicit `--scope main` mode. The full inventory is still validated and its model IDs are used to check the new main image against existing endpoint mappings. Only the two main VMs are contacted, locked, staged, updated and, if necessary, rolled back. Main container, environment, image and App Check checks remain enabled; inference availability and private-route checks are skipped and reported as unverified. Both image jobs still build, but only the main image is deployed. The default scope is `all`.
 
-All targets are preflighted, locked and snapshotted; all images are staged before container replacement. The order is inference backends, development main, production main. Only backend containers are recreated. Caddy, vLLM, weights, secrets, OS packages, and deployed Compose files are preserved. The new machine `TAG` contains `<commit-sha>@sha256:<digest>`, supported by the existing Compose image references.
+All targets are preflighted, locked and snapshotted; all images are staged before container replacement. The order is inference backends, development main, production main. Only backend containers are recreated. Caddy, all configured vLLM engines, weights, secrets, OS packages, and deployed Compose files are preserved. Inference preflight checks actual backend routes, every engine's served model ID, health and private ports. Profile targets also verify the generated files against the inventory profile. The new machine `TAG` contains `<commit-sha>@sha256:<digest>`, supported by the existing Compose image references. Generated stacks use the updated `INFERENCE_BACKEND_IMAGE` instead.
 
 The single update path is `make update-infrastructure` → `deploy/update-infrastructure.sh` → `deploy/update_infrastructure.py` → `deploy/update_remote.py` over SSH. The local Python module coordinates Actions and rollout; the remote helper owns container changes and rollback for both roles. Use the `update-infrastructure` skill for updates, and `configure-vm` for provisioning/readiness. `sync-secrets.sh` is only for delivering changed secrets or initial startup.
 
@@ -152,6 +171,13 @@ ssh -o BatchMode=yes GPU_SSH_ALIAS 'python3 - '\''{"action":"rollback","release"
 ```
 
 After checking recovery, use the same command with `"action":"unlock"` on each prepared target. For main targets use the inventory's development/production role. Ownership and operation locks are checked. Never clear another rollout's lock. A killed process or unreachable VM may require manual recovery; the script cannot guarantee rollback over a broken SSH connection. A restored mutable old tag may have moved: the saved image ID and rollback override in the snapshot identify the actual recovered image.
+
+New snapshots retain `target.json` with the normalized model/engine mapping.
+For profile-based recovery, specify the original role and deployment directory;
+the helper loads the recorded target, including all engines, from the snapshot.
+Changing generated Compose, profile or server configuration during rollout
+blocks update/rollback before replacement. Restore the intended files deliberately
+before retrying; the helper does not overwrite another configuration change.
 
 The entry point supports the full inventory and the two-main scope above. Other partial rollouts, explicit historical-SHA releases, incompatible migrations, and platform upgrades require a separate plan; there are no flags for these operations.
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from evaluation.voice.freeform_audio import tts_chunks, tts_script
-from evaluation.voice.freeform_development import make_cases
+from evaluation.voice.audio.freeform_audio import tts_chunks, tts_script
+from evaluation.voice.datasets.freeform_development import make_cases
 
 
 def test_freeform_audio_script_preserves_correction_side_and_fact_order() -> None:

@@ -6,6 +6,22 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "backend: local preparation",
+            "dependsOn": ["env: development", "billing: local"],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        {
+            "label": "billing: local",
+            "type": "process",
+            "command": "make",
+            "args": ["start-local-billing"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "env: development",
             "type": "shell",
             "command": "awk 1 secrets/.env secrets/.env.development > secrets/.env.running",

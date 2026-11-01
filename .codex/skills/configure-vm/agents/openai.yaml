@@ -1,4 +1,0 @@
-interface:
-  display_name: "Configure Doglyad VM"
-  short_description: "Set up and verify Doglyad deployment VMs"
-  default_prompt: "Use $configure-vm to configure or audit a Doglyad deployment VM safely."

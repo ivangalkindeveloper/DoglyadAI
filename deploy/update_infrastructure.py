@@ -14,6 +14,8 @@ import uuid
 from pathlib import Path
 from urllib.parse import quote
 
+from inference.host_profile import HostProfile
+
 REPO = "ivangalkindeveloper/DoglyadAI"
 REGISTRY = "ghcr.io/ivangalkindeveloper/doglyad-"
 DIRECTORY = Path(__file__).resolve().parent
@@ -37,24 +39,62 @@ def github(*args: str) -> object:
     return json.loads(command(["gh", *args]))
 
 
-def inventory(path: Path) -> list[dict[str, str]]:
+def inventory(path: Path) -> list[dict]:
     targets = json.loads(path.read_text())["targets"]
     if not isinstance(targets, list) or not targets:
         raise ValueError("Inventory must contain a non-empty targets list")
-    seen: set[str] = set()
+    seen: set[tuple[str, str]] = set()
     models: set[str] = set()
     for target in targets:
         if target.get("role") not in {"development", "production", "inference"}:
             raise ValueError("Unknown inventory role")
+        if "profile" in target and (
+            target["role"] != "inference"
+            or not isinstance(target["profile"], str)
+            or not target["profile"]
+        ):
+            raise ValueError("Only inference targets accept a host profile path")
         host = target.get("ssh", "")
-        if not re.fullmatch(r"[A-Za-z0-9_][A-Za-z0-9_.@-]*", host) or host in seen:
-            raise ValueError("SSH targets must be unique aliases or user@host values")
-        seen.add(host)
+        if not re.fullmatch(r"[A-Za-z0-9_][A-Za-z0-9_.@-]*", host):
+            raise ValueError("SSH targets must be aliases or user@host values")
+        directory = target.get("directory", "/opt/doglyad")
+        if not re.fullmatch(r"/opt/doglyad(?:/[A-Za-z0-9_-]+)*", directory):
+            raise ValueError("Deployment directory must be inside /opt/doglyad")
+        if (host, directory) in seen:
+            raise ValueError("SSH target and deployment directory must be unique")
+        if any(
+            other_host == host
+            and (
+                directory.startswith(other_dir + "/")
+                or other_dir.startswith(directory + "/")
+            )
+            for other_host, other_dir in seen
+        ):
+            raise ValueError("Deployment directories on one host must not overlap")
+        seen.add((host, directory))
+        if target["role"] == "inference" and "profile" in target:
+            if any(key in target for key in ("model", "models", "profile_fingerprint")):
+                raise ValueError(
+                    "Profile targets must not duplicate their model configuration"
+                )
+            profile = HostProfile.load(path.parent / target["profile"])
+            if target.get("architecture", profile.architecture) != profile.architecture:
+                raise ValueError("Inventory architecture conflicts with host profile")
+            target["architecture"] = profile.architecture
+            target["models"] = profile.models
+            target["profile_fingerprint"] = profile.fingerprint
+        elif "models" in target or "profile_fingerprint" in target:
+            raise ValueError("Model lists must come from a host profile")
+        architecture = target.get("architecture", "amd64")
+        if architecture not in {"amd64", "arm64"}:
+            raise ValueError("Unsupported deployment architecture")
+        if target["role"] != "inference" and architecture != "amd64":
+            raise ValueError("Main backend images support amd64 only")
         if target["role"] == "inference":
-            model = target.get("model")
-            if not isinstance(model, str) or not model or model in models:
-                raise ValueError("Inference targets require unique model IDs")
-            models.add(model)
+            for model in target.get("models", {target.get("model"): "vllm"}):
+                if not isinstance(model, str) or not model or model in models:
+                    raise ValueError("Inference targets require unique model IDs")
+                models.add(model)
     for role in ("development", "production"):
         if sum(t["role"] == role for t in targets) != 1:
             raise ValueError(f"Full inventory requires exactly one {role} VM")
@@ -66,9 +106,11 @@ def inventory(path: Path) -> list[dict[str, str]]:
     )
 
 
-def remote(target: dict[str, str], action: str, release: str, **values: object) -> dict:
+def remote(target: dict, action: str, release: str, **values: object) -> dict:
     if action == "stage":
-        values["storage_script"] = (DIRECTORY / "prepare_backend_storage.py").read_text()
+        values["storage_script"] = (
+            DIRECTORY / "prepare_backend_storage.py"
+        ).read_text()
     payload = json.dumps(dict(action=action, release=release, target=target, **values))
     invocation = "python3 - " + shlex.quote(payload)
     output = command(
@@ -157,17 +199,21 @@ def build(ref: str, timeout: int) -> tuple[str, str]:
             if (
                 status["conclusion"] != "success"
                 or status["headSha"] != sha
-                or len(status["jobs"]) != 2
+                or not {"publish (main)", "publish (inference)"}.issubset(
+                    {job["name"] for job in status["jobs"]}
+                )
                 or any(j["conclusion"] != "success" for j in status["jobs"])
             ):
-                raise RuntimeError(f"Both image jobs must succeed: {run['url']}")
+                raise RuntimeError(
+                    f"All checks and image publication jobs must succeed: {run['url']}"
+                )
             return sha, run["url"]
         print("Waiting for backend image build...", flush=True)
         time.sleep(15)
     raise RuntimeError(f"Build wait timed out; workflow may still run: {run['url']}")
 
 
-def amd64_image(service: str, sha: str) -> str:
+def platform_image(service: str, sha: str, architecture: str) -> str:
     image = f"{REGISTRY}{service}:{sha}"
     manifest = json.loads(
         command(["docker", "manifest", "inspect", "--verbose", image])
@@ -177,28 +223,41 @@ def amd64_image(service: str, sha: str) -> str:
         descriptor = entry.get("Descriptor", {})
         platform = descriptor.get("platform", {})
         digest = descriptor.get("digest", "")
-        if platform.get("os") == "linux" and platform.get("architecture") == "amd64":
+        if (
+            platform.get("os") == "linux"
+            and platform.get("architecture") == architecture
+        ):
             if re.fullmatch(r"sha256:[0-9a-f]{64}", digest):
                 return f"{REGISTRY}{service}@{digest}"
-    raise RuntimeError(f"No linux/amd64 manifest for {image}")
+    raise RuntimeError(f"No linux/{architecture} manifest for {image}")
+
+
+def image_key(target: dict) -> tuple[str, str]:
+    service = "inference" if target["role"] == "inference" else "main"
+    return service, target.get("architecture", "amd64")
+
+
+def target_label(target: dict) -> str:
+    return f"{target['ssh']}:{target.get('directory', '/opt/doglyad')}"
 
 
 def rollout(
-    targets: list[dict[str, str]],
+    targets: list[dict],
     release: str,
-    images: dict[str, str],
+    images: dict[tuple[str, str], str],
     sha: str,
     *,
     check_inference_routes: bool = True,
 ) -> None:
-    attempted: list[dict[str, str]] = []
+    attempted: list[dict] = []
     try:
         for target in targets:
             attempted.append(target)  # SSH may disconnect after the remote mutation.
-            service = "inference" if target["role"] == "inference" else "main"
-            result = remote(target, "update", release, image=images[service], sha=sha)
+            result = remote(
+                target, "update", release, image=images[image_key(target)], sha=sha
+            )
             print(
-                f"Updated {target['role']} {target['ssh']}: {result['image']}",
+                f"Updated {target['role']} {target_label(target)}: {result['image']}",
                 flush=True,
             )
             if check_inference_routes:
@@ -209,10 +268,10 @@ def rollout(
         for target in reversed(attempted):
             try:
                 remote(target, "rollback", release)
-                print(f"Rolled back {target['ssh']}", flush=True)
+                print(f"Rolled back {target_label(target)}", flush=True)
             except BaseException:
                 print(
-                    f"ROLLBACK UNCONFIRMED: {target['ssh']}; snapshot .deploy-{release}",
+                    f"ROLLBACK UNCONFIRMED: {target_label(target)}; snapshot .deploy-{release}",
                     file=sys.stderr,
                 )
         raise
@@ -245,17 +304,22 @@ def main() -> int:
     )
     check_inference_routes = args.scope == "all"
     release = uuid.uuid4().hex
-    prepared: list[dict[str, str]] = []
+    prepared: list[dict] = []
     rollout_started = False
     rollout_completed = False
     try:
         for target in targets:
             result = remote(target, "check", release)
             print(
-                f"Ready: {target['role']} {target['ssh']} ({result['image']})",
+                f"Ready: {target['role']} {target_label(target)} ({result['image']})",
                 flush=True,
             )
-        expected_models = [t["model"] for t in all_targets if t["role"] == "inference"]
+        expected_models = [
+            model
+            for target in all_targets
+            if target["role"] == "inference"
+            for model in target.get("models", {target.get("model"): "vllm"})
+        ]
         if check_inference_routes:
             for target in targets:
                 if target["role"] != "inference":
@@ -266,17 +330,22 @@ def main() -> int:
             print("Preflight passed. No changes made. Generation not tested.")
             return 0
         sha, url = build(args.ref, args.build_timeout)
-        services = ("main", "inference") if args.scope == "all" else ("main",)
-        images = {s: amd64_image(s, sha) for s in services}
+        images = {
+            (service, architecture): platform_image(service, sha, architecture)
+            for service, architecture in sorted({image_key(t) for t in targets})
+        }
         # Snapshot all selected targets before replacement. Persistent locks
         # also block another invocation if this process is killed or disconnected.
         for target in targets:
             prepared.append(target)
             remote(target, "prepare", release)
         for target in targets:
-            service = "inference" if target["role"] == "inference" else "main"
             remote(
-                target, "stage", release, image=images[service], models=expected_models
+                target,
+                "stage",
+                release,
+                image=images[image_key(target)],
+                models=expected_models,
             )
         rollout_started = True
         rollout(
@@ -295,7 +364,7 @@ def main() -> int:
         for target in reversed(prepared):
             if rollout_started and not rollout_completed:
                 print(
-                    f"Retained recovery lock: {target['ssh']} release={release}",
+                    f"Retained recovery lock: {target_label(target)} release={release}",
                     file=sys.stderr,
                 )
                 continue
@@ -303,7 +372,7 @@ def main() -> int:
                 remote(target, "unlock", release)
             except Exception:
                 print(
-                    f"Lock cleanup unconfirmed: {target['ssh']} release={release}",
+                    f"Lock cleanup unconfirmed: {target_label(target)} release={release}",
                     file=sys.stderr,
                 )
 

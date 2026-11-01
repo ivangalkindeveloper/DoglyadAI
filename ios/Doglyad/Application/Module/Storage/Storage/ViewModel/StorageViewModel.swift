@@ -22,7 +22,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         self.messager = messager
         super.init(
@@ -33,7 +33,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .screen(
                 .storage,
             ),
@@ -43,7 +43,8 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
         }
     }
 
-    func onDisappear() {
+    override func onDisappear() {
+        super.onDisappear()
         presentationID = nil
     }
 

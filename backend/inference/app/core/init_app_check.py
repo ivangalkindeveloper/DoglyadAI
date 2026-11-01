@@ -7,10 +7,14 @@ from firebase_admin import credentials
 
 from app.core.variables import Variables
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(
+    __name__,
+)
 
 
-def init_app_check(variables: Variables) -> None:
+def init_app_check(
+    variables: Variables,
+) -> None:
     """Initializes the Firebase Admin SDK for verifying App Check tokens.
 
     Called once at application startup. Verification cannot be switched off, so a
@@ -18,9 +22,19 @@ def init_app_check(variables: Variables) -> None:
     the service must never come up in a state where it answers unverified callers.
     """
     if firebase_admin._apps:
-        logger.warning("Firebase Admin SDK is already initialized")
+        logger.warning(
+            "Firebase Admin SDK is already initialized",
+        )
         return
     if not variables.firebase_credentials_path:
-        raise RuntimeError("FIREBASE_CREDENTIALS_PATH is not set")
-    credential = credentials.Certificate(str(variables.firebase_credentials_path))
-    firebase_admin.initialize_app(credential)
+        raise RuntimeError(
+            "FIREBASE_CREDENTIALS_PATH is not set",
+        )
+    credential = credentials.Certificate(
+        str(
+            variables.firebase_credentials_path,
+        ),
+    )
+    firebase_admin.initialize_app(
+        credential,
+    )

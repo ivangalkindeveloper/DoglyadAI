@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "projectName": "doglyad-dgx",
+  "architecture": "arm64",
+  "vllmImage": "vllm/vllm-openai:v0.28.0@sha256:2a7cde230b59f3ce6cab33dd245ba6bee41aa87b38c9fe84f966ff24016813ce",
+  "weightsVolume": {
+    "name": "doglyad-dgx-huggingface",
+    "isExternal": true
+  },
+  "serverConfig": "../../dgx-spark/config/server.json",
+  "models": [
+    {
+      "modelId": "google/medgemma-4b-it",
+      "service": "vllm_medgemma_4b",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 1,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": true,
+      "isPrefixCachingEnabled": true,
+      "gpuMemoryUtilization": 0.15,
+      "kvCacheMemoryBytes": 4294967296
+    },
+    {
+      "modelId": "google/medgemma-1.5-4b-it",
+      "service": "vllm_medgemma_15_4b",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 1,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": true,
+      "isPrefixCachingEnabled": true,
+      "gpuMemoryUtilization": 0.15,
+      "kvCacheMemoryBytes": 4294967296
+    },
+    {
+      "modelId": "google/medgemma-27b-it",
+      "service": "vllm_medgemma_27b",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 1,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": true,
+      "isPrefixCachingEnabled": true,
+      "gpuMemoryUtilization": 0.55,
+      "kvCacheMemoryBytes": 8589934592
+    }
+  ]
+}

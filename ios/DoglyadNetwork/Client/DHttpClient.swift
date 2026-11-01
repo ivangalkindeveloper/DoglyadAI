@@ -7,8 +7,8 @@ public final class DHttpClient: DHttpClientProtocol {
 
     /// Rebuilt by `updateConfiguration`, hence a `var`.
     private var session: Session
-    /// Kept so the session can be rebuilt with the same interceptor.
-    private let interceptor: DHttpInterceptorProtocol?
+    /// Kept so the session can be rebuilt with the same interceptors and order.
+    private let interceptors: [any DHttpInterceptorProtocol]
 
     private let jsonEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
@@ -25,15 +25,15 @@ public final class DHttpClient: DHttpClientProtocol {
     public init(
         baseUrl: String,
         baseVersionPrefix: String,
-        interceptor: DHttpInterceptorProtocol? = nil,
+        interceptors: [any DHttpInterceptorProtocol] = [],
     ) {
         self.baseUrl = baseUrl
         self.baseVersionPrefix = baseVersionPrefix
-        self.interceptor = interceptor
+        self.interceptors = interceptors
 
         // Placeholders until the remote config arrives; see NetworkConfig.default.
         session = Self.makeSession(
-            interceptor: interceptor,
+            interceptors: interceptors,
             timeoutIntervalForRequest: 300,
             timeoutIntervalForResource: 300,
         )
@@ -51,14 +51,14 @@ public final class DHttpClient: DHttpClientProtocol {
         // no-op — the session has to be replaced for new timeouts to take effect. Safe
         // during initialization: nothing is in flight yet.
         session = Self.makeSession(
-            interceptor: interceptor,
+            interceptors: interceptors,
             timeoutIntervalForRequest: timeoutIntervalForRequest,
             timeoutIntervalForResource: timeoutIntervalForResource,
         )
     }
 
     private static func makeSession(
-        interceptor: DHttpInterceptorProtocol?,
+        interceptors: [any DHttpInterceptorProtocol],
         timeoutIntervalForRequest: TimeInterval,
         timeoutIntervalForResource: TimeInterval,
     ) -> Session {
@@ -67,8 +67,8 @@ public final class DHttpClient: DHttpClientProtocol {
         configuration.timeoutIntervalForResource = timeoutIntervalForResource
         return Session(
             configuration: configuration,
-            interceptor: interceptor.map(
-                DHttpInterceptorAdapter.init,
+            interceptor: interceptors.isEmpty ? nil : DHttpInterceptorAdapter(
+                interceptors: interceptors,
             ),
         )
     }

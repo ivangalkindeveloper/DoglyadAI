@@ -9,12 +9,21 @@ class TextTooLongError(ApiError):
     description = "Text exceeds the allowed length"
     status_code = 422
 
-    def __init__(self, location: list[str | int]) -> None:
+    def __init__(
+        self,
+        location: list[str | int],
+    ) -> None:
         self._location = location
         super().__init__()
 
     @property
-    def fields(self) -> list[ApiValidationIssueResponse]:
+    def fields(
+        self,
+    ) -> list[ApiValidationIssueResponse]:
         return [
-            ApiValidationIssueResponse(location=self._location, code="string_too_long", description=self.description)
+            ApiValidationIssueResponse(
+                location=self._location,
+                code="string_too_long",
+                description=self.description,
+            )
         ]

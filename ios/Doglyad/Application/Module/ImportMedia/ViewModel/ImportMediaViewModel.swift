@@ -14,7 +14,7 @@ final class ImportMediaViewModel: DModuleViewModel<any ImportMediaStateProtocol>
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         self.arguments = arguments
         super.init(
@@ -25,14 +25,15 @@ final class ImportMediaViewModel: DModuleViewModel<any ImportMediaStateProtocol>
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .importMedia,
             ),
         )
     }
 
-    func onDisappear() {
+    override func onDisappear() {
+        super.onDisappear()
         let action = actionAfterDismiss
         actionAfterDismiss = nil
         action?()

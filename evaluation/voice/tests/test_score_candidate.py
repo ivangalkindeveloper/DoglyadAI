@@ -2,9 +2,9 @@ from __future__ import annotations
 
 import pytest
 
-from evaluation.voice.report import _field_nonregression, _gate
-from evaluation.voice.score_candidate import require_exact_gold_text, score_fields
-from evaluation.voice.score_ios import _equal
+from evaluation.voice.analysis.report import _field_nonregression, _gate
+from evaluation.voice.scoring.score_candidate import require_exact_gold_text, score_fields
+from evaluation.voice.scoring.score_ios import _equal
 
 
 def test_text_scoring_ignores_typography_but_preserves_facts() -> None:

@@ -20,7 +20,7 @@ struct StatePersistenceTests {
                 type: .scan,
             ),
         )
-        var requestCountUpdates = 0
+        var subscriptionRefreshCount = 0
         let model = ScanViewModel(
             container: container,
             messager: DMessager(),
@@ -29,7 +29,7 @@ struct StatePersistenceTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: { requestCountUpdates += 1 },
+            onRefreshSubscriptionStatus: { subscriptionRefreshCount += 1 },
             observeExaminationChanges: { _ in AnyCancellable {} },
             getSelectedTemplate: { nil },
             onTemplateSelected: { _ in },
@@ -126,7 +126,7 @@ struct StatePersistenceTests {
             router.sheet == nil,
         )
         #expect(
-            requestCountUpdates == 0,
+            subscriptionRefreshCount == 0,
         )
 
         reports.isSaveFailed = false
@@ -153,7 +153,7 @@ struct StatePersistenceTests {
             drafts.clearCount == 1,
         )
         #expect(
-            requestCountUpdates == 1,
+            subscriptionRefreshCount == 0,
         )
         #expect(
             form.examinationDescriptionTextController.text.isEmpty,
@@ -185,7 +185,7 @@ struct StatePersistenceTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             getInitialEmail: { nil },
             getInitialIsRecommendationsIncluded: { false },
             getInitialIsPhotoRemarks: { false },

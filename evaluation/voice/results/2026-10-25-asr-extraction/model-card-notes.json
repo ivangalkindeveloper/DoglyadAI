@@ -1,0 +1,44 @@
+{
+  "checkedAt": "2026-10-24",
+  "sources": {
+    "gigaam": {
+      "url": "https://huggingface.co/ai-sage/GigaAM-v3",
+      "scope": "Russian training and primary benchmark scope; English run retained as diagnostic",
+      "variant": "e2e_rnnt",
+      "longAudio": "acoustic segmentation over 25 seconds, without reference text",
+      "revision": "7655ad717f8122257385bb4b2f373db3697e8680"
+    },
+    "medasr": {
+      "url": "https://huggingface.co/google/medasr",
+      "scope": "English medical dictation; Russian run retained as diagnostic",
+      "decoder": "greedy CTC, no external language model",
+      "revision": "ae1e4845b4b07479735d93e1e591e566435b7104"
+    },
+    "nemotron": {
+      "url": "https://huggingface.co/nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "scope": "English and Russian are transcription-ready locales",
+      "mode": "documented offline Transformers path, explicit locale; this does not measure live streaming latency",
+      "revision": "ea30d66debe3740a08b573244286791d423d6b3e"
+    },
+    "canary": {
+      "url": "https://huggingface.co/nvidia/canary-1b-v2",
+      "scope": "English and Russian included in 25 ASR languages",
+      "mode": "documented Transformers transcription, explicit source language, no translation",
+      "revision": "d455706339a6b32e1aa40f82c713a482a0c938e2"
+    }
+  },
+  "timingLimitations": [
+    "Native server candidates run on Mac CPU or Metal, not GPU VM; speed comparisons between engines are not controlled hardware comparisons.",
+    "WhisperKit time includes the production repeat check.",
+    "All audio is synthetic TTS, with paired deterministic noise except the clean-only natural-reading supplement.",
+    "Intended spoken scripts are WER references and have not been human verified against every audio file.",
+    "WhisperKit primary run preserves 168 Debug measurements and continues remaining audio in Release-Development for genuine App Attest publication between clips. Native decoding and repeat-check calls are unchanged; runtime is not a single-build benchmark."
+  ],
+  "applicationPathNotes": [
+    "Current SFSpeechRecognizer controller and file adapter do not populate confidenceSpans. Replayed empty spans therefore match the current app; confidence-gated fields will require review.",
+    "SpeechAnalyzer confidence spans and WhisperKit decoder/recheck spans are measured in the actual native transcription run.",
+    "Server ASR candidates have no production DSpeechEngine or calibrated automatic application policy; their fields are applied only by simulated confirmation.",
+    "Server-generation schema rejection is a measured failure and is never retried until a successful model response. Transport failures stop the batch for operational recovery.",
+    "Server replay preserves the exact corrected text used for generation; it does not apply the lexicon a second time."
+  ]
+}

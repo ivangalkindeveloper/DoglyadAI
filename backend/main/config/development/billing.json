@@ -1,0 +1,111 @@
+{
+    "termsVersion": "2026-10-25",
+    "tiers": [
+        {
+            "id": "base",
+            "titleLocaleKey": "paywallBaseLabel",
+            "featureLocaleKeys": [
+                "paywallBaseModelsDescription"
+            ]
+        },
+        {
+            "id": "pro",
+            "titleLocaleKey": "paywallProLabel",
+            "featureLocaleKeys": [
+                "paywallProModelsDescription",
+                "paywallProVoiceDescription",
+                "paywallProWorkEmailDescription"
+            ]
+        }
+    ],
+    "products": [
+        {
+            "id": "base_annual",
+            "entitlement": "base",
+            "period": "annual",
+            "price": {
+                "amountMinor": 799900,
+                "currencyIso2Code": "RUB"
+            },
+            "titleLocaleKey": "subscriptionBaseAnnualLabel",
+            "priceTemplateLocaleKey": "subscriptionAnnualPriceDescription"
+        },
+        {
+            "id": "base_six_months",
+            "entitlement": "base",
+            "period": "sixMonth",
+            "price": {
+                "amountMinor": 409900,
+                "currencyIso2Code": "RUB"
+            },
+            "titleLocaleKey": "subscriptionBaseSixMonthLabel",
+            "priceTemplateLocaleKey": "subscriptionSixMonthPriceDescription"
+        },
+        {
+            "id": "base_monthly",
+            "entitlement": "base",
+            "period": "monthly",
+            "price": {
+                "amountMinor": 69900,
+                "currencyIso2Code": "RUB"
+            },
+            "titleLocaleKey": "subscriptionBaseMonthlyLabel",
+            "priceTemplateLocaleKey": "subscriptionMonthlyPriceDescription"
+        },
+        {
+            "id": "base_weekly",
+            "entitlement": "base",
+            "period": "weekly",
+            "price": {
+                "amountMinor": 19900,
+                "currencyIso2Code": "RUB"
+            },
+            "titleLocaleKey": "subscriptionBaseWeeklyLabel",
+            "priceTemplateLocaleKey": "subscriptionWeeklyPriceDescription"
+        },
+        {
+            "id": "pro_annual",
+            "entitlement": "pro",
+            "period": "annual",
+            "price": {
+                "amountMinor": 1599900,
+                "currencyIso2Code": "RUB"
+            },
+            "titleLocaleKey": "subscriptionProAnnualLabel",
+            "priceTemplateLocaleKey": "subscriptionAnnualPriceDescription"
+        },
+        {
+            "id": "pro_six_months",
+            "entitlement": "pro",
+            "period": "sixMonth",
+            "price": {
+                "amountMinor": 869900,
+                "currencyIso2Code": "RUB"
+            },
+            "titleLocaleKey": "subscriptionProSixMonthLabel",
+            "priceTemplateLocaleKey": "subscriptionSixMonthPriceDescription"
+        },
+        {
+            "id": "pro_monthly",
+            "entitlement": "pro",
+            "period": "monthly",
+            "price": {
+                "amountMinor": 149900,
+                "currencyIso2Code": "RUB"
+            },
+            "titleLocaleKey": "subscriptionProMonthlyLabel",
+            "priceTemplateLocaleKey": "subscriptionMonthlyPriceDescription"
+        },
+        {
+            "id": "pro_weekly",
+            "entitlement": "pro",
+            "period": "weekly",
+            "price": {
+                "amountMinor": 39900,
+                "currencyIso2Code": "RUB"
+            },
+            "titleLocaleKey": "subscriptionProWeeklyLabel",
+            "priceTemplateLocaleKey": "subscriptionWeeklyPriceDescription"
+        }
+    ]
+}

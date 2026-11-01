@@ -5,9 +5,9 @@ from collections import Counter
 from typing import Any
 
 from evaluation.voice.common import FIELD_IDS, LABELS, ROOT
-from evaluation.voice.freeform_development import make_cases as freeform_cases
-from evaluation.voice.guided_format import SCENARIOS, selected_cases, spoken_segments
-from evaluation.voice.score_candidate import score_scenarios
+from evaluation.voice.datasets.freeform_development import make_cases as freeform_cases
+from evaluation.voice.audio.guided_format import SCENARIOS, selected_cases, spoken_segments
+from evaluation.voice.scoring.score_candidate import score_scenarios
 
 
 def test_guided_pack_follows_the_labels_and_order_shown_in_the_recording_sheet() -> None:

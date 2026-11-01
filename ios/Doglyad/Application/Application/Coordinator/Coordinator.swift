@@ -4,7 +4,7 @@ import SwiftUI
 @MainActor
 final class Coordinator {
     let router: DRouter
-    let subscriptionRepository: SubscriptionRepositoryProtocol
+    let subscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
     let applicationConfig: ApplicationConfig
     let getSubscriptionStatus: () -> SubscriptionStatus?
     let onSubscriptionStatusUpdated: (SubscriptionStatus?) -> Void
@@ -16,7 +16,7 @@ final class Coordinator {
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
     ) {
         self.router = router
-        subscriptionRepository = container.subscriptionRepository
+        subscriptionBackendRepository = container.subscriptionBackendRepository
         applicationConfig = container.applicationConfig
         self.getSubscriptionStatus = getSubscriptionStatus
         self.onSubscriptionStatusUpdated = onSubscriptionStatusUpdated
@@ -94,7 +94,7 @@ extension Coordinator {
             )
         case .none:
             root(
-                .subscriptionPaywall,
+                .paywall,
                 isAnimated: true,
             )
         }
@@ -112,7 +112,7 @@ extension Coordinator {
         let status = try await refreshSubscriptionStatus()
         guard let status else {
             screen(
-                .subscriptionPaywall,
+                .paywall,
             )
             return .routed
         }
@@ -129,7 +129,7 @@ extension Coordinator {
     }
 
     func run(
-        _ feature: PaidFeature,
+        _ feature: SubscriptionPaidFeature,
         isSheetDismissedOnPaywall: Bool = false,
         onAvailable: () -> Void,
     ) {
@@ -154,7 +154,7 @@ extension Coordinator {
             dismissSheet()
         }
         screen(
-            .subscriptionPaywall,
+            .paywall,
         )
     }
 
@@ -169,7 +169,7 @@ extension Coordinator {
     }
 
     func refreshSubscriptionStatus() async throws -> SubscriptionStatus? {
-        let status = try await subscriptionRepository.fetchStatus(
+        let status = try await subscriptionBackendRepository.fetchStatus(
             configEntitlements: applicationConfig.entitlements,
         )
         onSubscriptionStatusUpdated(
@@ -238,7 +238,7 @@ extension Coordinator {
            context.subscriptionStatus == nil
         {
             return RouteScreen(
-                type: .subscriptionPaywall,
+                type: .paywall,
             )
         }
 

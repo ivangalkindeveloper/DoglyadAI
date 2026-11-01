@@ -18,7 +18,7 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: SelectTemplateArguments,
     ) {
         self.messager = messager
@@ -32,7 +32,7 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .selectTemplate,
             ),

@@ -15,10 +15,31 @@
                 "--port", "8000"
             ],
             "cwd": "${workspaceFolder}/backend/main",
-            "preLaunchTask": "env: development",
+            "preLaunchTask": "backend: local preparation",
             "envFile": "${workspaceFolder}/backend/main/secrets/.env.running",
             "env": {
-                "MODEL_SERVICE_TYPE": "mock"
+                "MODEL_SERVICE_TYPE": "mock",
+                "ENVIRONMENT": "development",
+                "BILLING_DATABASE_URL": "postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/billing"
+            }
+        },
+                {
+            "name": "Backend: Local Inference",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "uvicorn",
+            "args": [
+                "app.main:app",
+                "--host", "0.0.0.0",
+                "--port", "8000"
+            ],
+            "cwd": "${workspaceFolder}/backend/main",
+            "preLaunchTask": "backend: local preparation",
+            "envFile": "${workspaceFolder}/backend/main/secrets/.env.running",
+            "env": {
+                "MODEL_SERVICE_TYPE": "inference",
+                "ENVIRONMENT": "development",
+                "BILLING_DATABASE_URL": "postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/billing"
             }
         },
         {

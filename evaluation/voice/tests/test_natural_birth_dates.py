@@ -4,7 +4,7 @@ import copy
 
 import pytest
 
-from evaluation.voice.natural_birth_dates import natural_date_text, render_birth_date
+from evaluation.voice.datasets.natural_birth_dates import natural_date_text, render_birth_date
 
 
 @pytest.mark.parametrize(

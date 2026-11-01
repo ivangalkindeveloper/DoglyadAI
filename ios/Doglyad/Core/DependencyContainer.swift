@@ -17,7 +17,8 @@ final class DependencyContainer: ObservableObject {
     let ultrasoundReportRepository: UltrasoundReportRepositoryProtocol
     let ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol
     let templateRepository: TemplateRepositoryProtocol
-    let subscriptionRepository: SubscriptionRepositoryProtocol
+    let subscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
+    let subscriptionRepositoryFactory: SubscriptionRepositoryFactory
     let applicationConfig: ApplicationConfig
     let language: Language
     let l10n: L10N
@@ -46,7 +47,8 @@ final class DependencyContainer: ObservableObject {
         ultrasoundReportRepository: UltrasoundReportRepositoryProtocol,
         ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol,
         templateRepository: TemplateRepositoryProtocol,
-        subscriptionRepository: SubscriptionRepositoryProtocol,
+        subscriptionBackendRepository: SubscriptionBackendRepositoryProtocol,
+        subscriptionRepositoryFactory: SubscriptionRepositoryFactory,
         applicationConfig: ApplicationConfig,
         language: Language,
         l10n: L10N,
@@ -74,7 +76,8 @@ final class DependencyContainer: ObservableObject {
         self.ultrasoundReportRepository = ultrasoundReportRepository
         self.ultrasoundDraftRepository = ultrasoundDraftRepository
         self.templateRepository = templateRepository
-        self.subscriptionRepository = subscriptionRepository
+        self.subscriptionBackendRepository = subscriptionBackendRepository
+        self.subscriptionRepositoryFactory = subscriptionRepositoryFactory
         self.applicationConfig = applicationConfig
         self.language = language
         self.l10n = l10n
@@ -119,12 +122,19 @@ extension DependencyContainer {
 extension DependencyContainer {
     @MainActor
     static var previewable: DependencyContainer {
-        makePreviewable()
+        #if DEBUG
+            makePreviewable(
+                l10n: L10NPreviewFactory.make(),
+            )
+        #else
+            makePreviewable()
+        #endif
     }
 
     @MainActor
     static func makePreviewable(
         l10n: L10N? = nil,
+        subscriptionRepositoryFactory: SubscriptionRepositoryFactory? = nil,
     ) -> DependencyContainer {
         let environment = EnvironmentBase(
             type: .development,
@@ -158,10 +168,17 @@ extension DependencyContainer {
             database: database,
             httpClient: httpClient,
         )
-        let subscriptionRepository = RevenueCatSubscriptionRepository(
-            apiKey: "",
-            environment: environment,
+        let subscriptionBackendRepository = SubscriptionBackendRepository(
+            httpClient: httpClient,
             securityDatabase: DSecurityDatabase(),
+        )
+        let subscriptionRepositoryFactory = subscriptionRepositoryFactory ?? SubscriptionRepositoryFactory(
+            storeKit: SubscriptionStoreKitRepository(
+                backend: subscriptionBackendRepository,
+            ),
+            yooKassa: SubscriptionYooKassaRepository(
+                backend: subscriptionBackendRepository,
+            ),
         )
         let applicationConfig = ApplicationConfig.default
         let language = Language(
@@ -183,7 +200,8 @@ extension DependencyContainer {
             ultrasoundReportRepository: ultrasoundReportRepository,
             ultrasoundDraftRepository: ultrasoundDraftRepository,
             templateRepository: templateRepository,
-            subscriptionRepository: subscriptionRepository,
+            subscriptionBackendRepository: subscriptionBackendRepository,
+            subscriptionRepositoryFactory: subscriptionRepositoryFactory,
             applicationConfig: applicationConfig,
             language: language,
             l10n: l10n ?? L10N.previewable(

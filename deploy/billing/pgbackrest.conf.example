@@ -1,0 +1,26 @@
+# Copy to VM secrets/pgbackrest.conf, readable only by PostgreSQL's OS user.
+# Use different bucket/prefix, credentials and encryption key in each environment.
+[global]
+repo1-type=s3
+repo1-s3-endpoint=storage.yandexcloud.net
+repo1-s3-region=ru-central1
+repo1-s3-uri-style=path
+repo1-s3-bucket=REPLACE_WITH_SEPARATE_PRIVATE_BACKUP_BUCKET
+repo1-s3-key=REPLACE_WITH_SERVICE_ACCOUNT_ACCESS_KEY
+repo1-s3-key-secret=REPLACE_WITH_SERVICE_ACCOUNT_SECRET
+repo1-path=/doglyad/production
+repo1-cipher-type=aes-256-cbc
+repo1-cipher-pass=REPLACE_WITH_SEPARATELY_STORED_RANDOM_KEY
+repo1-retention-full-type=time
+repo1-retention-full=30
+archive-async=n
+compress-type=zst
+process-max=2
+start-fast=y
+log-level-console=info
+
+[billing]
+pg1-path=/var/lib/postgresql/data
+pg1-socket-path=/var/run/postgresql
+pg1-user=doglyad
+pg1-database=billing

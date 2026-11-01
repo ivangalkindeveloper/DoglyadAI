@@ -4,7 +4,15 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class TemplateAddConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
+    model_config = ConfigDict(
+        extra="forbid",
+        frozen=True,
+        strict=True,
+    )
 
-    nameMaxLength: int = Field(gt=0)
-    contentMaxLength: int = Field(gt=0)
+    nameMaxLength: int = Field(
+        gt=0,
+    )
+    contentMaxLength: int = Field(
+        gt=0,
+    )

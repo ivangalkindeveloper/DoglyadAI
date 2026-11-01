@@ -10,16 +10,25 @@ from app.core.variables import Variables
 _FORMAT = "%(asctime)s %(levelname)s %(name)s request_id=%(request_id)s: %(message)s"
 
 
-def setup_logging(variables: Variables) -> None:
+def setup_logging(
+    variables: Variables,
+) -> None:
     """Configures stdout output and, when LOG_DIR is set, daily file rotation.
 
     Logs contain only technical metadata and never request payloads, so long
     retention is safe.
     """
-    handlers: list[logging.Handler] = [logging.StreamHandler(sys.stdout)]
+    handlers: list[logging.Handler] = [
+        logging.StreamHandler(
+            sys.stdout,
+        )
+    ]
 
     if variables.log_dir:
-        variables.log_dir.mkdir(parents=True, exist_ok=True)
+        variables.log_dir.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
         file_handler = TimedRotatingFileHandler(
             filename=variables.log_dir / "inference_backend.log",
             when="midnight",
@@ -30,13 +39,25 @@ def setup_logging(variables: Variables) -> None:
         )
         # Files are named like inference_backend.log.2026-08-01.
         file_handler.suffix = "%Y-%m-%d"
-        handlers.append(file_handler)
+        handlers.append(
+            file_handler,
+        )
 
-    formatter = logging.Formatter(_FORMAT)
+    formatter = logging.Formatter(
+        _FORMAT,
+    )
     root = logging.getLogger()
     root.handlers.clear()
-    root.setLevel(logging.INFO)
+    root.setLevel(
+        logging.INFO,
+    )
     for handler in handlers:
-        handler.setFormatter(formatter)
-        handler.addFilter(RequestIdLogFilter())
-        root.addHandler(handler)
+        handler.setFormatter(
+            formatter,
+        )
+        handler.addFilter(
+            RequestIdLogFilter(),
+        )
+        root.addHandler(
+            handler,
+        )

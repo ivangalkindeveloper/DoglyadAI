@@ -8,7 +8,11 @@ from app.model.ultrasound.us_examination_photo_remark_point import USExamination
 
 
 class USExaminationPhotoRemarks(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
     photoId: UUID
-    points: list[USExaminationPhotoRemarkPoint] = Field(min_length=1)
+    points: list[USExaminationPhotoRemarkPoint] = Field(
+        min_length=1,
+    )

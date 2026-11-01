@@ -1,0 +1,3089 @@
+{
+  "schemaVersion": 2,
+  "corpusVersion": "clinical-pilot-v2-draft-1",
+  "purpose": "Medical-review starting points for 31 examination types, not a representative test or a blind holdout. No audio has been generated. Facts and clinical actions remain provisional until independent review.",
+  "cases": [
+    {
+      "id": "clinical-pilot-v2-abdominalCavity-ru",
+      "familyId": "clinical-pilot-v2-abdominalCavity",
+      "clusterId": "clinical-pilot-v2-abdominalCavity",
+      "locale": "ru",
+      "examinationTypeId": "abdominalCavity",
+      "clinicalContext": {
+        "ageYears": 48
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Жёлчный пузырь содержит подвижный конкремент 8 мм с акустической тенью. Стенка 2 мм. Общий жёлчный проток 4 мм.",
+      "inputText": "Жёлчный пузырь содержит подвижный конкремент 8 мм с акустической тенью. Стенка 2 мм. Общий жёлчный проток 4 мм.",
+      "expectedFields": {
+        "examinationDescription": "Жёлчный пузырь содержит подвижный конкремент 8 мм с акустической тенью. Стенка 2 мм. Общий жёлчный проток 4 мм."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Жёлчный пузырь содержит подвижный конкремент 8 мм с акустической тенью. Стенка 2 мм. Общий жёлчный проток 4 мм."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Жёлчный пузырь содержит подвижный конкремент 8 мм с акустической тенью. Стенка 2 мм. Общий жёлчный проток 4 мм.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-abdominalCavity-en",
+      "familyId": "clinical-pilot-v2-abdominalCavity",
+      "clusterId": "clinical-pilot-v2-abdominalCavity",
+      "locale": "en",
+      "examinationTypeId": "abdominalCavity",
+      "clinicalContext": {
+        "ageYears": 48
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The gallbladder contains a mobile 8 mm calculus with acoustic shadowing. Wall thickness is 2 mm. The common bile duct measures 4 mm.",
+      "inputText": "The gallbladder contains a mobile 8 mm calculus with acoustic shadowing. Wall thickness is 2 mm. The common bile duct measures 4 mm.",
+      "expectedFields": {
+        "examinationDescription": "The gallbladder contains a mobile 8 mm calculus with acoustic shadowing. Wall thickness is 2 mm. The common bile duct measures 4 mm."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The gallbladder contains a mobile 8 mm calculus with acoustic shadowing. Wall thickness is 2 mm. The common bile duct measures 4 mm."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The gallbladder contains a mobile 8 mm calculus with acoustic shadowing. Wall thickness is 2 mm. The common bile duct measures 4 mm.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-abdominalVessels-ru",
+      "familyId": "clinical-pilot-v2-abdominalVessels",
+      "clusterId": "clinical-pilot-v2-abdominalVessels",
+      "locale": "ru",
+      "examinationTypeId": "abdominalVessels",
+      "clinicalContext": {
+        "ageYears": 65
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Брюшная аорта в инфраренальном отделе 24 мм в переднезаднем размере. Пристеночных тромботических масс в этом отделе не выявлено.",
+      "inputText": "Брюшная аорта в инфраренальном отделе 24 мм в переднезаднем размере. Пристеночных тромботических масс в этом отделе не выявлено.",
+      "expectedFields": {
+        "examinationDescription": "Брюшная аорта в инфраренальном отделе 24 мм в переднезаднем размере. Пристеночных тромботических масс в этом отделе не выявлено."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Брюшная аорта в инфраренальном отделе 24 мм в переднезаднем размере. Пристеночных тромботических масс в этом отделе не выявлено."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Брюшная аорта в инфраренальном отделе 24 мм в переднезаднем размере. Пристеночных тромботических масс в этом отделе не выявлено.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-abdominalVessels-en",
+      "familyId": "clinical-pilot-v2-abdominalVessels",
+      "clusterId": "clinical-pilot-v2-abdominalVessels",
+      "locale": "en",
+      "examinationTypeId": "abdominalVessels",
+      "clinicalContext": {
+        "ageYears": 65
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The infrarenal abdominal aorta measures 24 mm anteroposteriorly. No mural thrombus is seen in this segment.",
+      "inputText": "The infrarenal abdominal aorta measures 24 mm anteroposteriorly. No mural thrombus is seen in this segment.",
+      "expectedFields": {
+        "examinationDescription": "The infrarenal abdominal aorta measures 24 mm anteroposteriorly. No mural thrombus is seen in this segment."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The infrarenal abdominal aorta measures 24 mm anteroposteriorly. No mural thrombus is seen in this segment."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The infrarenal abdominal aorta measures 24 mm anteroposteriorly. No mural thrombus is seen in this segment.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-arteriesOfTheLowerExtremities-ru",
+      "familyId": "clinical-pilot-v2-arteriesOfTheLowerExtremities",
+      "clusterId": "clinical-pilot-v2-arteriesOfTheLowerExtremities",
+      "locale": "ru",
+      "examinationTypeId": "arteriesOfTheLowerExtremities",
+      "clinicalContext": {
+        "ageYears": 61
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "В правой общей бедренной артерии определяется трёхфазный кровоток. Пиковая систолическая скорость 85 см/с. Левую ногу пока не исследовал.",
+      "inputText": "В правой общей бедренной артерии определяется трёхфазный кровоток. Пиковая систолическая скорость 85 см/с. Левую ногу пока не исследовал.",
+      "expectedFields": {
+        "examinationDescription": "В правой общей бедренной артерии определяется трёхфазный кровоток. Пиковая систолическая скорость 85 см/с. Левую ногу пока не исследовал."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "В правой общей бедренной артерии определяется трёхфазный кровоток. Пиковая систолическая скорость 85 см/с. Левую ногу пока не исследовал."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "В правой общей бедренной артерии определяется трёхфазный кровоток. Пиковая систолическая скорость 85 см/с. Левую ногу пока не исследовал.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-arteriesOfTheLowerExtremities-en",
+      "familyId": "clinical-pilot-v2-arteriesOfTheLowerExtremities",
+      "clusterId": "clinical-pilot-v2-arteriesOfTheLowerExtremities",
+      "locale": "en",
+      "examinationTypeId": "arteriesOfTheLowerExtremities",
+      "clinicalContext": {
+        "ageYears": 61
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The right common femoral artery has triphasic flow. Peak systolic velocity is 85 cm/s. The left leg has not yet been examined.",
+      "inputText": "The right common femoral artery has triphasic flow. Peak systolic velocity is 85 cm/s. The left leg has not yet been examined.",
+      "expectedFields": {
+        "examinationDescription": "The right common femoral artery has triphasic flow. Peak systolic velocity is 85 cm/s. The left leg has not yet been examined."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The right common femoral artery has triphasic flow. Peak systolic velocity is 85 cm/s. The left leg has not yet been examined."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The right common femoral artery has triphasic flow. Peak systolic velocity is 85 cm/s. The left leg has not yet been examined.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-arteriesOfTheUpperExtremities-ru",
+      "familyId": "clinical-pilot-v2-arteriesOfTheUpperExtremities",
+      "clusterId": "clinical-pilot-v2-arteriesOfTheUpperExtremities",
+      "locale": "ru",
+      "examinationTypeId": "arteriesOfTheUpperExtremities",
+      "clinicalContext": {
+        "ageYears": 42
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Правая лучевая артерия проходима. Кровоток трёхфазный, пиковая систолическая скорость 48 см/с.",
+      "inputText": "Правая лучевая артерия проходима. Кровоток трёхфазный, пиковая систолическая скорость 48 см/с.",
+      "expectedFields": {
+        "examinationDescription": "Правая лучевая артерия проходима. Кровоток трёхфазный, пиковая систолическая скорость 48 см/с."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Правая лучевая артерия проходима. Кровоток трёхфазный, пиковая систолическая скорость 48 см/с."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Правая лучевая артерия проходима. Кровоток трёхфазный, пиковая систолическая скорость 48 см/с.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-arteriesOfTheUpperExtremities-en",
+      "familyId": "clinical-pilot-v2-arteriesOfTheUpperExtremities",
+      "clusterId": "clinical-pilot-v2-arteriesOfTheUpperExtremities",
+      "locale": "en",
+      "examinationTypeId": "arteriesOfTheUpperExtremities",
+      "clinicalContext": {
+        "ageYears": 42
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The right radial artery is patent. Flow is triphasic, with a peak systolic velocity of 48 cm/s.",
+      "inputText": "The right radial artery is patent. Flow is triphasic, with a peak systolic velocity of 48 cm/s.",
+      "expectedFields": {
+        "examinationDescription": "The right radial artery is patent. Flow is triphasic, with a peak systolic velocity of 48 cm/s."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The right radial artery is patent. Flow is triphasic, with a peak systolic velocity of 48 cm/s."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The right radial artery is patent. Flow is triphasic, with a peak systolic velocity of 48 cm/s.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-bladder-ru",
+      "familyId": "clinical-pilot-v2-bladder",
+      "clusterId": "clinical-pilot-v2-bladder",
+      "locale": "ru",
+      "examinationTypeId": "bladder",
+      "clinicalContext": {
+        "ageYears": 57
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Мочевой пузырь наполнен, объём 260 мл. В просвете подвижных эхогенных включений не видно.",
+      "inputText": "Мочевой пузырь наполнен, объём 260 мл. В просвете подвижных эхогенных включений не видно.",
+      "expectedFields": {
+        "examinationDescription": "Мочевой пузырь наполнен, объём 260 мл. В просвете подвижных эхогенных включений не видно."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Мочевой пузырь наполнен, объём 260 мл. В просвете подвижных эхогенных включений не видно."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Мочевой пузырь наполнен, объём 260 мл. В просвете подвижных эхогенных включений не видно.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-bladder-en",
+      "familyId": "clinical-pilot-v2-bladder",
+      "clusterId": "clinical-pilot-v2-bladder",
+      "locale": "en",
+      "examinationTypeId": "bladder",
+      "clinicalContext": {
+        "ageYears": 57
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The bladder is filled, with a volume of 260 ml. No mobile echogenic material is seen in the lumen.",
+      "inputText": "The bladder is filled, with a volume of 260 ml. No mobile echogenic material is seen in the lumen.",
+      "expectedFields": {
+        "examinationDescription": "The bladder is filled, with a volume of 260 ml. No mobile echogenic material is seen in the lumen."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The bladder is filled, with a volume of 260 ml. No mobile echogenic material is seen in the lumen."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The bladder is filled, with a volume of 260 ml. No mobile echogenic material is seen in the lumen.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-bladderWithResidualUrineDetermination-ru",
+      "familyId": "clinical-pilot-v2-bladderWithResidualUrineDetermination",
+      "clusterId": "clinical-pilot-v2-bladderWithResidualUrineDetermination",
+      "locale": "ru",
+      "examinationTypeId": "bladderWithResidualUrineDetermination",
+      "clinicalContext": {
+        "ageYears": 69
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "До мочеиспускания объём мочевого пузыря 310 мл. После мочеиспускания остаточный объём 45 мл.",
+      "inputText": "До мочеиспускания объём мочевого пузыря 310 мл. После мочеиспускания остаточный объём 45 мл.",
+      "expectedFields": {
+        "examinationDescription": "До мочеиспускания объём мочевого пузыря 310 мл. После мочеиспускания остаточный объём 45 мл."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "До мочеиспускания объём мочевого пузыря 310 мл. После мочеиспускания остаточный объём 45 мл."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "До мочеиспускания объём мочевого пузыря 310 мл. После мочеиспускания остаточный объём 45 мл.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-bladderWithResidualUrineDetermination-en",
+      "familyId": "clinical-pilot-v2-bladderWithResidualUrineDetermination",
+      "clusterId": "clinical-pilot-v2-bladderWithResidualUrineDetermination",
+      "locale": "en",
+      "examinationTypeId": "bladderWithResidualUrineDetermination",
+      "clinicalContext": {
+        "ageYears": 69
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Bladder volume before voiding is 310 ml. Postvoid residual volume is 45 ml.",
+      "inputText": "Bladder volume before voiding is 310 ml. Postvoid residual volume is 45 ml.",
+      "expectedFields": {
+        "examinationDescription": "Bladder volume before voiding is 310 ml. Postvoid residual volume is 45 ml."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Bladder volume before voiding is 310 ml. Postvoid residual volume is 45 ml."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Bladder volume before voiding is 310 ml. Postvoid residual volume is 45 ml.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-brachiocephalicVessels-ru",
+      "familyId": "clinical-pilot-v2-brachiocephalicVessels",
+      "clusterId": "clinical-pilot-v2-brachiocephalicVessels",
+      "locale": "ru",
+      "examinationTypeId": "brachiocephalicVessels",
+      "clinicalContext": {
+        "ageYears": 64
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "В области левой каротидной бифуркации бляшка толщиной 2 мм. Степень стеноза пока не измерена.",
+      "inputText": "В области левой каротидной бифуркации бляшка толщиной 2 мм. Степень стеноза пока не измерена.",
+      "expectedFields": {
+        "examinationDescription": "В области левой каротидной бифуркации бляшка толщиной 2 мм. Степень стеноза пока не измерена."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "В области левой каротидной бифуркации бляшка толщиной 2 мм. Степень стеноза пока не измерена."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "В области левой каротидной бифуркации бляшка толщиной 2 мм. Степень стеноза пока не измерена.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-brachiocephalicVessels-en",
+      "familyId": "clinical-pilot-v2-brachiocephalicVessels",
+      "clusterId": "clinical-pilot-v2-brachiocephalicVessels",
+      "locale": "en",
+      "examinationTypeId": "brachiocephalicVessels",
+      "clinicalContext": {
+        "ageYears": 64
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "There is a 2 mm thick plaque at the left carotid bifurcation. The degree of stenosis has not yet been measured.",
+      "inputText": "There is a 2 mm thick plaque at the left carotid bifurcation. The degree of stenosis has not yet been measured.",
+      "expectedFields": {
+        "examinationDescription": "There is a 2 mm thick plaque at the left carotid bifurcation. The degree of stenosis has not yet been measured."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "There is a 2 mm thick plaque at the left carotid bifurcation. The degree of stenosis has not yet been measured."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "There is a 2 mm thick plaque at the left carotid bifurcation. The degree of stenosis has not yet been measured.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-echocardiography-ru",
+      "familyId": "clinical-pilot-v2-echocardiography",
+      "clusterId": "clinical-pilot-v2-echocardiography",
+      "locale": "ru",
+      "examinationTypeId": "echocardiography",
+      "clinicalContext": {
+        "ageYears": 55
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Конечный диастолический размер левого желудочка 49 мм. Фракция выброса по биплановому методу Симпсона 60 процентов. Жидкости в полости перикарда не выявлено.",
+      "inputText": "Конечный диастолический размер левого желудочка 49 мм. Фракция выброса по биплановому методу Симпсона 60 процентов. Жидкости в полости перикарда не выявлено.",
+      "expectedFields": {
+        "examinationDescription": "Конечный диастолический размер левого желудочка 49 мм. Фракция выброса по биплановому методу Симпсона 60 процентов. Жидкости в полости перикарда не выявлено."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Конечный диастолический размер левого желудочка 49 мм. Фракция выброса по биплановому методу Симпсона 60 процентов. Жидкости в полости перикарда не выявлено."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Конечный диастолический размер левого желудочка 49 мм. Фракция выброса по биплановому методу Симпсона 60 процентов. Жидкости в полости перикарда не выявлено.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-echocardiography-en",
+      "familyId": "clinical-pilot-v2-echocardiography",
+      "clusterId": "clinical-pilot-v2-echocardiography",
+      "locale": "en",
+      "examinationTypeId": "echocardiography",
+      "clinicalContext": {
+        "ageYears": 55
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Left ventricular end-diastolic diameter is 49 mm. Ejection fraction by the biplane Simpson method is 60 percent. No pericardial effusion is seen.",
+      "inputText": "Left ventricular end-diastolic diameter is 49 mm. Ejection fraction by the biplane Simpson method is 60 percent. No pericardial effusion is seen.",
+      "expectedFields": {
+        "examinationDescription": "Left ventricular end-diastolic diameter is 49 mm. Ejection fraction by the biplane Simpson method is 60 percent. No pericardial effusion is seen."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Left ventricular end-diastolic diameter is 49 mm. Ejection fraction by the biplane Simpson method is 60 percent. No pericardial effusion is seen."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Left ventricular end-diastolic diameter is 49 mm. Ejection fraction by the biplane Simpson method is 60 percent. No pericardial effusion is seen.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-eye-ru",
+      "familyId": "clinical-pilot-v2-eye",
+      "clusterId": "clinical-pilot-v2-eye",
+      "locale": "ru",
+      "examinationTypeId": "eye",
+      "clinicalContext": {
+        "ageYears": 60
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Исследую правый глаз. В стекловидном теле подвижные мелкоточечные эхосигналы. Признаков отслойки сетчатки не вижу.",
+      "inputText": "Исследую правый глаз. В стекловидном теле подвижные мелкоточечные эхосигналы. Признаков отслойки сетчатки не вижу.",
+      "expectedFields": {
+        "examinationDescription": "Исследую правый глаз. В стекловидном теле подвижные мелкоточечные эхосигналы. Признаков отслойки сетчатки не вижу."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Исследую правый глаз. В стекловидном теле подвижные мелкоточечные эхосигналы. Признаков отслойки сетчатки не вижу."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Исследую правый глаз. В стекловидном теле подвижные мелкоточечные эхосигналы. Признаков отслойки сетчатки не вижу.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-eye-en",
+      "familyId": "clinical-pilot-v2-eye",
+      "clusterId": "clinical-pilot-v2-eye",
+      "locale": "en",
+      "examinationTypeId": "eye",
+      "clinicalContext": {
+        "ageYears": 60
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "I am examining the right eye. There are mobile fine echoes in the vitreous. I do not see evidence of retinal detachment.",
+      "inputText": "I am examining the right eye. There are mobile fine echoes in the vitreous. I do not see evidence of retinal detachment.",
+      "expectedFields": {
+        "examinationDescription": "I am examining the right eye. There are mobile fine echoes in the vitreous. I do not see evidence of retinal detachment."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "I am examining the right eye. There are mobile fine echoes in the vitreous. I do not see evidence of retinal detachment."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "I am examining the right eye. There are mobile fine echoes in the vitreous. I do not see evidence of retinal detachment.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-hipJointsInNewborns-ru",
+      "familyId": "clinical-pilot-v2-hipJointsInNewborns",
+      "clusterId": "clinical-pilot-v2-hipJointsInNewborns",
+      "locale": "ru",
+      "examinationTypeId": "hipJointsInNewborns",
+      "clinicalContext": {
+        "ageDays": 35
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Ребёнку пять недель. Справа угол альфа 63 градуса, угол бета 51 градус. Слева угол альфа 62 градуса, угол бета 52 градуса.",
+      "inputText": "Ребёнку пять недель. Справа угол альфа 63 градуса, угол бета 51 градус. Слева угол альфа 62 градуса, угол бета 52 градуса.",
+      "expectedFields": {
+        "examinationDescription": "Ребёнку пять недель. Справа угол альфа 63 градуса, угол бета 51 градус. Слева угол альфа 62 градуса, угол бета 52 градуса."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Ребёнку пять недель. Справа угол альфа 63 градуса, угол бета 51 градус. Слева угол альфа 62 градуса, угол бета 52 градуса."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Ребёнку пять недель. Справа угол альфа 63 градуса, угол бета 51 градус. Слева угол альфа 62 градуса, угол бета 52 градуса.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-hipJointsInNewborns-en",
+      "familyId": "clinical-pilot-v2-hipJointsInNewborns",
+      "clusterId": "clinical-pilot-v2-hipJointsInNewborns",
+      "locale": "en",
+      "examinationTypeId": "hipJointsInNewborns",
+      "clinicalContext": {
+        "ageDays": 35
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The infant is five weeks old. On the right, the alpha angle is 63 degrees and the beta angle is 51 degrees. On the left, the alpha angle is 62 degrees and the beta angle is 52 degrees.",
+      "inputText": "The infant is five weeks old. On the right, the alpha angle is 63 degrees and the beta angle is 51 degrees. On the left, the alpha angle is 62 degrees and the beta angle is 52 degrees.",
+      "expectedFields": {
+        "examinationDescription": "The infant is five weeks old. On the right, the alpha angle is 63 degrees and the beta angle is 51 degrees. On the left, the alpha angle is 62 degrees and the beta angle is 52 degrees."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The infant is five weeks old. On the right, the alpha angle is 63 degrees and the beta angle is 51 degrees. On the left, the alpha angle is 62 degrees and the beta angle is 52 degrees."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The infant is five weeks old. On the right, the alpha angle is 63 degrees and the beta angle is 51 degrees. On the left, the alpha angle is 62 degrees and the beta angle is 52 degrees.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-hollowOrgansStomachAndIntestines-ru",
+      "familyId": "clinical-pilot-v2-hollowOrgansStomachAndIntestines",
+      "clusterId": "clinical-pilot-v2-hollowOrgansStomachAndIntestines",
+      "locale": "ru",
+      "examinationTypeId": "hollowOrgansStomachAndIntestines",
+      "clinicalContext": {
+        "ageYears": 32
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "В доступном осмотру участке терминального отдела подвздошной кишки стенка 3 мм. Перистальтика прослеживается. Остальные отделы оценить мешает газ.",
+      "inputText": "В доступном осмотру участке терминального отдела подвздошной кишки стенка 3 мм. Перистальтика прослеживается. Остальные отделы оценить мешает газ.",
+      "expectedFields": {
+        "examinationDescription": "В доступном осмотру участке терминального отдела подвздошной кишки стенка 3 мм. Перистальтика прослеживается. Остальные отделы оценить мешает газ."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "В доступном осмотру участке терминального отдела подвздошной кишки стенка 3 мм. Перистальтика прослеживается. Остальные отделы оценить мешает газ."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "В доступном осмотру участке терминального отдела подвздошной кишки стенка 3 мм. Перистальтика прослеживается. Остальные отделы оценить мешает газ.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-hollowOrgansStomachAndIntestines-en",
+      "familyId": "clinical-pilot-v2-hollowOrgansStomachAndIntestines",
+      "clusterId": "clinical-pilot-v2-hollowOrgansStomachAndIntestines",
+      "locale": "en",
+      "examinationTypeId": "hollowOrgansStomachAndIntestines",
+      "clinicalContext": {
+        "ageYears": 32
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The wall measures 3 mm in the visualized terminal ileum. Peristalsis is present. Gas limits assessment of the remaining segments.",
+      "inputText": "The wall measures 3 mm in the visualized terminal ileum. Peristalsis is present. Gas limits assessment of the remaining segments.",
+      "expectedFields": {
+        "examinationDescription": "The wall measures 3 mm in the visualized terminal ileum. Peristalsis is present. Gas limits assessment of the remaining segments."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The wall measures 3 mm in the visualized terminal ileum. Peristalsis is present. Gas limits assessment of the remaining segments."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The wall measures 3 mm in the visualized terminal ileum. Peristalsis is present. Gas limits assessment of the remaining segments.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-intracanialArteries-ru",
+      "familyId": "clinical-pilot-v2-intracanialArteries",
+      "clusterId": "clinical-pilot-v2-intracanialArteries",
+      "locale": "ru",
+      "examinationTypeId": "intracanialArteries",
+      "clinicalContext": {
+        "ageYears": 59
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Через правое височное окно средняя мозговая артерия лоцируется. Средняя скорость 55 см/с. Слева удовлетворительного акустического окна нет.",
+      "inputText": "Через правое височное окно средняя мозговая артерия лоцируется. Средняя скорость 55 см/с. Слева удовлетворительного акустического окна нет.",
+      "expectedFields": {
+        "examinationDescription": "Через правое височное окно средняя мозговая артерия лоцируется. Средняя скорость 55 см/с. Слева удовлетворительного акустического окна нет."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Через правое височное окно средняя мозговая артерия лоцируется. Средняя скорость 55 см/с. Слева удовлетворительного акустического окна нет."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Через правое височное окно средняя мозговая артерия лоцируется. Средняя скорость 55 см/с. Слева удовлетворительного акустического окна нет.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-intracanialArteries-en",
+      "familyId": "clinical-pilot-v2-intracanialArteries",
+      "clusterId": "clinical-pilot-v2-intracanialArteries",
+      "locale": "en",
+      "examinationTypeId": "intracanialArteries",
+      "clinicalContext": {
+        "ageYears": 59
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The right middle cerebral artery is visualized through the temporal window. Mean velocity is 55 cm/s. There is no adequate acoustic window on the left.",
+      "inputText": "The right middle cerebral artery is visualized through the temporal window. Mean velocity is 55 cm/s. There is no adequate acoustic window on the left.",
+      "expectedFields": {
+        "examinationDescription": "The right middle cerebral artery is visualized through the temporal window. Mean velocity is 55 cm/s. There is no adequate acoustic window on the left."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The right middle cerebral artery is visualized through the temporal window. Mean velocity is 55 cm/s. There is no adequate acoustic window on the left."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The right middle cerebral artery is visualized through the temporal window. Mean velocity is 55 cm/s. There is no adequate acoustic window on the left.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-joints-ru",
+      "familyId": "clinical-pilot-v2-joints",
+      "clusterId": "clinical-pilot-v2-joints",
+      "locale": "ru",
+      "examinationTypeId": "joints",
+      "clinicalContext": {
+        "ageYears": 47
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Осматриваю правое плечо. Сухожилие надостной мышцы прослеживается непрерывно. В субакромиально-субдельтовидной сумке слой жидкости до 3 мм.",
+      "inputText": "Осматриваю правое плечо. Сухожилие надостной мышцы прослеживается непрерывно. В субакромиально-субдельтовидной сумке слой жидкости до 3 мм.",
+      "expectedFields": {
+        "examinationDescription": "Осматриваю правое плечо. Сухожилие надостной мышцы прослеживается непрерывно. В субакромиально-субдельтовидной сумке слой жидкости до 3 мм."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Осматриваю правое плечо. Сухожилие надостной мышцы прослеживается непрерывно. В субакромиально-субдельтовидной сумке слой жидкости до 3 мм."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Осматриваю правое плечо. Сухожилие надостной мышцы прослеживается непрерывно. В субакромиально-субдельтовидной сумке слой жидкости до 3 мм.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-joints-en",
+      "familyId": "clinical-pilot-v2-joints",
+      "clusterId": "clinical-pilot-v2-joints",
+      "locale": "en",
+      "examinationTypeId": "joints",
+      "clinicalContext": {
+        "ageYears": 47
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "I am examining the right shoulder. The supraspinatus tendon is continuous. There is a fluid layer up to 3 mm in the subacromial-subdeltoid bursa.",
+      "inputText": "I am examining the right shoulder. The supraspinatus tendon is continuous. There is a fluid layer up to 3 mm in the subacromial-subdeltoid bursa.",
+      "expectedFields": {
+        "examinationDescription": "I am examining the right shoulder. The supraspinatus tendon is continuous. There is a fluid layer up to 3 mm in the subacromial-subdeltoid bursa."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "I am examining the right shoulder. The supraspinatus tendon is continuous. There is a fluid layer up to 3 mm in the subacromial-subdeltoid bursa."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "I am examining the right shoulder. The supraspinatus tendon is continuous. There is a fluid layer up to 3 mm in the subacromial-subdeltoid bursa.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-kidneysAdrenalGlandsAndRetroperitonealSpace-ru",
+      "familyId": "clinical-pilot-v2-kidneysAdrenalGlandsAndRetroperitonealSpace",
+      "clusterId": "clinical-pilot-v2-kidneysAdrenalGlandsAndRetroperitonealSpace",
+      "locale": "ru",
+      "examinationTypeId": "kidneysAdrenalGlandsAndRetroperitonealSpace",
+      "clinicalContext": {
+        "ageYears": 46
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Правая почка длиной 112 мм, левая 108 мм. В нижней чашечке правой почки конкремент 5 мм с акустической тенью. Лоханка справа не расширена.",
+      "inputText": "Правая почка длиной 112 мм, левая 108 мм. В нижней чашечке правой почки конкремент 5 мм с акустической тенью. Лоханка справа не расширена.",
+      "expectedFields": {
+        "examinationDescription": "Правая почка длиной 112 мм, левая 108 мм. В нижней чашечке правой почки конкремент 5 мм с акустической тенью. Лоханка справа не расширена."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Правая почка длиной 112 мм, левая 108 мм. В нижней чашечке правой почки конкремент 5 мм с акустической тенью. Лоханка справа не расширена."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Правая почка длиной 112 мм, левая 108 мм. В нижней чашечке правой почки конкремент 5 мм с акустической тенью. Лоханка справа не расширена.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-kidneysAdrenalGlandsAndRetroperitonealSpace-en",
+      "familyId": "clinical-pilot-v2-kidneysAdrenalGlandsAndRetroperitonealSpace",
+      "clusterId": "clinical-pilot-v2-kidneysAdrenalGlandsAndRetroperitonealSpace",
+      "locale": "en",
+      "examinationTypeId": "kidneysAdrenalGlandsAndRetroperitonealSpace",
+      "clinicalContext": {
+        "ageYears": 46
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The right kidney is 112 mm long and the left is 108 mm long. There is a 5 mm calculus with acoustic shadowing in the right lower calyx. The right renal pelvis is not dilated.",
+      "inputText": "The right kidney is 112 mm long and the left is 108 mm long. There is a 5 mm calculus with acoustic shadowing in the right lower calyx. The right renal pelvis is not dilated.",
+      "expectedFields": {
+        "examinationDescription": "The right kidney is 112 mm long and the left is 108 mm long. There is a 5 mm calculus with acoustic shadowing in the right lower calyx. The right renal pelvis is not dilated."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The right kidney is 112 mm long and the left is 108 mm long. There is a 5 mm calculus with acoustic shadowing in the right lower calyx. The right renal pelvis is not dilated."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The right kidney is 112 mm long and the left is 108 mm long. There is a 5 mm calculus with acoustic shadowing in the right lower calyx. The right renal pelvis is not dilated.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-lymphNodes-ru",
+      "familyId": "clinical-pilot-v2-lymphNodes",
+      "clusterId": "clinical-pilot-v2-lymphNodes",
+      "locale": "ru",
+      "examinationTypeId": "lymphNodes",
+      "clinicalContext": {
+        "ageYears": 29
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Слева на шее лимфоузел 16 на 6 мм. Форма овальная, эхогенные ворота сохранены. Кровоток преимущественно в области ворот.",
+      "inputText": "Слева на шее лимфоузел 16 на 6 мм. Форма овальная, эхогенные ворота сохранены. Кровоток преимущественно в области ворот.",
+      "expectedFields": {
+        "examinationDescription": "Слева на шее лимфоузел 16 на 6 мм. Форма овальная, эхогенные ворота сохранены. Кровоток преимущественно в области ворот."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Слева на шее лимфоузел 16 на 6 мм. Форма овальная, эхогенные ворота сохранены. Кровоток преимущественно в области ворот."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Слева на шее лимфоузел 16 на 6 мм. Форма овальная, эхогенные ворота сохранены. Кровоток преимущественно в области ворот.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-lymphNodes-en",
+      "familyId": "clinical-pilot-v2-lymphNodes",
+      "clusterId": "clinical-pilot-v2-lymphNodes",
+      "locale": "en",
+      "examinationTypeId": "lymphNodes",
+      "clinicalContext": {
+        "ageYears": 29
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "There is a 16 by 6 mm lymph node in the left neck. It is oval with a preserved echogenic hilum. Flow is predominantly hilar.",
+      "inputText": "There is a 16 by 6 mm lymph node in the left neck. It is oval with a preserved echogenic hilum. Flow is predominantly hilar.",
+      "expectedFields": {
+        "examinationDescription": "There is a 16 by 6 mm lymph node in the left neck. It is oval with a preserved echogenic hilum. Flow is predominantly hilar."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "There is a 16 by 6 mm lymph node in the left neck. It is oval with a preserved echogenic hilum. Flow is predominantly hilar."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "There is a 16 by 6 mm lymph node in the left neck. It is oval with a preserved echogenic hilum. Flow is predominantly hilar.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-mammaryGlands-ru",
+      "familyId": "clinical-pilot-v2-mammaryGlands",
+      "clusterId": "clinical-pilot-v2-mammaryGlands",
+      "locale": "ru",
+      "examinationTypeId": "mammaryGlands",
+      "clinicalContext": {
+        "ageYears": 38
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "В правой молочной железе на 10 часах, в 3 см от соска, анэхогенное образование 8 на 5 мм. Контур чёткий, стенка тонкая, при цветовом допплеровском картировании внутренний кровоток не определяется.",
+      "inputText": "В правой молочной железе на 10 часах, в 3 см от соска, анэхогенное образование 8 на 5 мм. Контур чёткий, стенка тонкая, при цветовом допплеровском картировании внутренний кровоток не определяется.",
+      "expectedFields": {
+        "examinationDescription": "В правой молочной железе на 10 часах, в 3 см от соска, анэхогенное образование 8 на 5 мм. Контур чёткий, стенка тонкая, при цветовом допплеровском картировании внутренний кровоток не определяется."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "В правой молочной железе на 10 часах, в 3 см от соска, анэхогенное образование 8 на 5 мм. Контур чёткий, стенка тонкая, при цветовом допплеровском картировании внутренний кровоток не определяется."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "В правой молочной железе на 10 часах, в 3 см от соска, анэхогенное образование 8 на 5 мм. Контур чёткий, стенка тонкая, при цветовом допплеровском картировании внутренний кровоток не определяется.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-mammaryGlands-en",
+      "familyId": "clinical-pilot-v2-mammaryGlands",
+      "clusterId": "clinical-pilot-v2-mammaryGlands",
+      "locale": "en",
+      "examinationTypeId": "mammaryGlands",
+      "clinicalContext": {
+        "ageYears": 38
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "In the right breast at 10 o'clock, 3 cm from the nipple, there is an 8 by 5 mm anechoic lesion. It has a well-defined margin and a thin wall. No internal flow is detected on color Doppler.",
+      "inputText": "In the right breast at 10 o'clock, 3 cm from the nipple, there is an 8 by 5 mm anechoic lesion. It has a well-defined margin and a thin wall. No internal flow is detected on color Doppler.",
+      "expectedFields": {
+        "examinationDescription": "In the right breast at 10 o'clock, 3 cm from the nipple, there is an 8 by 5 mm anechoic lesion. It has a well-defined margin and a thin wall. No internal flow is detected on color Doppler."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "In the right breast at 10 o'clock, 3 cm from the nipple, there is an 8 by 5 mm anechoic lesion. It has a well-defined margin and a thin wall. No internal flow is detected on color Doppler."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "In the right breast at 10 o'clock, 3 cm from the nipple, there is an 8 by 5 mm anechoic lesion. It has a well-defined margin and a thin wall. No internal flow is detected on color Doppler.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-neurosonography-ru",
+      "familyId": "clinical-pilot-v2-neurosonography",
+      "clusterId": "clinical-pilot-v2-neurosonography",
+      "locale": "ru",
+      "examinationTypeId": "neurosonography",
+      "clinicalContext": {
+        "ageDays": 21
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Ребёнку три недели, осмотр через большой родничок. Передний рог правого бокового желудочка 2 мм, левого 2 мм. Срединные структуры не смещены.",
+      "inputText": "Ребёнку три недели, осмотр через большой родничок. Передний рог правого бокового желудочка 2 мм, левого 2 мм. Срединные структуры не смещены.",
+      "expectedFields": {
+        "examinationDescription": "Ребёнку три недели, осмотр через большой родничок. Передний рог правого бокового желудочка 2 мм, левого 2 мм. Срединные структуры не смещены."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Ребёнку три недели, осмотр через большой родничок. Передний рог правого бокового желудочка 2 мм, левого 2 мм. Срединные структуры не смещены."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Ребёнку три недели, осмотр через большой родничок. Передний рог правого бокового желудочка 2 мм, левого 2 мм. Срединные структуры не смещены.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-neurosonography-en",
+      "familyId": "clinical-pilot-v2-neurosonography",
+      "clusterId": "clinical-pilot-v2-neurosonography",
+      "locale": "en",
+      "examinationTypeId": "neurosonography",
+      "clinicalContext": {
+        "ageDays": 21
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The infant is three weeks old and is examined through the anterior fontanelle. The anterior horn of each lateral ventricle measures 2 mm. There is no midline shift.",
+      "inputText": "The infant is three weeks old and is examined through the anterior fontanelle. The anterior horn of each lateral ventricle measures 2 mm. There is no midline shift.",
+      "expectedFields": {
+        "examinationDescription": "The infant is three weeks old and is examined through the anterior fontanelle. The anterior horn of each lateral ventricle measures 2 mm. There is no midline shift."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The infant is three weeks old and is examined through the anterior fontanelle. The anterior horn of each lateral ventricle measures 2 mm. There is no midline shift."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The infant is three weeks old and is examined through the anterior fontanelle. The anterior horn of each lateral ventricle measures 2 mm. There is no midline shift.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pelvicOrgans-ru",
+      "familyId": "clinical-pilot-v2-pelvicOrgans",
+      "clusterId": "clinical-pilot-v2-pelvicOrgans",
+      "locale": "ru",
+      "examinationTypeId": "pelvicOrgans",
+      "clinicalContext": {
+        "ageYears": 31,
+        "cycleDay": 8
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Восьмой день цикла. Эндометрий 5 мм. В правом яичнике фолликул 12 мм. Свободная жидкость в позадиматочном пространстве не определяется.",
+      "inputText": "Восьмой день цикла. Эндометрий 5 мм. В правом яичнике фолликул 12 мм. Свободная жидкость в позадиматочном пространстве не определяется.",
+      "expectedFields": {
+        "examinationDescription": "Восьмой день цикла. Эндометрий 5 мм. В правом яичнике фолликул 12 мм. Свободная жидкость в позадиматочном пространстве не определяется."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Восьмой день цикла. Эндометрий 5 мм. В правом яичнике фолликул 12 мм. Свободная жидкость в позадиматочном пространстве не определяется."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Восьмой день цикла. Эндометрий 5 мм. В правом яичнике фолликул 12 мм. Свободная жидкость в позадиматочном пространстве не определяется.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pelvicOrgans-en",
+      "familyId": "clinical-pilot-v2-pelvicOrgans",
+      "clusterId": "clinical-pilot-v2-pelvicOrgans",
+      "locale": "en",
+      "examinationTypeId": "pelvicOrgans",
+      "clinicalContext": {
+        "ageYears": 31,
+        "cycleDay": 8
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "This is cycle day eight. The endometrium measures 5 mm. There is a 12 mm follicle in the right ovary. No free fluid is seen in the pouch of Douglas.",
+      "inputText": "This is cycle day eight. The endometrium measures 5 mm. There is a 12 mm follicle in the right ovary. No free fluid is seen in the pouch of Douglas.",
+      "expectedFields": {
+        "examinationDescription": "This is cycle day eight. The endometrium measures 5 mm. There is a 12 mm follicle in the right ovary. No free fluid is seen in the pouch of Douglas."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "This is cycle day eight. The endometrium measures 5 mm. There is a 12 mm follicle in the right ovary. No free fluid is seen in the pouch of Douglas."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "This is cycle day eight. The endometrium measures 5 mm. There is a 12 mm follicle in the right ovary. No free fluid is seen in the pouch of Douglas.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pleuralRegion-ru",
+      "familyId": "clinical-pilot-v2-pleuralRegion",
+      "clusterId": "clinical-pilot-v2-pleuralRegion",
+      "locale": "ru",
+      "examinationTypeId": "pleuralRegion",
+      "clinicalContext": {
+        "ageYears": 72
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Справа в плевральной полости жидкость, максимальное расхождение листков в положении сидя 24 мм. Слева жидкости не выявлено.",
+      "inputText": "Справа в плевральной полости жидкость, максимальное расхождение листков в положении сидя 24 мм. Слева жидкости не выявлено.",
+      "expectedFields": {
+        "examinationDescription": "Справа в плевральной полости жидкость, максимальное расхождение листков в положении сидя 24 мм. Слева жидкости не выявлено."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Справа в плевральной полости жидкость, максимальное расхождение листков в положении сидя 24 мм. Слева жидкости не выявлено."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Справа в плевральной полости жидкость, максимальное расхождение листков в положении сидя 24 мм. Слева жидкости не выявлено.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pleuralRegion-en",
+      "familyId": "clinical-pilot-v2-pleuralRegion",
+      "clusterId": "clinical-pilot-v2-pleuralRegion",
+      "locale": "en",
+      "examinationTypeId": "pleuralRegion",
+      "clinicalContext": {
+        "ageYears": 72
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "There is right pleural fluid, with a maximum pleural separation of 24 mm in the sitting position. No fluid is seen on the left.",
+      "inputText": "There is right pleural fluid, with a maximum pleural separation of 24 mm in the sitting position. No fluid is seen on the left.",
+      "expectedFields": {
+        "examinationDescription": "There is right pleural fluid, with a maximum pleural separation of 24 mm in the sitting position. No fluid is seen on the left."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "There is right pleural fluid, with a maximum pleural separation of 24 mm in the sitting position. No fluid is seen on the left."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "There is right pleural fluid, with a maximum pleural separation of 24 mm in the sitting position. No fluid is seen on the left.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pregnancyFirstTrimester-ru",
+      "familyId": "clinical-pilot-v2-pregnancyFirstTrimester",
+      "clusterId": "clinical-pilot-v2-pregnancyFirstTrimester",
+      "locale": "ru",
+      "examinationTypeId": "pregnancyFirstTrimester",
+      "clinicalContext": {
+        "ageYears": 28,
+        "gestationalAgeWeeks": 9
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "По направлению срок беременности девять недель. В полости матки один эмбрион, копчико-теменной размер 23 мм. Сердцебиение определяется, частота 168 в минуту.",
+      "inputText": "По направлению срок беременности девять недель. В полости матки один эмбрион, копчико-теменной размер 23 мм. Сердцебиение определяется, частота 168 в минуту.",
+      "expectedFields": {
+        "examinationDescription": "По направлению срок беременности девять недель. В полости матки один эмбрион, копчико-теменной размер 23 мм. Сердцебиение определяется, частота 168 в минуту."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "По направлению срок беременности девять недель. В полости матки один эмбрион, копчико-теменной размер 23 мм. Сердцебиение определяется, частота 168 в минуту."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "По направлению срок беременности девять недель. В полости матки один эмбрион, копчико-теменной размер 23 мм. Сердцебиение определяется, частота 168 в минуту.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pregnancyFirstTrimester-en",
+      "familyId": "clinical-pilot-v2-pregnancyFirstTrimester",
+      "clusterId": "clinical-pilot-v2-pregnancyFirstTrimester",
+      "locale": "en",
+      "examinationTypeId": "pregnancyFirstTrimester",
+      "clinicalContext": {
+        "ageYears": 28,
+        "gestationalAgeWeeks": 9
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The referral gives a gestational age of nine weeks. There is one intrauterine embryo with a crown-rump length of 23 mm. Cardiac activity is present at 168 beats per minute.",
+      "inputText": "The referral gives a gestational age of nine weeks. There is one intrauterine embryo with a crown-rump length of 23 mm. Cardiac activity is present at 168 beats per minute.",
+      "expectedFields": {
+        "examinationDescription": "The referral gives a gestational age of nine weeks. There is one intrauterine embryo with a crown-rump length of 23 mm. Cardiac activity is present at 168 beats per minute."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The referral gives a gestational age of nine weeks. There is one intrauterine embryo with a crown-rump length of 23 mm. Cardiac activity is present at 168 beats per minute."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The referral gives a gestational age of nine weeks. There is one intrauterine embryo with a crown-rump length of 23 mm. Cardiac activity is present at 168 beats per minute.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pregnancySecondTrimester-ru",
+      "familyId": "clinical-pilot-v2-pregnancySecondTrimester",
+      "clusterId": "clinical-pilot-v2-pregnancySecondTrimester",
+      "locale": "ru",
+      "examinationTypeId": "pregnancySecondTrimester",
+      "clinicalContext": {
+        "ageYears": 30,
+        "gestationalAgeWeeks": 20
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "По направлению двадцать недель беременности. Бипариетальный размер 47 мм, длина бедренной кости 32 мм. Плацента по задней стенке.",
+      "inputText": "По направлению двадцать недель беременности. Бипариетальный размер 47 мм, длина бедренной кости 32 мм. Плацента по задней стенке.",
+      "expectedFields": {
+        "examinationDescription": "По направлению двадцать недель беременности. Бипариетальный размер 47 мм, длина бедренной кости 32 мм. Плацента по задней стенке."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "По направлению двадцать недель беременности. Бипариетальный размер 47 мм, длина бедренной кости 32 мм. Плацента по задней стенке."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "По направлению двадцать недель беременности. Бипариетальный размер 47 мм, длина бедренной кости 32 мм. Плацента по задней стенке.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pregnancySecondTrimester-en",
+      "familyId": "clinical-pilot-v2-pregnancySecondTrimester",
+      "clusterId": "clinical-pilot-v2-pregnancySecondTrimester",
+      "locale": "en",
+      "examinationTypeId": "pregnancySecondTrimester",
+      "clinicalContext": {
+        "ageYears": 30,
+        "gestationalAgeWeeks": 20
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The referral gives a gestational age of twenty weeks. Biparietal diameter is 47 mm and femur length is 32 mm. The placenta is posterior.",
+      "inputText": "The referral gives a gestational age of twenty weeks. Biparietal diameter is 47 mm and femur length is 32 mm. The placenta is posterior.",
+      "expectedFields": {
+        "examinationDescription": "The referral gives a gestational age of twenty weeks. Biparietal diameter is 47 mm and femur length is 32 mm. The placenta is posterior."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The referral gives a gestational age of twenty weeks. Biparietal diameter is 47 mm and femur length is 32 mm. The placenta is posterior."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The referral gives a gestational age of twenty weeks. Biparietal diameter is 47 mm and femur length is 32 mm. The placenta is posterior.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pregnancyThirdTrimester-ru",
+      "familyId": "clinical-pilot-v2-pregnancyThirdTrimester",
+      "clusterId": "clinical-pilot-v2-pregnancyThirdTrimester",
+      "locale": "ru",
+      "examinationTypeId": "pregnancyThirdTrimester",
+      "clinicalContext": {
+        "ageYears": 33,
+        "gestationalAgeWeeks": 32
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "По направлению тридцать две недели беременности. Головное предлежание. Бипариетальный размер 82 мм, длина бедренной кости 61 мм.",
+      "inputText": "По направлению тридцать две недели беременности. Головное предлежание. Бипариетальный размер 82 мм, длина бедренной кости 61 мм.",
+      "expectedFields": {
+        "examinationDescription": "По направлению тридцать две недели беременности. Головное предлежание. Бипариетальный размер 82 мм, длина бедренной кости 61 мм."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "По направлению тридцать две недели беременности. Головное предлежание. Бипариетальный размер 82 мм, длина бедренной кости 61 мм."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "По направлению тридцать две недели беременности. Головное предлежание. Бипариетальный размер 82 мм, длина бедренной кости 61 мм.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-pregnancyThirdTrimester-en",
+      "familyId": "clinical-pilot-v2-pregnancyThirdTrimester",
+      "clusterId": "clinical-pilot-v2-pregnancyThirdTrimester",
+      "locale": "en",
+      "examinationTypeId": "pregnancyThirdTrimester",
+      "clinicalContext": {
+        "ageYears": 33,
+        "gestationalAgeWeeks": 32
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The referral gives a gestational age of thirty-two weeks. The fetus is in cephalic presentation. Biparietal diameter is 82 mm and femur length is 61 mm.",
+      "inputText": "The referral gives a gestational age of thirty-two weeks. The fetus is in cephalic presentation. Biparietal diameter is 82 mm and femur length is 61 mm.",
+      "expectedFields": {
+        "examinationDescription": "The referral gives a gestational age of thirty-two weeks. The fetus is in cephalic presentation. Biparietal diameter is 82 mm and femur length is 61 mm."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The referral gives a gestational age of thirty-two weeks. The fetus is in cephalic presentation. Biparietal diameter is 82 mm and femur length is 61 mm."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The referral gives a gestational age of thirty-two weeks. The fetus is in cephalic presentation. Biparietal diameter is 82 mm and femur length is 61 mm.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-renalArteries-ru",
+      "familyId": "clinical-pilot-v2-renalArteries",
+      "clusterId": "clinical-pilot-v2-renalArteries",
+      "locale": "ru",
+      "examinationTypeId": "renalArteries",
+      "clinicalContext": {
+        "ageYears": 58
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "В устье правой почечной артерии пиковая систолическая скорость 120 см/с. Левую почечную артерию оценить не удалось из-за газа.",
+      "inputText": "В устье правой почечной артерии пиковая систолическая скорость 120 см/с. Левую почечную артерию оценить не удалось из-за газа.",
+      "expectedFields": {
+        "examinationDescription": "В устье правой почечной артерии пиковая систолическая скорость 120 см/с. Левую почечную артерию оценить не удалось из-за газа."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "В устье правой почечной артерии пиковая систолическая скорость 120 см/с. Левую почечную артерию оценить не удалось из-за газа."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "В устье правой почечной артерии пиковая систолическая скорость 120 см/с. Левую почечную артерию оценить не удалось из-за газа.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-renalArteries-en",
+      "familyId": "clinical-pilot-v2-renalArteries",
+      "clusterId": "clinical-pilot-v2-renalArteries",
+      "locale": "en",
+      "examinationTypeId": "renalArteries",
+      "clinicalContext": {
+        "ageYears": 58
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Peak systolic velocity at the right renal artery origin is 120 cm/s. Bowel gas prevents assessment of the left renal artery.",
+      "inputText": "Peak systolic velocity at the right renal artery origin is 120 cm/s. Bowel gas prevents assessment of the left renal artery.",
+      "expectedFields": {
+        "examinationDescription": "Peak systolic velocity at the right renal artery origin is 120 cm/s. Bowel gas prevents assessment of the left renal artery."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Peak systolic velocity at the right renal artery origin is 120 cm/s. Bowel gas prevents assessment of the left renal artery."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Peak systolic velocity at the right renal artery origin is 120 cm/s. Bowel gas prevents assessment of the left renal artery.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-salivaryGlands-ru",
+      "familyId": "clinical-pilot-v2-salivaryGlands",
+      "clusterId": "clinical-pilot-v2-salivaryGlands",
+      "locale": "ru",
+      "examinationTypeId": "salivaryGlands",
+      "clinicalContext": {
+        "ageYears": 44
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "В протоке правой поднижнечелюстной железы эхогенное включение 4 мм с акустической тенью. Проксимальнее включения проток расширен до 3 мм.",
+      "inputText": "В протоке правой поднижнечелюстной железы эхогенное включение 4 мм с акустической тенью. Проксимальнее включения проток расширен до 3 мм.",
+      "expectedFields": {
+        "examinationDescription": "В протоке правой поднижнечелюстной железы эхогенное включение 4 мм с акустической тенью. Проксимальнее включения проток расширен до 3 мм."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "В протоке правой поднижнечелюстной железы эхогенное включение 4 мм с акустической тенью. Проксимальнее включения проток расширен до 3 мм."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "В протоке правой поднижнечелюстной железы эхогенное включение 4 мм с акустической тенью. Проксимальнее включения проток расширен до 3 мм.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-salivaryGlands-en",
+      "familyId": "clinical-pilot-v2-salivaryGlands",
+      "clusterId": "clinical-pilot-v2-salivaryGlands",
+      "locale": "en",
+      "examinationTypeId": "salivaryGlands",
+      "clinicalContext": {
+        "ageYears": 44
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "There is a 4 mm echogenic focus with acoustic shadowing in the right submandibular duct. The duct is dilated to 3 mm proximal to the focus.",
+      "inputText": "There is a 4 mm echogenic focus with acoustic shadowing in the right submandibular duct. The duct is dilated to 3 mm proximal to the focus.",
+      "expectedFields": {
+        "examinationDescription": "There is a 4 mm echogenic focus with acoustic shadowing in the right submandibular duct. The duct is dilated to 3 mm proximal to the focus."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "There is a 4 mm echogenic focus with acoustic shadowing in the right submandibular duct. The duct is dilated to 3 mm proximal to the focus."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "There is a 4 mm echogenic focus with acoustic shadowing in the right submandibular duct. The duct is dilated to 3 mm proximal to the focus.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-scrotum-ru",
+      "familyId": "clinical-pilot-v2-scrotum",
+      "clusterId": "clinical-pilot-v2-scrotum",
+      "locale": "ru",
+      "examinationTypeId": "scrotum",
+      "clinicalContext": {
+        "ageYears": 27
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Правое яичко 43 на 26 на 22 мм. Кровоток в паренхиме определяется. Справа небольшое количество жидкости между оболочками.",
+      "inputText": "Правое яичко 43 на 26 на 22 мм. Кровоток в паренхиме определяется. Справа небольшое количество жидкости между оболочками.",
+      "expectedFields": {
+        "examinationDescription": "Правое яичко 43 на 26 на 22 мм. Кровоток в паренхиме определяется. Справа небольшое количество жидкости между оболочками."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Правое яичко 43 на 26 на 22 мм. Кровоток в паренхиме определяется. Справа небольшое количество жидкости между оболочками."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Правое яичко 43 на 26 на 22 мм. Кровоток в паренхиме определяется. Справа небольшое количество жидкости между оболочками.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-scrotum-en",
+      "familyId": "clinical-pilot-v2-scrotum",
+      "clusterId": "clinical-pilot-v2-scrotum",
+      "locale": "en",
+      "examinationTypeId": "scrotum",
+      "clinicalContext": {
+        "ageYears": 27
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The right testis measures 43 by 26 by 22 mm. Parenchymal blood flow is present. There is a small amount of fluid around the right testis.",
+      "inputText": "The right testis measures 43 by 26 by 22 mm. Parenchymal blood flow is present. There is a small amount of fluid around the right testis.",
+      "expectedFields": {
+        "examinationDescription": "The right testis measures 43 by 26 by 22 mm. Parenchymal blood flow is present. There is a small amount of fluid around the right testis."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The right testis measures 43 by 26 by 22 mm. Parenchymal blood flow is present. There is a small amount of fluid around the right testis."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The right testis measures 43 by 26 by 22 mm. Parenchymal blood flow is present. There is a small amount of fluid around the right testis.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-sinuses-ru",
+      "familyId": "clinical-pilot-v2-sinuses",
+      "clusterId": "clinical-pilot-v2-sinuses",
+      "locale": "ru",
+      "examinationTypeId": "sinuses",
+      "clinicalContext": {
+        "ageYears": 36
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "В проекции правой верхнечелюстной пазухи визуализируется задняя стенка. Слева задняя стенка не визуализируется. Причину этого различия по одному признаку не определяю.",
+      "inputText": "В проекции правой верхнечелюстной пазухи визуализируется задняя стенка. Слева задняя стенка не визуализируется. Причину этого различия по одному признаку не определяю.",
+      "expectedFields": {
+        "examinationDescription": "В проекции правой верхнечелюстной пазухи визуализируется задняя стенка. Слева задняя стенка не визуализируется. Причину этого различия по одному признаку не определяю."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "В проекции правой верхнечелюстной пазухи визуализируется задняя стенка. Слева задняя стенка не визуализируется. Причину этого различия по одному признаку не определяю."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "В проекции правой верхнечелюстной пазухи визуализируется задняя стенка. Слева задняя стенка не визуализируется. Причину этого различия по одному признаку не определяю.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-sinuses-en",
+      "familyId": "clinical-pilot-v2-sinuses",
+      "clusterId": "clinical-pilot-v2-sinuses",
+      "locale": "en",
+      "examinationTypeId": "sinuses",
+      "clinicalContext": {
+        "ageYears": 36
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The posterior wall is visualized through the right maxillary sinus. The posterior wall is not visualized on the left. I cannot determine the cause of this difference from this finding alone.",
+      "inputText": "The posterior wall is visualized through the right maxillary sinus. The posterior wall is not visualized on the left. I cannot determine the cause of this difference from this finding alone.",
+      "expectedFields": {
+        "examinationDescription": "The posterior wall is visualized through the right maxillary sinus. The posterior wall is not visualized on the left. I cannot determine the cause of this difference from this finding alone."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The posterior wall is visualized through the right maxillary sinus. The posterior wall is not visualized on the left. I cannot determine the cause of this difference from this finding alone."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The posterior wall is visualized through the right maxillary sinus. The posterior wall is not visualized on the left. I cannot determine the cause of this difference from this finding alone.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-softTissues-ru",
+      "familyId": "clinical-pilot-v2-softTissues",
+      "clusterId": "clinical-pilot-v2-softTissues",
+      "locale": "ru",
+      "examinationTypeId": "softTissues",
+      "clinicalContext": {
+        "ageYears": 40
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "В подкожной клетчатке левого предплечья образование 14 на 6 мм с чёткими контурами. При цветовом допплеровском картировании внутренний кровоток не определяется.",
+      "inputText": "В подкожной клетчатке левого предплечья образование 14 на 6 мм с чёткими контурами. При цветовом допплеровском картировании внутренний кровоток не определяется.",
+      "expectedFields": {
+        "examinationDescription": "В подкожной клетчатке левого предплечья образование 14 на 6 мм с чёткими контурами. При цветовом допплеровском картировании внутренний кровоток не определяется."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "В подкожной клетчатке левого предплечья образование 14 на 6 мм с чёткими контурами. При цветовом допплеровском картировании внутренний кровоток не определяется."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "В подкожной клетчатке левого предплечья образование 14 на 6 мм с чёткими контурами. При цветовом допплеровском картировании внутренний кровоток не определяется.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-softTissues-en",
+      "familyId": "clinical-pilot-v2-softTissues",
+      "clusterId": "clinical-pilot-v2-softTissues",
+      "locale": "en",
+      "examinationTypeId": "softTissues",
+      "clinicalContext": {
+        "ageYears": 40
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "There is a well-defined 14 by 6 mm lesion in the subcutaneous tissue of the left forearm. No internal flow is detected on color Doppler.",
+      "inputText": "There is a well-defined 14 by 6 mm lesion in the subcutaneous tissue of the left forearm. No internal flow is detected on color Doppler.",
+      "expectedFields": {
+        "examinationDescription": "There is a well-defined 14 by 6 mm lesion in the subcutaneous tissue of the left forearm. No internal flow is detected on color Doppler."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "There is a well-defined 14 by 6 mm lesion in the subcutaneous tissue of the left forearm. No internal flow is detected on color Doppler."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "There is a well-defined 14 by 6 mm lesion in the subcutaneous tissue of the left forearm. No internal flow is detected on color Doppler.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-thymusGland-ru",
+      "familyId": "clinical-pilot-v2-thymusGland",
+      "clusterId": "clinical-pilot-v2-thymusGland",
+      "locale": "ru",
+      "examinationTypeId": "thymusGland",
+      "clinicalContext": {
+        "ageMonths": 4
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Ребёнку четыре месяца. Тимус визуализируется в переднем средостении. Структура мелкозернистая, очаговых изменений в доступных осмотру отделах не выявлено.",
+      "inputText": "Ребёнку четыре месяца. Тимус визуализируется в переднем средостении. Структура мелкозернистая, очаговых изменений в доступных осмотру отделах не выявлено.",
+      "expectedFields": {
+        "examinationDescription": "Ребёнку четыре месяца. Тимус визуализируется в переднем средостении. Структура мелкозернистая, очаговых изменений в доступных осмотру отделах не выявлено."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Ребёнку четыре месяца. Тимус визуализируется в переднем средостении. Структура мелкозернистая, очаговых изменений в доступных осмотру отделах не выявлено."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Ребёнку четыре месяца. Тимус визуализируется в переднем средостении. Структура мелкозернистая, очаговых изменений в доступных осмотру отделах не выявлено.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-thymusGland-en",
+      "familyId": "clinical-pilot-v2-thymusGland",
+      "clusterId": "clinical-pilot-v2-thymusGland",
+      "locale": "en",
+      "examinationTypeId": "thymusGland",
+      "clinicalContext": {
+        "ageMonths": 4
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The infant is four months old. The thymus is visualized in the anterior mediastinum. It has a fine granular appearance, with no focal changes in the visualized portions.",
+      "inputText": "The infant is four months old. The thymus is visualized in the anterior mediastinum. It has a fine granular appearance, with no focal changes in the visualized portions.",
+      "expectedFields": {
+        "examinationDescription": "The infant is four months old. The thymus is visualized in the anterior mediastinum. It has a fine granular appearance, with no focal changes in the visualized portions."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The infant is four months old. The thymus is visualized in the anterior mediastinum. It has a fine granular appearance, with no focal changes in the visualized portions."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The infant is four months old. The thymus is visualized in the anterior mediastinum. It has a fine granular appearance, with no focal changes in the visualized portions.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-thyroidGland-ru",
+      "familyId": "clinical-pilot-v2-thyroidGland",
+      "clusterId": "clinical-pilot-v2-thyroidGland",
+      "locale": "ru",
+      "examinationTypeId": "thyroidGland",
+      "clinicalContext": {
+        "ageYears": 41
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "В нижней трети левой доли щитовидной железы узел 9 на 6 на 5 мм, солидный, гипоэхогенный, с ровными контурами, шире чем выше. Точечных эхогенных включений не вижу.",
+      "inputText": "В нижней трети левой доли щитовидной железы узел 9 на 6 на 5 мм, солидный, гипоэхогенный, с ровными контурами, шире чем выше. Точечных эхогенных включений не вижу.",
+      "expectedFields": {
+        "examinationDescription": "В нижней трети левой доли щитовидной железы узел 9 на 6 на 5 мм, солидный, гипоэхогенный, с ровными контурами, шире чем выше. Точечных эхогенных включений не вижу."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "В нижней трети левой доли щитовидной железы узел 9 на 6 на 5 мм, солидный, гипоэхогенный, с ровными контурами, шире чем выше. Точечных эхогенных включений не вижу."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "В нижней трети левой доли щитовидной железы узел 9 на 6 на 5 мм, солидный, гипоэхогенный, с ровными контурами, шире чем выше. Точечных эхогенных включений не вижу.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-thyroidGland-en",
+      "familyId": "clinical-pilot-v2-thyroidGland",
+      "clusterId": "clinical-pilot-v2-thyroidGland",
+      "locale": "en",
+      "examinationTypeId": "thyroidGland",
+      "clinicalContext": {
+        "ageYears": 41
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "There is a 9 by 6 by 5 mm solid hypoechoic nodule in the lower third of the left thyroid lobe. It has smooth margins and is wider than tall. No punctate echogenic foci are seen.",
+      "inputText": "There is a 9 by 6 by 5 mm solid hypoechoic nodule in the lower third of the left thyroid lobe. It has smooth margins and is wider than tall. No punctate echogenic foci are seen.",
+      "expectedFields": {
+        "examinationDescription": "There is a 9 by 6 by 5 mm solid hypoechoic nodule in the lower third of the left thyroid lobe. It has smooth margins and is wider than tall. No punctate echogenic foci are seen."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "There is a 9 by 6 by 5 mm solid hypoechoic nodule in the lower third of the left thyroid lobe. It has smooth margins and is wider than tall. No punctate echogenic foci are seen."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "There is a 9 by 6 by 5 mm solid hypoechoic nodule in the lower third of the left thyroid lobe. It has smooth margins and is wider than tall. No punctate echogenic foci are seen.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-veinsOfTheLowerExtremities-ru",
+      "familyId": "clinical-pilot-v2-veinsOfTheLowerExtremities",
+      "clusterId": "clinical-pilot-v2-veinsOfTheLowerExtremities",
+      "locale": "ru",
+      "examinationTypeId": "veinsOfTheLowerExtremities",
+      "clinicalContext": {
+        "ageYears": 63
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Правая подколенная вена не полностью сжимается датчиком. В просвете пристеночные массы, кровоток по оставшемуся просвету определяется.",
+      "inputText": "Правая подколенная вена не полностью сжимается датчиком. В просвете пристеночные массы, кровоток по оставшемуся просвету определяется.",
+      "expectedFields": {
+        "examinationDescription": "Правая подколенная вена не полностью сжимается датчиком. В просвете пристеночные массы, кровоток по оставшемуся просвету определяется."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Правая подколенная вена не полностью сжимается датчиком. В просвете пристеночные массы, кровоток по оставшемуся просвету определяется."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Правая подколенная вена не полностью сжимается датчиком. В просвете пристеночные массы, кровоток по оставшемуся просвету определяется.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-veinsOfTheLowerExtremities-en",
+      "familyId": "clinical-pilot-v2-veinsOfTheLowerExtremities",
+      "clusterId": "clinical-pilot-v2-veinsOfTheLowerExtremities",
+      "locale": "en",
+      "examinationTypeId": "veinsOfTheLowerExtremities",
+      "clinicalContext": {
+        "ageYears": 63
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The right popliteal vein is incompletely compressible. There is mural material in the lumen, with flow in the remaining lumen.",
+      "inputText": "The right popliteal vein is incompletely compressible. There is mural material in the lumen, with flow in the remaining lumen.",
+      "expectedFields": {
+        "examinationDescription": "The right popliteal vein is incompletely compressible. There is mural material in the lumen, with flow in the remaining lumen."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The right popliteal vein is incompletely compressible. There is mural material in the lumen, with flow in the remaining lumen."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The right popliteal vein is incompletely compressible. There is mural material in the lumen, with flow in the remaining lumen.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-veinsOfTheUpperExtremities-ru",
+      "familyId": "clinical-pilot-v2-veinsOfTheUpperExtremities",
+      "clusterId": "clinical-pilot-v2-veinsOfTheUpperExtremities",
+      "locale": "ru",
+      "examinationTypeId": "veinsOfTheUpperExtremities",
+      "clinicalContext": {
+        "ageYears": 52
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Левые плечевая и подмышечная вены сжимаются полностью. Внутрипросветных масс не выявлено. Подключичная вена проходима по цветовому допплеровскому картированию.",
+      "inputText": "Левые плечевая и подмышечная вены сжимаются полностью. Внутрипросветных масс не выявлено. Подключичная вена проходима по цветовому допплеровскому картированию.",
+      "expectedFields": {
+        "examinationDescription": "Левые плечевая и подмышечная вены сжимаются полностью. Внутрипросветных масс не выявлено. Подключичная вена проходима по цветовому допплеровскому картированию."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "Левые плечевая и подмышечная вены сжимаются полностью. Внутрипросветных масс не выявлено. Подключичная вена проходима по цветовому допплеровскому картированию."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "Левые плечевая и подмышечная вены сжимаются полностью. Внутрипросветных масс не выявлено. Подключичная вена проходима по цветовому допплеровскому картированию.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-veinsOfTheUpperExtremities-en",
+      "familyId": "clinical-pilot-v2-veinsOfTheUpperExtremities",
+      "clusterId": "clinical-pilot-v2-veinsOfTheUpperExtremities",
+      "locale": "en",
+      "examinationTypeId": "veinsOfTheUpperExtremities",
+      "clinicalContext": {
+        "ageYears": 52
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "The left brachial and axillary veins are fully compressible. No intraluminal material is seen. The subclavian vein is patent on color Doppler.",
+      "inputText": "The left brachial and axillary veins are fully compressible. No intraluminal material is seen. The subclavian vein is patent on color Doppler.",
+      "expectedFields": {
+        "examinationDescription": "The left brachial and axillary veins are fully compressible. No intraluminal material is seen. The subclavian vein is patent on color Doppler."
+      },
+      "fieldEvidence": {
+        "examinationDescription": [
+          "The left brachial and axillary veins are fully compressible. No intraluminal material is seen. The subclavian vein is patent on color Doppler."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "description",
+              "sourceQuote": "The left brachial and axillary veins are fully compressible. No intraluminal material is seen. The subclavian vein is patent on color Doppler.",
+              "acceptedTexts": []
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-explicit-correction-ru",
+      "familyId": "clinical-pilot-v2-explicit-correction",
+      "clusterId": "clinical-pilot-v2-explicit-correction",
+      "locale": "ru",
+      "examinationTypeId": "kidneysAdrenalGlandsAndRetroperitonealSpace",
+      "clinicalContext": {
+        "ageYears": 45
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Номер исследования 0184. Левая почка 112 мм, поправка: правая почка 112 мм. Левую ещё не измерял.",
+      "inputText": "Номер исследования 0184. Левая почка 112 мм, поправка: правая почка 112 мм. Левую ещё не измерял.",
+      "expectedFields": {
+        "examinationNumber": "0184",
+        "examinationDescription": "Правая почка 112 мм. Левую ещё не измерял."
+      },
+      "fieldEvidence": {
+        "examinationNumber": [
+          "0184"
+        ],
+        "examinationDescription": [
+          "112 мм, поправка: правая почка 112 мм. Левую ещё не измерял."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "corrected-description",
+              "sourceQuote": "Правая почка 112 мм. Левую ещё не измерял."
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationNumber": {
+          "action": "accept"
+        },
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    },
+    {
+      "id": "clinical-pilot-v2-explicit-correction-en",
+      "familyId": "clinical-pilot-v2-explicit-correction",
+      "clusterId": "clinical-pilot-v2-explicit-correction",
+      "locale": "en",
+      "examinationTypeId": "kidneysAdrenalGlandsAndRetroperitonealSpace",
+      "clinicalContext": {
+        "ageYears": 45
+      },
+      "sourceKind": "synthetic",
+      "split": "development",
+      "isPreviouslyExposed": true,
+      "mode": "clinical-pilot-v2",
+      "variant": "text",
+      "referenceText": "Study number 0184. Left kidney 112 mm, correction: right kidney 112 mm. The left has not yet been measured.",
+      "inputText": "Study number 0184. Left kidney 112 mm, correction: right kidney 112 mm. The left has not yet been measured.",
+      "expectedFields": {
+        "examinationNumber": "0184",
+        "examinationDescription": "right kidney 112 mm. The left has not yet been measured."
+      },
+      "fieldEvidence": {
+        "examinationNumber": [
+          "0184"
+        ],
+        "examinationDescription": [
+          "112 mm, correction: right kidney 112 mm. The left has not yet been measured."
+        ]
+      },
+      "clinicalGold": {
+        "examinationDescription": {
+          "reviewStatus": "draft",
+          "isComplete": false,
+          "facts": [
+            {
+              "id": "corrected-description",
+              "sourceQuote": "right kidney 112 mm. The left has not yet been measured."
+            }
+          ]
+        }
+      },
+      "goldReview": {
+        "status": "pending",
+        "reviewerIds": []
+      },
+      "expectedActions": {
+        "examinationNumber": {
+          "action": "accept"
+        },
+        "examinationDescription": {
+          "action": "accept"
+        }
+      }
+    }
+  ],
+  "validation": {
+    "cases": 64,
+    "families": 32,
+    "clusters": 32,
+    "doctorRecordings": 0,
+    "reviewedGoldCases": 0,
+    "reviewedAudioCases": 0,
+    "isClinicalEvidenceReady": false,
+    "isPopulationRepresentativenessEstablished": false,
+    "byLocale": {
+      "ru": 32,
+      "en": 32
+    },
+    "bySource": {
+      "synthetic": 64
+    },
+    "bySplit": {
+      "development": 64
+    },
+    "byExaminationType": {
+      "abdominalCavity": 2,
+      "abdominalVessels": 2,
+      "arteriesOfTheLowerExtremities": 2,
+      "arteriesOfTheUpperExtremities": 2,
+      "bladder": 2,
+      "bladderWithResidualUrineDetermination": 2,
+      "brachiocephalicVessels": 2,
+      "echocardiography": 2,
+      "eye": 2,
+      "hipJointsInNewborns": 2,
+      "hollowOrgansStomachAndIntestines": 2,
+      "intracanialArteries": 2,
+      "joints": 2,
+      "kidneysAdrenalGlandsAndRetroperitonealSpace": 4,
+      "lymphNodes": 2,
+      "mammaryGlands": 2,
+      "neurosonography": 2,
+      "pelvicOrgans": 2,
+      "pleuralRegion": 2,
+      "pregnancyFirstTrimester": 2,
+      "pregnancySecondTrimester": 2,
+      "pregnancyThirdTrimester": 2,
+      "renalArteries": 2,
+      "salivaryGlands": 2,
+      "scrotum": 2,
+      "sinuses": 2,
+      "softTissues": 2,
+      "thymusGland": 2,
+      "thyroidGland": 2,
+      "veinsOfTheLowerExtremities": 2,
+      "veinsOfTheUpperExtremities": 2
+    },
+    "uncoveredExaminationTypes": []
+  }
+}

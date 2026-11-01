@@ -1,0 +1,47 @@
+import DoglyadUI
+import SwiftUI
+
+struct PaywallStateView: DViewProtocol {
+    @EnvironmentObject var theme: DTheme
+    let state: any PaywallStateProtocol
+
+    var body: some View {
+        switch state {
+        case let loading as PaywallLoadingState:
+            if let previous = loading.previousState {
+                PaywallOffersView(
+                    state: previous,
+                )
+            } else {
+                PaywallLoadingView()
+            }
+        case let restoring as PaywallRestoringState:
+            PaywallStateView(
+                state: restoring.previousState,
+            )
+        case let failed as PaywallLoadingFailedState:
+            PaywallErrorView(
+                errorDescription: failed.errorDescription,
+            )
+        case let failed as PaywallOperationFailedState:
+            switch failed.previousState {
+            case let pending as PaywallPendingState: PaywallPendingView(
+                    state: pending,
+                )
+            default: PaywallOffersView(
+                    state: failed,
+                )
+            }
+            PaywallErrorView(
+                errorDescription: failed.errorDescription,
+            )
+        case let pending as PaywallPendingState: PaywallPendingView(
+                state: pending,
+            )
+        case let content as PaywallContentState: PaywallOffersView(
+                state: content,
+            )
+        default: EmptyView()
+        }
+    }
+}

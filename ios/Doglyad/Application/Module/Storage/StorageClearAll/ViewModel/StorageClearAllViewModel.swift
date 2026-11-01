@@ -11,7 +11,7 @@ final class StorageClearAllViewModel: DModuleViewModel<any StorageClearAllStateP
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: StorageClearAllArguments?,
     ) {
         self.arguments = arguments
@@ -23,7 +23,7 @@ final class StorageClearAllViewModel: DModuleViewModel<any StorageClearAllStateP
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .bottomSheet(
                 .storageClearAll,
             ),

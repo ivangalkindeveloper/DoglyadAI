@@ -28,8 +28,16 @@ class USVoiceFormGeneration(
         | USVoiceNumericFieldGeneration
         | USVoiceGenderFieldGeneration
         | USVoiceBirthDateFieldGeneration
-    ] = Field(max_length=8)
+    ] = Field(
+        max_length=8,
+    )
 
     @classmethod
-    def structured_output(cls) -> str:
-        return json.dumps(cls.model_json_schema(), ensure_ascii=False, separators=(",", ":"))
+    def structured_output(
+        cls,
+    ) -> str:
+        return json.dumps(
+            cls.model_json_schema(),
+            ensure_ascii=False,
+            separators=(",", ":"),
+        )

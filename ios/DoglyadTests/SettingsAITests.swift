@@ -102,7 +102,7 @@ struct SettingsAITests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             getAvailableAppleEngine: { _ in appleTranscriber?.speechEngine },
         )
         model.onInit()
@@ -262,7 +262,7 @@ struct SettingsAITests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { root.storedSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             onNeuralModelSelected: { _ in },
             onSettingsSaved: { transcriber, parser, markdown, temperature, tokens in
                 try await root.saveSettingsAI(
@@ -467,7 +467,7 @@ struct SettingsAITests {
                 status: $0,
             ) },
             getSettingsAI: { subscription.resolveSettingsAI() },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             onNeuralModelSelected: { _ in },
             onSettingsSaved: { transcriber, parser, markdown, temperature, tokens in
                 saved = SettingsAI(
@@ -576,10 +576,11 @@ struct SettingsAITests {
                 status: $0,
             ) },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             onNeuralModelSelected: { _ in },
             onSettingsSaved: { _, _, _, _, _ in },
         )
+        model.onAppear()
         model.transcriberType = .sfSpeechRecognizer
         model.transcriptParserType = .server
         model.onFocusChanged(
@@ -650,7 +651,7 @@ struct SettingsAITests {
                     observeSubscriptionStatus: { _ in AnyCancellable {} },
                     onSubscriptionStatusUpdated: { _ in },
                     getSettingsAI: { container.initialSettingsAI },
-                    onRequestCountIncremented: {},
+                    onRefreshSubscriptionStatus: {},
                     observeExaminationChanges: { _ in AnyCancellable {} },
                     getSelectedTemplate: { nil },
                     onTemplateSelected: { _ in },
@@ -667,7 +668,7 @@ struct SettingsAITests {
                     observeSubscriptionStatus: { _ in AnyCancellable {} },
                     onSubscriptionStatusUpdated: { _ in },
                     getSettingsAI: { container.initialSettingsAI },
-                    onRequestCountIncremented: {},
+                    onRefreshSubscriptionStatus: {},
                 )
                 model.onTapSettingsAI()
             }
@@ -709,7 +710,7 @@ struct SettingsAITests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
         )
         #expect(
             model.isSelectionEnabled(
@@ -742,6 +743,7 @@ struct SettingsAITests {
         availability: SubscriptionFeatureAvailability = .available,
     ) -> SubscriptionStatus {
         SubscriptionStatus(
+            planId: "monthly",
             type: type,
             entitlement: SubscriptionEntitlement(
                 requestCountPerDay: 20,

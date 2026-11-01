@@ -11,8 +11,16 @@
         "id": "google/medgemma-1.5-4b-it",
         "title": "Google MedGemma 1.5 4B",
         "entitlement": "pro",
-        "accessibility": "coming_soon",
+        "accessibility": "available",
         "contextLength": 128000,
         "descriptionLocaleKey": "googleMedGemma_1.5_4BDescription"
+    },
+    {
+        "id": "google/medgemma-27b-it",
+        "title": "Google MedGemma 27B",
+        "entitlement": "pro",
+        "accessibility": "available",
+        "contextLength": 128000,
+        "descriptionLocaleKey": "googleMedGemma27BDescription"
     }
 ]

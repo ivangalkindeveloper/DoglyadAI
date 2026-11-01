@@ -1,0 +1,410 @@
+{
+  "whisperKit/en/explicitRules": {
+    "examinationDescription": [
+      420,
+      332
+    ],
+    "examinationNumber": [
+      342,
+      339
+    ],
+    "patientComplaints": [
+      425,
+      403
+    ],
+    "patientDateOfBirth": [
+      222,
+      190
+    ],
+    "patientGender": [
+      214,
+      206
+    ],
+    "patientHeightCM": [
+      221,
+      219
+    ],
+    "patientName": [
+      223,
+      168
+    ],
+    "patientWeightKG": [
+      348,
+      337
+    ]
+  },
+  "whisperKit/en/productionMedgemma": {
+    "examinationDescription": [
+      420,
+      244
+    ],
+    "examinationNumber": [
+      342,
+      338
+    ],
+    "patientComplaints": [
+      425,
+      389
+    ],
+    "patientDateOfBirth": [
+      222,
+      194
+    ],
+    "patientGender": [
+      214,
+      211
+    ],
+    "patientHeightCM": [
+      221,
+      221
+    ],
+    "patientName": [
+      223,
+      195
+    ],
+    "patientWeightKG": [
+      348,
+      338
+    ]
+  },
+  "whisperKit/en/productionMedgemma15": {
+    "examinationDescription": [
+      420,
+      265
+    ],
+    "examinationNumber": [
+      342,
+      337
+    ],
+    "patientComplaints": [
+      425,
+      372
+    ],
+    "patientDateOfBirth": [
+      222,
+      190
+    ],
+    "patientGender": [
+      214,
+      211
+    ],
+    "patientHeightCM": [
+      221,
+      219
+    ],
+    "patientName": [
+      223,
+      193
+    ],
+    "patientWeightKG": [
+      348,
+      337
+    ]
+  },
+  "whisperKit/ru/explicitRules": {
+    "examinationDescription": [
+      419,
+      363
+    ],
+    "examinationNumber": [
+      343,
+      342
+    ],
+    "patientComplaints": [
+      425,
+      402
+    ],
+    "patientDateOfBirth": [
+      222,
+      217
+    ],
+    "patientGender": [
+      214,
+      204
+    ],
+    "patientHeightCM": [
+      221,
+      220
+    ],
+    "patientName": [
+      223,
+      201
+    ],
+    "patientWeightKG": [
+      348,
+      341
+    ]
+  },
+  "whisperKit/ru/productionMedgemma": {
+    "examinationDescription": [
+      419,
+      212
+    ],
+    "examinationNumber": [
+      343,
+      342
+    ],
+    "patientComplaints": [
+      425,
+      354
+    ],
+    "patientDateOfBirth": [
+      222,
+      215
+    ],
+    "patientGender": [
+      214,
+      205
+    ],
+    "patientHeightCM": [
+      221,
+      218
+    ],
+    "patientName": [
+      223,
+      210
+    ],
+    "patientWeightKG": [
+      348,
+      344
+    ]
+  },
+  "whisperKit/ru/productionMedgemma15": {
+    "examinationDescription": [
+      419,
+      251
+    ],
+    "examinationNumber": [
+      343,
+      340
+    ],
+    "patientComplaints": [
+      425,
+      346
+    ],
+    "patientDateOfBirth": [
+      222,
+      216
+    ],
+    "patientGender": [
+      214,
+      204
+    ],
+    "patientHeightCM": [
+      221,
+      218
+    ],
+    "patientName": [
+      223,
+      208
+    ],
+    "patientWeightKG": [
+      348,
+      344
+    ]
+  },
+  "canary/en/explicitRules": {
+    "examinationDescription": [
+      420,
+      288
+    ],
+    "examinationNumber": [
+      342,
+      337
+    ],
+    "patientComplaints": [
+      425,
+      362
+    ],
+    "patientDateOfBirth": [
+      222,
+      213
+    ],
+    "patientGender": [
+      214,
+      214
+    ],
+    "patientHeightCM": [
+      221,
+      214
+    ],
+    "patientName": [
+      223,
+      179
+    ],
+    "patientWeightKG": [
+      348,
+      316
+    ]
+  },
+  "canary/en/productionMedgemma": {
+    "examinationDescription": [
+      420,
+      221
+    ],
+    "examinationNumber": [
+      342,
+      337
+    ],
+    "patientComplaints": [
+      425,
+      381
+    ],
+    "patientDateOfBirth": [
+      222,
+      216
+    ],
+    "patientGender": [
+      214,
+      214
+    ],
+    "patientHeightCM": [
+      221,
+      215
+    ],
+    "patientName": [
+      223,
+      188
+    ],
+    "patientWeightKG": [
+      348,
+      317
+    ]
+  },
+  "canary/en/productionMedgemma15": {
+    "examinationDescription": [
+      420,
+      240
+    ],
+    "examinationNumber": [
+      342,
+      336
+    ],
+    "patientComplaints": [
+      425,
+      364
+    ],
+    "patientDateOfBirth": [
+      222,
+      214
+    ],
+    "patientGender": [
+      214,
+      214
+    ],
+    "patientHeightCM": [
+      221,
+      214
+    ],
+    "patientName": [
+      223,
+      187
+    ],
+    "patientWeightKG": [
+      348,
+      316
+    ]
+  },
+  "canary/ru/explicitRules": {
+    "examinationDescription": [
+      419,
+      317
+    ],
+    "examinationNumber": [
+      343,
+      340
+    ],
+    "patientComplaints": [
+      425,
+      378
+    ],
+    "patientDateOfBirth": [
+      222,
+      183
+    ],
+    "patientGender": [
+      214,
+      211
+    ],
+    "patientHeightCM": [
+      221,
+      221
+    ],
+    "patientName": [
+      223,
+      186
+    ],
+    "patientWeightKG": [
+      348,
+      346
+    ]
+  },
+  "canary/ru/productionMedgemma": {
+    "examinationDescription": [
+      419,
+      193
+    ],
+    "examinationNumber": [
+      343,
+      340
+    ],
+    "patientComplaints": [
+      425,
+      315
+    ],
+    "patientDateOfBirth": [
+      222,
+      216
+    ],
+    "patientGender": [
+      214,
+      211
+    ],
+    "patientHeightCM": [
+      221,
+      220
+    ],
+    "patientName": [
+      223,
+      193
+    ],
+    "patientWeightKG": [
+      348,
+      345
+    ]
+  },
+  "canary/ru/productionMedgemma15": {
+    "examinationDescription": [
+      419,
+      239
+    ],
+    "examinationNumber": [
+      343,
+      340
+    ],
+    "patientComplaints": [
+      425,
+      307
+    ],
+    "patientDateOfBirth": [
+      222,
+      214
+    ],
+    "patientGender": [
+      214,
+      211
+    ],
+    "patientHeightCM": [
+      221,
+      221
+    ],
+    "patientName": [
+      223,
+      193
+    ],
+    "patientWeightKG": [
+      348,
+      346
+    ]
+  }
+}

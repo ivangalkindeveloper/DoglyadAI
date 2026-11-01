@@ -24,9 +24,15 @@ extension View {
         )
     }
 
-    func previewable() -> some View {
+    func previewable(
+        container: DependencyContainer? = nil,
+        router: DRouter? = nil,
+    ) -> some View {
         modifier(
-            PreviewableModifier(),
+            PreviewableModifier(
+                container: container,
+                router: router,
+            ),
         )
     }
 }

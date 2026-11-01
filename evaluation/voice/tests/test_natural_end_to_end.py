@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 
 from evaluation.voice.common import ROOT
-from evaluation.voice.natural_end_to_end import formatted, spoken_date, spoken_script
+from evaluation.voice.audio.natural_end_to_end import formatted, spoken_date, spoken_script
 from datetime import date
 
 
@@ -22,7 +22,7 @@ def test_dates_are_calendar_dates_not_groups_of_digits() -> None:
 
 
 def test_frozen_control_has_three_styles_and_partial_values() -> None:
-    rows = json.loads((ROOT / "evaluation/voice/fixtures/natural_voice_control_v1.json").read_text())
+    rows = json.loads((ROOT / "evaluation/voice/datasets/fixtures/natural_voice_control_v1.json").read_text())
     assert len(rows) == 8
     assert {row["locale"] for row in rows} == {"ru", "en"}
     assert any(len(row["expectedFields"]) < 8 for row in rows)
@@ -34,7 +34,7 @@ def test_frozen_control_has_three_styles_and_partial_values() -> None:
 
 
 def test_new_holdout_is_disjoint_and_has_complete_partial_and_profile_cases() -> None:
-    fixture_dir = ROOT / "evaluation/voice/fixtures"
+    fixture_dir = ROOT / "evaluation/voice/datasets/fixtures"
     rows = json.loads((fixture_dir / "natural_voice_holdout_v1.json").read_text())
     previous = json.loads((fixture_dir / "natural_voice_control_v1.json").read_text())
     assert len(rows) == 12

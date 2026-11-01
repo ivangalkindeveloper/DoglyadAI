@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from evaluation.voice.compare_replay_variants import compare
-from evaluation.voice.score_candidate import FIELDS
+from evaluation.voice.analysis.compare_replay_variants import compare
+from evaluation.voice.scoring.score_candidate import FIELDS
 
 
 def _summary(*, name_correct: bool, manifest: str = "audio") -> dict:

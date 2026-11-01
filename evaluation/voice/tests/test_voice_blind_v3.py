@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 
-from evaluation.voice.voice_blind_v3 import NAMES, PARTIAL_FIELDS, make_cases, spoken_segments
+from evaluation.voice.datasets.voice_blind_v3 import NAMES, PARTIAL_FIELDS, make_cases, spoken_segments
 
 
 def test_blind_forms_are_balanced_and_partial_gold_omits_untouched_fields() -> None:

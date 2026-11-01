@@ -24,7 +24,7 @@ struct SelectUSExaminationTypeBottomSheet: View {
                     status: status,
                 ) },
                 getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
                 arguments: arguments,
             ),
         )

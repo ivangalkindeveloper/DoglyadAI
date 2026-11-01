@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "sha256",
+  "files": {
+    "all-matrices-complete.json": {
+      "sha256": "5935deb3b3bdab550c2b02e0d57091717b748bc4e96b4e2515c9089aa5dfc6fc",
+      "bytes": 357,
+      "isGitIgnored": false
+    },
+    "asr.csv": {
+      "sha256": "09adbb0205c25cf5fe21e47a007d554f641579198aff7d2630c2e76b4b4f20fd",
+      "bytes": 22989,
+      "isGitIgnored": false
+    },
+    "baseline.json": {
+      "sha256": "ed9d37fdef974d4b165523677f1a83b5f23953c236ffcc02cb90f469958b73c0",
+      "bytes": 26002,
+      "isGitIgnored": false
+    },
+    "corpus-final.json": {
+      "sha256": "2c02f372ab58450718de738d53b41eae15a87bd17dc482dd22fda1ce04402125",
+      "bytes": 2709730,
+      "isGitIgnored": false
+    },
+    "extraction.csv": {
+      "sha256": "f97d7b3f301762977c02d2b602ecb0bebebc1782cca6b81d9986c6ae287b0f32",
+      "bytes": 93980,
+      "isGitIgnored": false
+    },
+    "foundation-stop-complete.json": {
+      "sha256": "ea437dc14a666685e2613e9ab6c90b2d0885d43a5fe1e47cbbe482893818650f",
+      "bytes": 535,
+      "isGitIgnored": false
+    },
+    "model-card-notes.json": {
+      "sha256": "1b5d568b3537d8b11811bf278b7f5f559599ecb36144a044169b9bb960190575",
+      "bytes": 2879,
+      "isGitIgnored": false
+    },
+    "raw-artifacts.tar.gz": {
+      "sha256": "4753ea366ec5bdbf335142aaa14cc5c396a602f67c65c140908d68bc63f01d44",
+      "bytes": 899624490,
+      "isGitIgnored": true
+    },
+    "source-snapshot-v7.json": {
+      "sha256": "dc5d0e7bece0ac69577ee51909c4c4c21c58fc09b95912a244f02646f799a3e7",
+      "bytes": 1995,
+      "isGitIgnored": false
+    },
+    "source-snapshot-v8.json": {
+      "sha256": "f9c7373493ad3e3d823b5f84effdcc959f29166d0e88b1a24ee33b879eeb8df4",
+      "bytes": 487,
+      "isGitIgnored": false
+    },
+    "summary.json": {
+      "sha256": "4b1b7d9b8832e0cbda5310b0c583c25a001de1d89848602b5a4999f9476e410c",
+      "bytes": 590752,
+      "isGitIgnored": false
+    },
+    "terminology-matrix.json": {
+      "sha256": "3e8edf6c57cafec97cf0946dd0680bb80272e5319d69f3ac459283af3313798e",
+      "bytes": 1224384,
+      "isGitIgnored": false
+    },
+    "top-asr-field-breakdown.json": {
+      "sha256": "42fd5b7b989b48ad20e5a2928ff3f08b4fe1a3e86c389afa6acfe7dfdbe06b17",
+      "bytes": 5679,
+      "isGitIgnored": false
+    }
+  }
+}

@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 
-import evaluation.voice.compare_asr_reports as comparison
-from evaluation.voice.comparison import _critical_retention
-from evaluation.voice.generate import file_sha256
+import evaluation.voice.analysis.compare_asr_reports as comparison
+from evaluation.voice.analysis.comparison import _critical_retention
+from evaluation.voice.datasets.generate import file_sha256
 
 
 def _report(text: str, *, audio_hash: str = "same") -> dict[str, object]:

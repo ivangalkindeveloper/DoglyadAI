@@ -1,0 +1,20 @@
+{
+  "gitHead": "98ca96f3163457598a9871d7fefc2b21186fe3fe",
+  "files": {
+    "evaluation/voice/run_asr_matrix_followups.py": "8e4aa2ac621d7538e7dc5a584cdfb57e16a281b6aaef44ba9e378ca64294d51c",
+    "evaluation/voice/launch_matrix_main.py": "b9fd0f45c01d17d97285dc7caa84473bbc6405032fe04be76e332fe1e15fe03f",
+    "evaluation/voice/refresh_matrix_app_check.py": "ce201e43320125721d36e01824b0802ea84d8e203598e6cd9bce666e6fecc945",
+    "evaluation/voice/run_asr_matrix_extraction.py": "70622afba687244112039d86607378730662d744f648855b298f089a17902b8e",
+    "evaluation/voice/score_asr_matrix.py": "d5e9ec81fb9f991b0ae1bee39be185b11e8de8d71e429c92485f0132d2fa3a0a",
+    "evaluation/voice/server_matrix_parse.py": "ead282c73189c28fae2e9ee9b0582313d2d00ad6af2d90195138e2689c51c4db",
+    "evaluation/voice/prepare_terminology_matrix.py": "d9fa8d8958d905d372bd511c742f3252a77f054bb9a6dbb062cbec8204b8360d",
+    "evaluation/voice/run_local_asr_matrix.py": "a2e57e16f20290fbc3ac9f8f9ba74db0b4b04e007e0906c44b3d1d337b124f51",
+    "evaluation/voice/asr_matrix_corpus.py": "740eefe825a81608ad6ecda1160bf899479cb5c5c46d1d9453bcc5035a4b082a",
+    "evaluation/voice/run_voice_matrix_ios.py": "4a788f6e4c0181ac2a5bfd989d91d446d2445f1e0e5f3ad2f4225606e2342456",
+    "evaluation/voice/inference_failure_metadata.py": "bbffe42ae3f01a2ac7cd69aff5b927bccf87a5f76bfaeb8d8a0793e321828e9b",
+    "evaluation/voice/server_asr_benchmark.py": "a9dca1e300c2a6026e2f9e4c8aedc52b60de6c7d67c9d61970a9580f6c65d520",
+    "ios/DoglyadTests/VoiceMatrixTests.swift": "d46a478f02b4e3f90ef4a8ec176867236d2210103277e91fa0bd721e004e33d4",
+    "ios/DoglyadTests/VoiceMatrixAppCheckTests.swift": "1c33aeb4b2e93627d99e415872e3c2c9db888e8128ed1deaf6b53f9cfa946c48"
+  },
+  "note": "Request payload unchanged. V7 also records uncaught plaintext HTTP500 as backendInternalError (confirmed blank-value Pydantic failure) without retry. V2 first1227outputs remain original and final old-model matrix is assembled with traceableV3remaining shards."
+}

@@ -7,7 +7,11 @@ from app.model.ultrasound.us_examination_report import USExaminationReport
 
 
 class MockReportFixture(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
     report: USExaminationReport
-    photoRemarkPoints: list[USExaminationPhotoRemarkPoint] = Field(min_length=1)
+    photoRemarkPoints: list[USExaminationPhotoRemarkPoint] = Field(
+        min_length=1,
+    )

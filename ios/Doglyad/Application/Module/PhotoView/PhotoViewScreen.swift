@@ -22,7 +22,7 @@ struct PhotoViewScreen: View {
                     status: status,
                 ) },
                 getSettingsAI: { [subscription] in subscription.resolveSettingsAI() },
-                onRequestCountIncremented: { [subscription] in subscription.incrementRequestCount() },
+                onRefreshSubscriptionStatus: { [subscription] in await subscription.refreshStatus() },
                 arguments: arguments,
             ),
         )

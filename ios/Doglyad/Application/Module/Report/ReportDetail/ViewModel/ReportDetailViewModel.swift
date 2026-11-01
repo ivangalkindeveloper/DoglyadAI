@@ -31,7 +31,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         observeExaminationChanges: @escaping (@escaping () -> Void) -> AnyCancellable,
         getSelectedTemplate: @escaping () -> USExaminationTemplate?,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
@@ -54,7 +54,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .screen(
                 .reportDetail,
             ),
@@ -256,14 +256,21 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
                 isDescriptionRemarks: self.container.userSettingsRepository.getIsDescriptionRemarks(),
             )
             let config = self.container.applicationConfig.ultrasound
-            let response = try await self.container.ultrasoundReportRepository.generateReport(
-                locale: self.container.language.currentLocale,
-                request: request,
-                scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
-                    resizeMaxDimension: config.scanPhotoResizeMaxDimension,
-                    compressionQuality: config.scanPhotoCompressionQuality,
-                ),
-            )
+            let response: USExaminationModelReport
+            do {
+                response = try await self.container.ultrasoundReportRepository.generateReport(
+                    locale: self.container.language.currentLocale,
+                    request: request,
+                    scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
+                        resizeMaxDimension: config.scanPhotoResizeMaxDimension,
+                        compressionQuality: config.scanPhotoCompressionQuality,
+                    ),
+                )
+            } catch {
+                await self.refreshStatus()
+                throw error
+            }
+            await self.refreshStatus()
             return USExaminationReport(
                 id: original.id,
                 date: original.date,
@@ -307,7 +314,6 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
             try await self.container.ultrasoundReportRepository.updateReport(
                 report: candidate,
             )
-            self.incrementRequestCount()
         } onMainSuccess: { _ in
             withAnimation(
                 DTheme.light.animation,

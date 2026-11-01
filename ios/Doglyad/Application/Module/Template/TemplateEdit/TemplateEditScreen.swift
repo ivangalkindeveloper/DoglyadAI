@@ -23,7 +23,7 @@ struct TemplateEditScreen: View {
                     status: status,
                 ) },
                 getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRequestCountIncremented: { [subscriptionViewModel] in subscriptionViewModel.incrementRequestCount() },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
                 messager: messager,
                 arguments: arguments,
                 onSaveTemplate: { [ultrasoundViewModel, arguments] template in

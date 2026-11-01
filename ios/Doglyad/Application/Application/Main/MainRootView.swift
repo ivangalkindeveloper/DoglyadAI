@@ -56,6 +56,7 @@ struct MainRootView: View {
             subscriptionViewModel,
         )
         .onAppear {
+            subscriptionViewModel.onInit()
             ultrasoundViewModel.onAppear()
             viewModel.onAppear(
                 requestReview: { requestReview() },

@@ -5,8 +5,8 @@ from pathlib import Path
 
 import pytest
 
-from evaluation.voice import field_diagnostic
-from evaluation.voice.generate import file_sha256
+from evaluation.voice.analysis import field_diagnostic
+from evaluation.voice.datasets.generate import file_sha256
 
 
 def test_diagnostic_separates_wrong_fields_from_missing_and_reviewed_fields(

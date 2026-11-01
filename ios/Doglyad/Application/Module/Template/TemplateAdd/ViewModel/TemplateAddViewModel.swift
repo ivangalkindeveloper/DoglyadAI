@@ -27,7 +27,7 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
-        onRequestCountIncremented: @escaping () -> Void,
+        onRefreshSubscriptionStatus: @escaping () async -> Void,
         messager: DMessager,
         onSaveTemplate: @escaping (USExaminationTemplate) async throws -> Void,
     ) {
@@ -87,7 +87,7 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
             observeSubscriptionStatus: observeSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
-            onRequestCountIncremented: onRequestCountIncremented,
+            onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
             analyticsDestination: .screen(
                 .templateAdd,
             ),

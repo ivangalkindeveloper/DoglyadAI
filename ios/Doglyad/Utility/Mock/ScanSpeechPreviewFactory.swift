@@ -26,7 +26,7 @@
                 observeSubscriptionStatus: { _ in AnyCancellable {} },
                 onSubscriptionStatusUpdated: { _ in },
                 getSettingsAI: { container.initialSettingsAI },
-                onRequestCountIncremented: {},
+                onRefreshSubscriptionStatus: {},
                 arguments: ScanSpeechArguments(
                     examinationType: container.usExaminationTypeDefault,
                     onConfirm: { _ in true },

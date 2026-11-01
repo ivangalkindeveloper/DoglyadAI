@@ -6,7 +6,9 @@ from app.model.non_blank_string import NonBlankString
 
 
 class USExaminationType(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
     id: NonBlankString
     titleLocaleKey: NonBlankString

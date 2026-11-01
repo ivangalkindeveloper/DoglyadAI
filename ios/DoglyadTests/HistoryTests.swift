@@ -9,7 +9,7 @@ struct HistoryTests {
     func recentExaminationTypesKeepThreeUniqueSelectionsNewestFirst() {
         var ids: [String] = []
         for id in ["a", "b", "c", "d", "b"] {
-            ids = RecentUSExaminationTypes.recording(
+            ids = USExaminationRecentTypes.recording(
                 id,
                 in: ids,
             )
@@ -22,7 +22,7 @@ struct HistoryTests {
 
     @Test
     func unavailableRecentExaminationTypesAreRemovedDuringInitialization() {
-        let ids = RecentUSExaminationTypes.available(
+        let ids = USExaminationRecentTypes.available(
             from: ["removed", "a", "a", "b", "c", "d"],
             availableIds: ["a", "b", "c", "d"],
         )

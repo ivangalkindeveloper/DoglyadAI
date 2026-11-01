@@ -14,8 +14,9 @@ enum ScreenType: Hashable {
     case templateEdit
     case storage
     case userSettings
-    case subscription
-    case subscriptionPaywall
+    case subscriptionRecovery
+    case manageSubscription
+    case paywall
 }
 
 enum SheetType: Hashable {
@@ -41,7 +42,6 @@ enum SheetType: Hashable {
     case templateDelete
     case about
     case share
-    case subscriptionCustomerCenter
 }
 
 enum FullScreenCoverType: Hashable {}

@@ -4,6 +4,15 @@
 <dict>
 	<key>BASE_URL</key>
 	<string>$(BASE_URL)</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>doglyad</string>
+			</array>
+		</dict>
+	</array>
 	<key>ENVIRONMENT</key>
 	<string>$(ENVIRONMENT)</string>
 	<key>NSAppTransportSecurity</key>
@@ -11,8 +20,6 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>REVENUECAT_API_KEY</key>
-	<string>$(REVENUECAT_API_KEY)</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Regular.ttf</string>

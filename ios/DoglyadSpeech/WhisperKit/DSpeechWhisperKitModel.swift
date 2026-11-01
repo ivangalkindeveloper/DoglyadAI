@@ -113,7 +113,6 @@ public final class DSpeechWhisperKitModel: ObservableObject {
         let previous = inferenceTail
         let task = Task {
             await previous?.value
-            try Task.checkCancellation()
             let model = try await load()
             return try await operation(
                 model,

@@ -11,7 +11,9 @@ from app.model.ultrasound.us_examination_neural_model_accessibility import (
 class USExaminationNeuralModel(BaseModel):
     """Neural model stored in the backend configuration and used for selection."""
 
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
     id: NonBlankString
     title: NonBlankString

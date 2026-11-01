@@ -1,6 +1,10 @@
 from __future__ import annotations
 
-from evaluation.voice.confidence_diagnostic import evaluate, identifier_is_a_distinct_literal, quote_minimum_confidence
+from evaluation.voice.analysis.confidence_diagnostic import (
+    evaluate,
+    identifier_is_a_distinct_literal,
+    quote_minimum_confidence,
+)
 
 
 def test_quote_confidence_uses_utf16_and_requires_full_unique_coverage() -> None:

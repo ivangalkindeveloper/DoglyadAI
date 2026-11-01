@@ -45,7 +45,7 @@ struct CoordinatorTests {
             ),
         )
         #expect(
-            paywallRoute.type == .subscriptionPaywall,
+            paywallRoute.type == .paywall,
         )
 
         let scanRoute = Coordinator.initialRoute(

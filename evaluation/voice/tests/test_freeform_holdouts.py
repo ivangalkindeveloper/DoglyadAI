@@ -5,16 +5,16 @@ import json
 
 import pytest
 
-from evaluation.voice.freeform_holdout_v4 import make_cases, write_cases
-from evaluation.voice.freeform_holdout_v5 import make_cases as make_v5_cases
-from evaluation.voice.freeform_holdout_v5 import write_cases as write_v5_cases
-from evaluation.voice.freeform_holdout_v6 import make_cases as make_v6_cases
-from evaluation.voice.freeform_holdout_v6 import write_cases as write_v6_cases
-from evaluation.voice.freeform_holdout_v7 import make_cases as make_v7_cases
-from evaluation.voice.freeform_holdout_v7 import write_cases as write_v7_cases
-from evaluation.voice.freeform_holdout_v8 import make_cases as make_v8_cases
-from evaluation.voice.freeform_holdout_v8 import write_cases as write_v8_cases
-from evaluation.voice.prepare_holdout_ios import (
+from evaluation.voice.datasets.freeform_holdout_v4 import make_cases, write_cases
+from evaluation.voice.datasets.freeform_holdout_v5 import make_cases as make_v5_cases
+from evaluation.voice.datasets.freeform_holdout_v5 import write_cases as write_v5_cases
+from evaluation.voice.datasets.freeform_holdout_v6 import make_cases as make_v6_cases
+from evaluation.voice.datasets.freeform_holdout_v6 import write_cases as write_v6_cases
+from evaluation.voice.datasets.freeform_holdout_v7 import make_cases as make_v7_cases
+from evaluation.voice.datasets.freeform_holdout_v7 import write_cases as write_v7_cases
+from evaluation.voice.datasets.freeform_holdout_v8 import make_cases as make_v8_cases
+from evaluation.voice.datasets.freeform_holdout_v8 import write_cases as write_v8_cases
+from evaluation.voice.runners.prepare_holdout_ios import (
     AUDIO_MODE,
     AUDIO_MODE_V5,
     AUDIO_MODE_V6,
@@ -22,7 +22,7 @@ from evaluation.voice.prepare_holdout_ios import (
     AUDIO_MODE_V8,
     prepare_holdout_fixtures,
 )
-from evaluation.voice.score_candidate import score_candidate_report
+from evaluation.voice.scoring.score_candidate import score_candidate_report
 
 
 def test_frozen_holdout_covers_each_type_and_locale(tmp_path) -> None:

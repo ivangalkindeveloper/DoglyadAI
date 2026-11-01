@@ -38,8 +38,8 @@
 		77CB95292EB90C8500489F3E /* DoglyadNeuralModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77CB95232EB90C8500489F3E /* DoglyadNeuralModel.framework */; };
 		77CB952A2EB90C8500489F3E /* DoglyadNeuralModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 77CB95232EB90C8500489F3E /* DoglyadNeuralModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		77D9E0C62F2C143D00FB522A /* Router in Frameworks */ = {isa = PBXBuildFile; productRef = 77D9E0C52F2C143D00FB522A /* Router */; };
+		77DA10010000000000000001 /* YooKassaPaymentsBinary in Frameworks */ = {isa = PBXBuildFile; productRef = 77DA10010000000000000002 /* YooKassaPaymentsBinary */; };
 		77E745C030030621008B204A /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 77E745BF30030621008B204A /* Shimmer */; };
-		77F3A0042F2D100000000001 /* RevenueCat in Frameworks */ = {isa = PBXBuildFile; productRef = 77F3A0022F2D100000000001 /* RevenueCat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,6 +189,7 @@
 				Component/DBottomSheet.swift,
 				Component/DCaptureFrame.swift,
 				Component/DCardBackground.swift,
+				Component/DCheck.swift,
 				Component/DCheckbox.swift,
 				Component/DDatePicker.swift,
 				Component/DFocusScrollView.swift,
@@ -206,6 +207,7 @@
 				Component/DSegment.swift,
 				Component/DShareLink.swift,
 				Component/DShimmerPlaceholder.swift,
+				Component/DStretchyHeader.swift,
 				Component/DText.swift,
 				Component/DTextFade.swift,
 				Component/DToggle.swift,
@@ -273,6 +275,7 @@
 				Component/DBottomSheet.swift,
 				Component/DCaptureFrame.swift,
 				Component/DCardBackground.swift,
+				Component/DCheck.swift,
 				Component/DCheckbox.swift,
 				Component/DDatePicker.swift,
 				Component/DFocusScrollView.swift,
@@ -290,6 +293,7 @@
 				Component/DSegment.swift,
 				Component/DShareLink.swift,
 				Component/DShimmerPlaceholder.swift,
+				Component/DStretchyHeader.swift,
 				Component/DText.swift,
 				Component/DTextFade.swift,
 				Component/DToggle.swift,
@@ -485,8 +489,8 @@
 				771F41AE2EA430B400C4945A /* DoglyadDatabase.framework in Frameworks */,
 				77CB95292EB90C8500489F3E /* DoglyadNeuralModel.framework in Frameworks */,
 				770AEB5E2F1DA67D00C09C76 /* FirebaseAnalytics in Frameworks */,
-				77F3A0042F2D100000000001 /* RevenueCat in Frameworks */,
 				777D765C3014D00C004E81FE /* FirebaseCrashlytics in Frameworks */,
+				77DA10010000000000000001 /* YooKassaPaymentsBinary in Frameworks */,
 				77CB94F82EB8FED100489F3E /* DoglyadCamera.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -730,6 +734,7 @@
 			);
 			name = Doglyad;
 			packageProductDependencies = (
+				77DA10010000000000000002 /* YooKassaPaymentsBinary */,
 				77BB12232E92A87700B9FFC5 /* DependencyInitializer */,
 				77759AFA2E932B78007CC90C /* DependencyInitializer */,
 				777B8DE42EB0020D007F5678 /* BottomSheet */,
@@ -738,7 +743,6 @@
 				770AEB5D2F1DA67D00C09C76 /* FirebaseAnalytics */,
 				770AEB5F2F1DA67D00C09C76 /* FirebaseAnalyticsCore */,
 				770AEB612F1DA67D00C09C76 /* FirebaseAnalyticsIdentitySupport */,
-				77F3A0022F2D100000000001 /* RevenueCat */,
 				777D76573014CFC9004E81FE /* FirebaseAppCheck */,
 				777D76593014D00C004E81FE /* FirebaseCore */,
 				777D765B3014D00C004E81FE /* FirebaseCrashlytics */,
@@ -917,6 +921,7 @@
 			mainGroup = 77AC58A92E929E7E0028250A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				77DA10010000000000000003 /* XCRemoteSwiftPackageReference "yookassa-payments-swift" */,
 				7700BBBB000000000000A001 /* XCRemoteSwiftPackageReference "argmax-oss-swift" */,
 				7700CCCC000000000000A001 /* XCRemoteSwiftPackageReference "FluidAudio" */,
 				77759AF92E932B78007CC90C /* XCRemoteSwiftPackageReference "DependencyInitializer" */,
@@ -929,7 +934,6 @@
 				770AEB5C2F1DA67D00C09C76 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				77BF28D02F26C27A00D9373C /* XCRemoteSwiftPackageReference "SwiftMessages" */,
 				77B2576D2FAAA1780050413F /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
-				77F3A0012F2D100000000001 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 77AC58B32E929E7E0028250A /* Products */;
@@ -3085,20 +3089,20 @@
 				minimumVersion = 10.0.2;
 			};
 		};
+		77DA10010000000000000003 /* XCRemoteSwiftPackageReference "yookassa-payments-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git";
+			requirement = {
+				kind = exactVersion;
+				version = 12.0.2;
+			};
+		};
 		77E7F0AC2EA843F000E49A4E /* XCRemoteSwiftPackageReference "Router" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ivangalkindeveloper/Router";
 			requirement = {
 				branch = master;
 				kind = branch;
-			};
-		};
-		77F3A0012F2D100000000001 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/RevenueCat/purchases-ios-spm.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -3188,15 +3192,15 @@
 			package = 77E7F0AC2EA843F000E49A4E /* XCRemoteSwiftPackageReference "Router" */;
 			productName = Router;
 		};
+		77DA10010000000000000002 /* YooKassaPaymentsBinary */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 77DA10010000000000000003 /* XCRemoteSwiftPackageReference "yookassa-payments-swift" */;
+			productName = YooKassaPaymentsBinary;
+		};
 		77E745BF30030621008B204A /* Shimmer */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 776889DB2EBD483B00880301 /* XCRemoteSwiftPackageReference "SwiftUI-Shimmer" */;
 			productName = Shimmer;
-		};
-		77F3A0022F2D100000000001 /* RevenueCat */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77F3A0012F2D100000000001 /* XCRemoteSwiftPackageReference "purchases-ios-spm" */;
-			productName = RevenueCat;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

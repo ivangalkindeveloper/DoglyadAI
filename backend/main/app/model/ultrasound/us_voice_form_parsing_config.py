@@ -4,6 +4,11 @@ from pydantic import BaseModel, ConfigDict, Field
 
 
 class USVoiceFormParsingConfig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(
+        extra="forbid",
+    )
 
-    maxTokens: int = Field(gt=0, le=4096)
+    maxTokens: int = Field(
+        gt=0,
+        le=4096,
+    )

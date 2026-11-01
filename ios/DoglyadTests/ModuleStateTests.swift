@@ -10,7 +10,92 @@ import UIKit
 @MainActor
 struct ModuleStateTests {
     @Test
-    func subscriptionChangesReachModulesAndObservationIsReleased() throws {
+    func disappearanceCancelsTheOperationAndRestoresOneSubscriptionObservationOnReturn() {
+        let container = DependencyContainer.previewable
+        let statuses = CurrentValueSubject<SubscriptionStatus?, Never>(
+            nil,
+        )
+        var observations = 0
+        var cancellations = 0
+        let model = DModuleViewModel<Int>(
+            state: 0,
+            container: container,
+            router: DRouter(
+                initialRoute: RouteScreen(
+                    type: .scan,
+                ),
+            ),
+            getSubscriptionStatus: { statuses.value },
+            observeSubscriptionStatus: { observer in
+                observations += 1
+                let observation = statuses.sink(
+                    receiveValue: observer,
+                )
+                return AnyCancellable {
+                    cancellations += 1
+                    observation.cancel()
+                }
+            },
+            onSubscriptionStatusUpdated: { statuses.send(
+                $0,
+            ) },
+            getSettingsAI: { container.initialSettingsAI },
+            onRefreshSubscriptionStatus: {},
+            analyticsDestination: .screen(
+                .paywall,
+            ),
+        )
+        model.onAppear()
+        model.onAppear()
+        #expect(
+            observations == 1,
+        )
+        let task = Task<Void, Never> {
+            try? await Task.sleep(
+                for: .seconds(
+                    1,
+                ),
+            )
+        }
+        model.operationTask = task
+        model.onDisappear()
+        #expect(
+            task.isCancelled && model.operationTask == nil,
+        )
+        #expect(
+            cancellations == 1,
+        )
+        let status = SubscriptionStatus(
+            planId: "monthly",
+            type: .pro,
+            entitlement: .init(
+                requestCountPerDay: 20,
+                formCompletionViaMicrophone: .available,
+                sendingReportByEmail: .available,
+                settingsAI: .available,
+            ),
+            availableCountPerDay: 17,
+        )
+        statuses.send(
+            status,
+        )
+        #expect(
+            model.subscriptionStatus == nil,
+        )
+        model.onAppear()
+        model.onAppear()
+        #expect(
+            observations == 2 && model.availableRequestCount == 17,
+        )
+        model.onDisappear()
+        model.onDisappear()
+        #expect(
+            cancellations == 2 && model.operationTask == nil,
+        )
+    }
+
+    @Test
+    func subscriptionChangesReachModulesAndObservationIsReleased() async throws {
         let container = DependencyContainer.previewable
         let root = SubscriptionRootViewModel(
             container: container,
@@ -24,9 +109,9 @@ struct ModuleStateTests {
                 status?.availableCountPerDay,
             )
         }
-        var requestCountUpdates = 0
+        var subscriptionRefreshCount = 0
         var observationCancelled = false
-        var model: SubscriptionCustomerCenterViewModel? = SubscriptionCustomerCenterViewModel(
+        var model: ManageSubscriptionViewModel? = ManageSubscriptionViewModel(
             container: container,
             router: DRouter(
                 initialRoute: RouteScreen(
@@ -47,9 +132,19 @@ struct ModuleStateTests {
                 status: $0,
             ) },
             getSettingsAI: { root.resolveSettingsAI() },
-            onRequestCountIncremented: { requestCountUpdates += 1 },
+            onRefreshSubscriptionStatus: { subscriptionRefreshCount += 1 },
             arguments: nil,
-            onRefreshStatus: {},
+            manageSubscription: {},
+            restorePurchases: { nil },
+            requestRefund: {},
+            fetchProducts: { BillingProductsResponse(
+                products: [],
+                tiers: [SubscriptionTier(
+                    id: .pro,
+                    title: "Test subscription",
+                    features: ["Test feature"],
+                )],
+            ) },
         )
         weak let weakModel = model
         #expect(
@@ -60,8 +155,12 @@ struct ModuleStateTests {
                 of: .settingsAI,
             ) == .unavailable,
         )
+        model?.onAppear()
+        model?.onAppear()
+        await model?.lastTask?.value
 
         let status = SubscriptionStatus(
+            planId: "monthly",
             type: .pro,
             entitlement: SubscriptionEntitlement(
                 requestCountPerDay: 20,
@@ -91,9 +190,9 @@ struct ModuleStateTests {
             ) == .available,
         )
 
-        model?.incrementRequestCount()
+        await model?.refreshStatus()
         #expect(
-            requestCountUpdates == 1,
+            subscriptionRefreshCount == 2,
         )
         model?.updateSubscriptionStatus(
             nil,
@@ -139,7 +238,7 @@ struct ModuleStateTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             observeExaminationChanges: { observer in
                 let observation = changes.sink { _ in observer() }
                 return AnyCancellable {
@@ -236,7 +335,7 @@ struct ModuleStateTests {
                 status: $0,
             ) },
             getSettingsAI: { root.resolveSettingsAI() },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )
         model.onTapDelete()
@@ -299,7 +398,7 @@ struct ModuleStateTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             arguments: SelectDateOfBirthArguments(
                 currentValue: initialDate,
                 onSelected: { selectedDate = $0 },
@@ -343,7 +442,7 @@ struct ModuleStateTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
         )
         let initial = OnBoardingLegalState()
         model.emit(
@@ -419,7 +518,7 @@ struct ModuleStateTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
                 onConfirm: { proposals in
@@ -520,7 +619,7 @@ struct ModuleStateTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             messager: DMessager(),
             onSaveTemplate: { _ in },
         )
@@ -625,7 +724,7 @@ struct ModuleStateTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             observeExaminationChanges: { _ in AnyCancellable {} },
             getSelectedTemplate: { nil },
             getNeuralModel: { container.usExaminationNeuralModelDefault },
@@ -653,7 +752,7 @@ struct ModuleStateTests {
             observeSubscriptionStatus: { _ in AnyCancellable {} },
             onSubscriptionStatusUpdated: { _ in },
             getSettingsAI: { container.initialSettingsAI },
-            onRequestCountIncremented: {},
+            onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )
         source.report = USExaminationReport(

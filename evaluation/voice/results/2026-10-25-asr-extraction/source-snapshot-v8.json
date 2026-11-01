@@ -1,0 +1,8 @@
+{
+  "createdAt": "2026-10-25T11:15:10.111181+00:00",
+  "reason": "Explicit user cancellation of Foundation Models; seven-method scoring scope. All ASR/model input and generation code unchanged. Original v7 model outputs preserved.",
+  "sourceHashes": {
+    "evaluation/voice/score_asr_matrix.py": "5f16041ca5517d6925daf495ba2046adb8b5ac3cea3a2ad395a1a4d1dd1bb26a",
+    "evaluation/voice/tests/test_asr_matrix.py": "5897641d5dce3b55bd59f1073ea3a0658801274bd6234965ae564d01be89d4e5"
+  }
+}

@@ -1,5 +1,5 @@
 import Foundation
 
 enum DKeychainKey: String, CaseIterable {
-    case requestLimit = "request_limit"
+    case billingIdentity = "billing_identity"
 }
