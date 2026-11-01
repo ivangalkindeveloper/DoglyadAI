@@ -71,26 +71,9 @@ struct ReportReceivedBottomSheetView: DViewProtocol {
                         .primaryButton,
                     )
 
-                    switch (viewModel.userEmail, viewModel.subscriptionAvailability(
-                        of: .sendingReportByEmail,
-                    )) {
-                    case (.some, .available), (.some, .offered):
-                        DButton(
-                            image: .send,
-                            title: viewModel.userEmailButtonTitle,
-                            truncatingTitleSuffix: viewModel.userEmail,
-                            badge: viewModel.userEmailButtonBadge,
-                            action: viewModel.onTapUserEmail,
-                            isLoading: isSending,
-                        )
-                        .dStyle(
-                            .textWeak,
-                        )
-                        .transition(
-                            .opacity,
-                        )
-                    default: EmptyView()
-                    }
+                    ReportReceivedEmailButtonView(
+                        isSending: isSending,
+                    )
 
                     DButton(
                         image: .copy,

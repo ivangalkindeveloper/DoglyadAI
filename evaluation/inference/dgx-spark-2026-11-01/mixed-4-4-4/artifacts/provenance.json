@@ -1,0 +1,19 @@
+{
+  "measurement_functions_match_previous_series_ast": {
+    "_payload": true,
+    "_request": true,
+    "_metrics": true,
+    "_context": true,
+    "_summary": true
+  },
+  "initial_script_hash_matches_artifacts": {
+    "verify_matrix.py": true,
+    "test_matrix.py": true,
+    "fixtures.py": true,
+    "service_matrix.py": true,
+    "benchmark_matrix.py": true,
+    "run_matrix.py": true,
+    "host_helpers.py": true
+  },
+  "is_candidate_execution_hash_verified": true
+}

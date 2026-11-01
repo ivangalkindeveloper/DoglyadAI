@@ -15,45 +15,35 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
         default: false
         }
 
-        ScrollView(
-            showsIndicators: false,
+        DScrollVStack(
+            padding: EdgeInsets(
+                top: size.s16 + toolbarHeight,
+                leading: size.s16,
+                bottom: size.s16 + bottomHeight,
+                trailing: size.s16,
+            ),
         ) {
-            VStack(
-                alignment: .leading,
-                spacing: size.s16,
-            ) {
-                DText(
-                    viewModel.transcriptStatusDescription,
-                ).dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscaleBackgroundWeak,
-                )
-                DTextField(
-                    inputTextController: viewModel.transcriptTextController,
-                    title: l10n[
-                        .scanSpeechReviewFieldTitle,
-                    ],
-                    placeholder: l10n[
-                        .scanSpeechReviewFieldPlaceholder,
-                    ],
-                    mode: DTextFieldMultiLineMode(
-                        lineLimit: 6 ... 14,
-                    ),
-                )
-                .disabled(
-                    isProcessing,
-                )
-            }
-            .padding(
-                size.s16,
+            DText(
+                viewModel.transcriptStatusDescription,
+            ).dStyle(
+                font: typography.textSmall,
+                color: color.grayscaleBackgroundWeak,
             )
-            .padding(
-                .top,
-                toolbarHeight,
+
+            DTextField(
+                inputTextController: viewModel.transcriptTextController,
+                title: l10n[
+                    .scanSpeechReviewFieldTitle,
+                ],
+                placeholder: l10n[
+                    .scanSpeechReviewFieldPlaceholder,
+                ],
+                mode: DTextFieldMultiLineMode(
+                    lineLimit: 6 ... 14,
+                ),
             )
-            .padding(
-                .bottom,
-                bottomHeight,
+            .disabled(
+                isProcessing,
             )
         }
         .scrollDismissesKeyboard(

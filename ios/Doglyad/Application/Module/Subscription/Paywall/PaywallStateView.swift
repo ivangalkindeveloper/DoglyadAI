@@ -24,21 +24,19 @@ struct PaywallStateView: DViewProtocol {
                 errorDescription: failed.errorDescription,
             )
         case let failed as PaywallOperationFailedState:
-            switch failed.previousState {
-            case let pending as PaywallPendingState: PaywallPendingView(
-                    state: pending,
-                )
-            default: PaywallOffersView(
-                    state: failed,
-                )
-            }
+            PaywallFailedContentView(
+                state: failed,
+            )
+
             PaywallErrorView(
                 errorDescription: failed.errorDescription,
             )
-        case let pending as PaywallPendingState: PaywallPendingView(
+        case let pending as PaywallPendingState:
+            PaywallPendingView(
                 state: pending,
             )
-        case let content as PaywallContentState: PaywallOffersView(
+        case let content as PaywallContentState:
+            PaywallOffersView(
                 state: content,
             )
         default: EmptyView()

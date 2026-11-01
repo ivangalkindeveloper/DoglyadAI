@@ -4,10 +4,14 @@ extension UIApplication {
     static func openSettings() {
         guard let settingsURL = URL(
             string: openSettingsURLString,
-        ) else { return }
+        ) else {
+            return
+        }
         guard shared.canOpenURL(
             settingsURL,
-        ) else { return }
+        ) else {
+            return
+        }
         shared.open(
             settingsURL,
         )
@@ -22,7 +26,9 @@ extension UIApplication {
         )
         guard shared.canOpenURL(
             url,
-        ) else { return }
+        ) else {
+            return
+        }
         shared.open(
             url,
         )
@@ -51,7 +57,9 @@ extension UIApplication {
         ) ?? ""
         guard let url = URL(
             string: "mailto:\(encodedRecipient)?subject=\(encodedSubject)&body=\(encodedBody)",
-        ) else { return }
+        ) else {
+            return
+        }
         shared.open(
             url,
         )

@@ -61,6 +61,7 @@ public struct DListButtonCard: DViewProtocol {
                         .dStyle(
                             font: typography.linkSmall,
                         )
+
                         Spacer()
                         if isSelected {
                             DIcon(

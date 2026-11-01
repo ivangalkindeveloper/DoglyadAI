@@ -1,5 +1,8 @@
 # Subscriptions
 
+Короткий план отложенных доработок чеков НПД и отчётности Apple:
+[BILLING_RELEASE_PLAN.md](BILLING_RELEASE_PLAN.md).
+
 ## Коротко: текущая реализация
 
 Учет подписок, платежей и лимитов запросов ведет PostgreSQL в `backend/main`.

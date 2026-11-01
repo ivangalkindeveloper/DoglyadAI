@@ -22,9 +22,14 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
         )
         let offers = plans.compactMap { plan -> SubscriptionPlan? in
             guard let product = products.first(
-                where: { $0.id == plan.id },
+                where: {
+                    $0.id == plan.id
+                },
             ),
-                let storeKitPeriod = product.subscription?.subscriptionPeriod else { return nil }
+                let storeKitPeriod = product.subscription?.subscriptionPeriod
+            else {
+                return nil
+            }
             let period: SubscriptionPeriod? = switch storeKitPeriod.unit {
             case .day: nil
             case .week: storeKitPeriod.value == 1 ? .weekly : nil
@@ -37,8 +42,12 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
             case .year: storeKitPeriod.value == 1 ? .annual : nil
             @unknown default: nil
             }
-            guard let period else { return nil }
-            guard period == plan.period else { return nil }
+            guard let period else {
+                return nil
+            }
+            guard period == plan.period else {
+                return nil
+            }
             return SubscriptionPlan(
                 id: plan.id,
                 source: .apple,
@@ -64,7 +73,9 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
         let productID = plan.id
         guard let product = try await Product.products(
             for: [productID],
-        ).first else { throw SubscriptionError.offeringsUnavailable }
+        ).first else {
+            throw SubscriptionError.offeringsUnavailable
+        }
         let ownerID = try await backend.fetchOwnerID()
         var previousTransactionId: UInt64?
         var previousPurchaseDate: Date?
@@ -98,7 +109,9 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
             let update = try await synchronize(
                 verification,
             )
-            guard update.planId == productID, update.isActive else { throw SubscriptionError.unverifiedTransaction }
+            guard update.planId == productID, update.isActive else {
+                throw SubscriptionError.unverifiedTransaction
+            }
             return .completed(
                 nil,
             )
@@ -137,18 +150,23 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
     ) async throws {
         for await result in Transaction.updates {
             try Task.checkCancellation()
-            do { try await observer(
-                .success(
-                    synchronize(
-                        result,
+            do {
+                try await observer(
+                    .success(
+                        synchronize(
+                            result,
+                        ),
                     ),
-                ),
-            ) } catch is CancellationError { throw CancellationError() }
-            catch { observer(
-                .failure(
-                    error,
-                ),
-            ) }
+                )
+            } catch is CancellationError {
+                throw CancellationError()
+            } catch {
+                observer(
+                    .failure(
+                        error,
+                    ),
+                )
+            }
         }
     }
 
@@ -188,7 +206,9 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
                 transactionId: transaction.id,
                 planId: transaction.productID,
                 purchaseDate: transaction.purchaseDate,
-                isActive: transaction.revocationDate == nil && !transaction.isUpgraded && (transaction.expirationDate.map { $0 > Date() } ?? false),
+                isActive: transaction.revocationDate == nil && !transaction.isUpgraded && (transaction.expirationDate.map {
+                    $0 > Date()
+                } ?? false),
                 isOwnerChanged: isOwnerChanged,
             )
         case .unverified: throw SubscriptionError.unverifiedTransaction
@@ -197,7 +217,9 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
 
     private func activeScene() throws -> UIWindowScene {
         guard let scene = UIApplication.shared.connectedScenes.compactMap(
-            { $0 as? UIWindowScene },
+            {
+                $0 as? UIWindowScene
+            },
         ).first(
             where: {
                 switch $0.activationState {
@@ -206,7 +228,9 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
                 @unknown default: false
                 }
             },
-        ) else { throw SubscriptionError.offeringsUnavailable }
+        ) else {
+            throw SubscriptionError.offeringsUnavailable
+        }
         return scene
     }
 }

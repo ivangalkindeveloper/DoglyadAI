@@ -21,7 +21,9 @@ class ManageSubscriptionContentState: ManageSubscriptionStateProtocol, @MainActo
     static func == (
         lhs: ManageSubscriptionContentState,
         rhs: ManageSubscriptionContentState,
-    ) -> Bool { lhs.equals(
-        rhs,
-    ) }
+    ) -> Bool {
+        lhs.equals(
+            rhs,
+        )
+    }
 }

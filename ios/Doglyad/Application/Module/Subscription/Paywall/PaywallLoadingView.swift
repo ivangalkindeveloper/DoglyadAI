@@ -8,9 +8,11 @@ struct PaywallLoadingView: DViewProtocol {
         DShimmerPlaceholder().frame(
             height: size.s48,
         )
+
         DShimmerPlaceholder().frame(
             height: size.s24,
         )
+
         VStack(
             spacing: size.s8,
         ) {

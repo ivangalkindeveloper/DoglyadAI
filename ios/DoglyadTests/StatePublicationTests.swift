@@ -14,8 +14,12 @@ struct StatePublicationTests {
             state: initial,
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         model.emit(
             ScanSpeechReadyState(),
@@ -50,8 +54,12 @@ struct StatePublicationTests {
             ),
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         let next = ScanSpeechReviewParsingState(
             parsedText: "Weight 70 kg",
@@ -77,8 +85,12 @@ struct StatePublicationTests {
             ),
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         model.emit(
             ScanSpeechPreparingModelState(
@@ -126,8 +138,12 @@ struct StatePublicationTests {
             ),
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         model.emit(
             OnBoardingLegalState(
@@ -169,8 +185,12 @@ struct StatePublicationTests {
             ),
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         model.emit(
             ScanSpeechReviewProposalState(
@@ -212,8 +232,12 @@ struct StatePublicationTests {
             ),
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         model.emit(
             PaywallRestoringState(
@@ -267,8 +291,12 @@ struct StatePublicationTests {
             state: content,
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
         model.emit(
             PaywallDefaultState(
                 copying: content,
@@ -346,8 +374,12 @@ struct StatePublicationTests {
             ),
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         model.emit(
             ErrorRootServiceUnavailableState(
@@ -386,8 +418,12 @@ struct StatePublicationTests {
             state: initial,
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         model.emit(
             initial,
@@ -427,8 +463,12 @@ struct StatePublicationTests {
             ),
         )
         var publications = 0
-        let observation = model.$state.dropFirst().sink { _ in publications += 1 }
-        defer { observation.cancel() }
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         model.emit(
             WebDocumentFailedState(

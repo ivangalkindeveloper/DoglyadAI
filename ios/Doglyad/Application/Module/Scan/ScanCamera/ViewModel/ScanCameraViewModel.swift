@@ -74,7 +74,9 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     }
 
     func onCameraAppear() {
-        guard presentationID == nil else { return }
+        guard presentationID == nil else {
+            return
+        }
         presentationID = UUID()
         observeCamera()
         cameraController.startSession()
@@ -96,7 +98,9 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     func onTapPhoto(
         _ photo: USExaminationScanPhoto,
     ) {
-        guard presentationID != nil else { return }
+        guard presentationID != nil else {
+            return
+        }
         let getPhotos = arguments.getPhotos
         let onPhotosUpdated = arguments.onPhotosUpdated
         presentationID = nil
@@ -109,7 +113,9 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
                 onDelete: { photo in
                     withAnimation {
                         var updatedPhotos = getPhotos()
-                        updatedPhotos.removeAll { $0.id == photo.id }
+                        updatedPhotos.removeAll {
+                            $0.id == photo.id
+                        }
                         onPhotosUpdated(
                             updatedPhotos,
                         )
@@ -120,12 +126,16 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     }
 
     func onTapCapture() {
-        guard presentationID != nil else { return }
+        guard presentationID != nil else {
+            return
+        }
         switch state {
         case _ as ScanCameraReadyState: break
         default: return
         }
-        guard isCaptureFrameReady, photos.count < photoMaxCount else { return }
+        guard isCaptureFrameReady, photos.count < photoMaxCount else {
+            return
+        }
         emit(
             ScanCameraCapturingState(),
         )
@@ -161,7 +171,9 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     ) {
         guard let index = photos.firstIndex(
             of: photo,
-        ) else { return }
+        ) else {
+            return
+        }
 
         analytics.buttonTapped(
             .scanDeletePhoto,
@@ -185,8 +197,12 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     private func onCapture(
         _ image: UIImage,
     ) {
-        guard let id = presentationID else { return }
-        guard photos.count < photoMaxCount else { return }
+        guard let id = presentationID else {
+            return
+        }
+        guard photos.count < photoMaxCount else {
+            return
+        }
         emit(
             ScanCameraCapturingState(),
         )
@@ -196,7 +212,9 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
             )
             guard let self, presentationID == id,
                   photos.count < self.photoMaxCount
-            else { return }
+            else {
+                return
+            }
 
             var updatedPhotos = photos
             updatedPhotos.append(
@@ -229,33 +247,42 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
 
     private func observeCamera() {
         cameraObservation = cameraController.objectWillChange.sink { [weak self] _ in
-            Task { @MainActor [weak self] in self?.refreshCameraState() }
+            Task { @MainActor [weak self] in
+                self?.refreshCameraState()
+            }
         }
     }
 
     private func refreshCameraState() {
-        guard presentationID != nil else { return }
+        guard presentationID != nil else {
+            return
+        }
         switch state {
         case _ as ScanCameraCapturingState: return
         default: break
         }
 
-        guard photos.count < photoMaxCount else { emit(
-            ScanCameraReadyState(),
-        )
-        return
-        }
-        switch (cameraController.isLoading, cameraController.isCapturing, cameraController.isRunning) {
-        case (true, _, _): emit(
-                ScanCameraPreparingState(),
-            )
-        case (false, true, _): emit(
-                ScanCameraCapturingState(),
-            )
-        case (false, false, true): emit(
+        guard photos.count < photoMaxCount else {
+            emit(
                 ScanCameraReadyState(),
             )
-        case (false, false, false): emit(
+            return
+        }
+        switch (cameraController.isLoading, cameraController.isCapturing, cameraController.isRunning) {
+        case (true, _, _):
+            emit(
+                ScanCameraPreparingState(),
+            )
+        case (false, true, _):
+            emit(
+                ScanCameraCapturingState(),
+            )
+        case (false, false, true):
+            emit(
+                ScanCameraReadyState(),
+            )
+        case (false, false, false):
+            emit(
                 ScanCameraStoppedState(),
             )
         }

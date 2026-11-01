@@ -1,0 +1,5 @@
+{"capacity": 1, "clients": 1, "success": 1, "errors": []}
+{"capacity": 1, "clients": 4, "success": 1, "errors": ["InferenceBusyError", "InferenceBusyError", "InferenceBusyError"]}
+{"capacity": 2, "clients": 2, "success": 2, "errors": []}
+{"capacity": 4, "clients": 4, "success": 4, "errors": []}
+{"capacity": 8, "clients": 8, "success": 8, "errors": []}

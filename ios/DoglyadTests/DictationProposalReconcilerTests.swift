@@ -56,7 +56,8 @@ struct DictationProposalReconcilerTests {
             .examinationNumber,
         ] {
         case .labeledDictation: break
-        case .explicitFacts, .localModel, .serverModel, .none: Issue.record(
+        case .explicitFacts, .localModel, .serverModel, .none:
+            Issue.record(
                 "Wrong identifier source",
             )
         }
@@ -64,7 +65,8 @@ struct DictationProposalReconcilerTests {
             .patientWeightKG,
         ] {
         case .explicitFacts: break
-        case .labeledDictation, .localModel, .serverModel, .none: Issue.record(
+        case .labeledDictation, .localModel, .serverModel, .none:
+            Issue.record(
                 "Wrong weight source",
             )
         }
@@ -112,17 +114,23 @@ struct DictationProposalReconcilerTests {
         )
 
         #expect(
-            result.proposals.first { $0.id == .examinationNumber }?.value == .text(
+            result.proposals.first {
+                $0.id == .examinationNumber
+            }?.value == .text(
                 "007",
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .examinationNumber }?.warnings.contains(
+            result.proposals.first {
+                $0.id == .examinationNumber
+            }?.warnings.contains(
                 .ambiguousDictation,
             ) == true,
         )
         #expect(
-            result.proposals.first { $0.id == .examinationDescription }?.value == .text(
+            result.proposals.first {
+                $0.id == .examinationDescription
+            }?.value == .text(
                 "left kidney: 35 mm. No abnormality.",
             ),
         )
@@ -130,7 +138,8 @@ struct DictationProposalReconcilerTests {
             .examinationDescription,
         ] {
         case .localModel: break
-        case .labeledDictation, .explicitFacts, .serverModel, .none: Issue.record(
+        case .labeledDictation, .explicitFacts, .serverModel, .none:
+            Issue.record(
                 "Wrong description source",
             )
         }
@@ -223,8 +232,12 @@ struct DictationProposalReconcilerTests {
         let naturalLanguage = DNeuralUltrasoundDictationNaturalLanguageParser.parse(
             request: request,
         )
-        let rulesComplaints = rules.proposals.first { $0.id == .patientComplaints }
-        let naturalLanguageComplaints = naturalLanguage.proposals.first { $0.id == .patientComplaints }
+        let rulesComplaints = rules.proposals.first {
+            $0.id == .patientComplaints
+        }
+        let naturalLanguageComplaints = naturalLanguage.proposals.first {
+            $0.id == .patientComplaints
+        }
 
         #expect(
             rulesComplaints?.warnings.contains(

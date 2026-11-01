@@ -183,7 +183,9 @@ extension DependencyContainer {
         let applicationConfig = ApplicationConfig.default
         let language = Language(
             localeConfig: applicationConfig.locale,
-            preferredLanguageIdentifiers: l10n.map { [$0.locale.identifier] } ?? Locale.preferredLanguages,
+            preferredLanguageIdentifiers: l10n.map {
+                [$0.locale.identifier]
+            } ?? Locale.preferredLanguages,
         )
 
         return DependencyContainer(

@@ -95,9 +95,13 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
     }
 
     func animateResponse() async {
-        guard animationRunID == nil else { return }
+        guard animationRunID == nil else {
+            return
+        }
         animationRunID = UUID()
-        defer { animationRunID = nil }
+        defer {
+            animationRunID = nil
+        }
         let words = displayedMarkdownText.components(
             separatedBy: " ",
         )
@@ -113,9 +117,13 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
                 responseText += (nextWordIndex == 0 ? "" : " ") + word
                 nextWordIndex += 1
             }
-            do { try await Task.sleep(
-                nanoseconds: 60000000,
-            ) } catch { return }
+            do {
+                try await Task.sleep(
+                    nanoseconds: 60000000,
+                )
+            } catch {
+                return
+            }
         }
     }
 
@@ -143,7 +151,9 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
                 ],
             ),
         )
-        guard let userEmail else { return }
+        guard let userEmail else {
+            return
+        }
         coordinator.run(
             .sendingReportByEmail,
             isSheetDismissedOnPaywall: true,

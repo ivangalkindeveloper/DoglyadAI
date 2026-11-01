@@ -1,0 +1,49 @@
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346] EngineCore failed to start.
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346] Traceback (most recent call last):
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1315, in run_engine_core
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     return func(*args, **kwargs)
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 1073, in __init__
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     super().__init__(
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/engine/core.py", line 133, in __init__
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     self.model_executor = executor_class(vllm_config)
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     return func(*args, **kwargs)
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/abstract.py", line 110, in __init__
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     self._init_executor()
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/executor/uniproc_executor.py", line 69, in _init_executor
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     self.driver_worker.init_device()
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/worker_base.py", line 335, in init_device
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     self.worker.init_device()  # type: ignore
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     ^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     return func(*args, **kwargs)
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]            ^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/v1/worker/gpu_worker.py", line 406, in init_device
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     self.init_snapshot = init_snapshot = MemorySnapshot(device=self.device)
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "<string>", line 13, in __init__
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/utils/mem_utils.py", line 133, in __post_init__
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     self.measure()
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/vllm/utils/mem_utils.py", line 147, in measure
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     self.free_memory, self.total_memory = torch.accelerator.get_memory_info(device)
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]   File "/usr/local/lib/python3.12/dist-packages/torch/accelerator/memory.py", line 252, in get_memory_info
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]     return torch._C._accelerator_getMemoryInfo(device_index)
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346]            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346] torch.AcceleratorError: CUDA error: out of memory
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346] Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346] For more detailed error information, run with CUDA_LOG_FILE=stderr
+(EngineCore pid=207) ERROR 11-01 14:32:02 [core.py:1346] 
+(EngineCore pid=207) Traceback (most recent call last):
+(EngineCore pid=207) torch.AcceleratorError: CUDA error: out of memory
+(EngineCore pid=207) Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+(EngineCore pid=207) For more detailed error information, run with CUDA_LOG_FILE=stderr
+(APIServer pid=1) Traceback (most recent call last):
+(APIServer pid=1)     raise RuntimeError(
+(APIServer pid=1) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}

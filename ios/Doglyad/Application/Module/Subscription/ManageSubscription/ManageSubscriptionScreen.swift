@@ -12,19 +12,35 @@ struct ManageSubscriptionScreen: View {
             viewModel: ManageSubscriptionViewModel(
                 container: container,
                 router: router,
-                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
-                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
-                    observer,
-                ) },
-                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
-                    status: status,
-                ) },
-                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
+                getSubscriptionStatus: { [subscriptionViewModel] in
+                    subscriptionViewModel.status
+                },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in
+                    subscriptionViewModel.observeStatus(
+                        observer,
+                    )
+                },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in
+                    subscriptionViewModel.update(
+                        status: status,
+                    )
+                },
+                getSettingsAI: { [subscriptionViewModel] in
+                    subscriptionViewModel.resolveSettingsAI()
+                },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in
+                    await subscriptionViewModel.refreshStatus()
+                },
                 arguments: arguments,
-                manageSubscription: { [subscriptionViewModel] in try await subscriptionViewModel.manageSubscription() },
-                restorePurchases: { [subscriptionViewModel] in try await subscriptionViewModel.restorePurchases() },
-                requestRefund: { [subscriptionViewModel] in try await subscriptionViewModel.requestRefund() },
+                manageSubscription: { [subscriptionViewModel] in
+                    try await subscriptionViewModel.manageSubscription()
+                },
+                restorePurchases: { [subscriptionViewModel] in
+                    try await subscriptionViewModel.restorePurchases()
+                },
+                requestRefund: { [subscriptionViewModel] in
+                    try await subscriptionViewModel.requestRefund()
+                },
 
             ),
         )
@@ -50,16 +66,85 @@ struct ManageSubscriptionScreen: View {
                 for: .applePro,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .applePro,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .applePro,
+                to: model,
+            )
+        }
+    }
+
+    #Preview(
+        "Base · App Store",
+    ) {
+        let container = ManageSubscriptionPreviewFactory.makeContainer(
+            code: "ru",
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .settings,
+            ),
+        )
+        let model = ManageSubscriptionPreviewFactory.makeViewModel(
+            container: container,
+            router: router,
+            status: ManageSubscriptionPreviewFactory.status(
+                for: .appleBase,
+            ),
+        )
+
+        ManageSubscriptionScreenView(
+            viewModel: model,
+        ).previewable(
+            container: container,
+            router: router,
+        )
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .appleBase,
+                to: model,
+            )
+        }
+    }
+
+    #Preview(
+        "App Store · автопродление отключено",
+    ) {
+        let container = ManageSubscriptionPreviewFactory.makeContainer(
+            code: "ru",
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .settings,
+            ),
+        )
+        let model = ManageSubscriptionPreviewFactory.makeViewModel(
+            container: container,
+            router: router,
+            status: ManageSubscriptionPreviewFactory.status(
+                for: .appleRenewalOff,
+            ),
+        )
+
+        ManageSubscriptionScreenView(
+            viewModel: model,
+        ).previewable(
+            container: container,
+            router: router,
+        )
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .appleRenewalOff,
+                to: model,
+            )
+        }
     }
 
     #Preview(
@@ -80,16 +165,19 @@ struct ManageSubscriptionScreen: View {
                 for: .yooKassaBase,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .yooKassaBase,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .yooKassaBase,
+                to: model,
+            )
+        }
     }
 
     #Preview(
@@ -110,16 +198,19 @@ struct ManageSubscriptionScreen: View {
                 for: .yooKassaPro,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .yooKassaPro,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .yooKassaPro,
+                to: model,
+            )
+        }
     }
 
     #Preview(
@@ -140,16 +231,19 @@ struct ManageSubscriptionScreen: View {
                 for: .renewalOff,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .renewalOff,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .renewalOff,
+                to: model,
+            )
+        }
     }
 
     #Preview(
@@ -170,16 +264,19 @@ struct ManageSubscriptionScreen: View {
                 for: .inactive,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .inactive,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .inactive,
+                to: model,
+            )
+        }
     }
 
     #Preview(
@@ -200,16 +297,19 @@ struct ManageSubscriptionScreen: View {
                 for: .loading,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .loading,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .loading,
+                to: model,
+            )
+        }
     }
 
     #Preview(
@@ -230,16 +330,19 @@ struct ManageSubscriptionScreen: View {
                 for: .updating,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .updating,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .updating,
+                to: model,
+            )
+        }
     }
 
     #Preview(
@@ -260,16 +363,19 @@ struct ManageSubscriptionScreen: View {
                 for: .failed,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .failed,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .failed,
+                to: model,
+            )
+        }
     }
 
     #Preview(
@@ -290,16 +396,19 @@ struct ManageSubscriptionScreen: View {
                 for: .operationFailed,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .operationFailed,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .operationFailed,
+                to: model,
+            )
+        }
     }
 
     #Preview(
@@ -320,15 +429,18 @@ struct ManageSubscriptionScreen: View {
                 for: .applePro,
             ),
         )
+
         ManageSubscriptionScreenView(
             viewModel: model,
         ).previewable(
             container: container,
             router: router,
         )
-        .task { await ManageSubscriptionPreviewFactory.apply(
-            .applePro,
-            to: model,
-        ) }
+        .task {
+            await ManageSubscriptionPreviewFactory.apply(
+                .applePro,
+                to: model,
+            )
+        }
     }
 #endif

@@ -66,7 +66,9 @@ struct DictationProfileEvidenceTests {
             ) == [.patientHeightCM],
         )
         #expect(
-            !result.proposals.contains { $0.id == .examinationDescription },
+            !result.proposals.contains {
+                $0.id == .examinationDescription
+            },
         )
     }
 

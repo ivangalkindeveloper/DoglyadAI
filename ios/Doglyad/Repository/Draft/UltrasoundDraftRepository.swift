@@ -12,9 +12,11 @@ final class UltrasoundDraftRepository: UltrasoundDraftRepositoryProtocol {
 
     func getDraft() async throws -> USExaminationDraft? {
         try await database.examinationDraft.fetchDraft { draft in
-            draft.map { USExaminationDraft.fromDB(
-                $0,
-            ) }
+            draft.map {
+                USExaminationDraft.fromDB(
+                    $0,
+                )
+            }
         }
     }
 

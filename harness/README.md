@@ -91,6 +91,7 @@ python3 harness/checks/architecture.py path/to/edited.swift path/to/edited.py
 | `swift.protocol-name` | Имя объявленного протокола оканчивается на `Protocol` |
 | `swift.view-method` | View не содержит методов, кроме методов адаптеров и API модификаторов |
 | `swift.view-fragment` | View не содержит вычисляемых UI-фрагментов вне `body` |
+| `swift.view-state-switch` | В `body` одной View не больше одного `switch`, включая вложенные переключения и вычисление локальных параметров |
 | `python.layer-import` | `model` не импортирует `service`/`route`; `service` не импортирует `route` |
 
 Swift разбирается через SwiftParser/SwiftSyntax установленного Xcode. При первом

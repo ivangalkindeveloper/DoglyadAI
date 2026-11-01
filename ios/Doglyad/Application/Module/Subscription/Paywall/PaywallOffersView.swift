@@ -9,9 +9,11 @@ struct PaywallOffersView: DViewProtocol {
         PaywallSegmentTypeView(
             state: state,
         )
+
         PaywallFeaturesView(
             state: state,
         )
+
         PaywallPlansView(
             state: state,
         )

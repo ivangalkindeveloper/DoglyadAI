@@ -34,7 +34,9 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         let initialPhotos = arguments.getPhotos()
         photos = initialPhotos
         selectedPhotoID = initialPhotos.contains(
-            where: { $0.id == arguments.initialPhotoID },
+            where: {
+                $0.id == arguments.initialPhotoID
+            },
         )
             ? arguments.initialPhotoID : (initialPhotos.first?.id ?? arguments.initialPhotoID)
         isRemarksVisible = container.initialUserSettings.isRemarksVisible
@@ -55,17 +57,25 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
                 .photoView,
             ),
         )
-        photoObservation = arguments.observePhotos? { [weak self] updatedPhotos in self?.synchronizePhotos(
-            updatedPhotos,
-        ) }
+        photoObservation = arguments.observePhotos? { [weak self] updatedPhotos in
+            self?.synchronizePhotos(
+                updatedPhotos,
+            )
+        }
     }
 
-    var isDeletionAvailable: Bool { arguments.onDelete != nil }
+    var isDeletionAvailable: Bool {
+        arguments.onDelete != nil
+    }
 
     var currentPage: Int {
         photos.firstIndex(
-            where: { $0.id == selectedPhotoID },
-        ).map { $0 + 1 } ?? 0
+            where: {
+                $0.id == selectedPhotoID
+            },
+        ).map {
+            $0 + 1
+        } ?? 0
     }
 
     var subTitle: String? {
@@ -79,7 +89,9 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
     func remarkPoints(
         for photoId: UUID,
     ) -> [USExaminationPhotoRemarkPoint] {
-        getPhotoRemarks().first { $0.photoId == photoId }?.points ?? []
+        getPhotoRemarks().first {
+            $0.photoId == photoId
+        }?.points ?? []
     }
 
     override func onInit() {
@@ -88,7 +100,9 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         )
         handle {
             try await self.container.userSettingsRepository.getIsRemarksVisible()
-        } onMainSuccess: { self.isRemarksVisible = $0 } onMainUnknownError: { _ in
+        } onMainSuccess: {
+            self.isRemarksVisible = $0
+        } onMainUnknownError: { _ in
             self.messager?.showUnknownError(
                 l10n: self.container.l10n,
             )
@@ -96,7 +110,9 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
     }
 
     func onTapBack() {
-        guard !isClosing else { return }
+        guard !isClosing else {
+            return
+        }
         isClosing = true
         coordinator.pop()
     }
@@ -105,17 +121,27 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         _ photoID: UUID,
     ) {
         guard photos.contains(
-            where: { $0.id == photoID },
-        ) else { return }
+            where: {
+                $0.id == photoID
+            },
+        ) else {
+            return
+        }
         selectedPhotoID = photoID
     }
 
     func onTapDelete() {
-        guard let onDelete = arguments.onDelete else { return }
+        guard let onDelete = arguments.onDelete else {
+            return
+        }
         let current = arguments.getPhotos()
         guard let photo = current.first(
-            where: { $0.id == self.selectedPhotoID },
-        ) else { return }
+            where: {
+                $0.id == self.selectedPhotoID
+            },
+        ) else {
+            return
+        }
         onDelete(
             photo,
         )
@@ -131,7 +157,9 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
             try await self.container.userSettingsRepository.setIsRemarksVisible(
                 isVisible,
             )
-        } onMainSuccess: { self.isRemarksVisible = isVisible } onMainUnknownError: { _ in
+        } onMainSuccess: {
+            self.isRemarksVisible = isVisible
+        } onMainUnknownError: { _ in
             self.messager?.showUnknownError(
                 l10n: self.container.l10n,
             )
@@ -166,7 +194,9 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
             return
         }
         if !photos.contains(
-            where: { $0.id == self.selectedPhotoID },
+            where: {
+                $0.id == self.selectedPhotoID
+            },
         ) {
             selectedPhotoID = photos[
                 min(
@@ -185,7 +215,9 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         contentInsets: EdgeInsets,
         in viewport: CGSize,
     ) -> CGSize {
-        guard image.size.width > 0, image.size.height > 0 else { return .zero }
+        guard image.size.width > 0, image.size.height > 0 else {
+            return .zero
+        }
         let availableWidth = max(
             viewport.width - contentInsets.leading - contentInsets.trailing,
             0,

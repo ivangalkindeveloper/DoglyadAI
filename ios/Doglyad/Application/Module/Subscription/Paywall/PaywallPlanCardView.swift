@@ -10,11 +10,14 @@ struct PaywallPlanCardView: DViewProtocol {
 
     var body: some View {
         let isSelected = state.selectedPlanID == plan.id
+
         DButtonCard(
             isPlain: true,
-            action: { viewModel.onTapPlan(
-                plan,
-            ) },
+            action: {
+                viewModel.onTapPlan(
+                    plan,
+                )
+            },
         ) {
             HStack(
                 spacing: size.s8,
@@ -22,6 +25,7 @@ struct PaywallPlanCardView: DViewProtocol {
                 DCheck(
                     isChecked: isSelected,
                 )
+
                 VStack(
                     alignment: .leading,
                     spacing: size.s2,
@@ -32,6 +36,7 @@ struct PaywallPlanCardView: DViewProtocol {
                     .dStyle(
                         font: typography.linkSmall,
                     )
+
                     DText(
                         plan.price,
                     )
@@ -60,12 +65,7 @@ struct PaywallPlanCardView: DViewProtocol {
         .disabled(
             viewModel.isProcessing,
         )
-        .accessibilityElement(
-            children: .combine,
-        )
-        .accessibilityAddTraits(
-            isSelected ? .isSelected : [],
-        )
+
         .accessibilityIdentifier(
             "paywall.plan.\(plan.id)",
         )

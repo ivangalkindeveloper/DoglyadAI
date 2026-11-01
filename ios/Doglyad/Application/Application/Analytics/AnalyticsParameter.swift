@@ -13,6 +13,7 @@ enum AnalyticsParameter: String, Hashable {
     case productId = "product_id"
     case result
     case screen = "screen_name"
+    case screenClass = "screen_class"
     case selectionLimit = "selection_limit"
     case source
     case subscriptionType = "subscription_type"

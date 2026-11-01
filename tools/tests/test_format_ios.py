@@ -263,6 +263,61 @@ print(text, raw, pattern)
         first = self.format('fill(name: "Ivan", weight: scalar(value: 82))\n')
         self.assertEqual(self.format(first), first)
 
+    def test_adjacent_views_and_conditionals_have_blank_lines(self) -> None:
+        result = self.format("""struct Screen: View {
+    var body: some View {
+        switch state {
+        case .active: SummaryView()
+        default: EmptyView()
+        }
+        ActionsView()
+        VStack {
+            Text("One")
+            // Keep this comment with its view.
+            Text("Two")
+        }
+    }
+}
+""")
+        self.assertIn("}\n\n        ActionsView()\n\n        VStack", result)
+        self.assertIn(')\n\n            // Keep this comment with its view.\n            Text(', result)
+        self.assertEqual(result.count("// Keep this comment with its view."), 1)
+        self.assertEqual(self.format(result), result)
+
+    def test_nonempty_conditionals_closures_and_accessors_are_multiline(self) -> None:
+        result = self.format("""struct Screen: View {
+    var body: some View {
+        VStack {
+            if let title = model.title { Text(title).style(font: .small) }
+            Button(action: { save() }) { Text("Save") }
+        }
+    }
+}
+let callback = { value in consume(value) }
+var selected: Int { get { current } set { current = newValue } }
+""")
+        self.assertIn("if let title = model.title {\n                Text(", result)
+        self.assertIn("value in\n    consume(", result)
+        self.assertIn("get {\n        current\n    }", result)
+        self.assertIn("set {\n        current = newValue\n    }", result)
+        self.assertNotIn("{ Text(", result)
+        self.assertEqual(self.format(result), result)
+
+    def test_view_spacing_does_not_split_event_handlers_or_non_view_bodies(self) -> None:
+        result = self.format("""struct Screen: View {
+    var body: some View {
+        Text("Title").onAppear(perform: { first(); second() })
+            .task { first(); second() }
+        Button(action: { first(); second() }) { Text("Save") }
+    }
+}
+struct Request {
+    var body: Int { first(); second(); return 0 }
+}
+""")
+        self.assertNotRegex(result, r"first\(\)\n\s*\n\s*second\(\)")
+        self.assertEqual(self.format(result), result)
+
     def test_compiles_with_project_language_mode(self) -> None:
         source = """func scalar(value: Int) -> Int { value }
 func fill(name: String, weight: Int) { print(name, weight) }

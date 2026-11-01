@@ -13,7 +13,9 @@ public final class DTextFieldLengthValidator: DTextFieldValidatorProtocol {
     public func errorText(
         for value: String?,
     ) -> String? {
-        guard let value else { return nil }
+        guard let value else {
+            return nil
+        }
         return validRange.contains(
             value.count,
         ) ? nil : invalidValueErrorText

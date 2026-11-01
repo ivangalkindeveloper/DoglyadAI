@@ -13,20 +13,17 @@ public struct DToolbarButton: DViewProtocol {
 
     @EnvironmentObject public var theme: DTheme
 
-    private let accessibilityLabel: LocalizedStringResource
     private let style: Style
     private let badge: DButtonBadge?
     private let content: Content
     private let action: () -> Void
 
     public init(
-        accessibilityLabel: LocalizedStringResource,
         style: Style,
         badge: DButtonBadge? = nil,
         content: Content,
         action: @escaping () -> Void,
     ) {
-        self.accessibilityLabel = accessibilityLabel
         self.style = style
         self.badge = badge
         self.content = content
@@ -41,11 +38,6 @@ public struct DToolbarButton: DViewProtocol {
         }
         .buttonStyle(
             .plain,
-        )
-        .accessibilityLabel(
-            Text(
-                accessibilityLabel,
-            ),
         )
     }
 
@@ -143,7 +135,6 @@ public struct DToolbarButton: DViewProtocol {
         spacing: .zero,
     ) {
         DToolbarButton(
-            accessibilityLabel: "Microphone",
             style: .grayscaleHeader,
             badge: DButtonBadge(
                 "Pro",
@@ -156,7 +147,6 @@ public struct DToolbarButton: DViewProtocol {
         )
 
         DToolbarButton(
-            accessibilityLabel: "Generate",
             style: .primaryDefault,
             content: .text(
                 "Generate",

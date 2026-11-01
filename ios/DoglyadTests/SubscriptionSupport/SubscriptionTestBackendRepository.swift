@@ -22,7 +22,9 @@ final class SubscriptionTestBackendRepository: SubscriptionBackendRepositoryProt
 
     func configureIdentity() async throws {}
 
-    func fetchOwnerID() async throws -> UUID { UUID() }
+    func fetchOwnerID() async throws -> UUID {
+        UUID()
+    }
 
     func fetchPlans() async throws -> BillingProductsResponse {
         BillingProductsResponse(
@@ -39,23 +41,35 @@ final class SubscriptionTestBackendRepository: SubscriptionBackendRepositoryProt
 
     func synchronizeAppleTransaction(
         signedTransaction _: String,
-    ) async throws -> Bool { false }
+    ) async throws -> Bool {
+        false
+    }
 
-    func cancelRenewal() async throws { isRenewalCanceled = true }
+    func cancelRenewal() async throws {
+        isRenewalCanceled = true
+    }
 
-    func createRecoveryKey() async throws -> String { "test-recovery-key" }
+    func createRecoveryKey() async throws -> String {
+        "test-recovery-key"
+    }
 
     func recover(
         key _: String,
-    ) async throws { isAccessAvailable = true }
+    ) async throws {
+        isAccessAvailable = true
+    }
 
     func preparePayment(
         planID _: String,
-    ) async throws -> BillingPreparePaymentResponse { throw SubscriptionError.offeringsUnavailable }
+    ) async throws -> BillingPreparePaymentResponse {
+        throw SubscriptionError.offeringsUnavailable
+    }
 
     func tokenizePayment(
         request _: BillingTokenizePaymentRequest,
-    ) async throws -> BillingPaymentResponse { throw SubscriptionError.offeringsUnavailable }
+    ) async throws -> BillingPaymentResponse {
+        throw SubscriptionError.offeringsUnavailable
+    }
 
     func checkPayment(
         id: UUID,
@@ -66,7 +80,9 @@ final class SubscriptionTestBackendRepository: SubscriptionBackendRepositoryProt
         )
         guard let payment = payments[
             id,
-        ] else { throw SubscriptionError.offeringsUnavailable }
+        ] else {
+            throw SubscriptionError.offeringsUnavailable
+        }
         return payment
     }
 }

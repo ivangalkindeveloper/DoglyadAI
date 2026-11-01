@@ -1,0 +1,78 @@
+(EngineCore pid=178) INFO 11-01 12:50:06 [default_loader.py:430] Loading weights took 303.73 seconds
+(EngineCore pid=178) INFO 11-01 12:50:14 [model_runner.py:380] Model loading took 51.54 GiB memory and 315.986003 seconds
+(EngineCore pid=178) INFO 11-01 12:50:14 [topk_topp_sampler.py:62] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=178) INFO 11-01 12:50:27 [encoder_runner.py:120] Encoder cache will be initialized with a budget of 2048 tokens, and profiled with 6 image items of the maximum feature size.
+(EngineCore pid=178) INFO 11-01 12:50:31 [gpu_worker.py:506] Initial free memory 77.54 GiB, reserved 8.0 GiB memory for KV Cache as specified by kv_cache_memory_bytes config and skipped memory profiling. This does not respect the gpu_memory_utilization config. Only use kv_cache_memory_bytes config when you want manual control of KV cache memory size. If OOM'ed, check the difference of initial free memory between the current run and the previous run where kv_cache_memory_bytes is suggested and update it correspondingly.
+(EngineCore pid=178) WARNING 11-01 12:50:31 [kv_cache_utils.py:1227] Add 8 padding layers, may waste at most 15.38% KV cache memory
+(EngineCore pid=178) INFO 11-01 12:50:31 [kv_cache_utils.py:1869] GPU KV cache size: 36,394 tokens, Maximum concurrency for 16,384 tokens per request: 2.22x
+(EngineCore pid=178) INFO 11-01 12:50:33 [kernel_warmup.py:260] Using FlashInfer autotune cache file: /root/.cache/vllm/flashinfer_autotune_cache/0.6.16.post3/121a/ca179f853f75155c3f15a1362096b28a6243928a14ee4ff25ec5caa957ab1f45/autotune_configs.json
+(EngineCore pid=178) INFO 11-01 12:50:37 [jit_monitor.py:85] Kernel JIT monitor activated; monitored JIT compilations during inference will use mode=warn.
+(EngineCore pid=178) INFO 11-01 12:50:37 [torch_utils.py:262] Reducing Torch threads from 20 to 1 for serving. Set OMP_NUM_THREADS in the external environment to override.
+(EngineCore pid=178) INFO 11-01 12:50:37 [core.py:354] init engine (profile, create kv cache, warmup model) took 23.10 s
+(EngineCore pid=178) INFO 11-01 12:50:37 [kernel.py:308] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['vllm_c', 'native'], fused_add_rms_norm=['vllm_c', 'native'])
+(APIServer pid=1) INFO 11-01 12:50:38 [api_server.py:653] Supported tasks: ['generate']
+(APIServer pid=1) INFO 11-01 12:51:01 [hf.py:551] Detected the chat template content format to be 'openai'. You can set `--chat-template-content-format` to override this.
+(APIServer pid=1) INFO 11-01 12:51:26 [base.py:235] Multi-modal warmup completed in 24.753s
+(APIServer pid=1) INFO 11-01 12:51:26 [base.py:235] Readonly multi-modal warmup completed in 0.035s
+(APIServer pid=1) INFO 11-01 12:51:26 [api_server.py:657] Starting vLLM server on http://0.0.0.0:8000
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:51] Available routes are:
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /openapi.json, Methods: HEAD, GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /docs, Methods: HEAD, GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /docs/oauth2-redirect, Methods: HEAD, GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /redoc, Methods: HEAD, GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /load, Methods: GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /version, Methods: GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /health, Methods: GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /metrics, Methods: GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /tokenize, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /detokenize, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/models, Methods: GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /ping, Methods: GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /ping, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /invocations, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/chat/completions, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/chat/completions/batch, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/responses, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/responses/{response_id}, Methods: GET
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/responses/{response_id}/cancel, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/completions, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/messages, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/messages/count_tokens, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /generative_scoring, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /scale_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /is_scaling_elastic_ep, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/chat/completions/render, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/completions/render, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/chat/completions/derender, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /v1/completions/derender, Methods: POST
+(APIServer pid=1) INFO 11-01 12:51:26 [launcher.py:60] Route: /inference/v1/generate, Methods: POST
+(APIServer pid=1) INFO:     127.0.0.1:44256 - "GET /health HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:44298 - "GET /health HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:57992 - "GET /health HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:57994 - "GET /v1/models HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:57998 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:44634 - "GET /health HTTP/1.1" 200 OK
+(APIServer pid=1) INFO 11-01 12:51:46 [loggers.py:310] Engine 000: Avg prompt throughput: 1.9 tokens/s, Avg generation throughput: 0.7 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=1) INFO 11-01 12:51:56 [loggers.py:310] Engine 000: Avg prompt throughput: 0.0 tokens/s, Avg generation throughput: 0.0 tokens/s, Running: 0 reqs, Waiting: 0 reqs, GPU KV cache usage: 0.0%, Prefix cache hit rate: 0.0%
+(APIServer pid=1) INFO:     127.0.0.1:48916 - "GET /health HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:41788 - "GET /health HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:58310 - "GET /health HTTP/1.1" 200 OK
+(APIServer pid=1) INFO:     127.0.0.1:49808 - "GET /health HTTP/1.1" 200 OK
+(EngineCore pid=178) 
+Loading safetensors checkpoint shards:  75% Completed | 9/12 [04:03<01:26, 28.82s/it]
+(EngineCore pid=178) 
+Loading safetensors checkpoint shards:  83% Completed | 10/12 [04:32<00:57, 28.86s/it]
+(EngineCore pid=178) 
+Loading safetensors checkpoint shards:  92% Completed | 11/12 [05:00<00:28, 28.63s/it]
+(EngineCore pid=178) 
+Loading safetensors checkpoint shards: 100% Completed | 12/12 [05:03<00:00, 20.83s/it]
+(EngineCore pid=178) 
+Loading safetensors checkpoint shards: 100% Completed | 12/12 [05:03<00:00, 25.31s/it]
+(EngineCore pid=178) 
+(EngineCore pid=178) 2026-11-01 12:50:33,918 - INFO - autotuner.py:2397 - flashinfer.jit: [Autotuner]: Loaded 0 configs from /root/.cache/vllm/flashinfer_autotune_cache/0.6.16.post3/121a/ca179f853f75155c3f15a1362096b28a6243928a14ee4ff25ec5caa957ab1f45/autotune_configs.json
+(EngineCore pid=178) 2026-11-01 12:50:33,918 - INFO - autotuner.py:829 - flashinfer.jit: [Autotuner]: Autotuning process starts ...
+(EngineCore pid=178) 2026-11-01 12:50:35,639 - INFO - autotuner.py:852 - flashinfer.jit: [Autotuner]: Autotuning process ends
+(EngineCore pid=178) 2026-11-01 12:50:35,643 - INFO - autotuner.py:2269 - flashinfer.jit: [Autotuner]: Saved 0 configs to /root/.cache/vllm/flashinfer_autotune_cache/0.6.16.post3/121a/ca179f853f75155c3f15a1362096b28a6243928a14ee4ff25ec5caa957ab1f45/autotune_configs.json (0 new, 0 from previous config)
+(APIServer pid=1) INFO:     Started server process [1]
+(APIServer pid=1) INFO:     Waiting for application startup.
+(APIServer pid=1) INFO:     Application startup complete.

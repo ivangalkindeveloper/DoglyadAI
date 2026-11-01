@@ -467,7 +467,9 @@ struct DSpeechLexiconCorrectorTests {
                 let result = corrector.correct(
                     corrupted,
                 )
-                guard result != term else { continue }
+                guard result != term else {
+                    continue
+                }
 
                 #expect(
                     !vocabulary.contains(

@@ -27,7 +27,9 @@ struct StoredStateInitializationTests {
             steps,
         ):
             let step = try #require(
-                steps.first { $0.title == "Stored AI settings" },
+                steps.first {
+                    $0.title == "Stored AI settings"
+                },
             )
             stepSet = StepSet(
                 async: [step],
@@ -41,14 +43,20 @@ struct StoredStateInitializationTests {
         var failedStep: String?
         var isNextTierStarted = false
         await DependencyInitializer<InitializationProcess, DependencyContainer>(
-            createProcess: { process },
+            createProcess: {
+                process
+            },
             stepSets: [stepSet, StepSet(
                 sync: [SyncInitializationStep<InitializationProcess>(
                     title: "After restoration",
-                    run: { _ in isNextTierStarted = true },
+                    run: { _ in
+                        isNextTierStarted = true
+                    },
                 )],
             )],
-            onError: { _, _, step, _ in failedStep = step.title },
+            onError: { _, _, step, _ in
+                failedStep = step.title
+            },
         ).run()
         #expect(
             repository.saveCount == 1,
@@ -89,15 +97,19 @@ private final class InitializationTestSettingsRepository: SettingsAIRepositoryPr
         self.isSaveFailed = isSaveFailed
     }
 
-    func getSettings() async throws -> SettingsAI? { nil }
+    func getSettings() async throws -> SettingsAI? {
+        nil
+    }
 
     func saveSettings(
         _ settings: SettingsAI,
     ) async throws {
         saveCount += 1
-        if isSaveFailed { throw CocoaError(
-            .fileWriteUnknown,
-        ) }
+        if isSaveFailed {
+            throw CocoaError(
+                .fileWriteUnknown,
+            )
+        }
         savedSettings = settings
     }
 }

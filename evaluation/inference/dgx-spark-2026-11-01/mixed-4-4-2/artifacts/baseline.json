@@ -1,0 +1,861 @@
+{
+  "stage": "baseline",
+  "run_id": "0ff8bf7a-e009-43d8-9fc2-7bbcd3d9ae2a",
+  "started_at": "2026-11-01T11:54:40.068172+00:00",
+  "targets": [
+    {
+      "key": "4b",
+      "model": "google/medgemma-4b-it",
+      "concurrency": 4,
+      "original_container": "doglyad-dgx-vllm_medgemma_4b-1",
+      "test_container": "doglyad-eval442-4b",
+      "revision": "290cda5eeccbee130f987c4ad74a59ae6f196408",
+      "url": "http://doglyad-dgx-vllm_medgemma_4b-1:8000"
+    },
+    {
+      "key": "15-4b",
+      "model": "google/medgemma-1.5-4b-it",
+      "concurrency": 4,
+      "original_container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+      "test_container": "doglyad-eval442-15-4b",
+      "revision": "91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b",
+      "url": "http://doglyad-dgx-vllm_medgemma_15_4b-1:8000"
+    },
+    {
+      "key": "27b",
+      "model": "google/medgemma-27b-it",
+      "concurrency": 2,
+      "original_container": "doglyad-dgx-vllm_medgemma_27b-1",
+      "test_container": "doglyad-eval442-27b",
+      "revision": "2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f",
+      "url": "http://doglyad-dgx-vllm_medgemma_27b-1:8000"
+    }
+  ],
+  "is_synthetic": true,
+  "operation_timeout_seconds": 120,
+  "method": "Synchronized waves; unique cache salt; BF16; fixed 256/64 token text; unique JPEG images; full-stream decode timing",
+  "batches": [
+    {
+      "label": "4b-single",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-4b-it": 1
+      },
+      "wall_seconds": 12.529473494992999,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 0,
+          "is_success": true,
+          "started_monotonic": 49349.983969668,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 12.52937571900111,
+          "ttft_seconds": 0.2935333889981848,
+          "stream_decode_tokens_per_second": 20.840412382131362,
+          "cached_tokens": null,
+          "output_sha256": "2e8a6644b9e8db73333b830b03d2e1f9c17a78f716cadc244518e374e7a81439",
+          "finished_monotonic": 49362.513372811
+        }
+      ],
+      "output_tokens_per_second": 20.431824218495866,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-single",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 1
+      },
+      "wall_seconds": 12.53325849200337,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 1,
+          "is_success": true,
+          "started_monotonic": 49362.546565932,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 12.533172859999468,
+          "ttft_seconds": 0.2890909399939119,
+          "stream_decode_tokens_per_second": 20.826387937127123,
+          "cached_tokens": null,
+          "output_sha256": "2e8a6644b9e8db73333b830b03d2e1f9c17a78f716cadc244518e374e7a81439",
+          "finished_monotonic": 49375.07976012
+        }
+      ],
+      "output_tokens_per_second": 20.42565388429006,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-single",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 1
+      },
+      "wall_seconds": 12.556327842998144,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 2,
+          "is_success": true,
+          "started_monotonic": 49375.111747961,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 12.556234755000332,
+          "ttft_seconds": 0.2916018040050403,
+          "stream_decode_tokens_per_second": 20.791490541859744,
+          "cached_tokens": null,
+          "output_sha256": "2e8a6644b9e8db73333b830b03d2e1f9c17a78f716cadc244518e374e7a81439",
+          "finished_monotonic": 49387.668010604
+        }
+      ],
+      "output_tokens_per_second": 20.388126465075914,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-single",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 1
+      },
+      "wall_seconds": 12.564156633001403,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 3,
+          "is_success": true,
+          "started_monotonic": 49387.699607853,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 12.564077032999194,
+          "ttft_seconds": 0.29062756300118053,
+          "stream_decode_tokens_per_second": 20.776555166771814,
+          "cached_tokens": null,
+          "output_sha256": "2e8a6644b9e8db73333b830b03d2e1f9c17a78f716cadc244518e374e7a81439",
+          "finished_monotonic": 49400.263704614
+        }
+      ],
+      "output_tokens_per_second": 20.375422519612854,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 1
+      },
+      "wall_seconds": 15.095352632000868,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 4,
+          "is_success": true,
+          "started_monotonic": 49400.298889272,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 15.095251255996118,
+          "ttft_seconds": 3.2500934310010052,
+          "stream_decode_tokens_per_second": 21.52778407577741,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 49415.394162256
+        }
+      ],
+      "output_tokens_per_second": 16.95886185906659,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 1
+      },
+      "wall_seconds": 12.635749859997304,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 5,
+          "is_success": true,
+          "started_monotonic": 49415.42590453,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 12.635662068001693,
+          "ttft_seconds": 0.7410640570014948,
+          "stream_decode_tokens_per_second": 21.438303317537457,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 49428.061589686
+        }
+      ],
+      "output_tokens_per_second": 20.259976878020804,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 1
+      },
+      "wall_seconds": 12.391165062006621,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 6,
+          "is_success": true,
+          "started_monotonic": 49428.093236231,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 12.391036166001868,
+          "ttft_seconds": 0.32684530700498726,
+          "stream_decode_tokens_per_second": 21.136933506803196,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 49440.484299165
+        }
+      ],
+      "output_tokens_per_second": 20.659881352475782,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 1
+      },
+      "wall_seconds": 12.395196143996145,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 7,
+          "is_success": true,
+          "started_monotonic": 49440.521072942,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 12.395093056002224,
+          "ttft_seconds": 0.43186110100214137,
+          "stream_decode_tokens_per_second": 21.315310190355515,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 49452.916189614
+        }
+      ],
+      "output_tokens_per_second": 20.653162485371286,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-27b-it": 1
+      },
+      "wall_seconds": 64.40909943800216,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 8,
+          "is_success": true,
+          "started_monotonic": 49452.948152143,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 64.40900857400266,
+          "ttft_seconds": 2.041649562001112,
+          "stream_decode_tokens_per_second": 4.088677218974905,
+          "cached_tokens": null,
+          "output_sha256": "03add91fc9880f33b44b365c1946c8d93e0374c417ab43e2ca4d162edeeadcde",
+          "finished_monotonic": 49517.357183485
+        }
+      ],
+      "output_tokens_per_second": 3.9745936868193015,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 1
+      },
+      "wall_seconds": 64.46049657899857,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 9,
+          "is_success": true,
+          "started_monotonic": 49517.391729182,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 64.46034459499788,
+          "ttft_seconds": 2.0183616079957574,
+          "stream_decode_tokens_per_second": 4.083790869567365,
+          "cached_tokens": null,
+          "output_sha256": "03add91fc9880f33b44b365c1946c8d93e0374c417ab43e2ca4d162edeeadcde",
+          "finished_monotonic": 49581.852103841
+        }
+      ],
+      "output_tokens_per_second": 3.9714245714235714,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 1
+      },
+      "wall_seconds": 64.30522558799566,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 10,
+          "is_success": true,
+          "started_monotonic": 49581.88112653,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 64.30508582799666,
+          "ttft_seconds": 1.8125074459967436,
+          "stream_decode_tokens_per_second": 4.080484540760268,
+          "cached_tokens": null,
+          "output_sha256": "03add91fc9880f33b44b365c1946c8d93e0374c417ab43e2ca4d162edeeadcde",
+          "finished_monotonic": 49646.186239686
+        }
+      ],
+      "output_tokens_per_second": 3.981013948076242,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 1
+      },
+      "wall_seconds": 64.3359986699943,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 11,
+          "is_success": true,
+          "started_monotonic": 49646.217950134,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 64.33585747000325,
+          "ttft_seconds": 1.8129778980000992,
+          "stream_decode_tokens_per_second": 4.078506968098528,
+          "cached_tokens": null,
+          "output_sha256": "03add91fc9880f33b44b365c1946c8d93e0374c417ab43e2ca4d162edeeadcde",
+          "finished_monotonic": 49710.553835652
+        }
+      ],
+      "output_tokens_per_second": 3.979109756469763,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    }
+  ],
+  "summaries": [
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "model": "google/medgemma-1.5-4b-it",
+      "requests": 3,
+      "successful": 3,
+      "group_wall_seconds_p50": 12.395196143996145,
+      "group_output_tokens_per_second_p50": 20.653162485371286,
+      "total_seconds_p50": 12.395093056002224,
+      "total_seconds_p95": 12.611605166801747,
+      "ttft_seconds_p50": 0.43186110100214137,
+      "ttft_seconds_p95": 0.7101437614015594,
+      "stream_decode_tokens_per_second_p50": 21.315310190355515,
+      "stream_decode_tokens_per_second_p95": 21.426004004819262,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "model": "google/medgemma-27b-it",
+      "requests": 3,
+      "successful": 3,
+      "group_wall_seconds_p50": 64.3359986699943,
+      "group_output_tokens_per_second_p50": 3.979109756469763,
+      "total_seconds_p50": 64.33585747000325,
+      "total_seconds_p95": 64.44789588249841,
+      "ttft_seconds_p50": 1.8129778980000992,
+      "ttft_seconds_p95": 1.9978232369961915,
+      "stream_decode_tokens_per_second_p50": 4.080484540760268,
+      "stream_decode_tokens_per_second_p95": 4.083460236686656,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "4b-single",
+      "case": "long",
+      "model": "google/medgemma-4b-it",
+      "requests": 3,
+      "successful": 3,
+      "group_wall_seconds_p50": 12.556327842998144,
+      "group_output_tokens_per_second_p50": 20.388126465075914,
+      "total_seconds_p50": 12.556234755000332,
+      "total_seconds_p95": 12.563292805199307,
+      "ttft_seconds_p50": 0.29062756300118053,
+      "ttft_seconds_p95": 0.29150437990465433,
+      "stream_decode_tokens_per_second_p50": 20.791490541859744,
+      "stream_decode_tokens_per_second_p95": 20.822898197600384,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    }
+  ],
+  "finished_at": "2026-11-01T12:00:40.745737+00:00"
+}

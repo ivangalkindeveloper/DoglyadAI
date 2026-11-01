@@ -16,7 +16,9 @@ struct DNeuralUltrasoundFoundationModelProvider: DNeuralUltrasoundFoundationMode
     }
 
     func makeModel() throws -> any DNeuralUltrasoundModelProtocol {
-        guard #available(iOS 26.0, *) else { throw DNeuralModelError.unavailable }
+        guard #available(iOS 26.0, *) else {
+            throw DNeuralModelError.unavailable
+        }
         return DNeuralUltrasoundModelFoundationModels(
             proposalPrompt: proposalPrompt,
             parameters: parameters,

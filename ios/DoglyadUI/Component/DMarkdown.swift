@@ -23,6 +23,7 @@ public struct DMarkdown: DViewProtocol {
         let headingSixText = textColor == nil ? color.grayscaleLabel : primary.opacity(
             0.82,
         )
+
         Markdown(
             content,
         )

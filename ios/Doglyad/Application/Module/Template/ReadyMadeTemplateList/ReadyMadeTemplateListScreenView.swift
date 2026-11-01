@@ -15,51 +15,14 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
             ],
             onTapBack: viewModel.onTapBack,
             toolbarContent: {
-                switch viewModel.state {
-                case _ as ReadyMadeTemplateListContentState:
-                    DTextField(
-                        inputTextController: viewModel.searchTextController,
-                        focus: DTextFieldFocus(
-                            value: .search,
-                            state: $focus,
-                        ),
-                        title: l10n[
-                            .readyMadeTemplateListSearchLabel,
-                        ],
-                        placeholder: l10n[
-                            .readyMadeTemplateListSearchPlaceholder,
-                        ],
-                        mode: DTextFieldSingleLineMode(
-                            submitLabel: .done,
-                        ),
-                        autocapitalization: .never,
-                    )
-                    .padding(
-                        .top,
-                        size.s8,
-                    )
-                    .padding(
-                        .horizontal,
-                        size.s16,
-                    )
-                case _ as ReadyMadeTemplateListLoadingState, _ as ReadyMadeTemplateListFailedState:
-                    EmptyView()
-                default: EmptyView()
-                }
+                ReadyMadeTemplateListSearchView(
+                    focus: $focus,
+                )
             },
             onTapBody: viewModel.unfocus,
             keyboardToolbar: {
                 if focus != nil {
                     DToolbar(
-                        upAccessibilityLabel: l10n[
-                            .buttonBack,
-                        ],
-                        downAccessibilityLabel: l10n[
-                            .buttonNext,
-                        ],
-                        doneAccessibilityLabel: l10n[
-                            .buttonDone,
-                        ],
                         onTapDone: viewModel.unfocus,
                     )
                 }
@@ -211,7 +174,9 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
             of: focus,
             initial: true,
         ) { _, newValue in
-            guard viewModel.focus != newValue else { return }
+            guard viewModel.focus != newValue else {
+                return
+            }
             viewModel.onFocusChanged(
                 newValue,
             )
@@ -220,7 +185,9 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
             of: viewModel.focus,
             initial: true,
         ) { _, newValue in
-            guard focus != newValue else { return }
+            guard focus != newValue else {
+                return
+            }
             focus = newValue
         }
         .environmentObject(

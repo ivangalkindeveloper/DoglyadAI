@@ -1,0 +1,5387 @@
+{
+  "stage": "candidate",
+  "runner_sha256": "8c5a60c3386c780b5799c46254950a46eefa116ae9c62cc8fd3f7dcccc98ba7c",
+  "fixtures_sha256": "4ad2f912a1c681b4babf9bdfb043eca1864961a18970ba08143c8da7aeb7ea9e",
+  "run_id": "01f1210a-65d9-49e4-b518-9f05a347f386",
+  "started_at": "2026-11-01T12:14:03.893336+00:00",
+  "targets": [
+    {
+      "key": "4b",
+      "model": "google/medgemma-4b-it",
+      "concurrency": 4,
+      "original_container": "doglyad-dgx-vllm_medgemma_4b-1",
+      "test_container": "doglyad-eval442-4b",
+      "revision": "290cda5eeccbee130f987c4ad74a59ae6f196408",
+      "url": "http://doglyad-eval442-4b:8000"
+    },
+    {
+      "key": "15-4b",
+      "model": "google/medgemma-1.5-4b-it",
+      "concurrency": 4,
+      "original_container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+      "test_container": "doglyad-eval442-15-4b",
+      "revision": "91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b",
+      "url": "http://doglyad-eval442-15-4b:8000"
+    },
+    {
+      "key": "27b",
+      "model": "google/medgemma-27b-it",
+      "concurrency": 2,
+      "original_container": "doglyad-dgx-vllm_medgemma_27b-1",
+      "test_container": "doglyad-eval442-27b",
+      "revision": "2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f",
+      "url": "http://doglyad-eval442-27b:8000"
+    }
+  ],
+  "is_synthetic": true,
+  "operation_timeout_seconds": 120,
+  "method": "Synchronized waves; unique cache salt; BF16; fixed 256/64 token text; unique JPEG images; full-stream decode timing",
+  "batches": [
+    {
+      "label": "4b-single",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-4b-it": 1
+      },
+      "wall_seconds": 16.387669929004915,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 0,
+          "is_success": true,
+          "started_monotonic": 50517.348554343,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 16.387521657001344,
+          "ttft_seconds": 6.232085251998797,
+          "stream_decode_tokens_per_second": 25.109703791201678,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50533.73610792
+        }
+      ],
+      "output_tokens_per_second": 15.621500866752246,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-single",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 1
+      },
+      "wall_seconds": 11.080786159000127,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 1,
+          "is_success": true,
+          "started_monotonic": 50533.777034879,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 11.080679822996899,
+          "ttft_seconds": 0.5602560120023554,
+          "stream_decode_tokens_per_second": 24.23856724607501,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50544.857738638
+        }
+      ],
+      "output_tokens_per_second": 23.10305391031029,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-single",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 1
+      },
+      "wall_seconds": 10.8618565220022,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 2,
+          "is_success": true,
+          "started_monotonic": 50544.904303308,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.861767673995928,
+          "ttft_seconds": 0.23973272799776169,
+          "stream_decode_tokens_per_second": 24.006699403306975,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50555.766091942
+        }
+      ],
+      "output_tokens_per_second": 23.5687149320594,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-single",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 1
+      },
+      "wall_seconds": 10.86399078800605,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 3,
+          "is_success": true,
+          "started_monotonic": 50555.816371364,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.863896803995885,
+          "ttft_seconds": 0.3138819249943481,
+          "stream_decode_tokens_per_second": 24.17058202520122,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50566.680288264
+        }
+      ],
+      "output_tokens_per_second": 23.564084782051406,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-parallel",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-4b-it": 4
+      },
+      "wall_seconds": 10.116765307000605,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 4,
+          "is_success": true,
+          "started_monotonic": 50566.722163671,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.048231645996566,
+          "ttft_seconds": 0.3533303709991742,
+          "stream_decode_tokens_per_second": 26.302485478385503,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50576.770452837
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 5,
+          "is_success": true,
+          "started_monotonic": 50566.722268823,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.084109837000142,
+          "ttft_seconds": 0.5396106689950102,
+          "stream_decode_tokens_per_second": 26.716959738946347,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50576.806438004
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 6,
+          "is_success": true,
+          "started_monotonic": 50566.722342903,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.116493066998373,
+          "ttft_seconds": 0.7432332850003149,
+          "stream_decode_tokens_per_second": 27.205049889873287,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50576.838843314
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 7,
+          "is_success": true,
+          "started_monotonic": 50566.722543271,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.116252491003252,
+          "ttft_seconds": 0.7427152050004224,
+          "stream_decode_tokens_per_second": 27.204244483113378,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50576.838815602
+        }
+      ],
+      "output_tokens_per_second": 101.21812347385502,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-parallel",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4
+      },
+      "wall_seconds": 10.118963756001904,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 8,
+          "is_success": true,
+          "started_monotonic": 50576.874081841,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.010257023997838,
+          "ttft_seconds": 0.21257925700047053,
+          "stream_decode_tokens_per_second": 26.026575486994023,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50586.884397249
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 9,
+          "is_success": true,
+          "started_monotonic": 50576.874266065,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.118604764000338,
+          "ttft_seconds": 0.7242122300012852,
+          "stream_decode_tokens_per_second": 27.143851939030093,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50586.992896253
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 10,
+          "is_success": true,
+          "started_monotonic": 50576.874356129,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.045241599000292,
+          "ttft_seconds": 0.44066611199377803,
+          "stream_decode_tokens_per_second": 26.549845992149788,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50586.919670192
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 11,
+          "is_success": true,
+          "started_monotonic": 50576.874425681,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.0902135169963,
+          "ttft_seconds": 0.6855840869975509,
+          "stream_decode_tokens_per_second": 27.114305980691245,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50586.96470091
+        }
+      ],
+      "output_tokens_per_second": 101.19613279498412,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-parallel",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4
+      },
+      "wall_seconds": 10.090189338996424,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 12,
+          "is_success": true,
+          "started_monotonic": 50587.023106892,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.981519071006915,
+          "ttft_seconds": 0.1955964890003088,
+          "stream_decode_tokens_per_second": 26.057839499861668,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50597.004684763
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 13,
+          "is_success": true,
+          "started_monotonic": 50587.023335436,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.016635389998555,
+          "ttft_seconds": 0.42254987299384084,
+          "stream_decode_tokens_per_second": 26.578875031709256,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50597.040027994
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 14,
+          "is_success": true,
+          "started_monotonic": 50587.023524844,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.089651978996699,
+          "ttft_seconds": 0.7058094309977605,
+          "stream_decode_tokens_per_second": 27.174368996033248,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50597.113200151
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 15,
+          "is_success": true,
+          "started_monotonic": 50587.023724108,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.050126028996601,
+          "ttft_seconds": 0.6441239609994227,
+          "stream_decode_tokens_per_second": 27.110349132030034,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50597.073890857
+        }
+      ],
+      "output_tokens_per_second": 101.48471605408423,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-parallel",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4
+      },
+      "wall_seconds": 10.104481212001701,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 16,
+          "is_success": true,
+          "started_monotonic": 50597.139749318,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.992580368001654,
+          "ttft_seconds": 0.19362860199908027,
+          "stream_decode_tokens_per_second": 26.023191672880923,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50607.132382278
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 17,
+          "is_success": true,
+          "started_monotonic": 50597.139865174,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.024737438994634,
+          "ttft_seconds": 0.4179856650007423,
+          "stream_decode_tokens_per_second": 26.543831463440302,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50607.164634229
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 18,
+          "is_success": true,
+          "started_monotonic": 50597.139941638,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.063043836998986,
+          "ttft_seconds": 0.6424195930012502,
+          "stream_decode_tokens_per_second": 27.068269935771074,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50607.203055139
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 19,
+          "is_success": true,
+          "started_monotonic": 50597.140018758,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.104049708003004,
+          "ttft_seconds": 0.7116316070023458,
+          "stream_decode_tokens_per_second": 27.149558000706186,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 50607.244094754
+        }
+      ],
+      "output_tokens_per_second": 101.34117511978086,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-parallel",
+      "case": "images",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-4b-it": 4
+      },
+      "wall_seconds": 14.448736362006457,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 20,
+          "is_success": true,
+          "started_monotonic": 50607.391529021,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 119,
+          "finish_reason": "stop",
+          "total_seconds": 14.331421166003565,
+          "ttft_seconds": 9.944784368999535,
+          "stream_decode_tokens_per_second": 26.899879215117885,
+          "cached_tokens": null,
+          "output_sha256": "f38283d41acf4f79980cef8f2e09c7a67d1462f1680aa56f10744f90da7e579b",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50621.724107819
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 21,
+          "is_success": true,
+          "started_monotonic": 50607.392030157,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 110,
+          "finish_reason": "stop",
+          "total_seconds": 13.970548954996048,
+          "ttft_seconds": 8.655388463994313,
+          "stream_decode_tokens_per_second": 20.507376999157568,
+          "cached_tokens": null,
+          "output_sha256": "37e9b52d380c96a73ee8a6f2bf3a70aae0d226c40f7f66d6416afb59f3604ff8",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50621.3643734
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 22,
+          "is_success": true,
+          "started_monotonic": 50607.392426237,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 14.446659658002318,
+          "ttft_seconds": 10.004638734004402,
+          "stream_decode_tokens_per_second": 27.014730919366624,
+          "cached_tokens": null,
+          "output_sha256": "147f827864d3c248628716d1a71c889af68a046b8e973e7a32dd743859576586",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50621.840193415
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 23,
+          "is_success": true,
+          "started_monotonic": 50607.392785709,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 14.293155614999705,
+          "ttft_seconds": 7.374691087999963,
+          "stream_decode_tokens_per_second": 17.344889105334353,
+          "cached_tokens": null,
+          "output_sha256": "97058e35f7ab36d2aff86192d5c4529583e4d5afa459b73e4b37f0227f1786ec",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50621.687239068
+        }
+      ],
+      "output_tokens_per_second": 32.59800637227445,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-parallel",
+      "case": "images",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4
+      },
+      "wall_seconds": 8.17286865600181,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 24,
+          "is_success": true,
+          "started_monotonic": 50621.887343205,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 110,
+          "finish_reason": "stop",
+          "total_seconds": 7.624961283996527,
+          "ttft_seconds": 1.4985900249957922,
+          "stream_decode_tokens_per_second": 17.791935126337556,
+          "cached_tokens": null,
+          "output_sha256": "73418629f62b5d9e4db89ed39cc448aef3cd3029fae4e2f2d00e4b34f9024f4f",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50629.513575849
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 25,
+          "is_success": true,
+          "started_monotonic": 50621.887812325,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 119,
+          "finish_reason": "stop",
+          "total_seconds": 8.059722755999246,
+          "ttft_seconds": 3.3132941339936224,
+          "stream_decode_tokens_per_second": 24.860797327262574,
+          "cached_tokens": null,
+          "output_sha256": "b7eb98ca3101fb9802d985d07edfcc8f9eb43f4a56e82b4924434b1311882780",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50629.948855001
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 26,
+          "is_success": true,
+          "started_monotonic": 50621.888207045,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 8.170878752003773,
+          "ttft_seconds": 3.7252289989992278,
+          "stream_decode_tokens_per_second": 26.992679735712258,
+          "cached_tokens": null,
+          "output_sha256": "9d99ec22f8d581c60c53b2b3e74cdee5eb38ca37f19269b77d75cb0529a439c2",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50630.060155605
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 27,
+          "is_success": true,
+          "started_monotonic": 50621.888569589,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 8.096641442003602,
+          "ttft_seconds": 2.3942758000048343,
+          "stream_decode_tokens_per_second": 21.043897837098033,
+          "cached_tokens": null,
+          "output_sha256": "20ac4e1eb1d83e2b8bdf5b9b0e9b648dc96cfdd8b346a35ad852b59b242b6572",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50629.986435831
+        }
+      ],
+      "output_tokens_per_second": 57.62970381937038,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "4b-parallel",
+      "case": "images",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4
+      },
+      "wall_seconds": 8.137588288002007,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 28,
+          "is_success": true,
+          "started_monotonic": 50630.124635347,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 7.956713479004975,
+          "ttft_seconds": 1.0646943120009382,
+          "stream_decode_tokens_per_second": 17.41144316233294,
+          "cached_tokens": null,
+          "output_sha256": "425b9f1f754f5f0cd09080de4a4d859f969a73404bf4a8475bcf6c0d3037ef58",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50638.08346769
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 29,
+          "is_success": true,
+          "started_monotonic": 50630.12547437,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 8.101722019004228,
+          "ttft_seconds": 3.1418660760027706,
+          "stream_decode_tokens_per_second": 24.194251078869435,
+          "cached_tokens": null,
+          "output_sha256": "24c3e247c4bc34370473e1441d6699634a2b4041af12b5c605b9af4def365df7",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50638.229199253
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 30,
+          "is_success": true,
+          "started_monotonic": 50630.12622045,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 8.134015249001095,
+          "ttft_seconds": 3.550554123998154,
+          "stream_decode_tokens_per_second": 26.181088205460235,
+          "cached_tokens": null,
+          "output_sha256": "e3b172b11365c7039a05ac581d04f0e2043b04ef98c3f8497fad3357a5077761",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50638.262079827
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 31,
+          "is_success": true,
+          "started_monotonic": 50630.126955426,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 8.029235540998343,
+          "ttft_seconds": 1.9353747600034694,
+          "stream_decode_tokens_per_second": 19.691949703584957,
+          "cached_tokens": null,
+          "output_sha256": "3329adee11866c6aabece44f0f374a3d47fc8c30276b517546cca7f7feaf0044",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50638.158145863
+        }
+      ],
+      "output_tokens_per_second": 59.47708127647667,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 1
+      },
+      "wall_seconds": 16.990486881994002,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 32,
+          "is_success": true,
+          "started_monotonic": 50638.303644978,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 16.990323410005658,
+          "ttft_seconds": 7.066555192999658,
+          "stream_decode_tokens_per_second": 25.69588430763788,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50655.293995844
+        }
+      ],
+      "output_tokens_per_second": 15.067255092689601,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 1
+      },
+      "wall_seconds": 10.861615958005132,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 33,
+          "is_success": true,
+          "started_monotonic": 50655.336844514,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.861521573999198,
+          "ttft_seconds": 0.5632869070032029,
+          "stream_decode_tokens_per_second": 24.761525469722447,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50666.19838524
+        }
+      ],
+      "output_tokens_per_second": 23.56923693396885,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 1
+      },
+      "wall_seconds": 10.632324315993174,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 34,
+          "is_success": true,
+          "started_monotonic": 50666.233518263,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.63218804400094,
+          "ttft_seconds": 0.24106632700568298,
+          "stream_decode_tokens_per_second": 24.5401802562791,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50676.865733699
+        }
+      ],
+      "output_tokens_per_second": 24.077519871635598,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 1
+      },
+      "wall_seconds": 10.628426073002629,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 35,
+          "is_success": true,
+          "started_monotonic": 50676.90210421,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.628284840997367,
+          "ttft_seconds": 0.3276641960037523,
+          "stream_decode_tokens_per_second": 24.755789848831782,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50687.530416123
+        }
+      ],
+      "output_tokens_per_second": 24.086350908557208,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-parallel",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 4
+      },
+      "wall_seconds": 10.40972992299794,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 36,
+          "is_success": true,
+          "started_monotonic": 50687.566045594,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.299575223994907,
+          "ttft_seconds": 0.28752664499916136,
+          "stream_decode_tokens_per_second": 25.46931309691844,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50697.865701762
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 37,
+          "is_success": true,
+          "started_monotonic": 50687.566203466,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.335249414005375,
+          "ttft_seconds": 0.4830267180004739,
+          "stream_decode_tokens_per_second": 25.882484376180727,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50697.901499424
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 38,
+          "is_success": true,
+          "started_monotonic": 50687.56629233,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.370988116999797,
+          "ttft_seconds": 0.7280762440059334,
+          "stream_decode_tokens_per_second": 26.444294354090097,
+          "cached_tokens": null,
+          "output_sha256": "7265ebe5addcc66c3644c925bda8246e452caef3f0c685bdbb005aef55da9139",
+          "finished_monotonic": 50697.937314271
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 39,
+          "is_success": true,
+          "started_monotonic": 50687.566361978,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.409301011000935,
+          "ttft_seconds": 0.7738514269949519,
+          "stream_decode_tokens_per_second": 26.464774453625708,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50697.975684973
+        }
+      ],
+      "output_tokens_per_second": 98.36950694923449,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-parallel",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 4
+      },
+      "wall_seconds": 9.911146657002973,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 40,
+          "is_success": true,
+          "started_monotonic": 50698.01775126,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.803611508999893,
+          "ttft_seconds": 0.22268319100112421,
+          "stream_decode_tokens_per_second": 26.615374996695888,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50707.821417409
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 41,
+          "is_success": true,
+          "started_monotonic": 50698.018028876,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.838189668000268,
+          "ttft_seconds": 0.4394211990002077,
+          "stream_decode_tokens_per_second": 27.13121414162568,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50707.856282208
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 42,
+          "is_success": true,
+          "started_monotonic": 50698.018244956,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.910487793000357,
+          "ttft_seconds": 0.7416975230007665,
+          "stream_decode_tokens_per_second": 27.811738788961456,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50707.928757709
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 43,
+          "is_success": true,
+          "started_monotonic": 50698.01843974,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.873751746999915,
+          "ttft_seconds": 0.6724457660020562,
+          "stream_decode_tokens_per_second": 27.71345725559122,
+          "cached_tokens": null,
+          "output_sha256": "7265ebe5addcc66c3644c925bda8246e452caef3f0c685bdbb005aef55da9139",
+          "finished_monotonic": 50707.892228975
+        }
+      ],
+      "output_tokens_per_second": 103.31801510337522,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-parallel",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 4
+      },
+      "wall_seconds": 9.923268291000568,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 44,
+          "is_success": true,
+          "started_monotonic": 50707.962205628,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.814700246999564,
+          "ttft_seconds": 0.19437783199828118,
+          "stream_decode_tokens_per_second": 26.506388143745596,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50717.776952675
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 45,
+          "is_success": true,
+          "started_monotonic": 50707.962434796,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.922864691005088,
+          "ttft_seconds": 0.7062093490021653,
+          "stream_decode_tokens_per_second": 27.66730343467357,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50717.885327279
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 46,
+          "is_success": true,
+          "started_monotonic": 50707.962620364,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.89396952399693,
+          "ttft_seconds": 0.6489110789989354,
+          "stream_decode_tokens_per_second": 27.582302644929936,
+          "cached_tokens": null,
+          "output_sha256": "7265ebe5addcc66c3644c925bda8246e452caef3f0c685bdbb005aef55da9139",
+          "finished_monotonic": 50717.856652368
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 47,
+          "is_success": true,
+          "started_monotonic": 50707.962791388,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.8500841809946,
+          "ttft_seconds": 0.4160367839940591,
+          "stream_decode_tokens_per_second": 27.029756081263134,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50717.812915457
+        }
+      ],
+      "output_tokens_per_second": 103.19180838118301,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-parallel",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 4
+      },
+      "wall_seconds": 10.043250667993561,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 48,
+          "is_success": true,
+          "started_monotonic": 50717.91858155,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.935123456998554,
+          "ttft_seconds": 0.1865746319963364,
+          "stream_decode_tokens_per_second": 26.15773943153452,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50727.853771903
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 49,
+          "is_success": true,
+          "started_monotonic": 50717.918795886,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.042919676001475,
+          "ttft_seconds": 0.6994993330008583,
+          "stream_decode_tokens_per_second": 27.29193278680079,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50727.961737706
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 50,
+          "is_success": true,
+          "started_monotonic": 50717.918967838,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 10.013785533003102,
+          "ttft_seconds": 0.6540558300039265,
+          "stream_decode_tokens_per_second": 27.244376503553234,
+          "cached_tokens": null,
+          "output_sha256": "7265ebe5addcc66c3644c925bda8246e452caef3f0c685bdbb005aef55da9139",
+          "finished_monotonic": 50727.932799707
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 51,
+          "is_success": true,
+          "started_monotonic": 50717.919165902,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 9.970866910996847,
+          "ttft_seconds": 0.41177697599778185,
+          "stream_decode_tokens_per_second": 26.676179608516776,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 50727.890073997
+        }
+      ],
+      "output_tokens_per_second": 101.95902042586124,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-parallel",
+      "case": "images",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 4
+      },
+      "wall_seconds": 14.464258387000882,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 52,
+          "is_success": true,
+          "started_monotonic": 50728.018806712,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 137,
+          "finish_reason": "stop",
+          "total_seconds": 14.31416986399563,
+          "ttft_seconds": 8.275398433994269,
+          "stream_decode_tokens_per_second": 22.5211372174703,
+          "cached_tokens": null,
+          "output_sha256": "d775626332469ab5995342d46e0135432fdd788d8b0ba0fcf38c419af57833b7",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50742.334318096
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 53,
+          "is_success": true,
+          "started_monotonic": 50728.019629304,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 137,
+          "finish_reason": "stop",
+          "total_seconds": 14.23959727500187,
+          "ttft_seconds": 6.826765146004618,
+          "stream_decode_tokens_per_second": 18.34656412466162,
+          "cached_tokens": null,
+          "output_sha256": "3df718e996964fbfdde20d5dec40fc72c668b6d329d39c5494802949e9c1ca09",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50742.260684051
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 54,
+          "is_success": true,
+          "started_monotonic": 50728.020368664,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 101,
+          "finish_reason": "stop",
+          "total_seconds": 13.069869320999715,
+          "ttft_seconds": 9.417427223001141,
+          "stream_decode_tokens_per_second": 27.37894190158331,
+          "cached_tokens": null,
+          "output_sha256": "3316aac5651510512a009e763f545188dbe8ffd61cace95cd3e91481565c26d3",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50741.091674193
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 55,
+          "is_success": true,
+          "started_monotonic": 50728.021118616,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 139,
+          "finish_reason": "stop",
+          "total_seconds": 14.460786130999622,
+          "ttft_seconds": 9.480834691996279,
+          "stream_decode_tokens_per_second": 27.711113590219757,
+          "cached_tokens": null,
+          "output_sha256": "d2ae8bf2cfb5b75590dbca59abf34734bceff1fbaefc38501b918942d645871b",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50742.482954059
+        }
+      ],
+      "output_tokens_per_second": 35.535869606832726,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-parallel",
+      "case": "images",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 4
+      },
+      "wall_seconds": 11.476601730995753,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 56,
+          "is_success": true,
+          "started_monotonic": 50742.534248057,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 104,
+          "finish_reason": "stop",
+          "total_seconds": 7.634878663993732,
+          "ttft_seconds": 1.7994820419989992,
+          "stream_decode_tokens_per_second": 17.650899616964026,
+          "cached_tokens": null,
+          "output_sha256": "1d3914fabb0ce28673a0e97b8b6ab5fcaa93bed9a5627820b9bd236236687a6e",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50750.169944433
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 57,
+          "is_success": true,
+          "started_monotonic": 50742.534762761,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 101,
+          "finish_reason": "stop",
+          "total_seconds": 7.594999272994755,
+          "ttft_seconds": 2.704409702993871,
+          "stream_decode_tokens_per_second": 20.447432475913516,
+          "cached_tokens": null,
+          "output_sha256": "3e786e38e3b3a2138bccff91f9f753cdc773fe5d47eef6fb7ca63a0cc594f45e",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50750.131377986
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 58,
+          "is_success": true,
+          "started_monotonic": 50742.535184761,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 101,
+          "finish_reason": "stop",
+          "total_seconds": 7.632593239999551,
+          "ttft_seconds": 3.626909060003527,
+          "stream_decode_tokens_per_second": 24.96452428760853,
+          "cached_tokens": null,
+          "output_sha256": "c2db363f239d4bd3fcb88b51632d220b5c4b6a3b5bf7ae9365f66328f369a7e0",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50750.169074449
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 59,
+          "is_success": true,
+          "started_monotonic": 50742.535579177,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 194,
+          "finish_reason": "stop",
+          "total_seconds": 11.473930835003557,
+          "ttft_seconds": 4.03976891500497,
+          "stream_decode_tokens_per_second": 25.961231686494756,
+          "cached_tokens": null,
+          "output_sha256": "6561e461d366d25c5b48522b86e8ba20a82c4b469f6e6244cf9de14c9d9b9871",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50754.010736204
+        }
+      ],
+      "output_tokens_per_second": 43.566903489350075,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "15-4b-parallel",
+      "case": "images",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-1.5-4b-it": 4
+      },
+      "wall_seconds": 8.453248341997096,
+      "samples": [
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 60,
+          "is_success": true,
+          "started_monotonic": 50754.060267114,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 96,
+          "finish_reason": "stop",
+          "total_seconds": 6.776780678999785,
+          "ttft_seconds": 0.9716873540019151,
+          "stream_decode_tokens_per_second": 16.36493931818656,
+          "cached_tokens": null,
+          "output_sha256": "a89ce4e4b85c17794a34ffcee53f3ca682d383a3a1cee09c079091624585f7e1",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50760.838526929
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 61,
+          "is_success": true,
+          "started_monotonic": 50754.060766506,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 137,
+          "finish_reason": "stop",
+          "total_seconds": 8.45148784599587,
+          "ttft_seconds": 1.8552212879949366,
+          "stream_decode_tokens_per_second": 20.617723496185725,
+          "cached_tokens": null,
+          "output_sha256": "05bf45e4d848fbd6bfe7692be8e611f5bf054e9c894e452bcca1a0fb7b99a824",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50762.513392528
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 62,
+          "is_success": true,
+          "started_monotonic": 50754.061178778,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 103,
+          "finish_reason": "stop",
+          "total_seconds": 7.184405606996734,
+          "ttft_seconds": 3.475456505002512,
+          "stream_decode_tokens_per_second": 27.501051428599226,
+          "cached_tokens": null,
+          "output_sha256": "04fb0ba64a92f6fb339e999904e3be24023bef42528ad445f05ea00e77f9cd67",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50761.246964993
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 63,
+          "is_success": true,
+          "started_monotonic": 50754.061585514,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 96,
+          "finish_reason": "stop",
+          "total_seconds": 6.905900498000847,
+          "ttft_seconds": 3.0598848090012325,
+          "stream_decode_tokens_per_second": 24.700887277116234,
+          "cached_tokens": null,
+          "output_sha256": "63de66fda7dd1ab4076fdbd264e62a054115a94d07e412f2d301ae98585c5c76",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 50760.968770316
+        }
+      ],
+      "output_tokens_per_second": 51.104614761375764,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-27b-it": 1
+      },
+      "wall_seconds": 62.46736994299863,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 64,
+          "is_success": true,
+          "started_monotonic": 50762.551488574,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 62.467234503004875,
+          "ttft_seconds": 2.8815742730002967,
+          "stream_decode_tokens_per_second": 4.279553151138767,
+          "cached_tokens": null,
+          "output_sha256": "0ea2033f4f7c1a8073c48adf2a831fda1856b5f9724507b0f871ddfdb5b6ec95",
+          "finished_monotonic": 50825.018749173
+        }
+      ],
+      "output_tokens_per_second": 4.098139560439307,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 1
+      },
+      "wall_seconds": 61.26081571800023,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 65,
+          "is_success": true,
+          "started_monotonic": 50825.053984596,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 61.260719509999035,
+          "ttft_seconds": 1.3399509549999493,
+          "stream_decode_tokens_per_second": 4.255619648235066,
+          "cached_tokens": null,
+          "output_sha256": "0ea2033f4f7c1a8073c48adf2a831fda1856b5f9724507b0f871ddfdb5b6ec95",
+          "finished_monotonic": 50886.31472369
+        }
+      ],
+      "output_tokens_per_second": 4.178853921541559,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 1
+      },
+      "wall_seconds": 61.12259970499872,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 66,
+          "is_success": true,
+          "started_monotonic": 50886.345621081,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 61.12244575299701,
+          "ttft_seconds": 1.1505997459971695,
+          "stream_decode_tokens_per_second": 4.251995177374342,
+          "cached_tokens": null,
+          "output_sha256": "0ea2033f4f7c1a8073c48adf2a831fda1856b5f9724507b0f871ddfdb5b6ec95",
+          "finished_monotonic": 50947.468095762
+        }
+      ],
+      "output_tokens_per_second": 4.18830352824577,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 1
+      },
+      "wall_seconds": 61.12779161999788,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 67,
+          "is_success": true,
+          "started_monotonic": 50947.503950193,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 61.12768810000125,
+          "ttft_seconds": 1.1566503040012321,
+          "stream_decode_tokens_per_second": 4.252052480189165,
+          "cached_tokens": null,
+          "output_sha256": "0ea2033f4f7c1a8073c48adf2a831fda1856b5f9724507b0f871ddfdb5b6ec95",
+          "finished_monotonic": 51008.631659621
+        }
+      ],
+      "output_tokens_per_second": 4.187947792902924,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-parallel",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 61.3757948410057,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 68,
+          "is_success": true,
+          "started_monotonic": 51008.661722804,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 61.14449981100188,
+          "ttft_seconds": 1.1627622720043291,
+          "stream_decode_tokens_per_second": 4.251293984843469,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51069.806291831
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 69,
+          "is_success": true,
+          "started_monotonic": 51008.661853524,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 61.37553498500347,
+          "ttft_seconds": 2.299417138005083,
+          "stream_decode_tokens_per_second": 4.316465084256656,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51070.037418589
+        }
+      ],
+      "output_tokens_per_second": 8.34205082518831,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-parallel",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 60.70618729299895,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 70,
+          "is_success": true,
+          "started_monotonic": 51070.07464054,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 60.47429883800214,
+          "ttft_seconds": 1.1584664800029714,
+          "stream_decode_tokens_per_second": 4.299020849289514,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51130.549012098
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 71,
+          "is_success": true,
+          "started_monotonic": 51070.074896668,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 60.70584602900635,
+          "ttft_seconds": 2.2895866720064078,
+          "stream_decode_tokens_per_second": 4.365223018502702,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51130.780764649
+        }
+      ],
+      "output_tokens_per_second": 8.43406616081533,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-parallel",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 61.52082556000096,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 72,
+          "is_success": true,
+          "started_monotonic": 51130.817929191,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 61.2913660980048,
+          "ttft_seconds": 1.7718881350010633,
+          "stream_decode_tokens_per_second": 4.28431177031666,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51192.109369257
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 73,
+          "is_success": true,
+          "started_monotonic": 51130.818116039,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 61.52056027999788,
+          "ttft_seconds": 2.9120794629998272,
+          "stream_decode_tokens_per_second": 4.350906156332977,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51192.338698719
+        }
+      ],
+      "output_tokens_per_second": 8.322385067811695,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-parallel",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 61.383001841000805,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 74,
+          "is_success": true,
+          "started_monotonic": 51192.372113343,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 61.15305796299799,
+          "ttft_seconds": 1.158574173998204,
+          "stream_decode_tokens_per_second": 4.250390767538452,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51253.52527113
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 75,
+          "is_success": true,
+          "started_monotonic": 51192.372282847,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 61.3827003050028,
+          "ttft_seconds": 2.2949902059990563,
+          "stream_decode_tokens_per_second": 4.315618249086614,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51253.755028784
+        }
+      ],
+      "output_tokens_per_second": 8.341071382045206,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-parallel",
+      "case": "images",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 33.58805780699913,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 76,
+          "is_success": true,
+          "started_monotonic": 51253.792095502,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 120,
+          "finish_reason": "stop",
+          "total_seconds": 32.89706924499478,
+          "ttft_seconds": 4.7028569059984875,
+          "stream_decode_tokens_per_second": 4.22072440149028,
+          "cached_tokens": null,
+          "output_sha256": "89a9a6d2eb800d96a8c90d9dd86a3d2645775563766f498215d2d358a7122612",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51286.691434235
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 77,
+          "is_success": true,
+          "started_monotonic": 51253.792563886,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 33.585213166996255,
+          "ttft_seconds": 6.348141044996737,
+          "stream_decode_tokens_per_second": 4.405759894547381,
+          "cached_tokens": null,
+          "output_sha256": "5b54931f009437363f10c753a95c1faafb710b3b54cc142bada033d1f034bec0",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51287.379929917
+        }
+      ],
+      "output_tokens_per_second": 7.175169263576176,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-parallel",
+      "case": "images",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 32.21646602200053,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 78,
+          "is_success": true,
+          "started_monotonic": 51287.434368875,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 32.21407691799686,
+          "ttft_seconds": 3.6480098769970937,
+          "stream_decode_tokens_per_second": 4.200788292899007,
+          "cached_tokens": null,
+          "output_sha256": "555718157d1ab35f4819bc9025f56257b726f32c271572fc8f617a1f92e34fd6",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51319.650601809
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 79,
+          "is_success": true,
+          "started_monotonic": 51287.434916779,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 115,
+          "finish_reason": "stop",
+          "total_seconds": 31.288455964000605,
+          "ttft_seconds": 5.423429546004627,
+          "stream_decode_tokens_per_second": 4.407495981549928,
+          "cached_tokens": null,
+          "output_sha256": "b20841802537305f6b461fe604d90ba5e74e236e9e620013ff61124a2b0808a5",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51318.725653623
+        }
+      ],
+      "output_tokens_per_second": 7.3254465539093045,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "27b-parallel",
+      "case": "images",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 32.103189044995815,
+      "samples": [
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 80,
+          "is_success": true,
+          "started_monotonic": 51319.721489534,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 120,
+          "finish_reason": "stop",
+          "total_seconds": 31.64030885700049,
+          "ttft_seconds": 2.288548782002181,
+          "stream_decode_tokens_per_second": 4.0542713519031395,
+          "cached_tokens": null,
+          "output_sha256": "7464346f384329e9f88cbe0c68a9eb9ebd9d98532deb0eaaa20cb461d392c93a",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51351.363288311
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 81,
+          "is_success": true,
+          "started_monotonic": 51319.72258931,
+          "http_status": 200,
+          "input_tokens": 1742,
+          "output_tokens": 120,
+          "finish_reason": "stop",
+          "total_seconds": 32.10084208500484,
+          "ttft_seconds": 5.089730326006247,
+          "stream_decode_tokens_per_second": 4.405594299921988,
+          "cached_tokens": null,
+          "output_sha256": "77ee94dda325f44cf9668cc64dada95b86bf4ec84f27499aeadcf623177f41dc",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51351.824540787
+        }
+      ],
+      "output_tokens_per_second": 7.475892805029933,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "long",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-4b-it": 4,
+        "google/medgemma-1.5-4b-it": 4,
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 85.68928601500374,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 82,
+          "is_success": true,
+          "started_monotonic": 51351.871292337,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.771677869000996,
+          "ttft_seconds": 0.5890701660027844,
+          "stream_decode_tokens_per_second": 7.459934075703462,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51386.64305147
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 83,
+          "is_success": true,
+          "started_monotonic": 51351.872452369,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.01268481899751,
+          "ttft_seconds": 2.1552668519943836,
+          "stream_decode_tokens_per_second": 7.76080458470846,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51386.8851721
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 84,
+          "is_success": true,
+          "started_monotonic": 51351.872737905,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.89415239200025,
+          "ttft_seconds": 1.3556825499981642,
+          "stream_decode_tokens_per_second": 7.603209126751792,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51386.766961289
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 85,
+          "is_success": true,
+          "started_monotonic": 51351.872945985,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.1129989100009,
+          "ttft_seconds": 2.3493523150027613,
+          "stream_decode_tokens_per_second": 7.783016437459974,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51386.986051231
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 86,
+          "is_success": true,
+          "started_monotonic": 51351.873152065,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.624912979998044,
+          "ttft_seconds": 0.5783500869947602,
+          "stream_decode_tokens_per_second": 7.489742820776884,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51386.498117333
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 87,
+          "is_success": true,
+          "started_monotonic": 51351.873345889,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.748325742002635,
+          "ttft_seconds": 1.3541805979984929,
+          "stream_decode_tokens_per_second": 7.636069104340729,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51386.621701199
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 88,
+          "is_success": true,
+          "started_monotonic": 51351.873522785,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.86492562499916,
+          "ttft_seconds": 2.146175812005822,
+          "stream_decode_tokens_per_second": 7.793696319617135,
+          "cached_tokens": null,
+          "output_sha256": "7265ebe5addcc66c3644c925bda8246e452caef3f0c685bdbb005aef55da9139",
+          "finished_monotonic": 51386.738482442
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 89,
+          "is_success": true,
+          "started_monotonic": 51351.873696705,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.003156035003485,
+          "ttft_seconds": 2.3513491150006303,
+          "stream_decode_tokens_per_second": 7.809674993630573,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51386.876956852
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 90,
+          "is_success": true,
+          "started_monotonic": 51351.873864129,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 85.45558269700268,
+          "ttft_seconds": 5.9115594740069355,
+          "stream_decode_tokens_per_second": 3.2057719696315394,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51437.329525738
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 91,
+          "is_success": true,
+          "started_monotonic": 51351.874048577,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 85.68636199899629,
+          "ttft_seconds": 8.243927725998219,
+          "stream_decode_tokens_per_second": 3.2927683949226156,
+          "cached_tokens": null,
+          "output_sha256": "0af7f298df0e9219285caa784d2262cc5b17f4b460685117aa13f79c1c183bb2",
+          "finished_monotonic": 51437.560437968
+        }
+      ],
+      "output_tokens_per_second": 29.875380214415106,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "long",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4,
+        "google/medgemma-1.5-4b-it": 4,
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 85.95399430600082,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 92,
+          "is_success": true,
+          "started_monotonic": 51437.599568799,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.80944943000213,
+          "ttft_seconds": 0.5687888390020817,
+          "stream_decode_tokens_per_second": 7.447286226335984,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51472.409118453
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 93,
+          "is_success": true,
+          "started_monotonic": 51437.599873503,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.0561616269988,
+          "ttft_seconds": 1.4890242719993694,
+          "stream_decode_tokens_per_second": 7.596715719400503,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51472.656074922
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 94,
+          "is_success": true,
+          "started_monotonic": 51437.600083631,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.139225942999474,
+          "ttft_seconds": 2.284581389001687,
+          "stream_decode_tokens_per_second": 7.7614597102366565,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51472.739361046
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 95,
+          "is_success": true,
+          "started_monotonic": 51437.600273791,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.23641349099489,
+          "ttft_seconds": 2.495405731999199,
+          "stream_decode_tokens_per_second": 7.788398019909389,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51472.836782994
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 96,
+          "is_success": true,
+          "started_monotonic": 51437.600455439,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.65004615599901,
+          "ttft_seconds": 0.5716790149963344,
+          "stream_decode_tokens_per_second": 7.482752883813706,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51472.250588763
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 97,
+          "is_success": true,
+          "started_monotonic": 51437.600637359,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.0294193400041,
+          "ttft_seconds": 2.3609399769993615,
+          "stream_decode_tokens_per_second": 7.80568930578304,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51472.630140955
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 98,
+          "is_success": true,
+          "started_monotonic": 51437.600804895,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.772851478999655,
+          "ttft_seconds": 1.355084213995724,
+          "stream_decode_tokens_per_second": 7.630671372442153,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51472.373753254
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 99,
+          "is_success": true,
+          "started_monotonic": 51437.600964495,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.88971880199824,
+          "ttft_seconds": 2.154988242997206,
+          "stream_decode_tokens_per_second": 7.789891520273501,
+          "cached_tokens": null,
+          "output_sha256": "7265ebe5addcc66c3644c925bda8246e452caef3f0c685bdbb005aef55da9139",
+          "finished_monotonic": 51472.490710865
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 100,
+          "is_success": true,
+          "started_monotonic": 51437.601684095,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 85.64576529599435,
+          "ttft_seconds": 3.801205947995186,
+          "stream_decode_tokens_per_second": 3.1156622020011393,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51523.247515407
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 101,
+          "is_success": true,
+          "started_monotonic": 51437.601869839,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 85.95155284999782,
+          "ttft_seconds": 7.435657838999759,
+          "stream_decode_tokens_per_second": 3.2477500251927465,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51523.553450657
+        }
+      ],
+      "output_tokens_per_second": 29.783374474562088,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "long",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4,
+        "google/medgemma-1.5-4b-it": 4,
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 85.26570394600276,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 102,
+          "is_success": true,
+          "started_monotonic": 51523.589044656,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.00903914900118,
+          "ttft_seconds": 0.7427274399960879,
+          "stream_decode_tokens_per_second": 7.441711327600708,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51558.598181933
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 103,
+          "is_success": true,
+          "started_monotonic": 51523.589283856,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.135840774993994,
+          "ttft_seconds": 1.5159448470003554,
+          "stream_decode_tokens_per_second": 7.584794448684596,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51558.725213319
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 104,
+          "is_success": true,
+          "started_monotonic": 51523.589463936,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.22284161900461,
+          "ttft_seconds": 2.305906715999299,
+          "stream_decode_tokens_per_second": 7.746772314961759,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51558.812363107
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 105,
+          "is_success": true,
+          "started_monotonic": 51523.589628736,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.32167201500124,
+          "ttft_seconds": 2.5111419550012215,
+          "stream_decode_tokens_per_second": 7.771895166999318,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51558.911348863
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 106,
+          "is_success": true,
+          "started_monotonic": 51523.589787664,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.77715911099949,
+          "ttft_seconds": 0.7338428319999366,
+          "stream_decode_tokens_per_second": 7.490457096193738,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51558.367102359
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 107,
+          "is_success": true,
+          "started_monotonic": 51523.589950576,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.89169171399408,
+          "ttft_seconds": 1.511853390999022,
+          "stream_decode_tokens_per_second": 7.639341974413726,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51558.481736034
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 108,
+          "is_success": true,
+          "started_monotonic": 51523.590266096,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.011015836003935,
+          "ttft_seconds": 2.305264252005145,
+          "stream_decode_tokens_per_second": 7.796793764090049,
+          "cached_tokens": null,
+          "output_sha256": "7265ebe5addcc66c3644c925bda8246e452caef3f0c685bdbb005aef55da9139",
+          "finished_monotonic": 51558.601332204
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 109,
+          "is_success": true,
+          "started_monotonic": 51523.59043544,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.15065143000538,
+          "ttft_seconds": 2.5147751710028388,
+          "stream_decode_tokens_per_second": 7.813487156780684,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51558.741116086
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 110,
+          "is_success": true,
+          "started_monotonic": 51523.590594304,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 85.03322235499945,
+          "ttft_seconds": 3.9852774739993038,
+          "stream_decode_tokens_per_second": 3.1462858234642166,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51608.623881125
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 111,
+          "is_success": true,
+          "started_monotonic": 51523.590757216,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 85.2638500710018,
+          "ttft_seconds": 7.6485653950003325,
+          "stream_decode_tokens_per_second": 3.2854353503240534,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51608.854636808
+        }
+      ],
+      "output_tokens_per_second": 30.023794814632645,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "long",
+      "wave": 3,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4,
+        "google/medgemma-1.5-4b-it": 4,
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 85.77607481100131,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 112,
+          "is_success": true,
+          "started_monotonic": 51608.892290261,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.77370038800291,
+          "ttft_seconds": 0.5565269950020593,
+          "stream_decode_tokens_per_second": 7.452398158994643,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51643.666085212
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 113,
+          "is_success": true,
+          "started_monotonic": 51608.892522844,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.90124581599957,
+          "ttft_seconds": 1.3207760380028049,
+          "stream_decode_tokens_per_second": 7.59369960235297,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51643.793815589
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 114,
+          "is_success": true,
+          "started_monotonic": 51608.892701794,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.01953285199852,
+          "ttft_seconds": 2.116407025998342,
+          "stream_decode_tokens_per_second": 7.750023549388673,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51643.912268727
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "long",
+          "index": 115,
+          "is_success": true,
+          "started_monotonic": 51608.892868087,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.11727364699618,
+          "ttft_seconds": 2.3182155120011885,
+          "stream_decode_tokens_per_second": 7.774613495011537,
+          "cached_tokens": null,
+          "output_sha256": "8a8e8c168611d8aa40443c50cb7b3f0fcbafd8a68b2b626a625530b2a3436f25",
+          "finished_monotonic": 51644.010186247
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 116,
+          "is_success": true,
+          "started_monotonic": 51608.893035452,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.63116645200353,
+          "ttft_seconds": 0.5584498550015269,
+          "stream_decode_tokens_per_second": 7.4839938070108865,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51643.524253345
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 117,
+          "is_success": true,
+          "started_monotonic": 51608.893197537,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.75008207099745,
+          "ttft_seconds": 1.3291239949976443,
+          "stream_decode_tokens_per_second": 7.6299428466450845,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51643.643344394
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 118,
+          "is_success": true,
+          "started_monotonic": 51608.893636831,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 35.01093917199614,
+          "ttft_seconds": 2.3276685109958635,
+          "stream_decode_tokens_per_second": 7.802156725528756,
+          "cached_tokens": null,
+          "output_sha256": "3e10edc8a2c4b04b86d1ff2efef61e7487deb5f016aeb2b6ccab80a43c14992b",
+          "finished_monotonic": 51643.904602788
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "long",
+          "index": 119,
+          "is_success": true,
+          "started_monotonic": 51608.893812404,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 34.871818029998394,
+          "ttft_seconds": 2.1211783760008984,
+          "stream_decode_tokens_per_second": 7.786107468251389,
+          "cached_tokens": null,
+          "output_sha256": "7265ebe5addcc66c3644c925bda8246e452caef3f0c685bdbb005aef55da9139",
+          "finished_monotonic": 51643.765688163
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 120,
+          "is_success": true,
+          "started_monotonic": 51608.893986394,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 85.54323327999737,
+          "ttft_seconds": 3.7721420929956366,
+          "stream_decode_tokens_per_second": 3.1184615039175925,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51694.437271131
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "long",
+          "index": 121,
+          "is_success": true,
+          "started_monotonic": 51608.894183936,
+          "http_status": 200,
+          "input_tokens": 1477,
+          "output_tokens": 256,
+          "finish_reason": "length",
+          "total_seconds": 85.77408745299908,
+          "ttft_seconds": 7.423669875002815,
+          "stream_decode_tokens_per_second": 3.254609329250257,
+          "cached_tokens": null,
+          "output_sha256": "1272ad0e842d8cf49d25337e2b7f7ee0e5e6b817b9db623b01eff9910f20b41b",
+          "finished_monotonic": 51694.668295006
+        }
+      ],
+      "output_tokens_per_second": 29.845152108448595,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "images",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-4b-it": 4,
+        "google/medgemma-1.5-4b-it": 4,
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 53.75121219299763,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 122,
+          "is_success": true,
+          "started_monotonic": 51694.761066492,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 123,
+          "finish_reason": "stop",
+          "total_seconds": 28.346770789998118,
+          "ttft_seconds": 4.189033371003461,
+          "stream_decode_tokens_per_second": 5.050141819327595,
+          "cached_tokens": null,
+          "output_sha256": "ae0a97537d5d987958223102d65c11c2f06faa469dc90e7ae10e597ec140d2c4",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51723.109677522
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 123,
+          "is_success": true,
+          "started_monotonic": 51694.761560649,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 119,
+          "finish_reason": "stop",
+          "total_seconds": 28.090459029997874,
+          "ttft_seconds": 7.285369873003219,
+          "stream_decode_tokens_per_second": 5.671689225149438,
+          "cached_tokens": null,
+          "output_sha256": "17d2b425a9741c584cb9ac367826e8bdb99bccb359dfcdebd34f33b22880ed40",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51722.853928496
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 124,
+          "is_success": true,
+          "started_monotonic": 51694.761958148,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 122,
+          "finish_reason": "stop",
+          "total_seconds": 28.71526882199396,
+          "ttft_seconds": 11.405633751994174,
+          "stream_decode_tokens_per_second": 6.9903264575295,
+          "cached_tokens": null,
+          "output_sha256": "b3a0066a28af11cc901652f9b6fd8acb9bba4d677b3a58279a4ddcf1ddc68b4a",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51723.479464836
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 125,
+          "is_success": true,
+          "started_monotonic": 51694.762332942,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 28.71720626399474,
+          "ttft_seconds": 12.79614889399818,
+          "stream_decode_tokens_per_second": 7.537187839429658,
+          "cached_tokens": null,
+          "output_sha256": "778abfd8ec96a2f0538d566d361556a48b92dd1915d409031a7f2cdd4d78cbfa",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51723.481060734
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 126,
+          "is_success": true,
+          "started_monotonic": 51694.76268492,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 179,
+          "finish_reason": "stop",
+          "total_seconds": 33.168395692999184,
+          "ttft_seconds": 3.7879280139968614,
+          "stream_decode_tokens_per_second": 6.058446786645718,
+          "cached_tokens": null,
+          "output_sha256": "400b464cde5027edafc29ce7242bc37cfc71a88ad847eccb9b2e8a3b8533111c",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51727.933113162
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 127,
+          "is_success": true,
+          "started_monotonic": 51694.763281048,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 145,
+          "finish_reason": "stop",
+          "total_seconds": 30.24527938900428,
+          "ttft_seconds": 6.850559090002207,
+          "stream_decode_tokens_per_second": 6.155234948722275,
+          "cached_tokens": null,
+          "output_sha256": "e5bed7af9ca41677a4c2a9996fecc32063d47f6f8a2fcde24881d5c25cc02eaf",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51725.010863249
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 128,
+          "is_success": true,
+          "started_monotonic": 51694.763663827,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 155,
+          "finish_reason": "stop",
+          "total_seconds": 31.245240750002267,
+          "ttft_seconds": 10.99065065200557,
+          "stream_decode_tokens_per_second": 7.603214839446765,
+          "cached_tokens": null,
+          "output_sha256": "7c1f3f53f4bb026df998be4d1854035c044b9171db8cd61ec0a99e514a02321f",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51726.010810066
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 129,
+          "is_success": true,
+          "started_monotonic": 51694.764040301,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 138,
+          "finish_reason": "stop",
+          "total_seconds": 29.901103399999556,
+          "ttft_seconds": 12.406197778000205,
+          "stream_decode_tokens_per_second": 7.830851046588463,
+          "cached_tokens": null,
+          "output_sha256": "554a24db829ed8cf193a7d1b0273c1c64a172dd8635724ff68ea1b1ceccc3508",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51724.667214891
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 130,
+          "is_success": true,
+          "started_monotonic": 51694.764423575,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 53.74613241100451,
+          "ttft_seconds": 7.673757462005597,
+          "stream_decode_tokens_per_second": 2.604597660373213,
+          "cached_tokens": null,
+          "output_sha256": "9a373c3f50e8cf8984d0f6d30a9d2efb271508f9018679d2b96ed66281bba084",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51748.512015254
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 131,
+          "is_success": true,
+          "started_monotonic": 51694.764800289,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 112,
+          "finish_reason": "stop",
+          "total_seconds": 52.12275274100102,
+          "ttft_seconds": 14.950616200003424,
+          "stream_decode_tokens_per_second": 2.986107615245004,
+          "cached_tokens": null,
+          "output_sha256": "e3575f125f68ce75f0ee821fd7fd696386b6ff901188a3e68b4e7d63769a0a91",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51746.889811054
+        }
+      ],
+      "output_tokens_per_second": 24.836649175586693,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "images",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4,
+        "google/medgemma-1.5-4b-it": 4,
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 54.58541129100195,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 132,
+          "is_success": true,
+          "started_monotonic": 51748.614197546,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 122,
+          "finish_reason": "stop",
+          "total_seconds": 28.464249130003736,
+          "ttft_seconds": 4.3526547770015895,
+          "stream_decode_tokens_per_second": 5.0183326008441345,
+          "cached_tokens": null,
+          "output_sha256": "54125a0edf2ff55231c3af5eba13816f616bfd2196b65e62e0d97525e901be1c",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51777.080515606
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 133,
+          "is_success": true,
+          "started_monotonic": 51748.614804153,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 122,
+          "finish_reason": "stop",
+          "total_seconds": 28.72797351799818,
+          "ttft_seconds": 7.793421310998383,
+          "stream_decode_tokens_per_second": 5.779918232955647,
+          "cached_tokens": null,
+          "output_sha256": "879323744457b17f63aff860933bc123dc860990c8cc2409ec671aaf19ae3e2a",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51777.344982044
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 134,
+          "is_success": true,
+          "started_monotonic": 51748.6152313,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 123,
+          "finish_reason": "stop",
+          "total_seconds": 29.10269213200081,
+          "ttft_seconds": 11.937072651002381,
+          "stream_decode_tokens_per_second": 7.107229665381347,
+          "cached_tokens": null,
+          "output_sha256": "5e6a6f99fcfa453d10f3b996db42bbe8bf134e4f9935576552f15931e9bbc570",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51777.720044282
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 135,
+          "is_success": true,
+          "started_monotonic": 51748.61564731,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 123,
+          "finish_reason": "stop",
+          "total_seconds": 29.22296435300086,
+          "ttft_seconds": 13.348496336999233,
+          "stream_decode_tokens_per_second": 7.685296910549868,
+          "cached_tokens": null,
+          "output_sha256": "81d381311e67ddb659378eac4f55c49c976eca168db2127af0b718c85a6be93c",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51777.840435515
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 136,
+          "is_success": true,
+          "started_monotonic": 51748.616067545,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 147,
+          "finish_reason": "stop",
+          "total_seconds": 30.8504764399986,
+          "ttft_seconds": 4.343520677997731,
+          "stream_decode_tokens_per_second": 5.507988216787186,
+          "cached_tokens": null,
+          "output_sha256": "88b3d63a3683fd724df7df68c73409a7cb9c4a730ae91322d23a77a678199ff3",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51779.468540897
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 137,
+          "is_success": true,
+          "started_monotonic": 51748.616460403,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 138,
+          "finish_reason": "stop",
+          "total_seconds": 30.228189965004276,
+          "ttft_seconds": 7.780957515002228,
+          "stream_decode_tokens_per_second": 6.103202268036722,
+          "cached_tokens": null,
+          "output_sha256": "f92848ab1c568cf5140db3a19b15ce9b414738a7f1795ef6e02e57f801ddc76b",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51778.84666032
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 138,
+          "is_success": true,
+          "started_monotonic": 51748.616841164,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 128,
+          "finish_reason": "stop",
+          "total_seconds": 29.537850905995583,
+          "ttft_seconds": 11.91351063500042,
+          "stream_decode_tokens_per_second": 7.205943487655378,
+          "cached_tokens": null,
+          "output_sha256": "6d0b0ed3f14a59d3df2dafa6d95d976072ea229914fbc40e90ab7595602f4a49",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51778.156986653
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 139,
+          "is_success": true,
+          "started_monotonic": 51748.617251478,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 138,
+          "finish_reason": "stop",
+          "total_seconds": 30.476682756001537,
+          "ttft_seconds": 13.333954702000483,
+          "stream_decode_tokens_per_second": 7.991726845834474,
+          "cached_tokens": null,
+          "output_sha256": "c35b02d147ba4ba225eba1da20e0367b58ebb106ddca002509657358c608941c",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51779.096155678
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 140,
+          "is_success": true,
+          "started_monotonic": 51748.618034554,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 117,
+          "finish_reason": "stop",
+          "total_seconds": 53.18826190099935,
+          "ttft_seconds": 8.833017451004707,
+          "stream_decode_tokens_per_second": 2.6152488040230835,
+          "cached_tokens": null,
+          "output_sha256": "5ad05faf5942e3e02477ac3f254192df34160ac9c2fa6b0e097d6750ac0e7a53",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51801.807857787
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 141,
+          "is_success": true,
+          "started_monotonic": 51748.618409171,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 54.57987949100061,
+          "ttft_seconds": 16.08602499799599,
+          "stream_decode_tokens_per_second": 3.1173807242869707,
+          "cached_tokens": null,
+          "output_sha256": "ccdd22244e21efe2de4f11a73b9763840c5d676e32c7b15f76381ec99868597e",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51803.199469441
+        }
+      ],
+      "output_tokens_per_second": 23.431169056902114,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "images",
+      "wave": 2,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4,
+        "google/medgemma-1.5-4b-it": 4,
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 53.05952902599529,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 142,
+          "is_success": true,
+          "started_monotonic": 51803.27123596,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 122,
+          "finish_reason": "stop",
+          "total_seconds": 27.722703568004363,
+          "ttft_seconds": 3.728969963005511,
+          "stream_decode_tokens_per_second": 5.042983388579044,
+          "cached_tokens": null,
+          "output_sha256": "bb600ce4428d91de15578b948be04241b4581ae5f0deebd9558ed655042ba7e4",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51830.99595226
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 143,
+          "is_success": true,
+          "started_monotonic": 51803.271995833,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 27.852188092998404,
+          "ttft_seconds": 6.799027455999749,
+          "stream_decode_tokens_per_second": 5.699856761132244,
+          "cached_tokens": null,
+          "output_sha256": "54f6b64a00697ee6d3435fdc51be21084671a606f3e8cdcb81534aa8355f6941",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51831.126129296
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 144,
+          "is_success": true,
+          "started_monotonic": 51803.272422659,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 61,
+          "finish_reason": "stop",
+          "total_seconds": 20.14163221600029,
+          "ttft_seconds": 10.926833653997164,
+          "stream_decode_tokens_per_second": 6.511265503665782,
+          "cached_tokens": null,
+          "output_sha256": "d6927ba296bf287bd6d75c00c488785d90c63891b1cf1f5058f0b5a77d3434b4",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51823.416101192
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "images",
+          "index": 145,
+          "is_success": true,
+          "started_monotonic": 51803.272802028,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 122,
+          "finish_reason": "stop",
+          "total_seconds": 28.41846107099991,
+          "ttft_seconds": 12.339037076002569,
+          "stream_decode_tokens_per_second": 7.525145181671043,
+          "cached_tokens": null,
+          "output_sha256": "68aef88c07b585dc648e269f2d0bc45067cc69db4494c143a53838f101574513",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51831.692276529
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 146,
+          "is_success": true,
+          "started_monotonic": 51803.273227765,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 99,
+          "finish_reason": "stop",
+          "total_seconds": 24.722666424000636,
+          "ttft_seconds": 3.7390386870029033,
+          "stream_decode_tokens_per_second": 4.670307786065476,
+          "cached_tokens": null,
+          "output_sha256": "77006f0d187d104bdaa56d436736fc943579528d762001d53332465884b7a938",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51827.997913641
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 147,
+          "is_success": true,
+          "started_monotonic": 51803.273693808,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 151,
+          "finish_reason": "stop",
+          "total_seconds": 31.076639550003165,
+          "ttft_seconds": 6.798914684004558,
+          "stream_decode_tokens_per_second": 6.1785031681480875,
+          "cached_tokens": null,
+          "output_sha256": "22dc22eacbdd539334d28e44e270379ea73de88d3b6659fed7f1bc256d232797",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51834.351836863
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 148,
+          "is_success": true,
+          "started_monotonic": 51803.274114618,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 99,
+          "finish_reason": "stop",
+          "total_seconds": 25.23368016799941,
+          "ttft_seconds": 10.946233993003261,
+          "stream_decode_tokens_per_second": 6.8591684475778205,
+          "cached_tokens": null,
+          "output_sha256": "7814325fef71c250cecd49755fdf373c00f90faa42412ca4700d9c464af2bee8",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51828.510076436
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "images",
+          "index": 149,
+          "is_success": true,
+          "started_monotonic": 51803.274516707,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 102,
+          "finish_reason": "stop",
+          "total_seconds": 25.72688729299989,
+          "ttft_seconds": 12.346217587997671,
+          "stream_decode_tokens_per_second": 7.5482021622760955,
+          "cached_tokens": null,
+          "output_sha256": "3b1a2c9e383391ff6861dbc96d5307b434f362c24cbd126a732503b7af18b3e9",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51829.003757475
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 150,
+          "is_success": true,
+          "started_monotonic": 51803.275569707,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 118,
+          "finish_reason": "stop",
+          "total_seconds": 51.89950675099681,
+          "ttft_seconds": 7.6305633499941905,
+          "stream_decode_tokens_per_second": 2.6429363569890434,
+          "cached_tokens": null,
+          "output_sha256": "6a24c225658b1c608432c5705f718a78bf66f6640864d544e91f09e1ed032422",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51855.176550761
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "images",
+          "index": 151,
+          "is_success": true,
+          "started_monotonic": 51803.275997877,
+          "http_status": 200,
+          "input_tokens": 1743,
+          "output_tokens": 121,
+          "finish_reason": "stop",
+          "total_seconds": 53.05336352800077,
+          "ttft_seconds": 14.873617354001908,
+          "stream_decode_tokens_per_second": 3.1430277051376074,
+          "cached_tokens": null,
+          "output_sha256": "5e1339d1ed045432586477a59f5342f417f50a697eb830d1b0aff9cfada036cc",
+          "is_schema_valid": true,
+          "is_case_match": true,
+          "finished_monotonic": 51856.330597398
+        }
+      ],
+      "output_tokens_per_second": 21.032979758513154,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "context",
+      "wave": 0,
+      "is_measured": false,
+      "counts": {
+        "google/medgemma-4b-it": 4,
+        "google/medgemma-1.5-4b-it": 4,
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 66.49094437400345,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "context",
+          "index": 152,
+          "is_success": true,
+          "started_monotonic": 51856.377585618,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 34.664367270001094,
+          "ttft_seconds": 7.773077231999196,
+          "stream_decode_tokens_per_second": 2.342766000105255,
+          "cached_tokens": null,
+          "output_sha256": "4f3444080a3305d914c28dfa8b8b80a4744fc9604141ec49a5542d941860c3ed",
+          "finished_monotonic": 51891.041986105
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "context",
+          "index": 153,
+          "is_success": true,
+          "started_monotonic": 51856.377947193,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 35.843525437994685,
+          "ttft_seconds": 14.91317930999503,
+          "stream_decode_tokens_per_second": 3.0099836674808493,
+          "cached_tokens": null,
+          "output_sha256": "b1a5be161492c56cca36c5fdca8abf418c2bfc8fccd4aaff693a9e1dd84f7163",
+          "finished_monotonic": 51892.221504488
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "context",
+          "index": 154,
+          "is_success": true,
+          "started_monotonic": 51856.378146062,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 36.91388343700237,
+          "ttft_seconds": 22.12948519299971,
+          "stream_decode_tokens_per_second": 4.261248848972,
+          "cached_tokens": null,
+          "output_sha256": "b1a5be161492c56cca36c5fdca8abf418c2bfc8fccd4aaff693a9e1dd84f7163",
+          "finished_monotonic": 51893.292053835
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "context",
+          "index": 155,
+          "is_success": true,
+          "started_monotonic": 51856.378340162,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 38.129111438996915,
+          "ttft_seconds": 28.68328511499567,
+          "stream_decode_tokens_per_second": 6.66961235989709,
+          "cached_tokens": null,
+          "output_sha256": "b1a5be161492c56cca36c5fdca8abf418c2bfc8fccd4aaff693a9e1dd84f7163",
+          "finished_monotonic": 51894.507493698
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "context",
+          "index": 156,
+          "is_success": true,
+          "started_monotonic": 51856.378528902,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 34.60384976000205,
+          "ttft_seconds": 7.751206537999678,
+          "stream_decode_tokens_per_second": 2.3461377518463213,
+          "cached_tokens": null,
+          "output_sha256": "25ee96ddfc07978140e43cb710066352929d90d7fb5bb22d9b8db22f194f24c1",
+          "finished_monotonic": 51890.982435399
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "context",
+          "index": 157,
+          "is_success": true,
+          "started_monotonic": 51856.378761867,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 35.78725783799746,
+          "ttft_seconds": 14.945368881999457,
+          "stream_decode_tokens_per_second": 3.022758644046488,
+          "cached_tokens": null,
+          "output_sha256": "d7b313e9ec5982ae0bbc905e8b3cb461672b5caade0079df7df557f3953fcf86",
+          "finished_monotonic": 51892.166070282
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "context",
+          "index": 158,
+          "is_success": true,
+          "started_monotonic": 51856.378941518,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 36.85776497900224,
+          "ttft_seconds": 22.149547408997023,
+          "stream_decode_tokens_per_second": 4.283319831253873,
+          "cached_tokens": null,
+          "output_sha256": "d7b313e9ec5982ae0bbc905e8b3cb461672b5caade0079df7df557f3953fcf86",
+          "finished_monotonic": 51893.236730577
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "context",
+          "index": 159,
+          "is_success": true,
+          "started_monotonic": 51856.379126482,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 38.095478019997245,
+          "ttft_seconds": 28.68109494199598,
+          "stream_decode_tokens_per_second": 6.691888303038473,
+          "cached_tokens": null,
+          "output_sha256": "d7b313e9ec5982ae0bbc905e8b3cb461672b5caade0079df7df557f3953fcf86",
+          "finished_monotonic": 51894.474653527
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "context",
+          "index": 160,
+          "is_success": true,
+          "started_monotonic": 51856.37930543,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 64.57962402900012,
+          "ttft_seconds": 39.72785496300639,
+          "stream_decode_tokens_per_second": 2.5350307993247436,
+          "cached_tokens": null,
+          "output_sha256": "e5a471a7e8eda0a3971a3c917fa9ad97f4b65606fda8e2c8660004d159db9733",
+          "finished_monotonic": 51920.959030133
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "context",
+          "index": 161,
+          "is_success": true,
+          "started_monotonic": 51856.379531051,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 66.48888436199923,
+          "ttft_seconds": 51.555053547999705,
+          "stream_decode_tokens_per_second": 4.218609463617432,
+          "cached_tokens": null,
+          "output_sha256": "e5a471a7e8eda0a3971a3c917fa9ad97f4b65606fda8e2c8660004d159db9733",
+          "finished_monotonic": 51922.868432949
+        }
+      ],
+      "output_tokens_per_second": 9.625370883590977,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "context",
+      "wave": 1,
+      "is_measured": true,
+      "counts": {
+        "google/medgemma-4b-it": 4,
+        "google/medgemma-1.5-4b-it": 4,
+        "google/medgemma-27b-it": 2
+      },
+      "wall_seconds": 66.40033339100046,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "context",
+          "index": 162,
+          "is_success": true,
+          "started_monotonic": 51922.906827917,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 34.677689923999424,
+          "ttft_seconds": 7.686989901994821,
+          "stream_decode_tokens_per_second": 2.3341373120607556,
+          "cached_tokens": null,
+          "output_sha256": "4f3444080a3305d914c28dfa8b8b80a4744fc9604141ec49a5542d941860c3ed",
+          "finished_monotonic": 51957.584589955
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "context",
+          "index": 163,
+          "is_success": true,
+          "started_monotonic": 51922.907332039,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 35.88753718999942,
+          "ttft_seconds": 14.91453985899716,
+          "stream_decode_tokens_per_second": 3.0038624906929003,
+          "cached_tokens": null,
+          "output_sha256": "b1a5be161492c56cca36c5fdca8abf418c2bfc8fccd4aaff693a9e1dd84f7163",
+          "finished_monotonic": 51958.794908589
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "context",
+          "index": 164,
+          "is_success": true,
+          "started_monotonic": 51922.907773615,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 38.16738522000378,
+          "ttft_seconds": 28.698490399998263,
+          "stream_decode_tokens_per_second": 6.653363586518674,
+          "cached_tokens": null,
+          "output_sha256": "b1a5be161492c56cca36c5fdca8abf418c2bfc8fccd4aaff693a9e1dd84f7163",
+          "finished_monotonic": 51961.07518202
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "case": "context",
+          "index": 165,
+          "is_success": true,
+          "started_monotonic": 51922.908201559,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 36.9539761279957,
+          "ttft_seconds": 22.114956131998042,
+          "stream_decode_tokens_per_second": 4.245563387406459,
+          "cached_tokens": null,
+          "output_sha256": "b1a5be161492c56cca36c5fdca8abf418c2bfc8fccd4aaff693a9e1dd84f7163",
+          "finished_monotonic": 51959.862213239
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "context",
+          "index": 166,
+          "is_success": true,
+          "started_monotonic": 51922.908678368,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 34.6265579289975,
+          "ttft_seconds": 7.706175781997445,
+          "stream_decode_tokens_per_second": 2.3402342379831547,
+          "cached_tokens": null,
+          "output_sha256": "25ee96ddfc07978140e43cb710066352929d90d7fb5bb22d9b8db22f194f24c1",
+          "finished_monotonic": 51957.535257497
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "context",
+          "index": 167,
+          "is_success": true,
+          "started_monotonic": 51922.909141273,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 35.81335508500342,
+          "ttft_seconds": 14.94820373100083,
+          "stream_decode_tokens_per_second": 3.0193885935035225,
+          "cached_tokens": null,
+          "output_sha256": "d7b313e9ec5982ae0bbc905e8b3cb461672b5caade0079df7df557f3953fcf86",
+          "finished_monotonic": 51958.722542599
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "context",
+          "index": 168,
+          "is_success": true,
+          "started_monotonic": 51922.909634258,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 36.88952012099617,
+          "ttft_seconds": 22.135935427999357,
+          "stream_decode_tokens_per_second": 4.270148666303767,
+          "cached_tokens": null,
+          "output_sha256": "d7b313e9ec5982ae0bbc905e8b3cb461672b5caade0079df7df557f3953fcf86",
+          "finished_monotonic": 51959.799183436
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "case": "context",
+          "index": 169,
+          "is_success": true,
+          "started_monotonic": 51922.910091003,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 38.112269557997934,
+          "ttft_seconds": 28.71660763899854,
+          "stream_decode_tokens_per_second": 6.705222106023721,
+          "cached_tokens": null,
+          "output_sha256": "d7b313e9ec5982ae0bbc905e8b3cb461672b5caade0079df7df557f3953fcf86",
+          "finished_monotonic": 51961.022386562
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "context",
+          "index": 170,
+          "is_success": true,
+          "started_monotonic": 51922.910515347,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 64.48563941299653,
+          "ttft_seconds": 39.607358388995635,
+          "stream_decode_tokens_per_second": 2.5323293011772727,
+          "cached_tokens": null,
+          "output_sha256": "e5a471a7e8eda0a3971a3c917fa9ad97f4b65606fda8e2c8660004d159db9733",
+          "finished_monotonic": 51987.396202649
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "case": "context",
+          "index": 171,
+          "is_success": true,
+          "started_monotonic": 51922.911261377,
+          "http_status": 200,
+          "input_tokens": 15863,
+          "output_tokens": 64,
+          "finish_reason": "length",
+          "total_seconds": 66.395706152005,
+          "ttft_seconds": 51.45303617999889,
+          "stream_decode_tokens_per_second": 4.216113995559389,
+          "cached_tokens": null,
+          "output_sha256": "e5a471a7e8eda0a3971a3c917fa9ad97f4b65606fda8e2c8660004d159db9733",
+          "finished_monotonic": 51989.306990602
+        }
+      ],
+      "output_tokens_per_second": 9.638505822423207,
+      "metrics_before": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      },
+      "metrics_after": {
+        "google/medgemma-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-1.5-4b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        },
+        "google/medgemma-27b-it": {
+          "num_requests_running": 0.0,
+          "num_requests_waiting": 0.0,
+          "num_preemptions_total": 0.0
+        }
+      }
+    }
+  ],
+  "summaries": [
+    {
+      "label": "15-4b-parallel",
+      "case": "images",
+      "model": "google/medgemma-1.5-4b-it",
+      "requests": 8,
+      "successful": 8,
+      "group_wall_seconds_p50": 9.964925036496425,
+      "group_output_tokens_per_second_p50": 47.33575912536292,
+      "total_seconds_p50": 7.613796256497153,
+      "total_seconds_p95": 10.416075788850865,
+      "ttft_seconds_p50": 2.882147255997552,
+      "ttft_seconds_p95": 3.895267965754465,
+      "stream_decode_tokens_per_second_p50": 22.659305386650978,
+      "stream_decode_tokens_per_second_p95": 26.96211451886266,
+      "input_tokens_min": 1742,
+      "input_tokens_max": 1742
+    },
+    {
+      "label": "15-4b-parallel",
+      "case": "long",
+      "model": "google/medgemma-1.5-4b-it",
+      "requests": 12,
+      "successful": 12,
+      "group_wall_seconds_p50": 9.923268291000568,
+      "group_output_tokens_per_second_p50": 103.19180838118301,
+      "total_seconds_p50": 9.902228658498643,
+      "total_seconds_p95": 10.02689589735237,
+      "ttft_seconds_p50": 0.5441661389995716,
+      "ttft_seconds_p95": 0.7221790273015358,
+      "stream_decode_tokens_per_second_p50": 27.18779532258946,
+      "stream_decode_tokens_per_second_p95": 27.757683945607827,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "15-4b-single",
+      "case": "long",
+      "model": "google/medgemma-1.5-4b-it",
+      "requests": 3,
+      "successful": 3,
+      "group_wall_seconds_p50": 10.632324315993174,
+      "group_output_tokens_per_second_p50": 24.077519871635598,
+      "total_seconds_p50": 10.63218804400094,
+      "total_seconds_p95": 10.838588220999373,
+      "ttft_seconds_p50": 0.3276641960037523,
+      "ttft_seconds_p95": 0.5397246359032579,
+      "stream_decode_tokens_per_second_p50": 24.755789848831782,
+      "stream_decode_tokens_per_second_p95": 24.76095190763338,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "27b-parallel",
+      "case": "images",
+      "model": "google/medgemma-27b-it",
+      "requests": 4,
+      "successful": 4,
+      "group_wall_seconds_p50": 32.159827533498174,
+      "group_output_tokens_per_second_p50": 7.400669679469619,
+      "total_seconds_p50": 31.870575471002667,
+      "total_seconds_p95": 32.19709169304806,
+      "ttft_seconds_p50": 4.36887010150167,
+      "ttft_seconds_p95": 5.37337466300487,
+      "stream_decode_tokens_per_second_p50": 4.303191296410498,
+      "stream_decode_tokens_per_second_p95": 4.407210729305738,
+      "input_tokens_min": 1742,
+      "input_tokens_max": 1742
+    },
+    {
+      "label": "27b-parallel",
+      "case": "long",
+      "model": "google/medgemma-27b-it",
+      "requests": 6,
+      "successful": 6,
+      "group_wall_seconds_p50": 61.383001841000805,
+      "group_output_tokens_per_second_p50": 8.341071382045206,
+      "total_seconds_p50": 61.222212030501396,
+      "total_seconds_p95": 61.48609528624911,
+      "ttft_seconds_p50": 2.0307374035037355,
+      "ttft_seconds_p95": 2.7578071487496345,
+      "stream_decode_tokens_per_second_p50": 4.307319549188064,
+      "stream_decode_tokens_per_second_p95": 4.361643802960271,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "27b-single",
+      "case": "long",
+      "model": "google/medgemma-27b-it",
+      "requests": 3,
+      "successful": 3,
+      "group_wall_seconds_p50": 61.12779161999788,
+      "group_output_tokens_per_second_p50": 4.187947792902924,
+      "total_seconds_p50": 61.12768810000125,
+      "total_seconds_p95": 61.247416368999254,
+      "ttft_seconds_p50": 1.1566503040012321,
+      "ttft_seconds_p95": 1.3216208899000776,
+      "stream_decode_tokens_per_second_p50": 4.252052480189165,
+      "stream_decode_tokens_per_second_p95": 4.255262931430476,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "4b-parallel",
+      "case": "images",
+      "model": "google/medgemma-4b-it",
+      "requests": 8,
+      "successful": 8,
+      "group_wall_seconds_p50": 8.155228472001909,
+      "group_output_tokens_per_second_p50": 58.55339254792352,
+      "total_seconds_p50": 8.078182099001424,
+      "total_seconds_p95": 8.157976525952837,
+      "ttft_seconds_p50": 2.7680709380038024,
+      "ttft_seconds_p95": 3.664092792748852,
+      "stream_decode_tokens_per_second_p50": 22.619074457983736,
+      "stream_decode_tokens_per_second_p95": 26.70862270012405,
+      "input_tokens_min": 1742,
+      "input_tokens_max": 1742
+    },
+    {
+      "label": "4b-parallel",
+      "case": "long",
+      "model": "google/medgemma-4b-it",
+      "requests": 12,
+      "successful": 12,
+      "group_wall_seconds_p50": 10.104481212001701,
+      "group_output_tokens_per_second_p50": 101.34117511978086,
+      "total_seconds_p50": 10.047683813998447,
+      "total_seconds_p95": 10.110599483201804,
+      "ttft_seconds_p50": 0.5415428524975141,
+      "ttft_seconds_p95": 0.7172928873518686,
+      "stream_decode_tokens_per_second_p50": 26.823572483740165,
+      "stream_decode_tokens_per_second_p95": 27.160722948603365,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "4b-single",
+      "case": "long",
+      "model": "google/medgemma-4b-it",
+      "requests": 3,
+      "successful": 3,
+      "group_wall_seconds_p50": 10.86399078800605,
+      "group_output_tokens_per_second_p50": 23.564084782051406,
+      "total_seconds_p50": 10.863896803995885,
+      "total_seconds_p95": 11.059001521096798,
+      "ttft_seconds_p50": 0.3138819249943481,
+      "ttft_seconds_p95": 0.5356186033015546,
+      "stream_decode_tokens_per_second_p50": 24.17058202520122,
+      "stream_decode_tokens_per_second_p95": 24.23176872398763,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "context",
+      "model": "google/medgemma-1.5-4b-it",
+      "requests": 4,
+      "successful": 4,
+      "group_wall_seconds_p50": 66.40033339100046,
+      "group_output_tokens_per_second_p50": 9.638505822423207,
+      "total_seconds_p50": 36.351437602999795,
+      "total_seconds_p95": 37.92885714244767,
+      "ttft_seconds_p50": 18.542069579500094,
+      "ttft_seconds_p95": 27.72950680734866,
+      "stream_decode_tokens_per_second_p50": 3.644768629903645,
+      "stream_decode_tokens_per_second_p95": 6.339961090065728,
+      "input_tokens_min": 15863,
+      "input_tokens_max": 15863
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "context",
+      "model": "google/medgemma-27b-it",
+      "requests": 2,
+      "successful": 2,
+      "group_wall_seconds_p50": 66.40033339100046,
+      "group_output_tokens_per_second_p50": 9.638505822423207,
+      "total_seconds_p50": 65.44067278250077,
+      "total_seconds_p95": 66.30020281505458,
+      "ttft_seconds_p50": 45.53019728449726,
+      "ttft_seconds_p95": 50.86075229044873,
+      "stream_decode_tokens_per_second_p50": 3.374221648368331,
+      "stream_decode_tokens_per_second_p95": 4.131924760840283,
+      "input_tokens_min": 15863,
+      "input_tokens_max": 15863
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "context",
+      "model": "google/medgemma-4b-it",
+      "requests": 4,
+      "successful": 4,
+      "group_wall_seconds_p50": 66.40033339100046,
+      "group_output_tokens_per_second_p50": 9.638505822423207,
+      "total_seconds_p50": 36.42075665899756,
+      "total_seconds_p95": 37.98537385620257,
+      "ttft_seconds_p50": 18.5147479954976,
+      "ttft_seconds_p95": 27.710960259798227,
+      "stream_decode_tokens_per_second_p50": 3.6247129390496795,
+      "stream_decode_tokens_per_second_p95": 6.292193556651841,
+      "input_tokens_min": 15863,
+      "input_tokens_max": 15863
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "images",
+      "model": "google/medgemma-1.5-4b-it",
+      "requests": 8,
+      "successful": 8,
+      "group_wall_seconds_p50": 53.82247015849862,
+      "group_output_tokens_per_second_p50": 22.232074407707636,
+      "total_seconds_p50": 29.88302043549993,
+      "total_seconds_p95": 30.99748246150157,
+      "ttft_seconds_p50": 9.363595754002745,
+      "ttft_seconds_p95": 12.988246712099498,
+      "stream_decode_tokens_per_second_p50": 6.5188358078629545,
+      "stream_decode_tokens_per_second_p95": 7.836493206589042,
+      "input_tokens_min": 1743,
+      "input_tokens_max": 1743
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "images",
+      "model": "google/medgemma-27b-it",
+      "requests": 4,
+      "successful": 4,
+      "group_wall_seconds_p50": 53.82247015849862,
+      "group_output_tokens_per_second_p50": 22.232074407707636,
+      "total_seconds_p50": 53.12081271450006,
+      "total_seconds_p95": 54.37113685250042,
+      "ttft_seconds_p50": 11.853317402503308,
+      "ttft_seconds_p95": 15.904163851396879,
+      "stream_decode_tokens_per_second_p50": 2.880158540638007,
+      "stream_decode_tokens_per_second_p95": 3.139180658010012,
+      "input_tokens_min": 1743,
+      "input_tokens_max": 1743
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "images",
+      "model": "google/medgemma-4b-it",
+      "requests": 8,
+      "successful": 8,
+      "group_wall_seconds_p50": 53.82247015849862,
+      "group_output_tokens_per_second_p50": 22.232074407707636,
+      "total_seconds_p50": 28.441355100501823,
+      "total_seconds_p95": 29.180869075650843,
+      "ttft_seconds_p50": 9.360127482497774,
+      "ttft_seconds_p95": 12.9951855956504,
+      "stream_decode_tokens_per_second_p50": 6.1455918683107145,
+      "stream_decode_tokens_per_second_p95": 7.629243805442279,
+      "input_tokens_min": 1743,
+      "input_tokens_max": 1743
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "long",
+      "model": "google/medgemma-1.5-4b-it",
+      "requests": 12,
+      "successful": 12,
+      "group_wall_seconds_p50": 85.77607481100131,
+      "group_output_tokens_per_second_p50": 29.845152108448595,
+      "total_seconds_p50": 34.88076841599832,
+      "total_seconds_p95": 35.08397378050468,
+      "ttft_seconds_p50": 1.8165158834999602,
+      "ttft_seconds_p95": 2.4301658143009264,
+      "stream_decode_tokens_per_second_p50": 7.712724721332558,
+      "stream_decode_tokens_per_second_p95": 7.80919833873198,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "long",
+      "model": "google/medgemma-27b-it",
+      "requests": 6,
+      "successful": 6,
+      "group_wall_seconds_p50": 85.77607481100131,
+      "group_output_tokens_per_second_p50": 29.845152108448595,
+      "total_seconds_p50": 85.59449928799586,
+      "total_seconds_p95": 85.90718650074814,
+      "ttft_seconds_p50": 5.70447367450106,
+      "ttft_seconds_p95": 7.595338506000189,
+      "stream_decode_tokens_per_second_p50": 3.1970179243284815,
+      "stream_decode_tokens_per_second_p95": 3.2777288450556044,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    },
+    {
+      "label": "mixed-4-4-2",
+      "case": "long",
+      "model": "google/medgemma-4b-it",
+      "requests": 12,
+      "successful": 12,
+      "group_wall_seconds_p50": 85.77607481100131,
+      "group_output_tokens_per_second_p50": 29.845152108448595,
+      "total_seconds_p50": 35.08671763699749,
+      "total_seconds_p95": 35.27477982679775,
+      "ttft_seconds_p50": 1.8161759364993486,
+      "ttft_seconds_p95": 2.502487032350109,
+      "stream_decode_tokens_per_second_p50": 7.6717440171811315,
+      "stream_decode_tokens_per_second_p95": 7.78081653121557,
+      "input_tokens_min": 1477,
+      "input_tokens_max": 1477
+    }
+  ],
+  "is_all_successful": true,
+  "finished_at": "2026-11-01T12:38:39.502550+00:00"
+}

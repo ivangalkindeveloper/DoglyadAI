@@ -3,5 +3,7 @@ final class SubscriptionRecoveryDefaultState: SubscriptionRecoveryStateProtocol,
     static func == (
         _: SubscriptionRecoveryDefaultState,
         _: SubscriptionRecoveryDefaultState,
-    ) -> Bool { true }
+    ) -> Bool {
+        true
+    }
 }

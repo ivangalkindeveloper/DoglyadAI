@@ -6,4 +6,6 @@ public protocol DSecurityDatabaseProtocol: Sendable {
     func setBillingIdentity(
         value: BillingIdentityDB,
     ) async throws
+
+    func removeBillingIdentity() async throws
 }

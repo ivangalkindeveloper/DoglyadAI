@@ -17,12 +17,14 @@ struct PaywallFooterLinksView: DViewProtocol {
                 ],
                 action: viewModel.onTapRestore,
             )
+
             PaywallFooterLinkButton(
                 title: l10n[
                     .buttonTermsAndConditions,
                 ],
                 action: viewModel.onTapTerms,
             )
+
             PaywallFooterLinkButton(
                 title: l10n[
                     .buttonPrivacyPolicy,

@@ -82,7 +82,9 @@ enum DSpeechAudioSession {
     /// else — headset, lavalier, USB — is certainly closer to the physician's mouth.
     static var currentRoute: DSpeechAudioRoute {
         let inputs = AVAudioSession.sharedInstance().currentRoute.inputs
-        let isBuiltIn = inputs.allSatisfy { $0.portType == .builtInMic }
+        let isBuiltIn = inputs.allSatisfy {
+            $0.portType == .builtInMic
+        }
 
         return isBuiltIn ? .builtIn : .headset
     }

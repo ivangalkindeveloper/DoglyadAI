@@ -27,8 +27,5 @@ public struct DTextFade: View {
             .allowsHitTesting(
                 false,
             )
-            .accessibilityHidden(
-                true,
-            )
     }
 }

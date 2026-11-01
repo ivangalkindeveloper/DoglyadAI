@@ -11,7 +11,9 @@ final class SettingsAIRepository: SettingsAIRepositoryProtocol {
     }
 
     func getSettings() async throws -> SettingsAI? {
-        guard let data = try database.getSettingsAIData() else { return nil }
+        guard let data = try database.getSettingsAIData() else {
+            return nil
+        }
         return try JSONDecoder().decode(
             SettingsAI.self,
             from: data,

@@ -26,6 +26,33 @@ make stop-local-billing
 ```
 
 Остановка сохраняет контейнер и том. Автоматического удаления данных нет.
+
+## Чистый локальный запуск
+
+Останови локальный API, billing worker и payment ingress, если они запущены.
+Выбери в VS Code `Backend: Local Mock (Cold)` или `Backend: Local Inference (Cold)`.
+Эти профили стоят первыми в списке. Их подготовка удалит локальный
+том `doglyad-local-billing-data`, создаст PostgreSQL заново и применит миграции.
+Подписки, платежи, владельцы и остальные записи billing будут удалены при каждом
+запуске Cold-профиля. Сброс отклоняется, если порт API `8000` занят или Docker
+использует удалённый контекст.
+
+Затем запусти iOS схемой `Doglyad-Debug-Local-Clean`. Перед обращением к backend
+она удалит только запись `billing_identity` из Keychain локального приложения.
+Клиент зарегистрирует нового анонимного владельца без подписки. Firebase App Check
+сохранит свою настройку. Схема сбрасывает billing-идентификатор при каждом запуске;
+для обычной работы используй `Doglyad-Debug-Local`.
+
+Сброс можно выполнить отдельно из корня проекта:
+
+```sh
+make reset-local-billing
+```
+
+Обычные профили `Backend: Local Mock` и `Backend: Local Inference` сохраняют БД.
+Development и Production не используют эту задачу. В iOS сброс разрешён только
+для debug-сборки локального bundle ID в development-окружении с явным аргументом
+`--reset-local-billing-identity`.
 Локальная БД использует опубликованные тестовые реквизиты из
 `docker-compose.local-billing.yml` и слушает только loopback-интерфейс.
 Скрипт миграций всегда выбирает development и эту локальную БД.

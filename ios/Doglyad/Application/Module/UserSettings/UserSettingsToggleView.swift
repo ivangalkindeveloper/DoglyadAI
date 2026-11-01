@@ -22,9 +22,11 @@ struct UserSettingsToggleView: DViewProtocol {
                     ).dStyle(
                         font: typography.linkSmall,
                     )
+
                     Spacer(
                         minLength: size.s16,
                     )
+
                     DToggle(
                         title,
                         isOn: $isOn,
@@ -45,11 +47,6 @@ struct UserSettingsToggleView: DViewProtocol {
                     color.grayscaleHeader,
                 )
             }
-            .accessibilityLabel(
-                Text(
-                    title,
-                ),
-            )
 
             DText(
                 description,

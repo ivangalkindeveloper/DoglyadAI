@@ -22,7 +22,9 @@ enum DNeuralUltrasoundDictationNaturalLanguageParser {
             generated: nil,
         )
         guard !baseline.proposals.contains(
-            where: { $0.id == .patientName },
+            where: {
+                $0.id == .patientName
+            },
         ),
             request.allowedFields.contains(
                 .patientName,
@@ -30,7 +32,9 @@ enum DNeuralUltrasoundDictationNaturalLanguageParser {
             let name = patientName(
                 in: request,
             )
-        else { return baseline }
+        else {
+            return baseline
+        }
 
         let naturalLanguage = DNeuralUltrasoundDictationProposal(
             source: .explicitFacts,
@@ -66,7 +70,9 @@ enum DNeuralUltrasoundDictationNaturalLanguageParser {
             scheme: .nameType,
             options: [.omitPunctuation, .omitWhitespace, .joinNames],
         ) { tag, range in
-            guard tag == .personalName else { return true }
+            guard tag == .personalName else {
+                return true
+            }
             let name = String(
                 text[
                     range,
@@ -76,7 +82,9 @@ enum DNeuralUltrasoundDictationNaturalLanguageParser {
             )
             guard name.split(
                 whereSeparator: \.isWhitespace,
-            ).count >= 2 else { return true }
+            ).count >= 2 else {
+                return true
+            }
             let prefix = String(
                 text[
                     ..<range.lowerBound,
@@ -89,7 +97,9 @@ enum DNeuralUltrasoundDictationNaturalLanguageParser {
                     .naturalLanguagePatientCue,
                 ),
                 options: .regularExpression,
-            ) != nil else { return true }
+            ) != nil else {
+                return true
+            }
             matches.append(
                 name,
             )
@@ -99,7 +109,9 @@ enum DNeuralUltrasoundDictationNaturalLanguageParser {
               text.range(
                   of: name,
               ) != nil
-        else { return nil }
+        else {
+            return nil
+        }
         let value = DNeuralVoiceFieldValue.text(
             name,
         )

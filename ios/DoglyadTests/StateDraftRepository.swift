@@ -4,7 +4,9 @@
 final class StateDraftRepository: UltrasoundDraftRepositoryProtocol {
     private(set) var clearCount = 0
 
-    func getDraft() async throws -> USExaminationDraft? { nil }
+    func getDraft() async throws -> USExaminationDraft? {
+        nil
+    }
 
     func saveForm(
         _: USExaminationDraftForm,
@@ -15,5 +17,7 @@ final class StateDraftRepository: UltrasoundDraftRepositoryProtocol {
         currentForm _: USExaminationDraftForm,
     ) async throws {}
 
-    func clearDraft() async throws { clearCount += 1 }
+    func clearDraft() async throws {
+        clearCount += 1
+    }
 }

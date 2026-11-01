@@ -16,7 +16,9 @@ final class AnalyticsManager {
         environment: EnvironmentType,
         appVersion: String,
     ) {
-        guard isEnabled, !Self.isApplicationOpenedLogged else { return }
+        guard isEnabled, !Self.isApplicationOpenedLogged else {
+            return
+        }
         Self.isApplicationOpenedLogged = true
 
         log(
@@ -38,11 +40,15 @@ final class AnalyticsManager {
         _ screen: AnalyticsScreen,
         parameters: AnalyticsParameters = .empty,
     ) {
+        // SwiftUI hosting-controller class names can exceed Firebase's parameter limit.
         log(
             event: .screenViewed,
             parameters: AnalyticsParameters(
                 [
                     .screen: .string(
+                        screen.rawValue,
+                    ),
+                    .screenClass: .string(
                         screen.rawValue,
                     ),
                 ],
@@ -110,7 +116,9 @@ final class AnalyticsManager {
         event: AnalyticsEvent,
         parameters: AnalyticsParameters,
     ) {
-        guard isEnabled else { return }
+        guard isEnabled else {
+            return
+        }
 
         Analytics.logEvent(
             event.rawValue,

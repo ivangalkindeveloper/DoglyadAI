@@ -14,32 +14,46 @@
             let model = SubscriptionRecoveryViewModel(
                 container: container,
                 router: router,
-                getSubscriptionStatus: { nil },
-                observeSubscriptionStatus: { _ in AnyCancellable {} },
+                getSubscriptionStatus: {
+                    nil
+                },
+                observeSubscriptionStatus: { _ in
+                    AnyCancellable {}
+                },
                 onSubscriptionStatusUpdated: { _ in },
-                getSettingsAI: { container.initialSettingsAI },
+                getSettingsAI: {
+                    container.initialSettingsAI
+                },
                 onRefreshSubscriptionStatus: {},
                 arguments: nil,
-                createRecoveryKey: { if isFailure { throw URLError(
-                    .notConnectedToInternet,
-                ) }
-                return "Preview-MixedCase-Recovery-Key"
+                createRecoveryKey: {
+                    if isFailure {
+                        throw URLError(
+                            .notConnectedToInternet,
+                        )
+                    }
+                    return "Preview-MixedCase-Recovery-Key"
                 },
-                recover: { key in if isFailure { throw URLError(
-                    .notConnectedToInternet,
-                ) }
-                onRecover?(
-                    key,
-                )
-                return ManageSubscriptionPreviewFactory.makeStatus(
-                    source: .yookassa,
-                )
+                recover: { key in
+                    if isFailure {
+                        throw URLError(
+                            .notConnectedToInternet,
+                        )
+                    }
+                    onRecover?(
+                        key,
+                    )
+                    return ManageSubscriptionPreviewFactory.makeStatus(
+                        source: .yookassa,
+                    )
                 },
             )
-            if let state { model.emit(
-                state,
-                animation: nil,
-            ) }
+            if let state {
+                model.emit(
+                    state,
+                    animation: nil,
+                )
+            }
             return model
         }
     }

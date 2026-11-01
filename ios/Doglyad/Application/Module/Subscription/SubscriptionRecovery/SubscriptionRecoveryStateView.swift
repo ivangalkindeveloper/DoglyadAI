@@ -21,6 +21,7 @@ struct SubscriptionRecoveryStateView: DViewProtocol {
                 ).textSelection(
                     .enabled,
                 ).privacySensitive()
+
                 DButtonCard(
                     isPlain: true,
                     action: viewModel.onTapCopyKey,
@@ -53,6 +54,7 @@ struct SubscriptionRecoveryStateView: DViewProtocol {
             SubscriptionRecoveryStateView(
                 state: loading.previousState,
             )
+
             DShimmerPlaceholder().frame(
                 height: size.s8,
             )
@@ -60,6 +62,7 @@ struct SubscriptionRecoveryStateView: DViewProtocol {
             SubscriptionRecoveryStateView(
                 state: failed.previousState,
             )
+
             DText(
                 failed.errorDescription,
             ).dStyle(

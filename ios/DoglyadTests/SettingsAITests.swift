@@ -47,7 +47,9 @@ struct SettingsAITests {
         guard isSupported else {
             await #expect(
                 throws: DSpeechError.self,
-            ) { try await makeController() }
+            ) {
+                try await makeController()
+            }
             return
         }
         let controller = try await makeController()
@@ -96,14 +98,24 @@ struct SettingsAITests {
             ),
             arguments: SelectTranscriberArguments(
                 currentValue: .whisperKit,
-                onSelected: { selected = $0 },
+                onSelected: {
+                    selected = $0
+                },
             ),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
-            getAvailableAppleEngine: { _ in appleTranscriber?.speechEngine },
+            getAvailableAppleEngine: { _ in
+                appleTranscriber?.speechEngine
+            },
         )
         model.onInit()
         await model.lastTask?.value
@@ -191,7 +203,9 @@ struct SettingsAITests {
         )
         await #expect(
             throws: DecodingError.self,
-        ) { try await repository.getSettings() }
+        ) {
+            try await repository.getSettings()
+        }
         let settings = SettingsAI(
             selectedNeuralModelId: "model",
             isMarkdown: false,
@@ -212,9 +226,11 @@ struct SettingsAITests {
         )
         await #expect(
             throws: EncodingError.self,
-        ) { try await repository.saveSettings(
-            invalid,
-        ) }
+        ) {
+            try await repository.saveSettings(
+                invalid,
+            )
+        }
         #expect(
             database.data == previous,
         )
@@ -250,18 +266,32 @@ struct SettingsAITests {
         )
         let model = SettingsAIViewModel(
             container: container,
-            getInitialNeuralModel: { container.usExaminationNeuralModelDefault },
-            getInitialIsMarkdown: { root.isMarkdown },
-            getInitialTemperature: { root.temperature },
-            getInitialMaxTokens: { root.maxTokens },
+            getInitialNeuralModel: {
+                container.usExaminationNeuralModelDefault
+            },
+            getInitialIsMarkdown: {
+                root.isMarkdown
+            },
+            getInitialTemperature: {
+                root.temperature
+            },
+            getInitialMaxTokens: {
+                root.maxTokens
+            },
             messager: DMessager(),
             router: router,
-            getSubscriptionStatus: { makeStatus(
-                .pro,
-            ) },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                makeStatus(
+                    .pro,
+                )
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { root.storedSettingsAI },
+            getSettingsAI: {
+                root.storedSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             onNeuralModelSelected: { _ in },
             onSettingsSaved: { transcriber, parser, markdown, temperature, tokens in
@@ -438,35 +468,55 @@ struct SettingsAITests {
         )
         let subscription = SubscriptionRootViewModel(
             container: container,
-            getStoredSettingsAI: { stored },
+            getStoredSettingsAI: {
+                stored
+            },
         )
         subscription.update(
-            status: type.map { makeStatus(
-                $0,
-                availability: availability,
-            ) },
+            status: type.map {
+                makeStatus(
+                    $0,
+                    availability: availability,
+                )
+            },
         )
         var saved: SettingsAI?
         let model = SettingsAIViewModel(
             container: container,
-            getInitialNeuralModel: { container.usExaminationNeuralModelDefault },
-            getInitialIsMarkdown: { stored.isMarkdown },
-            getInitialTemperature: { stored.temperature! },
-            getInitialMaxTokens: { stored.maxTokens! },
+            getInitialNeuralModel: {
+                container.usExaminationNeuralModelDefault
+            },
+            getInitialIsMarkdown: {
+                stored.isMarkdown
+            },
+            getInitialTemperature: {
+                stored.temperature!
+            },
+            getInitialMaxTokens: {
+                stored.maxTokens!
+            },
             messager: DMessager(),
             router: DRouter(
                 initialRoute: RouteScreen(
                     type: .scan,
                 ),
             ),
-            getSubscriptionStatus: { subscription.status },
-            observeSubscriptionStatus: { subscription.observeStatus(
-                $0,
-            ) },
-            onSubscriptionStatusUpdated: { subscription.update(
-                status: $0,
-            ) },
-            getSettingsAI: { subscription.resolveSettingsAI() },
+            getSubscriptionStatus: {
+                subscription.status
+            },
+            observeSubscriptionStatus: {
+                subscription.observeStatus(
+                    $0,
+                )
+            },
+            onSubscriptionStatusUpdated: {
+                subscription.update(
+                    status: $0,
+                )
+            },
+            getSettingsAI: {
+                subscription.resolveSettingsAI()
+            },
             onRefreshSubscriptionStatus: {},
             onNeuralModelSelected: { _ in },
             onSettingsSaved: { transcriber, parser, markdown, temperature, tokens in
@@ -558,24 +608,40 @@ struct SettingsAITests {
         )
         let model = SettingsAIViewModel(
             container: container,
-            getInitialNeuralModel: { container.usExaminationNeuralModelDefault },
-            getInitialIsMarkdown: { false },
-            getInitialTemperature: { 0.2 },
-            getInitialMaxTokens: { 1024 },
+            getInitialNeuralModel: {
+                container.usExaminationNeuralModelDefault
+            },
+            getInitialIsMarkdown: {
+                false
+            },
+            getInitialTemperature: {
+                0.2
+            },
+            getInitialMaxTokens: {
+                1024
+            },
             messager: DMessager(),
             router: DRouter(
                 initialRoute: RouteScreen(
                     type: .scan,
                 ),
             ),
-            getSubscriptionStatus: { subscription.status },
-            observeSubscriptionStatus: { subscription.observeStatus(
-                $0,
-            ) },
-            onSubscriptionStatusUpdated: { subscription.update(
-                status: $0,
-            ) },
-            getSettingsAI: { container.initialSettingsAI },
+            getSubscriptionStatus: {
+                subscription.status
+            },
+            observeSubscriptionStatus: {
+                subscription.observeStatus(
+                    $0,
+                )
+            },
+            onSubscriptionStatusUpdated: {
+                subscription.update(
+                    status: $0,
+                )
+            },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             onNeuralModelSelected: { _ in },
             onSettingsSaved: { _, _, _, _, _ in },
@@ -647,16 +713,28 @@ struct SettingsAITests {
                     container: container,
                     messager: DMessager(),
                     router: router,
-                    getSubscriptionStatus: { status },
-                    observeSubscriptionStatus: { _ in AnyCancellable {} },
+                    getSubscriptionStatus: {
+                        status
+                    },
+                    observeSubscriptionStatus: { _ in
+                        AnyCancellable {}
+                    },
                     onSubscriptionStatusUpdated: { _ in },
-                    getSettingsAI: { container.initialSettingsAI },
+                    getSettingsAI: {
+                        container.initialSettingsAI
+                    },
                     onRefreshSubscriptionStatus: {},
-                    observeExaminationChanges: { _ in AnyCancellable {} },
-                    getSelectedTemplate: { nil },
+                    observeExaminationChanges: { _ in
+                        AnyCancellable {}
+                    },
+                    getSelectedTemplate: {
+                        nil
+                    },
                     onTemplateSelected: { _ in },
                     onTemplateReset: {},
-                    getNeuralModel: { container.usExaminationNeuralModelDefault },
+                    getNeuralModel: {
+                        container.usExaminationNeuralModelDefault
+                    },
                     onNeuralModelSelected: { _ in },
                 )
                 model.onTapSettingsAI()
@@ -664,10 +742,16 @@ struct SettingsAITests {
                 let model = SettingsViewModel(
                     container: container,
                     router: router,
-                    getSubscriptionStatus: { status },
-                    observeSubscriptionStatus: { _ in AnyCancellable {} },
+                    getSubscriptionStatus: {
+                        status
+                    },
+                    observeSubscriptionStatus: { _ in
+                        AnyCancellable {}
+                    },
                     onSubscriptionStatusUpdated: { _ in },
-                    getSettingsAI: { container.initialSettingsAI },
+                    getSettingsAI: {
+                        container.initialSettingsAI
+                    },
                     onRefreshSubscriptionStatus: {},
                 )
                 model.onTapSettingsAI()
@@ -704,12 +788,20 @@ struct SettingsAITests {
             ),
             arguments: SelectTranscriptParserArguments(
                 currentValue: .server,
-                onSelected: { selected = $0 },
+                onSelected: {
+                    selected = $0
+                },
             ),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
         )
         #expect(
@@ -759,11 +851,15 @@ struct SettingsAITests {
 private final class SettingsAITestDatabase: DDatabaseSettingsAIProtocol {
     var data: Data?
 
-    func getSettingsAIData() -> Data? { data }
+    func getSettingsAIData() -> Data? {
+        data
+    }
 
     func setSettingsAIData(
         _ value: Data,
-    ) { data = value }
+    ) {
+        data = value
+    }
 }
 
 private final class SettingsAITestRepository: SettingsAIRepositoryProtocol {
@@ -771,15 +867,19 @@ private final class SettingsAITestRepository: SettingsAIRepositoryProtocol {
     var isSaveFailing = false
     var saveCount = 0
 
-    func getSettings() async throws -> SettingsAI? { settings }
+    func getSettings() async throws -> SettingsAI? {
+        settings
+    }
 
     func saveSettings(
         _ settings: SettingsAI,
     ) async throws {
         saveCount += 1
-        if isSaveFailing { throw CocoaError(
-            .fileWriteUnknown,
-        ) }
+        if isSaveFailing {
+            throw CocoaError(
+                .fileWriteUnknown,
+            )
+        }
         self.settings = settings
     }
 }

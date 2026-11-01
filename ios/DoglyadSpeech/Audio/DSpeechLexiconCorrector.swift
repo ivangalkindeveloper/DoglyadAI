@@ -53,19 +53,23 @@ public struct DSpeechLexiconCorrector: Sendable {
     ) {
         self.localization = localization
         let vocabulary = Set(
-            terms.flatMap { Self.literalWords(
-                in: $0,
-                localization: localization,
-            ) },
+            terms.flatMap {
+                Self.literalWords(
+                    in: $0,
+                    localization: localization,
+                )
+            },
         )
         medicalTermCorrections = localization.medicalTermCorrections.filter { original, replacement in
             let words = Self.literalWords(
                 in: replacement,
                 localization: localization,
             )
-            return !words.isEmpty && words.allSatisfy { vocabulary.contains(
-                $0,
-            ) }
+            return !words.isEmpty && words.allSatisfy {
+                vocabulary.contains(
+                    $0,
+                )
+            }
                 && !original.contains(
                     where: \.isNumber,
                 ) && !replacement.contains(
@@ -99,13 +103,17 @@ public struct DSpeechLexiconCorrector: Sendable {
             let wordCount = text.split(
                 separator: " ",
             ).count
-            guard wordCount > 1 else { continue }
+            guard wordCount > 1 else {
+                continue
+            }
 
             let normalized = Self.normalize(
                 text,
                 localization: localization,
             )
-            guard !normalized.isEmpty else { continue }
+            guard !normalized.isEmpty else {
+                continue
+            }
 
             grouped[
                 wordCount,
@@ -144,12 +152,16 @@ public struct DSpeechLexiconCorrector: Sendable {
                 spans: decodingSpans,
             ),
         )
-        guard maximumWordCount > 1 else { return text }
+        guard maximumWordCount > 1 else {
+            return text
+        }
 
         let words = text.split(
             whereSeparator: \.isWhitespace,
         )
-        guard !words.isEmpty else { return text }
+        guard !words.isEmpty else {
+            return text
+        }
 
         // The replacement starting at this index, and how many words it consumes.
         var replacements = [(text: String, length: Int)?](
@@ -169,8 +181,12 @@ public struct DSpeechLexiconCorrector: Sendable {
         ) {
             guard let candidates = termsByWordCount[
                 wordCount,
-            ] else { continue }
-            guard words.count >= wordCount else { continue }
+            ] else {
+                continue
+            }
+            guard words.count >= wordCount else {
+                continue
+            }
 
             for start in 0 ... (words.count - wordCount) {
                 let range = start ..< (start + wordCount)
@@ -178,7 +194,9 @@ public struct DSpeechLexiconCorrector: Sendable {
                     range,
                 ].contains(
                     true,
-                ) else { continue }
+                ) else {
+                    continue
+                }
 
                 // A dictionary phrase cannot span a sentence or a field label.
                 guard !words[
@@ -186,12 +204,16 @@ public struct DSpeechLexiconCorrector: Sendable {
                 ].dropLast().contains(
                     where: { word in
                         word.contains(
-                            where: { ".;:!?".contains(
-                                $0,
-                            ) },
+                            where: {
+                                ".;:!?".contains(
+                                    $0,
+                                )
+                            },
                         )
                     },
-                ) else { continue }
+                ) else {
+                    continue
+                }
                 let window = String(
                     text[
                         words[
@@ -204,7 +226,9 @@ public struct DSpeechLexiconCorrector: Sendable {
                 guard let match = bestMatch(
                     for: window,
                     among: candidates,
-                ) else { continue }
+                ) else {
+                    continue
+                }
 
                 replacements[
                     start,
@@ -249,7 +273,9 @@ public struct DSpeechLexiconCorrector: Sendable {
     ) -> String {
         var result = text
         for original in medicalTermCorrections.keys.sorted(
-            by: { $0.count == $1.count ? $0 < $1 : $0.count > $1.count },
+            by: {
+                $0.count == $1.count ? $0 < $1 : $0.count > $1.count
+            },
         ) {
             guard let replacement = medicalTermCorrections[
                 original,
@@ -259,7 +285,10 @@ public struct DSpeechLexiconCorrector: Sendable {
                         for: original,
                     ) + #"(?![\p{L}\p{N}])"#,
                     options: .caseInsensitive,
-                ) else { continue }
+                )
+            else {
+                continue
+            }
             let source = result as NSString
             let corrected = NSMutableString(
                 string: result,
@@ -303,12 +332,18 @@ public struct DSpeechLexiconCorrector: Sendable {
             ),
             NSMaxRange(
                 match.range,
-            ) == (text as NSString).length else { return text }
+            ) == (text as NSString).length
+        else {
+            return text
+        }
         var covered = IndexSet()
         for span in spans {
             guard span.utf16Start >= 0, span.utf16Length > 0,
                   span.utf16Start <= (text as NSString).length,
-                  span.utf16Length <= (text as NSString).length - span.utf16Start else { return text }
+                  span.utf16Length <= (text as NSString).length - span.utf16Start
+            else {
+                return text
+            }
             let intersection = NSIntersectionRange(
                 match.range,
                 NSRange(
@@ -317,7 +352,9 @@ public struct DSpeechLexiconCorrector: Sendable {
                 ),
             )
             if intersection.length > 0 {
-                guard span.isSpeechDetected == false else { return text }
+                guard span.isSpeechDetected == false else {
+                    return text
+                }
                 covered.insert(
                     integersIn: intersection.location ..< NSMaxRange(
                         intersection,
@@ -339,9 +376,13 @@ public struct DSpeechLexiconCorrector: Sendable {
                 from: .alphanumerics,
             ) != nil, !covered.contains(
                 index,
-            ) { return text }
+            ) {
+                return text
+            }
         }
-        guard !covered.isEmpty else { return text }
+        guard !covered.isEmpty else {
+            return text
+        }
         return source.substring(
             to: match.range.location,
         ).trimmingCharacters(
@@ -356,20 +397,26 @@ public struct DSpeechLexiconCorrector: Sendable {
     ) -> String? {
         guard !window.contains(
             where: \.isNumber,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
 
         let normalized = Self.normalize(
             window,
             localization: localization,
         )
-        guard !normalized.isEmpty else { return nil }
+        guard !normalized.isEmpty else {
+            return nil
+        }
 
         let limit = Int(
             (Double(
                 normalized.count,
             ) * Self.maximumDistanceRatio).rounded(),
         )
-        guard limit > 0 else { return nil }
+        guard limit > 0 else {
+            return nil
+        }
 
         let isNegated = Self.isNegated(
             window,
@@ -389,21 +436,29 @@ public struct DSpeechLexiconCorrector: Sendable {
 
         for term in candidates {
             // Negation and side are immutable clinical facts.
-            guard term.isNegated == isNegated, term.sides == sides else { continue }
+            guard term.isNegated == isNegated, term.sides == sides else {
+                continue
+            }
             // Preserve inflection rather than forcing a canonical dictionary
             // ending: nodules != nodule; щитовидной железы != щитовидная железа.
             // This deliberately leaves misspelled endings for review.
-            guard term.wordEndings == wordEndings else { continue }
+            guard term.wordEndings == wordEndings else {
+                continue
+            }
             guard abs(
                 term.normalized.count - normalized.count,
-            ) <= limit else { continue }
+            ) <= limit else {
+                continue
+            }
 
             let distance = Self.distance(
                 normalized,
                 term.normalized,
                 limit: limit,
             )
-            guard distance <= limit else { continue }
+            guard distance <= limit else {
+                continue
+            }
 
             if distance < bestDistance {
                 runnerUpDistance = bestDistance
@@ -414,10 +469,14 @@ public struct DSpeechLexiconCorrector: Sendable {
             }
         }
 
-        guard let best else { return nil }
+        guard let best else {
+            return nil
+        }
         // The nearest term must lead the next one noticeably — otherwise this is a
         // choice between semantic opposites, and we are not going to guess.
-        guard runnerUpDistance - bestDistance >= Self.minimumMargin else { return nil }
+        guard runnerUpDistance - bestDistance >= Self.minimumMargin else {
+            return nil
+        }
         // A spelling already equivalent apart from ё and case needs no repair.
         guard Self.literalWords(
             in: best.text,
@@ -425,7 +484,9 @@ public struct DSpeechLexiconCorrector: Sendable {
         ) != Self.literalWords(
             in: window,
             localization: localization,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
 
         return best.text
     }
@@ -437,11 +498,13 @@ public struct DSpeechLexiconCorrector: Sendable {
         literalWords(
             in: text,
             localization: localization,
-        ).map { String(
-            $0.suffix(
-                2,
-            ),
-        ) }
+        ).map {
+            String(
+                $0.suffix(
+                    2,
+                ),
+            )
+        }
     }
 
     private static func literalWords(
@@ -456,7 +519,9 @@ public struct DSpeechLexiconCorrector: Sendable {
             )
         }
         return normalized.split(
-            whereSeparator: { !$0.isLetter },
+            whereSeparator: {
+                !$0.isLetter
+            },
         ).map(
             String.init,
         )
@@ -474,17 +539,23 @@ public struct DSpeechLexiconCorrector: Sendable {
         )
 
         for character in text.lowercased() {
-            guard character.isLetter || character.isNumber else { continue }
+            guard character.isLetter || character.isNumber else {
+                continue
+            }
             guard !localization.ignoredPhoneticCharacters.contains(
                 character,
-            ) else { continue }
+            ) else {
+                continue
+            }
 
             let mapped = localization.phoneticCharacterReplacements[
                 String(
                     character,
                 ),
             ]?.first ?? character
-            guard result.last != mapped else { continue }
+            guard result.last != mapped else {
+                continue
+            }
 
             result.append(
                 mapped,
@@ -499,7 +570,9 @@ public struct DSpeechLexiconCorrector: Sendable {
         localization: DSpeechLexiconLocalization,
     ) -> Bool {
         text.lowercased().split(
-            whereSeparator: { !$0.isLetter },
+            whereSeparator: {
+                !$0.isLetter
+            },
         ).contains { token in
             token.range(
                 of: localization.negationPattern,
@@ -514,7 +587,9 @@ public struct DSpeechLexiconCorrector: Sendable {
     ) -> Set<DSpeechLexiconSide> {
         var found: Set<DSpeechLexiconSide> = []
         for token in text.lowercased().split(
-            whereSeparator: { !$0.isLetter },
+            whereSeparator: {
+                !$0.isLetter
+            },
         ) {
             if token.range(
                 of: localization.leftSidePattern,
@@ -543,8 +618,12 @@ public struct DSpeechLexiconCorrector: Sendable {
         _ rhs: [Character],
         limit: Int,
     ) -> Int {
-        guard !lhs.isEmpty else { return rhs.count }
-        guard !rhs.isEmpty else { return lhs.count }
+        guard !lhs.isEmpty else {
+            return rhs.count
+        }
+        guard !rhs.isEmpty else {
+            return lhs.count
+        }
 
         var previous = Array(
             0 ... rhs.count,
@@ -589,7 +668,9 @@ public struct DSpeechLexiconCorrector: Sendable {
                 )
             }
 
-            guard rowMinimum <= limit else { return limit + 1 }
+            guard rowMinimum <= limit else {
+                return limit + 1
+            }
 
             swap(
                 &previous,
@@ -608,7 +689,9 @@ public struct DSpeechLexiconCorrector: Sendable {
         of window: String,
         for replacement: String,
     ) -> String {
-        guard let first = window.first, first.isUppercase else { return replacement }
+        guard let first = window.first, first.isUppercase else {
+            return replacement
+        }
 
         return replacement.prefix(
             1,
@@ -628,7 +711,9 @@ public struct DSpeechLexiconCorrector: Sendable {
         let original = window.split(
             whereSeparator: \.isWhitespace,
         )
-        guard canonical.count == original.count else { return replacement }
+        guard canonical.count == original.count else {
+            return replacement
+        }
         let result = NSMutableString(
             string: window,
         )
@@ -636,8 +721,12 @@ public struct DSpeechLexiconCorrector: Sendable {
             let source = original[
                 index,
             ]
-            let leading = source.prefix { !$0.isLetter && !$0.isNumber }
-            let trailing = source.reversed().prefix { !$0.isLetter && !$0.isNumber }.reversed()
+            let leading = source.prefix {
+                !$0.isLetter && !$0.isNumber
+            }
+            let trailing = source.reversed().prefix {
+                !$0.isLetter && !$0.isNumber
+            }.reversed()
             result.replaceCharacters(
                 in: NSRange(
                     source.startIndex ..< source.endIndex,

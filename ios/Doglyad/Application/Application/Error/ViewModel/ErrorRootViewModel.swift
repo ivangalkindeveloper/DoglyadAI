@@ -11,16 +11,20 @@ final class ErrorRootViewModel: DStateViewModel<any ErrorRootStateProtocol> {
     ) {
         self.analytics = analytics
         let state: any ErrorRootStateProtocol = switch error as? InitializationError {
-        case .newVersion: ErrorRootNewVersionState(
+        case .newVersion:
+            ErrorRootNewVersionState(
                 error: error,
             )
-        case .noInternetConnection: ErrorRootOfflineState(
+        case .noInternetConnection:
+            ErrorRootOfflineState(
                 error: error,
             )
-        case .serviceUnavailable: ErrorRootServiceUnavailableState(
+        case .serviceUnavailable:
+            ErrorRootServiceUnavailableState(
                 error: error,
             )
-        case .usExaminationTypesEmpty, .usExaminationNeuralModelsEmpty, .common, .none: ErrorRootUnknownState(
+        case .usExaminationTypesEmpty, .usExaminationNeuralModelsEmpty, .common, .none:
+            ErrorRootUnknownState(
                 error: error,
             )
         }
@@ -42,7 +46,8 @@ final class ErrorRootViewModel: DStateViewModel<any ErrorRootStateProtocol> {
                     state.error,
                 ),
             )
-        default: preconditionFailure(
+        default:
+            preconditionFailure(
                 "Unexpected initialization error state",
             )
         }
@@ -69,10 +74,14 @@ final class ErrorRootViewModel: DStateViewModel<any ErrorRootStateProtocol> {
         }
         guard let encodedEmail = email.addingPercentEncoding(
             withAllowedCharacters: .urlPathAllowed,
-        ) else { return }
+        ) else {
+            return
+        }
         guard let url = URL(
             string: "mailto:\(encodedEmail)",
-        ) else { return }
+        ) else {
+            return
+        }
         UIApplication.shared.open(
             url,
         )

@@ -1,0 +1,29 @@
+[
+  {
+    "key": "4b",
+    "model": "google/medgemma-4b-it",
+    "concurrency": 4,
+    "original_container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "test_container": "doglyad-eval444-4b",
+    "revision": "290cda5eeccbee130f987c4ad74a59ae6f196408",
+    "url": "http://doglyad-eval444-4b:8000"
+  },
+  {
+    "key": "15-4b",
+    "model": "google/medgemma-1.5-4b-it",
+    "concurrency": 4,
+    "original_container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "test_container": "doglyad-eval444-15-4b",
+    "revision": "91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b",
+    "url": "http://doglyad-eval444-15-4b:8000"
+  },
+  {
+    "key": "27b",
+    "model": "google/medgemma-27b-it",
+    "concurrency": 4,
+    "original_container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "test_container": "doglyad-eval444-27b",
+    "revision": "2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f",
+    "url": "http://doglyad-eval444-27b:8000"
+  }
+]

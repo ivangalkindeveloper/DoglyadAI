@@ -1,0 +1,12 @@
+{"stage": "baseline", "label": "4b-single", "case": "long", "wave": 0, "is_measured": false, "seconds": 12.529, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "4b-single", "case": "long", "wave": 1, "is_measured": true, "seconds": 12.533, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "4b-single", "case": "long", "wave": 2, "is_measured": true, "seconds": 12.556, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "4b-single", "case": "long", "wave": 3, "is_measured": true, "seconds": 12.564, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "15-4b-single", "case": "long", "wave": 0, "is_measured": false, "seconds": 15.095, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "15-4b-single", "case": "long", "wave": 1, "is_measured": true, "seconds": 12.636, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "15-4b-single", "case": "long", "wave": 2, "is_measured": true, "seconds": 12.391, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "15-4b-single", "case": "long", "wave": 3, "is_measured": true, "seconds": 12.395, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "27b-single", "case": "long", "wave": 0, "is_measured": false, "seconds": 64.409, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "27b-single", "case": "long", "wave": 1, "is_measured": true, "seconds": 64.46, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "27b-single", "case": "long", "wave": 2, "is_measured": true, "seconds": 64.305, "success": 1, "requests": 1}
+{"stage": "baseline", "label": "27b-single", "case": "long", "wave": 3, "is_measured": true, "seconds": 64.336, "success": 1, "requests": 1}

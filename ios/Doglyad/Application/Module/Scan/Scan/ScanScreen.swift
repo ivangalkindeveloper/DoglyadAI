@@ -16,18 +16,30 @@ struct ScanScreen: View {
                 container: container,
                 messager: messager,
                 router: router,
-                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
-                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
-                    observer,
-                ) },
-                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
-                    status: status,
-                ) },
-                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
-                observeExaminationChanges: { [ultrasoundViewModel] observer in ultrasoundViewModel.observeChanges(
-                    observer,
-                ) },
+                getSubscriptionStatus: { [subscriptionViewModel] in
+                    subscriptionViewModel.status
+                },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in
+                    subscriptionViewModel.observeStatus(
+                        observer,
+                    )
+                },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in
+                    subscriptionViewModel.update(
+                        status: status,
+                    )
+                },
+                getSettingsAI: { [subscriptionViewModel] in
+                    subscriptionViewModel.resolveSettingsAI()
+                },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in
+                    await subscriptionViewModel.refreshStatus()
+                },
+                observeExaminationChanges: { [ultrasoundViewModel] observer in
+                    ultrasoundViewModel.observeChanges(
+                        observer,
+                    )
+                },
                 getSelectedTemplate: { [ultrasoundViewModel] in
                     ultrasoundViewModel.template
                 },

@@ -7,21 +7,19 @@ struct ScanSpeechRecordingBottomView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     var body: some View {
-        let icon: ImageResource = switch viewModel.state {
-        case _ as ScanSpeechReadyState: .play
-        default: .check
-        }
-        let title = switch viewModel.state {
-        case _ as ScanSpeechReadyState: l10n[
+        let (icon, title, isProcessing): (ImageResource, LocalizedStringResource, Bool) = switch viewModel.state {
+        case _ as ScanSpeechReadyState:
+            (.play, l10n[
                 .scanSpeechRecordingStartButton,
-            ]
-        default: l10n[
+            ], false)
+        case _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState:
+            (.check, l10n[
                 .scanSpeechRecordingParseButton,
-            ]
-        }
-        let isProcessing = switch viewModel.state {
-        case _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState: true
-        default: false
+            ], true)
+        default:
+            (.check, l10n[
+                .scanSpeechRecordingParseButton,
+            ], false)
         }
 
         DButton(

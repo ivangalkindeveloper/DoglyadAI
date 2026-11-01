@@ -5,7 +5,9 @@ protocol DraftableProtocol: AnyObject {
     associatedtype Draft
     associatedtype DraftSnapshot
 
-    var draftAutosaver: DraftAutosaver<DraftSnapshot> { get }
+    var draftAutosaver: DraftAutosaver<DraftSnapshot> {
+        get
+    }
 
     func loadDraft() async throws -> Draft?
 
@@ -30,7 +32,9 @@ protocol DraftableProtocol: AnyObject {
 
 extension DraftableProtocol {
     func restoreDraft() async throws -> Bool {
-        guard let draft = try await loadDraft() else { return false }
+        guard let draft = try await loadDraft() else {
+            return false
+        }
 
         applyDraft(
             draft,
@@ -45,14 +49,18 @@ extension DraftableProtocol {
                 self?.makeDraftSnapshot()
             },
             saveDraft: { [weak self] draft in
-                guard let self else { return }
+                guard let self else {
+                    return
+                }
                 try await saveDraftSnapshot(
                     draft,
                 )
             },
-            onFailure: { [weak self] error in self?.onDraftSaveFailed(
-                error,
-            ) },
+            onFailure: { [weak self] error in
+                self?.onDraftSaveFailed(
+                    error,
+                )
+            },
         )
     }
 

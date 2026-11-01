@@ -42,12 +42,15 @@ struct PhotoViewControlsView: DViewProtocol {
                     ).dStyle(
                         font: typography.textSmall,
                     )
+
                     DToggle(
                         l10n[
                             .photoViewShowRemarksLabel,
                         ],
                         isOn: Binding(
-                            get: { viewModel.isRemarksVisible },
+                            get: {
+                                viewModel.isRemarksVisible
+                            },
                             set: viewModel.setRemarksVisibility,
                         ),
                     )

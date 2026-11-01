@@ -61,15 +61,19 @@
                     let featureKeys = tier[
                         "featureLocaleKeys",
                     ] as? [String]
-                else { throw URLError(
-                    .cannotParseResponse,
-                ) }
+                else {
+                    throw URLError(
+                        .cannotParseResponse,
+                    )
+                }
                 let features = try featureKeys.map { key in
                     guard let text = strings[
                         key,
-                    ] else { throw URLError(
-                        .cannotParseResponse,
-                    ) }
+                    ] else {
+                        throw URLError(
+                            .cannotParseResponse,
+                        )
+                    }
                     return text
                 }
                 return ["id": id, "title": title, "features": features]
@@ -134,11 +138,17 @@
         func purchase(
             plan _: SubscriptionPlan,
             onPurchasePrepared _: @escaping (SubscriptionPurchaseReference) -> Void,
-        ) async throws -> SubscriptionPurchaseOutcome { .cancelled }
+        ) async throws -> SubscriptionPurchaseOutcome {
+            .cancelled
+        }
 
-        func restorePurchases() async throws -> Bool { false }
+        func restorePurchases() async throws -> Bool {
+            false
+        }
 
-        func synchronizeCurrentEntitlements() async throws -> Bool { false }
+        func synchronizeCurrentEntitlements() async throws -> Bool {
+            false
+        }
 
         func observeChanges(
             _: @escaping (Result<SubscriptionTransactionUpdate, Error>) -> Void,

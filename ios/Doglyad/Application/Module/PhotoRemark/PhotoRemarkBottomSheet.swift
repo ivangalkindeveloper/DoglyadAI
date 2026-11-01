@@ -12,15 +12,25 @@ struct PhotoRemarkBottomSheet: View {
                 container: container,
                 router: router,
                 arguments: arguments,
-                getSubscriptionStatus: { [subscription] in subscription.status },
-                observeSubscriptionStatus: { [subscription] observer in subscription.observeStatus(
-                    observer,
-                ) },
-                onSubscriptionStatusUpdated: { [subscription] status in subscription.update(
-                    status: status,
-                ) },
-                getSettingsAI: { [subscription] in subscription.resolveSettingsAI() },
-                onRefreshSubscriptionStatus: { [subscription] in await subscription.refreshStatus() },
+                getSubscriptionStatus: { [subscription] in
+                    subscription.status
+                },
+                observeSubscriptionStatus: { [subscription] observer in
+                    subscription.observeStatus(
+                        observer,
+                    )
+                },
+                onSubscriptionStatusUpdated: { [subscription] status in
+                    subscription.update(
+                        status: status,
+                    )
+                },
+                getSettingsAI: { [subscription] in
+                    subscription.resolveSettingsAI()
+                },
+                onRefreshSubscriptionStatus: { [subscription] in
+                    await subscription.refreshStatus()
+                },
             ),
         )
     }

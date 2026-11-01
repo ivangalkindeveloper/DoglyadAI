@@ -10,7 +10,11 @@ final class YooKassaSDKPresentationTests: XCTestCase {
     @MainActor
     func testOfficialSDKMockFormOpensAndCancellationClosesIt() async throws {
         let scene = try XCTUnwrap(
-            UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first { $0.activationState == .foregroundActive },
+            UIApplication.shared.connectedScenes.compactMap {
+                $0 as? UIWindowScene
+            }.first {
+                $0.activationState == .foregroundActive
+            },
         )
         let previousKeyWindow = scene.keyWindow
         let presenter = UIViewController()
@@ -47,12 +51,16 @@ final class YooKassaSDKPresentationTests: XCTestCase {
                 """.utf8,
             ),
         )
-        let task = Task { try await controller.tokenize(
-            preparation: preparation,
-        ) }
+        let task = Task {
+            try await controller.tokenize(
+                preparation: preparation,
+            )
+        }
         do {
             for _ in 0 ..< 100 {
-                if presenter.presentedViewController?.viewIfLoaded?.window != nil { break }
+                if presenter.presentedViewController?.viewIfLoaded?.window != nil {
+                    break
+                }
                 try await Task.sleep(
                     for: .milliseconds(
                         50,

@@ -54,10 +54,12 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
                     with: locale,
                 )
             if nextWord.flatMap(
-                { DNeuralDictationUnit.fromWord(
-                    $0,
-                    localization: localization,
-                ) },
+                {
+                    DNeuralDictationUnit.fromWord(
+                        $0,
+                        localization: localization,
+                    )
+                },
             ) == nil {
                 append(
                     .examinationNumber,
@@ -95,7 +97,9 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
             guard let gender = DNeuralVoiceGender.fromSpokenWord(
                 match.value,
                 localization: localization,
-            ) else { return fields }
+            ) else {
+                return fields
+            }
             append(
                 .patientGender,
                 .gender(
@@ -345,7 +349,9 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
     ) {
         guard request.allowedFields.contains(
             id,
-        ) else { return }
+        ) else {
+            return
+        }
         let warnings = DNeuralUltrasoundDictationProposalValidator.warnings(
             fieldId: id,
             value: value,
@@ -356,11 +362,15 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
         case .examinationNumber:
             guard !warnings.contains(
                 .identifierMismatch,
-            ) else { return }
+            ) else {
+                return
+            }
         case .patientGender:
             guard !warnings.contains(
                 .genderUnverified,
-            ) else { return }
+            ) else {
+                return
+            }
         case .patientName, .patientDateOfBirth, .patientHeightCM,
              .patientWeightKG, .patientComplaints, .examinationDescription:
             break
@@ -386,14 +396,19 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
         if trimmed.range(
             of: #"^[0-9]+$"#,
             options: .regularExpression,
-        ) != nil { return trimmed }
+        ) != nil {
+            return trimmed
+        }
         if trimmed.contains(
             where: \.isNumber,
         ),
             trimmed.range(
                 of: #"^[\p{L}\p{N}]+(?:[-_/][\p{L}\p{N}]+)*$"#,
                 options: .regularExpression,
-            ) != nil { return trimmed }
+            ) != nil
+        {
+            return trimmed
+        }
         // ASR can punctuate a dictated identifier as "0,1,1" or "0,25".
         // All digits are present next to an explicit study-number cue.
         if trimmed.range(
@@ -405,7 +420,9 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
                     \.isNumber,
                 ),
             )
-            if digits.count <= 4 { return digits }
+            if digits.count <= 4 {
+                return digits
+            }
         }
         return DNeuralSpokenDigitSequence.parse(
             trimmed,
@@ -424,7 +441,9 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
                 of: ",",
                 with: ".",
             ),
-        ), parsed.isFinite, parsed > 0 { return parsed }
+        ), parsed.isFinite, parsed > 0 {
+            return parsed
+        }
         return DNeuralSpokenCardinal.parse(
             text,
             locale: locale,
@@ -444,7 +463,9 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
             quote,
             locale: locale,
             localization: localization,
-        ) { return spoken }
+        ) {
+            return spoken
+        }
         let literal = text.replacingOccurrences(
             of: localization.pattern(
                 .birthDateTrailingCue,
@@ -471,7 +492,9 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
             case let .date(
                 date,
             ) = parsed
-        else { return nil }
+        else {
+            return nil
+        }
         return date
     }
 
@@ -483,7 +506,9 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
             pattern: pattern,
             options: [.caseInsensitive, .dotMatchesLineSeparators],
         )
-        else { return nil }
+        else {
+            return nil
+        }
         let matches = expression.matches(
             in: text,
             range: NSRange(
@@ -502,7 +527,9 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
                   ),
                   in: text,
               )
-        else { return nil }
+        else {
+            return nil
+        }
         return DNeuralUltrasoundFactMatch(
             quote: String(
                 text[
@@ -525,7 +552,9 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
             if let match = uniqueMatch(
                 pattern,
                 in: text,
-            ) { return match }
+            ) {
+                return match
+            }
         }
         return nil
     }

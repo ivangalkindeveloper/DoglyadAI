@@ -1,0 +1,12 @@
+STOP originals
+START doglyad-eval444-27b
+READY doglyad-eval444-27b
+START doglyad-eval444-4b
+READY doglyad-eval444-4b
+START doglyad-eval444-15-4b
+READY doglyad-eval444-15-4b
+RESTORE originals
+RESTORED 27b
+RESTORED 4b
+RESTORED 15-4b
+COMPLETE restored=True

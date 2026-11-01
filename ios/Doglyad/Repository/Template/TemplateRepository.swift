@@ -46,7 +46,9 @@ final class TemplateRepository: TemplateRepositoryProtocol {
             dbs.compactMap { db in
                 guard let type = usExaminationTypesById[
                     db.usExaminationTypeId,
-                ] else { return nil }
+                ] else {
+                    return nil
+                }
                 return USExaminationTemplate.fromDB(
                     db,
                     usExaminationType: type,
@@ -62,7 +64,9 @@ final class TemplateRepository: TemplateRepositoryProtocol {
         let templates = try await getTemplates(
             usExaminationTypesById: usExaminationTypesById,
         )
-        return templates.first { $0.id == id }
+        return templates.first {
+            $0.id == id
+        }
     }
 
     func saveTemplate(

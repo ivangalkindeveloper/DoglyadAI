@@ -1,0 +1,40 @@
+Nov 01 16:53:16 spark-bfd6 kernel: br-144ccf3ac651: port 2(veth5528deb) entered disabled state
+Nov 01 16:53:16 spark-bfd6 kernel: veth36dd165: renamed from eth0
+Nov 01 16:53:16 spark-bfd6 kernel: br-144ccf3ac651: port 2(veth5528deb) entered disabled state
+Nov 01 16:53:16 spark-bfd6 kernel: veth5528deb (unregistering): left allmulticast mode
+Nov 01 16:53:16 spark-bfd6 kernel: veth5528deb (unregistering): left promiscuous mode
+Nov 01 16:53:16 spark-bfd6 kernel: br-144ccf3ac651: port 2(veth5528deb) entered disabled state
+Nov 01 16:53:17 spark-bfd6 kernel: br-144ccf3ac651: port 3(vethd3f30d5) entered disabled state
+Nov 01 16:53:17 spark-bfd6 kernel: veth9bad825: renamed from eth0
+Nov 01 16:53:17 spark-bfd6 kernel: br-144ccf3ac651: port 3(vethd3f30d5) entered disabled state
+Nov 01 16:53:17 spark-bfd6 kernel: vethd3f30d5 (unregistering): left allmulticast mode
+Nov 01 16:53:17 spark-bfd6 kernel: vethd3f30d5 (unregistering): left promiscuous mode
+Nov 01 16:53:17 spark-bfd6 kernel: br-144ccf3ac651: port 3(vethd3f30d5) entered disabled state
+Nov 01 16:53:18 spark-bfd6 kernel: br-144ccf3ac651: port 1(vethdbba93b) entered disabled state
+Nov 01 16:53:18 spark-bfd6 kernel: veth8937726: renamed from eth0
+Nov 01 16:53:18 spark-bfd6 kernel: br-144ccf3ac651: port 1(vethdbba93b) entered disabled state
+Nov 01 16:53:18 spark-bfd6 kernel: vethdbba93b (unregistering): left allmulticast mode
+Nov 01 16:53:18 spark-bfd6 kernel: vethdbba93b (unregistering): left promiscuous mode
+Nov 01 16:53:18 spark-bfd6 kernel: br-144ccf3ac651: port 1(vethdbba93b) entered disabled state
+Nov 01 16:53:19 spark-bfd6 kernel: br-144ccf3ac651: port 1(vethe0c2011) entered blocking state
+Nov 01 16:53:19 spark-bfd6 kernel: br-144ccf3ac651: port 1(vethe0c2011) entered disabled state
+Nov 01 16:53:19 spark-bfd6 kernel: vethe0c2011: entered allmulticast mode
+Nov 01 16:53:19 spark-bfd6 kernel: vethe0c2011: entered promiscuous mode
+Nov 01 16:53:19 spark-bfd6 kernel: eth0: renamed from veth6e85795
+Nov 01 16:53:19 spark-bfd6 kernel: br-144ccf3ac651: port 1(vethe0c2011) entered blocking state
+Nov 01 16:53:19 spark-bfd6 kernel: br-144ccf3ac651: port 1(vethe0c2011) entered forwarding state
+Nov 01 17:01:05 spark-bfd6 kernel: br-144ccf3ac651: port 2(veth10cfceb) entered blocking state
+Nov 01 17:01:05 spark-bfd6 kernel: br-144ccf3ac651: port 2(veth10cfceb) entered disabled state
+Nov 01 17:01:05 spark-bfd6 kernel: veth10cfceb: entered allmulticast mode
+Nov 01 17:01:05 spark-bfd6 kernel: veth10cfceb: entered promiscuous mode
+Nov 01 17:01:05 spark-bfd6 kernel: eth0: renamed from vethbb9e9a4
+Nov 01 17:01:05 spark-bfd6 kernel: br-144ccf3ac651: port 2(veth10cfceb) entered blocking state
+Nov 01 17:01:05 spark-bfd6 kernel: br-144ccf3ac651: port 2(veth10cfceb) entered forwarding state
+Nov 01 17:03:13 spark-bfd6 kernel: br-144ccf3ac651: port 3(vethba50a57) entered blocking state
+Nov 01 17:03:13 spark-bfd6 kernel: br-144ccf3ac651: port 3(vethba50a57) entered disabled state
+Nov 01 17:03:13 spark-bfd6 kernel: vethba50a57: entered allmulticast mode
+Nov 01 17:03:13 spark-bfd6 kernel: vethba50a57: entered promiscuous mode
+Nov 01 17:03:13 spark-bfd6 kernel: eth0: renamed from vethc92f3d1
+Nov 01 17:03:13 spark-bfd6 kernel: br-144ccf3ac651: port 3(vethba50a57) entered blocking state
+Nov 01 17:03:13 spark-bfd6 kernel: br-144ccf3ac651: port 3(vethba50a57) entered forwarding state
+Nov 01 17:03:49 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359

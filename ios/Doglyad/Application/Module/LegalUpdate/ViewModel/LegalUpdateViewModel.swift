@@ -179,7 +179,9 @@ extension LegalUpdateViewModel {
         case _ as LegalUpdateLoadingState: return
         default: break
         }
-        guard isLegalAccepted else { return }
+        guard isLegalAccepted else {
+            return
+        }
         emit(
             LegalUpdateLoadingState(),
         )
@@ -190,10 +192,12 @@ extension LegalUpdateViewModel {
             try await self.container.sharedRepository.acceptLegal(
                 documentDate: self.container.applicationConfig.legalDate,
             )
-        } onMainSuccess: { _ in self.coordinator.root(
-            .scan,
-            isAnimated: true,
-        ) } onMainUnknownError: { error in
+        } onMainSuccess: { _ in
+            self.coordinator.root(
+                .scan,
+                isAnimated: true,
+            )
+        } onMainUnknownError: { error in
             self.emit(
                 LegalUpdateFailedState(
                     error: error,

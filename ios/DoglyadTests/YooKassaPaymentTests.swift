@@ -75,19 +75,23 @@ struct YooKassaPaymentTests {
             title: "Pro monthly",
             price: "100 ₽",
         )
-        let task = Task { try await repository.purchase(
-            plan: plan,
-            onPurchasePrepared: { _ in },
-        ) }
+        let task = Task {
+            try await repository.purchase(
+                plan: plan,
+                onPurchasePrepared: { _ in },
+            )
+        }
         task.cancel()
         do {
             _ = try await task.value
             Issue.record(
                 "A canceled purchase must not present a form",
             )
-        } catch is CancellationError {} catch { Issue.record(
-            "Unexpected purchase error",
-        ) }
+        } catch is CancellationError {} catch {
+            Issue.record(
+                "Unexpected purchase error",
+            )
+        }
         #expect(
             await http.requests.isEmpty,
         )

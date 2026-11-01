@@ -323,10 +323,14 @@ struct ScanSpeechConfidencePolicyTests {
             ),
         )
         #expect(
-            plan.uncertain.contains { $0.id == .patientDateOfBirth },
+            plan.uncertain.contains {
+                $0.id == .patientDateOfBirth
+            },
         )
         #expect(
-            plan.uncertain.contains { $0.id == .patientComplaints },
+            plan.uncertain.contains {
+                $0.id == .patientComplaints
+            },
         )
     }
 
@@ -602,10 +606,14 @@ struct ScanSpeechConfidencePolicyTests {
             ) == [.examinationNumber],
         )
         #expect(
-            plan.uncertain.contains { $0.id == .patientGender },
+            plan.uncertain.contains {
+                $0.id == .patientGender
+            },
         )
         #expect(
-            plan.uncertain.contains { $0.id == .patientWeightKG },
+            plan.uncertain.contains {
+                $0.id == .patientWeightKG
+            },
         )
     }
 
@@ -685,7 +693,9 @@ struct ScanSpeechConfidencePolicyTests {
             ),
         )
         #expect(
-            changed.automatic.allSatisfy { $0.id != .patientGender },
+            changed.automatic.allSatisfy {
+                $0.id != .patientGender
+            },
         )
     }
 
@@ -717,7 +727,9 @@ struct ScanSpeechConfidencePolicyTests {
                 ) == [.patientGender],
             )
             #expect(
-                plan.uncertain.contains { $0.id == .patientWeightKG },
+                plan.uncertain.contains {
+                    $0.id == .patientWeightKG
+                },
             )
         }
     }

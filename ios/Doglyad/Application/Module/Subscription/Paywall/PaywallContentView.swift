@@ -27,6 +27,7 @@ struct PaywallContentView: DViewProtocol {
                     maxWidth: .infinity,
                     alignment: .leading,
                 )
+
                 DText(
                     l10n[
                         .paywallDescription,
@@ -41,13 +42,16 @@ struct PaywallContentView: DViewProtocol {
                     alignment: .leading,
                 )
             }
+
             PaywallStateView(
                 state: viewModel.state,
             )
+
             PaywallFooterLinksView()
                 .disabled(
                     viewModel.isProcessing,
                 )
+
             DText(
                 l10n[
                     .paywallCancelDescription,

@@ -14,135 +14,127 @@ struct SettingsScreenView: DViewProtocol {
             ],
             onTapBack: viewModel.onTapBack,
         ) { toolbarInset, _ in
-            ScrollView(
-                showsIndicators: false,
+            DScrollVStack(
+                alignment: .center,
+                spacing: .zero,
+                padding: EdgeInsets(
+                    top: size.s16 + toolbarInset,
+                    leading: size.s16,
+                    bottom: size.s16 + size.s32,
+                    trailing: size.s16,
+                ),
             ) {
                 VStack(
-                    spacing: .zero,
+                    spacing: size.s8,
                 ) {
-                    VStack(
-                        spacing: size.s8,
-                    ) {
-                        switch viewModel.state {
-                        case _ as SettingsLoadingState:
-                            DShimmerPlaceholder().frame(
-                                height: size.s64,
-                            )
-                        case _ as SettingsContentState:
-                            DListButtonCard(
-                                image: .iconHistory,
-                                title: l10n[
-                                    .settingsHistoryTitle,
-                                ],
-                                description: viewModel.historyDescription,
-                                action: viewModel.onTapHistory,
-                            )
-                            .contentTransition(
-                                .opacity,
-                            )
-                        case _ as SettingsFailedState:
-                            LoadingErrorView(
-                                onRetry: viewModel.onTapRetry,
-                            )
-                        default: EmptyView()
-                        }
-                        DListButtonCard(
-                            image: .iconTemplates,
-                            title: l10n[
-                                .settingsTemplatesTitle,
-                            ],
-                            description: l10n[
-                                .settingsTemplatesDescription,
-                            ],
-                            action: viewModel.onTapTemplates,
+                    switch viewModel.state {
+                    case _ as SettingsLoadingState:
+                        DShimmerPlaceholder().frame(
+                            height: size.s64,
                         )
+                    case _ as SettingsContentState:
                         DListButtonCard(
-                            image: .iconSettings,
+                            image: .iconHistory,
                             title: l10n[
-                                .settingsUserSettingsTitle,
+                                .settingsHistoryTitle,
                             ],
-                            description: l10n[
-                                .settingsUserSettingsDescription,
-                            ],
-                            action: viewModel.onTapUserSettings,
+                            description: viewModel.historyDescription,
+                            action: viewModel.onTapHistory,
                         )
-                        DListButtonCard(
-                            image: .iconAISettings,
-                            title: l10n[
-                                .settingsSettingsAITitle,
-                            ],
-                            description: l10n[
-                                .settingsSettingsAIDescription,
-                            ],
-                            action: viewModel.onTapSettingsAI,
+                        .contentTransition(
+                            .opacity,
                         )
-                        DListButtonCard(
-                            image: .iconMail,
-                            title: l10n[
-                                .buttonManageSubscription,
-                            ],
-                            description: l10n[
-                                .settingsSubscriptionManageDescription,
-                            ],
-                            action: viewModel.onTapSubscription,
+                    case _ as SettingsFailedState:
+                        LoadingErrorView(
+                            onRetry: viewModel.onTapRetry,
                         )
-                        DListButtonCard(
-                            image: .iconFile,
-                            title: l10n[
-                                .settingsStorageTitle,
-                            ],
-                            description: l10n[
-                                .settingsStorageDescription,
-                            ],
-                            action: viewModel.onTapStorage,
-                        )
-                        DListButtonCard(
-                            image: .iconGuard,
-                            title: l10n[
-                                .settingsPrivacyPolicyTitle,
-                            ],
-                            description: l10n[
-                                .settingsPrivacyPolicyDescription,
-                            ],
-                            action: viewModel.onTapPrivacyPolicy,
-                        )
-                        DListButtonCard(
-                            image: .iconDocuments,
-                            title: l10n[
-                                .settingsTermsAndConditionsTitle,
-                            ],
-                            description: l10n[
-                                .settingsTermsAndConditionsDescription,
-                            ],
-                            action: viewModel.onTapTermsAndConditions,
-                        )
+                    default: EmptyView()
                     }
-                    .padding(
-                        .bottom,
-                        size.s32,
-                    )
-
-                    DButton(
-                        image: .info,
+                    DListButtonCard(
+                        image: .iconTemplates,
                         title: l10n[
-                            .settingsAboutAppButton,
+                            .settingsTemplatesTitle,
                         ],
-                        action: viewModel.onTapAboutApp,
+                        description: l10n[
+                            .settingsTemplatesDescription,
+                        ],
+                        action: viewModel.onTapTemplates,
                     )
-                    .dStyle(
-                        .primaryText,
+                    DListButtonCard(
+                        image: .iconSettings,
+                        title: l10n[
+                            .settingsUserSettingsTitle,
+                        ],
+                        description: l10n[
+                            .settingsUserSettingsDescription,
+                        ],
+                        action: viewModel.onTapUserSettings,
                     )
-                    .padding(
-                        .bottom,
-                        size.s32,
+                    DListButtonCard(
+                        image: .iconAISettings,
+                        title: l10n[
+                            .settingsSettingsAITitle,
+                        ],
+                        description: l10n[
+                            .settingsSettingsAIDescription,
+                        ],
+                        action: viewModel.onTapSettingsAI,
+                    )
+                    DListButtonCard(
+                        image: .iconMail,
+                        title: l10n[
+                            .buttonManageSubscription,
+                        ],
+                        description: l10n[
+                            .settingsSubscriptionManageDescription,
+                        ],
+                        action: viewModel.onTapSubscription,
+                    )
+                    DListButtonCard(
+                        image: .iconFile,
+                        title: l10n[
+                            .settingsStorageTitle,
+                        ],
+                        description: l10n[
+                            .settingsStorageDescription,
+                        ],
+                        action: viewModel.onTapStorage,
+                    )
+                    DListButtonCard(
+                        image: .iconGuard,
+                        title: l10n[
+                            .settingsPrivacyPolicyTitle,
+                        ],
+                        description: l10n[
+                            .settingsPrivacyPolicyDescription,
+                        ],
+                        action: viewModel.onTapPrivacyPolicy,
+                    )
+                    DListButtonCard(
+                        image: .iconDocuments,
+                        title: l10n[
+                            .settingsTermsAndConditionsTitle,
+                        ],
+                        description: l10n[
+                            .settingsTermsAndConditionsDescription,
+                        ],
+                        action: viewModel.onTapTermsAndConditions,
                     )
                 }
                 .padding(
-                    size.s16,
+                    .bottom,
+                    size.s32,
                 )
-                .padding(
-                    .top,
-                    toolbarInset,
+
+                DButton(
+                    image: .info,
+                    title: l10n[
+                        .settingsAboutAppButton,
+                    ],
+                    action: viewModel.onTapAboutApp,
+                )
+                .dStyle(
+                    .primaryText,
                 )
                 .padding(
                     .bottom,

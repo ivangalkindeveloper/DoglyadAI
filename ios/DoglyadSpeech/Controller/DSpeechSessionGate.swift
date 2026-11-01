@@ -6,7 +6,9 @@ struct DSpeechSessionGate {
     private(set) var isFinalizing = false
 
     mutating func start() -> UUID? {
-        guard activeID == nil else { return nil }
+        guard activeID == nil else {
+            return nil
+        }
         let id = UUID()
         activeID = id
         return id
@@ -21,7 +23,9 @@ struct DSpeechSessionGate {
     mutating func beginFinalization(
         for id: UUID,
     ) -> Bool {
-        guard activeID == id, !isFinalizing else { return false }
+        guard activeID == id, !isFinalizing else {
+            return false
+        }
         isFinalizing = true
         return true
     }
@@ -29,7 +33,9 @@ struct DSpeechSessionGate {
     mutating func finish(
         for id: UUID,
     ) -> Bool {
-        guard activeID == id, isFinalizing else { return false }
+        guard activeID == id, isFinalizing else {
+            return false
+        }
         activeID = nil
         isFinalizing = false
         return true

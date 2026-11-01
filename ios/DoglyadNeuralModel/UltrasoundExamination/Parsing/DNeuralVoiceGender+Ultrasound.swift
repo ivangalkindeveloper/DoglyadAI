@@ -8,11 +8,15 @@ extension DNeuralVoiceGender {
         if localization.matches(
             .maleValue,
             text,
-        ) { return .male }
+        ) {
+            return .male
+        }
         if localization.matches(
             .femaleValue,
             text,
-        ) { return .female }
+        ) {
+            return .female
+        }
         return nil
     }
 

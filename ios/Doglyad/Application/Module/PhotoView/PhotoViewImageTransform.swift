@@ -42,7 +42,9 @@ struct PhotoViewImageTransform {
         viewport: CGSize,
         center: CGPoint,
     ) -> Self {
-        guard scale > 1 else { return Self() }
+        guard scale > 1 else {
+            return Self()
+        }
         return Self(
             scale: scale,
             offset: CGSize(
@@ -68,7 +70,9 @@ struct PhotoViewImageTransform {
         viewport: CGFloat,
         center: CGFloat,
     ) -> CGFloat {
-        guard length > viewport else { return 0 }
+        guard length > viewport else {
+            return 0
+        }
         return min(
             max(
                 offset,

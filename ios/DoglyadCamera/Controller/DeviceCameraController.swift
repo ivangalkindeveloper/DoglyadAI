@@ -29,11 +29,15 @@ public final class DeviceCameraController: DCameraControllerProtocol {
     }
 
     public func startSession() {
-        guard !isRunning else { return }
+        guard !isRunning else {
+            return
+        }
         isRunning = true
 
         sessionQueue.async { [weak self] in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
 
             if !session.isRunning {
                 session.startRunning()
@@ -47,7 +51,9 @@ public final class DeviceCameraController: DCameraControllerProtocol {
     }
 
     public func stopSession() {
-        guard isRunning else { return }
+        guard isRunning else {
+            return
+        }
         isRunning = false
         previewLayer.connection?.isEnabled = false
         sessionQueue.async { [weak self] in
@@ -59,7 +65,9 @@ public final class DeviceCameraController: DCameraControllerProtocol {
         cropRegion: DCameraCropRegion,
         completion: @escaping (UIImage) -> Void,
     ) {
-        guard !isCapturing, let previewConnection = previewLayer.connection else { return }
+        guard !isCapturing, let previewConnection = previewLayer.connection else {
+            return
+        }
         let rotationAngle = previewConnection.videoRotationAngle
         let isMirrored = previewConnection.isVideoMirrored
         let delegate = DevicePhotoCaptureDelegate(
@@ -72,7 +80,9 @@ public final class DeviceCameraController: DCameraControllerProtocol {
         capturePhotoCompletion = completion
 
         sessionQueue.async { [weak self] in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
 
             // The queue is serial, so configuration and startRunning() are already
             // guaranteed to have finished here — a capture never reaches a session
@@ -142,7 +152,9 @@ public final class DeviceCameraController: DCameraControllerProtocol {
 private extension DeviceCameraController {
     func configureSession() {
         sessionQueue.async { [weak self] in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
 
             Self.configure(
                 session: session,
@@ -172,7 +184,9 @@ private extension DeviceCameraController {
         }
 
         session.beginConfiguration()
-        defer { session.commitConfiguration() }
+        defer {
+            session.commitConfiguration()
+        }
 
         guard session.canAddInput(
             input,
@@ -312,7 +326,9 @@ private final class DevicePhotoCaptureDelegate: NSObject, AVCapturePhotoCaptureD
                       data: data,
                       options: [.applyOrientationProperty: false],
                   )
-            else { return nil }
+            else {
+                return nil
+            }
             rawImage = image
         }
         guard let cropped = DCameraPhotoCrop.crop(

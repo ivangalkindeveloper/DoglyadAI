@@ -68,7 +68,9 @@ struct ModuleInputLimitTests {
             model.examinationDescriptionTextController.isError,
         )
         #expect(
-            model.focusList.contains { $0.focus == .patientComplaints },
+            model.focusList.contains {
+                $0.focus == .patientComplaints
+            },
         )
     }
 
@@ -97,14 +99,22 @@ struct ModuleInputLimitTests {
             container: container,
             messager: DMessager(),
             router: makeRouter(),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
-                onConfirm: { _ in true },
+                onConfirm: { _ in
+                    true
+                },
             ),
             speechController: speechController,
         )
@@ -172,16 +182,28 @@ struct ModuleInputLimitTests {
             container: container,
             messager: DMessager(),
             router: makeRouter(),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
-            observeExaminationChanges: { _ in AnyCancellable {} },
-            getSelectedTemplate: { nil },
+            observeExaminationChanges: { _ in
+                AnyCancellable {}
+            },
+            getSelectedTemplate: {
+                nil
+            },
             onTemplateSelected: { _ in },
             onTemplateReset: {},
-            getNeuralModel: { container.usExaminationNeuralModelDefault },
+            getNeuralModel: {
+                container.usExaminationNeuralModelDefault
+            },
             onNeuralModelSelected: { _ in },
         )
     }

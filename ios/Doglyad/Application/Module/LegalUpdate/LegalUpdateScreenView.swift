@@ -11,13 +11,9 @@ struct LegalUpdateScreenView: DViewProtocol {
     @StateObject var viewModel: LegalUpdateViewModel
 
     var body: some View {
-        let isDisabled: Bool = switch viewModel.state {
-        case _ as LegalUpdateLoadingState: true
-        default: !viewModel.isLegalAccepted
-        }
-        let isProcessing = switch viewModel.state {
-        case _ as LegalUpdateLoadingState: true
-        default: false
+        let (isDisabled, isProcessing): (Bool, Bool) = switch viewModel.state {
+        case _ as LegalUpdateLoadingState: (true, true)
+        default: (!viewModel.isLegalAccepted, false)
         }
 
         DScreen(
@@ -60,7 +56,9 @@ struct LegalUpdateScreenView: DViewProtocol {
                     ) {
                         DCheckbox(
                             isChecked: Binding(
-                                get: { viewModel.isLegalAccepted },
+                                get: {
+                                    viewModel.isLegalAccepted
+                                },
                                 set: viewModel.onLegalAcceptedChanged,
                             ),
                         )

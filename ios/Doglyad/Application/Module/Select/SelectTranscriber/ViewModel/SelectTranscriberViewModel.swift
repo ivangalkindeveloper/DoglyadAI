@@ -49,7 +49,9 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
         availabilityObservation = NotificationCenter.default.publisher(
             for: UIApplication.didBecomeActiveNotification,
         ).sink { [weak self] _ in
-            Task { @MainActor [weak self] in self?.refreshAvailability() }
+            Task { @MainActor [weak self] in
+                self?.refreshAvailability()
+            }
         }
         refreshAvailability()
     }
@@ -59,7 +61,9 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
     ) {
         guard options.contains(
             type,
-        ) else { return }
+        ) else {
+            return
+        }
         analytics.buttonTapped(
             .selectTranscriber,
         )
@@ -75,9 +79,11 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
                 self.container.language.currentLocale,
             )
         } onMainSuccess: { engine in
-            self.options = engine.map { [TranscriberType(
-                engine: $0,
-            ), .whisperKit] } ?? [.whisperKit]
+            self.options = engine.map {
+                [TranscriberType(
+                    engine: $0,
+                ), .whisperKit]
+            } ?? [.whisperKit]
         }
     }
 }

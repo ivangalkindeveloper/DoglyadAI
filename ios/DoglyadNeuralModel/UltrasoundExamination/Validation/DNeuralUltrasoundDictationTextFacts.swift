@@ -31,28 +31,36 @@ struct DNeuralUltrasoundDictationTextFacts {
             if localization.matches(
                 .leftSide,
                 token,
-            ) { sides.insert(
-                .left,
-            ) }
+            ) {
+                sides.insert(
+                    .left,
+                )
+            }
             if localization.matches(
                 .rightSide,
                 token,
-            ) { sides.insert(
-                .right,
-            ) }
+            ) {
+                sides.insert(
+                    .right,
+                )
+            }
             if localization.matches(
                 .bilateralSide,
                 token,
-            ) { sides.formUnion(
-                [.left, .right],
-            ) }
+            ) {
+                sides.formUnion(
+                    [.left, .right],
+                )
+            }
         }
         self.sides = sides
         negationCount = tokens.count(
-            where: { localization.matches(
-                .negation,
-                $0,
-            ) },
+            where: {
+                localization.matches(
+                    .negation,
+                    $0,
+                )
+            },
         )
 
         numbers = Set(
@@ -73,9 +81,11 @@ struct DNeuralUltrasoundDictationTextFacts {
             if let unit = DNeuralDictationUnit.fromWord(
                 word,
                 localization: localization,
-            ) { units.insert(
-                unit,
-            ) }
+            ) {
+                units.insert(
+                    unit,
+                )
+            }
         }
         self.units = units
 
@@ -117,7 +127,9 @@ struct DNeuralUltrasoundDictationTextFacts {
                         ),
                         localization: localization,
                     )
-                else { continue }
+                else {
+                    continue
+                }
                 measurements[
                     unit,
                     default: [],
@@ -139,13 +151,17 @@ struct DNeuralUltrasoundDictationTextFacts {
     func containsLiteral(
         _ value: DNeuralUltrasoundDictationTextFacts,
     ) -> Bool {
-        guard !value.tokens.isEmpty, value.tokens.count <= tokens.count else { return false }
+        guard !value.tokens.isEmpty, value.tokens.count <= tokens.count else {
+            return false
+        }
         for start in 0 ... (tokens.count - value.tokens.count) {
             if Array(
                 tokens[
                     start ..< start + value.tokens.count,
                 ],
-            ) == value.tokens { return true }
+            ) == value.tokens {
+                return true
+            }
         }
         return false
     }
@@ -167,7 +183,9 @@ struct DNeuralUltrasoundDictationTextFacts {
     ) -> [String] {
         guard let regex = try? NSRegularExpression(
             pattern: pattern,
-        ) else { return [] }
+        ) else {
+            return []
+        }
         return regex.matches(
             in: text,
             range: NSRange(
@@ -178,11 +196,13 @@ struct DNeuralUltrasoundDictationTextFacts {
             Range(
                 match.range,
                 in: text,
-            ).map { String(
-                text[
-                    $0,
-                ],
-            ) }
+            ).map {
+                String(
+                    text[
+                        $0,
+                    ],
+                )
+            }
         }
     }
 }

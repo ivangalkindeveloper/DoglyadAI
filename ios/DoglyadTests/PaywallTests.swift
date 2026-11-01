@@ -394,7 +394,9 @@ struct PaywallTests {
         root.onInit()
         root.onInit()
         for _ in 0 ..< 100 {
-            if repository.observationCount == 1 { break }
+            if repository.observationCount == 1 {
+                break
+            }
             await Task.yield()
         }
         #expect(
@@ -406,7 +408,9 @@ struct PaywallTests {
             ),
         )
         for _ in 0 ..< 100 {
-            if root.status != nil { break }
+            if root.status != nil {
+                break
+            }
             await Task.yield()
         }
         #expect(
@@ -443,7 +447,9 @@ struct PaywallTests {
             container: container,
             root: root,
             router: router,
-            onUpdate: { updates += 1 },
+            onUpdate: {
+                updates += 1
+            },
         )
 
         model.onAppear()
@@ -466,7 +472,8 @@ struct PaywallTests {
             repository.purchaseCount == 1,
         )
         switch model.state {
-        case _ as PaywallLoadingState, _ as PaywallPurchasingState, _ as PaywallRestoringState: Issue.record(
+        case _ as PaywallLoadingState, _ as PaywallPurchasingState, _ as PaywallRestoringState:
+            Issue.record(
                 "Purchase must leave its processing state",
             )
         default: break
@@ -481,7 +488,8 @@ struct PaywallTests {
             )
             switch model.state {
             case _ as PaywallContentState: break
-            default: Issue.record(
+            default:
+                Issue.record(
                     "A completed or cancelled purchase must retain loaded plans",
                 )
             }
@@ -497,7 +505,8 @@ struct PaywallTests {
             )
             switch model.state {
             case _ as PaywallContentState: break
-            default: Issue.record(
+            default:
+                Issue.record(
                     "A completed or cancelled purchase must retain loaded plans",
                 )
             }
@@ -516,7 +525,8 @@ struct PaywallTests {
             )
             switch model.state {
             case _ as PaywallPendingState: break
-            default: Issue.record(
+            default:
+                Issue.record(
                     "Pending payment must await a verified backend result",
                 )
             }
@@ -539,7 +549,8 @@ struct PaywallTests {
                         \.id,
                     ) == [repository.plan.id],
                 )
-            default: Issue.record(
+            default:
+                Issue.record(
                     "Expected a purchase failure with the loaded plans",
                 )
             }
@@ -592,7 +603,8 @@ struct PaywallTests {
                     .subscriptionOfferingsUnavailableDescription,
                 ),
             )
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Expected an offerings load failure",
             )
         }
@@ -609,7 +621,8 @@ struct PaywallTests {
                     \.id,
                 ) == [repository.plan.id],
             )
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Retry must publish the loaded plans",
             )
         }
@@ -671,7 +684,8 @@ struct PaywallTests {
         )
         switch model.state {
         case _ as PaywallPendingState: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Expected a pending purchase",
             )
         }
@@ -684,7 +698,9 @@ struct PaywallTests {
             ),
         )
         for _ in 0 ..< 100 {
-            if router.path.isEmpty { break }
+            if router.path.isEmpty {
+                break
+            }
             await Task.yield()
         }
         #expect(
@@ -772,9 +788,11 @@ struct PaywallTests {
         let root = SubscriptionRootViewModel(
             container: container,
         )
-        if isAlreadySubscribed { root.update(
-            status: repository.status,
-        ) }
+        if isAlreadySubscribed {
+            root.update(
+                status: repository.status,
+            )
+        }
         let router = DRouter(
             initialRoute: RouteScreen(
                 type: .scan,
@@ -869,7 +887,8 @@ struct PaywallTests {
         )
         switch model.state {
         case _ as PaywallContentState: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Canceled checkout must return to the available plans",
             )
         }
@@ -999,7 +1018,9 @@ struct PaywallTests {
         let selected = try #require(
             model.state as? PaywallDefaultState,
         )
-        repository.onRestore = { throw SubscriptionError.offeringsUnavailable }
+        repository.onRestore = {
+            throw SubscriptionError.offeringsUnavailable
+        }
         model.onTapRestore()
         await waitUntilIdle(
             model,
@@ -1010,11 +1031,13 @@ struct PaywallTests {
         #expect(
             failed.previousState === selected && failed.selectedPlan == repository.plan,
         )
-        repository.onRestore = { try await Task.sleep(
-            for: .seconds(
-                60,
-            ),
-        ) }
+        repository.onRestore = {
+            try await Task.sleep(
+                for: .seconds(
+                    60,
+                ),
+            )
+        }
         model.onTapRestore()
         #expect(
             model.state is PaywallRestoringState,
@@ -1049,7 +1072,11 @@ struct PaywallTests {
         let repository = SubscriptionTestRepository()
         repository.isLoadingFailed = isFailure
         var response: CheckedContinuation<Void, Never>?
-        repository.onFetchCatalog = { await withCheckedContinuation { response = $0 } }
+        repository.onFetchCatalog = {
+            await withCheckedContinuation {
+                response = $0
+            }
+        }
         let container = makeContainer(
             repository: repository,
         )
@@ -1085,7 +1112,11 @@ struct PaywallTests {
     func closeIgnoresALateCatalogResponse() async throws {
         let repository = SubscriptionTestRepository()
         var response: CheckedContinuation<Void, Never>?
-        repository.onFetchCatalog = { await withCheckedContinuation { response = $0 } }
+        repository.onFetchCatalog = {
+            await withCheckedContinuation {
+                response = $0
+            }
+        }
         let container = makeContainer(
             repository: repository,
         )
@@ -1165,23 +1196,36 @@ struct PaywallTests {
         return PaywallViewModel(
             container: container,
             router: router,
-            getSubscriptionStatus: { root.status },
-            observeSubscriptionStatus: { root.observeStatus(
-                $0,
-            ) },
-            onSubscriptionStatusUpdated: { root.update(
-                status: $0,
-            )
-            onUpdate()
+            getSubscriptionStatus: {
+                root.status
             },
-            getSettingsAI: { root.resolveSettingsAI() },
+            observeSubscriptionStatus: {
+                root.observeStatus(
+                    $0,
+                )
+            },
+            onSubscriptionStatusUpdated: {
+                root.update(
+                    status: $0,
+                )
+                onUpdate()
+            },
+            getSettingsAI: {
+                root.resolveSettingsAI()
+            },
             onRefreshSubscriptionStatus: {},
             arguments: PaywallArguments(),
-            purchase: { try await root.purchase(
-                plan: $0,
-            ) },
-            restorePurchases: { try await root.restorePurchases() },
-            checkPurchase: { try await root.checkPurchase() },
+            purchase: {
+                try await root.purchase(
+                    plan: $0,
+                )
+            },
+            restorePurchases: {
+                try await root.restorePurchases()
+            },
+            checkPurchase: {
+                try await root.checkPurchase()
+            },
         )
     }
 

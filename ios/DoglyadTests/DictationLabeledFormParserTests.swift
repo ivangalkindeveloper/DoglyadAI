@@ -26,24 +26,32 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .patientName }?.value == .text(
+            result.proposals.first {
+                $0.id == .patientName
+            }?.value == .text(
                 "Дарья Морозова",
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .patientHeightCM }?.value == .number(
+            result.proposals.first {
+                $0.id == .patientHeightCM
+            }?.value == .number(
                 169,
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .patientWeightKG }?.value == .number(
+            result.proposals.first {
+                $0.id == .patientWeightKG
+            }?.value == .number(
                 58.2,
             ),
         )
         #expect(
-            result.proposals.allSatisfy { text.contains(
-                $0.sourceQuote,
-            ) },
+            result.proposals.allSatisfy {
+                text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -63,7 +71,9 @@ struct DictationLabeledFormParserTests {
             result.proposals.isEmpty,
         )
         #expect(
-            !result.proposals.contains { $0.id == .patientWeightKG },
+            !result.proposals.contains {
+                $0.id == .patientWeightKG
+            },
         )
     }
 
@@ -90,24 +100,32 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .patientName }?.value == .text(
+            result.proposals.first {
+                $0.id == .patientName
+            }?.value == .text(
                 "Claire Wilson",
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .patientHeightCM }?.value == .number(
+            result.proposals.first {
+                $0.id == .patientHeightCM
+            }?.value == .number(
                 169,
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .patientWeightKG }?.value == .number(
+            result.proposals.first {
+                $0.id == .patientWeightKG
+            }?.value == .number(
                 58.2,
             ),
         )
         #expect(
-            result.proposals.allSatisfy { text.contains(
-                $0.sourceQuote,
-            ) },
+            result.proposals.allSatisfy {
+                text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -150,7 +168,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
 
         #expect(
@@ -206,9 +226,11 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.proposals.allSatisfy { text.contains(
-                $0.sourceQuote,
-            ) },
+            proposal.proposals.allSatisfy {
+                text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -226,7 +248,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
 
         #expect(
@@ -279,9 +303,11 @@ struct DictationLabeledFormParserTests {
             proposal.proposals.count == 4,
         )
         #expect(
-            proposal.proposals.allSatisfy { text.contains(
-                $0.sourceQuote,
-            ) },
+            proposal.proposals.allSatisfy {
+                text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -349,7 +375,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
 
         #expect(
@@ -406,13 +434,19 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientName },
+            !proposal.proposals.contains {
+                $0.id == .patientName
+            },
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientName },
+            !proposal.proposals.contains {
+                $0.id == .patientName
+            },
         )
         #expect(
-            proposal.proposals.contains { $0.id == .examinationNumber },
+            proposal.proposals.contains {
+                $0.id == .examinationNumber
+            },
         )
     }
 
@@ -430,7 +464,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values[
@@ -462,7 +498,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values.count == 8,
@@ -496,9 +534,11 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.proposals.allSatisfy { text.contains(
-                $0.sourceQuote,
-            ) },
+            proposal.proposals.allSatisfy {
+                text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -516,7 +556,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values.count == 8,
@@ -579,7 +621,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
 
         #expect(
@@ -635,9 +679,11 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.proposals.allSatisfy { text.contains(
-                $0.sourceQuote,
-            ) },
+            proposal.proposals.allSatisfy {
+                text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -656,7 +702,9 @@ struct DictationLabeledFormParserTests {
                 ),
             )
             let number = try #require(
-                proposal.proposals.first { $0.id == .examinationNumber },
+                proposal.proposals.first {
+                    $0.id == .examinationNumber
+                },
             )
             #expect(
                 number.value == .text(
@@ -690,7 +738,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let date = try #require(
-            validProposal.proposals.first { $0.id == .patientDateOfBirth },
+            validProposal.proposals.first {
+                $0.id == .patientDateOfBirth
+            },
         )
         guard case let .date(
             parsedDate,
@@ -726,13 +776,19 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            !ambiguousProposal.proposals.contains { $0.id == .patientDateOfBirth },
+            !ambiguousProposal.proposals.contains {
+                $0.id == .patientDateOfBirth
+            },
         )
         #expect(
-            !ambiguousProposal.proposals.contains { $0.id == .patientDateOfBirth },
+            !ambiguousProposal.proposals.contains {
+                $0.id == .patientDateOfBirth
+            },
         )
         #expect(
-            ambiguousProposal.proposals.contains { $0.id == .patientHeightCM },
+            ambiguousProposal.proposals.contains {
+                $0.id == .patientHeightCM
+            },
         )
     }
 
@@ -750,7 +806,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values[
@@ -782,7 +840,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values[
@@ -816,7 +876,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientHeightCM },
+            !proposal.proposals.contains {
+                $0.id == .patientHeightCM
+            },
         )
     }
 
@@ -834,7 +896,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values[
@@ -891,12 +955,16 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.proposals.first { $0.id == .patientHeightCM }?.warnings.contains(
+            proposal.proposals.first {
+                $0.id == .patientHeightCM
+            }?.warnings.contains(
                 .ambiguousDictation,
             ) == true,
         )
         #expect(
-            proposal.proposals.first { $0.id == .patientWeightKG }?.warnings.contains(
+            proposal.proposals.first {
+                $0.id == .patientWeightKG
+            }?.warnings.contains(
                 .ambiguousDictation,
             ) == true,
         )
@@ -916,10 +984,14 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let height = try #require(
-            proposal.proposals.first { $0.id == .patientHeightCM },
+            proposal.proposals.first {
+                $0.id == .patientHeightCM
+            },
         )
         let weight = try #require(
-            proposal.proposals.first { $0.id == .patientWeightKG },
+            proposal.proposals.first {
+                $0.id == .patientWeightKG
+            },
         )
         #expect(
             height.value == .number(
@@ -957,10 +1029,14 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientHeightCM },
+            !proposal.proposals.contains {
+                $0.id == .patientHeightCM
+            },
         )
         #expect(
-            proposal.proposals.contains { $0.id == .examinationDescription },
+            proposal.proposals.contains {
+                $0.id == .examinationDescription
+            },
         )
     }
 
@@ -978,7 +1054,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values[
@@ -1005,7 +1083,9 @@ struct DictationLabeledFormParserTests {
             ) == "2000-07-17",
         )
         #expect(
-            proposal.proposals.first { $0.id == .examinationNumber }?.warnings.contains(
+            proposal.proposals.first {
+                $0.id == .examinationNumber
+            }?.warnings.contains(
                 .identifierMismatch,
             ) == true,
         )
@@ -1025,7 +1105,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let date = try #require(
-            proposal.proposals.first { $0.id == .patientDateOfBirth },
+            proposal.proposals.first {
+                $0.id == .patientDateOfBirth
+            },
         )
         guard case let .date(
             parsedDate,
@@ -1056,7 +1138,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            !rejected.proposals.contains { $0.id == .patientDateOfBirth },
+            !rejected.proposals.contains {
+                $0.id == .patientDateOfBirth
+            },
         )
     }
 
@@ -1081,7 +1165,9 @@ struct DictationLabeledFormParserTests {
                 ),
             )
             #expect(
-                proposal.proposals.first { $0.id == .examinationNumber }?.value == .text(
+                proposal.proposals.first {
+                    $0.id == .examinationNumber
+                }?.value == .text(
                     expected,
                 ),
             )
@@ -1133,7 +1219,9 @@ struct DictationLabeledFormParserTests {
                 ),
             )
             let values = Dictionary(
-                uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+                uniqueKeysWithValues: proposal.proposals.map {
+                    ($0.id, $0.value)
+                },
             )
             #expect(
                 values.count == 8,
@@ -1177,9 +1265,11 @@ struct DictationLabeledFormParserTests {
                 ) == dateString,
             )
             #expect(
-                proposal.proposals.allSatisfy { text.contains(
-                    $0.sourceQuote,
-                ) },
+                proposal.proposals.allSatisfy {
+                    text.contains(
+                        $0.sourceQuote,
+                    )
+                },
             )
         }
     }
@@ -1198,7 +1288,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let description = try #require(
-            proposal.proposals.first { $0.id == .examinationDescription },
+            proposal.proposals.first {
+                $0.id == .examinationDescription
+            },
         )
         #expect(
             description.value == .text(
@@ -1257,7 +1349,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values[
@@ -1274,9 +1368,11 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.proposals.allSatisfy { text.contains(
-                $0.sourceQuote,
-            ) },
+            proposal.proposals.allSatisfy {
+                text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -1294,7 +1390,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientComplaints },
+            !proposal.proposals.contains {
+                $0.id == .patientComplaints
+            },
         )
     }
 
@@ -1312,7 +1410,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let weight = try #require(
-            proposal.proposals.first { $0.id == .patientWeightKG },
+            proposal.proposals.first {
+                $0.id == .patientWeightKG
+            },
         )
         #expect(
             weight.value == .number(
@@ -1330,7 +1430,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let complaint = try #require(
-            proposal.proposals.first { $0.id == .patientComplaints },
+            proposal.proposals.first {
+                $0.id == .patientComplaints
+            },
         )
         #expect(
             complaint.value == .text(
@@ -1363,7 +1465,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values.count == 8,
@@ -1404,9 +1508,11 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.proposals.allSatisfy { text.contains(
-                $0.sourceQuote,
-            ) },
+            proposal.proposals.allSatisfy {
+                text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -1424,7 +1530,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values[
@@ -1469,7 +1577,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.proposals.first { $0.id == .patientGender }?.warnings.contains(
+            proposal.proposals.first {
+                $0.id == .patientGender
+            }?.warnings.contains(
                 .genderUnverified,
             ) == true,
         )
@@ -1489,7 +1599,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         let values = Dictionary(
-            uniqueKeysWithValues: proposal.proposals.map { ($0.id, $0.value) },
+            uniqueKeysWithValues: proposal.proposals.map {
+                ($0.id, $0.value)
+            },
         )
         #expect(
             values[
@@ -1520,17 +1632,23 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.proposals.first { $0.id == .patientWeightKG }?.warnings.contains(
+            proposal.proposals.first {
+                $0.id == .patientWeightKG
+            }?.warnings.contains(
                 .ambiguousDictation,
             ) == true,
         )
         #expect(
-            proposal.proposals.first { $0.id == .patientGender }?.value == .gender(
+            proposal.proposals.first {
+                $0.id == .patientGender
+            }?.value == .gender(
                 .male,
             ),
         )
         #expect(
-            proposal.proposals.first { $0.id == .patientGender }?.warnings.contains(
+            proposal.proposals.first {
+                $0.id == .patientGender
+            }?.warnings.contains(
                 .genderUnverified,
             ) == true,
         )
@@ -1550,12 +1668,16 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            forwardProposal.proposals.first { $0.id == .patientName }?.value == .text(
+            forwardProposal.proposals.first {
+                $0.id == .patientName
+            }?.value == .text(
                 "Дмитрий Орлов",
             ),
         )
         let gender = try #require(
-            forwardProposal.proposals.first { $0.id == .patientGender },
+            forwardProposal.proposals.first {
+                $0.id == .patientGender
+            },
         )
         #expect(
             gender.value == .gender(
@@ -1583,12 +1705,16 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            reverseProposal.proposals.first { $0.id == .patientName }?.value == .text(
+            reverseProposal.proposals.first {
+                $0.id == .patientName
+            }?.value == .text(
                 "Анна Петрова",
             ),
         )
         let reverseGender = try #require(
-            reverseProposal.proposals.first { $0.id == .patientGender },
+            reverseProposal.proposals.first {
+                $0.id == .patientGender
+            },
         )
         #expect(
             reverseGender.value == .gender(
@@ -1646,23 +1772,33 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            proposal.proposals.contains { $0.id == .patientName },
+            proposal.proposals.contains {
+                $0.id == .patientName
+            },
         )
         #expect(
-            proposal.proposals.contains { $0.id == .patientHeightCM },
+            proposal.proposals.contains {
+                $0.id == .patientHeightCM
+            },
         )
         #expect(
-            proposal.proposals.first { $0.id == .patientGender }?.value == .gender(
+            proposal.proposals.first {
+                $0.id == .patientGender
+            }?.value == .gender(
                 .male,
             ),
         )
         #expect(
-            proposal.proposals.first { $0.id == .patientGender }?.warnings.contains(
+            proposal.proposals.first {
+                $0.id == .patientGender
+            }?.warnings.contains(
                 .ambiguousDictation,
             ) == true,
         )
         #expect(
-            proposal.proposals.first { $0.id == .patientDateOfBirth }?.warnings.contains(
+            proposal.proposals.first {
+                $0.id == .patientDateOfBirth
+            }?.warnings.contains(
                 .dateUnverified,
             ) == true,
         )
@@ -1697,7 +1833,9 @@ struct DictationLabeledFormParserTests {
             ),
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .examinationDescription },
+            !proposal.proposals.contains {
+                $0.id == .examinationDescription
+            },
         )
     }
 
@@ -1720,7 +1858,9 @@ struct DictationLabeledFormParserTests {
             ) == [.patientGender],
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientName },
+            !proposal.proposals.contains {
+                $0.id == .patientName
+            },
         )
     }
 
@@ -1746,7 +1886,9 @@ struct DictationLabeledFormParserTests {
                 ),
             )
             let description = try #require(
-                proposal.proposals.first { $0.id == .examinationDescription },
+                proposal.proposals.first {
+                    $0.id == .examinationDescription
+                },
             )
             #expect(
                 description.value == .text(
@@ -1786,13 +1928,19 @@ struct DictationLabeledFormParserTests {
                 ),
             )
             #expect(
-                !proposal.proposals.contains { $0.id == .examinationDescription },
+                !proposal.proposals.contains {
+                    $0.id == .examinationDescription
+                },
             )
             #expect(
-                !proposal.proposals.contains { $0.id == .examinationDescription },
+                !proposal.proposals.contains {
+                    $0.id == .examinationDescription
+                },
             )
             #expect(
-                proposal.proposals.contains { $0.id == .patientName },
+                proposal.proposals.contains {
+                    $0.id == .patientName
+                },
             )
         }
     }

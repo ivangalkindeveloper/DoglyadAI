@@ -77,7 +77,9 @@ public struct DNeuralUltrasoundDictationLocalization: Decodable, Sendable {
             numbers.ones.count == 20, numbers.tens.count == 10, !numbers.hundred.isEmpty,
             !numbers.digits.isEmpty,
             numbers.digits.values.allSatisfy(
-                { $0.count == 1 && $0.first?.isASCII == true && $0.first?.isNumber == true },
+                {
+                    $0.count == 1 && $0.first?.isASCII == true && $0.first?.isNumber == true
+                },
             )
         else {
             throw DecodingError.dataCorruptedError(

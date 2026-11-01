@@ -25,7 +25,9 @@ struct ModuleStateTests {
                     type: .scan,
                 ),
             ),
-            getSubscriptionStatus: { statuses.value },
+            getSubscriptionStatus: {
+                statuses.value
+            },
             observeSubscriptionStatus: { observer in
                 observations += 1
                 let observation = statuses.sink(
@@ -36,10 +38,14 @@ struct ModuleStateTests {
                     observation.cancel()
                 }
             },
-            onSubscriptionStatusUpdated: { statuses.send(
-                $0,
-            ) },
-            getSettingsAI: { container.initialSettingsAI },
+            onSubscriptionStatusUpdated: {
+                statuses.send(
+                    $0,
+                )
+            },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             analyticsDestination: .screen(
                 .paywall,
@@ -118,7 +124,9 @@ struct ModuleStateTests {
                     type: .scan,
                 ),
             ),
-            getSubscriptionStatus: { root.status },
+            getSubscriptionStatus: {
+                root.status
+            },
             observeSubscriptionStatus: { observer in
                 let observation = root.observeStatus(
                     observer,
@@ -128,23 +136,33 @@ struct ModuleStateTests {
                     observation.cancel()
                 }
             },
-            onSubscriptionStatusUpdated: { root.update(
-                status: $0,
-            ) },
-            getSettingsAI: { root.resolveSettingsAI() },
-            onRefreshSubscriptionStatus: { subscriptionRefreshCount += 1 },
+            onSubscriptionStatusUpdated: {
+                root.update(
+                    status: $0,
+                )
+            },
+            getSettingsAI: {
+                root.resolveSettingsAI()
+            },
+            onRefreshSubscriptionStatus: {
+                subscriptionRefreshCount += 1
+            },
             arguments: nil,
             manageSubscription: {},
-            restorePurchases: { nil },
+            restorePurchases: {
+                nil
+            },
             requestRefund: {},
-            fetchProducts: { BillingProductsResponse(
-                products: [],
-                tiers: [SubscriptionTier(
-                    id: .pro,
-                    title: "Test subscription",
-                    features: ["Test feature"],
-                )],
-            ) },
+            fetchProducts: {
+                BillingProductsResponse(
+                    products: [],
+                    tiers: [SubscriptionTier(
+                        id: .pro,
+                        title: "Test subscription",
+                        features: ["Test feature"],
+                    )],
+                )
+            },
         )
         weak let weakModel = model
         #expect(
@@ -234,22 +252,34 @@ struct ModuleStateTests {
                     type: .scan,
                 ),
             ),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             observeExaminationChanges: { observer in
-                let observation = changes.sink { _ in observer() }
+                let observation = changes.sink { _ in
+                    observer()
+                }
                 return AnyCancellable {
                     observationCancelled = true
                     observation.cancel()
                 }
             },
-            getSelectedTemplate: { selectedTemplate },
+            getSelectedTemplate: {
+                selectedTemplate
+            },
             onTemplateSelected: { _ in },
             onTemplateReset: {},
-            getNeuralModel: { selectedModel },
+            getNeuralModel: {
+                selectedModel
+            },
             onNeuralModelSelected: { _ in },
         )
         weak let weakModel = model
@@ -304,14 +334,22 @@ struct ModuleStateTests {
             [first, second],
         )
         let arguments = PhotoViewArguments(
-            getPhotos: { source.value },
-            observePhotos: { source.sink(
-                receiveValue: $0,
-            ) },
+            getPhotos: {
+                source.value
+            },
+            observePhotos: {
+                source.sink(
+                    receiveValue: $0,
+                )
+            },
             initialPhotoID: first.id,
-            onDelete: { photo in source.send(
-                source.value.filter { $0.id != photo.id },
-            ) },
+            onDelete: { photo in
+                source.send(
+                    source.value.filter {
+                        $0.id != photo.id
+                    },
+                )
+            },
         )
         let router = DRouter(
             initialRoute: RouteScreen(
@@ -327,14 +365,22 @@ struct ModuleStateTests {
         let model = PhotoViewViewModel(
             container: container,
             router: router,
-            getSubscriptionStatus: { root.status },
-            observeSubscriptionStatus: { root.observeStatus(
-                $0,
-            ) },
-            onSubscriptionStatusUpdated: { root.update(
-                status: $0,
-            ) },
-            getSettingsAI: { root.resolveSettingsAI() },
+            getSubscriptionStatus: {
+                root.status
+            },
+            observeSubscriptionStatus: {
+                root.observeStatus(
+                    $0,
+                )
+            },
+            onSubscriptionStatusUpdated: {
+                root.update(
+                    status: $0,
+                )
+            },
+            getSettingsAI: {
+                root.resolveSettingsAI()
+            },
             onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )
@@ -368,7 +414,8 @@ struct ModuleStateTests {
         )
         switch model.state {
         case _ as PhotoViewEmptyState: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Deleting the last photo must publish the empty state",
             )
         }
@@ -394,22 +441,32 @@ struct ModuleStateTests {
                     type: .scan,
                 ),
             ),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             arguments: SelectDateOfBirthArguments(
                 currentValue: initialDate,
-                onSelected: { selectedDate = $0 },
+                onSelected: {
+                    selectedDate = $0
+                },
             ),
         )
         let fromDate = model.fromDate
         let toDate = model.toDate
         var publishedDates: [Date] = []
-        let observation = model.$date.sink { publishedDates.append(
-            $0,
-        ) }
+        let observation = model.$date.sink {
+            publishedDates.append(
+                $0,
+            )
+        }
 
         model.onDateChanged(
             updatedDate,
@@ -438,10 +495,16 @@ struct ModuleStateTests {
                     type: .onBoarding,
                 ),
             ),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
         )
         let initial = OnBoardingLegalState()
@@ -451,7 +514,8 @@ struct ModuleStateTests {
         var snapshots: [OnBoardingLegalState] = []
         let observation = model.$state.dropFirst().sink { state in
             switch state {
-            case let state as OnBoardingLegalState: snapshots.append(
+            case let state as OnBoardingLegalState:
+                snapshots.append(
                     state,
                 )
             default: break
@@ -477,7 +541,8 @@ struct ModuleStateTests {
         )
         switch model.state {
         case _ as OnBoardingLegalState: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Onboarding must require legal acceptance",
             )
         }
@@ -487,7 +552,8 @@ struct ModuleStateTests {
         model.onPressedNext()
         switch model.state {
         case _ as OnBoardingExaminationTypeState: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Accepted terms must allow the next onboarding step",
             )
         }
@@ -514,10 +580,16 @@ struct ModuleStateTests {
                     type: .scan,
                 ),
             ),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
@@ -559,7 +631,8 @@ struct ModuleStateTests {
         var snapshots: [ScanSpeechReviewProposalState] = []
         let observation = model.$state.dropFirst().sink { state in
             switch state {
-            case let state as ScanSpeechReviewProposalState: snapshots.append(
+            case let state as ScanSpeechReviewProposalState:
+                snapshots.append(
                     state,
                 )
             default: break
@@ -615,10 +688,16 @@ struct ModuleStateTests {
                     type: .scan,
                 ),
             ),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             messager: DMessager(),
             onSaveTemplate: { _ in },
@@ -626,8 +705,12 @@ struct ModuleStateTests {
         let inputTextController = model.nameTextController
         var transitions = 0
         var changes = 0
-        let stateObservation = model.$state.dropFirst().sink { _ in transitions += 1 }
-        let changeObservation = model.objectWillChange.sink { changes += 1 }
+        let stateObservation = model.$state.dropFirst().sink { _ in
+            transitions += 1
+        }
+        let changeObservation = model.objectWillChange.sink {
+            changes += 1
+        }
         inputTextController.setText(
             "Entered name",
         )
@@ -720,24 +803,42 @@ struct ModuleStateTests {
                 ),
             ),
             initialReport: report,
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
-            observeExaminationChanges: { _ in AnyCancellable {} },
-            getSelectedTemplate: { nil },
-            getNeuralModel: { container.usExaminationNeuralModelDefault },
+            observeExaminationChanges: { _ in
+                AnyCancellable {}
+            },
+            getSelectedTemplate: {
+                nil
+            },
+            getNeuralModel: {
+                container.usExaminationNeuralModelDefault
+            },
             onNeuralModelSelected: { _ in },
         )
         let arguments = PhotoViewArguments(
-            getPhotos: { source.report.examinationData.photos },
-            getPhotoRemarks: { source.report.actualModelReport.photoRemarks },
-            observePhotos: { observer in source.$report.map(
-                \.examinationData.photos,
-            ).sink(
-                receiveValue: observer,
-            ) },
+            getPhotos: {
+                source.report.examinationData.photos
+            },
+            getPhotoRemarks: {
+                source.report.actualModelReport.photoRemarks
+            },
+            observePhotos: { observer in
+                source.$report.map(
+                    \.examinationData.photos,
+                ).sink(
+                    receiveValue: observer,
+                )
+            },
             initialPhotoID: photo.id,
         )
         let model = PhotoViewViewModel(
@@ -748,10 +849,16 @@ struct ModuleStateTests {
                     arguments: arguments,
                 ),
             ),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )

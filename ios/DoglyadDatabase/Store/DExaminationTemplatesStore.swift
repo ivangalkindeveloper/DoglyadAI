@@ -25,7 +25,9 @@ public actor DExaminationTemplatesStore {
     ) throws {
         let id = value.id
         let descriptor = FetchDescriptor<USExaminationTemplateDB>(
-            predicate: #Predicate<USExaminationTemplateDB> { $0.id == id },
+            predicate: #Predicate<USExaminationTemplateDB> {
+                $0.id == id
+            },
         )
         if let existing = try modelContext.fetch(
             descriptor,
@@ -45,11 +47,15 @@ public actor DExaminationTemplatesStore {
         id: UUID,
     ) throws {
         let descriptor = FetchDescriptor<USExaminationTemplateDB>(
-            predicate: #Predicate<USExaminationTemplateDB> { $0.id == id },
+            predicate: #Predicate<USExaminationTemplateDB> {
+                $0.id == id
+            },
         )
         guard let item = try modelContext.fetch(
             descriptor,
-        ).first else { return }
+        ).first else {
+            return
+        }
         modelContext.delete(
             item,
         )

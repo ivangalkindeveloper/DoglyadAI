@@ -17,20 +17,8 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
             keyboardToolbar: {
                 if focus != nil {
                     DToolbar(
-                        upAccessibilityLabel: l10n[
-                            .buttonBack,
-                        ],
-                        downAccessibilityLabel: l10n[
-                            .buttonNext,
-                        ],
-                        doneAccessibilityLabel: l10n[
-                            .buttonDone,
-                        ],
                         onTapDone: viewModel.unfocus,
                         trailButtons: [DToolbarButton(
-                            accessibilityLabel: l10n[
-                                .subscriptionRecoveryRestoreButton,
-                            ],
                             style: .primaryDefault,
                             content: .text(
                                 l10n[
@@ -164,7 +152,9 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
             of: focus,
             initial: true,
         ) { _, newValue in
-            guard viewModel.focus != newValue else { return }
+            guard viewModel.focus != newValue else {
+                return
+            }
             viewModel.onFocusChanged(
                 newValue,
             )
@@ -173,7 +163,9 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
             of: viewModel.focus,
             initial: true,
         ) { _, newValue in
-            guard focus != newValue else { return }
+            guard focus != newValue else {
+                return
+            }
             focus = newValue
         }
         .onSubmit(

@@ -142,9 +142,11 @@ struct L10NTests {
         )
         #expect(
             throws: L10NError.self,
-        ) { try L10N(
-            localization: localization,
-        ) }
+        ) {
+            try L10N(
+                localization: localization,
+            )
+        }
     }
 
     @Test

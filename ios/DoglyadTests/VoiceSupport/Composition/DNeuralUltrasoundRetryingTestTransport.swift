@@ -21,7 +21,9 @@ final class DNeuralUltrasoundRetryingTestTransport: DNeuralUltrasoundServerTrans
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
-        guard !isFoundationOnly else { throw DNeuralModelError.unavailable }
+        guard !isFoundationOnly else {
+            throw DNeuralModelError.unavailable
+        }
         for attempt in 1 ... 3 {
             try Task.checkCancellation()
             calls += 1
@@ -35,7 +37,9 @@ final class DNeuralUltrasoundRetryingTestTransport: DNeuralUltrasoundServerTrans
             } catch is CancellationError {
                 throw CancellationError()
             } catch {
-                if attempt == 3 { throw error }
+                if attempt == 3 {
+                    throw error
+                }
                 try await Task.sleep(
                     for: .seconds(
                         2,

@@ -33,8 +33,5 @@ public struct DPageIndicator: DViewProtocol {
                     )
             }
         }
-        .accessibilityHidden(
-            true,
-        )
     }
 }

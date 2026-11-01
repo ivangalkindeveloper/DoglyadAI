@@ -84,7 +84,9 @@ final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
                 ],
             ),
         )
-        guard let userEmail else { return }
+        guard let userEmail else {
+            return
+        }
         coordinator.run(
             .sendingReportByEmail,
             isSheetDismissedOnPaywall: true,
@@ -157,7 +159,8 @@ private extension ShareViewModel {
             )
         } onDefer: {
             switch self.state {
-            case _ as ShareSendingState: self.emit(
+            case _ as ShareSendingState:
+                self.emit(
                     ShareReadyState(),
                 )
             default: break

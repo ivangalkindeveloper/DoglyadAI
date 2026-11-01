@@ -19,7 +19,9 @@ enum DNeuralUltrasoundDictationProposalReconciler {
         ) {
             guard request.allowedFields.contains(
                 candidate.id,
-            ) else { return }
+            ) else {
+                return
+            }
             if let current = byId[
                 candidate.id,
             ] {
@@ -84,13 +86,17 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                                original,
                            ) = current.value,
                            formatted.count(
-                               where: { ".,;:!?".contains(
-                                   $0,
-                               ) },
+                               where: {
+                                   ".,;:!?".contains(
+                                       $0,
+                                   )
+                               },
                            ) >= original.filter(
-                               { ".,;:!?".contains(
-                                   $0,
-                               ) },
+                               {
+                                   ".,;:!?".contains(
+                                       $0,
+                                   )
+                               },
                            ).count
                         {
                             byId[
@@ -223,12 +229,16 @@ enum DNeuralUltrasoundDictationProposalReconciler {
             proposals: request.allowedFields.compactMap { id in
                 guard let field = byId[
                     id,
-                ] else { return nil }
+                ] else {
+                    return nil
+                }
                 switch id {
                 case .patientName:
                     guard case let .text(
                         name,
-                    ) = field.value else { return field }
+                    ) = field.value else {
+                        return field
+                    }
                     return DNeuralUltrasoundVoiceFieldProposal(
                         id: id,
                         value: .text(
@@ -255,7 +265,9 @@ enum DNeuralUltrasoundDictationProposalReconciler {
         in text: String,
     ) -> Bool {
         guard let finding = generated?.proposals.first(
-            where: { $0.id.isExaminationDescription },
+            where: {
+                $0.id.isExaminationDescription
+            },
         ),
             let complaintRange = text.range(
                 of: quote,
@@ -264,7 +276,9 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                 of: finding.sourceQuote,
             ),
             complaintRange.upperBound <= findingRange.lowerBound
-        else { return false }
+        else {
+            return false
+        }
         return text[
             complaintRange.upperBound ..< findingRange.lowerBound,
         ]
@@ -281,7 +295,9 @@ enum DNeuralUltrasoundDictationProposalReconciler {
         fieldId: DNeuralUltrasoundVoiceFieldId,
         request: DNeuralUltrasoundDictationParseRequest,
     ) -> Bool {
-        if first == second { return true }
+        if first == second {
+            return true
+        }
         switch fieldId {
         case .examinationNumber: return false
         case .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM,
@@ -293,7 +309,9 @@ enum DNeuralUltrasoundDictationProposalReconciler {
             case let .text(
                 secondText,
             ) = second
-        else { return false }
+        else {
+            return false
+        }
         func normalized(
             _ text: String,
         ) -> String {

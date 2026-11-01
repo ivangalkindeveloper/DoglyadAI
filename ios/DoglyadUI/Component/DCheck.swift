@@ -38,8 +38,5 @@ public struct DCheck: DViewProtocol {
                 width: size.s24,
                 height: size.s24,
             )
-            .accessibilityHidden(
-                true,
-            )
     }
 }

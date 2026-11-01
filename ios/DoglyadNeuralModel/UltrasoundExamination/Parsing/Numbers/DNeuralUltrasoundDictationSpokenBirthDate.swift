@@ -15,7 +15,9 @@ enum DNeuralUltrasoundDictationSpokenBirthDate {
         guard quote.range(
             of: birthCue,
             options: .regularExpression,
-        ) != nil else { return nil }
+        ) != nil else {
+            return nil
+        }
         let digitsText = quote.replacingOccurrences(
             of: birthCue,
             with: "",
@@ -40,7 +42,10 @@ enum DNeuralUltrasoundDictationSpokenBirthDate {
             ),
             case let .date(
                 date,
-            ) = parsed { return date }
+            ) = parsed
+        {
+            return date
+        }
         // Recognizers may join adjacent dictated groups, for example
         // "1972-0802" or "2005, 0907". A four-digit year at the beginning
         // and a valid month/day make this year-first reading checkable.
@@ -151,7 +156,9 @@ enum DNeuralUltrasoundDictationSpokenBirthDate {
             separator: ",",
             omittingEmptySubsequences: false,
         )
-        guard groups.count == 3 else { return nil }
+        guard groups.count == 3 else {
+            return nil
+        }
         let digits = groups.compactMap { group in
             DNeuralSpokenDigitSequence.parse(
                 group.trimmingCharacters(
@@ -179,7 +186,9 @@ enum DNeuralUltrasoundDictationSpokenBirthDate {
             case let .date(
                 date,
             ) = value
-        else { return nil }
+        else {
+            return nil
+        }
         return date
     }
 }

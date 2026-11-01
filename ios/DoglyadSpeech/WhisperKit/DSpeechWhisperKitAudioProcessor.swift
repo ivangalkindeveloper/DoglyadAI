@@ -12,12 +12,35 @@ final class DSpeechWhisperKitAudioProcessor: AudioProcessing, @unchecked Sendabl
     private var recordedSamples: ContiguousArray<Float> = []
     private var recordedEnergy: [Float] = []
 
-    var isRecording: Bool { engineLock.withLock { processor.audioEngine?.isRunning == true } }
-    var audioSamples: ContiguousArray<Float> { samplesLock.withLock { recordedSamples } }
-    var relativeEnergy: [Float] { samplesLock.withLock { recordedEnergy } }
+    var isRecording: Bool {
+        engineLock.withLock {
+            processor.audioEngine?.isRunning == true
+        }
+    }
+
+    var audioSamples: ContiguousArray<Float> {
+        samplesLock.withLock {
+            recordedSamples
+        }
+    }
+
+    var relativeEnergy: [Float] {
+        samplesLock.withLock {
+            recordedEnergy
+        }
+    }
+
     var relativeEnergyWindow: Int {
-        get { engineLock.withLock { processor.relativeEnergyWindow } }
-        set { engineLock.withLock { processor.relativeEnergyWindow = newValue } }
+        get {
+            engineLock.withLock {
+                processor.relativeEnergyWindow
+            }
+        }
+        set {
+            engineLock.withLock {
+                processor.relativeEnergyWindow = newValue
+            }
+        }
     }
 
     func startRecordingLive(
@@ -25,7 +48,9 @@ final class DSpeechWhisperKitAudioProcessor: AudioProcessing, @unchecked Sendabl
         callback: (([Float]) -> Void)?,
     ) throws {
         engineLock.lock()
-        defer { engineLock.unlock() }
+        defer {
+            engineLock.unlock()
+        }
         try Task.checkCancellation()
         try DSpeechAudioSession.activate()
         samplesLock.withLock {
@@ -53,7 +78,9 @@ final class DSpeechWhisperKitAudioProcessor: AudioProcessing, @unchecked Sendabl
     }
 
     func pauseRecording() {
-        engineLock.withLock { processor.pauseRecording() }
+        engineLock.withLock {
+            processor.pauseRecording()
+        }
     }
 
     func resumeRecordingLive(
@@ -61,7 +88,9 @@ final class DSpeechWhisperKitAudioProcessor: AudioProcessing, @unchecked Sendabl
         callback: (([Float]) -> Void)?,
     ) throws {
         engineLock.lock()
-        defer { engineLock.unlock() }
+        defer {
+            engineLock.unlock()
+        }
         try Task.checkCancellation()
         try DSpeechAudioSession.activate()
         if let callback {
@@ -85,13 +114,17 @@ final class DSpeechWhisperKitAudioProcessor: AudioProcessing, @unchecked Sendabl
         inputDeviceID: DeviceID?,
     ) -> (AsyncThrowingStream<[Float], Error>, AsyncThrowingStream<[Float], Error>.Continuation) {
         let (stream, continuation) = AsyncThrowingStream<[Float], Error>.makeStream()
-        continuation.onTermination = { [weak self] _ in self?.stopRecording() }
+        continuation.onTermination = { [weak self] _ in
+            self?.stopRecording()
+        }
         do {
             try startRecordingLive(
                 inputDeviceID: inputDeviceID,
-                callback: { continuation.yield(
-                    $0,
-                ) },
+                callback: {
+                    continuation.yield(
+                        $0,
+                    )
+                },
             )
         } catch {
             continuation.finish(
@@ -114,9 +147,11 @@ final class DSpeechWhisperKitAudioProcessor: AudioProcessing, @unchecked Sendabl
                 recordedEnergy = []
                 return
             }
-            if recordedSamples.count > count { recordedSamples.removeFirst(
-                recordedSamples.count - count,
-            ) }
+            if recordedSamples.count > count {
+                recordedSamples.removeFirst(
+                    recordedSamples.count - count,
+                )
+            }
         }
     }
 

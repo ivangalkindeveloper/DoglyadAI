@@ -90,10 +90,14 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
         func applyInsets(
             to webView: WKWebView,
         ) {
-            guard isLoaded else { return }
+            guard isLoaded else {
+                return
+            }
             let topInset = parent.topInset
             let bottomInset = parent.bottomInset
-            guard appliedTopInset != topInset || appliedBottomInset != bottomInset else { return }
+            guard appliedTopInset != topInset || appliedBottomInset != bottomInset else {
+                return
+            }
             appliedTopInset = topInset
             appliedBottomInset = bottomInset
             webView.evaluateJavaScript(

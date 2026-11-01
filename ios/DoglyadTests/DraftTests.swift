@@ -77,7 +77,9 @@ struct DraftTests {
         )
 
         let snapshot = try await store.fetchDraft { draft in
-            guard let draft else { return Snapshot.empty }
+            guard let draft else {
+                return Snapshot.empty
+            }
             let value = USExaminationDraft.fromDB(
                 draft,
             )
@@ -118,7 +120,9 @@ struct DraftTests {
             value: updatedForm.toDB(),
         )
         let updatedSnapshot = try await store.fetchDraft { draft in
-            guard let draft else { return Snapshot.empty }
+            guard let draft else {
+                return Snapshot.empty
+            }
             let value = USExaminationDraft.fromDB(
                 draft,
             )
@@ -140,7 +144,9 @@ struct DraftTests {
         )
 
         try await store.clearDraft()
-        let isEmpty = try await store.fetchDraft { $0 == nil }
+        let isEmpty = try await store.fetchDraft {
+            $0 == nil
+        }
         #expect(
             isEmpty,
         )
@@ -159,15 +165,19 @@ struct DraftTests {
 
         autosaver.start(
             publishers: [changes.eraseToAnyPublisher()],
-            makeDraft: { currentDraft },
+            makeDraft: {
+                currentDraft
+            },
             saveDraft: { draft in
                 savedDrafts.append(
                     draft,
                 )
             },
-            onFailure: { _ in Issue.record(
-                "Unexpected autosave failure",
-            ) },
+            onFailure: { _ in
+                Issue.record(
+                    "Unexpected autosave failure",
+                )
+            },
         )
 
         currentDraft = 1
@@ -198,15 +208,19 @@ struct DraftTests {
 
         autosaver.start(
             publishers: [changes.eraseToAnyPublisher()],
-            makeDraft: { currentDraft },
+            makeDraft: {
+                currentDraft
+            },
             saveDraft: { draft in
                 savedDrafts.append(
                     draft,
                 )
             },
-            onFailure: { _ in Issue.record(
-                "Unexpected autosave failure",
-            ) },
+            onFailure: { _ in
+                Issue.record(
+                    "Unexpected autosave failure",
+                )
+            },
         )
 
         autosaver.flush()
@@ -238,16 +252,22 @@ struct DraftTests {
         var failures = 0
         autosaver.start(
             publishers: [changes.eraseToAnyPublisher()],
-            makeDraft: { draft },
+            makeDraft: {
+                draft
+            },
             saveDraft: { value in
-                guard isStorageAvailable else { throw CocoaError(
-                    .fileWriteUnknown,
-                ) }
+                guard isStorageAvailable else {
+                    throw CocoaError(
+                        .fileWriteUnknown,
+                    )
+                }
                 savedDrafts.append(
                     value,
                 )
             },
-            onFailure: { _ in failures += 1 },
+            onFailure: { _ in
+                failures += 1
+            },
         )
         changes.send()
         autosaver.flush()
@@ -285,9 +305,11 @@ struct DraftTests {
                 1,
             )
         }
-        autosaver.enqueue { writes.append(
-            2,
-        ) }
+        autosaver.enqueue {
+            writes.append(
+                2,
+            )
+        }
         try await autosaver.waitForPendingSave()
         #expect(
             writes == [1, 2],
@@ -311,18 +333,24 @@ struct DraftTests {
             publishers: [
                 inputTextController.$text
                     .dropFirst()
-                    .map { _ in () }
+                    .map { _ in
+                        ()
+                    }
                     .eraseToAnyPublisher(),
             ],
-            makeDraft: { inputTextController.text },
+            makeDraft: {
+                inputTextController.text
+            },
             saveDraft: { draft in
                 savedDrafts.append(
                     draft,
                 )
             },
-            onFailure: { _ in Issue.record(
-                "Unexpected autosave failure",
-            ) },
+            onFailure: { _ in
+                Issue.record(
+                    "Unexpected autosave failure",
+                )
+            },
         )
 
         inputTextController.setText(

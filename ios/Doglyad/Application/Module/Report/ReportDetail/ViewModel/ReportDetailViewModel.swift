@@ -60,7 +60,9 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
             ),
         )
         examinationObservation = observeExaminationChanges { [weak self] in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
             neuralModel = getNeuralModel()
             template = getSelectedTemplate()
         }
@@ -70,9 +72,13 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         "\(report.examinationData.patientName), \(report.date.localizedDateTime(locale: l10n.locale))"
     }
 
-    var selectedNeuralModelTitle: String { neuralModel.title }
+    var selectedNeuralModelTitle: String {
+        neuralModel.title
+    }
 
-    var selectedTemplate: USExaminationTemplate? { template }
+    var selectedTemplate: USExaminationTemplate? {
+        template
+    }
 
     func photoCardConfiguration(
         for photoId: UUID,
@@ -81,11 +87,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
             $0.photoId == photoId && !$0.points.isEmpty
         }
         return PhotoCardConfiguration(
-            badge: isPhotoRemarksAvailable ? .warning(
-                accessibilityLabel: l10n[
-                    .reportDetailPhotoRemarksLabel,
-                ],
-            ) : nil,
+            badge: isPhotoRemarksAvailable ? .warning : nil,
         )
     }
 
@@ -124,13 +126,19 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         coordinator.screen(
             .photoView,
             arguments: PhotoViewArguments(
-                getPhotos: { [weak self] in self?.report.examinationData.photos ?? [] },
-                getPhotoRemarks: { [weak self] in self?.report.actualModelReport.photoRemarks ?? [] },
-                observePhotos: { [weak self] observer in self?.$report.map(
-                    \.examinationData.photos,
-                ).sink(
-                    receiveValue: observer,
-                ) ?? AnyCancellable {} },
+                getPhotos: { [weak self] in
+                    self?.report.examinationData.photos ?? []
+                },
+                getPhotoRemarks: { [weak self] in
+                    self?.report.actualModelReport.photoRemarks ?? []
+                },
+                observePhotos: { [weak self] observer in
+                    self?.$report.map(
+                        \.examinationData.photos,
+                    ).sink(
+                        receiveValue: observer,
+                    ) ?? AnyCancellable {}
+                },
                 initialPhotoID: photo.id,
                 subTitle: subTitle,
             ),

@@ -22,12 +22,14 @@ public struct DCaptureFrame: DViewProtocol {
                             y: cornerLength,
                         ),
                     )
+
                     path.addLine(
                         to: CGPoint(
                             x: CGFloat.zero,
                             y: cornerRadius,
                         ),
                     )
+
                     path.addQuadCurve(
                         to: CGPoint(
                             x: cornerRadius,
@@ -38,6 +40,7 @@ public struct DCaptureFrame: DViewProtocol {
                             y: CGFloat.zero,
                         ),
                     )
+
                     path.addLine(
                         to: CGPoint(
                             x: cornerLength,
@@ -57,12 +60,14 @@ public struct DCaptureFrame: DViewProtocol {
                             y: CGFloat.zero,
                         ),
                     )
+
                     path.addLine(
                         to: CGPoint(
                             x: width - cornerRadius,
                             y: CGFloat.zero,
                         ),
                     )
+
                     path.addQuadCurve(
                         to: CGPoint(
                             x: width,
@@ -73,6 +78,7 @@ public struct DCaptureFrame: DViewProtocol {
                             y: CGFloat.zero,
                         ),
                     )
+
                     path.addLine(
                         to: CGPoint(
                             x: width,
@@ -92,12 +98,14 @@ public struct DCaptureFrame: DViewProtocol {
                             y: height - cornerLength,
                         ),
                     )
+
                     path.addLine(
                         to: CGPoint(
                             x: CGFloat.zero,
                             y: height - cornerRadius,
                         ),
                     )
+
                     path.addQuadCurve(
                         to: CGPoint(
                             x: cornerRadius,
@@ -108,6 +116,7 @@ public struct DCaptureFrame: DViewProtocol {
                             y: height,
                         ),
                     )
+
                     path.addLine(
                         to: CGPoint(
                             x: cornerLength,
@@ -127,12 +136,14 @@ public struct DCaptureFrame: DViewProtocol {
                             y: height,
                         ),
                     )
+
                     path.addLine(
                         to: CGPoint(
                             x: width - cornerRadius,
                             y: height,
                         ),
                     )
+
                     path.addQuadCurve(
                         to: CGPoint(
                             x: width,
@@ -143,6 +154,7 @@ public struct DCaptureFrame: DViewProtocol {
                             y: height,
                         ),
                     )
+
                     path.addLine(
                         to: CGPoint(
                             x: width,
@@ -160,8 +172,5 @@ public struct DCaptureFrame: DViewProtocol {
                 height: height,
             )
         }
-        .accessibilityHidden(
-            true,
-        )
     }
 }

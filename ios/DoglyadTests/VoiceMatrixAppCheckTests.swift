@@ -14,9 +14,11 @@ final class VoiceMatrixAppCheckTests: XCTestCase {
                 "Explicit device availability probe only",
             )
         }
-        guard #available(iOS 26.0, *) else { throw XCTSkip(
-            "Foundation Models requires iOS 26",
-        ) }
+        guard #available(iOS 26.0, *) else {
+            throw XCTSkip(
+                "Foundation Models requires iOS 26",
+            )
+        }
         let model = SystemLanguageModel.default
         let result: [String: Any] = [
             "availability": String(

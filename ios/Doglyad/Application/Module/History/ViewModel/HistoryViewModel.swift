@@ -79,7 +79,9 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         )
     }
 
-    func onTapRetry() { loadInitialPage() }
+    func onTapRetry() {
+        loadInitialPage()
+    }
 
     func onOffsetAppear() {
         loadNextOffset()
@@ -110,8 +112,13 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
     }
 
     private func loadNextOffset() {
-        guard offsetLoadingTask == nil, let offset = nextOffset else { return }
-        switch state { case _ as HistoryLoadingState: return; default: break }
+        guard offsetLoadingTask == nil, let offset = nextOffset else {
+            return
+        }
+        switch state {
+        case _ as HistoryLoadingState: return;
+        default: break
+        }
         emit(
             HistoryLoadingState(),
         )
@@ -120,17 +127,23 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
                 limit: self.pageSize,
                 offset: offset,
             )
-        } onDefer: { self.offsetLoadingTask = nil }
-            onMainSuccess: { reports in self.append(
+        } onDefer: {
+            self.offsetLoadingTask = nil
+        }
+        onMainSuccess: { reports in
+            self.append(
                 reports,
                 to: self.sections,
                 offset: offset,
-            ) }
-            onMainUnknownError: { error in self.emit(
+            )
+        }
+        onMainUnknownError: { error in
+            self.emit(
                 HistoryFailedState(
                     error: error,
                 ),
-            ) }
+            )
+        }
     }
 
     private func append(
@@ -139,21 +152,26 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         offset: Int,
     ) {
         var ids = Set(
-            sections.flatMap { $0.reports.map(
-                \.id,
-            ) },
+            sections.flatMap {
+                $0.reports.map(
+                    \.id,
+                )
+            },
         )
-        let uniqueReports = reports.filter { ids.insert(
-            $0.id,
-        ).inserted }
+        let uniqueReports = reports.filter {
+            ids.insert(
+                $0.id,
+            ).inserted
+        }
         let updated = sectionBuilder.appending(
             uniqueReports,
             to: sections,
         )
-        guard !updated.isEmpty else { emit(
-            HistoryEmptyState(),
-        )
-        return
+        guard !updated.isEmpty else {
+            emit(
+                HistoryEmptyState(),
+            )
+            return
         }
         self.sections = updated
         nextOffset = reports.count == pageSize ? offset + reports.count : nil

@@ -12,13 +12,19 @@ enum DNeuralSpokenDigitSequence {
             with: locale,
         )
         .split(
-            whereSeparator: { $0.isWhitespace || ",.;:-".contains(
-                $0,
-            ) },
+            whereSeparator: {
+                $0.isWhitespace || ",.;:-".contains(
+                    $0,
+                )
+            },
         )
-        guard !words.isEmpty, words.count <= 8 else { return nil }
+        guard !words.isEmpty, words.count <= 8 else {
+            return nil
+        }
         let dictionary = localization.digits
-        guard !dictionary.isEmpty else { return nil }
+        guard !dictionary.isEmpty else {
+            return nil
+        }
         var digits = ""
         for word in words {
             if word.count == 1, let digit = word.first, digit.isASCII, digit.isNumber {

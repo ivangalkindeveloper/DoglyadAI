@@ -11,5 +11,7 @@ final class SubscriptionRecoveryKeyState: SubscriptionRecoveryStateProtocol, @Ma
     static func == (
         lhs: SubscriptionRecoveryKeyState,
         rhs: SubscriptionRecoveryKeyState,
-    ) -> Bool { lhs.key == rhs.key }
+    ) -> Bool {
+        lhs.key == rhs.key
+    }
 }

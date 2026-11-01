@@ -51,7 +51,9 @@ public extension DText {
 private struct DTextModifier: ViewModifier {
     @EnvironmentObject private var theme: DTheme
 
-    private var typography: DTypography { theme.typography }
+    private var typography: DTypography {
+        theme.typography
+    }
 
     let font: Font?
     let color: Color?

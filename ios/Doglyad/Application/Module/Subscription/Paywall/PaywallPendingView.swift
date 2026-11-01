@@ -12,6 +12,7 @@ struct PaywallPendingView: DViewProtocol {
         ).dStyle(
             font: typography.linkSmall,
         )
+
         DText(
             l10n[
                 .subscriptionPendingDescription,

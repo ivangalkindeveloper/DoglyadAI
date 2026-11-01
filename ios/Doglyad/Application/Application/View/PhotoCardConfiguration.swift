@@ -1,5 +1,3 @@
-import SwiftUI
-
 struct PhotoCardConfiguration {
     let badge: Badge?
 
@@ -9,10 +7,12 @@ struct PhotoCardConfiguration {
         self.badge = badge
     }
 
-    var isBadgeVisible: Bool { badge != nil }
+    var isBadgeVisible: Bool {
+        badge != nil
+    }
 
     enum Badge {
         case delete(action: () -> Void)
-        case warning(accessibilityLabel: LocalizedStringResource)
+        case warning
     }
 }

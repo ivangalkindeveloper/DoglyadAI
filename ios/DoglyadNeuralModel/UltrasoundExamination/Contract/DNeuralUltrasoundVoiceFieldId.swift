@@ -53,8 +53,12 @@
         wireValue: String,
     ) {
         guard let field = Self.allCases.first(
-            where: { $0.wireValue == wireValue },
-        ) else { return nil }
+            where: {
+                $0.wireValue == wireValue
+            },
+        ) else {
+            return nil
+        }
         self = field
     }
 }

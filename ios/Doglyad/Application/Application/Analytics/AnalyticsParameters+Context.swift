@@ -44,7 +44,9 @@ extension AnalyticsParameters {
                 .warningCount: .int(
                     proposals.reduce(
                         0,
-                    ) { $0 + $1.warnings.count },
+                    ) {
+                        $0 + $1.warnings.count
+                    },
                 ),
             ],
         )
@@ -63,7 +65,9 @@ extension AnalyticsParameters {
                 .warningCount: .int(
                     proposal.proposals.reduce(
                         0,
-                    ) { $0 + $1.warnings.count },
+                    ) {
+                        $0 + $1.warnings.count
+                    },
                 ),
                 .durationMs: .int(
                     Int(

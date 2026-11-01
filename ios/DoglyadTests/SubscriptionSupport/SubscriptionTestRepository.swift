@@ -52,19 +52,27 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
     }
 
     var status: SubscriptionStatus {
-        get { backend.status }
-        set { backend.status = newValue }
+        get {
+            backend.status
+        }
+        set {
+            backend.status = newValue
+        }
     }
 
     func observeChanges(
         _ observer: @escaping (Result<SubscriptionTransactionUpdate, Error>) -> Void,
     ) async throws {
         let (stream, continuation) = AsyncStream<Result<Void, Error>>.makeStream()
-        let observation = changes.sink { continuation.yield(
-            $0,
-        ) }
+        let observation = changes.sink {
+            continuation.yield(
+                $0,
+            )
+        }
         observationCount += 1
-        defer { observation.cancel() }
+        defer {
+            observation.cancel()
+        }
         for await result in stream {
             try Task.checkCancellation()
             switch result {
@@ -83,7 +91,8 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
                 )
             case let .failure(
                 error,
-            ): observer(
+            ):
+                observer(
                     .failure(
                         error,
                     ),
@@ -95,7 +104,9 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
 
     func fetchCatalog() async throws -> SubscriptionCatalog {
         try await onFetchCatalog?()
-        if isLoadingFailed { throw SubscriptionError.offeringsUnavailable }
+        if isLoadingFailed {
+            throw SubscriptionError.offeringsUnavailable
+        }
         return SubscriptionCatalog(
             tiers: tiers,
             plans: availablePlans ?? [plan],
@@ -110,18 +121,21 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
         purchasedPlan = plan
         try await onPurchase?()
         switch plan.source {
-        case .apple: onPurchasePrepared(
+        case .apple:
+            onPurchasePrepared(
                 .apple(
                     previousTransactionId: 1,
                     previousPurchaseDate: .distantPast,
                 ),
             )
         case .yookassa:
-            if let preparedPaymentID { onPurchasePrepared(
-                .yookassa(
-                    paymentId: preparedPaymentID,
-                ),
-            ) }
+            if let preparedPaymentID {
+                onPurchasePrepared(
+                    .yookassa(
+                        paymentId: preparedPaymentID,
+                    ),
+                )
+            }
         }
         switch purchaseResult {
         case .pending: return .pending
@@ -151,9 +165,15 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
         return false
     }
 
-    func synchronizeCurrentEntitlements() async throws -> Bool { false }
+    func synchronizeCurrentEntitlements() async throws -> Bool {
+        false
+    }
 
-    func manageSubscription() async throws { manageCount += 1 }
+    func manageSubscription() async throws {
+        manageCount += 1
+    }
 
-    func requestRefund() async throws { refundCount += 1 }
+    func requestRefund() async throws {
+        refundCount += 1
+    }
 }

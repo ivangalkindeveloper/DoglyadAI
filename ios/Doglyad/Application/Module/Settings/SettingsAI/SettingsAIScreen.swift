@@ -14,21 +14,39 @@ struct SettingsAIScreen: View {
         SettingsAIScreenView(
             viewModel: SettingsAIViewModel(
                 container: container,
-                getInitialNeuralModel: { [ultrasoundViewModel] in ultrasoundViewModel.neuralModel },
-                getInitialIsMarkdown: { [ultrasoundViewModel] in ultrasoundViewModel.isMarkdown },
-                getInitialTemperature: { [ultrasoundViewModel] in ultrasoundViewModel.temperature },
-                getInitialMaxTokens: { [ultrasoundViewModel] in ultrasoundViewModel.maxTokens },
+                getInitialNeuralModel: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.neuralModel
+                },
+                getInitialIsMarkdown: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.isMarkdown
+                },
+                getInitialTemperature: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.temperature
+                },
+                getInitialMaxTokens: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.maxTokens
+                },
                 messager: messager,
                 router: router,
-                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
-                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
-                    observer,
-                ) },
-                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
-                    status: status,
-                ) },
-                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
+                getSubscriptionStatus: { [subscriptionViewModel] in
+                    subscriptionViewModel.status
+                },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in
+                    subscriptionViewModel.observeStatus(
+                        observer,
+                    )
+                },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in
+                    subscriptionViewModel.update(
+                        status: status,
+                    )
+                },
+                getSettingsAI: { [subscriptionViewModel] in
+                    subscriptionViewModel.resolveSettingsAI()
+                },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in
+                    await subscriptionViewModel.refreshStatus()
+                },
                 onNeuralModelSelected: { [ultrasoundViewModel] model in
                     try await ultrasoundViewModel.saveNeuralModel(
                         model,

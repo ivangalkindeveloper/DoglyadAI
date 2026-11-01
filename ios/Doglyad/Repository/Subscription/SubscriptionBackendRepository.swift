@@ -16,7 +16,9 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
     }
 
     func configureIdentity() async throws {
-        guard try await securityDatabase.fetchBillingIdentity() == nil else { return }
+        guard try await securityDatabase.fetchBillingIdentity() == nil else {
+            return
+        }
         let identity: BillingIdentityResponse = try await httpClient.post(
             endPoint: "/subscriptions/register",
             body: String?.none,
@@ -51,10 +53,14 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
             endPoint: "/subscriptions/status",
             headers: nil,
         )
-        guard let response else { return nil }
+        guard let response else {
+            return nil
+        }
         guard let entitlement = configEntitlements[
             response.type,
-        ] else { throw SubscriptionError.offeringsUnavailable }
+        ] else {
+            throw SubscriptionError.offeringsUnavailable
+        }
         return SubscriptionStatus(
             planId: response.planId,
             type: response.type,
@@ -77,7 +83,9 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
             headers: nil,
             encoderUserInfo: nil,
         )
-        guard let identity else { return false }
+        guard let identity else {
+            return false
+        }
         let previous = try await securityDatabase.fetchBillingIdentity()
         try await saveIdentity(
             identity,

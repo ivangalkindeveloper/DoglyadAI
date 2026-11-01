@@ -49,7 +49,9 @@ struct OnBoardingCurrentPageView: DViewProtocol {
                 ) {
                     DCheckbox(
                         isChecked: Binding(
-                            get: { state.isLegalAccepted },
+                            get: {
+                                state.isLegalAccepted
+                            },
                             set: viewModel.onLegalAcceptedChanged,
                         ),
                     )

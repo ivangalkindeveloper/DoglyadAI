@@ -66,7 +66,7 @@ final class ClassMemberOrder: SyntaxRewriter {
     }
 }
 
-/// Enforces line breaks for argument lists that SwiftFormat leaves on one line.
+/// Enforces argument, scope and SwiftUI statement layout before SwiftFormat.
 /// SwiftFormat runs afterward to apply the project's indentation and spacing.
 final class ArgumentLineBreaks: SyntaxRewriter {
     override func visit(_ node: MemberBlockItemListSyntax) -> MemberBlockItemListSyntax {
@@ -90,18 +90,138 @@ final class ArgumentLineBreaks: SyntaxRewriter {
             || declaration.is(DeinitializerDeclSyntax.self)
     }
 
-    override func visit(_ node: InitializerDeclSyntax) -> DeclSyntax {
-        var result = super.visit(node).cast(InitializerDeclSyntax.self)
-        if var body = result.body, !body.statements.isEmpty {
-            body.statements = CodeBlockItemListSyntax(body.statements.map { statement in
-                var result = statement
-                result.leadingTrivia = startingOnNewLine(result.leadingTrivia)
-                return result
-            })
-            body.rightBrace.leadingTrivia = startingOnNewLine(body.rightBrace.leadingTrivia)
-            result.body = body
+    override func visit(_ node: CodeBlockItemListSyntax) -> CodeBlockItemListSyntax {
+        let statements = super.visit(node)
+        guard isViewBuilderScope(node) else { return statements }
+        return CodeBlockItemListSyntax(statements.enumerated().map { index, statement in
+            var result = statement
+            if index > 0, isPresentation(statement) {
+                result.leadingTrivia = startingAfterBlankLine(result.leadingTrivia)
+            }
+            return result
+        })
+    }
+
+    override func visit(_ node: CodeBlockSyntax) -> CodeBlockSyntax {
+        var result = super.visit(node)
+        if !result.statements.isEmpty {
+            result.statements = multilineStatements(result.statements)
+            result.rightBrace.leadingTrivia = startingOnNewLine(result.rightBrace.leadingTrivia)
         }
-        return DeclSyntax(result)
+        return result
+    }
+
+    override func visit(_ node: ClosureExprSyntax) -> ExprSyntax {
+        var result = super.visit(node).cast(ClosureExprSyntax.self)
+        if !result.statements.isEmpty {
+            result.statements = multilineStatements(result.statements)
+            result.rightBrace.leadingTrivia = startingOnNewLine(result.rightBrace.leadingTrivia)
+        }
+        return ExprSyntax(result)
+    }
+
+    override func visit(_ node: AccessorBlockSyntax) -> AccessorBlockSyntax {
+        var result = super.visit(node)
+        switch result.accessors {
+        case let .getter(statements) where !statements.isEmpty:
+            result.accessors = .getter(multilineStatements(statements))
+            result.rightBrace.leadingTrivia = startingOnNewLine(result.rightBrace.leadingTrivia)
+        case let .accessors(accessors) where !accessors.isEmpty:
+            result.accessors = .accessors(AccessorDeclListSyntax(accessors.map { accessor in
+                var accessor = accessor
+                accessor.leadingTrivia = startingOnNewLine(accessor.leadingTrivia)
+                return accessor
+            }))
+            result.rightBrace.leadingTrivia = startingOnNewLine(result.rightBrace.leadingTrivia)
+        default: break
+        }
+        return result
+    }
+
+    override func visit(_ node: SwitchExprSyntax) -> ExprSyntax {
+        var result = super.visit(node).cast(SwitchExprSyntax.self)
+        if !result.cases.isEmpty {
+            result.cases = SwitchCaseListSyntax(result.cases.map { element in
+                var element = element
+                element.leadingTrivia = startingOnNewLine(element.leadingTrivia)
+                return element
+            })
+            result.rightBrace.leadingTrivia = startingOnNewLine(result.rightBrace.leadingTrivia)
+        }
+        return ExprSyntax(result)
+    }
+
+    override func visit(_ node: SwitchCaseSyntax) -> SwitchCaseSyntax {
+        var result = super.visit(node)
+        if result.statements.description.contains("\n") {
+            result.statements = multilineStatements(result.statements)
+        }
+        return result
+    }
+
+    private func multilineStatements(_ statements: CodeBlockItemListSyntax) -> CodeBlockItemListSyntax {
+        CodeBlockItemListSyntax(statements.map { statement in
+            var result = statement
+            result.leadingTrivia = startingOnNewLine(result.leadingTrivia)
+            return result
+        })
+    }
+
+    private func isPresentation(_ statement: CodeBlockItemSyntax) -> Bool {
+        statement.item.is(ExprSyntax.self) || statement.item.is(IfConfigDeclSyntax.self)
+    }
+
+    private func isViewBuilderScope(_ node: some SyntaxProtocol) -> Bool {
+        var parent = node.parent
+        while let current = parent {
+            if let argument = current.as(LabeledExprSyntax.self),
+               let label = argument.label?.text,
+               label == "action" || label == "get" || label == "set" || label.hasPrefix("on") {
+                return false
+            }
+            if let trailing = current.as(MultipleTrailingClosureElementSyntax.self),
+               trailing.label.text.hasPrefix("on") { return false }
+            if let call = current.as(FunctionCallExprSyntax.self) {
+                let name = call.calledExpression.as(DeclReferenceExprSyntax.self)?.baseName.text
+                    ?? call.calledExpression.as(MemberAccessExprSyntax.self)?.declName.baseName.text ?? ""
+                if name == "Task" || name == "task" || name.hasPrefix("on") { return false }
+            }
+            if let macro = current.as(MacroExpansionExprSyntax.self), macro.macroName.text == "Preview" {
+                return true
+            }
+            if let binding = current.as(PatternBindingSyntax.self), binding.accessorBlock != nil {
+                if binding.typeAnnotation?.type.as(SomeOrAnyTypeSyntax.self)?.constraint.trimmedDescription == "View" {
+                    return true
+                }
+                guard binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text == "body" else { return false }
+                return hasViewOwner(binding)
+            }
+            if let function = current.as(FunctionDeclSyntax.self) {
+                let hasBuilder = function.attributes.contains {
+                    $0.as(AttributeSyntax.self)?.attributeName.trimmedDescription == "ViewBuilder"
+                }
+                return hasBuilder || function.name.text == "body"
+                    && function.signature.returnClause?.type.trimmedDescription.contains("View") == true
+            }
+            parent = current.parent
+        }
+        return false
+    }
+
+    private func hasViewOwner(_ node: some SyntaxProtocol) -> Bool {
+        var parent = node.parent
+        while let current = parent {
+            let inheritance: InheritanceClauseSyntax?
+            if let value = current.as(StructDeclSyntax.self) { inheritance = value.inheritanceClause }
+            else if let value = current.as(ClassDeclSyntax.self) { inheritance = value.inheritanceClause }
+            else if let value = current.as(EnumDeclSyntax.self) { inheritance = value.inheritanceClause }
+            else { parent = current.parent; continue }
+            return inheritance?.inheritedTypes.contains {
+                let name = $0.type.trimmedDescription.split(separator: ".").last.map(String.init) ?? ""
+                return name == "View" || name.hasSuffix("ViewProtocol") || name == "ViewModifier"
+            } == true
+        }
+        return false
     }
 
     override func visit(_ node: StringLiteralExprSyntax) -> ExprSyntax {

@@ -1,0 +1,48 @@
+{
+  "time": "2026-11-01T01:53:15.522955+00:00",
+  "is_boot_unchanged": true,
+  "is_configuration_unchanged": true,
+  "engines": [
+    {
+      "container": "doglyad-dgx-vllm_medgemma_4b-1",
+      "health": 200,
+      "models": [
+        "google/medgemma-4b-it"
+      ]
+    },
+    {
+      "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+      "health": 200,
+      "models": [
+        "google/medgemma-1.5-4b-it"
+      ]
+    },
+    {
+      "container": "doglyad-dgx-vllm_medgemma_27b-1",
+      "health": 200,
+      "models": [
+        "google/medgemma-27b-it"
+      ]
+    }
+  ],
+  "restored_generation": {
+    "is_valid": true,
+    "usage": {
+      "prompt_tokens": 23,
+      "total_tokens": 30,
+      "completion_tokens": 7,
+      "prompt_tokens_details": null,
+      "completion_tokens_details": null
+    },
+    "output_sha256": "08e2c358ce13cb67f94ebb35b0f67c8763190a857c0db68da6eb196dfe9da46a"
+  },
+  "unauthenticated_http_status": 401,
+  "kernel_events": [],
+  "is_kernel_log_readable": true,
+  "running_project_containers": [
+    "doglyad-dgx-backend_inference-1",
+    "doglyad-dgx-vllm_medgemma_27b-1",
+    "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "doglyad-dgx-vllm_medgemma_4b-1"
+  ]
+}

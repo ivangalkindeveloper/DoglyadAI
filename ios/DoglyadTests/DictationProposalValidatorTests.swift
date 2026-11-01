@@ -702,7 +702,9 @@ struct DictationProposalValidatorTests {
                 result.proposals.isEmpty,
             )
             #expect(
-                !result.proposals.contains { $0.id == .patientGender },
+                !result.proposals.contains {
+                    $0.id == .patientGender
+                },
             )
         }
         let patient = try proposal(
@@ -798,7 +800,9 @@ struct DictationProposalValidatorTests {
                 result.proposals.isEmpty,
             )
             #expect(
-                !result.proposals.contains { $0.id == .examinationDescription },
+                !result.proposals.contains {
+                    $0.id == .examinationDescription
+                },
             )
         }
     }

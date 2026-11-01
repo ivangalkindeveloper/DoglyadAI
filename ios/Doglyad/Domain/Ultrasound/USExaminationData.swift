@@ -20,9 +20,11 @@ extension USExaminationData {
     ) -> USExaminationData {
         USExaminationData(
             usExaminationTypeId: db.usExaminationTypeId,
-            photos: db.photos.map { USExaminationScanPhoto.fromDB(
-                $0,
-            ) },
+            photos: db.photos.map {
+                USExaminationScanPhoto.fromDB(
+                    $0,
+                )
+            },
             examinationNumber: db.examinationNumber,
             patientName: db.patientName,
             patientGender: PatientGender(
@@ -39,7 +41,9 @@ extension USExaminationData {
     func toDB() -> USExaminationDataDB {
         USExaminationDataDB(
             usExaminationTypeId: usExaminationTypeId,
-            photos: photos.map { $0.toDB() },
+            photos: photos.map {
+                $0.toDB()
+            },
             examinationNumber: examinationNumber,
             patientName: patientName,
             patientGenderRawValue: patientGender.rawValue,

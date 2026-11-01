@@ -5,7 +5,9 @@ func makeSubscriptionTestContainer(
     backend: SubscriptionBackendRepositoryProtocol,
     storeKit: SubscriptionRepositoryProtocol,
     yooKassa: SubscriptionRepositoryProtocol,
-    getStorefrontCountryCode: @escaping () async -> String? = { nil },
+    getStorefrontCountryCode: @escaping () async -> String? = {
+        nil
+    },
     l10n: L10N? = nil,
 ) -> DependencyContainer {
     let base = DependencyContainer.makePreviewable(

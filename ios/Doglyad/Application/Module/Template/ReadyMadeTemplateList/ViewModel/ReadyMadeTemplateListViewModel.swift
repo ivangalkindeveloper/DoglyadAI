@@ -76,9 +76,13 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
 
     var filteredTemplates: [USExaminationReadyMadeTemplate] {
         let templates: [USExaminationReadyMadeTemplate]
-        switch state { case let state as ReadyMadeTemplateListContentState: templates = state.templates
-        default: return [] }
-        guard let query else { return templates }
+        switch state {
+        case let state as ReadyMadeTemplateListContentState: templates = state.templates
+        default: return []
+        }
+        guard let query else {
+            return templates
+        }
 
         return templates.filter { template in
             let values = [
@@ -108,7 +112,9 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
             ]
     }
 
-    private var typesById: [String: USExaminationType] { container.usExaminationTypesById }
+    private var typesById: [String: USExaminationType] {
+        container.usExaminationTypesById
+    }
 
     override func onInit() {
         loadTemplates()

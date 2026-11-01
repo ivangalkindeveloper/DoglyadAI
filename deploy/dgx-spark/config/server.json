@@ -11,7 +11,7 @@
         "max_body_bytes": 50331648,
         "max_images": 6,
         "max_image_bytes": 4194304,
-        "max_concurrent_requests": 1,
+        "max_concurrent_requests": 4,
         "max_waiting_requests": 1,
         "queue_timeout_seconds": 2,
         "retry_after_seconds": 5

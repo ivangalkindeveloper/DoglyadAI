@@ -48,8 +48,12 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         case .stopped: break
         case .preparing, .recording, .transcribing: return
         }
-        guard case .ready = modelPreparationStatus else { return }
-        guard let sessionID = session.start() else { return }
+        guard case .ready = modelPreparationStatus else {
+            return
+        }
+        guard let sessionID = session.start() else {
+            return
+        }
 
         recordingStatus = .preparing
         text = nil
@@ -62,19 +66,27 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         streamTask = Task { [weak self] in
             await previousStream?.value
             _ = await previousTranscription?.result
-            guard !Task.isCancelled else { return }
+            guard !Task.isCancelled else {
+                return
+            }
             do {
-                guard let store = self?.modelStore else { return }
+                guard let store = self?.modelStore else {
+                    return
+                }
                 try await store.performInference { [weak self] model in
                     guard let stream = try self?.makeStream(
                         model: model,
                         for: sessionID,
-                    ) else { return }
+                    ) else {
+                        return
+                    }
                     try await stream.startStreamTranscription()
                 }
                 guard let self, session.acceptsResult(
                     for: sessionID,
-                ), !session.isFinalizing else { return }
+                ), !session.isFinalizing else {
+                    return
+                }
                 // The stream has ended, so stop() must not await its own task.
                 streamTask = nil
                 _ = await stop(
@@ -97,7 +109,9 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
 
     @discardableResult
     public func cancel() -> DSpeechTranscript? {
-        guard session.cancel() != nil else { return lastTranscript }
+        guard session.cancel() != nil else {
+            return lastTranscript
+        }
 
         streamTask?.cancel()
         transcriptionTask?.cancel()
@@ -105,7 +119,9 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         audioProcessor = nil
         let stream = streamTranscriber
         streamTranscriber = nil
-        Task { await stream?.stopStreamTranscription() }
+        Task {
+            await stream?.stopStreamTranscription()
+        }
         stopMeter()
         DSpeechAudioSession.deactivate()
         text = nil
@@ -121,8 +137,12 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         try Task.checkCancellation()
         guard session.acceptsResult(
             for: sessionID,
-        ), !session.isFinalizing else { return nil }
-        guard let tokenizer = model.tokenizer else { throw DSpeechError.unavailable }
+        ), !session.isFinalizing else {
+            return nil
+        }
+        guard let tokenizer = model.tokenizer else {
+            throw DSpeechError.unavailable
+        }
         let processor = DSpeechWhisperKitAudioProcessor()
         let stream = AudioStreamTranscriber(
             audioEncoder: model.audioEncoder,
@@ -137,7 +157,10 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
             stateChangeCallback: { [weak self] oldState, state in
                 guard oldState.confirmedSegments != state.confirmedSegments
                     || oldState.unconfirmedSegments != state.unconfirmedSegments
-                    || (oldState.bufferEnergy.isEmpty && !state.bufferEnergy.isEmpty) else { return }
+                    || (oldState.bufferEnergy.isEmpty && !state.bufferEnergy.isEmpty)
+                else {
+                    return
+                }
                 let preview = DSpeechWhisperKitTranscription.previewText(
                     confirmedSegments: state.confirmedSegments,
                     unconfirmedSegments: state.unconfirmedSegments,
@@ -161,7 +184,9 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
     ) {
         guard session.acceptsResult(
             for: sessionID,
-        ), !session.isFinalizing else { return }
+        ), !session.isFinalizing else {
+            return
+        }
         if meterTimer == nil, audioProcessor?.isRecording == true {
             recordingStatus = .recording
             startMeter(
@@ -170,7 +195,9 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         }
         // Only ASR segments are displayed. The SDK's currentText also contains
         // hardcoded status messages such as "Waiting for speech...".
-        guard let preview, preview != lastPartialText else { return }
+        guard let preview, preview != lastPartialText else {
+            return
+        }
         lastPartialText = preview
         text = corrector.correct(
             preview,
@@ -180,11 +207,17 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
     private func stop(
         completion: DSpeechCompletion,
     ) async -> DSpeechTranscript? {
-        guard let sessionID = session.activeID else { return lastTranscript }
-        guard let processor = audioProcessor, let stream = streamTranscriber else { return cancel() }
+        guard let sessionID = session.activeID else {
+            return lastTranscript
+        }
+        guard let processor = audioProcessor, let stream = streamTranscriber else {
+            return cancel()
+        }
         guard session.beginFinalization(
             for: sessionID,
-        ) else { return lastTranscript }
+        ) else {
+            return lastTranscript
+        }
 
         let pendingStream = streamTask
         processor.stopRecording()
@@ -196,7 +229,9 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         await pendingStream?.value
         guard session.acceptsResult(
             for: sessionID,
-        ), session.isFinalizing else { return nil }
+        ), session.isFinalizing else {
+            return nil
+        }
 
         let samples = Array(
             processor.audioSamples,
@@ -235,7 +270,9 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
         }
         guard session.finish(
             for: sessionID,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         transcriptionTask = nil
         let correctedText = corrector.correct(
             rawText,
@@ -266,7 +303,9 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
                 guard let self, session.acceptsResult(
                     for: sessionID,
                 ), !session.isFinalizing,
-                let processor = audioProcessor else { return }
+                let processor = audioProcessor else {
+                    return
+                }
                 guard processor.isRecording else {
                     _ = await stop(
                         completion: .interrupted,
@@ -295,7 +334,9 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
     ) {
         guard session.acceptsResult(
             for: sessionID,
-        ), !session.isFinalizing else { return }
+        ), !session.isFinalizing else {
+            return
+        }
         let rawText = lastPartialText
         _ = cancel()
         lastTranscript = DSpeechTranscript(

@@ -11,7 +11,9 @@ struct StateAnimationTests {
     @Test
     func initialStateIsNotAnimatedAndEmitUsesDefaultAnimation() async throws {
         let scene = try #require(
-            UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first,
+            UIApplication.shared.connectedScenes.compactMap {
+                $0 as? UIWindowScene
+            }.first,
         )
         let previousKeyWindow = scene.keyWindow
         let model = DStateViewModel(
@@ -40,9 +42,15 @@ struct StateAnimationTests {
             previousKeyWindow?.makeKey()
         }
         hosting.view.layoutIfNeeded()
-        try await waitForRender { rendered.contains { $0.state == 0 } }
+        try await waitForRender {
+            rendered.contains {
+                $0.state == 0
+            }
+        }
         let initial = try #require(
-            rendered.first { $0.state == 0 },
+            rendered.first {
+                $0.state == 0
+            },
         )
         #expect(
             initial.animation == nil,
@@ -51,9 +59,15 @@ struct StateAnimationTests {
         model.emit(
             1,
         )
-        try await waitForRender { rendered.contains { $0.state == 1 } }
+        try await waitForRender {
+            rendered.contains {
+                $0.state == 1
+            }
+        }
         let updated = try #require(
-            rendered.first { $0.state == 1 },
+            rendered.first {
+                $0.state == 1
+            },
         )
         #expect(
             updated.animation == .easeInOut(
@@ -66,7 +80,9 @@ struct StateAnimationTests {
         _ isRendered: () -> Bool,
     ) async throws {
         for _ in 0 ..< 200 {
-            if isRendered() { return }
+            if isRendered() {
+                return
+            }
             try await Task.sleep(
                 for: .milliseconds(
                     10,

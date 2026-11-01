@@ -14,15 +14,25 @@ struct WebDocumentBottomSheet: View {
             viewModel: WebDocumentViewModel(
                 container: container,
                 router: router,
-                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
-                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
-                    observer,
-                ) },
-                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
-                    status: status,
-                ) },
-                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
+                getSubscriptionStatus: { [subscriptionViewModel] in
+                    subscriptionViewModel.status
+                },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in
+                    subscriptionViewModel.observeStatus(
+                        observer,
+                    )
+                },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in
+                    subscriptionViewModel.update(
+                        status: status,
+                    )
+                },
+                getSettingsAI: { [subscriptionViewModel] in
+                    subscriptionViewModel.resolveSettingsAI()
+                },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in
+                    await subscriptionViewModel.refreshStatus()
+                },
                 arguments: arguments,
             ),
         )
@@ -31,6 +41,7 @@ struct WebDocumentBottomSheet: View {
 
 #Preview {
     let l10n = DependencyContainer.previewable.l10n
+
     WebDocumentBottomSheet(
         arguments: WebDocumentArguments(
             url: URL(

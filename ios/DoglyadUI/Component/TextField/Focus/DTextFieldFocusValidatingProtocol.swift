@@ -2,7 +2,9 @@
 public protocol DTextFieldFocusValidatingProtocol {
     associatedtype Focus: Hashable
 
-    var focusList: [DTextFieldFocusValidationItem<Focus>] { get }
+    var focusList: [DTextFieldFocusValidationItem<Focus>] {
+        get
+    }
 
     func firstInvalidFocus() -> Focus?
 }

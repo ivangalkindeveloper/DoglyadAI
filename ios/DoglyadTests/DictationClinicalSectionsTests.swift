@@ -24,7 +24,9 @@ struct DictationClinicalSectionsTests {
                 result.proposals.isEmpty,
             )
             #expect(
-                !result.proposals.contains { $0.id == .examinationDescription },
+                !result.proposals.contains {
+                    $0.id == .examinationDescription
+                },
             )
         }
     }
@@ -56,7 +58,9 @@ struct DictationClinicalSectionsTests {
             request: request,
         )
         let complaint = try #require(
-            result.proposals.first { $0.id == .patientComplaints },
+            result.proposals.first {
+                $0.id == .patientComplaints
+            },
         )
         #expect(
             complaint.value == .text(
@@ -93,7 +97,9 @@ struct DictationClinicalSectionsTests {
             ),
         )
         #expect(
-            !result.proposals.contains { $0.id == .patientComplaints },
+            !result.proposals.contains {
+                $0.id == .patientComplaints
+            },
         )
     }
 
@@ -122,7 +128,9 @@ struct DictationClinicalSectionsTests {
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .patientComplaints }?.value == .text(
+            result.proposals.first {
+                $0.id == .patientComplaints
+            }?.value == .text(
                 "Pain at night.",
             ),
         )
@@ -153,17 +161,23 @@ struct DictationClinicalSectionsTests {
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .patientComplaints }?.value == .text(
+            result.proposals.first {
+                $0.id == .patientComplaints
+            }?.value == .text(
                 "upper abdominal pain",
             ),
         )
         #expect(
-            result.proposals.first { $0.id == .examinationDescription }?.value == .text(
+            result.proposals.first {
+                $0.id == .examinationDescription
+            }?.value == .text(
                 text,
             ),
         )
         #expect(
-            result.proposals.allSatisfy { $0.accuracy == .questionable },
+            result.proposals.allSatisfy {
+                $0.accuracy == .questionable
+            },
         )
     }
 

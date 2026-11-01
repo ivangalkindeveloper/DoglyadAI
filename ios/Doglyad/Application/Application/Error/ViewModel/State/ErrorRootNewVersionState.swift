@@ -14,7 +14,8 @@ final class ErrorRootNewVersionState: ErrorRootStateProtocol, @MainActor Equatab
         case let .newVersion(
             url,
             id,
-        ): appleUpdateUrl = url
+        ):
+            appleUpdateUrl = url
             appStoreId = id
         case .noInternetConnection, .serviceUnavailable, .usExaminationTypesEmpty, .usExaminationNeuralModelsEmpty, .common, .none:
             preconditionFailure(

@@ -10,7 +10,9 @@ final class SubscriptionRepositoryFactory {
     init(
         storeKit: SubscriptionRepositoryProtocol,
         yooKassa: SubscriptionRepositoryProtocol,
-        getStorefrontCountryCode: @escaping () async -> String? = { await Storefront.current?.countryCode },
+        getStorefrontCountryCode: @escaping () async -> String? = {
+            await Storefront.current?.countryCode
+        },
     ) {
         self.storeKit = storeKit
         self.yooKassa = yooKassa
@@ -28,7 +30,9 @@ final class SubscriptionRepositoryFactory {
         let repository = await make()
         guard repository === make(
             source: plan.source,
-        ) else { throw SubscriptionError.offeringsUnavailable }
+        ) else {
+            throw SubscriptionError.offeringsUnavailable
+        }
         return repository
     }
 

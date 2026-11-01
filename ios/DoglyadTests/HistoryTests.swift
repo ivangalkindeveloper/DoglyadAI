@@ -291,9 +291,11 @@ struct HistoryTests {
             limit: 1,
             offset: 0,
         ) {
-            $0.map { USExaminationData.fromDB(
-                $0.examinationData,
-            ) }
+            $0.map {
+                USExaminationData.fromDB(
+                    $0.examinationData,
+                )
+            }
         }
         let examination = try #require(
             examinations.first,

@@ -8,7 +8,9 @@ struct ScanDateOfBirthCardView: DViewProtocol {
 
     @EnvironmentObject private var viewModel: ScanViewModel
 
-    private var date: Date { viewModel.patientDateOfBirth }
+    private var date: Date {
+        viewModel.patientDateOfBirth
+    }
 
     var body: some View {
         DButtonCard(

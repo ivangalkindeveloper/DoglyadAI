@@ -58,9 +58,11 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
     }
 
     var sections: [SelectUSExaminationTypeSection] {
-        let recentTypes = recentTypeIds.compactMap { typesById[
-            $0,
-        ] }
+        let recentTypes = recentTypeIds.compactMap {
+            typesById[
+                $0,
+            ]
+        }
         let recentSections: [SelectUSExaminationTypeSection] = if recentTypes.isEmpty {
             []
         } else {
@@ -96,35 +98,43 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
         emit(
             loading,
         )
-        handle { try await self.container.ultrasoundReportRepository.getRecentExaminationTypeIds() }
-            onMainSuccess: { ids in
-                guard ObjectIdentifier(
-                    self.state,
-                ) == ObjectIdentifier(
-                    loading,
-                ) else { return }
-                self.recentTypeIds = ids
-                self.emit(
-                    SelectUSExaminationTypeContentState(),
-                )
-            } onMainUnknownError: { error in
-                guard ObjectIdentifier(
-                    self.state,
-                ) == ObjectIdentifier(
-                    loading,
-                ) else { return }
-                self.emit(
-                    SelectUSExaminationTypeFailedState(
-                        error: error,
-                    ),
-                )
-                self.messager?.showUnknownError(
-                    l10n: self.container.l10n,
-                )
+        handle {
+            try await self.container.ultrasoundReportRepository.getRecentExaminationTypeIds()
+        }
+        onMainSuccess: { ids in
+            guard ObjectIdentifier(
+                self.state,
+            ) == ObjectIdentifier(
+                loading,
+            ) else {
+                return
             }
+            self.recentTypeIds = ids
+            self.emit(
+                SelectUSExaminationTypeContentState(),
+            )
+        } onMainUnknownError: { error in
+            guard ObjectIdentifier(
+                self.state,
+            ) == ObjectIdentifier(
+                loading,
+            ) else {
+                return
+            }
+            self.emit(
+                SelectUSExaminationTypeFailedState(
+                    error: error,
+                ),
+            )
+            self.messager?.showUnknownError(
+                l10n: self.container.l10n,
+            )
+        }
     }
 
-    func onTapRetry() { onInit() }
+    func onTapRetry() {
+        onInit()
+    }
 
     func onTypeTap(
         _ type: USExaminationType,

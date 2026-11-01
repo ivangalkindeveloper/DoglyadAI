@@ -47,14 +47,17 @@ final class DSpeechAudioRelay: @unchecked Sendable {
         // The tap does not guarantee exactly `bufferFrames` per buffer, so allow slack.
         let capacity = bufferFrames * 2
         let buffers = (0 ..< slots).compactMap {
-            _ in AVAudioPCMBuffer(
+            _ in
+            AVAudioPCMBuffer(
                 pcmFormat: format,
                 frameCapacity: capacity,
             )
         }
 
         lock.lock()
-        defer { lock.unlock() }
+        defer {
+            lock.unlock()
+        }
 
         request = nil
         ring = buffers
@@ -67,7 +70,9 @@ final class DSpeechAudioRelay: @unchecked Sendable {
         _ buffer: AVAudioPCMBuffer,
     ) {
         lock.lock()
-        defer { lock.unlock() }
+        defer {
+            lock.unlock()
+        }
 
         request?.append(
             buffer,
@@ -83,7 +88,9 @@ final class DSpeechAudioRelay: @unchecked Sendable {
         _ newRequest: SFSpeechAudioBufferRecognitionRequest,
     ) {
         lock.lock()
-        defer { lock.unlock() }
+        defer {
+            lock.unlock()
+        }
 
         request = newRequest
         for buffer in orderedRingBuffers() {
@@ -96,14 +103,18 @@ final class DSpeechAudioRelay: @unchecked Sendable {
     /// Detaches the request: microphone buffers stop reaching it.
     func detach() {
         lock.lock()
-        defer { lock.unlock() }
+        defer {
+            lock.unlock()
+        }
 
         request = nil
     }
 
     func reset() {
         lock.lock()
-        defer { lock.unlock() }
+        defer {
+            lock.unlock()
+        }
 
         request = nil
         ring = []
@@ -116,14 +127,22 @@ final class DSpeechAudioRelay: @unchecked Sendable {
     private func remember(
         _ buffer: AVAudioPCMBuffer,
     ) {
-        guard !ring.isEmpty else { return }
-        guard let source = buffer.floatChannelData else { return }
+        guard !ring.isEmpty else {
+            return
+        }
+        guard let source = buffer.floatChannelData else {
+            return
+        }
 
         let slot = ring[
             ringWriteIndex,
         ]
-        guard let destination = slot.floatChannelData else { return }
-        guard buffer.format.channelCount == slot.format.channelCount else { return }
+        guard let destination = slot.floatChannelData else {
+            return
+        }
+        guard buffer.format.channelCount == slot.format.channelCount else {
+            return
+        }
 
         let frames = min(
             buffer.frameLength,
@@ -156,12 +175,16 @@ final class DSpeechAudioRelay: @unchecked Sendable {
 
     /// Ring buffers in chronological order — from the oldest to the freshest.
     private func orderedRingBuffers() -> [AVAudioPCMBuffer] {
-        guard ringFilled > 0 else { return [] }
+        guard ringFilled > 0 else {
+            return []
+        }
 
         let start = (ringWriteIndex - ringFilled + ring.count) % ring.count
 
-        return (0 ..< ringFilled).map { ring[
-            (start + $0) % ring.count,
-        ] }
+        return (0 ..< ringFilled).map {
+            ring[
+                (start + $0) % ring.count,
+            ]
+        }
     }
 }

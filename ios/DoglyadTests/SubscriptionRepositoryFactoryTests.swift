@@ -21,7 +21,9 @@ struct SubscriptionRepositoryFactoryTests {
         let factory = SubscriptionRepositoryFactory(
             storeKit: apple,
             yooKassa: yooKassa,
-            getStorefrontCountryCode: { countryCode },
+            getStorefrontCountryCode: {
+                countryCode
+            },
         )
         let expected = countryCode == "RUS" ? yooKassa : apple
         #expect(
@@ -128,7 +130,9 @@ struct SubscriptionRepositoryFactoryTests {
             backend: backend,
             storeKit: apple,
             yooKassa: yooKassa,
-            getStorefrontCountryCode: { countryCode },
+            getStorefrontCountryCode: {
+                countryCode
+            },
         )
         let root = SubscriptionRootViewModel(
             container: container,
@@ -138,7 +142,8 @@ struct SubscriptionRepositoryFactoryTests {
         )
         switch outcome {
         case .pending: break
-        case .cancelled, .completed: Issue.record(
+        case .cancelled, .completed:
+            Issue.record(
                 "Expected a pending payment",
             )
         }
@@ -202,7 +207,9 @@ struct SubscriptionRepositoryFactoryTests {
                 backend: backend,
                 storeKit: provider,
                 yooKassa: provider,
-                getStorefrontCountryCode: { "RUS" },
+                getStorefrontCountryCode: {
+                    "RUS"
+                },
             ),
         )
         _ = try await root.purchase(
@@ -225,20 +232,28 @@ struct SubscriptionRepositoryFactoryTests {
             backend: backend,
         )
         let (stream, continuation) = AsyncStream<Void>.makeStream()
-        provider.onPurchase = { for await _ in stream {} }
+        provider.onPurchase = {
+            for await _ in stream {}
+        }
         let root = SubscriptionRootViewModel(
             container: makeSubscriptionTestContainer(
                 backend: backend,
                 storeKit: provider,
                 yooKassa: provider,
-                getStorefrontCountryCode: { "USA" },
+                getStorefrontCountryCode: {
+                    "USA"
+                },
             ),
         )
-        let first = Task { try await root.purchase(
-            plan: provider.plan,
-        ) }
+        let first = Task {
+            try await root.purchase(
+                plan: provider.plan,
+            )
+        }
         for _ in 0 ..< 100 {
-            if provider.purchaseCount == 1 { break }
+            if provider.purchaseCount == 1 {
+                break
+            }
             await Task.yield()
         }
         #expect(
@@ -254,7 +269,8 @@ struct SubscriptionRepositoryFactoryTests {
         } catch let error as SubscriptionError {
             switch error {
             case .purchasePending: break
-            case .offeringsUnavailable, .unverifiedTransaction: Issue.record(
+            case .offeringsUnavailable, .unverifiedTransaction:
+                Issue.record(
                     "Unexpected rejection",
                 )
             }
@@ -294,7 +310,9 @@ struct SubscriptionRepositoryFactoryTests {
                 backend: backend,
                 storeKit: provider,
                 yooKassa: provider,
-                getStorefrontCountryCode: { "RUS" },
+                getStorefrontCountryCode: {
+                    "RUS"
+                },
             ),
         )
         _ = try await root.purchase(
@@ -311,7 +329,8 @@ struct SubscriptionRepositoryFactoryTests {
         )
         switch try await root.checkPurchase() {
         case .cancelled: break
-        case .pending, .completed: Issue.record(
+        case .pending, .completed:
+            Issue.record(
                 "A terminal canceled payment must allow another selection",
             )
         }
@@ -335,7 +354,9 @@ struct SubscriptionRepositoryFactoryTests {
             backend: backend,
             storeKit: apple,
             yooKassa: yooKassa,
-            getStorefrontCountryCode: { countryCode },
+            getStorefrontCountryCode: {
+                countryCode
+            },
         )
         let root = SubscriptionRootViewModel(
             container: container,
@@ -355,7 +376,8 @@ struct SubscriptionRepositoryFactoryTests {
         } catch let error as SubscriptionError {
             switch error {
             case .offeringsUnavailable: break
-            case .unverifiedTransaction, .purchasePending: Issue.record(
+            case .unverifiedTransaction, .purchasePending:
+                Issue.record(
                     "Unexpected rejection",
                 )
             }
@@ -378,14 +400,17 @@ struct SubscriptionRepositoryFactoryTests {
                 backend: backend,
                 storeKit: provider,
                 yooKassa: provider,
-                getStorefrontCountryCode: { "USA" },
+                getStorefrontCountryCode: {
+                    "USA"
+                },
             ),
         )
         switch try await root.purchase(
             plan: provider.plan,
         ) {
         case .pending: break
-        case .completed, .cancelled: Issue.record(
+        case .completed, .cancelled:
+            Issue.record(
                 "Existing access does not complete a new pending purchase",
             )
         }

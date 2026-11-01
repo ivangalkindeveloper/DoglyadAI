@@ -1,0 +1,21 @@
+{
+  "profile_and_rollout_tests": {
+    "command": ".venv311/bin/python -m pytest deploy/test/test_inference_profile.py deploy/test/test_inference_rollout.py -q",
+    "passed": 16
+  },
+  "queue_and_routing_tests": {
+    "cwd": "backend/inference",
+    "command": "../../.venv311/bin/python -m pytest tests/test_generation_limits.py tests/test_model_routing.py -q",
+    "passed": 16
+  },
+  "render_check": [
+    "dgx-spark: passed",
+    "medgemma-4b-amd64: passed"
+  ],
+  "architecture_check": {
+    "command": "make check-architecture",
+    "exit": 2,
+    "findings": 16,
+    "scope": "Existing swift.view-fragment findings in seven unrelated Swift files; those files were not edited for this deployment."
+  }
+}

@@ -3,9 +3,15 @@ import UIKit
 
 @MainActor
 public protocol DCameraControllerProtocol: AnyObject, ObservableObject {
-    var isLoading: Bool { get }
-    var isRunning: Bool { get }
-    var isCapturing: Bool { get }
+    var isLoading: Bool {
+        get
+    }
+    var isRunning: Bool {
+        get
+    }
+    var isCapturing: Bool {
+        get
+    }
 
     func startSession()
 

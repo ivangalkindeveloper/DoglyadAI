@@ -68,7 +68,9 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSe
     ) -> Double? {
         guard defaults.object(
             forKey: key.rawValue,
-        ) != nil else { return nil }
+        ) != nil else {
+            return nil
+        }
         return defaults.double(
             forKey: key.rawValue,
         )
@@ -134,7 +136,9 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSe
     ) -> Date? {
         guard let interval = getDouble(
             key,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         return Date(
             timeIntervalSince1970: interval,
         )
@@ -143,10 +147,14 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSe
     public func getSettingsAIData() throws -> Data? {
         guard let value = defaults.object(
             forKey: DUserDefaultsKey.settingsAI.rawValue,
-        ) else { return nil }
-        guard let data = value as? Data else { throw CocoaError(
-            .coderReadCorrupt,
-        ) }
+        ) else {
+            return nil
+        }
+        guard let data = value as? Data else {
+            throw CocoaError(
+                .coderReadCorrupt,
+            )
+        }
         return data
     }
 
@@ -177,7 +185,9 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSe
     public func getSelectedUSExaminationTemplateId() -> UUID? {
         guard let value = getString(
             .selectedUSExaminationTemplateId,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         return UUID(
             uuidString: value,
         )
@@ -278,7 +288,9 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSe
     ) -> Bool {
         guard defaults.object(
             forKey: key.rawValue,
-        ) != nil else { return true }
+        ) != nil else {
+            return true
+        }
         return getBool(
             key,
         )

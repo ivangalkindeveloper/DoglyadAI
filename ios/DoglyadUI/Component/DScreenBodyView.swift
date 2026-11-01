@@ -15,6 +15,8 @@ struct DScreenBodyView<Content: View>: View {
             maxWidth: .infinity,
             maxHeight: .infinity,
         )
-        .onTapGesture { onTap?() }
+        .onTapGesture {
+            onTap?()
+        }
     }
 }

@@ -15,29 +15,41 @@ final class UserSettingsRepository: UserSettingsRepositoryProtocol {
 }
 
 extension UserSettingsRepository {
-    func getIsPhotoRemarks() async throws -> Bool { database.getIsPhotoRemarks() }
+    func getIsPhotoRemarks() async throws -> Bool {
+        database.getIsPhotoRemarks()
+    }
 
     func setIsPhotoRemarks(
         _ isEnabled: Bool,
-    ) async throws { database.setIsPhotoRemarks(
-        isEnabled: isEnabled,
-    ) }
+    ) async throws {
+        database.setIsPhotoRemarks(
+            isEnabled: isEnabled,
+        )
+    }
 
-    func getIsDescriptionRemarks() async throws -> Bool { database.getIsDescriptionRemarks() }
+    func getIsDescriptionRemarks() async throws -> Bool {
+        database.getIsDescriptionRemarks()
+    }
 
     func setIsDescriptionRemarks(
         _ isEnabled: Bool,
-    ) async throws { database.setIsDescriptionRemarks(
-        isEnabled: isEnabled,
-    ) }
+    ) async throws {
+        database.setIsDescriptionRemarks(
+            isEnabled: isEnabled,
+        )
+    }
 
-    func getIsRemarksVisible() async throws -> Bool { database.getIsRemarksVisible() }
+    func getIsRemarksVisible() async throws -> Bool {
+        database.getIsRemarksVisible()
+    }
 
     func setIsRemarksVisible(
         _ isVisible: Bool,
-    ) async throws { database.setIsRemarksVisible(
-        isVisible: isVisible,
-    ) }
+    ) async throws {
+        database.setIsRemarksVisible(
+            isVisible: isVisible,
+        )
+    }
 
     func getUserEmail() async throws -> String? {
         database.getUserEmail()

@@ -16,19 +16,37 @@ struct UserSettingsScreen: View {
                 container: container,
                 messager: messager,
                 router: router,
-                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
-                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
-                    observer,
-                ) },
-                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
-                    status: status,
-                ) },
-                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
-                getInitialEmail: { [ultrasoundViewModel] in ultrasoundViewModel.userEmail },
-                getInitialIsRecommendationsIncluded: { [ultrasoundViewModel] in ultrasoundViewModel.isRecommendationsIncluded },
-                getInitialIsPhotoRemarks: { [ultrasoundViewModel] in ultrasoundViewModel.isPhotoRemarks },
-                getInitialIsDescriptionRemarks: { [ultrasoundViewModel] in ultrasoundViewModel.isDescriptionRemarks },
+                getSubscriptionStatus: { [subscriptionViewModel] in
+                    subscriptionViewModel.status
+                },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in
+                    subscriptionViewModel.observeStatus(
+                        observer,
+                    )
+                },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in
+                    subscriptionViewModel.update(
+                        status: status,
+                    )
+                },
+                getSettingsAI: { [subscriptionViewModel] in
+                    subscriptionViewModel.resolveSettingsAI()
+                },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in
+                    await subscriptionViewModel.refreshStatus()
+                },
+                getInitialEmail: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.userEmail
+                },
+                getInitialIsRecommendationsIncluded: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.isRecommendationsIncluded
+                },
+                getInitialIsPhotoRemarks: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.isPhotoRemarks
+                },
+                getInitialIsDescriptionRemarks: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.isDescriptionRemarks
+                },
                 onSaved: { [ultrasoundViewModel] email, isRecommendationsIncluded, isPhotoRemarks, isDescriptionRemarks in
                     try await ultrasoundViewModel.saveUserSettings(
                         userEmail: email,

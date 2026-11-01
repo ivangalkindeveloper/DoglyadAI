@@ -52,11 +52,21 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         )
     }
 
-    var analytics: AnalyticsManager { container.analytics }
-    var l10n: L10N { container.l10n }
+    var analytics: AnalyticsManager {
+        container.analytics
+    }
 
-    var availableRequestCount: Int { subscriptionStatus?.availableCountPerDay ?? 0 }
-    var settingsAI: SettingsAI { getSettingsAI() }
+    var l10n: L10N {
+        container.l10n
+    }
+
+    var availableRequestCount: Int {
+        subscriptionStatus?.availableCountPerDay ?? 0
+    }
+
+    var settingsAI: SettingsAI {
+        getSettingsAI()
+    }
 
     final func onAppear() {
         switch analyticsDestination {
@@ -78,14 +88,18 @@ class DModuleViewModel<State>: DStateViewModel<State> {
 
         if subscriptionObservation == nil {
             subscriptionObservation = observeSubscriptionStatus { [weak self] status in
-                guard let self else { return }
+                guard let self else {
+                    return
+                }
                 subscriptionStatus = status
                 onSubscriptionChanged(
                     status,
                 )
             }
         }
-        guard !isInitialized else { return }
+        guard !isInitialized else {
+            return
+        }
         isInitialized = true
         onInit()
     }

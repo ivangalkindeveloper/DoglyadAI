@@ -15,7 +15,9 @@ final class ManageSubscriptionInactiveState: ManageSubscriptionContentState {
     override func equals(
         _ other: ManageSubscriptionContentState,
     ) -> Bool {
-        guard let other = other as? ManageSubscriptionInactiveState else { return false }
+        guard let other = other as? ManageSubscriptionInactiveState else {
+            return false
+        }
         return super.equals(
             other,
         ) && notice == other.notice

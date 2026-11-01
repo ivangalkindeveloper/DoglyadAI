@@ -6,7 +6,9 @@ enum USExaminationRecentTypes {
         in existingIds: [String],
     ) -> [String] {
         Array(
-            ([id] + existingIds.filter { $0 != id }).prefix(
+            ([id] + existingIds.filter {
+                $0 != id
+            }).prefix(
                 maximumCount,
             ),
         )

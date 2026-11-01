@@ -35,7 +35,9 @@ final class TemplateListViewModel: DModuleViewModel<any TemplateListStateProtoco
         loadTemplates()
     }
 
-    func onTapRetry() { loadTemplates() }
+    func onTapRetry() {
+        loadTemplates()
+    }
 
     func onTapBack() {
         analytics.buttonTapped(

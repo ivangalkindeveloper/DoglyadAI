@@ -14,15 +14,25 @@ struct ScanCameraBottomSheet: View {
             viewModel: ScanCameraViewModel(
                 container: container,
                 router: router,
-                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
-                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
-                    observer,
-                ) },
-                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
-                    status: status,
-                ) },
-                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
+                getSubscriptionStatus: { [subscriptionViewModel] in
+                    subscriptionViewModel.status
+                },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in
+                    subscriptionViewModel.observeStatus(
+                        observer,
+                    )
+                },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in
+                    subscriptionViewModel.update(
+                        status: status,
+                    )
+                },
+                getSettingsAI: { [subscriptionViewModel] in
+                    subscriptionViewModel.resolveSettingsAI()
+                },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in
+                    await subscriptionViewModel.refreshStatus()
+                },
                 arguments: arguments,
             ),
         )
@@ -35,8 +45,12 @@ struct ScanCameraBottomSheet: View {
     ScanCameraBottomSheet(
         arguments: ScanCameraArguments(
             cameraController: DCameraControllerFactory.make(),
-            getPhotos: { photos },
-            onPhotosUpdated: { photos = $0 },
+            getPhotos: {
+                photos
+            },
+            onPhotosUpdated: {
+                photos = $0
+            },
             photoMaxCount: 6,
         ),
     )

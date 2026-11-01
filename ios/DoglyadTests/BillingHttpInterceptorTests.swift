@@ -28,9 +28,11 @@ struct BillingHttpInterceptorTests {
                     )!,
                 ),
                 for: .default,
-                completion: { continuation.resume(
-                    with: $0,
-                ) },
+                completion: {
+                    continuation.resume(
+                        with: $0,
+                    )
+                },
             )
         }
         #expect(
@@ -73,9 +75,11 @@ struct BillingHttpInterceptorTests {
                         )!,
                     ),
                     for: .default,
-                    completion: { continuation.resume(
-                        with: $0,
-                    ) },
+                    completion: {
+                        continuation.resume(
+                            with: $0,
+                        )
+                    },
                 )
             }
         }
@@ -166,9 +170,11 @@ private struct InterceptorTestAppCheck: DHttpInterceptorProtocol {
     func adapt(
         _ urlRequest: URLRequest,
     ) async throws -> URLRequest {
-        if isFailure { throw URLError(
-            .userAuthenticationRequired,
-        ) }
+        if isFailure {
+            throw URLError(
+                .userAuthenticationRequired,
+            )
+        }
         var request = urlRequest
         request.setValue(
             "test-attestation",
@@ -192,4 +198,6 @@ private actor InterceptorTestSecurityDatabase: DSecurityDatabaseProtocol {
     func setBillingIdentity(
         value _: BillingIdentityDB,
     ) async throws {}
+
+    func removeBillingIdentity() async throws {}
 }

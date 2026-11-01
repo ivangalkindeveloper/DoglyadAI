@@ -33,10 +33,10 @@ struct PhotoCardView: DViewProtocol {
         .cornerRadius(
             size.adaptiveCornerRadius / 4,
         )
-        .onTapGesture { onTap?() }
-        .accessibilityAddTraits(
-            onTap == nil ? [] : .isButton,
-        )
+        .onTapGesture {
+            onTap?()
+        }
+
         .if(
             configuration.isBadgeVisible,
         ) { view in
@@ -68,19 +68,13 @@ struct PhotoCardView: DViewProtocol {
                     style: .destructive,
                     action: action,
                 )
-            case let .warning(
-                accessibilityLabel,
-            ):
+            case .warning:
                 DIconBadge(
                     .alert,
                     iconColor: color.warningDefaultStrong,
                     backgroundColor: color.warningDefault,
                 )
-                .accessibilityLabel(
-                    Text(
-                        accessibilityLabel,
-                    ),
-                )
+
                 .allowsHitTesting(
                     false,
                 )

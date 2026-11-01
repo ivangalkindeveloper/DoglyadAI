@@ -8,12 +8,19 @@ Docker runs the backend as UID/GID `10001:10001`. `make start-backend-main-devel
 
 | VS Code profile | Configuration | Generation |
 |---|---|---|
+| `Backend: Local Mock (Cold)` | `config/development`, recreated local billing database | Local RU/EN fixtures; clears local billing data before every run |
+| `Backend: Local Inference (Cold)` | `config/development`, recreated local billing database | Real GPU inference; clears local billing data before every run |
 | `Backend: Development` | `config/development` | Real GPU inference |
 | `Backend: Local Inference` | `config/development`, local billing database | Real GPU inference, including DGX Spark |
 | `Backend: Local Mock` | `config/development` | Local RU/EN fixtures |
 | `Backend: Production` | `config/production` | Real GPU inference |
 
 Each profile's prelaunch task merges the existing shared `secrets/.env` and selected `secrets/.env.development` or `secrets/.env.production` into the ignored `secrets/.env.running`. `Variables` reads process environment values; it does not load an environment file itself.
+
+For a clean billing test, use `Backend: Local Mock (Cold)` or
+`Backend: Local Inference (Cold)` with the iOS
+`Doglyad-Debug-Local-Clean` scheme. Stop the existing local backend before starting
+this profile. See [BILLING_LOCAL.md](BILLING_LOCAL.md#чистый-локальный-запуск).
 
 `ENVIRONMENT` selects configuration documents and the YooKassa payment mode: `development` accepts only test shops/payments, `production` accepts only live shops/payments. The temporary `IS_YOOKASSA_LIVE_ENABLED=false` launch gate still blocks real charges. `MODEL_SERVICE_TYPE` independently selects `inference` or `mock`; the default is `inference`. The launch profiles set this value explicitly so switching back to Development or Production restores real inference.
 
@@ -135,4 +142,5 @@ See [ERRORS.md](ERRORS.md). Expected failures are classes in `app/error/`, with 
 ## Billing
 
 StoreKit 2, YooKassa, anonymous identities, PostgreSQL migrations and launch prerequisites: [BILLING.md](BILLING.md).
+Deferred NPD receipts and Apple external-purchase reporting work: [BILLING_RELEASE_PLAN.md](BILLING_RELEASE_PLAN.md).
 Backup and restoration templates: [deploy/billing/README.md](../../deploy/billing/README.md).

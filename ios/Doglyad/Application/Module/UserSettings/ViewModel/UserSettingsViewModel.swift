@@ -130,9 +130,13 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
         isRecommendationsIncluded.toggle()
     }
 
-    func togglePhotoRemarks() { isPhotoRemarks.toggle() }
+    func togglePhotoRemarks() {
+        isPhotoRemarks.toggle()
+    }
 
-    func toggleDescriptionRemarks() { isDescriptionRemarks.toggle() }
+    func toggleDescriptionRemarks() {
+        isDescriptionRemarks.toggle()
+    }
 
     func onTapSave() {
         switch state {
@@ -170,7 +174,8 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
             )
         } onDefer: {
             switch self.state {
-            case _ as UserSettingsLoadingState: self.emit(
+            case _ as UserSettingsLoadingState:
+                self.emit(
                     UserSettingsDefaultState(),
                 )
             default: break

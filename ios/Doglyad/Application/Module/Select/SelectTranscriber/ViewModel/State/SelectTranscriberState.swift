@@ -3,5 +3,7 @@ final class SelectTranscriberState: SelectTranscriberStateProtocol, @MainActor E
     static func == (
         _: SelectTranscriberState,
         _: SelectTranscriberState,
-    ) -> Bool { true }
+    ) -> Bool {
+        true
+    }
 }

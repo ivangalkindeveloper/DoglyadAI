@@ -167,10 +167,14 @@ struct DNeuralUltrasoundProposalProcessor {
     ) -> String? {
         guard !proposed.trimmingCharacters(
             in: .whitespacesAndNewlines,
-        ).isEmpty else { return nil }
+        ).isEmpty else {
+            return nil
+        }
         if text.contains(
             proposed,
-        ) { return proposed }
+        ) {
+            return proposed
+        }
         // Generated evidence sometimes replaces a source comma with a final
         // period. Removing only terminal punctuation can recover a literal
         // quote; changing words or joining noncontiguous passages cannot.
@@ -194,7 +198,9 @@ struct DNeuralUltrasoundProposalProcessor {
                   range: range.upperBound ..< text.endIndex,
                   locale: locale,
               ) == nil
-        else { return nil }
+        else {
+            return nil
+        }
         return String(
             text[
                 range,
@@ -229,9 +235,11 @@ struct DNeuralUltrasoundProposalProcessor {
                 value,
                 locale: locale,
                 localization: localization.numbers,
-            ).map { String(
-                $0,
-            ) } ?? value
+            ).map {
+                String(
+                    $0,
+                )
+            } ?? value
         case .patientComplaints:
             return value.replacingOccurrences(
                 of: #"^\s*(?:"# + DNeuralUltrasoundDictationSectionCue.complaint(
@@ -261,7 +269,9 @@ struct DNeuralUltrasoundProposalProcessor {
         case .patientName:
             guard case let .text(
                 name,
-            ) = value else { return true }
+            ) = value else {
+                return true
+            }
             return warnings.contains(
                 .textChanged,
             )
@@ -281,7 +291,9 @@ struct DNeuralUltrasoundProposalProcessor {
         case .patientDateOfBirth:
             guard warnings.contains(
                 .dateUnverified,
-            ) else { return false }
+            ) else {
+                return false
+            }
             return !DNeuralUltrasoundDictationTextFacts(
                 sourceQuote,
                 locale: request.locale,
@@ -319,11 +331,15 @@ struct DNeuralUltrasoundProposalProcessor {
                 sourceQuote,
                 locale: request.locale,
                 localization: localization,
-            ) { return true }
+            ) {
+                return true
+            }
             if isPatientIdentityQuote(
                 sourceQuote,
                 localization: localization,
-            ) { return true }
+            ) {
+                return true
+            }
             // Absence of complaints supplies no ultrasound finding. A model
             // must not duplicate that single fact into the description field.
             if sourceQuote.range(
@@ -331,7 +347,9 @@ struct DNeuralUltrasoundProposalProcessor {
                     .absentComplaintQuote,
                 ),
                 options: .regularExpression,
-            ) != nil { return true }
+            ) != nil {
+                return true
+            }
             // A complaint-only passage cannot become a second clinical field.
             return sourceQuote.range(
                 of: #"^\s*(?:"# + DNeuralUltrasoundDictationSectionCue.complaint(
@@ -357,13 +375,17 @@ struct DNeuralUltrasoundProposalProcessor {
                 ),
                 options: [.regularExpression, .caseInsensitive],
             )
-            guard complaintCue == nil else { return false }
+            guard complaintCue == nil else {
+                return false
+            }
             if sourceQuote.range(
                 of: #"^\s*(?:"# + DNeuralUltrasoundDictationObservationCue.pattern(
                     localization: localization,
                 ) + #")"#,
                 options: [.regularExpression, .caseInsensitive],
-            ) != nil { return true }
+            ) != nil {
+                return true
+            }
             return isPatientIdentityQuote(
                 sourceQuote,
                 localization: localization,
@@ -397,7 +419,9 @@ struct DNeuralUltrasoundProposalProcessor {
                 options: .caseInsensitive,
                 locale: request.locale,
             )
-        else { return false }
+        else {
+            return false
+        }
         let precedingText = String(
             request.text[
                 ..<quoteRange.lowerBound,
@@ -428,7 +452,9 @@ struct DNeuralUltrasoundProposalProcessor {
         if quote.range(
             of: pattern,
             options: [.regularExpression, .caseInsensitive],
-        ) != nil { return true }
+        ) != nil {
+            return true
+        }
         guard let range = request.text.range(
             of: quote,
         ),
@@ -436,7 +462,9 @@ struct DNeuralUltrasoundProposalProcessor {
                 of: quote,
                 range: range.upperBound ..< request.text.endIndex,
             ) == nil
-        else { return false }
+        else {
+            return false
+        }
         // A model may quote only "94.2 kg". Accept the directly adjacent
         // "weight is" label, never a cue elsewhere in the dictation.
         let prefix = String(

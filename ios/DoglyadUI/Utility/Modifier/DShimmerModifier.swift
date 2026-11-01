@@ -4,53 +4,79 @@ import SwiftUI
 public struct DShimmerModifier: ViewModifier {
     let isShimmering: Bool
     let cornerRadius: CGFloat
+    let masksContent: Bool
 
     public init(
         isShimmering: Bool = true,
         cornerRadius: CGFloat = .infinity,
+        masksContent: Bool = false,
     ) {
         self.isShimmering = isShimmering
         self.cornerRadius = cornerRadius
+        self.masksContent = masksContent
     }
 
     public func body(
         content: Content,
     ) -> some View {
-        content
-            .overlay {
-                Color.clear
-                    .shimmering(
-                        active: isShimmering,
-                        animation: Animation.linear(
-                            duration: 1.5,
+        let animation = Animation.linear(
+            duration: 1.5,
+        )
+        .delay(
+            2.4,
+        )
+        .repeatForever(
+            autoreverses: false,
+        )
+
+        if masksContent {
+            content
+                .shimmering(
+                    active: isShimmering,
+                    animation: animation,
+                    gradient: Gradient(
+                        colors: [
+                            .white.opacity(
+                                0.8,
+                            ),
+                            .white,
+                            .white.opacity(
+                                0.8,
+                            ),
+                        ],
+                    ),
+                    bandSize: 0.4,
+                    mode: .mask,
+                )
+        } else {
+            content
+                .overlay {
+                    Color.clear
+                        .shimmering(
+                            active: isShimmering,
+                            animation: animation,
+                            gradient: Gradient(
+                                colors: [
+                                    .clear,
+                                    .white.opacity(
+                                        0.8,
+                                    ),
+                                    .clear,
+                                ],
+                            ),
+                            bandSize: 0.8,
+                            mode: .overlay(
+                                blendMode: .overlay,
+                            ),
                         )
-                        .delay(
-                            2.4,
+                        .cornerRadius(
+                            cornerRadius,
                         )
-                        .repeatForever(
-                            autoreverses: false,
-                        ),
-                        gradient: Gradient(
-                            colors: [
-                                .clear,
-                                .white.opacity(
-                                    0.8,
-                                ),
-                                .clear,
-                            ],
-                        ),
-                        bandSize: 0.8,
-                        mode: .overlay(
-                            blendMode: .overlay,
-                        ),
-                    )
-                    .cornerRadius(
-                        cornerRadius,
-                    )
-                    .allowsHitTesting(
-                        false,
-                    )
-            }
+                        .allowsHitTesting(
+                            false,
+                        )
+                }
+        }
     }
 }
 
@@ -109,6 +135,7 @@ public struct DShimmerModifier: ViewModifier {
             label: "cornerRadius 0",
             cornerRadius: 0,
         )
+
         DShimmerPreviewSurface(
             label: "cornerRadius 0",
             cornerRadius: 0,

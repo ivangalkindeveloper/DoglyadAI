@@ -43,7 +43,9 @@ extension InitializationProcess {
                             .flatMap(
                                 \.examinationTypes,
                             )
-                            .map { ($0.id, $0) },
+                            .map {
+                                ($0.id, $0)
+                            },
                     )
 
                     await MainActor.run {
@@ -68,7 +70,9 @@ extension InitializationProcess {
                     await MainActor.run {
                         process.usExaminationNeuralModels = usExaminationNeuralModels
                         process.usExaminationNeuralModelsById = Dictionary(
-                            uniqueKeysWithValues: usExaminationNeuralModels.map { ($0.id, $0) },
+                            uniqueKeysWithValues: usExaminationNeuralModels.map {
+                                ($0.id, $0)
+                            },
                         )
                         process.usExaminationNeuralModelDefault = usExaminationNeuralModels.first!
                     }

@@ -15,12 +15,18 @@ final class ManageSubscriptionActiveState: ManageSubscriptionContentState {
         )
     }
 
-    var planTitle: String? { catalog.products.first { $0.id == status.planId }?.title }
+    var planTitle: String? {
+        catalog.products.first {
+            $0.id == status.planId
+        }?.title
+    }
 
     override func equals(
         _ other: ManageSubscriptionContentState,
     ) -> Bool {
-        guard let other = other as? ManageSubscriptionActiveState else { return false }
+        guard let other = other as? ManageSubscriptionActiveState else {
+            return false
+        }
         return super.equals(
             other,
         ) && status == other.status && tier == other.tier

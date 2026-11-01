@@ -22,6 +22,7 @@ public struct DStretchyHeader<Content: View>: View {
                     ),
                 ).minY,
             )
+
             content
                 .frame(
                     width: geometry.size.width,

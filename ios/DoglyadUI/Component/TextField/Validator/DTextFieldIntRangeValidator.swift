@@ -13,7 +13,9 @@ public final class DTextFieldIntRangeValidator: DTextFieldValidatorProtocol {
     public func errorText(
         for value: String?,
     ) -> String? {
-        guard let value else { return nil }
+        guard let value else {
+            return nil
+        }
         guard let number = Int(
             value,
         ), validRange.contains(

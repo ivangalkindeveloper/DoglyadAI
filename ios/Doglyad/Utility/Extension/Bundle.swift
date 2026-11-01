@@ -6,14 +6,18 @@ extension Bundle {
             .CFBundleShortVersionString,
         ).split(
             separator: ".",
-        ).compactMap { Int(
-            $0,
-        ) }
-        guard parts.count >= 3 else { return Version(
-            major: 1,
-            minor: 0,
-            patch: 0,
-        ) }
+        ).compactMap {
+            Int(
+                $0,
+            )
+        }
+        guard parts.count >= 3 else {
+            return Version(
+                major: 1,
+                minor: 0,
+                patch: 0,
+            )
+        }
         return Version(
             major: parts[
                 0,

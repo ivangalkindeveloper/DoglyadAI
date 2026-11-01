@@ -39,7 +39,9 @@ public struct DCameraCropRegion: Sendable {
             ).contains(
                 rect,
             )
-        else { return nil }
+        else {
+            return nil
+        }
 
         let scale = max(
             previewSize.width / imageSize.width,

@@ -30,7 +30,9 @@ struct DictationExplicitFactsExtractorTests {
                 let finding = try #require(
                     DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                         request: request,
-                    ).first { $0.id == .examinationDescription },
+                    ).first {
+                        $0.id == .examinationDescription
+                    },
                 )
                 #expect(
                     finding.sourceQuote == prefix,
@@ -95,7 +97,9 @@ struct DictationExplicitFactsExtractorTests {
         #expect(
             !DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                 request: relative,
-            ).contains { $0.id == .patientComplaints },
+            ).contains {
+                $0.id == .patientComplaints
+            },
         )
     }
 
@@ -121,17 +125,20 @@ struct DictationExplicitFactsExtractorTests {
         let finding = try #require(
             DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                 request: request,
-            ).first { $0.id == .examinationDescription },
+            ).first {
+                $0.id == .examinationDescription
+            },
         )
         #expect(
             finding.sourceQuote == text,
         )
         guard case let .text(
             value,
-        ) = finding.value else { Issue.record(
-            "Expected a clinical text field",
-        )
-        return
+        ) = finding.value else {
+            Issue.record(
+                "Expected a clinical text field",
+            )
+            return
         }
         #expect(
             value.contains(
@@ -167,12 +174,16 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         #expect(
-            fields.first { $0.id == .patientComplaints }?.value == .text(
+            fields.first {
+                $0.id == .patientComplaints
+            }?.value == .text(
                 "о дискомфорте при глотании. Повышения температуры нет",
             ),
         )
         let finding = try #require(
-            fields.first { $0.id == .examinationDescription },
+            fields.first {
+                $0.id == .examinationDescription
+            },
         )
         #expect(
             finding.sourceQuote.hasSuffix(
@@ -216,7 +227,9 @@ struct DictationExplicitFactsExtractorTests {
                 generated: nil,
             )
             let complaint = try #require(
-                result.proposals.first { $0.id == .patientComplaints },
+                result.proposals.first {
+                    $0.id == .patientComplaints
+                },
             )
             #expect(
                 complaint.value == .text(
@@ -258,9 +271,13 @@ struct DictationExplicitFactsExtractorTests {
                 ),
             )
             #expect(
-                fields.first { $0.id == .examinationNumber }?.value == expected.map { .text(
-                    $0,
-                ) },
+                fields.first {
+                    $0.id == .examinationNumber
+                }?.value == expected.map {
+                    .text(
+                        $0,
+                    )
+                },
             )
         }
     }
@@ -288,12 +305,16 @@ struct DictationExplicitFactsExtractorTests {
                 request: request,
             )
             #expect(
-                fields.first { $0.id == .patientWeightKG }?.value == .number(
+                fields.first {
+                    $0.id == .patientWeightKG
+                }?.value == .number(
                     68.7,
                 ),
             )
             #expect(
-                fields.first { $0.id == .patientHeightCM }?.value == .number(
+                fields.first {
+                    $0.id == .patientHeightCM
+                }?.value == .number(
                     172.5,
                 ),
             )
@@ -422,7 +443,9 @@ struct DictationExplicitFactsExtractorTests {
                 DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                     request: request,
                 )
-                .first { $0.id == .examinationNumber }?.value == .text(
+                .first {
+                    $0.id == .examinationNumber
+                }?.value == .text(
                     expected,
                 ),
             )
@@ -445,7 +468,9 @@ struct DictationExplicitFactsExtractorTests {
             !DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                 request: measurement,
             )
-            .contains { $0.id == .examinationNumber },
+            .contains {
+                $0.id == .examinationNumber
+            },
         )
     }
 
@@ -506,12 +531,16 @@ struct DictationExplicitFactsExtractorTests {
                 request: request,
             )
             #expect(
-                fields.first { $0.id == .patientComplaints }?.value == .text(
+                fields.first {
+                    $0.id == .patientComplaints
+                }?.value == .text(
                     "болезненность",
                 ),
             )
             #expect(
-                fields.first { $0.id == .examinationDescription }?.value
+                fields.first {
+                    $0.id == .examinationDescription
+                }?.value
                     == .text(
                         "правый желудочек: 47 мм. Дополнительных изменений не выявлено.",
                     ),
@@ -547,46 +576,64 @@ struct DictationExplicitFactsExtractorTests {
             fields.count == 8,
         )
         #expect(
-            fields.first { $0.id == .examinationNumber }?.value == .text(
+            fields.first {
+                $0.id == .examinationNumber
+            }?.value == .text(
                 "097",
             ),
         )
         #expect(
-            fields.first { $0.id == .examinationNumber }?.warnings.isEmpty == true,
+            fields.first {
+                $0.id == .examinationNumber
+            }?.warnings.isEmpty == true,
         )
         #expect(
-            fields.first { $0.id == .patientName }?.value == .text(
+            fields.first {
+                $0.id == .patientName
+            }?.value == .text(
                 "Olivia Carter",
             ),
         )
         #expect(
-            fields.first { $0.id == .patientGender }?.value == .gender(
+            fields.first {
+                $0.id == .patientGender
+            }?.value == .gender(
                 .female,
             ),
         )
         #expect(
-            fields.first { $0.id == .patientHeightCM }?.value == .number(
+            fields.first {
+                $0.id == .patientHeightCM
+            }?.value == .number(
                 179,
             ),
         )
         #expect(
-            fields.first { $0.id == .patientWeightKG }?.value == .number(
+            fields.first {
+                $0.id == .patientWeightKG
+            }?.value == .number(
                 110,
             ),
         )
         #expect(
-            fields.first { $0.id == .patientComplaints }?.value == .text(
+            fields.first {
+                $0.id == .patientComplaints
+            }?.value == .text(
                 "intermittent pain",
             ),
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.value
+            fields.first {
+                $0.id == .examinationDescription
+            }?.value
                 == .text(
                     "right ventricle: 52 mm. No additional abnormality.",
                 ),
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.warnings.isEmpty == true,
+            fields.first {
+                $0.id == .examinationDescription
+            }?.warnings.isEmpty == true,
         )
     }
 
@@ -624,31 +671,43 @@ struct DictationExplicitFactsExtractorTests {
             ],
         )
         #expect(
-            fields.first { $0.id == .examinationNumber }?.value == .text(
+            fields.first {
+                $0.id == .examinationNumber
+            }?.value == .text(
                 "062",
             ),
         )
         #expect(
-            fields.first { $0.id == .examinationNumber }?.warnings.isEmpty == true,
+            fields.first {
+                $0.id == .examinationNumber
+            }?.warnings.isEmpty == true,
         )
         #expect(
-            fields.first { $0.id == .patientWeightKG }?.value == .number(
+            fields.first {
+                $0.id == .patientWeightKG
+            }?.value == .number(
                 85,
             ),
         )
         #expect(
-            fields.first { $0.id == .patientComplaints }?.value == .text(
+            fields.first {
+                $0.id == .patientComplaints
+            }?.value == .text(
                 "отёчность",
             ),
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.value
+            fields.first {
+                $0.id == .examinationDescription
+            }?.value
                 == .text(
                     "левый желудочек: 37 мм. Дополнительных изменений не выявлено.",
                 ),
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.warnings.isEmpty == true,
+            fields.first {
+                $0.id == .examinationDescription
+            }?.warnings.isEmpty == true,
         )
     }
 
@@ -675,13 +734,19 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         #expect(
-            fields.first { $0.id == .examinationNumber }?.warnings.isEmpty == true,
+            fields.first {
+                $0.id == .examinationNumber
+            }?.warnings.isEmpty == true,
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.warnings.isEmpty == true,
+            fields.first {
+                $0.id == .examinationDescription
+            }?.warnings.isEmpty == true,
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.value
+            fields.first {
+                $0.id == .examinationDescription
+            }?.value
                 == .text(
                     "left kidney: 35 mm. No additional abnormality.",
                 ),
@@ -711,12 +776,16 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         #expect(
-            fields.first { $0.id == .patientComplaints }?.value == .text(
+            fields.first {
+                $0.id == .patientComplaints
+            }?.value == .text(
                 "intermittent pain",
             ),
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.value
+            fields.first {
+                $0.id == .examinationDescription
+            }?.value
                 == .text(
                     "common carotid artery: 9 mm. No additional abnormality.",
                 ),
@@ -760,7 +829,9 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.value
+            fields.first {
+                $0.id == .examinationDescription
+            }?.value
                 == .text(
                     "liver: 143 mm. No additional abnormality.",
                 ),
@@ -791,18 +862,24 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         #expect(
-            fields.first { $0.id == .patientComplaints }?.value == .text(
+            fields.first {
+                $0.id == .patientComplaints
+            }?.value == .text(
                 "о болезненности",
             ),
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.value
+            fields.first {
+                $0.id == .examinationDescription
+            }?.value
                 == .text(
                     "левый желудочек: 44 мм. Дополнительных изменений не выявлено.",
                 ),
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.warnings.isEmpty == true,
+            fields.first {
+                $0.id == .examinationDescription
+            }?.warnings.isEmpty == true,
         )
     }
 
@@ -828,7 +905,9 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         #expect(
-            !fields.contains { $0.id == .examinationNumber },
+            !fields.contains {
+                $0.id == .examinationNumber
+            },
         )
 
         let russian = DNeuralUltrasoundDictationParseRequest(
@@ -849,7 +928,9 @@ struct DictationExplicitFactsExtractorTests {
             !DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                 request: russian,
             )
-            .contains { $0.id == .examinationNumber },
+            .contains {
+                $0.id == .examinationNumber
+            },
         )
     }
 
@@ -875,7 +956,9 @@ struct DictationExplicitFactsExtractorTests {
             DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                 request: english,
             )
-            .first { $0.id == .examinationNumber }?.value == .text(
+            .first {
+                $0.id == .examinationNumber
+            }?.value == .text(
                 "007",
             ),
         )
@@ -898,7 +981,9 @@ struct DictationExplicitFactsExtractorTests {
             !DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                 request: insurance,
             )
-            .contains { $0.id == .examinationNumber },
+            .contains {
+                $0.id == .examinationNumber
+            },
         )
     }
 
@@ -926,37 +1011,51 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         #expect(
-            fields.first { $0.id == .examinationNumber }?.value == .text(
+            fields.first {
+                $0.id == .examinationNumber
+            }?.value == .text(
                 "097",
             ),
         )
         #expect(
-            fields.first { $0.id == .patientName }?.value == .text(
+            fields.first {
+                $0.id == .patientName
+            }?.value == .text(
                 "Olivia Carter",
             ),
         )
         #expect(
-            fields.first { $0.id == .patientGender }?.value == .gender(
+            fields.first {
+                $0.id == .patientGender
+            }?.value == .gender(
                 .female,
             ),
         )
         #expect(
-            fields.first { $0.id == .patientHeightCM }?.value == .number(
+            fields.first {
+                $0.id == .patientHeightCM
+            }?.value == .number(
                 179,
             ),
         )
         #expect(
-            fields.first { $0.id == .patientWeightKG }?.value == .number(
+            fields.first {
+                $0.id == .patientWeightKG
+            }?.value == .number(
                 110,
             ),
         )
         #expect(
-            fields.first { $0.id == .patientComplaints }?.value == .text(
+            fields.first {
+                $0.id == .patientComplaints
+            }?.value == .text(
                 "intermittent pain",
             ),
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.value
+            fields.first {
+                $0.id == .examinationDescription
+            }?.value
                 == .text(
                     "right ventricle: 52 mm. No additional abnormality.",
                 ),
@@ -988,12 +1087,16 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         #expect(
-            fields.first { $0.id == .patientComplaints }?.value == .text(
+            fields.first {
+                $0.id == .patientComplaints
+            }?.value == .text(
                 "периодическая боль",
             ),
         )
         #expect(
-            fields.first { $0.id == .examinationDescription }?.value
+            fields.first {
+                $0.id == .examinationDescription
+            }?.value
                 == .text(
                     "левый желудочек: 40 мм. Дополнительных изменений не выявлено.",
                 ),
@@ -1028,46 +1131,60 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             fields.first(
-                where: { $0.id == .examinationNumber },
+                where: {
+                    $0.id == .examinationNumber
+                },
             )?.value == .text(
                 "026",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientName },
+                where: {
+                    $0.id == .patientName
+                },
             )?.value == .text(
                 "Anna Morgan",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientGender },
+                where: {
+                    $0.id == .patientGender
+                },
             )?.value == .gender(
                 .female,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientHeightCM },
+                where: {
+                    $0.id == .patientHeightCM
+                },
             )?.value == .number(
                 182,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientWeightKG },
+                where: {
+                    $0.id == .patientWeightKG
+                },
             )?.value == .number(
                 80,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientDateOfBirth },
+                where: {
+                    $0.id == .patientDateOfBirth
+                },
             )?.value != nil,
         )
         let complaint = fields.first(
-            where: { $0.id == .patientComplaints },
+            where: {
+                $0.id == .patientComplaints
+            },
         )
         #expect(
             complaint?.value == .text(
@@ -1079,15 +1196,19 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             fields.first(
-                where: { $0.id == .examinationDescription },
+                where: {
+                    $0.id == .examinationDescription
+                },
             )?.value == .text(
                 "right ventricle: 47 mm.",
             ),
         )
         #expect(
-            fields.allSatisfy { request.text.contains(
-                $0.sourceQuote,
-            ) },
+            fields.allSatisfy {
+                request.text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -1120,62 +1241,80 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             fields.first(
-                where: { $0.id == .examinationNumber },
+                where: {
+                    $0.id == .examinationNumber
+                },
             )?.value == .text(
                 "095",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientName },
+                where: {
+                    $0.id == .patientName
+                },
             )?.value == .text(
                 "Дмитрий Орлов",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientGender },
+                where: {
+                    $0.id == .patientGender
+                },
             )?.value == .gender(
                 .male,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientHeightCM },
+                where: {
+                    $0.id == .patientHeightCM
+                },
             )?.value == .number(
                 177,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientWeightKG },
+                where: {
+                    $0.id == .patientWeightKG
+                },
             )?.value == .number(
                 95,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientDateOfBirth },
+                where: {
+                    $0.id == .patientDateOfBirth
+                },
             )?.value != nil,
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientComplaints },
+                where: {
+                    $0.id == .patientComplaints
+                },
             )?.value == .text(
                 "периодическая боль",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .examinationDescription },
+                where: {
+                    $0.id == .examinationDescription
+                },
             )?.value == .text(
                 "правый желудочек: 47 мм.",
             ),
         )
         #expect(
-            fields.allSatisfy { request.text.contains(
-                $0.sourceQuote,
-            ) },
+            fields.allSatisfy {
+                request.text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -1259,14 +1398,18 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientComplaints },
+                where: {
+                    $0.id == .patientComplaints
+                },
             )?.value == .text(
                 "swelling",
             ),
         )
         #expect(
             !fields.contains(
-                where: { $0.id == .examinationDescription },
+                where: {
+                    $0.id == .examinationDescription
+                },
             ),
         )
     }
@@ -1295,33 +1438,43 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientName },
+                where: {
+                    $0.id == .patientName
+                },
             )?.value == .text(
                 "Дмитрий Орлов",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientDateOfBirth },
+                where: {
+                    $0.id == .patientDateOfBirth
+                },
             )?.value != nil,
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientHeightCM },
+                where: {
+                    $0.id == .patientHeightCM
+                },
             )?.value == .number(
                 177,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientWeightKG },
+                where: {
+                    $0.id == .patientWeightKG
+                },
             )?.value == .number(
                 95,
             ),
         )
         #expect(
             !fields.contains(
-                where: { $0.id == .patientComplaints },
+                where: {
+                    $0.id == .patientComplaints
+                },
             ),
         )
     }
@@ -1350,7 +1503,9 @@ struct DictationExplicitFactsExtractorTests {
             )
             #expect(
                 fields.first(
-                    where: { $0.id == .patientName },
+                    where: {
+                        $0.id == .patientName
+                    },
                 )?.value == .text(
                     "Дмитрий Орлов",
                 ),
@@ -1374,7 +1529,9 @@ struct DictationExplicitFactsExtractorTests {
         #expect(
             !DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                 request: unrelated,
-            ).contains { $0.id == .patientName },
+            ).contains {
+                $0.id == .patientName
+            },
         )
     }
 
@@ -1410,7 +1567,9 @@ struct DictationExplicitFactsExtractorTests {
             guard case let .date(
                 date,
             ) = fields.first(
-                where: { $0.id == .patientDateOfBirth },
+                where: {
+                    $0.id == .patientDateOfBirth
+                },
             )?.value else {
                 Issue.record(
                     "Expected birth date from \(spoken)",
@@ -1442,7 +1601,9 @@ struct DictationExplicitFactsExtractorTests {
             !DNeuralUltrasoundDictationExplicitFactsExtractor.extract(
                 request: incomplete,
             )
-            .contains { $0.id == .patientDateOfBirth },
+            .contains {
+                $0.id == .patientDateOfBirth
+            },
         )
     }
 
@@ -1470,13 +1631,17 @@ struct DictationExplicitFactsExtractorTests {
             )
             #expect(
                 fields.first(
-                    where: { $0.id == .patientComplaints },
+                    where: {
+                        $0.id == .patientComplaints
+                    },
                 )?.value == .text(
                     "боль справа",
                 ),
             )
             let description = fields.first(
-                where: { $0.id == .examinationDescription },
+                where: {
+                    $0.id == .examinationDescription
+                },
             )
             guard case let .text(
                 value,
@@ -1525,7 +1690,9 @@ struct DictationExplicitFactsExtractorTests {
                 request: request,
             )
             let date = fields.first(
-                where: { $0.id == .patientDateOfBirth },
+                where: {
+                    $0.id == .patientDateOfBirth
+                },
             )?.value
             guard case let .date(
                 value,
@@ -1568,7 +1735,9 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             fields.first(
-                where: { $0.id == .examinationDescription },
+                where: {
+                    $0.id == .examinationDescription
+                },
             )?.value
                 == .text(
                     "right ventricle: 47 mm. No additional abnormality.",
@@ -1599,12 +1768,16 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientDateOfBirth },
+                where: {
+                    $0.id == .patientDateOfBirth
+                },
             )?.value != nil,
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientDateOfBirth },
+                where: {
+                    $0.id == .patientDateOfBirth
+                },
             )?.warnings.contains(
                 .dateUnverified,
             ) == false,
@@ -1639,44 +1812,56 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientName },
+                where: {
+                    $0.id == .patientName
+                },
             )?.value == .text(
                 "Henry Wilson",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientGender },
+                where: {
+                    $0.id == .patientGender
+                },
             )?.value == .gender(
                 .male,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientWeightKG },
+                where: {
+                    $0.id == .patientWeightKG
+                },
             )?.value == .number(
                 53,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientComplaints },
+                where: {
+                    $0.id == .patientComplaints
+                },
             )?.value == .text(
                 "tenderness",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .examinationDescription },
+                where: {
+                    $0.id == .examinationDescription
+                },
             )?.value
                 == .text(
                     "abdominal aorta: 24 mm. No additional abnormality.",
                 ),
         )
         #expect(
-            fields.allSatisfy { request.text.contains(
-                $0.sourceQuote,
-            ) },
+            fields.allSatisfy {
+                request.text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -1708,44 +1893,56 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             fields.first(
-                where: { $0.id == .examinationNumber },
+                where: {
+                    $0.id == .examinationNumber
+                },
             )?.value == .text(
                 "064",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientName },
+                where: {
+                    $0.id == .patientName
+                },
             )?.value == .text(
                 "Наталья Кузнецова",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientGender },
+                where: {
+                    $0.id == .patientGender
+                },
             )?.value == .gender(
                 .female,
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .patientComplaints },
+                where: {
+                    $0.id == .patientComplaints
+                },
             )?.value == .text(
                 "болезненность",
             ),
         )
         #expect(
             fields.first(
-                where: { $0.id == .examinationDescription },
+                where: {
+                    $0.id == .examinationDescription
+                },
             )?.value
                 == .text(
                     "левый желудочек: 54 мм. Дополнительных изменений не выявлено.",
                 ),
         )
         #expect(
-            fields.allSatisfy { request.text.contains(
-                $0.sourceQuote,
-            ) },
+            fields.allSatisfy {
+                request.text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -1799,15 +1996,19 @@ struct DictationExplicitFactsExtractorTests {
             )
             #expect(
                 fields.first(
-                    where: { $0.id == .patientWeightKG },
+                    where: {
+                        $0.id == .patientWeightKG
+                    },
                 )?.value == .number(
                     code == "en_US" ? 56 : 52,
                 ),
             )
             #expect(
-                fields.allSatisfy { request.text.contains(
-                    $0.sourceQuote,
-                ) },
+                fields.allSatisfy {
+                    request.text.contains(
+                        $0.sourceQuote,
+                    )
+                },
             )
         }
     }
@@ -1834,7 +2035,9 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         #expect(
-            !fields.contains { $0.id == .patientGender },
+            !fields.contains {
+                $0.id == .patientGender
+            },
         )
     }
 
@@ -1860,7 +2063,9 @@ struct DictationExplicitFactsExtractorTests {
             request: request,
         )
         let description = try #require(
-            fields.first { $0.id == .examinationDescription },
+            fields.first {
+                $0.id == .examinationDescription
+            },
         )
         #expect(
             description.value == .text(
@@ -1913,7 +2118,9 @@ struct DictationExplicitFactsExtractorTests {
         )
         #expect(
             proposal.proposals.first(
-                where: { $0.id == .patientComplaints },
+                where: {
+                    $0.id == .patientComplaints
+                },
             )?.value == .text(
                 "no complaints",
             ),

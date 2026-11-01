@@ -15,7 +15,9 @@ final class PaywallPendingState: PaywallContentState {
     override func equals(
         _ other: PaywallContentState,
     ) -> Bool {
-        guard let other = other as? PaywallPendingState else { return false }
+        guard let other = other as? PaywallPendingState else {
+            return false
+        }
         return super.equals(
             other,
         ) && plan == other.plan

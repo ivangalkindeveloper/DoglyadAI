@@ -11,61 +11,51 @@ struct ScanSpeechReviewProposalView: DViewProtocol {
     let bottomHeight: CGFloat
 
     var body: some View {
-        ScrollView(
-            showsIndicators: false,
+        DScrollVStack(
+            spacing: size.s4,
+            padding: EdgeInsets(
+                top: size.s16 + toolbarHeight,
+                leading: size.s16,
+                bottom: size.s16 + bottomHeight,
+                trailing: size.s16,
+            ),
         ) {
-            VStack(
-                alignment: .leading,
-                spacing: size.s4,
-            ) {
-                if state.reviewProposals.isEmpty {
-                    DText(
-                        l10n[
-                            .scanSpeechProposalNoFieldsDescription,
-                        ],
-                    )
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscaleBackgroundWeak,
-                    )
-                    .padding(
-                        .bottom,
-                        size.s8,
-                    )
-                } else {
-                    DText(
-                        viewModel.proposalInstructions,
-                    )
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscaleBackgroundWeak,
-                    )
-                    .padding(
-                        .bottom,
-                        size.s8,
-                    )
+            if state.reviewProposals.isEmpty {
+                DText(
+                    l10n[
+                        .scanSpeechProposalNoFieldsDescription,
+                    ],
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscaleBackgroundWeak,
+                )
+                .padding(
+                    .bottom,
+                    size.s8,
+                )
+            } else {
+                DText(
+                    viewModel.proposalInstructions,
+                )
+                .dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscaleBackgroundWeak,
+                )
+                .padding(
+                    .bottom,
+                    size.s8,
+                )
 
-                    ForEach(
-                        state.reviewProposals,
-                    ) { field in
-                        ScanSpeechProposalCardView(
-                            state: state,
-                            proposal: field,
-                        )
-                    }
+                ForEach(
+                    state.reviewProposals,
+                ) { field in
+                    ScanSpeechProposalCardView(
+                        state: state,
+                        proposal: field,
+                    )
                 }
             }
-            .padding(
-                size.s16,
-            )
-            .padding(
-                .top,
-                toolbarHeight,
-            )
-            .padding(
-                .bottom,
-                bottomHeight,
-            )
         }
     }
 }

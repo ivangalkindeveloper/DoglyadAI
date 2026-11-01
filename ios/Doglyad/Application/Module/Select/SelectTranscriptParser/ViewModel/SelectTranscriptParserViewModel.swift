@@ -44,7 +44,9 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
         availabilityObservation = NotificationCenter.default.publisher(
             for: UIApplication.didBecomeActiveNotification,
         ).sink { [weak self] _ in
-            Task { @MainActor [weak self] in self?.refreshAvailability() }
+            Task { @MainActor [weak self] in
+                self?.refreshAvailability()
+            }
         }
         refreshAvailability()
     }
@@ -66,7 +68,9 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
         refreshAvailability()
         guard isSelectionEnabled(
             for: type,
-        ) else { return }
+        ) else {
+            return
+        }
         analytics.buttonTapped(
             .selectTranscriptParser,
         )

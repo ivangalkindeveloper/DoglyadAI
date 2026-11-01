@@ -14,12 +14,14 @@ struct ActionRowView: DViewProtocol {
                 icon,
                 color: color.grayscaleHeader,
             )
+
             DText(
                 title,
             )
             .dStyle(
                 font: typography.linkSmall,
             )
+
             Spacer()
         }
     }

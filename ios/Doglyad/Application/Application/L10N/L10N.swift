@@ -52,7 +52,9 @@ final class L10N: ObservableObject, Sendable {
         let template = strings[
             key,
         ]!
-        guard !values.isEmpty else { return template }
+        guard !values.isEmpty else {
+            return template
+        }
         // Replace in the original template only. Inserted patient/user data is
         // literal, never a printf format or another template to evaluate.
         let expression = Self.placeholderExpression
@@ -84,7 +86,10 @@ final class L10N: ObservableObject, Sendable {
                 let range = Range(
                     match.range,
                     in: result,
-                ) else { continue }
+                )
+            else {
+                continue
+            }
             result.replaceSubrange(
                 range,
                 with: replacement,
@@ -135,7 +140,9 @@ extension L10N {
             "code": code,
             "dictation": [
                 "patterns": Dictionary(
-                    uniqueKeysWithValues: DNeuralUltrasoundDictationLocalizationKey.allCases.map { ($0.rawValue, emptyPattern) },
+                    uniqueKeysWithValues: DNeuralUltrasoundDictationLocalizationKey.allCases.map {
+                        ($0.rawValue, emptyPattern)
+                    },
                 ),
                 "namePatterns": [],
                 "genderPatterns": [],
@@ -152,7 +159,9 @@ extension L10N {
                 "dateFormats": ["yyyy-MM-dd"],
                 "shortUnits": ["millimeter": "__preview__", "velocity": "__preview__", "milliliter": "__preview__"],
                 "schema": Dictionary(
-                    uniqueKeysWithValues: ["patientName", "patientGender", "patientDateOfBirth", "patientHeightCM", "patientWeightKG", "patientComplaints", "examinationDescription", "fieldId", "value", "evidence", "accuracy"].map { ($0, $0) },
+                    uniqueKeysWithValues: ["patientName", "patientGender", "patientDateOfBirth", "patientHeightCM", "patientWeightKG", "patientComplaints", "examinationDescription", "fieldId", "value", "evidence", "accuracy"].map {
+                        ($0, $0)
+                    },
                 ),
             ],
             "speech": [
@@ -169,7 +178,9 @@ extension L10N {
         let payload: [String: Any] = [
             "code": code,
             "strings": Dictionary(
-                uniqueKeysWithValues: L10NKey.allCases.map { ($0.rawValue, $0.rawValue) },
+                uniqueKeysWithValues: L10NKey.allCases.map {
+                    ($0.rawValue, $0.rawValue)
+                },
             ),
             "voice": voice,
         ]

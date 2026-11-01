@@ -20,6 +20,7 @@
 	start-backend-main-development \
 	start-local-billing \
 	stop-local-billing \
+	reset-local-billing \
 	start-backend-main-production \
 	start-backend-main-logs \
 	stop-backend-main \
@@ -156,6 +157,9 @@ start-local-billing:
 
 stop-local-billing:
 	"$(BACKEND_FORMAT_PYTHON)" tools/local_billing_database.py --stop
+
+reset-local-billing:
+	"$(BACKEND_FORMAT_PYTHON)" tools/local_billing_database.py --reset
 
 start-backend-main-development:
 	ENV_FILE=secrets/.env.development bash deploy/start-backend.sh main

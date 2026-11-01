@@ -36,7 +36,9 @@ enum DNeuralUltrasoundDictationDescriptionNormalizer {
                 locale: locale,
                 localization: localization,
             )
-        else { return corrected }
+        else {
+            return corrected
+        }
         return corrected.replacingOccurrences(
             of: match.quote,
             with: ": \(Int(measurement)) \(unit)",
@@ -50,7 +52,9 @@ enum DNeuralUltrasoundDictationDescriptionNormalizer {
     ) -> Double? {
         if let parsed = Double(
             text,
-        ), parsed.isFinite, parsed > 0 { return parsed }
+        ), parsed.isFinite, parsed > 0 {
+            return parsed
+        }
         return DNeuralSpokenCardinal.parse(
             text,
             locale: locale,
@@ -100,7 +104,9 @@ enum DNeuralUltrasoundDictationDescriptionNormalizer {
             pattern: pattern,
             options: [.caseInsensitive, .dotMatchesLineSeparators],
         )
-        else { return nil }
+        else {
+            return nil
+        }
         let matches = expression.matches(
             in: text,
             range: NSRange(
@@ -119,7 +125,9 @@ enum DNeuralUltrasoundDictationDescriptionNormalizer {
                   ),
                   in: text,
               )
-        else { return nil }
+        else {
+            return nil
+        }
         return (String(
             text[
                 quoteRange,

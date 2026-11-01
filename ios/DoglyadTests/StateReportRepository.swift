@@ -9,13 +9,17 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     private(set) var saveCount = 0
     private(set) var reports: [USExaminationReport] = []
 
-    func getSelectedExaminationTypeId() async throws -> String? { nil }
+    func getSelectedExaminationTypeId() async throws -> String? {
+        nil
+    }
 
     func setSelectedExaminationTypeId(
         id _: String,
     ) async throws {}
 
-    func getRecentExaminationTypeIds() async throws -> [String] { [] }
+    func getRecentExaminationTypeIds() async throws -> [String] {
+        []
+    }
 
     func setRecentExaminationTypeIds(
         _: [String],
@@ -50,17 +54,23 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     func getReports(
         limit _: Int,
         offset _: Int,
-    ) async throws -> [USExaminationReport] { reports }
+    ) async throws -> [USExaminationReport] {
+        reports
+    }
 
-    func getReportsCount() async throws -> Int { reports.count }
+    func getReportsCount() async throws -> Int {
+        reports.count
+    }
 
     func setReport(
         report: USExaminationReport,
     ) async throws {
         saveCount += 1
-        guard !isSaveFailed else { throw CocoaError(
-            .fileWriteUnknown,
-        ) }
+        guard !isSaveFailed else {
+            throw CocoaError(
+                .fileWriteUnknown,
+            )
+        }
         reports.append(
             report,
         )
@@ -74,7 +84,11 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
         )
     }
 
-    func clearAllReports() async throws { reports.removeAll() }
+    func clearAllReports() async throws {
+        reports.removeAll()
+    }
 
-    func clearAll() async throws { reports.removeAll() }
+    func clearAll() async throws {
+        reports.removeAll()
+    }
 }

@@ -68,7 +68,9 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             .storageClearProtocols,
             arguments: StorageClearProtocolsArguments(
                 onConfirm: { [weak self] in
-                    guard let self else { return }
+                    guard let self else {
+                        return
+                    }
 
                     emit(
                         StorageLoadingState(),
@@ -105,7 +107,9 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
     }
 
     func onTapDeleteSpeechModel() {
-        guard isSpeechModelAvailable, let id = presentationID else { return }
+        guard isSpeechModelAvailable, let id = presentationID else {
+            return
+        }
         switch state {
         case _ as StorageLoadingState: return
         default: break
@@ -121,7 +125,9 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
         handle {
             try await DSpeechWhisperKitModel.shared.deleteDownloadedModel()
         } onMainSuccess: { _ in
-            guard self.presentationID == id, self.state === loading else { return }
+            guard self.presentationID == id, self.state === loading else {
+                return
+            }
             self.emit(
                 StorageReadyState(),
             )
@@ -136,7 +142,9 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             )
             self.coordinator.pop()
         } onMainUnknownError: { error in
-            guard self.presentationID == id, self.state === loading else { return }
+            guard self.presentationID == id, self.state === loading else {
+                return
+            }
             self.emit(
                 StorageFailedState(
                     error: error,
@@ -161,7 +169,9 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             .storageClearAll,
             arguments: StorageClearAllArguments(
                 onConfirm: { [weak self] in
-                    guard let self else { return }
+                    guard let self else {
+                        return
+                    }
 
                     emit(
                         StorageLoadingState(),

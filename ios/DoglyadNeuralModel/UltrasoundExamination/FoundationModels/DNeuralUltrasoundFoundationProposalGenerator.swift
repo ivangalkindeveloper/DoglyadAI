@@ -22,8 +22,12 @@ final class DNeuralUltrasoundFoundationProposalGenerator: DNeuralUltrasoundPropo
 
     func prewarm() {
         lock.lock()
-        defer { lock.unlock() }
-        guard prewarmedSession == nil else { return }
+        defer {
+            lock.unlock()
+        }
+        guard prewarmedSession == nil else {
+            return
+        }
         let session = LanguageModelSession(
             instructions: proposalPrompt,
         )
@@ -33,7 +37,9 @@ final class DNeuralUltrasoundFoundationProposalGenerator: DNeuralUltrasoundPropo
 
     private func takeSession() -> LanguageModelSession {
         lock.lock()
-        defer { lock.unlock() }
+        defer {
+            lock.unlock()
+        }
         // A separate session per dictation prevents previous patient data entering the next request.
         let session = prewarmedSession ?? LanguageModelSession(
             instructions: proposalPrompt,

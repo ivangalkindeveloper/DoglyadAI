@@ -131,9 +131,11 @@ extension USExaminationScanPhoto {
             image: UIImage(
                 data: db.data,
             ) ?? UIImage(),
-            thumbnail: db.thumbnailData.flatMap { UIImage(
-                data: $0,
-            ) },
+            thumbnail: db.thumbnailData.flatMap {
+                UIImage(
+                    data: $0,
+                )
+            },
         )
     }
 
@@ -152,21 +154,27 @@ extension USExaminationScanPhoto {
     ) -> USExaminationScanPhoto? {
         guard let image = UIImage(
             data: db.data,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
 
         return USExaminationScanPhoto(
             id: db.id,
             image: image,
-            thumbnail: db.thumbnailData.flatMap { UIImage(
-                data: $0,
-            ) },
+            thumbnail: db.thumbnailData.flatMap {
+                UIImage(
+                    data: $0,
+                )
+            },
         )
     }
 
     func toDraftDB(
         position: Int,
     ) -> USExaminationDraftPhotoDB? {
-        guard let data = image.pngData() else { return nil }
+        guard let data = image.pngData() else {
+            return nil
+        }
 
         return USExaminationDraftPhotoDB(
             id: id,

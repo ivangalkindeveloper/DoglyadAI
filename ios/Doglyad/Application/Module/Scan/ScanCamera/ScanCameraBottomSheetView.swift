@@ -28,32 +28,11 @@ struct ScanCameraBottomSheetView: DViewProtocol {
                 VStack(
                     spacing: .zero,
                 ) {
-                    switch viewModel.state {
-                    case _ as ScanCameraPreparingState: Spacer()
-                    default:
-                        ScanCameraFrameView(
-                            onFrameChanged: viewModel.updateCaptureFrame,
-                        )
-                        .frame(
-                            maxWidth: .infinity,
-                            maxHeight: .infinity,
-                            alignment: .center,
-                        )
-                    }
+                    ScanCameraFrameStateView()
 
-                    switch viewModel.state {
-                    case _ as ScanCameraReadyState, _ as ScanCameraCapturingState:
-                        DButton(
-                            image: .camera,
-                            action: viewModel.onTapCapture,
-                            isLoading: isCapturing,
-                            isDisabled: !viewModel.isCaptureFrameReady,
-                        )
-                        .dStyle(
-                            .primaryCircle,
-                        )
-                    default: EmptyView()
-                    }
+                    ScanCameraCaptureButtonView(
+                        isCapturing: isCapturing,
+                    )
                 }
                 .padding(
                     .top,
@@ -75,28 +54,7 @@ struct ScanCameraBottomSheetView: DViewProtocol {
             VStack(
                 spacing: size.s8,
             ) {
-                switch viewModel.state {
-                case _ as ScanCameraReadyState, _ as ScanCameraCapturingState:
-                    DText(
-                        l10n[
-                            .scanCaptureDescription,
-                        ],
-                    )
-                    .dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscaleLine,
-                        alignment: .center,
-                    )
-                    .padding(
-                        .horizontal,
-                        size.adaptiveCornerRadius / 2,
-                    )
-                    .safeAreaPadding(
-                        .bottom,
-                        viewModel.photos.isEmpty ? nil : .zero,
-                    )
-                default: EmptyView()
-                }
+                ScanCameraDescriptionView()
 
                 ScanCameraPhotoListView()
             }

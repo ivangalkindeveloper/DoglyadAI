@@ -11,10 +11,12 @@ struct ScanSpeechRecordingView: DViewProtocol {
 
     var body: some View {
         let description: LocalizedStringResource? = switch viewModel.state {
-        case _ as ScanSpeechPreparingRecordingState: l10n[
+        case _ as ScanSpeechPreparingRecordingState:
+            l10n[
                 .scanSpeechProcessPreparingDescription,
             ]
-        case _ as ScanSpeechTranscribingState: l10n[
+        case _ as ScanSpeechTranscribingState:
+            l10n[
                 .scanSpeechProcessTranscribingDescription,
             ]
         default: nil
@@ -25,47 +27,9 @@ struct ScanSpeechRecordingView: DViewProtocol {
         ) {
             Spacer()
 
-            switch viewModel.state {
-            case _ as ScanSpeechRecordingState:
-                switch viewModel.speechController?.text {
-                case let .some(
-                    text,
-                ):
-                    DText(
-                        text,
-                    ).dStyle(
-                        font: typography.linkSmall,
-                        color: color.grayscaleBackgroundWeak,
-                        alignment: .center,
-                    )
-                    .lineLimit(
-                        1,
-                    ).truncationMode(
-                        .head,
-                    ).clipped().padding(
-                        .horizontal,
-                        size.s32,
-                    ).padding(
-                        .bottom,
-                        size.s8,
-                    ).transition(
-                        .opacity,
-                    )
-                case .none: EmptyView()
-                }
-                ScanSpeechAudioMeterView().padding(
-                    .bottom,
-                    size.s16,
-                ).transition(
-                    .opacity,
-                )
-            default: EmptyView()
-            }
+            ScanSpeechRecordingMeterView()
 
-            switch description {
-            case let .some(
-                description,
-            ):
+            if let description {
                 DText(
                     description,
                 ).dStyle(
@@ -82,7 +46,8 @@ struct ScanSpeechRecordingView: DViewProtocol {
                 ).transition(
                     .opacity,
                 )
-            case .none:
+
+            } else {
                 Group {
                     DText(
                         l10n[
@@ -100,6 +65,7 @@ struct ScanSpeechRecordingView: DViewProtocol {
                         .bottom,
                         size.s8,
                     )
+
                     DText(
                         l10n[
                             .scanSpeechProcessSpeechDescription,

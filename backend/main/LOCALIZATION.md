@@ -68,6 +68,12 @@ Tier 4 — один `StepSet`, как и остальные уровни ини�
 всего Tier 4. При ошибке контейнер не публикуется, показывается локальный экран ошибки.
 Повторная инициализация скачивает каталог заново. Постоянного кэша переводов нет.
 
+Backend читает каталоги один раз при запуске. После изменения JSON перезапусти
+локальную сессию `Backend: Local Mock` или `Backend: Local Inference` в VS Code.
+Для Docker пересобери и перезапусти образ. Кнопка «Обновить» в iOS повторяет
+запрос к серверу, но не перечитывает его файлы. Новые обязательные ключи должны
+появиться в ответе backend до запуска обновлённого клиента.
+
 Модели `Language`, `Localization` и вложенная `VoiceLocalization` находятся в
 `ios/Doglyad/Domain/Localization`. `VoiceLocalization` хранит языковые правила разбора
 и коррекции речи, а не подписи интерфейса. Они доступны через `container.l10n.voice`;
@@ -90,7 +96,7 @@ view.localization(container.l10n)
 // Во вьюхе.
 @EnvironmentObject private var l10n: L10N
 DText(l10n[.buttonSpeech])
-DButton(title: l10n[.buttonDone], action: onConfirm)
+DButton(title: l10n[.buttonSave], action: onSave)
 
 // Готовая строка для валидатора, письма или другой модели.
 let text = container.l10n.text(.scanPatientDefaultNameLabel, values: [.count: "12"])

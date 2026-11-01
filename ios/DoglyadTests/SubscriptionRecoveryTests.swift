@@ -57,7 +57,9 @@
             let model = SubscriptionRecoveryPreviewFactory.makeViewModel(
                 container: container,
                 router: router,
-                onRecover: { recoveredKey = $0 },
+                onRecover: {
+                    recoveredKey = $0
+                },
             )
             #expect(
                 !model.isRestoreEnabled,

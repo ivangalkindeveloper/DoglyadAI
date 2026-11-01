@@ -37,19 +37,25 @@ struct L10NInitializationTests {
         var succeeded = false
         var nextTierStarted = false
         await DependencyInitializer<InitializationProcess, DependencyContainer>(
-            createProcess: { process },
+            createProcess: {
+                process
+            },
             stepSets: [
                 l10nSteps,
                 StepSet(
                     sync: [
                         SyncInitializationStep<InitializationProcess>(
                             title: "Next tier",
-                            run: { _ in nextTierStarted = true },
+                            run: { _ in
+                                nextTierStarted = true
+                            },
                         ),
                     ],
                 ),
             ],
-            onSuccess: { _, _ in succeeded = true },
+            onSuccess: { _, _ in
+                succeeded = true
+            },
             onError: { _, _, step, _ in
                 failed = true
                 #expect(
@@ -87,8 +93,17 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
     private var paths: [String] = []
     private var capturedHeaders: [String: String]?
 
-    var requestedPaths: [String] { lock.withLock { paths } }
-    var headers: [String: String]? { lock.withLock { capturedHeaders } }
+    var requestedPaths: [String] {
+        lock.withLock {
+            paths
+        }
+    }
+
+    var headers: [String: String]? {
+        lock.withLock {
+            capturedHeaders
+        }
+    }
 
     func updateConfiguration(
         timeoutIntervalForRequest _: TimeInterval,

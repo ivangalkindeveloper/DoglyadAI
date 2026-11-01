@@ -1,4 +1,6 @@
 @MainActor
 protocol ApplicationRootStateProtocol: AnyObject {
-    var id: ApplicationRootViewType { get }
+    var id: ApplicationRootViewType {
+        get
+    }
 }

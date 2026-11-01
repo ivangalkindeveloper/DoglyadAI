@@ -67,9 +67,17 @@ public struct DSegment<T: Equatable>: DViewProtocol {
 public struct DSegmentButtonStyle: ButtonStyle {
     @EnvironmentObject private var theme: DTheme
 
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
-    private var typography: DTypography { theme.typography }
+    private var color: DColor {
+        theme.color
+    }
+
+    private var size: DSize {
+        theme.size
+    }
+
+    private var typography: DTypography {
+        theme.typography
+    }
 
     let isConditionSatisfied: Bool
 

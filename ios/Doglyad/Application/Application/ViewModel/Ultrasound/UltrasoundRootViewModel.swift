@@ -26,9 +26,11 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         self.container = container
 
         let settings = container.initialSettingsAI
-        neuralModel = settings.selectedNeuralModelId.flatMap { container.usExaminationNeuralModelsById[
-            $0,
-        ] }
+        neuralModel = settings.selectedNeuralModelId.flatMap {
+            container.usExaminationNeuralModelsById[
+                $0,
+            ]
+        }
             ?? container.usExaminationNeuralModelDefault
         isMarkdown = settings.isMarkdown
         temperature = settings.temperature ?? container.applicationConfig.ultrasound.neuralModel.temperature
@@ -61,21 +63,30 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
     func observeChanges(
         _ observer: @escaping () -> Void,
     ) -> AnyCancellable {
-        changes.sink { _ in observer() }
+        changes.sink { _ in
+            observer()
+        }
     }
 
     func onAppear() {
         handle {
             let repository = self.container.templateRepository
-            guard let id = try await repository.getSelectedTemplateId() else { return nil as USExaminationTemplate? }
+            guard let id = try await repository.getSelectedTemplateId() else {
+                return nil as USExaminationTemplate?
+            }
             let template = try await repository.getTemplate(
                 id: id,
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
-            guard try await repository.getSelectedTemplateId() == id else { return self.template }
-            if template == nil { try await repository.clearSelectedTemplateId() }
+            guard try await repository.getSelectedTemplateId() == id else {
+                return self.template
+            }
+            if template == nil {
+                try await repository.clearSelectedTemplateId()
+            }
             return template
-        } onMainSuccess: { template in self.template = template
+        } onMainSuccess: { template in
+            self.template = template
             self.changes.send()
         }
     }
@@ -172,7 +183,9 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         try await container.templateRepository.saveTemplate(
             template: template,
         )
-        if self.template?.id == template.id { self.template = template }
+        if self.template?.id == template.id {
+            self.template = template
+        }
         changes.send()
         onChanged()
     }

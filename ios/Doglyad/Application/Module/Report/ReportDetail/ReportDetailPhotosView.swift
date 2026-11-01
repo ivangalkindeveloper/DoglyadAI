@@ -23,9 +23,11 @@ struct ReportDetailPhotosView: DViewProtocol {
                         configuration: viewModel.photoCardConfiguration(
                             for: photo.id,
                         ),
-                        onTap: { viewModel.onTapPhoto(
-                            photo,
-                        ) },
+                        onTap: {
+                            viewModel.onTapPhoto(
+                                photo,
+                            )
+                        },
                     )
                 }
             }

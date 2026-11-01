@@ -10,34 +10,37 @@ struct ManageSubscriptionStateView: DViewProtocol {
         switch state {
         case let loading as ManageSubscriptionLoadingState:
             if let previous = loading.previousState {
-                VStack(
-                    alignment: .leading,
-                    spacing: size.s8,
-                ) {
-                    DText(
-                        l10n[
-                            .manageSubscriptionUpdatingDescription,
-                        ],
-                    ).dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscaleLabel,
-                    )
-                    DShimmerPlaceholder().frame(
-                        height: size.s8,
-                    )
-                }
+                DText(
+                    l10n[
+                        .manageSubscriptionUpdatingDescription,
+                    ],
+                ).dStyle(
+                    font: typography.textSmall,
+                    color: color.grayscaleLabel,
+                )
+                .dShimmer()
+                .padding(
+                    .bottom,
+                    size.s8,
+                )
+
                 ManageSubscriptionContentView(
                     state: previous,
                 )
-            } else { ManageSubscriptionLoadingView() }
+            } else {
+                ManageSubscriptionLoadingView()
+            }
         case let failed as ManageSubscriptionFailedState:
             ManageSubscriptionErrorCardView(
                 state: failed,
             )
-            if let previous = failed.previousState { ManageSubscriptionContentView(
-                state: previous,
-            ) }
-        case let content as ManageSubscriptionContentState: ManageSubscriptionContentView(
+            if let previous = failed.previousState {
+                ManageSubscriptionContentView(
+                    state: previous,
+                )
+            }
+        case let content as ManageSubscriptionContentState:
+            ManageSubscriptionContentView(
                 state: content,
             )
         default: EmptyView()

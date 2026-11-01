@@ -1,0 +1,22 @@
+import DoglyadUI
+import SwiftUI
+
+struct ScanCameraFrameStateView: DViewProtocol {
+    @EnvironmentObject var theme: DTheme
+    @EnvironmentObject private var viewModel: ScanCameraViewModel
+
+    var body: some View {
+        switch viewModel.state {
+        case _ as ScanCameraPreparingState: Spacer()
+        default:
+            ScanCameraFrameView(
+                onFrameChanged: viewModel.updateCaptureFrame,
+            )
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity,
+                alignment: .center,
+            )
+        }
+    }
+}

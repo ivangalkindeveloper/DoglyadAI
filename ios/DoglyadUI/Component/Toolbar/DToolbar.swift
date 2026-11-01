@@ -3,26 +3,17 @@ import SwiftUI
 public struct DToolbar: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
 
-    private let upAccessibilityLabel: LocalizedStringResource
-    private let downAccessibilityLabel: LocalizedStringResource
-    private let doneAccessibilityLabel: LocalizedStringResource
     private let onTapUp: (() -> Void)?
     private let onTapDown: (() -> Void)?
     private let onTapDone: () -> Void
     private let trailButtons: [DToolbarButton]
 
     public init(
-        upAccessibilityLabel: LocalizedStringResource,
-        downAccessibilityLabel: LocalizedStringResource,
-        doneAccessibilityLabel: LocalizedStringResource,
         onTapUp: (() -> Void)? = nil,
         onTapDown: (() -> Void)? = nil,
         onTapDone: @escaping () -> Void,
         trailButtons: [DToolbarButton] = [],
     ) {
-        self.upAccessibilityLabel = upAccessibilityLabel
-        self.downAccessibilityLabel = downAccessibilityLabel
-        self.doneAccessibilityLabel = doneAccessibilityLabel
         self.trailButtons = trailButtons
         self.onTapUp = onTapUp
         self.onTapDown = onTapDown
@@ -35,7 +26,6 @@ public struct DToolbar: DViewProtocol {
         ) {
             if let onTapUp {
                 DToolbarButton(
-                    accessibilityLabel: upAccessibilityLabel,
                     style: .grayscaleHeader,
                     content: .icon(
                         .up,
@@ -46,7 +36,6 @@ public struct DToolbar: DViewProtocol {
 
             if let onTapDown {
                 DToolbarButton(
-                    accessibilityLabel: downAccessibilityLabel,
                     style: .grayscaleHeader,
                     content: .icon(
                         .down,
@@ -58,7 +47,6 @@ public struct DToolbar: DViewProtocol {
             Spacer()
 
             DToolbarButton(
-                accessibilityLabel: doneAccessibilityLabel,
                 style: .grayscaleHeader,
                 content: .icon(
                     .check,
@@ -88,9 +76,6 @@ public struct DToolbar: DViewProtocol {
 
 #Preview {
     DToolbar(
-        upAccessibilityLabel: "Previous",
-        downAccessibilityLabel: "Next",
-        doneAccessibilityLabel: "Done",
         onTapUp: {},
         onTapDown: {},
         onTapDone: {},

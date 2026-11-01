@@ -32,7 +32,9 @@ enum DNeuralUltrasoundDictationNumericCorrection {
         guard expression.numberOfMatches(
             in: text,
             range: range,
-        ) == 1 else { return text }
+        ) == 1 else {
+            return text
+        }
         return expression.stringByReplacingMatches(
             in: text,
             range: range,

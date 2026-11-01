@@ -11,6 +11,7 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
         case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechReviewProposalState: 0.9
         default: 0.5
         }
+
         DBottomSheet(
             type: .blur,
             title: l10n[
@@ -18,42 +19,12 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
             ],
             fraction: fraction,
         ) { toolbarHeight, bottomHeight in
-            switch viewModel.state {
-            case _ as ScanSpeechPreparingModelState, _ as ScanSpeechModelPreparationFailedState:
-                ScanSpeechModelPreparationView(
-                    toolbarHeight: toolbarHeight,
-                    bottomHeight: bottomHeight,
-                )
-            case _ as ScanSpeechReadyState, _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState:
-                ScanSpeechRecordingView(
-                    toolbarHeight: toolbarHeight,
-                    bottomHeight: bottomHeight,
-                )
-            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState:
-                ScanSpeechReviewTranscriptView(
-                    toolbarHeight: toolbarHeight,
-                    bottomHeight: bottomHeight,
-                )
-            case let state as ScanSpeechReviewProposalState:
-                ScanSpeechReviewProposalView(
-                    state: state,
-                    toolbarHeight: toolbarHeight,
-                    bottomHeight: bottomHeight,
-                )
-            default: EmptyView()
-            }
+            ScanSpeechContentStateView(
+                toolbarHeight: toolbarHeight,
+                bottomHeight: bottomHeight,
+            )
         } bottom: {
-            switch viewModel.state {
-            case _ as ScanSpeechReadyState, _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState:
-                ScanSpeechRecordingBottomView()
-            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState:
-                ScanSpeechReviewTranscriptBottomView()
-            case let state as ScanSpeechReviewProposalState:
-                ScanSpeechReviewProposalBottomView(
-                    state: state,
-                )
-            default: EmptyView()
-            }
+            ScanSpeechBottomView()
         }
         .onAppear(
             perform: viewModel.onAppear,

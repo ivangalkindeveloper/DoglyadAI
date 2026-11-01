@@ -230,10 +230,10 @@ class InferenceProfileTests(unittest.TestCase):
         )
 
     def test_failed_engine_stops_sequence_before_next_engine_and_api(self) -> None:
-        calls = self.start(failed_engine="vllm_medgemma_15_4b")
+        calls = self.start(failed_engine="vllm_medgemma_4b")
         self.assertEqual(
             [call[-1] for call in calls if "up" in call],
-            ["vllm_medgemma_4b", "vllm_medgemma_15_4b"],
+            ["vllm_medgemma_27b", "vllm_medgemma_4b"],
         )
 
     def test_startup_guards_fail_before_any_container_mutation(self) -> None:

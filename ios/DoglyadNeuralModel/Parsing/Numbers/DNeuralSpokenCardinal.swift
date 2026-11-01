@@ -22,7 +22,9 @@ enum DNeuralSpokenCardinal {
         ).joined(
             separator: " ",
         )
-        guard !normalized.isEmpty else { return nil }
+        guard !normalized.isEmpty else {
+            return nil
+        }
         for number in 1 ... 199 {
             var remainder = number
             var parts: [String] = []
@@ -49,7 +51,9 @@ enum DNeuralSpokenCardinal {
             }
             if parts.joined(
                 separator: " ",
-            ) == normalized { return number }
+            ) == normalized {
+                return number
+            }
         }
         return nil
     }

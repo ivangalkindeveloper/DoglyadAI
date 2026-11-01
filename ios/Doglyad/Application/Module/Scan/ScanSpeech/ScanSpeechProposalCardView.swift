@@ -17,15 +17,19 @@ struct ScanSpeechProposalCardView: DViewProtocol {
             ? [l10n[
                 .scanSpeechProposalNeedsReviewLabel,
             ]]
-            : proposal.warnings.map { viewModel.warningText(
-                $0,
-            ) }
+            : proposal.warnings.map {
+                viewModel.warningText(
+                    $0,
+                )
+            }
 
         DButtonCard(
             backgroundColor: color.grayscaleHeader,
-            action: { viewModel.onTapProposal(
-                proposal.id,
-            ) },
+            action: {
+                viewModel.onTapProposal(
+                    proposal.id,
+                )
+            },
         ) {
             HStack(
                 alignment: .top,
@@ -83,6 +87,7 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                                     font: typography.textSmall,
                                     color: color.warningDefaultStrong,
                                 )
+
                                 DText(
                                     warnings[
                                         index,
@@ -109,6 +114,7 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                             font: typography.textXSmall,
                             color: color.grayscaleBackgroundWeak,
                         )
+
                         DText(
                             proposal.sourceQuote,
                         )

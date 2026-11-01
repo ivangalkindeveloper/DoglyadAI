@@ -48,12 +48,17 @@ enum ScanSpeechConfidencePolicy {
         noComplaintsPattern: String,
     ) -> Bool {
         guard transcript.isReadyForParsing, parsedText == transcript.correctedText,
-              field.warnings.isEmpty else { return false }
+              field.warnings.isEmpty
+        else {
+            return false
+        }
         if !transcript.isFinal {
             guard let quoteRange = uniqueRange(
                 for: field.sourceQuote,
                 in: parsedText,
-            ) else { return false }
+            ) else {
+                return false
+            }
             let suffix = parsedText[
                 quoteRange.upperBound...,
             ].trimmingCharacters(
@@ -65,10 +70,14 @@ enum ScanSpeechConfidencePolicy {
             // An interruption can cut off the last field. Earlier complete fields
             // retain their normal per-field audio checks; the trailing fragment is reviewed.
             guard !suffix.isEmpty || quote.last.map(
-                { ".!?;".contains(
-                    $0,
-                ) },
-            ) == true else { return false }
+                {
+                    ".!?;".contains(
+                        $0,
+                    )
+                },
+            ) == true else {
+                return false
+            }
         }
         switch field.accuracy {
         case .full:
@@ -95,7 +104,10 @@ enum ScanSpeechConfidencePolicy {
                     .range(
                         of: noComplaintsPattern,
                         options: [.regularExpression, .caseInsensitive],
-                    ) != nil else { return false }
+                    ) != nil
+                else {
+                    return false
+                }
                 return hasReliableWhisperEvidence(
                     for: field.sourceQuote,
                     transcript: transcript,
@@ -137,7 +149,9 @@ enum ScanSpeechConfidencePolicy {
                     range,
                     in: field.sourceQuote,
                 )
-            else { return false }
+            else {
+                return false
+            }
             evidence = identifier
             threshold = minimumIdentifierConfidence
         case .patientGender, .patientWeightKG:
@@ -149,12 +163,16 @@ enum ScanSpeechConfidencePolicy {
         guard uniqueRange(
             for: field.sourceQuote,
             in: transcript.rawText,
-        ) != nil else { return false }
+        ) != nil else {
+            return false
+        }
         guard let confidence = minimumConfidence(
             for: evidence,
             in: transcript.rawText,
             spans: transcript.confidenceSpans,
-        ) else { return false }
+        ) else {
+            return false
+        }
         return confidence >= threshold
     }
 
@@ -165,7 +183,9 @@ enum ScanSpeechConfidencePolicy {
         guard let range = uniqueRange(
             for: quote,
             in: transcript.rawText,
-        ) else { return false }
+        ) else {
+            return false
+        }
         let quoteRange = NSRange(
             range,
             in: transcript.rawText,
@@ -174,7 +194,10 @@ enum ScanSpeechConfidencePolicy {
         var covered = IndexSet()
         for span in transcript.decodingSpans {
             guard span.utf16Start >= 0, span.utf16Length > 0,
-                  span.utf16Start <= raw.length, span.utf16Length <= raw.length - span.utf16Start else { return false }
+                  span.utf16Start <= raw.length, span.utf16Length <= raw.length - span.utf16Start
+            else {
+                return false
+            }
             let intersection = NSIntersectionRange(
                 quoteRange,
                 NSRange(
@@ -182,7 +205,9 @@ enum ScanSpeechConfidencePolicy {
                     length: span.utf16Length,
                 ),
             )
-            guard intersection.length > 0 else { continue }
+            guard intersection.length > 0 else {
+                continue
+            }
             guard NSMaxRange(
                 intersection,
             ) <= raw.length,
@@ -195,7 +220,9 @@ enum ScanSpeechConfidencePolicy {
                         with: intersection,
                     ),
                 )
-            else { return false }
+            else {
+                return false
+            }
             let indices = intersection.location ..< NSMaxRange(
                 intersection,
             )
@@ -203,7 +230,9 @@ enum ScanSpeechConfidencePolicy {
                 IndexSet(
                     integersIn: indices,
                 ),
-            ).isEmpty else { return false }
+            ).isEmpty else {
+                return false
+            }
             covered.insert(
                 integersIn: indices,
             )
@@ -218,13 +247,19 @@ enum ScanSpeechConfidencePolicy {
                 characters[
                     offset,
                 ],
-            ) else { return false }
+            ) else {
+                return false
+            }
             if CharacterSet.whitespacesAndNewlines.contains(
                 scalar,
-            ) { continue }
+            ) {
+                continue
+            }
             guard covered.contains(
                 offset,
-            ) else { return false }
+            ) else {
+                return false
+            }
         }
         return !covered.isEmpty
     }
@@ -237,7 +272,9 @@ enum ScanSpeechConfidencePolicy {
         guard let first = uniqueRange(
             for: quote,
             in: rawText,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         let range = NSRange(
             first,
             in: rawText,
@@ -254,17 +291,23 @@ enum ScanSpeechConfidencePolicy {
                 characters[
                     offset,
                 ],
-            ) else { return nil }
+            ) else {
+                return nil
+            }
             if CharacterSet.whitespacesAndNewlines.contains(
                 scalar,
-            ) { continue }
+            ) {
+                continue
+            }
             let covering = spans.filter { span in
                 span.utf16Start <= offset && offset < span.utf16Start + span.utf16Length
                     && span.confidence.isFinite && (0 ... 1).contains(
                         span.confidence,
                     )
             }
-            guard covering.count == 1 else { return nil }
+            guard covering.count == 1 else {
+                return nil
+            }
             minimum = min(
                 minimum,
                 covering[
@@ -288,7 +331,9 @@ enum ScanSpeechConfidencePolicy {
                   of: literal,
                   range: first.upperBound ..< text.endIndex,
               ) == nil
-        else { return nil }
+        else {
+            return nil
+        }
         return first
     }
 
@@ -302,7 +347,11 @@ enum ScanSpeechConfidencePolicy {
         let after = text[
             range.upperBound...,
         ].first
-        return (before.map { !$0.isLetter && !$0.isNumber } ?? true)
-            && (after.map { !$0.isLetter && !$0.isNumber } ?? true)
+        return (before.map {
+            !$0.isLetter && !$0.isNumber
+        } ?? true)
+            && (after.map {
+                !$0.isLetter && !$0.isNumber
+            } ?? true)
     }
 }

@@ -38,7 +38,9 @@ enum DNeuralUltrasoundDictationProfileEvidence {
     ) -> Bool {
         let labelPattern = labels(
             localization: localization,
-        ).map { "(?:" + $0.1 + ")" }.joined(
+        ).map {
+            "(?:" + $0.1 + ")"
+        }.joined(
             separator: "|",
         )
         let sentences = quote.replacingOccurrences(
@@ -47,24 +49,34 @@ enum DNeuralUltrasoundDictationProfileEvidence {
             options: .regularExpression,
         ).split(
             separator: "\n",
-        ).map { $0.trimmingCharacters(
-            in: .whitespacesAndNewlines,
-        ) }.filter { !$0.isEmpty }
+        ).map {
+            $0.trimmingCharacters(
+                in: .whitespacesAndNewlines,
+            )
+        }.filter {
+            !$0.isEmpty
+        }
         var pendingLabel: String?
         for sentence in sentences {
             if matches(
                 labelPattern,
                 sentence,
             ) {
-                guard pendingLabel == nil else { return false }
+                guard pendingLabel == nil else {
+                    return false
+                }
                 pendingLabel = sentence
             } else {
-                let joined = pendingLabel.map { $0 + ": " + sentence } ?? sentence
+                let joined = pendingLabel.map {
+                    $0 + ": " + sentence
+                } ?? sentence
                 guard isProfileSentence(
                     joined,
                     locale: locale,
                     localization: localization,
-                ) else { return false }
+                ) else {
+                    return false
+                }
                 pendingLabel = nil
             }
         }
@@ -82,7 +94,9 @@ enum DNeuralUltrasoundDictationProfileEvidence {
             guard let prefix = sentence.range(
                 of: #"^(?:"# + label + #")(?:\s*[:.,—–-]\s*|\s+)"#,
                 options: [.regularExpression, .caseInsensitive],
-            ) else { continue }
+            ) else {
+                continue
+            }
             let value = String(
                 sentence[
                     prefix.upperBound...,

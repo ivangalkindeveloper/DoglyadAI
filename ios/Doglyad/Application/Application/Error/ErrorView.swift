@@ -27,6 +27,7 @@ struct ErrorView<Description: View>: DViewProtocol {
         case _ as ApplicationRootInitializingState: true
         default: false
         }
+
         DScreen { _, bottomInset in
             ErrorInitializationView(
                 title: title,
@@ -36,12 +37,7 @@ struct ErrorView<Description: View>: DViewProtocol {
                 bottomInset,
             )
         } bottom: {
-            switch (buttonTitle, action) {
-            case let (.some(
-                title,
-            ), .some(
-                action,
-            )):
+            if let title = buttonTitle, let action {
                 DButton(
                     title: title,
                     action: action,
@@ -51,7 +47,6 @@ struct ErrorView<Description: View>: DViewProtocol {
                 ).padding(
                     size.s16,
                 )
-            default: EmptyView()
             }
         }
     }

@@ -46,12 +46,15 @@ public struct DBadge<Content: View>: DViewProtocol {
                             let badge = visibleBadges[
                                 index,
                             ]
+
                             DBadgeItemView(
                                 badge: badge,
                             )
                             .if(
                                 badge.isShimmering,
-                            ) { $0.dShimmer() }
+                            ) {
+                                $0.dShimmer()
+                            }
                         }
                     }
                     .offset(
@@ -85,6 +88,7 @@ public struct DBadge<Content: View>: DViewProtocol {
                             "Card with badge",
                         )
                         .dStyle()
+
                         Spacer()
                     }
                 }
@@ -102,6 +106,7 @@ public struct DBadge<Content: View>: DViewProtocol {
                             "Shimmering pro badge",
                         )
                         .dStyle()
+
                         Spacer()
                     }
                 }

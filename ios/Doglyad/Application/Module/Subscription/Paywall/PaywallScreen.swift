@@ -12,21 +12,37 @@ struct PaywallScreen: View {
             viewModel: PaywallViewModel(
                 container: container,
                 router: router,
-                getSubscriptionStatus: { [subscriptionViewModel] in subscriptionViewModel.status },
-                observeSubscriptionStatus: { [subscriptionViewModel] observer in subscriptionViewModel.observeStatus(
-                    observer,
-                ) },
-                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in subscriptionViewModel.update(
-                    status: status,
-                ) },
-                getSettingsAI: { [subscriptionViewModel] in subscriptionViewModel.resolveSettingsAI() },
-                onRefreshSubscriptionStatus: { [subscriptionViewModel] in await subscriptionViewModel.refreshStatus() },
+                getSubscriptionStatus: { [subscriptionViewModel] in
+                    subscriptionViewModel.status
+                },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in
+                    subscriptionViewModel.observeStatus(
+                        observer,
+                    )
+                },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in
+                    subscriptionViewModel.update(
+                        status: status,
+                    )
+                },
+                getSettingsAI: { [subscriptionViewModel] in
+                    subscriptionViewModel.resolveSettingsAI()
+                },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in
+                    await subscriptionViewModel.refreshStatus()
+                },
                 arguments: arguments,
-                purchase: { [subscriptionViewModel] plan in try await subscriptionViewModel.purchase(
-                    plan: plan,
-                ) },
-                restorePurchases: { [subscriptionViewModel] in try await subscriptionViewModel.restorePurchases() },
-                checkPurchase: { [subscriptionViewModel] in try await subscriptionViewModel.checkPurchase() },
+                purchase: { [subscriptionViewModel] plan in
+                    try await subscriptionViewModel.purchase(
+                        plan: plan,
+                    )
+                },
+                restorePurchases: { [subscriptionViewModel] in
+                    try await subscriptionViewModel.restorePurchases()
+                },
+                checkPurchase: { [subscriptionViewModel] in
+                    try await subscriptionViewModel.checkPurchase()
+                },
             ),
         )
     }
@@ -42,6 +58,7 @@ struct PaywallScreen: View {
                 type: .paywall,
             ),
         )
+
         PaywallScreenView(
             viewModel: PaywallPreviewFactory.makeViewModel(
                 container: container,
@@ -65,6 +82,7 @@ struct PaywallScreen: View {
                 type: .paywall,
             ),
         )
+
         PaywallScreenView(
             viewModel: PaywallPreviewFactory.makeViewModel(
                 container: container,

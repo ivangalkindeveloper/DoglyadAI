@@ -12,7 +12,9 @@ public enum DSpeechFactory {
         }
         guard DSpeechControllerSFSpeechRecognizer.isSupported(
             locale: locale,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         return .sfSpeechRecognizer
     }
 
@@ -33,7 +35,9 @@ public enum DSpeechFactory {
         case .speechAnalyzer:
             guard #available(iOS 26.0, *), await DSpeechControllerAnalyzer.isSupported(
                 locale: locale,
-            ) else { throw DSpeechError.unavailable }
+            ) else {
+                throw DSpeechError.unavailable
+            }
             return DSpeechControllerAnalyzer(
                 locale: locale,
                 contextualStrings: contextualStrings,
@@ -42,7 +46,9 @@ public enum DSpeechFactory {
         case .sfSpeechRecognizer:
             guard DSpeechControllerSFSpeechRecognizer.isSupported(
                 locale: locale,
-            ) else { throw DSpeechError.unavailable }
+            ) else {
+                throw DSpeechError.unavailable
+            }
             return DSpeechControllerSFSpeechRecognizer(
                 locale: locale,
                 contextualStrings: contextualStrings,

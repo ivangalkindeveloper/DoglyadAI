@@ -1,0 +1,236 @@
+{
+  "boundary": "Three isolated VLLMService instances with different capacities; no HTTP/App Check bypass and no live configuration changes",
+  "waves": [
+    {
+      "wave": 0,
+      "is_measured": false,
+      "seconds": 29.021185487996263,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 0,
+          "is_success": true,
+          "output_sha256": "ff41c103a2b03821b0088ba5f41f55da51ef241f2d549524b99a8b00a62098f1",
+          "seconds": 9.491302201000508
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 1,
+          "is_success": true,
+          "output_sha256": "fdf512491785ba6812e86b9b09b79fdbb49a09735b511a643fd859d46953a43c",
+          "seconds": 9.574504768999759
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 2,
+          "is_success": true,
+          "output_sha256": "4ffd825a8c14fe99cdb40a2221c1d262f1d1ae0edc864b9f17d15b65c33f981c",
+          "seconds": 9.574239085006411
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 3,
+          "is_success": true,
+          "output_sha256": "9c7463db523e36002703e52d15f36f1414ba07348dd2b0715ae0e8dff6d96d48",
+          "seconds": 9.575065322002047
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 0,
+          "is_success": true,
+          "output_sha256": "5f02326a5430c3ffe14d90543950c8eb342ebcce343f145d5d90d202ea61e595",
+          "seconds": 12.80147064999619
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 1,
+          "is_success": true,
+          "output_sha256": "d2750635bd1455e83b515859c72192358888145278d9bab7ff2e499b82228258",
+          "seconds": 9.719298852003703
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 2,
+          "is_success": true,
+          "output_sha256": "f135625a7cc61d96b73a962dcea9fb29aa344e338453e4931b2d0a730b73e3d8",
+          "seconds": 11.125606209003308
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 3,
+          "is_success": true,
+          "output_sha256": "e7e038ca10cb9de6d0a4dbc118a565d93a7993f46a9151d0831f601c7282a3df",
+          "seconds": 11.125700674994732
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "index": 0,
+          "is_success": true,
+          "output_sha256": "4793f11c691943462975e153a84dd1df7370772e56be29799e8f7bd2af070c76",
+          "seconds": 28.583897996002634
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "index": 1,
+          "is_success": true,
+          "output_sha256": "97a5da5ab3ad359ab3c1a04097d9ca930b06629769e9936c643b1398edccf437",
+          "seconds": 29.02086602700001
+        }
+      ]
+    },
+    {
+      "wave": 1,
+      "is_measured": true,
+      "seconds": 28.333580944003188,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 0,
+          "is_success": true,
+          "output_sha256": "5a697cb6312d06f861f439c373f389f835ee5426003e2ee922f71ed321b53da2",
+          "seconds": 9.782712389998778
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 1,
+          "is_success": true,
+          "output_sha256": "07cdaf8f7ddefeee68445d1c041ea96bed07c6d9626aba0d07185647d8edb726",
+          "seconds": 9.781929624994518
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 2,
+          "is_success": true,
+          "output_sha256": "63bb8af137164717c4a34aadb72b48f480f0a061423cb2f1a92b5fff3dec2ee3",
+          "seconds": 9.78241051400255
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 3,
+          "is_success": true,
+          "output_sha256": "37ca35ab4c433fe8c0e855f6ec09ff79a2aede3506bf784e4f6ee0306707fd77",
+          "seconds": 9.665086667999276
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 0,
+          "is_success": true,
+          "output_sha256": "4c63eaaa424634be1999e18bccef0b4590684f07c5b7f9290a53ad951fadc461",
+          "seconds": 12.745920348002983
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 1,
+          "is_success": true,
+          "output_sha256": "f81de4422d876a1cc6ca7d56504e7eae427e9bff7c6e913cfe6dee003e45d9ad",
+          "seconds": 11.34567422499822
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 2,
+          "is_success": true,
+          "output_sha256": "16c93a601b30902809b8d6b7fafac70b90e103d026b8b832227d1bd9afc14ac9",
+          "seconds": 12.745748856999853
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 3,
+          "is_success": true,
+          "output_sha256": "7de3136b4b17f371798bbf34885b47d039a4253ab54b664544e31cf37e4b571a",
+          "seconds": 11.266281762997096
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "index": 0,
+          "is_success": true,
+          "output_sha256": "89b68b829febf171f38bc0ae86dea54239df4c877b7a589931b6070b3a42b9c8",
+          "seconds": 28.333099272000254
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "index": 1,
+          "is_success": true,
+          "output_sha256": "f4b0de61830b649e244c3d788b6ecca22358c6eaf67239eb1554a91fed55edd6",
+          "seconds": 28.332633586003794
+        }
+      ]
+    },
+    {
+      "wave": 2,
+      "is_measured": true,
+      "seconds": 28.71956496999337,
+      "samples": [
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 0,
+          "is_success": true,
+          "output_sha256": "e9966af8b5449f318d03a168989b0318bf2dbb12a2db05cf3a37da380d936572",
+          "seconds": 9.700769082999614
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 1,
+          "is_success": true,
+          "output_sha256": "756972f4c5d73a4afe41e49f2d004c3a2ebc172423abd2bad5f6a3c583db09d9",
+          "seconds": 9.700793627001985
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 2,
+          "is_success": true,
+          "output_sha256": "e928c4ef85719a6d43ac762121f507df4fd27981eafd4096662bfadd22b01b0c",
+          "seconds": 9.700676633998228
+        },
+        {
+          "model": "google/medgemma-4b-it",
+          "index": 3,
+          "is_success": true,
+          "output_sha256": "97a1393e57f70ce6e3f6601910196b868d0a31e83c28973f73e560f9c2b8b693",
+          "seconds": 9.700829581001017
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 0,
+          "is_success": true,
+          "output_sha256": "c3084cdea2efd76950f9b452b15dedcb8604133e1facee6e4b9b4add7d09ac5e",
+          "seconds": 11.255281122001179
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 1,
+          "is_success": true,
+          "output_sha256": "e4108d9db2ead9bf33e5c4e2fe6dd532818e39bbad0fb1a9e71d135e11ebd5ad",
+          "seconds": 11.255501494000782
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 2,
+          "is_success": true,
+          "output_sha256": "0226dc702679522ceba4f8051bd8b7384818ce486dae8852428085adcd05a785",
+          "seconds": 11.254283313995984
+        },
+        {
+          "model": "google/medgemma-1.5-4b-it",
+          "index": 3,
+          "is_success": true,
+          "output_sha256": "b580830aa5230106fd01eb87c482854db115cd4ba54e58ac8b148f4d7bd8ef71",
+          "seconds": 12.929634207997879
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "index": 0,
+          "is_success": true,
+          "output_sha256": "6b0d7aa4c5066ff3338e6cf583c79e836e3d5a9e2ac4d499670012d7c8895df9",
+          "seconds": 28.71911397099757
+        },
+        {
+          "model": "google/medgemma-27b-it",
+          "index": 1,
+          "is_success": true,
+          "output_sha256": "fdf3be1c217eb1bb3c2e1bd2dd449d4bb174f142405cb822558a20f043d4d385",
+          "seconds": 28.718435895993025
+        }
+      ]
+    }
+  ]
+}

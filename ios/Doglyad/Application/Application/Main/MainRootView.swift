@@ -32,7 +32,9 @@ struct MainRootView: View {
         _subscriptionViewModel = StateObject(
             wrappedValue: SubscriptionRootViewModel(
                 container: dependencyContainer,
-                getStoredSettingsAI: { [ultrasoundViewModel] in ultrasoundViewModel.storedSettingsAI },
+                getStoredSettingsAI: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.storedSettingsAI
+                },
             ),
         )
     }
@@ -59,7 +61,9 @@ struct MainRootView: View {
             subscriptionViewModel.onInit()
             ultrasoundViewModel.onAppear()
             viewModel.onAppear(
-                requestReview: { requestReview() },
+                requestReview: {
+                    requestReview()
+                },
             )
         }
     }

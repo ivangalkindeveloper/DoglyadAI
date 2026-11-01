@@ -73,8 +73,12 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
                 )
                 .onGeometryChange(
                     for: CGFloat.self,
-                    of: { $0.size.height },
-                    action: { contentHeight = $0 },
+                    of: {
+                        $0.size.height
+                    },
+                    action: {
+                        contentHeight = $0
+                    },
                 )
                 .frame(
                     maxWidth: .infinity,

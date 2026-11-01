@@ -43,6 +43,7 @@ struct SettingsAICardView: DViewProtocol {
                             settings.isMarkdown,
                         ),
                     )
+
                     NeuralModelValueRowView(
                         title: l10n[
                             .settingsAICardTemperatureLabel,
@@ -52,6 +53,7 @@ struct SettingsAICardView: DViewProtocol {
                             settings.temperature ?? 0,
                         ),
                     )
+
                     NeuralModelValueRowView(
                         title: l10n[
                             .settingsAICardMaxTokensLabel,

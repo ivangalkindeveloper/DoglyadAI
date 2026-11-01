@@ -21,7 +21,9 @@ final class YooKassaPaymentController: YooKassaDelegate {
         preparation: BillingPreparePaymentResponse,
     ) async throws -> String? {
         try Task.checkCancellation()
-        guard sdkViewController == nil else { throw SubscriptionError.purchasePending }
+        guard sdkViewController == nil else {
+            throw SubscriptionError.purchasePending
+        }
         let presenter = try presenter()
         let operationID = UUID()
         self.operationID = operationID
@@ -46,7 +48,9 @@ final class YooKassaPaymentController: YooKassaDelegate {
             }
         } onCancel: {
             Task { @MainActor [weak self] in
-                guard let self, self.operationID == operationID else { return }
+                guard let self, self.operationID == operationID else {
+                    return
+                }
                 fail(
                     CancellationError(),
                 )
@@ -59,7 +63,9 @@ final class YooKassaPaymentController: YooKassaDelegate {
         preparation: BillingPreparePaymentResponse,
     ) async throws {
         try Task.checkCancellation()
-        guard !isDismissalRequested, let url = payment.confirmationUrl, url.scheme == "https" else { return }
+        guard !isDismissalRequested, let url = payment.confirmationUrl, url.scheme == "https" else {
+            return
+        }
         let method: PaymentMethodType
         switch payment.paymentMethodType {
         case "bank_card": method = .bankCard
@@ -84,14 +90,18 @@ final class YooKassaPaymentController: YooKassaDelegate {
                 }
                 confirmationContinuation = continuation
                 let runConfirmation = {
-                    do { try YooKassa.runConfirmation(
-                        config: ConfirmationConfig(
-                            confirmationUrl: url.absoluteString,
-                            paymentMethodType: method,
-                        ),
-                    ) } catch { self.fail(
-                        error,
-                    ) }
+                    do {
+                        try YooKassa.runConfirmation(
+                            config: ConfirmationConfig(
+                                confirmationUrl: url.absoluteString,
+                                paymentMethodType: method,
+                            ),
+                        )
+                    } catch {
+                        self.fail(
+                            error,
+                        )
+                    }
                 }
                 if let presenter, let controller = sdkViewController {
                     presenter.present(
@@ -99,11 +109,15 @@ final class YooKassaPaymentController: YooKassaDelegate {
                         animated: true,
                         completion: runConfirmation,
                     )
-                } else { runConfirmation() }
+                } else {
+                    runConfirmation()
+                }
             }
         } onCancel: {
             Task { @MainActor [weak self] in
-                guard let self, self.operationID == operationID else { return }
+                guard let self, self.operationID == operationID else {
+                    return
+                }
                 fail(
                     CancellationError(),
                 )
@@ -119,18 +133,24 @@ final class YooKassaPaymentController: YooKassaDelegate {
         )
         let controller = sdkViewController
         sdkViewController = nil
-        guard let controller, controller.presentingViewController != nil else { return }
+        guard let controller, controller.presentingViewController != nil else {
+            return
+        }
         await withCheckedContinuation { continuation in
             controller.dismiss(
                 animated: true,
-            ) { continuation.resume() }
+            ) {
+                continuation.resume()
+            }
         }
     }
 
     static func handleOpen(
         url: URL,
     ) {
-        guard url.scheme == "doglyad" else { return }
+        guard url.scheme == "doglyad" else {
+            return
+        }
         YooKassa.handleOpen(
             url: url,
         )
@@ -153,10 +173,11 @@ final class YooKassaPaymentController: YooKassaDelegate {
         didFinish error: Error?,
     ) {
         isDismissalRequested = true
-        if let error { fail(
-            error,
-        )
-        return
+        if let error {
+            fail(
+                error,
+            )
+            return
         }
         let tokenization = tokenizationContinuation
         tokenizationContinuation = nil
@@ -177,7 +198,9 @@ final class YooKassaPaymentController: YooKassaDelegate {
     func yooKassa(
         _: Any,
         didFailConfirmation _: Error,
-    ) { finishConfirmation() }
+    ) {
+        finishConfirmation()
+    }
 
     private func finishConfirmation() {
         let continuation = confirmationContinuation
@@ -237,7 +260,9 @@ final class YooKassaPaymentController: YooKassaDelegate {
     }
 
     private func presenter() throws -> UIViewController {
-        let scene = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first { scene in
+        let scene = UIApplication.shared.connectedScenes.compactMap {
+            $0 as? UIWindowScene
+        }.first { scene in
             switch scene.activationState {
             case .foregroundActive: true
             case .foregroundInactive, .background, .unattached: false
@@ -245,14 +270,18 @@ final class YooKassaPaymentController: YooKassaDelegate {
             }
         }
         guard var controller = scene?.windows.first(
-            where: { $0.isKeyWindow },
+            where: {
+                $0.isKeyWindow
+            },
         )?.rootViewController else {
             throw SubscriptionError.offeringsUnavailable
         }
         while let presented = controller.presentedViewController {
             controller = presented
         }
-        guard !controller.isBeingDismissed else { throw SubscriptionError.offeringsUnavailable }
+        guard !controller.isBeingDismissed else {
+            throw SubscriptionError.offeringsUnavailable
+        }
         return controller
     }
 }

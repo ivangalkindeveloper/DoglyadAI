@@ -32,10 +32,18 @@ public struct DScreen<
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
         onTapBack: (() -> Void)? = nil,
-        @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
-        @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
-        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
-        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
+        @ViewBuilder leading: @escaping (() -> Leading) = {
+            EmptyView()
+        },
+        @ViewBuilder titleContent: @escaping (() -> Title) = {
+            EmptyView()
+        },
+        @ViewBuilder trailing: @escaping (() -> Trailing) = {
+            EmptyView()
+        },
+        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = {
+            EmptyView()
+        },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
     ) where Bottom == EmptyView, KeyboardToolbar == EmptyView {
@@ -58,10 +66,18 @@ public struct DScreen<
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
         onTapBack: (() -> Void)? = nil,
-        @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
-        @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
-        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
-        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
+        @ViewBuilder leading: @escaping (() -> Leading) = {
+            EmptyView()
+        },
+        @ViewBuilder titleContent: @escaping (() -> Title) = {
+            EmptyView()
+        },
+        @ViewBuilder trailing: @escaping (() -> Trailing) = {
+            EmptyView()
+        },
+        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = {
+            EmptyView()
+        },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
         @ViewBuilder bottom: @escaping () -> Bottom,
@@ -85,10 +101,18 @@ public struct DScreen<
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
         onTapBack: (() -> Void)? = nil,
-        @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
-        @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
-        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
-        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
+        @ViewBuilder leading: @escaping (() -> Leading) = {
+            EmptyView()
+        },
+        @ViewBuilder titleContent: @escaping (() -> Title) = {
+            EmptyView()
+        },
+        @ViewBuilder trailing: @escaping (() -> Trailing) = {
+            EmptyView()
+        },
+        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = {
+            EmptyView()
+        },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
@@ -112,10 +136,18 @@ public struct DScreen<
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
         onTapBack: (() -> Void)? = nil,
-        @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
-        @ViewBuilder titleContent: @escaping (() -> Title) = { EmptyView() },
-        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
-        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = { EmptyView() },
+        @ViewBuilder leading: @escaping (() -> Leading) = {
+            EmptyView()
+        },
+        @ViewBuilder titleContent: @escaping (() -> Title) = {
+            EmptyView()
+        },
+        @ViewBuilder trailing: @escaping (() -> Trailing) = {
+            EmptyView()
+        },
+        @ViewBuilder toolbarContent: @escaping (() -> ToolbarContent) = {
+            EmptyView()
+        },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
@@ -193,7 +225,9 @@ public struct DScreen<
                                 .onPreferenceChange(
                                     BottomHeightPreferenceKey.self,
                                 ) { value in
-                                    guard bottomHeight != value else { return }
+                                    guard bottomHeight != value else {
+                                        return
+                                    }
                                     bottomHeight = value
                                 }
                                 .transition(
@@ -218,7 +252,9 @@ public struct DScreen<
                         .onPreferenceChange(
                             DScreenToolbarHeightPreferenceKey.self,
                         ) { value in
-                            guard toolbarHeight != value else { return }
+                            guard toolbarHeight != value else {
+                                return
+                            }
                             toolbarHeight = value
                         }
                         .onChange(
@@ -355,15 +391,19 @@ private struct BottomHeightPreferenceKey: PreferenceKey {
     DScreen(
         title: "Screen Title",
         subTitle: "Subtitle",
-        onTapBack: { print(
-            "Back",
-        ) },
+        onTapBack: {
+            print(
+                "Back",
+            )
+        },
         trailing: {
             DButton(
                 image: .alertInfo,
-                action: { print(
-                    "Info",
-                ) },
+                action: {
+                    print(
+                        "Info",
+                    )
+                },
             )
             .dStyle(
                 .circle,

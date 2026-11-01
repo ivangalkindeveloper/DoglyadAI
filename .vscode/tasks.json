@@ -6,6 +6,22 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "backend: clean local preparation",
+            "dependsOn": ["env: development", "billing: clean local"],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        },
+        {
+            "label": "billing: clean local",
+            "type": "process",
+            "command": "make",
+            "args": ["reset-local-billing"],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
             "label": "backend: local preparation",
             "dependsOn": ["env: development", "billing: local"],
             "dependsOrder": "sequence",

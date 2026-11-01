@@ -18,6 +18,7 @@ struct ManageSubscriptionErrorCardView: DViewProtocol {
                 font: typography.textSmall,
                 color: color.dangerDefault,
             )
+
             DButton(
                 title: l10n[
                     .buttonRetry,

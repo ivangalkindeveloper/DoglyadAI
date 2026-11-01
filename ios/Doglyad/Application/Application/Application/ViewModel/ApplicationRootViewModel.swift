@@ -40,13 +40,16 @@ final class ApplicationRootViewModel: DStateViewModel<any ApplicationRootStatePr
                             self?.isFirebaseConfigured = true
                         },
                     ),
+                    InitializationProcess.stepsLocalBillingReset(),
                     InitializationProcess.stepsTier2,
                     InitializationProcess.stepsTier3,
                     InitializationProcess.stepsTier4,
                     InitializationProcess.stepsTier5,
                 ],
                 onSuccess: { [weak self] result, _ in
-                    guard let self else { return }
+                    guard let self else {
+                        return
+                    }
 
                     analytics = result.container.analytics
                     emit(
@@ -55,9 +58,15 @@ final class ApplicationRootViewModel: DStateViewModel<any ApplicationRootStatePr
                         ),
                     )
                 },
-                onError: { [weak self] error, process, _, _ in
-                    guard let self else { return }
+                onError: { [weak self] error, process, step, _ in
+                    guard let self else {
+                        return
+                    }
 
+                    InitializationLogger.logFailure(
+                        step: step.title,
+                        error: error,
+                    )
                     analytics = process.analytics
                     emit(
                         ApplicationRootFailedState(

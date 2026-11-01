@@ -304,10 +304,12 @@ struct VoiceLocalizationTests {
             ] as? [String: String],
         )
         #expect(
-            patterns.values.allSatisfy { $0.range(
-                of: "[А-Яа-яЁё]",
-                options: .regularExpression,
-            ) == nil },
+            patterns.values.allSatisfy {
+                $0.range(
+                    of: "[А-Яа-яЁё]",
+                    options: .regularExpression,
+                ) == nil
+            },
         )
     }
 
@@ -416,7 +418,9 @@ struct VoiceLocalizationTests {
         _ value: Any,
         path: String = "",
     ) -> Set<String> {
-        guard let object = value as? [String: Any] else { return [path] }
+        guard let object = value as? [String: Any] else {
+            return [path]
+        }
         return object.reduce(
             into: Set<String>(),
         ) { result, item in
@@ -444,14 +448,18 @@ struct VoiceLocalizationTests {
         if let object = value as? [String: Any] {
             let own = (object[
                 "description",
-            ] as? String).map { [$0] } ?? []
+            ] as? String).map {
+                [$0]
+            } ?? []
             return own + object.values.flatMap(
                 collectDescriptions,
             )
         }
-        if let array = value as? [Any] { return array.flatMap(
-            collectDescriptions,
-        ) }
+        if let array = value as? [Any] {
+            return array.flatMap(
+                collectDescriptions,
+            )
+        }
         return []
     }
 }

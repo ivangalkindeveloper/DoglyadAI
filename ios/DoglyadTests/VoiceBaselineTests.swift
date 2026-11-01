@@ -26,9 +26,11 @@ final class VoiceBaselineTests: XCTestCase {
             )
         }
 
-        guard #available(iOS 26.0, *) else { throw XCTSkip(
-            "Foundation Models requires iOS 26",
-        ) }
+        guard #available(iOS 26.0, *) else {
+            throw XCTSkip(
+                "Foundation Models requires iOS 26",
+            )
+        }
 
         let bundle = Bundle(
             for: Self.self,
@@ -130,9 +132,11 @@ final class VoiceBaselineTests: XCTestCase {
             guard DNeuralUltrasoundModelFoundationModels.isAvailable(
                 locale: locale,
             )
-            else { throw XCTSkip(
-                "Foundation Models is unavailable for the baseline locale",
-            ) }
+            else {
+                throw XCTSkip(
+                    "Foundation Models is unavailable for the baseline locale",
+                )
+            }
             if activeModel == nil {
                 activeModel = DNeuralUltrasoundLegacyModelFoundationModels(
                     systemPrompt: prompt,
@@ -170,10 +174,12 @@ final class VoiceBaselineTests: XCTestCase {
                         contentsOf: audioURL,
                     ),
                 )
-                .map { String(
-                    format: "%02x",
-                    $0,
-                ) }.joined()
+                .map {
+                    String(
+                        format: "%02x",
+                        $0,
+                    )
+                }.joined()
                 if actualHash == audioSha256 {
                     row[
                         "asr",
@@ -361,7 +367,9 @@ final class VoiceBaselineTests: XCTestCase {
         let runID = ProcessInfo.processInfo.environment[
             "VOICE_REPORT_ID",
         ]
-        let name = runID.map { "voice-baseline-ios-\($0).json" } ?? "voice-baseline-ios.json"
+        let name = runID.map {
+            "voice-baseline-ios-\($0).json"
+        } ?? "voice-baseline-ios.json"
         return documents.appendingPathComponent(
             name,
         )

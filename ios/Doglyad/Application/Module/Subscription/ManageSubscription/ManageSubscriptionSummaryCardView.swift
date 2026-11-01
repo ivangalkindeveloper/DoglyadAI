@@ -10,20 +10,28 @@ struct ManageSubscriptionSummaryCardView: DViewProtocol {
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: size.s16,
+            spacing: size.s8,
         ) {
             HStack {
                 DText(
-                    l10n[
-                        .manageSubscriptionCurrentLabel,
-                    ],
+                    state.tier.title,
                 ).dStyle(
-                    font: typography.linkXSmall,
-                    color: color.grayscaleLabel,
+                    font: typography.displayMediumBold,
+                    color: viewModel.summaryTextColor(
+                        state.tier.id,
+                        theme: theme,
+                    ),
+                ).dShimmer(
+                    isShimmering: viewModel.summaryTitleShimmering(
+                        state.tier.id,
+                    ),
+                    masksContent: true,
                 )
+
                 Spacer(
                     minLength: size.s8,
                 )
+
                 DText(
                     l10n[
                         .manageSubscriptionActiveLabel,
@@ -42,26 +50,27 @@ struct ManageSubscriptionSummaryCardView: DViewProtocol {
                 .background(
                     DCardBackground(
                         cornerRadius: size.s24,
-                        color: color.successBackground,
+                        color: color.successBackgroundStrong,
                     ),
                 )
             }
+
             VStack(
                 alignment: .leading,
                 spacing: size.s4,
             ) {
-                DText(
-                    state.tier.title,
-                ).dStyle(
-                    font: typography.displayLargeBold,
-                    color: color.primaryDefault,
-                )
-                if let title = state.planTitle { DText(
-                    title,
-                ).dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscaleLabel,
-                ) }
+                if let title = state.planTitle {
+                    DText(
+                        title,
+                    ).dStyle(
+                        font: typography.textSmall,
+                        color: viewModel.summarySecondaryTextColor(
+                            state.tier.id,
+                            theme: theme,
+                        ),
+                    )
+                }
+
                 if let expiration = viewModel.expirationDescription(
                     state.status,
                 ) {
@@ -69,9 +78,14 @@ struct ManageSubscriptionSummaryCardView: DViewProtocol {
                         expiration,
                     ).dStyle(
                         font: typography.textSmall,
+                        color: viewModel.summaryTextColor(
+                            state.tier.id,
+                            theme: theme,
+                        ),
                     )
                 }
             }
+
             VStack(
                 alignment: .leading,
                 spacing: size.s8,
@@ -86,16 +100,22 @@ struct ManageSubscriptionSummaryCardView: DViewProtocol {
                     ) {
                         DIcon(
                             .check,
-                            color: color.primaryDefault,
-                        ).accessibilityHidden(
-                            true,
+                            color: viewModel.summaryFeatureIconColor(
+                                state.tier.id,
+                                theme: theme,
+                            ),
                         )
+
                         DText(
                             state.tier.features[
                                 index,
                             ],
                         ).dStyle(
                             font: typography.textSmall,
+                            color: viewModel.summaryTextColor(
+                                state.tier.id,
+                                theme: theme,
+                            ),
                         ).fixedSize(
                             horizontal: false,
                             vertical: true,
@@ -103,16 +123,19 @@ struct ManageSubscriptionSummaryCardView: DViewProtocol {
                     }
                 }
             }
+
             HStack(
                 alignment: .top,
                 spacing: size.s8,
             ) {
                 DIcon(
                     .refresh,
-                    color: color.grayscaleLabel,
-                ).accessibilityHidden(
-                    true,
+                    color: viewModel.summarySecondaryTextColor(
+                        state.tier.id,
+                        theme: theme,
+                    ),
                 )
+
                 DText(
                     state.status.isAutoRenewing ? l10n[
                         .manageSubscriptionAutoRenewOnDescription,
@@ -122,7 +145,10 @@ struct ManageSubscriptionSummaryCardView: DViewProtocol {
                 )
                 .dStyle(
                     font: typography.textXSmall,
-                    color: color.grayscaleLabel,
+                    color: viewModel.summarySecondaryTextColor(
+                        state.tier.id,
+                        theme: theme,
+                    ),
                 )
             }
         }
@@ -133,15 +159,15 @@ struct ManageSubscriptionSummaryCardView: DViewProtocol {
         .padding(
             size.s20,
         )
-        .background(
+        .background {
             DCardBackground(
                 cornerRadius: size.s24,
                 color: color.grayscaleBackground,
-                borderColor: color.primaryDefault.opacity(
-                    0.15,
+                gradient: viewModel.summaryBackgroundGradient(
+                    state.tier.id,
+                    theme: theme,
                 ),
-                lineWidth: size.s1,
-            ),
-        )
+            )
+        }
     }
 }

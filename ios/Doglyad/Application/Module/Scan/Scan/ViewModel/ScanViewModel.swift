@@ -251,18 +251,31 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         _ = examinationDescriptionTextController
 
         examinationObservation = observeExaminationChanges { [weak self] in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
             neuralModel = getNeuralModel()
             template = getSelectedTemplate()
         }
     }
 
-    var isPhotoLimitReached: Bool { photos.count >= photoMaxCount }
-    var isTemplateCompatible: Bool { template.map { $0.usExaminationType.id == usExaminationType.id } ?? true }
+    var isPhotoLimitReached: Bool {
+        photos.count >= photoMaxCount
+    }
 
-    var photoMaxCount: Int { config.scanPhotoMaxNumber }
+    var isTemplateCompatible: Bool {
+        template.map {
+            $0.usExaminationType.id == usExaminationType.id
+        } ?? true
+    }
 
-    var selectedNeuralModelTitle: String { neuralModel.title }
+    var photoMaxCount: Int {
+        config.scanPhotoMaxNumber
+    }
+
+    var selectedNeuralModelTitle: String {
+        neuralModel.title
+    }
 
     var defaultPatientDateOfBirth: Date {
         Calendar.current.date(
@@ -411,7 +424,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         }
     }
 
-    func onTapRetryInitialization() { onInit() }
+    func onTapRetryInitialization() {
+        onInit()
+    }
 
     func onTapSettings() {
         analytics.buttonTapped(
@@ -431,8 +446,12 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             arguments: SelectUSExaminationTypeArguments(
                 currentValue: usExaminationType,
                 onSelected: { [weak self] selectedType in
-                    guard let self else { return }
-                    guard usExaminationType != selectedType else { return }
+                    guard let self else {
+                        return
+                    }
+                    guard usExaminationType != selectedType else {
+                        return
+                    }
 
                     try await container.ultrasoundReportRepository.setSelectedExaminationTypeId(
                         id: selectedType.id,
@@ -520,7 +539,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         coordinator.screen(
             .photoView,
             arguments: PhotoViewArguments(
-                getPhotos: { [weak self] in self?.photos ?? [] },
+                getPhotos: { [weak self] in
+                    self?.photos ?? []
+                },
                 observePhotos: { [weak self] observer in
                     self?.$photos.sink(
                         receiveValue: observer,
@@ -541,7 +562,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
     ) {
         guard let index = photos.firstIndex(
             of: photo,
-        ) else { return }
+        ) else {
+            return
+        }
 
         analytics.buttonTapped(
             .scanDeletePhoto,
@@ -566,7 +589,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         analytics.buttonTapped(
             .scanPatientGender,
         )
-        guard patientGender != value else { return }
+        guard patientGender != value else {
+            return
+        }
 
         patientGender = value
     }
@@ -580,8 +605,12 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             arguments: SelectDateOfBirthArguments(
                 currentValue: patientDateOfBirth,
                 onSelected: { [weak self] date in
-                    guard let self else { return }
-                    guard patientDateOfBirth != date else { return }
+                    guard let self else {
+                        return
+                    }
+                    guard patientDateOfBirth != date else {
+                        return
+                    }
 
                     withAnimation(
                         DTheme.light.animation,
@@ -629,7 +658,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             let templates = try await self.container.templateRepository.getTemplates(
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
-            return templates.contains { $0.usExaminationType.id == usExaminationId }
+            return templates.contains {
+                $0.usExaminationType.id == usExaminationId
+            }
         } onMainSuccess: { [self] hasTemplates in
             guard hasTemplates else {
                 return coordinator.screen(
@@ -663,7 +694,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         analytics.buttonTapped(
             .scanResetTemplate,
         )
-        handle { try await self.onTemplateReset() } onMainUnknownError: { _ in
+        handle {
+            try await self.onTemplateReset()
+        } onMainUnknownError: { _ in
             self.messager.showUnknownError(
                 l10n: self.l10n,
             )
@@ -783,7 +816,8 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                 )],
             ),
         )
-        if let invalidFocus = firstInvalidFocus() { focus = invalidFocus
+        if let invalidFocus = firstInvalidFocus() {
+            focus = invalidFocus
             return
         }
         unfocus()
@@ -877,35 +911,51 @@ extension ScanViewModel {
         [
             examinationNumberTextController.$text
                 .dropFirst()
-                .map { _ in () }
+                .map { _ in
+                    ()
+                }
                 .eraseToAnyPublisher(),
             patientNameTextController.$text
                 .dropFirst()
-                .map { _ in () }
+                .map { _ in
+                    ()
+                }
                 .eraseToAnyPublisher(),
             $patientGender
                 .dropFirst()
-                .map { _ in () }
+                .map { _ in
+                    ()
+                }
                 .eraseToAnyPublisher(),
             $patientDateOfBirth
                 .dropFirst()
-                .map { _ in () }
+                .map { _ in
+                    ()
+                }
                 .eraseToAnyPublisher(),
             patientHeightCMTextController.$text
                 .dropFirst()
-                .map { _ in () }
+                .map { _ in
+                    ()
+                }
                 .eraseToAnyPublisher(),
             patientWeightKGTextController.$text
                 .dropFirst()
-                .map { _ in () }
+                .map { _ in
+                    ()
+                }
                 .eraseToAnyPublisher(),
             patientComplaintsTextController.$text
                 .dropFirst()
-                .map { _ in () }
+                .map { _ in
+                    ()
+                }
                 .eraseToAnyPublisher(),
             examinationDescriptionTextController.$text
                 .dropFirst()
-                .map { _ in () }
+                .map { _ in
+                    ()
+                }
                 .eraseToAnyPublisher(),
         ]
     }
@@ -919,7 +969,9 @@ private extension ScanViewModel {
             .dropFirst()
             .removeDuplicates()
             .sink { [weak self] receivedPhotos in
-                guard let self else { return }
+                guard let self else {
+                    return
+                }
 
                 saveDraftPhotos(
                     receivedPhotos,
@@ -948,7 +1000,9 @@ private extension ScanViewModel {
     ) {
         let currentForm = makeDraftSnapshot()
         draftAutosaver.enqueue { [weak self] in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
 
             try await container.ultrasoundDraftRepository.savePhotos(
                 draftPhotos,
@@ -963,7 +1017,9 @@ private extension ScanViewModel {
             self.flushPendingDraftSave()
             try await self.waitForPendingDraftSave()
         } onDefer: {
-            guard backgroundTask != .invalid else { return }
+            guard backgroundTask != .invalid else {
+                return
+            }
 
             UIApplication.shared.endBackgroundTask(
                 backgroundTask,
@@ -1046,7 +1102,9 @@ private extension ScanViewModel {
                 arguments: PhotoLibraryPickerArguments(
                     selectionLimit: gallerySelectionLimit,
                     onComplete: { [weak self] images in
-                        guard let self else { return }
+                        guard let self else {
+                            return
+                        }
 
                         onSelectGalleryImages(
                             images,
@@ -1060,7 +1118,9 @@ private extension ScanViewModel {
     func onSelectGalleryImages(
         _ images: [UIImage],
     ) {
-        guard photos.count < photoMaxCount else { return }
+        guard photos.count < photoMaxCount else {
+            return
+        }
 
         let availableCount = photoMaxCount - photos.count
         Task {
@@ -1106,7 +1166,9 @@ private extension ScanViewModel {
                                   proposals,
                                   to: makeDraftSnapshot(),
                               )
-                        else { return false }
+                        else {
+                            return false
+                        }
                         applyDraft(
                             USExaminationDraft(
                                 form: updatedForm,
@@ -1134,7 +1196,10 @@ private extension ScanViewModel {
 
         guard let number = examinationNumberTextController.value,
               let patientName = patientNameTextController.value,
-              let description = examinationDescriptionTextController.value else { return }
+              let description = examinationDescriptionTextController.value
+        else {
+            return
+        }
         let snapshot = makeDraftSnapshot()
         let examinationData = USExaminationData(
             usExaminationTypeId: usExaminationType.id,
@@ -1195,15 +1260,21 @@ private extension ScanViewModel {
                 report,
                 snapshot: snapshot,
             )
-        } onMainApiError: { error in self.onGenerationFailed(
-            error,
-        ) }
-        onMainConnectionError: { error in self.onGenerationFailed(
-            error,
-        ) }
-        onMainUnknownError: { error in self.onGenerationFailed(
-            error,
-        ) }
+        } onMainApiError: { error in
+            self.onGenerationFailed(
+                error,
+            )
+        }
+        onMainConnectionError: { error in
+            self.onGenerationFailed(
+                error,
+            )
+        }
+        onMainUnknownError: { error in
+            self.onGenerationFailed(
+                error,
+            )
+        }
     }
 
     func persistReport(
@@ -1225,10 +1296,13 @@ private extension ScanViewModel {
             ) == self.photos.map(
                 \.id,
             ) {
-                do { try await self.clearDraftAndReset() }
-                catch { self.onDraftSaveFailed(
-                    error,
-                ) }
+                do {
+                    try await self.clearDraftAndReset()
+                } catch {
+                    self.onDraftSaveFailed(
+                        error,
+                    )
+                }
             }
         } onMainSuccess: { _ in
             self.emit(
@@ -1269,7 +1343,9 @@ private extension ScanViewModel {
 
     func clearDraftAndReset() async throws {
         stopDraftObservation()
-        defer { startDraftObservation() }
+        defer {
+            startDraftObservation()
+        }
         let reportsCount = try await container.ultrasoundReportRepository.getReportsCount()
         try await waitForPendingDraftSave()
         try await clearDraft()

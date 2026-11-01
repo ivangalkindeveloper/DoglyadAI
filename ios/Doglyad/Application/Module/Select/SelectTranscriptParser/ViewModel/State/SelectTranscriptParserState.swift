@@ -3,5 +3,7 @@ final class SelectTranscriptParserState: SelectTranscriptParserStateProtocol, @M
     static func == (
         _: SelectTranscriptParserState,
         _: SelectTranscriptParserState,
-    ) -> Bool { true }
+    ) -> Bool {
+        true
+    }
 }

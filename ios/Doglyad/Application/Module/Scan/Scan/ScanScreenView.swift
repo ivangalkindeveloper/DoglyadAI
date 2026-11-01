@@ -9,31 +9,9 @@ struct ScanScreenView: DViewProtocol {
     @FocusState private var focus: ScanFocus?
 
     var body: some View {
-        let speechToolbarButton: DToolbarButton? = switch viewModel.subscriptionAvailability(
-            of: .formCompletionViaMicrophone,
-        ) {
-        case .available, .offered:
-            DToolbarButton(
-                accessibilityLabel: l10n[
-                    .buttonSpeech,
-                ],
-                style: .primaryDefault,
-                badge: viewModel.speechButtonBadge,
-                content: .icon(
-                    .microphone,
-                ),
-                action: viewModel.onTapSpeech,
-            )
-        case .unavailable: nil
-        }
-
-        let isProcessing = switch viewModel.state {
-        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState: true
-        default: false
-        }
-        let isMediaSelectionDisabled = switch (viewModel.state, viewModel.isPhotoLimitReached) {
-        case (_ as ScanInitializingState, _), (_ as ScanGeneratingState, _), (_ as ScanLoadingState, _), (_ as ScanClearingState, _), (_, true): true
-        default: false
+        let (isProcessing, isMediaSelectionDisabled): (Bool, Bool) = switch viewModel.state {
+        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState: (true, true)
+        default: (false, viewModel.isPhotoLimitReached)
         }
 
         DScreen(
@@ -68,39 +46,8 @@ struct ScanScreenView: DViewProtocol {
             onTapBody: viewModel.unfocus,
             keyboardToolbar: {
                 if focus != nil {
-                    DToolbar(
-                        upAccessibilityLabel: l10n[
-                            .buttonBack,
-                        ],
-                        downAccessibilityLabel: l10n[
-                            .buttonNext,
-                        ],
-                        doneAccessibilityLabel: l10n[
-                            .buttonDone,
-                        ],
-                        onTapUp: viewModel.isPreviousFieldFocusable ? { viewModel.onTapToolbarUp() } : nil,
-                        onTapDown: viewModel.isNextFieldFocusable ? { viewModel.onTapToolbarDown() } : nil,
-                        onTapDone: viewModel.unfocus,
-                        trailButtons: [
-                            speechToolbarButton,
-                            DToolbarButton(
-                                accessibilityLabel: l10n[
-                                    .buttonGenerate,
-                                ],
-                                style: .primaryDefault,
-                                content: .text(
-                                    l10n[
-                                        .buttonGenerate,
-                                    ],
-                                ),
-                                action: viewModel.onTapScan,
-                            ),
-                        ].compactMap(
-                            \.self,
-                        ),
-                    )
-                    .disabled(
-                        isProcessing,
+                    ScanKeyboardToolbarView(
+                        isProcessing: isProcessing,
                     )
                 }
             },
@@ -108,65 +55,12 @@ struct ScanScreenView: DViewProtocol {
                 ZStack(
                     alignment: .bottom,
                 ) {
-                    switch viewModel.state {
-                    case _ as ScanInitializationFailedState:
-                        LoadingErrorView(
-                            onRetry: viewModel.onTapRetryInitialization,
-                        )
-                    default:
-                        DFocusScrollView(
-                            focus: focus,
-                        ) {
-                            VStack(
-                                alignment: .leading,
-                                spacing: .zero,
-                            ) {
-                                switch viewModel.photos.isEmpty {
-                                case true:
-                                    ScanMediaButtonView(
-                                        action: viewModel.onTapImport,
-                                    )
-                                    .disabled(
-                                        isMediaSelectionDisabled,
-                                    )
-                                    .padding(
-                                        .horizontal,
-                                        size.s16,
-                                    )
-                                    .padding(
-                                        .bottom,
-                                        size.s4,
-                                    )
-                                    .transition(
-                                        .move(
-                                            edge: .top,
-                                        )
-                                        .combined(
-                                            with: .opacity,
-                                        ),
-                                    )
-                                case false: EmptyView()
-                                }
-
-                                ScanPhotoListView()
-
-                                ScanFormView(
-                                    focus: $focus,
-                                )
-                            }
-                            .padding(
-                                .top,
-                                toolbarHeight + size.s16,
-                            )
-                            .padding(
-                                .bottom,
-                                size.s136 * 2,
-                            )
-                        }
-                        .disabled(
-                            isProcessing,
-                        )
-                    }
+                    ScanContentStateView(
+                        focus: $focus,
+                        toolbarHeight: toolbarHeight,
+                        isProcessing: isProcessing,
+                        isMediaSelectionDisabled: isMediaSelectionDisabled,
+                    )
                     ScanBottomView()
                 }
             },
@@ -178,7 +72,9 @@ struct ScanScreenView: DViewProtocol {
             of: focus,
             initial: true,
         ) { _, newValue in
-            guard viewModel.focus != newValue else { return }
+            guard viewModel.focus != newValue else {
+                return
+            }
             viewModel.onFocusChanged(
                 newValue,
             )
@@ -187,7 +83,9 @@ struct ScanScreenView: DViewProtocol {
             of: viewModel.focus,
             initial: true,
         ) { _, newValue in
-            guard focus != newValue else { return }
+            guard focus != newValue else {
+                return
+            }
             focus = newValue
         }
         .onAppear {

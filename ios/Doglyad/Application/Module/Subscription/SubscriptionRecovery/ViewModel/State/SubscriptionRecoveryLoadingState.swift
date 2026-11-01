@@ -12,7 +12,9 @@ final class SubscriptionRecoveryLoadingState: SubscriptionRecoveryStateProtocol,
         lhs: SubscriptionRecoveryLoadingState,
         rhs: SubscriptionRecoveryLoadingState,
     ) -> Bool {
-        guard let previous = lhs.previousState as? any Equatable else { return false }
+        guard let previous = lhs.previousState as? any Equatable else {
+            return false
+        }
         return previous.isEqual(
             to: rhs.previousState,
         )

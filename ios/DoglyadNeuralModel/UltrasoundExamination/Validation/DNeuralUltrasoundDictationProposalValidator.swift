@@ -22,7 +22,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         case .examinationNumber:
             guard case let .text(
                 number,
-            ) = value else { return [.identifierMismatch] }
+            ) = value else {
+                return [.identifierMismatch]
+            }
             if !hasCitedIdentifier(
                 number,
                 in: sourceQuote,
@@ -36,7 +38,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         case .patientName:
             guard case let .text(
                 name,
-            ) = value else { return [.textChanged] }
+            ) = value else {
+                return [.textChanged]
+            }
             if !source.containsLiteral(
                 DNeuralUltrasoundDictationTextFacts(
                     name,
@@ -51,7 +55,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         case .patientGender:
             guard case let .gender(
                 gender,
-            ) = value else { return [.genderUnverified] }
+            ) = value else {
+                return [.genderUnverified]
+            }
             let spoken = spokenGenders(
                 source.tokens,
                 localization: localization,
@@ -66,7 +72,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         case .patientDateOfBirth:
             guard case let .date(
                 date,
-            ) = value else { return [.dateUnverified] }
+            ) = value else {
+                return [.dateUnverified]
+            }
             let spokenDates = dates(
                 in: sourceQuote,
                 locale: request.locale,
@@ -74,16 +82,22 @@ enum DNeuralUltrasoundDictationProposalValidator {
             )
             if !spokenDates.contains(
                 date,
-            ) { warnings.append(
-                .dateUnverified,
-            ) }
-            if spokenDates.count > 1 { warnings.append(
-                .ambiguousDictation,
-            ) }
+            ) {
+                warnings.append(
+                    .dateUnverified,
+                )
+            }
+            if spokenDates.count > 1 {
+                warnings.append(
+                    .ambiguousDictation,
+                )
+            }
         case .patientHeightCM:
             guard case let .number(
                 number,
-            ) = value else { return [.numberMismatch] }
+            ) = value else {
+                return [.numberMismatch]
+            }
             warnings.append(
                 contentsOf: measurementWarnings(
                     number: number,
@@ -104,7 +118,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         case .patientWeightKG:
             guard case let .number(
                 number,
-            ) = value else { return [.numberMismatch] }
+            ) = value else {
+                return [.numberMismatch]
+            }
             warnings.append(
                 contentsOf: measurementWarnings(
                     number: number,
@@ -125,21 +141,29 @@ enum DNeuralUltrasoundDictationProposalValidator {
         case .patientComplaints, .examinationDescription:
             guard case let .text(
                 text,
-            ) = value else { return [.textChanged] }
+            ) = value else {
+                return [.textChanged]
+            }
             let proposed = DNeuralUltrasoundDictationTextFacts(
                 text,
                 locale: request.locale,
                 localization: localization,
             )
-            if source.sides != proposed.sides { warnings.append(
-                .sideMismatch,
-            ) }
-            if source.negationCount != proposed.negationCount { warnings.append(
-                .negationMismatch,
-            ) }
-            if source.numbers != proposed.numbers { warnings.append(
-                .numberMismatch,
-            ) }
+            if source.sides != proposed.sides {
+                warnings.append(
+                    .sideMismatch,
+                )
+            }
+            if source.negationCount != proposed.negationCount {
+                warnings.append(
+                    .negationMismatch,
+                )
+            }
+            if source.numbers != proposed.numbers {
+                warnings.append(
+                    .numberMismatch,
+                )
+            }
             if source.units != proposed.units
                 || (source.numbers == proposed.numbers && source.measurements != proposed.measurements)
             {
@@ -149,9 +173,11 @@ enum DNeuralUltrasoundDictationProposalValidator {
             }
             if !source.containsLiteral(
                 proposed,
-            ) { warnings.append(
-                .textChanged,
-            ) }
+            ) {
+                warnings.append(
+                    .textChanged,
+                )
+            }
         }
 
         let segment = sourceSegment(
@@ -188,23 +214,29 @@ enum DNeuralUltrasoundDictationProposalValidator {
                 in: segment,
                 locale: request.locale,
                 localization: localization,
-            ).count > 1 { warnings.append(
-                .ambiguousDictation,
-            ) }
+            ).count > 1 {
+                warnings.append(
+                    .ambiguousDictation,
+                )
+            }
         case .patientGender:
             if isFetalGender(
                 sourceQuote,
                 in: segment,
                 localization: localization,
-            ) { warnings.append(
-                .genderUnverified,
-            ) }
+            ) {
+                warnings.append(
+                    .genderUnverified,
+                )
+            }
             if spokenGenders(
                 context.tokens,
                 localization: localization,
-            ).count > 1 { warnings.append(
-                .ambiguousDictation,
-            ) }
+            ).count > 1 {
+                warnings.append(
+                    .ambiguousDictation,
+                )
+            }
         case .patientComplaints:
             if context.sides.count > 1, context.sides != source.sides {
                 warnings.append(
@@ -289,7 +321,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
             Set(
                 warnings,
             ),
-        ).sorted { $0.rawValue < $1.rawValue }
+        ).sorted {
+            $0.rawValue < $1.rawValue
+        }
     }
 
     private static func measurementWarnings(
@@ -302,8 +336,12 @@ enum DNeuralUltrasoundDictationProposalValidator {
         let digitMeasurements = source.measurements.flatMap { unit, values -> [Double] in
             guard let factor = conversions[
                 unit,
-            ] else { return [] }
-            return values.map { $0 * factor }
+            ] else {
+                return []
+            }
+            return values.map {
+                $0 * factor
+            }
         }
         let spokenMeasurements = source.tokens.indices.compactMap { index -> Double? in
             guard let unit = DNeuralDictationUnit.fromWord(
@@ -315,7 +353,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
                 let factor = conversions[
                     unit,
                 ], index > 0
-            else { return nil }
+            else {
+                return nil
+            }
             let largest = (1 ... min(
                 4,
                 index,
@@ -330,9 +370,11 @@ enum DNeuralUltrasoundDictationProposalValidator {
                     localization: localization.numbers,
                 )
             }.first
-            return largest.map { Double(
-                $0,
-            ) * factor }
+            return largest.map {
+                Double(
+                    $0,
+                ) * factor
+            }
         }
         let converted = digitMeasurements + spokenMeasurements
         var warnings: [DNeuralVoiceProposalWarning] = []
@@ -347,23 +389,29 @@ enum DNeuralUltrasoundDictationProposalValidator {
                 warnings.append(
                     .numberMismatch,
                 )
-                if source.units.isEmpty { warnings.append(
-                    .unitMismatch,
-                ) }
+                if source.units.isEmpty {
+                    warnings.append(
+                        .unitMismatch,
+                    )
+                }
             }
         } else if !converted.contains(
-            where: { abs(
-                $0 - number,
-            ) < 0.0001 },
+            where: {
+                abs(
+                    $0 - number,
+                ) < 0.0001
+            },
         ) {
             warnings.append(
                 .numberMismatch,
             )
         }
         if let first = converted.first, converted.contains(
-            where: { abs(
-                $0 - first,
-            ) > 0.0001 },
+            where: {
+                abs(
+                    $0 - first,
+                ) > 0.0001
+            },
         ) {
             warnings.append(
                 .ambiguousDictation,
@@ -418,10 +466,12 @@ enum DNeuralUltrasoundDictationProposalValidator {
                 ).lowercased(
                     with: locale,
                 )
-            return nextWord.flatMap { DNeuralDictationUnit.fromWord(
-                $0,
-                localization: localization,
-            ) } == nil
+            return nextWord.flatMap {
+                DNeuralDictationUnit.fromWord(
+                    $0,
+                    localization: localization,
+                )
+            } == nil
         }
         return hasSpokenIdentifier(
             identifier,
@@ -443,7 +493,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         guard let range = quote.range(
             of: cue,
             options: [.regularExpression, .caseInsensitive],
-        ) else { return false }
+        ) else {
+            return false
+        }
         let spoken = String(
             quote[
                 range.upperBound...,
@@ -486,15 +538,19 @@ enum DNeuralUltrasoundDictationProposalValidator {
             if localization.matches(
                 .maleEvidence,
                 token,
-            ) { result.insert(
-                .male,
-            ) }
+            ) {
+                result.insert(
+                    .male,
+                )
+            }
             if localization.matches(
                 .femaleEvidence,
                 token,
-            ) { result.insert(
-                .female,
-            ) }
+            ) {
+                result.insert(
+                    .female,
+                )
+            }
         }
         return result
     }
@@ -582,7 +638,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
             let expression = try? NSRegularExpression(
                 pattern: #"[;\n]|[.!?](?=\s|$)"#,
             )
-        else { return quote }
+        else {
+            return quote
+        }
         let boundaries = expression.matches(
             in: text,
             range: NSRange(
@@ -590,14 +648,20 @@ enum DNeuralUltrasoundDictationProposalValidator {
                 in: text,
             ),
         )
-        .compactMap { Range(
-            $0.range,
-            in: text,
-        ) }
+        .compactMap {
+            Range(
+                $0.range,
+                in: text,
+            )
+        }
         // A decimal or a date's internal dot is not a sentence boundary. A
         // multi-sentence quote retains all its sentences, but not the next field.
-        let start = boundaries.last { $0.upperBound <= quoteRange.lowerBound }?.upperBound ?? text.startIndex
-        let end = boundaries.first { $0.upperBound >= quoteRange.upperBound }?.upperBound ?? text.endIndex
+        let start = boundaries.last {
+            $0.upperBound <= quoteRange.lowerBound
+        }?.upperBound ?? text.startIndex
+        let end = boundaries.first {
+            $0.upperBound >= quoteRange.upperBound
+        }?.upperBound ?? text.endIndex
         return String(
             text[
                 start ..< end,
@@ -627,7 +691,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
     ) -> Bool {
         guard let quoteRange = segment.range(
             of: quote,
-        ) else { return false }
+        ) else {
+            return false
+        }
         let prefix = String(
             segment[
                 ..<quoteRange.upperBound,
@@ -649,7 +715,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         )
         if let fetal {
             if let patient {
-                if fetal.lowerBound > patient.lowerBound { return true }
+                if fetal.lowerBound > patient.lowerBound {
+                    return true
+                }
             } else {
                 return true
             }
@@ -674,10 +742,12 @@ enum DNeuralUltrasoundDictationProposalValidator {
     ) -> String {
         let cue: String
         switch fieldId {
-        case .patientHeightCM: cue = localization.pattern(
+        case .patientHeightCM:
+            cue = localization.pattern(
                 .heightEvidenceCue,
             )
-        case .patientWeightKG: cue = localization.pattern(
+        case .patientWeightKG:
+            cue = localization.pattern(
                 .weightEvidenceCue,
             )
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
@@ -686,7 +756,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         guard let start = quote.range(
             of: cue,
             options: [.regularExpression, .caseInsensitive],
-        ) else { return quote }
+        ) else {
+            return quote
+        }
         let suffix = String(
             quote[
                 start.upperBound...,
@@ -724,7 +796,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
     ) -> Bool {
         guard let range = text.range(
             of: quote,
-        ) else { return false }
+        ) else {
+            return false
+        }
         let suffix = String(
             text[
                 range.upperBound...,
@@ -749,9 +823,11 @@ enum DNeuralUltrasoundDictationProposalValidator {
         )?.lowerBound ?? suffix.endIndex
         return suffix[
             ..<end,
-        ].unicodeScalars.contains { CharacterSet.letters.contains(
-            $0,
-        ) }
+        ].unicodeScalars.contains {
+            CharacterSet.letters.contains(
+                $0,
+            )
+        }
     }
 
     private static func hasNumericSelfCorrection(
@@ -765,7 +841,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         if text.range(
             of: pattern,
             options: [.regularExpression, .caseInsensitive],
-        ) != nil { return true }
+        ) != nil {
+            return true
+        }
 
         // TTS and speech recognition often spell out measurements. A copied
         // quote such as "sixty five, no, sixty two millimeters" still needs
@@ -779,7 +857,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         for index in tokens.indices where tokens[
             index,
         ] == localization.negativeCorrectionWord {
-            guard index > 0, index + 1 < tokens.count else { continue }
+            guard index > 0, index + 1 < tokens.count else {
+                continue
+            }
             let preceding = (1 ... min(
                 4,
                 index,
@@ -808,7 +888,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
                     localization: localization.numbers,
                 ) != nil
             }
-            if preceding, following { return true }
+            if preceding, following {
+                return true
+            }
         }
         return false
     }
@@ -820,7 +902,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
     ) -> Bool {
         guard let quoteRange = text.range(
             of: quote,
-        ) else { return false }
+        ) else {
+            return false
+        }
         let observation = lastMatch(
             DNeuralUltrasoundDictationObservationCue.pattern(
                 localization: localization,
@@ -838,7 +922,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
         if let complaint, complaint.lowerBound > (observation?.lowerBound ?? text.startIndex) {
             return true
         }
-        guard let observation else { return false }
+        guard let observation else {
+            return false
+        }
 
         // A literal model quote can omit the measured first sentence and cite
         // only the final negative sentence. Check the text between the finding
@@ -883,14 +969,18 @@ enum DNeuralUltrasoundDictationProposalValidator {
             of: nextFieldCue,
             options: [.regularExpression, .caseInsensitive],
         )
-        .map { String(
-            suffix[
-                ..<$0.lowerBound,
-            ],
-        ) } ?? suffix
-        return remainingObservation.unicodeScalars.contains { CharacterSet.letters.contains(
-            $0,
-        ) }
+        .map {
+            String(
+                suffix[
+                    ..<$0.lowerBound,
+                ],
+            )
+        } ?? suffix
+        return remainingObservation.unicodeScalars.contains {
+            CharacterSet.letters.contains(
+                $0,
+            )
+        }
     }
 
     private static func lastMatch(
@@ -909,7 +999,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
                     in: text,
                 ),
             ).last
-        else { return nil }
+        else {
+            return nil
+        }
         return Range(
             match.range,
             in: text,
@@ -936,7 +1028,9 @@ enum DNeuralUltrasoundDictationProposalValidator {
     ) -> Bool {
         guard let range = text.range(
             of: quote,
-        ) else { return false }
+        ) else {
+            return false
+        }
         let next = String(
             text[
                 range.upperBound...,

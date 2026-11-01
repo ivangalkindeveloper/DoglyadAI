@@ -55,6 +55,21 @@ final class Conformances: SyntaxVisitor {
     }
 }
 
+final class ViewSwitchExpressions: SyntaxVisitor {
+    var expressions: [SwitchExprSyntax] = []
+
+    init() { super.init(viewMode: .sourceAccurate) }
+
+    override func visit(_ node: SwitchExprSyntax) -> SyntaxVisitorContinueKind {
+        expressions.append(node)
+        return .visitChildren
+    }
+
+    override func visit(_ node: StructDeclSyntax) -> SyntaxVisitorContinueKind { .skipChildren }
+    override func visit(_ node: ClassDeclSyntax) -> SyntaxVisitorContinueKind { .skipChildren }
+    override func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind { .skipChildren }
+}
+
 final class ArchitectureChecks: SyntaxVisitor {
     let path: String
     let locations: SourceLocationConverter
@@ -161,6 +176,14 @@ final class ArchitectureChecks: SyntaxVisitor {
             $0.as(AttributeSyntax.self).map { typeName($0.attributeName) == "ViewBuilder" } ?? false
         }
         for binding in node.bindings {
+            if binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text == "body",
+               let accessors = binding.accessorBlock {
+                let switches = ViewSwitchExpressions()
+                switches.walk(accessors)
+                for expression in switches.expressions.dropFirst() {
+                    report(expression, "swift.view-state-switch", "Keep at most one switch in body; extract another presentation area into a named View.")
+                }
+            }
             guard binding.accessorBlock != nil,
                   binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text != "body"
             else { continue }

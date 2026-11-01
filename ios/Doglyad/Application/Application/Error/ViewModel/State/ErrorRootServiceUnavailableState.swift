@@ -15,7 +15,8 @@ final class ErrorRootServiceUnavailableState: ErrorRootStateProtocol, @MainActor
         case let .serviceUnavailable(
             email,
         ): email
-        case .newVersion, .noInternetConnection, .usExaminationTypesEmpty, .usExaminationNeuralModelsEmpty, .common, .none: preconditionFailure(
+        case .newVersion, .noInternetConnection, .usExaminationTypesEmpty, .usExaminationNeuralModelsEmpty, .common, .none:
+            preconditionFailure(
                 "Expected serviceUnavailable",
             )
         }

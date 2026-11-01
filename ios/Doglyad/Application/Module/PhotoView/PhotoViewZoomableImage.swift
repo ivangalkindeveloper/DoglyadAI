@@ -2,7 +2,6 @@ import DoglyadUI
 import SwiftUI
 
 struct PhotoViewZoomableImage: DViewProtocol {
-    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: PhotoViewViewModel
     @EnvironmentObject var theme: DTheme
 
@@ -54,24 +53,17 @@ struct PhotoViewZoomableImage: DViewProtocol {
                 switch viewModel.isRemarksVisible {
                 case true:
                     ForEach(
-                        Array(
-                            viewModel.remarkPoints(
-                                for: photoId,
-                            ).enumerated(),
+                        viewModel.remarkPoints(
+                            for: photoId,
                         ),
-                        id: \.element.id,
-                    ) { index, point in
+                    ) { point in
                         DImageAnnotationMarker(
                             title: point.title,
-                            accessibilityLabel: l10n.resource(
-                                .photoViewRemarkButton,
-                                values: [.number: String(
-                                    index + 1,
-                                )],
-                            ),
-                            action: { viewModel.onTapRemark(
-                                point,
-                            ) },
+                            action: {
+                                viewModel.onTapRemark(
+                                    point,
+                                )
+                            },
                         )
                         .position(
                             displayed.position(
@@ -148,6 +140,8 @@ struct PhotoViewZoomableImage: DViewProtocol {
         )
         .onChange(
             of: isSelected,
-        ) { _, _ in transform = PhotoViewImageTransform() }
+        ) { _, _ in
+            transform = PhotoViewImageTransform()
+        }
     }
 }

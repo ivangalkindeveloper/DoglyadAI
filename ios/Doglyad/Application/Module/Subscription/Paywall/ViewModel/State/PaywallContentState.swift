@@ -29,9 +29,23 @@ class PaywallContentState: PaywallStateProtocol, @MainActor Equatable {
         selectedPlanID = content.selectedPlanID
     }
 
-    var selectedTier: SubscriptionTier? { tiers.first { $0.id == selectedType } }
-    var displayedPlans: [SubscriptionPlan] { plans.filter { $0.type == selectedType } }
-    var selectedPlan: SubscriptionPlan? { displayedPlans.first { $0.id == selectedPlanID } }
+    var selectedTier: SubscriptionTier? {
+        tiers.first {
+            $0.id == selectedType
+        }
+    }
+
+    var displayedPlans: [SubscriptionPlan] {
+        plans.filter {
+            $0.type == selectedType
+        }
+    }
+
+    var selectedPlan: SubscriptionPlan? {
+        displayedPlans.first {
+            $0.id == selectedPlanID
+        }
+    }
 
     func equals(
         _ other: PaywallContentState,

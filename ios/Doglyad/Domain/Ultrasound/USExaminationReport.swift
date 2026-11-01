@@ -133,9 +133,11 @@ extension USExaminationReport {
             actualModelReport: USExaminationModelReport.fromDB(
                 db.actualModelReport,
             ),
-            previousModelReports: db.previousModelReports.map { USExaminationModelReport.fromDB(
-                $0,
-            ) },
+            previousModelReports: db.previousModelReports.map {
+                USExaminationModelReport.fromDB(
+                    $0,
+                )
+            },
         )
     }
 
@@ -146,7 +148,9 @@ extension USExaminationReport {
             settingsAI: settingsAI.toDB(),
             examinationData: examinationData.toDB(),
             actualModelReport: actualModelReport.toDB(),
-            previousModelReports: previousModelReports.map { $0.toDB() },
+            previousModelReports: previousModelReports.map {
+                $0.toDB()
+            },
         )
     }
 }

@@ -3,6 +3,7 @@ import SwiftUI
 public struct DCardBackground: View {
     private let cornerRadius: CGFloat
     private let color: Color
+    private let gradient: LinearGradient?
     private let material: Material?
     private let borderColor: Color
     private let lineWidth: CGFloat
@@ -11,6 +12,7 @@ public struct DCardBackground: View {
     public init(
         cornerRadius: CGFloat,
         color: Color = .clear,
+        gradient: LinearGradient? = nil,
         material: Material? = nil,
         borderColor: Color = .clear,
         lineWidth: CGFloat = 0,
@@ -18,6 +20,7 @@ public struct DCardBackground: View {
     ) {
         self.cornerRadius = cornerRadius
         self.color = color
+        self.gradient = gradient
         self.material = material
         self.borderColor = borderColor
         self.lineWidth = lineWidth
@@ -29,7 +32,13 @@ public struct DCardBackground: View {
             cornerRadius: cornerRadius,
         )
         .fill(
-            color,
+            gradient.map {
+                AnyShapeStyle(
+                    $0,
+                )
+            } ?? AnyShapeStyle(
+                color,
+            ),
         )
         .overlay {
             if let material {
@@ -53,8 +62,5 @@ public struct DCardBackground: View {
                 ),
             )
         }
-        .accessibilityHidden(
-            true,
-        )
     }
 }

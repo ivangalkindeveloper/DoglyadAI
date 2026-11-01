@@ -177,11 +177,13 @@ struct DictationProposalTests {
             ),
         )
         let generated = DNeuralUltrasoundProposalGenerationResponse(
-            proposals: values.map { DNeuralUltrasoundProposalGenerationItem(
-                fieldId: $0.0,
-                value: $0.1,
-                sourceQuote: $0.2,
-            ) },
+            proposals: values.map {
+                DNeuralUltrasoundProposalGenerationItem(
+                    fieldId: $0.0,
+                    value: $0.1,
+                    sourceQuote: $0.2,
+                )
+            },
         )
 
         let proposal = try DNeuralUltrasoundProposalProcessor.validate(
@@ -325,7 +327,9 @@ struct DictationProposalTests {
                 proposal.proposals.isEmpty,
             )
             #expect(
-                !proposal.proposals.contains { $0.id == .examinationNumber },
+                !proposal.proposals.contains {
+                    $0.id == .examinationNumber
+                },
             )
         }
     }
@@ -400,7 +404,9 @@ struct DictationProposalTests {
             ) == [.examinationNumber, .patientWeightKG, .patientComplaints],
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientName || $0.id == .patientGender || $0.id == .patientDateOfBirth || $0.id == .patientHeightCM },
+            !proposal.proposals.contains {
+                $0.id == .patientName || $0.id == .patientGender || $0.id == .patientDateOfBirth || $0.id == .patientHeightCM
+            },
         )
     }
 
@@ -435,7 +441,9 @@ struct DictationProposalTests {
             rejected.proposals.isEmpty,
         )
         #expect(
-            !rejected.proposals.contains { $0.id == .patientName },
+            !rejected.proposals.contains {
+                $0.id == .patientName
+            },
         )
 
         let patientRequest = DNeuralUltrasoundDictationParseRequest(
@@ -523,7 +531,9 @@ struct DictationProposalTests {
             generated.proposals.isEmpty,
         )
         #expect(
-            !generated.proposals.contains { $0.id == .patientName },
+            !generated.proposals.contains {
+                $0.id == .patientName
+            },
         )
     }
 
@@ -583,7 +593,9 @@ struct DictationProposalTests {
     func foundationModelsGeneratesArrayOnDevice() async throws {
         guard ProcessInfo.processInfo.environment[
             "VOICE_FOUNDATION_CONTRACT_RUN",
-        ] == "1" else { return }
+        ] == "1" else {
+            return
+        }
         let locale = Locale(
             identifier: "en_US",
         )
@@ -614,14 +626,18 @@ struct DictationProposalTests {
             request: request,
         )
         #expect(
-            proposal.proposals.contains { $0.id == .patientWeightKG && $0.value == .number(
-                70,
-            ) },
+            proposal.proposals.contains {
+                $0.id == .patientWeightKG && $0.value == .number(
+                    70,
+                )
+            },
         )
         #expect(
-            proposal.proposals.allSatisfy { request.text.contains(
-                $0.sourceQuote,
-            ) },
+            proposal.proposals.allSatisfy {
+                request.text.contains(
+                    $0.sourceQuote,
+                )
+            },
         )
     }
 
@@ -668,7 +684,9 @@ struct DictationProposalTests {
             proposal.proposals.isEmpty,
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientHeightCM || $0.id == .patientWeightKG },
+            !proposal.proposals.contains {
+                $0.id == .patientHeightCM || $0.id == .patientWeightKG
+            },
         )
     }
 
@@ -834,7 +852,9 @@ struct DictationProposalTests {
             rejected.proposals.isEmpty,
         )
         #expect(
-            !rejected.proposals.contains { $0.id == .examinationDescription },
+            !rejected.proposals.contains {
+                $0.id == .examinationDescription
+            },
         )
         let whitespace = response(
             fieldId: .examinationDescription,
@@ -849,7 +869,9 @@ struct DictationProposalTests {
             emptyQuote.proposals.isEmpty,
         )
         #expect(
-            !emptyQuote.proposals.contains { $0.id == .examinationDescription },
+            !emptyQuote.proposals.contains {
+                $0.id == .examinationDescription
+            },
         )
     }
 
@@ -1075,7 +1097,9 @@ struct DictationProposalTests {
             proposal.proposals.isEmpty,
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .examinationNumber },
+            !proposal.proposals.contains {
+                $0.id == .examinationNumber
+            },
         )
     }
 
@@ -1276,7 +1300,9 @@ struct DictationProposalTests {
             ) == [.patientName],
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .examinationDescription },
+            !proposal.proposals.contains {
+                $0.id == .examinationDescription
+            },
         )
     }
 
@@ -1444,7 +1470,9 @@ struct DictationProposalTests {
             ) == [.patientName],
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientDateOfBirth },
+            !proposal.proposals.contains {
+                $0.id == .patientDateOfBirth
+            },
         )
     }
 

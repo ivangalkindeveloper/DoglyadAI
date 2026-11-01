@@ -22,7 +22,9 @@ struct SelectDateOfBirthBottomSheetView: DViewProtocol {
                         .selectDateOfBirthTitle,
                     ],
                     selection: Binding(
-                        get: { viewModel.date },
+                        get: {
+                            viewModel.date
+                        },
                         set: viewModel.onDateChanged,
                     ),
                     in: viewModel.fromDate ... viewModel.toDate,

@@ -11,14 +11,10 @@ struct OnBoardingScreenView: DViewProtocol {
     @StateObject var viewModel: OnBoardingViewModel
 
     var body: some View {
-        let isDisabled: Bool = switch viewModel.state {
-        case let state as OnBoardingLegalState: !state.isLegalAccepted
-        case _ as OnBoardingCompletingState: true
-        default: false
-        }
-        let isProcessing = switch viewModel.state {
-        case _ as OnBoardingCompletingState: true
-        default: false
+        let (isDisabled, isProcessing): (Bool, Bool) = switch viewModel.state {
+        case let state as OnBoardingLegalState: (!state.isLegalAccepted, false)
+        case _ as OnBoardingCompletingState: (true, true)
+        default: (false, false)
         }
 
         DScreen(
@@ -60,23 +56,7 @@ struct OnBoardingScreenView: DViewProtocol {
                 HStack(
                     spacing: size.s8,
                 ) {
-                    switch viewModel.state {
-                    case _ as OnBoardingFirstState, _ as OnBoardingCompletingState: EmptyView()
-                    default:
-                        DButton(
-                            image: .back,
-                            action: viewModel.onPressedBack,
-                        )
-                        .dStyle(
-                            .circle,
-                        )
-                        .transition(
-                            .scale
-                                .combined(
-                                    with: .opacity,
-                                ),
-                        )
-                    }
+                    OnBoardingBackButtonView()
 
                     DButton(
                         title: l10n[

@@ -12,16 +12,20 @@ extension USExaminationPhotoRemarks {
     ) -> Self {
         Self(
             photoId: db.photoId,
-            points: db.points.map { USExaminationPhotoRemarkPoint.fromDB(
-                $0,
-            ) },
+            points: db.points.map {
+                USExaminationPhotoRemarkPoint.fromDB(
+                    $0,
+                )
+            },
         )
     }
 
     func toDB() -> USExaminationPhotoRemarksDB {
         USExaminationPhotoRemarksDB(
             photoId: photoId,
-            points: points.map { $0.toDB() },
+            points: points.map {
+                $0.toDB()
+            },
         )
     }
 }

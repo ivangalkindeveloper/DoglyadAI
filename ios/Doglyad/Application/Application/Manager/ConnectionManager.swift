@@ -3,7 +3,9 @@ import Network
 protocol ConnectionManagerProtocol: AnyObject {
     func start()
 
-    var isConnected: Bool { get }
+    var isConnected: Bool {
+        get
+    }
 
     func stop()
 }

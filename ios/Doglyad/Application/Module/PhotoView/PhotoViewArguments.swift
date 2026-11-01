@@ -12,7 +12,9 @@ final class PhotoViewArguments: RouteArgumentsProtocol {
 
     init(
         getPhotos: @escaping () -> [USExaminationScanPhoto],
-        getPhotoRemarks: @escaping () -> [USExaminationPhotoRemarks] = { [] },
+        getPhotoRemarks: @escaping () -> [USExaminationPhotoRemarks] = {
+            []
+        },
         observePhotos: ((@escaping ([USExaminationScanPhoto]) -> Void) -> AnyCancellable)? = nil,
         initialPhotoID: UUID,
         subTitle: String? = nil,

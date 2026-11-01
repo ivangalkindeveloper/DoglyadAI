@@ -15,7 +15,9 @@ struct OnBoardingPageView<BottomContent: View>: DViewProtocol {
         title: LocalizedStringResource,
         image: ImageResource,
         description: LocalizedStringResource,
-        @ViewBuilder bottomContent: @escaping () -> BottomContent = { EmptyView() },
+        @ViewBuilder bottomContent: @escaping () -> BottomContent = {
+            EmptyView()
+        },
     ) {
         self.tag = tag
         self.title = title

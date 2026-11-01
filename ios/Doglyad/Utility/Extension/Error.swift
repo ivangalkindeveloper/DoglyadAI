@@ -23,7 +23,9 @@ extension Error {
             of: self,
         ) is AnyClass, type(
             of: other,
-        ) is AnyClass else { return false }
+        ) is AnyClass else {
+            return false
+        }
         return (self as AnyObject) === (other as AnyObject)
     }
 }

@@ -76,6 +76,7 @@ public struct DCheckbox: DViewProtocol {
         DCheckbox(
             isChecked: $isChecked,
         )
+
         Text(
             "Accept terms",
         )

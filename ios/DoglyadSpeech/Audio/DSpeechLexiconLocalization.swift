@@ -64,10 +64,14 @@ public struct DSpeechLexiconLocalization: Decodable, Sendable {
         }
         guard (literalCharacterReplacements.merging(
             phoneticCharacterReplacements,
-        ) { first, _ in first })
-            .allSatisfy(
-                { $0.key.count == 1 && $0.value.count == 1 },
-            )
+        ) { first, _ in
+            first
+        })
+        .allSatisfy(
+            {
+                $0.key.count == 1 && $0.value.count == 1
+            },
+        )
         else {
             throw DecodingError.dataCorruptedError(
                 forKey: .phoneticCharacterReplacements,

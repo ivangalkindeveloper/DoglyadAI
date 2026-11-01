@@ -44,7 +44,9 @@ final class DInteractivePopGestureController: UIViewController, UIGestureRecogni
         guard
             let navigationController,
             let gestureRecognizer = navigationController.interactivePopGestureRecognizer
-        else { return }
+        else {
+            return
+        }
 
         if installedNavigationController !== navigationController {
             restoreInteractivePopGesture()
@@ -85,7 +87,9 @@ final class DInteractivePopGestureController: UIViewController, UIGestureRecogni
         guard
             let installedNavigationController,
             gestureRecognizer === installedNavigationController.interactivePopGestureRecognizer
-        else { return false }
+        else {
+            return false
+        }
 
         return installedNavigationController.viewControllers.count > 1
             && installedNavigationController.transitionCoordinator == nil

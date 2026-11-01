@@ -73,9 +73,11 @@ public final class DSpeechFileRecognizerSFSpeechRecognizer {
                 with: request,
             ) { [weak self] result, error in
                 let finalText = result?.isFinal == true ? result?.bestTranscription.formattedString : nil
-                let failure = error.map { String(
-                    describing: $0,
-                ) }
+                let failure = error.map {
+                    String(
+                        describing: $0,
+                    )
+                }
                 Task { @MainActor [weak self] in
                     if let finalText {
                         self?.finish(
@@ -124,7 +126,9 @@ public final class DSpeechFileRecognizerSFSpeechRecognizer {
     private func finish(
         _ result: Result<String, any Error>,
     ) {
-        guard let continuation else { return }
+        guard let continuation else {
+            return
+        }
         self.continuation = nil
         task?.cancel()
         task = nil

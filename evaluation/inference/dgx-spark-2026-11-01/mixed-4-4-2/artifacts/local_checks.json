@@ -1,0 +1,44 @@
+{
+  "time": "2026-11-01T12:55:48.522779+00:00",
+  "request_counts": {
+    "baseline": {
+      "expected": 12,
+      "actual": 12,
+      "successful": 12
+    },
+    "candidate": {
+      "expected": 172,
+      "actual": 172,
+      "successful": 172
+    },
+    "service": {
+      "expected": 30,
+      "actual": 30,
+      "successful": 30
+    }
+  },
+  "local_tests": {
+    "ruff": {
+      "exit_code": 0,
+      "output": "All checks passed!\n"
+    },
+    "pytest": {
+      "exit_code": 0,
+      "output": "......                                                                   [100%]\n6 passed in 0.17s\n"
+    }
+  },
+  "is_runtime_restored": true,
+  "is_kernel_log_clean": false,
+  "restoration_kernel_events": [
+    "Nov 01 15:50:31 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359",
+    "Nov 01 15:50:32 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359"
+  ],
+  "is_executed_candidate_source_verified": true,
+  "local_tunnel": {
+    "url": "http://127.0.0.1:18100",
+    "unauthenticated_status": 401,
+    "was_restarted_after_missing_listener": true
+  },
+  "is_secret_pattern_scan_clean": true,
+  "local_document_links_verified": 23
+}

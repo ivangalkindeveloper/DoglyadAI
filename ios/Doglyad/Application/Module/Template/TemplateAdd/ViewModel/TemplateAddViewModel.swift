@@ -130,15 +130,20 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
     override func onInit() {
         handle {
             try await self.container.ultrasoundReportRepository.getSelectedExaminationTypeId()
-        } onDefer: { switch self.state {
-        case _ as TemplateAddLoadingState: self.emit(
-                TemplateAddDefaultState(),
-            )
-        default: break
-        } } onMainSuccess: { id in
+        } onDefer: {
+            switch self.state {
+            case _ as TemplateAddLoadingState:
+                self.emit(
+                    TemplateAddDefaultState(),
+                )
+            default: break
+            }
+        } onMainSuccess: { id in
             if let id, let type = self.container.usExaminationTypesById[
                 id,
-            ] { self.usExaminationType = type }
+            ] {
+                self.usExaminationType = type
+            }
         } onMainUnknownError: { error in
             self.emit(
                 TemplateAddFailedState(
@@ -271,7 +276,8 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
             )
         } onDefer: {
             switch self.state {
-            case _ as TemplateAddLoadingState: self.emit(
+            case _ as TemplateAddLoadingState:
+                self.emit(
                     TemplateAddDefaultState(),
                 )
             default: break
@@ -305,7 +311,9 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
     ) {
         guard let examinationType = container.getUSExaminationTypeById(
             id: template.examinationType,
-        ) else { return }
+        ) else {
+            return
+        }
 
         usExaminationType = examinationType
         nameTextController.restoreText(

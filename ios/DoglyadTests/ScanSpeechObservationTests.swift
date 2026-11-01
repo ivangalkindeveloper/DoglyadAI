@@ -21,8 +21,12 @@ struct ScanSpeechObservationTests {
         )
         var changes = 0
         var phaseChanges = 0
-        let observation = model.objectWillChange.sink { changes += 1 }
-        let phaseObservation = model.$state.dropFirst().sink { _ in phaseChanges += 1 }
+        let observation = model.objectWillChange.sink {
+            changes += 1
+        }
+        let phaseObservation = model.$state.dropFirst().sink { _ in
+            phaseChanges += 1
+        }
         defer {
             observation.cancel()
             phaseObservation.cancel()
@@ -59,8 +63,12 @@ struct ScanSpeechObservationTests {
         )
         model.onDisappear()
         var changes = 0
-        let observation = model.objectWillChange.sink { changes += 1 }
-        defer { observation.cancel() }
+        let observation = model.objectWillChange.sink {
+            changes += 1
+        }
+        defer {
+            observation.cancel()
+        }
 
         speechController.text = "Late result"
         speechController.audioMeter = 1
@@ -98,14 +106,22 @@ struct ScanSpeechObservationTests {
                     type: .scan,
                 ),
             ),
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
-                onConfirm: { _ in true },
+                onConfirm: { _ in
+                    true
+                },
             ),
             speechController: speechController,
         )

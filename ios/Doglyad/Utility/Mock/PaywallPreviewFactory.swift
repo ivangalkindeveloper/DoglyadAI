@@ -19,7 +19,9 @@
                 subscriptionRepositoryFactory: SubscriptionRepositoryFactory(
                     storeKit: repository,
                     yooKassa: repository,
-                    getStorefrontCountryCode: { "RUS" },
+                    getStorefrontCountryCode: {
+                        "RUS"
+                    },
                 ),
             )
         }
@@ -31,15 +33,27 @@
             PaywallViewModel(
                 container: container,
                 router: router,
-                getSubscriptionStatus: { nil },
-                observeSubscriptionStatus: { _ in AnyCancellable {} },
+                getSubscriptionStatus: {
+                    nil
+                },
+                observeSubscriptionStatus: { _ in
+                    AnyCancellable {}
+                },
                 onSubscriptionStatusUpdated: { _ in },
-                getSettingsAI: { container.initialSettingsAI },
+                getSettingsAI: {
+                    container.initialSettingsAI
+                },
                 onRefreshSubscriptionStatus: {},
                 arguments: nil,
-                purchase: { _ in .cancelled },
-                restorePurchases: { nil },
-                checkPurchase: { .pending },
+                purchase: { _ in
+                    .cancelled
+                },
+                restorePurchases: {
+                    nil
+                },
+                checkPurchase: {
+                    .pending
+                },
             )
         }
     }

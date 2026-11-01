@@ -24,19 +24,27 @@ struct RepositoryOperationTests {
         let arguments = SelectTemplateArguments(
             onSelected: { value in
                 await Task.yield()
-                guard isStorageAvailable else { throw CocoaError(
-                    .fileWriteUnknown,
-                ) }
+                guard isStorageAvailable else {
+                    throw CocoaError(
+                        .fileWriteUnknown,
+                    )
+                }
                 selectedTemplate = value
             },
         )
         let model = SelectTemplateViewModel(
             container: container,
             router: router,
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )

@@ -52,7 +52,9 @@ extension UIImage {
             )
         }
 
-        guard targetSize.width < size.width else { return self }
+        guard targetSize.width < size.width else {
+            return self
+        }
 
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1
@@ -81,7 +83,9 @@ extension UIImage {
             size.width,
             size.height,
         )
-        guard maxSide > 0 else { return self }
+        guard maxSide > 0 else {
+            return self
+        }
 
         let ratio = min(
             1,

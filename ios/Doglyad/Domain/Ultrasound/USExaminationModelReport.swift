@@ -90,9 +90,11 @@ extension USExaminationModelReport {
             conclusion: db.conclusion,
             recommendations: db.recommendations,
             descriptionRemarks: db.descriptionRemarks,
-            photoRemarks: db.photoRemarks.map { USExaminationPhotoRemarks.fromDB(
-                $0,
-            ) },
+            photoRemarks: db.photoRemarks.map {
+                USExaminationPhotoRemarks.fromDB(
+                    $0,
+                )
+            },
         )
     }
 
@@ -105,7 +107,9 @@ extension USExaminationModelReport {
             conclusion: conclusion,
             recommendations: recommendations,
             descriptionRemarks: descriptionRemarks,
-            photoRemarks: photoRemarks.map { $0.toDB() },
+            photoRemarks: photoRemarks.map {
+                $0.toDB()
+            },
         )
     }
 }

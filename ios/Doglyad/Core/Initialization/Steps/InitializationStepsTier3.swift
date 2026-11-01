@@ -22,7 +22,9 @@ extension InitializationProcess {
                     let applicationVersion = Bundle.shortVersion
                     guard applicationVersion.major < applicationConfig.actualVersion.major,
                           !applicationConfig.appStoreId.isEmpty
-                    else { return }
+                    else {
+                        return
+                    }
 
                     throw InitializationError.newVersion(
                         appleUpdateUrl: applicationConfig.appleUpdateUrl,

@@ -38,16 +38,22 @@ public final class DNeuralUltrasoundModelFactory {
             object: nil,
             queue: .main,
         ) { [weak self] _ in
-            Task { @MainActor [weak self] in self?.unload() }
+            Task { @MainActor [weak self] in
+                self?.unload()
+            }
         }
     }
 
-    public var isFoundationModelsAvailable: Bool { foundationProvider.isAvailable }
+    public var isFoundationModelsAvailable: Bool {
+        foundationProvider.isAvailable
+    }
 
     deinit {
-        if let memoryWarningObserver { NotificationCenter.default.removeObserver(
-            memoryWarningObserver,
-        ) }
+        if let memoryWarningObserver {
+            NotificationCenter.default.removeObserver(
+                memoryWarningObserver,
+            )
+        }
     }
 
     public func model(
@@ -61,7 +67,9 @@ public final class DNeuralUltrasoundModelFactory {
             foundationModel = nil
             throw DNeuralModelError.unavailable
         }
-        if let foundationModel { return foundationModel }
+        if let foundationModel {
+            return foundationModel
+        }
         let model = try foundationProvider.makeModel()
         foundationModel = model
         return model
@@ -73,7 +81,9 @@ public final class DNeuralUltrasoundModelFactory {
         Task { [weak self] in
             guard let model = try? self?.model(
                 isFoundationModels: isFoundationModels,
-            ) else { return }
+            ) else {
+                return
+            }
             model.prewarm()
         }
     }

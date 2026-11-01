@@ -9,7 +9,13 @@ public protocol DDatabaseProtocol: AnyObject,
     DDatabaseUserSettingsProtocol,
     DDatabaseClearProtocol
 {
-    var examinationReports: DExaminationReportsStore { get }
-    var examinationTemplates: DExaminationTemplatesStore { get }
-    var examinationDraft: DExaminationDraftStore { get }
+    var examinationReports: DExaminationReportsStore {
+        get
+    }
+    var examinationTemplates: DExaminationTemplatesStore {
+        get
+    }
+    var examinationDraft: DExaminationDraftStore {
+        get
+    }
 }

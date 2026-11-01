@@ -20,11 +20,21 @@ public protocol DSpeechControllerProtocol: ObservableObject
         lexiconLocalization: DSpeechLexiconLocalization,
     )
 
-    var recordingStatus: DSpeechRecordingStatus { get }
-    var text: String? { get }
-    var audioMeter: Float { get }
-    var lastTranscript: DSpeechTranscript? { get }
-    var modelPreparationStatus: DSpeechModelPreparationStatus { get }
+    var recordingStatus: DSpeechRecordingStatus {
+        get
+    }
+    var text: String? {
+        get
+    }
+    var audioMeter: Float {
+        get
+    }
+    var lastTranscript: DSpeechTranscript? {
+        get
+    }
+    var modelPreparationStatus: DSpeechModelPreparationStatus {
+        get
+    }
 
     func prepareModel()
 
@@ -44,7 +54,9 @@ public protocol DSpeechControllerProtocol: ObservableObject
 }
 
 public extension DSpeechControllerProtocol {
-    var modelPreparationStatus: DSpeechModelPreparationStatus { .ready }
+    var modelPreparationStatus: DSpeechModelPreparationStatus {
+        .ready
+    }
 
     func prepareModel() {}
 }

@@ -19,12 +19,17 @@ struct StorageScreenView: DViewProtocol {
             ],
             onTapBack: viewModel.onTapBack,
         ) { toolbarInset, _ in
-            ScrollView(
-                showsIndicators: false,
+            DScrollVStack(
+                alignment: .center,
+                spacing: size.s8,
+                padding: EdgeInsets(
+                    top: size.s16 + toolbarInset,
+                    leading: size.s16,
+                    bottom: size.s16 + size.s32,
+                    trailing: size.s16,
+                ),
             ) {
-                VStack(
-                    spacing: size.s8,
-                ) {
+                Group {
                     DListButtonCard(
                         title: l10n[
                             .storageClearProtocolsTitle,
@@ -54,20 +59,8 @@ struct StorageScreenView: DViewProtocol {
                         ],
                         action: viewModel.onTapClearAll,
                     )
-                }
-                .disabled(
+                }.disabled(
                     isProcessing,
-                )
-                .padding(
-                    size.s16,
-                )
-                .padding(
-                    .top,
-                    toolbarInset,
-                )
-                .padding(
-                    .bottom,
-                    size.s32,
                 )
             }
         }

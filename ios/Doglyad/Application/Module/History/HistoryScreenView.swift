@@ -68,20 +68,7 @@ struct HistoryScreenView: DViewProtocol {
                                 }
                             }
 
-                            switch viewModel.state {
-                            case _ as HistoryFailedState:
-                                LoadingErrorView(
-                                    onRetry: viewModel.onOffsetAppear,
-                                )
-                            default:
-                                switch viewModel.nextOffset {
-                                case .some:
-                                    HistoryOffsetLoadingView().transition(
-                                        .opacity,
-                                    ).onAppear { viewModel.onOffsetAppear() }
-                                case .none: EmptyView()
-                                }
-                            }
+                            HistoryPaginationView()
                         case (_ as HistoryFailedState, true):
                             LoadingErrorView(
                                 onRetry: viewModel.onTapRetry,
@@ -110,30 +97,7 @@ struct HistoryScreenView: DViewProtocol {
                 )
             },
             bottom: {
-                switch viewModel.state {
-                case _ as HistoryEmptyState:
-                    DButton(
-                        title: l10n[
-                            .buttonBack,
-                        ],
-                        action: viewModel.onTapBack,
-                    )
-                    .dStyle(
-                        .primaryButton,
-                    )
-                    .padding(
-                        size.s16,
-                    )
-                    .transition(
-                        .move(
-                            edge: .bottom,
-                        )
-                        .combined(
-                            with: .opacity,
-                        ),
-                    )
-                default: EmptyView()
-                }
+                HistoryBottomView()
             },
         )
         .onAppear(

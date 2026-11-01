@@ -1,8 +1,12 @@
 public import Foundation
 
 public protocol DHttpClientProtocol {
-    var baseUrl: String { get }
-    var baseVersionPrefix: String { get }
+    var baseUrl: String {
+        get
+    }
+    var baseVersionPrefix: String {
+        get
+    }
 
     /// Applies new timeouts to every subsequent request.
     ///

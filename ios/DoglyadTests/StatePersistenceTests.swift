@@ -25,16 +25,30 @@ struct StatePersistenceTests {
             container: container,
             messager: DMessager(),
             router: router,
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
-            onRefreshSubscriptionStatus: { subscriptionRefreshCount += 1 },
-            observeExaminationChanges: { _ in AnyCancellable {} },
-            getSelectedTemplate: { nil },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
+            onRefreshSubscriptionStatus: {
+                subscriptionRefreshCount += 1
+            },
+            observeExaminationChanges: { _ in
+                AnyCancellable {}
+            },
+            getSelectedTemplate: {
+                nil
+            },
             onTemplateSelected: { _ in },
             onTemplateReset: {},
-            getNeuralModel: { container.usExaminationNeuralModelDefault },
+            getNeuralModel: {
+                container.usExaminationNeuralModelDefault
+            },
             onNeuralModelSelected: { _ in },
         )
         let form = model
@@ -112,7 +126,8 @@ struct StatePersistenceTests {
             #expect(
                 model.examinationDescriptionTextController === examinationTextController,
             )
-        default: Issue.record(
+        default:
+            Issue.record(
                 "A failed save must retain the generated report",
             )
         }
@@ -134,7 +149,8 @@ struct StatePersistenceTests {
         await model.lastTask?.value
         switch model.state {
         case _ as ScanDefaultState: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "A successful save must return to the examination form",
             )
         }
@@ -181,18 +197,34 @@ struct StatePersistenceTests {
             container: container,
             messager: DMessager(),
             router: router,
-            getSubscriptionStatus: { nil },
-            observeSubscriptionStatus: { _ in AnyCancellable {} },
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
             onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: { container.initialSettingsAI },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
             onRefreshSubscriptionStatus: {},
-            getInitialEmail: { nil },
-            getInitialIsRecommendationsIncluded: { false },
-            getInitialIsPhotoRemarks: { false },
-            getInitialIsDescriptionRemarks: { false },
-            onSaved: { _, _, _, _ in throw CocoaError(
-                .fileWriteUnknown,
-            ) },
+            getInitialEmail: {
+                nil
+            },
+            getInitialIsRecommendationsIncluded: {
+                false
+            },
+            getInitialIsPhotoRemarks: {
+                false
+            },
+            getInitialIsDescriptionRemarks: {
+                false
+            },
+            onSaved: { _, _, _, _ in
+                throw CocoaError(
+                    .fileWriteUnknown,
+                )
+            },
         )
         let form = model
         let emailTextController = model.emailTextController
@@ -213,7 +245,8 @@ struct StatePersistenceTests {
             #expect(
                 model.isPhotoRemarks,
             )
-        default: Issue.record(
+        default:
+            Issue.record(
                 "A failed settings save must retain the form",
             )
         }

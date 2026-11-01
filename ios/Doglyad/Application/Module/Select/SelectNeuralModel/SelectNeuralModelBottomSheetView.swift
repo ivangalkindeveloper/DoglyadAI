@@ -20,12 +20,17 @@ struct SelectNeuralModelBottomSheetView: DViewProtocol {
             ],
             fraction: 0.8,
         ) { toolbarHeight, bottomHeight in
-            ScrollView(
-                showsIndicators: false,
+            DScrollVStack(
+                alignment: .center,
+                spacing: .zero,
+                padding: EdgeInsets(
+                    top: toolbarHeight + size.s16,
+                    leading: size.s16,
+                    bottom: size.s16 + bottomHeight,
+                    trailing: size.s16,
+                ),
             ) {
-                VStack(
-                    spacing: .zero,
-                ) {
+                Group {
                     ForEach(
                         viewModel.models,
                     ) { model in
@@ -87,20 +92,8 @@ struct SelectNeuralModelBottomSheetView: DViewProtocol {
                         .bottom,
                         size.s8,
                     )
-                }
-                .disabled(
+                }.disabled(
                     isSelecting,
-                )
-                .padding(
-                    .top,
-                    toolbarHeight,
-                )
-                .padding(
-                    size.s16,
-                )
-                .padding(
-                    .bottom,
-                    bottomHeight,
                 )
             }
         }

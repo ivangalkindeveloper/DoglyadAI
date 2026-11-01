@@ -1,5 +1,7 @@
 import Combine
+import DoglyadUI
 import Foundation
+import SwiftUI
 import UIKit
 
 @MainActor
@@ -24,7 +26,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         requestRefund: @escaping () async throws -> Void,
         fetchProducts: (() async throws -> BillingProductsResponse)? = nil,
     ) {
-        self.fetchProducts = fetchProducts ?? { try await container.subscriptionBackendRepository.fetchPlans() }
+        self.fetchProducts = fetchProducts ?? {
+            try await container.subscriptionBackendRepository.fetchPlans()
+        }
         self.manageSubscription = manageSubscription
         self.restorePurchases = restorePurchases
         self.requestRefund = requestRefund
@@ -44,16 +48,20 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
     }
 
     var isProcessing: Bool {
-        switch state { case _ as ManageSubscriptionLoadingState: true
-        default: false }
+        switch state {
+        case _ as ManageSubscriptionLoadingState: true
+        default: false
+        }
     }
 
     var manageTitle: LocalizedStringResource {
         switch subscriptionStatus?.source {
-        case .yookassa: l10n[
+        case .yookassa:
+            l10n[
                 .manageSubscriptionCancelRenewalButton,
             ]
-        case .apple, .none: l10n[
+        case .apple, .none:
+            l10n[
                 .manageSubscriptionManageButton,
             ]
         }
@@ -61,10 +69,12 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
 
     var manageDescription: LocalizedStringResource {
         switch subscriptionStatus?.source {
-        case .yookassa: l10n[
+        case .yookassa:
+            l10n[
                 .manageSubscriptionCancelRenewalDescription,
             ]
-        case .apple, .none: l10n[
+        case .apple, .none:
+            l10n[
                 .manageSubscriptionAppleManageDescription,
             ]
         }
@@ -78,6 +88,19 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         }
     }
 
+    var refundDescription: LocalizedStringResource {
+        switch subscriptionStatus?.source {
+        case .apple:
+            l10n[
+                .manageSubscriptionAppleRefundDescription,
+            ]
+        case .yookassa, .none:
+            l10n[
+                .manageSubscriptionYooKassaRefundDescription,
+            ]
+        }
+    }
+
     private var content: ManageSubscriptionContentState? {
         switch state {
         case let content as ManageSubscriptionContentState: content
@@ -87,7 +110,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         }
     }
 
-    override func onInit() { load() }
+    override func onInit() {
+        load()
+    }
 
     override func onSubscriptionChanged(
         _ status: SubscriptionStatus?,
@@ -99,7 +124,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
                 status: status,
             )
         case let failed as ManageSubscriptionFailedState:
-            guard let previous = failed.previousState else { return }
+            guard let previous = failed.previousState else {
+                return
+            }
             emit(
                 ManageSubscriptionFailedState(
                     previousState: resolvedContent(
@@ -117,7 +144,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         super.onDisappear()
         switch state {
         case let loading as ManageSubscriptionLoadingState:
-            guard let previous = loading.previousState else { return }
+            guard let previous = loading.previousState else {
+                return
+            }
             showContent(
                 catalog: previous.catalog,
                 status: subscriptionStatus,
@@ -127,7 +156,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
     }
 
     func onTapBack() {
-        guard !router.path.isEmpty else { return }
+        guard !router.path.isEmpty else {
+            return
+        }
         isDismissalRequested = true
         cancelOperationTask()
         lastTask?.cancel()
@@ -138,7 +169,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
     }
 
     func onTapChangeType() {
-        guard !isProcessing, !isDismissalRequested else { return }
+        guard !isProcessing, !isDismissalRequested else {
+            return
+        }
         analytics.buttonTapped(
             .manageSubscriptionChangeType,
             parameters: .subscription(
@@ -156,39 +189,44 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         )
         perform {
             let status = try await self.restorePurchases()
-            guard !Task.isCancelled else { return }
+            guard !Task.isCancelled else {
+                return
+            }
             self.updateSubscriptionStatus(
                 status,
             )
             self.analytics.actionCompleted(
                 .manageSubscriptionRestoreCompleted,
             )
-        } noSubscriptionNotice: { self.l10n.text(
-            .manageSubscriptionNoPurchasesDescription,
-        ) }
+        } noSubscriptionNotice: {
+            self.l10n.text(
+                .manageSubscriptionNoPurchasesDescription,
+            )
+        }
     }
 
     func onTapManageSubscription() {
-        guard isManageAvailable else { return }
-        perform { try await self.manageSubscription() }
+        guard isManageAvailable else {
+            return
+        }
+        perform {
+            try await self.manageSubscription()
+        }
     }
 
     func onTapRecovery() {
-        guard !isProcessing, !isDismissalRequested else { return }
+        guard !isProcessing, !isDismissalRequested else {
+            return
+        }
         coordinator.screen(
             .subscriptionRecovery,
         )
     }
 
-    func onTapRefund() {
-        switch subscriptionStatus?.source {
-        case .yookassa, .none: onTapSupport()
-        case .apple: perform { try await self.requestRefund() }
-        }
-    }
-
     func onTapSupport() {
-        guard !isProcessing, !isDismissalRequested else { return }
+        guard !isProcessing, !isDismissalRequested else {
+            return
+        }
         UIApplication.openMail(
             subject: l10n.text(
                 .manageSubscriptionTitle,
@@ -198,19 +236,100 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         )
     }
 
-    func onTapRetry() { guard !isProcessing, !isDismissalRequested else { return }
+    func onTapRefund() {
+        switch subscriptionStatus?.source {
+        case .yookassa, .none: onTapSupport()
+        case .apple:
+            perform {
+                try await self.requestRefund()
+            }
+        }
+    }
+
+    func onTapRetry() {
+        guard !isProcessing, !isDismissalRequested else {
+            return
+        }
         load()
     }
 
     func onRefresh() {
-        guard !isProcessing, content != nil, !isDismissalRequested else { return }
-        perform { await self.refreshStatus() }
+        guard !isProcessing, content != nil, !isDismissalRequested else {
+            return
+        }
+        perform {
+            await self.refreshStatus()
+        }
+    }
+
+    func summaryTextColor(
+        _ type: SubscriptionType,
+        theme: DTheme,
+    ) -> Color {
+        switch type {
+        case .base: theme.color.grayscaleHeader
+        case .pro: .white
+        }
+    }
+
+    func summarySecondaryTextColor(
+        _ type: SubscriptionType,
+        theme: DTheme,
+    ) -> Color {
+        switch type {
+        case .base: theme.color.grayscaleLabel
+        case .pro: theme.color.grayscaleInput
+        }
+    }
+
+    func summaryFeatureIconColor(
+        _ type: SubscriptionType,
+        theme: DTheme,
+    ) -> Color {
+        switch type {
+        case .base: theme.color.successDefault
+        case .pro: theme.color.successBackgroundStrong
+        }
+    }
+
+    func summaryBackgroundGradient(
+        _ type: SubscriptionType,
+        theme: DTheme,
+    ) -> LinearGradient? {
+        switch type {
+        case .base: nil
+        case .pro: theme.color.gradientPrimary
+        }
+    }
+
+    func summaryBackgroundOverlayColor(
+        _ type: SubscriptionType,
+        theme: DTheme,
+    ) -> Color {
+        switch type {
+        case .base: .clear
+        case .pro:
+            theme.color.primaryDefaultStrong.opacity(
+                0.6,
+            )
+        }
+    }
+
+    func summaryTitleShimmering(
+        _ type: SubscriptionType,
+    ) -> Bool {
+        switch type {
+        case .base: false
+        case .pro: true
+        }
     }
 
     func expirationDescription(
         _ status: SubscriptionStatus,
     ) -> String? {
-        guard let date = status.expiresAt else { return nil }
+        guard let date = status.expiresAt else {
+            return nil
+        }
         return l10n.text(
             .manageSubscriptionPaidUntilDescription,
             values: [.date: date.formatted(
@@ -228,13 +347,19 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         status: SubscriptionStatus?,
         notice: String? = nil,
     ) -> ManageSubscriptionContentState? {
-        guard let status else { return ManageSubscriptionInactiveState(
-            catalog: catalog,
-            notice: notice,
-        ) }
+        guard let status else {
+            return ManageSubscriptionInactiveState(
+                catalog: catalog,
+                notice: notice,
+            )
+        }
         guard let tier = catalog.tiers.first(
-            where: { $0.id == status.type },
-        ) else { return nil }
+            where: {
+                $0.id == status.type
+            },
+        ) else {
+            return nil
+        }
         return ManageSubscriptionActiveState(
             catalog: catalog,
             status: status,
@@ -279,26 +404,36 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
             await self.refreshStatus()
             return try await self.fetchProducts()
         } onMainSuccess: { catalog in
-            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else { return }
+            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else {
+                return
+            }
             self.showContent(
                 catalog: catalog,
                 status: self.subscriptionStatus,
             )
-        } onMainApiError: { _ in self.failLoading(
-            loading,
-        ) }
-        onMainConnectionError: { _ in self.failLoading(
-            loading,
-        ) }
-        onMainUnknownError: { _ in self.failLoading(
-            loading,
-        ) }
+        } onMainApiError: { _ in
+            self.failLoading(
+                loading,
+            )
+        }
+        onMainConnectionError: { _ in
+            self.failLoading(
+                loading,
+            )
+        }
+        onMainUnknownError: { _ in
+            self.failLoading(
+                loading,
+            )
+        }
     }
 
     private func failLoading(
         _ loading: any ManageSubscriptionStateProtocol,
     ) {
-        guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+        guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+            return
+        }
         emit(
             ManageSubscriptionFailedState(
                 previousState: content,
@@ -313,7 +448,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         _ operation: @escaping () async throws -> Void,
         noSubscriptionNotice: (() -> String)? = nil,
     ) {
-        guard !isProcessing, !isDismissalRequested, let previous = content else { return }
+        guard !isProcessing, !isDismissalRequested, let previous = content else {
+            return
+        }
         let loading = ManageSubscriptionLoadingState(
             previousState: previous,
         )
@@ -321,17 +458,23 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
             loading,
         )
         operationTask = Task {
-            guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+            guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                return
+            }
             do {
                 try await operation()
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                    return
+                }
                 showContent(
                     catalog: previous.catalog,
                     status: subscriptionStatus,
                     notice: noSubscriptionNotice?(),
                 )
             } catch {
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                    return
+                }
                 emit(
                     ManageSubscriptionFailedState(
                         previousState: resolvedContent(

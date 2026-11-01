@@ -1,0 +1,62 @@
+{
+  "time": "2026-11-01T14:11:37.054206+00:00",
+  "requests": {
+    "direct": 184,
+    "direct_successful": 184,
+    "service": 36,
+    "service_successful": 36,
+    "structured_direct": 48
+  },
+  "is_runtime_restored": true,
+  "is_kernel_log_clean": false,
+  "new_kernel_events_during_restoration": [
+    "Nov 01 17:03:49 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359"
+  ],
+  "is_execution_sources_verified": true,
+  "analysis_script_sha256": "1970b68eef5e519a2c20fb17b76fc34fcda888dc6d3b958f266e1af9a96b9aff",
+  "local_tunnel_unauthenticated_status": 401,
+  "local_tests": {
+    "ruff": "passed",
+    "pytest": "7 passed in 0.15s",
+    "architecture": {
+      "exit_code": 2,
+      "rule": "swift.view-fragment",
+      "is_in_scope": false,
+      "findings": {
+        "ios/Doglyad/Application/Application/View/ExpandableContentView.swift": [
+          123,
+          147,
+          163
+        ],
+        "ios/Doglyad/Application/Application/View/PhotoCardView.swift": [
+          61
+        ],
+        "ios/Doglyad/Application/Application/View/SectionHeaderView.swift": [
+          71
+        ],
+        "ios/DoglyadUI/Component/Button/DButton.swift": [
+          59
+        ],
+        "ios/DoglyadUI/Component/DBottomSheet.swift": [
+          158,
+          166,
+          233
+        ],
+        "ios/DoglyadUI/Component/DScreen.swift": [
+          310,
+          333,
+          362
+        ],
+        "ios/DoglyadUI/Component/Toolbar/DToolbarButton.swift": [
+          45,
+          59,
+          78,
+          117
+        ]
+      }
+    }
+  },
+  "is_secret_pattern_scan_clean": true,
+  "is_artifact_json_valid": true,
+  "local_document_links_verified": 42
+}

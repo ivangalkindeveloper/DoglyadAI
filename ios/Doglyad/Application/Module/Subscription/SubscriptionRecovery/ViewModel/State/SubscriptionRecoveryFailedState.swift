@@ -15,7 +15,9 @@ final class SubscriptionRecoveryFailedState: SubscriptionRecoveryStateProtocol, 
         lhs: SubscriptionRecoveryFailedState,
         rhs: SubscriptionRecoveryFailedState,
     ) -> Bool {
-        guard let previous = lhs.previousState as? any Equatable else { return false }
+        guard let previous = lhs.previousState as? any Equatable else {
+            return false
+        }
         return previous.isEqual(
             to: rhs.previousState,
         ) && lhs.errorDescription == rhs.errorDescription

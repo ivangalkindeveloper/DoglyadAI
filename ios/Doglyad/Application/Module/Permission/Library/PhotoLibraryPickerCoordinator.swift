@@ -18,9 +18,11 @@ final class PhotoLibraryPickerCoordinator: NSObject, PHPickerViewControllerDeleg
             .map(
                 \.itemProvider,
             )
-            .filter { $0.canLoadObject(
-                ofClass: UIImage.self,
-            ) }
+            .filter {
+                $0.canLoadObject(
+                    ofClass: UIImage.self,
+                )
+            }
 
         guard !providers.isEmpty else {
             onComplete(

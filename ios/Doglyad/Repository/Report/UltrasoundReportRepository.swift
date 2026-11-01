@@ -105,9 +105,11 @@ extension UltrasoundReportRepository {
             limit: limit,
             offset: offset,
         ) { models in
-            models.map { USExaminationReport.fromDB(
-                $0,
-            ) }
+            models.map {
+                USExaminationReport.fromDB(
+                    $0,
+                )
+            }
         }
     }
 

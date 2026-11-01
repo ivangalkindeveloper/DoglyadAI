@@ -21,36 +21,13 @@ struct SelectTemplateBottomSheetView: DViewProtocol {
                     alignment: .leading,
                     spacing: size.s4,
                 ) {
-                    let isLoading = switch viewModel.state { case _ as SelectTemplateLoadingState: true
-                    default: false }
-                    switch (viewModel.state, viewModel.templates.isEmpty) {
-                    case (_, false):
-                        ForEach(
-                            viewModel.templates,
-                        ) { template in
-                            TemplateListItemCardView(
-                                template: template,
-                                action: {
-                                    viewModel.onTemplateTap(
-                                        template,
-                                    )
-                                },
-                                isSelected: viewModel.currentTemplateID == template.id,
-                            )
-                        }.disabled(
-                            isLoading,
-                        )
-                    case (_ as SelectTemplateLoadingState, true):
-                        TemplateListLoadingView()
-                    case (_ as SelectTemplateEmptyState, true):
-                        TemplateListEmptyView()
-                    case (_ as SelectTemplateFailedState, true):
-                        LoadingErrorView(
-                            onRetry: viewModel.onTapRetry,
-                        )
-                    default:
-                        EmptyView()
+                    let isLoading = switch viewModel.state {
+                    case _ as SelectTemplateLoadingState: true
+                    default: false
                     }
+                    SelectTemplateStateView(
+                        isLoading: isLoading,
+                    )
                 }
                 .padding(
                     .top,

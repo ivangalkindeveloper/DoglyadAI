@@ -19,7 +19,9 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
     public func fetchBillingIdentity() throws -> BillingIdentityDB? {
         guard let data = try read(
             key: .billingIdentity,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         return try decoder.decode(
             BillingIdentityDB.self,
             from: data,
@@ -35,6 +37,22 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
             ),
             key: .billingIdentity,
         )
+    }
+
+    public func removeBillingIdentity() throws {
+        let status = SecItemDelete(
+            baseQuery(
+                key: .billingIdentity,
+            ) as CFDictionary,
+        )
+        switch status {
+        case errSecSuccess, errSecItemNotFound:
+            return
+        default:
+            throw DSecurityDatabaseError.unhandled(
+                status: status,
+            )
+        }
     }
 
     // MARK: - Keychain
@@ -93,7 +111,9 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
             ) as CFDictionary,
             [kSecValueData as String: data] as CFDictionary,
         )
-        if status == errSecSuccess { return }
+        if status == errSecSuccess {
+            return
+        }
         guard status == errSecItemNotFound else {
             throw DSecurityDatabaseError.unhandled(
                 status: status,

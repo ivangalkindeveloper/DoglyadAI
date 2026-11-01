@@ -62,11 +62,13 @@ public extension View {
     func dShimmer(
         isShimmering: Bool = true,
         cornerRadius: CGFloat = .infinity,
+        masksContent: Bool = false,
     ) -> some View {
         modifier(
             DShimmerModifier(
                 isShimmering: isShimmering,
                 cornerRadius: cornerRadius,
+                masksContent: masksContent,
             ),
         )
     }

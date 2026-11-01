@@ -40,7 +40,9 @@ final class SubscriptionYooKassaRepository: SubscriptionRepositoryProtocol {
         let prepared = try await backend.preparePayment(
             planID: plan.id,
         )
-        guard prepared.payment.planId == plan.id else { throw SubscriptionError.unverifiedTransaction }
+        guard prepared.payment.planId == plan.id else {
+            throw SubscriptionError.unverifiedTransaction
+        }
         onPurchasePrepared(
             .yookassa(
                 paymentId: prepared.payment.id,
@@ -62,20 +64,28 @@ final class SubscriptionYooKassaRepository: SubscriptionRepositoryProtocol {
     }
 
     // YooKassa access is restored from backend status or an explicit recovery key.
-    func restorePurchases() async throws -> Bool { false }
+    func restorePurchases() async throws -> Bool {
+        false
+    }
 
     // The backend receives YooKassa payments directly; there are no device entitlements to upload.
-    func synchronizeCurrentEntitlements() async throws -> Bool { false }
+    func synchronizeCurrentEntitlements() async throws -> Bool {
+        false
+    }
 
     // YooKassa has no client transaction stream; the backend handles notifications and reconciliation.
     func observeChanges(
         _: @escaping (Result<SubscriptionTransactionUpdate, Error>) -> Void,
     ) async throws {}
 
-    func manageSubscription() async throws { try await backend.cancelRenewal() }
+    func manageSubscription() async throws {
+        try await backend.cancelRenewal()
+    }
 
     // ManageSubscription routes YooKassa refund requests to merchant support.
-    func requestRefund() async throws { throw SubscriptionError.offeringsUnavailable }
+    func requestRefund() async throws {
+        throw SubscriptionError.offeringsUnavailable
+    }
 
     private func completePayment(
         _ prepared: BillingPreparePaymentResponse,
@@ -156,7 +166,8 @@ final class SubscriptionYooKassaRepository: SubscriptionRepositoryProtocol {
         _ state: BillingPaymentState,
     ) -> SubscriptionPurchaseOutcome {
         switch state {
-        case .succeeded: .completed(
+        case .succeeded:
+            .completed(
                 nil,
             )
         case .canceled, .refunded: .cancelled

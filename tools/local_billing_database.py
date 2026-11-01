@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import socket
 import subprocess
 import sys
 from pathlib import Path
@@ -85,25 +86,85 @@ class LocalBillingDatabase:
             "Local PostgreSQL stopped; data remains in doglyad-local-billing-data.",
         )
 
+    def reset(
+        self,
+    ) -> None:
+        self.require_local_docker()
+        try:
+            with socket.create_connection(
+                ("127.0.0.1", 8000),
+                timeout=0.5,
+            ):
+                pass
+        except ConnectionRefusedError:
+            pass
+        else:
+            raise RuntimeError(
+                "Stop the backend listening on port 8000 before resetting the local database.",
+            )
+        subprocess.run(
+            [*self.compose, "down", "--volumes"],
+            cwd=self.ROOT,
+            check=True,
+        )
+        self.start()
+        print(
+            "Local billing database reset: all previous billing data has been removed.",
+        )
+
+    def require_local_docker(
+        self,
+    ) -> None:
+        override = os.environ.get(
+            "DOCKER_HOST",
+        )
+        if override and not override.startswith(
+            "unix://",
+        ):
+            raise RuntimeError(
+                "Local database reset requires a local Docker Unix socket.",
+            )
+        result = subprocess.run(
+            ["docker", "context", "inspect", "--format", "{{.Endpoints.docker.Host}}"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        if not result.stdout.strip().startswith(
+            "unix://",
+        ):
+            raise RuntimeError(
+                "Refusing to reset a database through a remote Docker context.",
+            )
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Start local PostgreSQL and apply billing migrations.",
     )
-    parser.add_argument(
+    operation = parser.add_mutually_exclusive_group()
+    operation.add_argument(
         "--stop",
         dest="is_stop",
         action="store_true",
         help="Stop PostgreSQL without deleting data.",
+    )
+    operation.add_argument(
+        "--reset",
+        dest="is_reset",
+        action="store_true",
+        help="Delete the local billing volume, recreate PostgreSQL and apply migrations.",
     )
     arguments = parser.parse_args()
     database = LocalBillingDatabase()
     try:
         if arguments.is_stop:
             database.stop()
+        elif arguments.is_reset:
+            database.reset()
         else:
             database.start()
-    except (OSError, subprocess.CalledProcessError) as error:
+    except (OSError, RuntimeError, subprocess.CalledProcessError) as error:
         print(
             f"Local billing preparation failed: {error}",
             file=sys.stderr,

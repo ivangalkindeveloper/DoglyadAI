@@ -20,6 +20,7 @@ struct LoadingErrorView: DViewProtocol {
                 color: color.grayscalePlacehold,
                 alignment: .center,
             )
+
             DButton(
                 title: l10n[
                     .buttonUpdate,

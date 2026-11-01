@@ -122,7 +122,9 @@ extension ApplicationConfig {
             uniqueKeysWithValues: rawEntitlements.compactMap { rawType, entitlement in
                 SubscriptionType(
                     rawValue: rawType,
-                ).map { ($0, entitlement) }
+                ).map {
+                    ($0, entitlement)
+                }
             },
         )
         history = try container.decodeIfPresent(
@@ -174,7 +176,9 @@ extension ApplicationConfig {
             settingsAI.temperatureMaxLength,
             settingsAI.maxTokensMaxLength,
         ].allSatisfy(
-            { $0 > 0 },
+            {
+                $0 > 0
+            },
         ) else {
             throw DecodingError.dataCorrupted(
                 .init(

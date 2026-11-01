@@ -7,6 +7,7 @@ struct PaywallFeaturesView: DViewProtocol {
 
     var body: some View {
         let features = state.selectedTier?.features ?? []
+
         VStack(
             alignment: .leading,
             spacing: size.s10,
@@ -21,11 +22,9 @@ struct PaywallFeaturesView: DViewProtocol {
                 ) {
                     DIcon(
                         .check,
-                        color: color.primaryDefault,
+                        color: color.successDefault,
                     )
-                    .accessibilityHidden(
-                        true,
-                    )
+
                     DText(
                         features[
                             index,

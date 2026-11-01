@@ -32,7 +32,9 @@ public struct DSpeechDecodingSpan: Sendable {
     public func isStable(
         quote: String,
     ) -> Bool {
-        guard let recheckedText else { return false }
+        guard let recheckedText else {
+            return false
+        }
         let literal = Self.normalized(
             quote,
         )
@@ -48,7 +50,9 @@ public struct DSpeechDecodingSpan: Sendable {
     ) -> String {
         guard let expression = try? NSRegularExpression(
             pattern: #"\d+(?:[.,]\d+)?|[^\W\d_]+"#,
-        ) else { return "" }
+        ) else {
+            return ""
+        }
         let value = text.lowercased()
         return expression.matches(
             in: value,
@@ -57,14 +61,18 @@ public struct DSpeechDecodingSpan: Sendable {
                 in: value,
             ),
         )
-        .compactMap { Range(
-            $0.range,
-            in: value,
-        ).map { String(
-            value[
-                $0,
-            ],
-        ) } }.joined(
+        .compactMap {
+            Range(
+                $0.range,
+                in: value,
+            ).map {
+                String(
+                    value[
+                        $0,
+                    ],
+                )
+            }
+        }.joined(
             separator: " ",
         )
     }

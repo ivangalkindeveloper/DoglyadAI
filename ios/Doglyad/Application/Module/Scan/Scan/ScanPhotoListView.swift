@@ -14,8 +14,7 @@ struct ScanPhotoListView: DViewProtocol {
         }
 
         Group {
-            switch viewModel.photos.isEmpty {
-            case false:
+            if !viewModel.photos.isEmpty {
                 VStack(
                     alignment: .leading,
                     spacing: .zero,
@@ -27,8 +26,7 @@ struct ScanPhotoListView: DViewProtocol {
                         HStack(
                             spacing: .zero,
                         ) {
-                            switch viewModel.isPhotoLimitReached {
-                            case false:
+                            if !viewModel.isPhotoLimitReached {
                                 ScanMediaButtonView(
                                     isCompact: true,
                                     action: viewModel.onTapImport,
@@ -43,7 +41,6 @@ struct ScanPhotoListView: DViewProtocol {
                                 .transition(
                                     .opacity,
                                 )
-                            case true: EmptyView()
                             }
 
                             ForEach(
@@ -106,7 +103,6 @@ struct ScanPhotoListView: DViewProtocol {
                 .transition(
                     .opacity,
                 )
-            case true: EmptyView()
             }
         }
     }

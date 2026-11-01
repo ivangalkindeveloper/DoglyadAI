@@ -97,7 +97,8 @@ enum VoiceLocalizationTestSupport {
         switch locale.language.languageCode?.identifier {
         case "en": english
         case "ru": russian
-        default: preconditionFailure(
+        default:
+            preconditionFailure(
                 "Test requested an unsupported localization",
             )
         }

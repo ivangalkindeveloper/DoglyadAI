@@ -95,7 +95,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         case .preparing, .recording, .transcribing:
             return
         }
-        guard let sessionID = session.start() else { return }
+        guard let sessionID = session.start() else {
+            return
+        }
 
         recordingStatus = .preparing
         text = nil
@@ -113,7 +115,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
             } catch {
                 guard let self, session.acceptsResult(
                     for: sessionID,
-                ) else { return }
+                ) else {
+                    return
+                }
                 _ = await stop(
                     completion: .failed,
                 )
@@ -134,7 +138,10 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         guard let sessionID = session.activeID,
               session.beginFinalization(
                   for: sessionID,
-              ) else { return lastTranscript }
+              )
+        else {
+            return lastTranscript
+        }
 
         audioEngine.stop()
         if isTapInstalled {
@@ -171,7 +178,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
                 } catch {
                     guard let self, session.acceptsResult(
                         for: sessionID,
-                    ) else { return }
+                    ) else {
+                        return
+                    }
                     isRecognizerFailed = true
                 }
                 await recognizerTask?.value
@@ -184,15 +193,22 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
                 try? await Task.sleep(
                     for: Self.finalizationTimeout,
                 )
-                guard !Task.isCancelled else { return }
+                guard !Task.isCancelled else {
+                    return
+                }
                 guard let self, session.acceptsResult(
                     for: sessionID,
                 ),
-                    finalizationContinuation != nil else { return }
+                    finalizationContinuation != nil
+                else {
+                    return
+                }
                 isTimedOut = true
                 finalization.cancel()
                 recognizerTask?.cancel()
-                Task { await analyzer?.cancelAndFinishNow() }
+                Task {
+                    await analyzer?.cancelAndFinishNow()
+                }
                 finishFinalizationWait(
                     for: sessionID,
                 )
@@ -208,7 +224,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
 
         guard session.finish(
             for: sessionID,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
 
         let completion: DSpeechCompletion = switch requestedCompletion {
         case .finished:
@@ -255,7 +273,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
 
     @discardableResult
     public func cancel() -> DSpeechTranscript? {
-        guard session.cancel() != nil else { return lastTranscript }
+        guard session.cancel() != nil else {
+            return lastTranscript
+        }
 
         startTask?.cancel()
         startTask = nil
@@ -267,7 +287,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
         inputBuilder?.finish()
         inputBuilder = nil
         if let analyzer {
-            Task { await analyzer.cancelAndFinishNow() }
+            Task {
+                await analyzer.cancelAndFinishNow()
+            }
         }
         analyzer = nil
         transcriber = nil
@@ -307,7 +329,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     ) {
         guard session.acceptsResult(
             for: sessionID,
-        ) else { return }
+        ) else {
+            return
+        }
         finishFinalizationWait()
     }
 
@@ -383,7 +407,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
                 for try await result in transcriber.results {
                     guard let self, session.acceptsResult(
                         for: sessionID,
-                    ) else { return }
+                    ) else {
+                        return
+                    }
                     if result.isFinal {
                         finalizedText += result.text
                         text = String(
@@ -398,13 +424,18 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
             } catch {
                 guard let self, session.acceptsResult(
                     for: sessionID,
-                ) else { return }
+                ) else {
+                    return
+                }
                 isRecognizerFailed = true
             }
             guard let self, session.acceptsResult(
                 for: sessionID,
             ),
-                !self.session.isFinalizing else { return }
+                !self.session.isFinalizing
+            else {
+                return
+            }
             Task { [weak self] in
                 _ = await self?.stop(
                     completion: .interrupted,
@@ -437,7 +468,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
             guard let converted = try? converter.convert(
                 buffer,
                 to: analyzerFormat,
-            ) else { return }
+            ) else {
+                return
+            }
             inputBuilder.yield(
                 AnalyzerInput(
                     buffer: converted,

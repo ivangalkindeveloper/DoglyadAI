@@ -323,11 +323,15 @@ struct ReportRemarksTests {
             description: "Image remark",
         )
         let arguments = PhotoViewArguments(
-            getPhotos: { [first, second] },
-            getPhotoRemarks: { [USExaminationPhotoRemarks(
-                photoId: first.id,
-                points: [point],
-            )] },
+            getPhotos: {
+                [first, second]
+            },
+            getPhotoRemarks: {
+                [USExaminationPhotoRemarks(
+                    photoId: first.id,
+                    points: [point],
+                )]
+            },
             initialPhotoID: first.id,
         )
         let model = makeViewer(
@@ -339,7 +343,8 @@ struct ReportRemarksTests {
         await model.lastTask?.value
         switch model.isRemarksVisible {
         case false: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Expected hidden photo remarks",
             )
         }
@@ -371,7 +376,8 @@ struct ReportRemarksTests {
         await model.lastTask?.value
         switch model.isRemarksVisible {
         case false: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Expected hidden photo remarks",
             )
         }
@@ -392,7 +398,8 @@ struct ReportRemarksTests {
         )
         switch model.isRemarksVisible {
         case true: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "Expected visible photo remarks",
             )
         }
@@ -405,7 +412,8 @@ struct ReportRemarksTests {
         await reopened.lastTask?.value
         switch reopened.isRemarksVisible {
         case true: break
-        default: Issue.record(
+        default:
+            Issue.record(
                 "The saved visibility must survive reopening",
             )
         }
@@ -445,14 +453,22 @@ struct ReportRemarksTests {
                     arguments: arguments,
                 ),
             ),
-            getSubscriptionStatus: { root.status },
-            observeSubscriptionStatus: { root.observeStatus(
-                $0,
-            ) },
-            onSubscriptionStatusUpdated: { root.update(
-                status: $0,
-            ) },
-            getSettingsAI: { root.resolveSettingsAI() },
+            getSubscriptionStatus: {
+                root.status
+            },
+            observeSubscriptionStatus: {
+                root.observeStatus(
+                    $0,
+                )
+            },
+            onSubscriptionStatusUpdated: {
+                root.update(
+                    status: $0,
+                )
+            },
+            getSettingsAI: {
+                root.resolveSettingsAI()
+            },
             onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )

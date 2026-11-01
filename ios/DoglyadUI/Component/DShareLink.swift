@@ -16,11 +16,13 @@ public struct DShareLink<Content: View>: DViewProtocol {
     public var body: some View {
         ShareLink(
             item: item,
-        ) { content }
-            .buttonStyle(
-                DButtonStyle(
-                    .card,
-                ),
-            )
+        ) {
+            content
+        }
+        .buttonStyle(
+            DButtonStyle(
+                .card,
+            ),
+        )
     }
 }

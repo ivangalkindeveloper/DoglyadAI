@@ -1,0 +1,311 @@
+{
+  "time": "2026-11-01T14:22:39.108796+00:00",
+  "boot_id": "20817391-c399-4c3f-9827-40a298025d39",
+  "meminfo": "MemTotal:       127598416 kB\nMemFree:         1814916 kB\nMemAvailable:   18902576 kB\nBuffers:           36932 kB\nCached:         18124308 kB\nSwapCached:      1400744 kB\nActive:          5436624 kB\nInactive:       23611652 kB\nActive(anon):    4049808 kB\nInactive(anon):  7113440 kB\nActive(file):    1386816 kB\nInactive(file): 16498212 kB\nUnevictable:       45840 kB\nMlocked:           31440 kB\nSwapTotal:      16777212 kB\nSwapFree:       10800472 kB\nZswap:                 0 kB\nZswapped:              0 kB\nDirty:              2232 kB\nWriteback:             0 kB\nAnonPages:      10836192 kB\nMapped:          1152320 kB\nShmem:            263516 kB\nKReclaimable:     342512 kB\nSlab:            1266972 kB\nSReclaimable:     342512 kB\nSUnreclaim:       924460 kB\nKernelStack:       24720 kB\nShadowCallStack:    6272 kB\nPageTables:        78860 kB\nSecPageTables:    192564 kB\nNFS_Unstable:          0 kB\nBounce:                0 kB\nWritebackTmp:          0 kB\nCommitLimit:    80576420 kB\nCommitted_AS:   36764328 kB\nVmallocTotal:   135288315904 kB\nVmallocUsed:      643484 kB\nVmallocChunk:          0 kB\nPercpu:            21760 kB\nHardwareCorrupted:     0 kB\nAnonHugePages:     65536 kB\nShmemHugePages:        0 kB\nShmemPmdMapped:        0 kB\nFileHugePages:     45056 kB\nFilePmdMapped:         0 kB\nCmaTotal:              0 kB\nCmaFree:               0 kB\nBalloon:               0 kB\nGPUActive:             0 kB\nGPUReclaim:            0 kB\nHugePages_Total:       0\nHugePages_Free:        0\nHugePages_Rsvd:        0\nHugePages_Surp:        0\nHugepagesize:       2048 kB\nHugetlb:               0 kB\n",
+  "files": {
+    "docker-compose.yml": "3b5d825d9328a243837305243891a6c4909fa1193c262e922d88c5e41dc2ff5f",
+    "start.sh": "425556faedc0991ad3f02d96471a3a2228a7a5da4b5bc7d1cd0546418d1123b4",
+    "config/server.json": "4f9e8732283be8f58411a67f907aefc2e927285ca9e49897efc8fe138caa327c"
+  },
+  "containers": [
+    {
+      "name": "/doglyad-dgx-backend_inference-1",
+      "id": "f0dff74b9f574bc182cb052b467d49923374cc8a040a45dc6501f4491cff5d15",
+      "image": "sha256:8b7677a73b1ff719dab894ec690cbb21f457020ecf2e073442fb278d0367766c",
+      "command": [
+        "uvicorn",
+        "app.main:app",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--proxy-headers",
+        "--forwarded-allow-ips",
+        "*"
+      ],
+      "state": {
+        "Status": "running",
+        "Running": true,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 181615,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-10-31T23:58:09.285388621Z",
+        "FinishedAt": "0001-01-01T00:00:00Z"
+      },
+      "restarts": 0,
+      "ports": {
+        "8000/tcp": [
+          {
+            "HostIp": "100.110.227.68",
+            "HostPort": "8100"
+          }
+        ]
+      }
+    },
+    {
+      "name": "/doglyad-dgx-vllm_medgemma_27b-1",
+      "id": "1f3dffb7a60f2a5bfd97a1264bc4b69fc383463fc39a2530be4e6878621f5b21",
+      "image": "sha256:89154ef00dd15368d2b293c167e5cc7dbb521fcfb2fbb77510e0d4df2b820e8f",
+      "command": [
+        "google/medgemma-27b-it",
+        "--served-model-name",
+        "google/medgemma-27b-it",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--dtype",
+        "bfloat16",
+        "--max-model-len",
+        "16384",
+        "--limit-mm-per-prompt",
+        "{\"image\":6}",
+        "--max-num-seqs",
+        "1",
+        "--max-num-batched-tokens",
+        "2048",
+        "--gpu-memory-utilization",
+        "0.55",
+        "--kv-cache-memory-bytes",
+        "8589934592",
+        "--tensor-parallel-size",
+        "1",
+        "--enforce-eager",
+        "--enable-prefix-caching",
+        "--no-enable-log-requests",
+        "--no-enable-log-outputs",
+        "--structured-outputs-config",
+        "{\"backend\":\"xgrammar\",\"disable_any_whitespace\":true}"
+      ],
+      "state": {
+        "Status": "running",
+        "Running": true,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 1455253,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-11-01T13:53:19.19920267Z",
+        "FinishedAt": "2026-11-01T13:09:29.750907391Z",
+        "Health": {
+          "Status": "healthy",
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "Start": "2026-11-01T17:21:24.719696865+03:00",
+              "End": "2026-11-01T17:21:24.797436664+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:21:39.798928046+03:00",
+              "End": "2026-11-01T17:21:39.902276929+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:21:54.903216471+03:00",
+              "End": "2026-11-01T17:21:55.00396229+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:22:10.006056456+03:00",
+              "End": "2026-11-01T17:22:10.108855868+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:22:25.109873866+03:00",
+              "End": "2026-11-01T17:22:25.181765871+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            }
+          ]
+        }
+      },
+      "restarts": 0,
+      "ports": {}
+    },
+    {
+      "name": "/doglyad-dgx-vllm_medgemma_15_4b-1",
+      "id": "4a432ae3b8598814f3794cd0105961bf28a07cb74740914bcd32838352dfdbd7",
+      "image": "sha256:89154ef00dd15368d2b293c167e5cc7dbb521fcfb2fbb77510e0d4df2b820e8f",
+      "command": [
+        "google/medgemma-1.5-4b-it",
+        "--served-model-name",
+        "google/medgemma-1.5-4b-it",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--dtype",
+        "bfloat16",
+        "--max-model-len",
+        "16384",
+        "--limit-mm-per-prompt",
+        "{\"image\":6}",
+        "--max-num-seqs",
+        "1",
+        "--max-num-batched-tokens",
+        "2048",
+        "--gpu-memory-utilization",
+        "0.15",
+        "--kv-cache-memory-bytes",
+        "4294967296",
+        "--tensor-parallel-size",
+        "1",
+        "--enforce-eager",
+        "--enable-prefix-caching",
+        "--no-enable-log-requests",
+        "--no-enable-log-outputs",
+        "--structured-outputs-config",
+        "{\"backend\":\"xgrammar\",\"disable_any_whitespace\":true}"
+      ],
+      "state": {
+        "Status": "running",
+        "Running": true,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 1470009,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-11-01T14:03:13.272916896Z",
+        "FinishedAt": "2026-11-01T13:09:52.715004164Z",
+        "Health": {
+          "Status": "healthy",
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "Start": "2026-11-01T17:21:36.73943522+03:00",
+              "End": "2026-11-01T17:21:36.821165819+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:21:51.822147992+03:00",
+              "End": "2026-11-01T17:21:51.925458845+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:22:06.926042265+03:00",
+              "End": "2026-11-01T17:22:07.025743441+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:22:22.027444235+03:00",
+              "End": "2026-11-01T17:22:22.101762617+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:22:37.102997646+03:00",
+              "End": "2026-11-01T17:22:37.17757054+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            }
+          ]
+        }
+      },
+      "restarts": 0,
+      "ports": {}
+    },
+    {
+      "name": "/doglyad-dgx-vllm_medgemma_4b-1",
+      "id": "562ebfa421b1811a48387d1685135d064ba05dd73370f1c368c9df4674b9b4cd",
+      "image": "sha256:89154ef00dd15368d2b293c167e5cc7dbb521fcfb2fbb77510e0d4df2b820e8f",
+      "command": [
+        "google/medgemma-4b-it",
+        "--served-model-name",
+        "google/medgemma-4b-it",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "8000",
+        "--dtype",
+        "bfloat16",
+        "--max-model-len",
+        "16384",
+        "--limit-mm-per-prompt",
+        "{\"image\":6}",
+        "--max-num-seqs",
+        "1",
+        "--max-num-batched-tokens",
+        "2048",
+        "--gpu-memory-utilization",
+        "0.15",
+        "--kv-cache-memory-bytes",
+        "4294967296",
+        "--tensor-parallel-size",
+        "1",
+        "--enforce-eager",
+        "--enable-prefix-caching",
+        "--no-enable-log-requests",
+        "--no-enable-log-outputs",
+        "--structured-outputs-config",
+        "{\"backend\":\"xgrammar\",\"disable_any_whitespace\":true}"
+      ],
+      "state": {
+        "Status": "running",
+        "Running": true,
+        "Paused": false,
+        "Restarting": false,
+        "OOMKilled": false,
+        "Dead": false,
+        "Pid": 1466584,
+        "ExitCode": 0,
+        "Error": "",
+        "StartedAt": "2026-11-01T14:01:04.969551188Z",
+        "FinishedAt": "2026-11-01T13:09:52.727036948Z",
+        "Health": {
+          "Status": "healthy",
+          "FailingStreak": 0,
+          "Log": [
+            {
+              "Start": "2026-11-01T17:21:33.951560578+03:00",
+              "End": "2026-11-01T17:21:34.045968566+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:21:49.046611053+03:00",
+              "End": "2026-11-01T17:21:49.145452193+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:22:04.146139018+03:00",
+              "End": "2026-11-01T17:22:04.221122121+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:22:19.221599067+03:00",
+              "End": "2026-11-01T17:22:19.314688764+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            },
+            {
+              "Start": "2026-11-01T17:22:34.315297194+03:00",
+              "End": "2026-11-01T17:22:34.418192703+03:00",
+              "ExitCode": 0,
+              "Output": ""
+            }
+          ]
+        }
+      },
+      "restarts": 0,
+      "ports": {}
+    }
+  ]
+}

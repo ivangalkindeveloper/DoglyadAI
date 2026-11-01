@@ -174,19 +174,24 @@ final class OnBoardingViewModel: DModuleViewModel<any OnBoardingStateProtocol> {
         )
         switch state {
         case _ as OnBoardingFirstState, _ as OnBoardingCompletingState: break
-        case _ as OnBoardingSecondState: emit(
+        case _ as OnBoardingSecondState:
+            emit(
                 OnBoardingFirstState(),
             )
-        case _ as OnBoardingLegalState: emit(
+        case _ as OnBoardingLegalState:
+            emit(
                 OnBoardingSecondState(),
             )
-        case _ as OnBoardingExaminationTypeState: emit(
+        case _ as OnBoardingExaminationTypeState:
+            emit(
                 OnBoardingLegalState(),
             )
-        case _ as OnBoardingFinalState, _ as OnBoardingFailedState: emit(
+        case _ as OnBoardingFinalState, _ as OnBoardingFailedState:
+            emit(
                 OnBoardingExaminationTypeState(),
             )
-        default: preconditionFailure(
+        default:
+            preconditionFailure(
                 "Unexpected onboarding state",
             )
         }
@@ -206,14 +211,18 @@ extension OnBoardingViewModel {
             ),
         )
         switch state {
-        case _ as OnBoardingFirstState: emit(
+        case _ as OnBoardingFirstState:
+            emit(
                 OnBoardingSecondState(),
             )
-        case _ as OnBoardingSecondState: emit(
+        case _ as OnBoardingSecondState:
+            emit(
                 OnBoardingLegalState(),
             )
         case let state as OnBoardingLegalState:
-            guard state.isLegalAccepted else { return }
+            guard state.isLegalAccepted else {
+                return
+            }
             emit(
                 OnBoardingExaminationTypeState(),
             )
@@ -222,7 +231,9 @@ extension OnBoardingViewModel {
                 .selectUSExaminationType,
                 arguments: SelectUSExaminationTypeArguments(
                     onSelected: { [weak self] type in
-                        guard let self else { return }
+                        guard let self else {
+                            return
+                        }
                         try await container.ultrasoundReportRepository.setSelectedExaminationTypeId(
                             id: type.id,
                         )
@@ -235,7 +246,8 @@ extension OnBoardingViewModel {
         case _ as OnBoardingFinalState, _ as OnBoardingFailedState:
             completeOnBoarding()
         case _ as OnBoardingCompletingState: break
-        default: preconditionFailure(
+        default:
+            preconditionFailure(
                 "Unexpected onboarding state",
             )
         }

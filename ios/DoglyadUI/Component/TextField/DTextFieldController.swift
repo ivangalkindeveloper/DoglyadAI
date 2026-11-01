@@ -44,7 +44,9 @@ public final class DTextFieldController: ObservableObject {
                 proposedValue: formattedText,
             )
         }
-        guard formattedText != text else { return }
+        guard formattedText != text else {
+            return
+        }
 
         text = formattedText
         if isValidationAttempted {

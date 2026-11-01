@@ -8,53 +8,16 @@ struct ScanBottomView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanViewModel
 
     var body: some View {
-        let isGenerationDisabled = switch viewModel.state {
-        case _ as ScanInitializationFailedState: true
-        default: false
-        }
-
-        let isProcessing = switch viewModel.state {
-        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState: true
-        default: false
+        let (isGenerationDisabled, isProcessing) = switch viewModel.state {
+        case _ as ScanInitializationFailedState: (true, false)
+        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState: (false, true)
+        default: (false, false)
         }
 
         VStack(
             spacing: .zero,
         ) {
-            switch viewModel.subscriptionAvailability(
-                of: .formCompletionViaMicrophone,
-            ) {
-            case .available, .offered:
-                switch viewModel.state {
-                case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: EmptyView()
-                default:
-                    DButton(
-                        image: .microphone,
-                        title: l10n[
-                            .buttonSpeech,
-                        ],
-                        action: viewModel.onTapSpeech,
-                    )
-                    .dStyle(
-                        .primaryChip,
-                    )
-                    .paidBadge(
-                        viewModel.subscriptionAvailability(
-                            of: .formCompletionViaMicrophone,
-                        ),
-                    )
-                    .padding(
-                        .bottom,
-                        size.s8,
-                    )
-                    .transition(
-                        .move(
-                            edge: .bottom,
-                        ),
-                    )
-                }
-            case .unavailable: EmptyView()
-            }
+            ScanSpeechButtonView()
 
             DButton(
                 title: l10n[

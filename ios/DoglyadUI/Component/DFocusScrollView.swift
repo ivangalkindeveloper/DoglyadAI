@@ -44,7 +44,9 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DViewProtocol {
                 .onChange(
                     of: focus,
                 ) { _, newValue in
-                    guard let newValue else { return }
+                    guard let newValue else {
+                        return
+                    }
                     DFocusScrollController.scroll(
                         to: newValue,
                         proxy: proxy,
@@ -55,7 +57,9 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DViewProtocol {
                 .onChange(
                     of: keyboardHeight,
                 ) { oldValue, newValue in
-                    guard newValue > oldValue, let focus else { return }
+                    guard newValue > oldValue, let focus else {
+                        return
+                    }
                     DFocusScrollController.scroll(
                         to: focus,
                         proxy: proxy,
@@ -85,7 +89,9 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DViewProtocol {
                             scrollViewFrame.maxY - keyboardFrame.minY,
                         ),
                     )
-                    guard keyboardHeight != newKeyboardHeight else { return }
+                    guard keyboardHeight != newKeyboardHeight else {
+                        return
+                    }
                     withAnimation(
                         theme.animation,
                     ) {

@@ -28,13 +28,7 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
                     spacing: .zero,
                     pinnedViews: [.sectionHeaders],
                 ) {
-                    switch viewModel.state {
-                    case _ as SelectUSExaminationTypeFailedState:
-                        LoadingErrorView(
-                            onRetry: viewModel.onTapRetry,
-                        )
-                    default: EmptyView()
-                    }
+                    SelectUSExaminationTypeErrorView()
                     ForEach(
                         viewModel.sections,
                     ) { section in

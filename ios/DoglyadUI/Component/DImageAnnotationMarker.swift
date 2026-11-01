@@ -3,16 +3,15 @@ import SwiftUI
 public struct DImageAnnotationMarker: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     let title: String
-    let accessibilityLabel: LocalizedStringResource
+
     let action: () -> Void
 
     public init(
         title: String,
-        accessibilityLabel: LocalizedStringResource,
         action: @escaping () -> Void,
     ) {
         self.title = title
-        self.accessibilityLabel = accessibilityLabel
+
         self.action = action
     }
 
@@ -81,11 +80,6 @@ public struct DImageAnnotationMarker: DViewProtocol {
                     Circle(),
                 )
         }
-        .accessibilityLabel(
-            Text(
-                accessibilityLabel,
-            ),
-        )
     }
 }
 

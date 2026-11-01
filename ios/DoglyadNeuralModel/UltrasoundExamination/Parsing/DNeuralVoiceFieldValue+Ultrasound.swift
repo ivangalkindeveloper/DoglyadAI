@@ -10,9 +10,11 @@ extension DNeuralVoiceFieldValue {
         let trimmed = text.trimmingCharacters(
             in: .whitespacesAndNewlines,
         )
-        guard !trimmed.isEmpty else { throw DNeuralUltrasoundDictationProposalError.invalidValue(
-            fieldId,
-        ) }
+        guard !trimmed.isEmpty else {
+            throw DNeuralUltrasoundDictationProposalError.invalidValue(
+                fieldId,
+            )
+        }
 
         switch fieldId {
         case .examinationNumber, .patientName, .patientComplaints, .examinationDescription:
@@ -63,7 +65,9 @@ extension DNeuralVoiceFieldValue {
     ) -> String {
         guard let expression = try? NSRegularExpression(
             pattern: #"[\p{L}]+"#,
-        ) else { return name }
+        ) else {
+            return name
+        }
         let result = NSMutableString(
             string: name,
         )
@@ -131,7 +135,9 @@ extension DNeuralVoiceFieldValue {
                 let range = match.range(
                     withName: name,
                 )
-                guard range.location != NSNotFound else { return nil }
+                guard range.location != NSNotFound else {
+                    return nil
+                }
                 return Int(
                     source.substring(
                         with: range,
@@ -157,7 +163,9 @@ extension DNeuralVoiceFieldValue {
                     from: literal,
                 ), iso.string(
                     from: date,
-                ) == literal { return date }
+                ) == literal {
+                    return date
+                }
             }
             return nil
         }
@@ -175,7 +183,9 @@ extension DNeuralVoiceFieldValue {
             formatter.dateFormat = format
             guard let date = formatter.date(
                 from: text,
-            ) else { continue }
+            ) else {
+                continue
+            }
             switch formatter.string(
                 from: date,
             ).localizedCaseInsensitiveCompare(

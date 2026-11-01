@@ -54,11 +54,15 @@ public actor DExaminationReportsStore {
     ) throws {
         let id = value.id
         let descriptor = FetchDescriptor<USExaminationReportDB>(
-            predicate: #Predicate<USExaminationReportDB> { $0.id == id },
+            predicate: #Predicate<USExaminationReportDB> {
+                $0.id == id
+            },
         )
         guard let report = try modelContext.fetch(
             descriptor,
-        ).first else { throw DDatabaseError.examinationReportNotFound }
+        ).first else {
+            throw DDatabaseError.examinationReportNotFound
+        }
         modelContext.delete(
             report,
         )

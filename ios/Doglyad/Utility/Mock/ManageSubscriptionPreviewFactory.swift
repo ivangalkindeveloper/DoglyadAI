@@ -42,17 +42,31 @@
             for scenario: ManageSubscriptionPreviewScenario,
         ) -> SubscriptionStatus? {
             switch scenario {
-            case .applePro: makeStatus(
+            case .appleBase:
+                makeStatus(
+                    source: .apple,
+                    type: .base,
+                )
+            case .appleRenewalOff:
+                makeStatus(
+                    source: .apple,
+                    isAutoRenewing: false,
+                )
+            case .applePro:
+                makeStatus(
                     source: .apple,
                 )
-            case .yooKassaBase: makeStatus(
+            case .yooKassaBase:
+                makeStatus(
                     source: .yookassa,
                     type: .base,
                 )
-            case .yooKassaPro, .updating, .operationFailed: makeStatus(
+            case .yooKassaPro, .updating, .operationFailed:
+                makeStatus(
                     source: .yookassa,
                 )
-            case .renewalOff: makeStatus(
+            case .renewalOff:
+                makeStatus(
                     source: .yookassa,
                     isAutoRenewing: false,
                 )
@@ -74,34 +88,54 @@
             return ManageSubscriptionViewModel(
                 container: container,
                 router: router,
-                getSubscriptionStatus: { statuses.value },
-                observeSubscriptionStatus: { statuses.sink(
-                    receiveValue: $0,
-                ) },
-                onSubscriptionStatusUpdated: { statuses.send(
-                    $0,
-                ) },
-                getSettingsAI: { container.initialSettingsAI },
+                getSubscriptionStatus: {
+                    statuses.value
+                },
+                observeSubscriptionStatus: {
+                    statuses.sink(
+                        receiveValue: $0,
+                    )
+                },
+                onSubscriptionStatusUpdated: {
+                    statuses.send(
+                        $0,
+                    )
+                },
+                getSettingsAI: {
+                    container.initialSettingsAI
+                },
                 onRefreshSubscriptionStatus: {},
                 arguments: nil,
                 manageSubscription: {
-                    if let manageOperation { try await manageOperation()
+                    if let manageOperation {
+                        try await manageOperation()
                         return
                     }
-                    guard var status = statuses.value else { return }
-                    switch status.source { case .yookassa: status.isAutoRenewing = false
+                    guard var status = statuses.value else {
+                        return
+                    }
+                    switch status.source {
+                    case .yookassa:
+                        status.isAutoRenewing = false
                         statuses.send(
                             status,
                         )
-                    case .apple, .none: break }
+                    case .apple, .none: break
+                    }
                 },
-                restorePurchases: { statuses.value },
+                restorePurchases: {
+                    statuses.value
+                },
                 requestRefund: {},
                 fetchProducts: {
-                    if let fetchProducts { return try await fetchProducts() }
-                    if isLoadingFailed { throw URLError(
-                        .notConnectedToInternet,
-                    ) }
+                    if let fetchProducts {
+                        return try await fetchProducts()
+                    }
+                    if isLoadingFailed {
+                        throw URLError(
+                            .notConnectedToInternet,
+                        )
+                    }
                     return try await SubscriptionPreviewRepository(
                         locale: container.l10n.locale,
                     ).fetchProducts()
@@ -113,20 +147,32 @@
             _ scenario: ManageSubscriptionPreviewScenario,
             to model: ManageSubscriptionViewModel,
         ) async {
+            // Canvas may schedule its task before the screen's onAppear handler.
+            while model.lastTask == nil {
+                guard !Task.isCancelled else {
+                    return
+                }
+                await Task.yield()
+            }
             await model.lastTask?.value
-            guard let content = model.state as? ManageSubscriptionContentState else { return }
+            guard let content = model.state as? ManageSubscriptionContentState else {
+                return
+            }
             switch scenario {
-            case .loading: model.emit(
+            case .loading:
+                model.emit(
                     ManageSubscriptionLoadingState(),
                     animation: nil,
                 )
-            case .updating: model.emit(
+            case .updating:
+                model.emit(
                     ManageSubscriptionLoadingState(
                         previousState: content,
                     ),
                     animation: nil,
                 )
-            case .failed: model.emit(
+            case .failed:
+                model.emit(
                     ManageSubscriptionFailedState(
                         errorDescription: model.l10n.text(
                             .manageSubscriptionLoadFailedDescription,
@@ -134,7 +180,8 @@
                     ),
                     animation: nil,
                 )
-            case .operationFailed: model.emit(
+            case .operationFailed:
+                model.emit(
                     ManageSubscriptionFailedState(
                         previousState: content,
                         errorDescription: model.l10n.text(
@@ -143,7 +190,7 @@
                     ),
                     animation: nil,
                 )
-            case .applePro, .yooKassaBase, .yooKassaPro, .renewalOff, .inactive: break
+            case .appleBase, .applePro, .appleRenewalOff, .yooKassaBase, .yooKassaPro, .renewalOff, .inactive: break
             }
         }
     }

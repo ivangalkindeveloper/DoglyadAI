@@ -300,23 +300,31 @@ struct DictationModelCompositionTests {
         let local = DNeuralUltrasoundModelFoundationModels(
             generator: generator,
         )
-        let localTask = Task { try await local.parseProposals(
-            request: request(),
-        ) }
+        let localTask = Task {
+            try await local.parseProposals(
+                request: request(),
+            )
+        }
         await #expect(
             throws: CancellationError.self,
-        ) { try await localTask.value }
+        ) {
+            try await localTask.value
+        }
         let transport = try TransportStub()
         transport.cancelBeforeReturning = true
         let server = DNeuralUltrasoundModelServer(
             transport: transport,
         )
-        let serverTask = Task { try await server.parseProposals(
-            request: request(),
-        ) }
+        let serverTask = Task {
+            try await server.parseProposals(
+                request: request(),
+            )
+        }
         await #expect(
             throws: CancellationError.self,
-        ) { try await serverTask.value }
+        ) {
+            try await serverTask.value
+        }
         #expect(
             generator.calls == 1,
         )
@@ -331,7 +339,9 @@ struct DictationModelCompositionTests {
     func cancellationBeforeGeneration() async {
         let generator = GeneratorStub()
         let task = Task {
-            withUnsafeCurrentTask { $0?.cancel() }
+            withUnsafeCurrentTask {
+                $0?.cancel()
+            }
             return try await DNeuralUltrasoundModelFoundationModels(
                 generator: generator,
             ).parseProposals(
@@ -340,7 +350,9 @@ struct DictationModelCompositionTests {
         }
         await #expect(
             throws: CancellationError.self,
-        ) { try await task.value }
+        ) {
+            try await task.value
+        }
         #expect(
             generator.calls == 0,
         )
@@ -369,7 +381,9 @@ struct DictationModelCompositionTests {
             ),
         )
         #expect(
-            !result.proposals.contains { $0.id == .patientDateOfBirth },
+            !result.proposals.contains {
+                $0.id == .patientDateOfBirth
+            },
         )
         #expect(
             result.fieldSources[
@@ -397,9 +411,11 @@ struct DictationModelCompositionTests {
         )
         #expect(
             throws: TestFailure.failed,
-        ) { try factory.model(
-            isFoundationModels: factory.isFoundationModelsAvailable,
-        ) }
+        ) {
+            try factory.model(
+                isFoundationModels: factory.isFoundationModelsAvailable,
+            )
+        }
         #expect(
             provider.creations == 1,
         )
@@ -537,7 +553,9 @@ private final class ProviderStub: DNeuralUltrasoundFoundationModelProviderProtoc
 
     func makeModel() throws -> any DNeuralUltrasoundModelProtocol {
         creations += 1
-        if let error { throw error }
+        if let error {
+            throw error
+        }
         return model
     }
 }
@@ -549,15 +567,23 @@ private final class GeneratorStub: DNeuralUltrasoundProposalGeneratorProtocol {
     private(set) var calls = 0
     private(set) var request: DNeuralUltrasoundDictationParseRequest?
 
-    func prewarm() { prewarms += 1 }
+    func prewarm() {
+        prewarms += 1
+    }
 
     func generateProposals(
         request: DNeuralUltrasoundDictationParseRequest,
     ) async throws -> DNeuralUltrasoundProposalGenerationResponse {
         calls += 1
         self.request = request
-        if let error { throw error }
-        if cancelBeforeReturning { withUnsafeCurrentTask { $0?.cancel() } }
+        if let error {
+            throw error
+        }
+        if cancelBeforeReturning {
+            withUnsafeCurrentTask {
+                $0?.cancel()
+            }
+        }
         return DNeuralUltrasoundProposalGenerationResponse(
             proposals: [DNeuralUltrasoundProposalGenerationItem(
                 fieldId: .patientWeightKG,
@@ -601,8 +627,14 @@ private final class TransportStub: DNeuralUltrasoundServerTransportProtocol {
         self.locale = locale
         typeID = examinationTypeId
         text = transcript
-        if let error { throw error }
-        if cancelBeforeReturning { withUnsafeCurrentTask { $0?.cancel() } }
+        if let error {
+            throw error
+        }
+        if cancelBeforeReturning {
+            withUnsafeCurrentTask {
+                $0?.cancel()
+            }
+        }
         return response
     }
 }

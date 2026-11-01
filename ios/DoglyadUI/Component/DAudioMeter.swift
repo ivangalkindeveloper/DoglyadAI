@@ -21,6 +21,7 @@ public struct DAudioMeter: DViewProtocol {
                 1,
             ),
         )
+
         HStack(
             spacing: size.s4,
         ) {
@@ -46,9 +47,6 @@ public struct DAudioMeter: DViewProtocol {
         .animation(
             theme.animation,
             value: level,
-        )
-        .accessibilityHidden(
-            true,
         )
     }
 }

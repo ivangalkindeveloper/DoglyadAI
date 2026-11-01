@@ -66,7 +66,9 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
         }
     }
 
-    func onTapRetry() { onInit() }
+    func onTapRetry() {
+        onInit()
+    }
 
     func onTapBack() {
         analytics.buttonTapped(

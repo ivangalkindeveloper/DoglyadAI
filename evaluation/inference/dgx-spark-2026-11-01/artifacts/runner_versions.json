@@ -1,0 +1,18 @@
+{
+  "eager-1": {
+    "file": "benchmark_eager_1_compiled_1.py",
+    "sha256": "566e9fd069285a5f1141ea203e26a1f8b11e5658b033d46401658c9863c10491"
+  },
+  "compiled-1": {
+    "file": "benchmark_eager_1_compiled_1.py",
+    "sha256": "566e9fd069285a5f1141ea203e26a1f8b11e5658b033d46401658c9863c10491"
+  },
+  "eager-8": {
+    "file": "benchmark_eager_8.py",
+    "sha256": "ddefb0408358286d9184f3640be9baec58777d8507a0cc7958f96978121ff526"
+  },
+  "compiled-8": {
+    "file": "benchmark.py",
+    "sha256": "d26d920ea57b85e4715c6d6a159a219d08c5ee37f7ef2a7bdce145520ef0b837"
+  }
+}

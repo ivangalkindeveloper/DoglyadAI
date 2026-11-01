@@ -148,7 +148,8 @@ final class DictationResponseReplayTests: XCTestCase {
                 ): gender.rawValue
                 case let .date(
                     date,
-                ): formatter.string(
+                ):
+                    formatter.string(
                         from: date,
                     )
                 }
@@ -163,9 +164,11 @@ final class DictationResponseReplayTests: XCTestCase {
                 ] as [String: Any]
             },
             "fieldSources": Dictionary(
-                uniqueKeysWithValues: result.fieldSources.map { ($0.key.wireValue, String(
-                    describing: $0.value,
-                )) },
+                uniqueKeysWithValues: result.fieldSources.map {
+                    ($0.key.wireValue, String(
+                        describing: $0.value,
+                    ))
+                },
             ),
         ]
     }
@@ -227,7 +230,9 @@ final class DictationResponseReplayTests: XCTestCase {
         )
         for item in expected {
             guard let proposal = actual.first(
-                where: { $0.id == item.fieldId },
+                where: {
+                    $0.id == item.fieldId
+                },
             ) else {
                 XCTFail(
                     "Missing model clinical field: \(caseId), \(item.fieldId)",

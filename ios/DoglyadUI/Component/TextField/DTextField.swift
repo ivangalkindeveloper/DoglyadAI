@@ -28,8 +28,12 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         mode: any DTextFieldModeProtocol = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
-        @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
-        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
+        @ViewBuilder leading: @escaping (() -> Leading) = {
+            EmptyView()
+        },
+        @ViewBuilder trailing: @escaping (() -> Trailing) = {
+            EmptyView()
+        },
     ) {
         self.inputTextController = inputTextController
         self.focus = focus
@@ -52,8 +56,12 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         mode: any DTextFieldModeProtocol = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
-        @ViewBuilder leading: @escaping (() -> Leading) = { EmptyView() },
-        @ViewBuilder trailing: @escaping (() -> Trailing) = { EmptyView() },
+        @ViewBuilder leading: @escaping (() -> Leading) = {
+            EmptyView()
+        },
+        @ViewBuilder trailing: @escaping (() -> Trailing) = {
+            EmptyView()
+        },
     ) where Focus == Bool {
         self.init(
             inputTextController: inputTextController,
@@ -209,7 +217,9 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
             vertical: true,
         )
         .onTapGesture {
-            guard focus == nil, isFocused == false else { return }
+            guard focus == nil, isFocused == false else {
+                return
+            }
             isInternallyFocused = true
         }
         .onChange(
@@ -218,13 +228,17 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
             inputTextController.setText(
                 proposedText,
             )
-            guard inputText != inputTextController.text else { return }
+            guard inputText != inputTextController.text else {
+                return
+            }
             inputText = inputTextController.text
         }
         .onChange(
             of: inputTextController.text,
         ) { _, text in
-            guard inputText != text else { return }
+            guard inputText != text else {
+                return
+            }
             inputText = text
         }
         .animation(
@@ -244,17 +258,23 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
 
 private extension DTextField {
     var fillColor: Color {
-        if inputTextController.isError || inputTextController.errorText != nil { return color.dangerBackground }
+        if inputTextController.isError || inputTextController.errorText != nil {
+            return color.dangerBackground
+        }
         return color.grayscaleBackground
     }
 
     var titleColor: Color {
-        if inputTextController.isError || inputTextController.errorText != nil { return color.dangerDefault }
+        if inputTextController.isError || inputTextController.errorText != nil {
+            return color.dangerDefault
+        }
         return isFocused ? color.primaryDefault : color.grayscalePlacehold
     }
 
     var borderColor: Color {
-        if inputTextController.isError || inputTextController.errorText != nil { return color.dangerDefault }
+        if inputTextController.isError || inputTextController.errorText != nil {
+            return color.dangerDefault
+        }
         return isFocused ? color.primaryDefault : .clear
     }
 }
@@ -265,13 +285,16 @@ private extension DTextField {
 
     VStack {
         Spacer()
+
         DTextField(
             inputTextController: inputTextController,
             title: "Some title",
             placeholder: "Some placeholder for filling...",
             mode: DTextFieldMultiLineMode(),
         )
+
         Spacer()
+
         Button(
             "Show error",
         ) {
@@ -279,6 +302,7 @@ private extension DTextField {
                 text: "Some Error",
             )
         }
+
         Button(
             "Set sample text",
         ) {

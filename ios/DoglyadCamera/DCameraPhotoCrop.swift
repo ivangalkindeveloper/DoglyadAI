@@ -7,7 +7,9 @@ enum DCameraPhotoCrop {
     ) -> CIImage? {
         guard let normalized = region.normalizedRect(
             imageSize: image.extent.size,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         // Preview coordinates start at the top left; Core Image starts at the bottom left.
         let rect = CGRect(
             x: image.extent.minX + normalized.minX * image.extent.width,
@@ -17,7 +19,9 @@ enum DCameraPhotoCrop {
         ).integral.intersection(
             image.extent,
         )
-        guard !rect.isNull, !rect.isEmpty else { return nil }
+        guard !rect.isNull, !rect.isEmpty else {
+            return nil
+        }
         return image.cropped(
             to: rect,
         )

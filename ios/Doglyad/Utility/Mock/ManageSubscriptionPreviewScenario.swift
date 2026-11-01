@@ -1,5 +1,5 @@
 #if DEBUG
     enum ManageSubscriptionPreviewScenario: String, CaseIterable {
-        case applePro, yooKassaBase, yooKassaPro, renewalOff, inactive, loading, updating, failed, operationFailed
+        case appleBase, applePro, appleRenewalOff, yooKassaBase, yooKassaPro, renewalOff, inactive, loading, updating, failed, operationFailed
     }
 #endif

@@ -1,0 +1,20 @@
+{
+  "is_baseline_candidate_measurement_ast_equal": {
+    "_payload": true,
+    "_request": true,
+    "_metrics": true,
+    "_context": true,
+    "_summary": true
+  },
+  "is_candidate_runner_hash_verified": true,
+  "is_candidate_fixtures_hash_verified": true,
+  "secret_pattern_scan_files": 23,
+  "is_secret_pattern_scan_clean": true,
+  "provenance_note": "conditions.json records an initial script snapshot. baseline_runner.py preserves the executed baseline copy. Before candidate startup the driver was formatted and gained self-hashes and failure/drain handling. Measurement functions are AST-identical. candidate.json records the executed candidate driver and fixtures hashes.",
+  "baseline_original_container_file_sha256": {
+    "baseline_runner.py": "b79a4b435862df84a8d1702bd3006df124dd923c7cc09d8cd661454014ea82a2",
+    "baseline.json": "b687f06e4f4b862b26f756362adf2ea723bdd62f32d0afed1ff1113a3fc759c2",
+    "fixtures.py": "4ad2f912a1c681b4babf9bdfb043eca1864961a18970ba08143c8da7aeb7ea9e"
+  },
+  "is_baseline_copy_verified_after_restart": true
+}

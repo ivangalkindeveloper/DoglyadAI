@@ -83,7 +83,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     ) -> Bool {
         guard let recognizer = SFSpeechRecognizer(
             locale: locale,
-        ) else { return false }
+        ) else {
+            return false
+        }
         return recognizer.isAvailable && recognizer.supportsOnDeviceRecognition
     }
 
@@ -94,7 +96,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         case .preparing, .recording, .transcribing:
             return
         }
-        guard !audioEngine.isRunning else { return }
+        guard !audioEngine.isRunning else {
+            return
+        }
         // Without an available recognizer, recording is pointless: the engine would
         // record while no text ever appeared.
         guard let recognizer = speechRecognizer,
@@ -110,7 +114,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
             )
             return
         }
-        guard let sessionID = session.start() else { return }
+        guard let sessionID = session.start() else {
+            return
+        }
 
         recordingStatus = .preparing
         text = nil
@@ -229,7 +235,10 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         guard isRunning, let sessionID = session.activeID,
               session.beginFinalization(
                   for: sessionID,
-              ) else { return lastTranscript }
+              )
+        else {
+            return lastTranscript
+        }
 
         isRunning = false
         audioEngine.stop()
@@ -246,7 +255,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         let result = await finalize()
         guard session.finish(
             for: sessionID,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
 
         teardown()
         let correctedText = corrector.correct(
@@ -278,7 +289,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
 
     @discardableResult
     public func cancel() -> DSpeechTranscript? {
-        guard session.cancel() != nil else { return lastTranscript }
+        guard session.cancel() != nil else {
+            return lastTranscript
+        }
 
         finalizationCompletion = .cancelled
         finishFinalization(
@@ -325,7 +338,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
                 try? await Task.sleep(
                     for: Self.finalizationTimeout,
                 )
-                guard !Task.isCancelled else { return }
+                guard !Task.isCancelled else {
+                    return
+                }
                 self?.finalizationCompletion = .timedOut
                 self?.finishFinalization(
                     with: nil,
@@ -346,7 +361,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     private func finishFinalization(
         with segment: String?,
     ) {
-        guard let continuation = finalizationContinuation else { return }
+        guard let continuation = finalizationContinuation else {
+            return
+        }
 
         finalizationContinuation = nil
         continuation.resume(
@@ -380,7 +397,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     ) {
         guard session.acceptsResult(
             for: sessionID,
-        ) else { return }
+        ) else {
+            return
+        }
         guard let recognizer = speechRecognizer,
               recognizer.isAvailable,
               recognizer.supportsOnDeviceRecognition
@@ -431,7 +450,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         // Ignore delayed callbacks from an already recreated task.
         guard session.acceptsResult(
             for: sessionID,
-        ), request === recognitionRequest else { return }
+        ), request === recognitionRequest else {
+            return
+        }
 
         if let result {
             let segment = result.bestTranscription.formattedString
@@ -442,7 +463,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
                     segment,
                 )
             }
-            guard result.isFinal else { return }
+            guard result.isFinal else {
+                return
+            }
 
             guard isRunning else {
                 finishFinalization(
@@ -460,7 +483,9 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
             return
         }
 
-        guard error != nil else { return }
+        guard error != nil else {
+            return
+        }
 
         guard isRunning else {
             finalizationCompletion = .interrupted
@@ -504,8 +529,12 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
         let trimmed = addition.trimmingCharacters(
             in: .whitespacesAndNewlines,
         )
-        guard !trimmed.isEmpty else { return base }
-        guard !base.isEmpty else { return trimmed }
+        guard !trimmed.isEmpty else {
+            return base
+        }
+        guard !base.isEmpty else {
+            return trimmed
+        }
 
         return base + " " + trimmed
     }

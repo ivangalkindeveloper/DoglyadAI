@@ -12,9 +12,11 @@ struct Language {
             localeConfig.codes,
         )
         let code = preferredLanguageIdentifiers
-            .compactMap { Locale(
-                identifier: $0,
-            ).language.languageCode?.identifier }
+            .compactMap {
+                Locale(
+                    identifier: $0,
+                ).language.languageCode?.identifier
+            }
             .first(
                 where: availableCodes.contains,
             ) ?? localeConfig.defaultCode

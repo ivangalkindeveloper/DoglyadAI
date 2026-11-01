@@ -12,16 +12,13 @@ public struct DShimmerPlaceholder: DViewProtocol {
 
     public var body: some View {
         RoundedRectangle(
-            cornerRadius: cornerRadius ?? size.s8,
+            cornerRadius: cornerRadius ?? size.s16,
         )
         .fill(
             color.grayscaleLine,
         )
         .dShimmer(
-            cornerRadius: cornerRadius ?? size.s8,
-        )
-        .accessibilityHidden(
-            true,
+            cornerRadius: cornerRadius ?? size.s16,
         )
     }
 }

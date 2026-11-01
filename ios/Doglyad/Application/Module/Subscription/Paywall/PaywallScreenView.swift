@@ -9,33 +9,27 @@ struct PaywallScreenView: DViewProtocol {
     var body: some View {
         DScreen(
             content: { _, bottomInset in
-                ScrollView(
-                    showsIndicators: false,
+                DScrollVStack(
+                    alignment: .center,
+                    spacing: .zero,
                 ) {
-                    VStack(
-                        spacing: .zero,
+                    DStretchyHeader(
+                        height: 240,
                     ) {
-                        DStretchyHeader(
-                            height: 240,
-                        ) {
-                            DImage(
-                                .paywallHeader,
-                            )
-                            .scaledToFill()
-                            .accessibilityHidden(
-                                true,
-                            )
-                        }
-                        PaywallContentView()
-                            .padding(
-                                .horizontal,
-                                size.s16,
-                            )
-                            .padding(
-                                .bottom,
-                                bottomInset + size.s32,
-                            )
+                        DImage(
+                            .paywallHeader,
+                        )
+                        .scaledToFill()
                     }
+                    PaywallContentView()
+                        .padding(
+                            .horizontal,
+                            size.s16,
+                        )
+                        .padding(
+                            .bottom,
+                            bottomInset + size.s32,
+                        )
                 }
                 .scrollBounceBehavior(
                     .always,
@@ -46,14 +40,18 @@ struct PaywallScreenView: DViewProtocol {
                     edges: .top,
                 )
                 .overlay(
-                    alignment: .topTrailing,
+                    alignment: .topLeading,
                 ) {
                     if viewModel.isDismissible {
-                        DCloseButton(
+                        DButton(
+                            image: .back,
                             action: viewModel.onTapClose,
                         )
+                        .dStyle(
+                            .circle,
+                        )
                         .padding(
-                            size.s16,
+                            size.s8,
                         )
                     }
                 }

@@ -15,8 +15,7 @@ struct PhotoViewScreenView: DViewProtocol {
             subTitle: viewModel.subTitle,
             onTapBack: viewModel.onTapBack,
             trailing: {
-                switch viewModel.isDeletionAvailable {
-                case true:
+                if viewModel.isDeletionAvailable {
                     DButton(
                         image: .delete,
                         action: viewModel.onTapDelete,
@@ -24,14 +23,6 @@ struct PhotoViewScreenView: DViewProtocol {
                     .dStyle(
                         .circle,
                     )
-                    .accessibilityLabel(
-                        Text(
-                            l10n[
-                                .buttonDelete,
-                            ],
-                        ),
-                    )
-                case false: EmptyView()
                 }
             },
         ) { toolbarInset, _ in
@@ -40,7 +31,9 @@ struct PhotoViewScreenView: DViewProtocol {
             ) {
                 TabView(
                     selection: Binding(
-                        get: { viewModel.selectedPhotoID },
+                        get: {
+                            viewModel.selectedPhotoID
+                        },
                         set: viewModel.onPhotoSelected,
                     ),
                 ) {
@@ -78,7 +71,9 @@ struct PhotoViewScreenView: DViewProtocol {
                         )
                         .onGeometryChange(
                             for: CGFloat.self,
-                            of: { $0.size.height },
+                            of: {
+                                $0.size.height
+                            },
                         ) { height in
                             controlsHeight = height
                         }

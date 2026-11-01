@@ -5,5 +5,7 @@ struct HistoryDaySection: Identifiable {
     let title: String
     var reports: [USExaminationReport]
 
-    var id: Date { day }
+    var id: Date {
+        day
+    }
 }

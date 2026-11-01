@@ -19,9 +19,13 @@ struct DScreenToolbarView<Leading: View, Title: View, Trailing: View, Content: V
                     spacing: .zero,
                 ) {
                     leadingView
+
                     Spacer()
+
                     titleView
+
                     Spacer()
+
                     trailingView
                 }
                 .padding(

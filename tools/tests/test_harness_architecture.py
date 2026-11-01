@@ -147,6 +147,44 @@ extension Screen { func footer() -> some View { Text("fragment") } }
         self.assertEqual(result.returncode, 1)
         self.assertIn("swift.view-method", result.stdout)
 
+    def test_nested_and_value_switches_share_the_view_body_limit(self) -> None:
+        result = self.run_source("""
+struct Screen: View {
+    var body: some View {
+        let isLoading = switch state { case .loading: true; default: false }
+        switch state {
+        case .loaded:
+            switch provider { case .apple: Text("Apple"); default: Text("Other") }
+        default: Text("Loading")
+        }
+    }
+}
+""")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertEqual(result.stdout.count("swift.view-state-switch"), 2)
+
+    def test_each_composed_view_may_have_its_own_switch(self) -> None:
+        result = self.run_source("""
+struct Screen: View {
+    var body: some View {
+        switch state { case .loaded: Footer(); default: Text("Loading") }
+    }
+}
+struct Footer: View {
+    var body: some View {
+        switch provider { case .apple: Text("Apple"); default: Text("Other") }
+    }
+}
+struct Adapter: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIView {
+        switch first { case true: break; default: break }
+        switch second { case true: break; default: break }
+        return UIView()
+    }
+}
+""")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
     def test_invalid_swift_is_not_silently_skipped(self) -> None:
         result = self.run_source("struct Broken: View { var body: some View {")
         self.assertEqual(result.returncode, 1)

@@ -9,7 +9,9 @@ final class DSpeechBufferConverter: @unchecked Sendable {
         to format: AVAudioFormat,
     ) throws -> AVAudioPCMBuffer {
         let inputFormat = buffer.format
-        guard inputFormat != format else { return buffer }
+        guard inputFormat != format else {
+            return buffer
+        }
 
         if converter == nil || converter?.outputFormat != format {
             converter = AVAudioConverter(
@@ -43,7 +45,9 @@ final class DSpeechBufferConverter: @unchecked Sendable {
             to: output,
             error: &error,
         ) { _, inputStatus in
-            defer { isInputConsumed = true }
+            defer {
+                isInputConsumed = true
+            }
             inputStatus.pointee = isInputConsumed ? .noDataNow : .haveData
             return isInputConsumed ? nil : buffer
         }

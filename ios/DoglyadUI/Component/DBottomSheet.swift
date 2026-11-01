@@ -105,7 +105,9 @@ public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, 
                                 .onPreferenceChange(
                                     BottomSheetBottomHeightPreferenceKey.self,
                                 ) { value in
-                                    guard bottomHeight != value else { return }
+                                    guard bottomHeight != value else {
+                                        return
+                                    }
                                     bottomHeight = value
                                 }
                                 .transition(
@@ -124,11 +126,15 @@ public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, 
                     .onPreferenceChange(
                         BottomSheetToolbarHeightPreferenceKey.self,
                     ) { value in
-                        guard toolbarHeight != value else { return }
+                        guard toolbarHeight != value else {
+                            return
+                        }
                         toolbarHeight = value
                     }
             }
-            .presentationBackground { presentationBackgroundView }
+            .presentationBackground {
+                presentationBackgroundView
+            }
             .presentationDragIndicator(
                 .hidden,
             )
@@ -163,7 +169,9 @@ public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, 
         ) {
             HStack {
                 toolbarSpacer
+
                 Spacer()
+
                 DText(
                     title,
                 )
@@ -175,6 +183,7 @@ public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, 
                 .padding(
                     size.s16,
                 )
+
                 Spacer()
                 if isCloseButtonVisible {
                     DCloseButton {
@@ -292,6 +301,7 @@ private struct BottomSheetBottomHeightPreferenceKey: PreferenceKey {
                         "Bottom sheet content",
                     )
                     .dStyle()
+
                     DText(
                         "Some description text",
                     )
@@ -306,7 +316,9 @@ private struct BottomSheetBottomHeightPreferenceKey: PreferenceKey {
         } bottom: {
             DButton(
                 title: "Confirm",
-                action: { isPresented = false },
+                action: {
+                    isPresented = false
+                },
             )
             .dStyle(
                 .primaryButton,

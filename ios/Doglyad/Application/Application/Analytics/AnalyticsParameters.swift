@@ -15,7 +15,9 @@ struct AnalyticsParameters {
         AnalyticsParameters(
             values.merging(
                 other.values,
-            ) { _, new in new },
+            ) { _, new in
+                new
+            },
         )
     }
 

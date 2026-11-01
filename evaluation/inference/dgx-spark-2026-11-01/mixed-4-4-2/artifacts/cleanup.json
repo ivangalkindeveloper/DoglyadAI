@@ -1,0 +1,13 @@
+{
+  "doglyad-dgx-vllm_medgemma_4b-1": [
+    "benchmark_matrix.py",
+    "fixtures.py",
+    "targets442.json",
+    "results442-baseline.json"
+  ],
+  "doglyad-dgx-backend_inference-1": [
+    "service_matrix.py",
+    "candidate-targets.json",
+    "service442.json"
+  ]
+}

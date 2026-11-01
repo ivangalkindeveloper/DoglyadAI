@@ -38,10 +38,14 @@ public final class DSpeechWhisperKitModel: ObservableObject {
     }
 
     public var isDownloaded: Bool {
-        if model != nil { return true }
+        if model != nil {
+            return true
+        }
         guard let folder = defaults.string(
             forKey: Self.folderKey,
-        ) else { return false }
+        ) else {
+            return false
+        }
         return hasModelFiles(
             at: folder,
         )
@@ -49,9 +53,13 @@ public final class DSpeechWhisperKitModel: ObservableObject {
 
     public func deleteDownloadedModel() async throws {
         try Task.checkCancellation()
-        guard !isDeletingModel else { throw DSpeechError.unavailable }
+        guard !isDeletingModel else {
+            throw DSpeechError.unavailable
+        }
         isDeletingModel = true
-        defer { isDeletingModel = false }
+        defer {
+            isDeletingModel = false
+        }
 
         let preparation = preparationTask
         preparation?.cancel()
@@ -79,28 +87,38 @@ public final class DSpeechWhisperKitModel: ObservableObject {
     }
 
     func prepare() {
-        guard !isDeletingModel else { return }
+        guard !isDeletingModel else {
+            return
+        }
         if model != nil {
             state = .ready
             return
         }
-        guard preparationTask == nil else { return }
+        guard preparationTask == nil else {
+            return
+        }
 
         state = .checking
         preparationTask = Task { [weak self] in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
             await prepareModel()
         }
     }
 
     func load() async throws -> WhisperKit {
         try Task.checkCancellation()
-        guard !isDeletingModel else { throw DSpeechError.unavailable }
+        guard !isDeletingModel else {
+            throw DSpeechError.unavailable
+        }
         prepare()
         let task = preparationTask
         await task?.value
         try Task.checkCancellation()
-        guard !isDeletingModel, let model else { throw DSpeechError.unavailable }
+        guard !isDeletingModel, let model else {
+            throw DSpeechError.unavailable
+        }
         return model
     }
 
@@ -109,7 +127,9 @@ public final class DSpeechWhisperKitModel: ObservableObject {
         _ operation: @escaping @MainActor (WhisperKit) async throws -> Result,
     ) async throws -> Result {
         try Task.checkCancellation()
-        guard !isDeletingModel else { throw DSpeechError.unavailable }
+        guard !isDeletingModel else {
+            throw DSpeechError.unavailable
+        }
         let previous = inferenceTail
         let task = Task {
             await previous?.value
@@ -121,11 +141,17 @@ public final class DSpeechWhisperKitModel: ObservableObject {
         let id = UUID()
         inferenceCancellations[
             id,
-        ] = { task.cancel() }
-        inferenceTail = Task { _ = await task.result }
-        defer { inferenceCancellations[
-            id,
-        ] = nil }
+        ] = {
+            task.cancel()
+        }
+        inferenceTail = Task {
+            _ = await task.result
+        }
+        defer {
+            inferenceCancellations[
+                id,
+            ] = nil
+        }
         return try await withTaskCancellationHandler {
             try await task.value
         } onCancel: {
@@ -213,7 +239,9 @@ public final class DSpeechWhisperKitModel: ObservableObject {
     ) {
         guard case let .downloading(
             previous,
-        ) = state else { return }
+        ) = state else {
+            return
+        }
         if let fraction, let previous, fraction < previous + 0.01, fraction < 1 {
             return
         }

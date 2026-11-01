@@ -18,57 +18,46 @@ struct TemplateListScreenView: DViewProtocol {
                 ZStack(
                     alignment: .bottom,
                 ) {
-                    ScrollView(
-                        showsIndicators: false,
+                    DScrollVStack(
+                        spacing: size.s4,
+                        padding: EdgeInsets(
+                            top: toolbarInset + size.s8,
+                            leading: size.s16,
+                            bottom: bottomInset + size.s16,
+                            trailing: size.s16,
+                        ),
                     ) {
-                        VStack(
-                            alignment: .leading,
-                            spacing: size.s4,
-                        ) {
-                            switch viewModel.state {
-                            case _ as TemplateListLoadingState:
-                                TemplateListLoadingView()
-                                    .transition(
-                                        .opacity,
-                                    )
-                            case _ as TemplateListEmptyState:
-                                TemplateListEmptyView()
-                                    .transition(
-                                        .opacity,
-                                    )
-                            case let state as TemplateListContentState:
-                                ForEach(
-                                    state.templates,
-                                ) { template in
-                                    TemplateListItemCardView(
-                                        template: template,
-                                        action: {
-                                            viewModel.onTapTemplate(
-                                                template,
-                                            )
-                                        },
-                                    )
-                                }
-                            case _ as TemplateListFailedState:
-                                LoadingErrorView(
-                                    onRetry: viewModel.onTapRetry,
+                        switch viewModel.state {
+                        case _ as TemplateListLoadingState:
+                            TemplateListLoadingView()
+                                .transition(
+                                    .opacity,
                                 )
-                            default:
-                                EmptyView()
+                        case _ as TemplateListEmptyState:
+                            TemplateListEmptyView()
+                                .transition(
+                                    .opacity,
+                                )
+                        case let state as TemplateListContentState:
+                            ForEach(
+                                state.templates,
+                            ) { template in
+                                TemplateListItemCardView(
+                                    template: template,
+                                    action: {
+                                        viewModel.onTapTemplate(
+                                            template,
+                                        )
+                                    },
+                                )
                             }
+                        case _ as TemplateListFailedState:
+                            LoadingErrorView(
+                                onRetry: viewModel.onTapRetry,
+                            )
+                        default:
+                            EmptyView()
                         }
-                        .padding(
-                            .top,
-                            toolbarInset + size.s8,
-                        )
-                        .padding(
-                            .horizontal,
-                            size.s16,
-                        )
-                        .padding(
-                            .bottom,
-                            bottomInset + size.s16,
-                        )
                     }
                 }
             },

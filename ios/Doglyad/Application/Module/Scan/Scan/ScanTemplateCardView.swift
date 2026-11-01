@@ -8,14 +8,8 @@ struct ScanTemplateCardView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanViewModel
 
     var body: some View {
-        let backgroundColor: Color? = switch viewModel.isTemplateCompatible {
-        case false: color.dangerBackground
-        case true: nil
-        }
-        let trailingInset: CGFloat = switch viewModel.template {
-        case .none: .zero
-        case .some: size.s32
-        }
+        let backgroundColor: Color? = viewModel.isTemplateCompatible ? nil : color.dangerBackground
+        let trailingInset: CGFloat = viewModel.template == nil ? .zero : size.s32
 
         VStack(
             alignment: .leading,
@@ -116,8 +110,7 @@ struct ScanTemplateCardView: DViewProtocol {
                     )
                 }
 
-                switch viewModel.template {
-                case .some:
+                if viewModel.template != nil {
                     DCloseButton(
                         action: viewModel.onTapResetTemplate,
                     )
@@ -127,12 +120,10 @@ struct ScanTemplateCardView: DViewProtocol {
                     .transition(
                         .opacity,
                     )
-                case .none: EmptyView()
                 }
             }
 
-            switch viewModel.isTemplateCompatible {
-            case false:
+            if !viewModel.isTemplateCompatible {
                 DText(
                     l10n[
                         .scanTemplateCardExaminationTypeMismatchDescription,
@@ -155,7 +146,6 @@ struct ScanTemplateCardView: DViewProtocol {
                 .transition(
                     .opacity,
                 )
-            case true: EmptyView()
             }
         }
     }

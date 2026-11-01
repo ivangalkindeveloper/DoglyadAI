@@ -22,14 +22,22 @@
                 container: container,
                 messager: messager,
                 router: router,
-                getSubscriptionStatus: { nil },
-                observeSubscriptionStatus: { _ in AnyCancellable {} },
+                getSubscriptionStatus: {
+                    nil
+                },
+                observeSubscriptionStatus: { _ in
+                    AnyCancellable {}
+                },
                 onSubscriptionStatusUpdated: { _ in },
-                getSettingsAI: { container.initialSettingsAI },
+                getSettingsAI: {
+                    container.initialSettingsAI
+                },
                 onRefreshSubscriptionStatus: {},
                 arguments: ScanSpeechArguments(
                     examinationType: container.usExaminationTypeDefault,
-                    onConfirm: { _ in true },
+                    onConfirm: { _ in
+                        true
+                    },
                 ),
                 speechController: speechController,
             )

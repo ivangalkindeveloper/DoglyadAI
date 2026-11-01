@@ -26,7 +26,9 @@ public final class DNeuralUltrasoundModelFoundationModels: DNeuralUltrasoundMode
     public static func isAvailable(
         locale: Locale,
     ) -> Bool {
-        guard #available(iOS 26.0, *) else { return false }
+        guard #available(iOS 26.0, *) else {
+            return false
+        }
         let model = SystemLanguageModel.default
         return model.isAvailable && model.supportsLocale(
             locale,
@@ -58,7 +60,9 @@ public final class DNeuralUltrasoundModelFoundationModels: DNeuralUltrasoundMode
         } catch {
             try Task.checkCancellation()
             let deterministic = processor.deterministic
-            guard !deterministic.proposals.isEmpty else { throw error }
+            guard !deterministic.proposals.isEmpty else {
+                throw error
+            }
             return deterministic
         }
     }

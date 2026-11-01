@@ -53,10 +53,12 @@ struct SubscriptionPurchaseVerificationTests {
         switch try await root.checkPurchase() {
         case let .completed(
             status,
-        ): #expect(
+        ):
+            #expect(
                 status?.planId == provider.plan.id,
             )
-        case .cancelled, .pending: Issue.record(
+        case .cancelled, .pending:
+            Issue.record(
                 "The exact confirmed payment must complete the purchase",
             )
         }
@@ -107,7 +109,9 @@ struct SubscriptionPurchaseVerificationTests {
         )
         await #expect(
             throws: SubscriptionError.self,
-        ) { try await root.checkPurchase() }
+        ) {
+            try await root.checkPurchase()
+        }
     }
 
     @Test
@@ -158,10 +162,12 @@ struct SubscriptionPurchaseVerificationTests {
         switch try await root.checkPurchase() {
         case let .completed(
             status,
-        ): #expect(
+        ):
+            #expect(
                 status?.planId == "annual",
             )
-        case .pending, .cancelled: Issue.record(
+        case .pending, .cancelled:
+            Issue.record(
                 "Confirmed payment must preserve the existing stronger or longer access",
             )
         }
@@ -181,7 +187,9 @@ struct SubscriptionPurchaseVerificationTests {
         )
         root.onInit()
         for _ in 0 ..< 100 {
-            if provider.observationCount == 1 { break }
+            if provider.observationCount == 1 {
+                break
+            }
             await Task.yield()
         }
         #expect(
@@ -246,10 +254,12 @@ struct SubscriptionPurchaseVerificationTests {
         switch try await root.checkPurchase() {
         case let .completed(
             status,
-        ): #expect(
+        ):
+            #expect(
                 status?.planId == provider.plan.id,
             )
-        case .pending, .cancelled: Issue.record(
+        case .pending, .cancelled:
+            Issue.record(
                 "A new verified transaction for the selected plan must complete",
             )
         }
@@ -264,7 +274,9 @@ struct SubscriptionPurchaseVerificationTests {
                 backend: backend,
                 storeKit: provider,
                 yooKassa: provider,
-                getStorefrontCountryCode: { "USA" },
+                getStorefrontCountryCode: {
+                    "USA"
+                },
             ),
         )
     }
@@ -274,7 +286,8 @@ struct SubscriptionPurchaseVerificationTests {
     ) {
         switch outcome {
         case .pending: break
-        case .cancelled, .completed: Issue.record(
+        case .cancelled, .completed:
+            Issue.record(
                 "Old or unrelated access must not complete this purchase",
             )
         }
@@ -293,7 +306,9 @@ struct SubscriptionPurchaseVerificationTests {
             ),
         )
         for _ in 0 ..< 100 {
-            if provider.deliveredUpdateCount > previousCount { break }
+            if provider.deliveredUpdateCount > previousCount {
+                break
+            }
             await Task.yield()
         }
         #expect(

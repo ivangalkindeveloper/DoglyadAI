@@ -34,13 +34,16 @@ final class PermissionViewModel: DModuleViewModel<any PermissionStateProtocol> {
 
     var title: LocalizedStringResource {
         switch kind {
-        case .camera: l10n[
+        case .camera:
+            l10n[
                 .permissionCameraTitle,
             ]
-        case .photoLibrary: l10n[
+        case .photoLibrary:
+            l10n[
                 .permissionPhotoLibraryTitle,
             ]
-        case .speech: l10n[
+        case .speech:
+            l10n[
                 .permissionSpeechTitle,
             ]
         }
@@ -48,13 +51,16 @@ final class PermissionViewModel: DModuleViewModel<any PermissionStateProtocol> {
 
     var description: LocalizedStringResource {
         switch kind {
-        case .camera: l10n[
+        case .camera:
+            l10n[
                 .permissionCameraDescription,
             ]
-        case .photoLibrary: l10n[
+        case .photoLibrary:
+            l10n[
                 .permissionPhotoLibraryDescription,
             ]
-        case .speech: l10n[
+        case .speech:
+            l10n[
                 .permissionSpeechDescription,
             ]
         }

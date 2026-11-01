@@ -14,28 +14,17 @@ struct ManageSubscriptionScreenView: DViewProtocol {
             ],
             onTapBack: viewModel.onTapBack,
         ) { toolbarInset, bottomInset in
-            ScrollView(
-                showsIndicators: false,
+            DScrollVStack(
+                spacing: size.s8,
+                padding: EdgeInsets(
+                    top: toolbarInset + size.s16,
+                    leading: size.s16,
+                    bottom: bottomInset + size.s32,
+                    trailing: size.s16,
+                ),
             ) {
-                VStack(
-                    alignment: .leading,
-                    spacing: size.s24,
-                ) {
-                    ManageSubscriptionStateView(
-                        state: viewModel.state,
-                    )
-                }
-                .padding(
-                    .horizontal,
-                    size.s16,
-                )
-                .padding(
-                    .top,
-                    toolbarInset + size.s16,
-                )
-                .padding(
-                    .bottom,
-                    bottomInset + size.s32,
+                ManageSubscriptionStateView(
+                    state: viewModel.state,
                 )
             }
         }
@@ -52,6 +41,8 @@ struct ManageSubscriptionScreenView: DViewProtocol {
             NotificationCenter.default.publisher(
                 for: UIApplication.didBecomeActiveNotification,
             ),
-        ) { _ in viewModel.onRefresh() }
+        ) { _ in
+            viewModel.onRefresh()
+        }
     }
 }

@@ -30,9 +30,11 @@ struct ErrorRootView: DViewProtocol {
                 ErrorView(
                     title: .errorNoInternetConnectionTitle,
                     buttonTitle: .buttonUpdate,
-                    action: { viewModel.onTapRetry(
-                        onRetryInitialization: applicationViewModel.retryInitialization,
-                    ) },
+                    action: {
+                        viewModel.onTapRetry(
+                            onRetryInitialization: applicationViewModel.retryInitialization,
+                        )
+                    },
                 ) {
                     DText(
                         .errorNoInternetConnectionDescription,
@@ -85,9 +87,11 @@ struct ErrorRootView: DViewProtocol {
                 ErrorView(
                     title: .errorUnknownTitle,
                     buttonTitle: .buttonUpdate,
-                    action: { viewModel.onTapRetry(
-                        onRetryInitialization: applicationViewModel.retryInitialization,
-                    ) },
+                    action: {
+                        viewModel.onTapRetry(
+                            onRetryInitialization: applicationViewModel.retryInitialization,
+                        )
+                    },
                 ) {
                     DText(
                         .errorUnknownDescription,

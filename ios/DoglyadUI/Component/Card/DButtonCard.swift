@@ -54,26 +54,32 @@ public struct DButtonCard<Content: View>: DViewProtocol {
         spacing: 16,
     ) {
         DButtonCard(
-            action: { print(
-                "Tap",
-            ) },
+            action: {
+                print(
+                    "Tap",
+                )
+            },
         ) {
             HStack {
                 DIcon(
                     .alertInfo,
                 )
+
                 DText(
                     "Button card",
                 )
                 .dStyle()
+
                 Spacer()
             }
         }
 
         DButtonCard(
-            action: { print(
-                "Tap",
-            ) },
+            action: {
+                print(
+                    "Tap",
+                )
+            },
         ) {
             DText(
                 "Simple card",

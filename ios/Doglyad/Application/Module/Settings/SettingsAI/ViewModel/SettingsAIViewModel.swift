@@ -144,7 +144,9 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
     }
 
     var focusList: [DTextFieldFocusValidationItem<SettingsAIFocus>] {
-        guard isReportGenerationSettingsEnabled else { return [] }
+        guard isReportGenerationSettingsEnabled else {
+            return []
+        }
         return [
             DTextFieldFocusValidationItem(
                 focus: .temperature,
@@ -178,7 +180,9 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
     override func onSubscriptionChanged(
         _: SubscriptionStatus?,
     ) {
-        if !isReportGenerationSettingsEnabled { unfocus() }
+        if !isReportGenerationSettingsEnabled {
+            unfocus()
+        }
     }
 
     func onTapTranscriber() {
@@ -187,7 +191,9 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
             .selectTranscriber,
             arguments: SelectTranscriberArguments(
                 currentValue: transcriberType,
-                onSelected: { [weak self] type in self?.transcriberType = type },
+                onSelected: { [weak self] type in
+                    self?.transcriberType = type
+                },
             ),
         )
     }
@@ -198,7 +204,9 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
             .selectTranscriptParser,
             arguments: SelectTranscriptParserArguments(
                 currentValue: transcriptParserType,
-                onSelected: { [weak self] type in self?.transcriptParserType = type },
+                onSelected: { [weak self] type in
+                    self?.transcriptParserType = type
+                },
             ),
         )
     }
@@ -220,8 +228,12 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
             arguments: SelectNeuralModelArguments(
                 currentValue: neuralModel,
                 onSelected: { [weak self] model in
-                    guard let self else { return }
-                    guard neuralModel != model else { return }
+                    guard let self else {
+                        return
+                    }
+                    guard neuralModel != model else {
+                        return
+                    }
 
                     try await onNeuralModelSelected(
                         model,
@@ -265,7 +277,9 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
     }
 
     func toggleIsMarkdown() {
-        guard isReportGenerationSettingsEnabled else { return }
+        guard isReportGenerationSettingsEnabled else {
+            return
+        }
         analytics.buttonTapped(
             .settingsAIMarkdown,
             parameters: AnalyticsParameters(
@@ -337,13 +351,17 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
 
         let isMarkdown = isReportGenerationSettingsEnabled ? isMarkdown : getInitialIsMarkdown()
         let temperature = isReportGenerationSettingsEnabled
-            ? temperatureTextController.value.flatMap { Double(
-                $0,
-            ) } : getInitialTemperature()
+            ? temperatureTextController.value.flatMap {
+                Double(
+                    $0,
+                )
+            } : getInitialTemperature()
         let maxTokens = isReportGenerationSettingsEnabled
-            ? maxTokensTextController.value.flatMap { Int(
-                $0,
-            ) } : getInitialMaxTokens()
+            ? maxTokensTextController.value.flatMap {
+                Int(
+                    $0,
+                )
+            } : getInitialMaxTokens()
         handle {
             try await self.onSettingsSaved(
                 self.transcriberType,
@@ -354,7 +372,8 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
             )
         } onDefer: {
             switch self.state {
-            case _ as SettingsAILoadingState: self.emit(
+            case _ as SettingsAILoadingState:
+                self.emit(
                     SettingsAIDefaultState(),
                 )
             default: break

@@ -40,14 +40,18 @@ final class ImportMediaViewModel: DModuleViewModel<any ImportMediaStateProtocol>
     }
 
     func onTapCamera() {
-        guard actionAfterDismiss == nil else { return }
+        guard actionAfterDismiss == nil else {
+            return
+        }
 
         actionAfterDismiss = arguments.onTapCamera
         coordinator.dismissSheet()
     }
 
     func onTapGallery() {
-        guard actionAfterDismiss == nil else { return }
+        guard actionAfterDismiss == nil else {
+            return
+        }
 
         actionAfterDismiss = arguments.onTapGallery
         coordinator.dismissSheet()

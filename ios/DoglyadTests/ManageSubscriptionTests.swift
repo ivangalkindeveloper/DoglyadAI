@@ -7,6 +7,32 @@
     @MainActor
     struct ManageSubscriptionTests {
         @Test
+        func previewTaskWaitsForScreenInitialization() async throws {
+            let container = ManageSubscriptionPreviewFactory.makeContainer()
+            let model = ManageSubscriptionPreviewFactory.makeViewModel(
+                container: container,
+                router: DRouter(
+                    initialRoute: RouteScreen(
+                        type: .settings,
+                    ),
+                ),
+            )
+            let preview = Task {
+                await ManageSubscriptionPreviewFactory.apply(
+                    .failed,
+                    to: model,
+                )
+            }
+            await Task.yield()
+            model.onAppear()
+            await preview.value
+            #expect(
+                model.state is ManageSubscriptionFailedState,
+            )
+            model.onDisappear()
+        }
+
+        @Test
         func changeTypeReturnsToManagementAndRecoveryHasItsOwnScreen() async {
             let container = ManageSubscriptionPreviewFactory.makeContainer()
             let router = DRouter(
@@ -98,10 +124,12 @@
                 model.state as? ManageSubscriptionActiveState,
             )
             switch source {
-            case .yookassa: #expect(
+            case .yookassa:
+                #expect(
                     !updated.status.isAutoRenewing && !model.isManageAvailable,
                 )
-            case .apple: #expect(
+            case .apple:
+                #expect(
                     updated.status.isAutoRenewing && model.isManageAvailable,
                 )
             }
@@ -183,16 +211,20 @@
                 to: model,
             )
             switch scenario {
-            case .loading, .updating: #expect(
+            case .loading, .updating:
+                #expect(
                     model.state is ManageSubscriptionLoadingState,
                 )
-            case .failed, .operationFailed: #expect(
+            case .failed, .operationFailed:
+                #expect(
                     model.state is ManageSubscriptionFailedState,
                 )
-            case .inactive: #expect(
+            case .inactive:
+                #expect(
                     model.state is ManageSubscriptionInactiveState,
                 )
-            case .applePro, .yooKassaBase, .yooKassaPro, .renewalOff: #expect(
+            case .appleBase, .applePro, .appleRenewalOff, .yooKassaBase, .yooKassaPro, .renewalOff:
+                #expect(
                     model.state is ManageSubscriptionActiveState,
                 )
             }
@@ -238,10 +270,12 @@
                 status: ManageSubscriptionPreviewFactory.makeStatus(
                     source: .apple,
                 ),
-                fetchProducts: { BillingProductsResponse(
-                    products: [],
-                    tiers: [],
-                ) },
+                fetchProducts: {
+                    BillingProductsResponse(
+                        products: [],
+                        tiers: [],
+                    )
+                },
             )
             model.onAppear()
             await model.lastTask?.value
@@ -264,9 +298,11 @@
                 status: ManageSubscriptionPreviewFactory.makeStatus(
                     source: .yookassa,
                 ),
-                manageOperation: { throw URLError(
-                    .notConnectedToInternet,
-                ) },
+                manageOperation: {
+                    throw URLError(
+                        .notConnectedToInternet,
+                    )
+                },
             )
             model.onAppear()
             await model.lastTask?.value
@@ -304,7 +340,9 @@
                 status: ManageSubscriptionPreviewFactory.makeStatus(
                     source: .yookassa,
                 ),
-                manageOperation: { calls += 1 },
+                manageOperation: {
+                    calls += 1
+                },
             )
             model.onAppear()
             await model.lastTask?.value

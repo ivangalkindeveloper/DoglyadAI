@@ -164,7 +164,9 @@ private struct DTextModifier: ViewModifier {
             DButton(
                 image: .bag,
                 title: "Primary button",
-                action: { isLoading.toggle() },
+                action: {
+                    isLoading.toggle()
+                },
                 isLoading: isLoading,
             )
             .dStyle(
@@ -173,7 +175,9 @@ private struct DTextModifier: ViewModifier {
 
             DButton(
                 image: .camera,
-                action: { isLoading.toggle() },
+                action: {
+                    isLoading.toggle()
+                },
                 isLoading: isLoading,
             )
             .dStyle(
@@ -183,7 +187,9 @@ private struct DTextModifier: ViewModifier {
             DButton(
                 image: .alertInfo,
                 title: "Primary chip",
-                action: { isLoading.toggle() },
+                action: {
+                    isLoading.toggle()
+                },
                 isLoading: isLoading,
             )
             .dStyle(
@@ -192,7 +198,9 @@ private struct DTextModifier: ViewModifier {
 
             DButton(
                 image: .alertInfo,
-                action: { isLoading.toggle() },
+                action: {
+                    isLoading.toggle()
+                },
                 isLoading: isLoading,
             )
             .dStyle(
@@ -202,7 +210,9 @@ private struct DTextModifier: ViewModifier {
             DButton(
                 image: .atSign,
                 title: "Some card",
-                action: { isLoading.toggle() },
+                action: {
+                    isLoading.toggle()
+                },
                 isLoading: isLoading,
             )
             .dStyle(
@@ -212,7 +222,9 @@ private struct DTextModifier: ViewModifier {
             DButton(
                 image: .send,
                 title: "Text button",
-                action: { isLoading.toggle() },
+                action: {
+                    isLoading.toggle()
+                },
                 isLoading: isLoading,
             )
             .dStyle(
@@ -222,7 +234,9 @@ private struct DTextModifier: ViewModifier {
             DButton(
                 image: .send,
                 title: "Text weak button",
-                action: { isLoading.toggle() },
+                action: {
+                    isLoading.toggle()
+                },
                 isLoading: isLoading,
             )
             .dStyle(
@@ -246,7 +260,9 @@ private struct DTextModifier: ViewModifier {
                     "Pro",
                     isShimmering: true,
                 ),
-                action: { isLoading.toggle() },
+                action: {
+                    isLoading.toggle()
+                },
                 isLoading: isLoading,
             )
             .dStyle(

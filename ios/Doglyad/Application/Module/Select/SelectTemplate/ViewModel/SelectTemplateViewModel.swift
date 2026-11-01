@@ -52,8 +52,12 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
             let templates = try await self.container.templateRepository.getTemplates(
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
-            guard let usExaminationId else { return templates }
-            return templates.filter { $0.usExaminationType.id == usExaminationId }
+            guard let usExaminationId else {
+                return templates
+            }
+            return templates.filter {
+                $0.usExaminationType.id == usExaminationId
+            }
         } onMainSuccess: { templates in
             self.templates = templates
             self.emit(
@@ -71,7 +75,9 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         }
     }
 
-    func onTapRetry() { onInit() }
+    func onTapRetry() {
+        onInit()
+    }
 
     func onTemplateTap(
         _ template: USExaminationTemplate,
@@ -79,14 +85,18 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         analytics.buttonTapped(
             .selectTemplate,
         )
-        switch state { case _ as SelectTemplateContentState: break
-        default: return }
+        switch state {
+        case _ as SelectTemplateContentState: break
+        default: return
+        }
         emit(
             SelectTemplateLoadingState(),
         )
-        handle { try await self.arguments.onSelected(
-            template,
-        ) }
+        handle {
+            try await self.arguments.onSelected(
+                template,
+            )
+        }
         onMainSuccess: { _ in
             self.currentTemplateID = template.id
             self.emit(

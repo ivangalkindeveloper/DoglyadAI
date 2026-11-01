@@ -27,10 +27,14 @@ extension USExaminationDraft {
                 db,
             ),
             photos: db.photos
-                .sorted { $0.position < $1.position }
-                .compactMap { USExaminationScanPhoto.fromDraftDB(
-                    $0,
-                ) },
+                .sorted {
+                    $0.position < $1.position
+                }
+                .compactMap {
+                    USExaminationScanPhoto.fromDraftDB(
+                        $0,
+                    )
+                },
         )
     }
 }

@@ -35,13 +35,17 @@ final class DraftAutosaver<Draft> {
             publishers,
         )
         .handleEvents(
-            receiveOutput: { [weak self] in self?.isPendingChangesPresent = true },
+            receiveOutput: { [weak self] in
+                self?.isPendingChangesPresent = true
+            },
         )
         .debounce(
             for: delay,
             scheduler: RunLoop.main,
         )
-        .sink { [weak self] _ in self?.savePendingDraft() }
+        .sink { [weak self] _ in
+            self?.savePendingDraft()
+        }
         .store(
             in: &cancellables,
         )
@@ -71,14 +75,22 @@ final class DraftAutosaver<Draft> {
     func waitForPendingSave() async throws {
         startWritingIfNeeded()
         await writeTask?.value
-        if let lastError { throw lastError }
+        if let lastError {
+            throw lastError
+        }
     }
 
     private func startWritingIfNeeded() {
-        guard writeTask == nil, !pendingWrites.isEmpty else { return }
+        guard writeTask == nil, !pendingWrites.isEmpty else {
+            return
+        }
         writeTask = Task { [weak self] in
-            guard let self else { return }
-            defer { writeTask = nil }
+            guard let self else {
+                return
+            }
+            defer {
+                writeTask = nil
+            }
             while let operation = pendingWrites.first {
                 do {
                     try await operation()
@@ -96,10 +108,14 @@ final class DraftAutosaver<Draft> {
     }
 
     private func savePendingDraft() {
-        guard isPendingChangesPresent, let draft = makeDraft?(), let saveDraft else { return }
+        guard isPendingChangesPresent, let draft = makeDraft?(), let saveDraft else {
+            return
+        }
         isPendingChangesPresent = false
-        enqueue { try await saveDraft(
-            draft,
-        ) }
+        enqueue {
+            try await saveDraft(
+                draft,
+            )
+        }
     }
 }

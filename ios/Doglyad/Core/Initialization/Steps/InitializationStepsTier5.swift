@@ -41,9 +41,11 @@ extension InitializationProcess {
                     let storedSettings = try await settingsRepository.getSettings()
                     let selectedId = storedSettings?.selectedNeuralModelId
                     var resolvedModelId = selectedId
-                    let selected = selectedId.flatMap { process.usExaminationNeuralModelsById![
-                        $0,
-                    ] }
+                    let selected = selectedId.flatMap {
+                        process.usExaminationNeuralModelsById![
+                            $0,
+                        ]
+                    }
                     let isSelectionAllowed: Bool
                     if let selected {
                         let isAvailable = switch selected.accessibility {
@@ -63,7 +65,9 @@ extension InitializationProcess {
                             }
                         }
                         isSelectionAllowed = isAvailable && isEntitled
-                    } else { isSelectionAllowed = false }
+                    } else {
+                        isSelectionAllowed = false
+                    }
                     if !isSelectionAllowed {
                         let firstBaseModel = process.usExaminationNeuralModels!.first { model in
                             let isAvailable = switch model.accessibility {
@@ -86,9 +90,11 @@ extension InitializationProcess {
                         temperature: storedSettings?.temperature,
                         maxTokens: storedSettings?.maxTokens,
                     )
-                    if settings != storedSettings { try await settingsRepository.saveSettings(
-                        settings,
-                    ) }
+                    if settings != storedSettings {
+                        try await settingsRepository.saveSettings(
+                            settings,
+                        )
+                    }
                     process.initialSettingsAI = settings
                 },
             ),

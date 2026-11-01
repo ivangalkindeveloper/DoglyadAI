@@ -22,14 +22,17 @@ struct DictationNormalizationTests {
             source: .serverModel,
         )
         let field = try #require(
-            proposal.proposals.first { $0.id.isPatientDateOfBirth },
+            proposal.proposals.first {
+                $0.id.isPatientDateOfBirth
+            },
         )
         guard case let .date(
             date,
-        ) = field.value else { Issue.record(
-            "Missing date",
-        )
-        return
+        ) = field.value else {
+            Issue.record(
+                "Missing date",
+            )
+            return
         }
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withFullDate]
@@ -59,7 +62,9 @@ struct DictationNormalizationTests {
             request: request,
         ).deterministic
         #expect(
-            !result.proposals.contains { $0.id.isPatientDateOfBirth },
+            !result.proposals.contains {
+                $0.id.isPatientDateOfBirth
+            },
         )
     }
 
@@ -117,7 +122,9 @@ struct DictationNormalizationTests {
             source: .serverModel,
         )
         let field = try #require(
-            result.proposals.first { $0.id.isExaminationDescription },
+            result.proposals.first {
+                $0.id.isExaminationDescription
+            },
         )
         #expect(
             field.value == .text(
@@ -164,7 +171,9 @@ struct DictationNormalizationTests {
             source: .serverModel,
         )
         #expect(
-            result.proposals.first { $0.id.isExaminationDescription }?.value == .text(
+            result.proposals.first {
+                $0.id.isExaminationDescription
+            }?.value == .text(
                 formatted,
             ),
         )
@@ -200,7 +209,9 @@ struct DictationNormalizationTests {
             source: .serverModel,
         )
         let field = try #require(
-            result.proposals.first { $0.id.isExaminationDescription },
+            result.proposals.first {
+                $0.id.isExaminationDescription
+            },
         )
         #expect(
             field.value == .text(
@@ -261,7 +272,9 @@ struct DictationNormalizationTests {
             source: .serverModel,
         )
         #expect(
-            result.proposals.first { $0.id.isExaminationDescription }?.value == .text(
+            result.proposals.first {
+                $0.id.isExaminationDescription
+            }?.value == .text(
                 corrected,
             ),
         )
@@ -291,7 +304,9 @@ struct DictationNormalizationTests {
             source: .serverModel,
         )
         let field = try #require(
-            result.proposals.first { $0.id.isExaminationDescription },
+            result.proposals.first {
+                $0.id.isExaminationDescription
+            },
         )
         #expect(
             field.value == .text(
@@ -332,7 +347,9 @@ struct DictationNormalizationTests {
             source: .serverModel,
         )
         let field = try #require(
-            result.proposals.first { $0.id == .patientComplaints },
+            result.proposals.first {
+                $0.id == .patientComplaints
+            },
         )
         #expect(
             field.value == .text(

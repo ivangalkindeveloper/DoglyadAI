@@ -60,10 +60,14 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         let localization = request.localization
         if let delimited = parseDelimited(
             request: request,
-        ) { return delimited }
+        ) {
+            return delimited
+        }
         if let reordered = parseUndelimitedReordered(
             request: request,
-        ) { return reordered }
+        ) {
+            return reordered
+        }
 
         let text = request.text
         let wholeRange = NSRange(
@@ -107,7 +111,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                         localization: localization,
                     )
                 },
-            ) else { continue }
+            ) else {
+                continue
+            }
             found.append(
                 (id, match.range),
             )
@@ -138,7 +144,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                       .punctuationCharacters,
                   ),
               ).isEmpty
-        else { return nil }
+        else {
+            return nil
+        }
         for index in 1 ..< found.count {
             guard NSMaxRange(
                 found[
@@ -146,7 +154,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 ].range,
             ) < found[
                 index,
-            ].range.location else { return nil }
+            ].range.location else {
+                return nil
+            }
         }
 
         return makeProposal(
@@ -224,7 +234,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     localization: localization,
                 )
             }
-            guard let first = matches.first else { continue }
+            guard let first = matches.first else {
+                continue
+            }
             if matches.count > 1 {
                 guard id.isPatientComplaints, matches.count == 2,
                       source.substring(
@@ -243,20 +255,26 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                               .punctuationCharacters,
                           ),
                       ).lowercased() == localization.negativeCorrectionWord
-                else { return nil }
+                else {
+                    return nil
+                }
             }
             found.append(
                 (id, first.range),
             )
         }
 
-        found.sort { $0.range.location < $1.range.location }
+        found.sort {
+            $0.range.location < $1.range.location
+        }
         guard let first = found.first,
               first.id.isExaminationDescription || found.allSatisfy(
-                  { hasExplicitSeparator(
-                      after: $0.range,
-                      in: source,
-                  ) },
+                  {
+                      hasExplicitSeparator(
+                          after: $0.range,
+                          in: source,
+                      )
+                  },
               ),
               source.substring(
                   to: found[
@@ -268,7 +286,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                       .punctuationCharacters,
                   ),
               ).isEmpty
-        else { return nil }
+        else {
+            return nil
+        }
         for index in 1 ..< found.count {
             guard NSMaxRange(
                 found[
@@ -276,7 +296,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 ].range,
             ) < found[
                 index,
-            ].range.location else { return nil }
+            ].range.location else {
+                return nil
+            }
         }
         return makeProposal(
             values: labeledValues(
@@ -295,13 +317,17 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         guard let label = labels(
             localization: localization,
         ).first(
-            where: { $0.0 == id },
+            where: {
+                $0.0 == id
+            },
         )?.1,
             let expression = try? NSRegularExpression(
                 pattern: #"(?<![\p{L}\p{N}])"# + label + #"(?![\p{L}\p{N}])"#,
                 options: .caseInsensitive,
             )
-        else { return nil }
+        else {
+            return nil
+        }
         return expression.firstMatch(
             in: text,
             range: NSRange(
@@ -336,20 +362,28 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             with: match.range,
         ).lowercased()
         let isAlias = switch id {
-        case .patientHeightCM: localization.matches(
+        case .patientHeightCM:
+            localization.matches(
                 .heightAlias,
                 word,
             )
-        case .patientWeightKG: localization.matches(
+        case .patientWeightKG:
+            localization.matches(
                 .weightAlias,
                 word,
             )
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
              .patientComplaints, .examinationDescription: false
         }
-        guard isAlias else { return true }
-        guard let complaintsStart, let descriptionStart else { return false }
-        if descriptionStart < complaintsStart { return match.range.location > complaintsStart }
+        guard isAlias else {
+            return true
+        }
+        guard let complaintsStart, let descriptionStart else {
+            return false
+        }
+        if descriptionStart < complaintsStart {
+            return match.range.location > complaintsStart
+        }
         return match.range.location < complaintsStart
     }
 
@@ -412,11 +446,17 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 charactersIn: ";\n",
             ),
         )
-        .map { $0.trimmingCharacters(
-            in: .whitespacesAndNewlines,
-        ) }
-        .filter { !$0.isEmpty }
-        guard parts.count > 1 else { return nil }
+        .map {
+            $0.trimmingCharacters(
+                in: .whitespacesAndNewlines,
+            )
+        }
+        .filter {
+            !$0.isEmpty
+        }
+        guard parts.count > 1 else {
+            return nil
+        }
 
         var values: [DNeuralUltrasoundLabeledValue] = []
         for part in parts {
@@ -438,7 +478,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                         in: part,
                         range: range,
                     )
-                else { continue }
+                else {
+                    continue
+                }
                 labeled = DNeuralUltrasoundLabeledValue(
                     id: id,
                     quote: part,
@@ -459,16 +501,20 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
 
         // Unrecognized segments stay separate from a clearly labeled value.
         // If labels are too sparse, leave the whole utterance to the model.
-        guard !values.isEmpty, values.count * 2 >= parts.count else { return nil }
+        guard !values.isEmpty, values.count * 2 >= parts.count else {
+            return nil
+        }
         let counts = Dictionary(
             grouping: values,
             by: \.id,
         ).mapValues(
             \.count,
         )
-        let unique = values.filter { counts[
-            $0.id,
-        ] == 1 }
+        let unique = values.filter {
+            counts[
+                $0.id,
+            ] == 1
+        }
         return makeProposal(
             values: unique,
             request: request,
@@ -490,7 +536,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         ) {
             guard request.allowedFields.contains(
                 entry.id,
-            ) else { continue }
+            ) else {
+                continue
+            }
             var rawValue = entry.rawValue.trimmingCharacters(
                 in: .whitespacesAndNewlines.union(
                     CharacterSet(
@@ -667,13 +715,17 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                  .patientHeightCM, .patientWeightKG, .examinationDescription: false
             }
         }
-        guard !isComplaintPresent else { return values }
+        guard !isComplaintPresent else {
+            return values
+        }
         var result: [DNeuralUltrasoundLabeledValue] = []
         for (index, entry) in values.enumerated() {
             result.append(
                 entry,
             )
-            guard index + 1 < values.count else { continue }
+            guard index + 1 < values.count else {
+                continue
+            }
             switch entry.id {
             case .patientWeightKG: break
             case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
@@ -689,12 +741,16 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             guard let unitPattern = measurementUnitPattern(
                 for: .patientWeightKG,
                 localization: localization,
-            ) else { continue }
+            ) else {
+                continue
+            }
             let pattern = "^[0-9]+(?:[.,][0-9]+)?\\s*(?:\(unitPattern))\\s+(\(localization.pattern(.complaintAlias)))\\s+([\\p{L}][^0-9]*)$"
             guard let groups = captures(
                 pattern,
                 in: entry.rawValue,
-            ), groups.count == 2 else { continue }
+            ), groups.count == 2 else {
+                continue
+            }
             let complaint = groups[
                 1,
             ].trimmingCharacters(
@@ -708,7 +764,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                           0,
                       ],
                   )
-            else { continue }
+            else {
+                continue
+            }
             result.append(
                 DNeuralUltrasoundLabeledValue(
                     id: .patientComplaints,
@@ -733,10 +791,14 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         localization: DNeuralUltrasoundDictationLocalization,
     ) -> [DNeuralUltrasoundLabeledValue] {
         guard !values.contains(
-            where: { isGenderField(
-                $0.id,
-            ) },
-        ) else { return values }
+            where: {
+                isGenderField(
+                    $0.id,
+                )
+            },
+        ) else {
+            return values
+        }
         var result: [DNeuralUltrasoundLabeledValue] = []
         for index in values.indices {
             let entry = values[
@@ -922,7 +984,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         for id: DNeuralUltrasoundVoiceFieldId,
         localization: DNeuralUltrasoundDictationLocalization,
     ) -> Bool {
-        guard id.isExaminationDescription else { return false }
+        guard id.isExaminationDescription else {
+            return false
+        }
         let trimmed = raw.trimmingCharacters(
             in: .whitespacesAndNewlines,
         )
@@ -930,7 +994,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             "...",
         ) || trimmed.hasSuffix(
             "…",
-        ) { return true }
+        ) {
+            return true
+        }
         let words = trimmed.trimmingCharacters(
             in: .punctuationCharacters,
         ).lowercased()
@@ -946,13 +1012,17 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         locale: Locale,
         localization: DNeuralUltrasoundDictationLocalization,
     ) -> Bool {
-        guard id.isExaminationDescription else { return false }
+        guard id.isExaminationDescription else {
+            return false
+        }
         let facts = DNeuralUltrasoundDictationTextFacts(
             raw,
             locale: locale,
             localization: localization,
         )
-        if facts.isUncertaintyCuePresent { return true }
+        if facts.isUncertaintyCuePresent {
+            return true
+        }
         let normalized = raw.folding(
             options: [.caseInsensitive, .diacriticInsensitive],
             locale: locale,
@@ -980,9 +1050,11 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             if captures(
                 #"^[0-9]{1,8}$"#,
                 in: number,
-            ) != nil { return .text(
-                number,
-            ) }
+            ) != nil {
+                return .text(
+                    number,
+                )
+            }
             if captures(
                 #"^[0-9]+(?:[.,–—-][0-9]+)+$"#,
                 in: number,
@@ -994,9 +1066,11 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 )
                 if (1 ... 8).contains(
                     digits.count,
-                ) { return .text(
-                    digits,
-                ) }
+                ) {
+                    return .text(
+                        digits,
+                    )
+                }
             }
             if let spokenDigits = DNeuralSpokenDigitSequence.parse(
                 number,
@@ -1014,7 +1088,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 in: number,
             ),
                 groups.count == 1
-            else { return nil }
+            else {
+                return nil
+            }
             return .text(
                 "0" + groups[
                     0,
@@ -1033,7 +1109,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             guard !DNeuralVoiceGender.isIsolatedSpokenWord(
                 name,
                 localization: localization,
-            ) else { return nil }
+            ) else {
+                return nil
+            }
             return .text(
                 name,
             )
@@ -1112,7 +1190,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             } else {
                 return nil
             }
-            guard digits.count == 8 else { return nil }
+            guard digits.count == 8 else {
+                return nil
+            }
             let iso = "\(digits.prefix(4))-\(digits.dropFirst(4).prefix(2))-\(digits.suffix(2))"
             return try? DNeuralVoiceFieldValue.parse(
                 fieldId: id,
@@ -1128,7 +1208,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 localization: localization,
             )
         case .patientComplaints, .examinationDescription:
-            guard !raw.isEmpty else { return nil }
+            guard !raw.isEmpty else {
+                return nil
+            }
             return .text(
                 raw,
             )
@@ -1152,7 +1234,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         guard let unitPattern = measurementUnitPattern(
             for: id,
             localization: localization,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         let numericPattern = "^([0-9]+(?:[.,][0-9]+)?)\\s*(\(unitPattern))$"
         let spokenPattern = "^([\\p{L}]+(?:[\\s-]+[\\p{L}]+){0,3})\\s+(\(unitPattern))$"
         let groups = captures(
@@ -1182,7 +1266,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                   Double.init,
               ),
               amount.isFinite, amount > 0
-        else { return nil }
+        else {
+            return nil
+        }
         let unit = groups[
             1,
         ].lowercased()
@@ -1234,7 +1320,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         guard let unitPattern = measurementUnitPattern(
             for: id,
             localization: localization,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         let pattern = "^([0-9]+(?:[.,][0-9]+)?\\s*(?:\(unitPattern)))(?=\\s+[\\p{L}])"
         guard let expression = try? NSRegularExpression(
             pattern: pattern,
@@ -1253,7 +1341,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 ),
                 in: raw,
             )
-        else { return nil }
+        else {
+            return nil
+        }
         let trailing = String(
             raw[
                 prefixRange.upperBound...,
@@ -1261,7 +1351,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         )
         guard trailing.rangeOfCharacter(
             from: .decimalDigits,
-        ) == nil else { return nil }
+        ) == nil else {
+            return nil
+        }
         return String(
             raw[
                 prefixRange,
@@ -1276,7 +1368,9 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         guard let expression = try? NSRegularExpression(
             pattern: pattern,
             options: .caseInsensitive,
-        ) else { return nil }
+        ) else {
+            return nil
+        }
         let wholeRange = NSRange(
             text.startIndex ..< text.endIndex,
             in: text,
@@ -1288,10 +1382,12 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             return nil
         }
         let source = text as NSString
-        return (1 ..< match.numberOfRanges).map { source.substring(
-            with: match.range(
-                at: $0,
-            ),
-        ) }
+        return (1 ..< match.numberOfRanges).map {
+            source.substring(
+                with: match.range(
+                    at: $0,
+                ),
+            )
+        }
     }
 }

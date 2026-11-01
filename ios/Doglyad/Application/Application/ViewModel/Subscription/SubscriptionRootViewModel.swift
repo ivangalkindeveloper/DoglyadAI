@@ -27,11 +27,14 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     ) {
         self.container = container
         repositoryFactory = container.subscriptionRepositoryFactory
-        self.getStoredSettingsAI = getStoredSettingsAI ?? { container.initialSettingsAI }
+        self.getStoredSettingsAI = getStoredSettingsAI ?? {
+            container.initialSettingsAI
+        }
         let state: any SubscriptionRootStateProtocol = switch container.initialSubscriptionStatus {
         case let .some(
             status,
-        ): SubscriptionRootActiveState(
+        ):
+            SubscriptionRootActiveState(
                 status: status,
             )
         case .none: SubscriptionRootInactiveState()
@@ -45,14 +48,17 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         switch state {
         case let state as SubscriptionRootActiveState: state.status
         case _ as SubscriptionRootInactiveState: nil
-        default: preconditionFailure(
+        default:
+            preconditionFailure(
                 "Unexpected subscription root state",
             )
         }
     }
 
     func onInit() {
-        guard !isInitialized else { return }
+        guard !isInitialized else {
+            return
+        }
         isInitialized = true
         let factory = repositoryFactory
         transactionUpdates = Task { [weak self] in
@@ -63,21 +69,29 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
                 try await storeKit.observeChanges { [weak self] result in
                     self?.handle {
                         let update = try result.get()
-                        if update.isOwnerChanged { self?.invalidateIdentity() }
+                        if update.isOwnerChanged {
+                            self?.invalidateIdentity()
+                        }
                         self?.acceptTransaction(
                             update,
                         )
                         _ = try await self?.fetchStatus()
                     }
                 }
-            } catch is CancellationError {} catch { self?.handle { throw error } }
+            } catch is CancellationError {} catch {
+                self?.handle {
+                    throw error
+                }
+            }
         }
         reconciliationTask = handle { [weak self] in
             let storeKit = factory.make(
                 source: .apple,
             )
             let isOwnerChanged = try await storeKit.synchronizeCurrentEntitlements()
-            if isOwnerChanged { self?.invalidateIdentity() }
+            if isOwnerChanged {
+                self?.invalidateIdentity()
+            }
             _ = try await self?.fetchStatus()
         }
     }
@@ -91,13 +105,17 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     func purchase(
         plan: SubscriptionPlan,
     ) async throws -> SubscriptionPurchaseOutcome {
-        guard purchaseID == nil, identityOperationID == nil else { throw SubscriptionError.purchasePending }
+        guard purchaseID == nil, identityOperationID == nil else {
+            throw SubscriptionError.purchasePending
+        }
         try Task.checkCancellation()
         let selected = try await repositoryFactory.make(
             plan: plan,
         )
         try Task.checkCancellation()
-        guard purchaseID == nil, identityOperationID == nil else { throw SubscriptionError.purchasePending }
+        guard purchaseID == nil, identityOperationID == nil else {
+            throw SubscriptionError.purchasePending
+        }
         let id = UUID()
         let revision = identityRevision
         purchaseID = id
@@ -110,12 +128,18 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
             let result = try await selected.purchase(
                 plan: plan,
             ) { [weak self] reference in
-                guard let self, purchaseID == id, identityRevision == revision, !Task.isCancelled else { return }
+                guard let self, purchaseID == id, identityRevision == revision, !Task.isCancelled else {
+                    return
+                }
                 pendingReference = reference
             }
             try Task.checkCancellation()
-            guard let self, identityRevision == revision else { throw CancellationError() }
-            guard pendingPurchaseID == id else { throw CancellationError() }
+            guard let self, identityRevision == revision else {
+                throw CancellationError()
+            }
+            guard pendingPurchaseID == id else {
+                throw CancellationError()
+            }
             switch result {
             case .completed:
                 switch pendingReference {
@@ -126,7 +150,8 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
             }
             let status = try await fetchStatus()
             switch result {
-            case .completed, .pending: return resolvePendingPurchase(
+            case .completed, .pending:
+                return resolvePendingPurchase(
                     status: status,
                 )
             case .cancelled:
@@ -136,24 +161,33 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         }
         purchaseTask = task
         defer {
-            if purchaseID == id { purchaseID = nil
+            if purchaseID == id {
+                purchaseID = nil
                 purchaseTask = nil
             }
         }
-        return try await withTaskCancellationHandler { try await task.value } onCancel: {
+        return try await withTaskCancellationHandler {
+            try await task.value
+        } onCancel: {
             task.cancel()
         }
     }
 
     func restorePurchases() async throws -> SubscriptionStatus? {
-        guard purchaseID == nil, identityOperationID == nil else { throw SubscriptionError.purchasePending }
+        guard purchaseID == nil, identityOperationID == nil else {
+            throw SubscriptionError.purchasePending
+        }
         identityOperationID = UUID()
-        defer { identityOperationID = nil }
+        defer {
+            identityOperationID = nil
+        }
         // Existing Apple purchases remain restorable after changing the storefront.
         let selected = repositoryFactory.make(
             source: .apple,
         )
-        if try await selected.restorePurchases() { invalidateIdentity() }
+        if try await selected.restorePurchases() {
+            invalidateIdentity()
+        }
         return try await fetchStatus()
     }
 
@@ -166,10 +200,10 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     }
 
     func requestRefund() async throws {
-        let selected = repositoryFactory.make(
+        let subscriptionRepository = repositoryFactory.make(
             source: status?.source,
         )
-        try await selected.requestRefund()
+        try await subscriptionRepository.requestRefund()
         _ = try await fetchStatus()
     }
 
@@ -180,9 +214,13 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     func recover(
         key: String,
     ) async throws -> SubscriptionStatus? {
-        guard purchaseID == nil, identityOperationID == nil else { throw SubscriptionError.purchasePending }
+        guard purchaseID == nil, identityOperationID == nil else {
+            throw SubscriptionError.purchasePending
+        }
         identityOperationID = UUID()
-        defer { identityOperationID = nil }
+        defer {
+            identityOperationID = nil
+        }
         try await container.subscriptionBackendRepository.recover(
             key: key,
         )
@@ -204,8 +242,12 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
                     id: paymentID,
                     isAbandoned: false,
                 )
-                guard identityRevision == revision, pendingPurchaseID == pendingID else { throw CancellationError() }
-                guard payment.id == paymentID, payment.planId == pendingPlan?.id else { throw SubscriptionError.unverifiedTransaction }
+                guard identityRevision == revision, pendingPurchaseID == pendingID else {
+                    throw CancellationError()
+                }
+                guard payment.id == paymentID, payment.planId == pendingPlan?.id else {
+                    throw SubscriptionError.unverifiedTransaction
+                }
                 pendingPayment = payment
             }
         case .apple, .none: break
@@ -213,7 +255,9 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         let status = try await container.subscriptionBackendRepository.fetchStatus(
             configEntitlements: container.applicationConfig.entitlements,
         )
-        guard identityRevision == revision else { throw CancellationError() }
+        guard identityRevision == revision else {
+            throw CancellationError()
+        }
         update(
             status: status,
         )
@@ -227,7 +271,9 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         case .apple, .none: break
         }
         let status = try await fetchStatus()
-        guard pendingPurchaseID == pendingID else { throw CancellationError() }
+        guard pendingPurchaseID == pendingID else {
+            throw CancellationError()
+        }
         return resolvePendingPurchase(
             status: status,
         )
@@ -240,7 +286,8 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
             switch state {
             case let state as SubscriptionRootActiveState: state.status
             case _ as SubscriptionRootInactiveState: nil
-            default: preconditionFailure(
+            default:
+                preconditionFailure(
                     "Unexpected subscription root state",
                 )
             }
@@ -273,7 +320,9 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     }
 
     func refreshStatus() async {
-        let task = handle { _ = try await self.fetchStatus() }
+        let task = handle {
+            _ = try await self.fetchStatus()
+        }
         await task?.value
     }
 
@@ -283,12 +332,14 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         switch status {
         case let .some(
             status,
-        ): emit(
+        ):
+            emit(
                 SubscriptionRootActiveState(
                     status: status,
                 ),
             )
-        case .none: emit(
+        case .none:
+            emit(
                 SubscriptionRootInactiveState(),
             )
         }
@@ -303,7 +354,9 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     private func acceptTransaction(
         _ update: SubscriptionTransactionUpdate,
     ) {
-        guard let plan = pendingPlan else { return }
+        guard let plan = pendingPlan else {
+            return
+        }
         switch pendingReference {
         case let .apple(
             previousID,
@@ -311,8 +364,13 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         ):
             guard update.planId == plan.id, update.transactionId != previousID,
                   previousDate.map(
-                      { update.purchaseDate > $0 },
-                  ) ?? true else { return }
+                      {
+                          update.purchaseDate > $0
+                      },
+                  ) ?? true
+            else {
+                return
+            }
             isPendingApplePurchaseVerified = update.isActive
         case .yookassa, .none: break
         }
@@ -321,14 +379,20 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     private func resolvePendingPurchase(
         status: SubscriptionStatus?,
     ) -> SubscriptionPurchaseOutcome {
-        guard let plan = pendingPlan else { return .pending }
+        guard let plan = pendingPlan else {
+            return .pending
+        }
         switch pendingReference {
         case .apple:
-            guard isPendingApplePurchaseVerified else { return .pending }
+            guard isPendingApplePurchaseVerified else {
+                return .pending
+            }
         case let .yookassa(
             paymentID,
         ):
-            guard let payment = pendingPayment, payment.id == paymentID, payment.planId == plan.id else { return .pending }
+            guard let payment = pendingPayment, payment.id == paymentID, payment.planId == plan.id else {
+                return .pending
+            }
             switch payment.status {
             case .succeeded: break
             case .canceled, .refunded:
@@ -338,7 +402,9 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
             }
         case .none: return .pending
         }
-        guard let status else { return .pending }
+        guard let status else {
+            return .pending
+        }
         clearPendingPurchase()
         return .completed(
             status,

@@ -235,10 +235,12 @@ final class VoiceCandidateTests: XCTestCase {
                         contentsOf: audioURL,
                     ),
                 )
-                .map { String(
-                    format: "%02x",
-                    $0,
-                ) }.joined()
+                .map {
+                    String(
+                        format: "%02x",
+                        $0,
+                    )
+                }.joined()
                 if try actualHash == string(
                     testCase,
                     "audioSha256",
@@ -322,7 +324,9 @@ final class VoiceCandidateTests: XCTestCase {
                             let confidence = span[
                                 "confidence",
                             ] as? Double
-                        else { return nil }
+                        else {
+                            return nil
+                        }
                         return DSpeechConfidenceSpan(
                             utf16Start: start,
                             utf16Length: length,
@@ -540,7 +544,9 @@ final class VoiceCandidateTests: XCTestCase {
                     request: request,
                 )
             case .foundationModels:
-                guard let foundation else { throw DNeuralModelError.unavailable }
+                guard let foundation else {
+                    throw DNeuralModelError.unavailable
+                }
                 proposal = try await DNeuralUltrasoundProposalProcessor.validate(
                     generated: foundation.generateProposals(
                         request: request,
@@ -574,7 +580,8 @@ final class VoiceCandidateTests: XCTestCase {
                 ): gender.rawValue
                 case let .date(
                     date,
-                ): formatter.string(
+                ):
+                    formatter.string(
                         from: date,
                     )
                 case let .number(
@@ -657,7 +664,9 @@ final class VoiceCandidateTests: XCTestCase {
         let runID = ProcessInfo.processInfo.environment[
             "VOICE_REPORT_ID",
         ]
-        let name = runID.map { "voice-candidate-ios-\($0).json" } ?? "voice-candidate-ios.json"
+        let name = runID.map {
+            "voice-candidate-ios-\($0).json"
+        } ?? "voice-candidate-ios.json"
         return documents.appendingPathComponent(
             name,
         )

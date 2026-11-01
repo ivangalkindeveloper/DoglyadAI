@@ -28,9 +28,13 @@ final class VoiceMatrixTests: XCTestCase {
         )
         let model: WhisperKit? = if engine == "whisperKit" {
             try await DSpeechWhisperKitModel.shared.load()
-        } else { nil }
+        } else {
+            nil
+        }
         let handle = try outputHandle()
-        defer { try? handle.close() }
+        defer {
+            try? handle.close()
+        }
         var tokenPublishedAt = Date.distantPast
         for (index, item) in cases.enumerated() {
             if Date().timeIntervalSince(
@@ -60,10 +64,12 @@ final class VoiceMatrixTests: XCTestCase {
                 XCTAssertEqual(
                     SHA256.hash(
                         data: data,
-                    ).map { String(
-                        format: "%02x",
-                        $0,
-                    ) }.joined(),
+                    ).map {
+                        String(
+                            format: "%02x",
+                            $0,
+                        )
+                    }.joined(),
                     try text(
                         item,
                         "audioSha256",
@@ -145,7 +151,8 @@ final class VoiceMatrixTests: XCTestCase {
                                 locale: locale,
                             ),
                         )
-                    default: throw CocoaError(
+                    default:
+                        throw CocoaError(
                             .featureUnsupported,
                         )
                     }
@@ -225,7 +232,9 @@ final class VoiceMatrixTests: XCTestCase {
             "VOICE_MATRIX_METHODS",
         ] ?? "all"
         let handle = try outputHandle()
-        defer { try? handle.close() }
+        defer {
+            try? handle.close()
+        }
         var generatedCache: [String: DNeuralUltrasoundProposalGenerationResponse] = [:]
         var tokenPublishedAt = Date.distantPast
         for (index, item) in cases.enumerated() {
@@ -300,17 +309,23 @@ final class VoiceMatrixTests: XCTestCase {
             var methods: [String: Any] = [:]
             if !isServer, selectedMethods != "foundation" {
                 let rules: [(String, () -> DNeuralUltrasoundDictationProposal)] = [
-                    ("exactLabels", { DNeuralUltrasoundDictationLabeledFormParser.parse(
-                        request: request,
-                    )
-                        ?? DNeuralUltrasoundDictationProposal(
-                            source: .labeledDictation,
-                            proposals: [],
-                        ) }),
-                    ("explicitRules", { processor.deterministic }),
-                    ("naturalLanguage", { DNeuralUltrasoundDictationNaturalLanguageParser.parse(
-                        request: request,
-                    ) }),
+                    ("exactLabels", {
+                        DNeuralUltrasoundDictationLabeledFormParser.parse(
+                            request: request,
+                        )
+                            ?? DNeuralUltrasoundDictationProposal(
+                                source: .labeledDictation,
+                                proposals: [],
+                            )
+                    }),
+                    ("explicitRules", {
+                        processor.deterministic
+                    }),
+                    ("naturalLanguage", {
+                        DNeuralUltrasoundDictationNaturalLanguageParser.parse(
+                            request: request,
+                        )
+                    }),
                 ]
                 for (name, parse) in rules {
                     let started = Date()
@@ -541,7 +556,9 @@ final class VoiceMatrixTests: XCTestCase {
     private func publishAppCheckTokenIfRequested() async throws {
         guard ProcessInfo.processInfo.environment[
             "VOICE_MATRIX_EXPORT_TOKEN",
-        ] == "1" else { return }
+        ] == "1" else {
+            return
+        }
         #if DEBUG || targetEnvironment(
             simulator,
         )
@@ -695,7 +712,10 @@ final class VoiceMatrixTests: XCTestCase {
                 ] as? Int,
                     let confidence = span[
                         "confidence",
-                    ] as? Double else { return nil }
+                    ] as? Double
+                else {
+                    return nil
+                }
                 return DSpeechConfidenceSpan(
                     utf16Start: start,
                     utf16Length: length,
@@ -718,7 +738,10 @@ final class VoiceMatrixTests: XCTestCase {
                     ] as? Double,
                     let compression = span[
                         "compressionRatio",
-                    ] as? Double else { return nil }
+                    ] as? Double
+                else {
+                    return nil
+                }
                 return DSpeechDecodingSpan(
                     utf16Start: start,
                     utf16Length: length,
@@ -870,7 +893,8 @@ final class VoiceMatrixTests: XCTestCase {
         ): value.rawValue
         case let .date(
             value,
-        ): dateString(
+        ):
+            dateString(
                 value,
             )
         }

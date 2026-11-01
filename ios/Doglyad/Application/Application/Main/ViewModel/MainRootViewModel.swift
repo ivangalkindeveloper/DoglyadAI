@@ -18,7 +18,9 @@ final class MainRootViewModel: DStateViewModel<any MainRootStateProtocol> {
     func onAppear(
         requestReview: @escaping @MainActor () -> Void,
     ) {
-        guard !isReviewRequestChecked else { return }
+        guard !isReviewRequestChecked else {
+            return
+        }
         isReviewRequestChecked = true
 
         Task {
@@ -33,7 +35,9 @@ final class MainRootViewModel: DStateViewModel<any MainRootStateProtocol> {
     ) async {
         do {
             let reportsCount = try await container.ultrasoundReportRepository.getReportsCount()
-            guard !Task.isCancelled, reportsCount > 0 else { return }
+            guard !Task.isCancelled, reportsCount > 0 else {
+                return
+            }
             try await Task.sleep(
                 for: .seconds(
                     2,
@@ -43,7 +47,9 @@ final class MainRootViewModel: DStateViewModel<any MainRootStateProtocol> {
             return
         }
 
-        guard !Task.isCancelled else { return }
+        guard !Task.isCancelled else {
+            return
+        }
         requestReview()
     }
 }

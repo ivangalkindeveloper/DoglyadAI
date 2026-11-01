@@ -51,9 +51,11 @@ struct DSpeechWhisperKitTranscriptionTests {
 
     @Test
     func recheckSamplesIncludeContextAndStayInsideTheRecording() {
-        let audio = (0 ..< WhisperKit.sampleRate).map { Float(
-            $0,
-        ) }
+        let audio = (0 ..< WhisperKit.sampleRate).map {
+            Float(
+                $0,
+            )
+        }
         let samples = DSpeechWhisperKitTranscription.samples(
             for: TranscriptionSegment(
                 start: 0.1,

@@ -9,6 +9,7 @@
 
 # Options (inferred from existing sources — keep in sync with the code style)
 --semicolons never
+--enable wrapConditionalBodies
 --wrap-collections before-first
 --wrap-arguments before-first
 --wrap-parameters before-first

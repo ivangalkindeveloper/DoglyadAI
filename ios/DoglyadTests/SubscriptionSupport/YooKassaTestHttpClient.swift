@@ -20,9 +20,11 @@ actor YooKassaTestHttpClient: DHttpClientProtocol {
 
     func get<Response: Decodable>(
         url _: URL,
-    ) async throws -> Response { throw URLError(
-        .unsupportedURL,
-    ) }
+    ) async throws -> Response {
+        throw URLError(
+            .unsupportedURL,
+        )
+    }
 
     func get<Response: Decodable>(
         endPoint: String,
@@ -33,9 +35,11 @@ actor YooKassaTestHttpClient: DHttpClientProtocol {
         )
         guard let data = responses[
             endPoint,
-        ] else { throw URLError(
-            .unsupportedURL,
-        ) }
+        ] else {
+            throw URLError(
+                .unsupportedURL,
+            )
+        }
         return try JSONDecoder().decode(
             Response.self,
             from: data,
@@ -63,9 +67,11 @@ actor YooKassaTestHttpClient: DHttpClientProtocol {
         )
         guard let data = responses[
             endPoint,
-        ] else { throw URLError(
-            .unsupportedURL,
-        ) }
+        ] else {
+            throw URLError(
+                .unsupportedURL,
+            )
+        }
         return try JSONDecoder().decode(
             Response.self,
             from: data,

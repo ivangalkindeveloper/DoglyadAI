@@ -7,7 +7,7 @@
     "name": "doglyad-gpu-huggingface",
     "isExternal": false
   },
-  "serverConfig": "../../dgx-spark/config/server.json",
+  "serverConfig": "../config/medgemma-4b-amd64.json",
   "models": [
     {
       "modelId": "google/medgemma-4b-it",

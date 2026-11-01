@@ -146,7 +146,9 @@ struct VoiceServerResponseTests {
             proposal.proposals.isEmpty,
         )
         #expect(
-            !proposal.proposals.contains { $0.id == .patientName },
+            !proposal.proposals.contains {
+                $0.id == .patientName
+            },
         )
     }
 

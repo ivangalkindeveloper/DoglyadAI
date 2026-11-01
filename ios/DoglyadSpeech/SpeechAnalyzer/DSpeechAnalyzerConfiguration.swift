@@ -28,7 +28,9 @@ enum DSpeechAnalyzerConfiguration {
         on analyzer: SpeechAnalyzer,
         contextualStrings: [String],
     ) async throws {
-        guard !contextualStrings.isEmpty else { return }
+        guard !contextualStrings.isEmpty else {
+            return
+        }
 
         let context = AnalysisContext()
         context.contextualStrings[

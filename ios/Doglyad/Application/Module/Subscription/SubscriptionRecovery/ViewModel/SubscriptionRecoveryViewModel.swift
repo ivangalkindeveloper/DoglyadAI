@@ -41,11 +41,19 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
         )
     }
 
-    var isProcessing: Bool { switch state { case _ as SubscriptionRecoveryLoadingState: true
-    default: false } }
-    var isRestoreEnabled: Bool { !isProcessing && !isDismissalRequested && !recoveryTextController.text.trimmingCharacters(
-        in: .whitespacesAndNewlines,
-    ).isEmpty }
+    var isProcessing: Bool {
+        switch state {
+        case _ as SubscriptionRecoveryLoadingState: true
+        default: false
+        }
+    }
+
+    var isRestoreEnabled: Bool {
+        !isProcessing && !isDismissalRequested && !recoveryTextController.text.trimmingCharacters(
+            in: .whitespacesAndNewlines,
+        ).isEmpty
+    }
+
     private var stableState: any SubscriptionRecoveryStateProtocol {
         switch state {
         case let loading as SubscriptionRecoveryLoadingState: loading.previousState
@@ -57,7 +65,8 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
     override func onDisappear() {
         super.onDisappear()
         switch state {
-        case let loading as SubscriptionRecoveryLoadingState: emit(
+        case let loading as SubscriptionRecoveryLoadingState:
+            emit(
                 loading.previousState,
             )
         default: break
@@ -65,7 +74,9 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
     }
 
     func onTapBack() {
-        guard !router.path.isEmpty else { return }
+        guard !router.path.isEmpty else {
+            return
+        }
         isDismissalRequested = true
         cancelOperationTask()
         coordinator.pop()
@@ -73,12 +84,18 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
 
     func onFocusChanged(
         _ focus: SubscriptionRecoveryFocus?,
-    ) { self.focus = focus }
+    ) {
+        self.focus = focus
+    }
 
-    func unfocus() { focus = nil }
+    func unfocus() {
+        focus = nil
+    }
 
     func onTapCreateKey() {
-        guard !isProcessing, !isDismissalRequested else { return }
+        guard !isProcessing, !isDismissalRequested else {
+            return
+        }
         unfocus()
         let previous = stableState
         let loading = SubscriptionRecoveryLoadingState(
@@ -88,17 +105,23 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
             loading,
         )
         operationTask = Task {
-            guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+            guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                return
+            }
             do {
                 let key = try await createRecoveryKey()
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                    return
+                }
                 emit(
                     SubscriptionRecoveryKeyState(
                         key: key,
                     ),
                 )
             } catch {
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                    return
+                }
                 emit(
                     SubscriptionRecoveryFailedState(
                         previousState: previous,
@@ -119,7 +142,9 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
     }
 
     func onTapRestore() {
-        guard isRestoreEnabled else { return }
+        guard isRestoreEnabled else {
+            return
+        }
         unfocus()
         let key = recoveryTextController.text.trimmingCharacters(
             in: .whitespacesAndNewlines,
@@ -132,19 +157,25 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
             loading,
         )
         operationTask = Task {
-            guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+            guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                return
+            }
             do {
                 let status = try await recover(
                     key,
                 )
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                    return
+                }
                 updateSubscriptionStatus(
                     status,
                 )
                 isDismissalRequested = true
                 coordinator.pop()
             } catch {
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                    return
+                }
                 emit(
                     SubscriptionRecoveryFailedState(
                         previousState: previous,

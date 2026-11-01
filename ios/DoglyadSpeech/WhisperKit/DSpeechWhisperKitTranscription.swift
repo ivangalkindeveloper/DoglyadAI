@@ -139,7 +139,9 @@ struct DSpeechWhisperKitTranscription: Sendable {
         // SDK callbacks can promote confirmed segments before replacing the old
         // draft array. Audio timestamps prevent that transient overlap appearing twice.
         let drafts = unconfirmedSegments.filter { segment in
-            guard let confirmedEnd = confirmedSegments.last?.end else { return true }
+            guard let confirmedEnd = confirmedSegments.last?.end else {
+                return true
+            }
             return segment.end > confirmedEnd
         }
         let text = (confirmedSegments + drafts).map { segment in
@@ -150,7 +152,9 @@ struct DSpeechWhisperKitTranscription: Sendable {
             ).trimmingCharacters(
                 in: .whitespacesAndNewlines,
             )
-        }.filter { !$0.isEmpty }.joined(
+        }.filter {
+            !$0.isEmpty
+        }.joined(
             separator: " ",
         )
         return text.isEmpty ? nil : text
@@ -204,7 +208,9 @@ struct DSpeechWhisperKitTranscription: Sendable {
         for segment: TranscriptionSegment,
         in audioArray: [Float],
     ) -> [Float] {
-        guard segment.start.isFinite, segment.end.isFinite, segment.end > segment.start else { return [] }
+        guard segment.start.isFinite, segment.end.isFinite, segment.end > segment.start else {
+            return []
+        }
         let rate = Double(
             WhisperKit.sampleRate,
         )
@@ -236,7 +242,9 @@ struct DSpeechWhisperKitTranscription: Sendable {
                 ) * rate,
             ),
         )
-        guard end > start else { return [] }
+        guard end > start else {
+            return []
+        }
         return Array(
             audioArray[
                 start ..< end,
@@ -321,9 +329,11 @@ struct DSpeechWhisperKitTranscription: Sendable {
                 repeatedTexts.append(
                     "",
                 )
-                if activity.count < repeatedTexts.count { activity.append(
-                    nil,
-                ) }
+                if activity.count < repeatedTexts.count {
+                    activity.append(
+                        nil,
+                    )
+                }
             }
         }
         return (repeatedTexts, activity)
@@ -336,7 +346,9 @@ struct DSpeechWhisperKitTranscription: Sendable {
         // energy check is evidence of activity, not proof that words are correct.
         guard !samples.isEmpty, samples.allSatisfy(
             \.isFinite,
-        ) else { return false }
+        ) else {
+            return false
+        }
         return EnergyVAD(
             energyThreshold: 0.002,
         ).voiceActivity(

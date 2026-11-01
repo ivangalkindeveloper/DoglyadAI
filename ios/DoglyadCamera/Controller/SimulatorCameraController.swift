@@ -22,12 +22,16 @@ public final class SimulatorCameraController: DCameraControllerProtocol {
     }
 
     public func startSession() {
-        guard !isRunning else { return }
+        guard !isRunning else {
+            return
+        }
         isRunning = true
     }
 
     public func stopSession() {
-        guard isRunning else { return }
+        guard isRunning else {
+            return
+        }
         isRunning = false
     }
 
@@ -35,7 +39,9 @@ public final class SimulatorCameraController: DCameraControllerProtocol {
         cropRegion: DCameraCropRegion,
         completion: @escaping (UIImage) -> Void,
     ) {
-        guard !isCapturing else { return }
+        guard !isCapturing else {
+            return
+        }
 
         isCapturing = true
         capturePhotoCompletion = completion
@@ -46,7 +52,9 @@ public final class SimulatorCameraController: DCameraControllerProtocol {
             try? await Task.sleep(
                 nanoseconds: 100000000,
             )
-            guard let self else { return }
+            guard let self else {
+                return
+            }
 
             let image = SimulatorCameraImageFactory.makeImage(
                 captureNumber: captureNumber,
@@ -67,7 +75,9 @@ public final class SimulatorCameraController: DCameraControllerProtocol {
                     cropped,
                     from: cropped.extent,
                 )
-            else { return }
+            else {
+                return
+            }
             completion?(
                 UIImage(
                     cgImage: cgImage,

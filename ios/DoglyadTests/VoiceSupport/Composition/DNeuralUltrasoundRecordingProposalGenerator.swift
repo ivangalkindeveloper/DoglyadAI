@@ -13,7 +13,9 @@ final class DNeuralUltrasoundRecordingProposalGenerator: DNeuralUltrasoundPropos
         self.base = base
     }
 
-    func prewarm() { base.prewarm() }
+    func prewarm() {
+        base.prewarm()
+    }
 
     func generateProposals(
         request: DNeuralUltrasoundDictationParseRequest,

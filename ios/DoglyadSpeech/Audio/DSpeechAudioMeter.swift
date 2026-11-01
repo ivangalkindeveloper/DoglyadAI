@@ -35,10 +35,14 @@ final class DSpeechAudioMeter: @unchecked Sendable {
     func process(
         _ buffer: AVAudioPCMBuffer,
     ) {
-        guard buffer.frameLength > 0 else { return }
+        guard buffer.frameLength > 0 else {
+            return
+        }
         guard let channel = buffer.floatChannelData?[
             0,
-        ] else { return }
+        ] else {
+            return
+        }
 
         var rms: Float = 0
         vDSP_rmsqv(

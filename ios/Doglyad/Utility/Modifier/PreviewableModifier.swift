@@ -11,6 +11,7 @@ struct PreviewableModifier: ViewModifier {
         content: Content,
     ) -> some View {
         let container = container ?? DependencyContainer.previewable
+
         content
             .environmentObject(
                 router ?? DRouter(

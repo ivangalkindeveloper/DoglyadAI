@@ -9,7 +9,6 @@ enum L10NParameter: String, CaseIterable, Sendable {
     case email
     case id
     case maxLength
-    case number
     case prefix
     case price
     case total

@@ -68,10 +68,12 @@ final class VoiceEndToEndTests: XCTestCase {
         )
         let fixtureHash = SHA256.hash(
             data: fixtureData,
-        ).map { String(
-            format: "%02x",
-            $0,
-        ) }.joined()
+        ).map {
+            String(
+                format: "%02x",
+                $0,
+            )
+        }.joined()
         let fixture = try XCTUnwrap(
             JSONSerialization.jsonObject(
                 with: fixtureData,
@@ -89,9 +91,11 @@ final class VoiceEndToEndTests: XCTestCase {
             "VOICE_END_TO_END_REQUIRE_FOUNDATION_MODELS",
         ] == "1"
         if let localeFilter {
-            cases = cases.filter { $0[
-                "locale",
-            ] as? String == localeFilter }
+            cases = cases.filter {
+                $0[
+                    "locale",
+                ] as? String == localeFilter
+            }
         }
         XCTAssertFalse(
             cases.isEmpty,
@@ -139,7 +143,10 @@ final class VoiceEndToEndTests: XCTestCase {
             ] as? String == "audio",
                 checkpoint[
                     "fixtureSha256",
-                ] as? String == fixtureHash else { throw CheckpointError.mismatchedInput }
+                ] as? String == fixtureHash
+            else {
+                throw CheckpointError.mismatchedInput
+            }
             let rows = try XCTUnwrap(
                 checkpoint[
                     "results",
@@ -156,10 +163,14 @@ final class VoiceEndToEndTests: XCTestCase {
                     ] as? String,
                 )
                 guard let item = cases.first(
-                    where: { $0[
-                        "id",
-                    ] as? String == id },
-                ) else { continue }
+                    where: {
+                        $0[
+                            "id",
+                        ] as? String == id
+                    },
+                ) else {
+                    continue
+                }
                 for key in ["audioSha256", "inputText", "expectedFields"] {
                     XCTAssertEqual(
                         item[
@@ -174,19 +185,25 @@ final class VoiceEndToEndTests: XCTestCase {
                         key,
                     ] as? NSObject == row[
                         key,
-                    ] as? NSObject else { throw CheckpointError.mismatchedInput }
+                    ] as? NSObject else {
+                        throw CheckpointError.mismatchedInput
+                    }
                 }
                 guard cachedASR.updateValue(
                     row,
                     forKey: id,
-                ) == nil else { throw CheckpointError.duplicateCase }
+                ) == nil else {
+                    throw CheckpointError.duplicateCase
+                }
             }
             checkpointHash = SHA256.hash(
                 data: data,
-            ).map { String(
-                format: "%02x",
-                $0,
-            ) }.joined()
+            ).map {
+                String(
+                    format: "%02x",
+                    $0,
+                )
+            }.joined()
         }
         let client = DHttpClient(
             baseUrl: Bundle.dictionaryString(
@@ -202,9 +219,11 @@ final class VoiceEndToEndTests: XCTestCase {
         var configurations: [String: ApplicationConfig] = [:]
         var types: [String: [String: USExaminationType]] = [:]
         let localeCodes = Set(
-            cases.compactMap { $0[
-                "locale",
-            ] as? String },
+            cases.compactMap {
+                $0[
+                    "locale",
+                ] as? String
+            },
         ).sorted()
         for code in localeCodes {
             let headers = [DHttpHeader.acceptLanguage: code]
@@ -224,7 +243,9 @@ final class VoiceEndToEndTests: XCTestCase {
             ] = Dictionary(
                 uniqueKeysWithValues: groups.flatMap(
                     \.examinationTypes,
-                ).map { ($0.id, $0) },
+                ).map {
+                    ($0.id, $0)
+                },
             )
             client.updateConfiguration(
                 timeoutIntervalForRequest: config.network.timeoutIntervalForRequest,
@@ -256,11 +277,13 @@ final class VoiceEndToEndTests: XCTestCase {
         ] == "1"
         let loadStarted = Date()
         let model: WhisperKit? = if textOnly || cases.allSatisfy(
-            { cachedASR[
-                $0[
-                    "id",
-                ] as? String ?? "",
-            ] != nil },
+            {
+                cachedASR[
+                    $0[
+                        "id",
+                    ] as? String ?? "",
+                ] != nil
+            },
         ) {
             nil
         } else {
@@ -323,10 +346,12 @@ final class VoiceEndToEndTests: XCTestCase {
                         data: Data(
                             contentsOf: audioURL,
                         ),
-                    ).map { String(
-                        format: "%02x",
-                        $0,
-                    ) }.joined(),
+                    ).map {
+                        String(
+                            format: "%02x",
+                            $0,
+                        )
+                    }.joined(),
                     item[
                         "audioSha256",
                     ] as? String,
@@ -397,7 +422,11 @@ final class VoiceEndToEndTests: XCTestCase {
                     }
                     row[
                         "asrSpeechActivity",
-                    ] = transcription.speechActivity.map { $0.map { $0 as Any } ?? NSNull() }
+                    ] = transcription.speechActivity.map {
+                        $0.map {
+                            $0 as Any
+                        } ?? NSNull()
+                    }
                     row[
                         "asrRechecks",
                     ] = zip(
@@ -436,11 +465,13 @@ final class VoiceEndToEndTests: XCTestCase {
                 ] = text
                 if row[
                     "asrReusedFromSha256",
-                ] == nil { row[
-                    "asrSeconds",
-                ] = Date().timeIntervalSince(
-                    asrStarted,
-                ) }
+                ] == nil {
+                    row[
+                        "asrSeconds",
+                    ] = Date().timeIntervalSince(
+                        asrStarted,
+                    )
+                }
                 let transcript = DSpeechTranscript(
                     rawText: raw,
                     correctedText: text,
@@ -523,7 +554,9 @@ final class VoiceEndToEndTests: XCTestCase {
                         locale,
                     )
                 }
-                if isFoundationOnly, !available { throw DNeuralModelError.unavailable }
+                if isFoundationOnly, !available {
+                    throw DNeuralModelError.unavailable
+                }
                 let parseStarted = Date()
                 defer {
                     if let error = foundationProvider.recorder?.error {
@@ -639,24 +672,28 @@ final class VoiceEndToEndTests: XCTestCase {
                 for field in DNeuralUltrasoundVoiceFieldId.allCases {
                     if !automaticIDs.contains(
                         field,
-                    ) { XCTAssertEqual(
-                        before[
-                            field.rawValue,
-                        ] as? AnyHashable,
-                        afterAutomatic[
-                            field.rawValue,
-                        ] as? AnyHashable,
-                    ) }
+                    ) {
+                        XCTAssertEqual(
+                            before[
+                                field.rawValue,
+                            ] as? AnyHashable,
+                            afterAutomatic[
+                                field.rawValue,
+                            ] as? AnyHashable,
+                        )
+                    }
                     if !proposedIDs.contains(
                         field,
-                    ) { XCTAssertEqual(
-                        before[
-                            field.rawValue,
-                        ] as? AnyHashable,
-                        afterConfirmed[
-                            field.rawValue,
-                        ] as? AnyHashable,
-                    ) }
+                    ) {
+                        XCTAssertEqual(
+                            before[
+                                field.rawValue,
+                            ] as? AnyHashable,
+                            afterConfirmed[
+                                field.rawValue,
+                            ] as? AnyHashable,
+                        )
+                    }
                 }
                 row[
                     "response",
@@ -729,9 +766,11 @@ final class VoiceEndToEndTests: XCTestCase {
             cases.count,
         )
         XCTAssertTrue(
-            results.allSatisfy { ($0[
-                "status",
-            ] as? String) == "ok" },
+            results.allSatisfy {
+                ($0[
+                    "status",
+                ] as? String) == "ok"
+            },
             "Inspect the report for failed pipeline requests",
         )
         print(
@@ -762,7 +801,9 @@ final class VoiceEndToEndTests: XCTestCase {
                 "asrRechecks",
             ] as? [[String: Any]],
         )
-        guard stored.count == repeats.count else { throw CheckpointError.mismatchedInput }
+        guard stored.count == repeats.count else {
+            throw CheckpointError.mismatchedInput
+        }
         var segments: [TranscriptionSegment] = []
         var repeatedTexts: [String] = []
         for (segment, repeated) in zip(
@@ -776,7 +817,9 @@ final class VoiceEndToEndTests: XCTestCase {
             )
             guard repeated[
                 "originalText",
-            ] as? String == text else { throw CheckpointError.mismatchedInput }
+            ] as? String == text else {
+                throw CheckpointError.mismatchedInput
+            }
             try segments.append(
                 TranscriptionSegment(
                     start: XCTUnwrap(
@@ -837,7 +880,9 @@ final class VoiceEndToEndTests: XCTestCase {
             repeatedTexts: repeatedTexts,
             speechActivity: (row[
                 "asrSpeechActivity",
-            ] as? [Any] ?? []).map { $0 as? Bool },
+            ] as? [Any] ?? []).map {
+                $0 as? Bool
+            },
             decodingSeconds: decoding,
             recheckSeconds: recheck,
         )
@@ -848,9 +893,11 @@ final class VoiceEndToEndTests: XCTestCase {
     ) -> [String: Any] {
         ["field_id": proposal.id.wireValue, "value": valueJSON(
             proposal.value,
-        ), "evidence": proposal.sourceQuote, "accuracy": proposal.accuracy.rawValue, "warnings": proposal.warnings.map { String(
-            describing: $0,
-        ) }]
+        ), "evidence": proposal.sourceQuote, "accuracy": proposal.accuracy.rawValue, "warnings": proposal.warnings.map {
+            String(
+                describing: $0,
+            )
+        }]
     }
 
     private func valueJSON(
@@ -866,11 +913,14 @@ final class VoiceEndToEndTests: XCTestCase {
         case let .gender(
             value,
         ):
-            switch value { case .male: "male"
-            case .female: "female" }
+            switch value {
+            case .male: "male"
+            case .female: "female"
+            }
         case let .date(
             value,
-        ): dateString(
+        ):
+            dateString(
                 value,
             )
         }

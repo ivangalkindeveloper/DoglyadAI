@@ -44,7 +44,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
         )
     }
 
-    var isDismissible: Bool { !router.path.isEmpty }
+    var isDismissible: Bool {
+        !router.path.isEmpty
+    }
 
     var isProcessing: Bool {
         switch state {
@@ -53,7 +55,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
         }
     }
 
-    var isContinueEnabled: Bool { !isDismissalRequested && selectableContent?.selectedPlan != nil }
+    var isContinueEnabled: Bool {
+        !isDismissalRequested && selectableContent?.selectedPlan != nil
+    }
 
     private var selectableContent: PaywallContentState? {
         switch state {
@@ -67,12 +71,16 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
         }
     }
 
-    override func onInit() { requestCatalog() }
+    override func onInit() {
+        requestCatalog()
+    }
 
     override func onSubscriptionChanged(
         _ status: SubscriptionStatus?,
     ) {
-        guard status != nil, !isDismissalRequested else { return }
+        guard status != nil, !isDismissalRequested else {
+            return
+        }
         switch state {
         case _ as PaywallPendingState: onTapCheckPayment()
         case let failed as PaywallOperationFailedState:
@@ -81,7 +89,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
             default: break
             }
         case _ as PaywallDefaultState, _ as PaywallLoadingFailedState, _ as PaywallLoadingState:
-            guard !isInitiallySubscribed else { return }
+            guard !isInitiallySubscribed else {
+                return
+            }
             dismissPaywall()
         default: break
         }
@@ -90,12 +100,14 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     override func onDisappear() {
         super.onDisappear()
         switch state {
-        case let purchasing as PaywallPurchasingState: emit(
+        case let purchasing as PaywallPurchasingState:
+            emit(
                 PaywallDefaultState(
                     copying: purchasing,
                 ),
             )
-        case let restoring as PaywallRestoringState: emit(
+        case let restoring as PaywallRestoringState:
+            emit(
                 restoring.previousState,
             )
         default: break
@@ -103,7 +115,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     }
 
     func onTapClose() {
-        guard !isDismissalRequested else { return }
+        guard !isDismissalRequested else {
+            return
+        }
         analytics.buttonTapped(
             .paywallCancel,
         )
@@ -115,10 +129,19 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     ) {
         guard !isDismissalRequested, let content = selectableContent,
               content.tiers.contains(
-                  where: { $0.id == type },
-              ) else { return }
-        guard content.selectedType != type else { return }
-        let selectedID = content.plans.first { $0.type == type }?.id
+                  where: {
+                      $0.id == type
+                  },
+              )
+        else {
+            return
+        }
+        guard content.selectedType != type else {
+            return
+        }
+        let selectedID = content.plans.first {
+            $0.type == type
+        }?.id
         emit(
             PaywallDefaultState(
                 tiers: content.tiers,
@@ -135,7 +158,10 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
         guard !isDismissalRequested, let content = selectableContent,
               content.displayedPlans.contains(
                   plan,
-              ) else { return }
+              )
+        else {
+            return
+        }
         emit(
             PaywallDefaultState(
                 tiers: content.tiers,
@@ -147,7 +173,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     }
 
     func onTapRetry() {
-        guard !isDismissalRequested else { return }
+        guard !isDismissalRequested else {
+            return
+        }
         switch state {
         case let failed as PaywallOperationFailedState:
             switch failed.previousState {
@@ -156,11 +184,13 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                     pending,
                 )
                 onTapCheckPayment()
-            default: requestCatalog(
+            default:
+                requestCatalog(
                     previous: failed.previousState,
                 )
             }
-        case let content as PaywallDefaultState: requestCatalog(
+        case let content as PaywallDefaultState:
+            requestCatalog(
                 previous: content,
             )
         case _ as PaywallLoadingFailedState: requestCatalog()
@@ -169,7 +199,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     }
 
     func onTapRestore() {
-        guard !isDismissalRequested else { return }
+        guard !isDismissalRequested else {
+            return
+        }
         switch state {
         case _ as PaywallRestoringState, _ as PaywallPurchasingState, _ as PaywallLoadingState: return
         case _ as PaywallPendingState:
@@ -197,14 +229,18 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
         operationTask = Task {
             do {
                 let status = try await restorePurchases()
-                guard !Task.isCancelled, !isDismissalRequested, state === restoring else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === restoring else {
+                    return
+                }
                 updateSubscriptionStatus(
                     status,
                 )
                 analytics.actionCompleted(
                     .subscriptionRestoreCompleted,
                 )
-                guard !Task.isCancelled, !isDismissalRequested else { return }
+                guard !Task.isCancelled, !isDismissalRequested else {
+                    return
+                }
                 emit(
                     previous,
                 )
@@ -213,7 +249,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                 case .none: break
                 }
             } catch {
-                guard !Task.isCancelled, !isDismissalRequested, state === restoring else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === restoring else {
+                    return
+                }
                 fail(
                     previous: previous,
                     description: l10n.text(
@@ -249,7 +287,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     }
 
     func onTapContinue() {
-        guard !isDismissalRequested, let content = selectableContent, let plan = content.selectedPlan else { return }
+        guard !isDismissalRequested, let content = selectableContent, let plan = content.selectedPlan else {
+            return
+        }
         analytics.buttonTapped(
             .paywallPurchaseStarted,
             parameters: AnalyticsParameters(
@@ -270,15 +310,19 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                 let outcome = try await purchase(
                     plan,
                 )
-                guard !Task.isCancelled, !isDismissalRequested, state === purchasing else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === purchasing else {
+                    return
+                }
                 switch outcome {
-                case .pending: emit(
+                case .pending:
+                    emit(
                         PaywallPendingState(
                             content: content,
                             plan: plan,
                         ),
                     )
-                case .cancelled: emit(
+                case .cancelled:
+                    emit(
                         PaywallDefaultState(
                             copying: content,
                         ),
@@ -292,7 +336,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                     analytics.actionCompleted(
                         .subscriptionPurchaseCompleted,
                     )
-                    guard !Task.isCancelled, !isDismissalRequested else { return }
+                    guard !Task.isCancelled, !isDismissalRequested else {
+                        return
+                    }
                     emit(
                         PaywallDefaultState(
                             copying: content,
@@ -301,7 +347,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                     dismissPaywall()
                 }
             } catch {
-                guard !Task.isCancelled, !isDismissalRequested, state === purchasing else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === purchasing else {
+                    return
+                }
                 fail(
                     previous: content,
                     description: l10n.text(
@@ -313,7 +361,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     }
 
     func onTapCheckPayment() {
-        guard !isDismissalRequested else { return }
+        guard !isDismissalRequested else {
+            return
+        }
         let pending: PaywallPendingState
         switch state {
         case let current as PaywallPendingState: pending = current
@@ -333,7 +383,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
         operationTask = Task {
             do {
                 let outcome = try await checkPurchase()
-                guard !Task.isCancelled, !isDismissalRequested, state === checking else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === checking else {
+                    return
+                }
                 switch outcome {
                 case let .completed(
                     status,
@@ -341,22 +393,28 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                     updateSubscriptionStatus(
                         status,
                     )
-                    guard !Task.isCancelled, !isDismissalRequested else { return }
+                    guard !Task.isCancelled, !isDismissalRequested else {
+                        return
+                    }
                     emit(
                         PaywallDefaultState(
                             copying: pending,
                         ),
                     )
                     dismissPaywall()
-                case .cancelled: requestCatalog(
+                case .cancelled:
+                    requestCatalog(
                         previous: pending,
                     )
-                case .pending: emit(
+                case .pending:
+                    emit(
                         pending,
                     )
                 }
             } catch {
-                guard !Task.isCancelled, !isDismissalRequested, state === checking else { return }
+                guard !Task.isCancelled, !isDismissalRequested, state === checking else {
+                    return
+                }
                 fail(
                     previous: pending,
                     description: l10n.text(
@@ -368,7 +426,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     }
 
     private func dismissPaywall() {
-        guard !isDismissalRequested else { return }
+        guard !isDismissalRequested else {
+            return
+        }
         isDismissalRequested = true
         cancelOperationTask()
         lastTask?.cancel()
@@ -394,7 +454,8 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                     errorDescription: description,
                 ),
             )
-        default: emit(
+        default:
+            emit(
                 PaywallLoadingFailedState(
                     errorDescription: description,
                 ),
@@ -417,7 +478,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
             try Task.checkCancellation()
             return try await repository.fetchCatalog()
         } onMainSuccess: { catalog in
-            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else { return }
+            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else {
+                return
+            }
             guard !catalog.plans.isEmpty, !catalog.tiers.isEmpty else {
                 self.fail(
                     previous: nil,
@@ -437,11 +500,17 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                 return first == second ? $0.id < $1.id : first < second
             }
             let preferredType = previous?.selectedType ?? .pro
-            let selectedType = plans.contains { $0.type == preferredType } ? preferredType : plans[
+            let selectedType = plans.contains {
+                $0.type == preferredType
+            } ? preferredType : plans[
                 0,
             ].type
-            let available = plans.filter { $0.type == selectedType }
-            let selectedID = available.first { $0.id == previous?.selectedPlanID }?.id ?? available.first?.id
+            let available = plans.filter {
+                $0.type == selectedType
+            }
+            let selectedID = available.first {
+                $0.id == previous?.selectedPlanID
+            }?.id ?? available.first?.id
             self.emit(
                 PaywallDefaultState(
                     tiers: catalog.tiers,
@@ -451,7 +520,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                 ),
             )
         } onMainApiError: { _ in
-            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else { return }
+            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else {
+                return
+            }
             self.fail(
                 previous: previous,
                 description: self.l10n.text(
@@ -459,7 +530,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                 ),
             )
         } onMainConnectionError: { _ in
-            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else { return }
+            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else {
+                return
+            }
             self.fail(
                 previous: previous,
                 description: self.l10n.text(
@@ -467,7 +540,9 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                 ),
             )
         } onMainUnknownError: { _ in
-            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else { return }
+            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else {
+                return
+            }
             self.fail(
                 previous: previous,
                 description: self.l10n.text(

@@ -17,8 +17,13 @@ public struct DButtonStyle: ButtonStyle {
         \.isEnabled,
     ) private var isEnabled
 
-    private var color: DColor { theme.color }
-    private var size: DSize { theme.size }
+    private var color: DColor {
+        theme.color
+    }
+
+    private var size: DSize {
+        theme.size
+    }
 
     let type: DButtonStyleType
     let customBackgroundColor: Color?

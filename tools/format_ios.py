@@ -87,7 +87,7 @@ def argument_formatter() -> Path:
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Format iOS arguments, class member order, and initializers."
+        description="Format iOS arguments, member order, block bodies, and view spacing."
     )
     parser.add_argument(
         "--check", action="store_true", help="Check without changing files."

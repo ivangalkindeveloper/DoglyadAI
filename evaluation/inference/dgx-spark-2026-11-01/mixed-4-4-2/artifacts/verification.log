@@ -1,0 +1,63 @@
+{
+  "time": "2026-11-01T12:53:16.106451+00:00",
+  "is_configuration_unchanged": true,
+  "is_boot_unchanged": true,
+  "engines": [
+    {
+      "model": "google/medgemma-4b-it",
+      "health": 200,
+      "is_generation_valid": true,
+      "usage": {
+        "prompt_tokens": 19,
+        "total_tokens": 26,
+        "completion_tokens": 7,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "output_sha256": "08e2c358ce13cb67f94ebb35b0f67c8763190a857c0db68da6eb196dfe9da46a"
+    },
+    {
+      "model": "google/medgemma-1.5-4b-it",
+      "health": 200,
+      "is_generation_valid": true,
+      "usage": {
+        "prompt_tokens": 19,
+        "total_tokens": 27,
+        "completion_tokens": 8,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "output_sha256": "08e2c358ce13cb67f94ebb35b0f67c8763190a857c0db68da6eb196dfe9da46a"
+    },
+    {
+      "model": "google/medgemma-27b-it",
+      "health": 200,
+      "is_generation_valid": true,
+      "usage": {
+        "prompt_tokens": 19,
+        "total_tokens": 26,
+        "completion_tokens": 7,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": null
+      },
+      "output_sha256": "08e2c358ce13cb67f94ebb35b0f67c8763190a857c0db68da6eb196dfe9da46a"
+    }
+  ],
+  "is_backend_unrestarted": true,
+  "unauthenticated_status": 401,
+  "kernel_events": [
+    "Nov 01 15:50:31 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359",
+    "Nov 01 15:50:32 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359"
+  ],
+  "is_kernel_log_clean": false,
+  "is_no_gpu_xid": true,
+  "is_no_linux_oom_kill": true,
+  "running_containers": [
+    "doglyad-dgx-backend_inference-1",
+    "doglyad-dgx-vllm_medgemma_27b-1",
+    "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "doglyad-dgx-vllm_medgemma_4b-1"
+  ],
+  "is_runtime_restored": true
+}
+Runtime restored, but kernel-log verification failed; see restoration.json

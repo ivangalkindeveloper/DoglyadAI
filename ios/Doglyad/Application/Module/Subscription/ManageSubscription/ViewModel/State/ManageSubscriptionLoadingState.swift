@@ -11,5 +11,7 @@ final class ManageSubscriptionLoadingState: ManageSubscriptionStateProtocol, @Ma
     static func == (
         lhs: ManageSubscriptionLoadingState,
         rhs: ManageSubscriptionLoadingState,
-    ) -> Bool { lhs.previousState == rhs.previousState }
+    ) -> Bool {
+        lhs.previousState == rhs.previousState
+    }
 }

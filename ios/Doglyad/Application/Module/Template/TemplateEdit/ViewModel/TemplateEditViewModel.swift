@@ -144,7 +144,8 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             )
         } onDefer: {
             switch self.state {
-            case _ as TemplateEditLoadingState: self.emit(
+            case _ as TemplateEditLoadingState:
+                self.emit(
                     TemplateEditDefaultState(),
                 )
             default: break
@@ -186,7 +187,9 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
         }
     }
 
-    func onTapRetryInitialization() { onInit() }
+    func onTapRetryInitialization() {
+        onInit()
+    }
 
     func onTapBack() {
         analytics.buttonTapped(
@@ -291,7 +294,8 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             )
         } onDefer: {
             switch self.state {
-            case _ as TemplateEditLoadingState: self.emit(
+            case _ as TemplateEditLoadingState:
+                self.emit(
                     TemplateEditDefaultState(),
                 )
             default: break
@@ -355,7 +359,8 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             )
         } onDefer: {
             switch self.state {
-            case _ as TemplateEditLoadingState: self.emit(
+            case _ as TemplateEditLoadingState:
+                self.emit(
                     TemplateEditDefaultState(),
                 )
             default: break

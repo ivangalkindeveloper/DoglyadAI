@@ -1,0 +1,42 @@
+ Container doglyad-dgx-backend_inference-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Stopped 
+ Container doglyad-dgx-backend_inference-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Healthy 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Healthy 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Healthy 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-backend_inference-1 Recreate 
+ Container doglyad-dgx-backend_inference-1 Recreated 
+ Container doglyad-dgx-backend_inference-1 Starting 
+ Container doglyad-dgx-backend_inference-1 Started 
+NAME                                IMAGE                                                                                              COMMAND                  SERVICE               CREATED                  STATUS                    PORTS
+doglyad-dgx-backend_inference-1     sha256:8b7677a73b1ff719dab894ec690cbb21f457020ecf2e073442fb278d0367766c                            "uvicorn app.main:ap…"   backend_inference     Less than a second ago   Up Less than a second     100.110.227.68:8100->8000/tcp
+doglyad-dgx-vllm_medgemma_15_4b-1   vllm/vllm-openai:v0.28.0@sha256:2a7cde230b59f3ce6cab33dd245ba6bee41aa87b38c9fe84f966ff24016813ce   "vllm serve google/m…"   vllm_medgemma_15_4b   2 minutes ago            Up 2 minutes (healthy)    
+doglyad-dgx-vllm_medgemma_27b-1     vllm/vllm-openai:v0.28.0@sha256:2a7cde230b59f3ce6cab33dd245ba6bee41aa87b38c9fe84f966ff24016813ce   "vllm serve google/m…"   vllm_medgemma_27b     14 minutes ago           Up 14 minutes (healthy)   
+doglyad-dgx-vllm_medgemma_4b-1      vllm/vllm-openai:v0.28.0@sha256:2a7cde230b59f3ce6cab33dd245ba6bee41aa87b38c9fe84f966ff24016813ce   "vllm serve google/m…"   vllm_medgemma_4b      6 minutes ago            Up 5 minutes (healthy)    
+Generated 4/4/4 stack started; generation verification follows.
