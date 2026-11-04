@@ -1,0 +1,413 @@
+[
+  {
+    "id": "historical-greedy-0",
+    "finish": "stop",
+    "seconds": 21.695,
+    "usage": {
+      "prompt_tokens": 1544,
+      "completion_tokens": 371
+    },
+    "runtime": "medgemma-google-recipe",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 11,
+    "remarks_characters": 230,
+    "remarks": "Включен параметр 'размер' правой доли, который был измерен правильно. Добавлено значение объема каждой доли. Зафиксировано увеличение размеров щитовидных желез. Необходимо учитывать возраст пациента при интерпретации результатов.\n",
+    "validation_error": "reportMeasurementsMismatch"
+  },
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 15.345,
+    "usage": {
+      "prompt_tokens": 1604,
+      "completion_tokens": 277
+    },
+    "runtime": "medgemma-google-recipe",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 11,
+    "remarks_characters": 0,
+    "remarks": null,
+    "validation_error": "reportMeasurementsMismatch"
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "stop",
+    "seconds": 8.264,
+    "usage": {
+      "prompt_tokens": 1615,
+      "completion_tokens": 147
+    },
+    "runtime": "medgemma-google-recipe",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 11,
+    "remarks_characters": 0,
+    "remarks": null,
+    "validation_error": "reportMeasurementsMismatch"
+  },
+  {
+    "id": "dictation-greedy-0",
+    "finish": "error",
+    "seconds": 8.854,
+    "error": "AssertionError",
+    "runtime": "medgemma-google-recipe",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 0,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 0,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-greedy-0",
+    "finish": "length",
+    "seconds": 86.813,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 44,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 424,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-0",
+    "finish": "length",
+    "seconds": 85.055,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 119,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 203,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-42",
+    "finish": "length",
+    "seconds": 85.22,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 44,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 93,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-123",
+    "finish": "length",
+    "seconds": 85.302,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 8,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 93,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 26.066,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2202,
+      "completion_tokens": 598
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 536,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-0",
+    "finish": "stop",
+    "seconds": 28.087,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2278,
+      "completion_tokens": 674
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 598,
+    "remarks_characters": 49,
+    "remarks": "В описании нет противоречий или неоднозначностей."
+  },
+  {
+    "id": "report-sample-42",
+    "finish": "stop",
+    "seconds": 31.049,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2348,
+      "completion_tokens": 744
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 2,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 490,
+    "remarks_characters": 321,
+    "remarks": "Не указано, что исследование выполнено с использованием эластографии узла. Необходимо уточнить, была ли проведена эластография узла и какие результаты получены. Не указано, что исследование выполнено с использованием эластографии узла. Необходимо уточнить, была ли проведена эластография узла и какие результаты получены.",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "report-sample-123",
+    "finish": "stop",
+    "seconds": 9.282,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1827,
+      "completion_tokens": 223
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 175,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "stop",
+    "seconds": 18.865,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2068,
+      "completion_tokens": 453
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 307,
+    "remarks_characters": 512,
+    "remarks": "В описании не указано, является ли очаговое образование тиреоидным узлом, солидным, кистозным, смешанным, коллоидным, губчатым, макрокальцинатом, микрокальцинатом, точечными эхофокусами, эхогенным ободком, периферическим кольцом, неровным краем или имеет экстратиреоидное распространение. Необходимо уточнить, является ли образование тиреоидным узлом, и если да, то его категорию ТИРАДС. Также необходимо уточнить, является ли образование солидным, кистозным, смешанным, коллоидным, губчатым, макрокальцинатом, и",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-0",
+    "finish": "stop",
+    "seconds": 18.5,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2060,
+      "completion_tokens": 445
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 286,
+    "remarks_characters": 512,
+    "remarks": "В описании не указано, является ли очаговое образование тиреоидным узлом, солидным, кистозным, смешанным, коллоидным, губчатым, макрокальцинатом, микрокальцинатом, точечными эхофокусами, эхогенным ободком, периферическим кольцом, неровным краем, экстратиреоидным распространением, вертикальной ориентацией, ТИРАДС, категорией ТИРАДС, эластографией узла, васкуляризацией узла, периферическим кровотоком, центральным кровотоком, псевдоузлом, тиреоидитом, гиперваскуляризацией железы, регионарными лимфоузлами, пара",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 12.145,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1907,
+      "completion_tokens": 292
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 269,
+    "remarks_characters": 124,
+    "remarks": "В описании не указана оценка очагового образования. Необходимо уточнить его характеристики (размер, эхогенность, структуру)."
+  },
+  {
+    "id": "conflict-sample-123",
+    "finish": "stop",
+    "seconds": 17.262,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2030,
+      "completion_tokens": 415
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 386,
+    "remarks_characters": 512,
+    "remarks": "В описании неоднозначно указано, что в правой доле выявлено очаговое образование. Необходимо уточнить, является ли это очаговым образованием, или это просто описание структуры, не требующее дальнейшего обследования. Также, необходимо уточнить, что подразумевается под «очаговым образованием» в данном контексте. Необходима консультация с радиологом для уточнения диагноза и дальнейших действий. Не указано, является ли данное образование солидным, кистозным или смешанным. Не указано, есть ли кальцинаты в очаге.",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "dictation-greedy-0",
+    "finish": "stop",
+    "seconds": 23.673,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 2004,
+      "completion_tokens": 567
+    },
+    "runtime": "medgemma-xgrammar-028",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 567,
+    "raw_missing_fields": [],
+    "raw_unexpected_fields": [
+      "examination_description",
+      "examination_number",
+      "patient_date_of_birth",
+      "patient_gender"
+    ],
+    "raw_value": [
+      {
+        "field_id": "examination_number",
+        "value": "1234567890",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_name",
+        "value": "Иванов Иван Иванович",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_gender",
+        "value": "male",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_date_of_birth",
+        "value": "1980-01-01",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "questionable"
+      },
+      {
+        "field_id": "patient_height_cm",
+        "value": 180,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_weight_kg",
+        "value": 80,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_complaints",
+        "value": "дискомфорт в области шеи",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "examination_description",
+        "value": "УЗИ щитовидной железы",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      }
+    ],
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "examination_description",
+          "value": "УЗИ щитовидной железы",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    },
+    "missing_expected_fields": [],
+    "unexpected_fields": [
+      "examination_description"
+    ]
+  }
+]

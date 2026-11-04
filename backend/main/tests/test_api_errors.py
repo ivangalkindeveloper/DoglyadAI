@@ -31,19 +31,8 @@ from app.error import (
 )
 from app.model.api_error_response import ApiErrorResponse
 
-_PATH = "/v1/ultrasound/generate_report"
-_BODY = {
-    "settingsAI": {},
-    "examinationData": {
-        "usExaminationTypeId": "bladder",
-        "photos": [],
-        "examinationNumber": "TEST",
-        "patientName": "Test Patient",
-        "patientGender": "female",
-        "patientDateOfBirth": "1990-01-01T00:00:00Z",
-        "examinationDescription": "Findings",
-    },
-}
+_PATH = "/v1/ultrasound/parse_dictation"
+_BODY = {"usExaminationTypeId": "bladder", "transcript": "Synthetic findings"}
 _VALIDATION_PATH = "/v1/ultrasound/parse_dictation"
 _FIELD = "transcript"
 
@@ -53,12 +42,12 @@ def _install_failure(
     error: Exception,
 ) -> None:
     service = SimpleNamespace(
-        generate=AsyncMock(
+        parse=AsyncMock(
             side_effect=error,
         ),
     )
     app.dependency_overrides[AppCheck.verify] = lambda: None
-    app.dependency_overrides[ServiceDependencies.report_generation] = lambda: service
+    app.dependency_overrides[ServiceDependencies.dictation_parsing] = lambda: service
 
 
 @pytest.mark.parametrize(

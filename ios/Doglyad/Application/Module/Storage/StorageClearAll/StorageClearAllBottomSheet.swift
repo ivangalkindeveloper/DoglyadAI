@@ -37,10 +37,3 @@ struct StorageClearAllBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    StorageClearAllBottomSheet(
-        arguments: nil,
-    )
-    .previewable()
-}

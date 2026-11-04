@@ -1,0 +1,30 @@
+{
+  "medgemma-15-4b-bf16.gguf": {
+    "bytes": 7767803968,
+    "sha256": "9629e64e5c98a2e84e2991ddc7ae5f38aa5eda92aa46b2a4320ffc573e7c0a1e",
+    "source_model": "google/medgemma-1.5-4b-it",
+    "revision": "91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b",
+    "outtype": "bf16"
+  },
+  "medgemma-15-4b-mmproj-bf16.gguf": {
+    "bytes": 851251744,
+    "sha256": "202e74477a7dce918bc2c333930380e1abdf775e70fd2cf0edadf5fa048fe3ed",
+    "source_model": "google/medgemma-1.5-4b-it",
+    "revision": "91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b",
+    "outtype": "bf16"
+  },
+  "medgemma-27b-bf16.gguf": {
+    "bytes": 54027965152,
+    "sha256": "76bc897561803ad541eb0e635f33c3cc12e7b73945ed6dfa5e9f95beb7c55a97",
+    "source_model": "google/medgemma-27b-it",
+    "revision": "2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f",
+    "outtype": "bf16"
+  },
+  "medgemma-27b-mmproj-bf16.gguf": {
+    "bytes": 857740256,
+    "sha256": "fca74b5041d666b765b4d5448bec27224068d79b73ec3d6d8fe45096c03b505a",
+    "source_model": "google/medgemma-27b-it",
+    "revision": "2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f",
+    "outtype": "bf16"
+  }
+}

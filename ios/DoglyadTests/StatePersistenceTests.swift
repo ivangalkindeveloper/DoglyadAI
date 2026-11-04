@@ -8,176 +8,451 @@ import Testing
 @MainActor
 struct StatePersistenceTests {
     @Test
-    func retryingReportSaveRetainsCandidateAndClearsOnlyAfterPersistence() async {
-        let reports = StateReportRepository()
-        let drafts = StateDraftRepository()
-        let container = makeStateTestContainer(
-            reportRepository: reports,
-            draftRepository: drafts,
-        )
-        let router = DRouter(
-            initialRoute: RouteScreen(
-                type: .scan,
+    func failedHistoryUpdateRetainsResultAndRetriesWithoutNewGeneration() async throws {
+        let repository = StateReportRepository()
+        repository.isSaveFailed = false
+        repository.isGeneratedSaveFailed = true
+        let controller = ReportGenerationController(
+            repository: repository,
+            photoOptions: ScanPhotoEncodingOptions(
+                resizeMaxDimension: 1024,
+                compressionQuality: 0.8,
             ),
         )
-        var subscriptionRefreshCount = 0
-        let model = ScanViewModel(
-            container: container,
-            messager: DMessager(),
-            router: router,
-            getSubscriptionStatus: {
-                nil
-            },
-            observeSubscriptionStatus: { _ in
-                AnyCancellable {}
-            },
-            onSubscriptionStatusUpdated: { _ in },
-            getSettingsAI: {
-                container.initialSettingsAI
-            },
-            onRefreshSubscriptionStatus: {
-                subscriptionRefreshCount += 1
-            },
-            observeExaminationChanges: { _ in
-                AnyCancellable {}
-            },
-            getSelectedTemplate: {
-                nil
-            },
-            onTemplateSelected: { _ in },
-            onTemplateReset: {},
-            getNeuralModel: {
-                container.usExaminationNeuralModelDefault
-            },
-            onNeuralModelSelected: { _ in },
-        )
-        let form = model
-        let examinationTextController = model.examinationDescriptionTextController
-        form.examinationNumberTextController.setText(
-            "12",
-        )
-        form.patientNameTextController.setText(
-            "Patient",
-        )
-        form.examinationDescriptionTextController.setText(
-            "Original examination",
-        )
-        let snapshot = model.makeDraftSnapshot()
-        let patientNameTextController = model.patientNameTextController
-        patientNameTextController.setText(
-            "Changed name",
-        )
-        model.applyDraft(
-            USExaminationDraft(
-                form: snapshot,
-                photos: [],
+        let request = USExaminationRequest(
+            settingsAI: SettingsAI(
+                selectedNeuralModelId: "test",
+                isMarkdown: false,
+                temperature: nil,
+                maxTokens: nil,
             ),
-        )
-        #expect(
-            model.makeDraftSnapshot() == snapshot,
-        )
-        #expect(
-            model.patientNameTextController === patientNameTextController,
-        )
-        let report = USExaminationReport(
-            date: Date(),
-            settingsAI: container.initialSettingsAI,
             examinationData: USExaminationData(
-                usExaminationTypeId: form.usExaminationType.id,
+                usExaminationTypeId: "bladder",
                 photos: [],
-                examinationNumber: "12",
-                patientName: "Patient",
-                patientGender: form.patientGender,
-                patientDateOfBirth: form.patientDateOfBirth,
+                examinationNumber: "1",
+                patientName: "Synthetic",
+                patientGender: .female,
+                patientDateOfBirth: Date(),
                 patientHeight: nil,
                 patientWeight: nil,
                 patientComplaints: nil,
-                examinationDescription: "Original examination",
+                examinationDescription: "Synthetic",
             ),
-            actualModelReport: USExaminationModelReport(
-                date: Date(),
-                modelId: "test",
-                description: "Generated description",
-                conclusion: "Generated conclusion",
-                recommendations: nil,
-            ),
-            previousModelReports: [],
+            template: nil,
+            isRecommendationsIncluded: false,
+            isPhotoRemarks: false,
+            isDescriptionRemarks: false,
         )
-        model.emit(
-            ScanSaveFailedState(
-                report: report,
-                snapshot: snapshot,
-                error: CocoaError(
-                    .fileWriteUnknown,
+        let report = try await controller.start(
+            request: request,
+            replacing: nil,
+        )
+        for _ in 0 ..< 100 {
+            if repository.saveCount > 1 {
+                break
+            }
+            await Task.yield()
+        }
+        #expect(
+            repository.saveCount == 2,
+        )
+        let completed = controller.current(
+            report,
+        )
+        #expect(
+            completed.actualModelReport.generation.status == .completed,
+        )
+        #expect(
+            completed.actualModelReport.description == "Synthetic result",
+        )
+        #expect(
+            repository.reports.first?.actualModelReport.generation.status == .generating,
+        )
+        #expect(
+            repository.generationCount == 1,
+        )
+
+        repository.isGeneratedSaveFailed = false
+        for _ in 0 ..< 150 {
+            if repository.reports.first?.actualModelReport.generation.status == .completed {
+                break
+            }
+            try await Task.sleep(
+                for: .milliseconds(
+                    25,
                 ),
+            )
+        }
+        #expect(
+            repository.reports.count == 1,
+        )
+        #expect(
+            repository.reports.first == completed,
+        )
+        #expect(
+            controller.current(
+                report,
+            ) == completed,
+        )
+        #expect(
+            repository.generationCount == 1,
+        )
+    }
+
+    @Test
+    func generationStartsOnlyAfterHistorySaveAndDoesNotDuplicateEntry() async throws {
+        let repository = StateReportRepository()
+        let controller = ReportGenerationController(
+            repository: repository,
+            photoOptions: ScanPhotoEncodingOptions(
+                resizeMaxDimension: 1024,
+                compressionQuality: 0.8,
             ),
         )
-
-        model.onTapScan()
-        await model.lastTask?.value
-        switch model.state {
-        case let state as ScanSaveFailedState:
-            #expect(
-                state.report.id == report.id,
+        let request = USExaminationRequest(
+            settingsAI: SettingsAI(
+                selectedNeuralModelId: "test",
+                isMarkdown: false,
+                temperature: nil,
+                maxTokens: nil,
+            ),
+            examinationData: USExaminationData(
+                usExaminationTypeId: "bladder",
+                photos: [],
+                examinationNumber: "1",
+                patientName: "Synthetic",
+                patientGender: .female,
+                patientDateOfBirth: Date(),
+                patientHeight: nil,
+                patientWeight: nil,
+                patientComplaints: nil,
+                examinationDescription: "Synthetic",
+            ),
+            template: nil,
+            isRecommendationsIncluded: false,
+            isPhotoRemarks: false,
+            isDescriptionRemarks: false,
+        )
+        do {
+            _ = try await controller.start(
+                request: request,
+                replacing: nil,
             )
-            #expect(
-                state.snapshot == snapshot,
-            )
-            #expect(
-                model.examinationDescriptionTextController === examinationTextController,
-            )
-        default:
             Issue.record(
-                "A failed save must retain the generated report",
+                "Initial persistence must succeed before generation",
             )
+        } catch {}
+        #expect(
+            repository.generationCount == 0,
+        )
+        #expect(
+            repository.reports.isEmpty,
+        )
+        repository.isSaveFailed = false
+        let report = try await controller.start(
+            request: request,
+            replacing: nil,
+        )
+        #expect(
+            repository.reports.count == 1,
+        )
+        #expect(
+            repository.reports.first?.id == report.id,
+        )
+        #expect(
+            report.actualModelReport.generation.status == .generating,
+        )
+        #expect(
+            report.actualModelReport.generation.requestData != nil,
+        )
+        for _ in 0 ..< 100 {
+            if controller.current(
+                report,
+            ).actualModelReport.generation.status == .completed {
+                break
+            }
+            await Task.yield()
         }
         #expect(
-            form.examinationDescriptionTextController.text == "Original examination",
+            controller.current(
+                report,
+            ).actualModelReport.generation.status == .completed,
         )
         #expect(
-            drafts.clearCount == 0,
+            repository.generationCount == 1,
         )
         #expect(
-            router.sheet == nil,
+            repository.reports.count == 1,
         )
-        #expect(
-            subscriptionRefreshCount == 0,
-        )
+    }
 
-        reports.isSaveFailed = false
-        model.onTapScan()
-        await model.lastTask?.value
-        switch model.state {
-        case _ as ScanDefaultState: break
-        default:
-            Issue.record(
-                "A successful save must return to the examination form",
+    @Test
+    func disconnectedStreamRecoversSameTaskAfterScreenObserverLeaves() async throws {
+        let repository = StateReportRepository()
+        repository.isSaveFailed = false
+        repository.isServerGenerating = true
+        let controller = ReportGenerationController(
+            repository: repository,
+            photoOptions: ScanPhotoEncodingOptions(
+                resizeMaxDimension: 1024,
+                compressionQuality: 0.8,
+            ),
+        )
+        let request = USExaminationRequest(
+            settingsAI: SettingsAI(
+                selectedNeuralModelId: "test",
+                isMarkdown: false,
+                temperature: nil,
+                maxTokens: nil,
+            ),
+            examinationData: USExaminationData(
+                usExaminationTypeId: "bladder",
+                photos: [],
+                examinationNumber: "1",
+                patientName: "Synthetic",
+                patientGender: .female,
+                patientDateOfBirth: Date(),
+                patientHeight: nil,
+                patientWeight: nil,
+                patientComplaints: nil,
+                examinationDescription: "Synthetic",
+            ),
+            template: nil,
+            isRecommendationsIncluded: false,
+            isPhotoRemarks: false,
+            isDescriptionRemarks: false,
+        )
+        let report = try await controller.start(
+            request: request,
+            replacing: nil,
+        )
+        for _ in 0 ..< 100 {
+            if repository.eventContinuation != nil {
+                break
+            }
+            await Task.yield()
+        }
+        let observer = controller.observe { _ in }
+        observer.cancel()
+        #expect(
+            controller.current(
+                report,
+            ).actualModelReport.generation.status == .generating,
+        )
+        repository.isServerGenerating = false
+        repository.eventContinuation?.finish(
+            throwing: URLError(
+                .networkConnectionLost,
+            ),
+        )
+        for _ in 0 ..< 100 {
+            if controller.current(
+                report,
+            ).actualModelReport.generation.status == .completed {
+                break
+            }
+            try await Task.sleep(
+                for: .milliseconds(
+                    25,
+                ),
             )
         }
-        #expect(
-            reports.generationCount == 0,
+        let recovered = controller.current(
+            report,
         )
         #expect(
-            reports.saveCount == 2,
+            recovered.actualModelReport.generation.status == .completed,
         )
         #expect(
-            reports.reports.map(
-                \.id,
-            ) == [report.id],
+            recovered.actualModelReport.generation.id == report.actualModelReport.generation.id,
         )
         #expect(
-            drafts.clearCount == 1,
+            repository.reports.count == 1,
         )
         #expect(
-            subscriptionRefreshCount == 0,
+            repository.generationCount == 2,
+        )
+    }
+
+    @Test(
+        arguments: [false, true],
+    )
+    func backgroundSuspendsStreamWithoutInterruptionAndResumesSameTask(
+        isImmediateReturn: Bool,
+    ) async throws {
+        let repository = StateReportRepository()
+        repository.isSaveFailed = false
+        repository.isServerGenerating = true
+        let controller = ReportGenerationController(
+            repository: repository,
+            photoOptions: ScanPhotoEncodingOptions(
+                resizeMaxDimension: 1024,
+                compressionQuality: 0.8,
+            ),
+        )
+        let request = USExaminationRequest(
+            settingsAI: SettingsAI(
+                selectedNeuralModelId: "test",
+                isMarkdown: false,
+                temperature: nil,
+                maxTokens: nil,
+            ),
+            examinationData: USExaminationData(
+                usExaminationTypeId: "bladder",
+                photos: [],
+                examinationNumber: "1",
+                patientName: "Synthetic",
+                patientGender: .female,
+                patientDateOfBirth: Date(),
+                patientHeight: nil,
+                patientWeight: nil,
+                patientComplaints: nil,
+                examinationDescription: "Synthetic",
+            ),
+            template: nil,
+            isRecommendationsIncluded: false,
+            isPhotoRemarks: false,
+            isDescriptionRemarks: false,
+        )
+        let report = try await controller.start(
+            request: request,
+            replacing: nil,
+        )
+        for _ in 0 ..< 100 {
+            if repository.eventContinuation != nil {
+                break
+            }
+            await Task.yield()
+        }
+        controller.setInBackground(
+            true,
+        )
+        if !isImmediateReturn {
+            for _ in 0 ..< 50 {
+                await Task.yield()
+            }
+        }
+        #expect(
+            controller.current(
+                report,
+            ).actualModelReport.generation.status == .generating,
         )
         #expect(
-            form.examinationDescriptionTextController.text.isEmpty,
+            repository.reports.first?.actualModelReport.generation.status == .generating,
         )
         #expect(
-            router.sheet?.type == .reportReceived,
+            repository.generationCount == 1,
         )
-        model.stopDraftAutosave()
+        repository.isServerGenerating = false
+        controller.setInBackground(
+            false,
+        )
+        for _ in 0 ..< 100 {
+            if controller.current(
+                report,
+            ).actualModelReport.generation.status == .completed {
+                break
+            }
+            try await Task.sleep(
+                for: .milliseconds(
+                    25,
+                ),
+            )
+        }
+        let recovered = controller.current(
+            report,
+        )
+        #expect(
+            recovered.actualModelReport.generation.status == .completed,
+        )
+        #expect(
+            recovered.actualModelReport.generation.id == report.actualModelReport.generation.id,
+        )
+        #expect(
+            repository.reports.count == 1,
+        )
+        #expect(
+            repository.generationCount == 2,
+        )
+    }
+
+    @Test
+    func newProcessMarksPendingHistoryInterruptedWithoutNetwork() async throws {
+        let repository = StateReportRepository()
+        repository.isSaveFailed = false
+        repository.isServerGenerating = true
+        let controller = ReportGenerationController(
+            repository: repository,
+            photoOptions: ScanPhotoEncodingOptions(
+                resizeMaxDimension: 1024,
+                compressionQuality: 0.8,
+            ),
+        )
+        let request = USExaminationRequest(
+            settingsAI: SettingsAI(
+                selectedNeuralModelId: "test",
+                isMarkdown: false,
+                temperature: nil,
+                maxTokens: nil,
+            ),
+            examinationData: USExaminationData(
+                usExaminationTypeId: "bladder",
+                photos: [],
+                examinationNumber: "1",
+                patientName: "Synthetic",
+                patientGender: .female,
+                patientDateOfBirth: Date(),
+                patientHeight: nil,
+                patientWeight: nil,
+                patientComplaints: nil,
+                examinationDescription: "Synthetic",
+            ),
+            template: nil,
+            isRecommendationsIncluded: false,
+            isPhotoRemarks: false,
+            isDescriptionRemarks: false,
+        )
+        let report = try await controller.start(
+            request: request,
+            replacing: nil,
+        )
+        for _ in 0 ..< 100 {
+            if repository.eventContinuation != nil {
+                break
+            }
+            await Task.yield()
+        }
+        controller.setInBackground(
+            true,
+        )
+        for _ in 0 ..< 50 {
+            await Task.yield()
+        }
+        #expect(
+            controller.current(
+                report,
+            ).actualModelReport.generation.status == .generating,
+        )
+        #expect(
+            repository.reports.first?.actualModelReport.generation.status == .generating,
+        )
+        #expect(
+            repository.generationCount == 1,
+        )
+        let requestsBeforeRestart = repository.generationCount
+        try await repository.interruptPendingGenerations()
+        let saved = try #require(
+            repository.reports.first,
+        )
+        #expect(
+            saved.actualModelReport.generation.status == .interrupted,
+        )
+        #expect(
+            saved.actualModelReport.generation.id == report.actualModelReport.generation.id,
+        )
+        #expect(
+            repository.generationCount == requestsBeforeRestart,
+        )
     }
 
     @Test

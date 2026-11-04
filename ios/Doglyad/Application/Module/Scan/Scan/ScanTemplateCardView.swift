@@ -110,9 +110,16 @@ struct ScanTemplateCardView: DViewProtocol {
                     )
                 }
 
+                .accessibilityIdentifier(
+                    "scan.template",
+                )
+
                 if viewModel.template != nil {
                     DCloseButton(
                         action: viewModel.onTapResetTemplate,
+                    )
+                    .accessibilityIdentifier(
+                        "scan.template.reset",
                     )
                     .padding(
                         size.s14,

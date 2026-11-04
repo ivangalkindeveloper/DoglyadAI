@@ -23,7 +23,6 @@ from app.model.neural_model.neural_model_service_operation import NeuralModelSer
 from app.model.neural_model.neural_model_service_request import NeuralModelServiceRequest
 from app.model.settings_ai import SettingsAI
 from app.model.ultrasound.us_examination_data import USExaminationData
-from app.model.ultrasound.us_examination_model_report_response import USExaminationModelReportResponse
 from app.model.ultrasound.us_examination_request import USExaminationRequest
 from app.model.ultrasound.us_examination_scan_photo import USExaminationScanPhoto
 from app.model.ultrasound.us_voice_field_id import USVoiceFieldId
@@ -31,6 +30,7 @@ from app.model.ultrasound.us_voice_form_generation import USVoiceFormGeneration
 from app.model.ultrasound.us_voice_form_parse_response import USVoiceFormParseResponse
 from app.prompt.prompt_factory import PromptFactory
 from app.service.neural_model.mock_neural_model_service import MockNeuralModelService
+from app.service.report.report_generation_jobs import ReportGenerationJobs
 
 _FIXTURES_DIR = (
     Path(
@@ -178,7 +178,7 @@ def test_mock_startup_still_initializes_and_requires_app_check(
     )
     assert (
         client.post(
-            "/v1/ultrasound/generate_report",
+            "/v1/ultrasound/report_generations",
             json={},
         ).status_code
         == 401
@@ -225,17 +225,11 @@ def test_mock_report_respects_flags_language_and_uploaded_ids(
         ),
     )
 
-    response = client.post(
-        "/v1/ultrasound/generate_report",
-        headers={"Accept-Language": language.value},
-        json=body.model_dump(
-            mode="json",
+    report = asyncio.run(
+        client.app.state.container.report_generation.generate(
+            body,
+            language_code=language,
         ),
-    )
-
-    assert response.status_code == 200, response.text
-    report = USExaminationModelReportResponse.model_validate(
-        response.json(),
     )
     assert report.modelId == _MODEL_ID
     assert report.description == fixture.report.description
@@ -263,15 +257,13 @@ def test_mock_report_does_not_invent_photos(
         is_photos_available=False,
     )
 
-    response = client.post(
-        "/v1/ultrasound/generate_report",
-        json=body.model_dump(
-            mode="json",
+    report = asyncio.run(
+        client.app.state.container.report_generation.generate(
+            body,
+            language_code=LanguageCode.EN,
         ),
     )
-
-    assert response.status_code == 200, response.text
-    assert response.json()["photoRemarks"] == []
+    assert report.photoRemarks == []
 
 
 @pytest.mark.parametrize(
@@ -327,17 +319,11 @@ def test_mock_report_preserves_source_measurements_without_copying_template_valu
             ),
         )
 
-    response = client.post(
-        "/v1/ultrasound/generate_report",
-        headers={"Accept-Language": language.value},
-        json=body.model_dump(
-            mode="json",
+    report = asyncio.run(
+        client.app.state.container.report_generation.generate(
+            body,
+            language_code=language,
         ),
-    )
-
-    assert response.status_code == 200, response.text
-    report = USExaminationModelReportResponse.model_validate(
-        response.json(),
     )
     fixture = MockReportFixture.model_validate_json(
         (_FIXTURES_DIR / language.value / "report.json").read_text(
@@ -385,13 +371,15 @@ def test_mock_report_accepts_client_settings_ai(
         settings,
     )
 
-    response = client.post(
-        "/v1/ultrasound/generate_report",
-        json=body,
+    report = asyncio.run(
+        client.app.state.container.report_generation.generate(
+            USExaminationRequest.model_validate(
+                body,
+            ),
+            language_code=LanguageCode.EN,
+        ),
     )
-
-    assert response.status_code == 200, response.text
-    assert response.json()["modelId"] == _MODEL_ID
+    assert report.modelId == _MODEL_ID
 
 
 @pytest.mark.parametrize(
@@ -402,6 +390,7 @@ def test_mock_report_rejects_token_limits_outside_inference_range(
     client: TestClient,
     monkeypatch: pytest.MonkeyPatch,
     max_tokens: int,
+    report_jobs: ReportGenerationJobs,
 ) -> None:
     _authorize(
         monkeypatch,
@@ -417,12 +406,12 @@ def test_mock_report_rejects_token_limits_outside_inference_range(
     body["settingsAI"]["maxTokens"] = max_tokens
 
     response = client.post(
-        "/v1/ultrasound/generate_report",
-        json=body,
+        "/v1/ultrasound/report_generations",
+        json={"requestId": "00000000-0000-0000-0000-000000000001", "examination": body},
     )
 
     assert response.status_code == 422
-    assert response.json()["fields"][0]["location"] == ["body", "settingsAI", "maxTokens"]
+    assert response.json()["fields"][0]["location"] == ["body", "examination", "settingsAI", "maxTokens"]
 
 
 @pytest.mark.parametrize(

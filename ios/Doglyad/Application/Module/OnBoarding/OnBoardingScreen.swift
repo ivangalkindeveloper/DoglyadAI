@@ -38,10 +38,3 @@ struct OnBoardingScreen: View {
         )
     }
 }
-
-#Preview {
-    OnBoardingScreen(
-        arguments: nil,
-    )
-    .previewable()
-}

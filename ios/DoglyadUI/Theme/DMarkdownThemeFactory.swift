@@ -92,7 +92,7 @@ enum DMarkdownThemeFactory {
                             1.5,
                         ),
                         bottom: .rem(
-                            1,
+                            0.5,
                         ),
                     )
                     .markdownTextStyle {
@@ -115,7 +115,7 @@ enum DMarkdownThemeFactory {
                             1.5,
                         ),
                         bottom: .rem(
-                            1,
+                            0.5,
                         ),
                     )
                     .markdownTextStyle {
@@ -138,7 +138,7 @@ enum DMarkdownThemeFactory {
                             1.5,
                         ),
                         bottom: .rem(
-                            1,
+                            0.5,
                         ),
                     )
                     .markdownTextStyle {
@@ -161,7 +161,7 @@ enum DMarkdownThemeFactory {
                             1.5,
                         ),
                         bottom: .rem(
-                            1,
+                            0.5,
                         ),
                     )
                     .markdownTextStyle {
@@ -184,7 +184,7 @@ enum DMarkdownThemeFactory {
                             1.5,
                         ),
                         bottom: .rem(
-                            1,
+                            0.5,
                         ),
                     )
                     .markdownTextStyle {
@@ -207,7 +207,7 @@ enum DMarkdownThemeFactory {
                             1.5,
                         ),
                         bottom: .rem(
-                            1,
+                            0.5,
                         ),
                     )
                     .markdownTextStyle {

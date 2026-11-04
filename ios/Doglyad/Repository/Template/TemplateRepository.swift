@@ -30,12 +30,9 @@ final class TemplateRepository: TemplateRepositoryProtocol {
         database.removeSelectedUSExaminationTemplateId()
     }
 
-    func getReadyMadeTemplates(
-        languageCode: String,
-    ) async throws -> [USExaminationReadyMadeTemplate] {
+    func getReadyMadeTemplates() async throws -> [USExaminationReadyMadeTemplate] {
         try await httpClient.get(
-            endPoint: Self.readyMadeListEndpoint,
-            headers: [DHttpHeader.acceptLanguage: languageCode],
+            endPoint: "/templates/ready_made_list",
         )
     }
 
@@ -84,8 +81,4 @@ final class TemplateRepository: TemplateRepositoryProtocol {
             id: id,
         )
     }
-}
-
-private extension TemplateRepository {
-    static let readyMadeListEndpoint = "/templates/ready_made_list"
 }

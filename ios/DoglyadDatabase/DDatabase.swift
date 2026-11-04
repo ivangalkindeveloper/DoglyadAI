@@ -16,6 +16,7 @@ public final class DDatabase: DDatabaseProtocol {
                 USExaminationDataDB.self,
                 USExaminationScanPhotoDB.self,
                 USExaminationModelReportDB.self,
+                USReportGenerationDB.self,
                 USExaminationPhotoRemarksDB.self,
                 USExaminationPhotoRemarkPointDB.self,
                 USExaminationTemplateDB.self,
@@ -34,63 +35,6 @@ public final class DDatabase: DDatabaseProtocol {
         )
         examinationDraft = DExaminationDraftStore(
             modelContainer: container,
-        )
-    }
-}
-
-extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSettingsAIProtocol, DDatabaseOnBoardingProtocol, DDatabaseUSExaminationTemplateProtocol, DDatabaseUSExaminationTypeProtocol, DDatabaseUserSettingsProtocol {
-    func getBool(
-        _ key: DUserDefaultsKey,
-    ) -> Bool {
-        defaults.bool(
-            forKey: key.rawValue,
-        )
-    }
-
-    func getString(
-        _ key: DUserDefaultsKey,
-    ) -> String? {
-        defaults.string(
-            forKey: key.rawValue,
-        )
-    }
-
-    func getInt(
-        _ key: DUserDefaultsKey,
-    ) -> Int? {
-        defaults.object(
-            forKey: key.rawValue,
-        ) as? Int
-    }
-
-    func getDouble(
-        _ key: DUserDefaultsKey,
-    ) -> Double? {
-        guard defaults.object(
-            forKey: key.rawValue,
-        ) != nil else {
-            return nil
-        }
-        return defaults.double(
-            forKey: key.rawValue,
-        )
-    }
-
-    func setValue(
-        _ value: some Any,
-        _ key: DUserDefaultsKey,
-    ) {
-        defaults.set(
-            value,
-            forKey: key.rawValue,
-        )
-    }
-
-    func removeValue(
-        _ key: DUserDefaultsKey,
-    ) {
-        defaults.removeObject(
-            forKey: key.rawValue,
         )
     }
 
@@ -128,19 +72,6 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSe
         setValue(
             acceptedAt.timeIntervalSince1970,
             .legalAcceptedAt,
-        )
-    }
-
-    private func date(
-        for key: DUserDefaultsKey,
-    ) -> Date? {
-        guard let interval = getDouble(
-            key,
-        ) else {
-            return nil
-        }
-        return Date(
-            timeIntervalSince1970: interval,
         )
     }
 
@@ -283,19 +214,6 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSe
         )
     }
 
-    private func getUserSettingsFlag(
-        _ key: DUserDefaultsKey,
-    ) -> Bool {
-        guard defaults.object(
-            forKey: key.rawValue,
-        ) != nil else {
-            return true
-        }
-        return getBool(
-            key,
-        )
-    }
-
     public func getUserEmail() -> String? {
         getString(
             .userEmail,
@@ -334,6 +252,87 @@ extension DDatabase: DDatabaseClearProtocol, DDatabaseLegalProtocol, DDatabaseSe
         setValue(
             isIncluded,
             .isRecommendationsIncluded,
+        )
+    }
+
+    func getBool(
+        _ key: DUserDefaultsKey,
+    ) -> Bool {
+        defaults.bool(
+            forKey: key.rawValue,
+        )
+    }
+
+    func getString(
+        _ key: DUserDefaultsKey,
+    ) -> String? {
+        defaults.string(
+            forKey: key.rawValue,
+        )
+    }
+
+    func getInt(
+        _ key: DUserDefaultsKey,
+    ) -> Int? {
+        defaults.object(
+            forKey: key.rawValue,
+        ) as? Int
+    }
+
+    func getDouble(
+        _ key: DUserDefaultsKey,
+    ) -> Double? {
+        guard defaults.object(
+            forKey: key.rawValue,
+        ) != nil else {
+            return nil
+        }
+        return defaults.double(
+            forKey: key.rawValue,
+        )
+    }
+
+    func setValue(
+        _ value: some Any,
+        _ key: DUserDefaultsKey,
+    ) {
+        defaults.set(
+            value,
+            forKey: key.rawValue,
+        )
+    }
+
+    func removeValue(
+        _ key: DUserDefaultsKey,
+    ) {
+        defaults.removeObject(
+            forKey: key.rawValue,
+        )
+    }
+
+    private func date(
+        for key: DUserDefaultsKey,
+    ) -> Date? {
+        guard let interval = getDouble(
+            key,
+        ) else {
+            return nil
+        }
+        return Date(
+            timeIntervalSince1970: interval,
+        )
+    }
+
+    private func getUserSettingsFlag(
+        _ key: DUserDefaultsKey,
+    ) -> Bool {
+        guard defaults.object(
+            forKey: key.rawValue,
+        ) != nil else {
+            return true
+        }
+        return getBool(
+            key,
         )
     }
 }

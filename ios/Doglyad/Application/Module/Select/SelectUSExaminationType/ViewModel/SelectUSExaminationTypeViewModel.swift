@@ -94,10 +94,11 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
     }
 
     override func onInit() {
-        let loading = SelectUSExaminationTypeLoadingState()
         emit(
-            loading,
+            SelectUSExaminationTypeLoadingState(),
         )
+        // Equal states keep the existing instance in emit.
+        let loading = state
         handle {
             try await self.container.ultrasoundReportRepository.getRecentExaminationTypeIds()
         }

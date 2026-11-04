@@ -1,0 +1,57 @@
+{
+  "version": "0.2.8",
+  "requires_dist": [
+    "apache-tvm-ffi>=0.1.11",
+    "pydantic",
+    "torch>=1.10.0",
+    "transformers>=4.38.0",
+    "triton; platform_system == \"Linux\" and platform_machine == \"x86_64\"",
+    "numpy",
+    "typing-extensions>=4.9.0",
+    "cohere_melody==0.13.0; python_version >= \"3.10\" and extra == \"test\"",
+    "huggingface-hub[cli]; extra == \"test\"",
+    "protobuf; extra == \"test\"",
+    "pytest; extra == \"test\"",
+    "sentencepiece<0.2.2; python_version < \"3.10\" and extra == \"test\"",
+    "sentencepiece; python_version >= \"3.10\" and extra == \"test\"",
+    "tiktoken; extra == \"test\"",
+    "mlx-lm; platform_system == \"Darwin\" and platform_machine == \"arm64\" and extra == \"metal\""
+  ],
+  "wheels": [
+    {
+      "filename": "xgrammar-0.2.8-cp310-cp310-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/de/5b/fdc88db44bf413e5d78802bfcd7b73f4535a03b14b5a26224a14387301e3/xgrammar-0.2.8-cp310-cp310-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "sha256": "ae437044b736797a3a0ad03a06ab5d156903b350f7f0809591f47e0571e27e51"
+    },
+    {
+      "filename": "xgrammar-0.2.8-cp311-cp311-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/b2/5a/721a753300c7eb66724e4f1f23657b9537ffc5e41aff12816228e337a8a2/xgrammar-0.2.8-cp311-cp311-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "sha256": "738d967f874dd916ddb73b39e533caf7254b5b81d579f44eddbe205cc59dcee1"
+    },
+    {
+      "filename": "xgrammar-0.2.8-cp312-cp312-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/b1/74/cdb56cc5afde708c6c39ed3d80680d7af6d12398bbb2681268bd5ac67eb7/xgrammar-0.2.8-cp312-cp312-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "sha256": "97732b6e5f11f21fd98a6cd9525241fc5f9d92f415329200a9adf8fc7453d8ec"
+    },
+    {
+      "filename": "xgrammar-0.2.8-cp313-cp313-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/67/c0/3690e8da12ae64b97ec1d69bf0802cc58661ccedf791e0b05e360083cafe/xgrammar-0.2.8-cp313-cp313-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "sha256": "dec7222c239668cbe23fe84bf5faf035b9308983fed03907b6a1837fdad9e9f1"
+    },
+    {
+      "filename": "xgrammar-0.2.8-cp314-cp314-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/3c/8d/5c59a22cc77d0bc4eadc65e3cf5c5365f0fee81881a84c73f649e12cf75c/xgrammar-0.2.8-cp314-cp314-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "sha256": "45d242227001175bacd70031017ddef80e0c9c5141d11fd04bca5f08abee5417"
+    },
+    {
+      "filename": "xgrammar-0.2.8-cp314-cp314t-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/d8/5f/6217b7553b21cea62381cf1fedb2dbf43010b7321f989ef496d401c5e338/xgrammar-0.2.8-cp314-cp314t-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "sha256": "47a041d9cb10f6c9da0d33db4aaa7b81163f677500278c4eab3e61b7ede5b2d3"
+    },
+    {
+      "filename": "xgrammar-0.2.8-cp39-cp39-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "url": "https://files.pythonhosted.org/packages/3e/98/3ac327a3561fa8414c22aaad3d38e61f50497dedbdb726df5a63e562049b/xgrammar-0.2.8-cp39-cp39-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl",
+      "sha256": "ffb6f7cd6e5393ef09d1a4395833e0dfbe359c07c48c2cfb028a9645702079c3"
+    }
+  ]
+}

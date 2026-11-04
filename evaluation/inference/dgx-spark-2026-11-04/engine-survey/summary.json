@@ -1,0 +1,359 @@
+{
+  "llama-4b-bf16-r2": {
+    "restoration_recorded": true,
+    "trial_failed": true,
+    "quality_count": 0,
+    "self_completed": 0,
+    "schema_valid": 0,
+    "main_valid": 0,
+    "vision_correct": 0,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {}
+  },
+  "llama-4b-bf16-r3": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 9,
+    "schema_valid": 9,
+    "main_valid": 7,
+    "vision_correct": 2,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {
+      "1": {
+        "mode": "concurrent_http",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.06747238102252595,
+        "latency_seconds": 8.340979928005254,
+        "decode_tokens_per_second": 30.819375937285336,
+        "aggregate_tokens_per_second": 30.59576875340643,
+        "min_seconds": 8.319274442997994,
+        "max_seconds": 8.353109008981846
+      },
+      "4": {
+        "mode": "concurrent_http",
+        "measured_rows": 20,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.12375515600433573,
+        "latency_seconds": 9.928470082508284,
+        "decode_tokens_per_second": 26.051505100124928,
+        "aggregate_tokens_per_second": 101.66973141140278,
+        "min_seconds": 9.868462537997402,
+        "max_seconds": 9.990845455991803
+      }
+    }
+  },
+  "llama-4b-context16k": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 9,
+    "schema_valid": 9,
+    "main_valid": 7,
+    "vision_correct": 2,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {
+      "1": {
+        "mode": "concurrent_http",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.06760309400851838,
+        "latency_seconds": 8.390344729006756,
+        "decode_tokens_per_second": 30.6530342061612,
+        "aggregate_tokens_per_second": 30.447462425464444,
+        "min_seconds": 8.38175882800715,
+        "max_seconds": 8.399541315011447
+      },
+      "4": {
+        "mode": "concurrent_http",
+        "measured_rows": 20,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.08519025350688025,
+        "latency_seconds": 9.96892735750589,
+        "decode_tokens_per_second": 25.903526130126842,
+        "aggregate_tokens_per_second": 101.62223473457247,
+        "min_seconds": 9.926029174996074,
+        "max_seconds": 9.990630400978262
+      }
+    }
+  },
+  "lmdeploy-4b-grammar-experimental": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 9,
+    "schema_valid": 9,
+    "main_valid": 7,
+    "vision_correct": 2,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {}
+  },
+  "lmdeploy-4b-sm121-experimental": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 8,
+    "schema_valid": 8,
+    "main_valid": 6,
+    "vision_correct": 2,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {
+      "1": {
+        "mode": "concurrent_http",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.06535772400093265,
+        "latency_seconds": 10.759820852021221,
+        "decode_tokens_per_second": 23.857706003925603,
+        "aggregate_tokens_per_second": 23.755225962412734,
+        "min_seconds": 10.743763485981617,
+        "max_seconds": 10.763139564020094
+      },
+      "4": {
+        "mode": "concurrent_http",
+        "measured_rows": 20,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.13462417450500652,
+        "latency_seconds": 9.02414586750092,
+        "decode_tokens_per_second": 28.684564612944968,
+        "aggregate_tokens_per_second": 112.04719503141905,
+        "min_seconds": 8.954853647010168,
+        "max_seconds": 9.61029777402291
+      }
+    }
+  },
+  "sglang-4b-adapted": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 9,
+    "schema_valid": 9,
+    "main_valid": 7,
+    "vision_correct": 2,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {
+      "1": {
+        "mode": "concurrent_http",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.05341325400513597,
+        "latency_seconds": 10.964634547010064,
+        "decode_tokens_per_second": 23.368077475387164,
+        "aggregate_tokens_per_second": 23.345763483545024,
+        "min_seconds": 10.932517709996318,
+        "max_seconds": 11.340794817020651
+      },
+      "4": {
+        "mode": "concurrent_http",
+        "measured_rows": 20,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.0945824184891535,
+        "latency_seconds": 9.15166754249367,
+        "decode_tokens_per_second": 28.15475360013329,
+        "aggregate_tokens_per_second": 111.84705811507447,
+        "min_seconds": 9.136837828002172,
+        "max_seconds": 9.212255526013905
+      }
+    }
+  },
+  "sglang-4b-current-prompt": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 5,
+    "schema_valid": 5,
+    "main_valid": 3,
+    "vision_correct": 2,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {
+      "1": {
+        "mode": "concurrent_http",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.052673633996164426,
+        "latency_seconds": 10.915475391986547,
+        "decode_tokens_per_second": 23.47360348087701,
+        "aggregate_tokens_per_second": 23.450652927916813,
+        "min_seconds": 10.904226446989924,
+        "max_seconds": 10.953656333003892
+      },
+      "4": {
+        "mode": "concurrent_http",
+        "measured_rows": 20,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.09343935748620424,
+        "latency_seconds": 9.105804345497745,
+        "decode_tokens_per_second": 28.29529385118446,
+        "aggregate_tokens_per_second": 112.42029936532062,
+        "min_seconds": 9.096949436003342,
+        "max_seconds": 9.154305864009075
+      }
+    }
+  },
+  "tensorrt-4b-flashinfer": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 5,
+    "schema_valid": 5,
+    "main_valid": 4,
+    "vision_correct": 0,
+    "within_field_duplicates": 1,
+    "prompt_mismatches": [],
+    "performance": {
+      "1": {
+        "mode": "concurrent_http",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.05234037101035938,
+        "latency_seconds": 10.857012032996863,
+        "decode_tokens_per_second": 23.600405665549392,
+        "aggregate_tokens_per_second": 23.543858464505725,
+        "min_seconds": 10.851782976009417,
+        "max_seconds": 10.86153606697917
+      },
+      "4": {
+        "mode": "concurrent_http",
+        "measured_rows": 20,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.11148339400824625,
+        "latency_seconds": 8.994831823001732,
+        "decode_tokens_per_second": 28.70708895117092,
+        "aggregate_tokens_per_second": 112.24465257480108,
+        "min_seconds": 8.955987895984435,
+        "max_seconds": 9.02024272098788
+      }
+    }
+  },
+  "transformers-4b-bf16": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 9,
+    "schema_valid": 9,
+    "main_valid": 7,
+    "vision_correct": 2,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {
+      "1": {
+        "mode": "static_batch",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.0604754870000761,
+        "latency_seconds": 13.169016233994626,
+        "decode_tokens_per_second": 19.452793173655518,
+        "aggregate_tokens_per_second": 19.439569019526235,
+        "min_seconds": 13.160254268004792,
+        "max_seconds": 13.173944059992209
+      },
+      "4": {
+        "mode": "static_batch",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.06899778000661172,
+        "latency_seconds": 11.505508828995517,
+        "decode_tokens_per_second": 22.29700184485204,
+        "aggregate_tokens_per_second": 89.00084431028156,
+        "min_seconds": 11.50155912298942,
+        "max_seconds": 11.508434707007837
+      }
+    }
+  },
+  "vllm-4b-baseline": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 9,
+    "schema_valid": 9,
+    "main_valid": 6,
+    "vision_correct": 2,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {
+      "1": {
+        "mode": "concurrent_http",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.06736910401377827,
+        "latency_seconds": 10.567882503994042,
+        "decode_tokens_per_second": 24.283141768994398,
+        "aggregate_tokens_per_second": 24.18814559018606,
+        "min_seconds": 10.546191998000722,
+        "max_seconds": 10.578229787002783
+      },
+      "4": {
+        "mode": "concurrent_http",
+        "measured_rows": 20,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.08940637500199955,
+        "latency_seconds": 8.81137192499591,
+        "decode_tokens_per_second": 29.2193272311699,
+        "aggregate_tokens_per_second": 114.79786565553962,
+        "min_seconds": 8.78801771698636,
+        "max_seconds": 8.83873485098593
+      }
+    }
+  },
+  "vllm-4b-final": {
+    "restoration_recorded": true,
+    "trial_failed": false,
+    "quality_count": 9,
+    "self_completed": 9,
+    "schema_valid": 9,
+    "main_valid": 7,
+    "vision_correct": 2,
+    "within_field_duplicates": 0,
+    "prompt_mismatches": [],
+    "performance": {
+      "1": {
+        "mode": "concurrent_http",
+        "measured_rows": 5,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.04804399100248702,
+        "latency_seconds": 10.579192296019755,
+        "decode_tokens_per_second": 24.214312509252967,
+        "aggregate_tokens_per_second": 24.162111580118903,
+        "min_seconds": 10.571810352004832,
+        "max_seconds": 10.583231407974381
+      },
+      "4": {
+        "mode": "concurrent_http",
+        "measured_rows": 20,
+        "all_fixed_256": true,
+        "complete_five_waves": true,
+        "ttft_seconds": 0.08399276199634187,
+        "latency_seconds": 8.793919272982748,
+        "decode_tokens_per_second": 29.250371770902696,
+        "aggregate_tokens_per_second": 114.89317781578843,
+        "min_seconds": 8.77542102499865,
+        "max_seconds": 8.821295540983556
+      }
+    }
+  }
+}

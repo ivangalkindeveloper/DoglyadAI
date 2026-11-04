@@ -35,6 +35,9 @@ To use local fixture generation:
 
 1. Stop the running backend instance so port `8000` is free.
 2. Select `Backend: Local Mock` in VS Code's Run and Debug panel and start it.
+   Local profiles now run both the API and the report worker through `app.local_main`.
+   The launcher creates and reuses a private local encryption key automatically.
+   Restart an already running debug session after updating these profiles.
 3. Run the iOS app with `Doglyad-Debug-Local`. Run `make init-ios-local` again if the Mac's local IP address has changed.
 
 Startup logs contain `Model service type: mock` and `Mock model service configured; GPU inference is not used`.
@@ -43,7 +46,7 @@ Startup logs contain `Model service type: mock` and `Mock model service configur
 
 `NeuralModelServiceFactory.create()` creates one `MockNeuralModelService` at startup. Both generation routes keep their normal prompts, schemas, validation and response models. The internal `NeuralModelServiceRequest` identifies the operation and resolved language; this metadata is not added to the GPU HTTP request or client API.
 
-- `POST /v1/ultrasound/generate_report` returns the selected language's demonstration report. Explicit measurement fragments from the examination notes are appended verbatim, using the same localized pattern as content validation. Values from the report template are not copied. Recommendations and description remarks follow the request flags. Photo remarks appear only when requested and photos are present: each uploaded photo receives two fixed points using its actual ID.
+- `POST /v1/ultrasound/report_generations` starts a job and returns `202`. Read its snapshot or SSE events to receive the selected language's demonstration report. Explicit measurement fragments from the examination notes are appended verbatim, using the same localized pattern as content validation. Values from the report template are not copied. Recommendations and description remarks follow the request flags. Photo remarks appear only when requested and photos are present: each uploaded photo receives two fixed points using its actual ID.
 - `POST /v1/ultrasound/parse_dictation` returns fixture proposals whose evidence appears exactly once in the supplied transcript, ignoring case. The normal source validator still checks the result. Unmatched input receives no canned proposals; existing source-based validation can still extract explicitly labeled fields from that input.
 
 Fixtures live in [`mock/`](mock/), beside `config`, with one `report.json` and `voice_form.json` per language. They are loaded and validated at startup; restart the backend after editing them. Docker copies them separately with `COPY mock /app/mock`.
@@ -52,7 +55,7 @@ The mock service does not call a GPU VM or read `INFERENCE_ENDPOINTS_PATH`. Fire
 
 Voice generation uses field-specific constraints for canonical gender and ISO date strings. Source validation independently verifies the actual date and gender, normalizes patient-name case, and retains valid, transcript-cited model proposals for clinical text. Differences from independently extracted source sections mark those proposals for physician review. Quoted evidence stays verbatim.
 
-For dictation parsing and report generation, main resolves the selected examination's localized `contextualStrings` from its own configuration and includes them in the GPU prompt. Both system prompts include the same localized `medicalTermCorrectionPrompt`: the vocabulary helps repair misrecognized medical terms and supplies no patient findings. Numbers, units, negations, laterality, identities and dates must remain unchanged; ambiguous terms must be retained.
+For dictation parsing, main resolves the selected examination's localized `contextualStrings` from its own configuration and includes them in the GPU prompt with `medicalTermCorrectionPrompt`. The vocabulary helps repair misrecognized medical terms and supplies no patient findings. Numbers, units, negations, laterality, identities and dates must remain unchanged; ambiguous terms must be retained. Report generation receives the examination data without this vocabulary or its correction instruction, so reference terms cannot be mistaken for missing patient findings.
 
 During dictation parsing, a nonblank clinical `value` with valid verbatim `evidence` is retained even when it changes words, measurements, negations or laterality; differences receive `questionable` accuracy for physician review. Source extraction fills clinical fields omitted by the model. `medicalTermCorrections` belongs only to the client's preprocessing corrector and never limits the model's proposed corrections. Report validation permits medical term repairs while retaining its checks on explicit measurements and misplaced sections.
 
@@ -144,3 +147,8 @@ See [ERRORS.md](ERRORS.md). Expected failures are classes in `app/error/`, with 
 StoreKit 2, YooKassa, anonymous identities, PostgreSQL migrations and launch prerequisites: [BILLING.md](BILLING.md).
 Deferred NPD receipts and Apple external-purchase reporting work: [BILLING_RELEASE_PLAN.md](BILLING_RELEASE_PLAN.md).
 Backup and restoration templates: [deploy/billing/README.md](../../deploy/billing/README.md).
+
+## Потоковая генерация
+
+Запуск worker, контракт SSE и восстановление после обрыва описаны в
+[REPORT_STREAMING.md](REPORT_STREAMING.md).

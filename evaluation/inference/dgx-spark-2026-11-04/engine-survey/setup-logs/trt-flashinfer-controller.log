@@ -1,0 +1,5 @@
+{"event": "trial_begin", "plan": "tensorrt-4b-flashinfer.json"}
+{"event": "original_stopped", "trial": "tensorrt-4b-flashinfer"}
+{"event": "probe_started", "trial": "tensorrt-4b-flashinfer"}
+{"event": "restored", "trial": "tensorrt-4b-flashinfer"}
+{"event": "trial_end", "plan": "tensorrt-4b-flashinfer.json", "exit": 0}

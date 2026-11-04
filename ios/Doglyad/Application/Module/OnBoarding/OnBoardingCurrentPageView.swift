@@ -55,6 +55,9 @@ struct OnBoardingCurrentPageView: DViewProtocol {
                             set: viewModel.onLegalAcceptedChanged,
                         ),
                     )
+                    .accessibilityIdentifier(
+                        "onboarding.acceptLegal",
+                    )
                     .padding(
                         .trailing,
                         size.s8,

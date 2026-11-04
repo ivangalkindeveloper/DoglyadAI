@@ -23,7 +23,7 @@ struct ScanCameraBottomSheetView: DViewProtocol {
             ZStack(
                 alignment: .bottom,
             ) {
-                ScanCameraPreviewView()
+                ScanCameraFeedView()
 
                 VStack(
                     spacing: .zero,

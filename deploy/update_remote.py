@@ -110,6 +110,12 @@ def check(target: dict) -> dict:
     inference = target["role"] == "inference"
     service = "backend_inference" if inference else "backend_main"
     backend = container(service)
+    report_worker = None
+    if not inference and "report_worker" in compose("config", "--services").splitlines():
+        worker = container("report_worker")
+        if not worker["State"]["Running"] or worker["Image"] != backend["Image"]:
+            raise RuntimeError("Report worker must run the same release as the API")
+        report_worker = {"container": worker["Id"], "image": worker["Image"], "restarts": worker["RestartCount"]}
     if not backend["State"]["Running"]:
         raise RuntimeError("Container not running")
     if inference:
@@ -215,13 +221,14 @@ def check(target: dict) -> dict:
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9.-]*", domain):
             raise RuntimeError("Invalid public domain")
         http(f"https://{domain}/v1/application_config")
-        http(f"https://{domain}/v1/ultrasound/generate_report", True)
+        http(f"https://{domain}/v1/ultrasound/report_generations", True)
         companions = companion["Id"]
     return {
         "image": backend["Image"],
         "container": backend["Id"],
         "companion": companions,
         "restarts": backend["RestartCount"],
+        "report_worker": report_worker,
     }
 
 
@@ -274,6 +281,7 @@ def wait_ready(
                 and _companions_match(first["companion"], companion)
                 and _companions_match(second["companion"], companion)
                 and first["restarts"] == second["restarts"]
+                and first.get("report_worker") == second.get("report_worker")
             ):
                 if (
                     is_non_root_required
@@ -452,7 +460,8 @@ visit(models)
             os.replace(temporary, ".env")
             compose("config", "--quiet")
             compose(
-                "up", "-d", "--no-deps", "--pull", "never", "--force-recreate", service
+                "up", "-d", "--no-deps", "--pull", "never", "--force-recreate", service,
+                *(["report_worker"] if state.get("report_worker") else []),
             )
             return wait_ready(
                 target, image_id, state["companion"], is_non_root_required=True
@@ -462,7 +471,10 @@ visit(models)
             # Use the recorded local image ID, even if the old tag has moved.
             override = snapshot / "rollback.json"
             override.write_text(
-                json.dumps({"services": {service: {"image": state["image"]}}})
+                json.dumps({"services": {
+                    service: {"image": state["image"]},
+                    **({"report_worker": {"image": state["report_worker"]["image"]}} if state.get("report_worker") else {}),
+                }})
             )
             run(
                 "docker",
@@ -478,6 +490,7 @@ visit(models)
                 "never",
                 "--force-recreate",
                 service,
+                *(["report_worker"] if state.get("report_worker") else []),
             )
             return wait_ready(target, state["image"], state["companion"])
         raise ValueError("Unknown remote action")

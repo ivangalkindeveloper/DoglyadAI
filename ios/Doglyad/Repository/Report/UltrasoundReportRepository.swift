@@ -14,9 +14,54 @@ final class UltrasoundReportRepository: UltrasoundReportRepositoryProtocol {
         self.database = database
         self.httpClient = httpClient
     }
-}
 
-extension UltrasoundReportRepository {
+    func prepareGeneration(
+        request: USReportGenerationRequest,
+        photoOptions: ScanPhotoEncodingOptions,
+    ) async throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601
+        encoder.userInfo[
+            .scanPhotoEncodingOptions,
+        ] = photoOptions
+        return try encoder.encode(
+            request,
+        )
+    }
+
+    func startGeneration(
+        data: Data,
+    ) async throws -> USReportGenerationResponse {
+        try await httpClient.post(
+            endPoint: "/ultrasound/report_generations",
+            data: data,
+        )
+    }
+
+    func generation(
+        id: UUID,
+    ) async throws -> USReportGenerationResponse {
+        try await httpClient.get(
+            endPoint: "/ultrasound/report_generations/\(id.uuidString)",
+        )
+    }
+
+    func generationEvents(
+        id: UUID,
+    ) async throws -> AsyncThrowingStream<DServerEvent, Error> {
+        try await httpClient.serverEvents(
+            endPoint: "/ultrasound/report_generations/\(id.uuidString)/events",
+        )
+    }
+
+    func cancelGeneration(
+        id: UUID,
+    ) async throws -> USReportGenerationResponse {
+        try await httpClient.post(
+            endPoint: "/ultrasound/report_generations/\(id.uuidString)/cancel",
+        )
+    }
+
     func getSelectedExaminationTypeId() async throws -> String? {
         database.getSelectedUSExaminationTypeId()
     }
@@ -55,47 +100,6 @@ extension UltrasoundReportRepository {
             ),
         )
     }
-}
-
-extension UltrasoundReportRepository {
-    static let reportEndpoint = "/ultrasound/generate_report"
-    static let voiceParseEndpoint = "/ultrasound/parse_dictation"
-
-    func parseDictation(
-        selectedNeuralModelId: String?,
-        locale: Locale,
-        examinationTypeId: String,
-        transcript: String,
-    ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
-        let request = USVoiceFormParseRequest(
-            selectedNeuralModelId: selectedNeuralModelId,
-            usExaminationTypeId: examinationTypeId,
-            transcript: transcript,
-        )
-        return try await httpClient.post(
-            endPoint: Self.voiceParseEndpoint,
-            body: request,
-            headers: [DHttpHeader.acceptLanguage: locale.identifier],
-            encoderUserInfo: nil,
-        )
-    }
-
-    func generateReport(
-        locale: Locale,
-        request: USExaminationRequest,
-        scanPhotoEncodingOptions: ScanPhotoEncodingOptions,
-    ) async throws -> USExaminationModelReport {
-        try await httpClient.post(
-            endPoint: Self.reportEndpoint,
-            body: request,
-            headers: [
-                DHttpHeader.acceptLanguage: locale.identifier,
-            ],
-            encoderUserInfo: [
-                .scanPhotoEncodingOptions: scanPhotoEncodingOptions,
-            ],
-        )
-    }
 
     func getReports(
         limit: Int,
@@ -113,6 +117,13 @@ extension UltrasoundReportRepository {
         }
     }
 
+    func interruptPendingGenerations() async throws {
+        try await database.examinationReports.updateGenerations(
+            fromStatus: USReportGenerationStatus.generating.rawValue,
+            toStatus: USReportGenerationStatus.interrupted.rawValue,
+        )
+    }
+
     func getReportsCount() async throws -> Int {
         try await database.examinationReports.fetchExaminationReportsCount()
     }
@@ -122,6 +133,19 @@ extension UltrasoundReportRepository {
     ) async throws {
         try await database.examinationReports.setExaminationReport(
             value: report.toDB(),
+        )
+    }
+
+    func updateGeneratedReport(
+        report: USExaminationReport,
+    ) async throws {
+        guard let generationId = report.actualModelReport.generation.id else {
+            return
+        }
+        try await database.examinationReports.updateGeneratedReport(
+            reportId: report.id,
+            generationId: generationId,
+            value: report.actualModelReport.toDB(),
         )
     }
 
@@ -136,10 +160,24 @@ extension UltrasoundReportRepository {
     func clearAllReports() async throws {
         try await database.examinationReports.clearAllExaminationReports()
     }
-}
 
-extension UltrasoundReportRepository {
     @MainActor func clearAll() async throws {
         try await database.clearAll()
+    }
+
+    func parseDictation(
+        selectedNeuralModelId: String?,
+        examinationTypeId: String,
+        transcript: String,
+    ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
+        let request = USVoiceFormParseRequest(
+            selectedNeuralModelId: selectedNeuralModelId,
+            usExaminationTypeId: examinationTypeId,
+            transcript: transcript,
+        )
+        return try await httpClient.post(
+            endPoint: "/ultrasound/parse_dictation",
+            body: request,
+        )
     }
 }

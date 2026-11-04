@@ -1,0 +1,38 @@
+{
+  "working": {
+    "expected": 8,
+    "received": 8,
+    "complete": true,
+    "finish": {
+      "stop": 8
+    },
+    "json_valid": 8,
+    "schema_valid": 8,
+    "main_valid": 8,
+    "repetition_detected": 0,
+    "loop_to_token_limit": 0,
+    "at_character_limit": 0,
+    "review_candidates": 8,
+    "description_equals_conclusion": 0,
+    "median_seconds": 66.17325710049772,
+    "scope": "Synthetic text cases only; validators do not prove clinical correctness."
+  },
+  "unbounded-grammar": {
+    "expected": 8,
+    "received": 8,
+    "complete": true,
+    "finish": {
+      "stop": 8
+    },
+    "json_valid": 8,
+    "schema_valid": 8,
+    "main_valid": 8,
+    "repetition_detected": 0,
+    "loop_to_token_limit": 0,
+    "at_character_limit": 0,
+    "review_candidates": 8,
+    "description_equals_conclusion": 0,
+    "median_seconds": 66.7224353349884,
+    "scope": "Synthetic text cases only; validators do not prove clinical correctness."
+  }
+}

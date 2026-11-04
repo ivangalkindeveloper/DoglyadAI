@@ -1,0 +1,5 @@
+{
+  "original_sha256": "5355d9b5c315a641443c45a3c26f9f3fb1d748033ec18472397cdaad437c4a14",
+  "modified_sha256": "bfb853c3e9ec08a3b500a903b575c077965c39562a347f4443e6fb9d3a4ec966",
+  "scope": "isolated experimental venv only; BF16 weights unchanged"
+}

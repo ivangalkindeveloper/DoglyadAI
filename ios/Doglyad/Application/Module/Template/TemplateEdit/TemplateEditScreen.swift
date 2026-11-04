@@ -56,12 +56,3 @@ struct TemplateEditScreen: View {
         )
     }
 }
-
-#Preview {
-    TemplateEditScreen(
-        arguments: TemplateEditArguments(
-            templateId: UUID(),
-        ),
-    )
-    .previewable()
-}

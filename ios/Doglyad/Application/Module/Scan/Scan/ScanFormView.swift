@@ -30,6 +30,9 @@ struct ScanFormView: DViewProtocol {
                 ),
                 keyboardType: .default,
             )
+            .accessibilityIdentifier(
+                "scan.examinationNumber",
+            )
             .id(
                 ScanFocus.examinationNumber,
             )
@@ -54,6 +57,9 @@ struct ScanFormView: DViewProtocol {
                     submitLabel: .next,
                 ),
                 keyboardType: .default,
+            )
+            .accessibilityIdentifier(
+                "scan.patientName",
             )
             .id(
                 ScanFocus.patientName,
@@ -119,6 +125,9 @@ struct ScanFormView: DViewProtocol {
                 ),
                 keyboardType: .decimalPad,
             )
+            .accessibilityIdentifier(
+                "scan.patientHeightCM",
+            )
             .id(
                 ScanFocus.patientHeightCM,
             )
@@ -144,6 +153,9 @@ struct ScanFormView: DViewProtocol {
                 ),
                 keyboardType: .decimalPad,
             )
+            .accessibilityIdentifier(
+                "scan.patientWeightKG",
+            )
             .id(
                 ScanFocus.patientWeightKG,
             )
@@ -167,6 +179,9 @@ struct ScanFormView: DViewProtocol {
                 mode: DTextFieldMultiLineMode(),
                 keyboardType: .default,
             )
+            .accessibilityIdentifier(
+                "scan.patientComplaints",
+            )
             .id(
                 ScanFocus.patientComplaints,
             )
@@ -189,6 +204,9 @@ struct ScanFormView: DViewProtocol {
                 ],
                 mode: DTextFieldMultiLineMode(),
                 keyboardType: .default,
+            )
+            .accessibilityIdentifier(
+                "scan.examinationDescription",
             )
             .id(
                 ScanFocus.examinationDescription,

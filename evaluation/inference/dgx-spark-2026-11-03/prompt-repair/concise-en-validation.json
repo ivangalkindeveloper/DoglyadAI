@@ -1,0 +1,182 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 9.187366691010538,
+    "usage": {
+      "prompt_tokens": 1351,
+      "total_tokens": 1571,
+      "completion_tokens": 220
+    },
+    "task": "report",
+    "schema_valid": true,
+    "current_main_valid": true,
+    "uncapped_main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 508,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      },
+      "conclusion": {
+        "characters": 101,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Увеличение щитовидной железы, без признаков патологической активности. Отсутствие очаговых изменений."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": false,
+    "review_candidate": true
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 9.722552758990787,
+    "usage": {
+      "prompt_tokens": 1351,
+      "total_tokens": 1583,
+      "completion_tokens": 232
+    },
+    "task": "report",
+    "schema_valid": true,
+    "current_main_valid": true,
+    "uncapped_main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 508,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      },
+      "conclusion": {
+        "characters": 147,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Увеличение щитовидной железы, без признаков патологической активности. Отсутствие очаговых изменений и увеличенных регионарных лимфатических узлов."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": false,
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 9.329177067003911,
+    "usage": {
+      "prompt_tokens": 1362,
+      "total_tokens": 1584,
+      "completion_tokens": 222
+    },
+    "task": "report",
+    "schema_valid": true,
+    "current_main_valid": true,
+    "uncapped_main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 553,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 62,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": false,
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 9.88931725700968,
+    "usage": {
+      "prompt_tokens": 1362,
+      "total_tokens": 1598,
+      "completion_tokens": 236
+    },
+    "task": "report",
+    "schema_valid": true,
+    "current_main_valid": true,
+    "uncapped_main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 553,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 149,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование. Рекомендуется проведение дальнейшего обследования для уточнения характера образования."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": false,
+    "review_candidate": true
+  }
+]

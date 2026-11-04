@@ -1,0 +1,11 @@
+{
+  "all_four_containers_unchanged": true,
+  "running": {
+    "doglyad-dgx-vllm_medgemma_4b-1": true,
+    "doglyad-dgx-vllm_medgemma_15_4b-1": true,
+    "doglyad-dgx-vllm_medgemma_27b-1": true,
+    "doglyad-dgx-backend_inference-1": true
+  },
+  "uptime": "15:21:32 up 2 days, 13:35,  2 users,  load average: 0.60, 0.32, 0.22",
+  "followup_log": "{\"event\": \"starting\", \"variant\": \"unbounded-grammar\", \"count\": 8}\n{\"event\": \"finished\", \"variant\": \"unbounded-grammar\"}\n{\"event\": \"engine_ready\", \"name\": \"doglyad-dgx-vllm_medgemma_4b-1\", \"seconds\": 0.1}\n{\"event\": \"engine_ready\", \"name\": \"doglyad-dgx-vllm_medgemma_15_4b-1\", \"seconds\": 0.1}\n{\"event\": \"engine_ready\", \"name\": \"doglyad-dgx-vllm_medgemma_27b-1\", \"seconds\": 0.1}\n{\"event\": \"runtime_verified\", \"no_containers_restarted\": true}\n"
+}

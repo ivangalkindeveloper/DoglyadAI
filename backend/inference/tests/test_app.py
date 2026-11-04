@@ -11,6 +11,7 @@ from fastapi import FastAPI
 from app.core.variables import Variables
 from app.error import ApiError
 from app.model.inference_server_config import InferenceServerConfig
+from tests.support.vllm_stream_response import vllm_stream_response
 
 
 def test_app_exposes_routes(
@@ -187,8 +188,13 @@ def test_generate_rejects_another_model(
     )
 
 
+@pytest.mark.parametrize(
+    "repetition_penalty",
+    [None, 1.05],
+)
 def test_generate_forwards_images_and_json_schema(
     server_config: InferenceServerConfig,
+    repetition_penalty: float | None,
 ) -> None:
     from app.model.generation_image import GenerationImage
     from app.model.generation_request import GenerationRequest
@@ -210,12 +216,8 @@ def test_generate_forwards_images_and_json_schema(
                 request.content,
             ),
         )
-        return httpx.Response(
-            200,
-            json={
-                "choices": [{"message": {"content": '{"value":"generated"}'}, "finish_reason": "stop"}],
-                "usage": {"prompt_tokens": 10, "completion_tokens": 5},
-            },
+        return vllm_stream_response(
+            '{"value":"generated"}',
         )
 
     async def run() -> str:
@@ -242,6 +244,7 @@ def test_generate_forwards_images_and_json_schema(
                             data="QUJD",
                         )
                     ],
+                    repetitionPenalty=repetition_penalty,
                 ),
             )
 
@@ -255,6 +258,10 @@ def test_generate_forwards_images_and_json_schema(
         "type": "json_schema",
         "json_schema": {"name": "structured_response", "schema": schema},
     }
+    if repetition_penalty is None:
+        assert "repetition_penalty" not in seen
+    else:
+        assert seen["repetition_penalty"] == repetition_penalty
     messages = seen["messages"]
     assert isinstance(
         messages,
@@ -282,9 +289,8 @@ def test_generate_omits_optional_fields_and_accepts_plain_text(
                 request.content,
             ),
         )
-        return httpx.Response(
-            200,
-            json={"choices": [{"message": {"content": "Generated text."}}]},
+        return vllm_stream_response(
+            "Generated text.",
         )
 
     async def run() -> str:
@@ -313,6 +319,7 @@ def test_generate_omits_optional_fields_and_accepts_plain_text(
     )
     assert seen == {
         "model": "example/served-model",
+        "stream": True,
         "messages": [
             {
                 "role": "user",
@@ -320,27 +327,3 @@ def test_generate_omits_optional_fields_and_accepts_plain_text(
             }
         ],
     }
-
-
-def test_vllm_response_value() -> None:
-    from app.model.vllm_chat_completion import VLLMChatCompletion
-
-    parsed = VLLMChatCompletion.model_validate(
-        {
-            "choices": [{"message": {"role": "assistant", "content": "  Generated text.  "}}],
-            "usage": {"prompt_tokens": 10, "completion_tokens": 20},
-        },
-    )
-    assert parsed.value() == "Generated text."
-
-
-def test_vllm_response_rejects_empty_content() -> None:
-    from app.model.vllm_chat_completion import VLLMChatCompletion
-
-    parsed = VLLMChatCompletion.model_validate(
-        {"choices": [{"message": {"content": ""}}]},
-    )
-    with pytest.raises(
-        ValueError,
-    ):
-        parsed.value()

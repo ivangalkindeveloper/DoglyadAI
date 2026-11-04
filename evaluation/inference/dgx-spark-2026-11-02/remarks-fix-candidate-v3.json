@@ -1,0 +1,116 @@
+{
+  "date": "2026-11-02",
+  "method": "Direct private vLLM SSE with current ReportGenerationService.prepare/complete; synthetic fixtures only",
+  "conditions": {
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "parallel_requests": 2,
+    "max_description_remarks_characters": 512
+  },
+  "results": [
+    {
+      "seconds": 9.79,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1623,
+        "total_tokens": 1914,
+        "completion_tokens": 291
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 0,
+      "conflict": true,
+      "characters": 966,
+      "valid_json": true,
+      "fields": {
+        "description": 588,
+        "conclusion": 193,
+        "recommendations": 97,
+        "descriptionRemarks": null
+      },
+      "synthetic_description_remarks": null,
+      "expected_remarks_present": false,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 17.73,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1600,
+        "total_tokens": 2127,
+        "completion_tokens": 527
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 0,
+      "conflict": false,
+      "characters": 1791,
+      "valid_json": true,
+      "fields": {
+        "description": 780,
+        "conclusion": 780,
+        "recommendations": 143,
+        "descriptionRemarks": null
+      },
+      "synthetic_description_remarks": null,
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 17.67,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1600,
+        "total_tokens": 2128,
+        "completion_tokens": 528
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 42,
+      "conflict": false,
+      "characters": 1801,
+      "valid_json": true,
+      "fields": {
+        "description": 780,
+        "conclusion": 780,
+        "recommendations": 153,
+        "descriptionRemarks": null
+      },
+      "synthetic_description_remarks": null,
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 10.39,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1623,
+        "total_tokens": 1932,
+        "completion_tokens": 309
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 42,
+      "conflict": true,
+      "characters": 1034,
+      "valid_json": true,
+      "fields": {
+        "description": 588,
+        "conclusion": 226,
+        "recommendations": 132,
+        "descriptionRemarks": null
+      },
+      "synthetic_description_remarks": null,
+      "expected_remarks_present": false,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    }
+  ],
+  "limitations": [
+    "Small synthetic regression matrix, not a general clinical-quality evaluation.",
+    "No images; photo schema paths are covered by backend tests."
+  ]
+}

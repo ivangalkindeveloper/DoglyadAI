@@ -1,0 +1,196 @@
+[
+  {
+    "id": "historical-greedy-0",
+    "kind": "historical",
+    "finish": "length",
+    "done": true,
+    "seconds": 85.95203351197415,
+    "first_delta_seconds": 0.17141276999609545,
+    "usage": {
+      "prompt_tokens": 1864,
+      "total_tokens": 3912,
+      "completion_tokens": 2048
+    },
+    "error": null,
+    "json_valid": false,
+    "schema_valid": false,
+    "main_valid": false,
+    "sections": {
+      "description": {
+        "characters": 508,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      },
+      "conclusion": {
+        "characters": 508,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      },
+      "descriptionRemarks": {
+        "characters": 10918,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 169,
+        "repeated_sentences": {
+          "Не требуется дополнительных исследований на данном этапе.": 169
+        },
+        "production_repetition_rejected": true,
+        "ends_in_sentence_punctuation": false,
+        "tail": "х исследований на данном этапе. Не требуется дополнительных исследований на данном этапе. Не требуется дополнительных исследований на данном этапе. Не требуется"
+      }
+    },
+    "validation_error": "JSONDecodeError",
+    "repetition_detected": true,
+    "fields_at_max_length": [],
+    "review_candidate": false
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "seconds": 15.120165714004543,
+    "first_delta_seconds": 0.06523725800798275,
+    "usage": {
+      "prompt_tokens": 1931,
+      "total_tokens": 2292,
+      "completion_tokens": 361
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 497,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      },
+      "conclusion": {
+        "characters": 497,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      }
+    },
+    "description_equals_conclusion": true,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "seconds": 16.370017578999978,
+    "first_delta_seconds": 0.09682516500470228,
+    "usage": {
+      "prompt_tokens": 1942,
+      "total_tokens": 2332,
+      "completion_tokens": 390
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": false,
+    "sections": {
+      "description": {
+        "characters": 542,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 143,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование. Необходимо провести дальнейшее обследование для уточнения характера образования."
+      },
+      "recommendations": {
+        "characters": 114,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Рекомендуется провести сцинтиграфию щитовидной железы и/или биопсию для уточнения характера очагового образования."
+      },
+      "descriptionRemarks": {
+        "characters": 512,
+        "max_length": 512,
+        "at_max_length": true,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": false,
+        "tail": "патологией. Если это очаговое образование, то необходимо уточнить его характер (тиреоидный узел, солидный узел, кистозный узел, смешанный узел, коллоидный узел,"
+      }
+    },
+    "description_equals_conclusion": false,
+    "validation_error": "invalidReportResponse",
+    "repetition_detected": false,
+    "fields_at_max_length": [
+      "descriptionRemarks"
+    ],
+    "review_candidate": false
+  },
+  {
+    "id": "dictation-greedy-0",
+    "kind": "dictation",
+    "finish": "stop",
+    "done": true,
+    "seconds": 23.728250084008323,
+    "first_delta_seconds": 0.07650392199866474,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 2004,
+      "completion_tokens": 567
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "name": "tensorrt-4b-jit",
+  "engine": "tensorrt-llm",
+  "image": "sha256:3c2f6b6cf3c57740c93a5f3583731c7a72c391bc9a0e574e6430a8cfb19b857e",
+  "entrypoint": "/survey/trt-venv/bin/trtllm-serve",
+  "python": "/survey/trt-venv/bin/python",
+  "args": [
+    "/root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000",
+    "--served_model_name",
+    "google/medgemma-4b-it",
+    "--max_batch_size",
+    "4",
+    "--max_seq_len",
+    "16384",
+    "--max_num_tokens",
+    "4096",
+    "--config",
+    "/survey/tensorrt-4b-config.yml"
+  ],
+  "health_url": "http://127.0.0.1:8000/health",
+  "env": [
+    "OMPI_ALLOW_RUN_AS_ROOT=1",
+    "OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1",
+    "CUDA_HOME=/usr/local/cuda",
+    "PATH=/survey/trt-venv/bin:/usr/local/cuda/bin:/usr/local/nvidia/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+  ]
+}

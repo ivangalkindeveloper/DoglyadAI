@@ -1,0 +1,176 @@
+2026-11-04 17:00:05,145 - lmdeploy - INFO - builder.py:72 - matching vision model: Gemma3VisionModel
+2026-11-04 17:00:07,051 - lmdeploy - WARNING - vl_async_engine.py:41 - Prefix caching is disabled for this VL model path. Supported: TurboMind native-vision models and PyTorch new-preprocess multimodal inputs.
+2026-11-04 17:00:07,051 - lmdeploy - INFO - async_engine.py:134 - input backend=pytorch, backend_config=PytorchEngineConfig(dtype='bfloat16', tp=1, dcp=1, dp=1, dp_rank=0, ep=1, session_len=16384, max_batch_size=4, attn_tp_size=None, mlp_tp_size=None, moe_tp_size=None, cache_max_entry_count=0.1, prefill_interval=16, block_size=64, kernel_block_size=64, num_cpu_blocks=0, num_gpu_blocks=256, adapters=None, max_prefill_token_num=8192, cudagraph_capture_batch_sizes=None, thread_safe=False, enable_prefix_caching=False, prefix_cache_state_budget=0, prefix_cache_decode_state_interval=0, prefix_cache_decode_save_first=False, prefill_save_alignment=1024, prefill_save_last_only=False, mooncake_state_save_slots=8, device_type='cuda', eager_mode=False, custom_module_map=None, download_dir=None, revision=None, quant_policy=<QuantPolicy.NONE: 0>, distributed_executor_backend=None, empty_init=False, enable_microbatch=False, enable_eplb=False, enable_mp_engine=True, mp_engine_backend='mp', model_format=None, enable_metrics=True, hf_overrides=None, language_model_only=False, logprobs_mode=None, enable_return_routed_experts=False, enable_transfer_obj_ref=False, dllm_block_length=None, dllm_unmasking_strategy='low_confidence_dynamic', dllm_denoising_steps=None, dllm_confidence_threshold=0.85, role=<EngineRole.Hybrid: 1>, migration_backend=<MigrationBackend.DLSlime: 1>, kv_transfer_config=None, piecewise_cudagraph_max_tokens=None)
+2026-11-04 17:00:07,051 - lmdeploy - INFO - async_engine.py:135 - speculative_config=None
+2026-11-04 17:00:11,879 - lmdeploy - INFO - zmq_rpc.py:359 - Connecting to AsyncRPCServer on port 34915...
+2026-11-04 17:00:16,738 - lmdeploy - INFO - __init__.py:146 - Build <uni> executor.
+2026-11-04 17:00:18,419 - lmdeploy - INFO - base.py:574 - Building Model.
+2026-11-04 17:00:23,287 - lmdeploy.pytorch.kernels.cuda.turbo_quant - INFO - turbo_quant.py:25 - fast_hadamard_transform not installed, falling back to matmul-based Hadamard transform. Install it for better performance.
+2026-11-04 17:00:23,322 - lmdeploy - WARNING - __init__.py:47 - For higher performance, please install FlashAttention-3 https://github.com/Dao-AILab/flash-attention
+Loading weights from safetensors:   0%|          | 0/2 [00:00<?, ?it/s]Loading weights from safetensors:  50%|█████     | 1/2 [00:21<00:21, 21.26s/it]Loading weights from safetensors: 100%|██████████| 2/2 [00:39<00:00, 19.48s/it]Loading weights from safetensors: 100%|██████████| 2/2 [00:39<00:00, 19.75s/it]
+2026-11-04 17:01:03,410 - lmdeploy - INFO - base.py:576 - Updating configs.
+2026-11-04 17:01:03,414 - lmdeploy - INFO - base.py:578 - Building GraphRunner and warmup ops, please waiting.
+2026-11-04 17:01:03,420 - lmdeploy - INFO - base.py:583 - Building CacheEngine with config: 
+CacheConfig(max_batches=4, block_size=64, num_cpu_blocks=0, num_gpu_blocks=256, kernel_block_size=64, dcp=1, window_size=-1, cache_max_entry_count=0.1, max_prefill_token_num=8192, cudagraph_capture_batch_sizes=None, enable_prefix_caching=False, quant_policy=<QuantPolicy.NONE: 0>, device_type='cuda', num_state_caches=None, compact_state_capacity=None, prefix_cache_state_budget=0, prefix_cache_decode_state_interval=0, prefix_cache_decode_save_first=False, prefill_save_alignment=1024, prefill_save_last_only=False, mooncake_state_save_slots=8, prefix_cache_block_aligned=False, prefix_cache_token_lookahead=0, states_shapes=[], num_reserved_gpu_blocks=1, role=<EngineRole.Hybrid: 1>, migration_backend=<MigrationBackend.DLSlime: 1>, kv_transfer_config=None).
+2026-11-04 17:01:03,506 - lmdeploy - INFO - base.py:569 - GPU KV cache capacity: 16,320 tokens (255 usable blocks/rank, DCP=1).
+2026-11-04 17:01:03,506 - lmdeploy - INFO - base.py:591 - Warming up model.
+2026-11-04 17:01:03,506 - lmdeploy - INFO - agent.py:551 - Starting engine warmup. This may take a while...
+/usr/local/lib/python3.12/dist-packages/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+  warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+Process mp_engine_proc:
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/multiprocessing/process.py", line 314, in _bootstrap
+    self.run()
+  File "/usr/lib/python3.12/multiprocessing/process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/mp_engine/zmq_engine.py", line 139, in _mp_proc
+    engine = Engine.from_pretrained(
+             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/engine.py", line 292, in from_pretrained
+    return cls(
+           ^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/engine.py", line 192, in __init__
+    self.executor.init()
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/executor/base.py", line 592, in init
+    self.warmup()
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/executor/uni_executor.py", line 99, in warmup
+    self.model_agent.warmup()
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/model_agent/agent.py", line 563, in warmup
+    self._warmup_prefill()
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/model_agent/agent.py", line 538, in _warmup_prefill
+    self._forward_impl(inputs)
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/model_agent/agent.py", line 1735, in _forward_impl
+    output = model_forward(
+             ^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/model_agent/agent.py", line 280, in model_forward
+    output = model(**input_dict)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/backends/cuda/graph_runner/runner.py", line 282, in __call__
+    return self._forward_eager(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/backends/cuda/graph_runner/runner.py", line 231, in _forward_eager
+    output = self.model(**kwargs)
+             ^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/models/gemma3_vl.py", line 203, in forward
+    hidden_states = self.language_model(input_ids,
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/models/gemma.py", line 541, in forward
+    hidden_states = self.model(
+                    ^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/models/gemma.py", line 475, in forward
+    hidden_states, residual = decoder_layer(
+                              ^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/models/gemma.py", line 322, in forward
+    hidden_states = self.self_attn(
+                    ^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/models/gemma.py", line 145, in forward
+    attn_output = self.attn_fwd(
+                  ^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/nn/attention.py", line 159, in forward
+    return self.impl.forward(
+           ^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/backends/cuda/attention/default.py", line 517, in forward
+    return self._forward_prefill(
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/backends/cuda/attention/default.py", line 423, in _forward_prefill
+    attn_output = self.flash_attention_fwd(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/kernels/cuda/flashattention.py", line 573, in flash_attn_varlen_func
+    _flash_prefill_fwd_kernel[grid](
+  File "/usr/local/lib/python3.12/dist-packages/triton/runtime/jit.py", line 370, in <lambda>
+    return lambda *args, **kwargs: self.run(grid=grid, warmup=False, *args, **kwargs)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/triton/runtime/jit.py", line 760, in run
+    launch_metadata = kernel.launch_metadata(grid, stream, *bound_args.values())
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/triton/compiler/compiler.py", line 485, in launch_metadata
+    self._init_handles()
+  File "/usr/local/lib/python3.12/dist-packages/triton/compiler/compiler.py", line 459, in _init_handles
+    raise_(OutOfResources(self.metadata.shared, max_shared, "shared memory"))
+  File "/usr/local/lib/python3.12/dist-packages/triton/compiler/compiler.py", line 451, in raise_
+    raise err
+triton.runtime.errors.OutOfResources: out of resource: shared memory, Required: 172032, Hardware limit: 101376. Reducing block sizes or `num_stages` may help.
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/__main__.py", line 5, in <module>
+2026-11-04 17:01:08,929 - lmdeploy - ERROR - zmq_rpc.py:62 - PyTorch ZMQ engine process is not alive.
+    run()
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/cli/entrypoint.py", line 39, in run
+    args.run(args)
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/cli/serve.py", line 334, in api_server
+    run_api_server(
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/serve/openai/api_server.py", line 371, in serve
+    server_context.async_engine = pipeline_class(
+                                  ^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/serve/core/vl_async_engine.py", line 44, in __init__
+    super().__init__(model_path,
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/serve/core/async_engine.py", line 158, in __init__
+    self.engine = self._build_pytorch(model_path=model_path,
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/serve/core/async_engine.py", line 225, in _build_pytorch
+    return Engine.from_pretrained(model_path,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/engine.py", line 283, in from_pretrained
+    return build_mp_engine(
+           ^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/mp_engine/__init__.py", line 10, in build_mp_engine
+    return ZMQMPEngine(model_path, engine_config=engine_config, trust_remote_code=trust_remote_code, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/mp_engine/zmq_engine.py", line 57, in __init__
+    super().__init__()
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/mp_engine/base.py", line 34, in __init__
+    self.engine_config = self._collective_rpc('get_engine_config')
+                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/mp_engine/zmq_engine.py", line 204, in _collective_rpc
+    return self.rpc_client.call(func, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/mp_engine/zmq_rpc.py", line 446, in call
+    reply = self._poll_recv()
+            ^^^^^^^^^^^^^^^^^
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/mp_engine/zmq_rpc.py", line 428, in _poll_recv
+    self._check_server_alive()
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/mp_engine/zmq_rpc.py", line 392, in _check_server_alive
+    self._server_liveness.check_alive()
+  File "/survey/lmdeploy-venv/lib/python3.12/site-packages/lmdeploy/pytorch/engine/mp_engine/zmq_rpc.py", line 86, in check_alive
+    raise self.new_dead_error()
+lmdeploy.pytorch.engine.mp_engine.zmq_rpc.RPCServerDeadError: PyTorch ZMQ engine process is not alive.

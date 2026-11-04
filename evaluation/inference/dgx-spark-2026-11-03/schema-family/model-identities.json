@@ -1,0 +1,8 @@
+{
+  "medgemma-15-4b": [
+    "google/medgemma-1.5-4b-it"
+  ],
+  "medgemma-27b": [
+    "google/medgemma-27b-it"
+  ]
+}

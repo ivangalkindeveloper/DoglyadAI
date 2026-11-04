@@ -1,0 +1,45 @@
+{
+  "vllm-transformers": {
+    "image": "sha256:89154ef00dd15368d2b293c167e5cc7dbb521fcfb2fbb77510e0d4df2b820e8f",
+    "packages": {
+      "torch": "2.13.0+cu130",
+      "transformers": "5.15.1",
+      "xgrammar": "0.2.3",
+      "vllm": "0.28.0",
+      "triton": "3.7.1"
+    }
+  },
+  "sglang": {
+    "image": "lmsysorg/sglang@sha256:7f132b890eb6d55f6a8ded87f85e359434878d0fb7f6758582cf759ffb35b5d8",
+    "packages": {
+      "torch": "2.14.1+cu130",
+      "transformers": "5.19.0",
+      "xgrammar": "0.2.7",
+      "sglang": "0.5.23",
+      "triton": "3.8.0"
+    }
+  },
+  "lmdeploy": {
+    "image": "sha256:89154ef00dd15368d2b293c167e5cc7dbb521fcfb2fbb77510e0d4df2b820e8f",
+    "packages": {
+      "torch": "2.12.1",
+      "transformers": "5.15.1",
+      "xgrammar": "0.2.3",
+      "vllm": "0.28.0",
+      "lmdeploy": "0.18.0",
+      "triton": "3.7.1"
+    }
+  },
+  "tensorrt-llm": {
+    "image": "sha256:3c2f6b6cf3c57740c93a5f3583731c7a72c391bc9a0e574e6430a8cfb19b857e",
+    "packages": {
+      "tensorrt-llm": "1.4.0rc2.post1",
+      "torch": "2.14.0",
+      "transformers": "5.5.4",
+      "flashinfer-python": "0.6.18",
+      "xgrammar": "0.1.32",
+      "triton": "3.8.0"
+    },
+    "optional_flashinfer_cache": "removed from temporary base; JIT mode"
+  }
+}

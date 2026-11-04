@@ -1,0 +1,212 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "seconds": 10.67202062701108,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 301,
+      "prompt_tokens": 1273,
+      "total_tokens": 1574,
+      "prompt_tokens_details": {
+        "cached_tokens": 1272
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "seconds": 10.311897385981865,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 277,
+      "prompt_tokens": 1273,
+      "total_tokens": 1550,
+      "prompt_tokens_details": {
+        "cached_tokens": 1272
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "seconds": 9.731404746009503,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 271,
+      "prompt_tokens": 1284,
+      "total_tokens": 1555,
+      "prompt_tokens_details": {
+        "cached_tokens": 1268
+      }
+    },
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true,
+    "validation_error": "reportMeasurementsMismatch"
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "seconds": 12.448835949006025,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 313,
+      "prompt_tokens": 1284,
+      "total_tokens": 1597,
+      "prompt_tokens_details": {
+        "cached_tokens": 1283
+      }
+    },
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true,
+    "validation_error": "reportMeasurementsMismatch"
+  },
+  {
+    "id": "bladder-correction-sample-42",
+    "kind": "heldout",
+    "finish": "stop",
+    "seconds": 3.912714196019806,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 99,
+      "prompt_tokens": 890,
+      "total_tokens": 989,
+      "prompt_tokens_details": {
+        "cached_tokens": 756
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "bladder-en-sample-42",
+    "kind": "heldout",
+    "finish": "stop",
+    "seconds": 3.0477433879859746,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 74,
+      "prompt_tokens": 686,
+      "total_tokens": 760,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 0,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "dictation-greedy-0",
+    "kind": "dictation",
+    "finish": "stop",
+    "seconds": 31.991252288018586,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 904,
+      "prompt_tokens": 1437,
+      "total_tokens": 2341,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 0,
+    "prompt_tokens_match_vllm": true,
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    }
+  },
+  {
+    "id": "vision-1",
+    "kind": "vision",
+    "finish": "stop",
+    "seconds": 1.6129798210167792,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 23,
+      "prompt_tokens": 306,
+      "total_tokens": 329,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_sentence_copies": 0,
+    "vision_expected_match": true
+  },
+  {
+    "id": "vision-2",
+    "kind": "vision",
+    "finish": "stop",
+    "seconds": 1.570257401006529,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 28,
+      "prompt_tokens": 564,
+      "total_tokens": 592,
+      "prompt_tokens_details": {
+        "cached_tokens": 301
+      }
+    },
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_sentence_copies": 0,
+    "vision_expected_match": true
+  }
+]

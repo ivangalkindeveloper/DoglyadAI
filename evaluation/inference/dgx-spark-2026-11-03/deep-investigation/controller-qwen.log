@@ -1,0 +1,10 @@
+{"event": "original_engine_stopped"}
+{"event": "starting", "stage": "qwen-vllm-xgrammar"}
+{"event": "engine_ready", "name": "doglyad-deep-evaluation", "seconds": 168.8}
+{"event": "probe_finished", "output": "qwen-vllm-xgrammar.jsonl"}
+{"event": "starting", "stage": "qwen-hf-xgrammar"}
+{"event": "probe_finished", "output": "qwen-hf-xgrammar.jsonl"}
+{"event": "restoring_original"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 122.8}
+{"event": "restoration_verified"}
+{"event": "finished"}

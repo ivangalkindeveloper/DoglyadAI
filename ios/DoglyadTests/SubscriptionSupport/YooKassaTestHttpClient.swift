@@ -88,4 +88,23 @@ actor YooKassaTestHttpClient: DHttpClientProtocol {
             .unsupportedURL,
         )
     }
+
+    func post<Response: Decodable>(
+        endPoint _: String,
+        data _: Data?,
+        headers _: [String: String]?,
+    ) async throws -> Response {
+        throw URLError(
+            .unsupportedURL,
+        )
+    }
+
+    func serverEvents(
+        endPoint _: String,
+        headers _: [String: String]?,
+    ) async throws -> AsyncThrowingStream<DServerEvent, Error> {
+        throw URLError(
+            .unsupportedURL,
+        )
+    }
 }

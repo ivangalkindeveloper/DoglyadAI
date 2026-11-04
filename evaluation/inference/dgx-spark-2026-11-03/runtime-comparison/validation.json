@@ -1,0 +1,665 @@
+[
+  {
+    "id": "historical-greedy-0",
+    "finish": "length",
+    "seconds": 83.051,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 44,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-0",
+    "finish": "length",
+    "seconds": 83.434,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 5,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-42",
+    "finish": "length",
+    "seconds": 83.6,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 65,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-123",
+    "finish": "length",
+    "seconds": 83.749,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 20,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "finish": "length",
+    "seconds": 83.717,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 3652,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 31,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-sample-0",
+    "finish": "stop",
+    "seconds": 27.098,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2266,
+      "completion_tokens": 662
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "remarks_characters": 0
+  },
+  {
+    "id": "report-sample-42",
+    "finish": "stop",
+    "seconds": 23.153,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2169,
+      "completion_tokens": 565
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "remarks_characters": 0
+  },
+  {
+    "id": "report-sample-123",
+    "finish": "stop",
+    "seconds": 10.466,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1859,
+      "completion_tokens": 255
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 0
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "stop",
+    "seconds": 18.924,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2076,
+      "completion_tokens": 461
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 512,
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-0",
+    "finish": "stop",
+    "seconds": 18.307,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2061,
+      "completion_tokens": 446
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 512,
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 14.877,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1977,
+      "completion_tokens": 362
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 2,
+    "remarks_characters": 512,
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-123",
+    "finish": "stop",
+    "seconds": 17.288,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2036,
+      "completion_tokens": 421
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 512,
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "dictation-greedy-0",
+    "finish": "stop",
+    "seconds": 23.254,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 2004,
+      "completion_tokens": 567
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "examination_description",
+          "value": "УЗИ щитовидной железы",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    },
+    "missing_expected_fields": [],
+    "unexpected_fields": [
+      "examination_description"
+    ]
+  },
+  {
+    "id": "historical-greedy-0",
+    "finish": "stop",
+    "seconds": 18.305,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 1910,
+      "completion_tokens": 366
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 0
+  },
+  {
+    "id": "historical-sample-0",
+    "finish": "stop",
+    "seconds": 14.588,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 1895,
+      "completion_tokens": 351
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 2,
+    "remarks_characters": 0
+  },
+  {
+    "id": "historical-sample-42",
+    "finish": "stop",
+    "seconds": 14.942,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 1908,
+      "completion_tokens": 364
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 2,
+    "remarks_characters": 0
+  },
+  {
+    "id": "historical-sample-123",
+    "finish": "length",
+    "seconds": 84.198,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": false,
+    "main_valid": false,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 16,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 17.165,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2019,
+      "completion_tokens": 415
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 0
+  },
+  {
+    "id": "report-sample-0",
+    "finish": "stop",
+    "seconds": 19.207,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2069,
+      "completion_tokens": 465
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 2,
+    "remarks_characters": 0
+  },
+  {
+    "id": "report-sample-42",
+    "finish": "stop",
+    "seconds": 12.106,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1897,
+      "completion_tokens": 293
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 0
+  },
+  {
+    "id": "report-sample-123",
+    "finish": "stop",
+    "seconds": 21.151,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2117,
+      "completion_tokens": 513
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 3,
+    "maximum_raw_sentence_copies": 2,
+    "remarks_characters": 0
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "length",
+    "seconds": 84.572,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 3663,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": false,
+    "main_valid": false,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 12,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "conflict-sample-0",
+    "finish": "stop",
+    "seconds": 11.125,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1884,
+      "completion_tokens": 269
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 0
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 11.132,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1884,
+      "completion_tokens": 269
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 3,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 0
+  },
+  {
+    "id": "conflict-sample-123",
+    "finish": "stop",
+    "seconds": 11.134,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1884,
+      "completion_tokens": 269
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 0,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 0
+  },
+  {
+    "id": "dictation-greedy-0",
+    "finish": "stop",
+    "seconds": 21.092,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 1945,
+      "completion_tokens": 508
+    },
+    "runtime": "vllm-guidance",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 5,
+    "maximum_raw_sentence_copies": 1,
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "examination_description",
+          "value": "Диагностика щитовидной железы.",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    },
+    "missing_expected_fields": [],
+    "unexpected_fields": [
+      "examination_description"
+    ]
+  },
+  {
+    "id": "historical-greedy-0",
+    "finish": "length",
+    "seconds": 114.924,
+    "usage": {
+      "prompt_tokens": 1544,
+      "completion_tokens": 2048
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": true,
+    "matching_initial_output_tokens": 2048,
+    "maximum_raw_sentence_copies": 44,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-0",
+    "finish": "length",
+    "seconds": 113.843,
+    "usage": {
+      "prompt_tokens": 1544,
+      "completion_tokens": 2048
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 182,
+    "maximum_raw_sentence_copies": 6,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-42",
+    "finish": "length",
+    "seconds": 114.193,
+    "usage": {
+      "prompt_tokens": 1544,
+      "completion_tokens": 2048
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 366,
+    "maximum_raw_sentence_copies": 71,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-123",
+    "finish": "length",
+    "seconds": 114.045,
+    "usage": {
+      "prompt_tokens": 1544,
+      "completion_tokens": 2048
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 93,
+    "maximum_raw_sentence_copies": 34,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 33.424,
+    "usage": {
+      "prompt_tokens": 1604,
+      "completion_tokens": 599
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 536,
+    "maximum_raw_sentence_copies": 2,
+    "remarks_characters": 0
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "stop",
+    "seconds": 15.976,
+    "usage": {
+      "prompt_tokens": 1615,
+      "completion_tokens": 284
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": false,
+    "matching_initial_output_tokens": 93,
+    "maximum_raw_sentence_copies": 1,
+    "remarks_characters": 0
+  },
+  {
+    "id": "dictation-greedy-0",
+    "finish": "stop",
+    "seconds": 31.566,
+    "usage": {
+      "prompt_tokens": 1437,
+      "completion_tokens": 567
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "prompt_tokens_match_baseline": true,
+    "text_matches_baseline": true,
+    "matching_initial_output_tokens": 567,
+    "maximum_raw_sentence_copies": 1,
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "examination_description",
+          "value": "УЗИ щитовидной железы",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    },
+    "missing_expected_fields": [],
+    "unexpected_fields": [
+      "examination_description"
+    ]
+  }
+]

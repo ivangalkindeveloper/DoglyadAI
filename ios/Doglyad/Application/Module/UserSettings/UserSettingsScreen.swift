@@ -59,10 +59,3 @@ struct UserSettingsScreen: View {
         )
     }
 }
-
-#Preview {
-    UserSettingsScreen(
-        arguments: nil,
-    )
-    .previewable()
-}

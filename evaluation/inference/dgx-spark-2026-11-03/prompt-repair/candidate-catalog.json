@@ -1,0 +1,16 @@
+{
+  "ru": {
+    "reportSystemPrompt": "Составь протокол УЗИ на русском языке только по данным пациента.\ndescription: изложи находки исследования. Сохрани каждое исходное измерение, единицу, сторону и отрицание. Не добавляй признаки, которых нет в источнике. Жалобы и заключение врача не копируй в описание находок.\nconclusion: краткое заключение по находкам; не пересказывай описание. Если врач продиктовал заключение отдельно, сохрани его смысл. Не назначай диагноз без основания.\n",
+    "reportRecommendationsPrompt": "recommendations: только действия, обоснованные исходными данными; иначе null.\n",
+    "reportDescriptionRemarksPrompt": "descriptionRemarks: только противоречия или неоднозначности исходного описания. Если для одной структуры одновременно указаны наличие и отсутствие признака, назови оба утверждения и попроси уточнить. Поздняя фраза заменяет раннюю только при явном исправлении врача. Не перечисляй недостающие признаки и не пересказывай описание. Если такой проблемы нет, null.\n",
+    "reportMedicalTermCorrectionPrompt": "contextualStrings — словарь для однозначного исправления ошибок распознавания медицинских терминов, а не данные пациента. Не переноси его термины в находки без источника. Сохраняй правильные слова, числа, единицы и отрицания. Шаблон определяет стиль, но не содержит фактов пациента.\n",
+    "reportStructuredOutputPrompt": "Верни один JSON-объект по схеме ниже. Заполни каждое обязательное поле. Закончив содержимое поля, перейди к следующему. После последнего поля закрой объект и заверши ответ.\nJSON Schema:\n{schema}\n"
+  },
+  "en": {
+    "reportSystemPrompt": "Write an ultrasound report in English using only the patient's supplied findings.\ndescription: state the examination findings. Preserve every supplied measurement, unit, side, and negation. Do not invent missing findings. Do not copy complaints or the clinician's separate conclusion into this field.\nconclusion: give a concise conclusion supported by the findings, without restating the description. Preserve any separately dictated conclusion. Do not introduce an unsupported diagnosis.\n",
+    "reportRecommendationsPrompt": "recommendations: include only actions supported by the supplied data; otherwise use null.\n",
+    "reportDescriptionRemarksPrompt": "descriptionRemarks: identify only contradictions or ambiguities in the clinician's source description. If the same structure is described as both having and not having a finding, cite both statements and request clarification. A later statement overrides an earlier one only when the clinician explicitly corrects it. Do not list missing details or restate the findings. Use null when there is no source problem.\n",
+    "reportMedicalTermCorrectionPrompt": "contextualStrings is a spelling vocabulary, not patient evidence. Use it only to correct an unambiguous speech-recognition error in a medical term. Preserve already correct words, numbers, units, and negations. A template supplies style, not patient facts.\n",
+    "reportStructuredOutputPrompt": "Return one JSON object matching the schema below. Include every required field. After completing each field, proceed to the next field. After the last field, close the object and end the answer.\nJSON Schema:\n{schema}\n"
+  }
+}

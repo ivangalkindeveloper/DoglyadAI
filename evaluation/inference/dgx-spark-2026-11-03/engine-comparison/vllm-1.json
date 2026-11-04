@@ -1,0 +1,10 @@
+{
+  "name": "vllm-maxseq-1",
+  "engine": "vllm",
+  "max_sequences": 1,
+  "concurrencies": [
+    1
+  ],
+  "cases": "extended-cases.json",
+  "wait_for_image": "lmsysorg/sglang@sha256:7f132b890eb6d55f6a8ded87f85e359434878d0fb7f6758582cf759ffb35b5d8"
+}

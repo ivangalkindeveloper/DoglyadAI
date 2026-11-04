@@ -40,10 +40,3 @@ struct SelectUSExaminationTypeBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    SelectUSExaminationTypeBottomSheet(
-        arguments: nil,
-    )
-    .previewable()
-}

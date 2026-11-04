@@ -26,6 +26,7 @@ from app.core.localization.localization_dependencies import LocalizationDependen
 from app.error import ApiError
 from app.service.configuration.configuration_response_service import ConfigurationResponseService
 from app.service.neural_model.neural_model_service import NeuralModelService
+from app.service.report.report_generation_jobs import ReportGenerationJobs
 from app.service.report.report_generation_service import ReportGenerationService
 from app.service.validation.image_request_validator import ImageRequestValidator
 
@@ -54,11 +55,12 @@ def body() -> dict[str, object]:
     "field",
     ["examinationNumber", "patientName", "patientComplaints", "examinationDescription"],
 )
-def test_text_fields_at_configured_limit_with_six_photos_reach_model_without_truncation(
+def test_text_fields_at_configured_limit_with_six_photos_are_queued_without_truncation(
     app: FastAPI,
     configuration: Configuration,
     body: dict[str, object],
     field: str,
+    report_jobs: ReportGenerationJobs,
 ) -> None:
     maximum = getattr(
         configuration.modules.scan,
@@ -84,32 +86,22 @@ def test_text_fields_at_configured_limit_with_six_photos_reach_model_without_tru
             configuration.photo_max_count,
         )
     ]
-    model = AsyncMock(
-        spec=NeuralModelService,
-    )
-    model.call.return_value = '{"description":"Findings","conclusion":"Conclusion"}'
-    service = ReportGenerationService(
-        configuration,
-        model,
-    )
-    app.dependency_overrides[AppCheck.verify] = lambda: None
-    app.dependency_overrides[ServiceDependencies.report_generation] = lambda: service
     client = TestClient(
         app,
     )
     try:
         response = client.post(
-            "/v1/ultrasound/generate_report",
-            json=body,
+            "/v1/ultrasound/report_generations",
+            json={"requestId": "00000000-0000-0000-0000-000000000001", "examination": body},
         )
     finally:
         client.close()
-    assert response.status_code == 200, response.text
-    generation = model.call.call_args.args[0]
-    assert value in generation.prompt
+    assert response.status_code == 202, response.text
+    stored = report_jobs.store.create.call_args.args[2]["examination"]["examinationData"]
+    assert stored[field] == value
     assert (
         len(
-            generation.photos,
+            stored["photos"],
         )
         == configuration.photo_max_count
     )

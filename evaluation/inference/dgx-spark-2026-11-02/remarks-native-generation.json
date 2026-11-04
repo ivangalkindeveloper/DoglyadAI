@@ -1,0 +1,132 @@
+{
+  "date": "2026-11-02",
+  "model": "google/medgemma-4b-it",
+  "input": "Synthetic thyroid data from development localization; no real request replay",
+  "method": "Direct private vLLM chat-completions SSE, bypassing application stream adapters",
+  "conditions": {
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "seeds": [
+      0,
+      42
+    ],
+    "changed_input": "descriptionRemarks prompt and schema enabled/disabled"
+  },
+  "results": [
+    {
+      "seconds": 84.79,
+      "finish": "length",
+      "characters": 6934,
+      "usage": {
+        "prompt_tokens": 1540,
+        "total_tokens": 3588,
+        "completion_tokens": 2048
+      },
+      "reported_prefix_count": 0,
+      "valid_json": false,
+      "seed": 0,
+      "remarks": true
+    },
+    {
+      "seconds": 18.61,
+      "finish": "stop",
+      "characters": 1428,
+      "usage": {
+        "prompt_tokens": 1448,
+        "total_tokens": 1895,
+        "completion_tokens": 447
+      },
+      "reported_prefix_count": 0,
+      "valid_json": true,
+      "fields": {
+        "description": {
+          "characters": 508,
+          "sentences": 8,
+          "max_exact_sentence_copies": 1
+        },
+        "conclusion": {
+          "characters": 508,
+          "sentences": 8,
+          "max_exact_sentence_copies": 1
+        },
+        "recommendations": {
+          "characters": 352,
+          "sentences": 2,
+          "max_exact_sentence_copies": 1
+        }
+      },
+      "seed": 0,
+      "remarks": false
+    },
+    {
+      "seconds": 85.19,
+      "finish": "length",
+      "characters": 8283,
+      "usage": {
+        "prompt_tokens": 1540,
+        "total_tokens": 3588,
+        "completion_tokens": 2048
+      },
+      "reported_prefix_count": 0,
+      "valid_json": false,
+      "seed": 42,
+      "remarks": true
+    },
+    {
+      "seconds": 24.31,
+      "finish": "stop",
+      "characters": 1853,
+      "usage": {
+        "prompt_tokens": 1448,
+        "total_tokens": 2032,
+        "completion_tokens": 584
+      },
+      "reported_prefix_count": 0,
+      "valid_json": true,
+      "fields": {
+        "description": {
+          "characters": 970,
+          "sentences": 16,
+          "max_exact_sentence_copies": 2
+        },
+        "conclusion": {
+          "characters": 508,
+          "sentences": 8,
+          "max_exact_sentence_copies": 1
+        },
+        "recommendations": {
+          "characters": 315,
+          "sentences": 2,
+          "max_exact_sentence_copies": 1
+        }
+      },
+      "seed": 42,
+      "remarks": false
+    }
+  ],
+  "limitations": [
+    "Two seeds per condition; not a clinical-quality evaluation.",
+    "The original request payload was removed, so its exact settings and input are unknown.",
+    "Remarks instructions and the remarks schema field were enabled/disabled together; the experiment cannot distinguish their individual effects."
+  ],
+  "observed_application_failure": {
+    "created_at_utc": "2026-11-01T23:56:49.558169Z",
+    "backend_started_local": "2026-11-02T02:55:09+03:00",
+    "validator_changed_local": "2026-11-02T02:52:18+03:00",
+    "status": "failed",
+    "code": "invalidReportResponse",
+    "affected_field": "descriptionRemarks",
+    "characters": 5603,
+    "sentence_fragments": 78,
+    "distinct_sentence_fragments": 47,
+    "reported_prefix_occurrences": 62,
+    "triply_repeated_sentence_characters": 59,
+    "current_guard_accepts_saved_preview": true
+  },
+  "interpretation": [
+    "Both direct vLLM runs with remarks exhausted the token limit before closing JSON.",
+    "Both runs without remarks returned complete JSON, with 447 and 584 completion tokens.",
+    "The repeated prefix in the actual failure had changing endings; exact-sentence repetition alone does not detect this pattern.",
+    "The investigation isolates the remarks-generation path for this synthetic case; it does not identify the specific underlying model or decoder mechanism."
+  ]
+}

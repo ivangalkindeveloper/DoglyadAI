@@ -29,22 +29,24 @@ struct ReportDetailScreenView: DViewProtocol {
             subTitle: viewModel.subTitle,
             onTapBack: viewModel.onTapBack,
             trailing: {
-                DButton(
-                    image: .export,
-                    action: viewModel.onTapShare,
-                )
-                .dStyle(
-                    .circle,
-                )
+                if report.actualModelReport.generation.status.isCompleted {
+                    DButton(
+                        image: .export,
+                        action: viewModel.onTapShare,
+                    )
+                    .dStyle(
+                        .circle,
+                    )
+                }
             },
-        ) { toolbarInset, _ in
+        ) { toolbarInset, bottomInset in
             ScrollViewReader { proxy in
                 DScrollVStack(
                     spacing: .zero,
                     padding: EdgeInsets(
                         top: size.s16 + toolbarInset,
                         leading: .zero,
-                        bottom: size.s128,
+                        bottom: bottomInset + size.s32,
                         trailing: .zero,
                     ),
                 ) {

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 9.170138293004129,
+    "usage": {
+      "prompt_tokens": 1888,
+      "total_tokens": 2106,
+      "completion_tokens": 218
+    },
+    "task": "report",
+    "schema_valid": true,
+    "current_main_valid": true,
+    "uncapped_main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 522,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      },
+      "conclusion": {
+        "characters": 86,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Общий объем щитовидной железы превышает верхнюю границу нормы. Без очаговых изменений."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": false,
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 12.421523511002306,
+    "usage": {
+      "prompt_tokens": 1899,
+      "total_tokens": 2194,
+      "completion_tokens": 295
+    },
+    "task": "report",
+    "schema_valid": true,
+    "current_main_valid": true,
+    "uncapped_main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 583,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 145,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование. Необходимо провести дальнейшее обследование для определения характера образования."
+      },
+      "recommendations": {
+        "characters": 116,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Рекомендуется проведение сцинтиграфии щитовидной железы и/или биопсии для уточнения характера очагового образования."
+      },
+      "descriptionRemarks": {
+        "characters": 132,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В описании не указан размер очагового образования. Необходимо уточнить размер очагового образования в правой доле щитовидной железы."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": true,
+    "review_candidate": true
+  }
+]

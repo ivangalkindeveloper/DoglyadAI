@@ -5,12 +5,13 @@ from fastapi import Request
 from app.core.application.main_container import MainContainer
 from app.core.configuration.configuration import Configuration
 from app.error.billing_unavailable_error import BillingUnavailableError
+from app.error.report_generation_unavailable_error import ReportGenerationUnavailableError
 from app.service.billing.sdk_payment_service import SDKPaymentService
 from app.service.billing.subscription_service import SubscriptionService
 from app.service.configuration.configuration_response_service import ConfigurationResponseService
 from app.service.dictation.dictation_parsing_service import DictationParsingService
 from app.service.email.report_email_service import ReportEmailService
-from app.service.report.report_generation_service import ReportGenerationService
+from app.service.report.report_generation_jobs import ReportGenerationJobs
 
 
 class ServiceDependencies:
@@ -29,13 +30,6 @@ class ServiceDependencies:
     ) -> ConfigurationResponseService:
         container: MainContainer = request.app.state.container
         return container.configuration_responses
-
-    @staticmethod
-    async def report_generation(
-        request: Request,
-    ) -> ReportGenerationService:
-        container: MainContainer = request.app.state.container
-        return container.report_generation
 
     @staticmethod
     async def dictation_parsing(
@@ -68,3 +62,12 @@ class ServiceDependencies:
         if container.sdk_payments is None:
             raise BillingUnavailableError()
         return container.sdk_payments
+
+    @staticmethod
+    async def report_jobs(
+        request: Request,
+    ) -> ReportGenerationJobs:
+        container: MainContainer = request.app.state.container
+        if container.report_jobs is None:
+            raise ReportGenerationUnavailableError()
+        return container.report_jobs

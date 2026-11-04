@@ -5,6 +5,12 @@ extension InitializationProcess {
     static let stepsTier5 = StepSet(
         async: [
             AsyncInitializationStep<InitializationProcess>(
+                title: "Interrupted report generations",
+                run: { @MainActor (process: InitializationProcess) async throws in
+                    try await process.ultrasoundReportRepository!.interruptPendingGenerations()
+                },
+            ),
+            AsyncInitializationStep<InitializationProcess>(
                 title: "Recent examination types",
                 run: { @MainActor (process: InitializationProcess) async throws in
                     let repository = process.ultrasoundReportRepository!

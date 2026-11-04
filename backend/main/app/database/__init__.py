@@ -8,6 +8,7 @@ from app.database.billing_payment_db import BillingPaymentDB
 from app.database.billing_refund_db import BillingRefundDB
 from app.database.billing_subscription_db import BillingSubscriptionDB
 from app.database.billing_usage_db import BillingUsageDB
+from app.database.report_generation_db import ReportGenerationDB
 
 __all__ = [
     "BillingCheckoutDB",
@@ -18,4 +19,5 @@ __all__ = [
     "BillingRefundDB",
     "BillingSubscriptionDB",
     "BillingUsageDB",
+    "ReportGenerationDB",
 ]

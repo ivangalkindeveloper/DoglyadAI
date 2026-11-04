@@ -90,21 +90,3 @@ struct ScanMediaButtonView: DViewProtocol {
         isCompact ? size.adaptiveCornerRadius / 4 : size.adaptiveCardCornerRadius
     }
 }
-
-#Preview {
-    VStack {
-        ScanMediaButtonView(
-            action: {},
-        )
-
-        ScanMediaButtonView(
-            isCompact: true,
-            action: {},
-        )
-    }
-    .padding()
-    .dThemeWrapper()
-    .localization(
-        DependencyContainer.previewable.l10n,
-    )
-}

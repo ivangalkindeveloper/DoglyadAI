@@ -39,17 +39,3 @@ struct ScanSpeechBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    ScanSpeechBottomSheet(
-        arguments: ScanSpeechArguments(
-            examinationType: USExaminationType(
-                id: "",
-                title: "",
-                contextualStrings: [],
-            ),
-            onConfirm: nil,
-        ),
-    )
-    .previewable()
-}

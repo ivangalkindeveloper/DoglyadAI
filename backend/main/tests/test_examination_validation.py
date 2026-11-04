@@ -1,17 +1,14 @@
 from __future__ import annotations
 
 from typing import Any
-from unittest.mock import AsyncMock
 
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
-from app.core.app_check.app_check import AppCheck
-from app.core.application.service_dependencies import ServiceDependencies
 from app.model.ultrasound.us_examination_data import USExaminationData
-from app.service.report.report_generation_service import ReportGenerationService
+from app.service.report.report_generation_jobs import ReportGenerationJobs
 
 
 @pytest.fixture
@@ -79,6 +76,7 @@ def test_measurements_reject_non_positive_non_finite_and_non_numeric_values(
     examination: dict[str, Any],
     field: str,
     value: object,
+    report_jobs: ReportGenerationJobs,
 ) -> None:
     examination[field] = value
     with pytest.raises(
@@ -99,30 +97,29 @@ def test_invalid_examination_returns_field_error_before_generation(
     examination: dict[str, Any],
     field: str,
     value: object,
+    report_jobs: ReportGenerationJobs,
 ) -> None:
     examination[field] = value
-    service = AsyncMock(
-        spec=ReportGenerationService,
-    )
-    app.dependency_overrides[AppCheck.verify] = lambda: None
-    app.dependency_overrides[ServiceDependencies.report_generation] = lambda: service
     client = TestClient(
         app,
     )
     try:
         response = client.post(
-            "/v1/ultrasound/generate_report",
+            "/v1/ultrasound/report_generations",
             json={
-                "settingsAI": {},
-                "examinationData": examination,
-                "isRecommendationsIncluded": False,
-                "isPhotoRemarks": False,
-                "isDescriptionRemarks": False,
+                "requestId": "00000000-0000-0000-0000-000000000001",
+                "examination": {
+                    "settingsAI": {},
+                    "examinationData": examination,
+                    "isRecommendationsIncluded": False,
+                    "isPhotoRemarks": False,
+                    "isDescriptionRemarks": False,
+                },
             },
         )
     finally:
         client.close()
     assert response.status_code == 422
     assert response.json()["code"] == "invalidRequest"
-    assert response.json()["fields"][0]["location"] == ["body", "examinationData", field]
-    service.generate.assert_not_called()
+    assert response.json()["fields"][0]["location"] == ["body", "examination", "examinationData", field]
+    report_jobs.store.create.assert_not_called()

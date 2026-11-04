@@ -1,0 +1,72 @@
+Skipping import of cpp extensions due to incompatible torch version 2.14.0+cu130 for torchao version 0.15.0             Please see https://github.com/pytorch/ao/issues/2919 for more info
+[11/04/2026-17:28:01] [TRT-LLM] [E] [executor] Exception initializing HF modules: [Errno 30] Read-only file system: '/root/.cache/huggingface/modules'
+/survey/trt-venv/lib/python3.12/site-packages/flashinfer/cutile/cutile_common.py:64: UserWarning: Installed NVIDIA pip packages have mismatched versions (nvidia-cuda-tileiras 13.1.80, nvidia-cuda-nvcc 13.3.73, nvidia-nvvm 13.3.73). Falling back to system tileiras.
+  binary = _find_compiler_bin()
+[TensorRT-LLM] TensorRT LLM version: 1.4.0rc2.post1
+/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/serve/openai_protocol.py:288: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+  class ResponseFormat(OpenAIBaseModel):
+[11/04/2026-17:28:05] [TRT-LLM] [I] [llmapi] Using LLM with PyTorch backend
+[11/04/2026-17:28:05] [TRT-LLM] [I] [llmapi] neither checkpoint_format nor checkpoint_loader were provided, checkpoint_format will be set to HF.
+[11/04/2026-17:28:05] [TRT-LLM] [W] [llmapi] Cannot sync quant_config.kv_cache_quant_algo with kv_cache_config.dtype of bfloat16, please update the validator
+[33;20mrank 0 using MpiPoolSession to spawn MPI processes
+[11/04/2026-17:28:06] [TRT-LLM] [W] [executor] Orchestrator is creating IPC executor
+[11/04/2026-17:28:06] [TRT-LLM] [I] [executor] [startup][pid=1] executor_proxy: start
+[11/04/2026-17:28:06] [TRT-LLM] [I] [_startup] [startup][pid=1] mpi_session_setup: start
+[11/04/2026-17:28:06] [TRT-LLM] [I] [_startup] [startup][pid=1] mpi_session_setup: done, total=0.000s, unattributed=0.000s | 
+[11/04/2026-17:28:06] [TRT-LLM] [I] [executor] Generating a new HMAC key for server proxy_request_queue
+[11/04/2026-17:28:06] [TRT-LLM] [I] [executor] Generating a new HMAC key for server proxy_result_queue
+[11/04/2026-17:28:06] [TRT-LLM] [I] [executor] Generating a new HMAC key for server worker_init_status_queue
+[11/04/2026-17:28:06] [TRT-LLM] [I] [executor] [startup][pid=1] executor_proxy/pre_worker_setup: done in 0.001s (includes mpi_session_setup)
+[11/04/2026-17:28:06] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready: start
+[11/04/2026-17:28:06] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_submit: start
+[11/04/2026-17:28:07] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_submit: done in 0.012s
+[11/04/2026-17:28:07] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_initialization_wait: start
+[0m--------------------------------------------------------------------------
+At least one pair of MPI processes are unable to reach each other for
+MPI communications.  This means that no Open MPI device has indicated
+that it can be used to communicate between these processes.  This is
+an error; Open MPI requires that all MPI processes be able to reach
+each other.  This error can sometimes be the result of forgetting to
+specify the "self" BTL.
+
+  Process 1 ([[11189,1],0]) is on host: f18e4d2b072d
+  Process 2 ([[11189,2],0]) is on host: f18e4d2b072d
+  BTLs attempted: self
+
+Your MPI job is now going to abort; sorry.
+--------------------------------------------------------------------------
+[f18e4d2b072d:00001] [[11189,1],0] ORTE_ERROR_LOG: Unreachable in file ../../../ompi/dpm/dpm.c at line 493
+Exception in thread Thread-1 (_manager_spawn):
+Traceback (most recent call last):
+  File "/usr/lib/python3.12/threading.py", line 1073, in _bootstrap_inner
+[f18e4d2b072d:00134] [[11189,2],0] ORTE_ERROR_LOG: Unreachable in file ../../../ompi/dpm/dpm.c at line 493
+--------------------------------------------------------------------------
+It looks like MPI_INIT failed for some reason; your parallel process is
+likely to abort.  There are many reasons that a parallel process can
+fail during MPI_INIT; some of which are due to configuration or environment
+problems.  This failure appears to be an internal failure; here's some
+additional information (which may only be relevant to an Open MPI
+developer):
+
+  ompi_dpm_dyn_init() failed
+  --> Returned "Unreachable" (-12) instead of "Success" (0)
+--------------------------------------------------------------------------
+    self.run()
+  File "/usr/lib/python3.12/threading.py", line 1010, in run
+    self._target(*self._args, **self._kwargs)
+  File "/survey/trt-venv/lib/python3.12/site-packages/mpi4py/futures/_core.py", line 353, in _manager_spawn
+    comm = serialized(client_spawn)(pyexe, pyargs, nprocs, info)
+[f18e4d2b072d:00134] *** An error occurred in MPI_Init_thread
+[f18e4d2b072d:00134] *** reported by process [733282306,278919471169536]
+[f18e4d2b072d:00134] *** on a NULL communicator
+[f18e4d2b072d:00134] *** Unknown error
+[f18e4d2b072d:00134] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,
+[f18e4d2b072d:00134] ***    and potentially your MPI job)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/mpi4py/futures/_core.py", line 1067, in client_spawn
+    comm = MPI.COMM_SELF.Spawn(python_exe, args, max_workers, info)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "src/mpi4py/MPI.src/Comm.pyx", line 2560, in mpi4py.MPI.Intracomm.Spawn
+mpi4py.MPI.Exception: MPI_ERR_INTERN: internal error
+[f18e4d2b072d:00081] 1 more process has sent help message help-mca-bml-r2.txt / unreachable proc
+[f18e4d2b072d:00081] Set MCA parameter "orte_base_help_aggregate" to 0 to see all help / error messages

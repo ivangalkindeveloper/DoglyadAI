@@ -39,10 +39,3 @@ struct LegalUpdateScreen: View {
         )
     }
 }
-
-#Preview {
-    LegalUpdateScreen(
-        arguments: nil,
-    )
-    .previewable()
-}

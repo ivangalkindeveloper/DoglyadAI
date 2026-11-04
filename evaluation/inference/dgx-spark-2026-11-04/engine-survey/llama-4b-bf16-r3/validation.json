@@ -1,0 +1,216 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "seconds": 8.358443877019454,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 246,
+      "prompt_tokens": 1273,
+      "total_tokens": 1519,
+      "prompt_tokens_details": {
+        "cached_tokens": 1272
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "seconds": 8.09111015900271,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 226,
+      "prompt_tokens": 1273,
+      "total_tokens": 1499,
+      "prompt_tokens_details": {
+        "cached_tokens": 1272
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "seconds": 10.303754224994918,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 300,
+      "prompt_tokens": 1284,
+      "total_tokens": 1584,
+      "prompt_tokens_details": {
+        "cached_tokens": 1268
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "seconds": 10.783753641997464,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 302,
+      "prompt_tokens": 1284,
+      "total_tokens": 1586,
+      "prompt_tokens_details": {
+        "cached_tokens": 1283
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "bladder-correction-sample-42",
+    "kind": "heldout",
+    "finish": "stop",
+    "seconds": 4.1733160319854505,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 111,
+      "prompt_tokens": 890,
+      "total_tokens": 1001,
+      "prompt_tokens_details": {
+        "cached_tokens": 756
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "bladder-en-sample-42",
+    "kind": "heldout",
+    "finish": "stop",
+    "seconds": 3.3464022089901846,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 88,
+      "prompt_tokens": 686,
+      "total_tokens": 774,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "dictation-greedy-0",
+    "kind": "dictation",
+    "finish": "stop",
+    "seconds": 21.480375539977103,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 635,
+      "prompt_tokens": 1437,
+      "total_tokens": 2072,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 0,
+    "prompt_tokens_match_vllm": true,
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "examination_description",
+          "value": "Описание исследования, результаты УЗИ",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    }
+  },
+  {
+    "id": "vision-1",
+    "kind": "vision",
+    "finish": "stop",
+    "seconds": 1.3047155769891106,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 17,
+      "prompt_tokens": 306,
+      "total_tokens": 323,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_sentence_copies": 0,
+    "vision_expected_match": true
+  },
+  {
+    "id": "vision-2",
+    "kind": "vision",
+    "finish": "stop",
+    "seconds": 1.227321912010666,
+    "error": null,
+    "done": true,
+    "usage": {
+      "completion_tokens": 20,
+      "prompt_tokens": 564,
+      "total_tokens": 584,
+      "prompt_tokens_details": {
+        "cached_tokens": 301
+      }
+    },
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_sentence_copies": 0,
+    "vision_expected_match": true
+  }
+]

@@ -48,7 +48,7 @@ _CONFIG_BASE = _CONFIG_DIR.parent
         ),
     ],
 )
-def test_report_uses_selected_context_and_the_same_term_correction_rules_as_dictation(
+def test_report_excludes_dictation_vocabulary_and_preserves_valid_term_repairs(
     configuration: Configuration,
     language: LanguageCode,
     raw: str,
@@ -85,7 +85,7 @@ def test_report_uses_selected_context_and_the_same_term_correction_rules_as_dict
         {
             "type": "http",
             "method": "POST",
-            "path": "/v1/ultrasound/generate_report",
+            "path": "/v1/ultrasound/report_generations",
             "headers": [(b"accept-language", language.value.encode())],
             "app": SimpleNamespace(
                 state=SimpleNamespace(
@@ -114,30 +114,13 @@ def test_report_uses_selected_context_and_the_same_term_correction_rules_as_dict
         ),
     )
     generation = service.call.call_args.args[0]
-    context = json.loads(
-        next(
-            (
-                line
-                for line in generation.prompt.splitlines()
-                if line.startswith(
-                    '{"contextualStrings":',
-                )
-            ),
-        ),
-    )
-    assert context["contextualStrings"] == configuration.resolve_examination_contextual_strings(
-        "bladder",
-        language,
-    )
-    assert context["contextualStrings"] != configuration.resolve_examination_contextual_strings(
-        "thyroidGland",
-        language,
-    )
+    assert "contextualStrings" not in generation.prompt
+    assert "contextualStrings" not in generation.system_prompt
     correction_prompt = configuration.text(
         language,
         "medicalTermCorrectionPrompt",
     )
-    assert correction_prompt in generation.system_prompt
+    assert correction_prompt not in generation.system_prompt
     assert (
         correction_prompt
         in PromptFactory(
@@ -216,7 +199,7 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
         {
             "type": "http",
             "method": "POST",
-            "path": "/v1/ultrasound/generate_report",
+            "path": "/v1/ultrasound/report_generations",
             "headers": [
                 (b"accept-language", b"en_US"),
                 (b"x-firebase-appcheck", b"app-check-token"),
@@ -344,6 +327,7 @@ def test_blank_complaints_are_omitted_and_recommendations_can_be_disabled(
         is_recommendations_included=False,
         is_photo_remarks=False,
         is_description_remarks=False,
+        structured_output="{}",
     )
 
 

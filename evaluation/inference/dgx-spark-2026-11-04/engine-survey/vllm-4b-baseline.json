@@ -1,0 +1,4 @@
+{
+  "name": "vllm-4b-baseline",
+  "engine": "vllm"
+}

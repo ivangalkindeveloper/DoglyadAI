@@ -48,10 +48,3 @@ struct TemplateAddScreen: View {
         )
     }
 }
-
-#Preview {
-    TemplateAddScreen(
-        arguments: nil,
-    )
-    .previewable()
-}

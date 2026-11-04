@@ -155,6 +155,15 @@ struct SettingsAIScreenView: DViewProtocol {
                                     color.grayscaleHeader,
                                 )
                             }
+                            .accessibilityElement(
+                                children: .combine,
+                            )
+                            .accessibilityIdentifier(
+                                "settingsAI.markdown",
+                            )
+                            .accessibilityAddTraits(
+                                viewModel.isMarkdown ? .isSelected : [],
+                            )
                             .disabled(
                                 !viewModel.isReportGenerationSettingsEnabled,
                             )
@@ -207,6 +216,9 @@ struct SettingsAIScreenView: DViewProtocol {
                             .paidBadge(
                                 viewModel.reportGenerationSettingsAvailability,
                             )
+                            .accessibilityIdentifier(
+                                "settingsAI.temperature",
+                            )
                             .id(
                                 SettingsAIFocus.temperature,
                             )
@@ -255,6 +267,9 @@ struct SettingsAIScreenView: DViewProtocol {
                             )
                             .paidBadge(
                                 viewModel.reportGenerationSettingsAvailability,
+                            )
+                            .accessibilityIdentifier(
+                                "settingsAI.maxTokens",
                             )
                             .id(
                                 SettingsAIFocus.length,

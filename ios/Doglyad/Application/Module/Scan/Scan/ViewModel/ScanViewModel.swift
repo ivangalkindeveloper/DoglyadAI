@@ -13,41 +13,29 @@ import UIKit
 @MainActor
 final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFocusValidatingProtocol, DraftableProtocol {
     @Published var usExaminationType: USExaminationType
-
     @Published var photos: [USExaminationScanPhoto] = []
-
     @Published var focus: ScanFocus? = nil
-
     @NestedObservableObject var examinationNumberTextController: DTextFieldController
-
     @NestedObservableObject var patientNameTextController: DTextFieldController
-
     @Published var patientGender = PatientGender.male
-
     @Published var patientDateOfBirth: Date = .init()
-
     @NestedObservableObject var patientHeightCMTextController: DTextFieldController
-
     @NestedObservableObject var patientWeightKGTextController: DTextFieldController
-
     @NestedObservableObject var patientComplaintsTextController: DTextFieldController
-
     @NestedObservableObject var examinationDescriptionTextController: DTextFieldController
-
     @Published var neuralModel: USExaminationNeuralModel
-
     @Published var template: USExaminationTemplate?
-
     let environmentType: EnvironmentType
 
     private let config: UltrasoundConfig
-
     private let messager: DMessager
+    private let observeExaminationChanges: (@escaping () -> Void) -> AnyCancellable
     private let getSelectedTemplate: () -> USExaminationTemplate?
     private let onTemplateSelected: (USExaminationTemplate) async throws -> Void
     private let onTemplateReset: () async throws -> Void
     private let getNeuralModel: () -> USExaminationNeuralModel
     private let onNeuralModelSelected: (USExaminationNeuralModel) async throws -> Void
+    private let onStartReportGeneration: (USExaminationRequest) async throws -> USExaminationReport
     let draftAutosaver = DraftAutosaver<USExaminationDraftForm>(
         delay: .seconds(
             1,
@@ -73,13 +61,16 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         onTemplateReset: @escaping () async throws -> Void,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) async throws -> Void,
+        onStartReportGeneration: @escaping (USExaminationRequest) async throws -> USExaminationReport,
     ) {
         self.messager = messager
+        self.observeExaminationChanges = observeExaminationChanges
         self.getSelectedTemplate = getSelectedTemplate
         self.onTemplateSelected = onTemplateSelected
         self.onTemplateReset = onTemplateReset
         self.getNeuralModel = getNeuralModel
         self.onNeuralModelSelected = onNeuralModelSelected
+        self.onStartReportGeneration = onStartReportGeneration
 
         neuralModel = getNeuralModel()
         template = getSelectedTemplate()
@@ -249,14 +240,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         _ = patientWeightKGTextController
         _ = patientComplaintsTextController
         _ = examinationDescriptionTextController
-
-        examinationObservation = observeExaminationChanges { [weak self] in
-            guard let self else {
-                return
-            }
-            neuralModel = getNeuralModel()
-            template = getSelectedTemplate()
-        }
     }
 
     var isPhotoLimitReached: Bool {
@@ -373,6 +356,13 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
     }
 
     override func onInit() {
+        examinationObservation = observeExaminationChanges { [weak self] in
+            guard let self else {
+                return
+            }
+            neuralModel = getNeuralModel()
+            template = getSelectedTemplate()
+        }
         emit(
             ScanInitializingState(),
         )
@@ -768,19 +758,42 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
     }
 
     func onTapFillDevelopment() {
+        switch state {
+        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: return
+        default: break
+        }
         analytics.buttonTapped(
             .scanFill,
         )
-        patientComplaintsTextController.setText(
-            container.mockFactory.fillPatientComplaints(
-                l10n: container.l10n,
-            ),
-        )
-        examinationDescriptionTextController.setText(
-            container.mockFactory.fillExaminationDescription(
-                l10n: container.l10n,
-            ),
-        )
+        guard let examinationType = container.getUSExaminationTypeById(
+            id: container.mockFactory.examinationTypeId,
+        ) else {
+            messager.showUnknownError(
+                l10n: l10n,
+            )
+            return
+        }
+        handle {
+            try await self.container.ultrasoundReportRepository.setSelectedExaminationTypeId(
+                id: examinationType.id,
+            )
+        } onMainSuccess: { _ in
+            self.usExaminationType = examinationType
+            self.patientComplaintsTextController.setText(
+                self.container.mockFactory.fillPatientComplaints(
+                    l10n: self.l10n,
+                ),
+            )
+            self.examinationDescriptionTextController.setText(
+                self.container.mockFactory.fillExaminationDescription(
+                    l10n: self.l10n,
+                ),
+            )
+        } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.l10n,
+            )
+        }
     }
 
     func onTapSpeech() {
@@ -797,13 +810,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
     func onTapScan() {
         switch state {
         case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: return
-        case let state as ScanSaveFailedState:
-            unfocus()
-            persistReport(
-                state.report,
-                snapshot: state.snapshot,
-            )
-            return
         default: break
         }
         analytics.buttonTapped(
@@ -830,9 +836,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             }
         }
     }
-}
 
-extension ScanViewModel {
     func loadDraft() async throws -> USExaminationDraft? {
         try await container.ultrasoundDraftRepository.getDraft()
     }
@@ -959,10 +963,8 @@ extension ScanViewModel {
                 .eraseToAnyPublisher(),
         ]
     }
-}
 
-private extension ScanViewModel {
-    func startDraftObservation() {
+    private func startDraftObservation() {
         startDraftAutosave()
 
         draftPhotosCancellable = $photos
@@ -987,7 +989,7 @@ private extension ScanViewModel {
             }
     }
 
-    func stopDraftObservation() {
+    private func stopDraftObservation() {
         stopDraftAutosave()
         draftPhotosCancellable?.cancel()
         draftPhotosCancellable = nil
@@ -995,7 +997,7 @@ private extension ScanViewModel {
         draftLifecycleCancellable = nil
     }
 
-    func saveDraftPhotos(
+    private func saveDraftPhotos(
         _ draftPhotos: [USExaminationScanPhoto],
     ) {
         let currentForm = makeDraftSnapshot()
@@ -1011,7 +1013,7 @@ private extension ScanViewModel {
         }
     }
 
-    func saveDraftBeforeBackground() {
+    private func saveDraftBeforeBackground() {
         let backgroundTask = UIApplication.shared.beginBackgroundTask()
         handle {
             self.flushPendingDraftSave()
@@ -1026,12 +1028,8 @@ private extension ScanViewModel {
             )
         }
     }
-}
 
-extension ScanViewModel {}
-
-private extension ScanViewModel {
-    func onTapCamera() {
+    private func onTapCamera() {
         switch (state, isPhotoLimitReached) {
         case (_ as ScanInitializingState, _), (_ as ScanGeneratingState, _), (_ as ScanLoadingState, _), (_ as ScanClearingState, _), (_, true): return
         default: break
@@ -1070,7 +1068,7 @@ private extension ScanViewModel {
         }
     }
 
-    func onTapGallery() {
+    private func onTapGallery() {
         switch (state, isPhotoLimitReached) {
         case (_ as ScanInitializingState, _), (_ as ScanGeneratingState, _), (_ as ScanLoadingState, _), (_ as ScanClearingState, _), (_, true): return
         default: break
@@ -1115,7 +1113,7 @@ private extension ScanViewModel {
         }
     }
 
-    func onSelectGalleryImages(
+    private func onSelectGalleryImages(
         _ images: [UIImage],
     ) {
         guard photos.count < photoMaxCount else {
@@ -1143,7 +1141,7 @@ private extension ScanViewModel {
         }
     }
 
-    func startSpeechFlow() {
+    private func startSpeechFlow() {
         handle {
             await self.container.permissionManager.isGranted(
                 .microphone,
@@ -1182,15 +1180,9 @@ private extension ScanViewModel {
         }
     }
 
-    func performScan() {
+    private func performScan() {
         switch state {
         case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: return
-        case let state as ScanSaveFailedState:
-            persistReport(
-                state.report,
-                snapshot: state.snapshot,
-            )
-            return
         default: break
         }
 
@@ -1233,30 +1225,11 @@ private extension ScanViewModel {
                 isPhotoRemarks: self.container.userSettingsRepository.getIsPhotoRemarks(),
                 isDescriptionRemarks: self.container.userSettingsRepository.getIsDescriptionRemarks(),
             )
-            let response: USExaminationModelReport
-            do {
-                response = try await self.container.ultrasoundReportRepository.generateReport(
-                    locale: self.container.language.currentLocale,
-                    request: request,
-                    scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
-                        resizeMaxDimension: self.ultrasoundConfig.scanPhotoResizeMaxDimension,
-                        compressionQuality: self.ultrasoundConfig.scanPhotoCompressionQuality,
-                    ),
-                )
-            } catch {
-                await self.refreshStatus()
-                throw error
-            }
-            await self.refreshStatus()
-            return USExaminationReport(
-                date: Date(),
-                settingsAI: settings,
-                examinationData: examinationData,
-                actualModelReport: response,
-                previousModelReports: [],
+            return try await self.onStartReportGeneration(
+                request,
             )
         } onMainSuccess: { report in
-            self.persistReport(
+            self.finishScan(
                 report,
                 snapshot: snapshot,
             )
@@ -1277,7 +1250,7 @@ private extension ScanViewModel {
         }
     }
 
-    func persistReport(
+    private func finishScan(
         _ report: USExaminationReport,
         snapshot: USExaminationDraftForm,
     ) {
@@ -1288,9 +1261,6 @@ private extension ScanViewModel {
             ),
         )
         handle {
-            try await self.container.ultrasoundReportRepository.setReport(
-                report: report,
-            )
             if snapshot == self.makeDraftSnapshot(), report.examinationData.photos.map(
                 \.id,
             ) == self.photos.map(
@@ -1315,20 +1285,13 @@ private extension ScanViewModel {
                 ),
             )
         } onMainUnknownError: { error in
-            self.emit(
-                ScanSaveFailedState(
-                    report: report,
-                    snapshot: snapshot,
-                    error: error,
-                ),
-            )
-            self.messager.showUnknownError(
-                l10n: self.l10n,
+            self.onGenerationFailed(
+                error,
             )
         }
     }
 
-    func onGenerationFailed(
+    private func onGenerationFailed(
         _ error: Error,
     ) {
         emit(
@@ -1341,20 +1304,21 @@ private extension ScanViewModel {
         )
     }
 
-    func clearDraftAndReset() async throws {
+    private func clearDraftAndReset() async throws {
         stopDraftObservation()
         defer {
             startDraftObservation()
         }
-        let reportsCount = try await container.ultrasoundReportRepository.getReportsCount()
+
         try await waitForPendingDraftSave()
         try await clearDraft()
+        let reportsCount = try await container.ultrasoundReportRepository.getReportsCount()
         applyDefaultValues(
             reportsCount: reportsCount,
         )
     }
 
-    func applyDefaultValues(
+    private func applyDefaultValues(
         reportsCount: Int,
     ) {
         photos.removeAll()
@@ -1386,7 +1350,7 @@ private extension ScanViewModel {
         examinationDescriptionTextController.clear()
     }
 
-    func clearForm() {
+    private func clearForm() {
         photos.removeAll()
         examinationNumberTextController.clear()
         patientNameTextController.clear()

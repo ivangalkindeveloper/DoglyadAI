@@ -51,7 +51,9 @@ def us_examination_report_structured_output(
             properties.pop(
                 field,
             )
-    schema["required"] += [field for field in ("descriptionRemarks", "photoRemarks") if field in properties]
+    schema["required"] = list(
+        properties,
+    )
     _localize_properties(
         properties,
         _REPORT_DESCRIPTIONS,

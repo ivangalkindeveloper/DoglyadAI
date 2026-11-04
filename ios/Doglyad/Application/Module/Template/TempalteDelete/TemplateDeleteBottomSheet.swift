@@ -37,10 +37,3 @@ struct TemplateDeleteBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    TemplateDeleteBottomSheet(
-        arguments: nil,
-    )
-    .previewable()
-}

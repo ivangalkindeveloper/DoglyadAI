@@ -1,0 +1,53 @@
+{
+  "scope": "Schema validation and CPU grammar matching only; no model generation, deployment or service restart.",
+  "configuration_combinations_checked": 96,
+  "unique_schemas": 24,
+  "environments": [
+    "development",
+    "production"
+  ],
+  "languages": [
+    "ru",
+    "en"
+  ],
+  "photo_counts": [
+    0,
+    1,
+    6
+  ],
+  "json_schema_dialect_checked": "2020-12",
+  "all_meta_schemas_valid": true,
+  "all_positive_instances_valid": true,
+  "xgrammar_version": "0.2.3",
+  "all_grammars_compiled_and_accepted_completion": true,
+  "main_boundary_checks": [
+    {
+      "remarks_characters": 511,
+      "schema_accepts": true,
+      "main_accepts": true
+    },
+    {
+      "remarks_characters": 512,
+      "schema_accepts": true,
+      "main_accepts": false
+    },
+    {
+      "remarks_characters": 513,
+      "schema_accepts": false,
+      "main_accepts": false
+    }
+  ],
+  "other_contract_checks": {
+    "blank_description_schema_accepts": true,
+    "blank_description_pydantic_accepts": false,
+    "omitted_recommendations_when_requested_schema_accepts": true
+  },
+  "source_sha256": {
+    "backend/main/app/schema/us_examination_report_structured_output.py": "39bac61a027994f9b48a392ca598da822d603a349f227082b0e010c56d7510f8",
+    "backend/main/app/model/ultrasound/us_examination_report.py": "9a2b546b9c7ea319e9cf8ecab38166ae15926a8ddc1fc32c23b64bd58586917f",
+    "backend/main/app/service/report/report_validator.py": "008c2a808e34ffdcecf7f13061f18cc9284eb9664aa6a478fe5127c6a6d0204f",
+    "backend/inference/app/model/generation_request.py": "9e6ff0b69a285a6ebe1f24565758187c5688701c1b271fdeedb80b9549b35696",
+    "backend/inference/app/service/vllm_service.py": "8dde23dda7f5f8a871b7ec795fa658eb66393133dbba9f58ddaac2d9e29059eb",
+    "backend/main/app/prompt/prompt_factory.py": "3ffbb04586a90c62668de59cef519d3d3eeac4ab025577b2fa69ad98b5b46568"
+  }
+}

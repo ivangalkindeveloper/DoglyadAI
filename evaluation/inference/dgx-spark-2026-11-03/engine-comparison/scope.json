@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-03",
+  "purpose": "Isolate max-num-seqs=1, then compare BF16 engines using JSON Schema and streaming latency.",
+  "model": "google/medgemma-4b-it",
+  "revision": "290cda5eeccbee130f987c4ad74a59ae6f196408",
+  "sglang_image": "lmsysorg/sglang@sha256:7f132b890eb6d55f6a8ded87f85e359434878d0fb7f6758582cf759ffb35b5d8",
+  "quality_cases": 13,
+  "client_parallelism_quality": 1,
+  "engine_limits": [
+    1,
+    4
+  ],
+  "performance_parallelism": [
+    1,
+    4
+  ],
+  "performance_repetitions": 3,
+  "other_engines": "remain resident and idle; verify counters before each stage",
+  "quantization": "none; original BF16 weights and KV cache",
+  "application_changes": false,
+  "private_test_data": "none; frozen synthetic fixtures only",
+  "restore": "same original container ID, image, command; other services start times unchanged",
+  "performance_output_limit": 256,
+  "performance_expected_finish": "length (intentional benchmark cap; quality uses separate full completions)",
+  "parallel_quality_cases": [
+    "historical-greedy-0",
+    "report-greedy-0",
+    "conflict-greedy-0",
+    "dictation-greedy-0"
+  ],
+  "parallel_quality_engine_limit": 4,
+  "quality_cases_total": 18,
+  "extra_greedy_penalty105_cases": 2,
+  "vision_smoke_cases": 3,
+  "sglang_token_parity": "Native template with leading BOS expression removed; assert text input IDs equal vLLM. No tokenizer or weight edits.",
+  "sglang_kv_pool_total_tokens": 16384,
+  "vllm_kv_cache_bytes": 4294967296,
+  "comparison_scope": "Pinned builds/configurations, warm short prompts; not engine maximum capability or clinical validation."
+}

@@ -17,9 +17,6 @@ extension InitializationProcess {
                     let preferredLanguageIdentifiers = Locale.preferredLanguages
                     let applicationConfig: ApplicationConfig = try await process.httpClient!.get(
                         endPoint: "/application_config",
-                        headers: [DHttpHeader.acceptLanguage: preferredLanguageIdentifiers.joined(
-                            separator: ", ",
-                        )],
                     )
                     let language = Language(
                         localeConfig: applicationConfig.locale,

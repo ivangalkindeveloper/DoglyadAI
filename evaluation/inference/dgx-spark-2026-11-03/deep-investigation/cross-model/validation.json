@@ -1,0 +1,660 @@
+[
+  {
+    "id": "historical-greedy-0",
+    "finish": "stop",
+    "seconds": 50.44,
+    "usage": {
+      "prompt_tokens": 1958,
+      "completion_tokens": 913
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 340,
+    "remarks_characters": 677,
+    "remarks": "Отсутствуют признаки диффузных изменений, узлов, кальцинатов, неоднородности структуры или нарушений кровотока. Все измерения приведены и соответствуют описанию. Нет упоминания о наличии узлов, эхогенных фокусов, кальцинатов или других аномалий. Уточнение: в описании не указаны признаки эхоструктурных изменений, таких как эхогенный ободок, периферическое кольцо или точечные эхофокусы. Структура паренхимы описана как однородная, без очаговых изменений — соответствует данным. Капсула не утолщена, что подтверждает отсутствие признаков тиреоидита или опухоли. Кровоток симметричный — не указывает на патологию. Все данные согласуются между собой и не противоречат друг другу.",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "historical-sample-0",
+    "finish": "stop",
+    "seconds": 42.232,
+    "usage": {
+      "prompt_tokens": 1958,
+      "completion_tokens": 781
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 4,
+    "remarks_characters": 547,
+    "remarks": "Отсутствуют признаки диффузных изменений, узлов, кальцинатов или иных патологий. Все измерения указаны и соответствуют описанию. Структура паренхимы описана как однородная, без очаговых изменений. Кровоток — симметричный, не усилен. Регионарные лимфоузлы не увеличены. Всё соответствует норме. Уточнение: отсутствуют данные о наличии или отсутствии эхогенных фокусов, эхоструктуры или других изменений, что не противоречит описанию. Нет противоречий между измерениями и описанием. Качество визуализации описано как хорошее. Все данные согласованы.",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "historical-sample-42",
+    "finish": "stop",
+    "seconds": 44.337,
+    "usage": {
+      "prompt_tokens": 1958,
+      "completion_tokens": 819
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 286,
+    "remarks_characters": 552,
+    "remarks": "Отсутствуют данные о наличии или отсутствии узлов, кальцинатов, аномалий структуры или кровотока. Все описанные параметры соответствуют норме. Жалобы пациента на давление в шее и затруднение при глотании требуют дополнительной оценки функциональными тестами, так как ультразвук не выявил патологий. Не указано наличие диффузных изменений, узлов или эхогенных фокусов. Следует учитывать, что симптомы могут быть связаны с другими патологиями (например, сухостью горла, миастенией, или нарушениями в пищеварительной системе), не выявленными ультразвуком.",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "historical-sample-123",
+    "finish": "stop",
+    "seconds": 34.211,
+    "usage": {
+      "prompt_tokens": 1958,
+      "completion_tokens": 631
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 4,
+    "remarks_characters": 371,
+    "remarks": "Отсутствуют данные о наличии узлов, кальцинатов, аномалий структуры или кровотока. Все параметры в пределах нормы. Жалобы пациента на давление в шее и затруднение при глотании не объясняются УЗИ-находками. Необходимо уточнение у врача-эндокринолога, возможно, причина симптомов — не в щитовидной железе, а в других структурах шеи или системах (например, глотка, пищевод)."
+  },
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 36.91,
+    "usage": {
+      "prompt_tokens": 2042,
+      "completion_tokens": 680
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 640,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-0",
+    "finish": "stop",
+    "seconds": 32.054,
+    "usage": {
+      "prompt_tokens": 2042,
+      "completion_tokens": 589
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 284,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-42",
+    "finish": "stop",
+    "seconds": 30.373,
+    "usage": {
+      "prompt_tokens": 2042,
+      "completion_tokens": 558
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 4,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-123",
+    "finish": "stop",
+    "seconds": 27.08,
+    "usage": {
+      "prompt_tokens": 2042,
+      "completion_tokens": 497
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 4,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "stop",
+    "seconds": 44.012,
+    "usage": {
+      "prompt_tokens": 2057,
+      "completion_tokens": 809
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 552,
+    "remarks_characters": 379,
+    "remarks": "В описании указано наличие очагового образования в правой доле, но не описаны его характеристики (размер, эхогенность, форма, края, кровоток, наличие эхоструктуры). Это противоречит утверждению о «однородной структуре паренхимы» и отсутствии очаговых изменений. Неоднозначность: одновременное утверждение о «однородной структуре» и «очаговом образовании» требует уточнения врача."
+  },
+  {
+    "id": "conflict-sample-0",
+    "finish": "stop",
+    "seconds": 49.228,
+    "usage": {
+      "prompt_tokens": 2057,
+      "completion_tokens": 902
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 442,
+    "remarks_characters": 505,
+    "remarks": "В описании указано наличие очагового образования в правой доле, но не указаны его характеристики (размеры, эхогенность, структура, наличие краев, кровотока, эластичности). Это противоречит утверждению о «однородной структуре паренхимы» и отсутствии очаговых изменений. Неоднозначность: одновременное упоминание «однородной структуры» и «очагового образования» требует уточнения врача — является ли очаговое образование частью паренхимы или отдельным очагом, каков его характер (солидный, кистозный и др.)."
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 46.495,
+    "usage": {
+      "prompt_tokens": 2057,
+      "completion_tokens": 840
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 449,
+    "remarks_characters": 371,
+    "remarks": "В описании указано наличие очагового образования в правой доле, но отсутствуют детали: эхогенность, форма, размеры, наличие краев, кровотока, эластичности, типа (солидный, кистозный и т.д.). Это противоречит утверждению о «однородной структуре паренхимы» и отсутствии очаговых изменений. Неоднозначность в описании признаков очагового образования требует уточнения врача."
+  },
+  {
+    "id": "conflict-sample-123",
+    "finish": "stop",
+    "seconds": 47.984,
+    "usage": {
+      "prompt_tokens": 2057,
+      "completion_tokens": 874
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 459,
+    "remarks_characters": 486,
+    "remarks": "В описании указано наличие очагового образования в правой доле, но отсутствуют детали: характер (солидный, кистозный, смешанный), эхогенность, форма, размеры, наличие краев, кровотока, эхоструктуры. Не указано, соответствует ли образование критериям ТИРАДС или есть признаки диффузных изменений. Противоречие: ранее указано, что структура паренхимы однородная, а затем — выявлено очаговое образование. Неоднозначно, является ли очаговое образование частью паренхимы или отдельным узлом."
+  },
+  {
+    "id": "dictation-greedy-0",
+    "finish": "stop",
+    "seconds": 27.052,
+    "usage": {
+      "prompt_tokens": 1785,
+      "completion_tokens": 502
+    },
+    "runtime": "qwen-hf-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 502,
+    "raw_missing_fields": [],
+    "raw_unexpected_fields": [
+      "examination_description",
+      "examination_number",
+      "patient_date_of_birth",
+      "patient_gender"
+    ],
+    "raw_value": [
+      {
+        "field_id": "examination_number",
+        "value": "",
+        "evidence": ", ",
+        "accuracy": "questionable"
+      },
+      {
+        "field_id": "patient_name",
+        "value": "Иванов Иван Иванович",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_gender",
+        "value": "male",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_date_of_birth",
+        "value": "0000-00-00",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "questionable"
+      },
+      {
+        "field_id": "patient_height_cm",
+        "value": 180,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_weight_kg",
+        "value": 80,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_complaints",
+        "value": "жалобы на дискомфорт в области шеи",
+        "evidence": "Жалобы на дискомфорт в области шеи",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "examination_description",
+        "value": "",
+        "evidence": ", ",
+        "accuracy": "questionable"
+      }
+    ],
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "жалобы на дискомфорт в области шеи",
+          "evidence": "Жалобы на дискомфорт в области шеи",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    },
+    "missing_expected_fields": [],
+    "unexpected_fields": []
+  },
+  {
+    "id": "historical-greedy-0",
+    "finish": "stop",
+    "seconds": 38.692,
+    "usage": {
+      "prompt_tokens": 1958,
+      "total_tokens": 2821,
+      "completion_tokens": 863
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 863,
+    "remarks_characters": 543,
+    "remarks": "Отсутствуют признаки диффузных изменений, узлов, кальцинатов, неоднородности структуры или нарушений кровотока. Все измерения приведены и соответствуют описанию. Нет упоминаний о наличии узлов, эхогенных фокусов, кальцинатов или других аномалий. Структура паренхимы описана как однородная, что соответствует норме. Капсула не утолщена, перешеек нормальной толщины. Кровоток симметричный — отсутствуют признаки гиперваскуляризации. Все данные согласуются с отсутствием патологии. Жалобы пациента не включены в описание находок, как требовалось.",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "historical-sample-0",
+    "finish": "stop",
+    "seconds": 29.93,
+    "usage": {
+      "prompt_tokens": 1958,
+      "total_tokens": 2630,
+      "completion_tokens": 672
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 672,
+    "remarks_characters": 510,
+    "remarks": "Отсутствуют данные о наличии или отсутствии узлов, кальцинатов, изменений структуры паренхимы, эхогенности или кровотока. Все описанные параметры соответствуют норме. Нет указаний на диффузные изменения, узлы, кальцинаты или воспаление. Уточнение: отсутствуют данные о визуализации регионарных лимфоузлов, однако они описаны как «не увеличены, обычной структуры» — это соответствует норме. Нет противоречий в измерениях и описании. Качество визуализации оценено как хорошее, что подтверждает надёжность данных."
+  },
+  {
+    "id": "historical-sample-42",
+    "finish": "stop",
+    "seconds": 38.048,
+    "usage": {
+      "prompt_tokens": 1958,
+      "total_tokens": 2814,
+      "completion_tokens": 856
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 856,
+    "remarks_characters": 770,
+    "remarks": "Отсутствуют признаки диффузных изменений, узлов, кальцинатов, неоднородности структуры или нарушений васкуляризации. Все измерения соответствуют описанию. Нет упоминания о наличии узлов, эхогенных фокусов, кальцинатов или других патологий. Жалобы пациента не отражены в ультразвуковых находках, что подчёркивает необходимость дальнейшего клинического наблюдения. УЗИ не выявляет признаков тиреоидита или экстратиреоидного распространения. Структура паренхимы описана как однородная, что соответствует норме. Кровоток симметричный — это норма. Нет указаний на аномалии в перешейке или регионарных лимфоузлах. Всё совпадает с описанием в протоколе. Нет противоречий между измерениями и описанием. Качество визуализации оценено как хорошее — подтверждает надёжность данных.",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "historical-sample-123",
+    "finish": "stop",
+    "seconds": 39.448,
+    "usage": {
+      "prompt_tokens": 1958,
+      "total_tokens": 2845,
+      "completion_tokens": 887
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 887,
+    "remarks_characters": 650,
+    "remarks": "Отсутствуют признаки диффузных изменений, узлов, кальцинатов, неоднородности структуры или нарушений кровотока. Все измерения указаны и соответствуют описанию. Нет указаний на наличие эхогенных фокусов, эхоструктурных аномалий или других патологий. Капсула не утолщена, что соответствует норме. Перешеечная толщина 4 мм — в пределах нормы. Указано, что кровоток симметричный и не усилен, что исключает признаки гиперваскуляризации. Нет упоминания о наличии узлов, кист, макрокальцинатов или других патологий. Все данные согласуются с клинической картиной отсутствия очаговых изменений. Жалобы пациента не включены в описание находок, как требовалось.",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 31.813,
+    "usage": {
+      "prompt_tokens": 2042,
+      "total_tokens": 2741,
+      "completion_tokens": 699
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 699,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-0",
+    "finish": "stop",
+    "seconds": 31.901,
+    "usage": {
+      "prompt_tokens": 2042,
+      "total_tokens": 2759,
+      "completion_tokens": 717
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 717,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-42",
+    "finish": "stop",
+    "seconds": 27.906,
+    "usage": {
+      "prompt_tokens": 2042,
+      "total_tokens": 2669,
+      "completion_tokens": 627
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 627,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-123",
+    "finish": "stop",
+    "seconds": 27.618,
+    "usage": {
+      "prompt_tokens": 2042,
+      "total_tokens": 2662,
+      "completion_tokens": 620
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 620,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "stop",
+    "seconds": 37.71,
+    "usage": {
+      "prompt_tokens": 2057,
+      "total_tokens": 2901,
+      "completion_tokens": 844
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 844,
+    "remarks_characters": 407,
+    "remarks": "В описании указано наличие очагового образования в правой доле, но не описаны его характеристики (эхогенность, форма, размеры, контуры, кровоток). Это противоречит утверждению о «однородной структуре паренхимы» и отсутствии очаговых изменений. Необходимо уточнить, является ли очаговое образование частью паренхимы или отдельным узлом, и его параметры (например, размеры, эхогенность, наличие эхоструктуры)."
+  },
+  {
+    "id": "conflict-sample-0",
+    "finish": "stop",
+    "seconds": 36.929,
+    "usage": {
+      "prompt_tokens": 2057,
+      "total_tokens": 2883,
+      "completion_tokens": 826
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 826,
+    "remarks_characters": 426,
+    "remarks": "В описании указано наличие очагового образования в правой доле, однако не приведены его характеристики (размеры, эхогенность, форма, границы, кровоток, эластография). Это противоречит описанию структуры паренхимы как однородной и без очаговых изменений. Не указано, является ли очаговое образование узлом или псевдозащитным процессом. Нет данных о структуре узла (гипоэхогенный, гиперэхогенный, анэхогенный, смешанный и т.д.)."
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 36.913,
+    "usage": {
+      "prompt_tokens": 2057,
+      "total_tokens": 2882,
+      "completion_tokens": 825
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 825,
+    "remarks_characters": 512,
+    "remarks": "В описании указано наличие очагового образования в правой доле, однако отсутствуют детали по его эхогенности, форме, размерам, наличию краев, кровотока или других признаков. Не указано, является ли образование узлом, кистой, солидным или смешанным. Отсутствует информация о категории ТИРАДС и эластографии. Не указано, есть ли эхоструктурные особенности (например, эхогенный ободок, неоднородность). Возможное противоречие: утверждение о «однородной структуре паренхимы» и наличии «очагового образования» — требу",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-123",
+    "finish": "stop",
+    "seconds": 39.692,
+    "usage": {
+      "prompt_tokens": 2057,
+      "total_tokens": 2943,
+      "completion_tokens": 886
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 886,
+    "remarks_characters": 458,
+    "remarks": "В описании указано наличие очагового образования в правой доле, но не указаны его характеристики: размер, эхогенность, форма, структура, кровоток, наличие капсул, эхоструктура. Это противоречит утверждению о «однородной структуре паренхимы» и отсутствии очаговых изменений. Наличие очагового образования и однородной структуры несовместимы. Врач должен уточнить, является ли очаговое образование частью паренхимы или отдельным узлом, и описать его параметры."
+  },
+  {
+    "id": "dictation-greedy-0",
+    "finish": "stop",
+    "seconds": 22.487,
+    "usage": {
+      "prompt_tokens": 1785,
+      "total_tokens": 2287,
+      "completion_tokens": 502
+    },
+    "runtime": "qwen-vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 502,
+    "raw_missing_fields": [],
+    "raw_unexpected_fields": [
+      "examination_description",
+      "examination_number",
+      "patient_date_of_birth",
+      "patient_gender"
+    ],
+    "raw_value": [
+      {
+        "field_id": "examination_number",
+        "value": "",
+        "evidence": ", ",
+        "accuracy": "questionable"
+      },
+      {
+        "field_id": "patient_name",
+        "value": "Иванов Иван Иванович",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_gender",
+        "value": "male",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_date_of_birth",
+        "value": "0000-00-00",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "questionable"
+      },
+      {
+        "field_id": "patient_height_cm",
+        "value": 180,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_weight_kg",
+        "value": 80,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_complaints",
+        "value": "жалобы на дискомфорт в области шеи",
+        "evidence": "Жалобы на дискомфорт в области шеи",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "examination_description",
+        "value": "",
+        "evidence": ", ",
+        "accuracy": "questionable"
+      }
+    ],
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "жалобы на дискомфорт в области шеи",
+          "evidence": "Жалобы на дискомфорт в области шеи",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    },
+    "missing_expected_fields": [],
+    "unexpected_fields": []
+  }
+]

@@ -1,0 +1,208 @@
+[
+  {
+    "id": "conflict-sample-0",
+    "finish": "stop",
+    "seconds": 66.02111487500952,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1573,
+      "completion_tokens": 289
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 533,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 142,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Общий объём щитовидной железы 13,7 мл (верхняя граница нормы). В правой доле выявлено очаговое образование. Остальные структуры без патологии."
+      },
+      "recommendations": {
+        "characters": 183,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ция эндокринолога для определения дальнейшей тактики ведения (возможно, проведение тонкоигольной аспирационной биопсии (ТАБ) очагового образования правой доли)."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 56.804329045000486,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1532,
+      "completion_tokens": 248
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 425,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ура однородная. Перешеек 4 мм, без особенностей. Кровоток симметричный, не усилен. Лимфатические узлы не увеличены. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 139,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Общий объём щитовидной железы находится на верхней границе нормы. В правой доле выявлено очаговое образование, требующее дальнейшей оценки."
+      },
+      "recommendations": {
+        "characters": 138,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Рекомендована консультация эндокринолога и проведение тонкоигольной аспирационной биопсии (ТАБ) образования правой доли щитовидной железы."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-dictated-sample-42",
+    "finish": "stop",
+    "seconds": 18.462545749003766,
+    "usage": {
+      "prompt_tokens": 916,
+      "total_tokens": 996,
+      "completion_tokens": 80
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 139,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь наполнен, объём 230 мл. Толщина стенки мочевого пузыря составляет 2,7 мм. В просвете визуализируется мелкодисперсная взвесь."
+      },
+      "conclusion": {
+        "characters": 36,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Эхопризнаки взвеси в мочевом пузыре."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 0,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-template-sample-42",
+    "finish": "stop",
+    "seconds": 17.999181480990956,
+    "usage": {
+      "prompt_tokens": 899,
+      "total_tokens": 977,
+      "completion_tokens": 78
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 84,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь содержит 240 мл мочи. Толщина стенки мочевого пузыря составляет 2 мм."
+      },
+      "conclusion": {
+        "characters": 101,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Обнаружен умеренный остаточный объем мочи в мочевом пузыре (240 мл). Толщина стенки в пределах нормы."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  }
+]

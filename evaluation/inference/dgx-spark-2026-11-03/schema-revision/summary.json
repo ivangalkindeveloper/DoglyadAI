@@ -1,0 +1,94 @@
+{
+  "baseline": {
+    "expected": 4,
+    "received": 4,
+    "complete": true,
+    "finish": {
+      "length": 2,
+      "stop": 2
+    },
+    "json_valid": 2,
+    "schema_valid": 2,
+    "main_valid": 1,
+    "repetition_detected": 2,
+    "loop_to_token_limit": 2,
+    "at_character_limit": 1,
+    "review_candidates": 1,
+    "description_equals_conclusion": 0,
+    "median_seconds": 54.50792216400441,
+    "scope": "Synthetic text cases only; validators do not prove clinical correctness."
+  },
+  "prompt-only": {
+    "expected": 4,
+    "received": 4,
+    "complete": true,
+    "finish": {
+      "length": 1,
+      "stop": 3
+    },
+    "json_valid": 3,
+    "schema_valid": 3,
+    "main_valid": 2,
+    "repetition_detected": 1,
+    "loop_to_token_limit": 1,
+    "at_character_limit": 1,
+    "review_candidates": 2,
+    "description_equals_conclusion": 1,
+    "median_seconds": 20.04913383150415,
+    "scope": "Synthetic text cases only; validators do not prove clinical correctness."
+  },
+  "bounded": {
+    "expected": 13,
+    "received": 13,
+    "complete": true,
+    "finish": {
+      "stop": 13
+    },
+    "json_valid": 13,
+    "schema_valid": 13,
+    "main_valid": 7,
+    "repetition_detected": 0,
+    "loop_to_token_limit": 0,
+    "at_character_limit": 6,
+    "review_candidates": 7,
+    "description_equals_conclusion": 8,
+    "median_seconds": 23.850630859000375,
+    "scope": "Synthetic text cases only; validators do not prove clinical correctness."
+  },
+  "working": {
+    "expected": 8,
+    "received": 8,
+    "complete": true,
+    "finish": {
+      "stop": 8
+    },
+    "json_valid": 8,
+    "schema_valid": 8,
+    "main_valid": 6,
+    "repetition_detected": 0,
+    "loop_to_token_limit": 0,
+    "at_character_limit": 2,
+    "review_candidates": 6,
+    "description_equals_conclusion": 3,
+    "median_seconds": 17.373436633497477,
+    "scope": "Synthetic text cases only; validators do not prove clinical correctness."
+  },
+  "unbounded-grammar": {
+    "expected": 8,
+    "received": 8,
+    "complete": true,
+    "finish": {
+      "stop": 8
+    },
+    "json_valid": 8,
+    "schema_valid": 8,
+    "main_valid": 6,
+    "repetition_detected": 1,
+    "loop_to_token_limit": 0,
+    "at_character_limit": 0,
+    "review_candidates": 6,
+    "description_equals_conclusion": 3,
+    "median_seconds": 18.777649203999317,
+    "scope": "Synthetic text cases only; validators do not prove clinical correctness."
+  }
+}

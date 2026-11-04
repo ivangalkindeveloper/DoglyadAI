@@ -6,6 +6,7 @@ func makeStateTestContainer(
     draftRepository: UltrasoundDraftRepositoryProtocol,
     settingsAIRepository: (any SettingsAIRepositoryProtocol)? = nil,
     applicationConfig: ApplicationConfig? = nil,
+    usExaminationTypesById: [String: USExaminationType]? = nil,
 ) -> DependencyContainer {
     let base = DependencyContainer.previewable
     return DependencyContainer(
@@ -26,7 +27,7 @@ func makeStateTestContainer(
         language: base.language,
         l10n: base.l10n,
         usExaminationTypeGroups: base.usExaminationTypeGroups,
-        usExaminationTypesById: base.usExaminationTypesById,
+        usExaminationTypesById: usExaminationTypesById ?? base.usExaminationTypesById,
         usExaminationTypeDefault: base.usExaminationTypeDefault,
         usExaminationNeuralModels: base.usExaminationNeuralModels,
         usExaminationNeuralModelsById: base.usExaminationNeuralModelsById,

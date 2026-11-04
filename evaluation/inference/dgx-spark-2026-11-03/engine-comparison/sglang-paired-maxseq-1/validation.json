@@ -1,0 +1,584 @@
+[
+  {
+    "id": "historical-greedy-0",
+    "kind": "historical",
+    "phase": "quality",
+    "finish": "length",
+    "seconds": 87.93100470700301,
+    "first_delta_seconds": 0.15637332099140622,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 17,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-0",
+    "kind": "historical",
+    "phase": "quality",
+    "finish": "length",
+    "seconds": 88.21237438701792,
+    "first_delta_seconds": 0.06789473700337112,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 9,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-42",
+    "kind": "historical",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 65.59814835799625,
+    "first_delta_seconds": 0.061189968982944265,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3065,
+      "completion_tokens": 1521,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 5456,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    },
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "historical-sample-123",
+    "kind": "historical",
+    "phase": "quality",
+    "finish": "length",
+    "seconds": 88.60700715999701,
+    "first_delta_seconds": 0.09606485100812279,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 3,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 19.472057873994345,
+    "first_delta_seconds": 0.06327704500290565,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2056,
+      "completion_tokens": 452,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "report-sample-0",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 25.986317549977684,
+    "first_delta_seconds": 0.09468916899641044,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2204,
+      "completion_tokens": 600,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 27.081303870974807,
+    "first_delta_seconds": 0.09542511598556302,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2229,
+      "completion_tokens": 625,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "description_remarks_characters": 417,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "report-sample-123",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 25.11734952099505,
+    "first_delta_seconds": 0.0964986199978739,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2183,
+      "completion_tokens": 579,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 12.316676538001047,
+    "first_delta_seconds": 0.12540714698843658,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1899,
+      "completion_tokens": 284,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "conflict-sample-0",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 13.008882852009265,
+    "first_delta_seconds": 0.09617883700411767,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1915,
+      "completion_tokens": 300,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 12.237249221012462,
+    "first_delta_seconds": 0.095022270019399,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1897,
+      "completion_tokens": 282,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "conflict-sample-123",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 18.675067039992427,
+    "first_delta_seconds": 0.09588783598155715,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2046,
+      "completion_tokens": 431,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 512,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    },
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "dictation-greedy-0",
+    "kind": "dictation",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 24.36800806300016,
+    "first_delta_seconds": 0.23391698399791494,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 1999,
+      "completion_tokens": 562,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "examination_description",
+          "value": "Описание исследования, результаты УЗИ",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    }
+  },
+  {
+    "id": "report-penalty105-greedy-0",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 20.366084849985782,
+    "first_delta_seconds": 0.38788597300299443,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2068,
+      "completion_tokens": 464,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "conflict-penalty105-greedy-0",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 11.313703543011798,
+    "first_delta_seconds": 0.09535104301176034,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1876,
+      "completion_tokens": 261,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "vision-1",
+    "kind": "vision",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 0.6265151880215853,
+    "first_delta_seconds": 0.3678589470218867,
+    "usage": {
+      "prompt_tokens": 308,
+      "total_tokens": 315,
+      "completion_tokens": 7,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "image_tokens": 256
+      },
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_raw_sentence_copies": 0,
+    "vision_expected_match": true
+  },
+  {
+    "id": "vision-2",
+    "kind": "vision",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 0.9569686529866885,
+    "first_delta_seconds": 0.5624809020082466,
+    "usage": {
+      "prompt_tokens": 567,
+      "total_tokens": 577,
+      "completion_tokens": 10,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "image_tokens": 512
+      },
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_raw_sentence_copies": 0,
+    "vision_expected_match": true
+  },
+  {
+    "id": "vision-6",
+    "kind": "vision",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 1.5001769889786374,
+    "first_delta_seconds": 0.5399389429949224,
+    "usage": {
+      "prompt_tokens": 1603,
+      "total_tokens": 1626,
+      "completion_tokens": 23,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "image_tokens": 1536
+      },
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_raw_sentence_copies": 1,
+    "vision_expected_match": true
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "phase": "performance",
+    "finish": "length",
+    "seconds": 11.032402280019596,
+    "first_delta_seconds": 0.06084952800301835,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1860,
+      "completion_tokens": 256,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": 1,
+    "repetition": 0,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 2,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "phase": "performance",
+    "finish": "length",
+    "seconds": 11.054373282997403,
+    "first_delta_seconds": 0.060808866983279586,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1860,
+      "completion_tokens": 256,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": 1,
+    "repetition": 1,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 2,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "phase": "performance",
+    "finish": "length",
+    "seconds": 11.039690762001555,
+    "first_delta_seconds": 0.06167237300542183,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1860,
+      "completion_tokens": 256,
+      "prompt_tokens_details": null,
+      "reasoning_tokens": 0,
+      "completion_tokens_details": null
+    },
+    "error": null,
+    "concurrency": 1,
+    "repetition": 2,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 2,
+    "validation_error": "JSONDecodeError"
+  }
+]

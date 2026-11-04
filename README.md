@@ -8,6 +8,11 @@ For coding-agent setup, run `make sync-harness` after checkout. Shared skills,
 hooks, and MCP settings live in [`harness/`](harness/README.md); local agent
 directories are generated and excluded from Git.
 
+Mobile regression resources live in [`test/`](test/README.md). The iOS pipeline
+creates an isolated local environment and collects screenshots. It updates Figma
+only after the complete registered suite passes. Use `test-regress-run` to run it
+and `test-regress-update` to refresh coverage after source changes.
+
 > [!IMPORTANT]
 > Doglyad is a documentation support tool, not a medical device and not an autonomous diagnostic system. Every generated report must be reviewed and approved by a qualified healthcare professional.
 
@@ -214,7 +219,7 @@ Except for the limited rights provided by GitHub's Terms of Service to access, v
 
 The names **Doglyad** and **Догляд**, the logo, application icon, mascot, and associated visual assets are proprietary brand assets. No trademark or brand-use rights are granted.
 
-See the [Doglyad Proprietary License](LICENSE) for the complete terms. Permission requests may be sent to [doglyadapp@gmail.com](mailto:doglyadapp@gmail.com).
+See the [Doglyad Proprietary License](LICENSE) for the complete terms. Permission requests may be sent to [support@doglyad.ru](mailto:support@doglyad.ru).
 
 ## Legal notice and contact
 
@@ -222,4 +227,4 @@ Doglyad assists physicians with preparing documentation. It does not replace pro
 
 - [Privacy Policy](https://ivangalkindeveloper.github.io/DoglyadAI/legal/privacy-policy)
 - [Terms and Conditions](https://ivangalkindeveloper.github.io/DoglyadAI/legal/terms-and-conditions)
-- Contact: [doglyadapp@gmail.com](mailto:doglyadapp@gmail.com)
+- Contact: [support@doglyad.ru](mailto:support@doglyad.ru)

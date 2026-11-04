@@ -1,0 +1,12 @@
+{"event": "original_stopped", "memory": {"MemTotal_kib": 127598416, "MemAvailable_kib": 40920604, "SwapTotal_kib": 16777212, "SwapFree_kib": 8791304}}
+{"event": "starting", "name": "sglang-maxseq-1"}
+{"event": "trial_failed", "error": "RuntimeError: Evaluation interrupted by signal 15"}
+{"event": "restoring_original"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 122.9}
+{"event": "restoration_verified"}
+Traceback (most recent call last):
+  File "/var/tmp/doglyad-engine-comparison-20261103-a/engine-comparison/run_engine_trial.py", line 258, in <module>
+    main()
+  File "/var/tmp/doglyad-engine-comparison-20261103-a/engine-comparison/run_engine_trial.py", line 253, in main
+    raise RuntimeError(failure)
+RuntimeError: RuntimeError: Evaluation interrupted by signal 15

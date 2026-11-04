@@ -11,6 +11,7 @@ from app.model.neural_model.neural_model_service_request import NeuralModelServi
 from app.model.ultrasound.us_examination_model_report_response import USExaminationModelReportResponse
 from app.model.ultrasound.us_examination_report import USExaminationReport
 from app.model.ultrasound.us_examination_request import USExaminationRequest
+from app.model.ultrasound.us_report_preview_response import USReportPreviewResponse
 from app.prompt import PromptFactory
 from app.schema.us_examination_report_structured_output import us_examination_report_structured_output
 from app.service.neural_model.neural_model_service import NeuralModelService
@@ -47,6 +48,30 @@ class ReportGenerationService:
         app_check_token: str | None = None,
         request_id: str | None = None,
     ) -> USExaminationModelReportResponse:
+        prepared = self.prepare(
+            body,
+            language_code=language_code,
+            app_check_token=app_check_token,
+            request_id=request_id,
+        )
+        response_text = await self._model_service.call(
+            prepared,
+        )
+        return self.complete(
+            response_text,
+            body,
+            model_id=prepared.model_id,
+            language_code=language_code,
+        )
+
+    def prepare(
+        self,
+        body: USExaminationRequest,
+        *,
+        language_code: LanguageCode,
+        app_check_token: str | None = None,
+        request_id: str | None = None,
+    ) -> NeuralModelServiceRequest:
         examination = body.examinationData
         limits = self._configuration.modules.scan
         for field, maximum in (
@@ -101,46 +126,72 @@ class ReportGenerationService:
             ),
         )
 
-        response_text = await self._model_service.call(
-            NeuralModelServiceRequest(
-                operation=NeuralModelServiceOperation.GENERATE_REPORT,
+        structured_output = us_examination_report_structured_output(
+            is_recommendations_included=body.isRecommendationsIncluded,
+            is_photo_remarks=body.isPhotoRemarks,
+            is_description_remarks=body.isDescriptionRemarks,
+            photo_ids=[photo.id for photo in examination.photos],
+            language_code=language_code,
+            localization=self._configuration.l10n,
+        )
+        return NeuralModelServiceRequest(
+            operation=NeuralModelServiceOperation.GENERATE_REPORT,
+            language_code=language_code,
+            model_id=neural_model.id,
+            system_prompt=prompt_factory.system_prompt(
+                settings,
+                is_recommendations_included=body.isRecommendationsIncluded,
+                is_photo_remarks=body.isPhotoRemarks
+                and bool(
+                    examination.photos,
+                ),
+                is_description_remarks=body.isDescriptionRemarks,
+                structured_output=structured_output,
+            ),
+            prompt=prompt_factory.build_prompt(
+                examination,
+                examination_title,
+                body.template,
+            ),
+            structured_output=structured_output,
+            temperature=settings.temperature,
+            max_tokens=settings.maxTokens,
+            repetition_penalty=self._configuration.server.report_generation.repetition_penalty,
+            photos=examination.photos,
+            app_check_token=app_check_token,
+            request_id=request_id,
+            report_measurements=self._validator.measurement_fragments(
+                examination.examinationDescription,
                 language_code=language_code,
-                model_id=neural_model.id,
-                system_prompt=prompt_factory.system_prompt(
-                    settings,
-                    is_recommendations_included=body.isRecommendationsIncluded,
-                    is_photo_remarks=body.isPhotoRemarks
-                    and bool(
-                        examination.photos,
-                    ),
-                    is_description_remarks=body.isDescriptionRemarks,
-                ),
-                prompt=prompt_factory.build_prompt(
-                    examination,
-                    examination_title,
-                    body.template,
-                ),
-                structured_output=us_examination_report_structured_output(
-                    is_recommendations_included=body.isRecommendationsIncluded,
-                    is_photo_remarks=body.isPhotoRemarks,
-                    is_description_remarks=body.isDescriptionRemarks,
-                    photo_ids=[photo.id for photo in examination.photos],
-                    language_code=language_code,
-                    localization=self._configuration.l10n,
-                ),
-                temperature=settings.temperature,
-                max_tokens=settings.maxTokens,
-                photos=examination.photos,
-                app_check_token=app_check_token,
-                request_id=request_id,
-                report_measurements=self._validator.measurement_fragments(
-                    examination.examinationDescription,
-                    language_code=language_code,
-                ),
             ),
         )
 
+    def preview(
+        self,
+        response_text: str,
+    ) -> USReportPreviewResponse:
+        report = USReportPreviewResponse.parse_partial(
+            response_text,
+        )
+        self._validator.validate_output(
+            report,
+        )
+        return report
+
+    def complete(
+        self,
+        response_text: str,
+        body: USExaminationRequest,
+        *,
+        model_id: str,
+        language_code: LanguageCode,
+    ) -> USExaminationModelReportResponse:
+        examination = body.examinationData
         try:
+            # Check raw strings before the final model trims optional sections.
+            self.preview(
+                response_text,
+            )
             report = USExaminationReport.model_validate_json(
                 response_text,
             )
@@ -160,6 +211,6 @@ class ReportGenerationService:
             date=datetime.now(
                 UTC,
             ),
-            modelId=neural_model.id,
+            modelId=model_id,
             **report.model_dump(),
         )

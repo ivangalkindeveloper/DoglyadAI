@@ -1,0 +1,268 @@
+[
+  {
+    "model": "MedGemma 4B",
+    "origin": "previous",
+    "llama_single_speed_change_percent": 26.590561654177947,
+    "llama_four_clients_speed_change_percent": -11.550679799712437,
+    "results": {
+      "vllm": {
+        "restoration_recorded": true,
+        "trial_failed": false,
+        "quality_count": 9,
+        "self_completed": 9,
+        "schema_valid": 9,
+        "main_valid": 7,
+        "vision_correct": 2,
+        "within_field_duplicates": 0,
+        "prompt_mismatches": [],
+        "performance": {
+          "1": {
+            "mode": "concurrent_http",
+            "measured_rows": 5,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.04804399100248702,
+            "latency_seconds": 10.579192296019755,
+            "decode_tokens_per_second": 24.214312509252967,
+            "aggregate_tokens_per_second": 24.162111580118903,
+            "min_seconds": 10.571810352004832,
+            "max_seconds": 10.583231407974381
+          },
+          "4": {
+            "mode": "concurrent_http",
+            "measured_rows": 20,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.08399276199634187,
+            "latency_seconds": 8.793919272982748,
+            "decode_tokens_per_second": 29.250371770902696,
+            "aggregate_tokens_per_second": 114.89317781578843,
+            "min_seconds": 8.77542102499865,
+            "max_seconds": 8.821295540983556
+          }
+        }
+      },
+      "llama.cpp": {
+        "restoration_recorded": true,
+        "trial_failed": false,
+        "quality_count": 9,
+        "self_completed": 9,
+        "schema_valid": 9,
+        "main_valid": 7,
+        "vision_correct": 2,
+        "within_field_duplicates": 0,
+        "prompt_mismatches": [],
+        "performance": {
+          "1": {
+            "mode": "concurrent_http",
+            "measured_rows": 5,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.06760309400851838,
+            "latency_seconds": 8.390344729006756,
+            "decode_tokens_per_second": 30.6530342061612,
+            "aggregate_tokens_per_second": 30.447462425464444,
+            "min_seconds": 8.38175882800715,
+            "max_seconds": 8.399541315011447
+          },
+          "4": {
+            "mode": "concurrent_http",
+            "measured_rows": 20,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.08519025350688025,
+            "latency_seconds": 9.96892735750589,
+            "decode_tokens_per_second": 25.903526130126842,
+            "aggregate_tokens_per_second": 101.62223473457247,
+            "min_seconds": 9.926029174996074,
+            "max_seconds": 9.990630400978262
+          }
+        }
+      }
+    }
+  },
+  {
+    "model": "MedGemma 1.5 4B",
+    "origin": "current",
+    "llama_single_speed_change_percent": 24.572822688689676,
+    "llama_four_clients_speed_change_percent": -12.889732640175556,
+    "results": {
+      "vllm": {
+        "model_id": "google/medgemma-1.5-4b-it",
+        "traffic": {
+          "expected_requests": 40,
+          "observed_requests": 40.0,
+          "is_exclusive_test_traffic": true
+        },
+        "restoration_recorded": true,
+        "trial_failed": false,
+        "quality_count": 9,
+        "self_completed": 9,
+        "schema_valid": 9,
+        "main_valid": 6,
+        "vision_correct": 2,
+        "within_field_duplicates": 0,
+        "prompt_mismatches": [],
+        "prompt_id_checks": 7,
+        "performance": {
+          "1": {
+            "mode": "concurrent_http",
+            "measured_rows": 5,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.06954918199335225,
+            "latency_seconds": 10.811422134982422,
+            "decode_tokens_per_second": 23.731101550463507,
+            "aggregate_tokens_per_second": 23.621682226161216,
+            "min_seconds": 10.797917051007971,
+            "max_seconds": 10.870723102008924
+          },
+          "4": {
+            "mode": "concurrent_http",
+            "measured_rows": 20,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.09275012151920237,
+            "latency_seconds": 8.812678973496077,
+            "decode_tokens_per_second": 29.22686927984541,
+            "aggregate_tokens_per_second": 115.03128054365565,
+            "min_seconds": 8.77479219099041,
+            "max_seconds": 8.846799304999877
+          }
+        }
+      },
+      "llama.cpp": {
+        "model_id": "google/medgemma-1.5-4b-it",
+        "traffic": null,
+        "restoration_recorded": true,
+        "trial_failed": false,
+        "quality_count": 9,
+        "self_completed": 9,
+        "schema_valid": 9,
+        "main_valid": 5,
+        "vision_correct": 2,
+        "within_field_duplicates": 0,
+        "prompt_mismatches": [],
+        "prompt_id_checks": 7,
+        "performance": {
+          "1": {
+            "mode": "concurrent_http",
+            "measured_rows": 5,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.07085360199562274,
+            "latency_seconds": 8.696645521995379,
+            "decode_tokens_per_second": 29.56250305653179,
+            "aggregate_tokens_per_second": 29.384833047223292,
+            "min_seconds": 8.620532800996443,
+            "max_seconds": 8.808039463008754
+          },
+          "4": {
+            "mode": "concurrent_http",
+            "measured_rows": 20,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.08561081648804247,
+            "latency_seconds": 10.135567661985988,
+            "decode_tokens_per_second": 25.405947909862142,
+            "aggregate_tokens_per_second": 100.20405602900816,
+            "min_seconds": 10.052435410994804,
+            "max_seconds": 10.19845636599348
+          }
+        }
+      }
+    }
+  },
+  {
+    "model": "MedGemma 27B",
+    "origin": "current",
+    "llama_single_speed_change_percent": 1.32198169098241,
+    "llama_four_clients_speed_change_percent": -6.750218696344101,
+    "results": {
+      "vllm": {
+        "model_id": "google/medgemma-27b-it",
+        "traffic": {
+          "expected_requests": 40,
+          "observed_requests": 40.0,
+          "is_exclusive_test_traffic": true
+        },
+        "restoration_recorded": true,
+        "trial_failed": false,
+        "quality_count": 9,
+        "self_completed": 9,
+        "schema_valid": 9,
+        "main_valid": 7,
+        "vision_correct": 2,
+        "within_field_duplicates": 0,
+        "prompt_mismatches": [],
+        "prompt_id_checks": 7,
+        "performance": {
+          "1": {
+            "mode": "concurrent_http",
+            "measured_rows": 5,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.2587567729933653,
+            "latency_seconds": 61.34336410101969,
+            "decode_tokens_per_second": 4.174785835249702,
+            "aggregate_tokens_per_second": 4.172170443843721,
+            "min_seconds": 61.293744121998316,
+            "max_seconds": 61.45827619699412
+          },
+          "4": {
+            "mode": "concurrent_http",
+            "measured_rows": 20,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.5243237850081641,
+            "latency_seconds": 59.98623052200128,
+            "decode_tokens_per_second": 4.288773507936732,
+            "aggregate_tokens_per_second": 17.04047739326025,
+            "min_seconds": 59.755946680990746,
+            "max_seconds": 60.000385259016184
+          }
+        }
+      },
+      "llama.cpp": {
+        "model_id": "google/medgemma-27b-it",
+        "traffic": null,
+        "restoration_recorded": true,
+        "trial_failed": false,
+        "quality_count": 9,
+        "self_completed": 9,
+        "schema_valid": 9,
+        "main_valid": 7,
+        "vision_correct": 2,
+        "within_field_duplicates": 0,
+        "prompt_mismatches": [],
+        "prompt_id_checks": 7,
+        "performance": {
+          "1": {
+            "mode": "concurrent_http",
+            "measured_rows": 5,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.47308179197716527,
+            "latency_seconds": 60.75196893300745,
+            "decode_tokens_per_second": 4.22997573962943,
+            "aggregate_tokens_per_second": 4.212753300033438,
+            "min_seconds": 60.32693875199766,
+            "max_seconds": 61.3062837109901
+          },
+          "4": {
+            "mode": "concurrent_http",
+            "measured_rows": 20,
+            "all_fixed_256": true,
+            "complete_five_waves": true,
+            "ttft_seconds": 0.9720236340072006,
+            "latency_seconds": 64.2806203464861,
+            "decode_tokens_per_second": 4.033409955918208,
+            "aggregate_tokens_per_second": 15.890207902314106,
+            "min_seconds": 63.66042679399834,
+            "max_seconds": 64.49202295599389
+          }
+        }
+      }
+    }
+  }
+]

@@ -8,6 +8,82 @@ import Testing
 
 @MainActor
 struct ModuleInputLimitTests {
+    @Test(
+        arguments: [false, true],
+    )
+    func developmentFillChangesTheTypeAndTextOnlyAfterSelectionIsSaved(
+        isSelectionSaveFailed: Bool,
+    ) async throws {
+        let repository = StateReportRepository()
+        repository.isSelectionSaveFailed = isSelectionSaveFailed
+        let thyroid = USExaminationType(
+            id: "thyroidGland",
+            title: "Thyroid",
+            contextualStrings: [],
+        )
+        let echo = USExaminationType(
+            id: "echocardiography",
+            title: "Echocardiography",
+            contextualStrings: [],
+        )
+        let container = makeStateTestContainer(
+            reportRepository: repository,
+            draftRepository: StateDraftRepository(),
+            usExaminationTypesById: [thyroid.id: thyroid, echo.id: echo],
+        )
+        let model = makeScanModel(
+            container: container,
+        )
+        model.emit(
+            ScanDefaultState(),
+        )
+        model.usExaminationType = echo
+        model.patientComplaintsTextController.setText(
+            "Original complaints",
+        )
+        model.examinationDescriptionTextController.setText(
+            "Original description",
+        )
+        model.onTapFillDevelopment()
+        for _ in 0 ..< 100 {
+            await Task.yield()
+        }
+        #expect(
+            repository.selectionSaveCount == 1,
+        )
+        if isSelectionSaveFailed {
+            #expect(
+                repository.selectedExaminationTypeId == nil,
+            )
+            #expect(
+                model.usExaminationType == echo,
+            )
+            #expect(
+                model.patientComplaintsTextController.text == "Original complaints",
+            )
+            #expect(
+                model.examinationDescriptionTextController.text == "Original description",
+            )
+        } else {
+            #expect(
+                repository.selectedExaminationTypeId == thyroid.id,
+            )
+            #expect(
+                model.usExaminationType == thyroid,
+            )
+            #expect(
+                model.patientComplaintsTextController.text == container.mockFactory.fillPatientComplaints(
+                    l10n: container.l10n,
+                ),
+            )
+            #expect(
+                model.examinationDescriptionTextController.text == container.mockFactory.fillExaminationDescription(
+                    l10n: container.l10n,
+                ),
+            )
+        }
+    }
+
     @Test
     func scanUsesConfiguredLimitsForEveryTextController() throws {
         let container = try makeContainer()
@@ -205,6 +281,11 @@ struct ModuleInputLimitTests {
                 container.usExaminationNeuralModelDefault
             },
             onNeuralModelSelected: { _ in },
+            onStartReportGeneration: { _ in
+                throw URLError(
+                    .unsupportedURL,
+                )
+            },
         )
     }
 

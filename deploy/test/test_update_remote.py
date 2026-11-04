@@ -58,6 +58,21 @@ class RemoteTransactionTests(unittest.TestCase):
             override["services"]["backend_main"]["image"], self.state["image"]
         )
 
+    def test_report_worker_updates_and_rolls_back_with_api(self) -> None:
+        self.state["report_worker"] = {"container": "worker", "image": self.state["image"], "restarts": 0}
+        with patch.object(remote, "check", return_value=self.state):
+            self.action("prepare")
+        image = "ghcr.io/ivangalkindeveloper/doglyad-main@sha256:" + "c" * 64
+        with (patch.object(remote, "run", return_value=json.dumps([{"Id": "new-image"}])) as run,
+              patch.object(remote, "compose") as compose,
+              patch.object(remote, "wait_ready", return_value={})):
+            self.action("update", image=image, sha="d" * 40)
+            self.assertIn("report_worker", compose.call_args_list[-1].args)
+            self.action("rollback")
+            self.assertIn("report_worker", run.call_args_list[-1].args)
+        override = json.loads((self.root / f".deploy-{self.release}/rollback.json").read_text())
+        self.assertEqual(override["services"]["report_worker"]["image"], self.state["image"])
+
     def test_foreign_release_cannot_unlock(self) -> None:
         with patch.object(remote, "check", return_value=self.state):
             self.action("prepare")

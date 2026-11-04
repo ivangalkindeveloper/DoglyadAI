@@ -1,0 +1,6 @@
+{"event": "starting", "variant": "unbounded-grammar", "count": 8}
+{"event": "finished", "variant": "unbounded-grammar"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+{"event": "runtime_verified", "no_containers_restarted": true}

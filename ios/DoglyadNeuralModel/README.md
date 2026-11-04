@@ -63,7 +63,7 @@ flowchart TD
     Factory -->|"выбран FoundationModels и доступен"| FM[DNeuralUltrasoundModelFoundationModels]
     Factory -->|"выбран сервер"| Server[DNeuralUltrasoundModelServer]
     FM --> Generator["DNeuralUltrasoundFoundationProposalGenerator<br/>промпт + схема → LanguageModelSession"]
-    Server --> Transport["DNeuralUltrasoundServerTransportProtocol<br/>repository приложения → DoglyadNetwork"]
+    Server --> Transport["Замыкание parseDictation<br/>UltrasoundReportRepository → DoglyadNetwork"]
     Transport --> Backend[main → inference → выбранная модель протоколов]
     Generator --> Raw["DNeuralUltrasoundProposalGenerationResponse<br/>height: 178; evidence: Рост: 178 см."]
     Backend --> DTO[DNeuralUltrasoundVoiceFormParseResponseDTO]
@@ -331,8 +331,8 @@ flowchart LR
 | `DNeuralModelProtocol` | Общий прогрев реализации модели; предметных методов/полей не содержит. УЗИ-протокол наследует его. |
 | `DNeuralModelError` | Недоступная модель или отсутствующий proposal-промпт. |
 | `DNeuralUltrasoundModelFoundationModels` | Организует локальный разбор через генератор и общий обработчик; сохраняет явные поля при ошибке. |
-| `DNeuralUltrasoundModelServer` | Запрашивает backend через транспорт и передаёт ответ общему обработчику. |
-| `DNeuralUltrasoundServerTransportProtocol` | Граница HTTP: реализована `UltrasoundReportRepository` приложения через DoglyadNetwork. |
+| `DNeuralUltrasoundModelServer` | Вызывает замыкание `parseDictation` и передаёт ответ общему обработчику. |
+| Замыкание `parseDictation` | Приложение передаёт метод `UltrasoundReportRepositoryProtocol.parseDictation` в фабрику. Репозиторий выполняет HTTP-запрос через DoglyadNetwork. |
 | `DNeuralUltrasoundFoundationModelProviderProtocol` | Внутренняя граница доступности/создания локальной модели; позволяет подставить provider в тестах. |
 | `DNeuralUltrasoundFoundationModelProvider` | Проверяет системную готовность, поддержку языка и локальный промпт; создаёт FM-реализацию. |
 | `DNeuralUltrasoundProposalGeneratorProtocol` | Внутренняя граница сырой генерации и прогрева; не выполняет валидацию/объединение. |

@@ -1,0 +1,2798 @@
+[
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": false,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 0,
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение."
+    },
+    "photo_document": null
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": false,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 1,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Горизонтальная координата на всём правильно ориентированном снимке: 0 слева, 1 справа"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Вертикальная координата на всём правильно ориентированном снимке: 0 сверху, 1 снизу"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Краткий конкретный заголовок замечания в этой точке обычным текстом, подходящий для подписи на снимке в две строки"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Полное обоснованное описание замечания по области снимка в этой точке"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              "description": "ID переданного снимка, к которому относятся замечания"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Локализованные точки замечаний на этом снимке"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Замечания, сгруппированные по ID переданных снимков; пустой массив, если замечаний нет"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": false,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 6,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Горизонтальная координата на всём правильно ориентированном снимке: 0 слева, 1 справа"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Вертикальная координата на всём правильно ориентированном снимке: 0 сверху, 1 снизу"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Краткий конкретный заголовок замечания в этой точке обычным текстом, подходящий для подписи на снимке в две строки"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Полное обоснованное описание замечания по области снимка в этой точке"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002",
+                "00000000-0000-0000-0000-000000000003",
+                "00000000-0000-0000-0000-000000000004",
+                "00000000-0000-0000-0000-000000000005",
+                "00000000-0000-0000-0000-000000000006"
+              ],
+              "description": "ID переданного снимка, к которому относятся замечания"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Локализованные точки замечаний на этом снимке"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Замечания, сгруппированные по ID переданных снимков; пустой массив, если замечаний нет"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": false,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 0,
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Только конкретная проблема исходного описания и требуемое уточнение; не более двух коротких предложений. Если проблем нет, null."
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null
+    },
+    "photo_document": null
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": false,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 1,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Горизонтальная координата на всём правильно ориентированном снимке: 0 слева, 1 справа"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Вертикальная координата на всём правильно ориентированном снимке: 0 сверху, 1 снизу"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Краткий конкретный заголовок замечания в этой точке обычным текстом, подходящий для подписи на снимке в две строки"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Полное обоснованное описание замечания по области снимка в этой точке"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              "description": "ID переданного снимка, к которому относятся замечания"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Локализованные точки замечаний на этом снимке"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Только конкретная проблема исходного описания и требуемое уточнение; не более двух коротких предложений. Если проблем нет, null."
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Замечания, сгруппированные по ID переданных снимков; пустой массив, если замечаний нет"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": false,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 6,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Горизонтальная координата на всём правильно ориентированном снимке: 0 слева, 1 справа"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Вертикальная координата на всём правильно ориентированном снимке: 0 сверху, 1 снизу"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Краткий конкретный заголовок замечания в этой точке обычным текстом, подходящий для подписи на снимке в две строки"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Полное обоснованное описание замечания по области снимка в этой точке"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002",
+                "00000000-0000-0000-0000-000000000003",
+                "00000000-0000-0000-0000-000000000004",
+                "00000000-0000-0000-0000-000000000005",
+                "00000000-0000-0000-0000-000000000006"
+              ],
+              "description": "ID переданного снимка, к которому относятся замечания"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Локализованные точки замечаний на этом снимке"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Только конкретная проблема исходного описания и требуемое уточнение; не более двух коротких предложений. Если проблем нет, null."
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Замечания, сгруппированные по ID переданных снимков; пустой массив, если замечаний нет"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": true,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 0,
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Обоснованные рекомендации по лечению или дальнейшим действиям, если запрошены; null, если рекомендаций нет"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение."
+    },
+    "photo_document": null
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": true,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 1,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Горизонтальная координата на всём правильно ориентированном снимке: 0 слева, 1 справа"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Вертикальная координата на всём правильно ориентированном снимке: 0 сверху, 1 снизу"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Краткий конкретный заголовок замечания в этой точке обычным текстом, подходящий для подписи на снимке в две строки"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Полное обоснованное описание замечания по области снимка в этой точке"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              "description": "ID переданного снимка, к которому относятся замечания"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Локализованные точки замечаний на этом снимке"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Обоснованные рекомендации по лечению или дальнейшим действиям, если запрошены; null, если рекомендаций нет"
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Замечания, сгруппированные по ID переданных снимков; пустой массив, если замечаний нет"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": true,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 6,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Горизонтальная координата на всём правильно ориентированном снимке: 0 слева, 1 справа"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Вертикальная координата на всём правильно ориентированном снимке: 0 сверху, 1 снизу"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Краткий конкретный заголовок замечания в этой точке обычным текстом, подходящий для подписи на снимке в две строки"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Полное обоснованное описание замечания по области снимка в этой точке"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002",
+                "00000000-0000-0000-0000-000000000003",
+                "00000000-0000-0000-0000-000000000004",
+                "00000000-0000-0000-0000-000000000005",
+                "00000000-0000-0000-0000-000000000006"
+              ],
+              "description": "ID переданного снимка, к которому относятся замечания"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Локализованные точки замечаний на этом снимке"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Обоснованные рекомендации по лечению или дальнейшим действиям, если запрошены; null, если рекомендаций нет"
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Замечания, сгруппированные по ID переданных снимков; пустой массив, если замечаний нет"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": true,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 0,
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Обоснованные рекомендации по лечению или дальнейшим действиям, если запрошены; null, если рекомендаций нет"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Только конкретная проблема исходного описания и требуемое уточнение; не более двух коротких предложений. Если проблем нет, null."
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null
+    },
+    "photo_document": null
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": true,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 1,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Горизонтальная координата на всём правильно ориентированном снимке: 0 слева, 1 справа"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Вертикальная координата на всём правильно ориентированном снимке: 0 сверху, 1 снизу"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Краткий конкретный заголовок замечания в этой точке обычным текстом, подходящий для подписи на снимке в две строки"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Полное обоснованное описание замечания по области снимка в этой точке"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              "description": "ID переданного снимка, к которому относятся замечания"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Локализованные точки замечаний на этом снимке"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Обоснованные рекомендации по лечению или дальнейшим действиям, если запрошены; null, если рекомендаций нет"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Только конкретная проблема исходного описания и требуемое уточнение; не более двух коротких предложений. Если проблем нет, null."
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Замечания, сгруппированные по ID переданных снимков; пустой массив, если замечаний нет"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "ru",
+    "recommendations": true,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 6,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Горизонтальная координата на всём правильно ориентированном снимке: 0 слева, 1 справа"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Вертикальная координата на всём правильно ориентированном снимке: 0 сверху, 1 снизу"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Краткий конкретный заголовок замечания в этой точке обычным текстом, подходящий для подписи на снимке в две строки"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Полное обоснованное описание замечания по области снимка в этой точке"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002",
+                "00000000-0000-0000-0000-000000000003",
+                "00000000-0000-0000-0000-000000000004",
+                "00000000-0000-0000-0000-000000000005",
+                "00000000-0000-0000-0000-000000000006"
+              ],
+              "description": "ID переданного снимка, к которому относятся замечания"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Локализованные точки замечаний на этом снимке"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Подробное описание результатов исследования"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Краткое клиническое заключение по результатам исследования"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Обоснованные рекомендации по лечению или дальнейшим действиям, если запрошены; null, если рекомендаций нет"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Только конкретная проблема исходного описания и требуемое уточнение; не более двух коротких предложений. Если проблем нет, null."
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Замечания, сгруппированные по ID переданных снимков; пустой массив, если замечаний нет"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": false,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 0,
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение."
+    },
+    "photo_document": null
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": false,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 1,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Horizontal position in the entire upright image: 0 at left, 1 at right"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Vertical position in the entire upright image: 0 at top, 1 at bottom"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Short, specific plain-text heading for the observation at this point, suitable for a two-line image tooltip"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Full, justified explanation of the observation at this image point"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              "description": "ID of the supplied image to which these remarks belong"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Localized remark points on this image"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Remarks grouped by supplied image ID; an empty array if no remarks are appropriate"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": false,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 6,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Horizontal position in the entire upright image: 0 at left, 1 at right"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Vertical position in the entire upright image: 0 at top, 1 at bottom"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Short, specific plain-text heading for the observation at this point, suitable for a two-line image tooltip"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Full, justified explanation of the observation at this image point"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002",
+                "00000000-0000-0000-0000-000000000003",
+                "00000000-0000-0000-0000-000000000004",
+                "00000000-0000-0000-0000-000000000005",
+                "00000000-0000-0000-0000-000000000006"
+              ],
+              "description": "ID of the supplied image to which these remarks belong"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Localized remark points on this image"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Remarks grouped by supplied image ID; an empty array if no remarks are appropriate"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": false,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 0,
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Only a specific problem in the source description and the required clarification, in at most two short sentences; null if there is no problem."
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null
+    },
+    "photo_document": null
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": false,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 1,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Horizontal position in the entire upright image: 0 at left, 1 at right"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Vertical position in the entire upright image: 0 at top, 1 at bottom"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Short, specific plain-text heading for the observation at this point, suitable for a two-line image tooltip"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Full, justified explanation of the observation at this image point"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              "description": "ID of the supplied image to which these remarks belong"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Localized remark points on this image"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Only a specific problem in the source description and the required clarification, in at most two short sentences; null if there is no problem."
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Remarks grouped by supplied image ID; an empty array if no remarks are appropriate"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": false,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 6,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Horizontal position in the entire upright image: 0 at left, 1 at right"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Vertical position in the entire upright image: 0 at top, 1 at bottom"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Short, specific plain-text heading for the observation at this point, suitable for a two-line image tooltip"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Full, justified explanation of the observation at this image point"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002",
+                "00000000-0000-0000-0000-000000000003",
+                "00000000-0000-0000-0000-000000000004",
+                "00000000-0000-0000-0000-000000000005",
+                "00000000-0000-0000-0000-000000000006"
+              ],
+              "description": "ID of the supplied image to which these remarks belong"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Localized remark points on this image"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Only a specific problem in the source description and the required clarification, in at most two short sentences; null if there is no problem."
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Remarks grouped by supplied image ID; an empty array if no remarks are appropriate"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": true,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 0,
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Recommended treatment or follow-up actions when requested; null if there are no justified recommendations"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение."
+    },
+    "photo_document": null
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": true,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 1,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Horizontal position in the entire upright image: 0 at left, 1 at right"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Vertical position in the entire upright image: 0 at top, 1 at bottom"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Short, specific plain-text heading for the observation at this point, suitable for a two-line image tooltip"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Full, justified explanation of the observation at this image point"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              "description": "ID of the supplied image to which these remarks belong"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Localized remark points on this image"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Recommended treatment or follow-up actions when requested; null if there are no justified recommendations"
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Remarks grouped by supplied image ID; an empty array if no remarks are appropriate"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": true,
+    "remarks": false,
+    "photo_remarks": true,
+    "photo_count": 6,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Horizontal position in the entire upright image: 0 at left, 1 at right"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Vertical position in the entire upright image: 0 at top, 1 at bottom"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Short, specific plain-text heading for the observation at this point, suitable for a two-line image tooltip"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Full, justified explanation of the observation at this image point"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002",
+                "00000000-0000-0000-0000-000000000003",
+                "00000000-0000-0000-0000-000000000004",
+                "00000000-0000-0000-0000-000000000005",
+                "00000000-0000-0000-0000-000000000006"
+              ],
+              "description": "ID of the supplied image to which these remarks belong"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Localized remark points on this image"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Recommended treatment or follow-up actions when requested; null if there are no justified recommendations"
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Remarks grouped by supplied image ID; an empty array if no remarks are appropriate"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": true,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 0,
+    "schema": {
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Recommended treatment or follow-up actions when requested; null if there are no justified recommendations"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Only a specific problem in the source description and the required clarification, in at most two short sentences; null if there is no problem."
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null
+    },
+    "photo_document": null
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": true,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 1,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Horizontal position in the entire upright image: 0 at left, 1 at right"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Vertical position in the entire upright image: 0 at top, 1 at bottom"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Short, specific plain-text heading for the observation at this point, suitable for a two-line image tooltip"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Full, justified explanation of the observation at this image point"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001"
+              ],
+              "description": "ID of the supplied image to which these remarks belong"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Localized remark points on this image"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Recommended treatment or follow-up actions when requested; null if there are no justified recommendations"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Only a specific problem in the source description and the required clarification, in at most two short sentences; null if there is no problem."
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Remarks grouped by supplied image ID; an empty array if no remarks are appropriate"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "environment": "production",
+    "language": "en",
+    "recommendations": true,
+    "remarks": true,
+    "photo_remarks": true,
+    "photo_count": 6,
+    "schema": {
+      "$defs": {
+        "USExaminationPhotoRemarkPoint": {
+          "additionalProperties": false,
+          "properties": {
+            "x": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "X",
+              "type": "number",
+              "description": "Horizontal position in the entire upright image: 0 at left, 1 at right"
+            },
+            "y": {
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Y",
+              "type": "number",
+              "description": "Vertical position in the entire upright image: 0 at top, 1 at bottom"
+            },
+            "title": {
+              "minLength": 1,
+              "title": "Title",
+              "type": "string",
+              "description": "Short, specific plain-text heading for the observation at this point, suitable for a two-line image tooltip"
+            },
+            "description": {
+              "minLength": 1,
+              "title": "Description",
+              "type": "string",
+              "description": "Full, justified explanation of the observation at this image point"
+            }
+          },
+          "required": [
+            "x",
+            "y",
+            "title",
+            "description"
+          ],
+          "title": "USExaminationPhotoRemarkPoint",
+          "type": "object"
+        },
+        "USExaminationPhotoRemarks": {
+          "additionalProperties": false,
+          "properties": {
+            "photoId": {
+              "format": "uuid",
+              "title": "Photoid",
+              "type": "string",
+              "enum": [
+                "00000000-0000-0000-0000-000000000001",
+                "00000000-0000-0000-0000-000000000002",
+                "00000000-0000-0000-0000-000000000003",
+                "00000000-0000-0000-0000-000000000004",
+                "00000000-0000-0000-0000-000000000005",
+                "00000000-0000-0000-0000-000000000006"
+              ],
+              "description": "ID of the supplied image to which these remarks belong"
+            },
+            "points": {
+              "items": {
+                "$ref": "#/$defs/USExaminationPhotoRemarkPoint"
+              },
+              "minItems": 1,
+              "title": "Points",
+              "type": "array",
+              "description": "Localized remark points on this image"
+            }
+          },
+          "required": [
+            "photoId",
+            "points"
+          ],
+          "title": "USExaminationPhotoRemarks",
+          "type": "object"
+        }
+      },
+      "additionalProperties": false,
+      "properties": {
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string",
+          "description": "Detailed examination findings"
+        },
+        "conclusion": {
+          "minLength": 1,
+          "title": "Conclusion",
+          "type": "string",
+          "description": "Concise interpretation of the findings"
+        },
+        "recommendations": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Recommendations",
+          "description": "Recommended treatment or follow-up actions when requested; null if there are no justified recommendations"
+        },
+        "descriptionRemarks": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 512
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Descriptionremarks",
+          "description": "Only a specific problem in the source description and the required clarification, in at most two short sentences; null if there is no problem."
+        },
+        "photoRemarks": {
+          "items": {
+            "$ref": "#/$defs/USExaminationPhotoRemarks"
+          },
+          "title": "Photoremarks",
+          "type": "array",
+          "description": "Remarks grouped by supplied image ID; an empty array if no remarks are appropriate"
+        }
+      },
+      "required": [
+        "description",
+        "conclusion",
+        "descriptionRemarks",
+        "photoRemarks"
+      ],
+      "title": "USExaminationReport",
+      "type": "object"
+    },
+    "minimal": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": []
+    },
+    "photo_document": {
+      "description": "Описание.",
+      "conclusion": "Заключение.",
+      "descriptionRemarks": null,
+      "photoRemarks": [
+        {
+          "photoId": "00000000-0000-0000-0000-000000000001",
+          "points": [
+            {
+              "x": 0.5,
+              "y": 0.5,
+              "title": "Точка",
+              "description": "Область."
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

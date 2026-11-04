@@ -33,8 +33,9 @@ Validation is **unconditional**. There is no bypass flag, and the service cannot
 | Method | Path | App Check | Description |
 |---|---|---:|---|
 | `POST` | `/v1/generation` | Yes | Generate one response |
+| `POST` | `/v1/generation/stream` | Yes | Stream deltas, then `completed` or `failed` |
 
-This is the service's only endpoint, and it is protected by App Check. Nothing is exposed anonymously: reaching the model VM's port alone must not grant model access.
+Both endpoints are protected by App Check. Nothing is exposed anonymously: reaching the model VM's port alone must not grant model access.
 
 Request:
 
@@ -54,6 +55,27 @@ Response:
 ```
 
 `modelId` selects an entry in the configured engine map. An unknown ID returns `400` without an upstream request. Caller-supplied model IDs can never supply a destination URL.
+
+Both endpoints read the same vLLM stream internally. With `structuredOutput`,
+`StructuredOutputReader` recognizes a complete JSON object, array or string,
+checks it against the supplied schema, and closes the upstream HTTP stream.
+The model slot is released before publishing the final delta. This prevents
+trailing whitespace from delaying a completed response. JSON numbers and other
+unframed scalar roots retain the normal `finish_reason=stop` and `[DONE]` checks;
+for example, `1` must not be accepted before a later chunk changes it to `12`.
+Plain-text requests also retain those finish checks.
+
+The reader handles nested values and escaped quotes across chunk boundaries.
+Incomplete JSON, duplicate properties, schema violations, and non-whitespace
+data after a closed root in the same chunk are rejected. Local schema references
+work; validation never retrieves external schema resources. Generated content
+and validation details are not logged. Main retains its clinical validation.
+
+The reader supports both compact and formatted JSON. Engine configuration retains
+`disable_any_whitespace=true`: the live comparison found whitespace loops before
+JSON completion in dictation when this restriction was removed. Recognizing a
+complete value cannot stop whitespace loops between unfinished fields or repair
+repetition inside an unfinished string; main still rejects such report output.
 
 Single-model deployments retain `SERVED_MODEL_ID` and `VLLM_BASE_URL`.
 For multiple models, clear `SERVED_MODEL_ID` and supply `VLLM_ENDPOINTS` as JSON:

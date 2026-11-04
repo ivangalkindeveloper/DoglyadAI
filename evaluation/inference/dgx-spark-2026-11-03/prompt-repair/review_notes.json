@@ -1,0 +1,26 @@
+{
+  "review_scope": "Synthetic text-only source consistency. This is not a clinical quality validation.",
+  "variants": {
+    "uncapped": "Control reproduces a repeated unfinished descriptionRemarks string (conflict-sample-42, finish=length). Normal greedy response duplicates the description in the conclusion.",
+    "no-dictionary": "Four natural stops, but false enlargement in normal data and missing-detail requests instead of identifying the supplied contradiction. Removing the vocabulary alone is not an accepted feature change.",
+    "concise-ru": "Four natural stops and preserved measurements. Both conflict responses omit source remarks. Requires expanded comparison before considering a replacement.",
+    "concise-en": "Four natural stops, but unsupported enlargement in normal data and omitted contradiction remarks. English instructions did not improve this screening.",
+    "ru-examples": "Examples avoid loops in four cases but both conflict responses have null remarks.",
+    "ru-remarks-first": "Reordering fields avoids loops in four cases but creates source-criticism errors and requests missing details instead of identifying the contradiction.",
+    "ru-examples-first": "One conflict output drops left-lobe measurements and selects the wrong source pair; another omits the conflict. Not accepted.",
+    "ru-examples-no-dictionary": "Four natural stops; normal conclusions are shorter, but conflict remarks remain null.",
+    "structured-input": "Four natural stops. Normal output invents enlargement, conflict remarks are null. This variant also removes patient metadata, so it is not an isolated test of serialization.",
+    "audit-text": "Standalone source audit copies source findings into the remarks field, including normal cases. Task decomposition did not establish a reliable audit.",
+    "audit-ids": "Returns an empty conflict list for all four cases, including explicit conflict inputs.",
+    "full-task-last": "Moving instructions after data did not fix source criticism: conflict-greedy enumerates much of the term vocabulary as missing lesion characteristics. Normal sampled conclusion claims enlargement.",
+    "concise-task-last": "Natural stops, but unsupported enlargement and follow-up recommendations on normal data; no conflict remarks.",
+    "audit-task-last": "Standalone audit still copies input fragments rather than explaining an inconsistency.",
+    "alias-fields": "Renaming fields to findings/impression/input_issues avoids loops in four cases but does not restore source conflict remarks; a normal conclusion introduces unsupported lymph-node blood flow. No API alias change is justified.",
+    "expanded-baseline": "4 length stops, 4 repetitions, union 5 rejected. Invents adrenal measurements in kidney case and mixes term vocabulary into criticism. One bladder conflict remark quotes the conflicting claims.",
+    "expanded-concise": "All 16 stop, all remarks null, including 5 contradiction requests. Rejected for source-audit regression.",
+    "actual-4b": "All 16 stop; all remarks null; source contradictions omitted, ASR typo retained, stale negation retained after explicit correction. Candidate rejected.",
+    "actual-15-4b": "All 5 stop; both source conflicts omitted, ASR typo retained. Candidate not accepted.",
+    "actual-27b": "All 5 stop; both source conflicts omitted, ASR typo retained; one recommendations value is the literal string null. Candidate not accepted.",
+    "final-smoke": "Both stop and pass technical checks. Normal upper-bound volume changes to above normal in conclusion; conflict case asks for lesion size instead of the incompatible claims. No quality or robust repetition-fix claim."
+  }
+}

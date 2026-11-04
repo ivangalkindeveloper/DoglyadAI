@@ -37,13 +37,3 @@ struct ImportMediaBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    ImportMediaBottomSheet(
-        arguments: ImportMediaArguments(
-            onTapCamera: {},
-            onTapGallery: {},
-        ),
-    )
-    .previewable()
-}

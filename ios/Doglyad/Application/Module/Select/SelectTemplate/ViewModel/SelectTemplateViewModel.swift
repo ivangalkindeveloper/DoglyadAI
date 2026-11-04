@@ -46,6 +46,14 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         )
     }
 
+    #if DEBUG
+        func setPreviewTemplates(
+            _ templates: [USExaminationTemplate],
+        ) {
+            self.templates = templates
+        }
+    #endif
+
     override func onInit() {
         let usExaminationId = arguments.usExaminationId
         handle {

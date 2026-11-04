@@ -1,0 +1,578 @@
+Collecting fire
+  Downloading fire-0.7.1-py3-none-any.whl.metadata (5.8 kB)
+Collecting mmengine-lite
+  Downloading mmengine_lite-0.10.7-py3-none-any.whl.metadata (20 kB)
+Collecting shortuuid
+  Downloading shortuuid-1.0.13-py3-none-any.whl.metadata (5.8 kB)
+Collecting rdkit
+  Downloading rdkit-2026.9.1-cp312-cp312-manylinux_2_28_aarch64.whl.metadata (3.8 kB)
+Collecting peft==0.14.0
+  Downloading peft-0.14.0-py3-none-any.whl.metadata (13 kB)
+Collecting flash-linear-attention==0.5.2
+  Downloading flash_linear_attention-0.5.2-py3-none-any.whl.metadata (45 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.6/45.6 kB 1.7 MB/s eta 0:00:00
+Requirement already satisfied: numpy>=1.17 in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (2.2.6)
+Requirement already satisfied: packaging>=20.0 in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (26.3)
+Requirement already satisfied: psutil in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (7.2.2)
+Requirement already satisfied: pyyaml in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (6.0.3)
+Requirement already satisfied: torch>=1.13.0 in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (2.13.0+cu130)
+Requirement already satisfied: transformers in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (5.15.1)
+Requirement already satisfied: tqdm in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (4.70.0)
+Requirement already satisfied: accelerate>=0.21.0 in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (1.14.0)
+Requirement already satisfied: safetensors in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (0.8.0)
+Requirement already satisfied: huggingface-hub>=0.25.0 in /usr/local/lib/python3.12/dist-packages (from peft==0.14.0) (1.28.0)
+Collecting fla-core==0.5.2 (from flash-linear-attention==0.5.2)
+  Downloading fla_core-0.5.2-py3-none-any.whl.metadata (45 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 45.3/45.3 kB 2.6 MB/s eta 0:00:00
+Requirement already satisfied: einops in /usr/local/lib/python3.12/dist-packages (from fla-core==0.5.2->flash-linear-attention==0.5.2) (0.8.2)
+Collecting termcolor (from fire)
+  Downloading termcolor-3.3.0-py3-none-any.whl.metadata (6.5 kB)
+Collecting addict (from mmengine-lite)
+  Downloading addict-2.4.0-py3-none-any.whl.metadata (1.0 kB)
+Requirement already satisfied: rich in /usr/local/lib/python3.12/dist-packages (from mmengine-lite) (15.0.0)
+Collecting yapf (from mmengine-lite)
+  Downloading yapf-0.43.0-py3-none-any.whl.metadata (46 kB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 46.8/46.8 kB 4.0 MB/s eta 0:00:00
+Requirement already satisfied: Pillow in /usr/local/lib/python3.12/dist-packages (from rdkit) (12.3.0)
+Requirement already satisfied: click<9.0.0,>=8.4.2 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub>=0.25.0->peft==0.14.0) (8.4.2)
+Requirement already satisfied: filelock>=3.10.0 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub>=0.25.0->peft==0.14.0) (3.32.4)
+Requirement already satisfied: fsspec>=2023.5.0 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub>=0.25.0->peft==0.14.0) (2026.7.0)
+Requirement already satisfied: hf-xet<2.0.0,>=1.5.2 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub>=0.25.0->peft==0.14.0) (1.6.0)
+Requirement already satisfied: httpx<1,>=0.23.0 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub>=0.25.0->peft==0.14.0) (0.28.1)
+Requirement already satisfied: typing-extensions>=4.1.0 in /usr/local/lib/python3.12/dist-packages (from huggingface-hub>=0.25.0->peft==0.14.0) (4.16.0)
+Requirement already satisfied: setuptools>=77.0.3 in /usr/local/lib/python3.12/dist-packages (from torch>=1.13.0->peft==0.14.0) (80.10.2)
+Requirement already satisfied: sympy>=1.13.3 in /usr/local/lib/python3.12/dist-packages (from torch>=1.13.0->peft==0.14.0) (1.14.0)
+Requirement already satisfied: networkx>=2.5.1 in /usr/local/lib/python3.12/dist-packages (from torch>=1.13.0->peft==0.14.0) (3.6.1)
+Requirement already satisfied: jinja2 in /usr/local/lib/python3.12/dist-packages (from torch>=1.13.0->peft==0.14.0) (3.1.6)
+Requirement already satisfied: cuda-toolkit==13.0.3 in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (13.0.3.0)
+Requirement already satisfied: cuda-bindings<14,>=13.0.3 in /usr/local/lib/python3.12/dist-packages (from torch>=1.13.0->peft==0.14.0) (13.3.1)
+Requirement already satisfied: nvidia-cudnn-cu13==9.20.0.48 in /usr/local/lib/python3.12/dist-packages (from torch>=1.13.0->peft==0.14.0) (9.20.0.48)
+Requirement already satisfied: nvidia-cusparselt-cu13==0.8.1 in /usr/local/lib/python3.12/dist-packages (from torch>=1.13.0->peft==0.14.0) (0.8.1)
+Collecting nvidia-nccl-cu13==2.29.7 (from torch>=1.13.0->peft==0.14.0)
+  Downloading nvidia_nccl_cu13-2.29.7-py3-none-manylinux_2_18_aarch64.whl.metadata (2.1 kB)
+Requirement already satisfied: nvidia-nvshmem-cu13==3.4.5 in /usr/local/lib/python3.12/dist-packages (from torch>=1.13.0->peft==0.14.0) (3.4.5)
+Requirement already satisfied: triton==3.7.1 in /usr/local/lib/python3.12/dist-packages (from torch>=1.13.0->peft==0.14.0) (3.7.1)
+Requirement already satisfied: nvidia-cublas==13.1.1.3.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (13.1.1.3)
+Requirement already satisfied: nvidia-cuda-nvrtc==13.0.88.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (13.0.88)
+Requirement already satisfied: nvidia-cuda-runtime==13.0.96.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (13.0.96)
+Requirement already satisfied: nvidia-cufft==12.0.0.61.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (12.0.0.61)
+Requirement already satisfied: nvidia-nvjitlink<14,>=13.0.88 in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (13.3.33)
+Requirement already satisfied: nvidia-cufile==1.15.1.6.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (1.15.1.6)
+Requirement already satisfied: nvidia-cuda-cupti==13.0.85.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (13.0.85)
+Requirement already satisfied: nvidia-curand==10.4.0.35.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (10.4.0.35)
+Requirement already satisfied: nvidia-cusolver==12.0.4.66.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (12.0.4.66)
+Requirement already satisfied: nvidia-cusparse==12.6.3.3.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (12.6.3.3)
+Requirement already satisfied: nvidia-nvtx==13.0.85.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cublas,cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.3; platform_system == "Linux"->torch>=1.13.0->peft==0.14.0) (13.0.85)
+Requirement already satisfied: regex>=2025.10.22 in /usr/local/lib/python3.12/dist-packages (from transformers->peft==0.14.0) (2026.7.19)
+Requirement already satisfied: tokenizers<=0.23.0,>=0.22.0 in /usr/local/lib/python3.12/dist-packages (from transformers->peft==0.14.0) (0.22.2)
+Requirement already satisfied: typer in /usr/local/lib/python3.12/dist-packages (from transformers->peft==0.14.0) (0.27.1)
+Requirement already satisfied: markdown-it-py>=2.2.0 in /usr/local/lib/python3.12/dist-packages (from rich->mmengine-lite) (4.2.0)
+Requirement already satisfied: pygments<3.0.0,>=2.13.0 in /usr/local/lib/python3.12/dist-packages (from rich->mmengine-lite) (2.21.0)
+Collecting platformdirs>=3.5.1 (from yapf->mmengine-lite)
+  Downloading platformdirs-4.14.4-py3-none-any.whl.metadata (5.7 kB)
+Requirement already satisfied: cuda-pathfinder>=1.4.2 in /usr/local/lib/python3.12/dist-packages (from cuda-bindings<14,>=13.0.3->torch>=1.13.0->peft==0.14.0) (1.7.0)
+Requirement already satisfied: anyio in /usr/local/lib/python3.12/dist-packages (from httpx<1,>=0.23.0->huggingface-hub>=0.25.0->peft==0.14.0) (4.14.2)
+Requirement already satisfied: certifi in /usr/local/lib/python3.12/dist-packages (from httpx<1,>=0.23.0->huggingface-hub>=0.25.0->peft==0.14.0) (2026.7.22)
+Requirement already satisfied: httpcore==1.* in /usr/local/lib/python3.12/dist-packages (from httpx<1,>=0.23.0->huggingface-hub>=0.25.0->peft==0.14.0) (1.0.9)
+Requirement already satisfied: idna in /usr/local/lib/python3.12/dist-packages (from httpx<1,>=0.23.0->huggingface-hub>=0.25.0->peft==0.14.0) (3.19)
+Requirement already satisfied: h11>=0.16 in /usr/local/lib/python3.12/dist-packages (from httpcore==1.*->httpx<1,>=0.23.0->huggingface-hub>=0.25.0->peft==0.14.0) (0.16.0)
+Requirement already satisfied: mdurl~=0.1 in /usr/local/lib/python3.12/dist-packages (from markdown-it-py>=2.2.0->rich->mmengine-lite) (0.1.2)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.12/dist-packages (from sympy>=1.13.3->torch>=1.13.0->peft==0.14.0) (1.3.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.12/dist-packages (from jinja2->torch>=1.13.0->peft==0.14.0) (3.0.3)
+Requirement already satisfied: shellingham>=1.3.0 in /usr/local/lib/python3.12/dist-packages (from typer->transformers->peft==0.14.0) (1.5.4)
+Requirement already satisfied: annotated-doc>=0.0.2 in /usr/local/lib/python3.12/dist-packages (from typer->transformers->peft==0.14.0) (0.0.5)
+Downloading peft-0.14.0-py3-none-any.whl (374 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 374.8/374.8 kB 2.0 MB/s eta 0:00:00
+Downloading flash_linear_attention-0.5.2-py3-none-any.whl (399 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 399.6/399.6 kB 397.6 kB/s eta 0:00:00
+Downloading fla_core-0.5.2-py3-none-any.whl (819 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 819.2/819.2 kB 698.9 kB/s eta 0:00:00
+Downloading fire-0.7.1-py3-none-any.whl (115 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 115.9/115.9 kB 699.2 kB/s eta 0:00:00
+Downloading mmengine_lite-0.10.7-py3-none-any.whl (452 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 452.8/452.8 kB 435.9 kB/s eta 0:00:00
+Downloading shortuuid-1.0.13-py3-none-any.whl (10 kB)
+Downloading rdkit-2026.9.1-cp312-cp312-manylinux_2_28_aarch64.whl (30.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 30.2/30.2 MB 375.7 kB/s eta 0:00:00
+Downloading nvidia_nccl_cu13-2.29.7-py3-none-manylinux_2_18_aarch64.whl (206.0 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 206.0/206.0 MB 152.1 kB/s eta 0:00:00
+Downloading addict-2.4.0-py3-none-any.whl (3.8 kB)
+Downloading termcolor-3.3.0-py3-none-any.whl (7.7 kB)
+Downloading yapf-0.43.0-py3-none-any.whl (256 kB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 256.2/256.2 kB 112.8 kB/s eta 0:00:00
+Downloading platformdirs-4.14.4-py3-none-any.whl (35 kB)
+Installing collected packages: addict, termcolor, shortuuid, rdkit, platformdirs, nvidia-nccl-cu13, fla-core, yapf, fire, mmengine-lite, peft, flash-linear-attention
+  Attempting uninstall: nvidia-nccl-cu13
+    Found existing installation: nvidia-nccl-cu13 2.30.7
+    Not uninstalling nvidia-nccl-cu13 at /usr/local/lib/python3.12/dist-packages, outside environment /survey/lmdeploy-venv
+    Can't uninstall 'nvidia-nccl-cu13'. No files were found to uninstall.
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+lmdeploy 0.18.0 requires ray, which is not installed.
+lmdeploy 0.18.0 requires torch<=2.12.1,>=2.0.0, but you have torch 2.13.0+cu130 which is incompatible.
+lmdeploy 0.18.0 requires torchvision<=0.27.1,>=0.15.0, but you have torchvision 0.28.0+cu130 which is incompatible.
+Successfully installed addict-2.4.0 fire-0.7.1 fla-core-0.5.2 flash-linear-attention-0.5.2 mmengine-lite-0.10.7 nvidia-nccl-cu13-2.29.7 peft-0.14.0 platformdirs-4.14.4 rdkit-2026.9.1 shortuuid-1.0.13 termcolor-3.3.0 yapf-0.43.0
+usage: lmdeploy serve api_server [-h] [--server-name SERVER_NAME]
+                                 [--server-port SERVER_PORT]
+                                 [--allow-origins ALLOW_ORIGINS [ALLOW_ORIGINS ...]]
+                                 [--allow-credentials]
+                                 [--allow-methods ALLOW_METHODS [ALLOW_METHODS ...]]
+                                 [--allow-headers ALLOW_HEADERS [ALLOW_HEADERS ...]]
+                                 [--proxy-url PROXY_URL]
+                                 [--max-concurrent-requests MAX_CONCURRENT_REQUESTS]
+                                 [--allowed-media-domains ALLOWED_MEDIA_DOMAINS [ALLOWED_MEDIA_DOMAINS ...]]
+                                 [--backend {pytorch,turbomind}]
+                                 [--log-level {CRITICAL,FATAL,ERROR,WARN,WARNING,INFO,DEBUG,NOTSET,REQUEST}]
+                                 [--api-keys [API_KEYS ...]] [--ssl]
+                                 [--model-name MODEL_NAME]
+                                 [--max-log-len MAX_LOG_LEN]
+                                 [--disable-fastapi-docs]
+                                 [--allow-terminate-by-client]
+                                 [--enable-abort-handling]
+                                 [--trust-remote-code]
+                                 [--chat-template CHAT_TEMPLATE]
+                                 [--tool-call-parser TOOL_CALL_PARSER]
+                                 [--reasoning-parser REASONING_PARSER]
+                                 [--revision REVISION]
+                                 [--download-dir DOWNLOAD_DIR]
+                                 [--generation-config GENERATION_CONFIG]
+                                 [--adapters [ADAPTERS ...]]
+                                 [--device {cuda,ascend,maca,camb}]
+                                 [--eager-mode] [--empty-init]
+                                 [--logprobs-mode {None,raw_logits,raw_logprobs}]
+                                 [--dllm-block-length DLLM_BLOCK_LENGTH]
+                                 [--dllm-unmasking-strategy {low_confidence_dynamic,low_confidence_static,sequential}]
+                                 [--dllm-denoising-steps DLLM_DENOISING_STEPS]
+                                 [--dllm-confidence-threshold DLLM_CONFIDENCE_THRESHOLD]
+                                 [--enable-return-routed-experts]
+                                 [--distributed-executor-backend {uni,mp,ray}]
+                                 [--kernel-block-size KERNEL_BLOCK_SIZE]
+                                 [--prefix-cache-state-budget PREFIX_CACHE_STATE_BUDGET]
+                                 [--prefix-cache-decode-state-interval PREFIX_CACHE_DECODE_STATE_INTERVAL]
+                                 [--prefix-cache-decode-save-first]
+                                 [--prefill-save-alignment PREFILL_SAVE_ALIGNMENT]
+                                 [--prefill-save-last-only]
+                                 [--mooncake-state-save-slots MOONCAKE_STATE_SAVE_SLOTS]
+                                 [--language-model-only]
+                                 [--dtype {auto,float16,bfloat16}] [--tp TP]
+                                 [--session-len SESSION_LEN]
+                                 [--max-batch-size MAX_BATCH_SIZE]
+                                 [--cache-max-entry-count CACHE_MAX_ENTRY_COUNT]
+                                 [--num-gpu-blocks NUM_GPU_BLOCKS]
+                                 [--cache-block-seq-len CACHE_BLOCK_SEQ_LEN]
+                                 [--enable-prefix-caching]
+                                 [--max-prefill-token-num MAX_PREFILL_TOKEN_NUM]
+                                 [--quant-policy QUANT_POLICY]
+                                 [--model-format {hf,awq,gptq,compressed-tensors,fp8,mxfp4}]
+                                 [--hf-overrides HF_OVERRIDES]
+                                 [--disable-metrics] [--dp DP] [--ep EP]
+                                 [--dcp DCP] [--enable-microbatch]
+                                 [--enable-eplb]
+                                 [--role {Hybrid,Prefill,Decode}]
+                                 [--migration-backend {DLSlime,Mooncake}]
+                                 [--cudagraph-capture-batch-sizes CUDAGRAPH_CAPTURE_BATCH_SIZES [CUDAGRAPH_CAPTURE_BATCH_SIZES ...]]
+                                 [--piecewise-cudagraph-max-tokens PIECEWISE_CUDAGRAPH_MAX_TOKENS]
+                                 [--node-rank NODE_RANK] [--nnodes NNODES]
+                                 [--cp CP]
+                                 [--rope-scaling-factor ROPE_SCALING_FACTOR]
+                                 [--num-tokens-per-iter NUM_TOKENS_PER_ITER]
+                                 [--max-prefill-iters MAX_PREFILL_ITERS]
+                                 [--async {0,1}]
+                                 [--communicator {nccl,native,cuda-ipc}]
+                                 [--moe-a2a-backend {auto,default,deepep}]
+                                 [--dist-init-addr DIST_INIT_ADDR]
+                                 [--vision-max-batch-size VISION_MAX_BATCH_SIZE]
+                                 [--speculative-algorithm {eagle,eagle3,deepseek_mtp,hy3_mtp,qwen3_5_mtp,dflash}]
+                                 [--speculative-draft-model SPECULATIVE_DRAFT_MODEL]
+                                 [--speculative-num-draft-tokens SPECULATIVE_NUM_DRAFT_TOKENS]
+                                 [--speculative-disable-prefix-cache-block-drop]
+                                 [--speculative-dflash-block-size SPECULATIVE_DFLASH_BLOCK_SIZE]
+                                 [--kv-transfer-config KV_TRANSFER_CONFIG]
+                                 model_path
+
+Serve LLMs with restful api using fastapi.
+
+positional arguments:
+  model_path            The path of a model. it could be one of the following
+                        options: - i) a local directory path of a turbomind
+                        model which is converted by `lmdeploy convert` command
+                        or download from ii) and iii). - ii) the model_id of a
+                        lmdeploy-quantized model hosted inside a model repo on
+                        huggingface.co, such as
+                        "lmdeploy/llama2-chat-70b-4bit", etc. - iii) the
+                        model_id of a model hosted inside a model repo on
+                        huggingface.co, such as
+                        "internlm/internlm2_5-7b-chat",
+                        "internlm/Intern-S2-Preview" and so on. Type: str
+
+options:
+  -h, --help            show this help message and exit
+  --server-name SERVER_NAME
+                        Host ip for serving. Default: 0.0.0.0. Type: str
+  --server-port SERVER_PORT
+                        Server port. Effective default is 23333 when unset. In
+                        DP mode with --proxy-url, ports are auto-selected
+                        unless this flag is explicitly set. Type: int
+  --allow-origins ALLOW_ORIGINS [ALLOW_ORIGINS ...]
+                        A list of allowed origins for cors. Default: ['*'].
+                        Type: str
+  --allow-credentials   Whether to allow credentials for cors. Default: False
+  --allow-methods ALLOW_METHODS [ALLOW_METHODS ...]
+                        A list of allowed http methods for cors. Default:
+                        ['*']. Type: str
+  --allow-headers ALLOW_HEADERS [ALLOW_HEADERS ...]
+                        A list of allowed http headers for cors. Default:
+                        ['*']. Type: str
+  --proxy-url PROXY_URL
+                        The proxy url for api server. Default: None. Type: str
+  --max-concurrent-requests MAX_CONCURRENT_REQUESTS
+                        This refers to the number of concurrent requests that
+                        the server can handle. The server is designed to
+                        process the engine’s tasks once the maximum number of
+                        concurrent requests is reached, regardless of any
+                        additional requests sent by clients concurrently
+                        during that time. Default to None. Type: int
+  --allowed-media-domains ALLOWED_MEDIA_DOMAINS [ALLOWED_MEDIA_DOMAINS ...]
+                        Exact hostnames allowed for HTTP(S) media URLs.
+                        Default: None. Type: str
+  --backend {pytorch,turbomind}
+                        Set the inference backend. Default: turbomind. Type:
+                        str
+  --log-level {CRITICAL,FATAL,ERROR,WARN,WARNING,INFO,DEBUG,NOTSET,REQUEST}
+                        Set the log level. Default: WARNING. Type: str
+  --api-keys [API_KEYS ...]
+                        Optional list of space separated API keys. Default:
+                        None. Type: str
+  --ssl                 Enable SSL. Requires OS Environment variables
+                        'SSL_KEYFILE' and 'SSL_CERTFILE'. Default: False
+  --model-name MODEL_NAME
+                        The name of the served model. It can be accessed by
+                        the RESTful API `/v1/models`. If it is not specified,
+                        `model_path` will be adopted. Default: None. Type: str
+  --max-log-len MAX_LOG_LEN
+                        Max number of prompt characters or prompt tokens being
+                        printed in log. Default: Unlimited. Type: int
+  --disable-fastapi-docs
+                        Disable FastAPI's OpenAPI schema, Swagger UI, and
+                        ReDoc endpoint. Default: False
+  --allow-terminate-by-client
+                        Enable server to be terminated by request from client.
+                        Default: False
+  --enable-abort-handling
+                        Enable server to handle client abort requests.
+                        Default: False
+  --trust-remote-code   Whether to trust remote code from model repositories.
+                        Default: False
+  --chat-template CHAT_TEMPLATE
+                        A JSON file or string that specifies the chat template
+                        configuration. Please refer to https://lmdeploy.readth
+                        edocs.io/en/latest/advance/chat_template.html for the
+                        specification. Default: None. Type: str
+  --tool-call-parser TOOL_CALL_PARSER
+                        The registered tool parser name
+                        dict_keys(['deepseek-v32', 'deepseek-v4', 'glm47',
+                        'internlm', 'intern-s1', 'qwen3coder',
+                        'interns2-preview', 'kimi_k2', 'kimi-k2', 'llama3',
+                        'qwen', 'qwen2d5', 'qwen3']). Default to None. Type:
+                        str
+  --reasoning-parser REASONING_PARSER
+                        The registered reasoning parser name:
+                        dict_keys(['default', 'deepseek-v3', 'deepseek-v4',
+                        'deepseek-v32', 'deepseek-v3.2']). Legacy names:
+                        ['qwen-qwq', 'intern-s1', 'deepseek-r1']. Default to
+                        None. Type: str
+  --revision REVISION   The specific model version to use. It can be a branch
+                        name, a tag name, or a commit id. If unspecified, will
+                        use the default version. Type: str
+  --download-dir DOWNLOAD_DIR
+                        Directory to download and load the weights, default to
+                        the default cache directory of huggingface. Type: str
+  --generation-config GENERATION_CONFIG
+                        The folder path to the generation config. Defaults to
+                        "auto", the generation config will be loaded from
+                        model path. If set to "lmdeploy", no generation config
+                        is loaded, lmdeploy defaults will be used. If set to a
+                        folder path, the generation config will be loaded from
+                        the specified folder path. Type: str
+
+PyTorch engine arguments:
+  --adapters [ADAPTERS ...]
+                        Used to set path(s) of lora adapter(s). One can input
+                        key-value pairs in xxx=yyy format for multiple lora
+                        adapters. If only have one adapter, one can only input
+                        the path of the adapter. Default: None. Type: str
+  --device {cuda,ascend,maca,camb}
+                        The device type of running. Default: cuda. Type: str
+  --eager-mode          Whether to enable eager mode. If True, cuda graph
+                        would be disabled. Default: False
+  --empty-init          Build the PyTorch runtime without loading model
+                        weights or KV cache. Use checkpoint-engine IPC to load
+                        weights, then wake kv_cache explicitly. Default: False
+  --logprobs-mode {None,raw_logits,raw_logprobs}
+                        The mode of logprobs. Default: None. Type: str
+  --dllm-block-length DLLM_BLOCK_LENGTH
+                        Block length for dllm. Default: None. Type: int
+  --dllm-unmasking-strategy {low_confidence_dynamic,low_confidence_static,sequential}
+                        The unmasking strategy for dllm. Default:
+                        low_confidence_dynamic. Type: str
+  --dllm-denoising-steps DLLM_DENOISING_STEPS
+                        The number of denoising steps for dllm. Default: None.
+                        Type: int
+  --dllm-confidence-threshold DLLM_CONFIDENCE_THRESHOLD
+                        The confidence threshold for dllm. Default: 0.85.
+                        Type: float
+  --enable-return-routed-experts
+                        Whether to output routed expert ids for replay.
+                        Default: False
+  --distributed-executor-backend {uni,mp,ray}
+                        The distributed executor backend for pytorch engine.
+                        Default: None. Type: str
+  --kernel-block-size KERNEL_BLOCK_SIZE
+                        The length of the token sequence in a k/v block for
+                        kernels. Only supported by Pytorch Engine. When set to
+                        a different value than --cache-block-seq-len, memory
+                        allocators and prefix cache use --cache-block-seq-len
+                        as the block size, while kernels use --kernel-block-
+                        size. Default: -1. Type: int
+  --prefix-cache-state-budget PREFIX_CACHE_STATE_BUDGET
+                        Extra SSM state-cache slots budgeted for prefix-cache
+                        checkpoints. 0 adds no extra slots, but checkpoints
+                        may borrow idle runtime state slots. Only used by the
+                        PyTorch engine. Default: 0. Type: int
+  --prefix-cache-decode-state-interval PREFIX_CACHE_DECODE_STATE_INTERVAL
+                        Token interval for SSM decode checkpoints, in
+                        multiples of actual block size. With --prefix-cache-
+                        decode-save-first, count from the last successful
+                        checkpoint; otherwise use absolute token positions. 0
+                        disables periodic saves. Need not be a multiple of
+                        --prefill-save-alignment. Applies to local prefix
+                        caching and Mooncake Store in the PyTorch engine.
+                        Default: 0. Type: int
+  --prefix-cache-decode-save-first
+                        Save at the first safe --prefill-save-alignment
+                        boundary at or after each prompt once decode has
+                        verified its dependencies. With --prefix-cache-decode-
+                        state-interval 0, save only this first checkpoint per
+                        turn. Disabled by default. Only used by the PyTorch
+                        engine.
+  --prefill-save-alignment PREFILL_SAVE_ALIGNMENT
+                        Token alignment for linear-attention prefill state
+                        checkpoints, shared by local prefix caching and
+                        Mooncake Store. Also aligns the first decode
+                        checkpoint with --prefix-cache-decode-save-first. Must
+                        be a positive multiple of actual cache block size;
+                        intermediate aligned positions may be skipped. Ignored
+                        by full-attention-only models. Only used by the
+                        PyTorch engine. Default: 1024. Type: int
+  --prefill-save-last-only
+                        Save local prefix checkpoints and Mooncake caches only
+                        at the last safe prefill-save-alignment boundary
+                        before the end of each prefill. Leaves at least one
+                        input token for prefix reuse. Only used by PyTorch
+                        models with linear-attention state caches. Default:
+                        False
+  --mooncake-state-save-slots MOONCAKE_STATE_SAVE_SLOTS
+                        Number of temporary state snapshots for hybrid
+                        Mooncake saves. Must be positive. When full, saves are
+                        skipped without blocking inference. Only used by the
+                        PyTorch engine. Default: 8. Type: int
+  --language-model-only
+                        Run as text-only LLM: do not load vision/multimodal
+                        encoder modules. Default: False
+  --dtype {auto,float16,bfloat16}
+                        data type for model weights and activations. The
+                        "auto" option will use FP16 precision for FP32 and
+                        FP16 models, and BF16 precision for BF16 models. This
+                        option will be ignored if the model is a quantized
+                        model. Default: auto. Type: str
+  --tp TP               GPU number used in tensor parallelism. Should be 2^n.
+                        Default: 1. Type: int
+  --session-len SESSION_LEN
+                        The max session length of a sequence. Default: None.
+                        Type: int
+  --max-batch-size MAX_BATCH_SIZE
+                        Maximum batch size. If not specified, the engine will
+                        automatically set it according to the device. Default:
+                        None. Type: int
+  --cache-max-entry-count CACHE_MAX_ENTRY_COUNT
+                        The percentage of free gpu memory occupied by the k/v
+                        cache, excluding weights . Default: 0.8. Type: float
+  --num-gpu-blocks NUM_GPU_BLOCKS
+                        Explicit number of GPU KV cache blocks for PyTorch
+                        engine. Use 0 to auto-size from cache-max-entry-count.
+                        Default: 0. Type: int
+  --cache-block-seq-len CACHE_BLOCK_SEQ_LEN
+                        The length of the token sequence in a k/v block. For
+                        Turbomind Engine, if the GPU compute capability is >=
+                        8.0, it should be a multiple of 32, otherwise it
+                        should be a multiple of 64. For Pytorch Engine, if
+                        Lora Adapter is specified, this parameter will be
+                        ignored. Default: 64. Type: int
+  --enable-prefix-caching
+                        Enable cache and match prefix. Default: False
+  --max-prefill-token-num MAX_PREFILL_TOKEN_NUM
+                        the max number of tokens per iteration during prefill.
+                        Default: 8192. Type: int
+  --quant-policy QUANT_POLICY
+                        KV cache quant policy:
+                        none/int4/int8/fp8/fp8_e5m2/turbo_quant (or
+                        0/4/8/16/17/42). For DSA models, fp8 uses the
+                        fp8_ds_mla layout. Default: 0. Type: _parse
+  --model-format {hf,awq,gptq,compressed-tensors,fp8,mxfp4}
+                        The format of input model. `hf` means `hf_llama`,
+                        `awq` and `gptq` refer to 4-bit grouped quantization,
+                        `compressed-tensors` refers to pack-quantized grouped
+                        int4 checkpoints and is usually auto-detected from the
+                        model config, `fp8` refers to blocked fp8 checkpoints,
+                        and `mxfp4` refers to MXFP4 expert weights. Default:
+                        None. Type: str
+  --hf-overrides HF_OVERRIDES
+                        Extra arguments to be forwarded to the HuggingFace
+                        config. Default: None. Type: loads
+  --disable-metrics     disable metrics system. Default: False
+  --dp DP               data parallelism. dp_rank is required when pytorch
+                        engine is used. Default: 1. Type: int
+  --ep EP               expert parallelism. dp is required when pytorch engine
+                        is used. Default: 1. Type: int
+  --dcp DCP             Decode context parallelism size for the PyTorch
+                        backend. It reuses ranks inside each tensor-parallel
+                        group, and tp must be a multiple of dcp. Default: 1.
+                        Type: int
+  --enable-microbatch   enable microbatch for specified model. Default: False
+  --enable-eplb         enable eplb for specified model. Default: False
+  --role {Hybrid,Prefill,Decode}
+                        Hybrid for Non-Disaggregated Engine; Prefill for
+                        Disaggregated Prefill Engine; Decode for Disaggregated
+                        Decode Engine. Default: Hybrid. Type: str
+  --migration-backend {DLSlime,Mooncake}
+                        kvcache migration management backend when PD
+                        disaggregation. Default: DLSlime. Type: str
+  --cudagraph-capture-batch-sizes CUDAGRAPH_CAPTURE_BATCH_SIZES [CUDAGRAPH_CAPTURE_BATCH_SIZES ...]
+                        Batch sizes to capture CUDA graphs for in the PyTorch
+                        engine. If not specified, the engine infers them from
+                        max_batch_size. max_batch_size is always captured.
+                        Default: None. Type: int
+  --piecewise-cudagraph-max-tokens PIECEWISE_CUDAGRAPH_MAX_TOKENS
+                        Enable piecewise CUDA graph in the PyTorch engine and
+                        capture prefill token buckets up to this value. If not
+                        specified, piecewise CUDA graph is disabled. Default:
+                        None. Type: int
+  --node-rank NODE_RANK
+                        The current node rank. Default: 0. Type: int
+  --nnodes NNODES       The total node nums. Default: 1. Type: int
+  --kv-transfer-config KV_TRANSFER_CONFIG
+                        External KV-cache connector configuration for the
+                        PyTorch engine. Mooncake Store requires
+                        MOONCAKE_CONFIG_PATH (or
+                        kv_connector_extra_config.mooncake_config_path) and
+                        does not support distributed_executor_backend="mp".
+                        Example: '{"kv_connector":"MooncakeStoreConnector","kv
+                        _role":"kv_both"}'. Default: None. Type: loads
+
+TurboMind engine arguments:
+  --dtype {auto,float16,bfloat16}
+                        data type for model weights and activations. The
+                        "auto" option will use FP16 precision for FP32 and
+                        FP16 models, and BF16 precision for BF16 models. This
+                        option will be ignored if the model is a quantized
+                        model. Default: auto. Type: str
+  --tp TP               GPU number used in tensor parallelism. Should be 2^n.
+                        Default: 1. Type: int
+  --session-len SESSION_LEN
+                        The max session length of a sequence. Default: None.
+                        Type: int
+  --max-batch-size MAX_BATCH_SIZE
+                        Maximum batch size. If not specified, the engine will
+                        automatically set it according to the device. Default:
+                        None. Type: int
+  --cache-max-entry-count CACHE_MAX_ENTRY_COUNT
+                        The percentage of free gpu memory occupied by the k/v
+                        cache, excluding weights . Default: 0.8. Type: float
+  --cache-block-seq-len CACHE_BLOCK_SEQ_LEN
+                        The length of the token sequence in a k/v block. For
+                        Turbomind Engine, if the GPU compute capability is >=
+                        8.0, it should be a multiple of 32, otherwise it
+                        should be a multiple of 64. For Pytorch Engine, if
+                        Lora Adapter is specified, this parameter will be
+                        ignored. Default: 64. Type: int
+  --enable-prefix-caching
+                        Enable cache and match prefix. Default: False
+  --max-prefill-token-num MAX_PREFILL_TOKEN_NUM
+                        the max number of tokens per iteration during prefill.
+                        Default: 8192. Type: int
+  --quant-policy QUANT_POLICY
+                        KV cache quant policy:
+                        none/int4/int8/fp8/fp8_e5m2/turbo_quant (or
+                        0/4/8/16/17/42). For DSA models, fp8 uses the
+                        fp8_ds_mla layout. Default: 0. Type: _parse
+  --model-format {hf,awq,gptq,compressed-tensors,fp8,mxfp4}
+                        The format of input model. `hf` means `hf_llama`,
+                        `awq` and `gptq` refer to 4-bit grouped quantization,
+                        `compressed-tensors` refers to pack-quantized grouped
+                        int4 checkpoints and is usually auto-detected from the
+                        model config, `fp8` refers to blocked fp8 checkpoints,
+                        and `mxfp4` refers to MXFP4 expert weights. Default:
+                        None. Type: str
+  --nnodes NNODES       The total node nums. Default: 1. Type: int
+  --node-rank NODE_RANK
+                        The current node rank. Default: 0. Type: int
+  --hf-overrides HF_OVERRIDES
+                        Extra arguments to be forwarded to the HuggingFace
+                        config. Default: None. Type: loads
+  --disable-metrics     disable metrics system. Default: False
+  --dp DP               data parallelism. dp_rank is required when pytorch
+                        engine is used. Default: 1. Type: int
+  --ep EP               expert parallelism. dp is required when pytorch engine
+                        is used. Default: 1. Type: int
+  --language-model-only
+                        Run as text-only LLM: do not load vision/multimodal
+                        encoder modules. Default: False
+  --cp CP               context parallelism size in attention for turbomind
+                        backend, tp must be a multiple of cp. Default: 1.
+                        Type: int
+  --rope-scaling-factor ROPE_SCALING_FACTOR
+                        Rope scaling factor. Default: 0.0. Type: float
+  --num-tokens-per-iter NUM_TOKENS_PER_ITER
+                        the number of tokens processed in a forward pass.
+                        Default: 0. Type: int
+  --max-prefill-iters MAX_PREFILL_ITERS
+                        the max number of forward passes in prefill stage.
+                        Default: 1. Type: int
+  --async {0,1}         Enable async execution (default: 1, enabled). Set to 0
+                        to disable async mode, 1 to enable it. Type: int
+  --communicator {nccl,native,cuda-ipc}
+                        Communication backend for multi-GPU inference. The
+                        "native" option is deprecated and serves as an alias
+                        for "cuda-ipc". Default: nccl. Type: str
+  --moe-a2a-backend {auto,default,deepep}
+                        Communication backend for MoE all-to-all. The "auto"
+                        option selects "default" for single-node inference and
+                        "deepep" for multi-node inference. Type: str
+  --dist-init-addr DIST_INIT_ADDR
+
+Vision model arguments:
+  --vision-max-batch-size VISION_MAX_BATCH_SIZE
+                        the vision model batch size. Default: 1. Type: int
+
+Speculative decoding arguments:
+  --speculative-algorithm {eagle,eagle3,deepseek_mtp,hy3_mtp,qwen3_5_mtp,dflash}
+                        The speculative algorithm to use. `None` means
+                        speculative decoding is disabled. Default: None. Type:
+                        str
+  --speculative-draft-model SPECULATIVE_DRAFT_MODEL
+                        The path to speculative draft model. Default: None.
+                        Type: str
+  --speculative-num-draft-tokens SPECULATIVE_NUM_DRAFT_TOKENS
+                        The number of speculative tokens to generate per step.
+                        Default: 1. Type: int
+  --speculative-disable-prefix-cache-block-drop
+                        Reuse the trailing prefix-cache block for
+                        autoregressive MTP/EAGLE methods. Can improve hybrid
+                        Mooncake Store hit rates; may affect speculative-token
+                        acceptance rates. DFlash and DSpark are not supported.
+                        Default: False
+  --speculative-dflash-block-size SPECULATIVE_DFLASH_BLOCK_SIZE
+                        DFlash only. Runtime draft block length, including the
+                        current target token. Overrides --speculative-num-
+                        draft-tokens with block_size - 1 proposed tokens and
+                        must not exceed the DFlash checkpoint block_size.
+                        Default: None. Type: int

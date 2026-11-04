@@ -30,11 +30,12 @@ class RequestLimiter:
         self,
         request: Request,
     ) -> None:
-        limit = self._limits[request.url.path]
+        path = request.scope["route"].path
+        limit = self._limits[path]
         address = request.client.host if request.client else "unknown"
         if not self._limiter.hit(
             limit,
-            request.url.path,
+            path,
             address,
         ):
             raise RateLimitExceededError()

@@ -137,9 +137,13 @@ enum L10NKey: String, CaseIterable, Sendable {
     case reportDetailModelCopyMessageTitle
     case reportDetailModelResponseUpdatedMessageDescription
     case reportDetailModelResponseUpdatedMessageTitle
+    case reportGenerationIncompleteLabel
+    case reportGenerationInterruptedLabel
+    case reportGenerationRetryButton
     case reportPreviousModelResponsesTitle
     case reportReceivedCopyMessageDescription
     case reportReceivedCopyMessageTitle
+    case reportReceivedGeneratingLabel
     case reportReceivedOpenReportButton
     case reportRecommendationsTitle
     case reportResponseDateLabel

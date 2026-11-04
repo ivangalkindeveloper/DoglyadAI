@@ -1,0 +1,83 @@
+{
+  "date": "2026-11-02",
+  "problem": "MedGemma 4B repeated sentences in descriptionRemarks on synthetic thyroid data, without a template.",
+  "evidence": {
+    "source": "remarks-native-generation.json",
+    "old_prompt_runs": 2,
+    "old_prompt_runs_reaching_token_limit": 2,
+    "original_application_snapshot_prefix_occurrences": 62,
+    "input_was_synthetic_not_an_exact_original_request_replay": true
+  },
+  "changes": {
+    "remarks_prompt": "RU candidate v3; EN explicit scope with no complaints repetition",
+    "max_description_remarks_characters": 512,
+    "reject_at_or_above_limit": true,
+    "report_repetition_penalty": 1.05,
+    "voice_parsing_penalty": "omitted; unchanged engine default",
+    "clinical_text_is_not_deduplicated_or_truncated": true
+  },
+  "verification": {
+    "artifact": "remarks-final-verification.json",
+    "native_runs": 15,
+    "finish_stop": 15,
+    "accepted_by_report_validator": 14,
+    "rejected_by_report_validator": [
+      {
+        "model": "google/medgemma-4b-it",
+        "language": "ru",
+        "seed": 42,
+        "conflict": false,
+        "server_validation": "invalidReportResponse",
+        "fields": {
+          "description": 733,
+          "conclusion": 189,
+          "recommendations": 194,
+          "descriptionRemarks": 512
+        }
+      }
+    ],
+    "main_tests": {
+      "passed": 587,
+      "skipped": 5
+    },
+    "inference_tests": {
+      "passed": 63
+    },
+    "ruff": "passed both backends",
+    "mypy": "passed both backends"
+  },
+  "deployment": {
+    "inference_image": "sha256:d9b877cc826458f9ab0c4deda2dd91d668aebd7cb975d24c22a110432adb95ae",
+    "previous_image": "sha256:6f4e051a28a29ea840abaa2c47b05e806514fd7712c6022628de14aedec6d455",
+    "method": "Local image based on installed image; changed only generation_request.py and vllm_service.py. Preserve the installed dependencies and engine containers.",
+    "main": "Local VS Code backend must restart to load configuration and code.",
+    "status": "installed on DGX; local main restart pending",
+    "vllm_containers": "same container IDs before and after deployment",
+    "checks": {
+      "internal_generate": "passed",
+      "internal_stream": "passed",
+      "forwarded_penalties": [
+        1.05,
+        1.05
+      ],
+      "public_http_checks": "401 without App Check; authenticated client check awaits local restart"
+    }
+  },
+  "limitations": [
+    "This is a small synthetic regression set, not a clinical-quality evaluation.",
+    "One of 15 final runs reached the remarks boundary; it was rejected, not marked complete.",
+    "Seed equality does not guarantee identical output across different concurrent batches.",
+    "Earlier candidates and failures are retained. Prompt-only fixes were insufficient; see remarks-fix-additional-seeds.json.",
+    "Native vLLM runs bypassed application SSE adapters. Automated tests cover those adapters, cancellation and reservation release.",
+    "No image input or template was used in live experiments."
+  ],
+  "streaming_research": {
+    "date": "2026-11-02",
+    "openai": "https://developers.openai.com/api/docs/guides/streaming-responses",
+    "anthropic": "https://platform.claude.com/docs/en/build-with-claude/streaming",
+    "opencode_commit": "ff90ed91607cabf420a369e9009539c1aa0932af",
+    "opencode_server_batch_ms": 100,
+    "opencode_client_flush_ms": 16,
+    "scope": "OpenAI and Anthropic public APIs; OpenCode open-source implementation. Not verified internals of ChatGPT or Claude consumer apps."
+  }
+}

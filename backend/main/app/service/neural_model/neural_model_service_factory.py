@@ -79,6 +79,8 @@ class NeuralModelServiceFactory:
     def _generation_endpoint(
         cls,
         url: str,
+        *,
+        is_stream: bool = False,
     ) -> str:
         # Endpoint maps historically contained the old /v1 route. Treat either a VM
         # base URL or a full legacy endpoint as the same VM address so this contract
@@ -120,7 +122,7 @@ class NeuralModelServiceFactory:
                 "/",
             )
         )
-        return f"{base_url}{cls.GENERATION_PATH}"
+        return f"{base_url}{cls.GENERATION_PATH}" + ("/stream" if is_stream else "")
 
     @classmethod
     def create(
@@ -186,4 +188,11 @@ class NeuralModelServiceFactory:
             http_client,
             generation_endpoints,
             http_config,
+            {
+                model_id: cls._generation_endpoint(
+                    url,
+                    is_stream=True,
+                )
+                for model_id, url in vm_urls.items()
+            },
         )

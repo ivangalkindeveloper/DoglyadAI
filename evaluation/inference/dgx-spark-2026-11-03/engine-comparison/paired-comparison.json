@@ -1,0 +1,380 @@
+[
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "conflict-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "conflict-penalty105-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "conflict-sample-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "conflict-sample-123",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "conflict-sample-42",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "dictation-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "historical-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "historical-sample-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "historical-sample-123",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "historical-sample-42",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "report-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "report-penalty105-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "report-sample-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "report-sample-123",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "report-sample-42",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "vision-1",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "vision-2",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "sglang-paired-maxseq-1",
+    "id": "vision-6",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "conflict-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "conflict-penalty105-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "conflict-sample-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "conflict-sample-123",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "conflict-sample-42",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "dictation-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "historical-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "historical-sample-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "historical-sample-123",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "historical-sample-42",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "report-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "report-penalty105-greedy-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "report-sample-0",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "report-sample-123",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "report-sample-42",
+    "text_equal": false,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "vision-1",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "vision-2",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "sglang-paired-maxseq-4",
+    "id": "vision-6",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": false
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "conflict-greedy-0",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "conflict-penalty105-greedy-0",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "conflict-sample-0",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "conflict-sample-123",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "conflict-sample-42",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "dictation-greedy-0",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "historical-greedy-0",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "historical-sample-0",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "historical-sample-123",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "historical-sample-42",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "report-greedy-0",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "report-penalty105-greedy-0",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "report-sample-0",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "report-sample-123",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "report-sample-42",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "vision-1",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "vision-2",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  },
+  {
+    "trial": "vllm-maxseq-4",
+    "id": "vision-6",
+    "text_equal": true,
+    "prompt_token_ids_equal": true,
+    "output_token_ids_equal": true
+  }
+]

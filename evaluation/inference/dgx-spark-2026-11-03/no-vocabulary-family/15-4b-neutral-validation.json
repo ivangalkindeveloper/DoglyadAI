@@ -1,0 +1,208 @@
+[
+  {
+    "id": "conflict-sample-0",
+    "finish": "stop",
+    "seconds": 13.702945696015377,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1622,
+      "completion_tokens": 338
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 825,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "изуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 174,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ование в правой доле щитовидной железы. Рекомендуется консультация эндокринолога и узкого специалиста (например, онколога) для дальнейшей диагностики и лечения."
+      },
+      "recommendations": {
+        "characters": 106,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Консультация эндокринолога и узкого специалиста (например, онколога) для дальнейшей диагностики и лечения."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 13.9033402359928,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1627,
+      "completion_tokens": 343
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 801,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "изуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 122,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Очаговое образование в правой доле щитовидной железы требует дальнейшего обследования для уточнения характера и этиологии."
+      },
+      "recommendations": {
+        "characters": 239,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "иальной диагностики очагового образования в правой доле щитовидной железы. Также рекомендуется выполнение допплеровского УЗИ для оценки кровотока в образовании."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-dictated-sample-42",
+    "finish": "stop",
+    "seconds": 2.85551496502012,
+    "usage": {
+      "prompt_tokens": 916,
+      "total_tokens": 986,
+      "completion_tokens": 70
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 88,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь наполнен, объём 230 мл, стенка 2,7 мм. В просвете мелкодисперсная взвесь."
+      },
+      "conclusion": {
+        "characters": 36,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Эхопризнаки взвеси в мочевом пузыре."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-template-sample-42",
+    "finish": "stop",
+    "seconds": 2.578793330001645,
+    "usage": {
+      "prompt_tokens": 899,
+      "total_tokens": 962,
+      "completion_tokens": 63
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 43,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь объёмом 240 мл. Стенка 2 мм."
+      },
+      "conclusion": {
+        "characters": 43,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь объёмом 240 мл. Стенка 2 мм."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 0,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  }
+]

@@ -1,0 +1,783 @@
+{
+  "xgrammar": "0.2.3",
+  "schema_count": 24,
+  "all_compiled_and_completed": true,
+  "results": [
+    {
+      "language": "ru",
+      "recommendations": false,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 0,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": false,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 1,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": false,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 6,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": false,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 0,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": false,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 1,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": false,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 6,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": true,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 0,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": true,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 1,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": true,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 6,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": true,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 0,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": true,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 1,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "ru",
+      "recommendations": true,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 6,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": false,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 0,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": false,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 1,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": false,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 6,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": false,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 0,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": false,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 1,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": false,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 6,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": true,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 0,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": true,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 1,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": true,
+      "remarks": false,
+      "photo_remarks": true,
+      "photo_count": 6,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": true,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 0,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": true,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 1,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    },
+    {
+      "language": "en",
+      "recommendations": true,
+      "remarks": true,
+      "photo_remarks": true,
+      "photo_count": 6,
+      "checks": [
+        {
+          "document": "minimal",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "minimal",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 1,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        },
+        {
+          "document": "photo_document",
+          "stop": 106,
+          "accepted": true,
+          "stop_accepted": true,
+          "terminated": true
+        }
+      ]
+    }
+  ]
+}

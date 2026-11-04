@@ -1,0 +1,10 @@
+{
+  "app/schema/us_examination_report_structured_output.py": "2589b2111cc59db4b4c168dd71fd5200a4ad83c43ade342c8a8561ab68739c51",
+  "app/prompt/prompt_factory.py": "a8dd3b5dc78d9148e288f90fa2f0bcf68bfbe9a954bc83650b792068e4ae4cdc",
+  "app/service/report/report_generation_service.py": "28c9e3f167e992e64545dcdab61cbbcfa63bc44c33abe738b37fe6c6f1b03f0e",
+  "app/service/report/report_validator.py": "a672a0bab74142a42977dff296590f98eec69c450f514e7485c1e5141c2a5b71",
+  "app/model/ultrasound/us_report_generation_config.py": "124446ded0bb184c5bda4b7e947ed6207e5ac5423c40f67d665a276c2277559d",
+  "app/core/localization/prompt_localization_validator.py": "ffd792c4b7581d57d9dbfff0382e288ea7c8873d18c49915351f2389cb6d7564",
+  "config/development/server.json": "c5c43c1d808af0e2b05e5f897b099fac4dc808a8058245d59790b76a79d9dc7c",
+  "config/development/ru/l10n.json": "037aefeadf716c69952852846d84eced5bbf964824a4b75422813f8aa1df22be"
+}

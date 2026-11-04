@@ -1,0 +1,183 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "seconds": 10.247153559001163,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1273,
+      "total_tokens": 1507,
+      "completion_tokens": 234,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": null
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "seconds": 11.055392721988028,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1273,
+      "total_tokens": 1521,
+      "completion_tokens": 248,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": null
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "seconds": 11.306801477010595,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1542,
+      "completion_tokens": 258,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": null
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "seconds": 12.51172417300404,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1568,
+      "completion_tokens": 284,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": null
+  },
+  {
+    "id": "bladder-correction-sample-42",
+    "kind": "heldout",
+    "finish": "stop",
+    "seconds": 3.5475234139885288,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 890,
+      "total_tokens": 967,
+      "completion_tokens": 77,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": null
+  },
+  {
+    "id": "bladder-en-sample-42",
+    "kind": "heldout",
+    "finish": "stop",
+    "seconds": 2.565888165991055,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 686,
+      "total_tokens": 742,
+      "completion_tokens": 56,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": null
+  },
+  {
+    "id": "dictation-greedy-0",
+    "kind": "dictation",
+    "finish": "length",
+    "seconds": 89.21133814999484,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 3485,
+      "completion_tokens": 2048,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": false,
+    "main_valid": null,
+    "maximum_sentence_copies": null,
+    "prompt_tokens_match_vllm": null,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "vision-1",
+    "kind": "vision",
+    "finish": "stop",
+    "seconds": 0.8021903859917074,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 305,
+      "total_tokens": 311,
+      "completion_tokens": 6,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_sentence_copies": 0,
+    "vision_expected_match": true
+  },
+  {
+    "id": "vision-2",
+    "kind": "vision",
+    "finish": "stop",
+    "seconds": 1.0264095589809585,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 562,
+      "total_tokens": 571,
+      "completion_tokens": 9,
+      "prompt_tokens_details": {
+        "cached_tokens": 0
+      }
+    },
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_sentence_copies": 0,
+    "vision_expected_match": true
+  }
+]

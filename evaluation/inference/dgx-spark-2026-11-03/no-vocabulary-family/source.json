@@ -1,0 +1,13 @@
+{
+  "backend/main/app/prompt/prompt_factory.py": "1696922a3c58f63ca240e1fb47fa3cb3315412d833cda285f27a7fb30c602b75",
+  "backend/main/app/service/report/report_generation_service.py": "23f669e6a394696c259a8f1c2f7803b2fc05111aebeb3a40d9ec07b94646bf6e",
+  "backend/main/app/schema/us_examination_report_structured_output.py": "d96ceb542220696c5a41aea096f4f6135d60678dcccbdd7b9e5ac67530db0cba",
+  "backend/main/app/service/neural_model/inference_service.py": "2702a0e97a62709ce5c11158f75db1e14c9a0b17debaef95fed9a5717cd7ca3a",
+  "backend/inference/app/service/vllm_service.py": "8dde23dda7f5f8a871b7ec795fa658eb66393133dbba9f58ddaac2d9e29059eb",
+  "backend/main/config/development/server.json": "686525eafb1001e8a63688ea70c25ff5b85decb999a6bfeacba7f9ea5b1aaaf4",
+  "backend/main/config/production/server.json": "686525eafb1001e8a63688ea70c25ff5b85decb999a6bfeacba7f9ea5b1aaaf4",
+  "backend/main/config/development/ru/l10n.json": "43fa57b31de847140346655ebca1fec7cc12453b8af11604d0df65686c6df46f",
+  "backend/main/config/development/en/l10n.json": "082668b6d49f63d0ac08858d7eecaf05836d981829dec40c6edf9653f848bc7a",
+  "backend/main/config/production/ru/l10n.json": "43fa57b31de847140346655ebca1fec7cc12453b8af11604d0df65686c6df46f",
+  "backend/main/config/production/en/l10n.json": "082668b6d49f63d0ac08858d7eecaf05836d981829dec40c6edf9653f848bc7a"
+}

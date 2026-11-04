@@ -1,0 +1,12 @@
+{"event": "starting", "variant": "ru-examples", "count": 4}
+{"event": "finished", "variant": "ru-examples"}
+{"event": "starting", "variant": "ru-remarks-first", "count": 4}
+{"event": "finished", "variant": "ru-remarks-first"}
+{"event": "starting", "variant": "ru-examples-first", "count": 4}
+{"event": "finished", "variant": "ru-examples-first"}
+{"event": "starting", "variant": "ru-examples-no-dictionary", "count": 4}
+{"event": "finished", "variant": "ru-examples-no-dictionary"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+{"event": "runtime_verified", "containers_unchanged": true}

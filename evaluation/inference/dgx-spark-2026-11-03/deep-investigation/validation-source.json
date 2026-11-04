@@ -1,0 +1,11 @@
+{
+  "commit": "cf41ea2ed92b0db1729331f79f29d90d201ed893",
+  "note": "Working tree contains uncommitted changes. Hashes describe the validators used for this evaluation.",
+  "sha256": {
+    "backend/main/app/service/report/report_generation_service.py": "1d917c21988d06a9cb9720c685052596f6f877c192018287887d514131ce45fa",
+    "backend/main/app/service/report/report_validator.py": "008c2a808e34ffdcecf7f13061f18cc9284eb9664aa6a478fe5127c6a6d0204f",
+    "backend/main/app/service/dictation/voice_form_validator.py": "19c215e083aa200371bb8495d16fccfc26a2f6ee10da011ac74100a24e44b256",
+    "backend/main/config/development/server.json": "ef07e0dbc926ac99fc2d939edfa27200952347b87448a57e6bc07faf0ac85d2b",
+    "backend/main/config/development/ru/l10n_voice_source_validation.json": "46bfb05c36d94ef687107f1e55fa600ff58be635ba1286e5944eb0b5579ebc02"
+  }
+}

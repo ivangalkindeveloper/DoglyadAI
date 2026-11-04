@@ -1,0 +1,10 @@
+{"event": "starting", "variant": "structured-input", "count": 4}
+{"event": "finished", "variant": "structured-input"}
+{"event": "starting", "variant": "audit-text", "count": 4}
+{"event": "finished", "variant": "audit-text"}
+{"event": "starting", "variant": "audit-ids", "count": 4}
+{"event": "finished", "variant": "audit-ids"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+{"event": "runtime_verified", "containers_unchanged": true}

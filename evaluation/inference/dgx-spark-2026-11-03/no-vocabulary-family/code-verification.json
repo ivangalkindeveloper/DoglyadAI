@@ -1,0 +1,10 @@
+{
+  "main_pytest": "passed",
+  "main_ruff": "passed",
+  "main_mypy": "passed; 279 source files",
+  "backend_format": "passed; 400 files unchanged",
+  "backend_format_check": "passed; 400 files",
+  "architecture": "13 pre-existing swift.view-fragment failures; no backend failures",
+  "cases_prepared": 60,
+  "dgx_runs": "complete; 60/60 self-completed; main accepted 58/60"
+}

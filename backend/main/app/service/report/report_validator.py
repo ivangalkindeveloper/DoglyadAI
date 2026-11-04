@@ -8,6 +8,7 @@ from app.core.localization.language_code import LanguageCode
 from app.error import (
     EmptyReportDescriptionError,
     InvalidPhotoRemarksError,
+    InvalidReportResponseError,
     ReportMeasurementsMismatchError,
     UnexpectedReportRemarksError,
     UnverifiedReportSectionError,
@@ -15,15 +16,28 @@ from app.error import (
 from app.model.ultrasound.us_examination_data import USExaminationData
 from app.model.ultrasound.us_examination_report import USExaminationReport
 from app.model.ultrasound.us_examination_request import USExaminationRequest
+from app.model.ultrasound.us_report_preview_response import USReportPreviewResponse
 from app.service.dictation.clinical_value_is_supported import clinical_value_is_supported
 
 
 class ReportValidator:
+    _MIN_REPEAT_CHARACTERS = 80
+    _MIN_REPEAT_SENTENCE_CHARACTERS = 64
+    _MAX_REPEAT_WORDS = 128
+
     def __init__(
         self,
         configuration: Configuration,
     ) -> None:
         self._configuration = configuration
+
+    def validate_output(
+        self,
+        report: USExaminationReport | USReportPreviewResponse,
+    ) -> None:
+        self.validate_repetition(
+            report,
+        )
 
     def validate_content(
         self,
@@ -114,6 +128,79 @@ class ReportValidator:
         if expected and (not expected <= actual or (not examination.photos and not actual <= expected)):
             raise ReportMeasurementsMismatchError()
         report.description = description
+
+    @classmethod
+    def validate_repetition(
+        cls,
+        report: USExaminationReport | USReportPreviewResponse,
+    ) -> None:
+        """Reject repeated long sentences or consecutive blocks within one section.
+
+        Require three copies, normalizing only whitespace. Sentence copies may
+        have other sentences between them. Keep short findings, unfinished
+        sentences and cross-section repetition; never deduplicate medical text.
+        """
+        for text in (
+            report.description,
+            report.conclusion,
+            report.recommendations,
+            report.descriptionRemarks,
+        ):
+            if not text:
+                continue
+            sentence_counts: dict[str, int] = {}
+            for part in re.split(
+                r"(?<=[.!?])\s+",
+                text,
+            ):
+                sentence = " ".join(
+                    part.split(),
+                )
+                if len(
+                    sentence,
+                ) < cls._MIN_REPEAT_SENTENCE_CHARACTERS or not sentence.endswith(
+                    (".", "!", "?"),
+                ):
+                    continue
+                sentence_counts[sentence] = (
+                    sentence_counts.get(
+                        sentence,
+                        0,
+                    )
+                    + 1
+                )
+                if sentence_counts[sentence] >= 3:
+                    raise InvalidReportResponseError()
+            words = text.split()
+            for width in range(
+                1,
+                min(
+                    len(
+                        words,
+                    )
+                    // 3,
+                    cls._MAX_REPEAT_WORDS,
+                )
+                + 1,
+            ):
+                matched = 0
+                for index in range(
+                    width,
+                    len(
+                        words,
+                    ),
+                ):
+                    matched = matched + 1 if words[index] == words[index - width] else 0
+                    if (
+                        matched >= 2 * width
+                        and len(
+                            " ".join(
+                                words[index - width + 1 : index + 1],
+                            ),
+                        )
+                        >= cls._MIN_REPEAT_CHARACTERS
+                    ):
+                        raise InvalidReportResponseError()
 
     @staticmethod
     def validate_remarks(

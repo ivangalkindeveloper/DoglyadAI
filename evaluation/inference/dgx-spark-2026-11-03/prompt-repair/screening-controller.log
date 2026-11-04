@@ -1,0 +1,12 @@
+{"event": "starting", "variant": "uncapped", "count": 4}
+{"event": "finished", "variant": "uncapped"}
+{"event": "starting", "variant": "no-dictionary", "count": 4}
+{"event": "finished", "variant": "no-dictionary"}
+{"event": "starting", "variant": "concise-ru", "count": 4}
+{"event": "finished", "variant": "concise-ru"}
+{"event": "starting", "variant": "concise-en", "count": 4}
+{"event": "finished", "variant": "concise-en"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+{"event": "runtime_verified", "containers_unchanged": true}

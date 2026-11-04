@@ -1,0 +1,84 @@
+{
+  "repo": "ggml-org/llama.cpp",
+  "commit": "5851a8e505f4d5fbb183f2847698eb6155d176b7",
+  "date": "2026-11-04T14:15:09Z",
+  "release": "v0.9.0",
+  "assets": [
+    "nightly-tag.txt"
+  ],
+  "files": [
+    {
+      "path": "docs/multimodal/gemma3.md",
+      "file": "docs__multimodal__gemma3.md",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/5851a8e505f4d5fbb183f2847698eb6155d176b7/docs/multimodal/gemma3.md",
+      "sha256": "57e49f25cd5363e0993f77c6db451495ddf2da2ee4b4fc598cbdf0e3dca07a12"
+    },
+    {
+      "path": "pyproject.toml",
+      "file": "pyproject.toml",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/5851a8e505f4d5fbb183f2847698eb6155d176b7/pyproject.toml",
+      "sha256": "7da8c22de3753b371aae7a1c257155e09e14f0838f17d997a04772732e1f05f0"
+    },
+    {
+      "path": "requirements.txt",
+      "file": "requirements.txt",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/5851a8e505f4d5fbb183f2847698eb6155d176b7/requirements.txt",
+      "sha256": "08e67179ad6863e26c8c763822b53f1080f4d4251cc2ad48c10418be9ee38f7f"
+    },
+    {
+      "path": "README.md",
+      "file": "README.md",
+      "url": "https://raw.githubusercontent.com/ggml-org/llama.cpp/5851a8e505f4d5fbb183f2847698eb6155d176b7/README.md",
+      "sha256": "404287f3e07f32aeaa5b951cfe7e43277a6444b2cf921c9f70894c1f7e89dd80"
+    }
+  ],
+  "candidate_paths": [
+    ".devops/cann.Dockerfile",
+    ".devops/cpu.Dockerfile",
+    ".devops/cuda.Dockerfile",
+    ".devops/intel.Dockerfile",
+    ".devops/llama-cli-cann.Dockerfile",
+    ".devops/musa.Dockerfile",
+    ".devops/nix/docker.nix",
+    ".devops/nix/jetson-support.nix",
+    ".devops/openvino.Dockerfile",
+    ".devops/rocm.Dockerfile",
+    ".devops/s390x.Dockerfile",
+    ".devops/vulkan.Dockerfile",
+    ".devops/zendnn.Dockerfile",
+    ".dockerignore",
+    ".github/actions/install-exe/action.yml",
+    ".github/workflows/docker.yml",
+    "common/parsers/gemma4.cpp",
+    "common/parsers/translate-gemma.cpp",
+    "conversion/gemma.py",
+    "docs/docker.md",
+    "docs/install.md",
+    "docs/multimodal/gemma3.md",
+    "examples/test-cmake/build-install.sh",
+    "models/ggml-vocab-gemma-4.gguf",
+    "models/ggml-vocab-gemma-4.gguf.inp",
+    "models/ggml-vocab-gemma-4.gguf.out",
+    "models/templates/google-gemma-2-2b-it.jinja",
+    "models/templates/google-gemma-4-31B-it-interleaved.jinja",
+    "models/templates/google-gemma-4-31B-it.jinja",
+    "models/templates/google-translategemma-4b-it.jinja",
+    "scripts/install-oneapi.bat",
+    "src/models/gemma-embedding.cpp",
+    "src/models/gemma-embedding2.cpp",
+    "src/models/gemma.cpp",
+    "src/models/gemma2.cpp",
+    "src/models/gemma3.cpp",
+    "src/models/gemma3n.cpp",
+    "src/models/gemma4-assistant.cpp",
+    "src/models/gemma4.cpp",
+    "tests/snapshots/gemma-3-4b-it.schema",
+    "tools/mtmd/models/gemma4a.cpp",
+    "tools/mtmd/models/gemma4ua.cpp",
+    "tools/mtmd/models/gemma4uv.cpp",
+    "tools/mtmd/models/gemma4v.cpp",
+    "tools/ui/scripts/git-hooks/install.sh",
+    "tools/ui/src/lib/components/app/content/MarkdownContent/plugins/rehype/rehype-rtl-support.ts",
+    "tools/ui/src/lib/constants/supported-file-types.constants.ts"
+  ]
+}

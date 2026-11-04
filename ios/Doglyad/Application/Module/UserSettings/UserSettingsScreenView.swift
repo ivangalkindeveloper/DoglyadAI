@@ -103,6 +103,7 @@ struct UserSettingsScreenView: DViewProtocol {
                             isOn: .constant(
                                 viewModel.isRecommendationsIncluded,
                             ),
+                            identifier: "userSettings.recommendations",
                             action: viewModel.toggleRecommendationsIncluded,
                         )
                         .padding(
@@ -120,6 +121,7 @@ struct UserSettingsScreenView: DViewProtocol {
                             isOn: .constant(
                                 viewModel.isPhotoRemarks,
                             ),
+                            identifier: "userSettings.photoRemarks",
                             action: viewModel.togglePhotoRemarks,
                         )
                         .padding(
@@ -137,6 +139,7 @@ struct UserSettingsScreenView: DViewProtocol {
                             isOn: .constant(
                                 viewModel.isDescriptionRemarks,
                             ),
+                            identifier: "userSettings.descriptionRemarks",
                             action: viewModel.toggleDescriptionRemarks,
                         )
                     }

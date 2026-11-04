@@ -1,0 +1,790 @@
+[
+  {
+    "id": "historical-greedy-0",
+    "kind": "historical",
+    "finish": "stop",
+    "done": true,
+    "seconds": 27.673261907999404,
+    "first_delta_seconds": 0.17335638098302297,
+    "usage": {
+      "prompt_tokens": 1894,
+      "total_tokens": 2552,
+      "completion_tokens": 658
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": false,
+    "sections": {
+      "description": {
+        "characters": 769,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "conclusion": {
+        "characters": 769,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "recommendations": {
+        "characters": 204,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "тоянием щитовидной железы с последующим повторным ультразвуковым исследованием через 6 месяцев для оценки динамики размеров долей и исключения прогрессирования."
+      },
+      "descriptionRemarks": {
+        "characters": 512,
+        "max_length": 512,
+        "at_max_length": true,
+        "over_max_length": false,
+        "maximum_sentence_copies": 2,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": false,
+        "tail": " размеры и структура долей щитовидной железы. Не указаны размеры и структура перешейка железы. Не указаны размеры и структура регионарных лимфатических узлов. О"
+      }
+    },
+    "description_equals_conclusion": true,
+    "validation_error": "invalidReportResponse",
+    "repetition_detected": false,
+    "fields_at_max_length": [
+      "descriptionRemarks"
+    ],
+    "review_candidate": false
+  },
+  {
+    "id": "historical-sample-0",
+    "kind": "historical",
+    "finish": "stop",
+    "done": true,
+    "seconds": 22.781517794006504,
+    "first_delta_seconds": 0.07668665598612279,
+    "usage": {
+      "prompt_tokens": 1894,
+      "total_tokens": 2437,
+      "completion_tokens": 543
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": false,
+    "sections": {
+      "description": {
+        "characters": 497,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      },
+      "conclusion": {
+        "characters": 497,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      },
+      "recommendations": {
+        "characters": 179,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ическое наблюдение за состоянием щитовидной железы. При появлении новых симптомов или изменений в размерах и структуре железы необходимо повторное обследование."
+      },
+      "descriptionRemarks": {
+        "characters": 512,
+        "max_length": 512,
+        "at_max_length": true,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": false,
+        "tail": ", обычной структуры. Отсутствуют какие-либо признаки, требующие немедленного вмешательства. Рекомендовано динамическое наблюдение за состоянием щитовидной желез"
+      }
+    },
+    "description_equals_conclusion": true,
+    "validation_error": "invalidReportResponse",
+    "repetition_detected": false,
+    "fields_at_max_length": [
+      "descriptionRemarks"
+    ],
+    "review_candidate": false
+  },
+  {
+    "id": "historical-sample-42",
+    "kind": "historical",
+    "finish": "stop",
+    "done": true,
+    "seconds": 28.35397943202406,
+    "first_delta_seconds": 0.06899128001532517,
+    "usage": {
+      "prompt_tokens": 1894,
+      "total_tokens": 2570,
+      "completion_tokens": 676
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": false,
+    "sections": {
+      "description": {
+        "characters": 769,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "conclusion": {
+        "characters": 769,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "recommendations": {
+        "characters": 360,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ния. При наличии каких-либо изменений в динамике, необходимо проведение дополнительных исследований, таких как сцинтиграфия или биопсия, для уточнения диагноза."
+      },
+      "descriptionRemarks": {
+        "characters": 512,
+        "max_length": 512,
+        "at_max_length": true,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": false,
+        "tail": "им повторным ультразвуковым исследованием через 6 месяцев для оценки динамики размеров долей и исключения прогрессирования. При наличии каких-либо изменений в в"
+      }
+    },
+    "description_equals_conclusion": true,
+    "validation_error": "invalidReportResponse",
+    "repetition_detected": false,
+    "fields_at_max_length": [
+      "descriptionRemarks"
+    ],
+    "review_candidate": false
+  },
+  {
+    "id": "historical-sample-123",
+    "kind": "historical",
+    "finish": "stop",
+    "done": true,
+    "seconds": 28.87063276799745,
+    "first_delta_seconds": 0.06578626498230733,
+    "usage": {
+      "prompt_tokens": 1894,
+      "total_tokens": 2582,
+      "completion_tokens": 688
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 816,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "conclusion": {
+        "characters": 816,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "recommendations": {
+        "characters": 378,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "огрессировании симптомов, а также при появлении новых очаговых изменений, необходимо проведение дополнительных исследований, таких как сцинтиграфия или биопсия."
+      },
+      "descriptionRemarks": {
+        "characters": 464,
+        "max_length": 512,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Не указаны очаговые изменения в щитовидной железе. Требуется уточнение размеров и особенностей левой доли щитовидной железы, а также наличие очаговых изменений."
+      }
+    },
+    "description_equals_conclusion": true,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "seconds": 24.473635714995908,
+    "first_delta_seconds": 0.06640932100708596,
+    "usage": {
+      "prompt_tokens": 1954,
+      "total_tokens": 2537,
+      "completion_tokens": 583
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 769,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "conclusion": {
+        "characters": 769,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "recommendations": {
+        "characters": 396,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "одимо исключить диффузные изменения щитовидной железы, что может потребовать дополнительных исследований, таких как ТТГ, Т3, Т4, антитела к ТПО и антитела к ТГ."
+      }
+    },
+    "description_equals_conclusion": true,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "report-sample-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "seconds": 24.21867596299853,
+    "first_delta_seconds": 0.06772183597786352,
+    "usage": {
+      "prompt_tokens": 1954,
+      "total_tokens": 2530,
+      "completion_tokens": 576
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 769,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "conclusion": {
+        "characters": 769,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "recommendations": {
+        "characters": 433,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "одимо проведение дополнительных исследований, таких как сцинтиграфия щитовидной железы или биопсия, для уточнения диагноза и выбора оптимальной тактики лечения."
+      }
+    },
+    "description_equals_conclusion": true,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "seconds": 20.64819811200141,
+    "first_delta_seconds": 0.0654185829916969,
+    "usage": {
+      "prompt_tokens": 1954,
+      "total_tokens": 2445,
+      "completion_tokens": 491
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 780,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "conclusion": {
+        "characters": 780,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      }
+    },
+    "description_equals_conclusion": true,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "report-sample-123",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "seconds": 25.44101225398481,
+    "first_delta_seconds": 0.07195369998225942,
+    "usage": {
+      "prompt_tokens": 1954,
+      "total_tokens": 2558,
+      "completion_tokens": 604
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 780,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "conclusion": {
+        "characters": 780,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "recommendations": {
+        "characters": 471,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "нии новых симптомов, необходимо проведение консультации эндокринолога и, при необходимости, дополнительных исследований (например, ТТГ, Т3, Т4, антитела к ТПО)."
+      }
+    },
+    "description_equals_conclusion": true,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "seconds": 18.517468509002356,
+    "first_delta_seconds": 0.10019988499698229,
+    "usage": {
+      "prompt_tokens": 1965,
+      "total_tokens": 2404,
+      "completion_tokens": 439
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": false,
+    "sections": {
+      "description": {
+        "characters": 542,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 143,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование. Необходимо провести дальнейшее обследование для уточнения характера образования."
+      },
+      "recommendations": {
+        "characters": 174,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "проведение сцинтиграфии щитовидной железы с последующей консультацией эндокринолога для уточнения характера очагового образования и определения тактики ведения."
+      },
+      "descriptionRemarks": {
+        "characters": 512,
+        "max_length": 512,
+        "at_max_length": true,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": false,
+        "tail": ", вертикальная ориентация, ТИРАДС, категория ТИРАДС, эластография узла, васкуляризация узла, периферический кровоток, центральный кровоток, псевдоузел, тиреоиди"
+      }
+    },
+    "description_equals_conclusion": false,
+    "validation_error": "invalidReportResponse",
+    "repetition_detected": false,
+    "fields_at_max_length": [
+      "descriptionRemarks"
+    ],
+    "review_candidate": false
+  },
+  {
+    "id": "conflict-sample-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "seconds": 12.908049410005333,
+    "first_delta_seconds": 0.07336790600675158,
+    "usage": {
+      "prompt_tokens": 1965,
+      "total_tokens": 2271,
+      "completion_tokens": 306
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 542,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 143,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование. Необходимо провести дальнейшее обследование для уточнения характера образования."
+      },
+      "recommendations": {
+        "characters": 184,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "нейшее обследование для уточнения характера образования. Рассмотреть возможность проведения сцинтиграфии щитовидной железы и/или биопсии для уточнения диагноза."
+      },
+      "descriptionRemarks": {
+        "characters": 156,
+        "max_length": 512,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В описании не указано, что очаговое образование визуализируется на всех изображениях. Необходимо уточнить, визуализируется ли образование на всех проекциях."
+      }
+    },
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "seconds": 19.06902746198466,
+    "first_delta_seconds": 0.08052574898465537,
+    "usage": {
+      "prompt_tokens": 1965,
+      "total_tokens": 2417,
+      "completion_tokens": 452
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": false,
+    "sections": {
+      "description": {
+        "characters": 553,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 143,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование. Необходимо провести дальнейшее обследование для уточнения характера образования."
+      },
+      "recommendations": {
+        "characters": 183,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "сцинтиграфию щитовидной железы для уточнения характера очагового образования. Также рекомендуется провести пункцию образования для цитологического исследования."
+      },
+      "descriptionRemarks": {
+        "characters": 512,
+        "max_length": 512,
+        "at_max_length": true,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": false,
+        "tail": "ей ТИРАДС, эластографией узла, васкуляризацией узла, периферическим кровотоком, центральным кровотоком, псевдоузлом, тиреоидитом, гиперваскуляризацией железы, а"
+      }
+    },
+    "description_equals_conclusion": false,
+    "validation_error": "invalidReportResponse",
+    "repetition_detected": false,
+    "fields_at_max_length": [
+      "descriptionRemarks"
+    ],
+    "review_candidate": false
+  },
+  {
+    "id": "conflict-sample-123",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "seconds": 18.565871036989847,
+    "first_delta_seconds": 0.07565350900404155,
+    "usage": {
+      "prompt_tokens": 1965,
+      "total_tokens": 2405,
+      "completion_tokens": 440
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": false,
+    "sections": {
+      "description": {
+        "characters": 553,
+        "max_length": 16000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 143,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование. Необходимо провести дальнейшее обследование для уточнения характера образования."
+      },
+      "recommendations": {
+        "characters": 148,
+        "max_length": 4000,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Рекомендуется проведение сцинтиграфии щитовидной железы и/или биопсии для уточнения характера очагового образования в правой доле щитовидной железы."
+      },
+      "descriptionRemarks": {
+        "characters": 512,
+        "max_length": 512,
+        "at_max_length": true,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": false,
+        "tail": "ое распространение, вертикальная ориентация, ТИРАДС, категория ТИРАДС, эластография узла, васкуляризация узла, периферический кровоток, центральный кровоток, пс"
+      }
+    },
+    "description_equals_conclusion": false,
+    "validation_error": "invalidReportResponse",
+    "repetition_detected": false,
+    "fields_at_max_length": [
+      "descriptionRemarks"
+    ],
+    "review_candidate": false
+  },
+  {
+    "id": "dictation-greedy-0",
+    "kind": "dictation",
+    "finish": "stop",
+    "done": true,
+    "seconds": 23.850630859000375,
+    "first_delta_seconds": 0.0763038840086665,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 2004,
+      "completion_tokens": 567
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  }
+]

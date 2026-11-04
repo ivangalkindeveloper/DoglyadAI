@@ -1,0 +1,192 @@
+{
+  "transformers-xgrammar": {
+    "new_in_this_series": false,
+    "requests": 7,
+    "finish": {
+      "length": 4,
+      "stop": 3
+    },
+    "schema_valid": 3,
+    "main_valid": 3,
+    "by_case": {
+      "historical": {
+        "requests": 4,
+        "main_valid": 0,
+        "length": 4
+      },
+      "report": {
+        "requests": 1,
+        "main_valid": 1,
+        "length": 0
+      },
+      "conflict": {
+        "requests": 1,
+        "main_valid": 1,
+        "length": 0
+      },
+      "dictation": {
+        "requests": 1,
+        "main_valid": 1,
+        "length": 0
+      }
+    }
+  },
+  "vllm-xgrammar": {
+    "new_in_this_series": false,
+    "requests": 13,
+    "finish": {
+      "length": 5,
+      "stop": 8
+    },
+    "schema_valid": 8,
+    "main_valid": 4,
+    "by_case": {
+      "historical": {
+        "requests": 4,
+        "main_valid": 0,
+        "length": 4
+      },
+      "report": {
+        "requests": 4,
+        "main_valid": 3,
+        "length": 1
+      },
+      "conflict": {
+        "requests": 4,
+        "main_valid": 0,
+        "length": 0
+      },
+      "dictation": {
+        "requests": 1,
+        "main_valid": 1,
+        "length": 0
+      }
+    }
+  },
+  "medgemma-google-recipe": {
+    "new_in_this_series": true,
+    "requests": 4,
+    "finish": {
+      "stop": 3,
+      "error": 1
+    },
+    "schema_valid": 3,
+    "main_valid": 0,
+    "by_case": {
+      "historical": {
+        "requests": 1,
+        "main_valid": 0,
+        "length": 0
+      },
+      "report": {
+        "requests": 1,
+        "main_valid": 0,
+        "length": 0
+      },
+      "conflict": {
+        "requests": 1,
+        "main_valid": 0,
+        "length": 0
+      },
+      "dictation": {
+        "requests": 1,
+        "main_valid": 0,
+        "length": 0
+      }
+    }
+  },
+  "medgemma-xgrammar-028": {
+    "new_in_this_series": true,
+    "requests": 13,
+    "finish": {
+      "length": 4,
+      "stop": 9
+    },
+    "schema_valid": 9,
+    "main_valid": 5,
+    "by_case": {
+      "historical": {
+        "requests": 4,
+        "main_valid": 0,
+        "length": 4
+      },
+      "report": {
+        "requests": 4,
+        "main_valid": 3,
+        "length": 0
+      },
+      "conflict": {
+        "requests": 4,
+        "main_valid": 1,
+        "length": 0
+      },
+      "dictation": {
+        "requests": 1,
+        "main_valid": 1,
+        "length": 0
+      }
+    }
+  },
+  "qwen-hf-xgrammar": {
+    "new_in_this_series": true,
+    "requests": 13,
+    "finish": {
+      "stop": 13
+    },
+    "schema_valid": 13,
+    "main_valid": 10,
+    "by_case": {
+      "historical": {
+        "requests": 4,
+        "main_valid": 1,
+        "length": 0
+      },
+      "report": {
+        "requests": 4,
+        "main_valid": 4,
+        "length": 0
+      },
+      "conflict": {
+        "requests": 4,
+        "main_valid": 4,
+        "length": 0
+      },
+      "dictation": {
+        "requests": 1,
+        "main_valid": 1,
+        "length": 0
+      }
+    }
+  },
+  "qwen-vllm-xgrammar": {
+    "new_in_this_series": true,
+    "requests": 13,
+    "finish": {
+      "stop": 13
+    },
+    "schema_valid": 13,
+    "main_valid": 9,
+    "by_case": {
+      "historical": {
+        "requests": 4,
+        "main_valid": 1,
+        "length": 0
+      },
+      "report": {
+        "requests": 4,
+        "main_valid": 4,
+        "length": 0
+      },
+      "conflict": {
+        "requests": 4,
+        "main_valid": 3,
+        "length": 0
+      },
+      "dictation": {
+        "requests": 1,
+        "main_valid": 1,
+        "length": 0
+      }
+    }
+  }
+}

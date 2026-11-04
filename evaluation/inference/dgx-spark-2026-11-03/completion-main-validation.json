@@ -1,0 +1,75 @@
+[
+  {
+    "name": "forced-whitespace-generate",
+    "reader_success": true,
+    "main_validation": "passed"
+  },
+  {
+    "name": "forced-whitespace-stream",
+    "reader_success": true,
+    "main_validation": "passed"
+  },
+  {
+    "name": "report-medgemma-4b-it",
+    "reader_success": true,
+    "validated_result": {
+      "description": "Правая доля щитовидной железы: 52×18×16 мм, объем 7,4 мл. Левая доля щитовидной железы: 50×17×15 мм, объем 6,3 мл. Общий объем щитовидной железы — 13,7 мл, что соответствует верхней границе нормы. Контуры долей ровные, чёткие, капсула не утолщена. Эхогенность паренхимы средняя, структура однородная, без очаговых изменений. Перешеек толщиной 4 мм, без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры.",
+      "conclusion": "Правая доля щитовидной железы: 52×18×16 мм, объем 7,4 мл. Левая доля щитовидной железы: 50×17×15 мм, объем 6,3 мл. Общий объем щитовидной железы — 13,7 мл, что соответствует верхней границе нормы. Контуры долей ровные, чёткие, капсула не утолщена. Эхогенность паренхимы средняя, структура однородная, без очаговых изменений. Перешеек толщиной 4 мм, без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры.",
+      "recommendations": "Рекомендуется динамическое наблюдение за щитовидной железой с повторным ультразвуковым исследованием через 6 месяцев для оценки изменений размера и структуры долей. Также рекомендуется консультация эндокринолога для исключения гипотиреоза и оценки функции щитовидной железы.",
+      "descriptionRemarks": null,
+      "photoRemarks": [],
+      "date": "2026-11-02T23:36:11.229688Z",
+      "modelId": "google/medgemma-4b-it"
+    },
+    "main_validation": "passed"
+  },
+  {
+    "name": "dictation-medgemma-4b-it",
+    "reader_success": false
+  },
+  {
+    "name": "report-medgemma-1.5-4b-it",
+    "reader_success": false
+  },
+  {
+    "name": "dictation-medgemma-1.5-4b-it",
+    "reader_success": false
+  },
+  {
+    "name": "report-medgemma-27b-it",
+    "reader_success": false
+  },
+  {
+    "name": "dictation-medgemma-27b-it",
+    "reader_success": true,
+    "validated_result": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "Жалобы на дискомфорт в области шеи.",
+          "evidence": "Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    },
+    "main_validation": "passed"
+  }
+]

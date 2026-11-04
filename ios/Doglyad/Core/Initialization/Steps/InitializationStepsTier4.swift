@@ -9,10 +9,8 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "L10N",
                 run: { (process: InitializationProcess) async throws in
-                    let code = await process.language!.currentCode
                     let localization: Localization = try await process.httpClient!.get(
                         endPoint: "/l10n",
-                        headers: [DHttpHeader.acceptLanguage: code],
                     )
                     let l10n = try L10N(
                         localization: localization,
@@ -25,10 +23,8 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Ultrasound examination types",
                 run: { (process: InitializationProcess) async throws in
-                    let languageCode = await process.language!.currentCode
                     let usExaminationTypeGroups: [USExaminationTypeGroup] = try await process.httpClient!.get(
                         endPoint: "/ultrasound/examination_types",
-                        headers: [DHttpHeader.acceptLanguage: languageCode],
                     )
                     guard let usExaminationTypeDefault = usExaminationTypeGroups.lazy
                         .compactMap(
@@ -58,10 +54,8 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Ultrasound examination neural models",
                 run: { (process: InitializationProcess) async throws in
-                    let languageCode = await process.language!.currentCode
                     let usExaminationNeuralModels: [USExaminationNeuralModel] = try await process.httpClient!.get(
                         endPoint: "/ultrasound/examination_neural_models",
-                        headers: [DHttpHeader.acceptLanguage: languageCode],
                     )
                     if usExaminationNeuralModels.isEmpty {
                         throw InitializationError.usExaminationNeuralModelsEmpty
@@ -96,7 +90,7 @@ extension InitializationProcess {
                             locale: locale,
                             proposalPrompt: config.proposalPrompt,
                             parameters: parameters,
-                            serverTransport: repository,
+                            parseDictation: repository.parseDictation,
                         )
                     }
                 },

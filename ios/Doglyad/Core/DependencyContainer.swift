@@ -135,6 +135,9 @@ extension DependencyContainer {
     static func makePreviewable(
         l10n: L10N? = nil,
         subscriptionRepositoryFactory: SubscriptionRepositoryFactory? = nil,
+        usExaminationTypesById: [String: USExaminationType] = [:],
+        usExaminationTypeGroups: [USExaminationTypeGroup] = [],
+        usExaminationNeuralModels: [USExaminationNeuralModel] = [],
     ) -> DependencyContainer {
         let environment = EnvironmentBase(
             type: .development,
@@ -209,16 +212,20 @@ extension DependencyContainer {
             l10n: l10n ?? L10N.previewable(
                 code: language.currentCode,
             ),
-            usExaminationTypeGroups: [],
-            usExaminationTypesById: [:],
-            usExaminationTypeDefault: .init(
+            usExaminationTypeGroups: usExaminationTypeGroups,
+            usExaminationTypesById: usExaminationTypesById,
+            usExaminationTypeDefault: usExaminationTypeGroups.first?.examinationTypes.first ?? .init(
                 id: "",
                 title: "",
                 contextualStrings: [],
             ),
-            usExaminationNeuralModels: [],
-            usExaminationNeuralModelsById: [:],
-            usExaminationNeuralModelDefault: .init(
+            usExaminationNeuralModels: usExaminationNeuralModels,
+            usExaminationNeuralModelsById: Dictionary(
+                uniqueKeysWithValues: usExaminationNeuralModels.map {
+                    ($0.id, $0)
+                },
+            ),
+            usExaminationNeuralModelDefault: usExaminationNeuralModels.first ?? .init(
                 id: "",
                 title: "",
                 entitlement: .base,
@@ -234,7 +241,7 @@ extension DependencyContainer {
                     maxTokens: applicationConfig.ultrasound.examinationNeuralModel.maxTokens,
                     maxContextTokens: applicationConfig.ultrasound.examinationNeuralModel.maxContextTokens,
                 ),
-                serverTransport: ultrasoundReportRepository,
+                parseDictation: ultrasoundReportRepository.parseDictation,
             ),
             initialSubscriptionStatus: nil,
             initialRoute: RouteScreen(

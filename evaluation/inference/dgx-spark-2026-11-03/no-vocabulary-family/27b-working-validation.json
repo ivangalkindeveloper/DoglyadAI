@@ -1,0 +1,782 @@
+[
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 63.10910970301484,
+    "usage": {
+      "prompt_tokens": 1273,
+      "total_tokens": 1550,
+      "completion_tokens": 277
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 576,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ветовой допплеровский анализ показывает симметричный кровоток, без признаков усиления. Регионарные лимфатические узлы шеи не увеличены, имеют обычную структуру."
+      },
+      "conclusion": {
+        "characters": 243,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "елезы 13,7 мл, что соответствует верхней границе нормы. Структура паренхимы однородная, очаговых образований не обнаружено. Лимфатические узлы шеи не увеличены."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-0",
+    "finish": "stop",
+    "seconds": 54.86723575898213,
+    "usage": {
+      "prompt_tokens": 1273,
+      "total_tokens": 1513,
+      "completion_tokens": 240
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 578,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "товой допплеровский анализ показывает симметричный кровоток, усиления не определяется. Регионарные лимфатические узлы шеи не увеличены, имеют обычную структуру."
+      },
+      "conclusion": {
+        "characters": 148,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "По результатам ультразвукового исследования щитовидной железы патологических изменений не выявлено. Объём железы находится на верхней границе нормы."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-42",
+    "finish": "stop",
+    "seconds": 64.02983647500514,
+    "usage": {
+      "prompt_tokens": 1273,
+      "total_tokens": 1553,
+      "completion_tokens": 280
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 558,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "тологии. Цветовой допплеровский анализ показывает симметричный кровоток, не усиленный. Регионарные лимфатические узлы шеи не увеличены, имеют обычную структуру."
+      },
+      "conclusion": {
+        "characters": 248,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ет верхней границе нормы. Структура паренхимы однородная, очаговые образования не обнаружены. Контуры долей ровные, четкие. Лимфатические узлы шеи не увеличены."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-123",
+    "finish": "stop",
+    "seconds": 65.69403973800945,
+    "usage": {
+      "prompt_tokens": 1273,
+      "total_tokens": 1560,
+      "completion_tokens": 287
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 590,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "вое допплеровское картирование демонстрирует симметричный кровоток, который не усилен. Регионарные лимфатические узлы шеи не увеличены, имеют обычную структуру."
+      },
+      "conclusion": {
+        "characters": 285,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "меры долей, контуры, эхоструктура и кровоток соответствуют норме. Патологических изменений в паренхиме, перешейке и регионарных лимфатических узлах не выявлено."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "stop",
+    "seconds": 69.87996082799509,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1589,
+      "completion_tokens": 305
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 525,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "енностей. Кровоток при ЦДК симметричный, не усилен. Регионарные лимфатические узлы не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 247,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "е образование. Рекомендуется консультация эндокринолога и дальнейшее обследование образования (например, тонкоигольная аспирационная биопсия под контролем УЗИ)."
+      },
+      "recommendations": {
+        "characters": 123,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Консультация эндокринолога, дальнейшее обследование очагового образования в правой доле (например, ТИАБ под контролем УЗИ)."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "conflict-sample-0",
+    "finish": "stop",
+    "seconds": 58.89332017500419,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1541,
+      "completion_tokens": 257
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 501,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "енностей. Кровоток при ЦДК симметричный, не усилен. Регионарные лимфатические узлы не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 105,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Обнаружено очаговое образование в правой доле щитовидной железы. Остальные параметры соответствуют норме."
+      },
+      "recommendations": {
+        "characters": 138,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Рекомендована консультация эндокринолога и проведение тонкоигольной аспирационной биопсии (ТАБ) образования правой доли щитовидной железы."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 62.5304368219804,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1557,
+      "completion_tokens": 273
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 516,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при ЦДК симметричный, не усилен. Регионарные лимфоузлы не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 219,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "руктура паренхимы однородная, без очаговых изменений, кроме образования в правой доле. Контуры долей ровные, чёткие. Кровоток не усилен. Лимфоузлы не увеличены."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "conflict-sample-123",
+    "finish": "stop",
+    "seconds": 65.94926409397158,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1572,
+      "completion_tokens": 288
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 536,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "енностей. Кровоток при ЦДК симметричный, не усилен. Регионарные лимфатические узлы не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 153,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Объем щитовидной железы 13,7 мл (верхняя граница нормы). Структура паренхимы однородная, кровоток не усилен. В правой доле выявлено очаговое образование."
+      },
+      "recommendations": {
+        "characters": 171,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ся консультация эндокринолога для определения дальнейшей тактики ведения, возможно проведение тонкоигольной аспирационной биопсии (ТАБ) образования правой доли."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-normal-sample-42",
+    "finish": "stop",
+    "seconds": 27.16335652899579,
+    "usage": {
+      "prompt_tokens": 883,
+      "total_tokens": 1001,
+      "completion_tokens": 118
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 191,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "мочи составляет 240 мл. Толщина стенки мочевого пузыря составляет 2 мм. Содержимое мочевого пузыря анэхогенное. Конкременты в мочевом пузыре не визуализируются."
+      },
+      "conclusion": {
+        "characters": 134,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Ультразвуковое исследование мочевого пузыря: наполнен, объем 240 мл. Стенка 2 мм, содержимое анэхогенное, конкременты не определяются."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-conflict-sample-42",
+    "finish": "stop",
+    "seconds": 20.770961606991477,
+    "usage": {
+      "prompt_tokens": 891,
+      "total_tokens": 981,
+      "completion_tokens": 90
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 181,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ен, объём 240 мл. В просвете мочевого пузыря определяется образование размером 6 мм с акустической тенью, вероятно, конкремент. Других конкрементов не выявлено."
+      },
+      "conclusion": {
+        "characters": 62,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Обнаружен одиночный конкремент в мочевом пузыре размером 6 мм."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-correction-sample-42",
+    "finish": "stop",
+    "seconds": 30.56346416301676,
+    "usage": {
+      "prompt_tokens": 890,
+      "total_tokens": 1023,
+      "completion_tokens": 133
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 272,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ической тенью, вероятно, конкремент. Другие внутрипузырные образования не выявлены. Стенка мочевого пузыря не утолщена. Дополнительные структуры не оценивались."
+      },
+      "conclusion": {
+        "characters": 72,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Обнаружен конкремент мочевого пузыря размером 4 мм с акустической тенью."
+      },
+      "recommendations": {
+        "characters": 82,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Рекомендовано наблюдение или консультация уролога для определения тактики лечения."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-dictated-sample-42",
+    "finish": "stop",
+    "seconds": 19.148922315973323,
+    "usage": {
+      "prompt_tokens": 916,
+      "total_tokens": 999,
+      "completion_tokens": 83
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 157,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь наполнен, объем мочи 230 мл. Толщина стенки мочевого пузыря составляет 2,7 мм. В просвете мочевого пузыря определяется мелкодисперсная взвесь."
+      },
+      "conclusion": {
+        "characters": 36,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Эхопризнаки взвеси в мочевом пузыре."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 0,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-term-sample-42",
+    "finish": "stop",
+    "seconds": 27.61661477200687,
+    "usage": {
+      "prompt_tokens": 880,
+      "total_tokens": 1000,
+      "completion_tokens": 120
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 202,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "олщина стенки мочевого пузыря составляет 2 мм. В просвете пузыря определяется анофагенное содержимое. Конкременты в просвете мочевого пузыря не визуализируются."
+      },
+      "conclusion": {
+        "characters": 167,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтатам ультразвукового исследования мочевого пузыря выявлено наличие анофагенного содержимого в объеме 250 мл, толщина стенки 2 мм. Конкрементов не обнаружено."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "kidneys-normal-sample-42",
+    "finish": "stop",
+    "seconds": 33.79290590400342,
+    "usage": {
+      "prompt_tokens": 922,
+      "total_tokens": 1069,
+      "completion_tokens": 147
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 260,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ки составляют 105×48 мм. Толщина паренхимы левой почки - 16 мм. Чашечно-лоханочная система с обеих сторон не расширена. Конкременты в почках не визуализируются."
+      },
+      "conclusion": {
+        "characters": 125,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Почки не увеличены, толщина паренхимы соответствует норме. Чашечно-лоханочная система не расширена. Конкрементов не выявлено."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-template-sample-42",
+    "finish": "stop",
+    "seconds": 18.03796789899934,
+    "usage": {
+      "prompt_tokens": 899,
+      "total_tokens": 977,
+      "completion_tokens": 78
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 84,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь содержит 240 мл мочи. Толщина стенки мочевого пузыря составляет 2 мм."
+      },
+      "conclusion": {
+        "characters": 101,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Обнаружен умеренный остаточный объем мочи в мочевом пузыре (240 мл). Толщина стенки в пределах нормы."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 1,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "bladder-en-sample-42",
+    "finish": "stop",
+    "seconds": 13.499724332010373,
+    "usage": {
+      "prompt_tokens": 686,
+      "total_tokens": 743,
+      "completion_tokens": 57
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 127,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "The bladder volume is 240 ml. The wall measures 2 mm in thickness. The contents are anechoic. No bladder stones are identified."
+      },
+      "conclusion": {
+        "characters": 26,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Normal bladder ultrasound."
+      }
+    },
+    "exceeds_inference_operation_timeout": false,
+    "raw_maximum_long_sentence_copies": 0,
+    "within_field_duplicate": false,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  }
+]

@@ -1,0 +1,26 @@
+[
+  {
+    "model": "medgemma-15-4b",
+    "variant": "working",
+    "requests": 8,
+    "only_model_id_changed": true
+  },
+  {
+    "model": "medgemma-15-4b",
+    "variant": "unbounded-grammar",
+    "requests": 8,
+    "only_model_id_changed": true
+  },
+  {
+    "model": "medgemma-27b",
+    "variant": "working",
+    "requests": 8,
+    "only_model_id_changed": true
+  },
+  {
+    "model": "medgemma-27b",
+    "variant": "unbounded-grammar",
+    "requests": 8,
+    "only_model_id_changed": true
+  }
+]

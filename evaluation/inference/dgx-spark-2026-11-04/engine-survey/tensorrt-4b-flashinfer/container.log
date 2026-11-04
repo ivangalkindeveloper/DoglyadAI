@@ -1,0 +1,535 @@
+Skipping import of cpp extensions due to incompatible torch version 2.14.0+cu130 for torchao version 0.15.0             Please see https://github.com/pytorch/ao/issues/2919 for more info
+/survey/trt-venv/lib/python3.12/site-packages/flashinfer/cutile/cutile_common.py:64: UserWarning: Installed NVIDIA pip packages have mismatched versions (nvidia-cuda-tileiras 13.1.80, nvidia-cuda-nvcc 13.3.73, nvidia-nvvm 13.3.73). Falling back to system tileiras.
+  binary = _find_compiler_bin()
+[TensorRT-LLM] TensorRT LLM version: 1.4.0rc2.post1
+/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/serve/openai_protocol.py:288: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+  class ResponseFormat(OpenAIBaseModel):
+[11/04/2026-17:39:36] [TRT-LLM] [I] [llmapi] Using LLM with PyTorch backend
+[11/04/2026-17:39:36] [TRT-LLM] [I] [llmapi] neither checkpoint_format nor checkpoint_loader were provided, checkpoint_format will be set to HF.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[11/04/2026-17:39:39] [TRT-LLM] [W] [executor] Orchestrator is creating IPC executor
+[11/04/2026-17:39:39] [TRT-LLM] [I] [executor] [startup][pid=1] executor_proxy: start
+[11/04/2026-17:39:39] [TRT-LLM] [I] [_startup] [startup][pid=1] mpi_session_setup: start
+[33;20mrank 0 using MpiPoolSession to spawn MPI processes
+[11/04/2026-17:39:39] [TRT-LLM] [I] [_startup] [startup][pid=1] mpi_session_setup: done, total=0.000s, unattributed=0.000s | 
+[11/04/2026-17:39:39] [TRT-LLM] [I] [executor] Generating a new HMAC key for server proxy_request_queue
+[11/04/2026-17:39:39] [TRT-LLM] [I] [executor] Generating a new HMAC key for server proxy_result_queue
+[11/04/2026-17:39:39] [TRT-LLM] [I] [executor] Generating a new HMAC key for server worker_init_status_queue
+[11/04/2026-17:39:39] [TRT-LLM] [I] [executor] [startup][pid=1] executor_proxy/pre_worker_setup: done in 0.001s (includes mpi_session_setup)
+[11/04/2026-17:39:39] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready: start
+[11/04/2026-17:39:39] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_submit: start
+[11/04/2026-17:39:39] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_submit: done in 0.011s
+[11/04/2026-17:39:39] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_initialization_wait: start
+[0mSkipping import of cpp extensions due to incompatible torch version 2.14.0+cu130 for torchao version 0.15.0             Please see https://github.com/pytorch/ao/issues/2919 for more info
+/survey/trt-venv/lib/python3.12/site-packages/flashinfer/cutile/cutile_common.py:64: UserWarning: Installed NVIDIA pip packages have mismatched versions (nvidia-cuda-tileiras 13.1.80, nvidia-cuda-nvcc 13.3.73, nvidia-nvvm 13.3.73). Falling back to system tileiras.
+  binary = _find_compiler_bin()
+[TensorRT-LLM] TensorRT LLM version: 1.4.0rc2.post1
+/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/serve/openai_protocol.py:288: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+  class ResponseFormat(OpenAIBaseModel):
+[TRT-LLM] [I] [runtime][RANK 0] Refreshed the MPI local session
+[11/04/2026-17:39:57] [TRT-LLM] [I] [executor] get signal from executor worker
+[11/04/2026-17:39:58] [TRT-LLM] [W] [llmapi] Worker process 154 is affined to run on the following CPUs: [2] (subset of all logical CPUs). This may harm performance if set incorrectly.
+[11/04/2026-17:39:58] [TRT-LLM] [W] [llmapi] Worker process 154 has constrained CPU affinity but `TLLM_NUMA_AWARE_WORKER_AFFINITY` is not set. Removing CPU affinity constraints.
+[11/04/2026-17:39:58] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation: start
+`torch_dtype` is deprecated! Use `dtype` instead!
+[11/04/2026-17:39:58] [TRT-LLM] [I] [_torch] Tokenizer not provided; loading from checkpoint for guided decoding
+[11/04/2026-17:39:59] [TRT-LLM] [I] [_torch] ATTENTION RUNTIME FEATURES:  AttentionRuntimeFeatures(chunked_prefill=False, cache_reuse=True, has_speculative_draft_tokens=False, chunk_size=4096, chunked_prefill_buffer_batch_size=4)
+[11/04/2026-17:39:59] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/configuration_and_distributed_init: done in 1.532s
+[11/04/2026-17:39:59] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/model: start
+The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[11/04/2026-17:40:00] [TRT-LLM] [I] [_torch] Validating KV Cache config against kv_cache_dtype="auto"
+[11/04/2026-17:40:00] [TRT-LLM] [I] [_torch] KV cache quantization set to "auto". Using checkpoint KV quantization.
+[11/04/2026-17:40:00] [TRT-LLM] [W] [_torch] Model architectures is None, default to is_generation_model=True
+[11/04/2026-17:40:00] [TRT-LLM] [W] [_torch] rope_fusion is true but the attention backend does not support it. Will disable rope_fusion.
+[11/04/2026-17:40:00] [TRT-LLM] [W] [_torch] Model architectures is None, default to is_generation_model=True
+[11/04/2026-17:40:01] [TRT-LLM] [I] [_torch] Fallback to regular model init: Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_loader.py", line 1089, in load
+    model = AutoModelForCausalLM.from_config(config_copy)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_auto.py", line 78, in from_config
+    model = cls(config)
+            ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3vl.py", line 230, in __init__
+    self.siglip_tower = SiglipVisionModel(vision_model_config,
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_siglip.py", line 77, in __init__
+    self.vision_model = SiglipVisionTransformer(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_siglip.py", line 36, in __init__
+    self.encoder = SiglipEncoder(model_config)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_clip.py", line 104, in __init__
+    CLIPEncoderLayer(model_config, layer_idx)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_clip.py", line 57, in __init__
+    self.layer_norm1 = nn.LayerNorm(self.embed_dim,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/normalization.py", line 219, in __init__
+    self.reset_parameters()
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/normalization.py", line 223, in reset_parameters
+    init.ones_(self.weight)
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/init.py", line 365, in ones_
+    return _no_grad_fill_(tensor, 1.0)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tensorrt_llm._torch.models.modeling_utils.MetaInitException: Meta tensor used in unsupported function: aten.fill_.Scalar
+
+[11/04/2026-17:40:01] [TRT-LLM] [W] [_torch] Model architectures is None, default to is_generation_model=True
+[11/04/2026-17:40:01] [TRT-LLM] [W] [_torch] Model architectures is None, default to is_generation_model=True
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Use 8.52 GB for model weights.
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Checkpoint I/O policy is falling back before model materialization: requested=auto, selected=native, reason=rank 0: checkpoint bytes (8600277880) exceed available host memory (20793864192) after startup headroom (17179869184).
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Prefetching 8.01GB checkpoint files.
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Prefetching /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00002-of-00002.safetensors to memory...
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Prefetching /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00001-of-00002.safetensors to memory...
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Finished prefetching /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00002-of-00002.safetensors.
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Finished prefetching /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00001-of-00002.safetensors.
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Start to load safetensor file /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00002-of-00002.safetensors
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Start to load safetensor file /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00001-of-00002.safetensors
+Loading safetensors weights in parallel:   0%|          | 0/2 [00:00<?, ?it/s]Loading safetensors weights in parallel: 100%|██████████| 2/2 [00:00<00:00, 92.58it/s]
+[11/04/2026-17:41:09] [TRT-LLM] [I] [_torch] Checkpoint I/O policy: requested=auto, selected=native, activated=False, effective=native, fallback_reason=rank 0: checkpoint bytes (8600277880) exceed available host memory (20793864192) after startup headroom (17179869184).
+[11/04/2026-17:41:09] [TRT-LLM] [W] [_torch] [Linear.load_shard] Skipping device transfer from cpu to cuda on integrated GPU to conserve shared memory.
+Loading weights concurrently:   0%|          | 0/858 [00:00<?, ?it/s]Loading weights concurrently:   5%|▌         | 44/858 [00:07<02:22,  5.70it/s]Loading weights concurrently:   6%|▋         | 54/858 [00:08<01:54,  7.05it/s]Loading weights concurrently:  10%|█         | 88/858 [00:08<00:53, 14.39it/s]Loading weights concurrently:  14%|█▍        | 119/858 [00:08<00:33, 21.85it/s]Loading weights concurrently:  15%|█▌        | 129/858 [00:09<00:31, 23.33it/s]Loading weights concurrently:  18%|█▊        | 155/858 [00:09<00:22, 31.23it/s]Loading weights concurrently:  21%|██        | 180/858 [00:09<00:17, 38.46it/s]Loading weights concurrently:  27%|██▋       | 235/858 [00:10<00:09, 65.09it/s]Loading weights concurrently:  29%|██▉       | 247/858 [00:10<00:10, 58.26it/s]Loading weights concurrently:  32%|███▏      | 274/858 [00:10<00:08, 66.26it/s]Loading weights concurrently:  36%|███▋      | 313/858 [00:11<00:06, 79.22it/s]Loading weights concurrently:  39%|███▉      | 335/858 [00:11<00:06, 75.28it/s]Loading weights concurrently:  41%|████▏     | 354/858 [00:11<00:06, 73.45it/s]Loading weights concurrently:  45%|████▌     | 388/858 [00:11<00:05, 81.46it/s]Loading weights concurrently:  47%|████▋     | 405/858 [00:12<00:06, 74.54it/s]Loading weights concurrently:  48%|████▊     | 413/858 [00:12<00:07, 58.06it/s]Loading weights concurrently:  49%|████▉     | 424/858 [00:12<00:06, 62.67it/s]Loading weights concurrently:  56%|█████▌    | 481/858 [00:13<00:03, 97.31it/s]Loading weights concurrently:  57%|█████▋    | 491/858 [00:13<00:04, 77.41it/s]Loading weights concurrently:  61%|██████    | 524/858 [00:13<00:03, 105.82it/s]Loading weights concurrently:  66%|██████▌   | 563/858 [00:13<00:02, 108.32it/s]Loading weights concurrently:  67%|██████▋   | 579/858 [00:14<00:03, 92.25it/s] Loading weights concurrently:  70%|██████▉   | 599/858 [00:14<00:02, 102.34it/s]Loading weights concurrently:  71%|███████▏  | 612/858 [00:14<00:03, 81.07it/s] Loading weights concurrently:  76%|███████▌  | 649/858 [00:14<00:01, 118.72it/s]Loading weights concurrently:  80%|████████  | 688/858 [00:15<00:01, 113.60it/s]Loading weights concurrently:  82%|████████▏ | 705/858 [00:15<00:01, 90.59it/s] Loading weights concurrently:  87%|████████▋ | 745/858 [00:15<00:00, 125.39it/s]Loading weights concurrently:  89%|████████▉ | 762/858 [00:15<00:00, 100.80it/s]Loading weights concurrently:  91%|█████████ | 782/858 [00:16<00:00, 81.05it/s] Loading weights concurrently:  94%|█████████▎| 804/858 [00:16<00:00, 75.74it/s]Loading weights concurrently:  97%|█████████▋| 831/858 [00:17<00:00, 72.92it/s]Loading weights concurrently:  99%|█████████▉| 851/858 [00:17<00:00, 84.82it/s]Loading weights concurrently: 100%|██████████| 858/858 [00:17<00:00, 49.21it/s]
+[11/04/2026-17:41:26] [TRT-LLM] [I] [_torch] Renamed weights with params_map: {'(.*?)out_proj(.*)': '\\1o_proj\\2', '(.*?)fc1(.*)': '\\1up_proj\\2', '(.*?)fc2(.*)': '\\1down_proj\\2'}
+Loading weights concurrently:   0%|          | 0/602 [00:00<?, ?it/s]Loading weights concurrently:  26%|██▌       | 157/602 [00:00<00:00, 1370.92it/s]Loading weights concurrently:  55%|█████▍    | 329/602 [00:00<00:00, 1470.82it/s]Loading weights concurrently:  82%|████████▏ | 493/602 [00:00<00:00, 1529.87it/s]Loading weights concurrently: 100%|██████████| 602/602 [00:00<00:00, 1402.75it/s]
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] Model loading metrics for rank 0: checkpoint_preparation_seconds=0.3015, weight_population_seconds=17.8829, checkpoint_finalization_seconds=0.0000, post_load_processing_seconds=0.0021, total_model_loading_seconds=86.8815
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/model: done in 87.984s
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/guided_decoder: start
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] Guided decoder initialized with backend: GuidedDecodingBackend.XGRAMMAR
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/guided_decoder: done in 0.321s
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/sampler: start
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] Using Sampler: TorchSampler
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/sampler: done in 0.011s
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] [create_py_executor] Created execution_stream: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4f865920>
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] Memory used at after loading weights (inside torch) in memory usage profiling: 8.77 GiB
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] Memory used at after loading weights (outside torch) in memory usage profiling: 106.82 GiB
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/profiling_kv_cache_allocation: start
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] [KVCacheManager] execution_stream: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4f865920>
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] max_gpu_total_bytes is provided. New quota is 3.046619415283203GiB
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] max_tokens 16384 is provided. Allowed quota from max_tokens is 2.2368421060964465GiB. New quota is 2.2368421060964465GiB
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] KV cache manager v2 device quota set to 2.2368421060964465GiB
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] KV cache manager v2 auto host tier sizing: 1 co-located rank(s) on this node, available host memory 6.09GiB
+[11/04/2026-17:41:27] [TRT-LLM] [I] [_torch] KV cache manager v2 host cache quota set to 0.01GiB
+[TRT-LLM] [W] [batchmgr][RANK 0] PooledPhysMemAllocator: device 0 refused gpuDirectRDMACapable for KV cache memory with handle type 1, so the pools are allocated without it. nvidia_peermem (ibv_reg_mr) cannot register this memory for GPUDirect RDMA; dma-buf registration still can.
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_torch] KVCacheManagerV2: IndexMapper capacity=9 (max_num_sequences=4, is_disagg=False, disable_overlap_scheduler=False, pp_size=1, num_reserved_index_slots=1, max_beam_width=1, max_copy_beam_width=1)
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_torch] KVCacheManagerV2 role-to-pool/lifecycle mapping:
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_torch] role=key, pool_group_id=0, layer_group_id=0
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_torch] role=value, pool_group_id=0, layer_group_id=0
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/profiling_kv_cache_allocation: done in 0.111s
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/spec_resource_manager: start
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/spec_resource_manager: done in 0.000s
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/drafter: start
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/drafter: done in 0.000s
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/profiling_executor_creation: start
+[TRT-LLM] [I] [runtime][RANK 0] GPU 0 is on NUMA node 0
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_torch] max_seq_len=16384, max_num_requests=8, max_num_tokens=4096, max_batch_size=4
+[11/04/2026-17:41:28] [TRT-LLM] [W] [_torch] KVCacheV2Scheduler only supports MAX_UTILIZATION for now, got GUARANTEED_NO_EVICT, setting to MAX_UTILIZATION
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_torch] KVCacheV2Scheduler: tokens_per_block=32, max_num_tokens=4096, max_batch_size=4, draft_mgr=None, cross_mgr=None, enable_prefix_aware_scheduling=True, prefix_skip_enabled=True, enable_recompute_pause=True
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_torch] cache_transceiver is disabled
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_torch] [PyExecutor] execution_stream initialized: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4f865920>; encoder_stream initialized: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4f6f1070>.
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_startup] [startup][pid=154] pre_warmup_rank_barrier: start
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_startup] [startup][pid=154] pre_warmup_rank_barrier: done, total=0.000s, unattributed=0.000s | 
+[11/04/2026-17:41:28] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] sampling_module_prewarm: start
+[11/04/2026-17:42:05] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] sampling_module_prewarm: done in 37.0s
+[11/04/2026-17:42:05] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] cute_dsl_indexer_q: start
+[11/04/2026-17:42:05] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] cute_dsl_indexer_q: done in 0.0s
+[11/04/2026-17:42:05] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] attention_jit: start
+[11/04/2026-17:42:05] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] attention_jit: done in 0.0s
+[11/04/2026-17:42:05] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] general: start
+[11/04/2026-17:42:05] [TRT-LLM] [I] [_torch] Run warmup with 1 tokens, include 0 generation tokens
+[11/04/2026-17:42:06] [TRT-LLM] [I] [_torch] PDL enabled
+[11/04/2026-17:43:26] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] general shape num_tokens=1, num_gen_tokens=0: done in 80.7s
+[11/04/2026-17:43:26] [TRT-LLM] [I] [_torch] Run warmup with 1 tokens, include 1 generation tokens
+[11/04/2026-17:43:37] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] general shape num_tokens=1, num_gen_tokens=1: done in 11.6s
+[11/04/2026-17:43:37] [TRT-LLM] [I] [_torch] Run warmup with 4096 tokens, include 0 generation tokens
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] general shape num_tokens=4096, num_gen_tokens=0: done in 0.5s
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] Run warmup with 4 tokens, include 4 generation tokens
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] general shape num_tokens=4, num_gen_tokens=4: done in 0.0s
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] Run warmup with 2 tokens, include 0 generation tokens
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] general shape num_tokens=2, num_gen_tokens=0: done in 0.0s
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] general: done in 93.2s
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] autotuner: start
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] Running autotuner warmup (TRT-LLM=True, native MXFP8=False, FlashInfer MXFP8=False)...
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] [Autotuner] Autotuning process starts ...
+[11/04/2026-17:43:38] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] autotuner shape num_tokens=4096, num_gen_requests=0: start
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] autotuner shape num_tokens=4096, num_gen_requests=0: done in 0.5s
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] autotuner shape num_tokens=1, num_gen_requests=1: start
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] autotuner shape num_tokens=1, num_gen_requests=1: done in 0.0s
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [Autotuner] Autotuning process ends
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [Autotuner] Cache size after warmup is 0
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] autotuner: done in 0.5s
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] mamba_hybrid: start
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] mamba_hybrid: done in 0.0s
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] cuda_graph_capture: start
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] Running CUDA graph warmup for 3 batch sizes.
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph warmup (full) for batch size=4, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph warmup (full) for batch size=2, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph warmup (full) for batch size=1, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] Running CUDA graph capture for 3 batch sizes.
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph capture (full) for batch size=4, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph capture (full) for batch size=2, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph capture (full) for batch size=1, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] cuda_graph_capture: done in 0.6s
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] dsa_prewarm: start
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] dsa_prewarm: done in 0.0s
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] memory_pool_prepop: start
+[11/04/2026-17:43:39] [TRT-LLM] [I] [_torch] Run warmup with 4096 tokens, include 0 generation tokens
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] general shape num_tokens=4096, num_gen_tokens=0: done in 0.4s
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] Run warmup with 4 tokens, include 4 generation tokens
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] general shape num_tokens=4, num_gen_tokens=4: done in 0.0s
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] memory_pool_prepop: done in 0.5s
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] preallocate_padding_dummies: start
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] preallocate_padding_dummies: done in 0.0s
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] Eager workspace reclamation requires warmup of pure fallback scratch
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] summary: total=132.1s | sampling_module_prewarm=37.0s (28%), cute_dsl_indexer_q=0.0s (0%), attention_jit=0.0s (0%), general=93.2s (71%), autotuner=0.5s (0%), mamba_hybrid=0.0s (0%), cuda_graph_capture=0.6s (0%), dsa_prewarm=0.0s (0%), memory_pool_prepop=0.5s (0%), preallocate_padding_dummies=0.0s (0%)
+[11/04/2026-17:43:40] [TRT-LLM] [W] [_torch] [warmup][pid=154][rank=0][purpose=memory_profiling][pass=1] slow phases (>60s): general=93.2s
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] global_steady_clock_offset at each rank: [0.0]
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] Setting global_steady_clock_offset: 0.0 seconds for rank 0
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/profiling_executor_creation: done in 132.462s
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/memory_profiling_and_capacity: start
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] Memory used after loading model weights (inside torch) in memory usage profiling: 9.27 GiB
+[11/04/2026-17:43:40] [TRT-LLM] [I] [_torch] Memory used after loading model weights (outside torch) in memory usage profiling: 108.02 GiB
+[11/04/2026-17:43:40] [TRT-LLM] [W] [_torch] Resource manager ResourceManagerType.KV_CACHE_MANAGER does not provide a per-request KV block budget
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] Memory dynamically allocated during inference (inside torch) in memory usage profiling: 0.36 GiB
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] Memory used outside torch (e.g., NCCL and CUDA graphs) in memory usage profiling: 108.17 GiB
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] Reserving 0.00 GiB for the penalty workspace of the overlap-headroom seats, which is allocated on the first penalized request.
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] Peak memory during memory usage profiling (torch + non-torch): 117.81 GiB, available KV cache memory when calculating max tokens: 3.06 GiB, fraction is set 0.5, kv size per token is 20480 bytes/token + 988282880 bytes fixed cost. device total memory 121.69 GiB, temporary kv cache memory during profiling 2.24 GiB
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] Estimated max memory in KV cache : 3.06 GiB
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/memory_profiling_and_capacity: done in 0.605s
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/profiling_resource_teardown: start
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/profiling_kv_cache_teardown: start
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/profiling_kv_cache_teardown: done in 0.000s
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/profiling_resource_teardown: done in 0.284s
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/final_kv_cache_allocation: start
+[11/04/2026-17:43:41] [TRT-LLM] [W] [_torch] The engine admits up to ~4 concurrent decode requests (scheduler max_batch_size=4), but captured CUDA graphs only cover decode batches up to 2 (largest capture 4, enable_padding=False). Decode batches above 2 run in eager mode with a large per-iteration latency penalty, which can cost more throughput than the added concurrency buys. Raise cuda_graph_config.max_batch_size (or add larger cuda_graph_config.batch_sizes) and set cuda_graph_config.enable_padding=True so ragged batches round up to a captured size, or lower max_batch_size if decode above 2 concurrent requests is not intended.
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] Derived per-layer max_attention_window from layer_types for KVCacheManagerV2: [1024, 1024, 1024, 1024, 1024, 16384, 1024, 1024, 1024, 1024, 1024, 16384, 1024, 1024, 1024, 1024, 1024, 16384, 1024, 1024, 1024, 1024, 1024, 16384, 1024, 1024, 1024, 1024, 1024, 16384, 1024, 1024, 1024, 1024] (2 distinct windows)
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [KVCacheManager] execution_stream: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4f865920>
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] max_gpu_total_bytes is provided. New quota is 3.0565105676651GiB
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] max_tokens 16384 is provided. Allowed quota from max_tokens is 1.2978001646697521GiB. New quota is 1.2978001646697521GiB
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] KV cache manager v2 device quota set to 1.2978001646697521GiB
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] KV cache manager v2 auto host tier sizing: 1 co-located rank(s) on this node, available host memory 7.07GiB
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] KV cache manager v2 host cache quota set to 0.01GiB
+[TRT-LLM] [W] [batchmgr][RANK 0] PooledPhysMemAllocator: device 0 refused gpuDirectRDMACapable for KV cache memory with handle type 1, so the pools are allocated without it. nvidia_peermem (ibv_reg_mr) cannot register this memory for GPUDirect RDMA; dma-buf registration still can.
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] KVCacheManagerV2: IndexMapper capacity=9 (max_num_sequences=4, is_disagg=False, disable_overlap_scheduler=False, pp_size=1, num_reserved_index_slots=1, max_beam_width=1, max_copy_beam_width=1)
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] KVCacheManagerV2 role-to-pool/lifecycle mapping:
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] role=key, pool_group_id=1, layer_group_id=0
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] role=value, pool_group_id=1, layer_group_id=0
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] role=key, pool_group_id=0, layer_group_id=1
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] role=value, pool_group_id=0, layer_group_id=1
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/final_kv_cache_allocation: done in 0.081s
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/final_executor_creation: start
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] max_seq_len=16384, max_num_requests=8, max_num_tokens=4096, max_batch_size=4
+[11/04/2026-17:43:41] [TRT-LLM] [W] [_torch] KVCacheV2Scheduler only supports MAX_UTILIZATION for now, got GUARANTEED_NO_EVICT, setting to MAX_UTILIZATION
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] KVCacheV2Scheduler: tokens_per_block=32, max_num_tokens=4096, max_batch_size=4, draft_mgr=None, cross_mgr=None, enable_prefix_aware_scheduling=True, prefix_skip_enabled=True, enable_recompute_pause=True
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] cache_transceiver is disabled
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [PyExecutor] execution_stream initialized: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4f865920>; encoder_stream initialized: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4f75ece0>.
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] pre_warmup_rank_barrier: start
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_startup] [startup][pid=154] pre_warmup_rank_barrier: done, total=0.000s, unattributed=0.000s | 
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] sampling_module_prewarm: start
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] sampling_module_prewarm: done in 0.0s
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] cute_dsl_indexer_q: start
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] cute_dsl_indexer_q: done in 0.0s
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] attention_jit: start
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] attention_jit: done in 0.0s
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] general: start
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] Run warmup with 1 tokens, include 0 generation tokens
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] general shape num_tokens=1, num_gen_tokens=0: done in 0.1s
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] Run warmup with 1 tokens, include 1 generation tokens
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] general shape num_tokens=1, num_gen_tokens=1: done in 0.0s
+[11/04/2026-17:43:41] [TRT-LLM] [I] [_torch] Run warmup with 4096 tokens, include 0 generation tokens
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] general shape num_tokens=4096, num_gen_tokens=0: done in 0.4s
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] Run warmup with 4 tokens, include 4 generation tokens
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] general shape num_tokens=4, num_gen_tokens=4: done in 0.0s
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] Run warmup with 2 tokens, include 0 generation tokens
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] general shape num_tokens=2, num_gen_tokens=0: done in 0.0s
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] general: done in 0.9s
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] autotuner: start
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] Skipping duplicate autotuner warmup for already completed num_tokens=4096
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] autotuner: done in 0.0s
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] mamba_hybrid: start
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] mamba_hybrid: done in 0.0s
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] cuda_graph_capture: start
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] Running CUDA graph warmup for 3 batch sizes.
+[11/04/2026-17:43:42] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph warmup (full) for batch size=4, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph warmup (full) for batch size=2, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph warmup (full) for batch size=1, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Running CUDA graph capture for 3 batch sizes.
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph capture (full) for batch size=4, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph capture (full) for batch size=2, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Run generation-only CUDA graph capture (full) for batch size=1, draft_len=0, max_seq_len=16384
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] cuda_graph_capture: done in 0.5s
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] dsa_prewarm: start
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] dsa_prewarm: done in 0.0s
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] memory_pool_prepop: start
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Run warmup with 4096 tokens, include 0 generation tokens
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] general shape num_tokens=4096, num_gen_tokens=0: done in 0.4s
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Run warmup with 4 tokens, include 4 generation tokens
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] general shape num_tokens=4, num_gen_tokens=4: done in 0.0s
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] memory_pool_prepop: done in 0.5s
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] preallocate_padding_dummies: start
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] preallocate_padding_dummies: done in 0.0s
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Eager workspace reclamation requires warmup of pure fallback scratch
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] [warmup][pid=154][rank=0][purpose=final_executor][pass=2] summary: total=2.2s | sampling_module_prewarm=0.0s (0%), cute_dsl_indexer_q=0.0s (0%), attention_jit=0.0s (0%), general=0.9s (42%), autotuner=0.0s (0%), mamba_hybrid=0.0s (0%), cuda_graph_capture=0.5s (23%), dsa_prewarm=0.0s (0%), memory_pool_prepop=0.5s (22%), preallocate_padding_dummies=0.0s (0%)
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] global_steady_clock_offset already set (0:00:00); skipping recalibration for rank 0
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/final_executor_creation: done in 2.508s
+[11/04/2026-17:43:43] [TRT-LLM] [W] [_torch] It is recommended to incl. 'garbage_collection_threshold:0.???' or 'backend:cudaMallocAsync' or 'expandable_segments:True' in PYTORCH_ALLOC_CONF.
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] Setting PyTorch memory fraction to 0.12011578576335932 (14.616569519042969 GiB)
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_torch] LLM Args:
+model='/root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408' tokenizer=None tokenizer_mode='auto' custom_tokenizer=None post_processor_hook=None skip_tokenizer_init=False trust_remote_code=False tensor_parallel_size=1 dtype='bfloat16' revision=None tokenizer_revision=None model_kwargs=None pipeline_parallel_size=1 context_parallel_size=1 gpus_per_node=1 moe_cluster_parallel_size=-1 moe_tensor_parallel_size=-1 moe_expert_parallel_size=-1 enable_attention_dp=False enable_lm_head_tp_in_adp=False pp_partition=None cp_config=None load_format=<LoadFormat.AUTO: 0> enable_lora=False lora_config=None kv_cache_config=KvCacheConfig(enable_block_reuse=True, max_tokens=16384, max_attention_window=None, sink_token_length=None, free_gpu_memory_fraction=0.5, host_cache_size=None, disk_cache_size=None, disk_cache_path=None, cross_kv_cache_fraction=None, cold_tier_offload_min_priority=None, secondary_offload_min_priority=None, event_buffer_max_size=0, attention_dp_events_gather_period_ms=5, kv_events_config=None, enable_partial_reuse=True, copy_on_partial_reuse=True, use_uvm=False, max_gpu_total_bytes=3281903232, iteration_stats_interval=1, dtype='auto', mixed_precision_first_n=256, mixed_precision_last_n=256, mamba_ssm_cache_dtype='auto', mamba_ssm_stochastic_rounding=False, mamba_ssm_philox_rounds=10, tokens_per_block=32, mamba_state_cache_interval=None, mamba_state_config=MambaStateConfig(periodic_snapshot_interval=0, additional_snapshot_offsets_from_start=[], additional_snapshot_offsets_from_end=[], enable_branch_snapshot=False), use_kv_cache_manager_v2=True, enable_swa_scratch_reuse=False, kv_cache_event_hash_algo='auto', max_util_for_resume=0.95, enable_kv_pool_rebalance=False, kv_pool_rebalance_config=KvPoolRebalanceConfig(min_sampled_kv_caches=2000, cooldown_secs=120.0, target_ratio_update_interval=100, ratio_tolerance=0.25, moving_average_decay=0.9999, check_interval=10), disk_prefetch_num_reqs=0, fp8_context_mla_kv_len_cap=None, pool_ratio=None, avg_seq_len=None, block_reuse_config=BlockReuseConfig(policy='all_reusable', max_num_turns=1, swa_endpoint_rewind_tokens=0, enable_branch_snapshot=False)) enable_chunked_prefill=False guided_decoding_backend='xgrammar' batched_logits_processor=None iter_stats_max_iterations=None request_stats_max_iterations=None peft_cache_config=None scheduler_config=SchedulerConfig(capacity_scheduler_policy=<CapacitySchedulerPolicy.GUARANTEED_NO_EVICT: 'GUARANTEED_NO_EVICT'>, context_chunking_policy=None, dynamic_batch_config=None, waiting_queue_policy=<WaitingQueuePolicy.FCFS: 'fcfs'>, use_python_scheduler=False, enable_prefix_aware_scheduling=True) cache_transceiver_config=None sparse_attention_config=None kv_cache_compression_config=None speculative_config=None max_batch_size=4 max_input_len=1024 max_seq_len=16384 max_beam_width=1 max_num_tokens=4096 gather_generation_logits=False num_postprocess_workers=0 postprocess_tokenizer_dir='/root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408' num_serve_frontends=1 reasoning_parser=None decoding_config=None mpi_session=None otlp_traces_endpoint=None backend='pytorch' return_perf_metrics=False per_request_spec_decode_stats=False perf_metrics_output_dir=None perf_metrics_max_requests=0 prometheus_metrics_config=None enable_energy_metrics=False orchestrator_type=None env_overrides=None telemetry_config=TelemetryConfig(disabled=False, usage_context=<UsageContext.CLI_SERVE: 'cli_serve'>) generation_config='trtllm' garbage_collection_gen0_threshold=20000 cuda_graph_config=DecodeCudaGraphConfig(batch_sizes=[1, 2, 4], max_batch_size=4, enable_padding=False, mode='decode') encoder_cuda_graph_config=None enable_encoder_decoder_mixed_cuda_graph=True multimodal_config=MultimodalConfig(encoder_cuda_graph=None, encoder_side_stream_max_ahead=0, encoder_cache_max_bytes=134217728, encoder_scheduling_policy=<MultimodalEncoderSchedulingPolicy.DEFAULT: 'DEFAULT'>, video_pruning_rate=None) attention_dp_config=None disable_overlap_scheduler=False enable_return_routed_experts=False lm_head_output_dtype='auto' moe_config=MoeConfig(backend='AUTO', max_num_tokens=None, load_balancer=None, disable_finalize_fusion=False, use_low_precision_moe_combine=False) nvfp4_gemm_config=Nvfp4GemmConfig(allowed_backends=['cutlass', 'cublaslt', 'cutedsl', 'cuda_core']) dwdp_config=None encoder_max_batch_size=None encoder_max_num_tokens=None attn_backend='FLASHINFER' enable_mla_skip_correction=False mla_skip_correction_threshold=8.0 sampler_force_async_worker=False enable_in_graph_sampling=False enable_speculative_beam_history_d2h=False enable_early_first_token_response=False enable_low_latency_host_dispatch=False enable_iter_perf_stats=False enable_tokenization_cache=False enable_iter_req_stats=False iter_perf_stats_interval=1 print_iter_log=False batch_wait_timeout_ms=0 batch_wait_timeout_iters=0 batch_wait_max_tokens_ratio=0 bounded_replay_on_generation=False torch_compile_config=None prefill_cuda_graph_backend=<PrefillCudaGraphBackend.DISABLED: 'disabled'> prefill_capture_num_tokens=None enable_autotuner=True use_fine_grained_sync=False enable_layerwise_nvtx_marker=False enable_min_latency=False stream_interval=1 force_dynamic_quantization=False allreduce_strategy='AUTO' checkpoint_loader=None checkpoint_format='HF' checkpoint_io_policy='auto' mx_config=ModelExpressConfig(server_url=None, server_query_timeout_s=None, preshard_strategy='per_module') gms_config=GmsConfig(socket_path=None, mode='auto', tag='weights') kv_connector_config=None mm_encoder_only=False disable_mm_encoder=False encode_only=False ray_worker_extension_cls=None ray_placement_config=None ray_worker_nsight_options=None sleep_config=None reorder_policy_config=None enable_resource_governor=False use_cute_dsl_blockscaling_mm=False use_cute_dsl_blockscaling_bmm=False enable_locality_domains=False use_cute_dsl_bf16_bmm=False use_cute_dsl_bf16_gemm=False max_stats_len=1000 layer_wise_benchmarks_config=LayerwiseBenchmarksConfig(calibration_mode='NONE', calibration_file_path=None, calibration_layer_indices=None) modeling_v2='off'
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/executor_start_worker: start
+[11/04/2026-17:43:43] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation/executor_start_worker: done in 0.001s
+[11/04/2026-17:43:44] [TRT-LLM] [I] [_startup] [startup][pid=154] executor_creation: done, total=225.975s, unattributed=0.076s | configuration_and_distributed_init=1.532s, model=87.984s, guided_decoder=0.321s, sampler=0.011s, profiling_kv_cache_allocation=0.111s, spec_resource_manager=0.000s, drafter=0.000s, profiling_executor_creation=132.462s, memory_profiling_and_capacity=0.605s, profiling_resource_teardown=0.284s, final_kv_cache_allocation=0.081s, final_executor_creation=2.508s, executor_start_worker=0.001s
+[11/04/2026-17:43:44] [TRT-LLM] [I] [executor] RPCServer is bound to ipc:///tmp/rpc_test_73c3a74f-3210-4c48-be63-00b013e8cc04
+[11/04/2026-17:43:44] [TRT-LLM] [I] [executor] RPC Server started and listening on ipc:///tmp/rpc_test_73c3a74f-3210-4c48-be63-00b013e8cc04
+[11/04/2026-17:43:44] [TRT-LLM] [I] [executor] RPC Server has started.
+[11/04/2026-17:43:44] [TRT-LLM] [I] [executor] get signal from executor worker
+[11/04/2026-17:43:44] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_initialization_wait: done in 244.484s
+[11/04/2026-17:43:44] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready: done, total=244.495s, unattributed=0.000s | worker_submit=0.011s, worker_initialization_wait=244.484s
+[11/04/2026-17:43:44] [TRT-LLM] [I] [executor] [startup][pid=1] executor_proxy/workers_ready: elapsed=244.675s
+[11/04/2026-17:43:45] [TRT-LLM] [W] [serve] Resource governor is disabled: the executor backend does not provide a resource_governor_queue (e.g. RPC orchestrator mode or explicit opt-out). Endpoints under /_resource_governor/ will not be available.
+[11/04/2026-17:43:45] [TRT-LLM] [I] [_startup] [startup][pid=1] http_server_start: start
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+[11/04/2026-17:43:45] [TRT-LLM] [I] [_startup] [startup][pid=1] http_server_start: done, total=0.101s, unattributed=0.101s | 
+INFO:     127.0.0.1:35304 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35320 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34446 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54818 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35848 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:35876 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:37580 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57578 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57588 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+[11/04/2026-17:47:21] [TRT-LLM] [W] [inputs] Multimodal hashing failed: Number of start positions (0) does not match number of multimodal chunks (1).
+[11/04/2026-17:47:21] [TRT-LLM] [W] [inputs] Falling back to basic input processor.
+/survey/trt-venv/lib/python3.12/site-packages/torch/multiprocessing/reductions.py:593: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  if storage.is_cuda:
+torch_shm_manager: error while loading shared libraries: libcupti.so.13: cannot open shared object file: No such file or directory
+[11/04/2026-17:47:21] [TRT-LLM] [E] [serve] Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 640, in _apply_tensor_operation
+    input_data).dump_to_dict()
+                ^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/shared_tensor/shared_tensor.py", line 460, in dump_to_dict
+    storage_handle = reduce_storage(storage)
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/multiprocessing/reductions.py", line 602, in reduce_storage
+    metadata = storage._share_filename_cpu_()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/storage.py", line 1481, in _share_filename_cpu_
+    ) = self._untyped_storage._share_filename_cpu_(*args, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/storage.py", line 458, in wrapper
+    return fn(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/storage.py", line 540, in _share_filename_cpu_
+    return super()._share_filename_cpu_(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: no response from torch_shm_manager at "/survey/trt-venv/lib/python3.12/site-packages/torch/bin/torch_shm_manager"
+Exception raised from start_manager at /__w/pytorch/pytorch/torch/lib/libshm/core.cpp:59 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xeeb66c33d558 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xc8 (0xeeb66c2d9ec8 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #2: <unknown function> + 0x412288 (0xeeb68fee2288 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #3: THManagedMapAllocatorInit::THManagedMapAllocatorInit(char const*, char const*) + 0x80 (0xeeb68fee2860 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #4: THManagedMapAllocator::THManagedMapAllocator(char const*, char const*, int, unsigned long) + 0x30 (0xeeb68fee2d00 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #5: THManagedMapAllocator::makeDataPtr(char const*, char const*, int, unsigned long) + 0x48 (0xeeb68fee2d98 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #6: <unknown function> + 0xa6b6cc (0xeeb69059b6cc in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so)
+frame #7: /survey/trt-venv/bin/python3() [0x503048]
+frame #8: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #9: /survey/trt-venv/bin/python3() [0x4c6ca4]
+frame #10: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #11: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #12: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #13: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #14: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #15: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #16: /survey/trt-venv/bin/python3() [0x6e69d4]
+frame #17: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #18: /survey/trt-venv/bin/python3() [0x4c6ca4]
+frame #19: /survey/trt-venv/bin/python3() [0x6e4a90]
+frame #20: /survey/trt-venv/bin/python3() [0x686260]
+frame #21: <unknown function> + 0x8582c (0xeeb720af582c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #22: <unknown function> + 0xeb79c (0xeeb720b5b79c in /lib/aarch64-linux-gnu/libc.so.6)
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/serve/openai_server.py", line 2461, in openai_chat
+    generate_inputs = await loop.run_in_executor(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 1176, in preprocess
+    encoder_input_token_ids) = self._preprocess(
+                               ^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 1105, in _preprocess
+    multimodal_params.to_handle("multimodal_data")
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 683, in to_handle
+    transformed_data = self._apply_tensor_operation(data, "to_handle")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 627, in _apply_tensor_operation
+    key: self._apply_tensor_operation(value, operation,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 627, in _apply_tensor_operation
+    key: self._apply_tensor_operation(value, operation,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 642, in _apply_tensor_operation
+    raise RuntimeError(
+RuntimeError: Failed to convert tensor to shared tensor: no response from torch_shm_manager at "/survey/trt-venv/lib/python3.12/site-packages/torch/bin/torch_shm_manager"
+Exception raised from start_manager at /__w/pytorch/pytorch/torch/lib/libshm/core.cpp:59 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xeeb66c33d558 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xc8 (0xeeb66c2d9ec8 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #2: <unknown function> + 0x412288 (0xeeb68fee2288 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #3: THManagedMapAllocatorInit::THManagedMapAllocatorInit(char const*, char const*) + 0x80 (0xeeb68fee2860 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #4: THManagedMapAllocator::THManagedMapAllocator(char const*, char const*, int, unsigned long) + 0x30 (0xeeb68fee2d00 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #5: THManagedMapAllocator::makeDataPtr(char const*, char const*, int, unsigned long) + 0x48 (0xeeb68fee2d98 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #6: <unknown function> + 0xa6b6cc (0xeeb69059b6cc in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so)
+frame #7: /survey/trt-venv/bin/python3() [0x503048]
+frame #8: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #9: /survey/trt-venv/bin/python3() [0x4c6ca4]
+frame #10: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #11: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #12: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #13: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #14: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #15: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #16: /survey/trt-venv/bin/python3() [0x6e69d4]
+frame #17: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #18: /survey/trt-venv/bin/python3() [0x4c6ca4]
+frame #19: /survey/trt-venv/bin/python3() [0x6e4a90]
+frame #20: /survey/trt-venv/bin/python3() [0x686260]
+frame #21: <unknown function> + 0x8582c (0xeeb720af582c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #22: <unknown function> + 0xeb79c (0xeeb720b5b79c in /lib/aarch64-linux-gnu/libc.so.6)
+
+
+INFO:     127.0.0.1:58304 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+torch_shm_manager: error while loading shared libraries: libcupti.so.13: cannot open shared object file: No such file or directory
+[11/04/2026-17:47:21] [TRT-LLM] [E] [serve] Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 640, in _apply_tensor_operation
+    input_data).dump_to_dict()
+                ^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/shared_tensor/shared_tensor.py", line 460, in dump_to_dict
+    storage_handle = reduce_storage(storage)
+                     ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/multiprocessing/reductions.py", line 602, in reduce_storage
+    metadata = storage._share_filename_cpu_()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/storage.py", line 1481, in _share_filename_cpu_
+    ) = self._untyped_storage._share_filename_cpu_(*args, **kwargs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/storage.py", line 458, in wrapper
+    return fn(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/storage.py", line 540, in _share_filename_cpu_
+    return super()._share_filename_cpu_(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: no response from torch_shm_manager at "/survey/trt-venv/lib/python3.12/site-packages/torch/bin/torch_shm_manager"
+Exception raised from start_manager at /__w/pytorch/pytorch/torch/lib/libshm/core.cpp:59 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xeeb66c33d558 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xc8 (0xeeb66c2d9ec8 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #2: <unknown function> + 0x412288 (0xeeb68fee2288 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #3: THManagedMapAllocatorInit::THManagedMapAllocatorInit(char const*, char const*) + 0x80 (0xeeb68fee2860 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #4: THManagedMapAllocator::THManagedMapAllocator(char const*, char const*, int, unsigned long) + 0x30 (0xeeb68fee2d00 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #5: THManagedMapAllocator::makeDataPtr(char const*, char const*, int, unsigned long) + 0x48 (0xeeb68fee2d98 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #6: <unknown function> + 0xa6b6cc (0xeeb69059b6cc in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so)
+frame #7: /survey/trt-venv/bin/python3() [0x503048]
+frame #8: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #9: /survey/trt-venv/bin/python3() [0x4c6ca4]
+frame #10: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #11: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #12: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #13: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #14: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #15: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #16: /survey/trt-venv/bin/python3() [0x6e69d4]
+frame #17: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #18: /survey/trt-venv/bin/python3() [0x4c6ca4]
+frame #19: /survey/trt-venv/bin/python3() [0x6e4a90]
+frame #20: /survey/trt-venv/bin/python3() [0x686260]
+frame #21: <unknown function> + 0x8582c (0xeeb720af582c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #22: <unknown function> + 0xeb79c (0xeeb720b5b79c in /lib/aarch64-linux-gnu/libc.so.6)
+
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/serve/openai_server.py", line 2461, in openai_chat
+    generate_inputs = await loop.run_in_executor(
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 1176, in preprocess
+    encoder_input_token_ids) = self._preprocess(
+                               ^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 1105, in _preprocess
+    multimodal_params.to_handle("multimodal_data")
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 683, in to_handle
+    transformed_data = self._apply_tensor_operation(data, "to_handle")
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 627, in _apply_tensor_operation
+    key: self._apply_tensor_operation(value, operation,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 627, in _apply_tensor_operation
+    key: self._apply_tensor_operation(value, operation,
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/inputs/multimodal.py", line 642, in _apply_tensor_operation
+    raise RuntimeError(
+RuntimeError: Failed to convert tensor to shared tensor: no response from torch_shm_manager at "/survey/trt-venv/lib/python3.12/site-packages/torch/bin/torch_shm_manager"
+Exception raised from start_manager at /__w/pytorch/pytorch/torch/lib/libshm/core.cpp:59 (most recent call first):
+frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0xc8 (0xeeb66c33d558 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xc8 (0xeeb66c2d9ec8 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libc10.so)
+frame #2: <unknown function> + 0x412288 (0xeeb68fee2288 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #3: THManagedMapAllocatorInit::THManagedMapAllocatorInit(char const*, char const*) + 0x80 (0xeeb68fee2860 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #4: THManagedMapAllocator::THManagedMapAllocator(char const*, char const*, int, unsigned long) + 0x30 (0xeeb68fee2d00 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #5: THManagedMapAllocator::makeDataPtr(char const*, char const*, int, unsigned long) + 0x48 (0xeeb68fee2d98 in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libshm.so)
+frame #6: <unknown function> + 0xa6b6cc (0xeeb69059b6cc in /survey/trt-venv/lib/python3.12/site-packages/torch/lib/libtorch_python.so)
+frame #7: /survey/trt-venv/bin/python3() [0x503048]
+frame #8: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #9: /survey/trt-venv/bin/python3() [0x4c6ca4]
+frame #10: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #11: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #12: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #13: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #14: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #15: /survey/trt-venv/bin/python3() [0x4c6c2c]
+frame #16: /survey/trt-venv/bin/python3() [0x6e69d4]
+frame #17: _PyEval_EvalFrameDefault + 0x3e50 (0x566f94 in /survey/trt-venv/bin/python3)
+frame #18: /survey/trt-venv/bin/python3() [0x4c6ca4]
+frame #19: /survey/trt-venv/bin/python3() [0x6e4a90]
+frame #20: /survey/trt-venv/bin/python3() [0x686260]
+frame #21: <unknown function> + 0x8582c (0xeeb720af582c in /lib/aarch64-linux-gnu/libc.so.6)
+frame #22: <unknown function> + 0xeb79c (0xeeb720b5b79c in /lib/aarch64-linux-gnu/libc.so.6)
+
+
+INFO:     127.0.0.1:58312 - "POST /v1/chat/completions HTTP/1.1" 400 Bad Request
+INFO:     127.0.0.1:58314 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45830 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41732 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38824 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50124 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44922 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57714 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57716 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57722 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57724 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48988 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48974 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49008 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48992 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58460 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58446 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58452 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58464 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50534 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50544 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50518 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50548 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43480 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43492 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43500 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43498 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33058 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33044 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33070 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33080 - "POST /v1/chat/completions HTTP/1.1" 200 OK

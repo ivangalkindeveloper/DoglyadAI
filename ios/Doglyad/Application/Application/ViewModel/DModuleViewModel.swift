@@ -7,6 +7,11 @@ import Handler
 class DModuleViewModel<State>: DStateViewModel<State> {
     private var isInitialized = false
 
+    #if DEBUG
+        private(set) var isPreviewSnapshot = false
+
+    #endif
+
     let container: DependencyContainer
     let router: DRouter
     @Published private(set) var subscriptionStatus: SubscriptionStatus?
@@ -68,7 +73,25 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         getSettingsAI()
     }
 
+    #if DEBUG
+        /// Keep Canvas snapshots in their selected phase without starting module services.
+        final func preparePreview(
+            state: State,
+        ) {
+            isPreviewSnapshot = true
+            emit(
+                state,
+                animation: nil,
+            )
+        }
+    #endif
+
     final func onAppear() {
+        #if DEBUG
+            guard !isPreviewSnapshot else {
+                return
+            }
+        #endif
         switch analyticsDestination {
         case let .screen(
             screen,

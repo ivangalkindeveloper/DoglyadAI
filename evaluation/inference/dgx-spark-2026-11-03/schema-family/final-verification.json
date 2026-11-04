@@ -1,0 +1,11 @@
+{
+  "all_four_containers_unchanged": true,
+  "running": {
+    "doglyad-dgx-vllm_medgemma_4b-1": true,
+    "doglyad-dgx-vllm_medgemma_15_4b-1": true,
+    "doglyad-dgx-vllm_medgemma_27b-1": true,
+    "doglyad-dgx-backend_inference-1": true
+  },
+  "uptime": "15:54:14 up 2 days, 14:08,  2 users,  load average: 0.38, 0.28, 0.25",
+  "all_series_finished": true
+}

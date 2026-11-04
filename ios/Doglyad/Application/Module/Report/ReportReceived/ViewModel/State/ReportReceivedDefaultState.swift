@@ -1,9 +1,17 @@
 @MainActor
 final class ReportReceivedDefaultState: ReportReceivedStateProtocol, @MainActor Equatable {
+    let report: USExaminationReport
+
+    init(
+        report: USExaminationReport,
+    ) {
+        self.report = report
+    }
+
     static func == (
-        _: ReportReceivedDefaultState,
-        _: ReportReceivedDefaultState,
+        lhs: ReportReceivedDefaultState,
+        rhs: ReportReceivedDefaultState,
     ) -> Bool {
-        true
+        lhs.report == rhs.report
     }
 }

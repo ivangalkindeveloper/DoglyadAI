@@ -62,6 +62,9 @@ struct PaywallPlanCardView: DViewProtocol {
                 ),
             )
         }
+        .accessibilityAddTraits(
+            isSelected ? .isSelected : [],
+        )
         .disabled(
             viewModel.isProcessing,
         )

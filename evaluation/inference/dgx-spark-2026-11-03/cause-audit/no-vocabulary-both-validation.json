@@ -1,0 +1,167 @@
+[
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 12.417370124981971,
+    "usage": {
+      "prompt_tokens": 1273,
+      "total_tokens": 1569,
+      "completion_tokens": 296
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 769,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "conclusion": {
+        "characters": 105,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Увеличение размеров щитовидной железы, но без признаков патологии. Рекомендуется динамическое наблюдение."
+      },
+      "recommendations": {
+        "characters": 56,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Динамическое наблюдение с повторным УЗИ через 6 месяцев."
+      }
+    },
+    "raw_maximum_long_sentence_copies": 1,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 12.25327701799688,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1576,
+      "completion_tokens": 292
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 542,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 141,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование. Рекомендуется консультация эндокринолога для дальнейшей диагностики и лечения."
+      },
+      "recommendations": {
+        "characters": 27,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Консультация эндокринолога."
+      },
+      "descriptionRemarks": {
+        "characters": 214,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "образование, но не указан размер и другие характеристики. Необходимо уточнить размер и другие характеристики очагового образования для дальнейшего обследования."
+      }
+    },
+    "raw_maximum_long_sentence_copies": 1,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": true,
+    "remarks": "В тексте указано, что в правой доле выявлено очаговое образование, но не указан размер и другие характеристики. Необходимо уточнить размер и другие характеристики очагового образования для дальнейшего обследования."
+  },
+  {
+    "id": "bladder-dictated-sample-42",
+    "finish": "stop",
+    "seconds": 2.9496476390049793,
+    "usage": {
+      "prompt_tokens": 916,
+      "total_tokens": 986,
+      "completion_tokens": 70
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 88,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь наполнен, объём 230 мл, стенка 2,7 мм. В просвете мелкодисперсная взвесь."
+      },
+      "conclusion": {
+        "characters": 36,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Эхопризнаки взвеси в мочевом пузыре."
+      }
+    },
+    "raw_maximum_long_sentence_copies": 1,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  }
+]

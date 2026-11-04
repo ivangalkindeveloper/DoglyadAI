@@ -1,0 +1,116 @@
+{
+  "date": "2026-11-02",
+  "method": "Direct private vLLM SSE with current ReportGenerationService.prepare/complete; synthetic fixtures only",
+  "conditions": {
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "parallel_requests": 2,
+    "max_description_remarks_characters": 512
+  },
+  "results": [
+    {
+      "seconds": 12.46,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1604,
+        "total_tokens": 1977,
+        "completion_tokens": 373
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 0,
+      "conflict": true,
+      "characters": 1422,
+      "valid_json": true,
+      "fields": {
+        "description": 598,
+        "conclusion": 148,
+        "recommendations": 78,
+        "descriptionRemarks": 512
+      },
+      "synthetic_description_remarks": "Найдено гипоэхогенное образование в правой доле щитовидной железы. Необходимо уточнить диагноз и план лечения. Необходимо исключить возможность злокачественного процесса. Врач должен проанализировать данные исследования и сопоставить их с клинической картиной пациента. Необходимо исключить возможность злокачественного процесса. Необходимо исключить возможность злокачественного процесса. Необходимо исключить возможность злокачественного процесса. Необходимо исключить возможность злокачественного процесса. Не",
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 5,
+      "server_validation": "invalidReportResponse"
+    },
+    {
+      "seconds": 18.9,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1581,
+        "total_tokens": 2146,
+        "completion_tokens": 565
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 0,
+      "conflict": false,
+      "characters": 1855,
+      "valid_json": true,
+      "fields": {
+        "description": 508,
+        "conclusion": 508,
+        "recommendations": 241,
+        "descriptionRemarks": 512
+      },
+      "synthetic_description_remarks": "В описании не указан размер левой доли щитовидной железы, что требует уточнения. В описании не указан размер правой доли щитовидной железы, что требует уточнения. В описании не указан размер левой доли щитовидной железы, что требует уточнения. В описании не указан размер правой доли щитовидной железы, что требует уточнения. В описании не указан размер левой доли щитовидной железы, что требует уточнения. В описании не указан размер правой доли щитовидной железы, что требует уточнения. В описании не указан, в",
+      "expected_remarks_present": false,
+      "max_exact_sentence_copies": 3,
+      "server_validation": "invalidReportResponse"
+    },
+    {
+      "seconds": 20.33,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1581,
+        "total_tokens": 2189,
+        "completion_tokens": 608
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 42,
+      "conflict": false,
+      "characters": 2162,
+      "valid_json": true,
+      "fields": {
+        "description": 665,
+        "conclusion": 608,
+        "recommendations": 291,
+        "descriptionRemarks": 512
+      },
+      "synthetic_description_remarks": "В описании исследования не указаны размеры долей щитовидной железы, что является важной информацией. Также не указана оценка состояния капсулы щитовидной железы. Не указано наличие или отсутствие очаговых изменений в щитовидной железе. Не указано наличие или отсутствие гиперплазии щитовидной железы. Не указано наличие или отсутствие тиреоидитов. Не указано наличие или отсутствие узлов щитовидной железы. Не указано наличие или отсутствие кальцинации щитовидной железы. Не указано наличие или отсутствие эласто",
+      "expected_remarks_present": false,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "invalidReportResponse"
+    },
+    {
+      "seconds": 14.49,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1604,
+        "total_tokens": 2035,
+        "completion_tokens": 431
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 42,
+      "conflict": true,
+      "characters": 1471,
+      "valid_json": true,
+      "fields": {
+        "description": 588,
+        "conclusion": 73,
+        "recommendations": 212,
+        "descriptionRemarks": 512
+      },
+      "synthetic_description_remarks": "Необходимо уточнить размер и характеристики гипоэхогенного образования в правой доле щитовидной железы. Необходимо уточнить, является ли образование тиреоидным узлом или нет. Необходимо уточнить, является ли образование солидным, кистозным, смешанным, коллоидным, губчатым, макрокальцинатом, микрокальцинатом, точечными эхофокусами, эхогенным ободком, периферическим кольцом, неровным краем или экстратиреоидным распространением. Необходимо уточнить, является ли образование вертикально ориентированным, или нет.",
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    }
+  ],
+  "limitations": [
+    "Small synthetic regression matrix, not a general clinical-quality evaluation.",
+    "No images; photo schema paths are covered by backend tests."
+  ]
+}

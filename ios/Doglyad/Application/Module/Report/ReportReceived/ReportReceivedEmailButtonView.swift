@@ -4,7 +4,13 @@ import SwiftUI
 struct ReportReceivedEmailButtonView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ReportReceivedViewModel
-    let isSending: Bool
+
+    private var isSending: Bool {
+        switch viewModel.state {
+        case _ as ReportReceivedSendingState: true
+        default: false
+        }
+    }
 
     var body: some View {
         switch (viewModel.userEmail, viewModel.subscriptionAvailability(

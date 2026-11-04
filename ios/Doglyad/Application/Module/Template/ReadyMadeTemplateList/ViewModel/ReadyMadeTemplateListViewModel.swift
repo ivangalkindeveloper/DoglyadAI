@@ -161,9 +161,7 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
             ReadyMadeTemplateListLoadingState(),
         )
         handle {
-            try await self.container.templateRepository.getReadyMadeTemplates(
-                languageCode: self.container.language.currentCode,
-            )
+            try await self.container.templateRepository.getReadyMadeTemplates()
         } onMainSuccess: { templates in
             self.emit(
                 ReadyMadeTemplateListContentState(

@@ -1,0 +1,4 @@
+{
+  "name": "vllm-4b-final",
+  "engine": "vllm"
+}

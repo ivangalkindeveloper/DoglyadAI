@@ -1,0 +1,22 @@
+{
+  "created": "2026-10-30T00:41:04.104467746Z",
+  "architecture": "arm64",
+  "compressed_bytes": 16046334209,
+  "config": {
+    "Entrypoint": [
+      "/opt/nvidia/nvidia_entrypoint.sh"
+    ],
+    "Cmd": null,
+    "Labels": {
+      "ai.sglang.build.commit": "297e54fd105e974cdf401e5b4d20253a22c16f90",
+      "ai.sglang.build.url": "https://github.com/sgl-project/sglang/actions/runs/40978390987",
+      "ai.sglang.image.tag": "lmsysorg/sglang:v0.5.23",
+      "com.nvidia.cudnn.version": "9.14.0.64-1",
+      "maintainer": "NVIDIA CORPORATION <cudatools@nvidia.com>",
+      "org.opencontainers.image.revision": "297e54fd105e974cdf401e5b4d20253a22c16f90",
+      "org.opencontainers.image.source": "https://github.com/sgl-project/sglang",
+      "org.opencontainers.image.url": "https://github.com/sgl-project/sglang/actions/runs/40978390987",
+      "org.opencontainers.image.version": "lmsysorg/sglang:v0.5.23"
+    }
+  }
+}

@@ -15,6 +15,7 @@ from app.error import InferenceBusyError, InferenceUnavailableError, ModelMismat
 from app.model.generation_request import GenerationRequest
 from app.model.inference_server_config import InferenceServerConfig
 from app.service.vllm_service import VLLMService
+from tests.support.vllm_stream_response import vllm_stream_response
 
 
 @pytest.fixture
@@ -60,9 +61,8 @@ def test_each_model_uses_its_configured_engine_and_response_id(
                 payload["messages"][0]["content"][0]["text"],
             ),
         )
-        return httpx.Response(
-            200,
-            json={"choices": [{"message": {"content": payload["model"]}}]},
+        return vllm_stream_response(
+            payload["model"],
         )
 
     async def run() -> None:
@@ -167,9 +167,8 @@ def test_busy_model_does_not_block_another_and_cancellation_releases_its_slot(
             if request.url.host == "engine-27b":
                 started.set()
                 await release.wait()
-            return httpx.Response(
-                200,
-                json={"choices": [{"message": {"content": "Synthetic result"}}]},
+            return vllm_stream_response(
+                "Synthetic result",
             )
 
         config = server_config.model_copy(
@@ -266,9 +265,8 @@ def test_engine_failure_is_isolated_to_its_model(
                 "Synthetic unavailable engine",
                 request=request,
             )
-        return httpx.Response(
-            200,
-            json={"choices": [{"message": {"content": "Synthetic result"}}]},
+        return vllm_stream_response(
+            "Synthetic result",
         )
 
     async def run() -> None:

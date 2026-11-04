@@ -50,6 +50,11 @@ class GenerationRequest(BaseModel):
         gt=0,
         le=4096,
     )
+    repetitionPenalty: float | None = Field(
+        default=None,
+        gt=0.0,
+        le=2.0,
+    )
 
     @field_validator(
         "structuredOutput",

@@ -12,8 +12,6 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 from pydantic import ValidationError
 
-from app.core.app_check.app_check import AppCheck
-from app.core.application.service_dependencies import ServiceDependencies
 from app.core.configuration.configuration import Configuration
 from app.core.configuration.configuration_loader import ConfigurationLoader
 from app.core.configuration.variables import Variables
@@ -26,7 +24,7 @@ from app.service.configuration.configuration_response_service import Configurati
 from app.service.dictation.dictation_parsing_service import DictationParsingService
 from app.service.email.report_email_service import ReportEmailService
 from app.service.neural_model.neural_model_service import NeuralModelService
-from app.service.report.report_generation_service import ReportGenerationService
+from app.service.report.report_generation_jobs import ReportGenerationJobs
 from app.service.validation.text_length_validator import TextLengthValidator
 
 
@@ -150,6 +148,7 @@ def test_oversized_examination_fields_are_rejected_before_generation(
     app: FastAPI,
     configuration: Configuration,
     field: str,
+    report_jobs: ReportGenerationJobs,
 ) -> None:
     maximum = getattr(
         configuration.modules.scan,
@@ -165,21 +164,16 @@ def test_oversized_examination_fields_are_rejected_before_generation(
         "examinationDescription": "Findings",
     }
     examination[field] = "x" * (maximum + 1)
-    model = AsyncMock(
-        spec=NeuralModelService,
-    )
-    app.dependency_overrides[AppCheck.verify] = lambda: None
-    app.dependency_overrides[ServiceDependencies.report_generation] = lambda: ReportGenerationService(
-        configuration,
-        model,
-    )
     client = TestClient(
         app,
     )
     try:
         response = client.post(
-            "/v1/ultrasound/generate_report",
-            json={"settingsAI": {}, "examinationData": examination},
+            "/v1/ultrasound/report_generations",
+            json={
+                "requestId": "00000000-0000-0000-0000-000000000001",
+                "examination": {"settingsAI": {}, "examinationData": examination},
+            },
         )
     finally:
         client.close()
@@ -187,7 +181,7 @@ def test_oversized_examination_fields_are_rejected_before_generation(
     assert response.json()["code"] == "textTooLong"
     assert response.json()["fields"][0]["location"] == ["body", "examinationData", field]
     assert "x" * (maximum + 1) not in response.text
-    model.call.assert_not_called()
+    report_jobs.store.create.assert_not_called()
 
 
 def test_ready_made_templates_must_fit_both_editors(

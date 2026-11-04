@@ -1,0 +1,74 @@
+[
+  {
+    "repo": "Google-Health/medgemma",
+    "number": 40,
+    "title": "medgemma-27b-text-it function calling is broken!",
+    "state": "closed",
+    "state_reason": "completed",
+    "url": "https://github.com/Google-Health/medgemma/issues/40",
+    "updated_at": "2026-06-22T23:11:10Z"
+  },
+  {
+    "repo": "Google-Health/medgemma",
+    "number": 57,
+    "title": "MedGemma 4B p.attn_bias_ptr is not correctly aligned with long system prompt",
+    "state": "closed",
+    "state_reason": "completed",
+    "url": "https://github.com/Google-Health/medgemma/issues/57",
+    "updated_at": "2026-05-29T13:41:14Z"
+  },
+  {
+    "repo": "Google-Health/medgemma",
+    "number": 21,
+    "title": "Large performance gap between my evaluation and results in the technical report",
+    "state": "closed",
+    "state_reason": "completed",
+    "url": "https://github.com/Google-Health/medgemma/issues/21",
+    "updated_at": "2026-09-28T05:13:45Z"
+  },
+  {
+    "repo": "vllm-project/vllm",
+    "number": 42110,
+    "title": "[Bug]: gemma4 prompts with embedded json requirements AND response_format.json_schema cause timeouts",
+    "state": "open",
+    "state_reason": null,
+    "url": "https://github.com/vllm-project/vllm/issues/42110",
+    "updated_at": "2026-10-05T17:40:10Z"
+  },
+  {
+    "repo": "vllm-project/vllm",
+    "number": 53717,
+    "title": "[Bug]: MedGemma 27B model:  Repetitive newline-token generation loop",
+    "state": "open",
+    "state_reason": null,
+    "url": "https://github.com/vllm-project/vllm/issues/53717",
+    "updated_at": "2026-08-31T10:51:44Z"
+  },
+  {
+    "repo": "mlc-ai/xgrammar",
+    "number": 856,
+    "title": "Reuse vocabulary common prefixes in token mask generation and fix JSON string masking issues",
+    "state": "closed",
+    "state_reason": null,
+    "url": "https://github.com/mlc-ai/xgrammar/pull/856",
+    "updated_at": "2026-08-28T10:30:19Z"
+  },
+  {
+    "repo": "mlc-ai/xgrammar",
+    "number": 867,
+    "title": "[Release] Backport regex repeat fix and bump v0.2.6rc2",
+    "state": "closed",
+    "state_reason": null,
+    "url": "https://github.com/mlc-ai/xgrammar/pull/867",
+    "updated_at": "2026-08-29T09:18:07Z"
+  },
+  {
+    "repo": "mlc-ai/xgrammar",
+    "number": 905,
+    "title": "fix: Mask overridden stop tokens until grammar completion",
+    "state": "closed",
+    "state_reason": null,
+    "url": "https://github.com/mlc-ai/xgrammar/pull/905",
+    "updated_at": "2026-09-19T18:22:33Z"
+  }
+]

@@ -1,0 +1,36 @@
+{
+  "vllm-maxseq-1": {
+    "quality_requests": 18,
+    "parallel_quality_requests": 0,
+    "performance_requests": 3,
+    "all_streams_finished_without_transport_error": true,
+    "all_speed_responses_256_tokens": true,
+    "other_engine_counters_unchanged": true
+  },
+  "vllm-maxseq-4": {
+    "quality_requests": 18,
+    "parallel_quality_requests": 4,
+    "performance_requests": 15,
+    "all_streams_finished_without_transport_error": true,
+    "all_speed_responses_256_tokens": true,
+    "other_engine_counters_unchanged": true
+  },
+  "sglang-paired-maxseq-1": {
+    "quality_requests": 18,
+    "parallel_quality_requests": 0,
+    "performance_requests": 3,
+    "all_streams_finished_without_transport_error": true,
+    "all_speed_responses_256_tokens": true,
+    "other_engine_counters_unchanged": true
+  },
+  "sglang-paired-maxseq-4": {
+    "quality_requests": 18,
+    "parallel_quality_requests": 4,
+    "performance_requests": 15,
+    "all_streams_finished_without_transport_error": true,
+    "all_speed_responses_256_tokens": true,
+    "other_engine_counters_unchanged": true
+  },
+  "validation_sources_unchanged": true,
+  "final_restoration_verified": true
+}

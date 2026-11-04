@@ -39,10 +39,3 @@ struct SelectNeuralModelBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    SelectNeuralModelBottomSheet(
-        arguments: nil,
-    )
-    .previewable()
-}

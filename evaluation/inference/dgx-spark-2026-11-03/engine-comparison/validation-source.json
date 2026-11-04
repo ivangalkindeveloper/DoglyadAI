@@ -1,0 +1,8 @@
+{
+  "backend/main/app/service/report/report_validator.py": "008c2a808e34ffdcecf7f13061f18cc9284eb9664aa6a478fe5127c6a6d0204f",
+  "backend/main/app/service/report/report_generation_service.py": "1d917c21988d06a9cb9720c685052596f6f877c192018287887d514131ce45fa",
+  "backend/main/app/schema/us_examination_report_structured_output.py": "39bac61a027994f9b48a392ca598da822d603a349f227082b0e010c56d7510f8",
+  "backend/main/app/prompt/prompt_factory.py": "3ffbb04586a90c62668de59cef519d3d3eeac4ab025577b2fa69ad98b5b46568",
+  "backend/main/config/development/server.json": "ef07e0dbc926ac99fc2d939edfa27200952347b87448a57e6bc07faf0ac85d2b",
+  "backend/main/config/development/ru/l10n.json": "1f174a22d42ce7e3bea20218601bd57d2c3ff67ccbdf263aa12c14ec4a560fe6"
+}

@@ -1,0 +1,10 @@
+{
+  "medgemma-4b-bf16.gguf": {
+    "bytes": 7776006400,
+    "sha256": "199f1f8e886047979982e240cab89dca8ce4199f9dd156836ec31db02f3cf769"
+  },
+  "medgemma-4b-mmproj-bf16.gguf": {
+    "bytes": 851251328,
+    "sha256": "fd133971e1b63afb0c8d4d1cdff2fee919b1cae2ee16caaca14d0e6bd185e112"
+  }
+}

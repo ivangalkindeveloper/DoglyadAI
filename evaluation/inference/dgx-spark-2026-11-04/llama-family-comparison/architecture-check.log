@@ -1,0 +1,14 @@
+/Users/ivangalkin/Development/My projects/Doglyad/ios/Doglyad/Application/Application/View/ExpandableContentView.swift:123:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/Doglyad/Application/Application/View/ExpandableContentView.swift:147:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/Doglyad/Application/Application/View/ExpandableContentView.swift:163:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/Doglyad/Application/Application/View/PhotoCardView.swift:61:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/Doglyad/Application/Application/View/SectionHeaderView.swift:71:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/DoglyadUI/Component/Base/DScreen.swift:313:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/DoglyadUI/Component/Base/DScreen.swift:339:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/DoglyadUI/Component/Base/DScreen.swift:368:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/DoglyadUI/Component/Button/DButton.swift:59:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/DoglyadUI/Component/Toolbar/DToolbarButton.swift:45:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/DoglyadUI/Component/Toolbar/DToolbarButton.swift:59:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/DoglyadUI/Component/Toolbar/DToolbarButton.swift:78:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+/Users/ivangalkin/Development/My projects/Doglyad/ios/DoglyadUI/Component/Toolbar/DToolbarButton.swift:117:17: swift.view-fragment: Extract the computed view fragment into a named View type.
+make: *** [check-architecture] Error 1

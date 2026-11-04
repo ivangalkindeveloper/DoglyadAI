@@ -63,6 +63,7 @@ extension InitializationProcess {
                             baseUrl: process.environment!.baseUrl.absoluteString,
                             baseVersionPrefix: process.environment!.baseVersionPrefix,
                             interceptors: [
+                                DLocaleInterceptor(),
                                 AppCheckHttpInterceptor(),
                                 BillingHttpInterceptor(
                                     baseUrl: process.environment!.baseUrl,

@@ -24,6 +24,7 @@ class PromptFactory:
         is_recommendations_included: bool,
         is_photo_remarks: bool,
         is_description_remarks: bool,
+        structured_output: str,
     ) -> str:
         prompt = self._configuration.text(
             self._language_code,
@@ -31,14 +32,14 @@ class PromptFactory:
         )
         prompt += self._configuration.text(
             self._language_code,
-            "medicalTermCorrectionPrompt",
-        )
-        prompt += self._configuration.text(
-            self._language_code,
             "reportRecommendationsPrompt" if is_recommendations_included else "reportNoRecommendationsPrompt",
         )
+        if is_description_remarks:
+            prompt += self._configuration.text(
+                self._language_code,
+                "reportDescriptionRemarksPrompt",
+            )
         sections = (
-            (is_description_remarks, "reportDescriptionRemarksPrompt"),
             (is_photo_remarks, "reportPhotoRemarksPrompt"),
             (not settings.isMarkdown, "reportPlainTextPrompt"),
         )
@@ -55,6 +56,12 @@ class PromptFactory:
             ).format(
                 maxTokens=settings.maxTokens,
             )
+        prompt += self._configuration.text(
+            self._language_code,
+            "reportStructuredOutputPrompt",
+        ).format(
+            schema=structured_output,
+        )
         return prompt
 
     def build_prompt(
@@ -113,18 +120,6 @@ class PromptFactory:
                 )
                 + "\n"
             )
-        prompt += (
-            json.dumps(
-                {
-                    "contextualStrings": self._configuration.resolve_examination_contextual_strings(
-                        examination.usExaminationTypeId,
-                        self._language_code,
-                    )
-                },
-                ensure_ascii=False,
-            )
-            + "\n"
-        )
         return prompt
 
     def voice_system_prompt(

@@ -7,12 +7,15 @@ public final class USExaminationModelReportDB {
     public var date: Date
     public var modelId: String
     public var reportDescription: String
-    @Attribute public var conclusion: String
+    public var conclusion: String
     public var recommendations: String?
     public var descriptionRemarks: String?
     @Relationship(
         deleteRule: .cascade,
     ) public var photoRemarks: [USExaminationPhotoRemarksDB] = []
+    @Relationship(
+        deleteRule: .cascade,
+    ) public var generation: USReportGenerationDB?
 
     public init(
         id: UUID = UUID(),
@@ -23,6 +26,7 @@ public final class USExaminationModelReportDB {
         recommendations: String?,
         descriptionRemarks: String? = nil,
         photoRemarks: [USExaminationPhotoRemarksDB] = [],
+        generation: USReportGenerationDB? = nil,
     ) {
         self.id = id
         self.date = date
@@ -32,5 +36,6 @@ public final class USExaminationModelReportDB {
         self.recommendations = recommendations
         self.descriptionRemarks = descriptionRemarks
         self.photoRemarks = photoRemarks
+        self.generation = generation
     }
 }

@@ -1,0 +1,84 @@
+{
+  "scope": "Source consistency review of synthetic text; not clinical expert validation.",
+  "working": {
+    "medgemma-15-4b": [
+      {
+        "id": "report-greedy-0",
+        "description_remarks_is_null": true
+      },
+      {
+        "id": "report-sample-0",
+        "description_remarks_is_null": true
+      },
+      {
+        "id": "report-sample-42",
+        "description_remarks_is_null": true,
+        "manual_observation": "Source volumes 7.4 ml and 6.3 ml omitted from description and conclusion."
+      },
+      {
+        "id": "report-sample-123",
+        "description_remarks_is_null": true
+      },
+      {
+        "id": "conflict-greedy-0",
+        "description_remarks_is_null": true,
+        "source_contains_explicit_conflict": true
+      },
+      {
+        "id": "conflict-sample-0",
+        "description_remarks_is_null": true,
+        "source_contains_explicit_conflict": true,
+        "manual_observation": "Output description retains both focal lesion and no focal changes."
+      },
+      {
+        "id": "conflict-sample-42",
+        "description_remarks_is_null": true,
+        "source_contains_explicit_conflict": true,
+        "manual_observation": "Output description retains both focal lesion and no focal changes."
+      },
+      {
+        "id": "conflict-sample-123",
+        "description_remarks_is_null": true,
+        "source_contains_explicit_conflict": true
+      }
+    ],
+    "medgemma-27b": [
+      {
+        "id": "report-greedy-0",
+        "description_remarks_is_null": true
+      },
+      {
+        "id": "report-sample-0",
+        "description_remarks_is_null": true
+      },
+      {
+        "id": "report-sample-42",
+        "description_remarks_is_null": true
+      },
+      {
+        "id": "report-sample-123",
+        "description_remarks_is_null": true
+      },
+      {
+        "id": "conflict-greedy-0",
+        "description_remarks_is_null": true,
+        "source_contains_explicit_conflict": true
+      },
+      {
+        "id": "conflict-sample-0",
+        "description_remarks_is_null": true,
+        "source_contains_explicit_conflict": true
+      },
+      {
+        "id": "conflict-sample-42",
+        "description_remarks_is_null": true,
+        "source_contains_explicit_conflict": true
+      },
+      {
+        "id": "conflict-sample-123",
+        "description_remarks_is_null": true,
+        "source_contains_explicit_conflict": true
+      }
+    ]
+  }
+}

@@ -15,7 +15,9 @@ public struct DShimmerPlaceholder: DViewProtocol {
             cornerRadius: cornerRadius ?? size.s16,
         )
         .fill(
-            color.grayscaleLine,
+            color.grayscaleLine.opacity(
+                0.5,
+            ),
         )
         .dShimmer(
             cornerRadius: cornerRadius ?? size.s16,

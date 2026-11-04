@@ -10,10 +10,17 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
     @Published private(set) var sections: [HistoryDaySection] = []
     private(set) var nextOffset: Int?
 
+    private var reportObservation: AnyCancellable?
+    private let currentReport: (USExaminationReport) -> USExaminationReport
+    private let observeReports: (@escaping (USExaminationReport) -> Void) -> AnyCancellable
     private let sectionBuilder: HistoryDaySectionBuilder
     private let historyConfig: HistoryConfig
 
     private var offsetLoadingTask: Task<Void, Never>?
+
+    #if DEBUG
+        private var isPreview = false
+    #endif
 
     init(
         container: DependencyContainer,
@@ -23,8 +30,12 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
         onRefreshSubscriptionStatus: @escaping () async -> Void,
+        currentReport: @escaping (USExaminationReport) -> USExaminationReport,
+        observeReports: @escaping (@escaping (USExaminationReport) -> Void) -> AnyCancellable,
         sectionBuilder: HistoryDaySectionBuilder? = nil,
     ) {
+        self.currentReport = currentReport
+        self.observeReports = observeReports
         self.sectionBuilder = sectionBuilder ?? HistoryDaySectionBuilder(
             todayTitle: container.l10n.text(
                 .dateTodayLabel,
@@ -55,8 +66,60 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
     }
 
     override func onInit() {
+        reportObservation = observeReports { [weak self] report in
+            guard let self else {
+                return
+            }
+            var values = sections.flatMap(
+                \.reports,
+            )
+            if let index = values.firstIndex(
+                where: {
+                    $0.id == report.id
+                },
+            ) {
+                let previous = values[
+                    index,
+                ].actualModelReport
+                guard previous.generation.status != report.actualModelReport.generation.status || previous.generation.id != report.actualModelReport.generation.id else {
+                    return
+                }
+                values[
+                    index,
+                ] = report
+            } else {
+                values.append(
+                    report,
+                )
+            }
+            sections = sectionBuilder.appending(
+                values.sorted {
+                    $0.date > $1.date
+                },
+                to: [],
+            )
+        }
         loadInitialPage()
     }
+
+    #if DEBUG
+        func configurePreview(
+            state: any HistoryStateProtocol,
+            reports: [USExaminationReport],
+            nextOffset: Int? = nil,
+        ) {
+            isPreview = true
+            sections = sectionBuilder.appending(
+                reports,
+                to: [],
+            )
+            self.nextOffset = nextOffset
+            emit(
+                state,
+                animation: nil,
+            )
+        }
+    #endif
 
     func onTapBack() {
         analytics.buttonTapped(
@@ -71,6 +134,18 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         analytics.buttonTapped(
             .historyReport,
         )
+        let value = currentReport(
+            value,
+        )
+        if value.actualModelReport.generation.status == .generating {
+            coordinator.sheet(
+                .reportReceived,
+                arguments: ReportReceivedArguments(
+                    report: value,
+                ),
+            )
+            return
+        }
         coordinator.screen(
             .reportDetail,
             arguments: ReportDetailArguments(
@@ -88,6 +163,11 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
     }
 
     private func loadInitialPage() {
+        #if DEBUG
+            guard !isPreview else {
+                return
+            }
+        #endif
         emit(
             HistoryLoadingState(),
         )
@@ -98,7 +178,9 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
             )
         } onMainSuccess: { reports in
             self.append(
-                reports,
+                reports.map(
+                    self.currentReport,
+                ),
                 to: [],
                 offset: 0,
             )
@@ -112,6 +194,11 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
     }
 
     private func loadNextOffset() {
+        #if DEBUG
+            guard !isPreview else {
+                return
+            }
+        #endif
         guard offsetLoadingTask == nil, let offset = nextOffset else {
             return
         }
@@ -132,7 +219,9 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         }
         onMainSuccess: { reports in
             self.append(
-                reports,
+                reports.map(
+                    self.currentReport,
+                ),
                 to: self.sections,
                 offset: offset,
             )

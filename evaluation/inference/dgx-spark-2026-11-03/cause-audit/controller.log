@@ -1,0 +1,18 @@
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+tokens_verified
+{"event": "starting", "variant": "control", "count": 3}
+{"event": "finished", "variant": "control"}
+{"event": "starting", "variant": "no-vocabulary-data", "count": 3}
+{"event": "finished", "variant": "no-vocabulary-data"}
+{"event": "starting", "variant": "no-vocabulary-instruction", "count": 3}
+{"event": "finished", "variant": "no-vocabulary-instruction"}
+{"event": "starting", "variant": "no-vocabulary-both", "count": 3}
+{"event": "finished", "variant": "no-vocabulary-both"}
+{"event": "starting", "variant": "no-grammar", "count": 3}
+{"event": "finished", "variant": "no-grammar"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+{"event": "runtime_verified", "containers_unchanged": true}

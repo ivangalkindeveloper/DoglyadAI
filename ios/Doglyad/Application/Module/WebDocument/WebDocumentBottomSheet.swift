@@ -38,19 +38,3 @@ struct WebDocumentBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    let l10n = DependencyContainer.previewable.l10n
-
-    WebDocumentBottomSheet(
-        arguments: WebDocumentArguments(
-            url: URL(
-                string: "https://ivangalkindeveloper.github.io/DoglyadAI/legal/privacy-policy/",
-            )!,
-            title: l10n[
-                .privacyPolicyTitle,
-            ],
-        ),
-    )
-    .previewable()
-}

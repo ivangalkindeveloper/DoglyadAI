@@ -21,6 +21,7 @@ class NeuralModelServiceRequest:
     structured_output: str
     temperature: float | None = None
     max_tokens: int | None = None
+    repetition_penalty: float | None = None
     photos: list[USExaminationScanPhoto] = field(
         default_factory=list,
     )

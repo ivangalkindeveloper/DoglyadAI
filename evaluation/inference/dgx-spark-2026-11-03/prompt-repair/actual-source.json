@@ -1,0 +1,8 @@
+{
+  "app/prompt/prompt_factory.py": "8edad1f8471928647bd7ee2f56b7ac4182a06b9b5a96fa6a17099f9961df7c6f",
+  "app/schema/us_examination_report_structured_output.py": "d96ceb542220696c5a41aea096f4f6135d60678dcccbdd7b9e5ac67530db0cba",
+  "app/service/report/report_generation_service.py": "23f669e6a394696c259a8f1c2f7803b2fc05111aebeb3a40d9ec07b94646bf6e",
+  "config/development/ru/l10n.json": "37862922b20a306ff4277169aeb18c7cd139957b431c8c493b02f18f3fb176b4",
+  "config/development/en/l10n.json": "fdfcea7e937da4ffda6fa4b5a0f98b41768578bbbdfc321f6e33c2c696f8d0d2",
+  "config/development/server.json": "6dbda02257e68c72eabd527ca12ebcc176bebbb59f0e6ea8f4485bc3854f4b38"
+}

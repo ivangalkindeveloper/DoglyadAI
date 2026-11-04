@@ -1,0 +1,138 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 9.64568402900477,
+    "usage": {
+      "prompt_tokens": 525,
+      "total_tokens": 758,
+      "completion_tokens": 233
+    },
+    "task": "audit-text",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {
+      "descriptionRemarks": {
+        "characters": 747,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": true,
+    "review_candidate": false
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 2.096183176996419,
+    "usage": {
+      "prompt_tokens": 525,
+      "total_tokens": 575,
+      "completion_tokens": 50
+    },
+    "task": "audit-text",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {
+      "descriptionRemarks": {
+        "characters": 147,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Общий объём железы — 13,7 мл, что соответствует верхней границе нормы. Эхогенность паренхимы средняя, структура однородная, без очаговых изменений."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": true,
+    "review_candidate": false
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 1.688355378981214,
+    "usage": {
+      "prompt_tokens": 536,
+      "total_tokens": 576,
+      "completion_tokens": 40
+    },
+    "task": "audit-text",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {
+      "descriptionRemarks": {
+        "characters": 121,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле выявлено очаговое образование. Эхогенность паренхимы средняя, структура однородная, без очаговых изменений."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": true,
+    "review_candidate": false
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 1.6771454160043504,
+    "usage": {
+      "prompt_tokens": 536,
+      "total_tokens": 576,
+      "completion_tokens": 40
+    },
+    "task": "audit-text",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {
+      "descriptionRemarks": {
+        "characters": 121,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле выявлено очаговое образование. Эхогенность паренхимы средняя, структура однородная, без очаговых изменений."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": true,
+    "review_candidate": false
+  }
+]

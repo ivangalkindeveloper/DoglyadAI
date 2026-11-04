@@ -1,0 +1,132 @@
+2026-11-04 17:15:50,860 - lmdeploy.pytorch.kernels.cuda.turbo_quant - INFO - turbo_quant.py:25 - fast_hadamard_transform not installed, falling back to matmul-based Hadamard transform. Install it for better performance.
+/usr/local/lib/python3.12/dist-packages/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+  warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+{"kernel_check": "passed", "cases": 6}
+2026-11-04 17:15:59,842 - lmdeploy - INFO - builder.py:72 - matching vision model: Gemma3VisionModel
+2026-11-04 17:16:01,919 - lmdeploy - WARNING - vl_async_engine.py:41 - Prefix caching is disabled for this VL model path. Supported: TurboMind native-vision models and PyTorch new-preprocess multimodal inputs.
+2026-11-04 17:16:01,919 - lmdeploy - INFO - async_engine.py:134 - input backend=pytorch, backend_config=PytorchEngineConfig(dtype='bfloat16', tp=1, dcp=1, dp=1, dp_rank=0, ep=1, session_len=16384, max_batch_size=4, attn_tp_size=None, mlp_tp_size=None, moe_tp_size=None, cache_max_entry_count=0.1, prefill_interval=16, block_size=64, kernel_block_size=64, num_cpu_blocks=0, num_gpu_blocks=256, adapters=None, max_prefill_token_num=8192, cudagraph_capture_batch_sizes=None, thread_safe=False, enable_prefix_caching=False, prefix_cache_state_budget=0, prefix_cache_decode_state_interval=0, prefix_cache_decode_save_first=False, prefill_save_alignment=1024, prefill_save_last_only=False, mooncake_state_save_slots=8, device_type='cuda', eager_mode=False, custom_module_map=None, download_dir=None, revision=None, quant_policy=<QuantPolicy.NONE: 0>, distributed_executor_backend=None, empty_init=False, enable_microbatch=False, enable_eplb=False, enable_mp_engine=True, mp_engine_backend='mp', model_format=None, enable_metrics=True, hf_overrides=None, language_model_only=False, logprobs_mode=None, enable_return_routed_experts=False, enable_transfer_obj_ref=False, dllm_block_length=None, dllm_unmasking_strategy='low_confidence_dynamic', dllm_denoising_steps=None, dllm_confidence_threshold=0.85, role=<EngineRole.Hybrid: 1>, migration_backend=<MigrationBackend.DLSlime: 1>, kv_transfer_config=None, piecewise_cudagraph_max_tokens=None)
+2026-11-04 17:16:01,919 - lmdeploy - INFO - async_engine.py:135 - speculative_config=None
+2026-11-04 17:16:07,044 - lmdeploy - INFO - zmq_rpc.py:359 - Connecting to AsyncRPCServer on port 37685...
+2026-11-04 17:16:11,130 - lmdeploy - INFO - __init__.py:146 - Build <uni> executor.
+2026-11-04 17:16:12,817 - lmdeploy - INFO - base.py:574 - Building Model.
+2026-11-04 17:16:17,290 - lmdeploy.pytorch.kernels.cuda.turbo_quant - INFO - turbo_quant.py:25 - fast_hadamard_transform not installed, falling back to matmul-based Hadamard transform. Install it for better performance.
+2026-11-04 17:16:17,316 - lmdeploy - WARNING - __init__.py:47 - For higher performance, please install FlashAttention-3 https://github.com/Dao-AILab/flash-attention
+Loading weights from safetensors:   0%|          | 0/2 [00:00<?, ?it/s]Loading weights from safetensors:  50%|█████     | 1/2 [00:21<00:21, 21.34s/it]Loading weights from safetensors: 100%|██████████| 2/2 [00:45<00:00, 22.88s/it]Loading weights from safetensors: 100%|██████████| 2/2 [00:45<00:00, 22.65s/it]
+2026-11-04 17:17:03,164 - lmdeploy - INFO - base.py:576 - Updating configs.
+2026-11-04 17:17:03,168 - lmdeploy - INFO - base.py:578 - Building GraphRunner and warmup ops, please waiting.
+2026-11-04 17:17:03,173 - lmdeploy - INFO - base.py:583 - Building CacheEngine with config: 
+CacheConfig(max_batches=4, block_size=64, num_cpu_blocks=0, num_gpu_blocks=256, kernel_block_size=64, dcp=1, window_size=-1, cache_max_entry_count=0.1, max_prefill_token_num=8192, cudagraph_capture_batch_sizes=None, enable_prefix_caching=False, quant_policy=<QuantPolicy.NONE: 0>, device_type='cuda', num_state_caches=None, compact_state_capacity=None, prefix_cache_state_budget=0, prefix_cache_decode_state_interval=0, prefix_cache_decode_save_first=False, prefill_save_alignment=1024, prefill_save_last_only=False, mooncake_state_save_slots=8, prefix_cache_block_aligned=False, prefix_cache_token_lookahead=0, states_shapes=[], num_reserved_gpu_blocks=1, role=<EngineRole.Hybrid: 1>, migration_backend=<MigrationBackend.DLSlime: 1>, kv_transfer_config=None).
+2026-11-04 17:17:03,267 - lmdeploy - INFO - base.py:569 - GPU KV cache capacity: 16,320 tokens (255 usable blocks/rank, DCP=1).
+2026-11-04 17:17:03,267 - lmdeploy - INFO - base.py:591 - Warming up model.
+2026-11-04 17:17:03,267 - lmdeploy - INFO - agent.py:551 - Starting engine warmup. This may take a while...
+/usr/local/lib/python3.12/dist-packages/triton/language/core.py:2284: UserWarning: tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.
+  warn("tl.make_block_ptr is deprecated. Use TensorDescriptor or tl.make_tensor_descriptor instead.")
+2026-11-04 17:17:06,608 - lmdeploy - INFO - full_graph.py:151 - Initialized CUDASingleGraphRunner with max_batches=4, max_tokens=4, num_blocks=256, is_decoding=True, use_graph=True
+2026-11-04 17:17:07,374 - lmdeploy - INFO - full_graph.py:151 - Initialized CUDASingleGraphRunner with max_batches=2, max_tokens=2, num_blocks=256, is_decoding=True, use_graph=True
+2026-11-04 17:17:07,583 - lmdeploy - INFO - full_graph.py:151 - Initialized CUDASingleGraphRunner with max_batches=1, max_tokens=1, num_blocks=256, is_decoding=True, use_graph=True
+2026-11-04 17:17:09,254 - lmdeploy - INFO - agent.py:590 - Engine warmup completed in 5.99 seconds.
+Warming up decoding:   0%|          | 0/3 [00:00<?, ?it/s]Warming up decoding:  33%|███▎      | 1/3 [00:00<00:01,  1.31it/s]Warming up decoding:  67%|██████▋   | 2/3 [00:00<00:00,  2.28it/s]Warming up decoding: 100%|██████████| 3/3 [00:02<00:00,  1.00s/it]Warming up decoding: 100%|██████████| 3/3 [00:02<00:00,  1.13it/s]
+2026-11-04 17:17:09,257 - lmdeploy - INFO - zmq_rpc.py:321 - Starting AsyncRPCServer...
+2026-11-04 17:17:09,261 - lmdeploy - INFO - engine_loop.py:702 - Starting executor.
+2026-11-04 17:17:09,261 - lmdeploy - INFO - engine_loop.py:706 - Starting async task MainLoopPreprocessMessage.
+2026-11-04 17:17:09,261 - lmdeploy - INFO - engine_loop.py:708 - Starting async task MainLoopResponse.
+2026-11-04 17:17:09,261 - lmdeploy - INFO - engine_loop.py:710 - Starting async task MainLoop.
+2026-11-04 17:17:09,262 - lmdeploy - INFO - async_engine.py:169 - updated backend_config=PytorchEngineConfig(dtype='bfloat16', tp=1, dcp=1, dp=1, dp_rank=0, ep=1, session_len=16384, max_batch_size=4, attn_tp_size=None, mlp_tp_size=None, moe_tp_size=None, cache_max_entry_count=0.1, prefill_interval=16, block_size=64, kernel_block_size=64, num_cpu_blocks=0, num_gpu_blocks=256, adapters=None, max_prefill_token_num=8192, cudagraph_capture_batch_sizes=None, thread_safe=False, enable_prefix_caching=False, prefix_cache_state_budget=0, prefix_cache_decode_state_interval=0, prefix_cache_decode_save_first=False, prefill_save_alignment=1024, prefill_save_last_only=False, mooncake_state_save_slots=8, device_type='cuda', eager_mode=False, custom_module_map=None, download_dir=None, revision=None, quant_policy=<QuantPolicy.NONE: 0>, distributed_executor_backend=None, empty_init=False, enable_microbatch=False, enable_eplb=False, enable_mp_engine=False, mp_engine_backend='mp', model_format=None, enable_metrics=True, hf_overrides=None, language_model_only=False, logprobs_mode=None, enable_return_routed_experts=False, enable_transfer_obj_ref=False, dllm_block_length=None, dllm_unmasking_strategy='low_confidence_dynamic', dllm_denoising_steps=None, dllm_confidence_threshold=0.85, role=<EngineRole.Hybrid: 1>, migration_backend=<MigrationBackend.DLSlime: 1>, kv_transfer_config=None, piecewise_cudagraph_max_tokens=None)
+2026-11-04 17:17:09,543 - lmdeploy - INFO - async_engine.py:240 - enable metrics, with dp: 1 dp_rank: 0
+HINT:    Please open [93m[1mhttp://127.0.0.1:8000[0m in a browser for detailed api usage!!!
+HINT:    Please open [93m[1mhttp://127.0.0.1:8000[0m in a browser for detailed api usage!!!
+HINT:    Please open [93m[1mhttp://127.0.0.1:8000[0m in a browser for detailed api usage!!!
+INFO:     Started server process [1]
+INFO:     Waiting for application startup.
+2026-11-04 17:17:09,669 - lmdeploy - INFO - metrics_processor.py:31 - Metrics handler task started.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     127.0.0.1:45958 - "GET /v1/models HTTP/1.1" 200 OK
+2026-11-04 17:17:10,074 - lmdeploy - WARNING - tokenizer.py:476 - Detected duplicate bos token 2 in prompt, this will likely reduce response quality, one of them will beremoved
+2026-11-04 17:17:10,074 - lmdeploy - INFO - async_engine.py:579 - session=0, input_tokens=1273, max_new_tokens=16, prep=True
+INFO:     127.0.0.1:45974 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:17:10,075 - lmdeploy - WARNING - messages.py:121 - `temperature` is 0, set top_k=1.
+2026-11-04 17:17:10,075 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:17:10,075 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:17:10,447 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=0, seq_id=0, and total_processors=1
+2026-11-04 17:17:11,340 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:17:11,383 - lmdeploy - INFO - async_engine.py:782 - session 0 finished, reason "length", input_tokens 1273, output_tokens 16
+2026-11-04 17:17:11,402 - lmdeploy - INFO - async_engine.py:579 - session=1, input_tokens=1273, max_new_tokens=2048, prep=True
+INFO:     127.0.0.1:45986 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:17:11,404 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:17:11,404 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:17:11,418 - lmdeploy - INFO - guided_process.py:77 - delete guided processor for session_id=0, and total_processors=0
+2026-11-04 17:17:11,418 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=1, seq_id=1, and total_processors=1
+[2026-11-04 17:17:19 DP0] Avg thr (in/out): 251.0 / 20.3 tokens/s, Server (succeeded/failed/routed/waiting): 1 / 0 / 1 / 0, Engine (running/waiting): 1 / 0, KV cache: 9.0%, 
+2026-11-04 17:17:21,570 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:17:21,613 - lmdeploy - INFO - async_engine.py:782 - session 1 finished, reason "stop", input_tokens 1273, output_tokens 234
+2026-11-04 17:17:21,631 - lmdeploy - INFO - async_engine.py:579 - session=2, input_tokens=1273, max_new_tokens=2048, prep=True
+INFO:     127.0.0.1:43116 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:17:21,633 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:17:21,633 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:17:21,647 - lmdeploy - INFO - guided_process.py:77 - delete guided processor for session_id=1, and total_processors=0
+2026-11-04 17:17:21,647 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=2, seq_id=2, and total_processors=1
+[2026-11-04 17:17:29 DP0] Avg thr (in/out): 126.9 / 22.5 tokens/s, Server (succeeded/failed/routed/waiting): 2 / 0 / 1 / 0, Engine (running/waiting): 1 / 0, KV cache: 9.0%, 
+2026-11-04 17:17:32,604 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:17:32,646 - lmdeploy - INFO - async_engine.py:782 - session 2 finished, reason "stop", input_tokens 1273, output_tokens 248
+2026-11-04 17:17:32,666 - lmdeploy - INFO - async_engine.py:579 - session=3, input_tokens=1284, max_new_tokens=2048, prep=True
+INFO:     127.0.0.1:47664 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:17:32,667 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:17:32,667 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:17:32,685 - lmdeploy - INFO - guided_process.py:77 - delete guided processor for session_id=2, and total_processors=0
+2026-11-04 17:17:32,685 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=3, seq_id=3, and total_processors=1
+[2026-11-04 17:17:39 DP0] Avg thr (in/out): 128.1 / 22.8 tokens/s, Server (succeeded/failed/routed/waiting): 3 / 0 / 1 / 0, Engine (running/waiting): 1 / 0, KV cache: 9.0%, 
+2026-11-04 17:17:43,903 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:17:43,946 - lmdeploy - INFO - async_engine.py:782 - session 3 finished, reason "stop", input_tokens 1284, output_tokens 258
+2026-11-04 17:17:43,965 - lmdeploy - INFO - async_engine.py:579 - session=4, input_tokens=1284, max_new_tokens=2048, prep=True
+INFO:     127.0.0.1:53870 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:17:43,966 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:17:43,966 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:17:43,981 - lmdeploy - INFO - guided_process.py:77 - delete guided processor for session_id=3, and total_processors=0
+2026-11-04 17:17:43,981 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=4, seq_id=4, and total_processors=1
+[2026-11-04 17:17:49 DP0] Avg thr (in/out): 128.2 / 22.9 tokens/s, Server (succeeded/failed/routed/waiting): 4 / 0 / 1 / 0, Engine (running/waiting): 1 / 0, KV cache: 9.0%, 
+2026-11-04 17:17:56,351 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:17:56,395 - lmdeploy - INFO - async_engine.py:782 - session 4 finished, reason "stop", input_tokens 1284, output_tokens 284
+2026-11-04 17:17:56,413 - lmdeploy - INFO - async_engine.py:579 - session=5, input_tokens=890, max_new_tokens=2048, prep=True
+INFO:     127.0.0.1:49408 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:17:56,415 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:17:56,415 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:17:56,430 - lmdeploy - INFO - guided_process.py:77 - delete guided processor for session_id=4, and total_processors=0
+2026-11-04 17:17:56,431 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=5, seq_id=5, and total_processors=1
+[2026-11-04 17:17:59 DP0] Avg thr (in/out): 89.0 / 22.8 tokens/s, Server (succeeded/failed/routed/waiting): 5 / 0 / 1 / 0, Engine (running/waiting): 1 / 0, KV cache: 6.2%, 
+2026-11-04 17:17:59,894 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:17:59,936 - lmdeploy - INFO - async_engine.py:782 - session 5 finished, reason "stop", input_tokens 890, output_tokens 77
+2026-11-04 17:17:59,955 - lmdeploy - INFO - async_engine.py:579 - session=6, input_tokens=686, max_new_tokens=2048, prep=True
+INFO:     127.0.0.1:58036 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:17:59,956 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:17:59,957 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:17:59,973 - lmdeploy - INFO - guided_process.py:77 - delete guided processor for session_id=5, and total_processors=0
+2026-11-04 17:17:59,975 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=6, seq_id=6, and total_processors=1
+2026-11-04 17:18:02,706 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:18:02,749 - lmdeploy - INFO - async_engine.py:782 - session 6 finished, reason "stop", input_tokens 686, output_tokens 62
+2026-11-04 17:18:02,781 - lmdeploy - INFO - async_engine.py:579 - session=7, input_tokens=1437, max_new_tokens=2048, prep=True
+INFO:     127.0.0.1:58040 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:18:02,782 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:18:02,782 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:18:02,800 - lmdeploy - INFO - guided_process.py:77 - delete guided processor for session_id=6, and total_processors=0
+2026-11-04 17:18:02,805 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=7, seq_id=7, and total_processors=1
+[2026-11-04 17:18:09 DP0] Avg thr (in/out): 212.2 / 22.6 tokens/s, Server (succeeded/failed/routed/waiting): 7 / 0 / 1 / 0, Engine (running/waiting): 1 / 0, KV cache: 9.8%, 
+[2026-11-04 17:18:19 DP0] Avg thr (in/out): 0.0 / 23.3 tokens/s, Server (succeeded/failed/routed/waiting): 7 / 0 / 1 / 0, Engine (running/waiting): 1 / 0, KV cache: 11.3%, 
+2026-11-04 17:18:27,299 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:18:27,342 - lmdeploy - INFO - async_engine.py:782 - session 7 finished, reason "stop", input_tokens 1437, output_tokens 566
+2026-11-04 17:18:27,443 - lmdeploy - INFO - async_engine.py:579 - session=8, input_tokens=305, max_new_tokens=2048, prep=True
+INFO:     127.0.0.1:32968 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:18:27,461 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:18:27,462 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:18:27,844 - lmdeploy - INFO - guided_process.py:77 - delete guided processor for session_id=7, and total_processors=0
+2026-11-04 17:18:27,847 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=8, seq_id=8, and total_processors=1
+2026-11-04 17:18:28,112 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:18:28,155 - lmdeploy - INFO - async_engine.py:782 - session 8 finished, reason "stop", input_tokens 305, output_tokens 6
+2026-11-04 17:18:28,191 - lmdeploy - INFO - async_engine.py:579 - session=9, input_tokens=562, max_new_tokens=2048, prep=True
+INFO:     127.0.0.1:40400 - "POST /v1/chat/completions HTTP/1.1" 200 OK
+2026-11-04 17:18:28,247 - lmdeploy - INFO - request.py:416 - Receive ADD_SESSION Request: 1
+2026-11-04 17:18:28,247 - lmdeploy - INFO - request.py:416 - Receive ADD_MESSAGE Request: 1
+2026-11-04 17:18:28,735 - lmdeploy - INFO - guided_process.py:77 - delete guided processor for session_id=8, and total_processors=0
+2026-11-04 17:18:28,735 - lmdeploy - INFO - guided_process.py:70 - create guided processor for session_id=9, seq_id=9, and total_processors=1
+2026-11-04 17:18:29,136 - lmdeploy - INFO - request.py:416 - Receive END_SESSION Request: 1
+2026-11-04 17:18:29,179 - lmdeploy - INFO - async_engine.py:782 - session 9 finished, reason "stop", input_tokens 562, output_tokens 9

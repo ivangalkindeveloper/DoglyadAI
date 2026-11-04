@@ -17,6 +17,8 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
     @Published var isPhotoRemarks: Bool
     @Published var isDescriptionRemarks: Bool
 
+    let reportGenerations: ReportGenerationController
+
     private let container: DependencyContainer
     private let changes = PassthroughSubject<Void, Never>()
 
@@ -24,6 +26,14 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         container: DependencyContainer,
     ) {
         self.container = container
+        let config = container.applicationConfig.ultrasound
+        reportGenerations = ReportGenerationController(
+            repository: container.ultrasoundReportRepository,
+            photoOptions: ScanPhotoEncodingOptions(
+                resizeMaxDimension: config.scanPhotoResizeMaxDimension,
+                compressionQuality: config.scanPhotoCompressionQuality,
+            ),
+        )
 
         let settings = container.initialSettingsAI
         neuralModel = settings.selectedNeuralModelId.flatMap {

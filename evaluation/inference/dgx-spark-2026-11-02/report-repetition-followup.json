@@ -1,0 +1,22 @@
+{
+  "date": "2026-11-02",
+  "source": "Read-only analysis of the retained encrypted failed-generation preview; no patient text or request data exported",
+  "model": "google/medgemma-4b-it",
+  "user_reported_examination": "thyroidGland",
+  "server_status": "failed",
+  "server_error": "invalidReportResponse",
+  "affected_field": "descriptionRemarks",
+  "reported_sentence_characters": 73,
+  "saved_preview_characters": 4138,
+  "reported_sentence_occurrences": 6,
+  "original_guard_accepts_saved_preview": true,
+  "new_guard_first_rejected_prefix_characters": 2951,
+  "new_guard_reported_sentence_occurrences_at_rejection": 3,
+  "characters_after_rejection_in_saved_preview": 1187,
+  "scope": "Replays retained text prefixes through the validator, without running the model or changing sampling settings",
+  "limitations": [
+    "The original request payload was deleted on termination, so the input trigger and exact generation settings cannot be recovered.",
+    "The guard rejects repeated output; it does not improve the model or validate clinical relevance.",
+    "This is an exact-match heuristic for long sentences and can reject intentional repetition in a single section."
+  ]
+}

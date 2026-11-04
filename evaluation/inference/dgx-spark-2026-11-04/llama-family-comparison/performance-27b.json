@@ -1,0 +1,21 @@
+{
+  "id": "speed-256",
+  "kind": "performance",
+  "payload": {
+    "model": "google/medgemma-27b-it",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Перечисли числа от 1 до 1000. Каждое число запиши словами по-русски на отдельной строке. Не пропускай числа."
+      }
+    ],
+    "temperature": 0.0,
+    "top_p": 1.0,
+    "top_k": 0,
+    "seed": 42,
+    "repetition_penalty": 1.0,
+    "max_tokens": 256,
+    "stream": true,
+    "ignore_eos": true
+  }
+}

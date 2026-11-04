@@ -237,7 +237,7 @@ struct ModuleStateTests {
     }
 
     @Test
-    func examinationChangesReachScanAndObservationIsReleased() {
+    func examinationChangesReachScanAndObservationIsReleased() async {
         let container = DependencyContainer.previewable
         let initialModel = container.usExaminationNeuralModelDefault
         var selectedModel = initialModel
@@ -281,6 +281,25 @@ struct ModuleStateTests {
                 selectedModel
             },
             onNeuralModelSelected: { _ in },
+            onStartReportGeneration: { _ in
+                throw URLError(
+                    .unsupportedURL,
+                )
+            },
+        )
+        model?.onAppear()
+        for _ in 0 ..< 1000 {
+            guard model?.state is ScanInitializingState else {
+                break
+            }
+            try? await Task.sleep(
+                for: .milliseconds(
+                    2,
+                ),
+            )
+        }
+        #expect(
+            !(model?.state is ScanInitializingState),
         )
         weak let weakModel = model
         selectedModel = USExaminationNeuralModel(
@@ -303,7 +322,14 @@ struct ModuleStateTests {
         #expect(
             model?.template == selectedTemplate,
         )
+        model?.onDisappear()
         model = nil
+        for _ in 0 ..< 100 {
+            guard weakModel != nil else {
+                break
+            }
+            await Task.yield()
+        }
         #expect(
             weakModel == nil,
         )
@@ -824,6 +850,17 @@ struct ModuleStateTests {
                 container.usExaminationNeuralModelDefault
             },
             onNeuralModelSelected: { _ in },
+            currentReport: {
+                $0
+            },
+            observeReports: { _ in
+                AnyCancellable {}
+            },
+            onStartReportGeneration: { _, _ in
+                throw URLError(
+                    .unsupportedURL,
+                )
+            },
         )
         let arguments = PhotoViewArguments(
             getPhotos: {

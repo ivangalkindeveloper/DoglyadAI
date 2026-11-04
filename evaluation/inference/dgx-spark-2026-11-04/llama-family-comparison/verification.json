@@ -1,0 +1,17 @@
+{
+  "ruff": "passed",
+  "syntax": "passed",
+  "python_scripts": 7,
+  "json_files_checked_before_receipt": 43,
+  "jsonl_files": 5,
+  "jsonl_records": 218,
+  "completed_new_trials": 4,
+  "measured_speed_requests": 100,
+  "full_synthetic_answers": 36,
+  "restoration": "passed",
+  "architecture_check": {
+    "status": "13 pre-existing swift.view-fragment violations in files unchanged by this work",
+    "log": "architecture-check.log"
+  },
+  "application_files_changed": false
+}

@@ -45,6 +45,14 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
         )
     }
 
+    #if DEBUG
+        func setPreviewOptions(
+            _ options: [TranscriberType],
+        ) {
+            self.options = options
+        }
+    #endif
+
     override func onInit() {
         availabilityObservation = NotificationCenter.default.publisher(
             for: UIApplication.didBecomeActiveNotification,

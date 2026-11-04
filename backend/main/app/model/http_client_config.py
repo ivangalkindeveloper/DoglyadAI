@@ -11,6 +11,11 @@ class HttpClientConfig(BaseModel):
         allow_inf_nan=False,
     )
 
+    max_response_bytes: int = Field(
+        default=4194304,
+        gt=0,
+    )
+
     connect_timeout_seconds: float = Field(
         gt=0,
     )

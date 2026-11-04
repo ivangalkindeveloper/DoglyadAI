@@ -1,0 +1,39 @@
+{
+  "before": {
+    "doglyad-dgx-vllm_medgemma_4b-1": [
+      "vllm:generation_tokens_total{engine=\"0\",model_name=\"google/medgemma-4b-it\"} 54565.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"stop\",model_name=\"google/medgemma-4b-it\"} 138.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"length\",model_name=\"google/medgemma-4b-it\"} 30.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"abort\",model_name=\"google/medgemma-4b-it\"} 0.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"error\",model_name=\"google/medgemma-4b-it\"} 0.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"repetition\",model_name=\"google/medgemma-4b-it\"} 0.0"
+    ],
+    "doglyad-dgx-vllm_medgemma_15_4b-1": [
+      "vllm:generation_tokens_total{engine=\"0\",model_name=\"google/medgemma-1.5-4b-it\"} 36626.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"stop\",model_name=\"google/medgemma-1.5-4b-it\"} 46.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"length\",model_name=\"google/medgemma-1.5-4b-it\"} 12.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"abort\",model_name=\"google/medgemma-1.5-4b-it\"} 0.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"error\",model_name=\"google/medgemma-1.5-4b-it\"} 0.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"repetition\",model_name=\"google/medgemma-1.5-4b-it\"} 0.0"
+    ]
+  },
+  "after": {
+    "doglyad-dgx-vllm_medgemma_4b-1": [
+      "vllm:generation_tokens_total{engine=\"0\",model_name=\"google/medgemma-4b-it\"} 54565.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"stop\",model_name=\"google/medgemma-4b-it\"} 138.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"length\",model_name=\"google/medgemma-4b-it\"} 30.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"abort\",model_name=\"google/medgemma-4b-it\"} 0.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"error\",model_name=\"google/medgemma-4b-it\"} 0.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"repetition\",model_name=\"google/medgemma-4b-it\"} 0.0"
+    ],
+    "doglyad-dgx-vllm_medgemma_15_4b-1": [
+      "vllm:generation_tokens_total{engine=\"0\",model_name=\"google/medgemma-1.5-4b-it\"} 36626.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"stop\",model_name=\"google/medgemma-1.5-4b-it\"} 46.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"length\",model_name=\"google/medgemma-1.5-4b-it\"} 12.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"abort\",model_name=\"google/medgemma-1.5-4b-it\"} 0.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"error\",model_name=\"google/medgemma-1.5-4b-it\"} 0.0",
+      "vllm:request_success_total{engine=\"0\",finished_reason=\"repetition\",model_name=\"google/medgemma-1.5-4b-it\"} 0.0"
+    ]
+  },
+  "unchanged": true
+}

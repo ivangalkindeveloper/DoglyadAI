@@ -33,6 +33,23 @@ public actor DExaminationReportsStore {
         )
     }
 
+    public func updateGenerations(
+        fromStatus: String,
+        toStatus: String,
+    ) throws {
+        let descriptor = FetchDescriptor<USReportGenerationDB>(
+            predicate: #Predicate {
+                $0.status == fromStatus
+            },
+        )
+        for generation in try modelContext.fetch(
+            descriptor,
+        ) {
+            generation.status = toStatus
+        }
+        try saveChanges()
+    }
+
     public func fetchExaminationReportsCount() throws -> Int {
         let descriptor = FetchDescriptor<USExaminationReportDB>()
         return try modelContext.fetchCount(
@@ -68,6 +85,32 @@ public actor DExaminationReportsStore {
         )
         modelContext.insert(
             value,
+        )
+        try saveChanges()
+    }
+
+    public func updateGeneratedReport(
+        reportId: UUID,
+        generationId: UUID,
+        value: USExaminationModelReportDB,
+    ) throws {
+        let descriptor = FetchDescriptor<USExaminationReportDB>(
+            predicate: #Predicate {
+                $0.id == reportId
+            },
+        )
+        guard let report = try modelContext.fetch(
+            descriptor,
+        ).first else {
+            throw DDatabaseError.examinationReportNotFound
+        }
+        guard report.actualModelReport.generation?.id == generationId else {
+            return
+        }
+        let previous = report.actualModelReport
+        report.actualModelReport = value
+        modelContext.delete(
+            previous,
         )
         try saveChanges()
     }

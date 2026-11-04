@@ -3,10 +3,11 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+from collections.abc import AsyncGenerator
+from contextlib import aclosing
 from typing import Any
 
 import httpx
-from pydantic import ValidationError
 
 from app.core.variables import Variables
 from app.error import (
@@ -18,9 +19,10 @@ from app.error import (
 )
 from app.model.generation_request import GenerationRequest
 from app.model.inference_server_config import InferenceServerConfig
-from app.model.vllm_chat_completion import VLLMChatCompletion
 from app.service.generation_capacity import GenerationCapacity
 from app.service.image_request_validator import ImageRequestValidator
+from app.service.sse_decoder import SSEDecoder
+from app.service.structured_output_reader import StructuredOutputReader
 
 logger = logging.getLogger(
     __name__,
@@ -39,6 +41,7 @@ class VLLMService:
         self._http_client = http_client
         self._endpoints = variables.model_endpoints
         self._http_config = config.vllm
+        self._max_response_bytes = config.generation.max_response_bytes
         self._capacities = {
             model_id: GenerationCapacity(
                 config.generation,
@@ -62,6 +65,178 @@ class VLLMService:
         self,
         request: GenerationRequest,
     ) -> str:
+        async with aclosing(
+            self.stream(
+                request,
+            ),
+        ) as source:
+            return "".join(
+                [part async for part in source],
+            ).strip()
+
+    async def stream(
+        self,
+        request: GenerationRequest,
+    ) -> AsyncGenerator[str, None]:
+        """Close upstream as soon as a complete structured value passes its schema."""
+        base_url, payload = self._prepare(
+            request,
+        )
+        payload["stream"] = True
+        pieces: list[str] = []
+        size = 0
+        finish: str | None = None
+        is_done = False
+        completed_content: str | None = None
+        try:
+            schema = request.structured_output_schema()
+            reader = (
+                StructuredOutputReader(
+                    schema,
+                )
+                if schema is not None
+                else None
+            )
+            async with asyncio.timeout(
+                self._http_config.operation_timeout_seconds,
+            ):
+                async with self._capacities[request.modelId].slot():
+                    async with self._http_client.stream(
+                        "POST",
+                        f"{base_url}/v1/chat/completions",
+                        json=payload,
+                        timeout=self._http_config.timeout(),
+                    ) as response:
+                        if response.status_code >= 400:
+                            raise InferenceResponseError()
+                        async for data in SSEDecoder(
+                            self._max_response_bytes,
+                        ).messages(
+                            response,
+                        ):
+                            if data == "[DONE]":
+                                is_done = True
+                                break
+                            event = json.loads(
+                                data,
+                            )
+                            if not isinstance(
+                                event,
+                                dict,
+                            ) or event.get(
+                                "error",
+                            ):
+                                raise InvalidInferenceResponseError()
+                            choices = event.get(
+                                "choices",
+                                [],
+                            )
+                            if (
+                                not isinstance(
+                                    choices,
+                                    list,
+                                )
+                                or len(
+                                    choices,
+                                )
+                                > 1
+                            ):
+                                raise InvalidInferenceResponseError()
+                            for choice in choices:
+                                if (
+                                    not isinstance(
+                                        choice,
+                                        dict,
+                                    )
+                                    or choice.get(
+                                        "index",
+                                        0,
+                                    )
+                                    != 0
+                                ):
+                                    raise InvalidInferenceResponseError()
+                                delta = choice.get(
+                                    "delta",
+                                    {},
+                                )
+                                if not isinstance(
+                                    delta,
+                                    dict,
+                                ):
+                                    raise InvalidInferenceResponseError()
+                                content = delta.get(
+                                    "content",
+                                )
+                                if content is not None and not isinstance(
+                                    content,
+                                    str,
+                                ):
+                                    raise InvalidInferenceResponseError()
+                                finish = (
+                                    choice.get(
+                                        "finish_reason",
+                                    )
+                                    or finish
+                                )
+                                if content:
+                                    size += len(
+                                        content.encode(
+                                            "utf-8",
+                                        ),
+                                    )
+                                    if size > self._max_response_bytes:
+                                        raise InvalidInferenceResponseError()
+                                    if reader is not None:
+                                        content = reader.append(
+                                            content,
+                                        )
+                                    pieces.append(
+                                        content,
+                                    )
+                                    if reader is not None and reader.is_complete:
+                                        completed_content = content
+                                        break
+                                    yield content
+                            if completed_content is not None:
+                                break
+                        if completed_content is None:
+                            if (
+                                not is_done
+                                or finish != "stop"
+                                or not "".join(
+                                    pieces,
+                                ).strip()
+                            ):
+                                raise InvalidInferenceResponseError()
+                            if reader is not None:
+                                reader.finish()
+            logger.info(
+                "vLLM stream completed: model=%s, chars=%d, reason=%s",
+                request.modelId,
+                sum(
+                    (
+                        len(
+                            part,
+                        )
+                        for part in pieces
+                    ),
+                ),
+                "json_complete" if completed_content is not None else finish,
+            )
+        except (TimeoutError, httpx.TimeoutException) as error:
+            raise InferenceTimeoutError() from error
+        except httpx.HTTPError as error:
+            raise InferenceUnavailableError() from error
+        except (ValueError, TypeError, KeyError, RecursionError) as error:
+            raise InvalidInferenceResponseError() from error
+        # The final delta is published only after closing HTTP and releasing capacity.
+        if completed_content is not None:
+            yield completed_content
+
+    def _prepare(
+        self,
+        request: GenerationRequest,
+    ) -> tuple[str, dict[str, Any]]:
         # Endpoints come only from trusted host configuration, never from callers.
         base_url = self._endpoints.get(
             request.modelId,
@@ -110,6 +285,8 @@ class VLLMService:
             payload["temperature"] = request.temperature
         if request.maxTokens is not None:
             payload["max_tokens"] = request.maxTokens
+        if request.repetitionPenalty is not None:
+            payload["repetition_penalty"] = request.repetitionPenalty
 
         # Never log payload contents because prompts and images may be sensitive.
         logger.info(
@@ -126,49 +303,4 @@ class VLLMService:
             ),
         )
 
-        try:
-            async with asyncio.timeout(
-                self._http_config.operation_timeout_seconds,
-            ):
-                async with self._capacities[request.modelId].slot():
-                    response = await self._http_client.post(
-                        f"{base_url}/v1/chat/completions",
-                        json=payload,
-                        timeout=self._http_config.timeout(),
-                    )
-        except (TimeoutError, httpx.TimeoutException) as error:
-            raise InferenceTimeoutError() from error
-        except httpx.HTTPError as error:
-            raise InferenceUnavailableError() from error
-
-        logger.info(
-            "vLLM response: status=%d",
-            response.status_code,
-        )
-        if response.status_code >= 400:
-            raise InferenceResponseError()
-
-        try:
-            parsed = VLLMChatCompletion.model_validate(
-                response.json(),
-            )
-            value = parsed.value()
-            usage = parsed.usage
-            finish_reason = parsed.choices[0].finish_reason
-            logger.info(
-                "vLLM value: model=%s, chars=%d, finish_reason=%s, prompt_tokens=%d, completion_tokens=%d",
-                request.modelId,
-                len(
-                    value,
-                ),
-                finish_reason,
-                usage.prompt_tokens if usage else 0,
-                usage.completion_tokens if usage else 0,
-            )
-            if request.structuredOutput is not None:
-                json.loads(
-                    value,
-                )
-        except (ValueError, ValidationError) as error:
-            raise InvalidInferenceResponseError() from error
-        return value
+        return base_url, payload

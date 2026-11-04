@@ -1,9 +1,6 @@
 import Foundation
 internal import Alamofire
 
-/// A bridge between the Alamofire-agnostic `DHttpInterceptorProtocol` and
-/// Alamofire's `RequestInterceptor`. Applies adapters in order and bridges the
-/// async operations to a completion API. A failure stops subsequent adapters.
 struct DHttpInterceptorAdapter: RequestInterceptor {
     private let interceptors: [any DHttpInterceptorProtocol]
 

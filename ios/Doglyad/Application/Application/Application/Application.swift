@@ -1,7 +1,9 @@
 import DoglyadUI
 import SwiftUI
 
-@main
+#if !DOGLYAD_REGRESSION
+    @main
+#endif
 struct Application: App {
     @StateObject private var viewModel = ApplicationRootViewModel()
 

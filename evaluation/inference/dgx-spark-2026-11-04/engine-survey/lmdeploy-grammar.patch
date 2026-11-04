@@ -1,0 +1,11 @@
+--- upstream/_guided_decoding.py
++++ experimental/_guided_decoding.py
+@@ -95,7 +95,7 @@
+     """
+     schema_type, source = _grammar_source(response_format)
+     if schema_type == 'json_schema':
+-        return compiler.compile_json_schema(source)
++        return compiler.compile_json_schema(source, any_whitespace=False)
+     if schema_type == 'regex_schema':
+         return compiler.compile_regex(source)
+     if schema_type == 'structural_tag':

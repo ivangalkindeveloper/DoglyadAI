@@ -1,0 +1,10 @@
+{"event": "original_engine_stopped"}
+{"event": "starting", "stage": "medgemma-google-recipe"}
+{"event": "probe_finished", "output": "medgemma-google-recipe.jsonl"}
+{"event": "starting", "stage": "medgemma-xgrammar-028"}
+{"event": "engine_ready", "name": "doglyad-deep-evaluation", "seconds": 148.5}
+{"event": "probe_finished", "output": "medgemma-xgrammar-028.jsonl"}
+{"event": "restoring_original"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 122.7}
+{"event": "restoration_verified"}
+{"event": "finished"}

@@ -1,0 +1,92 @@
+[
+  {
+    "name": "doglyad-survey-trt-flashinfer2",
+    "id": "9de3ef47ed79f37f1378bdc917051b7ca2fb28ea544e10f5f1b14940cc47dda8",
+    "exit_code": 137,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-trt-clean",
+    "id": "8207abfd25ea7c65a24679193ad432587f6a4aeef2eacd25f65eb74692b5ca88",
+    "exit_code": 0,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-trt-flashinfer",
+    "id": "9a71d9f3114ae08b200a4b7e7b77f9a44a8c9d2732c6e3db3770612d891ffebf",
+    "exit_code": 1,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-trt-runtime-build",
+    "id": "5e007fa3d0dbbf3ac3e607dd044d21c1969d32fea3302ba643a0420c1a8ffd01",
+    "exit_code": 1,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-trt-install4",
+    "id": "75572d65b23ced2dd8b7400429427ec4f3edd4315b9183e1f6a6b41824d5bf82",
+    "exit_code": 1,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-lmdeploy-ray",
+    "id": "4b0c61b515d375ae5880579aacbe8caf5126d35accb2b4945714b9c1de3b3937",
+    "exit_code": 0,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-lmdeploy-torch2",
+    "id": "c908e4eab74137e355777135b4bca583c71a9e052587d1606c665a93d3ef73e3",
+    "exit_code": 0,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-lmdeploy-torch",
+    "id": "b3b3a221d0c3b7f9364dac81bf8d9682152655f09dd60c9b504ba2c070d4ca94",
+    "exit_code": 137,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-trt-install2",
+    "id": "99dc259cda2bbca9e85bb553bc90b46f99a6f071cb74e93aa570d906c9d90ee0",
+    "exit_code": 137,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-trt-install",
+    "id": "21f2b2d2bb0cb47299d4fb31529e43c542cfd94fc4d1f85f004214e299788f3e",
+    "exit_code": 2,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-lmdeploy-deps",
+    "id": "cdc3c153f23f2c3f91f9bec99b3f1cc21b5f5385273160a9b1ff8451ebb0ebe3",
+    "exit_code": 0,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-lmdeploy-install2",
+    "id": "32dd2c7a69fb9ec157e6fcc9d37b69dc1ceb6abf18fd0d3bbdcdc2e8cfa59926",
+    "exit_code": 0,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-mmproj",
+    "id": "84945fd206b9f6c1ad100fe24e465cb1d26b5faf49f4ff82b518c1c68026e7c4",
+    "exit_code": 0,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-lmdeploy-build",
+    "id": "1ea7d52cd7ea13d0b4740df782ecb00c58531ff1c5eae7d39ef0d912039171f8",
+    "exit_code": 1,
+    "oom_killed": false
+  },
+  {
+    "name": "doglyad-survey-convert",
+    "id": "f9b20bffa33c3bc2e6fe84c1f04d5b4ca191e2b99b8d545087c422cffd2f07df",
+    "exit_code": 0,
+    "oom_killed": false
+  }
+]

@@ -21,6 +21,21 @@ private extension USExaminationReport {
 }
 
 extension USExaminationReport {
+    func replacingModelReport(
+        _ model: USExaminationModelReport,
+        isNewAttempt: Bool = false,
+        settings: SettingsAI? = nil,
+    ) -> USExaminationReport {
+        USExaminationReport(
+            id: id,
+            date: date,
+            settingsAI: settings ?? settingsAI,
+            examinationData: examinationData,
+            actualModelReport: model,
+            previousModelReports: isNewAttempt ? [actualModelReport] + previousModelReports : previousModelReports,
+        )
+    }
+
     func makeEmail(
         recipientEmail: String,
         examinationTypesById: [String: USExaminationType],
@@ -96,7 +111,9 @@ extension USExaminationReport {
             "\(String(localized: l10n[.reportActualModelResponseTitle]))\n\(actualModelReport.plainText(l10n: l10n))",
         )
 
-        if !previousModelReports.isEmpty {
+        if previousModelReports.contains(
+            where: \.generation.status.isCompleted,
+        ) {
             lines.append(
                 String(
                     localized: l10n[
@@ -104,7 +121,7 @@ extension USExaminationReport {
                     ],
                 ),
             )
-            for modelReport in previousModelReports {
+            for modelReport in previousModelReports where modelReport.generation.status.isCompleted {
                 lines.append(
                     modelReport.plainText(
                         l10n: l10n,

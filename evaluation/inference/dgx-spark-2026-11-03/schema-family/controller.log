@@ -1,0 +1,17 @@
+{"event": "starting", "model": "medgemma-15-4b", "variant": "working", "count": 8}
+{"event": "finished", "model": "medgemma-15-4b", "variant": "working"}
+{"event": "starting", "model": "medgemma-15-4b", "variant": "unbounded-grammar", "count": 8}
+{"event": "finished", "model": "medgemma-15-4b", "variant": "unbounded-grammar"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+{"event": "runtime_verified", "model": "medgemma-15-4b", "no_containers_restarted": true}
+{"event": "starting", "model": "medgemma-27b", "variant": "working", "count": 8}
+{"event": "finished", "model": "medgemma-27b", "variant": "working"}
+{"event": "starting", "model": "medgemma-27b", "variant": "unbounded-grammar", "count": 8}
+{"event": "finished", "model": "medgemma-27b", "variant": "unbounded-grammar"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+{"event": "runtime_verified", "model": "medgemma-27b", "no_containers_restarted": true}
+{"event": "all_finished", "containers_unchanged": true}

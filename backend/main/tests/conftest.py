@@ -23,6 +23,7 @@ from app.service.configuration.configuration_response_service import Configurati
 from app.service.dictation.dictation_parsing_service import DictationParsingService
 from app.service.email.report_email_service import ReportEmailService
 from app.service.neural_model.mock_neural_model_service import MockNeuralModelService
+from app.service.report.report_generation_jobs import ReportGenerationJobs
 from app.service.report.report_generation_service import ReportGenerationService
 
 
@@ -72,9 +73,54 @@ def app(
         ),
     )
     from app.core.billing.billing_dependencies import BillingDependencies
-    from tests.support.billing.unmetered_request import UnmeteredRequest
 
-    application.dependency_overrides[BillingDependencies.report_access] = lambda: UnmeteredRequest()
     application.dependency_overrides[BillingDependencies.dictation_access] = lambda: None
     application.dependency_overrides[BillingDependencies.email_access] = lambda: None
     return application
+
+
+@pytest.fixture
+def report_jobs(
+    app: FastAPI,
+    configuration: Configuration,
+) -> ReportGenerationJobs:
+    from datetime import UTC, datetime, timedelta
+    from unittest.mock import AsyncMock
+    from uuid import uuid4
+
+    from app.core.app_check.app_check import AppCheck
+    from app.core.application.service_dependencies import ServiceDependencies
+    from app.core.billing.billing_dependencies import BillingDependencies
+    from app.model.ultrasound.us_report_generation_response import USReportGenerationResponse
+    from app.model.ultrasound.us_report_generation_status import USReportGenerationStatus
+    from app.model.ultrasound.us_report_preview_response import USReportPreviewResponse
+    from app.service.billing.subscription_service import SubscriptionService
+    from app.service.report.report_generation_store import ReportGenerationStore
+
+    store = AsyncMock(
+        spec=ReportGenerationStore,
+    )
+    store.create.return_value = USReportGenerationResponse(
+        modelId="google/medgemma-4b-it",
+        generationId=uuid4(),
+        status=USReportGenerationStatus.QUEUED,
+        sequence=0,
+        expiresAt=datetime.now(
+            UTC,
+        )
+        + timedelta(
+            seconds=configuration.server.report_generation.retention_seconds,
+        ),
+        partialReport=USReportPreviewResponse(),
+    )
+    jobs = ReportGenerationJobs(
+        store,
+        app.state.container.report_generation,
+        AsyncMock(
+            spec=SubscriptionService,
+        ),
+    )
+    app.dependency_overrides[AppCheck.verify] = lambda: None
+    app.dependency_overrides[BillingDependencies.owner] = lambda: "test-owner"
+    app.dependency_overrides[ServiceDependencies.report_jobs] = lambda: jobs
+    return jobs

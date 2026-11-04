@@ -1,0 +1,123 @@
+{
+  "repo": "InternLM/lmdeploy",
+  "commit": "3228395546dfb2f6427faf39ec0c0c285f4c378a",
+  "date": "2026-11-03T08:30:15Z",
+  "release": "v0.18.0",
+  "assets": [],
+  "files": [
+    {
+      "path": "docs/en/multi_modal/gemma3.md",
+      "file": "docs__en__multi_modal__gemma3.md",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/docs/en/multi_modal/gemma3.md",
+      "sha256": "4237c61c65e940a68dd2437155682365213434def32a3ac059d2346f613d2c45"
+    },
+    {
+      "path": "docs/en/supported_models/reward_models.md",
+      "file": "docs__en__supported_models__reward_models.md",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/docs/en/supported_models/reward_models.md",
+      "sha256": "066f1d72bbdc7c36ed5a9e7d7a59ccf6e2b0a49efb81478eae036d1f0058ee6b"
+    },
+    {
+      "path": "docs/en/supported_models/supported_models.md",
+      "file": "docs__en__supported_models__supported_models.md",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/docs/en/supported_models/supported_models.md",
+      "sha256": "36819e1dde81cc08303beac8d238c6e11a7f765f62eca305fb30f0f72f703992"
+    },
+    {
+      "path": "docs/zh_cn/multi_modal/gemma3.md",
+      "file": "docs__zh_cn__multi_modal__gemma3.md",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/docs/zh_cn/multi_modal/gemma3.md",
+      "sha256": "ae12a66ecf4fbe49ddfc8eb8ac5506942e7cc0c352ea78e5a1d54ca4644d1892"
+    },
+    {
+      "path": "docs/zh_cn/supported_models/reward_models.md",
+      "file": "docs__zh_cn__supported_models__reward_models.md",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/docs/zh_cn/supported_models/reward_models.md",
+      "sha256": "80af7e4a886b4f7bb3fc42a10413e56720897c8c4404b8839d076cf133375c0f"
+    },
+    {
+      "path": "docs/zh_cn/supported_models/supported_models.md",
+      "file": "docs__zh_cn__supported_models__supported_models.md",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/docs/zh_cn/supported_models/supported_models.md",
+      "sha256": "9c8858d9af31c2309d4da88938cbb54f8c82c3dc0fd6db5490fbeb103b478358"
+    },
+    {
+      "path": "lmdeploy/pytorch/models/gemma3_vl.py",
+      "file": "lmdeploy__pytorch__models__gemma3_vl.py",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/lmdeploy/pytorch/models/gemma3_vl.py",
+      "sha256": "425c38e9e3c8d34fb2c82680f05890b87eb0a13b800f6d33446243adfc0277bc"
+    },
+    {
+      "path": "lmdeploy/turbomind/supported_models.py",
+      "file": "lmdeploy__turbomind__supported_models.py",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/lmdeploy/turbomind/supported_models.py",
+      "sha256": "c86b37afb7494f828fcf13d6cbb63d0805d72fffc8810e28e2797550ea96bc0b"
+    },
+    {
+      "path": "lmdeploy/vl/model/gemma3_vl.py",
+      "file": "lmdeploy__vl__model__gemma3_vl.py",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/lmdeploy/vl/model/gemma3_vl.py",
+      "sha256": "88ba3a0d54d07fa964ab8ef377dc9a8d4225b23b6a288fc129da69eda1abcba5"
+    },
+    {
+      "path": "pyproject.toml",
+      "file": "pyproject.toml",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/pyproject.toml",
+      "sha256": "c15eeeaf6f4fe9be1cd8672bf9f4074e7d616f53ac0344bf873b28960756dace"
+    },
+    {
+      "path": "setup.py",
+      "file": "setup.py",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/setup.py",
+      "sha256": "cc3ac3728033b52749bcd0284eddd9d727b13e0e27174c7c63fbf77e5bd6cbb9"
+    },
+    {
+      "path": "README.md",
+      "file": "README.md",
+      "url": "https://raw.githubusercontent.com/InternLM/lmdeploy/3228395546dfb2f6427faf39ec0c0c285f4c378a/README.md",
+      "sha256": "fa3dff84d35dbfdedc67973df6666b7dd37f37190680265171409f56cd560892"
+    }
+  ],
+  "candidate_paths": [
+    ".claude/skills/docker-build/SKILL.md",
+    ".claude/skills/support-new-model/SKILL.md",
+    ".dockerignore",
+    ".github/workflows/docker.yml",
+    ".github/workflows/docker_dev.yml",
+    ".github/workflows/docker_nightly.yml",
+    ".github/workflows/test_docker.yml",
+    "autotest/configs/google/gemma-2-27b-it.yml",
+    "autotest/configs/google/gemma-2-9b-it.yml",
+    "autotest/configs/google/gemma-3-12b-it.yml",
+    "autotest/configs/google/gemma-3-27b-it.yml",
+    "autotest/configs/google/gemma-7b-it.yml",
+    "builder/manywheel/Dockerfile_2_28",
+    "builder/manywheel/scripts/install_conda.sh",
+    "builder/manywheel/scripts/install_cuda.sh",
+    "docker/Dockerfile",
+    "docker/Dockerfile.jetson",
+    "docker/Dockerfile_ascend_a2_300i",
+    "docker/Dockerfile_ascend_a3",
+    "docker/Dockerfile_dev",
+    "docker/Dockerfile_patch",
+    "docker/InternVL_Dockerfile",
+    "docker/Qwen2VL_Dockerfile",
+    "docker/build.sh",
+    "docker/install.sh",
+    "docker/prepare_3rdparty_wheel.sh",
+    "docs/en/get_started/installation.md",
+    "docs/en/multi_modal/gemma3.md",
+    "docs/en/supported_models/reward_models.md",
+    "docs/en/supported_models/supported_models.md",
+    "docs/zh_cn/get_started/installation.md",
+    "docs/zh_cn/multi_modal/gemma3.md",
+    "docs/zh_cn/supported_models/reward_models.md",
+    "docs/zh_cn/supported_models/supported_models.md",
+    "lmdeploy/monitoring/docker-compose.yaml",
+    "lmdeploy/pytorch/configurations/gemma.py",
+    "lmdeploy/pytorch/models/gemma.py",
+    "lmdeploy/pytorch/models/gemma3_vl.py",
+    "lmdeploy/turbomind/supported_models.py",
+    "lmdeploy/vl/model/gemma3_vl.py"
+  ]
+}

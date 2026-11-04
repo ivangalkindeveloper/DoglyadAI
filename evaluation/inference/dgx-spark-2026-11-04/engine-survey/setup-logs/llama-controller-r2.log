@@ -1,0 +1,9 @@
+{"event": "original_stopped", "trial": "llama-4b-bf16-r2"}
+{"event": "probe_started", "trial": "llama-4b-bf16-r2"}
+{"event": "restored", "trial": "llama-4b-bf16-r2"}
+Traceback (most recent call last):
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 133, in <module>
+    main()
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 109, in main
+    raise RuntimeError(f"Probe failed: {result.returncode}")
+RuntimeError: Probe failed: 1

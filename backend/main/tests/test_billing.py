@@ -16,7 +16,6 @@ from sqlalchemy import select
 
 from app.core.application.application_factory import ApplicationFactory
 from app.core.application.service_dependencies import ServiceDependencies
-from app.core.billing.billing_request_guard import BillingRequestGuard
 from app.core.configuration.configuration import Configuration
 from app.core.configuration.variables import Variables
 from app.database.billing_credential_db import BillingCredentialDB
@@ -146,17 +145,15 @@ def test_quota_refunds_failures_and_blocks_replays(
             operation = str(
                 uuid4(),
             )
-            with pytest.raises(
-                RuntimeError,
-            ):
-                async with BillingRequestGuard(
-                    ctx.service,
-                    owner,
-                    operation,
-                ):
-                    raise RuntimeError(
-                        "generation failed",
-                    )
+            await ctx.service.reserve(
+                owner,
+                operation,
+            )
+            await ctx.service.finish_usage(
+                owner,
+                operation,
+                is_success=False,
+            )
             assert (
                 await ctx.service.status(
                     owner,
@@ -172,14 +169,18 @@ def test_quota_refunds_failures_and_blocks_replays(
             for _ in range(
                 initial,
             ):
-                async with BillingRequestGuard(
-                    ctx.service,
+                operation = str(
+                    uuid4(),
+                )
+                await ctx.service.reserve(
                     owner,
-                    str(
-                        uuid4(),
-                    ),
-                ):
-                    pass
+                    operation,
+                )
+                await ctx.service.finish_usage(
+                    owner,
+                    operation,
+                    is_success=True,
+                )
             assert (
                 await ctx.service.status(
                     owner,
@@ -207,13 +208,18 @@ def test_quota_refunds_failures_and_blocks_replays(
     )
 
 
-def test_generation_counts_without_client_operation_identifier(
+def test_report_jobs_count_each_completed_generation_once(
     tmp_path: Path,
     configuration: Configuration,
     app: FastAPI,
 ) -> None:
+    from cryptography.fernet import Fernet
+
     from app.core.app_check.app_check import AppCheck
-    from app.core.billing.billing_dependencies import BillingDependencies
+    from app.service.report.report_generation_cipher import ReportGenerationCipher
+    from app.service.report.report_generation_jobs import ReportGenerationJobs
+    from app.service.report.report_generation_store import ReportGenerationStore
+    from app.service.report.report_generation_worker import ReportGenerationWorker
 
     async def run() -> None:
         async with BillingTestContext(
@@ -246,12 +252,23 @@ def test_generation_counts_without_client_operation_identifier(
                         ),
                     ),
                 )
-            app.state.container = replace(
-                app.state.container,
-                subscriptions=ctx.service,
+            container = app.state.container
+            store = ReportGenerationStore(
+                ctx.database,
+                ReportGenerationCipher(
+                    Fernet.generate_key().decode(),
+                ),
+                configuration.server.report_generation,
             )
-            app.dependency_overrides.pop(
-                BillingDependencies.report_access,
+            jobs = ReportGenerationJobs(
+                store,
+                container.report_generation,
+                ctx.service,
+            )
+            app.state.container = replace(
+                container,
+                subscriptions=ctx.service,
+                report_jobs=jobs,
             )
             app.dependency_overrides[AppCheck.verify] = lambda: None
             initial = (
@@ -280,12 +297,50 @@ def test_generation_counts_without_client_operation_identifier(
                 for _ in range(
                     2,
                 ):
+                    request = {
+                        "requestId": str(
+                            uuid4(),
+                        ),
+                        "examination": body,
+                    }
+                    headers = {"Authorization": "Bearer " + identity.accessToken}
                     response = await client.post(
-                        "/v1/ultrasound/generate_report",
-                        json=body,
-                        headers={"Authorization": "Bearer " + identity.accessToken},
+                        "/v1/ultrasound/report_generations",
+                        json=request,
+                        headers=headers,
                     )
-                    assert response.status_code == 200, response.text
+                    assert response.status_code == 202, response.text
+                    job = await store.claim(
+                        130,
+                    )
+                    assert job is not None
+                    await ReportGenerationWorker(
+                        Variables(
+                            environment="development",
+                            model_service_type="mock",
+                        ),
+                    ).execute(
+                        job,
+                        store,
+                        container.report_generation,
+                        container.model_service,
+                        ctx.service,
+                        10,
+                    )
+                    completed = await client.get(
+                        "/v1/ultrasound/report_generations/" + job.id,
+                        headers=headers,
+                    )
+                    assert completed.status_code == 200, completed.text
+                    assert completed.json()["status"] == "completed", completed.text
+                    duplicate = await client.post(
+                        "/v1/ultrasound/report_generations",
+                        json=request,
+                        headers=headers,
+                    )
+                    assert duplicate.status_code == 202, duplicate.text
+                    assert duplicate.json()["generationId"] == job.id
+                    assert duplicate.json()["status"] == "completed"
             assert (
                 await ctx.service.status(
                     owner,

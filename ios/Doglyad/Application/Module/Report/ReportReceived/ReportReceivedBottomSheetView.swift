@@ -6,13 +6,9 @@ struct ReportReceivedBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     @StateObject var viewModel: ReportReceivedViewModel
+    @State private var generationFailureCardHeight: CGFloat = 0
 
     var body: some View {
-        let isSending = switch viewModel.state {
-        case _ as ReportReceivedSendingState: true
-        default: false
-        }
-
         DBottomSheet(
             type: .blur,
             title: l10n[
@@ -20,84 +16,113 @@ struct ReportReceivedBottomSheetView: DViewProtocol {
             ],
             fraction: 1,
             content: { toolbarHeight, bottomHeight in
-                VStack(
-                    spacing: .zero,
+                ZStack(
+                    alignment: .bottom,
                 ) {
-                    ScrollView {
-                        ReportReceivedMarkdownView(
-                            textColor: color.grayscaleBackgroundWeak,
+                    DScrollVStack(
+                        padding: EdgeInsets(
+                            top: toolbarHeight + size.s16,
+                            leading: size.s16,
+                            bottom: bottomHeight + size.s16 + (viewModel.generationFailureTitle == nil ? 0 : generationFailureCardHeight + size.s8),
+                            trailing: size.s16,
+                        ),
+                    ) {
+                        ReportReceivedMarkdownView()
+                    }
+                    .transaction { transaction in
+                        // Stream updates resize text immediately; controls animate outside this subtree.
+                        transaction.animation = nil
+                    }
+                    if let title = viewModel.generationFailureTitle {
+                        DMessageCard(
+                            type: .error,
+                            title: l10n[
+                                title,
+                            ],
+                            alignment: .center,
                         )
+                        .onGeometryChange(
+                            for: CGFloat.self,
+                            of: {
+                                $0.size.height
+                            },
+                        ) { height in
+                            generationFailureCardHeight = height
+                        }
                         .padding(
-                            .top,
-                            toolbarHeight,
-                        )
-                        .padding(
+                            .horizontal,
                             size.s16,
                         )
                         .padding(
                             .bottom,
-                            bottomHeight,
+                            bottomHeight + size.s8,
+                        )
+                        .transition(
+                            .move(
+                                edge: .bottom,
+                            ).combined(
+                                with: .opacity,
+                            ),
                         )
                     }
-                    .mask(
-                        VStack(
-                            spacing: .zero,
-                        ) {
-                            LinearGradient(
-                                colors: [.clear, .black],
-                                startPoint: .top,
-                                endPoint: .bottom,
-                            )
-                            .frame(
-                                height: size.s16,
-                            )
-
-                            Color.black
-                        },
-                    )
                 }
             },
             bottom: {
-                VStack(
-                    spacing: size.s8,
-                ) {
-                    DButton(
-                        title: l10n[
-                            .reportReceivedOpenReportButton,
-                        ],
-                        action: viewModel.onTapReport,
-                    )
-                    .dStyle(
-                        .primaryButton,
-                    )
+                if viewModel.canRetry || viewModel.isCompleted {
+                    VStack(
+                        spacing: size.s8,
+                    ) {
+                        if viewModel.canRetry {
+                            DButton(
+                                image: .refresh,
+                                title: l10n[
+                                    .reportGenerationRetryButton,
+                                ],
+                                action: viewModel.onTapRetryGeneration,
+                            ).dStyle(
+                                .primaryButton,
+                            )
+                        }
+                        if viewModel.isCompleted {
+                            if viewModel.isReportNavigationAvailable {
+                                DButton(
+                                    title: l10n[
+                                        .reportReceivedOpenReportButton,
+                                    ],
+                                    action: viewModel.onTapReport,
+                                )
+                                .dStyle(
+                                    .primaryButton,
+                                )
+                            }
 
-                    ReportReceivedEmailButtonView(
-                        isSending: isSending,
-                    )
+                            ReportReceivedEmailButtonView()
 
-                    DButton(
-                        image: .copy,
-                        title: l10n[
-                            .buttonCopy,
-                        ],
-                        action: viewModel.onTapCopy,
-                    )
-                    .dStyle(
-                        .textWeak,
+                            DButton(
+                                image: .copy,
+                                title: l10n[
+                                    .buttonCopy,
+                                ],
+                                action: viewModel.onTapCopy,
+                            )
+                            .dStyle(
+                                .textWeak,
+                            )
+                            .padding(
+                                .bottom,
+                                size.s10,
+                            )
+                        }
+                    }
+                    .padding(
+                        .top,
+                        size.s8,
                     )
                     .padding(
-                        .bottom,
-                        size.s10,
+                        .horizontal,
+                        size.s16,
                     )
                 }
-                .padding(
-                    .top,
-                    size.s8,
-                )
-                .padding(
-                    .horizontal,
-                    size.s16,
-                )
             },
         )
         .environmentObject(

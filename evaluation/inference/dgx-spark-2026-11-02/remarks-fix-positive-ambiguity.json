@@ -1,0 +1,66 @@
+{
+  "date": "2026-11-02",
+  "method": "Direct private vLLM SSE with current ReportGenerationService.prepare/complete; synthetic fixtures only",
+  "conditions": {
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "parallel_requests": 2,
+    "max_description_remarks_characters": 512
+  },
+  "results": [
+    {
+      "seconds": 8.0,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1419,
+        "total_tokens": 1661,
+        "completion_tokens": 242
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 0,
+      "conflict": true,
+      "characters": 772,
+      "valid_json": true,
+      "fields": {
+        "description": 307,
+        "conclusion": 87,
+        "recommendations": 239,
+        "descriptionRemarks": 53
+      },
+      "synthetic_description_remarks": "Размеры узла не согласованы. Какой из размеров верен?",
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 2,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 8.51,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1419,
+        "total_tokens": 1673,
+        "completion_tokens": 254
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 42,
+      "conflict": true,
+      "characters": 905,
+      "valid_json": true,
+      "fields": {
+        "description": 202,
+        "conclusion": 139,
+        "recommendations": 291,
+        "descriptionRemarks": 187
+      },
+      "synthetic_description_remarks": "Несоответствие размеров узла в описании. Необходимо уточнить, какой размер узла указан врачом в качестве основного. Также, необходимо уточнить, был ли проведен анализ кровоснабжения узла.",
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    }
+  ],
+  "limitations": [
+    "Small synthetic regression matrix, not a general clinical-quality evaluation.",
+    "No images; photo schema paths are covered by backend tests."
+  ]
+}

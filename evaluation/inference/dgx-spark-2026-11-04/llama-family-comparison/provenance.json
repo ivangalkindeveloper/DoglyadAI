@@ -1,0 +1,18 @@
+{
+  "model_revisions": {
+    "google/medgemma-1.5-4b-it": "91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b",
+    "google/medgemma-27b-it": "2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f"
+  },
+  "previous_4b_report": "../engine-survey/README.md",
+  "llama_commit": "5851a8e505f4d5fbb183f2847698eb6155d176b7",
+  "source_harness_sha256": {
+    "run_trial.py": "d29a3742977ce2655ee367283688bcafeff67e815fbe1abee7e883fb30de8bff",
+    "probe_http.py": "ba3d51e94a496f50bedac1fd58f3407421d15af637dcd5d8dd26c08af8fcd531",
+    "analyze_survey.py": "da7ec790107c0f02441fe1f1c1034d6c3106cbde136ba48e79732e103ff9817a",
+    "cases.json": "3215167d94a74b03dc254f9a78fa9b7f5dc712e88b46cd705003e17cc74920c6",
+    "performance.json": "84670d0e52c11f50f05e79faf4e2254b5da551d62e9f2342748cf34560a36345"
+  },
+  "vllm_image": "sha256:89154ef00dd15368d2b293c167e5cc7dbb521fcfb2fbb77510e0d4df2b820e8f",
+  "remote_directory": "/var/tmp/doglyad-llama-family-20261104",
+  "assets_directory": "/var/tmp/doglyad-engine-survey-20261104"
+}

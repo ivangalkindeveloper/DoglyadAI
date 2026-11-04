@@ -1,0 +1,12 @@
+{"event": "trial_begin", "plan": "tensorrt-4b-auto-kv.json"}
+{"event": "original_stopped", "trial": "tensorrt-4b-auto-kv"}
+{"event": "restored", "trial": "tensorrt-4b-auto-kv"}
+Traceback (most recent call last):
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 273, in <module>
+    main()
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 189, in main
+    _health(
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 96, in _health
+    raise RuntimeError(f"Engine exited: {name}")
+RuntimeError: Engine exited: doglyad-survey-engine
+{"event": "trial_end", "plan": "tensorrt-4b-auto-kv.json", "exit": 1}

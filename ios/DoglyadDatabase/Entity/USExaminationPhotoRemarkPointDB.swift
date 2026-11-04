@@ -7,7 +7,6 @@ public final class USExaminationPhotoRemarkPointDB {
     public var x: Double
     public var y: Double
     public var title: String
-    // SwiftData's @Model macro reserves the stored-property name `description`.
     public var remarkDescription: String
 
     public init(

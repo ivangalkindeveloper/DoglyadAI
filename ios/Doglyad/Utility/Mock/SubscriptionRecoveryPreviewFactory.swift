@@ -49,9 +49,8 @@
                 },
             )
             if let state {
-                model.emit(
-                    state,
-                    animation: nil,
+                model.preparePreview(
+                    state: state,
                 )
             }
             return model

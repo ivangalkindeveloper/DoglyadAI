@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-02",
+  "purpose": "Reproduce report-generation repetition with inconsistent development mock examination type",
+  "host": "DGX Spark",
+  "model": "google/medgemma-4b-it",
+  "conditions": {
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "seed": 42,
+    "stream": true,
+    "runs_per_case": 1,
+    "changed_input": "Only the examination title in the same prepared prompt",
+    "input_source": "backend/main/config/development/ru/l10n_application.json",
+    "input_keys": [
+      "scanDevelopmentPatientComplaintsDescription",
+      "scanDevelopmentExaminationDescription"
+    ],
+    "images": 0,
+    "template": null,
+    "transport": "Private vLLM chat completions from the inference container; native httpx SSE line reader",
+    "timing_scope": "Complete streamed HTTP request"
+  },
+  "case_titles": {
+    "echo": "Эхокардиография",
+    "thyroid": "Щитовидная железа"
+  },
+  "results": [
+    {
+      "exam": "echo",
+      "model": "google/medgemma-4b-it",
+      "seconds": 87.36,
+      "finish": "length",
+      "done": true,
+      "delta_count": 2048,
+      "chars": 6989,
+      "valid_json": false,
+      "description_remarks_chars": null,
+      "largest_sentence_count": 85,
+      "usage": {
+        "prompt_tokens": 1542,
+        "total_tokens": 3590,
+        "completion_tokens": 2048
+      }
+    },
+    {
+      "exam": "thyroid",
+      "model": "google/medgemma-4b-it",
+      "seconds": 18.21,
+      "finish": "stop",
+      "done": true,
+      "delta_count": 424,
+      "chars": 1419,
+      "valid_json": true,
+      "description_remarks_chars": 274,
+      "largest_sentence_count": 1,
+      "usage": {
+        "prompt_tokens": 1543,
+        "total_tokens": 1968,
+        "completion_tokens": 425
+      }
+    }
+  ],
+  "interpretation": "The mismatched title reproduced a native model-output loop. The matching title returned complete JSON in this run.",
+  "limitations": [
+    "One run per title; these results are not a general performance or medical-quality benchmark.",
+    "The original failed request payload was already removed after termination, so this is a controlled reproduction, not an exact replay.",
+    "This experiment preceded the main-backend repetition guard and does not measure its cancellation latency."
+  ]
+}

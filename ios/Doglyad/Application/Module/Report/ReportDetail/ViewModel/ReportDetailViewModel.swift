@@ -16,10 +16,15 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
 
     @Published var template: USExaminationTemplate?
 
+    private var reportObservation: AnyCancellable?
     private let messager: DMessager
+    private let observeExaminationChanges: (@escaping () -> Void) -> AnyCancellable
     private let getSelectedTemplate: () -> USExaminationTemplate?
     private let getNeuralModel: () -> USExaminationNeuralModel
     private let onNeuralModelSelected: (USExaminationNeuralModel) async throws -> Void
+    private let currentReport: (USExaminationReport) -> USExaminationReport
+    private let observeReports: (@escaping (USExaminationReport) -> Void) -> AnyCancellable
+    private let onStartReportGeneration: (USExaminationRequest, USExaminationReport) async throws -> USExaminationReport
     private var examinationObservation: AnyCancellable?
 
     init(
@@ -36,13 +41,22 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         getSelectedTemplate: @escaping () -> USExaminationTemplate?,
         getNeuralModel: @escaping () -> USExaminationNeuralModel,
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) async throws -> Void,
+        currentReport: @escaping (USExaminationReport) -> USExaminationReport,
+        observeReports: @escaping (@escaping (USExaminationReport) -> Void) -> AnyCancellable,
+        onStartReportGeneration: @escaping (USExaminationRequest, USExaminationReport) async throws -> USExaminationReport,
     ) {
         self.messager = messager
+        self.observeExaminationChanges = observeExaminationChanges
         self.getSelectedTemplate = getSelectedTemplate
         self.getNeuralModel = getNeuralModel
         self.onNeuralModelSelected = onNeuralModelSelected
+        self.currentReport = currentReport
+        self.observeReports = observeReports
+        self.onStartReportGeneration = onStartReportGeneration
 
-        report = initialReport
+        report = currentReport(
+            initialReport,
+        )
         neuralModel = getNeuralModel()
         template = getSelectedTemplate()
 
@@ -59,13 +73,6 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
                 .reportDetail,
             ),
         )
-        examinationObservation = observeExaminationChanges { [weak self] in
-            guard let self else {
-                return
-            }
-            neuralModel = getNeuralModel()
-            template = getSelectedTemplate()
-        }
     }
 
     var subTitle: String {
@@ -78,6 +85,25 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
 
     var selectedTemplate: USExaminationTemplate? {
         template
+    }
+
+    override func onInit() {
+        reportObservation = observeReports { [weak self] updated in
+            guard let self, report.id == updated.id else {
+                return
+            }
+            report = updated
+        }
+        examinationObservation = observeExaminationChanges { [weak self] in
+            guard let self else {
+                return
+            }
+            neuralModel = getNeuralModel()
+            template = getSelectedTemplate()
+        }
+        report = currentReport(
+            report,
+        )
     }
 
     func photoCardConfiguration(
@@ -105,6 +131,9 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
     }
 
     func onTapShare() {
+        guard report.actualModelReport.generation.status.isCompleted else {
+            return
+        }
         analytics.buttonTapped(
             .reportDetailShare,
         )
@@ -184,14 +213,18 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
     ) {
         switch state {
         case _ as ReportDetailGeneratingState, _ as ReportDetailLoadingState: return
-        case let state as ReportDetailSaveFailedState:
-            persistReport(
-                state.candidate,
-                proxy: proxy,
-                toolbarInset: toolbarInset,
+        default: break
+        }
+
+        if report.actualModelReport.generation.status == .generating {
+            coordinator.sheet(
+                .reportReceived,
+                arguments: ReportReceivedArguments(
+                    isReportNavigationAvailable: false,
+                    report: report,
+                ),
             )
             return
-        default: break
         }
 
         analytics.buttonTapped(
@@ -222,6 +255,9 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
     func onTapCopy(
         report: USExaminationModelReport,
     ) {
+        guard report.generation.status.isCompleted else {
+            return
+        }
         analytics.buttonTapped(
             .reportDetailCopy,
         )
@@ -242,12 +278,22 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
     }
 
     private func performRepeatScan(
-        proxy: ScrollViewProxy,
-        toolbarInset: CGFloat,
+        proxy _: ScrollViewProxy,
+        toolbarInset _: CGFloat,
     ) {
         switch state {
         case _ as ReportDetailGeneratingState, _ as ReportDetailLoadingState: return
         default: break
+        }
+        if report.actualModelReport.generation.status == .generating {
+            coordinator.sheet(
+                .reportReceived,
+                arguments: ReportReceivedArguments(
+                    isReportNavigationAvailable: false,
+                    report: report,
+                ),
+            )
+            return
         }
         let original = report
         emit(
@@ -263,35 +309,21 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
                 isPhotoRemarks: self.container.userSettingsRepository.getIsPhotoRemarks(),
                 isDescriptionRemarks: self.container.userSettingsRepository.getIsDescriptionRemarks(),
             )
-            let config = self.container.applicationConfig.ultrasound
-            let response: USExaminationModelReport
-            do {
-                response = try await self.container.ultrasoundReportRepository.generateReport(
-                    locale: self.container.language.currentLocale,
-                    request: request,
-                    scanPhotoEncodingOptions: ScanPhotoEncodingOptions(
-                        resizeMaxDimension: config.scanPhotoResizeMaxDimension,
-                        compressionQuality: config.scanPhotoCompressionQuality,
-                    ),
-                )
-            } catch {
-                await self.refreshStatus()
-                throw error
-            }
-            await self.refreshStatus()
-            return USExaminationReport(
-                id: original.id,
-                date: original.date,
-                settingsAI: settings,
-                examinationData: original.examinationData,
-                actualModelReport: response,
-                previousModelReports: [original.actualModelReport] + original.previousModelReports,
+            return try await self.onStartReportGeneration(
+                request,
+                original,
             )
         } onMainSuccess: { candidate in
-            self.persistReport(
-                candidate,
-                proxy: proxy,
-                toolbarInset: toolbarInset,
+            self.report = candidate
+            self.emit(
+                ReportDetailContentState(),
+            )
+            self.coordinator.sheet(
+                .reportReceived,
+                arguments: ReportReceivedArguments(
+                    isReportNavigationAvailable: false,
+                    report: candidate,
+                ),
             )
         } onMainApiError: { error in
             self.onGenerationFailed(
@@ -304,59 +336,6 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         } onMainUnknownError: { error in
             self.onGenerationFailed(
                 error,
-            )
-        }
-    }
-
-    private func persistReport(
-        _ candidate: USExaminationReport,
-        proxy: ScrollViewProxy,
-        toolbarInset: CGFloat,
-    ) {
-        emit(
-            ReportDetailLoadingState(
-                candidate: candidate,
-            ),
-        )
-        handle {
-            try await self.container.ultrasoundReportRepository.updateReport(
-                report: candidate,
-            )
-        } onMainSuccess: { _ in
-            withAnimation(
-                DTheme.light.animation,
-            ) {
-                self.report = candidate
-                self.emit(
-                    ReportDetailContentState(),
-                )
-            }
-            withAnimation {
-                proxy.scrollTo(
-                    Self.actualModelReportCardScrollId(
-                        toolbarInset: toolbarInset,
-                    ),
-                    anchor: .top,
-                )
-            }
-            self.messager.show(
-                type: .success,
-                title: self.l10n[
-                    .reportDetailModelResponseUpdatedMessageTitle,
-                ],
-                description: self.l10n[
-                    .reportDetailModelResponseUpdatedMessageDescription,
-                ],
-            )
-        } onMainUnknownError: { error in
-            self.emit(
-                ReportDetailSaveFailedState(
-                    candidate: candidate,
-                    error: error,
-                ),
-            )
-            self.messager.showUnknownError(
-                l10n: self.l10n,
             )
         }
     }

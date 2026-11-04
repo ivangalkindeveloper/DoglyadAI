@@ -1,0 +1,509 @@
+[
+  {
+    "id": "historical-greedy-0",
+    "kind": "historical",
+    "phase": "quality",
+    "finish": "length",
+    "seconds": 84.65235285201925,
+    "first_delta_seconds": 0.1474197609932162,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 50,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-0",
+    "kind": "historical",
+    "phase": "quality",
+    "finish": "length",
+    "seconds": 85.0910672500031,
+    "first_delta_seconds": 0.23584028900950216,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 59,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-42",
+    "kind": "historical",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 20.850951986998552,
+    "first_delta_seconds": 0.0598706649907399,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 2047,
+      "completion_tokens": 503
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 2,
+    "description_remarks_characters": 540,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    },
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "historical-sample-123",
+    "kind": "historical",
+    "phase": "quality",
+    "finish": "length",
+    "seconds": 85.41878387099132,
+    "first_delta_seconds": 0.06721377198118716,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 8,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "length",
+    "seconds": 86.23479175101966,
+    "first_delta_seconds": 0.0683953000116162,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 3652,
+      "completion_tokens": 2048
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 31,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-sample-0",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 25.951248371013207,
+    "first_delta_seconds": 0.0677925730124116,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2226,
+      "completion_tokens": 622
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 24.247434955002973,
+    "first_delta_seconds": 0.07329321699216962,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2185,
+      "completion_tokens": 581
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "report-sample-123",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 9.316239065985428,
+    "first_delta_seconds": 0.06564486000570469,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1827,
+      "completion_tokens": 223
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 18.931849244021578,
+    "first_delta_seconds": 0.10505821101833135,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2068,
+      "completion_tokens": 453
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 512,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    },
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-0",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 18.66855719999876,
+    "first_delta_seconds": 0.07007600300130434,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2060,
+      "completion_tokens": 445
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 512,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    },
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 12.295765230985126,
+    "first_delta_seconds": 0.06352178397355601,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1907,
+      "completion_tokens": 292
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 124,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "conflict-sample-123",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 11.177640155015979,
+    "first_delta_seconds": 0.08397182100452483,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1879,
+      "completion_tokens": 264
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "dictation-greedy-0",
+    "kind": "dictation",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 24.174053137976443,
+    "first_delta_seconds": 0.19282365799881518,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 2004,
+      "completion_tokens": 567
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "examination_description",
+          "value": "УЗИ щитовидной железы",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    }
+  },
+  {
+    "id": "report-penalty105-greedy-0",
+    "kind": "report",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 10.49878966700635,
+    "first_delta_seconds": 0.08024524600477889,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1853,
+      "completion_tokens": 249
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "description_remarks_characters": 0,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    }
+  },
+  {
+    "id": "conflict-penalty105-greedy-0",
+    "kind": "conflict",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 16.53123547497671,
+    "first_delta_seconds": 0.07412638899404556,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2008,
+      "completion_tokens": 393
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 2,
+    "description_remarks_characters": 512,
+    "measurement_screen": {
+      "missing_literal_measurements": [],
+      "description_numbers_absent_from_source": [],
+      "scope": "Literal screen only; no side, unit conversion, or clinical validation."
+    },
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "vision-1",
+    "kind": "vision",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 1.018093962018611,
+    "first_delta_seconds": 0.7678291100019123,
+    "usage": {
+      "prompt_tokens": 308,
+      "total_tokens": 315,
+      "completion_tokens": 7
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_raw_sentence_copies": 0,
+    "vision_expected_match": true
+  },
+  {
+    "id": "vision-2",
+    "kind": "vision",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 0.9737528540135827,
+    "first_delta_seconds": 0.5993464129860513,
+    "usage": {
+      "prompt_tokens": 567,
+      "total_tokens": 577,
+      "completion_tokens": 10
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_raw_sentence_copies": 0,
+    "vision_expected_match": true
+  },
+  {
+    "id": "vision-6",
+    "kind": "vision",
+    "phase": "quality",
+    "finish": "stop",
+    "seconds": 1.556890352978371,
+    "first_delta_seconds": 0.6709560099989176,
+    "usage": {
+      "prompt_tokens": 1603,
+      "total_tokens": 1625,
+      "completion_tokens": 22
+    },
+    "error": null,
+    "concurrency": null,
+    "repetition": null,
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_raw_sentence_copies": 1,
+    "vision_expected_match": true
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "phase": "performance",
+    "finish": "length",
+    "seconds": 10.553241476998664,
+    "first_delta_seconds": 0.06152362600550987,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1860,
+      "completion_tokens": 256
+    },
+    "error": null,
+    "concurrency": 1,
+    "repetition": 0,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "phase": "performance",
+    "finish": "length",
+    "seconds": 10.67470034598955,
+    "first_delta_seconds": 0.06485058600082994,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1860,
+      "completion_tokens": 256
+    },
+    "error": null,
+    "concurrency": 1,
+    "repetition": 1,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "phase": "performance",
+    "finish": "length",
+    "seconds": 10.581734509003581,
+    "first_delta_seconds": 0.06389922898961231,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1860,
+      "completion_tokens": 256
+    },
+    "error": null,
+    "concurrency": 1,
+    "repetition": 2,
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "validation_error": "JSONDecodeError"
+  }
+]

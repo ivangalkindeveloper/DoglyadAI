@@ -2,13 +2,13 @@ import DoglyadNeuralModel
 import Foundation
 
 /// The device benchmark retries requests; the production transport keeps its existing policy.
-final class DNeuralUltrasoundRetryingTestTransport: DNeuralUltrasoundServerTransportProtocol {
-    private let base: any DNeuralUltrasoundServerTransportProtocol
+final class DNeuralUltrasoundRetryingTestTransport {
+    private let base: (String?, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO
     private let isFoundationOnly: Bool
     private(set) var calls = 0
 
     init(
-        base: any DNeuralUltrasoundServerTransportProtocol,
+        base: @escaping (String?, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO,
         isFoundationOnly: Bool,
     ) {
         self.base = base
@@ -17,7 +17,6 @@ final class DNeuralUltrasoundRetryingTestTransport: DNeuralUltrasoundServerTrans
 
     func parseDictation(
         selectedNeuralModelId: String?,
-        locale: Locale,
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
@@ -28,11 +27,10 @@ final class DNeuralUltrasoundRetryingTestTransport: DNeuralUltrasoundServerTrans
             try Task.checkCancellation()
             calls += 1
             do {
-                return try await base.parseDictation(
-                    selectedNeuralModelId: selectedNeuralModelId,
-                    locale: locale,
-                    examinationTypeId: examinationTypeId,
-                    transcript: transcript,
+                return try await base(
+                    selectedNeuralModelId,
+                    examinationTypeId,
+                    transcript,
                 )
             } catch is CancellationError {
                 throw CancellationError()

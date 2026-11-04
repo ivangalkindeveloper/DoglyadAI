@@ -1,0 +1,30 @@
+{
+  "name": "llama-4b-bf16",
+  "engine": "llama.cpp",
+  "entrypoint": "/survey/llama.cpp/build/bin/llama-server",
+  "args": [
+    "--model",
+    "/survey/medgemma-4b-bf16.gguf",
+    "--mmproj",
+    "/survey/medgemma-4b-mmproj-bf16.gguf",
+    "--n-gpu-layers",
+    "999",
+    "--ctx-size",
+    "16384",
+    "--parallel",
+    "4",
+    "--flash-attn",
+    "on",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000",
+    "--alias",
+    "google/medgemma-4b-it",
+    "--jinja",
+    "--cache-type-k",
+    "bf16",
+    "--cache-type-v",
+    "bf16"
+  ]
+}

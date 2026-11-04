@@ -57,22 +57,6 @@ public final class DHttpClient: DHttpClientProtocol {
         )
     }
 
-    private static func makeSession(
-        interceptors: [any DHttpInterceptorProtocol],
-        timeoutIntervalForRequest: TimeInterval,
-        timeoutIntervalForResource: TimeInterval,
-    ) -> Session {
-        let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = timeoutIntervalForRequest
-        configuration.timeoutIntervalForResource = timeoutIntervalForResource
-        return Session(
-            configuration: configuration,
-            interceptor: interceptors.isEmpty ? nil : DHttpInterceptorAdapter(
-                interceptors: interceptors,
-            ),
-        )
-    }
-
     public func get<Response: Decodable>(
         url: URL,
     ) async throws -> Response {
@@ -111,7 +95,7 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func get<Response: Decodable>(
         endPoint: String,
-        body: (some Encodable & Sendable)? = nil,
+        body: (some Encodable & Sendable)? = String?.none,
         headers: [String: String]? = nil,
     ) async throws -> Response {
         let response = await session.request(
@@ -136,7 +120,7 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func post<Response: Decodable>(
         endPoint: String,
-        body: (some Encodable & Sendable)? = nil,
+        body: (some Encodable & Sendable)? = String?.none,
         headers: [String: String]? = nil,
         encoderUserInfo: [CodingUserInfoKey: Any]? = nil,
     ) async throws -> Response {
@@ -171,7 +155,7 @@ public final class DHttpClient: DHttpClientProtocol {
 
     public func post(
         endPoint: String,
-        body: (some Encodable & Sendable)? = nil,
+        body: (some Encodable & Sendable)? = String?.none,
         headers: [String: String]? = nil,
         encoderUserInfo: [CodingUserInfoKey: Any]? = nil,
     ) async throws {
@@ -201,5 +185,115 @@ public final class DHttpClient: DHttpClientProtocol {
         )
         .response
         _ = try response.result.get()
+    }
+
+    public func post<Response: Decodable>(
+        endPoint: String,
+        data: Data?,
+        headers: [String: String]? = nil,
+    ) async throws -> Response {
+        guard let url = URL(
+            string: baseApiUrl + endPoint,
+        ) else {
+            throw URLError(
+                .badURL,
+            )
+        }
+        var request = URLRequest(
+            url: url,
+        )
+        request.httpMethod = "POST"
+        request.httpBody = data
+        request.allHTTPHeaderFields = headers
+        request.setValue(
+            "application/json",
+            forHTTPHeaderField: "Content-Type",
+        )
+        return try await session.request(
+            request,
+        ).validate().serializingDecodable(
+            Response.self,
+            decoder: jsonDecoder,
+        ).value
+    }
+
+    public func serverEvents(
+        endPoint: String,
+        headers: [String: String]? = nil,
+    ) async throws -> AsyncThrowingStream<DServerEvent, Error> {
+        guard let url = URL(
+            string: baseApiUrl + endPoint,
+        ) else {
+            throw URLError(
+                .badURL,
+            )
+        }
+        var request = URLRequest(
+            url: url,
+            timeoutInterval: 30,
+        )
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = headers
+        request.setValue(
+            "text/event-stream",
+            forHTTPHeaderField: "Accept",
+        )
+        let streamRequest = session.streamRequest(
+            request,
+        ).validate()
+        return AsyncThrowingStream { continuation in
+            let task = Task {
+                var decoder = DServerEventDecoder()
+                do {
+                    for await value in streamRequest.streamTask().streamingData() {
+                        try Task.checkCancellation()
+                        switch value.event {
+                        case let .stream(
+                            result,
+                        ):
+                            for event in try decoder.append(
+                                result.get(),
+                            ) {
+                                continuation.yield(
+                                    event,
+                                )
+                            }
+                        case let .complete(
+                            completion,
+                        ):
+                            if let error = completion.error {
+                                throw error
+                            }
+                            try decoder.finish()
+                        }
+                    }
+                    continuation.finish()
+                } catch {
+                    continuation.finish(
+                        throwing: error,
+                    )
+                }
+            }
+            continuation.onTermination = { _ in
+                task.cancel()
+                streamRequest.cancel()
+            }
+        }
+    }
+
+    private static func makeSession(
+        interceptors: [any DHttpInterceptorProtocol],
+        timeoutIntervalForRequest: TimeInterval,
+        timeoutIntervalForResource: TimeInterval,
+    ) -> Session {
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = timeoutIntervalForRequest
+        configuration.timeoutIntervalForResource = timeoutIntervalForResource
+        return Session(
+            configuration: configuration,
+            interceptor: interceptors.isEmpty ? nil : DHttpInterceptorAdapter(
+                interceptors: interceptors,
+            ),
+        )
     }
 }

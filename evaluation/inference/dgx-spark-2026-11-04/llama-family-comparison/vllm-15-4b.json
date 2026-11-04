@@ -1,0 +1,13 @@
+{
+  "model_index": 1,
+  "model_id": "google/medgemma-1.5-4b-it",
+  "model_key": "15-4b",
+  "cases_file": "cases-15-4b.json",
+  "performance_file": "performance-15-4b.json",
+  "settings": {
+    "request_timeout_seconds": 900,
+    "absolute_deadline_seconds": 900
+  },
+  "name": "vllm-15-4b",
+  "engine": "vllm"
+}

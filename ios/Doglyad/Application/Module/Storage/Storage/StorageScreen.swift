@@ -38,10 +38,3 @@ struct StorageScreen: View {
         )
     }
 }
-
-#Preview {
-    StorageScreen(
-        arguments: nil,
-    )
-    .previewable()
-}

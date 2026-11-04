@@ -53,6 +53,7 @@ def test_main_and_inference_generation_contract(
             ],
             temperature=0.3,
             maxTokens=512,
+            repetitionPenalty=1.05,
         )
     request = InferenceGenerationRequest.model_validate(
         kwargs,

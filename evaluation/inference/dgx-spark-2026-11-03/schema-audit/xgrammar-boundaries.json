@@ -1,0 +1,52 @@
+[
+  {
+    "case": "valid",
+    "json_schema_accepts": true,
+    "xgrammar_accepts_complete": true
+  },
+  {
+    "case": "remark_512",
+    "json_schema_accepts": true,
+    "xgrammar_accepts_complete": true
+  },
+  {
+    "case": "remark_513",
+    "json_schema_accepts": false,
+    "xgrammar_accepts_complete": false
+  },
+  {
+    "case": "blank_description",
+    "json_schema_accepts": true,
+    "xgrammar_accepts_complete": true
+  },
+  {
+    "case": "extra_property",
+    "json_schema_accepts": false,
+    "xgrammar_accepts_complete": false
+  },
+  {
+    "case": "wrong_photo_id",
+    "json_schema_accepts": false,
+    "xgrammar_accepts_complete": false
+  },
+  {
+    "case": "coordinate_1_1",
+    "json_schema_accepts": false,
+    "xgrammar_accepts_complete": false
+  },
+  {
+    "case": "empty_points",
+    "json_schema_accepts": false,
+    "xgrammar_accepts_complete": false
+  },
+  {
+    "case": "repeated_description",
+    "json_schema_accepts": true,
+    "xgrammar_accepts_complete": true
+  },
+  {
+    "case": "duplicate_photo_id",
+    "json_schema_accepts": true,
+    "xgrammar_accepts_complete": true
+  }
+]

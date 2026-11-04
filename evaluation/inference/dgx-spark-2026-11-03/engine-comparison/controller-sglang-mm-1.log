@@ -1,0 +1,18 @@
+{"event": "original_stopped", "memory": {"MemTotal_kib": 127598416, "MemAvailable_kib": 40955520, "SwapTotal_kib": 16777212, "SwapFree_kib": 8791308}}
+{"event": "starting", "name": "sglang-mm-maxseq-1"}
+{"event": "engine_ready", "name": "doglyad-engine-evaluation", "seconds": 104.1}
+{"event": "probe_started", "memory": {"MemTotal_kib": 127598416, "MemAvailable_kib": 21055636, "SwapTotal_kib": 16777212, "SwapFree_kib": 8791308}}
+Traceback (most recent call last):
+  File "<string>", line 219, in <module>
+  File "<string>", line 146, in main
+RuntimeError: Quality request failed: historical-greedy-0
+{"event": "trial_failed", "error": "CalledProcessError: Command '['docker', 'exec', '-i', 'doglyad-engine-evaluation', 'python3', '-c', '\"\"\"Measure private OpenAI-compatible SSE engines with frozen synthetic inputs.\"\"\"\\n\\nfrom __future__ import annotations\\n\\nimport concurrent.futures\\nimport copy\\nimport hashlib\\nimport importlib.metadata\\nimport json\\nimport sys\\nimport threading\\nimport time\\nimport urllib.error\\nimport urllib.request\\n\\n\\ndef main() -> None:\\n    settings = json.load(sys.stdin)\\n    endpoint = \"http://127.0.0.1:8000\"\\n    engine = settings[\"engine\"]\\n    cases = settings[\"cases\"]\\n    versions = {}\\n    for name in (\\n        \"vllm\",\\n        \"sglang\",\\n        \"xgrammar\",\\n        \"transformers\",\\n        \"torch\",\\n        \"flashinfer-python\",\\n    ):\\n        try:\\n            versions[name] = importlib.metadata.version(name)\\n        except importlib.metadata.PackageNotFoundError:\\n            pass\\n    print(json.dumps({\"event\": \"versions\", \"versions\": versions}), flush=True)\\n\\n    def request(\\n        case: dict,"}
+{"event": "restoring_original"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 122.9}
+{"event": "restoration_verified"}
+Traceback (most recent call last):
+  File "/var/tmp/doglyad-engine-comparison-20261103-a/engine-comparison/run_engine_trial.py", line 258, in <module>
+    main()
+  File "/var/tmp/doglyad-engine-comparison-20261103-a/engine-comparison/run_engine_trial.py", line 253, in main
+    raise RuntimeError(failure)
+RuntimeError: CalledProcessError: Command '['docker', 'exec', '-i', 'doglyad-engine-evaluation', 'python3', '-c', '"""Measure private OpenAI-compatible SSE engines with frozen synthetic inputs."""\n\nfrom __future__ import annotations\n\nimport concurrent.futures\nimport copy\nimport hashlib\nimport importlib.metadata\nimport json\nimport sys\nimport threading\nimport time\nimport urllib.error\nimport urllib.request\n\n\ndef main() -> None:\n    settings = json.load(sys.stdin)\n    endpoint = "http://127.0.0.1:8000"\n    engine = settings["engine"]\n    cases = settings["cases"]\n    versions = {}\n    for name in (\n        "vllm",\n        "sglang",\n        "xgrammar",\n        "transformers",\n        "torch",\n        "flashinfer-python",\n    ):\n        try:\n            versions[name] = importlib.metadata.version(name)\n        except importlib.metadata.PackageNotFoundError:\n            pass\n    print(json.dumps({"event": "versions", "versions": versions}), flush=True)\n\n    def request(\n        case: dict,

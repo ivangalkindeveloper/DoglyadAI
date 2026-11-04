@@ -9,9 +9,7 @@ protocol TemplateRepositoryProtocol: AnyObject {
 
     func clearSelectedTemplateId() async throws
 
-    func getReadyMadeTemplates(
-        languageCode: String,
-    ) async throws -> [USExaminationReadyMadeTemplate]
+    func getReadyMadeTemplates() async throws -> [USExaminationReadyMadeTemplate]
 
     func getTemplates(
         usExaminationTypesById: [String: USExaminationType],

@@ -40,12 +40,3 @@ struct SelectTemplateBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    SelectTemplateBottomSheet(
-        arguments: SelectTemplateArguments(
-            onSelected: { _ in },
-        ),
-    )
-    .previewable()
-}

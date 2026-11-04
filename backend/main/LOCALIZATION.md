@@ -3,8 +3,10 @@
 ## API и каталоги
 
 `GET /v1/l10n` имеет собственный `router_v1` и обязательную проверку Firebase App Check.
-Клиент отправляет `Accept-Language` с `Language.currentCode`. Backend возвращает
-только один язык; неподдерживаемый язык разрешается в `application.locale.defaultCode`.
+`DLocaleInterceptor` добавляет `Accept-Language` ко всем запросам клиента.
+Он передаёт `Locale.preferredLanguages` в исходном порядке. Backend выбирает первый
+поддерживаемый язык или `application.locale.defaultCode`, как и клиентский `Language`.
+Ответ содержит только выбранный язык.
 Ответ содержит `Content-Language` и `Vary: Accept-Language`.
 
 ```json

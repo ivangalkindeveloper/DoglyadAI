@@ -37,12 +37,3 @@ struct ReadyMadeTemplateListScreen: View {
         )
     }
 }
-
-#Preview {
-    ReadyMadeTemplateListScreen(
-        arguments: ReadyMadeTemplateListArguments(
-            onTemplateSelected: { _ in },
-        ),
-    )
-    .previewable()
-}

@@ -10,6 +10,7 @@ struct USExaminationModelReport: Identifiable, Codable, Equatable, Sendable {
     let recommendations: String?
     let descriptionRemarks: String?
     let photoRemarks: [USExaminationPhotoRemarks]
+    var generation = USReportGeneration()
 
     init(
         id: UUID = UUID(),
@@ -20,6 +21,7 @@ struct USExaminationModelReport: Identifiable, Codable, Equatable, Sendable {
         recommendations: String?,
         descriptionRemarks: String? = nil,
         photoRemarks: [USExaminationPhotoRemarks] = [],
+        generation: USReportGeneration = .init(),
     ) {
         self.id = id
         self.date = date
@@ -29,6 +31,7 @@ struct USExaminationModelReport: Identifiable, Codable, Equatable, Sendable {
         self.recommendations = recommendations
         self.descriptionRemarks = descriptionRemarks
         self.photoRemarks = photoRemarks
+        self.generation = generation
     }
 }
 
@@ -48,13 +51,25 @@ extension USExaminationModelReport {
     func plainText(
         l10n: L10N,
     ) -> String {
-        var sections = [
-            "\(String(localized: l10n[.reportDescriptionTitle]))\n\(description)",
-            "\(String(localized: l10n[.reportConclusionTitle]))\n\(conclusion)",
-        ]
+        var sections: [String] = []
+        if !description.isEmpty {
+            sections.append(
+                "\(String(localized: l10n[.reportDescriptionTitle]))\n\(description)",
+            )
+        }
+        if !conclusion.isEmpty {
+            sections.append(
+                "\(String(localized: l10n[.reportConclusionTitle]))\n\(conclusion)",
+            )
+        }
         if let recommendations {
             sections.append(
                 "\(String(localized: l10n[.reportRecommendationsTitle]))\n\(recommendations)",
+            )
+        }
+        if let descriptionRemarks {
+            sections.append(
+                "\(String(localized: l10n[.reportDescriptionRemarksTitle]))\n\(descriptionRemarks)",
             )
         }
         return sections.joined(
@@ -65,13 +80,25 @@ extension USExaminationModelReport {
     func markdownText(
         l10n: L10N,
     ) -> String {
-        var sections = [
-            "## \(String(localized: l10n[.reportDescriptionTitle]))\n\(description)",
-            "## \(String(localized: l10n[.reportConclusionTitle]))\n\(conclusion)",
-        ]
+        var sections: [String] = []
+        if !description.isEmpty {
+            sections.append(
+                "### \(String(localized: l10n[.reportDescriptionTitle]))\n\(description)",
+            )
+        }
+        if !conclusion.isEmpty {
+            sections.append(
+                "### \(String(localized: l10n[.reportConclusionTitle]))\n\(conclusion)",
+            )
+        }
         if let recommendations {
             sections.append(
-                "## \(String(localized: l10n[.reportRecommendationsTitle]))\n\(recommendations)",
+                "### \(String(localized: l10n[.reportRecommendationsTitle]))\n\(recommendations)",
+            )
+        }
+        if let descriptionRemarks {
+            sections.append(
+                "### \(String(localized: l10n[.reportDescriptionRemarksTitle]))\n\(descriptionRemarks)",
             )
         }
         return sections.joined(
@@ -95,6 +122,14 @@ extension USExaminationModelReport {
                     $0,
                 )
             },
+            generation: USReportGeneration(
+                status: USReportGenerationStatus(
+                    rawValue: db.generation?.status ?? "completed",
+                ) ?? .interrupted,
+                id: db.generation?.id,
+                requestData: db.generation?.requestData,
+                sequence: db.generation?.sequence ?? -1,
+            ),
         )
     }
 
@@ -110,6 +145,12 @@ extension USExaminationModelReport {
             photoRemarks: photoRemarks.map {
                 $0.toDB()
             },
+            generation: USReportGenerationDB(
+                status: generation.status.rawValue,
+                id: generation.id,
+                requestData: generation.requestData,
+                sequence: generation.sequence,
+            ),
         )
     }
 }

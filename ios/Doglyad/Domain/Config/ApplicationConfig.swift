@@ -31,7 +31,7 @@ extension ApplicationConfig {
         appStoreId: "",
         locale: .default,
         actualVersion: .default,
-        contactEmail: "doglyadapp@gmail.com",
+        contactEmail: "support@doglyad.ru",
         appleUpdateUrl: URL(
             string: "https://apps.apple.com/app/id",
         )!,

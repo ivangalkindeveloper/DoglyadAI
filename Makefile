@@ -2,6 +2,11 @@
 	sync-harness \
 	check-harness \
 	check-architecture \
+	regression \
+	regression-check \
+	regression-doctor \
+	regression-figma \
+	regression-publish \
 	venv \
 	pip-install \
 	pip-install-dev \
@@ -79,6 +84,24 @@ check-harness:
 
 check-architecture:
 	python3 harness/checks/architecture.py
+
+regression-check:
+	python3 test/scripts/catalog.py --check
+	python3 test/scripts/coverage.py --check
+	python3 test/scripts/regression.py validate
+
+regression-doctor:
+	python3 test/scripts/regression.py doctor
+
+regression:
+	python3 test/scripts/regression.py run
+
+regression-figma:
+	python3 test/scripts/regression.py run --publish
+
+regression-publish:
+	@test -n "$(RUN)" || (echo 'Use RUN=test/runs/<run-id>'; exit 1)
+	python3 test/scripts/figma_bridge.py "$(RUN)"
 
 format: format-ios format-backend
 

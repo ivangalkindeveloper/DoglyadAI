@@ -42,6 +42,7 @@ def _request(
     token: str | None = "app-check-token",
     request_id: str | None = None,
     report_measurements: tuple[str, ...] = (),
+    repetition_penalty: float | None = None,
 ) -> NeuralModelServiceRequest:
     return NeuralModelServiceRequest(
         operation=NeuralModelServiceOperation.GENERATE_REPORT,
@@ -52,6 +53,7 @@ def _request(
         structured_output=_STRUCTURED_OUTPUT,
         temperature=0.3,
         max_tokens=512,
+        repetition_penalty=repetition_penalty,
         photos=photos or [],
         app_check_token=token,
         request_id=request_id,
@@ -135,7 +137,13 @@ def test_request_id_is_relayed_to_the_gpu_vm() -> None:
     assert seen["x-request-id"] == request_id
 
 
-def test_request_carries_prompts_images_schema_and_sampling() -> None:
+@pytest.mark.parametrize(
+    "repetition_penalty",
+    [None, 1.05],
+)
+def test_request_carries_prompts_images_schema_and_sampling(
+    repetition_penalty: float | None,
+) -> None:
     seen: dict[str, Any] = {}
 
     def handler(
@@ -169,6 +177,7 @@ def test_request_carries_prompts_images_schema_and_sampling() -> None:
                 ),
             ],
             report_measurements=("2.7 mm", "180 ml"),
+            repetition_penalty=repetition_penalty,
         ),
     )
 
@@ -179,9 +188,18 @@ def test_request_carries_prompts_images_schema_and_sampling() -> None:
     assert seen["images"] == [{"data": "QUJD"}, {"data": "REVG"}]
     assert seen["temperature"] == 0.3
     assert seen["maxTokens"] == 512
-    assert set(
-        seen,
-    ) == {"modelId", "systemPrompt", "prompt", "structuredOutput", "images", "temperature", "maxTokens"}
+    expected = {"modelId", "systemPrompt", "prompt", "structuredOutput", "images", "temperature", "maxTokens"}
+    if repetition_penalty is not None:
+        expected.add(
+            "repetitionPenalty",
+        )
+        assert seen["repetitionPenalty"] == repetition_penalty
+    assert (
+        set(
+            seen,
+        )
+        == expected
+    )
 
 
 @pytest.mark.parametrize(

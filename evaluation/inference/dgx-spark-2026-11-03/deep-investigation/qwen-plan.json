@@ -1,0 +1,20 @@
+{
+  "output_directory": "cross-model",
+  "stages": [
+    {
+      "name": "qwen-vllm-xgrammar",
+      "kind": "vllm",
+      "cases": "qwen-cases.json",
+      "model": "Qwen/Qwen3-4B-Instruct-2507",
+      "revision": "cdbee75f17c01a7cc42f958dc650907174af0554"
+    },
+    {
+      "name": "qwen-hf-xgrammar",
+      "kind": "hf",
+      "cases": "qwen-cases.json",
+      "reference": "cross-model/qwen-vllm-xgrammar.jsonl",
+      "snapshot": "/root/.cache/huggingface/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+      "family": "qwen"
+    }
+  ]
+}

@@ -66,18 +66,3 @@ struct ReadyMadeTemplateListItemCardView: DViewProtocol {
         )
     }
 }
-
-#Preview {
-    ReadyMadeTemplateListItemCardView(
-        template: USExaminationReadyMadeTemplate(
-            id: "thyroidGlandStandard",
-            examinationType: "thyroidGland",
-            title: "Thyroid ultrasound",
-            content: "**Examination description:**\n\nThe thyroid gland is located in the typical position.",
-        ),
-        examinationTypeTitle: "Thyroid gland",
-        action: {},
-    )
-    .padding()
-    .dThemeWrapper()
-}

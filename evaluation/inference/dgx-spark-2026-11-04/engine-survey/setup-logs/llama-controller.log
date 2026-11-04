@@ -1,0 +1,13 @@
+{"event": "original_stopped", "trial": "llama-4b-bf16"}
+{"event": "restored", "trial": "llama-4b-bf16"}
+Traceback (most recent call last):
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 128, in <module>
+    assert after[name]["started"] == before[name]["started"]
+
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 93, in main
+    (directory / "command.json").write_text(json.dumps(command, indent=2) + "\n")
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 51, in _health
+    if not _inspect(name)["State"]["Running"]:
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Engine exited: doglyad-survey-engine

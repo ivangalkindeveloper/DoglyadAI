@@ -1,0 +1,12 @@
+{"event": "starting", "variant": "full-task-last", "count": 4}
+{"event": "finished", "variant": "full-task-last"}
+{"event": "starting", "variant": "concise-task-last", "count": 4}
+{"event": "finished", "variant": "concise-task-last"}
+{"event": "starting", "variant": "audit-task-last", "count": 4}
+{"event": "finished", "variant": "audit-task-last"}
+{"event": "starting", "variant": "alias-fields", "count": 4}
+{"event": "finished", "variant": "alias-fields"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+{"event": "runtime_verified", "containers_unchanged": true}

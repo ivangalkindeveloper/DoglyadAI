@@ -1,0 +1,116 @@
+{
+  "date": "2026-11-02",
+  "method": "Direct private vLLM SSE with current ReportGenerationService.prepare/complete; synthetic fixtures only",
+  "conditions": {
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "parallel_requests": 2,
+    "max_description_remarks_characters": 512
+  },
+  "results": [
+    {
+      "seconds": 13.52,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1623,
+        "total_tokens": 2031,
+        "completion_tokens": 408
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 0,
+      "conflict": true,
+      "characters": 1404,
+      "valid_json": true,
+      "fields": {
+        "descriptionRemarks": 241,
+        "description": 729,
+        "conclusion": 157,
+        "recommendations": 191
+      },
+      "synthetic_description_remarks": "В описании указано, что в правой доле щитовидной железы выявлено гипоэхогенное очаговое образование диаметром 8 мм, но не указано, является ли это тиреоидным узлом. Также не указано, является ли образование солидным, кистозным или смешанным.",
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 17.51,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1600,
+        "total_tokens": 2125,
+        "completion_tokens": 525
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 0,
+      "conflict": false,
+      "characters": 1939,
+      "valid_json": true,
+      "fields": {
+        "descriptionRemarks": 512,
+        "description": 733,
+        "conclusion": 354,
+        "recommendations": 254
+      },
+      "synthetic_description_remarks": "В описании указано, что контуры долей ровные и четкие, а также что эхогенность паренхимы средняя. Однако, в контексте клинической картины, не исключено, что эхогенность паренхимы может быть не совсем средняя, а, например, гиперэхогенной, что может указывать на наличие изменений в железе. Также, в описании указано, что общий объем железы соответствует верхней границе нормы. Однако, учитывая жалобы пациента на периодическое ощущение давления и дискомфорта в передней области шеи, возникающее преимущественно в.",
+      "expected_remarks_present": false,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 14.94,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1623,
+        "total_tokens": 2072,
+        "completion_tokens": 449
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 42,
+      "conflict": true,
+      "characters": 1534,
+      "valid_json": true,
+      "fields": {
+        "descriptionRemarks": 370,
+        "description": 813,
+        "conclusion": 144,
+        "recommendations": 121
+      },
+      "synthetic_description_remarks": "В описании указано, что в правой доле щитовидной железы выявлено гипоэхогенное очаговое образование диаметром 8 мм. В то же время, в описании указано, что в правой доле щитовидной железы 52×18×16 мм, объём 7,4 мл. Необходимо уточнить, относится ли гипоэхогенное образование к правой доле щитовидной железы и является ли оно частью правой доли или отдельным образованием.",
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 19.75,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1600,
+        "total_tokens": 2187,
+        "completion_tokens": 587
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 42,
+      "conflict": false,
+      "characters": 2012,
+      "valid_json": true,
+      "fields": {
+        "descriptionRemarks": 512,
+        "description": 733,
+        "conclusion": 295,
+        "recommendations": 386
+      },
+      "synthetic_description_remarks": "В описании указано, что общая толщина перешейка железы составляет 4 мм, но в контексте исследования это не имеет значения. Необходимо уточнить, что имеется в виду под 'перешейком железы' в данном контексте, так как в описании указано, что перешеек железы имеет толщину 4 мм, что не является стандартным значением. Также, в описании указано, что эхогенность паренхимы средняя, но в контексте исследования это не имеет значения. Необходимо уточнить, что имеется в виду под 'средней эхогенностью' в данном контексте",
+      "expected_remarks_present": false,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "invalidReportResponse"
+    }
+  ],
+  "limitations": [
+    "Small synthetic regression matrix, not a general clinical-quality evaluation.",
+    "No images; photo schema paths are covered by backend tests."
+  ]
+}

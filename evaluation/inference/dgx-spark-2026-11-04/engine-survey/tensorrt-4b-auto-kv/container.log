@@ -1,0 +1,496 @@
+Skipping import of cpp extensions due to incompatible torch version 2.14.0+cu130 for torchao version 0.15.0             Please see https://github.com/pytorch/ao/issues/2919 for more info
+/survey/trt-venv/lib/python3.12/site-packages/flashinfer/cutile/cutile_common.py:64: UserWarning: Installed NVIDIA pip packages have mismatched versions (nvidia-cuda-tileiras 13.1.80, nvidia-cuda-nvcc 13.3.73, nvidia-nvvm 13.3.73). Falling back to system tileiras.
+  binary = _find_compiler_bin()
+[TensorRT-LLM] TensorRT LLM version: 1.4.0rc2.post1
+/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/serve/openai_protocol.py:288: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+  class ResponseFormat(OpenAIBaseModel):
+[11/04/2026-17:34:21] [TRT-LLM] [I] [llmapi] Using LLM with PyTorch backend
+[11/04/2026-17:34:21] [TRT-LLM] [I] [llmapi] neither checkpoint_format nor checkpoint_loader were provided, checkpoint_format will be set to HF.
+`torch_dtype` is deprecated! Use `dtype` instead!
+The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[11/04/2026-17:34:24] [TRT-LLM] [W] [executor] Orchestrator is creating IPC executor
+[11/04/2026-17:34:24] [TRT-LLM] [I] [executor] [startup][pid=1] executor_proxy: start
+[11/04/2026-17:34:24] [TRT-LLM] [I] [_startup] [startup][pid=1] mpi_session_setup: start
+[11/04/2026-17:34:24] [TRT-LLM] [I] [_startup] [startup][pid=1] mpi_session_setup: done, total=0.000s, unattributed=0.000s | 
+[11/04/2026-17:34:24] [TRT-LLM] [I] [executor] Generating a new HMAC key for server proxy_request_queue
+[11/04/2026-17:34:24] [TRT-LLM] [I] [executor] Generating a new HMAC key for server proxy_result_queue
+[11/04/2026-17:34:24] [TRT-LLM] [I] [executor] Generating a new HMAC key for server worker_init_status_queue
+[11/04/2026-17:34:24] [TRT-LLM] [I] [executor] [startup][pid=1] executor_proxy/pre_worker_setup: done in 0.001s (includes mpi_session_setup)
+[33;20mrank 0 using MpiPoolSession to spawn MPI processes
+[11/04/2026-17:34:24] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready: start
+[11/04/2026-17:34:24] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_submit: start
+[11/04/2026-17:34:24] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_submit: done in 0.012s
+[11/04/2026-17:34:24] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_initialization_wait: start
+[0mSkipping import of cpp extensions due to incompatible torch version 2.14.0+cu130 for torchao version 0.15.0             Please see https://github.com/pytorch/ao/issues/2919 for more info
+/survey/trt-venv/lib/python3.12/site-packages/flashinfer/cutile/cutile_common.py:64: UserWarning: Installed NVIDIA pip packages have mismatched versions (nvidia-cuda-tileiras 13.1.80, nvidia-cuda-nvcc 13.3.73, nvidia-nvvm 13.3.73). Falling back to system tileiras.
+  binary = _find_compiler_bin()
+[TensorRT-LLM] TensorRT LLM version: 1.4.0rc2.post1
+/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/serve/openai_protocol.py:288: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+  class ResponseFormat(OpenAIBaseModel):
+[TRT-LLM] [I] [runtime][RANK 0] Refreshed the MPI local session
+[11/04/2026-17:34:41] [TRT-LLM] [I] [executor] get signal from executor worker
+[11/04/2026-17:34:42] [TRT-LLM] [W] [llmapi] Worker process 155 is affined to run on the following CPUs: [2] (subset of all logical CPUs). This may harm performance if set incorrectly.
+[11/04/2026-17:34:42] [TRT-LLM] [W] [llmapi] Worker process 155 has constrained CPU affinity but `TLLM_NUMA_AWARE_WORKER_AFFINITY` is not set. Removing CPU affinity constraints.
+[11/04/2026-17:34:42] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation: start
+`torch_dtype` is deprecated! Use `dtype` instead!
+[11/04/2026-17:34:42] [TRT-LLM] [I] [_torch] Tokenizer not provided; loading from checkpoint for guided decoding
+[11/04/2026-17:34:44] [TRT-LLM] [I] [_torch] ATTENTION RUNTIME FEATURES:  AttentionRuntimeFeatures(chunked_prefill=False, cache_reuse=True, has_speculative_draft_tokens=False, chunk_size=4096, chunked_prefill_buffer_batch_size=4)
+[11/04/2026-17:34:44] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/configuration_and_distributed_init: done in 1.517s
+[11/04/2026-17:34:44] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/model: start
+The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[11/04/2026-17:34:45] [TRT-LLM] [I] [_torch] Validating KV Cache config against kv_cache_dtype="auto"
+[11/04/2026-17:34:45] [TRT-LLM] [I] [_torch] KV cache quantization set to "auto". Using checkpoint KV quantization.
+[11/04/2026-17:34:45] [TRT-LLM] [W] [_torch] Model architectures is None, default to is_generation_model=True
+[11/04/2026-17:34:45] [TRT-LLM] [W] [_torch] rope_fusion is true but the attention backend does not support it. Will disable rope_fusion.
+[11/04/2026-17:34:45] [TRT-LLM] [W] [_torch] Model architectures is None, default to is_generation_model=True
+[11/04/2026-17:34:45] [TRT-LLM] [I] [_torch] Fallback to regular model init: Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_loader.py", line 1089, in load
+    model = AutoModelForCausalLM.from_config(config_copy)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_auto.py", line 78, in from_config
+    model = cls(config)
+            ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3vl.py", line 230, in __init__
+    self.siglip_tower = SiglipVisionModel(vision_model_config,
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_siglip.py", line 77, in __init__
+    self.vision_model = SiglipVisionTransformer(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_siglip.py", line 36, in __init__
+    self.encoder = SiglipEncoder(model_config)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_clip.py", line 104, in __init__
+    CLIPEncoderLayer(model_config, layer_idx)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_clip.py", line 57, in __init__
+    self.layer_norm1 = nn.LayerNorm(self.embed_dim,
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/normalization.py", line 219, in __init__
+    self.reset_parameters()
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/normalization.py", line 223, in reset_parameters
+    init.ones_(self.weight)
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/init.py", line 365, in ones_
+    return _no_grad_fill_(tensor, 1.0)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tensorrt_llm._torch.models.modeling_utils.MetaInitException: Meta tensor used in unsupported function: aten.fill_.Scalar
+
+[11/04/2026-17:34:45] [TRT-LLM] [W] [_torch] Model architectures is None, default to is_generation_model=True
+[11/04/2026-17:34:45] [TRT-LLM] [W] [_torch] Model architectures is None, default to is_generation_model=True
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Use 8.52 GB for model weights.
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Checkpoint I/O policy is falling back before model materialization: requested=auto, selected=native, reason=rank 0: checkpoint bytes (8600277880) exceed available host memory (20774440960) after startup headroom (17179869184).
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Prefetching 8.01GB checkpoint files.
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Prefetching /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00001-of-00002.safetensors to memory...
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Prefetching /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00002-of-00002.safetensors to memory...
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Finished prefetching /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00001-of-00002.safetensors.
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Finished prefetching /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00002-of-00002.safetensors.
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Start to load safetensor file /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00002-of-00002.safetensors
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Start to load safetensor file /root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/model-00001-of-00002.safetensors
+[11/04/2026-17:35:47] [TRT-LLM] [I] [_torch] Checkpoint I/O policy: requested=auto, selected=native, activated=False, effective=native, fallback_reason=rank 0: checkpoint bytes (8600277880) exceed available host memory (20774440960) after startup headroom (17179869184).
+Loading safetensors weights in parallel:   0%|          | 0/2 [00:00<?, ?it/s]Loading safetensors weights in parallel: 100%|██████████| 2/2 [00:00<00:00, 163.27it/s]
+[11/04/2026-17:35:47] [TRT-LLM] [W] [_torch] [Linear.load_shard] Skipping device transfer from cpu to cuda on integrated GPU to conserve shared memory.
+Loading weights concurrently:   0%|          | 0/858 [00:00<?, ?it/s]Loading weights concurrently:   5%|▌         | 44/858 [00:08<02:34,  5.27it/s]Loading weights concurrently:   6%|▌         | 49/858 [00:08<02:19,  5.79it/s]Loading weights concurrently:  10%|█         | 88/858 [00:08<00:55, 13.89it/s]Loading weights concurrently:  14%|█▍        | 119/858 [00:09<00:34, 21.23it/s]Loading weights concurrently:  15%|█▌        | 132/858 [00:09<00:30, 23.56it/s]Loading weights concurrently:  18%|█▊        | 155/858 [00:09<00:23, 30.43it/s]Loading weights concurrently:  21%|██        | 182/858 [00:10<00:18, 37.41it/s]Loading weights concurrently:  24%|██▍       | 206/858 [00:10<00:15, 42.63it/s]Loading weights concurrently:  26%|██▌       | 224/858 [00:11<00:14, 43.26it/s]Loading weights concurrently:  29%|██▉       | 249/858 [00:11<00:12, 48.40it/s]Loading weights concurrently:  30%|██▉       | 257/858 [00:11<00:13, 44.10it/s]Loading weights concurrently:  33%|███▎      | 280/858 [00:12<00:11, 52.35it/s]Loading weights concurrently:  36%|███▌      | 305/858 [00:12<00:09, 55.84it/s]Loading weights concurrently:  42%|████▏     | 363/858 [00:12<00:04, 108.84it/s]Loading weights concurrently:  45%|████▍     | 385/858 [00:12<00:05, 93.33it/s] Loading weights concurrently:  47%|████▋     | 404/858 [00:13<00:05, 80.56it/s]Loading weights concurrently:  50%|█████     | 430/858 [00:13<00:05, 78.39it/s]Loading weights concurrently:  53%|█████▎    | 456/858 [00:14<00:05, 75.56it/s]Loading weights concurrently:  56%|█████▌    | 481/858 [00:14<00:05, 72.29it/s]Loading weights concurrently:  57%|█████▋    | 491/858 [00:14<00:05, 61.70it/s]Loading weights concurrently:  61%|██████    | 524/858 [00:14<00:03, 89.62it/s]Loading weights concurrently:  66%|██████▋   | 570/858 [00:15<00:02, 103.13it/s]Loading weights concurrently:  70%|██████▉   | 597/858 [00:15<00:02, 119.40it/s]Loading weights concurrently:  71%|███████▏  | 613/858 [00:15<00:02, 84.19it/s] Loading weights concurrently:  74%|███████▎  | 631/858 [00:16<00:03, 70.08it/s]Loading weights concurrently:  82%|████████▏ | 704/858 [00:16<00:01, 107.53it/s]Loading weights concurrently:  84%|████████▍ | 724/858 [00:16<00:01, 114.29it/s]Loading weights concurrently:  88%|████████▊ | 756/858 [00:17<00:01, 101.17it/s]Loading weights concurrently:  90%|████████▉ | 770/858 [00:17<00:01, 84.14it/s] Loading weights concurrently:  91%|█████████ | 780/858 [00:17<00:00, 85.39it/s]Loading weights concurrently:  92%|█████████▏| 790/858 [00:17<00:01, 67.69it/s]Loading weights concurrently:  96%|█████████▌| 824/858 [00:17<00:00, 100.31it/s]Loading weights concurrently:  98%|█████████▊| 837/858 [00:18<00:00, 79.66it/s] Loading weights concurrently:  99%|█████████▉| 848/858 [00:18<00:00, 59.00it/s]Loading weights concurrently: 100%|█████████▉| 857/858 [00:18<00:00, 50.77it/s]Loading weights concurrently: 100%|██████████| 858/858 [00:18<00:00, 45.27it/s]
+[11/04/2026-17:36:06] [TRT-LLM] [I] [_torch] Renamed weights with params_map: {'(.*?)out_proj(.*)': '\\1o_proj\\2', '(.*?)fc1(.*)': '\\1up_proj\\2', '(.*?)fc2(.*)': '\\1down_proj\\2'}
+Loading weights concurrently:   0%|          | 0/602 [00:00<?, ?it/s]Loading weights concurrently:  17%|█▋        | 105/602 [00:00<00:00, 1001.77it/s]Loading weights concurrently:  40%|████      | 241/602 [00:00<00:00, 1206.77it/s]Loading weights concurrently:  61%|██████▏   | 369/602 [00:00<00:00, 969.11it/s] Loading weights concurrently:  79%|███████▊  | 474/602 [00:00<00:00, 956.83it/s]Loading weights concurrently: 100%|██████████| 602/602 [00:00<00:00, 1069.84it/s]
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] Model loading metrics for rank 0: checkpoint_preparation_seconds=0.6822, weight_population_seconds=19.5343, checkpoint_finalization_seconds=0.0000, post_load_processing_seconds=0.0021, total_model_loading_seconds=82.1966
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/model: done in 83.294s
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/guided_decoder: start
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] Guided decoder initialized with backend: GuidedDecodingBackend.XGRAMMAR
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/guided_decoder: done in 0.318s
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/sampler: start
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] Using Sampler: TorchSampler
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/sampler: done in 0.014s
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] [create_py_executor] Created execution_stream: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4bc839d0>
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] Memory used at after loading weights (inside torch) in memory usage profiling: 8.77 GiB
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] Memory used at after loading weights (outside torch) in memory usage profiling: 106.50 GiB
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/profiling_kv_cache_allocation: start
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] [KVCacheManager] execution_stream: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4bc839d0>
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] max_gpu_total_bytes is provided. New quota is 0.641232299618423GiB
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] max_tokens 16384 is provided. Allowed quota from max_tokens is 2.2368421060964465GiB. New quota is 0.641232299618423GiB
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] KV cache manager v2 device quota set to 0.641232299618423GiB
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] KV cache manager v2 auto host tier sizing: 1 co-located rank(s) on this node, available host memory 6.41GiB
+[11/04/2026-17:36:07] [TRT-LLM] [I] [_torch] KV cache manager v2 host cache quota set to 0.01GiB
+[TRT-LLM] [W] [batchmgr][RANK 0] PooledPhysMemAllocator: device 0 refused gpuDirectRDMACapable for KV cache memory with handle type 1, so the pools are allocated without it. nvidia_peermem (ibv_reg_mr) cannot register this memory for GPUDirect RDMA; dma-buf registration still can.
+[11/04/2026-17:36:08] [TRT-LLM] [W] [_torch] max_seq_len 16384 is greater than max_num_tokens 4928 that can be allocated in kv cache manager, setting max_seq_len to 4928
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_torch] KVCacheManagerV2: IndexMapper capacity=9 (max_num_sequences=4, is_disagg=False, disable_overlap_scheduler=False, pp_size=1, num_reserved_index_slots=1, max_beam_width=1, max_copy_beam_width=1)
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_torch] KVCacheManagerV2 role-to-pool/lifecycle mapping:
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_torch] role=key, pool_group_id=0, layer_group_id=0
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_torch] role=value, pool_group_id=0, layer_group_id=0
+[TRT-LLM] [I] [runtime][RANK 0] GPU 0 is on NUMA node 0
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/profiling_kv_cache_allocation: done in 0.045s
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/spec_resource_manager: start
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/spec_resource_manager: done in 0.000s
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/drafter: start
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/drafter: done in 0.000s
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/profiling_executor_creation: start
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_torch] max_seq_len=16384, max_num_requests=8, max_num_tokens=4096, max_batch_size=4
+[11/04/2026-17:36:08] [TRT-LLM] [W] [_torch] KVCacheV2Scheduler only supports MAX_UTILIZATION for now, got GUARANTEED_NO_EVICT, setting to MAX_UTILIZATION
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_torch] KVCacheV2Scheduler: tokens_per_block=32, max_num_tokens=4096, max_batch_size=4, draft_mgr=None, cross_mgr=None, enable_prefix_aware_scheduling=True, prefix_skip_enabled=True, enable_recompute_pause=True
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_torch] cache_transceiver is disabled
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_torch] [PyExecutor] execution_stream initialized: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4bc839d0>; encoder_stream initialized: <torch.cuda.Stream device=cuda:0 cuda_stream=0x4bcb1370>.
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_startup] [startup][pid=155] pre_warmup_rank_barrier: start
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_startup] [startup][pid=155] pre_warmup_rank_barrier: done, total=0.000s, unattributed=0.000s | 
+[11/04/2026-17:36:08] [TRT-LLM] [I] [_torch] [warmup][pid=155][rank=0][purpose=memory_profiling][pass=1] sampling_module_prewarm: start
+[11/04/2026-17:36:45] [TRT-LLM] [I] [_torch] [warmup][pid=155][rank=0][purpose=memory_profiling][pass=1] sampling_module_prewarm: done in 37.1s
+[11/04/2026-17:36:45] [TRT-LLM] [I] [_torch] [warmup][pid=155][rank=0][purpose=memory_profiling][pass=1] cute_dsl_indexer_q: start
+[11/04/2026-17:36:45] [TRT-LLM] [I] [_torch] [warmup][pid=155][rank=0][purpose=memory_profiling][pass=1] cute_dsl_indexer_q: done in 0.0s
+[11/04/2026-17:36:45] [TRT-LLM] [I] [_torch] [warmup][pid=155][rank=0][purpose=memory_profiling][pass=1] attention_jit: start
+[11/04/2026-17:36:45] [TRT-LLM] [I] [_torch] Running TRTLLM-Gen FMHA JIT warmup
+[11/04/2026-17:36:45] [TRT-LLM] [I] [_torch] [warmup][pid=155][rank=0][purpose=memory_profiling][pass=1] attention shape num_tokens=1, num_gen_requests=1: start
+[11/04/2026-17:36:45] [TRT-LLM] [I] [_torch] PDL enabled
+[11/04/2026-17:37:02] [TRT-LLM] [W] [_torch] [warmup][pid=155][rank=0][purpose=memory_profiling][pass=1] attention shape num_tokens=1, num_gen_requests=1: failed after 16.9s
+[11/04/2026-17:37:02] [TRT-LLM] [W] [_torch] [warmup][pid=155][rank=0][purpose=memory_profiling][pass=1] attention_jit: failed after 16.9s
+[11/04/2026-17:37:02] [TRT-LLM] [I] [_torch] [warmup][pid=155][rank=0][purpose=memory_profiling][pass=1] summary: total=54.0s | sampling_module_prewarm=37.1s (69%), cute_dsl_indexer_q=0.0s (0%), attention_jit=16.9s (31%)
+[11/04/2026-17:37:02] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation/profiling_executor_creation: failed in 54.226s
+[11/04/2026-17:37:02] [TRT-LLM] [I] [_startup] [startup][pid=155] executor_creation: failed, total=139.416s, unattributed=0.002s | configuration_and_distributed_init=1.517s, model=83.294s, guided_decoder=0.318s, sampler=0.014s, profiling_kv_cache_allocation=0.045s, spec_resource_manager=0.000s, drafter=0.000s, profiling_executor_creation=54.226s
+[11/04/2026-17:37:02] [TRT-LLM] [E] [executor] Failed to initialize executor on rank 0: 'TrtllmAttentionMetadata' object has no attribute 'swap_paged_kv_indices_for_layer'
+[11/04/2026-17:37:02] [TRT-LLM] [E] [executor] Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/worker.py", line 443, in worker_main
+    worker: GenerationExecutorWorker = worker_cls(
+                                       ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/worker.py", line 87, in __init__
+    self.setup_engine()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/base_worker.py", line 181, in setup_engine
+    self.engine = create_py_executor(**args)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 1341, in create_py_executor
+    return _create_py_executor_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 509, in _create_py_executor_impl
+    py_executor = _create_py_executor(
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 1194, in _create_py_executor
+    py_executor = create_py_executor_instance(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/_util.py", line 4537, in create_py_executor_instance
+    return PyExecutor(
+           ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor.py", line 932, in __init__
+    self.model_engine.warmup(self.resource_manager)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_engine.py", line 908, in wrapper
+    result = method(self, resource_manager, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_engine.py", line 964, in warmup
+    self._warmup_impl(resource_manager)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_engine.py", line 979, in _warmup_impl
+    self._runner.warmup(resource_manager)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 338, in warmup
+    self._eager_workspace_reclaimer = self._warmup.run(resource_manager)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/warmup.py", line 288, in run
+    return self._warmup_scheduled(resource_manager, kv_cache_manager)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/warmup.py", line 405, in _warmup_scheduled
+    self._run_attention_warmup(resource_manager, can_run_general_warmup)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/warmup.py", line 930, in _run_attention_warmup
+    self._forward_warmup(
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 483, in _forward_warmup
+    return self.forward(inputs, resource_manager=resource_manager, is_dummy=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 185, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 321, in forward
+    return self._forward_decoder(inputs, resource_manager, is_dummy=is_dummy)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 671, in _forward_decoder
+    outputs = self._graphs.run(
+              ^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/graphs.py", line 521, in run
+    return self._run(
+           ^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/graphs.py", line 561, in _run
+    outputs = run_model(inputs)
+              ^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 653, in run_model
+    return self._forward_step(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 758, in _forward_step
+    outputs = self._model_forward(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 731, in _model_forward
+    return self._model_caller(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/model_call.py", line 85, in __call__
+    outputs = self._model.forward(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3vl.py", line 331, in forward
+    logits = self.llm.forward(
+             ^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 606, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3.py", line 488, in forward
+    output = self.model(
+             ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 606, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3.py", line 362, in forward
+    hidden_states = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1889, in _call_impl
+    return inner()
+           ^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1837, in inner
+    result = forward_call(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 606, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3.py", line 294, in forward
+    hidden_states = self.self_attn(
+                    ^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 606, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3.py", line 224, in forward
+    return super().forward(position_ids=position_ids,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/attention.py", line 1185, in forward
+    attn_output = self.forward_impl(
+                  ^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/attention.py", line 1094, in forward_impl
+    output, output_sf = self._attn_impl(
+                        ^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/attention.py", line 989, in _attn_impl
+    attn_output = self.attn.forward(
+                  ^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/backends/flashinfer.py", line 2920, in forward
+    self.forward_impl(
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/backends/flashinfer.py", line 2735, in forward_impl
+    metadata.swap_paged_kv_indices_for_layer(self.layer_idx)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'TrtllmAttentionMetadata' object has no attribute 'swap_paged_kv_indices_for_layer'
+
+[11/04/2026-17:37:02] [TRT-LLM] [I] [executor] get signal from executor worker
+[11/04/2026-17:37:02] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_initialization_wait: done in 157.822s
+[11/04/2026-17:37:02] [TRT-LLM] [E] [executor] Executor worker initialization error: Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/worker.py", line 443, in worker_main
+    worker: GenerationExecutorWorker = worker_cls(
+                                       ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/worker.py", line 87, in __init__
+    self.setup_engine()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/base_worker.py", line 181, in setup_engine
+    self.engine = create_py_executor(**args)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 1341, in create_py_executor
+    return _create_py_executor_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 509, in _create_py_executor_impl
+    py_executor = _create_py_executor(
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 1194, in _create_py_executor
+    py_executor = create_py_executor_instance(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/_util.py", line 4537, in create_py_executor_instance
+    return PyExecutor(
+           ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor.py", line 932, in __init__
+    self.model_engine.warmup(self.resource_manager)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_engine.py", line 908, in wrapper
+    result = method(self, resource_manager, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_engine.py", line 964, in warmup
+    self._warmup_impl(resource_manager)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_engine.py", line 979, in _warmup_impl
+    self._runner.warmup(resource_manager)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 338, in warmup
+    self._eager_workspace_reclaimer = self._warmup.run(resource_manager)
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/warmup.py", line 288, in run
+    return self._warmup_scheduled(resource_manager, kv_cache_manager)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/warmup.py", line 405, in _warmup_scheduled
+    self._run_attention_warmup(resource_manager, can_run_general_warmup)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/warmup.py", line 930, in _run_attention_warmup
+    self._forward_warmup(
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 483, in _forward_warmup
+    return self.forward(inputs, resource_manager=resource_manager, is_dummy=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 185, in wrapper
+    return func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 321, in forward
+    return self._forward_decoder(inputs, resource_manager, is_dummy=is_dummy)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 671, in _forward_decoder
+    outputs = self._graphs.run(
+              ^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/graphs.py", line 521, in run
+    return self._run(
+           ^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/graphs.py", line 561, in _run
+    outputs = run_model(inputs)
+              ^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 653, in run_model
+    return self._forward_step(
+           ^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 758, in _forward_step
+    outputs = self._model_forward(
+              ^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/runners/decoder/runner.py", line 731, in _model_forward
+    return self._model_caller(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/engine/model_call.py", line 85, in __call__
+    outputs = self._model.forward(**kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3vl.py", line 331, in forward
+    logits = self.llm.forward(
+             ^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 606, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3.py", line 488, in forward
+    output = self.model(
+             ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 606, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3.py", line 362, in forward
+    hidden_states = decoder_layer(
+                    ^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1889, in _call_impl
+    return inner()
+           ^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1837, in inner
+    result = forward_call(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 606, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3.py", line 294, in forward
+    hidden_states = self.self_attn(
+                    ^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1783, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/torch/nn/modules/module.py", line 1794, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/utils.py", line 606, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/models/modeling_gemma3.py", line 224, in forward
+    return super().forward(position_ids=position_ids,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/attention.py", line 1185, in forward
+    attn_output = self.forward_impl(
+                  ^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/attention.py", line 1094, in forward_impl
+    output, output_sf = self._attn_impl(
+                        ^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/attention.py", line 989, in _attn_impl
+    attn_output = self.attn.forward(
+                  ^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/backends/flashinfer.py", line 2920, in forward
+    self.forward_impl(
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/attention/backends/flashinfer.py", line 2735, in forward_impl
+    metadata.swap_paged_kv_indices_for_layer(self.layer_idx)
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'TrtllmAttentionMetadata' object has no attribute 'swap_paged_kv_indices_for_layer'
+
+[11/04/2026-17:37:02] [TRT-LLM] [I] [llmapi] MpiSession.shutdown_abort: waiting up to 60s for workers to exit
+[11/04/2026-17:37:02] [TRT-LLM] [I] [llmapi] MpiPoolSession.shutdown: joining 1 worker(s) (wait=True)
+[11/04/2026-17:37:02] [TRT-LLM] [I] [llmapi] MpiPoolSession.shutdown: done
+[11/04/2026-17:37:02] [TRT-LLM] [I] [llmapi] MpiSession.shutdown_abort: workers exited cleanly
+[11/04/2026-17:37:02] [TRT-LLM] [E] [executor] Fatal engine error recorded: AttributeError("'TrtllmAttentionMetadata' object has no attribute 'swap_paged_kv_indices_for_layer'")
+[11/04/2026-17:37:02] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready: failed, total=157.837s, unattributed=0.003s | worker_submit=0.012s, worker_initialization_wait=157.822s
+AttributeError: 'TrtllmAttentionMetadata' object has no attribute 'swap_paged_kv_indices_for_layer'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/survey/trt-venv/bin/trtllm-serve", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/_telemetry.py", line 319, in main
+    return run_with_terminal_reporting(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/_telemetry.py", line 183, in run_with_terminal_reporting
+    result = operation()
+             ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/_telemetry.py", line 320, in <lambda>
+    lambda: super(TelemetryGroup, self).main(*args, **kwargs),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 1490, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/_telemetry.py", line 282, in invoke
+    return super().invoke(ctx)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 1970, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/serve.py", line 1651, in serve
+    _serve_llm()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/serve.py", line 1607, in _serve_llm
+    launch_server(
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/serve.py", line 617, in launch_server
+    llm = PyTorchLLM(**llm_args)
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 2208, in __init__
+    super().__init__(model, tokenizer, tokenizer_mode, skip_tokenizer_init,
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 1884, in __init__
+    super().__init__(model,
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 507, in __init__
+    self._build_model()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 2158, in _build_model
+    self._executor = self._executor_cls.create(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/executor.py", line 702, in create
+    return GenerationExecutor._create_ipc_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/executor.py", line 550, in _create_ipc_executor
+    return GenerationExecutorProxy(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/proxy.py", line 217, in __init__
+    self._start_executor_workers(worker_kwargs)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/proxy.py", line 939, in _start_executor_workers
+    self._fail_initialization(
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/proxy.py", line 849, in _fail_initialization
+    raise error from cause
+RuntimeError: Executor worker returned error

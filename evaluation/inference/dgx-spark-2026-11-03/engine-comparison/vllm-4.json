@@ -1,0 +1,10 @@
+{
+  "name": "vllm-maxseq-4",
+  "engine": "vllm",
+  "max_sequences": 4,
+  "concurrencies": [
+    1,
+    4
+  ],
+  "cases": "extended-cases.json"
+}

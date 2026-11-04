@@ -1,0 +1,55 @@
+{
+  "model": "Qwen/Qwen3-4B-Instruct-2507",
+  "revision": "cdbee75f17c01a7cc42f958dc650907174af0554",
+  "snapshot": "/root/.cache/huggingface/hub/models--Qwen--Qwen3-4B-Instruct-2507/snapshots/cdbee75f17c01a7cc42f958dc650907174af0554",
+  "files": [
+    {
+      "name": "LICENSE",
+      "bytes": 11343
+    },
+    {
+      "name": "README.md",
+      "bytes": 8168
+    },
+    {
+      "name": "config.json",
+      "bytes": 727
+    },
+    {
+      "name": "generation_config.json",
+      "bytes": 238
+    },
+    {
+      "name": "merges.txt",
+      "bytes": 1671839
+    },
+    {
+      "name": "model-00001-of-00003.safetensors",
+      "bytes": 3957900840
+    },
+    {
+      "name": "model-00002-of-00003.safetensors",
+      "bytes": 3987450520
+    },
+    {
+      "name": "model-00003-of-00003.safetensors",
+      "bytes": 99630640
+    },
+    {
+      "name": "model.safetensors.index.json",
+      "bytes": 32819
+    },
+    {
+      "name": "tokenizer.json",
+      "bytes": 11422654
+    },
+    {
+      "name": "tokenizer_config.json",
+      "bytes": 9377
+    },
+    {
+      "name": "vocab.json",
+      "bytes": 2776833
+    }
+  ]
+}

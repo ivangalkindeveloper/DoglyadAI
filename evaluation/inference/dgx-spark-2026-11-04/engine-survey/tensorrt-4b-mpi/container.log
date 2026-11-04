@@ -1,0 +1,178 @@
+Skipping import of cpp extensions due to incompatible torch version 2.14.0+cu130 for torchao version 0.15.0             Please see https://github.com/pytorch/ao/issues/2919 for more info
+/survey/trt-venv/lib/python3.12/site-packages/flashinfer/cutile/cutile_common.py:64: UserWarning: Installed NVIDIA pip packages have mismatched versions (nvidia-cuda-tileiras 13.1.80, nvidia-cuda-nvcc 13.3.73, nvidia-nvvm 13.3.73). Falling back to system tileiras.
+  binary = _find_compiler_bin()
+[TensorRT-LLM] TensorRT LLM version: 1.4.0rc2.post1
+/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/serve/openai_protocol.py:288: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+  class ResponseFormat(OpenAIBaseModel):
+[11/04/2026-17:31:33] [TRT-LLM] [I] [llmapi] Using LLM with PyTorch backend
+[11/04/2026-17:31:33] [TRT-LLM] [I] [llmapi] neither checkpoint_format nor checkpoint_loader were provided, checkpoint_format will be set to HF.
+[11/04/2026-17:31:33] [TRT-LLM] [W] [llmapi] Cannot sync quant_config.kv_cache_quant_algo with kv_cache_config.dtype of bfloat16, please update the validator
+`torch_dtype` is deprecated! Use `dtype` instead!
+The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[33;20mrank 0 using MpiPoolSession to spawn MPI processes
+[11/04/2026-17:31:36] [TRT-LLM] [W] [executor] Orchestrator is creating IPC executor
+[11/04/2026-17:31:36] [TRT-LLM] [I] [executor] [startup][pid=1] executor_proxy: start
+[11/04/2026-17:31:36] [TRT-LLM] [I] [_startup] [startup][pid=1] mpi_session_setup: start
+[11/04/2026-17:31:36] [TRT-LLM] [I] [_startup] [startup][pid=1] mpi_session_setup: done, total=0.000s, unattributed=0.000s | 
+[11/04/2026-17:31:36] [TRT-LLM] [I] [executor] Generating a new HMAC key for server proxy_request_queue
+[11/04/2026-17:31:36] [TRT-LLM] [I] [executor] Generating a new HMAC key for server proxy_result_queue
+[11/04/2026-17:31:36] [TRT-LLM] [I] [executor] Generating a new HMAC key for server worker_init_status_queue
+[11/04/2026-17:31:36] [TRT-LLM] [I] [executor] [startup][pid=1] executor_proxy/pre_worker_setup: done in 0.001s (includes mpi_session_setup)
+[11/04/2026-17:31:36] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready: start
+[11/04/2026-17:31:36] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_submit: start
+[11/04/2026-17:31:36] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_submit: done in 0.001s
+[11/04/2026-17:31:36] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_initialization_wait: start
+[0mSkipping import of cpp extensions due to incompatible torch version 2.14.0+cu130 for torchao version 0.15.0             Please see https://github.com/pytorch/ao/issues/2919 for more info
+/survey/trt-venv/lib/python3.12/site-packages/flashinfer/cutile/cutile_common.py:64: UserWarning: Installed NVIDIA pip packages have mismatched versions (nvidia-cuda-tileiras 13.1.80, nvidia-cuda-nvcc 13.3.73, nvidia-nvvm 13.3.73). Falling back to system tileiras.
+  binary = _find_compiler_bin()
+[TensorRT-LLM] TensorRT LLM version: 1.4.0rc2.post1
+/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/serve/openai_protocol.py:288: UserWarning: Field name "schema" in "ResponseFormat" shadows an attribute in parent "OpenAIBaseModel"
+  class ResponseFormat(OpenAIBaseModel):
+[TRT-LLM] [I] [runtime][RANK 0] Refreshed the MPI local session
+[11/04/2026-17:31:53] [TRT-LLM] [I] [executor] get signal from executor worker
+[11/04/2026-17:31:54] [TRT-LLM] [W] [llmapi] Worker process 150 is affined to run on the following CPUs: [2] (subset of all logical CPUs). This may harm performance if set incorrectly.
+[11/04/2026-17:31:54] [TRT-LLM] [W] [llmapi] Worker process 150 has constrained CPU affinity but `TLLM_NUMA_AWARE_WORKER_AFFINITY` is not set. Removing CPU affinity constraints.
+[11/04/2026-17:31:54] [TRT-LLM] [I] [_startup] [startup][pid=150] executor_creation: start
+`torch_dtype` is deprecated! Use `dtype` instead!
+[11/04/2026-17:31:54] [TRT-LLM] [I] [_torch] Tokenizer not provided; loading from checkpoint for guided decoding
+[11/04/2026-17:31:56] [TRT-LLM] [I] [_torch] ATTENTION RUNTIME FEATURES:  AttentionRuntimeFeatures(chunked_prefill=False, cache_reuse=True, has_speculative_draft_tokens=False, chunk_size=4096, chunked_prefill_buffer_batch_size=4)
+[11/04/2026-17:31:56] [TRT-LLM] [I] [_startup] [startup][pid=150] executor_creation/configuration_and_distributed_init: done in 1.541s
+[11/04/2026-17:31:56] [TRT-LLM] [I] [_startup] [startup][pid=150] executor_creation/model: start
+The `use_fast` parameter is deprecated and will be removed in a future version. Use `backend="torchvision"` instead of `use_fast=True`, or `backend="pil"` instead of `use_fast=False`.
+[11/04/2026-17:31:57] [TRT-LLM] [I] [_torch] Validating KV Cache config against kv_cache_dtype="bfloat16"
+[11/04/2026-17:31:57] [TRT-LLM] [I] [_startup] [startup][pid=150] executor_creation/model: failed in 1.083s
+[11/04/2026-17:31:57] [TRT-LLM] [I] [_startup] [startup][pid=150] executor_creation: failed, total=2.624s, unattributed=0.000s | configuration_and_distributed_init=1.541s, model=1.083s
+[11/04/2026-17:31:57] [TRT-LLM] [E] [executor] Failed to initialize executor on rank 0: Overriding KV cache quantization with an invalid type "llm_args.KvCacheConfig.dtype="bfloat16" Accepted types are "('fp8', 'fp8_ds_mla', 'nvfp4', 'auto', 'mixed_nvfp4_fp8', 'mixed_nvfp4_float16', 'mixed_nvfp4_bfloat16')".
+[11/04/2026-17:31:57] [TRT-LLM] [E] [executor] Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/worker.py", line 443, in worker_main
+    worker: GenerationExecutorWorker = worker_cls(
+                                       ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/worker.py", line 87, in __init__
+    self.setup_engine()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/base_worker.py", line 181, in setup_engine
+    self.engine = create_py_executor(**args)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 1341, in create_py_executor
+    return _create_py_executor_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 509, in _create_py_executor_impl
+    py_executor = _create_py_executor(
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 794, in _create_py_executor
+    model_engine = PyTorchModelEngine(
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_engine.py", line 315, in __init__
+    self.model, moe_load_balancer = self.model_loader.load(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_loader.py", line 1061, in load
+    config = self._load_and_validate_config(checkpoint_dir,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_loader.py", line 2140, in _load_and_validate_config
+    validate_and_set_kv_cache_quant(config,
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_loader.py", line 212, in validate_and_set_kv_cache_quant
+    raise ValueError(
+ValueError: Overriding KV cache quantization with an invalid type "llm_args.KvCacheConfig.dtype="bfloat16" Accepted types are "('fp8', 'fp8_ds_mla', 'nvfp4', 'auto', 'mixed_nvfp4_fp8', 'mixed_nvfp4_float16', 'mixed_nvfp4_bfloat16')".
+
+[11/04/2026-17:31:57] [TRT-LLM] [I] [executor] get signal from executor worker
+[11/04/2026-17:31:57] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready/worker_initialization_wait: done in 21.189s
+[11/04/2026-17:31:57] [TRT-LLM] [E] [executor] Executor worker initialization error: Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/worker.py", line 443, in worker_main
+    worker: GenerationExecutorWorker = worker_cls(
+                                       ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/worker.py", line 87, in __init__
+    self.setup_engine()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/base_worker.py", line 181, in setup_engine
+    self.engine = create_py_executor(**args)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 1341, in create_py_executor
+    return _create_py_executor_impl(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 509, in _create_py_executor_impl
+    py_executor = _create_py_executor(
+                  ^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/py_executor_creator.py", line 794, in _create_py_executor
+    model_engine = PyTorchModelEngine(
+                   ^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_engine.py", line 315, in __init__
+    self.model, moe_load_balancer = self.model_loader.load(
+                                    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_loader.py", line 1061, in load
+    config = self._load_and_validate_config(checkpoint_dir,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_loader.py", line 2140, in _load_and_validate_config
+    validate_and_set_kv_cache_quant(config,
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/pyexecutor/model_loader.py", line 212, in validate_and_set_kv_cache_quant
+    raise ValueError(
+ValueError: Overriding KV cache quantization with an invalid type "llm_args.KvCacheConfig.dtype="bfloat16" Accepted types are "('fp8', 'fp8_ds_mla', 'nvfp4', 'auto', 'mixed_nvfp4_fp8', 'mixed_nvfp4_float16', 'mixed_nvfp4_bfloat16')".
+
+[11/04/2026-17:31:57] [TRT-LLM] [I] [llmapi] MpiSession.shutdown_abort: waiting up to 60s for workers to exit
+[11/04/2026-17:31:57] [TRT-LLM] [I] [llmapi] MpiPoolSession.shutdown: joining 1 worker(s) (wait=True)
+[11/04/2026-17:31:57] [TRT-LLM] [I] [llmapi] MpiPoolSession.shutdown: done
+[11/04/2026-17:31:57] [TRT-LLM] [I] [llmapi] MpiSession.shutdown_abort: workers exited cleanly
+[11/04/2026-17:31:57] [TRT-LLM] [E] [executor] Fatal engine error recorded: ValueError('Overriding KV cache quantization with an invalid type "llm_args.KvCacheConfig.dtype="bfloat16" Accepted types are "(\'fp8\', \'fp8_ds_mla\', \'nvfp4\', \'auto\', \'mixed_nvfp4_fp8\', \'mixed_nvfp4_float16\', \'mixed_nvfp4_bfloat16\')".')
+[11/04/2026-17:31:57] [TRT-LLM] [I] [_startup] [startup][pid=1] worker_submit_to_ready: failed, total=21.198s, unattributed=0.007s | worker_submit=0.001s, worker_initialization_wait=21.189s
+[11/04/2026-17:31:57] [TRT-LLM] [W] [_torch] PyTorchModelEngine cleanup failed during destruction: 'PyTorchModelEngine' object has no attribute '_torch_compile_backend'
+ValueError: Overriding KV cache quantization with an invalid type "llm_args.KvCacheConfig.dtype="bfloat16" Accepted types are "('fp8', 'fp8_ds_mla', 'nvfp4', 'auto', 'mixed_nvfp4_fp8', 'mixed_nvfp4_float16', 'mixed_nvfp4_bfloat16')".
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/survey/trt-venv/bin/trtllm-serve", line 8, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 1569, in __call__
+    return self.main(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/_telemetry.py", line 319, in main
+    return run_with_terminal_reporting(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/_telemetry.py", line 183, in run_with_terminal_reporting
+    result = operation()
+             ^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/_telemetry.py", line 320, in <lambda>
+    lambda: super(TelemetryGroup, self).main(*args, **kwargs),
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 1490, in main
+    rv = self.invoke(ctx)
+         ^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/_telemetry.py", line 282, in invoke
+    return super().invoke(ctx)
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 1970, in invoke
+    return _process_result(sub_ctx.command.invoke(sub_ctx))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 1353, in invoke
+    return ctx.invoke(self.callback, **ctx.params)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.12/dist-packages/click/core.py", line 907, in invoke
+    return callback(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/serve.py", line 1651, in serve
+    _serve_llm()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/serve.py", line 1607, in _serve_llm
+    launch_server(
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/commands/serve.py", line 617, in launch_server
+    llm = PyTorchLLM(**llm_args)
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 2208, in __init__
+    super().__init__(model, tokenizer, tokenizer_mode, skip_tokenizer_init,
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 1884, in __init__
+    super().__init__(model,
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 507, in __init__
+    self._build_model()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/llmapi/llm.py", line 2158, in _build_model
+    self._executor = self._executor_cls.create(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/executor.py", line 702, in create
+    return GenerationExecutor._create_ipc_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/executor.py", line 550, in _create_ipc_executor
+    return GenerationExecutorProxy(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/proxy.py", line 217, in __init__
+    self._start_executor_workers(worker_kwargs)
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/proxy.py", line 939, in _start_executor_workers
+    self._fail_initialization(
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/executor/proxy.py", line 849, in _fail_initialization
+    raise error from cause
+RuntimeError: Executor worker returned error

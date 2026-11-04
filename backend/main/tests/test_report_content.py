@@ -6,11 +6,124 @@ import pytest
 
 from app.core.configuration.configuration import Configuration
 from app.core.localization.language_code import LanguageCode
-from app.error import ReportMeasurementsMismatchError, UnverifiedReportSectionError
+from app.error import InvalidReportResponseError, ReportMeasurementsMismatchError, UnverifiedReportSectionError
 from app.model.ultrasound.us_examination_data import USExaminationData
 from app.model.ultrasound.us_examination_report import USExaminationReport
+from app.model.ultrasound.us_report_preview_response import USReportPreviewResponse
 from app.prompt import PromptFactory
 from app.service.report.report_validator import ReportValidator
+
+
+@pytest.mark.parametrize(
+    "field",
+    ["description", "conclusion", "recommendations", "descriptionRemarks"],
+)
+@pytest.mark.parametrize(
+    "separated",
+    [False, True],
+)
+def test_report_rejects_three_copies_of_a_complete_sentence(
+    field: str,
+    separated: bool,
+) -> None:
+    sentence = "Необходима консультация уролога для исключения урологических заболеваний."
+    text = "\n".join(
+        (
+            sentence + (f" Separate finding number {index}." if separated else "")
+            for index in range(
+                3,
+            )
+        ),
+    )
+    report = USReportPreviewResponse.model_validate(
+        {field: text},
+    )
+    with pytest.raises(
+        InvalidReportResponseError,
+    ):
+        ReportValidator.validate_repetition(
+            report,
+        )
+
+
+def test_repetition_validation_accepts_two_sentences_and_an_unfinished_third() -> None:
+    sentence = "Необходима консультация уролога для исключения урологических заболеваний."
+    ReportValidator.validate_repetition(
+        USReportPreviewResponse(
+            descriptionRemarks="\n".join(
+                [sentence, sentence, sentence[:-1]],
+            ),
+        ),
+    )
+
+
+def test_repetition_validation_preserves_short_findings_and_decimal_measurements() -> None:
+    report = USExaminationReport(
+        description="\n".join(
+            (
+                f"Segment {index}: No focal lesion. The measured length is {index}.5 mm."
+                for index in range(
+                    1,
+                    5,
+                )
+            ),
+        ),
+        conclusion="No focal lesion.",
+    )
+    before = report.model_dump()
+    ReportValidator.validate_repetition(
+        report,
+    )
+    assert report.model_dump() == before
+
+
+@pytest.mark.parametrize(
+    "field",
+    ["description", "conclusion", "recommendations", "descriptionRemarks"],
+)
+def test_report_rejects_repeated_sentence_pair_in_each_streamed_section(
+    field: str,
+) -> None:
+    block = (
+        "В описании не указана информация о размере левой доли щитовидной железы. "  # noqa: RUF001 — Russian regression input
+        "Необходимо указать размер левой доли щитовидной железы."
+    )
+    report = USReportPreviewResponse.model_validate(
+        {
+            field: "Initial text. "
+            + "\n".join(
+                [block] * 3,
+            )
+            + " Trailing text."
+        },
+    )
+    with pytest.raises(
+        InvalidReportResponseError,
+    ):
+        ReportValidator.validate_repetition(
+            report,
+        )
+
+
+def test_repetition_validation_preserves_measurements_and_cross_section_findings() -> None:
+    finding = "The left thyroid lobe is unchanged, with a smooth contour and homogeneous echotexture."
+    measurements = " ".join(
+        (
+            f"The left thyroid lobe has a smooth contour and homogeneous echotexture; measured length is {value} mm."
+            for value in [50, 51, 52]
+        ),
+    )
+    report = USExaminationReport(
+        description=measurements,
+        conclusion=finding,
+        recommendations=finding,
+        descriptionRemarks=finding + " " + finding,
+    )
+    before = report.model_dump()
+    ReportValidator.validate_repetition(
+        report,
+    )
+    assert report.model_dump() == before
 
 
 def _examination(

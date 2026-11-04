@@ -1,0 +1,13 @@
+{
+  "model_index": 2,
+  "model_id": "google/medgemma-27b-it",
+  "model_key": "27b",
+  "cases_file": "cases-27b.json",
+  "performance_file": "performance-27b.json",
+  "settings": {
+    "request_timeout_seconds": 900,
+    "absolute_deadline_seconds": 900
+  },
+  "name": "vllm-27b",
+  "engine": "vllm"
+}

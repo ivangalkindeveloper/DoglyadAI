@@ -18,7 +18,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                transport: transport,
+                parseDictation: transport.parseDictation,
             ),
         )
         let result = try await factory.model(
@@ -60,7 +60,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                transport: transport,
+                parseDictation: transport.parseDictation,
             ),
         )
         let result = try await factory.model(
@@ -91,11 +91,6 @@ struct DictationModelCompositionTests {
             transport.calls == 1,
         )
         #expect(
-            transport.locale == Locale(
-                identifier: "ru",
-            ),
-        )
-        #expect(
             transport.typeID == "abdominalCavity",
         )
         #expect(
@@ -113,7 +108,7 @@ struct DictationModelCompositionTests {
             ),
         )
         let server = try DNeuralUltrasoundModelServer(
-            transport: TransportStub(),
+            parseDictation: TransportStub().parseDictation,
         )
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
@@ -166,7 +161,7 @@ struct DictationModelCompositionTests {
         )
         let transport = try TransportStub()
         DNeuralUltrasoundModelServer(
-            transport: transport,
+            parseDictation: transport.parseDictation,
         ).prewarm()
         #expect(
             transport.calls == 0,
@@ -188,7 +183,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                transport: transport,
+                parseDictation: transport.parseDictation,
             ),
         )
         let result = try await factory.model(
@@ -250,7 +245,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                transport: transport,
+                parseDictation: transport.parseDictation,
             ),
         )
         await #expect(
@@ -277,7 +272,7 @@ struct DictationModelCompositionTests {
         let transport = try TransportStub()
         transport.error = TestFailure.failed
         let model = DNeuralUltrasoundModelServer(
-            transport: transport,
+            parseDictation: transport.parseDictation,
         )
         await #expect(
             throws: TestFailure.failed,
@@ -313,7 +308,7 @@ struct DictationModelCompositionTests {
         let transport = try TransportStub()
         transport.cancelBeforeReturning = true
         let server = DNeuralUltrasoundModelServer(
-            transport: transport,
+            parseDictation: transport.parseDictation,
         )
         let serverTask = Task {
             try await server.parseProposals(
@@ -366,7 +361,7 @@ struct DictationModelCompositionTests {
             json: #"{"proposals":[]}"#,
         )
         let result = try await DNeuralUltrasoundModelServer(
-            transport: transport,
+            parseDictation: transport.parseDictation,
         ).parseProposals(
             request: request(
                 text: "Вес: 68 кг. Описание исследования: Печень без особенностей. Нужно уточнить анамнез.",
@@ -406,7 +401,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                transport: transport,
+                parseDictation: transport.parseDictation,
             ),
         )
         #expect(
@@ -439,7 +434,7 @@ struct DictationModelCompositionTests {
                 maxTokens: 512,
                 maxContextTokens: 4096,
             ),
-            serverTransport: transport,
+            parseDictation: transport.parseDictation,
         )
         #expect(
             try factory.model(
@@ -462,7 +457,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                transport: transport,
+                parseDictation: transport.parseDictation,
             ),
         )
         let result = try await factory.model(
@@ -500,7 +495,7 @@ struct DictationModelCompositionTests {
         let factory = DNeuralUltrasoundModelFactory(
             foundationProvider: provider,
             serverModel: DNeuralUltrasoundModelServer(
-                transport: transport,
+                parseDictation: transport.parseDictation,
             ),
         )
         #expect(
@@ -595,12 +590,11 @@ private final class GeneratorStub: DNeuralUltrasoundProposalGeneratorProtocol {
     }
 }
 
-private final class TransportStub: DNeuralUltrasoundServerTransportProtocol {
+private final class TransportStub {
     private let response: DNeuralUltrasoundVoiceFormParseResponseDTO
     var error: (any Error)?
     var cancelBeforeReturning = false
     private(set) var calls = 0
-    private(set) var locale: Locale?
     private(set) var selectedNeuralModelId: String?
     private(set) var typeID: String?
     private(set) var text: String?
@@ -618,13 +612,11 @@ private final class TransportStub: DNeuralUltrasoundServerTransportProtocol {
 
     func parseDictation(
         selectedNeuralModelId: String?,
-        locale: Locale,
         examinationTypeId: String,
         transcript: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {
         calls += 1
         self.selectedNeuralModelId = selectedNeuralModelId
-        self.locale = locale
         typeID = examinationTypeId
         text = transcript
         if let error {

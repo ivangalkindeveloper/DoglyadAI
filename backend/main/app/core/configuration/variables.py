@@ -32,14 +32,17 @@ class Variables(BaseSettings):
     # of ENVIRONMENT.
     model_service_type: NeuralModelServiceType = NeuralModelServiceType.INFERENCE
 
-    # Inference path: one GPU VM per model, each running backend/inference
-    # next to its own vLLM instance. Path to a modelId -> URL map; required when
-    # MODEL_SERVICE_TYPE=inference in every environment. See InferenceService.
+    # Each GPU host runs one inference service beside its local vLLM engines.
+    # Models on the same host can share a URL in this modelId -> URL map.
+    # Required when MODEL_SERVICE_TYPE=inference in every environment.
     inference_endpoints_path: Path | None = None
     email_sender: str | None = None
     email_password: str | None = None
     email_smtp_host: str | None = None
     email_smtp_port: int | None = None
+
+    # Shared by the API and worker to encrypt persisted report jobs and snapshots.
+    report_generation_encryption_key: str | None = None
 
     # Billing credentials never belong in the public application configuration.
     billing_database_url: str | None = None

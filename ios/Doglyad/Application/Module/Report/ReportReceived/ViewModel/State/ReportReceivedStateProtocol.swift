@@ -1,2 +1,4 @@
 @MainActor
-protocol ReportReceivedStateProtocol: AnyObject {}
+protocol ReportReceivedStateProtocol: AnyObject { var report: USExaminationReport {
+    get
+} }

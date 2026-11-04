@@ -1,0 +1,190 @@
+[
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 15.051120468997397,
+    "usage": {
+      "prompt_tokens": 1888,
+      "total_tokens": 2249,
+      "completion_tokens": 361
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 497,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      },
+      "conclusion": {
+        "characters": 497,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " без особенностей. Кровоток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры."
+      }
+    },
+    "raw_maximum_long_sentence_copies": 2,
+    "repetition": false,
+    "raw_schema_valid": true,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": true,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "length",
+    "seconds": 85.75870092501282,
+    "usage": {
+      "prompt_tokens": 1899,
+      "total_tokens": 3947,
+      "completion_tokens": 2048
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 883,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "изуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 53,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Очаговое образование в правой доле щитовидной железы."
+      },
+      "recommendations": {
+        "characters": 224,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "нения характера очагового образования и исключения злокачественной природы. Также рекомендуется консультация эндокринолога для дальнейшей диагностики и лечения."
+      },
+      "descriptionRemarks": {
+        "characters": 7231,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 27,
+        "repeated_sentences": {
+          "Это противоречит выявлению очагового образования.": 3,
+          "Необходимо уточнить, является ли очаговое образование, или это просто описание структуры щитовидной железы.": 27,
+          "Также, в описании указано, что в правой доле выявлено очаговое образование.": 26,
+          "Это противоречит описанию структуры щитовидной железы.": 26
+        },
+        "production_repetition_rejected": true,
+        "ends_in_sentence_punctuation": false,
+        "tail": "ры щитовидной железы. Необходимо уточнить, является ли очаговое образование, или это просто описание структуры щитовидной железы. Также, в описании указано, что"
+      }
+    },
+    "raw_maximum_long_sentence_copies": 27,
+    "repetition": true,
+    "raw_schema_valid": false,
+    "schema_valid_after_fence_removal": false,
+    "main_valid": false,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "bladder-dictated-sample-42",
+    "finish": "length",
+    "seconds": 85.77267373198993,
+    "usage": {
+      "prompt_tokens": 1542,
+      "total_tokens": 3590,
+      "completion_tokens": 2048
+    },
+    "error": null,
+    "done": true,
+    "fenced": false,
+    "sections": {
+      "description": {
+        "characters": 125,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь наполнен, объём 230 мл, стенка 2,7 мм. В просвете мелкодисперсная взвесь. Эхопризнаки взвеси в мочевом пузыре."
+      },
+      "conclusion": {
+        "characters": 36,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Эхопризнаки взвеси в мочевом пузыре."
+      },
+      "descriptionRemarks": {
+        "characters": 7820,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 4,
+        "repeated_sentences": {
+          "Если свободной жидкостью, необходимо уточнить, является ли она шейкой матки или околопузырным пространством.": 4,
+          "Если шейкой матки, необходимо уточнить, является ли она шейкой пузыря или предстательной железой.": 4,
+          "Если предстательной железой, необходимо уточнить, является ли она средней долей простаты или уретрой.": 4,
+          "Если уретрой, необходимо уточнить, является ли она передней брюшной стенкой или симфизом.": 4,
+          "Если симфизом, необходимо уточнить, является ли он околопузырным пространством.": 4,
+          "Если околопузырным пространством, необходимо уточнить, является ли оно мочеточником или конкрементом.": 4,
+          "Если конкрементом, необходимо уточнить, является ли он мочевого пузыря или цветовым доплером.": 4,
+          "Если цветовым доплером, необходимо уточнить, является ли он трабекулярностью стенки или эхопризнаками взвеси.": 4,
+          "Если эхопризнаками взвеси, необходимо уточнить, является ли она гиперэхогенной взвеси или эхогенной взвеси.": 4,
+          "Если эхогенной взвеси, необходимо уточнить, является ли она сгустком крови или пристеночным образованием.": 4,
+          "Если сгустком крови, необходимо уточнить, является ли он полипом пузыря или опухолью пузыря.": 4,
+          "Если полипом пузыря, необходимо уточнить, является ли он внутрипузырным компонентом или кровотоком образования.": 4,
+          "Если кровотоком образования, необходимо уточнить, является ли он движущимся включением или фиксированным включением.": 3,
+          "Если движущимся включением, необходимо уточнить, является ли он уретероцеле или дивертикулом пузыря.": 3,
+          "Если уретероцеле, необходимо уточнить, является ли он псевдодивертикулом или конкрементом пузыря.": 3,
+          "Если конкрементом пузыря, необходимо уточнить, является ли он акустической тенью или дистальным усилением.": 3,
+          "Если дистальным усилением, необходимо уточнить, является ли оно утолщением стенки или локальным утолщением.": 3,
+          "Если утолщением стенки, необходимо уточнить, является ли оно диффузным утолщением или слоистостью стенки.": 3,
+          "Если слоистостью стенки, необходимо уточнить, является ли она перивезикальной клетчаткой или свободной жидкостью.": 3
+        },
+        "production_repetition_rejected": true,
+        "ends_in_sentence_punctuation": false,
+        "tail": " пузыря. Если полипом пузыря, необходимо уточнить, является ли он внутрипузырным компонентом или кровотоком образования. Если кровотоком образования, необходимо"
+      }
+    },
+    "raw_maximum_long_sentence_copies": 4,
+    "repetition": true,
+    "raw_schema_valid": false,
+    "schema_valid_after_fence_removal": false,
+    "main_valid": false,
+    "validation_error": "JSONDecodeError"
+  }
+]

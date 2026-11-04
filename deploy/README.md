@@ -109,7 +109,7 @@ For production, use the environment-specific target:
 make sync-secrets-main-production TARGET=USER@MAIN_PRODUCTION_HOST
 ```
 
-The endpoint map is loaded when the main backend starts, so `sync-secrets.sh` recreates `backend_main`. A `401` response from both `/v1/application_config` and `/v1/ultrasound/generate_report` without a token confirms that the public stack is reachable and App Check is enforced after the update.
+The endpoint map is loaded when the main backend starts, so `sync-secrets.sh` recreates `backend_main`. A `401` response from both `/v1/application_config` and `/v1/ultrasound/report_generations` without a token confirms that the public stack is reachable and App Check is enforced after the update.
 
 ## Update all backend services
 

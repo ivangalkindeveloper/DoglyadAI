@@ -1,0 +1,128 @@
+[
+  {
+    "id": "historical-greedy-0",
+    "kind": "historical",
+    "text_equal": true,
+    "output_token_ids_equal": true,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "historical-sample-0",
+    "kind": "historical",
+    "text_equal": false,
+    "output_token_ids_equal": false,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "historical-sample-42",
+    "kind": "historical",
+    "text_equal": false,
+    "output_token_ids_equal": false,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "historical-sample-123",
+    "kind": "historical",
+    "text_equal": false,
+    "output_token_ids_equal": false,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "text_equal": true,
+    "output_token_ids_equal": true,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "report-sample-0",
+    "kind": "report",
+    "text_equal": false,
+    "output_token_ids_equal": false,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "text_equal": false,
+    "output_token_ids_equal": false,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "report-sample-123",
+    "kind": "report",
+    "text_equal": false,
+    "output_token_ids_equal": false,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "text_equal": true,
+    "output_token_ids_equal": true,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "conflict-sample-0",
+    "kind": "conflict",
+    "text_equal": false,
+    "output_token_ids_equal": false,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "text_equal": false,
+    "output_token_ids_equal": false,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "conflict-sample-123",
+    "kind": "conflict",
+    "text_equal": false,
+    "output_token_ids_equal": false,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "dictation-greedy-0",
+    "kind": "dictation",
+    "text_equal": true,
+    "output_token_ids_equal": true,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "report-penalty105-greedy-0",
+    "kind": "report",
+    "text_equal": true,
+    "output_token_ids_equal": true,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "conflict-penalty105-greedy-0",
+    "kind": "conflict",
+    "text_equal": true,
+    "output_token_ids_equal": true,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "vision-1",
+    "kind": "vision",
+    "text_equal": true,
+    "output_token_ids_equal": true,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "vision-2",
+    "kind": "vision",
+    "text_equal": true,
+    "output_token_ids_equal": true,
+    "prompt_token_ids_equal": true
+  },
+  {
+    "id": "vision-6",
+    "kind": "vision",
+    "text_equal": true,
+    "output_token_ids_equal": true,
+    "prompt_token_ids_equal": true
+  }
+]

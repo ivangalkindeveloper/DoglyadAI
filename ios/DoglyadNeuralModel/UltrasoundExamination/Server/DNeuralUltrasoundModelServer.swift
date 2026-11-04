@@ -1,12 +1,12 @@
 import Foundation
 
 public final class DNeuralUltrasoundModelServer: DNeuralUltrasoundModelProtocol {
-    private let transport: any DNeuralUltrasoundServerTransportProtocol
+    private let parseDictation: (String?, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO
 
     public init(
-        transport: any DNeuralUltrasoundServerTransportProtocol,
+        parseDictation: @escaping (String?, String, String) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO,
     ) {
-        self.transport = transport
+        self.parseDictation = parseDictation
     }
 
     /// The remote engine is managed by the backend; preparing it sends no request.
@@ -16,11 +16,10 @@ public final class DNeuralUltrasoundModelServer: DNeuralUltrasoundModelProtocol 
         request: DNeuralUltrasoundDictationParseRequest,
     ) async throws -> DNeuralUltrasoundDictationProposal {
         try Task.checkCancellation()
-        let response = try await transport.parseDictation(
-            selectedNeuralModelId: request.selectedNeuralModelId,
-            locale: request.locale,
-            examinationTypeId: request.examinationTypeId,
-            transcript: request.text,
+        let response = try await parseDictation(
+            request.selectedNeuralModelId,
+            request.examinationTypeId,
+            request.text,
         )
         try Task.checkCancellation()
         return try DNeuralUltrasoundProposalProcessor(

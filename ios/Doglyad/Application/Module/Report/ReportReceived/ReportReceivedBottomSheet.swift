@@ -39,53 +39,22 @@ struct ReportReceivedBottomSheet: View {
                 getUserEmail: { [ultrasoundViewModel] in
                     ultrasoundViewModel.userEmail
                 },
+                currentReport: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.reportGenerations.current(
+                        $0,
+                    )
+                },
+                observeReports: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.reportGenerations.observe(
+                        $0,
+                    )
+                },
+                retryGeneration: { [ultrasoundViewModel] in
+                    try await ultrasoundViewModel.reportGenerations.retry(
+                        $0,
+                    )
+                },
             ),
         )
     }
-}
-
-#Preview {
-    ReportReceivedBottomSheet(
-        arguments: ReportReceivedArguments(
-            report: USExaminationReport(
-                date: Date(),
-                settingsAI: SettingsAI(
-                    selectedNeuralModelId: "google/medgemma-1.5-4b-it",
-                    isMarkdown: false,
-                    temperature: nil,
-                    maxTokens: nil,
-                ),
-                examinationData: USExaminationData(
-                    usExaminationTypeId: "abdominalCavity",
-                    photos: [],
-                    examinationNumber: "Examination#0",
-                    patientName: "Patient#0",
-                    patientGender: .male,
-                    patientDateOfBirth: Date(),
-                    patientHeight: 180.0,
-                    patientWeight: 80.0,
-                    patientComplaints: "Patient complaints",
-                    examinationDescription: "Examination description",
-                ),
-                actualModelReport: USExaminationModelReport(
-                    date: Date(),
-                    modelId: "google/medgemma-1.5-4b-it",
-                    description: """
-                    No signs of thyroid nodules or cystic changes were identified.
-                    The organ dimensions are within the normal range for age.
-                    The parenchymal echotexture is preserved, with no pathological inclusions.
-                    No evidence of an inflammatory process was found.
-                    The ultrasound findings are within normal limits.
-                    """,
-                    conclusion: "The ultrasound findings are within normal limits.",
-                    recommendations: "Routine follow-up when clinically indicated.",
-                ),
-                previousModelReports: [],
-            ),
-        ),
-    )
-    .background(
-        .black,
-    )
-    .previewable()
 }

@@ -6,6 +6,7 @@ struct HistoryScreen: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
+    @EnvironmentObject private var ultrasoundViewModel: UltrasoundRootViewModel
     let arguments: HistoryArguments?
 
     var body: some View {
@@ -32,14 +33,17 @@ struct HistoryScreen: View {
                 onRefreshSubscriptionStatus: { [subscriptionViewModel] in
                     await subscriptionViewModel.refreshStatus()
                 },
+                currentReport: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.reportGenerations.current(
+                        $0,
+                    )
+                },
+                observeReports: { [ultrasoundViewModel] in
+                    ultrasoundViewModel.reportGenerations.observe(
+                        $0,
+                    )
+                },
             ),
         )
     }
-}
-
-#Preview {
-    HistoryScreen(
-        arguments: nil,
-    )
-    .previewable()
 }

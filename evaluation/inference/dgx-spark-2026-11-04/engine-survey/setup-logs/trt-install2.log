@@ -1,0 +1,7 @@
+WARNING: The directory '/survey/trt-pip-cache' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.
+Looking in indexes: https://pypi.org/simple, https://pypi.nvidia.com
+Collecting tensorrt-llm==1.4.0rc2.post1
+  Downloading https://pypi.nvidia.com/tensorrt-llm/tensorrt_llm-1.4.0rc2.post1-cp312-cp312-manylinux_2_39_aarch64.whl (1387.3 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.4/1.4 GB 19.6 MB/s eta 0:00:00
+Requirement already satisfied: accelerate>=1.7.0 in /usr/local/lib/python3.12/dist-packages (from tensorrt-llm==1.4.0rc2.post1) (1.14.0)
+Collecting build (from tensorrt-llm==1.4.0rc2.post1)

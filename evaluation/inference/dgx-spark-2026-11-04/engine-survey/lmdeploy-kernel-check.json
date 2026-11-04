@@ -1,0 +1,32 @@
+[
+  {
+    "length": 37,
+    "window": -1,
+    "max_absolute_error": 0.007914543151855469
+  },
+  {
+    "length": 37,
+    "window": 128,
+    "max_absolute_error": 0.007706403732299805
+  },
+  {
+    "length": 260,
+    "window": -1,
+    "max_absolute_error": 0.007533550262451172
+  },
+  {
+    "length": 260,
+    "window": 128,
+    "max_absolute_error": 0.009916067123413086
+  },
+  {
+    "length": 513,
+    "window": -1,
+    "max_absolute_error": 0.007396221160888672
+  },
+  {
+    "length": 513,
+    "window": 128,
+    "max_absolute_error": 0.00820016860961914
+  }
+]

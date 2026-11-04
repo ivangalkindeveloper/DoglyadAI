@@ -1,0 +1,12 @@
+{"event": "starting", "variant": "baseline", "count": 4}
+{"event": "finished", "variant": "baseline"}
+{"event": "starting", "variant": "prompt-only", "count": 4}
+{"event": "finished", "variant": "prompt-only"}
+{"event": "starting", "variant": "bounded", "count": 13}
+{"event": "finished", "variant": "bounded"}
+{"event": "starting", "variant": "working", "count": 8}
+{"event": "finished", "variant": "working"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_15_4b-1", "seconds": 0.1}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_27b-1", "seconds": 0.1}
+{"event": "runtime_verified", "no_containers_restarted": true}

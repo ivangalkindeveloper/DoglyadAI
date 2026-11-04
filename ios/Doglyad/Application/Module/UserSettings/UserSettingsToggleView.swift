@@ -6,6 +6,7 @@ struct UserSettingsToggleView: DViewProtocol {
     let title: LocalizedStringResource
     let description: LocalizedStringResource
     @Binding var isOn: Bool
+    let identifier: String
     let action: () -> Void
 
     var body: some View {
@@ -47,6 +48,16 @@ struct UserSettingsToggleView: DViewProtocol {
                     color.grayscaleHeader,
                 )
             }
+
+            .accessibilityElement(
+                children: .combine,
+            )
+            .accessibilityIdentifier(
+                identifier,
+            )
+            .accessibilityAddTraits(
+                isOn ? .isSelected : [],
+            )
 
             DText(
                 description,

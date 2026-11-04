@@ -205,17 +205,11 @@ final class VoiceEndToEndTests: XCTestCase {
                 )
             }.joined()
         }
-        let client = DHttpClient(
-            baseUrl: Bundle.dictionaryString(
-                .BASE_URL,
-            ),
-            baseVersionPrefix: "/v1",
-            interceptors: [AppCheckHttpInterceptor()],
+        let baseUrl = Bundle.dictionaryString(
+            .BASE_URL,
         )
-        let repository = try UltrasoundReportRepository(
-            database: DDatabase(),
-            httpClient: client,
-        )
+        let database = try DDatabase()
+        var repositories: [String: UltrasoundReportRepository] = [:]
         var configurations: [String: ApplicationConfig] = [:]
         var types: [String: [String: USExaminationType]] = [:]
         let localeCodes = Set(
@@ -226,17 +220,30 @@ final class VoiceEndToEndTests: XCTestCase {
             },
         ).sorted()
         for code in localeCodes {
-            let headers = [DHttpHeader.acceptLanguage: code]
+            let client = DHttpClient(
+                baseUrl: baseUrl,
+                baseVersionPrefix: "/v1",
+                interceptors: [
+                    DLocaleInterceptor(
+                        preferredLanguageIdentifiers: [code],
+                    ),
+                    AppCheckHttpInterceptor(),
+                ],
+            )
+            repositories[
+                code,
+            ] = UltrasoundReportRepository(
+                database: database,
+                httpClient: client,
+            )
             let config: ApplicationConfig = try await client.get(
                 endPoint: "/application_config",
-                headers: headers,
             )
             configurations[
                 code,
             ] = config
             let groups: [USExaminationTypeGroup] = try await client.get(
                 endPoint: "/ultrasound/examination_types",
-                headers: headers,
             )
             types[
                 code,
@@ -500,14 +507,19 @@ final class VoiceEndToEndTests: XCTestCase {
                         parameters: parameters,
                     ),
                 )
+                let repository = try XCTUnwrap(
+                    repositories[
+                        code,
+                    ],
+                )
                 let transport = DNeuralUltrasoundRetryingTestTransport(
-                    base: repository,
+                    base: repository.parseDictation,
                     isFoundationOnly: isFoundationOnly,
                 )
                 let factory = DNeuralUltrasoundModelFactory(
                     foundationProvider: foundationProvider,
                     serverModel: DNeuralUltrasoundModelServer(
-                        transport: transport,
+                        parseDictation: transport.parseDictation,
                     ),
                 )
                 defer {
@@ -749,7 +761,7 @@ final class VoiceEndToEndTests: XCTestCase {
             )
             let report: [String: Any] = ["runId": runID, "fixtureSha256": fixtureHash, "sourceSha256": ProcessInfo.processInfo.environment[
                 "VOICE_SOURCE_SHA256",
-            ] ?? "unrecorded", "inputMode": textOnly ? "ideal-text" : "audio", "modelLabel": "large-v3-v20240930_626MB", "modelLoadSeconds": loadSeconds, "baseURL": client.baseUrl, "appCheckProvider": "AppAttest", "localeFilter": localeFilter ?? "all", "requireFoundationModels": isFoundationOnly, "results": results]
+            ] ?? "unrecorded", "inputMode": textOnly ? "ideal-text" : "audio", "modelLabel": "large-v3-v20240930_626MB", "modelLoadSeconds": loadSeconds, "baseURL": baseUrl, "appCheckProvider": "AppAttest", "localeFilter": localeFilter ?? "all", "requireFoundationModels": isFoundationOnly, "results": results]
             try JSONSerialization.data(
                 withJSONObject: report,
                 options: [.prettyPrinted, .sortedKeys],

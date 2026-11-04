@@ -1,0 +1,13 @@
+{
+  "name": "transformers-4b-bf16",
+  "engine": "transformers",
+  "entrypoint": "sleep",
+  "args": [
+    "infinity"
+  ],
+  "mode": "direct",
+  "probe": "probe_transformers.py",
+  "settings": {
+    "snapshot": "/root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408"
+  }
+}

@@ -128,7 +128,7 @@ deploy/sync-secrets.sh main <ssh-target>
 
 - `GET https://<domain>/v1/application_config` with no App Check token returns `401`
 - `GET https://<domain>/v1/ultrasound/examination_neural_models` with no App Check token returns `401`
-- `POST https://<domain>/v1/ultrasound/generate_report` with `{}` and no App Check token returns `401`
+- `POST https://<domain>/v1/ultrasound/report_generations` with `{}` and no App Check token returns `401`
 
 For a later image-only update, use [update-infrastructure](../update-infrastructure/SKILL.md). Do not use `sync-secrets.sh` merely to update code; use it when local secrets actually changed.
 

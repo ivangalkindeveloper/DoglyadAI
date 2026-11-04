@@ -1,0 +1,138 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 9.462486226984765,
+    "usage": {
+      "prompt_tokens": 487,
+      "total_tokens": 716,
+      "completion_tokens": 229
+    },
+    "task": "audit-text",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {
+      "descriptionRemarks": {
+        "characters": 733,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": true,
+    "review_candidate": false
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 9.473531691008247,
+    "usage": {
+      "prompt_tokens": 487,
+      "total_tokens": 716,
+      "completion_tokens": 229
+    },
+    "task": "audit-text",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {
+      "descriptionRemarks": {
+        "characters": 733,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": true,
+    "review_candidate": false
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 4.433349497994641,
+    "usage": {
+      "prompt_tokens": 498,
+      "total_tokens": 605,
+      "completion_tokens": 107
+    },
+    "task": "audit-text",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {
+      "descriptionRemarks": {
+        "characters": 271,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "о соответствует верхней границе нормы. Эхогенность паренхимы средняя, структура однородная, без очаговых изменений. В правой доле выявлено очаговое образование."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": true,
+    "review_candidate": false
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 4.430094018985983,
+    "usage": {
+      "prompt_tokens": 498,
+      "total_tokens": 605,
+      "completion_tokens": 107
+    },
+    "task": "audit-text",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {
+      "descriptionRemarks": {
+        "characters": 271,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "о соответствует верхней границе нормы. Эхогенность паренхимы средняя, структура однородная, без очаговых изменений. В правой доле выявлено очаговое образование."
+      }
+    },
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": true,
+    "review_candidate": false
+  }
+]

@@ -1,0 +1,45 @@
+{
+  "model_index": 1,
+  "model_id": "google/medgemma-1.5-4b-it",
+  "model_key": "15-4b",
+  "cases_file": "cases-15-4b.json",
+  "performance_file": "performance-15-4b.json",
+  "settings": {
+    "request_timeout_seconds": 900,
+    "absolute_deadline_seconds": 900
+  },
+  "name": "llama-15-4b",
+  "engine": "llama.cpp",
+  "entrypoint": "/assets/llama.cpp/build/bin/llama-server",
+  "args": [
+    "--model",
+    "/survey/medgemma-15-4b-bf16.gguf",
+    "--mmproj",
+    "/survey/medgemma-15-4b-mmproj-bf16.gguf",
+    "--n-gpu-layers",
+    "999",
+    "--ctx-size",
+    "65536",
+    "--parallel",
+    "4",
+    "--flash-attn",
+    "on",
+    "--host",
+    "127.0.0.1",
+    "--port",
+    "8000",
+    "--alias",
+    "google/medgemma-1.5-4b-it",
+    "--jinja",
+    "--cache-type-k",
+    "bf16",
+    "--cache-type-v",
+    "bf16"
+  ],
+  "env": [
+    "LD_LIBRARY_PATH=/assets/llama.cpp/build/bin:/usr/local/cuda/lib64:/usr/local/nvidia/lib64"
+  ],
+  "asset_directory": "/var/tmp/doglyad-engine-survey-20261104",
+  "memory": "24g",
+  "minimum_available_gib": 20
+}

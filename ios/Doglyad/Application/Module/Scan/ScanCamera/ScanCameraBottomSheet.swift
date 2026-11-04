@@ -38,21 +38,3 @@ struct ScanCameraBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    @Previewable @State var photos: [USExaminationScanPhoto] = []
-
-    ScanCameraBottomSheet(
-        arguments: ScanCameraArguments(
-            cameraController: DCameraControllerFactory.make(),
-            getPhotos: {
-                photos
-            },
-            onPhotosUpdated: {
-                photos = $0
-            },
-            photoMaxCount: 6,
-        ),
-    )
-    .previewable()
-}

@@ -24,7 +24,7 @@
             "entitlement": "base",
             "period": "annual",
             "price": {
-                "amountMinor": 799900,
+                "amountMinor": 429900,
                 "currencyIso2Code": "RUB"
             },
             "titleLocaleKey": "subscriptionBaseAnnualLabel",
@@ -35,7 +35,7 @@
             "entitlement": "base",
             "period": "sixMonth",
             "price": {
-                "amountMinor": 409900,
+                "amountMinor": 224900,
                 "currencyIso2Code": "RUB"
             },
             "titleLocaleKey": "subscriptionBaseSixMonthLabel",
@@ -46,7 +46,7 @@
             "entitlement": "base",
             "period": "monthly",
             "price": {
-                "amountMinor": 69900,
+                "amountMinor": 39900,
                 "currencyIso2Code": "RUB"
             },
             "titleLocaleKey": "subscriptionBaseMonthlyLabel",
@@ -57,7 +57,7 @@
             "entitlement": "base",
             "period": "weekly",
             "price": {
-                "amountMinor": 19900,
+                "amountMinor": 14900,
                 "currencyIso2Code": "RUB"
             },
             "titleLocaleKey": "subscriptionBaseWeeklyLabel",
@@ -68,7 +68,7 @@
             "entitlement": "pro",
             "period": "annual",
             "price": {
-                "amountMinor": 1599900,
+                "amountMinor": 859900,
                 "currencyIso2Code": "RUB"
             },
             "titleLocaleKey": "subscriptionProAnnualLabel",
@@ -79,7 +79,7 @@
             "entitlement": "pro",
             "period": "sixMonth",
             "price": {
-                "amountMinor": 869900,
+                "amountMinor": 454900,
                 "currencyIso2Code": "RUB"
             },
             "titleLocaleKey": "subscriptionProSixMonthLabel",
@@ -90,7 +90,7 @@
             "entitlement": "pro",
             "period": "monthly",
             "price": {
-                "amountMinor": 149900,
+                "amountMinor": 79900,
                 "currencyIso2Code": "RUB"
             },
             "titleLocaleKey": "subscriptionProMonthlyLabel",
@@ -101,7 +101,7 @@
             "entitlement": "pro",
             "period": "weekly",
             "price": {
-                "amountMinor": 39900,
+                "amountMinor": 24900,
                 "currencyIso2Code": "RUB"
             },
             "titleLocaleKey": "subscriptionProWeeklyLabel",

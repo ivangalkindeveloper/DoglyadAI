@@ -37,10 +37,3 @@ struct StorageClearProtocolsBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    StorageClearProtocolsBottomSheet(
-        arguments: nil,
-    )
-    .previewable()
-}

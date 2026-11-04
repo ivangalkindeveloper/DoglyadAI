@@ -1,0 +1,90 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 0.31732715098769404,
+    "usage": {
+      "prompt_tokens": 678,
+      "total_tokens": 685,
+      "completion_tokens": 7
+    },
+    "task": "audit-ids",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {},
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": false,
+    "review_candidate": false
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 0.31309392300317995,
+    "usage": {
+      "prompt_tokens": 678,
+      "total_tokens": 685,
+      "completion_tokens": 7
+    },
+    "task": "audit-ids",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {},
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": false,
+    "review_candidate": false
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 0.3506391650007572,
+    "usage": {
+      "prompt_tokens": 704,
+      "total_tokens": 711,
+      "completion_tokens": 7
+    },
+    "task": "audit-ids",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {},
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": false,
+    "review_candidate": false
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "error": null,
+    "seconds": 0.32332270801998675,
+    "usage": {
+      "prompt_tokens": 704,
+      "total_tokens": 711,
+      "completion_tokens": 7
+    },
+    "task": "audit-ids",
+    "schema_valid": true,
+    "current_main_valid": false,
+    "uncapped_main_valid": false,
+    "sections": {},
+    "repetition": false,
+    "description_equals_conclusion": false,
+    "remarks_present": false,
+    "review_candidate": false
+  }
+]

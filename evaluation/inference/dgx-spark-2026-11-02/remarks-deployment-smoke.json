@@ -1,0 +1,1 @@
+{"internal_generate": "passed", "internal_stream": "passed", "forwarded_penalties": [1.05, 1.05], "public_http_checks": "401 without App Check; authenticated client check awaits local restart"}

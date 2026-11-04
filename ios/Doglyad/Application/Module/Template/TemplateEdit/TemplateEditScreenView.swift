@@ -28,6 +28,9 @@ struct TemplateEditScreenView: DViewProtocol {
                 .dStyle(
                     .circle,
                 )
+                .accessibilityIdentifier(
+                    "template.delete",
+                )
                 .disabled(
                     isProcessing,
                 )

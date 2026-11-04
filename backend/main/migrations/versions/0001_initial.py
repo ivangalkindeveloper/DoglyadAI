@@ -1,4 +1,4 @@
-"""Create the initial subscription and payment ledger."""
+"""Create the initial subscription ledger and report generation storage."""
 
 from __future__ import annotations
 
@@ -714,6 +714,108 @@ def upgrade() -> None:
         unique=False,
     )
 
+    op.create_table(
+        "report_generations",
+        sa.Column(
+            "id",
+            sa.String(
+                36,
+            ),
+            primary_key=True,
+        ),
+        sa.Column(
+            "owner_id",
+            sa.String(
+                36,
+            ),
+            sa.ForeignKey(
+                "billing_owners.id",
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "request_id",
+            sa.String(
+                36,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "request_digest",
+            sa.String(
+                64,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "status",
+            sa.String(
+                16,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "model_id",
+            sa.String(
+                256,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "sequence",
+            sa.Integer(),
+            nullable=False,
+        ),
+        sa.Column(
+            "payload",
+            sa.LargeBinary(),
+            nullable=True,
+        ),
+        sa.Column(
+            "snapshot",
+            sa.LargeBinary(),
+            nullable=False,
+        ),
+        sa.Column(
+            "error_code",
+            sa.String(
+                80,
+            ),
+            nullable=True,
+        ),
+        sa.Column(
+            "created_at",
+            sa.DateTime(
+                timezone=True,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "expires_at",
+            sa.DateTime(
+                timezone=True,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "deadline_at",
+            sa.DateTime(
+                timezone=True,
+            ),
+            nullable=False,
+        ),
+        sa.UniqueConstraint(
+            "owner_id",
+            "request_id",
+        ),
+    )
+    for name in ("owner_id", "status", "expires_at", "deadline_at"):
+        op.create_index(
+            f"ix_report_generations_{name}",
+            "report_generations",
+            [name],
+        )
+
 
 def downgrade() -> None:
     if context.is_offline_mode():
@@ -722,6 +824,7 @@ def downgrade() -> None:
         )
     connection = op.get_bind()
     for table in (
+        "report_generations",
         "billing_checkouts",
         "billing_refunds",
         "billing_payments",
@@ -742,6 +845,9 @@ def downgrade() -> None:
             raise RuntimeError(
                 "Cannot drop a populated billing ledger",
             )
+    op.drop_table(
+        "report_generations",
+    )
     op.drop_index(
         op.f(
             "ix_billing_refunds_payment_id",

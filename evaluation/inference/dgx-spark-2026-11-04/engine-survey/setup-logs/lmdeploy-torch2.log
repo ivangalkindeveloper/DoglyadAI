@@ -1,0 +1,62 @@
+Looking in indexes: https://pypi.org/simple, https://pypi.nvidia.com
+Processing /survey/wheels/torch-2.12.1-cp312-cp312-manylinux_2_28_aarch64.whl
+Collecting torchvision==0.27.1
+  Downloading torchvision-0.27.1-cp312-cp312-manylinux_2_28_aarch64.whl.metadata (5.5 kB)
+Requirement already satisfied: numpy in /usr/local/lib/python3.12/dist-packages (from torchvision==0.27.1) (2.2.6)
+Requirement already satisfied: pillow!=8.3.*,>=5.3.0 in /usr/local/lib/python3.12/dist-packages (from torchvision==0.27.1) (12.3.0)
+Requirement already satisfied: filelock in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (3.32.4)
+Requirement already satisfied: typing-extensions>=4.10.0 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (4.16.0)
+Requirement already satisfied: setuptools<82 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (80.10.2)
+Requirement already satisfied: sympy>=1.13.3 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (1.14.0)
+Requirement already satisfied: networkx>=2.5.1 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (3.6.1)
+Requirement already satisfied: jinja2 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (3.1.6)
+Requirement already satisfied: fsspec>=0.8.5 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (2026.7.0)
+Collecting cuda-toolkit==13.0.2 (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1)
+  Downloading https://pypi.nvidia.com/cuda-toolkit/cuda_toolkit-13.0.2-py2.py3-none-any.whl (2.4 kB)
+Requirement already satisfied: nvidia-cublas<=13.1.1.3,>=13.1.0.3 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (13.1.1.3)
+Requirement already satisfied: cuda-bindings<14,>=13.0.3 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (13.3.1)
+Requirement already satisfied: nvidia-cudnn-cu13==9.20.0.48 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (9.20.0.48)
+Requirement already satisfied: nvidia-cusparselt-cu13==0.8.1 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (0.8.1)
+Requirement already satisfied: nvidia-nccl-cu13==2.29.7 in /survey/lmdeploy-venv/lib/python3.12/site-packages (from torch==2.12.1) (2.29.7)
+Requirement already satisfied: nvidia-nvshmem-cu13==3.4.5 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (3.4.5)
+Requirement already satisfied: triton==3.7.1 in /usr/local/lib/python3.12/dist-packages (from torch==2.12.1) (3.7.1)
+Requirement already satisfied: nvidia-cuda-runtime==13.0.96.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1) (13.0.96)
+Requirement already satisfied: nvidia-cufft==12.0.0.61.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1) (12.0.0.61)
+Requirement already satisfied: nvidia-cufile==1.15.1.6.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1) (1.15.1.6)
+Requirement already satisfied: nvidia-cuda-cupti==13.0.85.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1) (13.0.85)
+Requirement already satisfied: nvidia-curand==10.4.0.35.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1) (10.4.0.35)
+Requirement already satisfied: nvidia-cusolver==12.0.4.66.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1) (12.0.4.66)
+Requirement already satisfied: nvidia-cusparse==12.6.3.3.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1) (12.6.3.3)
+Collecting nvidia-nvjitlink==13.0.88.* (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1)
+  Downloading https://pypi.nvidia.com/nvidia-nvjitlink/nvidia_nvjitlink-13.0.88-py3-none-manylinux2014_aarch64.manylinux_2_17_aarch64.whl (38.8 MB)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 38.8/38.8 MB 17.8 MB/s eta 0:00:00
+Requirement already satisfied: nvidia-cuda-nvrtc==13.0.88.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1) (13.0.88)
+Requirement already satisfied: nvidia-nvtx==13.0.85.* in /usr/local/lib/python3.12/dist-packages (from cuda-toolkit[cudart,cufft,cufile,cupti,curand,cusolver,cusparse,nvjitlink,nvrtc,nvtx]==13.0.2; platform_system == "Linux"->torch==2.12.1) (13.0.85)
+Requirement already satisfied: cuda-pathfinder>=1.4.2 in /usr/local/lib/python3.12/dist-packages (from cuda-bindings<14,>=13.0.3->torch==2.12.1) (1.7.0)
+Requirement already satisfied: mpmath<1.4,>=1.1.0 in /usr/local/lib/python3.12/dist-packages (from sympy>=1.13.3->torch==2.12.1) (1.3.0)
+Requirement already satisfied: MarkupSafe>=2.0 in /usr/local/lib/python3.12/dist-packages (from jinja2->torch==2.12.1) (3.0.3)
+Downloading torchvision-0.27.1-cp312-cp312-manylinux_2_28_aarch64.whl (7.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 7.8/7.8 MB 268.7 kB/s eta 0:00:00
+Installing collected packages: cuda-toolkit, nvidia-nvjitlink, torch, torchvision
+  Attempting uninstall: cuda-toolkit
+    Found existing installation: cuda-toolkit 13.0.3.0
+    Not uninstalling cuda-toolkit at /usr/local/lib/python3.12/dist-packages, outside environment /survey/lmdeploy-venv
+    Can't uninstall 'cuda-toolkit'. No files were found to uninstall.
+  Attempting uninstall: nvidia-nvjitlink
+    Found existing installation: nvidia-nvjitlink 13.3.33
+    Not uninstalling nvidia-nvjitlink at /usr/local/lib/python3.12/dist-packages, outside environment /survey/lmdeploy-venv
+    Can't uninstall 'nvidia-nvjitlink'. No files were found to uninstall.
+  Attempting uninstall: torch
+    Found existing installation: torch 2.13.0+cu130
+    Not uninstalling torch at /usr/local/lib/python3.12/dist-packages, outside environment /survey/lmdeploy-venv
+    Can't uninstall 'torch'. No files were found to uninstall.
+  Attempting uninstall: torchvision
+    Found existing installation: torchvision 0.28.0+cu130
+    Not uninstalling torchvision at /usr/local/lib/python3.12/dist-packages, outside environment /survey/lmdeploy-venv
+    Can't uninstall 'torchvision'. No files were found to uninstall.
+ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
+lmdeploy 0.18.0 requires ray, which is not installed.
+vllm 0.28.0 requires torch==2.13.0, but you have torch 2.12.1 which is incompatible.
+vllm 0.28.0 requires torchvision==0.28.0, but you have torchvision 0.27.1 which is incompatible.
+Successfully installed cuda-toolkit-13.0.2 nvidia-nvjitlink-13.0.88 torch-2.12.1 torchvision-0.27.1
+2.12.1+cu130 5.15.1 0.18.0

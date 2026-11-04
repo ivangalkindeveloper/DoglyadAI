@@ -1,0 +1,183 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "seconds": 67.5723594680021,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1273,
+      "total_tokens": 1550,
+      "completion_tokens": 277
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "seconds": 68.0069689709926,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1273,
+      "total_tokens": 1553,
+      "completion_tokens": 280
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "seconds": 74.23603466397617,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1589,
+      "completion_tokens": 305
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "seconds": 66.45191216099192,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1284,
+      "total_tokens": 1557,
+      "completion_tokens": 273
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "bladder-correction-sample-42",
+    "kind": "heldout",
+    "finish": "stop",
+    "seconds": 21.046574829000747,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 890,
+      "total_tokens": 976,
+      "completion_tokens": 86
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 1,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "bladder-en-sample-42",
+    "kind": "heldout",
+    "finish": "stop",
+    "seconds": 14.074887155991746,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 686,
+      "total_tokens": 743,
+      "completion_tokens": 57
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 0,
+    "prompt_tokens_match_vllm": true
+  },
+  {
+    "id": "dictation-greedy-0",
+    "kind": "dictation",
+    "finish": "stop",
+    "seconds": 41.472387004003394,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 1602,
+      "completion_tokens": 165
+    },
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_sentence_copies": 0,
+    "prompt_tokens_match_vllm": true,
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    }
+  },
+  {
+    "id": "vision-1",
+    "kind": "vision",
+    "finish": "stop",
+    "seconds": 5.2168498579994775,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 308,
+      "total_tokens": 315,
+      "completion_tokens": 7
+    },
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_sentence_copies": 0,
+    "vision_expected_match": true
+  },
+  {
+    "id": "vision-2",
+    "kind": "vision",
+    "finish": "stop",
+    "seconds": 3.4110968449967913,
+    "error": null,
+    "done": true,
+    "usage": {
+      "prompt_tokens": 567,
+      "total_tokens": 577,
+      "completion_tokens": 10
+    },
+    "schema_valid": true,
+    "main_valid": null,
+    "maximum_sentence_copies": 0,
+    "vision_expected_match": true
+  }
+]

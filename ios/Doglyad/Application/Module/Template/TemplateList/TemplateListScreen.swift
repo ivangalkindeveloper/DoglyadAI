@@ -36,10 +36,3 @@ struct TemplateListScreen: View {
         )
     }
 }
-
-#Preview {
-    TemplateListScreen(
-        arguments: nil,
-    )
-    .previewable()
-}

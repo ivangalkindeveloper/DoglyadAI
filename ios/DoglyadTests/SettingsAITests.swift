@@ -736,6 +736,11 @@ struct SettingsAITests {
                         container.usExaminationNeuralModelDefault
                     },
                     onNeuralModelSelected: { _ in },
+                    onStartReportGeneration: { _ in
+                        throw URLError(
+                            .unsupportedURL,
+                        )
+                    },
                 )
                 model.onTapSettingsAI()
             } else {

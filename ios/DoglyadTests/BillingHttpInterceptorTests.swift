@@ -6,10 +6,13 @@ import Testing
 
 struct BillingHttpInterceptorTests {
     @Test
-    func independentInterceptorsPreserveBothHeadersInOrder() async throws {
+    func independentInterceptorsPreserveHeadersInOrder() async throws {
         let storage = InterceptorTestSecurityDatabase()
         let adapter = DHttpInterceptorAdapter(
             interceptors: [
+                DLocaleInterceptor(
+                    preferredLanguageIdentifiers: ["ru-RU", "en-US"],
+                ),
                 InterceptorTestAppCheck(),
                 BillingHttpInterceptor(
                     baseUrl: URL(
@@ -35,6 +38,11 @@ struct BillingHttpInterceptorTests {
                 },
             )
         }
+        #expect(
+            result.value(
+                forHTTPHeaderField: DHttpHeader.acceptLanguage,
+            ) == "ru-RU, en-US",
+        )
         #expect(
             result.value(
                 forHTTPHeaderField: "X-Firebase-AppCheck",

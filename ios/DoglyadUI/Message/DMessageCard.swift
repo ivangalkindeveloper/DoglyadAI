@@ -1,12 +1,35 @@
 import SwiftUI
 
-struct DMessageCard: DViewProtocol {
-    let theme: DTheme
-    let message: DMessage
+public struct DMessageCard: DViewProtocol {
+    @EnvironmentObject public var theme: DTheme
+    private let message: DMessage
+    private let alignment: TextAlignment
 
-    var body: some View {
+    public init(
+        type: DMessageType,
+        title: LocalizedStringResource,
+        description: LocalizedStringResource? = nil,
+        alignment: TextAlignment = .leading,
+    ) {
+        message = DMessage(
+            type: type,
+            title: title,
+            description: description,
+        )
+        self.alignment = alignment
+    }
+
+    private var horizontalAlignment: HorizontalAlignment {
+        switch alignment {
+        case .leading: .leading
+        case .center: .center
+        case .trailing: .trailing
+        }
+    }
+
+    public var body: some View {
         VStack(
-            alignment: .leading,
+            alignment: horizontalAlignment,
             spacing: .zero,
         ) {
             Text(
@@ -19,7 +42,7 @@ struct DMessageCard: DViewProtocol {
                 theme.color.grayscaleBackground,
             )
             .multilineTextAlignment(
-                .leading,
+                alignment,
             )
 
             if let description = message.description {
@@ -33,7 +56,7 @@ struct DMessageCard: DViewProtocol {
                     theme.color.grayscaleBackground,
                 )
                 .multilineTextAlignment(
-                    .leading,
+                    alignment,
                 )
             }
         }
@@ -47,7 +70,10 @@ struct DMessageCard: DViewProtocol {
         )
         .frame(
             maxWidth: .infinity,
-            alignment: .leading,
+            alignment: Alignment(
+                horizontal: horizontalAlignment,
+                vertical: .center,
+            ),
         )
         .background(
             RoundedRectangle(
@@ -73,12 +99,9 @@ private extension DMessageCard {
 
 #Preview {
     DMessageCard(
-        theme: DTheme.light,
-        message: DMessage(
-            type: .success,
-            title: "Data deleted",
-            description: "All application data has been successfully deleted",
-        ),
+        type: .success,
+        title: "Data deleted",
+        description: "All application data has been successfully deleted",
     )
     .padding()
     .dThemeWrapper()

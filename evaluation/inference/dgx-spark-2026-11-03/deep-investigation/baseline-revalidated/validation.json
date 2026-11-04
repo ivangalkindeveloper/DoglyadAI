@@ -1,0 +1,556 @@
+[
+  {
+    "id": "historical-greedy-0",
+    "finish": "length",
+    "seconds": 114.924,
+    "usage": {
+      "prompt_tokens": 1544,
+      "completion_tokens": 2048
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 44,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 2048,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-0",
+    "finish": "length",
+    "seconds": 113.843,
+    "usage": {
+      "prompt_tokens": 1544,
+      "completion_tokens": 2048
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 6,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 182,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-42",
+    "finish": "length",
+    "seconds": 114.193,
+    "usage": {
+      "prompt_tokens": 1544,
+      "completion_tokens": 2048
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 71,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 366,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-123",
+    "finish": "length",
+    "seconds": 114.045,
+    "usage": {
+      "prompt_tokens": 1544,
+      "completion_tokens": 2048
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 34,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 93,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 33.424,
+    "usage": {
+      "prompt_tokens": 1604,
+      "completion_tokens": 599
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 536,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "stop",
+    "seconds": 15.976,
+    "usage": {
+      "prompt_tokens": 1615,
+      "completion_tokens": 284
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": false,
+    "matching_initial_output_tokens": 93,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "dictation-greedy-0",
+    "finish": "stop",
+    "seconds": 31.566,
+    "usage": {
+      "prompt_tokens": 1437,
+      "completion_tokens": 567
+    },
+    "runtime": "transformers-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 567,
+    "raw_missing_fields": [],
+    "raw_unexpected_fields": [
+      "examination_description",
+      "examination_number",
+      "patient_date_of_birth",
+      "patient_gender"
+    ],
+    "raw_value": [
+      {
+        "field_id": "examination_number",
+        "value": "1234567890",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_name",
+        "value": "Иванов Иван Иванович",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_gender",
+        "value": "male",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_date_of_birth",
+        "value": "1980-01-01",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "questionable"
+      },
+      {
+        "field_id": "patient_height_cm",
+        "value": 180,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_weight_kg",
+        "value": 80,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_complaints",
+        "value": "дискомфорт в области шеи",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "examination_description",
+        "value": "УЗИ щитовидной железы",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      }
+    ],
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "examination_description",
+          "value": "УЗИ щитовидной железы",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    },
+    "missing_expected_fields": [],
+    "unexpected_fields": [
+      "examination_description"
+    ]
+  },
+  {
+    "id": "historical-greedy-0",
+    "finish": "length",
+    "seconds": 83.051,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 44,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 2048,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-0",
+    "finish": "length",
+    "seconds": 83.434,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 5,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 2048,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-42",
+    "finish": "length",
+    "seconds": 83.6,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 65,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 2048,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "historical-sample-123",
+    "finish": "length",
+    "seconds": 83.749,
+    "usage": {
+      "prompt_tokens": 1544,
+      "total_tokens": 3592,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 20,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 2048,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-greedy-0",
+    "finish": "length",
+    "seconds": 83.717,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 3652,
+      "completion_tokens": 2048
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": false,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 31,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 2048,
+    "validation_error": "JSONDecodeError"
+  },
+  {
+    "id": "report-sample-0",
+    "finish": "stop",
+    "seconds": 27.098,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2266,
+      "completion_tokens": 662
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 662,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-42",
+    "finish": "stop",
+    "seconds": 23.153,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 2169,
+      "completion_tokens": 565
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 2,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 565,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "report-sample-123",
+    "finish": "stop",
+    "seconds": 10.466,
+    "usage": {
+      "prompt_tokens": 1604,
+      "total_tokens": 1859,
+      "completion_tokens": 255
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 255,
+    "remarks_characters": 0,
+    "remarks": null
+  },
+  {
+    "id": "conflict-greedy-0",
+    "finish": "stop",
+    "seconds": 18.924,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2076,
+      "completion_tokens": 461
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 461,
+    "remarks_characters": 512,
+    "remarks": "В описании не указано, является ли очаговое образование тиреоидным узлом, солидным узлом, кистозным узлом, смешанным узлом, коллоидным узлом, губчатым узлом, макрокальцинатом, микрокальцинатом, точечными эхофокусами, эхогенным ободком, периферическим кольцом, неровным краем или экстратиреоидным распространением. Также не указана вертикальная ориентация, ТИРАДС, категория ТИРАДС, эластография узла, васкуляризация узла, периферический кровоток, центральный кровоток, псевдоузел, тиреоидит, гиперваскуляризация,",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-0",
+    "finish": "stop",
+    "seconds": 18.307,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2061,
+      "completion_tokens": 446
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 446,
+    "remarks_characters": 512,
+    "remarks": "В описании не указано, является ли очаговое образование тиреоидным узлом, солидным узлом, кистозным узлом, смешанным узлом, коллоидным узлом, губчатым узлом, макрокальцинатом, микрокальцинатом, точечными эхофокусами, эхогенным ободком, периферическим кольцом, неровным краем, экстратиреоидным распространением, вертикальной ориентацией, ТИРАДС, категорией ТИРАДС, эластографией узла, васкуляризацией узла, периферическим кровотоком, центральным кровотоком, псевдоузлом, тиреоидитом, гиперваскуляризацией железы,/",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 14.877,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 1977,
+      "completion_tokens": 362
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 2,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 362,
+    "remarks_characters": 512,
+    "remarks": "В описании не указана оценка размера очагового образования, его эхогенность и другие характеристики, которые необходимы для дифференциальной диагностики. Необходимо уточнить размер очагового образования и его характеристики для дальнейшей диагностики. В описании не указана оценка размера очагового образования, его эхогенность и другие характеристики, которые необходимы для дифференциальной диагностики. Необходимо уточнить размер очагового образования и его характеристики для дальнейшей диагностики. В описан",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "conflict-sample-123",
+    "finish": "stop",
+    "seconds": 17.288,
+    "usage": {
+      "prompt_tokens": 1615,
+      "total_tokens": 2036,
+      "completion_tokens": 421
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": false,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 421,
+    "remarks_characters": 512,
+    "remarks": "В описании неоднозначно указано, что в правой доле выявлено очаговое образование. Необходимо уточнить, является ли это очаговым образованием, или это просто описание структуры, не требующее дальнейшего обследования. Также, необходимо уточнить, что подразумевается под «очаговым образованием» в данном контексте. Необходима консультация с радиологом для уточнения диагноза и дальнейших действий. Не указано, является ли данное образование тиреоидным узлом, солидным, кистозным, смешанным, коллоидным, губчатым, ма",
+    "validation_error": "invalidReportResponse"
+  },
+  {
+    "id": "dictation-greedy-0",
+    "finish": "stop",
+    "seconds": 23.254,
+    "usage": {
+      "prompt_tokens": 1437,
+      "total_tokens": 2004,
+      "completion_tokens": 567
+    },
+    "runtime": "vllm-xgrammar",
+    "schema_valid": true,
+    "main_valid": true,
+    "maximum_raw_sentence_copies": 1,
+    "prompt_tokens_match_reference": true,
+    "text_matches_reference": true,
+    "matching_initial_output_tokens": 567,
+    "raw_missing_fields": [],
+    "raw_unexpected_fields": [
+      "examination_description",
+      "examination_number",
+      "patient_date_of_birth",
+      "patient_gender"
+    ],
+    "raw_value": [
+      {
+        "field_id": "examination_number",
+        "value": "1234567890",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_name",
+        "value": "Иванов Иван Иванович",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_gender",
+        "value": "male",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_date_of_birth",
+        "value": "1980-01-01",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "questionable"
+      },
+      {
+        "field_id": "patient_height_cm",
+        "value": 180,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_weight_kg",
+        "value": 80,
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "patient_complaints",
+        "value": "дискомфорт в области шеи",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      },
+      {
+        "field_id": "examination_description",
+        "value": "УЗИ щитовидной железы",
+        "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+        "accuracy": "full"
+      }
+    ],
+    "validated_value": {
+      "proposals": [
+        {
+          "fieldId": "patient_name",
+          "value": "Иванов Иван Иванович",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_complaints",
+          "value": "дискомфорт в области шеи",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "examination_description",
+          "value": "УЗИ щитовидной железы",
+          "evidence": "Пациент Иванов Иван Иванович. Рост 180 сантиметров. Вес 80 килограммов. Жалобы на дискомфорт в области шеи.",
+          "accuracy": "questionable"
+        },
+        {
+          "fieldId": "patient_height_cm",
+          "value": 180.0,
+          "evidence": "Рост 180 сантиметров",
+          "accuracy": "full"
+        },
+        {
+          "fieldId": "patient_weight_kg",
+          "value": 80.0,
+          "evidence": "Вес 80 килограммов",
+          "accuracy": "full"
+        }
+      ]
+    },
+    "missing_expected_fields": [],
+    "unexpected_fields": [
+      "examination_description"
+    ]
+  }
+]

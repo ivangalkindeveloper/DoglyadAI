@@ -1,0 +1,26 @@
+{
+  "ruff_check": "passed",
+  "ruff_format": "13 files already formatted",
+  "syntax": {
+    "python_scripts": 13,
+    "json_files": 123,
+    "jsonl_files": 11,
+    "jsonl_records": 450
+  },
+  "trials_with_restoration_snapshots": 17,
+  "main_speed_series_complete": true,
+  "application_files_changed_by_research": false,
+  "architecture_check": {
+    "status": "failed",
+    "rule": "swift.view-fragment",
+    "violations": 13,
+    "files_unchanged_by_research": [
+      "ExpandableContentView",
+      "PhotoCardView",
+      "SectionHeaderView",
+      "DScreen",
+      "DButton",
+      "DToolbarButton"
+    ]
+  }
+}

@@ -40,6 +40,11 @@ final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol>
     }
 
     func onDocumentLoaded() {
+        #if DEBUG
+            guard !isPreviewSnapshot else {
+                return
+            }
+        #endif
         emit(
             WebDocumentLoadedState(),
         )
@@ -48,6 +53,11 @@ final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol>
     func onDocumentFailed(
         _ error: Error,
     ) {
+        #if DEBUG
+            guard !isPreviewSnapshot else {
+                return
+            }
+        #endif
         emit(
             WebDocumentFailedState(
                 error: error,

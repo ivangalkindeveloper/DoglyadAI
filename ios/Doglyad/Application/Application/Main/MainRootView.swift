@@ -8,6 +8,10 @@ struct MainRootView: View {
         \.requestReview,
     ) private var requestReview
 
+    @Environment(
+        \.scenePhase,
+    ) private var scenePhase
+
     let dependencyContainer: DependencyContainer
 
     @StateObject private var viewModel: MainRootViewModel
@@ -57,6 +61,29 @@ struct MainRootView: View {
         .environmentObject(
             subscriptionViewModel,
         )
+        .onReceive(
+            ultrasoundViewModel.reportGenerations.terminalEvents,
+        ) { _ in
+            Task {
+                await subscriptionViewModel.refreshStatus()
+            }
+        }
+        .onChange(
+            of: scenePhase,
+        ) { _, phase in
+            switch phase {
+            case .background:
+                ultrasoundViewModel.reportGenerations.setInBackground(
+                    true,
+                )
+            case .active:
+                ultrasoundViewModel.reportGenerations.setInBackground(
+                    false,
+                )
+            case .inactive: break
+            @unknown default: break
+            }
+        }
         .onAppear {
             subscriptionViewModel.onInit()
             ultrasoundViewModel.onAppear()

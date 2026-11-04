@@ -14,7 +14,10 @@ from app.service.configuration.configuration_response_service import Configurati
 from app.service.dictation.dictation_parsing_service import DictationParsingService
 from app.service.email.report_email_service import ReportEmailService
 from app.service.neural_model.neural_model_service_factory import NeuralModelServiceFactory
+from app.service.report.report_generation_cipher import ReportGenerationCipher
+from app.service.report.report_generation_jobs import ReportGenerationJobs
 from app.service.report.report_generation_service import ReportGenerationService
+from app.service.report.report_generation_store import ReportGenerationStore
 
 
 class ServiceFactory:
@@ -63,16 +66,31 @@ class ServiceFactory:
             variables,
             configuration.server.inference,
         )
+        reports = ReportGenerationService(
+            configuration,
+            model_service,
+        )
+        jobs = None
+        if subscriptions is not None and variables.report_generation_encryption_key:
+            jobs = ReportGenerationJobs(
+                ReportGenerationStore(
+                    subscriptions.database,
+                    ReportGenerationCipher(
+                        variables.report_generation_encryption_key,
+                    ),
+                    configuration.server.report_generation,
+                ),
+                reports,
+                subscriptions,
+            )
         return MainContainer(
+            report_jobs=jobs,
             configuration=configuration,
             configuration_responses=ConfigurationResponseService(
                 configuration,
             ),
             model_service=model_service,
-            report_generation=ReportGenerationService(
-                configuration,
-                model_service,
-            ),
+            report_generation=reports,
             dictation_parsing=DictationParsingService(
                 configuration,
                 model_service,

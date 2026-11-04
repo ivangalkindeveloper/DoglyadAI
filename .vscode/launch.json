@@ -5,14 +5,7 @@
             "name": "Backend: Local Mock (Cold)",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "app.main:app",
-                "--host",
-                "0.0.0.0",
-                "--port",
-                "8000"
-            ],
+            "module": "app.local_main",
             "cwd": "${workspaceFolder}/backend/main",
             "preLaunchTask": "backend: clean local preparation",
             "envFile": "${workspaceFolder}/backend/main/secrets/.env.running",
@@ -26,14 +19,7 @@
             "name": "Backend: Local Inference (Cold)",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "app.main:app",
-                "--host",
-                "0.0.0.0",
-                "--port",
-                "8000"
-            ],
+            "module": "app.local_main",
             "cwd": "${workspaceFolder}/backend/main",
             "preLaunchTask": "backend: clean local preparation",
             "envFile": "${workspaceFolder}/backend/main/secrets/.env.running",
@@ -47,14 +33,7 @@
             "name": "Backend: Local Mock",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "app.main:app",
-                "--host",
-                "0.0.0.0",
-                "--port",
-                "8000"
-            ],
+            "module": "app.local_main",
             "cwd": "${workspaceFolder}/backend/main",
             "preLaunchTask": "backend: local preparation",
             "envFile": "${workspaceFolder}/backend/main/secrets/.env.running",
@@ -68,14 +47,7 @@
             "name": "Backend: Local Inference",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "app.main:app",
-                "--host",
-                "0.0.0.0",
-                "--port",
-                "8000"
-            ],
+            "module": "app.local_main",
             "cwd": "${workspaceFolder}/backend/main",
             "preLaunchTask": "backend: local preparation",
             "envFile": "${workspaceFolder}/backend/main/secrets/.env.running",

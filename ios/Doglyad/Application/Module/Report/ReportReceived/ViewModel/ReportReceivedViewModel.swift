@@ -10,15 +10,16 @@ import UIKit
 
 @MainActor
 final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStateProtocol> {
-    let report: USExaminationReport
+    let isReportNavigationAvailable: Bool
+    private var reportObservation: AnyCancellable?
+    private var retryTask: Task<Void, Never>?
 
     let userEmail: String?
 
-    @Published private(set) var responseText = ""
-    private var nextWordIndex = 0
     private let messager: DMessager
-
-    private var animationRunID: UUID?
+    private let currentReport: (USExaminationReport) -> USExaminationReport
+    private let observeReports: (@escaping (USExaminationReport) -> Void) -> AnyCancellable
+    private let retryGeneration: (USExaminationReport) async throws -> USExaminationReport
 
     init(
         container: DependencyContainer,
@@ -31,14 +32,25 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         getSettingsAI: @escaping () -> SettingsAI,
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         getUserEmail: @escaping () -> String?,
+        currentReport: @escaping (USExaminationReport) -> USExaminationReport,
+        observeReports: @escaping (@escaping (USExaminationReport) -> Void) -> AnyCancellable,
+        retryGeneration: @escaping (USExaminationReport) async throws -> USExaminationReport,
     ) {
         self.messager = messager
+        self.currentReport = currentReport
+        self.observeReports = observeReports
+        self.retryGeneration = retryGeneration
 
-        report = (arguments.report)
+        isReportNavigationAvailable = arguments.isReportNavigationAvailable
+        let report = currentReport(
+            arguments.report,
+        )
         userEmail = getUserEmail()
 
         super.init(
-            state: ReportReceivedDefaultState(),
+            state: ReportReceivedDefaultState(
+                report: report,
+            ),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -52,22 +64,49 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         )
     }
 
-    var model: USExaminationModelReport {
+    var report: USExaminationReport {
+        state.report
+    }
+
+    var actualModelReport: USExaminationModelReport {
         report.actualModelReport
     }
 
+    var isCompleted: Bool {
+        actualModelReport.generation.status.isCompleted
+    }
+
+    var isGenerating: Bool {
+        actualModelReport.generation.status == .generating
+    }
+
+    var isWaitingForFirstToken: Bool {
+        isGenerating && displayedMarkdownText.isEmpty
+    }
+
+    var generationFailureTitle: L10NKey? {
+        switch actualModelReport.generation.status {
+        case .generating, .completed: nil
+        case .interrupted: .reportGenerationInterruptedLabel
+        case .failed, .cancelled: .reportGenerationIncompleteLabel
+        }
+    }
+
+    var canRetry: Bool {
+        switch actualModelReport.generation.status {
+        case .generating, .completed: false
+        case .interrupted, .failed, .cancelled: true
+        }
+    }
+
     var displayedMarkdownText: String {
-        var text = model.markdownText(
+        actualModelReport.markdownText(
             l10n: l10n,
         )
-        if let remarks = model.descriptionRemarks {
-            text += "\n\n## \(String(localized: l10n[.reportDescriptionRemarksTitle]))\n\(remarks)"
-        }
-        return text
     }
 
     var response: String {
-        report.actualModelReport.plainText(
+        actualModelReport.plainText(
             l10n: l10n,
         )
     }
@@ -94,40 +133,67 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         }
     }
 
-    func animateResponse() async {
-        guard animationRunID == nil else {
+    override func onInit() {
+        reportObservation = observeReports { [weak self] updated in
+            guard let self, updated.id == self.report.id else {
+                return
+            }
+            switch state {
+            case _ as ReportReceivedSendingState:
+                emit(
+                    ReportReceivedSendingState(
+                        report: updated,
+                    ),
+                )
+            default:
+                emit(
+                    ReportReceivedDefaultState(
+                        report: updated,
+                    ),
+                )
+            }
+        }
+        emit(
+            ReportReceivedDefaultState(
+                report: currentReport(
+                    report,
+                ),
+            ),
+        )
+    }
+
+    func onTapRetryGeneration() {
+        guard retryTask == nil else {
             return
         }
-        animationRunID = UUID()
-        defer {
-            animationRunID = nil
-        }
-        let words = displayedMarkdownText.components(
-            separatedBy: " ",
-        )
-        while !Task.isCancelled, nextWordIndex < words.count {
-            let word = words[
-                nextWordIndex,
-            ]
-            withAnimation(
-                .easeIn(
-                    duration: 0.3,
-                ),
-            ) {
-                responseText += (nextWordIndex == 0 ? "" : " ") + word
-                nextWordIndex += 1
+        retryTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            defer {
+                retryTask = nil
             }
             do {
-                try await Task.sleep(
-                    nanoseconds: 60000000,
+                let updated = try await retryGeneration(
+                    report,
+                )
+                emit(
+                    ReportReceivedDefaultState(
+                        report: updated,
+                    ),
                 )
             } catch {
-                return
+                messager.showUnknownError(
+                    l10n: l10n,
+                )
             }
         }
     }
 
     func onTapReport() {
+        guard isCompleted, isReportNavigationAvailable else {
+            return
+        }
         analytics.buttonTapped(
             .reportReceivedOpen,
         )
@@ -141,6 +207,9 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
     }
 
     func onTapUserEmail() {
+        guard isCompleted else {
+            return
+        }
         analytics.buttonTapped(
             .reportReceivedEmail,
             parameters: AnalyticsParameters(
@@ -165,6 +234,9 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
     }
 
     func onTapCopy() {
+        guard isCompleted else {
+            return
+        }
         analytics.buttonTapped(
             .reportReceivedCopy,
         )
@@ -181,10 +253,8 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
             ],
         )
     }
-}
 
-private extension ReportReceivedViewModel {
-    func sendReportEmail(
+    private func sendReportEmail(
         to userEmail: String,
     ) {
         switch state {
@@ -192,7 +262,9 @@ private extension ReportReceivedViewModel {
         default: break
         }
         emit(
-            ReportReceivedSendingState(),
+            ReportReceivedSendingState(
+                report: report,
+            ),
         )
         let report = report
         let ultrasoundConfig = container.applicationConfig.ultrasound
@@ -212,7 +284,9 @@ private extension ReportReceivedViewModel {
             switch self.state {
             case _ as ReportReceivedSendingState:
                 self.emit(
-                    ReportReceivedDefaultState(),
+                    ReportReceivedDefaultState(
+                        report: self.report,
+                    ),
                 )
             default: break
             }
@@ -229,6 +303,7 @@ private extension ReportReceivedViewModel {
         } onMainUnknownError: { error in
             self.emit(
                 ReportReceivedDeliveryFailedState(
+                    report: self.report,
                     error: error,
                 ),
             )

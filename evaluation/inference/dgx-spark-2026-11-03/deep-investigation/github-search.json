@@ -1,0 +1,410 @@
+[
+  {
+    "query": "repo:google-health/medgemma repetition",
+    "total": 3,
+    "items": [
+      {
+        "number": 21,
+        "title": "Large performance gap between my evaluation and results in the technical report",
+        "state": "closed",
+        "html_url": "https://github.com/Google-Health/medgemma/issues/21",
+        "updated_at": "2026-09-28T05:13:45Z"
+      },
+      {
+        "number": 40,
+        "title": "medgemma-27b-text-it function calling is broken!",
+        "state": "closed",
+        "html_url": "https://github.com/Google-Health/medgemma/issues/40",
+        "updated_at": "2026-06-22T23:11:10Z"
+      },
+      {
+        "number": 57,
+        "title": "MedGemma 4B p.attn_bias_ptr is not correctly aligned with long system prompt",
+        "state": "closed",
+        "html_url": "https://github.com/Google-Health/medgemma/issues/57",
+        "updated_at": "2026-05-29T13:41:14Z"
+      }
+    ]
+  },
+  {
+    "query": "repo:google-health/medgemma JSON",
+    "total": 6,
+    "items": [
+      {
+        "number": 78,
+        "title": "MedGemma | ATRIA EchoTrace: Echocardiographic Cardiac Chamber Contour Tracing",
+        "state": "closed",
+        "html_url": "https://github.com/Google-Health/medgemma/pull/78",
+        "updated_at": "2026-07-16T19:05:22Z"
+      },
+      {
+        "number": 40,
+        "title": "medgemma-27b-text-it function calling is broken!",
+        "state": "closed",
+        "html_url": "https://github.com/Google-Health/medgemma/issues/40",
+        "updated_at": "2026-06-22T23:11:10Z"
+      },
+      {
+        "number": 57,
+        "title": "MedGemma 4B p.attn_bias_ptr is not correctly aligned with long system prompt",
+        "state": "closed",
+        "html_url": "https://github.com/Google-Health/medgemma/issues/57",
+        "updated_at": "2026-05-29T13:41:14Z"
+      },
+      {
+        "number": 37,
+        "title": "Unable to reproduce MedQA, MMLU-Med results on technical report",
+        "state": "closed",
+        "html_url": "https://github.com/Google-Health/medgemma/issues/37",
+        "updated_at": "2026-05-14T11:15:34Z"
+      },
+      {
+        "number": 52,
+        "title": "Bump protobuf from 5.29.5 to 5.29.6 in /python/serving",
+        "state": "open",
+        "html_url": "https://github.com/Google-Health/medgemma/pull/52",
+        "updated_at": "2026-04-06T23:56:55Z"
+      },
+      {
+        "number": 22,
+        "title": "MedGemma 4b-it ignores system message after if conversation is continued beyond the first message",
+        "state": "closed",
+        "html_url": "https://github.com/Google-Health/medgemma/issues/22",
+        "updated_at": "2025-10-13T18:51:32Z"
+      }
+    ]
+  },
+  {
+    "query": "repo:vllm-project/vllm structured repetition",
+    "total": 314,
+    "items": [
+      {
+        "number": 60339,
+        "title": "[Spec Decode][MRV2] Suffix decoding speculator for Model Runner V2",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/pull/60339",
+        "updated_at": "2026-11-03T01:43:05Z"
+      },
+      {
+        "number": 60762,
+        "title": "[Bugfix][DSv4.1] Declare 64-token kernel blocks for SM120 sparse backends",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/pull/60762",
+        "updated_at": "2026-11-03T01:36:34Z"
+      },
+      {
+        "number": 56892,
+        "title": "[Bug/Perf] DeepSeek-V4.1-Flash on SM120 (RTX PRO 6000 Blackwell, 8xTP): extremely low decode throughput with --enforce-eager; CUDA graphs unusable — please prioritize SM120 graph capture fix",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/56892",
+        "updated_at": "2026-11-03T01:07:08Z"
+      },
+      {
+        "number": 54521,
+        "title": "[Bug]: Qwen3.8-Flash-Next: greedy decoding is non-deterministic from persistent_topk in prefill when prompt length nears indexer_budget (sm121/GB10)",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/54521",
+        "updated_at": "2026-11-02T21:30:39Z"
+      },
+      {
+        "number": 38256,
+        "title": "[RFC]: Incremental MoE Expert Offloading — GPU Cache + Async Pipeline",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/38256",
+        "updated_at": "2026-11-02T17:27:59Z"
+      },
+      {
+        "number": 50576,
+        "title": "[Feature]: SM8x (Ampere A100/A800) support for DeepSeek-V4-Flash / DeepSeek-V4-Flash-0731 DSpark",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/50576",
+        "updated_at": "2026-11-02T06:51:38Z"
+      },
+      {
+        "number": 55688,
+        "title": "[Mamba] Unify FI ReplaySSM STP/MTP/Prefix Caching Lifecycle",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/pull/55688",
+        "updated_at": "2026-11-02T04:49:48Z"
+      },
+      {
+        "number": 55947,
+        "title": "[Feature][Spec Decode] Add Uno shared-model drafting with a draft-only LoRA adapter (Model Runner V2)",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/pull/55947",
+        "updated_at": "2026-11-01T23:18:12Z"
+      },
+      {
+        "number": 56180,
+        "title": "Failed: Cuda error /workspace/csrc/custom_all_reduce.cuh:164 'invalid argument'",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/56180",
+        "updated_at": "2026-11-01T16:49:25Z"
+      },
+      {
+        "number": 31740,
+        "title": "feat: Add SM121/GB10 (DGX Spark) Blackwell-class GPU support",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/pull/31740",
+        "updated_at": "2026-11-01T01:35:24Z"
+      },
+      {
+        "number": 44734,
+        "title": "CUDA device-side assert with nvidia/Qwen3.6-35B-A3B-NVFP4 + MTP on nightly f91fb2f",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/issues/44734",
+        "updated_at": "2026-10-31T01:36:28Z"
+      },
+      {
+        "number": 61995,
+        "title": "[CPU][MRv2] Enable MRv2 for non-triton CPU backends",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/pull/61995",
+        "updated_at": "2026-10-30T22:52:04Z"
+      },
+      {
+        "number": 43009,
+        "title": "[Bug]: Triton kernel JIT compilation during inference",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/43009",
+        "updated_at": "2026-10-30T05:53:58Z"
+      },
+      {
+        "number": 36237,
+        "title": "[Bug]: Generation hangs until RAY_CGRAPH_get_timeout (300s) with Ray compiled DAG executor",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/36237",
+        "updated_at": "2026-10-29T01:38:20Z"
+      },
+      {
+        "number": 36489,
+        "title": "[Bug]: vllm 0.17.0 部署 Qwen3.5 397b-fp8版本运行过程中异常崩溃(vllm 0.17.0 crashed unexpectedly during deployment of Qwen3.5 397b-fp8 version.)",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/36489",
+        "updated_at": "2026-10-29T01:38:05Z"
+      }
+    ]
+  },
+  {
+    "query": "repo:mlc-ai/xgrammar repetition",
+    "total": 79,
+    "items": [
+      {
+        "number": 1030,
+        "title": "fix: escapes in length-bounded strings without leaving the counted fast path",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/1030",
+        "updated_at": "2026-11-03T07:39:43Z"
+      },
+      {
+        "number": 1034,
+        "title": "fix: stop counted regex repeats from re-entering a finished copy",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/1034",
+        "updated_at": "2026-11-02T22:50:25Z"
+      },
+      {
+        "number": 949,
+        "title": "fix: preserve forbidden bytes across counted repeat lowering",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/949",
+        "updated_at": "2026-11-01T12:16:19Z"
+      },
+      {
+        "number": 983,
+        "title": "fix: apply property names constraints to every object key",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/983",
+        "updated_at": "2026-11-01T05:57:21Z"
+      },
+      {
+        "number": 1014,
+        "title": "feat: support validated unordered arguments for Qwen XML",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/1014",
+        "updated_at": "2026-10-29T10:02:57Z"
+      },
+      {
+        "number": 1001,
+        "title": "JSON-schema `pattern` with lookahead, lookbehind, backreference, `\\b` or `\\p{..}` fails the whole grammar; request support or an ignore option",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/issues/1001",
+        "updated_at": "2026-10-21T08:32:29Z"
+      },
+      {
+        "number": 990,
+        "title": "fix: compare ASCII bytes with the whole codepoint bounds of a character class",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/990",
+        "updated_at": "2026-10-16T21:08:20Z"
+      },
+      {
+        "number": 955,
+        "title": "fix: prevent bounded GLM XML strings from retaining delimiter-spanning parses",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/955",
+        "updated_at": "2026-10-15T21:16:06Z"
+      },
+      {
+        "number": 986,
+        "title": "fix: never fall back to an unescaped CFG for JSON string patterns",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/986",
+        "updated_at": "2026-10-15T18:40:31Z"
+      },
+      {
+        "number": 978,
+        "title": "perf: keep the counted fast path for bounded JSON strings with escapes",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/978",
+        "updated_at": "2026-10-12T10:22:22Z"
+      },
+      {
+        "number": 963,
+        "title": "fix: compile large regex repetitions with caching enabled",
+        "state": "closed",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/963",
+        "updated_at": "2026-10-08T17:13:44Z"
+      },
+      {
+        "number": 952,
+        "title": "fix: guard untrusted grammar, regex, schema and bitmask inputs",
+        "state": "closed",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/952",
+        "updated_at": "2026-10-08T15:49:20Z"
+      },
+      {
+        "number": 852,
+        "title": "[Bug] [Perf] String `maxLength` in a JSON schema makes `fill_next_token_bitmask` ~300x slower",
+        "state": "closed",
+        "html_url": "https://github.com/mlc-ai/xgrammar/issues/852",
+        "updated_at": "2026-10-05T15:41:45Z"
+      },
+      {
+        "number": 943,
+        "title": "fix: rule-level cache hash collisions between different character ranges and repeat bounds",
+        "state": "closed",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/943",
+        "updated_at": "2026-09-30T02:05:32Z"
+      },
+      {
+        "number": 880,
+        "title": "fix: preserve JSON escapes in length-constrained strings",
+        "state": "open",
+        "html_url": "https://github.com/mlc-ai/xgrammar/pull/880",
+        "updated_at": "2026-10-09T12:57:59Z"
+      }
+    ]
+  },
+  {
+    "query": "repo:vllm-project/vllm Gemma3 repeat",
+    "total": 19,
+    "items": [
+      {
+        "number": 27433,
+        "title": "[Feature]: Batch Invariant Feature and Performance Optimization",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/27433",
+        "updated_at": "2026-11-03T02:49:17Z"
+      },
+      {
+        "number": 40244,
+        "title": "[RFC]: Add API to restore free_block_queue allocation order for long-running RLHF / rollout sessions",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/40244",
+        "updated_at": "2026-11-01T16:42:57Z"
+      },
+      {
+        "number": 49525,
+        "title": "[Bugfix] Shared MM text-LoRA mapper fallback for language_model wrappers",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/pull/49525",
+        "updated_at": "2026-10-21T03:55:47Z"
+      },
+      {
+        "number": 60040,
+        "title": "[ROCm][Attention] Support multimodal Prefix-LM in ROCM_ATTN",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/pull/60040",
+        "updated_at": "2026-10-12T19:03:59Z"
+      },
+      {
+        "number": 58674,
+        "title": "[Model] Support MiniCPM-V 4.7",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/pull/58674",
+        "updated_at": "2026-10-12T17:25:57Z"
+      },
+      {
+        "number": 60049,
+        "title": "[Bugfix][MRV2] Preserve dummy tokens across PIECEWISE padding",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/pull/60049",
+        "updated_at": "2026-10-09T02:36:01Z"
+      },
+      {
+        "number": 42110,
+        "title": "[Bug]: gemma4 prompts with embedded json requirements AND response_format.json_schema cause timeouts",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/42110",
+        "updated_at": "2026-10-05T17:40:10Z"
+      },
+      {
+        "number": 53809,
+        "title": "[MM] Add a Mooncake-store backend for the multi-modal processor cache",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/pull/53809",
+        "updated_at": "2026-10-01T10:56:21Z"
+      },
+      {
+        "number": 36802,
+        "title": "[Bug]: Tesla T4 GPU - triton.runtime.errors.OutOfResources: out of resource: shared memory, Required: 81920, Hardware limit: 65536. Reducing block sizes or `num_stages`",
+        "state": "open",
+        "html_url": "https://github.com/vllm-project/vllm/issues/36802",
+        "updated_at": "2026-09-28T07:27:06Z"
+      },
+      {
+        "number": 57781,
+        "title": "[Bugfix][Multimodal] Reject prompts with placeholder tokens outside the recorded placeholders",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/pull/57781",
+        "updated_at": "2026-09-24T02:52:01Z"
+      },
+      {
+        "number": 58060,
+        "title": "[Performance][ROCm]: Narrower KV tiles speed up Triton embedding/reranking attention on RDNA3/RDNA4",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/issues/58060",
+        "updated_at": "2026-09-24T00:35:22Z"
+      },
+      {
+        "number": 55991,
+        "title": "[ROCm][AITER] Skip AITER norm kernels when flattening to 2D would copy",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/pull/55991",
+        "updated_at": "2026-09-16T07:26:56Z"
+      },
+      {
+        "number": 26480,
+        "title": "[Bug][v0.11.0]: gpt-oss-120b generates with no output",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/issues/26480",
+        "updated_at": "2026-08-03T02:17:36Z"
+      },
+      {
+        "number": 49464,
+        "title": "[Bugfix] Shared MM text-LoRA mapper fallback for language_model wrappers",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/pull/49464",
+        "updated_at": "2026-07-23T04:59:59Z"
+      },
+      {
+        "number": 41181,
+        "title": "[Bugfix] Fix `RuntimeError: Already borrowed` by adding thread-safe Hugging Face fast-tokenizer wrappers",
+        "state": "closed",
+        "html_url": "https://github.com/vllm-project/vllm/pull/41181",
+        "updated_at": "2026-05-20T07:28:13Z"
+      }
+    ]
+  }
+]

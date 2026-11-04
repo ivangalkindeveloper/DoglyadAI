@@ -9,6 +9,7 @@ from app.service.configuration.configuration_response_service import Configurati
 from app.service.dictation.dictation_parsing_service import DictationParsingService
 from app.service.email.report_email_service import ReportEmailService
 from app.service.neural_model.neural_model_service import NeuralModelService
+from app.service.report.report_generation_jobs import ReportGenerationJobs
 from app.service.report.report_generation_service import ReportGenerationService
 
 
@@ -22,5 +23,6 @@ class MainContainer:
     report_generation: ReportGenerationService
     dictation_parsing: DictationParsingService
     report_email: ReportEmailService
+    report_jobs: ReportGenerationJobs | None = None
     subscriptions: SubscriptionService | None = None
     sdk_payments: SDKPaymentService | None = None

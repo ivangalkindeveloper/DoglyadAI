@@ -1,0 +1,361 @@
+{
+  "actual-15-4b": {
+    "received": 5,
+    "expected": 5,
+    "complete": true,
+    "tasks": {
+      "report": 5
+    },
+    "finish": {
+      "stop": 5
+    },
+    "repetition": 0,
+    "schema_valid": 5,
+    "current_main_valid": 5,
+    "uncapped_main_valid": 5,
+    "description_equals_conclusion": 0,
+    "review_candidates": 5
+  },
+  "actual-27b": {
+    "received": 5,
+    "expected": 5,
+    "complete": true,
+    "tasks": {
+      "report": 5
+    },
+    "finish": {
+      "stop": 5
+    },
+    "repetition": 0,
+    "schema_valid": 5,
+    "current_main_valid": 5,
+    "uncapped_main_valid": 5,
+    "description_equals_conclusion": 0,
+    "review_candidates": 5
+  },
+  "actual-4b": {
+    "received": 16,
+    "expected": 16,
+    "complete": true,
+    "tasks": {
+      "report": 16
+    },
+    "finish": {
+      "stop": 16
+    },
+    "repetition": 0,
+    "schema_valid": 16,
+    "current_main_valid": 16,
+    "uncapped_main_valid": 16,
+    "description_equals_conclusion": 1,
+    "review_candidates": 16
+  },
+  "alias-fields": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "audit-ids": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "audit-ids": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 0,
+    "uncapped_main_valid": 0,
+    "description_equals_conclusion": 0,
+    "review_candidates": 0
+  },
+  "audit-task-last": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "audit-text": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 0,
+    "uncapped_main_valid": 0,
+    "description_equals_conclusion": 0,
+    "review_candidates": 0
+  },
+  "audit-text": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "audit-text": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 0,
+    "uncapped_main_valid": 0,
+    "description_equals_conclusion": 0,
+    "review_candidates": 0
+  },
+  "concise-en": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "concise-ru": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "concise-task-last": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "expanded-baseline": {
+    "received": 16,
+    "expected": 16,
+    "complete": true,
+    "tasks": {
+      "report": 16
+    },
+    "finish": {
+      "stop": 12,
+      "length": 4
+    },
+    "repetition": 4,
+    "schema_valid": 12,
+    "current_main_valid": 11,
+    "uncapped_main_valid": 11,
+    "description_equals_conclusion": 4,
+    "review_candidates": 11
+  },
+  "expanded-concise": {
+    "received": 16,
+    "expected": 16,
+    "complete": true,
+    "tasks": {
+      "report": 16
+    },
+    "finish": {
+      "stop": 16
+    },
+    "repetition": 0,
+    "schema_valid": 16,
+    "current_main_valid": 16,
+    "uncapped_main_valid": 16,
+    "description_equals_conclusion": 1,
+    "review_candidates": 16
+  },
+  "final-smoke": {
+    "received": 2,
+    "expected": 2,
+    "complete": true,
+    "tasks": {
+      "report": 2
+    },
+    "finish": {
+      "stop": 2
+    },
+    "repetition": 0,
+    "schema_valid": 2,
+    "current_main_valid": 2,
+    "uncapped_main_valid": 2,
+    "description_equals_conclusion": 0,
+    "review_candidates": 2
+  },
+  "full-task-last": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "no-dictionary": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "ru-examples-first": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 3,
+    "uncapped_main_valid": 3,
+    "description_equals_conclusion": 0,
+    "review_candidates": 3
+  },
+  "ru-examples-no-dictionary": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "ru-examples": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "ru-remarks-first": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "structured-input": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 4
+    },
+    "repetition": 0,
+    "schema_valid": 4,
+    "current_main_valid": 4,
+    "uncapped_main_valid": 4,
+    "description_equals_conclusion": 0,
+    "review_candidates": 4
+  },
+  "uncapped": {
+    "received": 4,
+    "expected": 4,
+    "complete": true,
+    "tasks": {
+      "report": 4
+    },
+    "finish": {
+      "stop": 3,
+      "length": 1
+    },
+    "repetition": 1,
+    "schema_valid": 3,
+    "current_main_valid": 3,
+    "uncapped_main_valid": 3,
+    "description_equals_conclusion": 2,
+    "review_candidates": 3
+  }
+}

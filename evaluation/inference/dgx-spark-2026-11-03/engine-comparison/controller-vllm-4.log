@@ -1,0 +1,10 @@
+{"event": "original_stopped", "memory": {"MemTotal_kib": 127598416, "MemAvailable_kib": 40831868, "SwapTotal_kib": 16777212, "SwapFree_kib": 8791292}}
+{"event": "starting", "name": "vllm-maxseq-4"}
+{"event": "engine_ready", "name": "doglyad-engine-evaluation", "seconds": 153.5}
+{"event": "probe_started", "memory": {"MemTotal_kib": 127598416, "MemAvailable_kib": 21920136, "SwapTotal_kib": 16777212, "SwapFree_kib": 8791292}}
+{"event": "performance_started"}
+{"event": "probe_finished", "memory": {"MemTotal_kib": 127598416, "MemAvailable_kib": 21713220, "SwapTotal_kib": 16777212, "SwapFree_kib": 8791304}}
+{"event": "restoring_original"}
+{"event": "engine_ready", "name": "doglyad-dgx-vllm_medgemma_4b-1", "seconds": 122.9}
+{"event": "restoration_verified"}
+{"event": "finished"}

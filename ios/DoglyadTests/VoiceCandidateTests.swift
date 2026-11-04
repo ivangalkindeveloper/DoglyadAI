@@ -174,7 +174,7 @@ final class VoiceCandidateTests: XCTestCase {
                         "proposalPrompt",
                     ),
                     parameters: parameters,
-                    serverTransport: DNeuralUltrasoundUnavailableTestTransport(),
+                    parseDictation: DNeuralUltrasoundUnavailableTestTransport().parseDictation,
                 )
             }
             let factory = try XCTUnwrap(

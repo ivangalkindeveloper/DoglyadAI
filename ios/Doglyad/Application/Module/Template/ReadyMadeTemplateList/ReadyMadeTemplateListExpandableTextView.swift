@@ -42,29 +42,3 @@ struct ReadyMadeTemplateListExpandableTextView: DViewProtocol {
         }
     }
 }
-
-#Preview {
-    VStack(
-        alignment: .leading,
-        spacing: 24,
-    ) {
-        ReadyMadeTemplateListExpandableTextView(
-            text: "Short plain text, including literal **asterisks**.",
-            backgroundColor: .white,
-        )
-
-        ReadyMadeTemplateListExpandableTextView(
-            text: """
-            This is long plain text that should be truncated after several lines. \
-            Markdown characters such as **bold** and [links](https://example.com) remain literal text. \
-            The expanded view shows the entire text, and short content has no expand or collapse button.
-            """,
-            backgroundColor: .white,
-        )
-    }
-    .padding()
-    .dThemeWrapper()
-    .localization(
-        DependencyContainer.previewable.l10n,
-    )
-}

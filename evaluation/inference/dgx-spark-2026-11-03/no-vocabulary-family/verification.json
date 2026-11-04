@@ -1,0 +1,21 @@
+{
+  "complete": true,
+  "full_generations": 60,
+  "self_completed": 60,
+  "raw_schema_valid": 60,
+  "within_field_duplicates": 0,
+  "production_repetition_detector_failures": 0,
+  "main_valid": 58,
+  "max_generation_seconds": 69.87996082799509,
+  "source_hashes_unchanged": true,
+  "runtime_checks": [
+    "15-4b-manifest",
+    "27b-manifest",
+    "4b-manifest",
+    "4b-resume-manifest"
+  ],
+  "containers_unchanged": true,
+  "final_engines_healthy_and_idle": true,
+  "failed_warmup_attempt_archived": true,
+  "completed_cases_not_rerun": true
+}

@@ -9,6 +9,11 @@ class GenerationConfig(BaseModel):
         frozen=True,
     )
 
+    max_response_bytes: int = Field(
+        default=4194304,
+        gt=0,
+    )
+
     max_body_bytes: int = Field(
         gt=0,
     )

@@ -1,0 +1,83 @@
+{
+  "4b-working": {
+    "review_scope": "Source-grounded checks of measurements, contradictions, explicit corrections and vocabulary; not clinical validation.",
+    "measurement_failure": {
+      "case": "conflict-sample-42",
+      "code": "reportMeasurementsMismatch",
+      "observation": "Description omits left-lobe dimensions and lobe volumes present in the input."
+    },
+    "contradiction_cases": {
+      "count": 5,
+      "null_remarks": 3,
+      "remarks_without_identifying_the_conflict": 2
+    },
+    "explicit_correction": {
+      "case": "bladder-correction-sample-42",
+      "observation": "Old absence of stones and corrected 4 mm stone are both retained."
+    },
+    "unprocessed_speech_error": {
+      "case": "bladder-term-sample-42",
+      "observation": "Raw anofagennoe term remains. This input bypasses the speech parsing stage, where the vocabulary is retained."
+    },
+    "within_field_duplicates": 0
+  },
+  "15-4b-working": {
+    "measurement_failure": {
+      "case": "conflict-greedy-0",
+      "code": "reportMeasurementsMismatch",
+      "observation": "Combined thyroid volume 13.7 ml is omitted."
+    },
+    "contradiction_cases": {
+      "count": 5,
+      "null_remarks": 5
+    },
+    "all_remarks_null": true,
+    "explicit_correction": {
+      "case": "bladder-correction-sample-42",
+      "observation": "Old negative phrase is retained with a changed word, followed by the explicit correction."
+    },
+    "unprocessed_speech_error": {
+      "case": "bladder-term-sample-42",
+      "observation": "Raw anofagennoe term remains; this case bypasses speech parsing."
+    },
+    "within_field_duplicates": 0
+  },
+  "27b-working": {
+    "measurement_failures": 0,
+    "contradiction_cases": {
+      "count": 5,
+      "null_remarks": 5
+    },
+    "all_remarks_null": true,
+    "explicit_correction": {
+      "case": "bladder-correction-sample-42",
+      "observation": "Corrected stone retained, but normal wall and other absent findings added without source evidence."
+    },
+    "unsupported_inference": {
+      "case": "bladder-template-sample-42",
+      "observation": "240 ml described as residual urine despite no post-void measurement in input."
+    },
+    "unprocessed_speech_error": {
+      "case": "bladder-term-sample-42",
+      "observation": "Raw anofagennoe term remains; this case bypasses speech parsing."
+    },
+    "within_field_duplicates": 0
+  },
+  "neutral_series": {
+    "4b": {
+      "main_valid": 4,
+      "remarks_present": 1,
+      "contradiction_not_identified": 2
+    },
+    "15-4b": {
+      "main_valid": 4,
+      "remarks_present": 0,
+      "contradiction_not_identified": 2
+    },
+    "27b": {
+      "main_valid": 4,
+      "remarks_present": 0,
+      "contradiction_not_identified": 2
+    }
+  }
+}

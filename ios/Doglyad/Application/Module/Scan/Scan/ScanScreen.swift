@@ -59,14 +59,13 @@ struct ScanScreen: View {
                         model,
                     )
                 },
+                onStartReportGeneration: { [ultrasoundViewModel] request in
+                    try await ultrasoundViewModel.reportGenerations.start(
+                        request: request,
+                        replacing: nil,
+                    )
+                },
             ),
         )
     }
-}
-
-#Preview {
-    ScanScreen(
-        arguments: nil,
-    )
-    .previewable()
 }

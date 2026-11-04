@@ -76,9 +76,9 @@ final class DictationResponseReplayTests: XCTestCase {
                 source: .localModel,
             )
             let server = try await DNeuralUltrasoundModelServer(
-                transport: ReplayTransport(
+                parseDictation: ReplayTransport(
                     response: response,
-                ),
+                ).parseDictation,
             ).parseProposals(
                 request: request,
             )
@@ -269,12 +269,11 @@ final class DictationResponseReplayTests: XCTestCase {
     }
 }
 
-private struct ReplayTransport: DNeuralUltrasoundServerTransportProtocol {
+private struct ReplayTransport {
     let response: DNeuralUltrasoundVoiceFormParseResponseDTO
 
     func parseDictation(
         selectedNeuralModelId _: String?,
-        locale _: Locale,
         examinationTypeId _: String,
         transcript _: String,
     ) async throws -> DNeuralUltrasoundVoiceFormParseResponseDTO {

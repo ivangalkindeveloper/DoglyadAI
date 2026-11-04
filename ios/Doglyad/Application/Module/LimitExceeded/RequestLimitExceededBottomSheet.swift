@@ -35,10 +35,3 @@ struct RequestLimitExceededBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    RequestLimitExceededBottomSheet(
-        arguments: nil,
-    )
-    .previewable()
-}

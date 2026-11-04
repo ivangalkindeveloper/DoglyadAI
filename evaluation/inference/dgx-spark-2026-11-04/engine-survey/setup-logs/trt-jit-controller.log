@@ -1,0 +1,15 @@
+{"event": "trial_begin", "plan": "tensorrt-4b-jit.json"}
+{"event": "original_stopped", "trial": "tensorrt-4b-jit"}
+{"event": "restored", "trial": "tensorrt-4b-jit"}
+Traceback (most recent call last):
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 133, in <module>
+    try:
+    ^^^^^
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 98, in main
+    subprocess.run(
+        ^^^^^^^^^^^^
+  File "/var/tmp/doglyad-engine-survey-20261104/run_trial.py", line 52, in _health
+    return result
+            ^^^^^^
+RuntimeError: Engine exited: doglyad-survey-engine
+{"event": "trial_end", "plan": "tensorrt-4b-jit.json", "exit": 1}

@@ -1,0 +1,373 @@
+[
+  {
+    "id": "report-greedy-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "seconds": 73.81916672800435,
+    "first_delta_seconds": 0.24890576998586766,
+    "usage": {
+      "prompt_tokens": 1954,
+      "total_tokens": 2277,
+      "completion_tokens": 323
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 591,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. Качество визуализации хорошее."
+      },
+      "conclusion": {
+        "characters": 266,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " 50x17x15 мм (6,3 мл). Структура паренхимы однородная, очаговых образований не выявлено. Перешеек 4 мм. Лимфоузлы не увеличены. Данных за патологию не получено."
+      }
+    },
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "report-sample-0",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "seconds": 69.47012476899545,
+    "first_delta_seconds": 0.4533589920029044,
+    "usage": {
+      "prompt_tokens": 1954,
+      "total_tokens": 2253,
+      "completion_tokens": 299
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 632,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "овский анализ показывает симметричный, не усиленный кровоток. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. Качество визуализации хорошее."
+      },
+      "conclusion": {
+        "characters": 274,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "очаговых образований не выявлено. Контуры долей ровные, четкие. Перешеек без особенностей. Лимфатические узлы шеи не увеличены. Данных за патологию не получено."
+      }
+    },
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "report-sample-42",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "seconds": 75.44408034498338,
+    "first_delta_seconds": 0.43939686598605476,
+    "usage": {
+      "prompt_tokens": 1954,
+      "total_tokens": 2282,
+      "completion_tokens": 328
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 582,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "воток при цветовом допплеровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. Визуализация хорошая."
+      },
+      "conclusion": {
+        "characters": 277,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "м (6,3 мл). Структура паренхимы однородная, очаговых образований не выявлено. Перешеек 4 мм. Лимфоузлы не увеличены. Контуры ровные, четкие. Кровоток не усилен."
+      }
+    },
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "report-sample-123",
+    "kind": "report",
+    "finish": "stop",
+    "done": true,
+    "seconds": 59.85257081600139,
+    "first_delta_seconds": 0.4406217760115396,
+    "usage": {
+      "prompt_tokens": 1954,
+      "total_tokens": 2215,
+      "completion_tokens": 261
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 547,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ерешейка 4 мм, без особенностей. Кровоток при ЦДК симметричный, не усилен. Регионарные лимфатические узлы не увеличены, обычной структуры. Визуализация хорошая."
+      },
+      "conclusion": {
+        "characters": 213,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "щий объём - верхняя граница нормы. Структура паренхимы однородная, очаговых образований не выявлено. Перешеек без особенностей. Лимфатические узлы не увеличены."
+      }
+    },
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-greedy-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "seconds": 56.216011346987216,
+    "first_delta_seconds": 0.45863096698303707,
+    "usage": {
+      "prompt_tokens": 1965,
+      "total_tokens": 2210,
+      "completion_tokens": 245
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 512,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "еек толщиной 4 мм, без особенностей. Кровоток симметричный, не усилен. Регионарные лимфатические узлы не увеличены. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 166,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "объём щитовидной железы находится на верхней границе нормы. Структура паренхимы однородная, контуры долей чёткие. В правой доле обнаружено очаговое образование."
+      }
+    },
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-sample-0",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "seconds": 72.18812379799783,
+    "first_delta_seconds": 0.43565589500940405,
+    "usage": {
+      "prompt_tokens": 1965,
+      "total_tokens": 2280,
+      "completion_tokens": 315
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 508,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "еек толщиной 4 мм, без особенностей. Кровоток симметричный, не усилен. Регионарные лимфатические узлы не увеличены. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 295,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ие. Эхогенность паренхимы средняя, структура однородная. Перешеек 4 мм. Кровоток не усилен. Лимфоузлы не увеличены. В правой доле выявлено очаговое образование."
+      }
+    },
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-sample-42",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "seconds": 55.77141414399375,
+    "first_delta_seconds": 0.45821490098023787,
+    "usage": {
+      "prompt_tokens": 1965,
+      "total_tokens": 2208,
+      "completion_tokens": 243
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 486,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " однородная. Перешеек толщиной 4 мм. Кровоток симметричный, не усилен. Регионарные лимфатические узлы не увеличены. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 156,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Общий объём щитовидной железы 13,7 мл, что соответствует верхней границе нормы. Структура паренхимы однородная. В правой доле выявлено очаговое образование."
+      }
+    },
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  },
+  {
+    "id": "conflict-sample-123",
+    "kind": "conflict",
+    "finish": "stop",
+    "done": true,
+    "seconds": 63.97474590098136,
+    "first_delta_seconds": 0.4623407209874131,
+    "usage": {
+      "prompt_tokens": 1965,
+      "total_tokens": 2244,
+      "completion_tokens": 279
+    },
+    "error": null,
+    "json_valid": true,
+    "schema_valid": true,
+    "main_valid": true,
+    "sections": {
+      "description": {
+        "characters": 500,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "еек толщиной 4 мм, без особенностей. Кровоток симметричный, не усилен. Регионарные лимфатические узлы не увеличены. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 195,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "ится на верхней границе нормы. Структура паренхимы однородная, контуры долей чёткие. В правой доле обнаружено очаговое образование, требующее дальнейшей оценки."
+      },
+      "recommendations": {
+        "characters": 139,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Рекомендуется консультация эндокринолога для определения тактики ведения выявленного очагового образования в правой доле щитовидной железы."
+      }
+    },
+    "description_equals_conclusion": false,
+    "repetition_detected": false,
+    "fields_at_max_length": [],
+    "review_candidate": true
+  }
+]

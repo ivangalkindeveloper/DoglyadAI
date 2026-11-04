@@ -74,6 +74,11 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     }
 
     func onCameraAppear() {
+        #if DEBUG
+            guard !isPreviewSnapshot else {
+                return
+            }
+        #endif
         guard presentationID == nil else {
             return
         }

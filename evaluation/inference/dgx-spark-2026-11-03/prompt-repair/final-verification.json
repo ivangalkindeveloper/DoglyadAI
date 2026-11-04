@@ -1,0 +1,53 @@
+{
+  "generations": 120,
+  "all_variants_complete": true,
+  "runtime": {
+    "audit-manifest": {
+      "containers_unchanged": true,
+      "other_engines_idle": true
+    },
+    "final-smoke-manifest": {
+      "containers_unchanged": true,
+      "other_engines_idle": true
+    },
+    "actual-27b-manifest": {
+      "containers_unchanged": true,
+      "other_engines_idle": true
+    },
+    "expanded-manifest": {
+      "containers_unchanged": true,
+      "other_engines_idle": true
+    },
+    "actual-15-4b-manifest": {
+      "containers_unchanged": true,
+      "other_engines_idle": true
+    },
+    "placement-manifest": {
+      "containers_unchanged": true,
+      "other_engines_idle": true
+    },
+    "actual-4b-manifest": {
+      "containers_unchanged": true,
+      "other_engines_idle": true
+    },
+    "screening-manifest": {
+      "containers_unchanged": true,
+      "other_engines_idle": true
+    },
+    "examples-manifest": {
+      "containers_unchanged": true,
+      "other_engines_idle": true
+    }
+  },
+  "retained_source_matches_smoke": true,
+  "candidate_accepted": false,
+  "caps_removed": true,
+  "backend_tests": {
+    "passed": 587,
+    "skipped": 5
+  },
+  "ruff": "passed",
+  "mypy": "passed (279 files)",
+  "format": "passed",
+  "architecture": "13 pre-existing swift.view-fragment failures in unrelated iOS files"
+}

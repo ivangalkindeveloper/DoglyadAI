@@ -14,8 +14,13 @@ struct DMessageModifier: ViewModifier {
                 message: $messager.message,
             ) { message in
                 DMessageCard(
-                    theme: theme,
-                    message: message,
+                    type: message.type,
+                    title: message.title,
+                    description: message.description,
+                )
+                // SwiftMessages creates a separate UIHostingController.
+                .environmentObject(
+                    theme,
                 )
                 .padding(
                     .top,

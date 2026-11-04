@@ -10,10 +10,6 @@ struct L10NInitializationTests {
     func failedLocalizationDoesNotPublishCatalogOrStartNextTier() async {
         let client = FailingLocalizationHttpClient()
         let process = InitializationProcess()
-        process.language = Language(
-            localeConfig: ApplicationConfig.default.locale,
-            preferredLanguageIdentifiers: ["ru"],
-        )
         process.httpClient = client
         let l10nSteps: StepSet<InitializationProcess>
         switch InitializationProcess.stepsTier4.kind {
@@ -76,11 +72,6 @@ struct L10NInitializationTests {
             client.requestedPaths == ["/l10n"],
         )
         #expect(
-            client.headers?[
-                DHttpHeader.acceptLanguage,
-            ] == process.language?.currentCode,
-        )
-        #expect(
             process.l10n == nil,
         )
     }
@@ -91,17 +82,10 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
     let baseVersionPrefix = "/v1"
     private let lock = NSLock()
     private var paths: [String] = []
-    private var capturedHeaders: [String: String]?
 
     var requestedPaths: [String] {
         lock.withLock {
             paths
-        }
-    }
-
-    var headers: [String: String]? {
-        lock.withLock {
-            capturedHeaders
         }
     }
 
@@ -120,13 +104,12 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
 
     func get<Response: Decodable>(
         endPoint: String,
-        headers: [String: String]?,
+        headers _: [String: String]?,
     ) async throws -> Response {
         lock.withLock {
             paths.append(
                 endPoint,
             )
-            capturedHeaders = headers
         }
         throw URLError(
             .notConnectedToInternet,
@@ -162,6 +145,25 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
     ) async throws {
         throw URLError(
             .notConnectedToInternet,
+        )
+    }
+
+    func post<Response: Decodable>(
+        endPoint _: String,
+        data _: Data?,
+        headers _: [String: String]?,
+    ) async throws -> Response {
+        throw URLError(
+            .unsupportedURL,
+        )
+    }
+
+    func serverEvents(
+        endPoint _: String,
+        headers _: [String: String]?,
+    ) async throws -> AsyncThrowingStream<DServerEvent, Error> {
+        throw URLError(
+            .unsupportedURL,
         )
     }
 }

@@ -36,6 +36,7 @@ class PromptLocalizationValidator:
             "reportPlainTextPrompt",
             "reportRecommendationsPrompt",
             "reportRecommendationsSchemaDescription",
+            "reportStructuredOutputPrompt",
             "reportSystemPrompt",
             "reportTemplatePrompt",
             "reportTokenLimitPrompt",

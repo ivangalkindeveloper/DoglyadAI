@@ -21,9 +21,6 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
         }
         let identity: BillingIdentityResponse = try await httpClient.post(
             endPoint: "/subscriptions/register",
-            body: String?.none,
-            headers: nil,
-            encoderUserInfo: nil,
         )
         try await saveIdentity(
             identity,
@@ -40,9 +37,6 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
     func fetchPlans() async throws -> BillingProductsResponse {
         try await httpClient.get(
             endPoint: "/subscriptions/plans",
-            headers: [DHttpHeader.acceptLanguage: Locale.preferredLanguages.joined(
-                separator: ", ",
-            )],
         )
     }
 
@@ -51,7 +45,6 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
     ) async throws -> SubscriptionStatus? {
         let response: BillingStatusResponse? = try await httpClient.get(
             endPoint: "/subscriptions/status",
-            headers: nil,
         )
         guard let response else {
             return nil
@@ -80,8 +73,6 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
             body: BillingAppleRequest(
                 signedTransaction: signedTransaction,
             ),
-            headers: nil,
-            encoderUserInfo: nil,
         )
         guard let identity else {
             return false
@@ -96,18 +87,12 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
     func cancelRenewal() async throws {
         try await httpClient.post(
             endPoint: "/subscriptions/cancel",
-            body: String?.none,
-            headers: nil,
-            encoderUserInfo: nil,
         )
     }
 
     func createRecoveryKey() async throws -> String {
         let response: BillingRecoveryResponse = try await httpClient.post(
             endPoint: "/subscriptions/recovery_key",
-            body: String?.none,
-            headers: nil,
-            encoderUserInfo: nil,
         )
         return response.recoveryKey
     }
@@ -120,8 +105,6 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
             body: BillingRecoveryRequest(
                 recoveryKey: key,
             ),
-            headers: nil,
-            encoderUserInfo: nil,
         )
         try await saveIdentity(
             identity,
@@ -136,10 +119,6 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
             body: BillingPreparePaymentRequest(
                 planId: planID,
             ),
-            headers: [DHttpHeader.acceptLanguage: Locale.preferredLanguages.joined(
-                separator: ", ",
-            )],
-            encoderUserInfo: nil,
         )
     }
 
@@ -149,8 +128,6 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
         try await httpClient.post(
             endPoint: "/subscriptions/tokenize_payment",
             body: request,
-            headers: nil,
-            encoderUserInfo: nil,
         )
     }
 
@@ -164,8 +141,6 @@ final class SubscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
                 paymentId: id,
                 isAbandoned: isAbandoned,
             ),
-            headers: nil,
-            encoderUserInfo: nil,
         )
     }
 

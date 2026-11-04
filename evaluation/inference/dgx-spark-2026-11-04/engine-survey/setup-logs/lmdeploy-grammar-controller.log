@@ -1,0 +1,5 @@
+{"event": "trial_begin", "plan": "lmdeploy-4b-grammar-experimental.json"}
+{"event": "original_stopped", "trial": "lmdeploy-4b-grammar-experimental"}
+{"event": "probe_started", "trial": "lmdeploy-4b-grammar-experimental"}
+{"event": "restored", "trial": "lmdeploy-4b-grammar-experimental"}
+{"event": "trial_end", "plan": "lmdeploy-4b-grammar-experimental.json", "exit": 0}

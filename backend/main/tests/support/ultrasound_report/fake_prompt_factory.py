@@ -19,6 +19,7 @@ class FakePromptFactory:
         is_recommendations_included: bool,
         is_photo_remarks: bool,
         is_description_remarks: bool,
+        structured_output: str,
     ) -> str:
         assert settings.selectedNeuralModelId == "google/medgemma-4b-it"
         assert is_recommendations_included is True

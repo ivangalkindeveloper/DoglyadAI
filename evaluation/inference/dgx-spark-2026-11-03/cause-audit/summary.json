@@ -1,0 +1,81 @@
+{
+  "control": {
+    "received": 3,
+    "expected": 3,
+    "complete": true,
+    "finish": {
+      "stop": 1,
+      "length": 2
+    },
+    "repetition": 2,
+    "raw_schema_valid": 1,
+    "main_valid": 1,
+    "remarks_present": 0,
+    "fenced": 0
+  },
+  "expanded-no-vocabulary": {
+    "received": 16,
+    "expected": 16,
+    "complete": true,
+    "finish": {
+      "stop": 16
+    },
+    "repetition": 0,
+    "raw_schema_valid": 16,
+    "main_valid": 15,
+    "remarks_present": 4,
+    "fenced": 0
+  },
+  "no-grammar": {
+    "received": 3,
+    "expected": 3,
+    "complete": true,
+    "finish": {
+      "stop": 3
+    },
+    "repetition": 0,
+    "raw_schema_valid": 0,
+    "main_valid": 0,
+    "remarks_present": 2,
+    "fenced": 3
+  },
+  "no-vocabulary-both": {
+    "received": 3,
+    "expected": 3,
+    "complete": true,
+    "finish": {
+      "stop": 3
+    },
+    "repetition": 0,
+    "raw_schema_valid": 3,
+    "main_valid": 3,
+    "remarks_present": 1,
+    "fenced": 0
+  },
+  "no-vocabulary-data": {
+    "received": 3,
+    "expected": 3,
+    "complete": true,
+    "finish": {
+      "stop": 3
+    },
+    "repetition": 0,
+    "raw_schema_valid": 3,
+    "main_valid": 3,
+    "remarks_present": 1,
+    "fenced": 0
+  },
+  "no-vocabulary-instruction": {
+    "received": 3,
+    "expected": 3,
+    "complete": true,
+    "finish": {
+      "stop": 3
+    },
+    "repetition": 0,
+    "raw_schema_valid": 3,
+    "main_valid": 2,
+    "remarks_present": 1,
+    "fenced": 0
+  }
+}

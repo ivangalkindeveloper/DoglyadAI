@@ -1,0 +1,64 @@
+{
+  "commit": "03605a640475836738badd9677be668eda5b4040",
+  "registry_sha256": "a995a61c2a6a857a58cc42bd9b87080da306193ac928438fbfc9c469e3266292",
+  "registered_model_types": [
+    "gemma4",
+    "gemma4_text",
+    "gemma4_unified",
+    "gemma4_unified_text",
+    "diffusion_gemma",
+    "diffusion_gemma_text",
+    "diffusiongemma",
+    "nemotron_h",
+    "muse_glimmer_text",
+    "muse_glimmer",
+    "cosmos3_edge",
+    "cosmos3_edge_text",
+    "qwen3_5_text",
+    "qwen3_5_moe_text",
+    "qwen3_5_moe",
+    "qwen3_moe",
+    "NemotronH_Nano_VL_V2",
+    "NemotronH_Nano_Omni_Reasoning_V3",
+    "qwen3_omni",
+    "qwen3_omni_thinker",
+    "qwen3_omni_text",
+    "qwen3_omni_moe_text",
+    "qwen3_omni_moe_talker",
+    "qwen3_omni_next",
+    "qwen3_omni_next_thinker",
+    "qwen3_omni_next_text",
+    "qwen3_omni_next_text_moe",
+    "qwen3_omni_next_talker_text",
+    "qwen3_asr",
+    "qwen3_asr_thinker"
+  ],
+  "checkpoints": [
+    {
+      "file": "/root/.cache/huggingface/hub/models--google--medgemma-1.5-4b-it/snapshots/91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b/config.json",
+      "architecture": [
+        "Gemma3ForConditionalGeneration"
+      ],
+      "model_type": "gemma3",
+      "dtype": "bfloat16"
+    },
+    {
+      "file": "/root/.cache/huggingface/hub/models--google--medgemma-4b-it/snapshots/290cda5eeccbee130f987c4ad74a59ae6f196408/config.json",
+      "architecture": [
+        "Gemma3ForConditionalGeneration"
+      ],
+      "model_type": "gemma3",
+      "dtype": "bfloat16"
+    },
+    {
+      "file": "/root/.cache/huggingface/hub/models--google--medgemma-27b-it/snapshots/2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f/config.json",
+      "architecture": [
+        "Gemma3ForConditionalGeneration"
+      ],
+      "model_type": "gemma3",
+      "dtype": "bfloat16"
+    }
+  ],
+  "gemma3_registered": false,
+  "scope": "Source and documented compatibility only; no unsupported generic fallback used for generation."
+}

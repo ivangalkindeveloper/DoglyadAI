@@ -5,6 +5,8 @@ final class UserSettingsRepository: UserSettingsRepositoryProtocol {
     let database: DDatabaseProtocol
     let httpClient: DHttpClientProtocol
 
+    static let sendEmailEndpoint = "/send_report_email"
+
     init(
         database: DDatabaseProtocol,
         httpClient: DHttpClientProtocol,
@@ -12,9 +14,7 @@ final class UserSettingsRepository: UserSettingsRepositoryProtocol {
         self.database = database
         self.httpClient = httpClient
     }
-}
 
-extension UserSettingsRepository {
     func getIsPhotoRemarks() async throws -> Bool {
         database.getIsPhotoRemarks()
     }
@@ -74,10 +74,6 @@ extension UserSettingsRepository {
             isIncluded: isIncluded,
         )
     }
-}
-
-extension UserSettingsRepository {
-    static let sendEmailEndpoint = "/send_report_email"
 
     func sendEmail(
         email: ReportEmail,
@@ -85,8 +81,6 @@ extension UserSettingsRepository {
         try await httpClient.post(
             endPoint: Self.sendEmailEndpoint,
             body: email,
-            headers: nil,
-            encoderUserInfo: nil,
         )
     }
 }

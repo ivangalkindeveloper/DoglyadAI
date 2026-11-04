@@ -1,0 +1,167 @@
+[
+  {
+    "id": "report-greedy-0",
+    "finish": "stop",
+    "seconds": 20.9479454740067,
+    "usage": {
+      "prompt_tokens": 1888,
+      "total_tokens": 2386,
+      "completion_tokens": 498
+    },
+    "error": null,
+    "done": true,
+    "fenced": true,
+    "sections": {
+      "description": {
+        "characters": 769,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      },
+      "conclusion": {
+        "characters": 769,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "льтичастотного датчика 7,5–12 МГц. Качество визуализации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM."
+      }
+    },
+    "raw_maximum_long_sentence_copies": 2,
+    "repetition": false,
+    "raw_schema_valid": false,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": false,
+    "remarks_present": false,
+    "remarks": null
+  },
+  {
+    "id": "conflict-sample-42",
+    "finish": "stop",
+    "seconds": 24.38247945398325,
+    "usage": {
+      "prompt_tokens": 1899,
+      "total_tokens": 2478,
+      "completion_tokens": 579
+    },
+    "error": null,
+    "done": true,
+    "fenced": true,
+    "sections": {
+      "description": {
+        "characters": 542,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "леровском картировании симметричный, не усилен. Регионарные лимфатические узлы шеи не увеличены, обычной структуры. В правой доле выявлено очаговое образование."
+      },
+      "conclusion": {
+        "characters": 134,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "В правой доле щитовидной железы выявлено очаговое образование. Необходимо дальнейшее обследование для уточнения характера образования."
+      },
+      "recommendations": {
+        "characters": 197,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": " щитовидной железы с последующей консультацией эндокринолога для уточнения характера выявленного очагового образования и определения дальнейшей тактики ведения."
+      },
+      "descriptionRemarks": {
+        "characters": 842,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "енность, эхоструктура, гипоэхогенный, гиперэхогенный, анэхогенный, изоэхогенный, однородная структура, неоднородная структура, четкий контур, акустическая тень."
+      }
+    },
+    "raw_maximum_long_sentence_copies": 1,
+    "repetition": false,
+    "raw_schema_valid": false,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": false,
+    "remarks_present": true,
+    "remarks": "В описании не указано, является ли очаговое образование тиреоидным узлом, солидным узлом, кистозным узлом, смешанным узлом, коллоидным узлом, губчатым узлом, макрокальцинатом, микрокальцинатом, точечными эхофокусами, эхогенным ободком, периферическим кольцом, неровным краем или экстратиреоидным распространением. Также не указана вертикальная ориентация, ТИРАДС, категория ТИРАДС, эластография узла, васкуляризация узла, периферический кровоток, центральный кровоток, псевдоузел, тиреоидит, гиперваскуляризация железы, регионарные лимфоузлы, паратрахеальные узлы, паращитовидная железа, узел перешейка, нижний полюс, верхний полюс, капсула железы, перешеечная толщина, трахея, эхогенность, эхоструктура, гипоэхогенный, гиперэхогенный, анэхогенный, изоэхогенный, однородная структура, неоднородная структура, четкий контур, акустическая тень."
+  },
+  {
+    "id": "bladder-dictated-sample-42",
+    "finish": "stop",
+    "seconds": 5.008787744998699,
+    "usage": {
+      "prompt_tokens": 1542,
+      "total_tokens": 1661,
+      "completion_tokens": 119
+    },
+    "error": null,
+    "done": true,
+    "fenced": true,
+    "sections": {
+      "description": {
+        "characters": 125,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Мочевой пузырь наполнен, объём 230 мл, стенка 2,7 мм. В просвете мелкодисперсная взвесь. Эхопризнаки взвеси в мочевом пузыре."
+      },
+      "conclusion": {
+        "characters": 36,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 0,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Эхопризнаки взвеси в мочевом пузыре."
+      },
+      "descriptionRemarks": {
+        "characters": 77,
+        "max_length": null,
+        "at_max_length": false,
+        "over_max_length": false,
+        "maximum_sentence_copies": 1,
+        "repeated_sentences": {},
+        "production_repetition_rejected": false,
+        "ends_in_sentence_punctuation": true,
+        "tail": "Необходимо уточнить, является ли взвесь сгустком крови или другой патологией."
+      }
+    },
+    "raw_maximum_long_sentence_copies": 1,
+    "repetition": false,
+    "raw_schema_valid": false,
+    "schema_valid_after_fence_removal": true,
+    "main_valid": false,
+    "remarks_present": true,
+    "remarks": "Необходимо уточнить, является ли взвесь сгустком крови или другой патологией."
+  }
+]

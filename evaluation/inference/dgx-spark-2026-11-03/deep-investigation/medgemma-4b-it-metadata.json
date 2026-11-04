@@ -1,0 +1,11 @@
+{
+  "id": "google/medgemma-4b-it",
+  "sha": "290cda5eeccbee130f987c4ad74a59ae6f196408",
+  "lastModified": "2025-10-28T17:24:49.000Z",
+  "safetensors": {
+    "parameters": {
+      "BF16": 4300079472
+    },
+    "total": 4300079472
+  }
+}

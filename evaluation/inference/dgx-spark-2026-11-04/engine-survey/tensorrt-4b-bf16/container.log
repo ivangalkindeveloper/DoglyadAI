@@ -1,0 +1,35 @@
+Skipping import of cpp extensions due to incompatible torch version 2.14.0+cu130 for torchao version 0.15.0             Please see https://github.com/pytorch/ao/issues/2919 for more info
+[11/04/2026-17:20:49] [TRT-LLM] [E] [executor] Exception initializing HF modules: [Errno 30] Read-only file system: '/root/.cache/huggingface/modules'
+Traceback (most recent call last):
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_bootstrap.py", line 202, in _init
+    from ._torch.custom_ops import _register_fake
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/custom_ops/__init__.py", line 19, in <module>
+    from ..flashinfer_utils import IS_FLASHINFER_AVAILABLE
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_torch/flashinfer_utils.py", line 20, in <module>
+    import flashinfer
+  File "/survey/trt-venv/lib/python3.12/site-packages/flashinfer/__init__.py", line 25, in <module>
+    from . import jit as jit
+  File "/survey/trt-venv/lib/python3.12/site-packages/flashinfer/jit/__init__.py", line 22, in <module>
+    from . import cubin_loader
+  File "/survey/trt-venv/lib/python3.12/site-packages/flashinfer/jit/cubin_loader.py", line 30, in <module>
+    from .core import logger
+  File "/survey/trt-venv/lib/python3.12/site-packages/flashinfer/jit/core.py", line 15, in <module>
+    from . import env as jit_env
+  File "/survey/trt-venv/lib/python3.12/site-packages/flashinfer/jit/env.py", line 110, in <module>
+    FLASHINFER_CUBIN_DIR: pathlib.Path = _get_cubin_dir()
+                                         ^^^^^^^^^^^^^^^^
+  File "/survey/trt-venv/lib/python3.12/site-packages/flashinfer/jit/env.py", line 97, in _get_cubin_dir
+    raise RuntimeError(
+RuntimeError: flashinfer-cubin version (0.6.16.post3) does not match flashinfer version (0.6.18). Please install the same version of both packages. Set FLASHINFER_DISABLE_VERSION_CHECK=1 to bypass this check.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/survey/trt-venv/bin/trtllm-serve", line 5, in <module>
+    from tensorrt_llm.commands.serve import main
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/__init__.py", line 189, in <module>
+    _init()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_bootstrap.py", line 210, in _init
+    raise ImportError(str(e) + msg)
+ImportError: flashinfer-cubin version (0.6.16.post3) does not match flashinfer version (0.6.18). Please install the same version of both packages. Set FLASHINFER_DISABLE_VERSION_CHECK=1 to bypass this check.
+FATAL: Decoding operators failed to load. This may be caused by an incompatibility between PyTorch and TensorRT-LLM. Please rebuild and install TensorRT-LLM.

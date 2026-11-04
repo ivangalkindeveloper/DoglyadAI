@@ -1,0 +1,107 @@
+{
+  "date": "2026-11-02",
+  "model": "google/medgemma-4b-it",
+  "input": "Synthetic thyroid fixtures from development RU catalog",
+  "conditions": {
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "seeds": [
+      0,
+      42
+    ]
+  },
+  "candidate_prompt_ru": "Поле descriptionRemarks предназначено только для конкретных противоречий или неоднозначностей в исходном описании выбранного исследования. Если таких проблем нет, верни descriptionRemarks: null. Нормальное или полное описание не требует замечаний. Если проблема есть, укажи конкретное противоречие и что именно нужно уточнить. Используй не более двух коротких предложений, максимум 400 символов. Не перечисляй нормальные находки, отсутствующие заболевания, ненужные исследования и консультации специалистов. Не добавляй советы по лечению или новые клинические факты. Каждое замечание укажи один раз. После descriptionRemarks заверши JSON.\n",
+  "results": [
+    {
+      "seconds": 19.24,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1587,
+        "total_tokens": 2049,
+        "completion_tokens": 462
+      },
+      "variant": "concise_prompt",
+      "seed": 0,
+      "characters": 1510,
+      "valid_json": true,
+      "fields": {
+        "description": 508,
+        "conclusion": 508,
+        "recommendations": 406,
+        "descriptionRemarks": null
+      },
+      "synthetic_description_remarks": null,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 23.86,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1587,
+        "total_tokens": 2163,
+        "completion_tokens": 576
+      },
+      "variant": "concise_prompt",
+      "seed": 42,
+      "characters": 2041,
+      "valid_json": true,
+      "fields": {
+        "description": 780,
+        "conclusion": 780,
+        "recommendations": 393,
+        "descriptionRemarks": null
+      },
+      "synthetic_description_remarks": null,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 20.21,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1587,
+        "total_tokens": 2049,
+        "completion_tokens": 462
+      },
+      "variant": "concise_prompt_max512",
+      "seed": 0,
+      "characters": 1510,
+      "valid_json": true,
+      "fields": {
+        "description": 508,
+        "conclusion": 508,
+        "recommendations": 406,
+        "descriptionRemarks": null
+      },
+      "synthetic_description_remarks": null,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 23.9,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1587,
+        "total_tokens": 2163,
+        "completion_tokens": 576
+      },
+      "variant": "concise_prompt_max512",
+      "seed": 42,
+      "characters": 2041,
+      "valid_json": true,
+      "fields": {
+        "description": 780,
+        "conclusion": 780,
+        "recommendations": 393,
+        "descriptionRemarks": null
+      },
+      "synthetic_description_remarks": null,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    }
+  ],
+  "limitations": [
+    "Small synthetic regression sample, not a clinical-quality benchmark."
+  ]
+}

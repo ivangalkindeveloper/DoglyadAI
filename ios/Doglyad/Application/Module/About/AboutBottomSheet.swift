@@ -35,10 +35,3 @@ struct AboutBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    AboutBottomSheet(
-        arguments: AboutArguments(),
-    )
-    .previewable()
-}

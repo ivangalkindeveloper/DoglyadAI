@@ -65,10 +65,3 @@ struct SettingsAIScreen: View {
         )
     }
 }
-
-#Preview {
-    SettingsAIScreen(
-        arguments: nil,
-    )
-    .previewable()
-}

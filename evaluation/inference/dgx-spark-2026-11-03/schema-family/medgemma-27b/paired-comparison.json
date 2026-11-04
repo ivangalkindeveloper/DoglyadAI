@@ -1,0 +1,58 @@
+[
+  {
+    "id": "conflict-greedy-0",
+    "prompt_token_ids_equal": true,
+    "text_equal": true,
+    "bounded_finish": "stop",
+    "unbounded_finish": "stop"
+  },
+  {
+    "id": "conflict-sample-0",
+    "prompt_token_ids_equal": true,
+    "text_equal": true,
+    "bounded_finish": "stop",
+    "unbounded_finish": "stop"
+  },
+  {
+    "id": "conflict-sample-123",
+    "prompt_token_ids_equal": true,
+    "text_equal": true,
+    "bounded_finish": "stop",
+    "unbounded_finish": "stop"
+  },
+  {
+    "id": "conflict-sample-42",
+    "prompt_token_ids_equal": true,
+    "text_equal": true,
+    "bounded_finish": "stop",
+    "unbounded_finish": "stop"
+  },
+  {
+    "id": "report-greedy-0",
+    "prompt_token_ids_equal": true,
+    "text_equal": true,
+    "bounded_finish": "stop",
+    "unbounded_finish": "stop"
+  },
+  {
+    "id": "report-sample-0",
+    "prompt_token_ids_equal": true,
+    "text_equal": true,
+    "bounded_finish": "stop",
+    "unbounded_finish": "stop"
+  },
+  {
+    "id": "report-sample-123",
+    "prompt_token_ids_equal": true,
+    "text_equal": true,
+    "bounded_finish": "stop",
+    "unbounded_finish": "stop"
+  },
+  {
+    "id": "report-sample-42",
+    "prompt_token_ids_equal": true,
+    "text_equal": true,
+    "bounded_finish": "stop",
+    "unbounded_finish": "stop"
+  }
+]

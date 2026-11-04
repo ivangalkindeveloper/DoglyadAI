@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/survey/trt-venv/bin/trtllm-serve", line 5, in <module>
+    from tensorrt_llm.commands.serve import main
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/__init__.py", line 189, in <module>
+    _init()
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_bootstrap.py", line 180, in _init
+    from ._utils import print_all_stacks
+  File "/survey/trt-venv/lib/python3.12/site-packages/tensorrt_llm/_utils.py", line 66, in <module>
+    from tensorrt_llm.bindings import (DataType, LayerType, global_steady_clock_now,
+ImportError: libcuda.so.1: cannot open shared object file: No such file or directory

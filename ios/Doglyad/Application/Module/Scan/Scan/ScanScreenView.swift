@@ -23,6 +23,9 @@ struct ScanScreenView: DViewProtocol {
                 .dStyle(
                     .circle,
                 )
+                .accessibilityIdentifier(
+                    "scan.settings",
+                )
                 .disabled(
                     isProcessing,
                 )

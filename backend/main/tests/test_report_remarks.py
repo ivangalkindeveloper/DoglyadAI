@@ -119,9 +119,29 @@ def test_schema_and_prompt_match_requested_remarks(
         is_recommendations_included=False,
         is_photo_remarks=is_photo_remarks and is_photos_available,
         is_description_remarks=is_description_remarks,
+        structured_output=json.dumps(
+            schema,
+        ),
     )
     assert ("descriptionRemarks" in system) is is_description_remarks
     assert ("photoRemarks" in system) is (is_photo_remarks and is_photos_available)
+    assert (
+        json.dumps(
+            schema,
+        )
+        in system
+    )
+    assert set(
+        schema["required"],
+    ) == set(
+        schema["properties"],
+    )
+    if is_description_remarks:
+        variants = schema["properties"]["descriptionRemarks"]["anyOf"]
+        assert {"type": "null"} in variants
+        assert "maxLength" not in json.dumps(
+            schema,
+        )
     if is_photo_remarks and is_photos_available:
         point = schema["$defs"]["USExaminationPhotoRemarkPoint"]
         assert point["additionalProperties"] is False
@@ -139,6 +159,83 @@ def test_schema_and_prompt_match_requested_remarks(
         ]
     else:
         assert "$defs" not in schema
+
+
+@pytest.mark.parametrize(
+    "environment",
+    ["development", "production"],
+)
+def test_long_unicode_remarks_are_preserved_in_partial_and_final_report(
+    environment: str,
+) -> None:
+    configuration = ConfigurationLoader(
+        Variables(
+            environment=environment,
+        ).configuration_directory,
+    ).load()
+    service = ReportGenerationService(
+        configuration,
+        FakeRemarksService(
+            {},
+        ),
+    )
+    body = USExaminationRequest(
+        settingsAI=SettingsAI(
+            selectedNeuralModelId="google/medgemma-4b-it",
+        ),
+        examinationData=_examination(
+            False,
+        ),
+        isPhotoRemarks=False,
+    )
+    prepared = service.prepare(
+        body,
+        language_code=LanguageCode.RU,
+    )
+    remarks = (
+        "Исходное описание утверждает отсутствие очаговых изменений. "
+        "Затем приведено описание образования в правой доле без явного исправления первой записи. "
+        "Необходимо уточнить, относятся ли эти утверждения к одной структуре и одному исследованию. "
+        "Кроме того, в отдельном фрагменте сторона находки обозначена неоднозначно; "
+        "по представленному тексту невозможно определить, какую из записей врач считает окончательной. "
+        "Сохраните подтверждённые сведения и исправьте исходную формулировку перед использованием протокола. "
+        "Это замечание относится к согласованности исходных данных и не устанавливает диагноз."
+    )
+    assert (
+        len(
+            remarks,
+        )
+        > 512
+    )
+    schema = json.loads(
+        prepared.structured_output,
+    )
+    assert "maxLength" not in json.dumps(
+        schema,
+    )
+    response = json.dumps(
+        {
+            "description": "Synthetic description.",
+            "conclusion": "Synthetic conclusion.",
+            "descriptionRemarks": remarks,
+        },
+        ensure_ascii=False,
+    )
+    assert (
+        service.preview(
+            response[:-1],
+        ).descriptionRemarks
+        == remarks
+    )
+    assert (
+        service.complete(
+            response,
+            body,
+            model_id=prepared.model_id,
+            language_code=LanguageCode.RU,
+        ).descriptionRemarks
+        == remarks
+    )
 
 
 @pytest.mark.parametrize(
@@ -220,6 +317,7 @@ def test_report_prompt_uses_catalog_templates_and_preserves_input(
         True,
         True,
         True,
+        structured_output="{}",
     )
     assert system.startswith(
         configuration.text(
@@ -317,7 +415,7 @@ def _generate(
         {
             "type": "http",
             "method": "POST",
-            "path": "/v1/ultrasound/generate_report",
+            "path": "/v1/ultrasound/report_generations",
             "headers": [(b"accept-language", b"en"), (b"x-firebase-appcheck", b"token")],
             "app": SimpleNamespace(
                 state=SimpleNamespace(

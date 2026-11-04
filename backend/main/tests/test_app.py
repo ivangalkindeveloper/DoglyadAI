@@ -25,7 +25,8 @@ def test_app_exposes_v1_routes(
     assert "/v1/ultrasound/examination_types" in paths
     assert "/v1/ultrasound/examination_neural_models" in paths
     assert "/v1/ultrasound/examination_contextual_strings" not in paths
-    assert "/v1/ultrasound/generate_report" in paths
+    assert "/v1/ultrasound/generate_report" not in paths
+    assert "/v1/ultrasound/report_generations" in paths
     assert "/v1/templates/ready_made_list" in paths
     assert "/v1/send_report_email" in paths
     assert "/application_config" not in paths

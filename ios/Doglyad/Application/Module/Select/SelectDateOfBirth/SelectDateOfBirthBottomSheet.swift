@@ -37,10 +37,3 @@ struct SelectDateOfBirthBottomSheet: View {
         )
     }
 }
-
-#Preview {
-    SelectDateOfBirthBottomSheet(
-        arguments: nil,
-    )
-    .previewable()
-}

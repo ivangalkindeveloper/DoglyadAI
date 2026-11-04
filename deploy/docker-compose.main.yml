@@ -40,6 +40,24 @@ services:
         max-size: "20m"
         max-file: "5"
 
+  report_worker:
+    image: ghcr.io/ivangalkindeveloper/doglyad-main:${TAG:-latest}
+    command: [python, -m, app.report_worker]
+    volumes:
+      - ./secrets:/app/secrets:ro
+      - ./logs:/app/logs
+    env_file:
+      - secrets/.env
+      - ${ENV_FILE:?ENV_FILE is required}
+    environment:
+      LOG_DIR: /app/logs/report-worker
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"
+
   caddy:
     image: caddy:2
     # The only thing facing the internet.

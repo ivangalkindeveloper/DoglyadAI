@@ -1,0 +1,8 @@
+dtype: bfloat16
+kv_cache_config:
+  free_gpu_memory_fraction: 0.1
+  max_tokens: 16384
+  dtype: bfloat16
+cuda_graph_config:
+  batch_sizes: [1, 2, 4]
+guided_decoding_backend: xgrammar

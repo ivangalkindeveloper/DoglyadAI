@@ -36,10 +36,3 @@ struct NewVersionScreen: View {
         )
     }
 }
-
-#Preview {
-    NewVersionScreen(
-        arguments: nil,
-    )
-    .previewable()
-}

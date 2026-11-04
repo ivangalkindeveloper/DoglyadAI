@@ -10,7 +10,7 @@ uses Python 3.11, FastAPI, Pydantic and one shared `httpx.AsyncClient`.
 
 ## Read the current implementation
 
-Use `app/route/ultrasound/generate_report.py` for a service-backed operation,
+Use `app/route/ultrasound/report_generations/start_report_generation.py` for a service-backed operation,
 `app/route/email/send_report_email.py` for a bodyless response, and
 `app/route/templates/ready_made_list.py` for localized configuration data.
 Read `app/core/application/application_factory.py` and `main_lifespan.py` for composition.

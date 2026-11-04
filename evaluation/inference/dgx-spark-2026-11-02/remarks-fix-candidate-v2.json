@@ -1,0 +1,116 @@
+{
+  "date": "2026-11-02",
+  "method": "Direct private vLLM SSE with current ReportGenerationService.prepare/complete; synthetic fixtures only",
+  "conditions": {
+    "temperature": 0.3,
+    "max_tokens": 2048,
+    "parallel_requests": 2,
+    "max_description_remarks_characters": 512
+  },
+  "results": [
+    {
+      "seconds": 15.26,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1694,
+        "total_tokens": 2149,
+        "completion_tokens": 455
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 0,
+      "conflict": true,
+      "characters": 1548,
+      "valid_json": true,
+      "fields": {
+        "description": 588,
+        "conclusion": 163,
+        "recommendations": 199,
+        "descriptionRemarks": 512
+      },
+      "synthetic_description_remarks": "Уточните наличие очагового образования: в исходном описании одновременно указаны его наличие и отсутствие. Уточните, есть ли диффузные изменения в щитовидной железе, если да, то какие. Уточните, есть ли признаки тиреоидита, если да, то какой. Уточните, есть ли признаки гиперваскуляризации железы, если да, то какие. Уточните, есть ли признаки регионарных лимфоузлов, если да, то какие. Уточните, есть ли признаки экстратиреоидного распространения, если да, то какие. Уточните, есть ли признаки ТИРАДС, если да, ",
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 16.01,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1671,
+        "total_tokens": 2146,
+        "completion_tokens": 475
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 0,
+      "conflict": false,
+      "characters": 1581,
+      "valid_json": true,
+      "fields": {
+        "description": 508,
+        "conclusion": 508,
+        "recommendations": 373,
+        "descriptionRemarks": 106
+      },
+      "synthetic_description_remarks": "Уточните наличие очагового образования: в исходном описании одновременно указаны его наличие и отсутствие.",
+      "expected_remarks_present": false,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 15.6,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1694,
+        "total_tokens": 2162,
+        "completion_tokens": 468
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 42,
+      "conflict": true,
+      "characters": 1639,
+      "valid_json": true,
+      "fields": {
+        "description": 588,
+        "conclusion": 178,
+        "recommendations": 275,
+        "descriptionRemarks": 512
+      },
+      "synthetic_description_remarks": "Уточните наличие очагового образования: в исходном описании одновременно указаны его наличие и отсутствие. Уточните, является ли гипоэхогенное образование очаговым образованием. Уточните, требуется ли проведение сцинтиграфии щитовидной железы и/или тонкоигольной аспирационной биопсии для уточнения диагноза. Уточните, требуется ли проведение сцинтиграфии щитовидной железы и/или тонкоигольной аспирационной биопсии для уточнения диагноза. Уточните, требуется ли проведение сцинтиграфии щитовидной железы и/или с",
+      "expected_remarks_present": true,
+      "max_exact_sentence_copies": 2,
+      "server_validation": "passed"
+    },
+    {
+      "seconds": 17.83,
+      "finish": "stop",
+      "usage": {
+        "prompt_tokens": 1671,
+        "total_tokens": 2195,
+        "completion_tokens": 524
+      },
+      "model": "google/medgemma-4b-it",
+      "language": "ru",
+      "seed": 42,
+      "conflict": false,
+      "characters": 1775,
+      "valid_json": true,
+      "fields": {
+        "description": 508,
+        "conclusion": 508,
+        "recommendations": 264,
+        "descriptionRemarks": 409
+      },
+      "synthetic_description_remarks": "Уточните наличие очагового образования: в исходном описании одновременно указаны его наличие и отсутствие. Уточните, соответствует ли размер долей нормальным значениям, учитывая возраст пациента. Уточните, есть ли какие-либо другие признаки, указывающие на патологию щитовидной железы, помимо описанных. Уточните, есть ли какие-либо изменения в кровотоке, которые могли бы указывать на воспалительный процесс.",
+      "expected_remarks_present": false,
+      "max_exact_sentence_copies": 1,
+      "server_validation": "passed"
+    }
+  ],
+  "limitations": [
+    "Small synthetic regression matrix, not a general clinical-quality evaluation.",
+    "No images; photo schema paths are covered by backend tests."
+  ]
+}

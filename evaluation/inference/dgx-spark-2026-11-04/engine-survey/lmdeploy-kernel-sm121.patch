@@ -1,0 +1,12 @@
+--- upstream/flashattention.py
++++ experimental/flashattention.py
+@@ -437,6 +437,9 @@
+ 
+ 
+ def _kernel_meta_sm12x(BLOCK_DK: int, shared_kv: bool):
++    # Experimental DGX Spark tile: avoid exceeding SM121 shared memory.
++    if BLOCK_DK == 256 and not shared_kv:
++        return 32, 32, 4, 1
+     # Blackwell (sm_120, cc 12.x) + B200/B100 variants
+     if BLOCK_DK <= 128:
+         BLOCK_M = 128
