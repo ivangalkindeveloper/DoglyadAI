@@ -1,0 +1,7 @@
+{
+  "model_index": 2,
+  "model_key": "27b",
+  "model": "google/medgemma-27b-it",
+  "profile": "pressure-plus",
+  "kv_gib": 12
+}

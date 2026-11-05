@@ -1,0 +1,26 @@
+{
+  "commit": "551536d",
+  "subject": "Add report streaming, previews and inference evaluations",
+  "pushed_to": "origin/master",
+  "excluded": [
+    "test/",
+    "eight PBX project lines attaching test/ios sources",
+    "protected secret/resource paths"
+  ],
+  "checks": {
+    "main_ruff": true,
+    "main_mypy": true,
+    "main_pytest_passed": 587,
+    "main_pytest_skipped": 5,
+    "inference_ruff": true,
+    "inference_mypy": true,
+    "inference_pytest_passed": 103,
+    "deploy_unittest_passed": 48,
+    "ios_debug_development_build": true,
+    "ios_release_production_build": true,
+    "architecture_existing_violations": 13,
+    "format": true,
+    "harness_check": true
+  },
+  "ios_note": "Built for iPhone 17 simulator; no physical iPhone installation. Used pinned cached Swift packages after a stalled remote fetch."
+}

@@ -1,0 +1,7 @@
+{
+  "uname": "Linux spark-bfd6 7.0.0-1024-nvidia #25~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Thu Oct 22 21:37:03 UTC 2 aarch64 aarch64 aarch64 GNU/Linux",
+  "os": "PRETTY_NAME=\"Ubuntu 24.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"24.04\"\nVERSION=\"24.04.5 LTS (Noble Numbat)\"\nVERSION_CODENAME=noble\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=noble\nLOGO=ubuntu-logo\n",
+  "docker": "29.6.2",
+  "gpu": "NVIDIA GB10, 580.178.04",
+  "uptime": "1177.77 22271.70\n"
+}

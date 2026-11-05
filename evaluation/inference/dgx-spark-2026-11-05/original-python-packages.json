@@ -1,0 +1,32 @@
+{
+  "4b": {
+    "packages": {
+      "vllm": "0.28.0",
+      "torch": "2.13.0+cu130",
+      "transformers": "5.15.1",
+      "xgrammar": "0.2.3",
+      "flashinfer-python": "0.6.16.post3"
+    },
+    "modified_python_sources": []
+  },
+  "15_4b": {
+    "packages": {
+      "vllm": "0.28.0",
+      "torch": "2.13.0+cu130",
+      "transformers": "5.15.1",
+      "xgrammar": "0.2.3",
+      "flashinfer-python": "0.6.16.post3"
+    },
+    "modified_python_sources": []
+  },
+  "27b": {
+    "packages": {
+      "vllm": "0.28.0",
+      "torch": "2.13.0+cu130",
+      "transformers": "5.15.1",
+      "xgrammar": "0.2.3",
+      "flashinfer-python": "0.6.16.post3"
+    },
+    "modified_python_sources": []
+  }
+}

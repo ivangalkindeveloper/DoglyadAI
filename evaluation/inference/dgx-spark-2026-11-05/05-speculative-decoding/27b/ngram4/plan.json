@@ -1,0 +1,9 @@
+{
+  "model_key": "27b",
+  "model_index": 2,
+  "model": "google/medgemma-27b-it",
+  "profile": "ngram4",
+  "flags": {
+    "--speculative-config": "{\"method\": \"ngram\", \"num_speculative_tokens\": 4, \"prompt_lookup_min\": 2, \"prompt_lookup_max\": 5}"
+  }
+}

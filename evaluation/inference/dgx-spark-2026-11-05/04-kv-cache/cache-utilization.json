@@ -1,0 +1,62 @@
+[
+  {
+    "model": "15-4b",
+    "profile": "pressure-default",
+    "source": "runs/15-4b-pressure-default/container.log",
+    "log_samples": 12,
+    "maximum_observed_running": 8,
+    "maximum_observed_usage_percent": 91.5,
+    "preemptions_including_warmup": 0.0,
+    "sampling_note": "Engine log samples approximately every 10 seconds, including warmup; peaks between samples can be missed."
+  },
+  {
+    "model": "15-4b",
+    "profile": "pressure-plus",
+    "source": "runs/15-4b-pressure-plus/container.log",
+    "log_samples": 12,
+    "maximum_observed_running": 8,
+    "maximum_observed_usage_percent": 60.5,
+    "preemptions_including_warmup": 0.0,
+    "sampling_note": "Engine log samples approximately every 10 seconds, including warmup; peaks between samples can be missed."
+  },
+  {
+    "model": "27b",
+    "profile": "pressure-default",
+    "source": "runs/27b-pressure-default/container.log",
+    "log_samples": 80,
+    "maximum_observed_running": 3,
+    "maximum_observed_usage_percent": 83.6,
+    "preemptions_including_warmup": 0.0,
+    "sampling_note": "Engine log samples approximately every 10 seconds, including warmup; peaks between samples can be missed."
+  },
+  {
+    "model": "27b",
+    "profile": "pressure-plus",
+    "source": "runs/27b-pressure-plus/container.log",
+    "log_samples": 63,
+    "maximum_observed_running": 6,
+    "maximum_observed_usage_percent": 95.0,
+    "preemptions_including_warmup": 0.0,
+    "sampling_note": "Engine log samples approximately every 10 seconds, including warmup; peaks between samples can be missed."
+  },
+  {
+    "model": "4b",
+    "profile": "pressure-default",
+    "source": "runs/4b-pressure-default/container.log",
+    "log_samples": 12,
+    "maximum_observed_running": 8,
+    "maximum_observed_usage_percent": 89.5,
+    "preemptions_including_warmup": 0.0,
+    "sampling_note": "Engine log samples approximately every 10 seconds, including warmup; peaks between samples can be missed."
+  },
+  {
+    "model": "4b",
+    "profile": "pressure-plus",
+    "source": "runs/4b-pressure-plus/container.log",
+    "log_samples": 12,
+    "maximum_observed_running": 8,
+    "maximum_observed_usage_percent": 60.1,
+    "preemptions_including_warmup": 0.0,
+    "sampling_note": "Engine log samples approximately every 10 seconds, including warmup; peaks between samples can be missed."
+  }
+]

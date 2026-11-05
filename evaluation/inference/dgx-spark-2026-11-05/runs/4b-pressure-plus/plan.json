@@ -1,0 +1,33 @@
+{
+  "model_index": 0,
+  "model_key": "4b",
+  "model": "google/medgemma-4b-it",
+  "profile": "pressure-plus",
+  "groups": [
+    {
+      "study": "04-kv-cache",
+      "id": "held-context-c8",
+      "concurrency": 8,
+      "target_tokens": 15000,
+      "payload": {
+        "model": "google/medgemma-4b-it",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Перечисли числа от 1 до 1000 словами по-русски."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "top_k": 0,
+        "repetition_penalty": 1.0,
+        "seed": 42,
+        "max_tokens": 512,
+        "ignore_eos": true
+      },
+      "fixed_tokens": 512,
+      "repetitions": 2
+    }
+  ],
+  "kv_gib": 6
+}

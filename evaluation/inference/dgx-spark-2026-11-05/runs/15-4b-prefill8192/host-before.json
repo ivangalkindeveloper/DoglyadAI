@@ -1,0 +1,20 @@
+{
+  "unix": 1793835868.8348227,
+  "memory_kib": {
+    "MemFree": 4014344,
+    "MemAvailable": 18844300,
+    "Cached": 15738844,
+    "SwapTotal": 16777212,
+    "SwapFree": 13640468,
+    "Dirty": 21820
+  },
+  "vmstat": {
+    "pswpin": 1409719,
+    "pswpout": 2520022,
+    "pgmajfault": 612693,
+    "oom_kill": 0
+  },
+  "gpu": "48, 11.11 W, 2405 MHz, [N/A], P0, Not Active, Not Active, Not Active",
+  "loadavg": "1.11 1.03 0.98 1/1523 211073",
+  "memory_pressure": "some avg10=0.00 avg60=0.00 avg300=0.00 total=2178547\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=2171093"
+}

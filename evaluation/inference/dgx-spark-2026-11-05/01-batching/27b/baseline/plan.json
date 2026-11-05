@@ -1,0 +1,7 @@
+{
+  "model_key": "27b",
+  "model_index": 2,
+  "model": "google/medgemma-27b-it",
+  "profile": "baseline",
+  "flags": {}
+}

@@ -1,0 +1,9 @@
+{
+  "model_key": "15-4b",
+  "model_index": 1,
+  "model": "google/medgemma-1.5-4b-it",
+  "profile": "seq8",
+  "flags": {
+    "--max-num-seqs": "8"
+  }
+}

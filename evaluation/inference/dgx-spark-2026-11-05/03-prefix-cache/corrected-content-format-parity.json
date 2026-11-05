@@ -1,0 +1,38 @@
+{
+  "4b": {
+    "equal_token_ids": true,
+    "recorded_count": 1286,
+    "canonical_count": 1286,
+    "recorded_sha256": "b8ae0f04d59205edf650da2f244bb27e4fc9480ca46b960b1825bc763d5dd78e",
+    "canonical_sha256": "b8ae0f04d59205edf650da2f244bb27e4fc9480ca46b960b1825bc763d5dd78e",
+    "first_differences": [],
+    "tails": {
+      "recorded": "ации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM.\n\nНомер синтетического запроса: 10-0.<end_of_turn>\n<start_of_turn>model\n",
+      "canonical": "ации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM.\n\nНомер синтетического запроса: 10-0.<end_of_turn>\n<start_of_turn>model\n"
+    }
+  },
+  "15-4b": {
+    "equal_token_ids": true,
+    "recorded_count": 1286,
+    "canonical_count": 1286,
+    "recorded_sha256": "b8ae0f04d59205edf650da2f244bb27e4fc9480ca46b960b1825bc763d5dd78e",
+    "canonical_sha256": "b8ae0f04d59205edf650da2f244bb27e4fc9480ca46b960b1825bc763d5dd78e",
+    "first_differences": [],
+    "tails": {
+      "recorded": "ации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM.\n\nНомер синтетического запроса: 10-0.<end_of_turn>\n<start_of_turn>model\n",
+      "canonical": "ации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM.\n\nНомер синтетического запроса: 10-0.<end_of_turn>\n<start_of_turn>model\n"
+    }
+  },
+  "27b": {
+    "equal_token_ids": true,
+    "recorded_count": 1286,
+    "canonical_count": 1286,
+    "recorded_sha256": "b8ae0f04d59205edf650da2f244bb27e4fc9480ca46b960b1825bc763d5dd78e",
+    "canonical_sha256": "b8ae0f04d59205edf650da2f244bb27e4fc9480ca46b960b1825bc763d5dd78e",
+    "first_differences": [],
+    "tails": {
+      "recorded": "ации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM.\n\nНомер синтетического запроса: 10-0.<end_of_turn>\n<start_of_turn>model\n",
+      "canonical": "ации хорошее на протяжении всего исследования. Архивирование ключевых изображений выполнено в формате DICOM.\n\nНомер синтетического запроса: 10-0.<end_of_turn>\n<start_of_turn>model\n"
+    }
+  }
+}

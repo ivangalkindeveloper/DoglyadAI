@@ -1,0 +1,14 @@
+[
+  {
+    "model": "27b",
+    "profile": "prefill8192",
+    "groups": [["02-prefill-budget", "27b", "prefill8192", "long-c4"]],
+    "failure": "runs/27b-prefill8192/failure.json",
+    "log": "runs/27b-prefill8192/container.log",
+    "required_log_fragment": "8.76 GiB KV cache is needed",
+    "phase": "startup",
+    "reason": "vLLM requires at least 8.76 GiB KV cache for max_model_len=16384 with max_num_batched_tokens=8192; the controlled comparison retains 8 GiB. No measurements are claimed for this configuration.",
+    "is_host_oom": false,
+    "changed_other_settings_to_force_startup": false
+  }
+]

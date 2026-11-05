@@ -1,0 +1,35 @@
+{
+  "model_key": "27b",
+  "model_index": 2,
+  "model": "google/medgemma-27b-it",
+  "profile": "kv-plus",
+  "flags": {
+    "--max-num-seqs": "8",
+    "--kv-cache-memory-bytes": "12884901888"
+  },
+  "groups": [
+    {
+      "study": "04-kv-cache",
+      "id": "near-context-c8",
+      "concurrency": 8,
+      "target_tokens": 15000,
+      "payload": {
+        "model": "google/medgemma-27b-it",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Перечисли числа от 1 до 1000 словами по-русски."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "top_k": 0,
+        "repetition_penalty": 1.0,
+        "seed": 42,
+        "max_tokens": 64,
+        "ignore_eos": true
+      },
+      "fixed_tokens": 64
+    }
+  ]
+}

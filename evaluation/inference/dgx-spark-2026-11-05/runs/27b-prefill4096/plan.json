@@ -1,0 +1,34 @@
+{
+  "model_key": "27b",
+  "model_index": 2,
+  "model": "google/medgemma-27b-it",
+  "profile": "prefill4096",
+  "flags": {
+    "--max-num-batched-tokens": "4096"
+  },
+  "groups": [
+    {
+      "study": "02-prefill-budget",
+      "id": "long-c4",
+      "concurrency": 4,
+      "target_tokens": 8000,
+      "payload": {
+        "model": "google/medgemma-27b-it",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Перечисли числа от 1 до 1000 словами по-русски."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "top_k": 0,
+        "repetition_penalty": 1.0,
+        "seed": 42,
+        "max_tokens": 128,
+        "ignore_eos": true
+      },
+      "fixed_tokens": 128
+    }
+  ]
+}

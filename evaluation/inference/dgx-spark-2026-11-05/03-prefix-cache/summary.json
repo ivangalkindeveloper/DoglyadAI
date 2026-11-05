@@ -1,0 +1,2318 @@
+[
+  {
+    "model": "15-4b",
+    "profile": "baseline",
+    "group": "application-cold",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.18340405499975532,
+    "latency_seconds": 0.7971342169998934,
+    "wave_seconds": 0.8222167139997509,
+    "wave_tokens_per_second": 19.459589822939122,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.0407605160003186,
+    "maximum_delta_gap_seconds": 0.05171084600033282,
+    "latency_range_seconds": [
+      0.7795577399997455,
+      1.3430879819998154
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 5143.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5143.0,
+      "vllm:prompt_tokens_by_source_total": 5143.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "baseline",
+    "group": "application-warm",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.05673931499995888,
+    "latency_seconds": 0.6659016769999653,
+    "wave_seconds": 0.6920211980000204,
+    "wave_tokens_per_second": 23.12067902867844,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.04071147700005895,
+    "maximum_delta_gap_seconds": 0.051134785000158445,
+    "latency_range_seconds": [
+      0.6637600730000486,
+      0.6848076259998379
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 5143.0,
+      "vllm:prefix_cache_hits_total": 3792.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5143.0,
+      "vllm:prompt_tokens_by_source_total": 5143.0,
+      "vllm:prompt_tokens_cached_total": 3792.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "baseline",
+    "group": "long-cold",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.0457645239998783,
+    "latency_seconds": 1.6716229149997162,
+    "wave_seconds": 1.6973388900000828,
+    "wave_tokens_per_second": 9.426520593067433,
+    "prompt_tokens": [
+      8009
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.04220811799996227,
+    "maximum_delta_gap_seconds": 0.044283268000071985,
+    "latency_range_seconds": [
+      1.6628557400003956,
+      1.6769146500000716
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 32035.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 32035.0,
+      "vllm:prompt_tokens_by_source_total": 32035.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "baseline",
+    "group": "long-warm",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.08477679599991461,
+    "latency_seconds": 0.7082307339996987,
+    "wave_seconds": 0.7273965310000676,
+    "wave_tokens_per_second": 21.996255574661948,
+    "prompt_tokens": [
+      8009
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.04210931899979187,
+    "maximum_delta_gap_seconds": 0.05272114700028396,
+    "latency_range_seconds": [
+      0.702498063999883,
+      0.7113487510000596
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 32035.0,
+      "vllm:prefix_cache_hits_total": 23984.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 32035.0,
+      "vllm:prompt_tokens_by_source_total": 32035.0,
+      "vllm:prompt_tokens_cached_total": 23984.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "system-cold--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "system-cold-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.0204874320006638,
+    "latency_seconds": 1.5137427720001142,
+    "wave_seconds": 1.5437787200025923,
+    "wave_tokens_per_second": 10.36417965391642,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04090645799806225,
+    "maximum_delta_gap_seconds": 0.05470231299841544,
+    "latency_range_seconds": [
+      1.5137427720001142,
+      1.5137427720001142
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "system-cold-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.22039507600129582,
+    "latency_seconds": 0.7992210810007236,
+    "wave_seconds": 0.8258717569988221,
+    "wave_tokens_per_second": 19.37346793180484,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.041240092999942135,
+    "maximum_delta_gap_seconds": 0.05670972699954291,
+    "latency_range_seconds": [
+      0.7992210810007236,
+      0.7992210810007236
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "system-cold-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.2735374959993351,
+    "latency_seconds": 0.8021709629974794,
+    "wave_seconds": 0.8174184039999091,
+    "wave_tokens_per_second": 19.573819138040573,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.041222604500944726,
+    "maximum_delta_gap_seconds": 0.0517233650025446,
+    "latency_range_seconds": [
+      0.8021709629974794,
+      0.8021709629974794
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "system-warm--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "system-warm-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.11327725899900543,
+    "latency_seconds": 0.7306522649996623,
+    "wave_seconds": 0.7570110159977048,
+    "wave_tokens_per_second": 21.13575583693819,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04143963000024087,
+    "maximum_delta_gap_seconds": 0.05336525500024436,
+    "latency_range_seconds": [
+      0.7306522649996623,
+      0.7306522649996623
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 784.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 784.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "system-warm-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.11085356699913973,
+    "latency_seconds": 0.7287262540012307,
+    "wave_seconds": 0.7549882359999174,
+    "wave_tokens_per_second": 21.192383188341164,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04107370500059915,
+    "maximum_delta_gap_seconds": 0.053332855000917334,
+    "latency_range_seconds": [
+      0.7287262540012307,
+      0.7287262540012307
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 784.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 784.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "system-warm-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.11021954099851428,
+    "latency_seconds": 0.7302912889972504,
+    "wave_seconds": 0.7568696910020662,
+    "wave_tokens_per_second": 21.13970236913123,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04178646500076866,
+    "maximum_delta_gap_seconds": 0.05164009800137137,
+    "latency_range_seconds": [
+      0.7302912889972504,
+      0.7302912889972504
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 784.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 784.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1285.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1285.0,
+      "vllm:prompt_tokens_by_source_total": 1285.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.20289994799895794,
+    "latency_seconds": 0.8136247289985477,
+    "wave_seconds": 0.838352405000478,
+    "wave_tokens_per_second": 19.085052902056,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04149281299760332,
+    "maximum_delta_gap_seconds": 0.043253473999357084,
+    "latency_range_seconds": [
+      0.8136247289985477,
+      0.8136247289985477
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.18997024599957513,
+    "latency_seconds": 0.8125347549976141,
+    "wave_seconds": 0.8383383960026549,
+    "wave_tokens_per_second": 19.08537182155895,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04155681400152389,
+    "maximum_delta_gap_seconds": 0.05193256399797974,
+    "latency_range_seconds": [
+      0.8125347549976141,
+      0.8125347549976141
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.18992010000147275,
+    "latency_seconds": 0.8055660909994913,
+    "wave_seconds": 0.8309920779975073,
+    "wave_tokens_per_second": 19.254094501786568,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04163249300108873,
+    "maximum_delta_gap_seconds": 0.055034695000358624,
+    "latency_range_seconds": [
+      0.8055660909994913,
+      0.8055660909994913
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1285.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1285.0,
+      "vllm:prompt_tokens_by_source_total": 1285.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.09206367899969337,
+    "latency_seconds": 0.7115740230001393,
+    "wave_seconds": 0.7379042129978188,
+    "wave_tokens_per_second": 21.68303110101269,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04162698900108808,
+    "maximum_delta_gap_seconds": 0.050932678997924086,
+    "latency_range_seconds": [
+      0.7115740230001393,
+      0.7115740230001393
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 1264.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 1264.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.06627933499839855,
+    "latency_seconds": 0.6852118749993679,
+    "wave_seconds": 0.7102184169998509,
+    "wave_tokens_per_second": 22.52828090207545,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04129842499969527,
+    "maximum_delta_gap_seconds": 0.04315481500088936,
+    "latency_range_seconds": [
+      0.6852118749993679,
+      0.6852118749993679
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 1264.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 1264.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.07455274099993403,
+    "latency_seconds": 0.6960219450011209,
+    "wave_seconds": 0.720929270999477,
+    "wave_tokens_per_second": 22.193577988334457,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04169537200141349,
+    "maximum_delta_gap_seconds": 0.05357725199792185,
+    "latency_range_seconds": [
+      0.6960219450011209,
+      0.6960219450011209
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 1264.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 1264.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "baseline",
+    "group": "application-cold",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.0632704609997745,
+    "latency_seconds": 4.4909294709996175,
+    "wave_seconds": 4.515990446000615,
+    "wave_tokens_per_second": 3.54296586569834,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.22849289500027226,
+    "maximum_delta_gap_seconds": 0.23211523999998462,
+    "latency_range_seconds": [
+      4.4870917649996045,
+      5.0547467849992245
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 5143.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5143.0,
+      "vllm:prompt_tokens_by_source_total": 5143.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "baseline",
+    "group": "application-warm",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.2748776340004042,
+    "latency_seconds": 3.6956621879999147,
+    "wave_seconds": 3.7112879190008243,
+    "wave_tokens_per_second": 4.311171849018822,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.2277676399999109,
+    "maximum_delta_gap_seconds": 0.23412821800047823,
+    "latency_range_seconds": [
+      3.687251901000309,
+      3.7076134319995617
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 5143.0,
+      "vllm:prefix_cache_hits_total": 3792.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5143.0,
+      "vllm:prompt_tokens_by_source_total": 5143.0,
+      "vllm:prompt_tokens_cached_total": 3792.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "baseline",
+    "group": "long-cold",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 5.993341753000095,
+    "latency_seconds": 9.46611077199941,
+    "wave_seconds": 9.491542493999987,
+    "wave_tokens_per_second": 1.6857112540047405,
+    "prompt_tokens": [
+      8009
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.23164585700033058,
+    "maximum_delta_gap_seconds": 0.2381844359997558,
+    "latency_range_seconds": [
+      9.464369992999309,
+      9.469563264000499
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 32035.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 32035.0,
+      "vllm:prompt_tokens_by_source_total": 32035.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "baseline",
+    "group": "long-warm",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.27128325500052597,
+    "latency_seconds": 3.73709628800043,
+    "wave_seconds": 3.752793957999529,
+    "wave_tokens_per_second": 4.263490130038737,
+    "prompt_tokens": [
+      8009
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.23125963700022112,
+    "maximum_delta_gap_seconds": 0.23708576299941342,
+    "latency_range_seconds": [
+      3.736010988000089,
+      3.7647935999993933
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 32035.0,
+      "vllm:prefix_cache_hits_total": 23984.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 32035.0,
+      "vllm:prompt_tokens_by_source_total": 32035.0,
+      "vllm:prompt_tokens_cached_total": 23984.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "system-cold--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "system-cold-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.7082114639997599,
+    "latency_seconds": 5.231779634999839,
+    "wave_seconds": 5.260376743997767,
+    "wave_tokens_per_second": 3.041607241963503,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.23468539499663166,
+    "maximum_delta_gap_seconds": 0.23915109200243023,
+    "latency_range_seconds": [
+      5.231779634999839,
+      5.231779634999839
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "system-cold-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.0480663620000996,
+    "latency_seconds": 4.573569364001742,
+    "wave_seconds": 4.599483865000366,
+    "wave_tokens_per_second": 3.4786511855713895,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.23560508800073876,
+    "maximum_delta_gap_seconds": 0.2368458670025575,
+    "latency_range_seconds": [
+      4.573569364001742,
+      4.573569364001742
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "system-cold-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.0427674019992992,
+    "latency_seconds": 4.5694424159992195,
+    "wave_seconds": 4.595881192999514,
+    "wave_tokens_per_second": 3.481378070514821,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.23516669899981935,
+    "maximum_delta_gap_seconds": 0.23674827099966933,
+    "latency_range_seconds": [
+      4.5694424159992195,
+      4.5694424159992195
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "system-warm--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "system-warm-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.4770433960002265,
+    "latency_seconds": 4.0030998309994175,
+    "wave_seconds": 4.018921752001916,
+    "wave_tokens_per_second": 3.981167334753417,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.23549455900138128,
+    "maximum_delta_gap_seconds": 0.2380437690007966,
+    "latency_range_seconds": [
+      4.0030998309994175,
+      4.0030998309994175
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 784.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 784.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "system-warm-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.474946390997502,
+    "latency_seconds": 3.999948887998471,
+    "wave_seconds": 4.026640128999134,
+    "wave_tokens_per_second": 3.9735361212865525,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.2351529270017636,
+    "maximum_delta_gap_seconds": 0.23846630499974708,
+    "latency_range_seconds": [
+      3.999948887998471,
+      3.999948887998471
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 784.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 784.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "system-warm-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.4777571539998462,
+    "latency_seconds": 4.004362732001027,
+    "wave_seconds": 4.030899568999303,
+    "wave_tokens_per_second": 3.969337297076867,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.23535168899979908,
+    "maximum_delta_gap_seconds": 0.23755710200202884,
+    "latency_range_seconds": [
+      4.004362732001027,
+      4.004362732001027
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 784.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 784.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1285.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1285.0,
+      "vllm:prompt_tokens_by_source_total": 1285.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.0537851859990042,
+    "latency_seconds": 4.580297107997467,
+    "wave_seconds": 4.605962030000228,
+    "wave_tokens_per_second": 3.473758553758466,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.23492445800002315,
+    "maximum_delta_gap_seconds": 0.23929570899781538,
+    "latency_range_seconds": [
+      4.580297107997467,
+      4.580297107997467
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.0477344280006946,
+    "latency_seconds": 4.577341413998511,
+    "wave_seconds": 4.603063567999925,
+    "wave_tokens_per_second": 3.4759459137671986,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.23542456399809453,
+    "maximum_delta_gap_seconds": 0.23871565800072858,
+    "latency_range_seconds": [
+      4.577341413998511,
+      4.577341413998511
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.0472392839983513,
+    "latency_seconds": 4.579519668997818,
+    "wave_seconds": 4.604777783999452,
+    "wave_tokens_per_second": 3.474651926873938,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.2357269099993573,
+    "maximum_delta_gap_seconds": 0.2385363459979999,
+    "latency_range_seconds": [
+      4.579519668997818,
+      4.579519668997818
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1285.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1285.0,
+      "vllm:prompt_tokens_by_source_total": 1285.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.2838039700000081,
+    "latency_seconds": 3.81084284499957,
+    "wave_seconds": 3.8379900670006464,
+    "wave_tokens_per_second": 4.168848725683089,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.23542064399953233,
+    "maximum_delta_gap_seconds": 0.2379273730002751,
+    "latency_range_seconds": [
+      3.81084284499957,
+      3.81084284499957
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 1264.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 1264.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.27926109500185703,
+    "latency_seconds": 3.805059980000806,
+    "wave_seconds": 3.8310729950026143,
+    "wave_tokens_per_second": 4.176375657908623,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.235137878000387,
+    "maximum_delta_gap_seconds": 0.23723665699799312,
+    "latency_range_seconds": [
+      3.805059980000806,
+      3.805059980000806
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 1264.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 1264.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.27598090500032413,
+    "latency_seconds": 3.8041105600023,
+    "wave_seconds": 3.82932495699788,
+    "wave_tokens_per_second": 4.178282120132136,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.23524704200099222,
+    "maximum_delta_gap_seconds": 0.23771018600018579,
+    "latency_range_seconds": [
+      3.8041105600023,
+      3.8041105600023
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 1264.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 1264.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "baseline",
+    "group": "application-cold",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.1790454280001086,
+    "latency_seconds": 0.7884156459999758,
+    "wave_seconds": 0.814516292999997,
+    "wave_tokens_per_second": 19.643560402050866,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.04072114199993848,
+    "maximum_delta_gap_seconds": 0.049947350999900664,
+    "latency_range_seconds": [
+      0.7780250740001975,
+      1.323299967000139
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 5143.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5143.0,
+      "vllm:prompt_tokens_by_source_total": 5143.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "baseline",
+    "group": "application-warm",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.05939674699993702,
+    "latency_seconds": 0.6683459999999286,
+    "wave_seconds": 0.6838346990000446,
+    "wave_tokens_per_second": 23.39746728763022,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.04060744200000954,
+    "maximum_delta_gap_seconds": 0.04421936799985815,
+    "latency_range_seconds": [
+      0.6660925920000409,
+      0.680261592000079
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 5143.0,
+      "vllm:prefix_cache_hits_total": 3792.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5143.0,
+      "vllm:prompt_tokens_by_source_total": 5143.0,
+      "vllm:prompt_tokens_cached_total": 3792.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "baseline",
+    "group": "long-cold",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.039430478999975,
+    "latency_seconds": 1.6660278919998746,
+    "wave_seconds": 1.6898490369999308,
+    "wave_tokens_per_second": 9.468301398334113,
+    "prompt_tokens": [
+      8009
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.04248173499991026,
+    "maximum_delta_gap_seconds": 0.04685774099993978,
+    "latency_range_seconds": [
+      1.664397597000061,
+      1.6678739819999464
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 32035.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 32035.0,
+      "vllm:prompt_tokens_by_source_total": 32035.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "baseline",
+    "group": "long-warm",
+    "measured_requests": 3,
+    "expected_requests": 3,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.08346708399994895,
+    "latency_seconds": 0.707058280999945,
+    "wave_seconds": 0.7224619369999346,
+    "wave_tokens_per_second": 22.146495449214854,
+    "prompt_tokens": [
+      8009
+    ],
+    "completion_tokens": [
+      16,
+      16,
+      16
+    ],
+    "median_delta_gap_seconds": 0.042046287999937704,
+    "maximum_delta_gap_seconds": 0.04449971500002903,
+    "latency_range_seconds": [
+      0.6991118569999344,
+      0.710381094000013
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 32035.0,
+      "vllm:prefix_cache_hits_total": 23984.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 32035.0,
+      "vllm:prompt_tokens_by_source_total": 32035.0,
+      "vllm:prompt_tokens_cached_total": 23984.0,
+      "vllm:generation_tokens_total": 64.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "system-cold--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "system-cold-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 1.143121107998013,
+    "latency_seconds": 1.579738323998754,
+    "wave_seconds": 1.6079475220030872,
+    "wave_tokens_per_second": 9.95057349885905,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04119683949829778,
+    "maximum_delta_gap_seconds": 0.051067020001937635,
+    "latency_range_seconds": [
+      1.579738323998754,
+      1.579738323998754
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "system-cold-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.2375750830033212,
+    "latency_seconds": 0.8183467170019867,
+    "wave_seconds": 0.8443520799992257,
+    "wave_tokens_per_second": 18.949441090989758,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.041070598002988845,
+    "maximum_delta_gap_seconds": 0.050820057000237284,
+    "latency_range_seconds": [
+      0.8183467170019867,
+      0.8183467170019867
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "system-cold-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.2901570619978884,
+    "latency_seconds": 0.8111879669995687,
+    "wave_seconds": 0.8374676700004784,
+    "wave_tokens_per_second": 19.105215130263907,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04048555000008491,
+    "maximum_delta_gap_seconds": 0.05310626000209595,
+    "latency_range_seconds": [
+      0.8111879669995687,
+      0.8111879669995687
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "system-warm--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "system-warm-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.1270582840006682,
+    "latency_seconds": 0.7382171710014518,
+    "wave_seconds": 0.7643267749990628,
+    "wave_tokens_per_second": 20.93345480409164,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04139848799968604,
+    "maximum_delta_gap_seconds": 0.043763043999206275,
+    "latency_range_seconds": [
+      0.7382171710014518,
+      0.7382171710014518
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 784.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 784.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "system-warm-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.11628948200086597,
+    "latency_seconds": 0.7266268040002615,
+    "wave_seconds": 0.7524706129988772,
+    "wave_tokens_per_second": 21.263288856203975,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.041026740000233985,
+    "maximum_delta_gap_seconds": 0.05046488299922203,
+    "latency_range_seconds": [
+      0.7266268040002615,
+      0.7266268040002615
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 784.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 784.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "system-warm-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.1118161330014118,
+    "latency_seconds": 0.7321325090015307,
+    "wave_seconds": 0.7475292979979713,
+    "wave_tokens_per_second": 21.403843358181557,
+    "prompt_tokens": [
+      1287
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04123832600089372,
+    "maximum_delta_gap_seconds": 0.0467935109991231,
+    "latency_range_seconds": [
+      0.7321325090015307,
+      0.7321325090015307
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1287.0,
+      "vllm:prefix_cache_hits_total": 784.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1287.0,
+      "vllm:prompt_tokens_by_source_total": 1287.0,
+      "vllm:prompt_tokens_cached_total": 784.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1285.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1285.0,
+      "vllm:prompt_tokens_by_source_total": 1285.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.20135918600135483,
+    "latency_seconds": 0.8082514540001284,
+    "wave_seconds": 0.8333124359996873,
+    "wave_tokens_per_second": 19.200481486641348,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04092305800077156,
+    "maximum_delta_gap_seconds": 0.05181531299967901,
+    "latency_range_seconds": [
+      0.8082514540001284,
+      0.8082514540001284
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.18562493400168023,
+    "latency_seconds": 0.8066106910009694,
+    "wave_seconds": 0.8220056389982346,
+    "wave_tokens_per_second": 19.464586665730113,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04138672599947313,
+    "maximum_delta_gap_seconds": 0.05167241399976774,
+    "latency_range_seconds": [
+      0.8066106910009694,
+      0.8066106910009694
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-cold-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.19326769300096203,
+    "latency_seconds": 0.7955448719985725,
+    "wave_seconds": 0.8207738090022758,
+    "wave_tokens_per_second": 19.493799417709777,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.04075826999905985,
+    "maximum_delta_gap_seconds": 0.05312508700080798,
+    "latency_range_seconds": [
+      0.7955448719985725,
+      0.7955448719985725
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm--1",
+    "measured_requests": 0,
+    "expected_requests": 0,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": null,
+    "latency_seconds": null,
+    "wave_seconds": null,
+    "wave_tokens_per_second": null,
+    "prompt_tokens": [],
+    "completion_tokens": [],
+    "median_delta_gap_seconds": null,
+    "maximum_delta_gap_seconds": null,
+    "latency_range_seconds": [
+      null,
+      null
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1285.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1285.0,
+      "vllm:prompt_tokens_by_source_total": 1285.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm-0",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.08773056399877532,
+    "latency_seconds": 0.7034176169981947,
+    "wave_seconds": 0.7190504400023201,
+    "wave_tokens_per_second": 22.25156833218595,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.041278963999502594,
+    "maximum_delta_gap_seconds": 0.04390904200045043,
+    "latency_range_seconds": [
+      0.7034176169981947,
+      0.7034176169981947
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 1264.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 1264.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm-1",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.06702148800104624,
+    "latency_seconds": 0.6840097659987805,
+    "wave_seconds": 0.6997298380010761,
+    "wave_tokens_per_second": 22.86596787941376,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.041309492000436876,
+    "maximum_delta_gap_seconds": 0.052028016001713695,
+    "latency_range_seconds": [
+      0.6840097659987805,
+      0.6840097659987805
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 1264.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 1264.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "group": "application-corrected-warm-2",
+    "measured_requests": 1,
+    "expected_requests": 1,
+    "complete": true,
+    "concurrency": 1,
+    "fixed_tokens": 16,
+    "requests_over_120_seconds": 0,
+    "ttft_seconds": 0.06338432600023225,
+    "latency_seconds": 0.6908408009985578,
+    "wave_seconds": 0.7066484249990026,
+    "wave_tokens_per_second": 22.64209390974385,
+    "prompt_tokens": [
+      1286
+    ],
+    "completion_tokens": [
+      16
+    ],
+    "median_delta_gap_seconds": 0.041380211998330196,
+    "maximum_delta_gap_seconds": 0.05210848199931206,
+    "latency_range_seconds": [
+      0.6908408009985578,
+      0.6908408009985578
+    ],
+    "counter_deltas_including_warmup": {
+      "vllm:prefix_cache_queries_total": 1286.0,
+      "vllm:prefix_cache_hits_total": 1264.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 1286.0,
+      "vllm:prompt_tokens_by_source_total": 1286.0,
+      "vllm:prompt_tokens_cached_total": 1264.0,
+      "vllm:generation_tokens_total": 16.0,
+      "vllm:request_success_total": 1.0
+    }
+  }
+]

@@ -1,0 +1,11 @@
+{
+  "python": "3.11.14",
+  "libraries": {
+    "pydantic": "2.13.3",
+    "jsonschema": "4.26.0",
+    "fastapi": "0.136.1",
+    "httpx": "0.28.1",
+    "pydantic-settings": "2.7.1"
+  },
+  "repository_commit": "551536d"
+}

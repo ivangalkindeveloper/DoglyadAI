@@ -1,0 +1,7 @@
+{
+  "model_index": 1,
+  "model_key": "15-4b",
+  "model": "google/medgemma-1.5-4b-it",
+  "profile": "pressure-default",
+  "kv_gib": 4
+}

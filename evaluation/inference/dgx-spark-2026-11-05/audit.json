@@ -1,0 +1,101 @@
+{
+  "transport_and_restoration_checks_passed": true,
+  "complete_parameter_groups": 185,
+  "assessed_unavailable_groups": [
+    [
+      "02-prefill-budget",
+      "27b",
+      "prefill8192",
+      "long-c4"
+    ]
+  ],
+  "mixed_waves_including_warmup": 16,
+  "requests_including_warmup": 1334,
+  "measured_requests": 1011,
+  "excluded_marker_format_requests": 18,
+  "interpreted_measured_requests": 993,
+  "full_answers_checked": 117,
+  "full_answer_prompt_ids_match_baseline": true,
+  "natural_stops": 117,
+  "schema_valid": 117,
+  "answers_with_repeated_long_sentences": 0,
+  "content_validator_failures": [
+    {
+      "model": "15-4b",
+      "profile": "baseline",
+      "case": "conflict-greedy-0",
+      "wave": 0,
+      "schema_valid": true,
+      "main_valid": false,
+      "finish": "stop",
+      "natural_stop": true,
+      "error": null,
+      "prompt_ids_match_baseline": true,
+      "text_matches_baseline": true,
+      "maximum_sentence_copies": 1,
+      "validation_error": "reportMeasurementsMismatch"
+    },
+    {
+      "model": "15-4b",
+      "profile": "ngram4",
+      "case": "conflict-greedy-0",
+      "wave": 0,
+      "schema_valid": true,
+      "main_valid": false,
+      "finish": "stop",
+      "natural_stop": true,
+      "error": null,
+      "prompt_ids_match_baseline": true,
+      "text_matches_baseline": true,
+      "maximum_sentence_copies": 1,
+      "validation_error": "reportMeasurementsMismatch"
+    },
+    {
+      "model": "15-4b",
+      "profile": "ngram4",
+      "case": "conflict-sample-42",
+      "wave": 0,
+      "schema_valid": true,
+      "main_valid": false,
+      "finish": "stop",
+      "natural_stop": true,
+      "error": null,
+      "prompt_ids_match_baseline": true,
+      "text_matches_baseline": false,
+      "maximum_sentence_copies": 1,
+      "validation_error": "reportMeasurementsMismatch"
+    },
+    {
+      "model": "15-4b",
+      "profile": "ngram8",
+      "case": "conflict-greedy-0",
+      "wave": 0,
+      "schema_valid": true,
+      "main_valid": false,
+      "finish": "stop",
+      "natural_stop": true,
+      "error": null,
+      "prompt_ids_match_baseline": true,
+      "text_matches_baseline": false,
+      "maximum_sentence_copies": 1,
+      "validation_error": "reportMeasurementsMismatch"
+    },
+    {
+      "model": "4b",
+      "profile": "baseline",
+      "case": "conflict-sample-42",
+      "wave": 0,
+      "schema_valid": true,
+      "main_valid": false,
+      "finish": "stop",
+      "natural_stop": true,
+      "error": null,
+      "prompt_ids_match_baseline": true,
+      "text_matches_baseline": true,
+      "maximum_sentence_copies": 1,
+      "validation_error": "reportMeasurementsMismatch"
+    }
+  ],
+  "json_files_parsed_excluding_this_audit": 231,
+  "restored_host_ready_at_publication": true
+}

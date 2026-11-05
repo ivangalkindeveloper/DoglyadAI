@@ -1,0 +1,290 @@
+[
+  {
+    "model": "4b",
+    "profile": "baseline",
+    "observed_requests_including_warmup": 130,
+    "engine_success_counter_delta": 130.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "seq8",
+    "observed_requests_including_warmup": 84,
+    "engine_success_counter_delta": 84.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "prefill1024",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "prefill4096",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "prefill8192",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "kv-plus",
+    "observed_requests_including_warmup": 32,
+    "engine_success_counter_delta": 32.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "ngram4",
+    "observed_requests_including_warmup": 14,
+    "engine_success_counter_delta": 14.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "ngram8",
+    "observed_requests_including_warmup": 14,
+    "engine_success_counter_delta": 14.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "baseline",
+    "observed_requests_including_warmup": 130,
+    "engine_success_counter_delta": 130.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "seq8",
+    "observed_requests_including_warmup": 84,
+    "engine_success_counter_delta": 84.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefill1024",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefill4096",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefill8192",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "kv-plus",
+    "observed_requests_including_warmup": 32,
+    "engine_success_counter_delta": 32.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "ngram4",
+    "observed_requests_including_warmup": 14,
+    "engine_success_counter_delta": 14.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "ngram8",
+    "observed_requests_including_warmup": 14,
+    "engine_success_counter_delta": 14.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "baseline",
+    "observed_requests_including_warmup": 130,
+    "engine_success_counter_delta": 130.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "seq8",
+    "observed_requests_including_warmup": 84,
+    "engine_success_counter_delta": 84.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "prefill1024",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "prefill4096",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "kv-plus",
+    "observed_requests_including_warmup": 32,
+    "engine_success_counter_delta": 32.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "ngram4",
+    "observed_requests_including_warmup": 14,
+    "engine_success_counter_delta": 14.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "ngram8",
+    "observed_requests_including_warmup": 14,
+    "engine_success_counter_delta": 14.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "prefix-controls",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "prefix-controls",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "prefix-controls",
+    "observed_requests_including_warmup": 16,
+    "engine_success_counter_delta": 16.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "pressure-default",
+    "observed_requests_including_warmup": 24,
+    "engine_success_counter_delta": 24.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "4b",
+    "profile": "pressure-plus",
+    "observed_requests_including_warmup": 24,
+    "engine_success_counter_delta": 24.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "pressure-default",
+    "observed_requests_including_warmup": 24,
+    "engine_success_counter_delta": 24.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "15-4b",
+    "profile": "pressure-plus",
+    "observed_requests_including_warmup": 24,
+    "engine_success_counter_delta": 24.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "pressure-default",
+    "observed_requests_including_warmup": 24,
+    "engine_success_counter_delta": 24.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  },
+  {
+    "model": "27b",
+    "profile": "pressure-plus",
+    "observed_requests_including_warmup": 24,
+    "engine_success_counter_delta": 24.0,
+    "ends_after_last_group": true,
+    "counter_matches_observed": true,
+    "client_errors": 0
+  }
+]

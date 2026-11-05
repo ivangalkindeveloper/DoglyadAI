@@ -1,0 +1,17 @@
+{
+  "counts": {
+    "json": 231,
+    "jsonl_records": 6700,
+    "python": 30,
+    "files": 396
+  },
+  "json_and_jsonl_parsed": true,
+  "python_syntax_valid": true,
+  "credential_pattern_findings": [],
+  "missing_document_links": [],
+  "ruff_root_scripts": true,
+  "format_check_root_scripts": true,
+  "make_format_completed": true,
+  "make_format_changed_files": 0,
+  "note": "Exact execution-source files are retained unchanged; lint applies to root scripts. This scan detects listed credential patterns, not every possible secret."
+}

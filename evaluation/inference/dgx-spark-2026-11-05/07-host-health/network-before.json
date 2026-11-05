@@ -1,0 +1,23 @@
+{
+  "unix": 1793832612.4944746,
+  "network_devices": {
+    "exit_code": 0,
+    "output": "wlP9s9:wifi:connected\ntailscale0:tun:connected (externally)\nbr-144ccf3ac651:bridge:connected (externally)\nlo:loopback:connected (externally)\nbr-1a2d771a6e39:bridge:connected (externally)\nbr-60a8a43ecb79:bridge:connected (externally)\nbr-9e4f74390125:bridge:connected (externally)\ndocker0:bridge:connected (externally)\np2p-dev-wlP9s9:wifi-p2p:disconnected\nenP7s7:ethernet:unavailable\nveth1e328a1:ethernet:unmanaged\nveth54fbb24:ethernet:unmanaged\nveth9dae254:ethernet:unmanaged\nvethaa56336:ethernet:unmanaged\n"
+  },
+  "route_to_mac": {
+    "exit_code": 0,
+    "output": "[{\"dst\":\"192.168.0.25\",\"dev\":\"wlP9s9\",\"prefsrc\":\"192.168.0.30\",\"flags\":[],\"uid\":1000,\"cache\":[]}]\n"
+  },
+  "ping_mac": {
+    "exit_code": 0,
+    "output": "PING 192.168.0.25 (192.168.0.25) 56(84) bytes of data.\n64 bytes from 192.168.0.25: icmp_seq=1 ttl=64 time=14.9 ms\n64 bytes from 192.168.0.25: icmp_seq=2 ttl=64 time=7.61 ms\n64 bytes from 192.168.0.25: icmp_seq=3 ttl=64 time=16.2 ms\n64 bytes from 192.168.0.25: icmp_seq=4 ttl=64 time=4.30 ms\n64 bytes from 192.168.0.25: icmp_seq=5 ttl=64 time=9.98 ms\n64 bytes from 192.168.0.25: icmp_seq=6 ttl=64 time=4.65 ms\n64 bytes from 192.168.0.25: icmp_seq=7 ttl=64 time=30.1 ms\n64 bytes from 192.168.0.25: icmp_seq=8 ttl=64 time=52.4 ms\n64 bytes from 192.168.0.25: icmp_seq=9 ttl=64 time=6.23 ms\n64 bytes from 192.168.0.25: icmp_seq=10 ttl=64 time=7.03 ms\n64 bytes from 192.168.0.25: icmp_seq=11 ttl=64 time=20.3 ms\n64 bytes from 192.168.0.25: icmp_seq=13 ttl=64 time=36.2 ms\n64 bytes from 192.168.0.25: icmp_seq=14 ttl=64 time=5.48 ms\n64 bytes from 192.168.0.25: icmp_seq=15 ttl=64 time=7.59 ms\n64 bytes from 192.168.0.25: icmp_seq=16 ttl=64 time=20.7 ms\n64 bytes from 192.168.0.25: icmp_seq=17 ttl=64 time=10.9 ms\n64 bytes from 192.168.0.25: icmp_seq=18 ttl=64 time=12.6 ms\n64 bytes from 192.168.0.25: icmp_seq=19 ttl=64 time=41.6 ms\n64 bytes from 192.168.0.25: icmp_seq=20 ttl=64 time=46.8 ms\n\n--- 192.168.0.25 ping statistics ---\n20 packets transmitted, 19 received, 5% packet loss, time 3822ms\nrtt min/avg/max/mdev = 4.301/18.716/52.432/14.881 ms\n"
+  },
+  "disk": {
+    "exit_code": 0,
+    "output": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/nvme0n1p2  3.7T  271G  3.3T   8% /\n"
+  },
+  "boot": {
+    "exit_code": 0,
+    "output": "a1c6a91f-b23b-4da4-a0ce-5fb1a5dfd218\n"
+  }
+}

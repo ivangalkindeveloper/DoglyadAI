@@ -1,0 +1,5 @@
+{
+  "phase": "startup",
+  "error": "RuntimeError",
+  "detail": "Engine exited: doglyad-tuning-20261105"
+}

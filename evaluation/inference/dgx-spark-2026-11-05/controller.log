@@ -1,0 +1,378 @@
+{"event": "trial_start", "unix": 1793832524.9879875, "trial": "4b-baseline"}
+{"event": "wave", "unix": 1793832530.9035473, "model": "4b", "profile": "baseline", "group": "medium-c1", "wave": -1, "seconds": 5.310311870000078, "valid": true}
+{"event": "wave", "unix": 1793832536.2143614, "model": "4b", "profile": "baseline", "group": "medium-c1", "wave": 0, "seconds": 5.310255332999986, "valid": true}
+{"event": "wave", "unix": 1793832541.5165493, "model": "4b", "profile": "baseline", "group": "medium-c1", "wave": 1, "seconds": 5.302546194999877, "valid": true}
+{"event": "wave", "unix": 1793832546.8329747, "model": "4b", "profile": "baseline", "group": "medium-c1", "wave": 2, "seconds": 5.316005786999995, "valid": true}
+{"event": "wave", "unix": 1793832552.1000714, "model": "4b", "profile": "baseline", "group": "medium-c4", "wave": -1, "seconds": 5.21530914899995, "valid": true}
+{"event": "wave", "unix": 1793832557.3163784, "model": "4b", "profile": "baseline", "group": "medium-c4", "wave": 0, "seconds": 5.215447498999993, "valid": true}
+{"event": "wave", "unix": 1793832562.508213, "model": "4b", "profile": "baseline", "group": "medium-c4", "wave": 1, "seconds": 5.191307706999851, "valid": true}
+{"event": "wave", "unix": 1793832567.7126744, "model": "4b", "profile": "baseline", "group": "medium-c4", "wave": 2, "seconds": 5.204006359999994, "valid": true}
+{"event": "wave", "unix": 1793832578.0156696, "model": "4b", "profile": "baseline", "group": "medium-c8", "wave": -1, "seconds": 10.252084376999846, "valid": true}
+{"event": "wave", "unix": 1793832588.3057108, "model": "4b", "profile": "baseline", "group": "medium-c8", "wave": 0, "seconds": 10.288904057000082, "valid": true}
+{"event": "wave", "unix": 1793832598.5923703, "model": "4b", "profile": "baseline", "group": "medium-c8", "wave": 1, "seconds": 10.285670351999897, "valid": true}
+{"event": "wave", "unix": 1793832608.8837924, "model": "4b", "profile": "baseline", "group": "medium-c8", "wave": 2, "seconds": 10.291289702000086, "valid": true}
+{"event": "wave", "unix": 1793832618.202775, "model": "4b", "profile": "baseline", "group": "long-c4", "wave": -1, "seconds": 8.853913120000016, "valid": true}
+{"event": "wave", "unix": 1793832627.008973, "model": "4b", "profile": "baseline", "group": "long-c4", "wave": 0, "seconds": 8.804724832000147, "valid": true}
+{"event": "wave", "unix": 1793832635.838908, "model": "4b", "profile": "baseline", "group": "long-c4", "wave": 1, "seconds": 8.826689005999924, "valid": true}
+{"event": "wave", "unix": 1793832644.6667702, "model": "4b", "profile": "baseline", "group": "long-c4", "wave": 2, "seconds": 8.827841444999876, "valid": true}
+{"event": "wave", "unix": 1793832665.3876164, "model": "4b", "profile": "baseline", "group": "near-context-c8", "wave": -1, "seconds": 19.930036786000073, "valid": true}
+{"event": "wave", "unix": 1793832685.3280818, "model": "4b", "profile": "baseline", "group": "near-context-c8", "wave": 0, "seconds": 19.935559041000033, "valid": true}
+{"event": "wave", "unix": 1793832705.3029997, "model": "4b", "profile": "baseline", "group": "near-context-c8", "wave": 1, "seconds": 19.97043201800011, "valid": true}
+{"event": "wave", "unix": 1793832725.2610698, "model": "4b", "profile": "baseline", "group": "near-context-c8", "wave": 2, "seconds": 19.955006169999933, "valid": true}
+{"event": "wave", "unix": 1793832728.1192389, "model": "4b", "profile": "baseline", "group": "application-cold", "wave": -1, "seconds": 2.819151497999883, "valid": true}
+{"event": "wave", "unix": 1793832729.4688716, "model": "4b", "profile": "baseline", "group": "application-cold", "wave": 0, "seconds": 1.3496656559998428, "valid": true}
+{"event": "wave", "unix": 1793832730.2738574, "model": "4b", "profile": "baseline", "group": "application-cold", "wave": 1, "seconds": 0.8042904829999316, "valid": true}
+{"event": "wave", "unix": 1793832731.088417, "model": "4b", "profile": "baseline", "group": "application-cold", "wave": 2, "seconds": 0.814516292999997, "valid": true}
+{"event": "wave", "unix": 1793832731.9384184, "model": "4b", "profile": "baseline", "group": "application-warm", "wave": -1, "seconds": 0.8100125650000791, "valid": true}
+{"event": "wave", "unix": 1793832732.6451108, "model": "4b", "profile": "baseline", "group": "application-warm", "wave": 0, "seconds": 0.7064880740001627, "valid": true}
+{"event": "wave", "unix": 1793832733.3270612, "model": "4b", "profile": "baseline", "group": "application-warm", "wave": 1, "seconds": 0.6815359580000404, "valid": true}
+{"event": "wave", "unix": 1793832734.011196, "model": "4b", "profile": "baseline", "group": "application-warm", "wave": 2, "seconds": 0.6838346990000446, "valid": true}
+{"event": "wave", "unix": 1793832735.741596, "model": "4b", "profile": "baseline", "group": "long-cold", "wave": -1, "seconds": 1.689792111000088, "valid": true}
+{"event": "wave", "unix": 1793832737.431862, "model": "4b", "profile": "baseline", "group": "long-cold", "wave": 0, "seconds": 1.6898490369999308, "valid": true}
+{"event": "wave", "unix": 1793832739.1139739, "model": "4b", "profile": "baseline", "group": "long-cold", "wave": 1, "seconds": 1.6812659659999554, "valid": true}
+{"event": "wave", "unix": 1793832740.8087835, "model": "4b", "profile": "baseline", "group": "long-cold", "wave": 2, "seconds": 1.6940692009998202, "valid": true}
+{"event": "wave", "unix": 1793832742.5260515, "model": "4b", "profile": "baseline", "group": "long-warm", "wave": -1, "seconds": 1.6762465929998598, "valid": true}
+{"event": "wave", "unix": 1793832743.2506433, "model": "4b", "profile": "baseline", "group": "long-warm", "wave": 0, "seconds": 0.7224619369999346, "valid": true}
+{"event": "wave", "unix": 1793832743.9775188, "model": "4b", "profile": "baseline", "group": "long-warm", "wave": 1, "seconds": 0.7261559620001208, "valid": true}
+{"event": "wave", "unix": 1793832744.6931336, "model": "4b", "profile": "baseline", "group": "long-warm", "wave": 2, "seconds": 0.7149954640001397, "valid": true}
+{"event": "wave", "unix": 1793832754.8506968, "model": "4b", "profile": "baseline", "group": "report-greedy-0", "wave": -1, "seconds": 10.116945280999971, "valid": true}
+{"event": "wave", "unix": 1793832764.9475768, "model": "4b", "profile": "baseline", "group": "report-greedy-0", "wave": 0, "seconds": 10.09664901200017, "valid": true}
+{"event": "wave", "unix": 1793832775.040989, "model": "4b", "profile": "baseline", "group": "report-greedy-0", "wave": 1, "seconds": 10.093158443999982, "valid": true}
+{"event": "wave", "unix": 1793832785.1165044, "model": "4b", "profile": "baseline", "group": "report-greedy-0", "wave": 2, "seconds": 10.07451594600002, "valid": true}
+{"event": "wave", "unix": 1793832795.3854957, "model": "4b", "profile": "baseline", "group": "report-sample-42", "wave": 0, "seconds": 10.224464451999893, "valid": true}
+{"event": "wave", "unix": 1793832806.6292005, "model": "4b", "profile": "baseline", "group": "conflict-greedy-0", "wave": 0, "seconds": 11.199433192000015, "valid": true}
+{"event": "wave", "unix": 1793832819.712057, "model": "4b", "profile": "baseline", "group": "conflict-sample-42", "wave": 0, "seconds": 13.039035543999944, "valid": true}
+{"event": "wave", "unix": 1793832823.39191, "model": "4b", "profile": "baseline", "group": "bladder-correction-sample-42", "wave": 0, "seconds": 3.6192294990000846, "valid": true}
+{"event": "wave", "unix": 1793832826.0729694, "model": "4b", "profile": "baseline", "group": "bladder-en-sample-42", "wave": 0, "seconds": 2.6367764209999223, "valid": true}
+{"event": "wave", "unix": 1793832849.553284, "model": "4b", "profile": "baseline", "group": "dictation-greedy-0", "wave": 0, "seconds": 23.434746575999952, "valid": true}
+{"event": "wave", "unix": 1793832872.9645946, "model": "4b", "profile": "baseline", "group": "dictation-greedy-0", "wave": 1, "seconds": 23.410090071000013, "valid": true}
+{"event": "wave", "unix": 1793832896.2109575, "model": "4b", "profile": "baseline", "group": "dictation-greedy-0", "wave": 2, "seconds": 23.24561804399991, "valid": true}
+{"event": "wave", "unix": 1793832897.1797745, "model": "4b", "profile": "baseline", "group": "vision-1", "wave": 0, "seconds": 0.9275785299998915, "valid": true}
+{"event": "wave", "unix": 1793832897.8191566, "model": "4b", "profile": "baseline", "group": "vision-2", "wave": 0, "seconds": 0.5931002299998909, "valid": true}
+{"event": "trial_end", "unix": 1793832897.9187953, "trial": "4b-baseline"}
+{"event": "trial_start", "unix": 1793832897.918854, "trial": "4b-seq8"}
+{"event": "wave", "unix": 1793833073.6493957, "model": "4b", "profile": "seq8", "group": "medium-c1", "wave": -1, "seconds": 5.886382492000166, "valid": true}
+{"event": "wave", "unix": 1793833078.9575891, "model": "4b", "profile": "seq8", "group": "medium-c1", "wave": 0, "seconds": 5.306924029999891, "valid": true}
+{"event": "wave", "unix": 1793833084.278783, "model": "4b", "profile": "seq8", "group": "medium-c1", "wave": 1, "seconds": 5.32191848299999, "valid": true}
+{"event": "wave", "unix": 1793833089.6025233, "model": "4b", "profile": "seq8", "group": "medium-c1", "wave": 2, "seconds": 5.323516984999969, "valid": true}
+{"event": "wave", "unix": 1793833094.9005291, "model": "4b", "profile": "seq8", "group": "medium-c4", "wave": -1, "seconds": 5.256483228999969, "valid": true}
+{"event": "wave", "unix": 1793833100.1574533, "model": "4b", "profile": "seq8", "group": "medium-c4", "wave": 0, "seconds": 5.256449470000007, "valid": true}
+{"event": "wave", "unix": 1793833105.4128568, "model": "4b", "profile": "seq8", "group": "medium-c4", "wave": 1, "seconds": 5.254788959000052, "valid": true}
+{"event": "wave", "unix": 1793833110.678502, "model": "4b", "profile": "seq8", "group": "medium-c4", "wave": 2, "seconds": 5.265003714999921, "valid": true}
+{"event": "wave", "unix": 1793833117.1147635, "model": "4b", "profile": "seq8", "group": "medium-c8", "wave": -1, "seconds": 6.394931173000032, "valid": true}
+{"event": "wave", "unix": 1793833123.5194976, "model": "4b", "profile": "seq8", "group": "medium-c8", "wave": 0, "seconds": 6.403549501000043, "valid": true}
+{"event": "wave", "unix": 1793833129.923799, "model": "4b", "profile": "seq8", "group": "medium-c8", "wave": 1, "seconds": 6.4031766269999935, "valid": true}
+{"event": "wave", "unix": 1793833136.3407786, "model": "4b", "profile": "seq8", "group": "medium-c8", "wave": 2, "seconds": 6.415233486000034, "valid": true}
+{"event": "wave", "unix": 1793833155.7683074, "model": "4b", "profile": "seq8", "group": "near-context-c8", "wave": -1, "seconds": 18.670149874000117, "valid": true}
+{"event": "wave", "unix": 1793833174.48116, "model": "4b", "profile": "seq8", "group": "near-context-c8", "wave": 0, "seconds": 18.710474579999982, "valid": true}
+{"event": "wave", "unix": 1793833193.2704601, "model": "4b", "profile": "seq8", "group": "near-context-c8", "wave": 1, "seconds": 18.77764253800001, "valid": true}
+{"event": "wave", "unix": 1793833212.0636468, "model": "4b", "profile": "seq8", "group": "near-context-c8", "wave": 2, "seconds": 18.782097668999995, "valid": true}
+{"event": "trial_end", "unix": 1793833212.9820392, "trial": "4b-seq8"}
+{"event": "trial_start", "unix": 1793833212.9821565, "trial": "4b-prefill1024"}
+{"event": "wave", "unix": 1793833381.966377, "model": "4b", "profile": "prefill1024", "group": "long-c4", "wave": -1, "seconds": 9.58312266400003, "valid": true}
+{"event": "wave", "unix": 1793833391.0090406, "model": "4b", "profile": "prefill1024", "group": "long-c4", "wave": 0, "seconds": 9.041151383999932, "valid": true}
+{"event": "wave", "unix": 1793833400.0634787, "model": "4b", "profile": "prefill1024", "group": "long-c4", "wave": 1, "seconds": 9.052944945000036, "valid": true}
+{"event": "wave", "unix": 1793833409.1425822, "model": "4b", "profile": "prefill1024", "group": "long-c4", "wave": 2, "seconds": 9.077557438999975, "valid": true}
+{"event": "trial_end", "unix": 1793833409.8965068, "trial": "4b-prefill1024"}
+{"event": "trial_start", "unix": 1793833409.8972611, "trial": "4b-prefill4096"}
+{"event": "wave", "unix": 1793833573.8945346, "model": "4b", "profile": "prefill4096", "group": "long-c4", "wave": -1, "seconds": 9.422064008000234, "valid": true}
+{"event": "wave", "unix": 1793833582.7643518, "model": "4b", "profile": "prefill4096", "group": "long-c4", "wave": 0, "seconds": 8.867344860999765, "valid": true}
+{"event": "wave", "unix": 1793833591.6437747, "model": "4b", "profile": "prefill4096", "group": "long-c4", "wave": 1, "seconds": 8.876027485999657, "valid": true}
+{"event": "wave", "unix": 1793833600.532839, "model": "4b", "profile": "prefill4096", "group": "long-c4", "wave": 2, "seconds": 8.886464875000001, "valid": true}
+{"event": "trial_end", "unix": 1793833601.3274515, "trial": "4b-prefill4096"}
+{"event": "trial_start", "unix": 1793833601.327513, "trial": "4b-prefill8192"}
+{"event": "wave", "unix": 1793833769.6416583, "model": "4b", "profile": "prefill8192", "group": "long-c4", "wave": -1, "seconds": 8.693455874999927, "valid": true}
+{"event": "wave", "unix": 1793833778.7686377, "model": "4b", "profile": "prefill8192", "group": "long-c4", "wave": 0, "seconds": 9.125678710000102, "valid": true}
+{"event": "wave", "unix": 1793833787.4611542, "model": "4b", "profile": "prefill8192", "group": "long-c4", "wave": 1, "seconds": 8.692257219000112, "valid": true}
+{"event": "wave", "unix": 1793833796.1881294, "model": "4b", "profile": "prefill8192", "group": "long-c4", "wave": 2, "seconds": 8.725424475000182, "valid": true}
+{"event": "trial_end", "unix": 1793833796.9590228, "trial": "4b-prefill8192"}
+{"event": "trial_start", "unix": 1793833796.9590807, "trial": "4b-kv-plus"}
+{"event": "wave", "unix": 1793833976.1220798, "model": "4b", "profile": "kv-plus", "group": "near-context-c8", "wave": -1, "seconds": 19.266686348999883, "valid": true}
+{"event": "wave", "unix": 1793833994.8579214, "model": "4b", "profile": "kv-plus", "group": "near-context-c8", "wave": 0, "seconds": 18.73453196499986, "valid": true}
+{"event": "wave", "unix": 1793834013.686577, "model": "4b", "profile": "kv-plus", "group": "near-context-c8", "wave": 1, "seconds": 18.8209663800003, "valid": true}
+{"event": "wave", "unix": 1793834032.5606172, "model": "4b", "profile": "kv-plus", "group": "near-context-c8", "wave": 2, "seconds": 18.870219764000012, "valid": true}
+{"event": "trial_end", "unix": 1793834033.5269296, "trial": "4b-kv-plus"}
+{"event": "trial_start", "unix": 1793834033.5270405, "trial": "4b-ngram4"}
+{"event": "wave", "unix": 1793834199.9648435, "model": "4b", "profile": "ngram4", "group": "report-greedy-0", "wave": -1, "seconds": 7.368239531999734, "valid": true}
+{"event": "wave", "unix": 1793834204.9331465, "model": "4b", "profile": "ngram4", "group": "report-greedy-0", "wave": 0, "seconds": 4.9678414069999235, "valid": true}
+{"event": "wave", "unix": 1793834209.8983855, "model": "4b", "profile": "ngram4", "group": "report-greedy-0", "wave": 1, "seconds": 4.964826114000061, "valid": true}
+{"event": "wave", "unix": 1793834214.8618722, "model": "4b", "profile": "ngram4", "group": "report-greedy-0", "wave": 2, "seconds": 4.9628138620000755, "valid": true}
+{"event": "wave", "unix": 1793834220.807348, "model": "4b", "profile": "ngram4", "group": "report-sample-42", "wave": 0, "seconds": 5.892410452000149, "valid": true}
+{"event": "wave", "unix": 1793834226.7829022, "model": "4b", "profile": "ngram4", "group": "conflict-greedy-0", "wave": 0, "seconds": 5.913501498000187, "valid": true}
+{"event": "wave", "unix": 1793834234.371281, "model": "4b", "profile": "ngram4", "group": "conflict-sample-42", "wave": 0, "seconds": 7.545142591000058, "valid": true}
+{"event": "wave", "unix": 1793834236.6292055, "model": "4b", "profile": "ngram4", "group": "bladder-correction-sample-42", "wave": 0, "seconds": 2.215768517000015, "valid": true}
+{"event": "wave", "unix": 1793834238.281784, "model": "4b", "profile": "ngram4", "group": "bladder-en-sample-42", "wave": 0, "seconds": 1.610302461000174, "valid": true}
+{"event": "wave", "unix": 1793834246.3143709, "model": "4b", "profile": "ngram4", "group": "dictation-greedy-0", "wave": 0, "seconds": 7.985080956999809, "valid": true}
+{"event": "wave", "unix": 1793834254.2944489, "model": "4b", "profile": "ngram4", "group": "dictation-greedy-0", "wave": 1, "seconds": 7.979388612999628, "valid": true}
+{"event": "wave", "unix": 1793834262.2869492, "model": "4b", "profile": "ngram4", "group": "dictation-greedy-0", "wave": 2, "seconds": 7.99228637799979, "valid": true}
+{"event": "wave", "unix": 1793834263.8248837, "model": "4b", "profile": "ngram4", "group": "vision-1", "wave": 0, "seconds": 1.495367693999924, "valid": true}
+{"event": "wave", "unix": 1793834265.2995634, "model": "4b", "profile": "ngram4", "group": "vision-2", "wave": 0, "seconds": 1.4132457610003257, "valid": true}
+{"event": "trial_end", "unix": 1793834266.2511399, "trial": "4b-ngram4"}
+{"event": "trial_start", "unix": 1793834266.2512069, "trial": "4b-ngram8"}
+{"event": "wave", "unix": 1793834427.434527, "model": "4b", "profile": "ngram8", "group": "report-greedy-0", "wave": -1, "seconds": 6.868657901999995, "valid": true}
+{"event": "wave", "unix": 1793834432.0719528, "model": "4b", "profile": "ngram8", "group": "report-greedy-0", "wave": 0, "seconds": 4.637039971999911, "valid": true}
+{"event": "wave", "unix": 1793834436.714029, "model": "4b", "profile": "ngram8", "group": "report-greedy-0", "wave": 1, "seconds": 4.6417490709995946, "valid": true}
+{"event": "wave", "unix": 1793834441.3541427, "model": "4b", "profile": "ngram8", "group": "report-greedy-0", "wave": 2, "seconds": 4.640012935999948, "valid": true}
+{"event": "wave", "unix": 1793834445.9123464, "model": "4b", "profile": "ngram8", "group": "report-sample-42", "wave": 0, "seconds": 4.516712371999802, "valid": true}
+{"event": "wave", "unix": 1793834450.6925082, "model": "4b", "profile": "ngram8", "group": "conflict-greedy-0", "wave": 0, "seconds": 4.737442238999847, "valid": true}
+{"event": "wave", "unix": 1793834456.3912897, "model": "4b", "profile": "ngram8", "group": "conflict-sample-42", "wave": 0, "seconds": 5.655951800999901, "valid": true}
+{"event": "wave", "unix": 1793834458.7120595, "model": "4b", "profile": "ngram8", "group": "bladder-correction-sample-42", "wave": 0, "seconds": 2.2795193349998044, "valid": true}
+{"event": "wave", "unix": 1793834460.4642441, "model": "4b", "profile": "ngram8", "group": "bladder-en-sample-42", "wave": 0, "seconds": 1.7083639320003385, "valid": true}
+{"event": "wave", "unix": 1793834467.1475592, "model": "4b", "profile": "ngram8", "group": "dictation-greedy-0", "wave": 0, "seconds": 6.632883019000019, "valid": true}
+{"event": "wave", "unix": 1793834473.770341, "model": "4b", "profile": "ngram8", "group": "dictation-greedy-0", "wave": 1, "seconds": 6.622191477000342, "valid": true}
+{"event": "wave", "unix": 1793834480.3940642, "model": "4b", "profile": "ngram8", "group": "dictation-greedy-0", "wave": 2, "seconds": 6.6232650699998885, "valid": true}
+{"event": "wave", "unix": 1793834481.9431448, "model": "4b", "profile": "ngram8", "group": "vision-1", "wave": 0, "seconds": 1.506415760999971, "valid": true}
+{"event": "wave", "unix": 1793834483.3907917, "model": "4b", "profile": "ngram8", "group": "vision-2", "wave": 0, "seconds": 1.4056587889999719, "valid": true}
+{"event": "trial_end", "unix": 1793834484.2978823, "trial": "4b-ngram8"}
+{"event": "model_restored", "unix": 1793834607.3842506, "model": 0}
+{"event": "trial_start", "unix": 1793834607.3939757, "trial": "15-4b-baseline"}
+{"event": "wave", "unix": 1793834614.6365201, "model": "15-4b", "profile": "baseline", "group": "medium-c1", "wave": -1, "seconds": 6.250154038999881, "valid": true}
+{"event": "wave", "unix": 1793834620.0986893, "model": "15-4b", "profile": "baseline", "group": "medium-c1", "wave": 0, "seconds": 5.462211075000141, "valid": true}
+{"event": "wave", "unix": 1793834625.4341247, "model": "15-4b", "profile": "baseline", "group": "medium-c1", "wave": 1, "seconds": 5.3351670680003735, "valid": true}
+{"event": "wave", "unix": 1793834630.7643101, "model": "15-4b", "profile": "baseline", "group": "medium-c1", "wave": 2, "seconds": 5.329652381999949, "valid": true}
+{"event": "wave", "unix": 1793834636.0401363, "model": "15-4b", "profile": "baseline", "group": "medium-c4", "wave": -1, "seconds": 5.233786963000057, "valid": true}
+{"event": "wave", "unix": 1793834641.236711, "model": "15-4b", "profile": "baseline", "group": "medium-c4", "wave": 0, "seconds": 5.196027603999937, "valid": true}
+{"event": "wave", "unix": 1793834646.498397, "model": "15-4b", "profile": "baseline", "group": "medium-c4", "wave": 1, "seconds": 5.251009387999602, "valid": true}
+{"event": "wave", "unix": 1793834651.7687268, "model": "15-4b", "profile": "baseline", "group": "medium-c4", "wave": 2, "seconds": 5.269543753000107, "valid": true}
+{"event": "wave", "unix": 1793834662.1568615, "model": "15-4b", "profile": "baseline", "group": "medium-c8", "wave": -1, "seconds": 10.3505008799998, "valid": true}
+{"event": "wave", "unix": 1793834672.518101, "model": "15-4b", "profile": "baseline", "group": "medium-c8", "wave": 0, "seconds": 10.360318384000038, "valid": true}
+{"event": "wave", "unix": 1793834682.8446307, "model": "15-4b", "profile": "baseline", "group": "medium-c8", "wave": 1, "seconds": 10.325267213000188, "valid": true}
+{"event": "wave", "unix": 1793834693.192176, "model": "15-4b", "profile": "baseline", "group": "medium-c8", "wave": 2, "seconds": 10.34774243999982, "valid": true}
+{"event": "wave", "unix": 1793834702.699936, "model": "15-4b", "profile": "baseline", "group": "long-c4", "wave": -1, "seconds": 8.875762925000345, "valid": true}
+{"event": "wave", "unix": 1793834711.5952897, "model": "15-4b", "profile": "baseline", "group": "long-c4", "wave": 0, "seconds": 8.892860536000171, "valid": true}
+{"event": "wave", "unix": 1793834720.5194683, "model": "15-4b", "profile": "baseline", "group": "long-c4", "wave": 1, "seconds": 8.920807463999608, "valid": true}
+{"event": "wave", "unix": 1793834729.4490337, "model": "15-4b", "profile": "baseline", "group": "long-c4", "wave": 2, "seconds": 8.926177438000195, "valid": true}
+{"event": "wave", "unix": 1793834750.7502978, "model": "15-4b", "profile": "baseline", "group": "near-context-c8", "wave": -1, "seconds": 20.15837096500036, "valid": true}
+{"event": "wave", "unix": 1793834770.9525366, "model": "15-4b", "profile": "baseline", "group": "near-context-c8", "wave": 0, "seconds": 20.191221782999946, "valid": true}
+{"event": "wave", "unix": 1793834791.1567898, "model": "15-4b", "profile": "baseline", "group": "near-context-c8", "wave": 1, "seconds": 20.193939094000143, "valid": true}
+{"event": "wave", "unix": 1793834811.3626194, "model": "15-4b", "profile": "baseline", "group": "near-context-c8", "wave": 2, "seconds": 20.196291277, "valid": true}
+{"event": "wave", "unix": 1793834814.4180634, "model": "15-4b", "profile": "baseline", "group": "application-cold", "wave": -1, "seconds": 2.999849884000014, "valid": true}
+{"event": "wave", "unix": 1793834815.7864923, "model": "15-4b", "profile": "baseline", "group": "application-cold", "wave": 0, "seconds": 1.3681927820002784, "valid": true}
+{"event": "wave", "unix": 1793834816.6090713, "model": "15-4b", "profile": "baseline", "group": "application-cold", "wave": 1, "seconds": 0.8222167139997509, "valid": true}
+{"event": "wave", "unix": 1793834817.414139, "model": "15-4b", "profile": "baseline", "group": "application-cold", "wave": 2, "seconds": 0.8047459529998378, "valid": true}
+{"event": "wave", "unix": 1793834818.2605996, "model": "15-4b", "profile": "baseline", "group": "application-warm", "wave": -1, "seconds": 0.7976838740000858, "valid": true}
+{"event": "wave", "unix": 1793834818.9721093, "model": "15-4b", "profile": "baseline", "group": "application-warm", "wave": 0, "seconds": 0.7110301729999264, "valid": true}
+{"event": "wave", "unix": 1793834819.6615386, "model": "15-4b", "profile": "baseline", "group": "application-warm", "wave": 1, "seconds": 0.6896517790000871, "valid": true}
+{"event": "wave", "unix": 1793834820.3541105, "model": "15-4b", "profile": "baseline", "group": "application-warm", "wave": 2, "seconds": 0.6920211980000204, "valid": true}
+{"event": "wave", "unix": 1793834822.079575, "model": "15-4b", "profile": "baseline", "group": "long-cold", "wave": -1, "seconds": 1.6879134870000598, "valid": true}
+{"event": "wave", "unix": 1793834823.777264, "model": "15-4b", "profile": "baseline", "group": "long-cold", "wave": 0, "seconds": 1.6973388900000828, "valid": true}
+{"event": "wave", "unix": 1793834825.4666057, "model": "15-4b", "profile": "baseline", "group": "long-cold", "wave": 1, "seconds": 1.6886353499999132, "valid": true}
+{"event": "wave", "unix": 1793834827.1698174, "model": "15-4b", "profile": "baseline", "group": "long-cold", "wave": 2, "seconds": 1.7027491579997331, "valid": true}
+{"event": "wave", "unix": 1793834828.8930557, "model": "15-4b", "profile": "baseline", "group": "long-warm", "wave": -1, "seconds": 1.686453144999632, "valid": true}
+{"event": "wave", "unix": 1793834829.6324732, "model": "15-4b", "profile": "baseline", "group": "long-warm", "wave": 0, "seconds": 0.7368130579998251, "valid": true}
+{"event": "wave", "unix": 1793834830.3558707, "model": "15-4b", "profile": "baseline", "group": "long-warm", "wave": 1, "seconds": 0.7234344870003042, "valid": true}
+{"event": "wave", "unix": 1793834831.0842447, "model": "15-4b", "profile": "baseline", "group": "long-warm", "wave": 2, "seconds": 0.7273965310000676, "valid": true}
+{"event": "wave", "unix": 1793834840.350976, "model": "15-4b", "profile": "baseline", "group": "report-greedy-0", "wave": -1, "seconds": 9.206823103999795, "valid": true}
+{"event": "wave", "unix": 1793834849.556061, "model": "15-4b", "profile": "baseline", "group": "report-greedy-0", "wave": 0, "seconds": 9.204354669000168, "valid": true}
+{"event": "wave", "unix": 1793834858.7639518, "model": "15-4b", "profile": "baseline", "group": "report-greedy-0", "wave": 1, "seconds": 9.20726026400007, "valid": true}
+{"event": "wave", "unix": 1793834867.9681656, "model": "15-4b", "profile": "baseline", "group": "report-greedy-0", "wave": 2, "seconds": 9.204087415000231, "valid": true}
+{"event": "wave", "unix": 1793834879.225969, "model": "15-4b", "profile": "baseline", "group": "report-sample-42", "wave": 0, "seconds": 11.213868392999757, "valid": true}
+{"event": "wave", "unix": 1793834889.4977934, "model": "15-4b", "profile": "baseline", "group": "conflict-greedy-0", "wave": 0, "seconds": 10.229601375999664, "valid": true}
+{"event": "wave", "unix": 1793834900.3804405, "model": "15-4b", "profile": "baseline", "group": "conflict-sample-42", "wave": 0, "seconds": 10.839183720000165, "valid": true}
+{"event": "wave", "unix": 1793834904.3604472, "model": "15-4b", "profile": "baseline", "group": "bladder-correction-sample-42", "wave": 0, "seconds": 3.9210220519998984, "valid": true}
+{"event": "wave", "unix": 1793834907.0601127, "model": "15-4b", "profile": "baseline", "group": "bladder-en-sample-42", "wave": 0, "seconds": 2.6394715040000847, "valid": true}
+{"event": "wave", "unix": 1793834936.0172198, "model": "15-4b", "profile": "baseline", "group": "dictation-greedy-0", "wave": 0, "seconds": 28.893145560999983, "valid": true}
+{"event": "wave", "unix": 1793834964.833369, "model": "15-4b", "profile": "baseline", "group": "dictation-greedy-0", "wave": 1, "seconds": 28.814938783999878, "valid": true}
+{"event": "wave", "unix": 1793834994.0976284, "model": "15-4b", "profile": "baseline", "group": "dictation-greedy-0", "wave": 2, "seconds": 29.263631708000048, "valid": true}
+{"event": "wave", "unix": 1793834995.3034625, "model": "15-4b", "profile": "baseline", "group": "vision-1", "wave": 0, "seconds": 1.1465155659998345, "valid": true}
+{"event": "wave", "unix": 1793834995.974528, "model": "15-4b", "profile": "baseline", "group": "vision-2", "wave": 0, "seconds": 0.6252547539997977, "valid": true}
+{"event": "trial_end", "unix": 1793834996.0615962, "trial": "15-4b-baseline"}
+{"event": "trial_start", "unix": 1793834996.0616565, "trial": "15-4b-seq8"}
+{"event": "wave", "unix": 1793835176.0022533, "model": "15-4b", "profile": "seq8", "group": "medium-c1", "wave": -1, "seconds": 5.9159956749999765, "valid": true}
+{"event": "wave", "unix": 1793835181.3406472, "model": "15-4b", "profile": "seq8", "group": "medium-c1", "wave": 0, "seconds": 5.338235779000115, "valid": true}
+{"event": "wave", "unix": 1793835186.6903024, "model": "15-4b", "profile": "seq8", "group": "medium-c1", "wave": 1, "seconds": 5.349499499000103, "valid": true}
+{"event": "wave", "unix": 1793835192.0303655, "model": "15-4b", "profile": "seq8", "group": "medium-c1", "wave": 2, "seconds": 5.339755891000095, "valid": true}
+{"event": "wave", "unix": 1793835197.3506765, "model": "15-4b", "profile": "seq8", "group": "medium-c4", "wave": -1, "seconds": 5.277348018999874, "valid": true}
+{"event": "wave", "unix": 1793835202.661454, "model": "15-4b", "profile": "seq8", "group": "medium-c4", "wave": 0, "seconds": 5.300752173000092, "valid": true}
+{"event": "wave", "unix": 1793835207.9471643, "model": "15-4b", "profile": "seq8", "group": "medium-c4", "wave": 1, "seconds": 5.284911399000066, "valid": true}
+{"event": "wave", "unix": 1793835213.2554986, "model": "15-4b", "profile": "seq8", "group": "medium-c4", "wave": 2, "seconds": 5.3075496550000025, "valid": true}
+{"event": "wave", "unix": 1793835219.7330022, "model": "15-4b", "profile": "seq8", "group": "medium-c8", "wave": -1, "seconds": 6.443511341999965, "valid": true}
+{"event": "wave", "unix": 1793835226.1794121, "model": "15-4b", "profile": "seq8", "group": "medium-c8", "wave": 0, "seconds": 6.44546815700005, "valid": true}
+{"event": "wave", "unix": 1793835232.649381, "model": "15-4b", "profile": "seq8", "group": "medium-c8", "wave": 1, "seconds": 6.46887077800011, "valid": true}
+{"event": "wave", "unix": 1793835239.1128669, "model": "15-4b", "profile": "seq8", "group": "medium-c8", "wave": 2, "seconds": 6.463242331999936, "valid": true}
+{"event": "wave", "unix": 1793835258.558738, "model": "15-4b", "profile": "seq8", "group": "near-context-c8", "wave": -1, "seconds": 18.78875190000008, "valid": true}
+{"event": "wave", "unix": 1793835277.3960252, "model": "15-4b", "profile": "seq8", "group": "near-context-c8", "wave": 0, "seconds": 18.82659306800042, "valid": true}
+{"event": "wave", "unix": 1793835296.308532, "model": "15-4b", "profile": "seq8", "group": "near-context-c8", "wave": 1, "seconds": 18.901908303000255, "valid": true}
+{"event": "wave", "unix": 1793835315.1991386, "model": "15-4b", "profile": "seq8", "group": "near-context-c8", "wave": 2, "seconds": 18.879977959999906, "valid": true}
+{"event": "trial_end", "unix": 1793835316.0129604, "trial": "15-4b-seq8"}
+{"event": "trial_start", "unix": 1793835316.0130217, "trial": "15-4b-prefill1024"}
+{"event": "wave", "unix": 1793835480.2396657, "model": "15-4b", "profile": "prefill1024", "group": "long-c4", "wave": -1, "seconds": 9.635774440000205, "valid": true}
+{"event": "wave", "unix": 1793835489.3258348, "model": "15-4b", "profile": "prefill1024", "group": "long-c4", "wave": 0, "seconds": 9.082783089999793, "valid": true}
+{"event": "wave", "unix": 1793835498.4165273, "model": "15-4b", "profile": "prefill1024", "group": "long-c4", "wave": 1, "seconds": 9.088066781000634, "valid": true}
+{"event": "wave", "unix": 1793835507.5309415, "model": "15-4b", "profile": "prefill1024", "group": "long-c4", "wave": 2, "seconds": 9.111320849000549, "valid": true}
+{"event": "trial_end", "unix": 1793835508.3106534, "trial": "15-4b-prefill1024"}
+{"event": "trial_start", "unix": 1793835508.3107264, "trial": "15-4b-prefill4096"}
+{"event": "wave", "unix": 1793835677.1568248, "model": "15-4b", "profile": "prefill4096", "group": "long-c4", "wave": -1, "seconds": 9.396526657999857, "valid": true}
+{"event": "wave", "unix": 1793835686.0180688, "model": "15-4b", "profile": "prefill4096", "group": "long-c4", "wave": 0, "seconds": 8.85809489499934, "valid": true}
+{"event": "wave", "unix": 1793835694.9031444, "model": "15-4b", "profile": "prefill4096", "group": "long-c4", "wave": 1, "seconds": 8.882198076999885, "valid": true}
+{"event": "wave", "unix": 1793835703.798318, "model": "15-4b", "profile": "prefill4096", "group": "long-c4", "wave": 2, "seconds": 8.89122400999986, "valid": true}
+{"event": "trial_end", "unix": 1793835704.729593, "trial": "15-4b-prefill4096"}
+{"event": "trial_start", "unix": 1793835704.7296548, "trial": "15-4b-prefill8192"}
+{"event": "wave", "unix": 1793835878.081155, "model": "15-4b", "profile": "prefill8192", "group": "long-c4", "wave": -1, "seconds": 8.84170487099982, "valid": true}
+{"event": "wave", "unix": 1793835887.339867, "model": "15-4b", "profile": "prefill8192", "group": "long-c4", "wave": 0, "seconds": 9.25725282500025, "valid": true}
+{"event": "wave", "unix": 1793835896.1681204, "model": "15-4b", "profile": "prefill8192", "group": "long-c4", "wave": 1, "seconds": 8.826772548000008, "valid": true}
+{"event": "wave", "unix": 1793835905.010896, "model": "15-4b", "profile": "prefill8192", "group": "long-c4", "wave": 2, "seconds": 8.842950433000624, "valid": true}
+{"event": "trial_end", "unix": 1793835905.936858, "trial": "15-4b-prefill8192"}
+{"event": "trial_start", "unix": 1793835905.936962, "trial": "15-4b-kv-plus"}
+{"event": "wave", "unix": 1793836074.6299515, "model": "15-4b", "profile": "kv-plus", "group": "near-context-c8", "wave": -1, "seconds": 19.097913644000073, "valid": true}
+{"event": "wave", "unix": 1793836093.1865828, "model": "15-4b", "profile": "kv-plus", "group": "near-context-c8", "wave": 0, "seconds": 18.550156639000306, "valid": true}
+{"event": "wave", "unix": 1793836111.8151135, "model": "15-4b", "profile": "kv-plus", "group": "near-context-c8", "wave": 1, "seconds": 18.623390565999216, "valid": true}
+{"event": "wave", "unix": 1793836130.4699194, "model": "15-4b", "profile": "kv-plus", "group": "near-context-c8", "wave": 2, "seconds": 18.650415160000193, "valid": true}
+{"event": "trial_end", "unix": 1793836131.2383854, "trial": "15-4b-kv-plus"}
+{"event": "trial_start", "unix": 1793836131.2384677, "trial": "15-4b-ngram4"}
+{"event": "wave", "unix": 1793836292.5592637, "model": "15-4b", "profile": "ngram4", "group": "report-greedy-0", "wave": -1, "seconds": 7.184793974000058, "valid": true}
+{"event": "wave", "unix": 1793836297.3079655, "model": "15-4b", "profile": "ngram4", "group": "report-greedy-0", "wave": 0, "seconds": 4.7476749379993635, "valid": true}
+{"event": "wave", "unix": 1793836302.0579226, "model": "15-4b", "profile": "ngram4", "group": "report-greedy-0", "wave": 1, "seconds": 4.750748582000597, "valid": true}
+{"event": "wave", "unix": 1793836306.8121746, "model": "15-4b", "profile": "ngram4", "group": "report-greedy-0", "wave": 2, "seconds": 4.7538422439993155, "valid": true}
+{"event": "wave", "unix": 1793836310.168035, "model": "15-4b", "profile": "ngram4", "group": "report-sample-42", "wave": 0, "seconds": 3.3142286989996137, "valid": true}
+{"event": "wave", "unix": 1793836315.8560536, "model": "15-4b", "profile": "ngram4", "group": "conflict-greedy-0", "wave": 0, "seconds": 5.646319903999938, "valid": true}
+{"event": "wave", "unix": 1793836322.2766368, "model": "15-4b", "profile": "ngram4", "group": "conflict-sample-42", "wave": 0, "seconds": 6.37846433499999, "valid": true}
+{"event": "wave", "unix": 1793836324.5741916, "model": "15-4b", "profile": "ngram4", "group": "bladder-correction-sample-42", "wave": 0, "seconds": 2.255776500999673, "valid": true}
+{"event": "wave", "unix": 1793836326.4138753, "model": "15-4b", "profile": "ngram4", "group": "bladder-en-sample-42", "wave": 0, "seconds": 1.7986702289999812, "valid": true}
+{"event": "wave", "unix": 1793836340.7315457, "model": "15-4b", "profile": "ngram4", "group": "dictation-greedy-0", "wave": 0, "seconds": 14.269899216999875, "valid": true}
+{"event": "wave", "unix": 1793836355.0133834, "model": "15-4b", "profile": "ngram4", "group": "dictation-greedy-0", "wave": 1, "seconds": 14.281437737999113, "valid": true}
+{"event": "wave", "unix": 1793836369.3064933, "model": "15-4b", "profile": "ngram4", "group": "dictation-greedy-0", "wave": 2, "seconds": 14.29212258699954, "valid": true}
+{"event": "wave", "unix": 1793836370.9210892, "model": "15-4b", "profile": "ngram4", "group": "vision-1", "wave": 0, "seconds": 1.5738657849997253, "valid": true}
+{"event": "wave", "unix": 1793836372.4355073, "model": "15-4b", "profile": "ngram4", "group": "vision-2", "wave": 0, "seconds": 1.4718248970002605, "valid": true}
+{"event": "trial_end", "unix": 1793836373.3548613, "trial": "15-4b-ngram4"}
+{"event": "trial_start", "unix": 1793836373.3549166, "trial": "15-4b-ngram8"}
+{"event": "wave", "unix": 1793836534.00851, "model": "15-4b", "profile": "ngram8", "group": "report-greedy-0", "wave": -1, "seconds": 6.543202763999943, "valid": true}
+{"event": "wave", "unix": 1793836538.3258758, "model": "15-4b", "profile": "ngram8", "group": "report-greedy-0", "wave": 0, "seconds": 4.317169003999879, "valid": true}
+{"event": "wave", "unix": 1793836542.6254995, "model": "15-4b", "profile": "ngram8", "group": "report-greedy-0", "wave": 1, "seconds": 4.2994178660001126, "valid": true}
+{"event": "wave", "unix": 1793836546.9169927, "model": "15-4b", "profile": "ngram8", "group": "report-greedy-0", "wave": 2, "seconds": 4.291056925000703, "valid": true}
+{"event": "wave", "unix": 1793836550.7673726, "model": "15-4b", "profile": "ngram8", "group": "report-sample-42", "wave": 0, "seconds": 3.8139666899996882, "valid": true}
+{"event": "wave", "unix": 1793836556.1804657, "model": "15-4b", "profile": "ngram8", "group": "conflict-greedy-0", "wave": 0, "seconds": 5.375040955999793, "valid": true}
+{"event": "wave", "unix": 1793836560.6790218, "model": "15-4b", "profile": "ngram8", "group": "conflict-sample-42", "wave": 0, "seconds": 4.458491891999984, "valid": true}
+{"event": "wave", "unix": 1793836562.3749435, "model": "15-4b", "profile": "ngram8", "group": "bladder-correction-sample-42", "wave": 0, "seconds": 1.6561245540005984, "valid": true}
+{"event": "wave", "unix": 1793836564.1551647, "model": "15-4b", "profile": "ngram8", "group": "bladder-en-sample-42", "wave": 0, "seconds": 1.7426792200003547, "valid": true}
+{"event": "wave", "unix": 1793836577.8260355, "model": "15-4b", "profile": "ngram8", "group": "dictation-greedy-0", "wave": 0, "seconds": 13.625298079999993, "valid": true}
+{"event": "wave", "unix": 1793836591.4625576, "model": "15-4b", "profile": "ngram8", "group": "dictation-greedy-0", "wave": 1, "seconds": 13.636175698999978, "valid": true}
+{"event": "wave", "unix": 1793836605.0686483, "model": "15-4b", "profile": "ngram8", "group": "dictation-greedy-0", "wave": 2, "seconds": 13.60574547899978, "valid": true}
+{"event": "wave", "unix": 1793836606.6350548, "model": "15-4b", "profile": "ngram8", "group": "vision-1", "wave": 0, "seconds": 1.5260105590004969, "valid": true}
+{"event": "wave", "unix": 1793836608.1573238, "model": "15-4b", "profile": "ngram8", "group": "vision-2", "wave": 0, "seconds": 1.4811087130001397, "valid": true}
+{"event": "trial_end", "unix": 1793836609.0683076, "trial": "15-4b-ngram8"}
+{"event": "model_restored", "unix": 1793836726.9140656, "model": 1}
+{"event": "trial_start", "unix": 1793836726.925468, "trial": "27b-baseline"}
+{"event": "wave", "unix": 1793836757.7220132, "model": "27b", "profile": "baseline", "group": "medium-c1", "wave": -1, "seconds": 30.053159987999607, "valid": true}
+{"event": "wave", "unix": 1793836787.9232826, "model": "27b", "profile": "baseline", "group": "medium-c1", "wave": 0, "seconds": 30.20056335299978, "valid": true}
+{"event": "wave", "unix": 1793836818.016287, "model": "27b", "profile": "baseline", "group": "medium-c1", "wave": 1, "seconds": 30.092993960999593, "valid": true}
+{"event": "wave", "unix": 1793836848.1156273, "model": "27b", "profile": "baseline", "group": "medium-c1", "wave": 2, "seconds": 30.099076913999852, "valid": true}
+{"event": "wave", "unix": 1793836881.8109605, "model": "27b", "profile": "baseline", "group": "medium-c4", "wave": -1, "seconds": 33.63443200599977, "valid": true}
+{"event": "wave", "unix": 1793836915.4771574, "model": "27b", "profile": "baseline", "group": "medium-c4", "wave": 0, "seconds": 33.66501023500041, "valid": true}
+{"event": "wave", "unix": 1793836949.145303, "model": "27b", "profile": "baseline", "group": "medium-c4", "wave": 1, "seconds": 33.66651937299957, "valid": true}
+{"event": "wave", "unix": 1793836982.8248315, "model": "27b", "profile": "baseline", "group": "medium-c4", "wave": 2, "seconds": 33.678794122, "valid": true}
+{"event": "wave", "unix": 1793837049.898973, "model": "27b", "profile": "baseline", "group": "medium-c8", "wave": -1, "seconds": 67.01540805400055, "valid": true}
+{"event": "wave", "unix": 1793837116.9412045, "model": "27b", "profile": "baseline", "group": "medium-c8", "wave": 0, "seconds": 67.04089357300018, "valid": true}
+{"event": "wave", "unix": 1793837183.9979227, "model": "27b", "profile": "baseline", "group": "medium-c8", "wave": 1, "seconds": 67.05491264699958, "valid": true}
+{"event": "wave", "unix": 1793837251.0524435, "model": "27b", "profile": "baseline", "group": "medium-c8", "wave": 2, "seconds": 67.05237029199998, "valid": true}
+{"event": "wave", "unix": 1793837305.6727312, "model": "27b", "profile": "baseline", "group": "long-c4", "wave": -1, "seconds": 54.218183717999636, "valid": true}
+{"event": "wave", "unix": 1793837359.9204519, "model": "27b", "profile": "baseline", "group": "long-c4", "wave": 0, "seconds": 54.24507810599971, "valid": true}
+{"event": "wave", "unix": 1793837414.1655567, "model": "27b", "profile": "baseline", "group": "long-c4", "wave": 1, "seconds": 54.24284255099974, "valid": true}
+{"event": "wave", "unix": 1793837468.4158318, "model": "27b", "profile": "baseline", "group": "long-c4", "wave": 2, "seconds": 54.24872732200038, "valid": true}
+{"event": "wave", "unix": 1793837600.0625415, "model": "27b", "profile": "baseline", "group": "near-context-c8", "wave": -1, "seconds": 130.98568529299973, "valid": true}
+{"event": "wave", "unix": 1793837731.1242807, "model": "27b", "profile": "baseline", "group": "near-context-c8", "wave": 0, "seconds": 131.0447240630001, "valid": true}
+{"event": "wave", "unix": 1793837862.1258652, "model": "27b", "profile": "baseline", "group": "near-context-c8", "wave": 1, "seconds": 130.99880526699963, "valid": true}
+{"event": "wave", "unix": 1793837993.0807557, "model": "27b", "profile": "baseline", "group": "near-context-c8", "wave": 2, "seconds": 130.9420358519992, "valid": true}
+{"event": "wave", "unix": 1793837999.0988672, "model": "27b", "profile": "baseline", "group": "application-cold", "wave": -1, "seconds": 5.962621467000645, "valid": true}
+{"event": "wave", "unix": 1793838004.1788003, "model": "27b", "profile": "baseline", "group": "application-cold", "wave": 0, "seconds": 5.080066661999808, "valid": true}
+{"event": "wave", "unix": 1793838008.695375, "model": "27b", "profile": "baseline", "group": "application-cold", "wave": 1, "seconds": 4.515990446000615, "valid": true}
+{"event": "wave", "unix": 1793838013.2077434, "model": "27b", "profile": "baseline", "group": "application-cold", "wave": 2, "seconds": 4.512154840999756, "valid": true}
+{"event": "wave", "unix": 1793838017.7887828, "model": "27b", "profile": "baseline", "group": "application-warm", "wave": -1, "seconds": 4.523712329999398, "valid": true}
+{"event": "wave", "unix": 1793838021.523467, "model": "27b", "profile": "baseline", "group": "application-warm", "wave": 0, "seconds": 3.7340736039996045, "valid": true}
+{"event": "wave", "unix": 1793838025.225907, "model": "27b", "profile": "baseline", "group": "application-warm", "wave": 1, "seconds": 3.702573313999892, "valid": true}
+{"event": "wave", "unix": 1793838028.937718, "model": "27b", "profile": "baseline", "group": "application-warm", "wave": 2, "seconds": 3.7112879190008243, "valid": true}
+{"event": "wave", "unix": 1793838038.4945476, "model": "27b", "profile": "baseline", "group": "long-cold", "wave": -1, "seconds": 9.499006877999818, "valid": true}
+{"event": "wave", "unix": 1793838047.991083, "model": "27b", "profile": "baseline", "group": "long-cold", "wave": 0, "seconds": 9.495539321000251, "valid": true}
+{"event": "wave", "unix": 1793838057.4833202, "model": "27b", "profile": "baseline", "group": "long-cold", "wave": 1, "seconds": 9.491542493999987, "valid": true}
+{"event": "wave", "unix": 1793838066.9739237, "model": "27b", "profile": "baseline", "group": "long-cold", "wave": 2, "seconds": 9.48978174199965, "valid": true}
+{"event": "wave", "unix": 1793838076.511624, "model": "27b", "profile": "baseline", "group": "long-warm", "wave": -1, "seconds": 9.478747046000535, "valid": true}
+{"event": "wave", "unix": 1793838080.2951155, "model": "27b", "profile": "baseline", "group": "long-warm", "wave": 0, "seconds": 3.7803018309996332, "valid": true}
+{"event": "wave", "unix": 1793838084.0487552, "model": "27b", "profile": "baseline", "group": "long-warm", "wave": 1, "seconds": 3.752793957999529, "valid": true}
+{"event": "wave", "unix": 1793838087.8002143, "model": "27b", "profile": "baseline", "group": "long-warm", "wave": 2, "seconds": 3.75121994500023, "valid": true}
+{"event": "wave", "unix": 1793838152.0304937, "model": "27b", "profile": "baseline", "group": "report-greedy-0", "wave": -1, "seconds": 64.19354894200023, "valid": true}
+{"event": "wave", "unix": 1793838216.556475, "model": "27b", "profile": "baseline", "group": "report-greedy-0", "wave": 0, "seconds": 64.52539760399941, "valid": true}
+{"event": "wave", "unix": 1793838280.9364617, "model": "27b", "profile": "baseline", "group": "report-greedy-0", "wave": 1, "seconds": 64.37924269799987, "valid": true}
+{"event": "wave", "unix": 1793838345.315575, "model": "27b", "profile": "baseline", "group": "report-greedy-0", "wave": 2, "seconds": 64.3787507119996, "valid": true}
+{"event": "wave", "unix": 1793838410.3812153, "model": "27b", "profile": "baseline", "group": "report-sample-42", "wave": 0, "seconds": 64.99996064599964, "valid": true}
+{"event": "wave", "unix": 1793838459.4110768, "model": "27b", "profile": "baseline", "group": "conflict-greedy-0", "wave": 0, "seconds": 48.96311647099992, "valid": true}
+{"event": "wave", "unix": 1793838525.5621352, "model": "27b", "profile": "baseline", "group": "conflict-sample-42", "wave": 0, "seconds": 66.08478344699961, "valid": true}
+{"event": "wave", "unix": 1793838544.5322237, "model": "27b", "profile": "baseline", "group": "bladder-correction-sample-42", "wave": 0, "seconds": 18.878322184999888, "valid": true}
+{"event": "wave", "unix": 1793838558.1698806, "model": "27b", "profile": "baseline", "group": "bladder-en-sample-42", "wave": 0, "seconds": 13.571420526999646, "valid": true}
+{"event": "wave", "unix": 1793838597.0683365, "model": "27b", "profile": "baseline", "group": "dictation-greedy-0", "wave": 0, "seconds": 38.83316584499971, "valid": true}
+{"event": "wave", "unix": 1793838635.8515813, "model": "27b", "profile": "baseline", "group": "dictation-greedy-0", "wave": 1, "seconds": 38.782655717000125, "valid": true}
+{"event": "wave", "unix": 1793838675.226877, "model": "27b", "profile": "baseline", "group": "dictation-greedy-0", "wave": 2, "seconds": 39.37502251100068, "valid": true}
+{"event": "wave", "unix": 1793838677.283984, "model": "27b", "profile": "baseline", "group": "vision-1", "wave": 0, "seconds": 1.9954206769998564, "valid": true}
+{"event": "wave", "unix": 1793838680.1344454, "model": "27b", "profile": "baseline", "group": "vision-2", "wave": 0, "seconds": 2.797777675999896, "valid": true}
+{"event": "trial_end", "unix": 1793838680.3377721, "trial": "27b-baseline"}
+{"event": "trial_start", "unix": 1793838680.3379924, "trial": "27b-seq8"}
+{"event": "wave", "unix": 1793839137.6224656, "model": "27b", "profile": "seq8", "group": "medium-c1", "wave": -1, "seconds": 31.140010819000054, "valid": true}
+{"event": "wave", "unix": 1793839168.367033, "model": "27b", "profile": "seq8", "group": "medium-c1", "wave": 0, "seconds": 30.74393605899968, "valid": true}
+{"event": "wave", "unix": 1793839199.114012, "model": "27b", "profile": "seq8", "group": "medium-c1", "wave": 1, "seconds": 30.757031312000436, "valid": true}
+{"event": "wave", "unix": 1793839229.91004, "model": "27b", "profile": "seq8", "group": "medium-c1", "wave": 2, "seconds": 30.795537089999925, "valid": true}
+{"event": "wave", "unix": 1793839264.0279417, "model": "27b", "profile": "seq8", "group": "medium-c4", "wave": -1, "seconds": 34.05600413199954, "valid": true}
+{"event": "wave", "unix": 1793839298.0498402, "model": "27b", "profile": "seq8", "group": "medium-c4", "wave": 0, "seconds": 34.02976200099965, "valid": true}
+{"event": "wave", "unix": 1793839332.1057143, "model": "27b", "profile": "seq8", "group": "medium-c4", "wave": 1, "seconds": 34.05606940199959, "valid": true}
+{"event": "wave", "unix": 1793839366.1765366, "model": "27b", "profile": "seq8", "group": "medium-c4", "wave": 2, "seconds": 34.069900235000205, "valid": true}
+{"event": "wave", "unix": 1793839406.339415, "model": "27b", "profile": "seq8", "group": "medium-c8", "wave": -1, "seconds": 40.10104166699966, "valid": true}
+{"event": "wave", "unix": 1793839446.4194863, "model": "27b", "profile": "seq8", "group": "medium-c8", "wave": 0, "seconds": 40.078015174999564, "valid": true}
+{"event": "wave", "unix": 1793839486.5312085, "model": "27b", "profile": "seq8", "group": "medium-c8", "wave": 1, "seconds": 40.10970383499989, "valid": true}
+{"event": "wave", "unix": 1793839526.6403358, "model": "27b", "profile": "seq8", "group": "medium-c8", "wave": 2, "seconds": 40.10732268399988, "valid": true}
+{"event": "wave", "unix": 1793839660.4482963, "model": "27b", "profile": "seq8", "group": "near-context-c8", "wave": -1, "seconds": 133.03628473999925, "valid": true}
+{"event": "wave", "unix": 1793839793.509001, "model": "27b", "profile": "seq8", "group": "near-context-c8", "wave": 0, "seconds": 133.05202302900034, "valid": true}
+{"event": "wave", "unix": 1793839926.5689235, "model": "27b", "profile": "seq8", "group": "near-context-c8", "wave": 1, "seconds": 133.05305789399972, "valid": true}
+{"event": "wave", "unix": 1793840059.6444557, "model": "27b", "profile": "seq8", "group": "near-context-c8", "wave": 2, "seconds": 133.06565482299993, "valid": true}
+{"event": "trial_end", "unix": 1793840061.4357715, "trial": "27b-seq8"}
+{"event": "trial_start", "unix": 1793840061.43676, "trial": "27b-prefill1024"}
+{"event": "wave", "unix": 1793840533.6165366, "model": "27b", "profile": "prefill1024", "group": "long-c4", "wave": -1, "seconds": 56.88550675099941, "valid": true}
+{"event": "wave", "unix": 1793840590.195855, "model": "27b", "profile": "prefill1024", "group": "long-c4", "wave": 0, "seconds": 56.59363711700098, "valid": true}
+{"event": "wave", "unix": 1793840646.9176528, "model": "27b", "profile": "prefill1024", "group": "long-c4", "wave": 1, "seconds": 56.709644455999296, "valid": true}
+{"event": "wave", "unix": 1793840703.663272, "model": "27b", "profile": "prefill1024", "group": "long-c4", "wave": 2, "seconds": 56.752258227999846, "valid": true}
+{"event": "trial_end", "unix": 1793840705.2630517, "trial": "27b-prefill1024"}
+{"event": "trial_start", "unix": 1793840705.2636807, "trial": "27b-prefill4096"}
+{"event": "wave", "unix": 1793841191.2251937, "model": "27b", "profile": "prefill4096", "group": "long-c4", "wave": -1, "seconds": 55.27869691500018, "valid": true}
+{"event": "wave", "unix": 1793841246.2922761, "model": "27b", "profile": "prefill4096", "group": "long-c4", "wave": 0, "seconds": 55.08125899799961, "valid": true}
+{"event": "wave", "unix": 1793841301.4197693, "model": "27b", "profile": "prefill4096", "group": "long-c4", "wave": 1, "seconds": 55.126214187001096, "valid": true}
+{"event": "wave", "unix": 1793841356.588946, "model": "27b", "profile": "prefill4096", "group": "long-c4", "wave": 2, "seconds": 55.157703724000385, "valid": true}
+{"event": "trial_end", "unix": 1793841358.0658038, "trial": "27b-prefill4096"}
+{"event": "trial_start", "unix": 1793841358.0659072, "trial": "27b-prefill8192"}
+{"event": "startup_failed", "unix": 1793841768.6277757, "trial": "27b-prefill8192"}
+{"event": "trial_start", "unix": 1793841768.629271, "trial": "27b-kv-plus"}
+{"event": "wave", "unix": 1793842321.6699584, "model": "27b", "profile": "kv-plus", "group": "near-context-c8", "wave": -1, "seconds": 117.12181764600064, "valid": true}
+{"event": "wave", "unix": 1793842437.5214036, "model": "27b", "profile": "kv-plus", "group": "near-context-c8", "wave": 0, "seconds": 115.8593012579986, "valid": true}
+{"event": "wave", "unix": 1793842553.4744627, "model": "27b", "profile": "kv-plus", "group": "near-context-c8", "wave": 1, "seconds": 115.9315110259995, "valid": true}
+{"event": "wave", "unix": 1793842669.441021, "model": "27b", "profile": "kv-plus", "group": "near-context-c8", "wave": 2, "seconds": 115.95574108000073, "valid": true}
+{"event": "trial_end", "unix": 1793842671.108689, "trial": "27b-kv-plus"}
+{"event": "trial_start", "unix": 1793842671.109562, "trial": "27b-ngram4"}
+{"event": "wave", "unix": 1793843132.897072, "model": "27b", "profile": "ngram4", "group": "report-greedy-0", "wave": -1, "seconds": 41.589635119999, "valid": true}
+{"event": "wave", "unix": 1793843172.2132952, "model": "27b", "profile": "ngram4", "group": "report-greedy-0", "wave": 0, "seconds": 39.32866665700021, "valid": true}
+{"event": "wave", "unix": 1793843211.5580945, "model": "27b", "profile": "ngram4", "group": "report-greedy-0", "wave": 1, "seconds": 39.33486475300015, "valid": true}
+{"event": "wave", "unix": 1793843250.9204023, "model": "27b", "profile": "ngram4", "group": "report-greedy-0", "wave": 2, "seconds": 39.37128301899975, "valid": true}
+{"event": "wave", "unix": 1793843290.892304, "model": "27b", "profile": "ngram4", "group": "report-sample-42", "wave": 0, "seconds": 39.92936783600089, "valid": true}
+{"event": "wave", "unix": 1793843316.184733, "model": "27b", "profile": "ngram4", "group": "conflict-greedy-0", "wave": 0, "seconds": 25.228777398000602, "valid": true}
+{"event": "wave", "unix": 1793843341.5086682, "model": "27b", "profile": "ngram4", "group": "conflict-sample-42", "wave": 0, "seconds": 25.262970537, "valid": true}
+{"event": "wave", "unix": 1793843357.437769, "model": "27b", "profile": "ngram4", "group": "bladder-correction-sample-42", "wave": 0, "seconds": 15.86707383599969, "valid": true}
+{"event": "wave", "unix": 1793843368.5240088, "model": "27b", "profile": "ngram4", "group": "bladder-en-sample-42", "wave": 0, "seconds": 11.024035213999014, "valid": true}
+{"event": "wave", "unix": 1793843391.0941641, "model": "27b", "profile": "ngram4", "group": "dictation-greedy-0", "wave": 0, "seconds": 22.496921287000077, "valid": true}
+{"event": "wave", "unix": 1793843413.6009965, "model": "27b", "profile": "ngram4", "group": "dictation-greedy-0", "wave": 1, "seconds": 22.506702135000523, "valid": true}
+{"event": "wave", "unix": 1793843436.1129894, "model": "27b", "profile": "ngram4", "group": "dictation-greedy-0", "wave": 2, "seconds": 22.51151534100063, "valid": true}
+{"event": "wave", "unix": 1793843438.9597988, "model": "27b", "profile": "ngram4", "group": "vision-1", "wave": 0, "seconds": 2.8054788110002846, "valid": true}
+{"event": "wave", "unix": 1793843442.3321083, "model": "27b", "profile": "ngram4", "group": "vision-2", "wave": 0, "seconds": 3.3321223100010684, "valid": true}
+{"event": "trial_end", "unix": 1793843444.0253835, "trial": "27b-ngram4"}
+{"event": "trial_start", "unix": 1793843444.026164, "trial": "27b-ngram8"}
+{"event": "wave", "unix": 1793843910.6411066, "model": "27b", "profile": "ngram8", "group": "report-greedy-0", "wave": -1, "seconds": 41.3970405680011, "valid": true}
+{"event": "wave", "unix": 1793843949.538943, "model": "27b", "profile": "ngram8", "group": "report-greedy-0", "wave": 0, "seconds": 38.90898941600062, "valid": true}
+{"event": "wave", "unix": 1793843988.4495165, "model": "27b", "profile": "ngram8", "group": "report-greedy-0", "wave": 1, "seconds": 38.909943005999594, "valid": true}
+{"event": "wave", "unix": 1793844027.3866448, "model": "27b", "profile": "ngram8", "group": "report-greedy-0", "wave": 2, "seconds": 38.93675104399881, "valid": true}
+{"event": "wave", "unix": 1793844057.9858208, "model": "27b", "profile": "ngram8", "group": "report-sample-42", "wave": 0, "seconds": 30.54768160200001, "valid": true}
+{"event": "wave", "unix": 1793844081.2361078, "model": "27b", "profile": "ngram8", "group": "conflict-greedy-0", "wave": 0, "seconds": 23.218366416000208, "valid": true}
+{"event": "wave", "unix": 1793844107.1338768, "model": "27b", "profile": "ngram8", "group": "conflict-sample-42", "wave": 0, "seconds": 25.857958534999852, "valid": true}
+{"event": "wave", "unix": 1793844122.778117, "model": "27b", "profile": "ngram8", "group": "bladder-correction-sample-42", "wave": 0, "seconds": 15.592214240999965, "valid": true}
+{"event": "wave", "unix": 1793844133.75616, "model": "27b", "profile": "ngram8", "group": "bladder-en-sample-42", "wave": 0, "seconds": 10.946145816998978, "valid": true}
+{"event": "wave", "unix": 1793844154.968924, "model": "27b", "profile": "ngram8", "group": "dictation-greedy-0", "wave": 0, "seconds": 21.164361035000184, "valid": true}
+{"event": "wave", "unix": 1793844176.179494, "model": "27b", "profile": "ngram8", "group": "dictation-greedy-0", "wave": 1, "seconds": 21.210645802000727, "valid": true}
+{"event": "wave", "unix": 1793844197.2931025, "model": "27b", "profile": "ngram8", "group": "dictation-greedy-0", "wave": 2, "seconds": 21.113231158000417, "valid": true}
+{"event": "wave", "unix": 1793844200.214741, "model": "27b", "profile": "ngram8", "group": "vision-1", "wave": 0, "seconds": 2.879701533000116, "valid": true}
+{"event": "wave", "unix": 1793844203.6951132, "model": "27b", "profile": "ngram8", "group": "vision-2", "wave": 0, "seconds": 3.4275241079994885, "valid": true}
+{"event": "trial_end", "unix": 1793844204.987797, "trial": "27b-ngram8"}
+{"event": "model_restored", "unix": 1793844634.6293166, "model": 2}
+{"event": "restored", "unix": 1793844635.1127498}

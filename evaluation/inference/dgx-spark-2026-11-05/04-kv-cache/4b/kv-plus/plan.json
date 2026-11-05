@@ -1,0 +1,10 @@
+{
+  "model_key": "4b",
+  "model_index": 0,
+  "model": "google/medgemma-4b-it",
+  "profile": "kv-plus",
+  "flags": {
+    "--max-num-seqs": "8",
+    "--kv-cache-memory-bytes": "6442450944"
+  }
+}

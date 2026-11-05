@@ -1,0 +1,75 @@
+{
+  "unix": 1793849986.4006295,
+  "containers": {
+    "doglyad-dgx-vllm_medgemma_4b-1": {
+      "id": true,
+      "image": true,
+      "command": true,
+      "restart_policy": true,
+      "running": true
+    },
+    "doglyad-dgx-vllm_medgemma_15_4b-1": {
+      "id": true,
+      "image": true,
+      "command": true,
+      "restart_policy": true,
+      "running": true
+    },
+    "doglyad-dgx-vllm_medgemma_27b-1": {
+      "id": true,
+      "image": true,
+      "command": true,
+      "restart_policy": true,
+      "running": true
+    },
+    "doglyad-dgx-backend_inference-1": {
+      "id": true,
+      "image": true,
+      "command": true,
+      "restart_policy": true,
+      "running": true
+    }
+  },
+  "backend_never_restarted": true,
+  "unauthenticated_api_status": {
+    "/v1/generation": 401,
+    "/v1/generation/stream": 401
+  },
+  "backend_engine_routes": {
+    "google/medgemma-27b-it": {
+      "health_status": 200,
+      "configured_model_present": true
+    },
+    "google/medgemma-4b-it": {
+      "health_status": 200,
+      "configured_model_present": true
+    },
+    "google/medgemma-1.5-4b-it": {
+      "health_status": 200,
+      "configured_model_present": true
+    }
+  },
+  "same_boot": true,
+  "boot_id": "a1c6a91f-b23b-4da4-a0ce-5fb1a5dfd218",
+  "no_temporary_container": true,
+  "host": {
+    "unix": 1793849986.4262176,
+    "memory_kib": {
+      "MemFree": 4559524,
+      "MemAvailable": 26417732,
+      "Cached": 22828044,
+      "SwapTotal": 16777212,
+      "SwapFree": 6251372,
+      "Dirty": 472
+    },
+    "vmstat": {
+      "pswpin": 3274829,
+      "pswpout": 8718152,
+      "pgmajfault": 1549076,
+      "oom_kill": 0
+    },
+    "gpu": "55, 12.26 W, 2405 MHz, [N/A], P0, Not Active, Not Active, Not Active",
+    "loadavg": "0.40 0.41 0.54 2/1531 724426",
+    "memory_pressure": "some avg10=0.00 avg60=0.00 avg300=0.00 total=13961219\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=13937390"
+  }
+}

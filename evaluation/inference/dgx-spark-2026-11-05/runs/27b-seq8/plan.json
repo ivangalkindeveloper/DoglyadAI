@@ -1,0 +1,103 @@
+{
+  "model_key": "27b",
+  "model_index": 2,
+  "model": "google/medgemma-27b-it",
+  "profile": "seq8",
+  "flags": {
+    "--max-num-seqs": "8"
+  },
+  "groups": [
+    {
+      "study": "01-batching",
+      "id": "medium-c1",
+      "concurrency": 1,
+      "target_tokens": 1500,
+      "payload": {
+        "model": "google/medgemma-27b-it",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Перечисли числа от 1 до 1000 словами по-русски."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "top_k": 0,
+        "repetition_penalty": 1.0,
+        "seed": 42,
+        "max_tokens": 128,
+        "ignore_eos": true
+      },
+      "fixed_tokens": 128
+    },
+    {
+      "study": "01-batching",
+      "id": "medium-c4",
+      "concurrency": 4,
+      "target_tokens": 1500,
+      "payload": {
+        "model": "google/medgemma-27b-it",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Перечисли числа от 1 до 1000 словами по-русски."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "top_k": 0,
+        "repetition_penalty": 1.0,
+        "seed": 42,
+        "max_tokens": 128,
+        "ignore_eos": true
+      },
+      "fixed_tokens": 128
+    },
+    {
+      "study": "01-batching",
+      "id": "medium-c8",
+      "concurrency": 8,
+      "target_tokens": 1500,
+      "payload": {
+        "model": "google/medgemma-27b-it",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Перечисли числа от 1 до 1000 словами по-русски."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "top_k": 0,
+        "repetition_penalty": 1.0,
+        "seed": 42,
+        "max_tokens": 128,
+        "ignore_eos": true
+      },
+      "fixed_tokens": 128
+    },
+    {
+      "study": "04-kv-cache",
+      "id": "near-context-c8",
+      "concurrency": 8,
+      "target_tokens": 15000,
+      "payload": {
+        "model": "google/medgemma-27b-it",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Перечисли числа от 1 до 1000 словами по-русски."
+          }
+        ],
+        "temperature": 0.0,
+        "top_p": 1.0,
+        "top_k": 0,
+        "repetition_penalty": 1.0,
+        "seed": 42,
+        "max_tokens": 64,
+        "ignore_eos": true
+      },
+      "fixed_tokens": 64
+    }
+  ]
+}

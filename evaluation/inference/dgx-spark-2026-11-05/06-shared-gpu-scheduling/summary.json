@@ -1,0 +1,110 @@
+[
+  {
+    "mode": "parallel12",
+    "waves": 3,
+    "all_valid": true,
+    "wave_seconds": 48.01226753800074,
+    "aggregate_tps": 31.991823730972236,
+    "models": {
+      "4b": {
+        "latency_from_arrival": 18.795624782500454,
+        "ttft_from_arrival": 1.8529592990016681,
+        "admission_wait_seconds": 0.001687012501861318,
+        "service_seconds": 18.792960689501342
+      },
+      "15-4b": {
+        "latency_from_arrival": 18.88574323300054,
+        "ttft_from_arrival": 1.9862051820018678,
+        "admission_wait_seconds": 0.0019166145011695335,
+        "service_seconds": 18.884773721498277
+      },
+      "27b": {
+        "latency_from_arrival": 47.6428458040009,
+        "ttft_from_arrival": 11.033257170500292,
+        "admission_wait_seconds": 0.0021439840020320844,
+        "service_seconds": 47.64070338000056
+      }
+    }
+  },
+  {
+    "mode": "global4",
+    "waves": 3,
+    "all_valid": true,
+    "wave_seconds": 105.21659226499833,
+    "aggregate_tps": 14.598457970691857,
+    "models": {
+      "4b": {
+        "latency_from_arrival": 26.83704130749902,
+        "ttft_from_arrival": 10.030851068497213,
+        "admission_wait_seconds": 9.123231822499292,
+        "service_seconds": 16.688665115498225
+      },
+      "15-4b": {
+        "latency_from_arrival": 41.58778018599696,
+        "ttft_from_arrival": 26.337941013498494,
+        "admission_wait_seconds": 25.75347999549922,
+        "service_seconds": 15.949500151500615
+      },
+      "27b": {
+        "latency_from_arrival": 86.21695777399873,
+        "ttft_from_arrival": 30.77197729299951,
+        "admission_wait_seconds": 26.837153500497152,
+        "service_seconds": 59.21924787050193
+      }
+    }
+  },
+  {
+    "mode": "global8",
+    "waves": 3,
+    "all_valid": true,
+    "wave_seconds": 63.831847450997884,
+    "aggregate_tps": 24.063223317782693,
+    "models": {
+      "4b": {
+        "latency_from_arrival": 17.874831268998605,
+        "ttft_from_arrival": 1.692967356997542,
+        "admission_wait_seconds": 0.0016054509978857823,
+        "service_seconds": 17.87261953199959
+      },
+      "15-4b": {
+        "latency_from_arrival": 17.900643572500485,
+        "ttft_from_arrival": 1.7174516534978466,
+        "admission_wait_seconds": 0.0018740369996521622,
+        "service_seconds": 17.900003343998833
+      },
+      "27b": {
+        "latency_from_arrival": 62.15076630299882,
+        "ttft_from_arrival": 14.893105071500031,
+        "admission_wait_seconds": 8.834870208997017,
+        "service_seconds": 53.30640117999974
+      }
+    }
+  },
+  {
+    "mode": "model_groups",
+    "waves": 3,
+    "all_valid": true,
+    "wave_seconds": 45.8431748610019,
+    "aggregate_tps": 33.50553282265474,
+    "models": {
+      "4b": {
+        "latency_from_arrival": 5.438046007999219,
+        "ttft_from_arrival": 0.6399376600002142,
+        "admission_wait_seconds": 0.0007174850015871925,
+        "service_seconds": 5.437411794999207
+      },
+      "15-4b": {
+        "latency_from_arrival": 10.952180780499475,
+        "ttft_from_arrival": 6.1198337675014045,
+        "admission_wait_seconds": 5.500301750500512,
+        "service_seconds": 5.471877080999548
+      },
+      "27b": {
+        "latency_from_arrival": 45.59021287199903,
+        "ttft_from_arrival": 14.515396312999655,
+        "admission_wait_seconds": 10.996828933501092,
+        "service_seconds": 34.56594118999965
+      }
+    }
+  }
+]

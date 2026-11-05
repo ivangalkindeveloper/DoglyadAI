@@ -1,0 +1,30 @@
+{
+  "doglyad-dgx-vllm_medgemma_4b-1": {
+    "id": true,
+    "image": true,
+    "command": true,
+    "restart_policy": true,
+    "running": true
+  },
+  "doglyad-dgx-vllm_medgemma_15_4b-1": {
+    "id": true,
+    "image": true,
+    "command": true,
+    "restart_policy": true,
+    "running": true
+  },
+  "doglyad-dgx-vllm_medgemma_27b-1": {
+    "id": true,
+    "image": true,
+    "command": true,
+    "restart_policy": true,
+    "running": true
+  },
+  "doglyad-dgx-backend_inference-1": {
+    "id": true,
+    "image": true,
+    "command": true,
+    "restart_policy": true,
+    "running": true
+  }
+}

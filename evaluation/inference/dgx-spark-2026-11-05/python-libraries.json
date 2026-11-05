@@ -1,0 +1,10 @@
+{
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "packages": {
+    "vllm": "0.28.0",
+    "torch": "2.13.0+cu130",
+    "transformers": "5.15.1",
+    "xgrammar": "0.2.3",
+    "flashinfer-python": "0.6.16.post3"
+  }
+}

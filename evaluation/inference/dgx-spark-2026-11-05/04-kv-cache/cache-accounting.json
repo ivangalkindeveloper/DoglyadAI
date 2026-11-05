@@ -1,0 +1,297 @@
+{
+  "model_configs": {
+    "medgemma-4b-it": {
+      "revision": "290cda5eeccbee130f987c4ad74a59ae6f196408",
+      "config_sha256": "d718c800cdb5f40322010f57c6489944ab202b4622dc5f63e61b2a57d5df3b8e",
+      "text_config": {
+        "attention_bias": false,
+        "attention_dropout": 0.0,
+        "attn_logit_softcapping": null,
+        "final_logit_softcapping": null,
+        "head_dim": 256,
+        "hidden_activation": "gelu_pytorch_tanh",
+        "hidden_size": 2560,
+        "initializer_range": 0.02,
+        "intermediate_size": 10240,
+        "layer_types": [
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention"
+        ],
+        "max_position_embeddings": 131072,
+        "model_type": "gemma3_text",
+        "num_attention_heads": 8,
+        "num_hidden_layers": 34,
+        "num_key_value_heads": 4,
+        "query_pre_attn_scalar": 256,
+        "rms_norm_eps": 1e-06,
+        "rope_local_base_freq": 10000,
+        "rope_scaling": {
+          "factor": 8.0,
+          "rope_type": "linear"
+        },
+        "rope_theta": 1000000,
+        "sliding_window": 1024,
+        "torch_dtype": "bfloat16",
+        "use_cache": true,
+        "vocab_size": 262208
+      }
+    },
+    "medgemma-1.5-4b-it": {
+      "revision": "91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b",
+      "config_sha256": "300c724c2c1fcdea39f1e21865cb1b14a605f1e3bb5ef50550faaa48da944fc8",
+      "text_config": {
+        "_sliding_window_pattern": 6,
+        "attention_bias": false,
+        "attention_dropout": 0.0,
+        "attn_logit_softcapping": null,
+        "dtype": "bfloat16",
+        "final_logit_softcapping": null,
+        "head_dim": 256,
+        "hidden_activation": "gelu_pytorch_tanh",
+        "hidden_size": 2560,
+        "initializer_range": 0.02,
+        "intermediate_size": 10240,
+        "layer_types": [
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention"
+        ],
+        "max_position_embeddings": 131072,
+        "model_type": "gemma3_text",
+        "num_attention_heads": 8,
+        "num_hidden_layers": 34,
+        "num_key_value_heads": 4,
+        "query_pre_attn_scalar": 256,
+        "rms_norm_eps": 1e-06,
+        "rope_local_base_freq": 10000,
+        "rope_scaling": {
+          "factor": 8.0,
+          "rope_type": "linear"
+        },
+        "rope_theta": 1000000,
+        "sliding_window": 1024,
+        "use_bidirectional_attention": false,
+        "use_cache": true,
+        "vocab_size": 262208
+      }
+    },
+    "medgemma-27b-it": {
+      "revision": "2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f",
+      "config_sha256": "c81e0e4b771b2975127433494e126020518cdff76d5f73ef2fb015789d1cbf69",
+      "text_config": {
+        "attention_bias": false,
+        "attention_dropout": 0.0,
+        "attn_logit_softcapping": null,
+        "final_logit_softcapping": null,
+        "head_dim": 128,
+        "hidden_activation": "gelu_pytorch_tanh",
+        "hidden_size": 5376,
+        "initializer_range": 0.02,
+        "intermediate_size": 21504,
+        "layer_types": [
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "sliding_attention",
+          "full_attention",
+          "sliding_attention",
+          "sliding_attention"
+        ],
+        "max_position_embeddings": 131072,
+        "model_type": "gemma3_text",
+        "num_attention_heads": 32,
+        "num_hidden_layers": 62,
+        "num_key_value_heads": 16,
+        "query_pre_attn_scalar": 168,
+        "rms_norm_eps": 1e-06,
+        "rope_local_base_freq": 10000,
+        "rope_scaling": {
+          "factor": 8.0,
+          "rope_type": "linear"
+        },
+        "rope_theta": 1000000,
+        "sliding_window": 1024,
+        "torch_dtype": "bfloat16",
+        "use_cache": true,
+        "vocab_size": 262208
+      }
+    }
+  },
+  "vllm_sources": {
+    "v1/kv_cache_interface.py": {
+      "sha256": "932e9175796706506c34c3014cc3c69b146e199426dbbacf19f24056f7332ec3",
+      "source_header": [
+        "# SPDX-License-Identifier: Apache-2.0",
+        "# SPDX-FileCopyrightText: Copyright contributors to the vLLM project",
+        "",
+        "from __future__ import annotations"
+      ],
+      "snippets": [
+        {
+          "name": "FullAttentionSpec.max_memory_usage_bytes",
+          "source": "def max_memory_usage_bytes(self, vllm_config: VllmConfig) -> int:\n        max_model_len = vllm_config.model_config.max_model_len\n        dcp_world_size = vllm_config.parallel_config.decode_context_parallel_size\n        if dcp_world_size > 1:\n            max_model_len = cdiv(max_model_len, dcp_world_size)\n        return cdiv(max_model_len, self.block_size) * self.page_size_bytes"
+        },
+        {
+          "name": "SlidingWindowSpec.max_memory_usage_bytes",
+          "source": "def max_memory_usage_bytes(self, vllm_config: VllmConfig) -> int:\n        assert vllm_config.parallel_config.decode_context_parallel_size == 1, (\n            \"DCP not support sliding window.\"\n        )\n        max_blocks = self.max_admission_blocks_per_request(\n            max_in_flight_tokens=vllm_config.max_in_flight_tokens,\n            max_model_len=vllm_config.model_config.max_model_len,\n        )\n        return max_blocks * self.page_size_bytes"
+        },
+        {
+          "name": "max_admission_blocks_per_request",
+          "source": "def max_admission_blocks_per_request(\n        self, max_in_flight_tokens: int, max_model_len: int\n    ) -> int:\n        \"\"\"Per-request admission cap, in blocks.\n\n        Single source of truth for both startup pool sizing\n        (`max_memory_usage_bytes`) and the runtime admission gate, so requests\n        admitted by startup can also be admitted at runtime.\n\n        `max_in_flight_tokens` is the max tokens scheduled but not yet settled\n        (one batch per concurrent step); see `VllmConfig.max_in_flight_tokens`.\n        \"\"\"\n        # During chunked prefill, we hold KV for at most one chunk window plus\n        # the in-flight tokens, since frees happen on the processed-token basis.\n        num_tokens = min(\n            self.attention_chunk_size + max_in_flight_tokens, max_model_len\n        )\n        return cdiv(num_tokens, self.block_size)"
+        },
+        {
+          "name": "max_admission_blocks_per_request",
+          "source": "def max_admission_blocks_per_request(\n        self, max_in_flight_tokens: int, max_model_len: int\n    ) -> int:\n        \"\"\"Per-request admission cap, in blocks.\n\n        Single source of truth for both startup pool sizing\n        (`max_memory_usage_bytes`) and the runtime admission gate. Per-request\n        real-held blocks plateau at this bound because\n        `SlidingWindowManager.remove_skipped_blocks` runs from `allocate_slots`\n        before each chunk's `get_num_blocks_to_allocate`.\n\n        `max_in_flight_tokens` is the max tokens scheduled but not yet settled\n        (one batch per concurrent step); see `VllmConfig.max_in_flight_tokens`.\n        \"\"\"\n        # During chunked prefill, we hold KV for the last `sliding_window-1`\n        # computed tokens plus the in-flight tokens (frees happen on the\n        # processed-token basis); never more than `max_model_len`. An additional\n        # `extra_retained_tokens` trailing tokens are kept alive below the\n        # window for multi-module spec decoding, and must be accounted here too.\n        num_tokens = min(\n            self.sliding_window - 1 + self.extra_retained_tokens + max_in_flight_tokens,\n            max_model_len,\n        )\n        # +1 because the sliding window may not start from the beginning of\n        # the block. E.g. block size 4 and num_token 4 needs two blocks\n        # [XXCD][EF] to store the 6-token window [CDEF].\n        return cdiv(num_tokens, self.block_size) + 1"
+        }
+      ]
+    },
+    "v1/core/kv_cache_utils.py": {
+      "sha256": "088f2201bee86fade694e78141b6e99a5cd0cdd23c5c7ab3526dd119f76e4aec",
+      "source_header": [
+        "# SPDX-License-Identifier: Apache-2.0",
+        "# SPDX-FileCopyrightText: Copyright contributors to the vLLM project",
+        "\"\"\"KV-Cache Utilities.\"\"\"",
+        ""
+      ],
+      "snippets": [
+        {
+          "name": "get_max_concurrency_for_kv_cache_config",
+          "source": "def get_max_concurrency_for_kv_cache_config(\n    vllm_config: VllmConfig, kv_cache_config: KVCacheConfig\n) -> float:\n    \"\"\"\n    Get the maximum concurrency for the given KV cache configuration.\n\n    A request at max_model_len consumes whole blocks from each group's block\n    table — cdiv(per-request bytes, page bytes) of the group's spec — and all\n    groups draw those block ids from one shared pool, so the per-request\n    total is the sum over groups. The memory/page ratio is identical whether\n    a group carries an aggregated UniformTypeKVCacheSpecs (worker config) or\n    a representative per-layer spec (scheduler config), so both capacity\n    call sites agree.\n    \"\"\"\n    num_blocks_per_request = sum(\n        cdiv(\n            group.kv_cache_spec.max_memory_usage_bytes(vllm_config),\n            group.kv_cache_spec.page_size_bytes,\n        )\n        for group in kv_cache_config.kv_cache_groups\n    )\n    max_concurrency = kv_cache_config.num_blocks / num_blocks_per_request\n    return max_concurrency"
+        }
+      ]
+    },
+    "config/vllm.py": {
+      "sha256": "fb07f95658ae0ee6e6c16c0f36e90f9179e8761221a45d4bf1aebe8bcf63cdcb",
+      "source_header": [
+        "# SPDX-License-Identifier: Apache-2.0",
+        "# SPDX-FileCopyrightText: Copyright contributors to the vLLM project",
+        "",
+        "import copy"
+      ],
+      "snippets": [
+        {
+          "name": "max_in_flight_tokens",
+          "source": "def max_in_flight_tokens(self) -> int:\n        # Upper bound on tokens that are scheduled but not yet settled (freed):\n        # every concurrent batch may hold up to a full `max_num_batched_tokens`.\n        # Recycling-aware KV cache specs (sliding-window, chunked-local) reserve\n        # for this because out-of-window blocks are freed on the processed-token\n        # basis, so in-flight steps transiently keep their blocks.\n        return (\n            self.max_concurrent_batches * self.scheduler_config.max_num_batched_tokens\n        )"
+        }
+      ]
+    }
+  }
+}

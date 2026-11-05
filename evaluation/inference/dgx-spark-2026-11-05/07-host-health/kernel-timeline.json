@@ -1,0 +1,82 @@
+[
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvAssertOkFailedNoLog: Assertion failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from status @ kernel_graphics_context.c:1178"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from kgrctxAllocMainCtxBuffer(pGpu, pKernelGraphicsContext, pKernelGraphics, pKernelChannel) @ kernel_graphics_context.c:1387"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from kgrctxAllocCtxBuffers(pGpu, pKernelGraphicsObject->pKernelGraphicsContext, pKernelGraphics, pKernelGraphicsObject) @ kernel_graphics_object.c:215"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvAssertOkFailedNoLog: Assertion failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from status @ kernel_graphics_context.c:1178"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from kgrctxAllocMainCtxBuffer(pGpu, pKernelGraphicsContext, pKernelGraphics, pKernelChannel) @ kernel_graphics_context.c:1387"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from kgrctxAllocCtxBuffers(pGpu, pKernelGraphicsObject->pKernelGraphicsContext, pKernelGraphics, pKernelGraphicsObject) @ kernel_graphics_object.c:215"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvAssertOkFailedNoLog: Assertion failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from status @ kernel_graphics_context.c:1178"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from kgrctxAllocMainCtxBuffer(pGpu, pKernelGraphicsContext, pKernelGraphics, pKernelChannel) @ kernel_graphics_context.c:1387"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from kgrctxAllocCtxBuffers(pGpu, pKernelGraphicsObject->pKernelGraphicsContext, pKernelGraphics, pKernelGraphicsObject) @ kernel_graphics_object.c:215"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from _memdescAllocInternal(pMemDesc) @ mem_desc.c:1359"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvAssertOkFailedNoLog: Assertion failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from status @ kernel_graphics_context.c:1178"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from kgrctxAllocMainCtxBuffer(pGpu, pKernelGraphicsContext, pKernelGraphics, pKernelChannel) @ kernel_graphics_context.c:1387"
+  },
+  {
+    "unix": 1793832136.0,
+    "phase": "before_measurements",
+    "line": "2026-11-05T01:42:16+03:00 spark-bfd6 kernel: NVRM: nvCheckOkFailedNoLog: Check failed: Out of memory [NV_ERR_NO_MEMORY] (0x00000051) returned from kgrctxAllocCtxBuffers(pGpu, pKernelGraphicsObject->pKernelGraphicsContext, pKernelGraphics, pKernelGraphicsObject) @ kernel_graphics_object.c:215"
+  }
+]
