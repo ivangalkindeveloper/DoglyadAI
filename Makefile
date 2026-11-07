@@ -7,6 +7,9 @@
 	regression-doctor \
 	regression-figma \
 	regression-publish \
+	previews \
+	previews-figma \
+	previews-publish \
 	venv \
 	pip-install \
 	pip-install-dev \
@@ -103,6 +106,16 @@ regression-figma:
 regression-publish:
 	@test -n "$(RUN)" || (echo 'Use RUN=build/regression/runs/<run-id>'; exit 1)
 	python3 test/scripts/figma_bridge.py "$(RUN)"
+
+previews:
+	python3 test/scripts/previews.py
+
+previews-figma:
+	python3 test/scripts/previews.py --publish
+
+previews-publish:
+	@test -n "$(RUN)" || (echo 'Use RUN=build/previews/runs/<run-id>'; exit 1)
+	python3 test/scripts/figma_bridge.py "$(RUN)" --previews
 
 format: format-ios format-backend
 

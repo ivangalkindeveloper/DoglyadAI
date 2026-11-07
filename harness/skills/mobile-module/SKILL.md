@@ -5,7 +5,7 @@ description: Create a mobile application module according to Doglyad conventions
 
 # Create a mobile module
 
-Create and connect an iOS feature using the current rules in the repository's `AGENTS.md`. Add Android instructions when the project gains an Android client.
+Create and connect an iOS feature using the current rules in `harness/instructions/ios.md`. Add Android instructions when the project gains an Android client.
 
 ## Choose the module
 
@@ -24,9 +24,9 @@ Every module contains four types, each in its own file:
 
 Descendant views obtain their feature view model only through private `@EnvironmentObject`. Do not pass it to descendant constructors or store it as `@ObservedObject`. Externally owned controllers are distinct from feature view models.
 
-Use `DView` and declare its theme directly as `@EnvironmentObject var theme: DTheme`. Other environment objects are private. Views contain properties, initializers, and declarative layout. Move methods into the feature view model; express reusable rendering through separate view types. Framework-adapter exceptions are defined in `AGENTS.md`.
+Use `DView` and declare its theme directly as `@EnvironmentObject var theme: DTheme`. Other environment objects are private. Views contain properties, initializers, and declarative layout. Move methods into the feature view model; express reusable rendering through separate view types. Framework-adapter exceptions are defined in `harness/instructions/ios.md`.
 
-Arrange public interactions in visible order from the top of the screen to the bottom. Initialization and lifecycle methods come first, private helpers last. The owning view model publishes immutable phase states; presentation views select and render those states under the rules in `AGENTS.md`.
+Arrange public interactions in visible order from the top of the screen to the bottom. Initialization and lifecycle methods come first, private helpers last. The owning view model publishes immutable phase states; presentation views select and render those states under the rules in `harness/instructions/ios.md`.
 
 ## Dependencies and communication
 
@@ -38,7 +38,7 @@ Modules communicate through closures in the destination's `FeatureArguments`, fo
 
 ## UI and localization
 
-Build layout from `DoglyadUI` components and styling, using SwiftUI for composition. Use design-system shimmer for loading states. Add missing generic primitives to DoglyadUI; consult its target-membership instructions in `AGENTS.md` when adding files.
+Build layout from `DoglyadUI` components and styling, using SwiftUI for composition. Use design-system shimmer for loading states. Add missing generic primitives to DoglyadUI; consult its target-membership instructions in `harness/instructions/architecture.md` when adding files.
 
 Application views shared between modules belong in `ios/Doglyad/Application/Application/View/`. A view used by one module stays in that module and starts with its feature name. Visual resources come through DoglyadUI or the application asset catalog. Networking uses `DoglyadNetwork`; persistence uses `DoglyadDatabase`.
 

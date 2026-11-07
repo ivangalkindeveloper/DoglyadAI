@@ -12,18 +12,15 @@ struct ShareEmailButtonView: DViewProtocol {
             of: .sendingReportByEmail,
         ) {
         case .available, .offered:
-            DButtonCard(
+            DListButton(
+                icon: .mail,
+                title: l10n[
+                    .buttonShareEmail,
+                ],
                 action: viewModel.onTapEmail,
-            ) {
-                ActionRowView(
-                    icon: .mail,
-                    title: l10n[
-                        .buttonShareEmail,
-                    ],
-                )
-            }.disabled(
-                isProcessing,
-            ).paidBadge(
+                isDisabled: isProcessing,
+            )
+            .paidBadge(
                 viewModel.subscriptionAvailability(
                     of: .sendingReportByEmail,
                 ),

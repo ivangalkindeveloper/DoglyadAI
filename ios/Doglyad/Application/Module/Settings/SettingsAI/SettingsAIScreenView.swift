@@ -113,6 +113,9 @@ struct SettingsAIScreenView: DViewProtocol {
                             )
 
                             DButtonCard(
+                                accessibilityElement: .combine,
+                                accessibilityIdentifier: "settingsAI.markdown",
+                                accessibilityTraits: viewModel.isMarkdown ? .isSelected : [],
                                 action: {
                                     viewModel.toggleIsMarkdown()
                                 },
@@ -155,15 +158,7 @@ struct SettingsAIScreenView: DViewProtocol {
                                     color.grayscaleHeader,
                                 )
                             }
-                            .accessibilityElement(
-                                children: .combine,
-                            )
-                            .accessibilityIdentifier(
-                                "settingsAI.markdown",
-                            )
-                            .accessibilityAddTraits(
-                                viewModel.isMarkdown ? .isSelected : [],
-                            )
+
                             .disabled(
                                 !viewModel.isReportGenerationSettingsEnabled,
                             )
@@ -209,6 +204,7 @@ struct SettingsAIScreenView: DViewProtocol {
                                     submitLabel: .next,
                                 ),
                                 keyboardType: .decimalPad,
+                                accessibilityIdentifier: "settingsAI.temperature",
                             )
                             .disabled(
                                 !viewModel.isReportGenerationSettingsEnabled,
@@ -216,9 +212,7 @@ struct SettingsAIScreenView: DViewProtocol {
                             .paidBadge(
                                 viewModel.reportGenerationSettingsAvailability,
                             )
-                            .accessibilityIdentifier(
-                                "settingsAI.temperature",
-                            )
+
                             .id(
                                 SettingsAIFocus.temperature,
                             )
@@ -261,6 +255,7 @@ struct SettingsAIScreenView: DViewProtocol {
                                     submitLabel: .done,
                                 ),
                                 keyboardType: .numberPad,
+                                accessibilityIdentifier: "settingsAI.maxTokens",
                             )
                             .disabled(
                                 !viewModel.isReportGenerationSettingsEnabled,
@@ -268,9 +263,7 @@ struct SettingsAIScreenView: DViewProtocol {
                             .paidBadge(
                                 viewModel.reportGenerationSettingsAvailability,
                             )
-                            .accessibilityIdentifier(
-                                "settingsAI.maxTokens",
-                            )
+
                             .id(
                                 SettingsAIFocus.length,
                             )

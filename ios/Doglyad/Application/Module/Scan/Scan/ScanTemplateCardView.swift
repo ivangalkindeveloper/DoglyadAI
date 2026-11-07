@@ -38,6 +38,7 @@ struct ScanTemplateCardView: DViewProtocol {
             ) {
                 DButtonCard(
                     backgroundColor: backgroundColor,
+                    accessibilityIdentifier: "scan.template",
                     action: viewModel.onTapSelectedTemplate,
                 ) {
                     VStack(
@@ -110,17 +111,12 @@ struct ScanTemplateCardView: DViewProtocol {
                     )
                 }
 
-                .accessibilityIdentifier(
-                    "scan.template",
-                )
-
                 if viewModel.template != nil {
                     DCloseButton(
+                        accessibilityIdentifier: "scan.template.reset",
                         action: viewModel.onTapResetTemplate,
                     )
-                    .accessibilityIdentifier(
-                        "scan.template.reset",
-                    )
+
                     .padding(
                         size.s14,
                     )

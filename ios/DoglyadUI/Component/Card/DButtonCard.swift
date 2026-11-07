@@ -6,6 +6,10 @@ public struct DButtonCard<Content: View>: DViewProtocol {
     let backgroundColor: Color?
     let isPlain: Bool
     let style: DButtonStyleType
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
+    private let accessibilityTraits: AccessibilityTraits?
+
     let action: () -> Void
     let content: () -> Content
 
@@ -13,6 +17,9 @@ public struct DButtonCard<Content: View>: DViewProtocol {
         backgroundColor: Color? = nil,
         isPlain: Bool = false,
         style: DButtonStyleType = .card,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
+        accessibilityTraits: AccessibilityTraits? = nil,
         action: @escaping () -> Void,
         @ViewBuilder content: @escaping () -> Content,
     ) {
@@ -20,32 +27,45 @@ public struct DButtonCard<Content: View>: DViewProtocol {
         self.isPlain = isPlain
         self.style = style
         self.content = content
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
+        self.accessibilityTraits = accessibilityTraits
+
         self.action = action
     }
 
     public var body: some View {
-        Button(
-            action: action,
-        ) {
-            content()
+        Group {
+            Button(
+                action: action,
+            ) {
+                content()
+            }
+            .if(
+                isPlain,
+            ) { view in
+                view.buttonStyle(
+                    .plain,
+                )
+            }
+            .if(
+                !isPlain,
+            ) { view in
+                view.buttonStyle(
+                    DButtonStyle(
+                        style,
+                        backgroundColor: backgroundColor,
+                    ),
+                )
+            }
         }
-        .if(
-            isPlain,
-        ) { view in
-            view.buttonStyle(
-                .plain,
-            )
-        }
-        .if(
-            !isPlain,
-        ) { view in
-            view.buttonStyle(
-                DButtonStyle(
-                    style,
-                    backgroundColor: backgroundColor,
-                ),
-            )
-        }
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
+                traits: accessibilityTraits,
+            ),
+        )
     }
 }
 

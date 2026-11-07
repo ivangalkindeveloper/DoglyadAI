@@ -4,25 +4,39 @@ import SwiftUI
 public struct DProgress: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let value: Double
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     public init(
         value: Double,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
         self.value = value
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
-        ProgressView(
-            value: min(
-                max(
-                    value,
-                    0,
+        Group {
+            ProgressView(
+                value: min(
+                    max(
+                        value,
+                        0,
+                    ),
+                    1,
                 ),
-                1,
+            )
+            .tint(
+                color.primaryDefault,
+            )
+        }
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
             ),
-        )
-        .tint(
-            color.primaryDefault,
         )
     }
 }

@@ -34,15 +34,13 @@ struct PaywallContinueView: DViewProtocol {
                 title: l10n[
                     .paywallContinueButton,
                 ],
+                accessibilityIdentifier: "paywall.continue",
                 action: viewModel.onTapContinue,
                 isLoading: viewModel.isProcessing,
                 isDisabled: !viewModel.isContinueEnabled,
             )
             .dStyle(
                 .primaryButton,
-            )
-            .accessibilityIdentifier(
-                "paywall.continue",
             )
         }
     }

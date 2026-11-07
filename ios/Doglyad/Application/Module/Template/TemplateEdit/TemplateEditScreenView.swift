@@ -23,14 +23,13 @@ struct TemplateEditScreenView: DViewProtocol {
             trailing: {
                 DButton(
                     image: .delete,
+                    accessibilityIdentifier: "template.delete",
                     action: viewModel.onTapDelete,
                 )
                 .dStyle(
                     .circle,
                 )
-                .accessibilityIdentifier(
-                    "template.delete",
-                )
+
                 .disabled(
                     isProcessing,
                 )

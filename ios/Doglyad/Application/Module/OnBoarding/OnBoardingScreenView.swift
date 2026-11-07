@@ -62,15 +62,13 @@ struct OnBoardingScreenView: DViewProtocol {
                         title: l10n[
                             viewModel.state.primaryButtonTitleKey,
                         ],
+                        accessibilityIdentifier: "onboarding.primary",
                         action: viewModel.onPressedNext,
                         isLoading: isProcessing,
                         isDisabled: isDisabled,
                     )
                     .dStyle(
                         .primaryButton,
-                    )
-                    .accessibilityIdentifier(
-                        "onboarding.primary",
                     )
                 }
                 .padding(

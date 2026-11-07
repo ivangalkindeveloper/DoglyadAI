@@ -11,36 +11,14 @@ struct ShareWorkEmailButtonView: DViewProtocol {
             of: .sendingReportByEmail,
         )) {
         case (.some, .available), (.some, .offered):
-            DButtonCard(
+            DListButton(
+                icon: .send,
+                title: viewModel.userEmailButtonTitle,
+                accessibilityIdentifier: "share.workEmail",
                 action: viewModel.onTapUserEmail,
-            ) {
-                HStack(
-                    spacing: size.s8,
-                ) {
-                    ShareSendingIconView()
-
-                    DText(
-                        viewModel.userEmailButtonTitle,
-                    )
-                    .dStyle(
-                        font: typography.linkSmall,
-                    )
-                    .lineLimit(
-                        1,
-                    )
-                    .truncationMode(
-                        .middle,
-                    )
-
-                    Spacer()
-                }
-            }
-            .disabled(
-                isProcessing,
+                isLoading: isProcessing,
             )
-            .accessibilityIdentifier(
-                "share.workEmail",
-            )
+
             .paidBadge(
                 viewModel.subscriptionAvailability(
                     of: .sendingReportByEmail,

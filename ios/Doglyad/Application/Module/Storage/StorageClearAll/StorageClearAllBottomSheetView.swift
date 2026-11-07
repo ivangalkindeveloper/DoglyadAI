@@ -8,50 +8,20 @@ struct StorageClearAllBottomSheetView: DViewProtocol {
     @StateObject var viewModel: StorageClearAllViewModel
 
     var body: some View {
-        DBottomSheet(
+        DInfoBottomSheet(
+            fraction: 0.5,
             title: l10n[
                 .storageClearAllWarningTitle,
             ],
-            fraction: 0.3,
-        ) { toolbarHeight, _ in
-            VStack(
-                spacing: .zero,
-            ) {
-                DText(
-                    l10n[
-                        .storageClearAllWarningDescription,
-                    ],
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscalePlacehold,
-                    alignment: .center,
-                )
-                .padding(
-                    .top,
-                    toolbarHeight + size.s24,
-                )
-                .padding(
-                    .horizontal,
-                    size.s16,
-                )
-                Spacer()
-            }
-        } bottom: {
-            DButton(
-                title: l10n[
-                    .buttonClearAll,
-                ],
-                action: viewModel.onTapConfirm,
-            )
-            .dStyle(
-                .primaryButton,
-            )
-            .padding(
-                .horizontal,
-                size.s16,
-            )
-        }
+            image: .doglyadQuestion,
+            description: l10n[
+                .storageClearAllWarningDescription,
+            ],
+            buttonTitle: l10n[
+                .buttonClearAll,
+            ],
+            action: viewModel.onTapConfirm,
+        )
         .environmentObject(
             viewModel,
         )

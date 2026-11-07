@@ -4,12 +4,16 @@ public struct DMessageCard: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let message: DMessage
     private let alignment: TextAlignment
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     public init(
         type: DMessageType,
         title: LocalizedStringResource,
         description: LocalizedStringResource? = nil,
         alignment: TextAlignment = .leading,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
         message = DMessage(
             type: type,
@@ -17,6 +21,8 @@ public struct DMessageCard: DViewProtocol {
             description: description,
         )
         self.alignment = alignment
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     private var horizontalAlignment: HorizontalAlignment {
@@ -28,29 +34,16 @@ public struct DMessageCard: DViewProtocol {
     }
 
     public var body: some View {
-        VStack(
-            alignment: horizontalAlignment,
-            spacing: .zero,
-        ) {
-            Text(
-                message.title,
-            )
-            .font(
-                typography.linkSmall,
-            )
-            .foregroundStyle(
-                theme.color.grayscaleBackground,
-            )
-            .multilineTextAlignment(
-                alignment,
-            )
-
-            if let description = message.description {
+        Group {
+            VStack(
+                alignment: horizontalAlignment,
+                spacing: .zero,
+            ) {
                 Text(
-                    description,
+                    message.title,
                 )
                 .font(
-                    typography.textXSmall,
+                    typography.linkSmall,
                 )
                 .foregroundStyle(
                     theme.color.grayscaleBackground,
@@ -58,29 +51,50 @@ public struct DMessageCard: DViewProtocol {
                 .multilineTextAlignment(
                     alignment,
                 )
+
+                if let description = message.description {
+                    Text(
+                        description,
+                    )
+                    .font(
+                        typography.textXSmall,
+                    )
+                    .foregroundStyle(
+                        theme.color.grayscaleBackground,
+                    )
+                    .multilineTextAlignment(
+                        alignment,
+                    )
+                }
             }
-        }
-        .padding(
-            .horizontal,
-            size.s16,
-        )
-        .padding(
-            .vertical,
-            size.s12,
-        )
-        .frame(
-            maxWidth: .infinity,
-            alignment: Alignment(
-                horizontal: horizontalAlignment,
-                vertical: .center,
-            ),
-        )
-        .background(
-            RoundedRectangle(
-                cornerRadius: theme.size.adaptiveCardCornerRadius,
+            .padding(
+                .horizontal,
+                size.s16,
             )
-            .fill(
-                backgroundColor,
+            .padding(
+                .vertical,
+                size.s12,
+            )
+            .frame(
+                maxWidth: .infinity,
+                alignment: Alignment(
+                    horizontal: horizontalAlignment,
+                    vertical: .center,
+                ),
+            )
+            .background(
+                RoundedRectangle(
+                    cornerRadius: theme.size.adaptiveCardCornerRadius,
+                )
+                .fill(
+                    backgroundColor,
+                ),
+            )
+        }
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
             ),
         )
     }

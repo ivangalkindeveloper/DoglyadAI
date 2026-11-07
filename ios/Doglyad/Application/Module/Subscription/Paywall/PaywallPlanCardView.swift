@@ -13,6 +13,8 @@ struct PaywallPlanCardView: DViewProtocol {
 
         DButtonCard(
             isPlain: true,
+            accessibilityIdentifier: "paywall.plan.\(plan.id)",
+            accessibilityTraits: isSelected ? .isSelected : [],
             action: {
                 viewModel.onTapPlan(
                     plan,
@@ -62,15 +64,9 @@ struct PaywallPlanCardView: DViewProtocol {
                 ),
             )
         }
-        .accessibilityAddTraits(
-            isSelected ? .isSelected : [],
-        )
+
         .disabled(
             viewModel.isProcessing,
-        )
-
-        .accessibilityIdentifier(
-            "paywall.plan.\(plan.id)",
         )
     }
 }

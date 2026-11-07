@@ -18,12 +18,12 @@ struct ReportDetailPhotosView: DViewProtocol {
                 ForEach(
                     viewModel.report.examinationData.photos,
                 ) { photo in
-                    PhotoCardView(
+                    DPhotoCard(
                         image: photo.thumbnail,
                         configuration: viewModel.photoCardConfiguration(
                             for: photo.id,
                         ),
-                        accessibilityID: "reportDetail.photo.\(photo.id)",
+                        accessibilityIdentifier: "reportDetail.photo.\(photo.id)",
                         onTap: {
                             viewModel.onTapPhoto(
                                 photo,

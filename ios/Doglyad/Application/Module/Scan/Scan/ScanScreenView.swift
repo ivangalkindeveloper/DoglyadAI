@@ -18,14 +18,13 @@ struct ScanScreenView: DViewProtocol {
             leading: {
                 DButton(
                     image: .hambergerMenu,
+                    accessibilityIdentifier: "scan.settings",
                     action: viewModel.onTapSettings,
                 )
                 .dStyle(
                     .circle,
                 )
-                .accessibilityIdentifier(
-                    "scan.settings",
-                )
+
                 .disabled(
                     isProcessing,
                 )
@@ -34,14 +33,13 @@ struct ScanScreenView: DViewProtocol {
                 DButton(
                     image: .down,
                     title: viewModel.usExaminationType.localizedTitle,
+                    accessibilityIdentifier: "scan.type",
                     action: viewModel.onTapUSExaminationType,
                 )
                 .dStyle(
                     .primaryChip,
                 )
-                .accessibilityIdentifier(
-                    "scan.type",
-                )
+
                 .disabled(
                     isProcessing,
                 )

@@ -22,6 +22,7 @@ struct ScanMediaButtonView: DViewProtocol {
     var body: some View {
         DButtonCard(
             isPlain: true,
+            accessibilityIdentifier: "scan.importMedia",
             action: action,
         ) {
             HStack(
@@ -63,9 +64,7 @@ struct ScanMediaButtonView: DViewProtocol {
                 )
             }
         }
-        .accessibilityIdentifier(
-            "scan.importMedia",
-        )
+
         .frame(
             width: isCompact ? compactButtonSize : nil,
             height: isCompact ? compactButtonSize : buttonHeight,

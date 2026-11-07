@@ -3,83 +3,97 @@ import SwiftUI
 public struct DImageAnnotationMarker: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     let title: String
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     let action: () -> Void
 
     public init(
         title: String,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
         action: @escaping () -> Void,
     ) {
         self.title = title
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.action = action
     }
 
     public var body: some View {
-        DButtonCard(
-            isPlain: true,
-            action: action,
-        ) {
-            Circle()
-                .fill(
-                    color.primaryDefault,
-                )
-                .overlay {
-                    Circle().strokeBorder(
-                        color.grayscaleBackground,
-                        lineWidth: size.s1,
+        Group {
+            DButtonCard(
+                isPlain: true,
+                action: action,
+            ) {
+                Circle()
+                    .fill(
+                        color.primaryDefault,
                     )
-                }
-                .frame(
-                    width: size.s12,
-                    height: size.s12,
-                )
-                .overlay(
-                    alignment: .top,
-                ) {
-                    DImageAnnotationMarkerTitleLayout(
-                        maximumWidth: size.s64 * 3,
+                    .overlay {
+                        Circle().strokeBorder(
+                            color.grayscaleBackground,
+                            lineWidth: size.s1,
+                        )
+                    }
+                    .frame(
+                        width: size.s12,
+                        height: size.s12,
+                    )
+                    .overlay(
+                        alignment: .top,
                     ) {
-                        DText(
-                            title,
+                        DImageAnnotationMarkerTitleLayout(
+                            maximumWidth: size.s64 * 3,
+                        ) {
+                            DText(
+                                title,
+                            )
+                            .dStyle(
+                                font: typography.textSmall,
+                                color: color.grayscaleBackground,
+                                alignment: .center,
+                            )
+                            .lineLimit(
+                                2,
+                            )
+                        }
+                        .padding(
+                            .horizontal,
+                            size.s8,
                         )
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.grayscaleBackground,
-                            alignment: .center,
+                        .padding(
+                            .vertical,
+                            size.s4,
                         )
-                        .lineLimit(
-                            2,
+                        .background(
+                            DCardBackground(
+                                cornerRadius: size.s8,
+                                material: .ultraThinMaterial,
+                            ),
                         )
+                        .alignmentGuide(
+                            .top,
+                        ) { dimensions in
+                            dimensions.height + size.s8
+                        }
                     }
-                    .padding(
-                        .horizontal,
-                        size.s8,
+                    .frame(
+                        width: size.s48,
+                        height: size.s48,
                     )
-                    .padding(
-                        .vertical,
-                        size.s4,
+                    .contentShape(
+                        Circle(),
                     )
-                    .background(
-                        DCardBackground(
-                            cornerRadius: size.s8,
-                            material: .ultraThinMaterial,
-                        ),
-                    )
-                    .alignmentGuide(
-                        .top,
-                    ) { dimensions in
-                        dimensions.height + size.s8
-                    }
-                }
-                .frame(
-                    width: size.s48,
-                    height: size.s48,
-                )
-                .contentShape(
-                    Circle(),
-                )
+            }
         }
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
+            ),
+        )
     }
 }
 

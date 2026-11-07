@@ -10,6 +10,9 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
     private let mode: any DTextFieldModeProtocol
     private let keyboardType: UIKeyboardType
     private let autocapitalization: TextInputAutocapitalization?
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
+
     private let leading: Leading
     private let trailing: Trailing
 
@@ -28,6 +31,8 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         mode: any DTextFieldModeProtocol = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
         },
@@ -42,6 +47,9 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         self.mode = mode
         self.keyboardType = keyboardType
         self.autocapitalization = autocapitalization
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
+
         self.leading = leading()
         self.trailing = trailing()
         _inputText = State(
@@ -56,6 +64,8 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         mode: any DTextFieldModeProtocol = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
         },
@@ -71,187 +81,197 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
             mode: mode,
             keyboardType: keyboardType,
             autocapitalization: autocapitalization,
+            accessibilityElement: accessibilityElement,
+            accessibilityIdentifier: accessibilityIdentifier,
             leading: leading,
             trailing: trailing,
         )
     }
 
     public var body: some View {
-        VStack(
-            alignment: .leading,
-            spacing: .zero,
-        ) {
-            ZStack {
-                RoundedRectangle(
-                    cornerRadius: size.s16,
-                )
-                .fill(
-                    fillColor,
-                )
-                .stroke(
-                    borderColor,
-                    lineWidth: 1,
-                )
+        Group {
+            VStack(
+                alignment: .leading,
+                spacing: .zero,
+            ) {
+                ZStack {
+                    RoundedRectangle(
+                        cornerRadius: size.s16,
+                    )
+                    .fill(
+                        fillColor,
+                    )
+                    .stroke(
+                        borderColor,
+                        lineWidth: 1,
+                    )
 
-                HStack(
-                    spacing: .zero,
-                ) {
-                    if !(leading is EmptyView) {
-                        leading.fixedSize()
-                            .padding(
-                                .leading,
-                                size.s16,
-                            )
-                    }
-
-                    VStack(
-                        alignment: .leading,
+                    HStack(
                         spacing: .zero,
                     ) {
-                        Text(
-                            title,
-                        )
-                        .font(
-                            .custom(
-                                .MontserratRegular,
-                                size.s10,
-                            ),
-                        )
-                        .foregroundStyle(
-                            titleColor,
-                        )
-                        .padding(
-                            .bottom,
-                            size.s2,
-                        )
+                        if !(leading is EmptyView) {
+                            leading.fixedSize()
+                                .padding(
+                                    .leading,
+                                    size.s16,
+                                )
+                        }
 
-                        let field = TextField(
-                            placeholder,
-                            text: $inputText,
-                            prompt: Text(
-                                verbatim: String(
-                                    localized: placeholder,
+                        VStack(
+                            alignment: .leading,
+                            spacing: .zero,
+                        ) {
+                            Text(
+                                title,
+                            )
+                            .font(
+                                .custom(
+                                    .MontserratRegular,
+                                    size.s10,
                                 ),
                             )
                             .foregroundStyle(
-                                color.grayscalePlacehold,
-                            ),
-                            axis: mode.axis,
-                        )
-                        Group {
-                            if let focus {
-                                field.focused(
-                                    focus.state,
-                                    equals: focus.value,
-                                )
-                            } else {
-                                field.focused(
-                                    $isInternallyFocused,
-                                )
-                            }
-                        }
-                        .font(
-                            typography.textSmall,
-                        )
-                        .foregroundStyle(
-                            color.grayscaleHeader,
-                        )
-                        .multilineTextAlignment(
-                            .leading,
-                        )
-                        .tint(
-                            borderColor,
-                        )
-                        .lineLimit(
-                            mode.lineLimit,
-                        )
-                        .keyboardType(
-                            keyboardType,
-                        )
-                        .submitLabel(
-                            mode.submitLabel,
-                        )
-                        .textInputAutocapitalization(
-                            autocapitalization,
-                        )
-                    }
-
-                    if !(trailing is EmptyView) {
-                        trailing.fixedSize()
-                            .padding(
-                                .leading,
-                                size.s16,
+                                titleColor,
                             )
-                    }
-                }
-                .padding(
-                    size.s10,
-                )
-            }
+                            .padding(
+                                .bottom,
+                                size.s2,
+                            )
 
-            if let error = inputTextController.errorText, !error.isEmpty {
-                Text(
-                    error,
-                )
-                .font(
-                    typography.textXSmall,
-                )
-                .foregroundStyle(
-                    color.dangerDefault,
-                )
-                .padding(
-                    .top,
-                    size.s4,
-                )
-                .padding(
-                    .horizontal,
-                    size.s8,
-                )
-                .transition(
-                    .opacity,
-                )
+                            let field = TextField(
+                                placeholder,
+                                text: $inputText,
+                                prompt: Text(
+                                    verbatim: String(
+                                        localized: placeholder,
+                                    ),
+                                )
+                                .foregroundStyle(
+                                    color.grayscalePlacehold,
+                                ),
+                                axis: mode.axis,
+                            )
+                            Group {
+                                if let focus {
+                                    field.focused(
+                                        focus.state,
+                                        equals: focus.value,
+                                    )
+                                } else {
+                                    field.focused(
+                                        $isInternallyFocused,
+                                    )
+                                }
+                            }
+                            .font(
+                                typography.textSmall,
+                            )
+                            .foregroundStyle(
+                                color.grayscaleHeader,
+                            )
+                            .multilineTextAlignment(
+                                .leading,
+                            )
+                            .tint(
+                                borderColor,
+                            )
+                            .lineLimit(
+                                mode.lineLimit,
+                            )
+                            .keyboardType(
+                                keyboardType,
+                            )
+                            .submitLabel(
+                                mode.submitLabel,
+                            )
+                            .textInputAutocapitalization(
+                                autocapitalization,
+                            )
+                        }
+
+                        if !(trailing is EmptyView) {
+                            trailing.fixedSize()
+                                .padding(
+                                    .leading,
+                                    size.s16,
+                                )
+                        }
+                    }
+                    .padding(
+                        size.s10,
+                    )
+                }
+
+                if let error = inputTextController.errorText, !error.isEmpty {
+                    Text(
+                        error,
+                    )
+                    .font(
+                        typography.textXSmall,
+                    )
+                    .foregroundStyle(
+                        color.dangerDefault,
+                    )
+                    .padding(
+                        .top,
+                        size.s4,
+                    )
+                    .padding(
+                        .horizontal,
+                        size.s8,
+                    )
+                    .transition(
+                        .opacity,
+                    )
+                }
             }
-        }
-        .fixedSize(
-            horizontal: false,
-            vertical: true,
-        )
-        .onTapGesture {
-            guard focus == nil, isFocused == false else {
-                return
-            }
-            isInternallyFocused = true
-        }
-        .onChange(
-            of: inputText,
-        ) { _, proposedText in
-            inputTextController.setText(
-                proposedText,
+            .fixedSize(
+                horizontal: false,
+                vertical: true,
             )
-            guard inputText != inputTextController.text else {
-                return
+            .onTapGesture {
+                guard focus == nil, isFocused == false else {
+                    return
+                }
+                isInternallyFocused = true
             }
-            inputText = inputTextController.text
-        }
-        .onChange(
-            of: inputTextController.text,
-        ) { _, text in
-            guard inputText != text else {
-                return
+            .onChange(
+                of: inputText,
+            ) { _, proposedText in
+                inputTextController.setText(
+                    proposedText,
+                )
+                guard inputText != inputTextController.text else {
+                    return
+                }
+                inputText = inputTextController.text
             }
-            inputText = text
+            .onChange(
+                of: inputTextController.text,
+            ) { _, text in
+                guard inputText != text else {
+                    return
+                }
+                inputText = text
+            }
+            .animation(
+                theme.animation,
+                value: isFocused,
+            )
+            .animation(
+                theme.animation,
+                value: inputTextController.isError,
+            )
+            .animation(
+                theme.animation,
+                value: inputTextController.errorText,
+            )
         }
-        .animation(
-            theme.animation,
-            value: isFocused,
-        )
-        .animation(
-            theme.animation,
-            value: inputTextController.isError,
-        )
-        .animation(
-            theme.animation,
-            value: inputTextController.errorText,
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
+            ),
         )
     }
 }

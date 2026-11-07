@@ -35,11 +35,4 @@ final class RequestLimitExceededViewModel: DModuleViewModel<any RequestLimitExce
             isSheetDismissalRequired: true,
         )
     }
-
-    func onTapBack() {
-        analytics.buttonTapped(
-            .requestLimitBack,
-        )
-        coordinator.dismissSheet()
-    }
 }

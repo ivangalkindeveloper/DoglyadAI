@@ -134,22 +134,14 @@ private extension DButtonStyle {
 
     @ViewBuilder
     var enabledBackground: some View {
-        let cornerRadius = cornerRadius ?? size.s16
         switch type {
-        case .primaryButton:
-            RoundedRectangle(
-                cornerRadius: cornerRadius,
-            )
-            .fill(
-                backgroundGradient,
-            )
-        case .primaryCircle:
-            Circle()
+        case .primaryButton, .primaryChip:
+            Capsule()
                 .fill(
                     backgroundGradient,
                 )
-        case .primaryChip:
-            Capsule()
+        case .primaryCircle:
+            Circle()
                 .fill(
                     backgroundGradient,
                 )
@@ -158,14 +150,7 @@ private extension DButtonStyle {
                 .fill(
                     backgroundColor,
                 )
-        case .card:
-            RoundedRectangle(
-                cornerRadius: cornerRadius,
-            )
-            .fill(
-                backgroundColor,
-            )
-        case .chip:
+        case .card, .chip:
             Capsule()
                 .fill(
                     backgroundColor,
@@ -177,22 +162,14 @@ private extension DButtonStyle {
 
     @ViewBuilder
     var disabledBackground: some View {
-        let cornerRadius = cornerRadius ?? size.s16
         switch type {
-        case .primaryButton:
-            RoundedRectangle(
-                cornerRadius: cornerRadius,
-            )
-            .fill(
-                color.grayscaleInput,
-            )
-        case .primaryCircle:
-            Circle()
+        case .primaryButton, .primaryChip, .card, .chip:
+            Capsule()
                 .fill(
                     color.grayscaleInput,
                 )
-        case .primaryChip:
-            Capsule()
+        case .primaryCircle:
+            Circle()
                 .fill(
                     color.grayscaleInput,
                 )
@@ -201,31 +178,8 @@ private extension DButtonStyle {
                 .fill(
                     color.grayscaleInput,
                 )
-        case .card:
-            RoundedRectangle(
-                cornerRadius: cornerRadius,
-            )
-            .fill(
-                color.grayscaleInput,
-            )
-        case .chip:
-            Capsule()
-                .fill(
-                    color.grayscaleInput,
-                )
         case .primaryText, .textWeak:
             Color.clear
-        }
-    }
-
-    var cornerRadius: CGFloat? {
-        switch type {
-        case .primaryButton:
-            size.adaptiveCornerRadius
-        case .card:
-            size.adaptiveCardCornerRadius
-        case .primaryCircle, .primaryChip, .primaryText, .circle, .chip, .textWeak:
-            nil
         }
     }
 

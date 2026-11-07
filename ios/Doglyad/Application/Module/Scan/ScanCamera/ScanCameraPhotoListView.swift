@@ -24,9 +24,9 @@ struct ScanCameraPhotoListView: DViewProtocol {
                             ForEach(
                                 viewModel.photos,
                             ) { photo in
-                                PhotoCardView(
+                                DPhotoCard(
                                     image: photo.thumbnail,
-                                    configuration: PhotoCardConfiguration(
+                                    configuration: DPhotoCardConfiguration(
                                         badge: .delete(
                                             action: {
                                                 viewModel.onTapDeletePhoto(
@@ -35,7 +35,7 @@ struct ScanCameraPhotoListView: DViewProtocol {
                                             },
                                         ),
                                     ),
-                                    accessibilityID: "scanCamera.photo.\(photo.id)",
+                                    accessibilityIdentifier: "scanCamera.photo.\(photo.id)",
                                     onTap: {
                                         viewModel.onTapPhoto(
                                             photo,

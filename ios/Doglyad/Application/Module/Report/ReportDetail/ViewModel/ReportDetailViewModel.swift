@@ -108,11 +108,11 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
 
     func photoCardConfiguration(
         for photoId: UUID,
-    ) -> PhotoCardConfiguration {
+    ) -> DPhotoCardConfiguration {
         let isPhotoRemarksAvailable = report.actualModelReport.photoRemarks.contains {
             $0.photoId == photoId && !$0.points.isEmpty
         }
-        return PhotoCardConfiguration(
+        return DPhotoCardConfiguration(
             badge: isPhotoRemarksAvailable ? .warning : nil,
         )
     }

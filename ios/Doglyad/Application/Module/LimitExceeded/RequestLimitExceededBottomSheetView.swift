@@ -8,64 +8,20 @@ struct RequestLimitExceededBottomSheetView: DViewProtocol {
     @StateObject var viewModel: RequestLimitExceededViewModel
 
     var body: some View {
-        DBottomSheet(
+        DInfoBottomSheet(
+            fraction: 0.5,
             title: l10n[
                 .requestLimitExceededTitle,
             ],
-            isCloseButtonVisible: false,
-            fraction: 0.3,
-        ) { toolbarHeight, _ in
-            VStack(
-                spacing: .zero,
-            ) {
-                DText(
-                    l10n[
-                        .requestLimitExceededDescription,
-                    ],
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscalePlacehold,
-                    alignment: .center,
-                )
-                .padding(
-                    .top,
-                    toolbarHeight + size.s24,
-                )
-                .padding(
-                    .horizontal,
-                    size.s16,
-                )
-                Spacer()
-            }
-        } bottom: {
-            VStack(
-                spacing: size.s8,
-            ) {
-                DButton(
-                    title: l10n[
-                        .buttonManageSubscription,
-                    ],
-                    action: viewModel.onTapUpgrade,
-                )
-                .dStyle(
-                    .primaryButton,
-                )
-                DButton(
-                    title: l10n[
-                        .buttonBack,
-                    ],
-                    action: viewModel.onTapBack,
-                )
-                .dStyle(
-                    .card,
-                )
-            }
-            .padding(
-                .horizontal,
-                size.s16,
-            )
-        }
+            image: .doglyadAbout,
+            description: l10n[
+                .requestLimitExceededDescription,
+            ],
+            buttonTitle: l10n[
+                .buttonManageSubscription,
+            ],
+            action: viewModel.onTapUpgrade,
+        )
         .environmentObject(
             viewModel,
         )

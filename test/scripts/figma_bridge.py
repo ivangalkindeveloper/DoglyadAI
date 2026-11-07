@@ -12,13 +12,15 @@ import time
 
 from artifacts import publication
 from configure_figma import bridge_key, configure
+from preview_artifacts import preview_publication
 
-LAYOUT_VERSION = "ordered-white-text-v6"
+LAYOUT_VERSION = "ordered-white-text-v7"
 
 
-def serve(run: Path, timeout: int = 900) -> bool:
+def serve(run: Path, timeout: int = 900, *, previews: bool = False) -> bool:
     manifest_path = configure()
-    data = publication(run)
+    validate = preview_publication if previews else publication
+    data = validate(run)
     if not data["figmaFileKey"]:
         raise ValueError(
             "Set figmaFileKey in test/secrets/config.local.json before running with --publish"
@@ -60,14 +62,14 @@ def serve(run: Path, timeout: int = 900) -> bool:
             if not self.is_authorized():
                 self.respond(401, b"{}")
                 return
-            if self.headers.get("X-Doglyad-Regression-Protocol") != "6":
+            if self.headers.get("X-Doglyad-Regression-Protocol") != "7":
                 self.respond(
                     426, b'{"error":"Restart the updated Doglyad AI Regression plugin"}'
                 )
                 return
             try:
                 if self.path == "/manifest":
-                    if publication(run) != data:
+                    if validate(run) != data:
                         raise ValueError("Run manifest changed")
                     self.respond(200, json.dumps(data, ensure_ascii=False).encode())
                 elif self.path.startswith("/image/") and self.path[7:] in images:
@@ -95,13 +97,14 @@ def serve(run: Path, timeout: int = 900) -> bool:
                 if not 0 < size < 8192:
                     raise ValueError("Invalid response size")
                 body = json.loads(self.rfile.read(size))
-                if publication(run) != data:
+                if validate(run) != data:
                     raise ValueError("Run manifest changed")
                 if (
                     body.get("runId") != data["runId"]
                     or body.get("fileKey") != data["figmaFileKey"]
                     or body.get("imageCount") != len(images)
                     or body.get("layoutVersion") != LAYOUT_VERSION
+                    or (previews and body.get("scope") != "previews")
                     or not body.get("nodeId")
                 ):
                     raise ValueError("Wrong publication acknowledgment")
@@ -134,5 +137,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("run", type=Path)
     parser.add_argument("--timeout", type=int, default=900)
+    parser.add_argument("--previews", action="store_true")
     args = parser.parse_args()
-    raise SystemExit(0 if serve(args.run.resolve(), args.timeout) else 1)
+    raise SystemExit(
+        0 if serve(args.run.resolve(), args.timeout, previews=args.previews) else 1
+    )

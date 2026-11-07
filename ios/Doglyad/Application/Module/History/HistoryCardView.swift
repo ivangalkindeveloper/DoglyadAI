@@ -28,7 +28,7 @@ struct HistoryCardView: DViewProtocol {
                             ),
                             id: \.element.id,
                         ) { index, photo in
-                            PhotoCardView(
+                            DPhotoCard(
                                 image: photo.thumbnail,
                             )
                             .overlay {

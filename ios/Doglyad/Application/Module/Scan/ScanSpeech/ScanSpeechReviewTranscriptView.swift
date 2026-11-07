@@ -46,10 +46,9 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
                 mode: DTextFieldMultiLineMode(
                     lineLimit: 6 ... 14,
                 ),
+                accessibilityIdentifier: "scanSpeech.transcript",
             )
-            .accessibilityIdentifier(
-                "scanSpeech.transcript",
-            )
+
             .disabled(
                 isProcessing,
             )

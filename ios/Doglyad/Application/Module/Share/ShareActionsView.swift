@@ -24,37 +24,23 @@ struct ShareActionsView: DViewProtocol {
                 isProcessing: isProcessing,
             )
 
-            DButtonCard(
+            DListButton(
+                icon: .copy,
+                title: l10n[
+                    .buttonCopy,
+                ],
+                accessibilityIdentifier: "share.copy",
                 action: viewModel.onTapCopy,
-            ) {
-                ActionRowView(
-                    icon: .copy,
-                    title: l10n[
-                        .buttonCopy,
-                    ],
-                )
-            }.disabled(
-                isProcessing,
-            )
-            .accessibilityIdentifier(
-                "share.copy",
+                isDisabled: isProcessing,
             )
 
-            DShareLink(
-                item: viewModel.shareMessage,
-            ) {
-                ActionRowView(
-                    icon: .export,
-                    title: l10n[
-                        .buttonShare,
-                    ],
-                )
-            }.buttonStyle(
-                DButtonStyle(
-                    .card,
-                ),
-            ).disabled(
-                isProcessing,
+            DListButton(
+                icon: .export,
+                title: l10n[
+                    .buttonShare,
+                ],
+                shareItem: viewModel.shareMessage,
+                isDisabled: isProcessing,
             )
 
             Spacer()

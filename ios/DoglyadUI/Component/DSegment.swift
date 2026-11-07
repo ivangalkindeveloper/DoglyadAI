@@ -22,44 +22,58 @@ public struct DSegment<T: Equatable>: DViewProtocol {
 
     let currentValue: T?
     let items: [DSegmentItem<T>]
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     public init(
         currentValue: T?,
         items: [DSegmentItem<T>],
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
         self.currentValue = currentValue
         self.items = items
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
-        HStack(
-            spacing: size.s8,
-        ) {
-            ForEach(
-                items,
-            ) { item in
-                Button(
-                    action: item.action,
-                ) {
-                    Text(
-                        item.title,
-                    )
-                    .font(
-                        typography.linkSmall,
+        Group {
+            HStack(
+                spacing: size.s8,
+            ) {
+                ForEach(
+                    items,
+                ) { item in
+                    Button(
+                        action: item.action,
+                    ) {
+                        Text(
+                            item.title,
+                        )
+                        .font(
+                            typography.linkSmall,
+                        )
+                    }
+                    .buttonStyle(
+                        DSegmentButtonStyle(
+                            currentValue == item.value,
+                        ),
                     )
                 }
-                .buttonStyle(
-                    DSegmentButtonStyle(
-                        currentValue == item.value,
-                    ),
-                )
             }
+            .animation(
+                .easeOut(
+                    duration: 0.1,
+                ),
+                value: currentValue,
+            )
         }
-        .animation(
-            .easeOut(
-                duration: 0.1,
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
             ),
-            value: currentValue,
         )
     }
 }

@@ -93,7 +93,7 @@ struct UserSettingsScreenView: DViewProtocol {
                             size.s16,
                         )
 
-                        UserSettingsToggleView(
+                        DToggleCard(
                             title: l10n[
                                 .userSettingsRecommendationsLabel,
                             ],
@@ -103,7 +103,7 @@ struct UserSettingsScreenView: DViewProtocol {
                             isOn: .constant(
                                 viewModel.isRecommendationsIncluded,
                             ),
-                            identifier: "userSettings.recommendations",
+                            accessibilityIdentifier: "userSettings.recommendations",
                             action: viewModel.toggleRecommendationsIncluded,
                         )
                         .padding(
@@ -111,7 +111,7 @@ struct UserSettingsScreenView: DViewProtocol {
                             size.s16,
                         )
 
-                        UserSettingsToggleView(
+                        DToggleCard(
                             title: l10n[
                                 .userSettingsPhotoRemarksLabel,
                             ],
@@ -121,7 +121,7 @@ struct UserSettingsScreenView: DViewProtocol {
                             isOn: .constant(
                                 viewModel.isPhotoRemarks,
                             ),
-                            identifier: "userSettings.photoRemarks",
+                            accessibilityIdentifier: "userSettings.photoRemarks",
                             action: viewModel.togglePhotoRemarks,
                         )
                         .padding(
@@ -129,7 +129,7 @@ struct UserSettingsScreenView: DViewProtocol {
                             size.s16,
                         )
 
-                        UserSettingsToggleView(
+                        DToggleCard(
                             title: l10n[
                                 .userSettingsDescriptionRemarksLabel,
                             ],
@@ -139,7 +139,7 @@ struct UserSettingsScreenView: DViewProtocol {
                             isOn: .constant(
                                 viewModel.isDescriptionRemarks,
                             ),
-                            identifier: "userSettings.descriptionRemarks",
+                            accessibilityIdentifier: "userSettings.descriptionRemarks",
                             action: viewModel.toggleDescriptionRemarks,
                         )
                     }

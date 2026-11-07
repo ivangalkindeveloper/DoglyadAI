@@ -17,27 +17,21 @@ struct ImportMediaBottomSheetView: DViewProtocol {
             VStack(
                 spacing: size.s8,
             ) {
-                DButtonCard(
+                DListButton(
+                    icon: .camera,
+                    title: l10n[
+                        .buttonCamera,
+                    ],
                     action: viewModel.onTapCamera,
-                ) {
-                    ActionRowView(
-                        icon: .camera,
-                        title: l10n[
-                            .buttonCamera,
-                        ],
-                    )
-                }
+                )
 
-                DButtonCard(
+                DListButton(
+                    icon: .image,
+                    title: l10n[
+                        .buttonGallery,
+                    ],
                     action: viewModel.onTapGallery,
-                ) {
-                    ActionRowView(
-                        icon: .image,
-                        title: l10n[
-                            .buttonGallery,
-                        ],
-                    )
-                }
+                )
 
                 Spacer()
             }

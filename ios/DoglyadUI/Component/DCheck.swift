@@ -7,36 +7,50 @@ public struct DCheck: DViewProtocol {
     ) private var displayScale
 
     private let isChecked: Bool
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     public init(
         isChecked: Bool,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
         self.isChecked = isChecked
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
-        Circle()
-            .fill(
-                isChecked ? color.primaryDefault : .clear,
-            )
-            .overlay {
-                Circle().strokeBorder(
-                    isChecked ? color.primaryDefault : color.grayscalePlacehold,
-                    lineWidth: 1 / displayScale,
+        Group {
+            Circle()
+                .fill(
+                    isChecked ? color.primaryDefault : .clear,
                 )
-            }
-            .overlay {
-                if isChecked {
-                    DIcon(
-                        .check,
-                        color: color.grayscaleBackground,
-                        height: size.s16,
+                .overlay {
+                    Circle().strokeBorder(
+                        isChecked ? color.primaryDefault : color.grayscalePlacehold,
+                        lineWidth: 1 / displayScale,
                     )
                 }
-            }
-            .frame(
-                width: size.s24,
-                height: size.s24,
-            )
+                .overlay {
+                    if isChecked {
+                        DIcon(
+                            .check,
+                            color: color.grayscaleBackground,
+                            height: size.s16,
+                        )
+                    }
+                }
+                .frame(
+                    width: size.s24,
+                    height: size.s24,
+                )
+        }
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
+            ),
+        )
     }
 }

@@ -1,20 +1,39 @@
-import DoglyadUI
 import SwiftUI
 
-struct UserSettingsToggleView: DViewProtocol {
-    @EnvironmentObject var theme: DTheme
-    let title: LocalizedStringResource
-    let description: LocalizedStringResource
-    @Binding var isOn: Bool
-    let identifier: String
-    let action: () -> Void
+public struct DToggleCard: DViewProtocol {
+    @EnvironmentObject public var theme: DTheme
+    private let title: LocalizedStringResource
+    private let description: LocalizedStringResource
+    @Binding private var isOn: Bool
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
+    private let action: () -> Void
 
-    var body: some View {
+    public init(
+        title: LocalizedStringResource,
+        description: LocalizedStringResource,
+        isOn: Binding<Bool>,
+        accessibilityElement: AccessibilityChildBehavior? = .combine,
+        accessibilityIdentifier: String? = nil,
+        action: @escaping () -> Void,
+    ) {
+        self.title = title
+        self.description = description
+        _isOn = isOn
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
+        self.action = action
+    }
+
+    public var body: some View {
         VStack(
             alignment: .leading,
             spacing: size.s4,
         ) {
             DButtonCard(
+                accessibilityElement: accessibilityElement,
+                accessibilityIdentifier: accessibilityIdentifier,
+                accessibilityTraits: isOn ? .isSelected : [],
                 action: action,
             ) {
                 HStack {
@@ -48,16 +67,6 @@ struct UserSettingsToggleView: DViewProtocol {
                     color.grayscaleHeader,
                 )
             }
-
-            .accessibilityElement(
-                children: .combine,
-            )
-            .accessibilityIdentifier(
-                identifier,
-            )
-            .accessibilityAddTraits(
-                isOn ? .isSelected : [],
-            )
 
             DText(
                 description,

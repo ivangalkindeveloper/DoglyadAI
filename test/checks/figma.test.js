@@ -194,3 +194,72 @@ test('historical English previews are validated but omitted from the Russian col
   assert.equal(regression.children[1].children[1].children.length, 1);
   assert.equal(previews.children[1].children[1].children[0].name, 'Preview · Paywall · 01 Русский');
 });
+
+function previewManifest(e) {
+  return { ...e.manifest, scope: 'previews', runId: 'preview-new',
+    expectedCases: ['atlas-screen'], results: [{ id: 'atlas-screen', exitCode: 0 }],
+    images: ['one', 'two'].map(id => ({ id: 'atlas-screen--' + id, caseId: 'atlas-screen',
+      kind: 'render', screen: 'screen', state: id, width: 390, height: 844 })) };
+}
+
+async function publish(e, manifest) {
+  await e.figma.ui.onmessage({ type: 'begin', manifest });
+  for (const image of manifest.images) await e.figma.ui.onmessage({ type: 'image', id: image.id, bytes: [1] });
+  await e.figma.ui.onmessage({ type: 'commit' });
+}
+
+test('Preview refresh replaces only Preview and preserves regression evidence and manual notes', async () => {
+  const e = environment();
+  await publish(e, e.manifest);
+  const owner = e.page.children[0];
+  const regression = owner.children[0];
+  const oldPreview = e.figma.createFrame(); oldPreview.name = 'Preview';
+  owner.insertChild(0, oldPreview);
+  const manual = e.figma.createFrame(); e.page.appendChild(manual);
+  const manifest = previewManifest(e);
+  await publish(e, manifest);
+  assert.equal(e.messages.at(-1).type, 'done');
+  assert.equal(e.messages.at(-1).scope, 'previews');
+  assert.equal(oldPreview.removed, true);
+  assert.equal(regression.removed, false);
+  assert.equal(owner.children[1], regression);
+  assert.equal(owner.getPluginData('doglyadRegressionRun'), 'new');
+  assert.equal(manual.removed, false);
+  assert.equal(e.page.children.length, 2);
+  const children = [...owner.children];
+  await e.figma.ui.onmessage({ type: 'begin', manifest });
+  assert.equal(e.messages.at(-1).type, 'done');
+  assert.deepEqual(owner.children, children);
+});
+
+test('incomplete Preview refresh keeps the existing Preview and regression', async () => {
+  const e = environment();
+  await publish(e, e.manifest);
+  const owner = e.page.children[0];
+  const regression = owner.children[0];
+  const oldPreview = e.figma.createFrame(); oldPreview.name = 'Preview'; owner.insertChild(0, oldPreview);
+  const manifest = previewManifest(e);
+  await e.figma.ui.onmessage({ type: 'begin', manifest });
+  await e.figma.ui.onmessage({ type: 'image', id: manifest.images[0].id, bytes: [1] });
+  await e.figma.ui.onmessage({ type: 'commit' });
+  assert.equal(e.messages.at(-1).type, 'error');
+  assert.equal(oldPreview.removed, false);
+  assert.equal(regression.removed, false);
+});
+
+test('first Preview-only import preserves unrelated page content at the Starter page limit', async () => {
+  const e = environment({ managed: false, pageLimit: true });
+  await publish(e, previewManifest(e));
+  assert.equal(e.messages.at(-1).type, 'done');
+  assert.equal(e.manual.removed, false);
+  assert.equal(e.page.children.length, 2);
+  assert.equal(e.figma.root.children.length, 3);
+});
+
+test('Preview-only mode rejects functional screenshots', async () => {
+  const e = environment();
+  const manifest = previewManifest(e); manifest.images[0].kind = 'functional'; manifest.images[0].caseId = 'functional'; manifest.images[0].id = 'functional--one';
+  await e.figma.ui.onmessage({ type: 'begin', manifest });
+  assert.equal(e.messages.at(-1).type, 'error');
+  assert.equal(e.old.removed, false);
+});

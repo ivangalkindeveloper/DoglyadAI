@@ -18,13 +18,11 @@ struct PhotoViewScreenView: DViewProtocol {
                 if viewModel.isDeletionAvailable {
                     DButton(
                         image: .delete,
+                        accessibilityIdentifier: "photoView.delete",
                         action: viewModel.onTapDelete,
                     )
                     .dStyle(
                         .circle,
-                    )
-                    .accessibilityIdentifier(
-                        "photoView.delete",
                     )
                 }
             },

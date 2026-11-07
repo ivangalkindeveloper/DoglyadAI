@@ -13,6 +13,12 @@
 
 **/.venv311
 
+# Local environment files, including examples, in every directory.
+.env
+.env.*
+*.env
+*.env.*
+
 /backend/main/secrets/
 /backend/main/logs/
 

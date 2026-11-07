@@ -32,13 +32,11 @@ struct ReportDetailScreenView: DViewProtocol {
                 if report.actualModelReport.generation.status.isCompleted {
                     DButton(
                         image: .export,
+                        accessibilityIdentifier: "reportDetail.share",
                         action: viewModel.onTapShare,
                     )
                     .dStyle(
                         .circle,
-                    )
-                    .accessibilityIdentifier(
-                        "reportDetail.share",
                     )
                 }
             },

@@ -1,0 +1,87 @@
+# Doglyad — AI assistant for ultrasound examination analysis
+
+Doglyad is an AI assistant that analyzes ultrasound images together with patient history and generates a medical report.
+
+## Session communication
+
+- **Required skill:** Read [asd-ste100](../../harness/skills/asd-ste100/SKILL.md) once at the start of each session. Apply it throughout the session to progress updates, plans, questions, explanations, reviews, and final answers. Do not wait for a separate request to simplify text.
+- **Language:** Use Russian by default. Follow the user's explicit language choice. Apply these communication rules to both Russian and English.
+- **Standard and adaptation:** Use the ASD-STE100 writing principles covered by the skill for English. For Russian, use the mandatory [Russian adaptation](../../harness/skills/asd-ste100/references/russian.md). ASD-STE100 defines English, so do not describe the Russian adaptation as an official standard or claim certified compliance.
+- **Clarity:** State the result or intended action first. Use short sentences, direct verbs, and one stable term for each concept. Give one instruction per sentence. Make the actor, condition, and expected result clear when they affect meaning. Remove filler, bureaucratic wording, and unnecessary jargon.
+- **Precision:** Preserve facts, conditions, exceptions, negation, numbers, units, and uncertainty. Distinguish completed actions from plans and verified results from assumptions. Keep code, commands, paths, API identifiers, and exact quotations unchanged when simplifying surrounding prose.
+- **Scope:** Apply the rules to communication without changing the requested task or its output format. Keep necessary explanations and verification results. The skill's rewrite-only format applies only when the user requests a text rewrite.
+
+## Product rules
+
+- **Purpose:** Optimize and automate the work of physicians and other medical professionals. When designing or refactoring any feature, prioritize ease of use and let the application take over routine work so the clinician can focus on the examination.
+- **Design approach:** Start every feature design or refactoring from the clinician's goal and the routine work needed to achieve it. Identify which steps the application can perform, then design a flow that reaches the result with the fewest necessary interactions. Evaluate it by the clinician's time, effort, and convenience throughout the task, including data entry and delivery of the resulting report. Avoid unnecessary screens, repeated entry, and redundant confirmations.
+
+### Examples of the design approach
+
+These examples explain why the features exist and illustrate how to apply the product rules when designing or refactoring features.
+
+**Voice form filling:** A clinician can fill scan fields manually, and the toolbar makes moving focus between fields convenient. Even with that toolbar, entering all examination data by hand is slow and requires many interactions. Voice filling lets the clinician dictate the necessary information naturally during the examination while the application extracts it into the appropriate fields. The feature's goal is to take over routine form entry and reduce interruptions to the examination. Extract as much as possible while preserving the meaning, medical terminology, measurements, and units, without inventing missing information. When interpretation is uncertain, ask for confirmation or correction only for the affected fields or speech fragments, retaining reliably interpreted data without requiring the clinician to repeat or reconfirm the entire form.
+
+**Sending a report to work email:** The clinician needs to receive the completed report at work and transfer it into the medical information system. Copying the report and sending it through other services adds routine steps. Sending it directly to the configured work email in one action removes those steps and makes the report available in the clinician's work mailbox. The feature's goal is to simplify the path from the completed examination report to its use in the clinician's existing workflow.
+
+## Code style
+
+- **Boolean flags:** Name every boolean flag with the `is` prefix, for example `isChecked`, `isAvailable`, and `isRemarksVisible`. Use `is_` in Python snake_case names, for example `is_available`; fields shared with iOS use camelCase, for example `isAvailable`.
+- **Class member order:** In every class, declare stored fields first, then initializers (constructors), then computed properties and getter/setter accessors, then methods. Apply the same order within each Swift extension block. Separate each nonempty group with a blank line and leave a blank line between every pair of initializers or methods, including empty implementations. Keep property observers with stored fields. Preserve the relative order of stored fields so initialization behavior stays unchanged; order view-model methods according to the View-model method order rule in [the iOS instructions](ios.md#swift-ios).
+- **Property and initializer order:** Keep stored properties and their corresponding parameters in the primary initializer in the same relative order. Assign those properties in that order when dependencies permit. This applies to classes, structs and database models. Properties without an initializer parameter, computed properties and framework-generated initializers are excluded. Preserve initialization dependencies and side effects; prefer reordering parameters and their call sites when moving property initialization would change behavior.
+- **Protocol method order:** Keep implemented methods in the same relative order as their declarations in the protocol, including overloads. When adding, removing or reordering protocol methods, update every implementation, including test doubles, in the same change. For multiple or inherited protocols, preserve the relative order within each protocol. Keep non-protocol helpers after the implemented protocol methods.
+- **Class declarations:** Add members and protocol conformances directly to a project-owned class declaration. Do not split that class's implementation into extensions merely to group methods or append new behavior. Keep existing access levels when moving members into the class. Extensions of external framework or package types remain permitted.
+- **API string contract:** Required response strings must contain non-whitespace text. Normalize blank optional strings to `null` on the backend, including strings assembled there. Clients rely on optional presence and do not repeat empty-string checks for validated response fields.
+- **Persistence results:** Propagate storage failures to the caller. A read returns `nil` or an empty collection only for absent or empty data, never to hide a storage or decoding failure. Report success, clear an examination form or draft, and notify dependent modules only after the required persistence operation succeeds. Preserve unsaved data when an operation fails; autosave must retain pending changes and report failures rather than silently discard them. Replacing a stored value must preserve the previous value if the replacement fails.
+- **Defensive storage-to-domain mapping:** Make new preference fields optional in persistence models when stored records can omit them. Map optional enum preferences through failable parsing: trim surrounding whitespace, accept recognized values, and use explicit domain defaults for missing, blank or unknown values. These conversions must not throw, assert, force-unwrap or terminate the application. For `SettingsAIDB`, default `transcriberType` to `whisperKit` and `transcriptParserType` to `server`. Actual storage I/O and structural decoding failures continue to propagate under the Persistence results rule.
+
+### Design and refactoring
+
+- **Release status and compatibility:** The application has not been released. Until the first release, refactoring does not require support for previous client versions. Update backend and client contracts, localization keys, and their checks together; do not introduce compatibility aliases, deprecated keys, or adapters solely to support previous client versions.
+- **Historical evaluation evidence:** Preserve recorded evaluation outputs in their original schema so results remain traceable to the run that produced them. Evaluation tools may explicitly normalize historical schemas when reading these artifacts. Keep such adapters in evaluation code; they do not authorize compatibility aliases in the application or backend API. Fixtures exercising the current transport contract must follow its current schema.
+- **Existing conventions:** Write code consistently with the project's current architecture, naming, structure, and implementation style. Agree on any conceptual or architectural change with the user before implementing it, even when the code change is small.
+- **Simplicity and readability:** Prefer the simplest clear implementation that solves the actual requirement. Keep code easy to read and change. Do not introduce extra layers, marker protocols, wrapper types, or state classes without a concrete responsibility that makes the code easier to understand. Before adding an abstraction, check whether an existing type or a direct implementation is sufficient.
+- **Responsibilities:** Avoid spaghetti code. Keep responsibilities explicit and cohesive, dependencies clear, and coupling low. Use encapsulation, composition, polymorphism, and SOLID principles; choose patterns that solve the actual problem without introducing unnecessary abstractions.
+- **Dynamic implementation selection:** When a dependency implementation depends on changeable external context, its factory obtains and interprets that context and selects the implementation. Consumers depend on the factory and request an implementation before each operation; they do not duplicate selection conditions, retain the selected implementation between operations, or observe context changes solely to switch dependencies. Initialization creates the factory and its dependencies without resolving a provider or storing a context snapshot in the container. A local implementation reference may remain fixed until the operation completes. The factory may reuse existing immutable instances; requesting an implementation does not require constructing a new object. For subscriptions, resolve the current storefront inside `SubscriptionRepositoryFactory` for plans and new purchases, and use the purchase source for existing-purchase operations. Do not observe storefront changes or preload storefront/provider selection during initialization.
+- **Refactoring approval:** Before a refactoring that changes substantial code or many files, present a concrete proposed design: types and their responsibilities, dependency relationships, selected patterns and why they fit, and the migration scope. Obtain the user's approval of that design before starting the refactoring.
+
+Use the following pattern catalog when evaluating a design. Apply relevant patterns rather than requiring every pattern in each feature. The catalog includes classic GoF patterns and common additional patterns; it is not an exhaustive list of every published pattern.
+
+- **Creational (GoF):** Abstract Factory, Builder, Factory Method, Prototype.
+- **Structural (GoF):** Adapter, Bridge, Composite, Decorator, Facade, Flyweight, Proxy.
+- **Behavioral (GoF):** Chain of Responsibility, Command, Interpreter, Iterator, Mediator, Memento, Observer, State, Strategy, Template Method, Visitor.
+- **Additional object-oriented patterns:** Dependency Injection, Null Object, Object Pool, Specification.
+- **Architecture and application patterns:** MVVM (the required client architecture), MVC, MVP, Repository, Unit of Work, Service Layer, Coordinator, Router, Composition Root. Listing an alternative architecture does not authorize replacing the project's existing architecture; such changes require prior agreement.
+
+### Localization
+
+- **Backend ownership:** The main backend is the source of truth for application localization. Keep the client thin: application UI text, language-dependent phrases and words, parsing patterns, numeric vocabularies, and schema descriptions live in backend localization catalogs.
+- **Client exceptions:** Local application localization is limited to initialization errors and mandatory major-version update UI, which must work before backend catalogs are available. Mandatory iOS system bundle strings, such as permission descriptions and the display name, remain in `InfoPlist.xcstrings` because iOS reads them from the installed bundle. Do not add local copies or fallbacks for other application text.
+- **Feature keys:** Name application UI localization keys as `{featureName}{keyName}` in lower camel case: a feature prefix such as `scan`, `history`, `onBoarding`, or `legalUpdate`, followed by a specific key name starting with an uppercase letter. For example: `scanUserDescription`, `scanServiceAvailabilityDescription`, `historyTitle`, `onBoardingContinueButton`, and `scanPatientNamePlaceholder`. Use the same key names in backend catalogs, `L10NKey`, and the permitted local bootstrap catalog.
+- **Key ordering:** Always keep all localization keys in ascending alphabetical order by their full key names in every localization catalog and key declaration, including backend catalogs, `L10NKey`, and permitted client bundle catalogs. Preserve this ordering whenever adding, renaming, or editing keys.
+- **Semantic suffixes:** Choose the suffix by the text's UI role. Use the exact spellings `Title`, `Label`, `Description`, `Button`, and `Placeholder`.
+
+| Suffix | Purpose | Example |
+|---|---|---|
+| `Title` | Screen or bottom-sheet title | `historyTitle` |
+| `Label` | Short section or field name | `scanPatientLabel` |
+| `Description` | Medium or long explanatory text | `scanServiceAvailabilityDescription` |
+| `Button` | Button wording specific to a feature | `scanGenerateReportButton` |
+| `Placeholder` | Field placeholder specific to a feature | `scanPatientNamePlaceholder` |
+
+- **Shared buttons:** Use the shared `button` prefix for generic actions that are not tied to a feature, for example `buttonAccept` and `buttonBack`. Reuse these keys across features. When the button phrase belongs to a particular feature, use that feature's prefix and the `Button` suffix instead.
+- **Catalog usage:** UI accesses `L10N` with `L10NKey`; named substitutions use `L10NParameter` through `values: [L10NParameter: String]`. Views receive the catalog through `.localization(container.l10n)` and `@EnvironmentObject`, and non-UI code receives it through arguments. Select one catalog using `Language.currentLocale` and inject it through arguments. Do not embed or mix localized RU/EN matching rules in Swift models, parsers, or policies. Technical identifiers, protocol syntax, and test input data are not translations.
+
+- **Entity localization comes from configuration:** Declare localization metadata beside each entity's data in its backend configuration, using fields such as `titleLocaleKey`, `descriptionLocaleKey` and `priceTemplateLocaleKey`. Resolve these references on the backend and return localized text or templates with the entity in the API response. The client must never select an entity's localization key by its type, ID, enum case, tier, period or other attributes. This prohibits `switch`, `if`, ternary expressions and lookup dictionaries that map entity attributes to localization keys anywhere in client code, including views, view models, models, extensions, repositories and helpers. Moving such a mapping to another client type does not satisfy this rule. The client displays the entity's supplied text and can substitute runtime values, such as a StoreKit price, into a server-supplied template. Follow the subscription products in `billing.json` and the ultrasound examination type and neural model configurations as examples.
+
+## Constraints
+
+- Preserve camelCase fields in backend Pydantic models because they are the iOS API contract.
+- Build visible client UI and its style from `DoglyadUI` components, including loading shimmer. Use native SwiftUI containers only under the [Design system rule](ios.md#swift-ios), without introducing native visible UI or styling.
+- Use visual resources only through `DoglyadUI` or `ios/Doglyad/Assets.xcassets`; direct use of system or third-party framework resources is prohibited.
+- Client module view models communicate only through closures in module arguments; root-to-module interaction uses only closures in the module view-model initializer.
+- Use only `DoglyadNetwork` resources for client networking.
+- Use only `DoglyadDatabase` resources for client persistence.
+- Do not modify `ios/DoglyadNeuralModel/Resources/`, `ios/Config/`, `ios/Firebase/`, `backend/main/secrets/`, or `backend/inference/secrets/`. For local iOS preparation, `make init-ios-local` may update only `BASE_URL` in `ios/Config/Config.Local.xcconfig`.
+- The main backend does not run inference and lives on a non-GPU VM. All model execution belongs in `backend/inference/`.
+- Prompts, application localization, and templates live in the main backend, with only the explicitly listed bootstrap and iOS system localization exceptions on the client. The inference service receives final text and only performs generation.

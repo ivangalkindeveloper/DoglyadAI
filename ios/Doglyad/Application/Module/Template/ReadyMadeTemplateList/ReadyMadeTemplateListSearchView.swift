@@ -26,10 +26,9 @@ struct ReadyMadeTemplateListSearchView: DViewProtocol {
                     submitLabel: .done,
                 ),
                 autocapitalization: .never,
+                accessibilityIdentifier: "readyMade.search",
             )
-            .accessibilityIdentifier(
-                "readyMade.search",
-            )
+
             .padding(
                 .top,
                 size.s8,

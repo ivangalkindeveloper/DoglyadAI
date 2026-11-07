@@ -61,10 +61,9 @@ struct LegalUpdateScreenView: DViewProtocol {
                                 },
                                 set: viewModel.onLegalAcceptedChanged,
                             ),
+                            accessibilityIdentifier: "legalUpdate.acceptLegal",
                         )
-                        .accessibilityIdentifier(
-                            "legalUpdate.acceptLegal",
-                        )
+
                         .padding(
                             .trailing,
                             size.s8,
@@ -117,6 +116,7 @@ struct LegalUpdateScreenView: DViewProtocol {
                     title: l10n[
                         .buttonAccept,
                     ],
+                    accessibilityIdentifier: "legalUpdate.accept",
                     action: viewModel.onTapAccept,
                     isLoading: isProcessing,
                     isDisabled: isDisabled,
@@ -124,9 +124,7 @@ struct LegalUpdateScreenView: DViewProtocol {
                 .dStyle(
                     .primaryButton,
                 )
-                .accessibilityIdentifier(
-                    "legalUpdate.accept",
-                )
+
                 .padding(
                     size.s16,
                 )

@@ -1,7 +1,8 @@
 # Общий harness Doglyad
 
 Правьте навыки, хуки и настройки в `harness/`. Каталоги агентов содержат
-генерируемые копии и исключены из Git. Общие инструкции остаются в `AGENTS.md`.
+генерируемые копии и исключены из Git. Общие инструкции находятся в
+`harness/instructions/`. Короткий [AGENTS.md](../AGENTS.md) задаёт порядок их чтения.
 
 После клонирования, обновления ветки или изменения исходников выполните:
 
@@ -18,6 +19,7 @@ make check-harness
 
 | Исходник | Генерируемые файлы |
 |---|---|
+| `instructions/` | Общие документы, которые оба агента читают напрямую |
 | `skills/` | `.agents/skills/` для Codex и `.claude/skills/` для Claude |
 | `hooks/` | Общие исполняемые скрипты; адаптеры вызывают их напрямую |
 | `adapters/codex/config.toml` | Общие настройки в `.codex/config.toml` |
@@ -26,6 +28,21 @@ make check-harness
 | `mcp/servers.json` | MCP в `.codex/config.toml` и `.mcp.json` |
 | `mcp/mobilebuildmcp.yaml` | `.mobilebuildmcp/config.yaml` |
 | `AGENTS.md` в корне | `CLAUDE.md` с импортом `@AGENTS.md` |
+
+## Инструкции при старте
+
+Перед работой агент обязан полностью прочитать все шесть документов в порядке
+из `AGENTS.md`: [общие правила](instructions/common.md),
+[архитектура](instructions/architecture.md), [backend](instructions/backend.md),
+[iOS](instructions/ios.md), [инфраструктура](instructions/infrastructure.md)
+и [рабочий процесс](instructions/workflow.md).
+Если вывод инструмента обрезан, агент должен дочитать документ по частям.
+
+Правьте правила в соответствующем документе. При изменении состава документов
+обновляйте список в `AGENTS.md`. Пути в кодовых вставках считаются от корня
+репозитория, Markdown-ссылки — от содержащего их документа.
+
+## Настройки агентов и MCP
 
 `adapters/*/hooks.json` задают события и имена инструментов каждого агента.
 Значения `@SECURITY_HOOK@` и `@POST_EDIT_HOOK@` заменяются командами с корректным

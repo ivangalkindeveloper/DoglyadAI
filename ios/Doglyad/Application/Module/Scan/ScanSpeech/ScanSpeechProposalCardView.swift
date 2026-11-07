@@ -25,6 +25,7 @@ struct ScanSpeechProposalCardView: DViewProtocol {
 
         DButtonCard(
             backgroundColor: color.grayscaleHeader,
+            accessibilityIdentifier: "scanSpeech.proposal.\(proposal.id.rawValue).selected.\(isSelected)",
             action: {
                 viewModel.onTapProposal(
                     proposal.id,
@@ -130,8 +131,5 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                 )
             }
         }
-        .accessibilityIdentifier(
-            "scanSpeech.proposal.\(proposal.id.rawValue).selected.\(isSelected)",
-        )
     }
 }

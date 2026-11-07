@@ -51,8 +51,8 @@ final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
         )
     }
 
-    var userEmailButtonTitle: String {
-        l10n.text(
+    var userEmailButtonTitle: LocalizedStringResource {
+        l10n.resource(
             .shareWorkEmailButton,
             values: [.prefix: l10n.text(
                 .buttonSendToEmail,

@@ -49,9 +49,9 @@ struct ScanPhotoListView: DViewProtocol {
                                 ),
                                 id: \.element.id,
                             ) { index, photo in
-                                PhotoCardView(
+                                DPhotoCard(
                                     image: photo.thumbnail,
-                                    configuration: PhotoCardConfiguration(
+                                    configuration: DPhotoCardConfiguration(
                                         badge: .delete(
                                             action: {
                                                 viewModel.onTapDeletePhoto(
@@ -60,7 +60,7 @@ struct ScanPhotoListView: DViewProtocol {
                                             },
                                         ),
                                     ),
-                                    accessibilityID: "scan.photo.\(index + 1).\(photo.id)",
+                                    accessibilityIdentifier: "scan.photo.\(index + 1).\(photo.id)",
                                     onTap: {
                                         viewModel.onTapPhoto(
                                             photo,

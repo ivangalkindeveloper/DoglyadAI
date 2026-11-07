@@ -1,17 +1,17 @@
-struct PhotoCardConfiguration {
-    let badge: Badge?
+public struct DPhotoCardConfiguration {
+    public let badge: Badge?
 
-    init(
+    public init(
         badge: Badge? = nil,
     ) {
         self.badge = badge
     }
 
-    var isBadgeVisible: Bool {
+    public var isBadgeVisible: Bool {
         badge != nil
     }
 
-    enum Badge {
+    public enum Badge {
         case delete(action: () -> Void)
         case warning
     }

@@ -9,41 +9,16 @@ struct PermissionBottomSheetView: DViewProtocol {
     @StateObject var viewModel: PermissionViewModel
 
     var body: some View {
-        DBottomSheet(
+        DInfoBottomSheet(
+            fraction: 0.5,
             title: viewModel.title,
-        ) { toolbarHeight, _ in
-            VStack(
-                spacing: .zero,
-            ) {
-                DText(
-                    viewModel.description,
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    alignment: .center,
-                )
-                .padding(
-                    .bottom,
-                    size.s32,
-                )
-                DButton(
-                    title: l10n[
-                        .buttonOpenSettings,
-                    ],
-                    action: viewModel.onTapOpenSettings,
-                )
-                .dStyle(
-                    .primaryButton,
-                )
-            }
-            .padding(
-                size.s16,
-            )
-            .padding(
-                .top,
-                toolbarHeight,
-            )
-        }
+            image: .doglyadQuestion,
+            description: viewModel.description,
+            buttonTitle: l10n[
+                .buttonOpenSettings,
+            ],
+            action: viewModel.onTapOpenSettings,
+        )
         .onAppear(
             perform: viewModel.onAppear,
         )

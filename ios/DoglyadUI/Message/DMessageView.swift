@@ -28,10 +28,9 @@ struct DMessageModifier: ViewModifier {
                     type: message.type,
                     title: message.title,
                     description: message.description,
+                    accessibilityIdentifier: "message.\(message.type)",
                 )
-                .accessibilityIdentifier(
-                    "message.\(message.type)",
-                )
+
                 // SwiftMessages creates a separate UIHostingController.
                 .environmentObject(
                     theme,

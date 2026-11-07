@@ -1,6 +1,6 @@
 /* Verify and stage all images, then clear the regression page before showing the new collection. */
 figma.showUI(__html__, { width: 420, height: 220 });
-const layoutVersion = 'ordered-white-text-v6';
+const layoutVersion = 'ordered-white-text-v7';
 let stage = null;
 let manifest = null;
 let received = new Set();
@@ -56,7 +56,8 @@ function prepareRows(value) {
     const images = value.images.filter(image => visibleImage(image) && imageGroup(image).kind === kind);
     if (!images.length) continue;
     const section = frame(stage, kind, 'VERTICAL', 40);
-    text(section, `${kind} · ${images.length} снимков`, 40);
+    text(section, `${kind} · ${images.length} снимков`
+      + (value.scope === 'previews' ? ` · ${value.runId}` : ''), 40);
     const modules = [...new Set(images.map(image => imageGroup(image).module))];
     modules.sort((a, b) => {
       const rank = name => order.includes(name) ? order.indexOf(name) : order.length;
@@ -95,9 +96,26 @@ function rollback() {
 }
 
 function focusCollection(collection) {
-  const section = collection.children[0];
-  const firstModule = section && section.children[1];
+  const section = ['Preview', 'Регресс'].includes(collection.name)
+    ? collection : collection.children[0];
+  const firstModule = section && section.children && section.children[1];
   figma.viewport.scrollAndZoomIntoView([firstModule || section || collection]);
+}
+
+function previewOwner() {
+  return target.children.find(node => node.getPluginData('complete') === '1'
+    && (node.getPluginData('doglyadRegressionRun') || node.getPluginData('doglyadPreviewRun')));
+}
+
+function previewSection(owner) {
+  return owner && owner.children.find(node => node.name === 'Preview');
+}
+
+function receipt(value, collection) {
+  return { type: 'done', runId: value.runId, fileKey: figma.fileKey,
+    nodeId: collection.id, imageCount: value.images.length,
+    visibleImageCount: value.images.filter(visibleImage).length,
+    scope: value.scope || 'regression', layoutVersion };
 }
 
 async function handle(message) {
@@ -109,6 +127,10 @@ async function handle(message) {
         || value.results.some((r, i) => r.id !== value.expectedCases[i])) {
       throw new Error('The complete regression suite must pass before import.');
     }
+    if (value.scope === 'previews' && (value.expectedCases.some(id => !id.startsWith('atlas-'))
+        || value.images.some(image => imageGroup(image).kind !== 'Preview'))) {
+      throw new Error('A Preview refresh can contain only the complete Preview collection.');
+    }
     if (!figma.fileKey || figma.fileKey !== value.figmaFileKey) {
       throw new Error('Open the Figma file configured in test/secrets/config.local.json.');
     }
@@ -116,15 +138,18 @@ async function handle(message) {
     target = figma.root.children.find(p => p.getPluginData('doglyadRegression') === '1')
       || figma.currentPage;
     previous = target.children.filter(n => n.getPluginData('doglyadRegressionRun') && n.getPluginData('complete') === '1');
-    const existing = previous.find(n => n.getPluginData('doglyadRegressionRun') === value.runId
+    const existingPreview = previewSection(previewOwner());
+    const existing = value.scope === 'previews'
+      ? existingPreview && existingPreview.getPluginData('doglyadPreviewRun') === value.runId
+        && existingPreview.getPluginData('suiteHash') === value.suiteHash
+        && existingPreview.getPluginData('layoutVersion') === layoutVersion && existingPreview
+      : previous.find(n => n.getPluginData('doglyadRegressionRun') === value.runId
       && n.getPluginData('suiteHash') === value.suiteHash
       && n.getPluginData('layoutVersion') === layoutVersion);
     if (existing) {
       await figma.setCurrentPageAsync(target);
       focusCollection(existing);
-      figma.ui.postMessage({ type: 'done', runId: value.runId, fileKey: figma.fileKey,
-        nodeId: existing.id, imageCount: value.images.length,
-        visibleImageCount: value.images.filter(visibleImage).length, layoutVersion });
+      figma.ui.postMessage(receipt(value, existing));
       return;
     }
     manifest = value;
@@ -134,10 +159,10 @@ async function handle(message) {
     const gaps = value.coverage && value.coverage.missingExecution
       ? value.coverage.missingExecution.length : 0;
     const runTitle = value.runId.replace(/^(\d{8}T\d{6}Z)-[0-9a-f]{8}$/, '$1');
-    stage.name = `${value.figmaPageName || 'Doglyad Regression'} · ${runTitle}`
+    stage.name = `${value.scope === 'previews' ? 'Preview' : value.figmaPageName || 'Doglyad Regression'} · ${runTitle}`
       + (gaps ? ` · ${gaps} сценариев требуют автоматизации` : '');
     stage.visible = false;
-    stage.setPluginData('doglyadRegressionRun', value.runId);
+    stage.setPluginData(value.scope === 'previews' ? 'doglyadPreviewRun' : 'doglyadRegressionRun', value.runId);
     stage.setPluginData('suiteHash', value.suiteHash);
     stage.setPluginData('layoutVersion', layoutVersion);
     await figma.loadFontAsync({ family: 'Inter', style: 'Regular' });
@@ -164,6 +189,33 @@ async function handle(message) {
   } else if (message.type === 'commit') {
     if (!manifest || !stage || received.size !== manifest.images.length) throw new Error('Some images are missing.');
     await figma.setCurrentPageAsync(target);
+    if (manifest.scope === 'previews') {
+      const owner = previewOwner();
+      const section = previewSection(stage);
+      if (!section) throw new Error('Missing staged Preview section.');
+      section.setPluginData('doglyadPreviewRun', manifest.runId);
+      section.setPluginData('suiteHash', manifest.suiteHash);
+      section.setPluginData('layoutVersion', layoutVersion);
+      section.setPluginData('complete', '1');
+      if (owner) {
+        const old = previewSection(owner);
+        owner.insertChild(old ? owner.children.indexOf(old) : 0, section);
+        if (old) old.remove();
+        owner.setPluginData('doglyadPreviewRun', manifest.runId);
+        if (!owner.getPluginData('doglyadRegressionRun')) owner.name = stage.name;
+        stage.remove();
+      } else {
+        stage.visible = true;
+        stage.setPluginData('complete', '1');
+      }
+      focusCollection(owner || stage);
+      const done = receipt(manifest, section);
+      stage = null;
+      manifest = null;
+      target.setPluginData('doglyadRegression', '1');
+      figma.ui.postMessage(done);
+      return;
+    }
     // The user dedicates this page to regression: remove every previous node,
     // including manual additions. Other pages are outside the publication target.
     for (const node of [...target.children]) if (node !== stage) node.remove();
@@ -171,11 +223,10 @@ async function handle(message) {
     focusCollection(stage);
     stage.setPluginData('complete', '1');
     target.setPluginData('doglyadRegression', '1');
-    const receipt = { type: 'done', runId: manifest.runId, fileKey: figma.fileKey,
-      nodeId: stage.id, imageCount: received.size, visibleImageCount: imageCards.size, layoutVersion };
+    const done = receipt(manifest, stage);
     stage = null;
     manifest = null;
-    figma.ui.postMessage(receipt);
+    figma.ui.postMessage(done);
   } else if (message.type === 'abort') {
     rollback();
   }

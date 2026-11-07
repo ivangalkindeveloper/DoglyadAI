@@ -11,14 +11,13 @@ struct OnBoardingBackButtonView: DViewProtocol {
         default:
             DButton(
                 image: .back,
+                accessibilityIdentifier: "onboarding.back",
                 action: viewModel.onPressedBack,
             )
             .dStyle(
                 .circle,
             )
-            .accessibilityIdentifier(
-                "onboarding.back",
-            )
+
             .transition(
                 .scale
                     .combined(

@@ -7,6 +7,9 @@ public struct DButton: DViewProtocol {
     let title: LocalizedStringResource?
     let truncatingTitleSuffix: String?
     let badge: DButtonBadge?
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
+
     let action: () -> Void
     let isLoading: Bool
     let isDisabled: Bool
@@ -16,6 +19,8 @@ public struct DButton: DViewProtocol {
         title: LocalizedStringResource? = nil,
         truncatingTitleSuffix: String? = nil,
         badge: DButtonBadge? = nil,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
         action: @escaping () -> Void,
         isLoading: Bool = false,
         isDisabled: Bool = false,
@@ -24,35 +29,46 @@ public struct DButton: DViewProtocol {
         self.title = title
         self.truncatingTitleSuffix = truncatingTitleSuffix
         self.badge = badge
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
+
         self.action = action
         self.isLoading = isLoading
         self.isDisabled = isDisabled
     }
 
     public var body: some View {
-        Button(
-            action: isLoading || isDisabled ? {} : action,
-        ) {
-            if isLoading {
-                ProgressView()
-            } else if let badge {
-                DBadge(
-                    badge.title,
-                    isVisible: badge.isVisible,
-                    isShimmering: badge.isShimmering,
-                ) {
+        Group {
+            Button(
+                action: isLoading || isDisabled ? {} : action,
+            ) {
+                if isLoading {
+                    ProgressView()
+                } else if let badge {
+                    DBadge(
+                        badge.title,
+                        isVisible: badge.isVisible,
+                        isShimmering: badge.isShimmering,
+                    ) {
+                        label
+                    }
+                } else {
                     label
                 }
-            } else {
-                label
             }
+            .disabled(
+                isDisabled,
+            )
+            .animation(
+                theme.animation,
+                value: isLoading,
+            )
         }
-        .disabled(
-            isDisabled,
-        )
-        .animation(
-            theme.animation,
-            value: isLoading,
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
+            ),
         )
     }
 

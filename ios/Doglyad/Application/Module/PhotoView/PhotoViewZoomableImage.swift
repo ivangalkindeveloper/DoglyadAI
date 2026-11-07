@@ -35,6 +35,7 @@ struct PhotoViewZoomableImage: DViewProtocol {
                 Color.clear
                 DImage(
                     uiImage: image,
+                    accessibilityIdentifier: "photoView.image.\(photoId).offset.\(Int(displayed.offset.width)).\(Int(displayed.offset.height)).scale.\(Int(displayed.scale * 100))",
                 )
                 .scaledToFit()
                 .frame(
@@ -50,9 +51,7 @@ struct PhotoViewZoomableImage: DViewProtocol {
                     x: center.x + displayed.offset.width,
                     y: center.y + displayed.offset.height,
                 )
-                .accessibilityIdentifier(
-                    "photoView.image.\(photoId).offset.\(Int(displayed.offset.width)).\(Int(displayed.offset.height)).scale.\(Int(displayed.scale * 100))",
-                )
+
                 switch viewModel.isRemarksVisible {
                 case true:
                     ForEach(
@@ -62,15 +61,14 @@ struct PhotoViewZoomableImage: DViewProtocol {
                     ) { point in
                         DImageAnnotationMarker(
                             title: point.title,
+                            accessibilityIdentifier: "photoView.remark.\(point.id)",
                             action: {
                                 viewModel.onTapRemark(
                                     point,
                                 )
                             },
                         )
-                        .accessibilityIdentifier(
-                            "photoView.remark.\(point.id)",
-                        )
+
                         .position(
                             displayed.position(
                                 normalizedPoint: CGPoint(

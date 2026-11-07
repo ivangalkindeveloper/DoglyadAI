@@ -26,6 +26,6 @@ of `en0` and port `8000`.
 4. Report the resulting backend URL and the `Doglyad-Debug-Local` scheme to
    select in Xcode.
 
-This command is the narrow exception permitted by `AGENTS.md` for local iOS
+This command is the narrow exception permitted by `harness/instructions/common.md` for local iOS
 preparation. Preserve all other configuration values. Build the app or start
 backend services only when the user also requests those actions.

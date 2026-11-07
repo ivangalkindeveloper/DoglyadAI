@@ -91,6 +91,7 @@ struct ReportDetailModelReportCardView: DViewProtocol {
                 if report.generation.status.isCompleted {
                     DButtonCard(
                         isPlain: true,
+                        accessibilityIdentifier: "reportDetail.copy.\(report.modelId)",
                         action: onTapCopy,
                     ) {
                         DIcon(
@@ -102,9 +103,7 @@ struct ReportDetailModelReportCardView: DViewProtocol {
                     .buttonStyle(
                         .plain,
                     )
-                    .accessibilityIdentifier(
-                        "reportDetail.copy.\(report.modelId)",
-                    )
+
                     .padding(
                         .leading,
                         size.s8,

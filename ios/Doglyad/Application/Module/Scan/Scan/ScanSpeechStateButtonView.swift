@@ -15,14 +15,13 @@ struct ScanSpeechStateButtonView: DViewProtocol {
                 title: l10n[
                     .buttonSpeech,
                 ],
+                accessibilityIdentifier: "scan.speech",
                 action: viewModel.onTapSpeech,
             )
             .dStyle(
                 .primaryChip,
             )
-            .accessibilityIdentifier(
-                "scan.speech",
-            )
+
             .paidBadge(
                 viewModel.subscriptionAvailability(
                     of: .formCompletionViaMicrophone,

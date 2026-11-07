@@ -19,7 +19,7 @@ tags: [e2e, RequestLimitExceeded, Scan]
 - assertVisible: ^Вы достигли дневного лимита запросов. Пожалуйста, попробуйте завтра.$
 - assertNotVisible: ^К протоколу$
 - takeScreenshot: RequestLimitExceeded-exhausted
-- tapOn: ^Назад$
+- tapOn: {id: bottomSheet.close}
 - assertVisible: {id: scan.settings}
 - scrollUntilVisible:
     element: {id: scan.patientName}

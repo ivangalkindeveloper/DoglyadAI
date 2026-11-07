@@ -8,50 +8,20 @@ struct TemplateDeleteBottomSheetView: DViewProtocol {
     @StateObject var viewModel: TemplateDeleteViewModel
 
     var body: some View {
-        DBottomSheet(
+        DInfoBottomSheet(
+            fraction: 0.5,
             title: l10n[
                 .templateDeleteTitle,
             ],
-            fraction: 0.25,
-        ) { toolbarHeight, _ in
-            VStack(
-                spacing: .zero,
-            ) {
-                DText(
-                    l10n[
-                        .templateDeleteDescription,
-                    ],
-                )
-                .dStyle(
-                    font: typography.textSmall,
-                    color: color.grayscalePlacehold,
-                    alignment: .center,
-                )
-                .padding(
-                    .top,
-                    toolbarHeight + size.s24,
-                )
-                .padding(
-                    .horizontal,
-                    size.s16,
-                )
-                Spacer()
-            }
-        } bottom: {
-            DButton(
-                title: l10n[
-                    .buttonDelete,
-                ],
-                action: viewModel.onTapConfirm,
-            )
-            .dStyle(
-                .primaryButton,
-            )
-            .padding(
-                .horizontal,
-                size.s16,
-            )
-        }
+            image: .doglyadQuestion,
+            description: l10n[
+                .templateDeleteDescription,
+            ],
+            buttonTitle: l10n[
+                .buttonDelete,
+            ],
+            action: viewModel.onTapConfirm,
+        )
         .environmentObject(
             viewModel,
         )

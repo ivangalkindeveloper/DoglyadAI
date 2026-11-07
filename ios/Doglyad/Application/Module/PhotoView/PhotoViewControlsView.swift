@@ -53,11 +53,9 @@ struct PhotoViewControlsView: DViewProtocol {
                             },
                             set: viewModel.setRemarksVisibility,
                         ),
+                        accessibilityIdentifier: "photoView.remarksVisible",
                     )
                     .labelsHidden()
-                    .accessibilityIdentifier(
-                        "photoView.remarksVisible",
-                    )
                 }
             case true: EmptyView()
             }

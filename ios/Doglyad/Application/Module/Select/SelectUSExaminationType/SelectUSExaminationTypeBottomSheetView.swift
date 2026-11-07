@@ -38,6 +38,7 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
                             ) { item in
                                 DListButtonCard(
                                     title: item.type.localizedTitle,
+                                    accessibilityIdentifier: "examinationType.\(item.type.id)",
                                     action: {
                                         viewModel.onTypeTap(
                                             item.type,
@@ -47,9 +48,7 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
                                         item.type,
                                     ),
                                 )
-                                .accessibilityIdentifier(
-                                    "examinationType.\(item.type.id)",
-                                )
+
                                 .padding(
                                     .bottom,
                                     size.s4,

@@ -17,6 +17,9 @@ public struct DScreen<
     let title: LocalizedStringResource?
     let subTitle: String?
     let backgroundColor: Color?
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
+
     let onTapBack: (() -> Void)?
     let leading: Leading
     let titleContent: Title
@@ -31,6 +34,8 @@ public struct DScreen<
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
         onTapBack: (() -> Void)? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
@@ -50,6 +55,9 @@ public struct DScreen<
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
+
         self.onTapBack = onTapBack
         self.leading = leading()
         self.titleContent = titleContent()
@@ -65,6 +73,8 @@ public struct DScreen<
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
         onTapBack: (() -> Void)? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
@@ -85,6 +95,9 @@ public struct DScreen<
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
+
         self.onTapBack = onTapBack
         self.leading = leading()
         self.titleContent = titleContent()
@@ -100,6 +113,8 @@ public struct DScreen<
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
         onTapBack: (() -> Void)? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
@@ -120,6 +135,9 @@ public struct DScreen<
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
+
         self.onTapBack = onTapBack
         self.leading = leading()
         self.titleContent = titleContent()
@@ -135,6 +153,8 @@ public struct DScreen<
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
         onTapBack: (() -> Void)? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
@@ -156,6 +176,9 @@ public struct DScreen<
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
+
         self.onTapBack = onTapBack
         self.leading = leading()
         self.titleContent = titleContent()
@@ -168,136 +191,144 @@ public struct DScreen<
     }
 
     public var body: some View {
-        ZStack(
-            alignment: .bottom,
-        ) {
-            GeometryReader { proxy in
-                let safeAreaInsetTop = proxy.safeAreaInsets.top
-                let safeAreaInsetBottom = proxy.safeAreaInsets.bottom
+        Group {
+            ZStack(
+                alignment: .bottom,
+            ) {
+                GeometryReader { proxy in
+                    let safeAreaInsetTop = proxy.safeAreaInsets.top
+                    let safeAreaInsetBottom = proxy.safeAreaInsets.bottom
 
-                ZStack(
-                    alignment: .top,
-                ) {
-                    DScreenBodyView(
-                        toolbarHeight: toolbarHeight - safeAreaInsetTop,
-                        bottomHeight: bottom == nil ? 0 : max(
-                            0,
-                            bottomHeight - safeAreaInsetBottom,
-                        ),
-                        onTap: onTapBody,
-                        content: content,
-                    )
-
-                    VStack(
-                        spacing: .zero,
+                    ZStack(
+                        alignment: .top,
                     ) {
-                        Spacer()
-                        if let bottom {
-                            bottom
-                                .padding(
-                                    .vertical,
-                                    size.adaptiveCornerRadius / 6,
-                                )
-                                .frame(
-                                    maxWidth: .infinity,
-                                )
-                                .safeAreaPadding(
-                                    .bottom,
-                                )
-                                .background(
-                                    Rectangle()
-                                        .fill(
-                                            .ultraThinMaterial,
-                                        )
-                                        .clipShape(
-                                            DRoundedCorner(
-                                                radius: size.adaptiveCornerRadius,
-                                                corners: [.topLeft, .topRight],
-                                            ),
-                                        ),
-                                )
-                                .overlay {
-                                    GeometryReader { proxy in
-                                        Color.clear
-                                            .preference(
-                                                key: BottomHeightPreferenceKey.self,
-                                                value: proxy.size.height,
-                                            )
-                                    }
-                                }
-                                .transition(
-                                    .move(
-                                        edge: .bottom,
-                                    ),
-                                )
-                        }
-                    }
-                    .edgesIgnoringSafeArea(
-                        .bottom,
-                    )
-                    .onPreferenceChange(
-                        BottomHeightPreferenceKey.self,
-                    ) { value in
-                        guard bottomHeight != value else {
-                            return
-                        }
-                        bottomHeight = value
-                    }
+                        DScreenBodyView(
+                            toolbarHeight: toolbarHeight - safeAreaInsetTop,
+                            bottomHeight: bottom == nil ? 0 : max(
+                                0,
+                                bottomHeight - safeAreaInsetBottom,
+                            ),
+                            onTap: onTapBody,
+                            content: content,
+                        )
 
-                    if isShowsToolbar {
-                        DScreenToolbarView(
-                            safeAreaInsetTop: safeAreaInsetTop,
-                            leadingView: leadingView,
-                            titleView: titleView,
-                            trailingView: trailingView,
-                            toolbarContent: toolbarContent,
+                        VStack(
+                            spacing: .zero,
+                        ) {
+                            Spacer()
+                            if let bottom {
+                                bottom
+                                    .padding(
+                                        .vertical,
+                                        size.adaptiveCornerRadius / 6,
+                                    )
+                                    .frame(
+                                        maxWidth: .infinity,
+                                    )
+                                    .safeAreaPadding(
+                                        .bottom,
+                                    )
+                                    .background(
+                                        Rectangle()
+                                            .fill(
+                                                .ultraThinMaterial,
+                                            )
+                                            .clipShape(
+                                                DRoundedCorner(
+                                                    radius: size.adaptiveCornerRadius,
+                                                    corners: [.topLeft, .topRight],
+                                                ),
+                                            ),
+                                    )
+                                    .overlay {
+                                        GeometryReader { proxy in
+                                            Color.clear
+                                                .preference(
+                                                    key: BottomHeightPreferenceKey.self,
+                                                    value: proxy.size.height,
+                                                )
+                                        }
+                                    }
+                                    .transition(
+                                        .move(
+                                            edge: .bottom,
+                                        ),
+                                    )
+                            }
+                        }
+                        .edgesIgnoringSafeArea(
+                            .bottom,
                         )
                         .onPreferenceChange(
-                            DScreenToolbarHeightPreferenceKey.self,
+                            BottomHeightPreferenceKey.self,
                         ) { value in
-                            guard toolbarHeight != value else {
+                            guard bottomHeight != value else {
                                 return
                             }
-                            toolbarHeight = value
+                            bottomHeight = value
                         }
-                        .onChange(
-                            of: isShowsToolbar,
-                        ) { _, value in
-                            if !value {
-                                toolbarHeight = 0
-                            }
-                        }
-                        .ignoresSafeArea(
-                            .container,
-                            edges: [.top],
-                        )
-                    }
-                }
-                .background(
-                    backgroundColor ?? color.grayscaleBackgroundWeak,
-                )
-                .frame(
-                    maxWidth: .infinity,
-                    maxHeight: .infinity,
-                )
-                .background(
-                    DInteractivePopGestureView(),
-                )
-                .toolbar(
-                    .hidden,
-                    for: .navigationBar,
-                )
-                .toolbarBackground(
-                    .hidden,
-                    for: .navigationBar,
-                )
-            }
-            .ignoresSafeArea(
-                .keyboard,
-            )
 
-            keyboardToolbar
+                        if isShowsToolbar {
+                            DScreenToolbarView(
+                                safeAreaInsetTop: safeAreaInsetTop,
+                                leadingView: leadingView,
+                                titleView: titleView,
+                                trailingView: trailingView,
+                                toolbarContent: toolbarContent,
+                            )
+                            .onPreferenceChange(
+                                DScreenToolbarHeightPreferenceKey.self,
+                            ) { value in
+                                guard toolbarHeight != value else {
+                                    return
+                                }
+                                toolbarHeight = value
+                            }
+                            .onChange(
+                                of: isShowsToolbar,
+                            ) { _, value in
+                                if !value {
+                                    toolbarHeight = 0
+                                }
+                            }
+                            .ignoresSafeArea(
+                                .container,
+                                edges: [.top],
+                            )
+                        }
+                    }
+                    .background(
+                        backgroundColor ?? color.grayscaleBackgroundWeak,
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                        maxHeight: .infinity,
+                    )
+                    .background(
+                        DInteractivePopGestureView(),
+                    )
+                    .toolbar(
+                        .hidden,
+                        for: .navigationBar,
+                    )
+                    .toolbarBackground(
+                        .hidden,
+                        for: .navigationBar,
+                    )
+                }
+                .ignoresSafeArea(
+                    .keyboard,
+                )
+
+                keyboardToolbar
+            }
         }
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
+            ),
+        )
     }
 
     private var isShowsToolbar: Bool {
@@ -317,13 +348,11 @@ public struct DScreen<
             if let onTapBack {
                 DButton(
                     image: .back,
+                    accessibilityIdentifier: "navigation.back",
                     action: onTapBack,
                 )
                 .dStyle(
                     .circle,
-                )
-                .accessibilityIdentifier(
-                    "navigation.back",
                 )
             }
             if !(leading is EmptyView) {

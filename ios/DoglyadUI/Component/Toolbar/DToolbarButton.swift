@@ -8,6 +8,7 @@ public struct DToolbarButton: DViewProtocol {
 
     public enum Content {
         case icon(ImageResource)
+
         case text(LocalizedStringResource)
     }
 
@@ -16,28 +17,43 @@ public struct DToolbarButton: DViewProtocol {
     private let style: Style
     private let badge: DButtonBadge?
     private let content: Content
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
     private let action: () -> Void
 
     public init(
         style: Style,
         badge: DButtonBadge? = nil,
         content: Content,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
         action: @escaping () -> Void,
     ) {
         self.style = style
         self.badge = badge
         self.content = content
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
+
         self.action = action
     }
 
     public var body: some View {
-        Button(
-            action: action,
-        ) {
-            buttonContent
+        Group {
+            Button(
+                action: action,
+            ) {
+                buttonContent
+            }
+            .buttonStyle(
+                .plain,
+            )
         }
-        .buttonStyle(
-            .plain,
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
+            ),
         )
     }
 

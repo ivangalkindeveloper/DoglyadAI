@@ -11,6 +11,10 @@ function environment({ managed = true, pageLimit = false } = {}) {
         if (child.parent) child.parent.children = child.parent.children.filter(n => n !== child);
         this.children.push(child); child.parent = this;
       },
+      insertChild(index, child) {
+        if (child.parent) child.parent.children = child.parent.children.filter(n => n !== child);
+        this.children.splice(index, 0, child); child.parent = this;
+      },
       resize() {}, remove() {
         this.removed = true;
         if (this.parent) this.parent.children = this.parent.children.filter(n => n !== this);

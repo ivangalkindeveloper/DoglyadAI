@@ -7,6 +7,8 @@ description: Synchronize Doglyad's shared harness into Codex and Claude settings
 
 `harness/` is the source of truth. Read `harness/README.md` for source and output
 locations. Edit shared skills and hooks there; never edit generated copies.
+Shared instructions live in `harness/instructions/`; the root `AGENTS.md` lists
+the documents that both agents must read before starting work.
 
 1. Inspect changes under `harness/` and run `python3 tools/sync_harness.py --dry-run`
    from the repository root.
