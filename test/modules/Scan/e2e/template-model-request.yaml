@@ -1,0 +1,72 @@
+appId: ${APP_ID}
+name: e2e-scan-template-model-request
+tags: [e2e, Scan, SelectTemplate, SettingsAI, SelectNeuralModel]
+---
+- runFlow: ../../../maestro/support/one-photo.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: UP
+    centerElement: true
+- tapOn: {id: scan.patientName, index: 1}
+- eraseText: 100
+- inputText: Regression template settings
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element: {id: scan.template}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.template}
+- tapOn: ^УЗИ Щитовидной железы$
+- assertVisible: ^УЗИ Щитовидной железы$
+- tapOn: {id: scan.template.reset}
+- assertVisible: ^Шаблон не выбран$
+- tapOn: {id: scan.template}
+- tapOn: ^УЗИ Щитовидной железы$
+- scrollUntilVisible:
+    element: {text: '^Осталось запросов:$'}
+    direction: DOWN
+    centerElement: true
+- tapOn: '^Осталось запросов:$'
+- tapOn: ^Google MedGemma 4B$
+- tapOn: '^Осталось запросов:$'
+- tapOn: '^Google MedGemma 1\.5 4B$'
+- assertVisible: '^Google MedGemma 1\.5 4B$'
+- scrollUntilVisible:
+    element: {text: '^Температура:$'}
+    direction: DOWN
+    centerElement: true
+- tapOn: '^Температура:$'
+- assertVisible: ^Настройки AI$
+- scrollUntilVisible:
+    element: {id: settingsAI.temperature}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: settingsAI.temperature, index: 1}
+- eraseText: 100
+- inputText: '0.7'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element: {id: settingsAI.maxTokens}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: settingsAI.maxTokens, index: 1}
+- eraseText: 100
+- inputText: '1024'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: ^Сохранить$
+- assertVisible: {id: scan.settings}
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: UP
+    centerElement: true
+- assertVisible: {id: scan.patientName, text: '^Regression template settings$'}
+- takeScreenshot: Scan-patient-preserved-after-ai-settings
+- runFlow:
+    file: ../../../maestro/support/controlled-generation.yaml
+    env:
+      EXAMINATION_NUMBER: REG-TEMPLATE-MODEL
+- extendedWaitUntil:
+    visible: '^К протоколу$'
+    timeout: 180000
+- takeScreenshot: Scan-template-model-request-completed

@@ -1,0 +1,30 @@
+schemaVersion: 1
+module: SelectTranscriber
+source: ios/Doglyad/Application/Module/Select/SelectTranscriber
+cases:
+- id: SelectTranscriber.available-options
+  title: Доступные транскрибаторы и сохранение выбора
+  profiles:
+  - pro
+  preconditions:
+  - Известна доступность Apple speech на устройстве; WhisperKit присутствует
+  - Варианты возможностей Apple проверяются нативными тестами с управляемым ответом проверки доступности; настоящая
+    запись и inference Apple не запускаются.
+  steps:
+  - action: Открыть селектор
+    expect: WhisperKit отображается; Apple-вариант показан только при доступном Apple engine.
+  - action: Выбрать каждый доступный вариант, сохранить настройки, перезапустить
+    expect: Селектор закрывается; выбор отражается в SettingsAI и сохраняется.
+  - action: Вернуть приложение из фона после изменения доступности
+    expect: Список обновляется без повторяющихся пунктов.
+  covers:
+  - onInit
+  - onSelect
+  automation:
+    kind: mixed
+    flows:
+    - e2e-settingsai-providers
+    nativeTests:
+    - RegressionFormTests/testTranscriberAvailabilityRefreshesOnForegroundWithoutDuplicates()
+    - SettingsAITests/transcriberListOffersOnlyTheAvailableAppleEngineAndWhisperKit(appleTranscriber:)
+    - SettingsAITests/speechChoicesSurviveRepositoryReloadAndReportStorage(transcriber:parser:)

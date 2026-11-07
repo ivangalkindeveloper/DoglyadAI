@@ -1,0 +1,31 @@
+appId: ${APP_ID}
+name: e2e-settingsai-tokens-high
+tags:
+- e2e
+- SettingsAI
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.maxTokens
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: settingsAI.maxTokens
+    index: 1
+- eraseText
+- inputText: '4097'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- assertVisible:
+    text: ^Введите\ максимальное\ количество\ токенов\ от\ 1\ до\ 4096$
+- takeScreenshot: SettingsAI-tokens-high

@@ -1,0 +1,40 @@
+appId: ${APP_ID}
+name: e2e-paywall-yookassa-confirmed
+tags: [e2e, Paywall, yookassa]
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionNewBillingOwner: 'false'
+- runFlow: ../../../maestro/support/paywall-ready.yaml
+- tapOn: ^Подписка Pro$
+- scrollUntilVisible:
+    element: {id: paywall.plan.pro_weekly}
+    direction: DOWN
+- tapOn: {id: paywall.plan.pro_weekly}
+- tapOn: {id: paywall.continue}
+- extendedWaitUntil:
+    visible: ^Card authentication$
+    timeout: 60000
+- assertVisible: ^249.00 RUB$
+- takeScreenshot: Paywall-yookassa-3ds-resumed
+- tapOn: ^Any number$
+- inputText: '123'
+- tapOn: ^Confirm$
+- extendedWaitUntil:
+    visible: ^Успешно$
+    timeout: 60000
+- takeScreenshot: Paywall-yookassa-3ds-provider-success
+- tapOn: ^Закрыть$
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element: {text: '^Управление подпиской$'}
+    direction: DOWN
+- tapOn: ^Управление подпиской$
+- assertVisible: ^Подписка Pro$
+- assertVisible: ^Активна$
+- assertVisible: ^Pro - Недельный доступ$
+- takeScreenshot: ManageSubscription-yookassa-3ds-confirmed

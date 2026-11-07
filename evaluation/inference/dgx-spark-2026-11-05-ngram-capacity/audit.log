@@ -1,0 +1,74 @@
+{
+  "baseline": {
+    "checks": {
+      "complete": true,
+      "expected_requests": true,
+      "all_transport_complete": true,
+      "all_prompt_ids_match": true,
+      "all_ordinary_json_valid": true,
+      "all_ordinary_natural_stop": true,
+      "no_image_changes": true,
+      "backend_unchanged": true,
+      "no_kernel_errors": true
+    },
+    "ordinary": 111,
+    "pressure": 12,
+    "main_rejected": 2,
+    "main_evaluated": 105,
+    "vision_passed": 6,
+    "vision_evaluated": 6,
+    "maximum_sentence_copies": 1,
+    "ordinary_over120": 0,
+    "pressure_over120": 6,
+    "success_counter_delta": 123.0,
+    "preemptions": 0.0
+  },
+  "seq8": {
+    "checks": {
+      "complete": true,
+      "expected_requests": true,
+      "all_transport_complete": true,
+      "all_prompt_ids_match": true,
+      "all_ordinary_json_valid": true,
+      "all_ordinary_natural_stop": true,
+      "no_image_changes": true,
+      "backend_unchanged": true,
+      "no_kernel_errors": true
+    },
+    "ordinary": 111,
+    "pressure": 12,
+    "main_rejected": 1,
+    "main_evaluated": 105,
+    "vision_passed": 6,
+    "vision_evaluated": 6,
+    "maximum_sentence_copies": 1,
+    "ordinary_over120": 0,
+    "pressure_over120": 5,
+    "success_counter_delta": 123.0,
+    "preemptions": 0.0
+  },
+  "seq8-kv12": {
+    "checks": {
+      "complete": true,
+      "expected_requests": true,
+      "all_transport_complete": true,
+      "all_prompt_ids_match": true,
+      "all_ordinary_json_valid": true,
+      "all_ordinary_natural_stop": true,
+      "no_image_changes": true,
+      "backend_unchanged": true,
+      "no_kernel_errors": true
+    },
+    "ordinary": 111,
+    "pressure": 12,
+    "main_rejected": 1,
+    "main_evaluated": 105,
+    "vision_passed": 6,
+    "vision_evaluated": 6,
+    "maximum_sentence_copies": 1,
+    "ordinary_over120": 0,
+    "pressure_over120": 7,
+    "success_counter_delta": 123.0,
+    "preemptions": 0.0
+  }
+}

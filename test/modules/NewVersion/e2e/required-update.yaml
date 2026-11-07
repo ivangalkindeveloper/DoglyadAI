@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+name: e2e-newversion-required-update
+tags: [e2e, NewVersion]
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionExternalApps: 'true'
+      regressionVersionPolicy: major
+      regressionFault: ''
+      regressionNewBillingOwner: 'false'
+- extendedWaitUntil:
+    visible: '^Новая версия$'
+    timeout: 60000
+- assertNotVisible: {id: navigation.back}
+- assertNotVisible: {id: scan.settings}
+- takeScreenshot: NewVersion-required-major-update
+- tapOn: ^Обновить$
+- assertVisible: ^App Store$
+- tapOn: ^Отмена$
+- assertVisible: ^Новая версия$
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionExternalApps: 'false'
+      regressionVersionPolicy: minor
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- assertNotVisible: ^Новая версия$
+- takeScreenshot: Scan-compatible-minor-version
+- runFlow: ../../../maestro/support/main.yaml
+- assertVisible: {id: scan.settings}

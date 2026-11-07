@@ -21,7 +21,9 @@ struct PreviewableModifier: ViewModifier {
                     ),
                 ),
             )
-            .dMessage()
+            .dMessage(
+                isPersistent: true,
+            )
             .dThemeWrapper()
             .environmentObject(
                 ApplicationRootViewModel(),

@@ -1,0 +1,123 @@
+schemaVersion: 1
+module: Paywall
+source: ios/Doglyad/Application/Module/Subscription/Paywall
+cases:
+- id: Paywall.catalog
+  title: Тарифы, периоды и выбор
+  profiles:
+  - none
+  preconditions:
+  - Нет подписки; доступен каталог провайдера
+  steps:
+  - action: Выбрать по очереди Base и Pro
+    expect: Меняются преимущества и список планов соответствующего тарифа.
+  - action: Выбрать каждый период из каталога
+    expect: Выделен ровно один план; цена и период соответствуют этому продукту; продолжение относится
+      к выбранному planId.
+  covers:
+  - onInit
+  - onSelectType
+  - onTapPlan
+  automation:
+    kind: maestro
+    flows:
+    - e2e-paywall-select-base_annual
+    - e2e-paywall-select-base_six_months
+    - e2e-paywall-select-base_monthly
+    - e2e-paywall-select-base_weekly
+    - e2e-paywall-select-pro_annual
+    - e2e-paywall-select-pro_six_months
+    - e2e-paywall-select-pro_monthly
+    - e2e-paywall-select-pro_weekly
+  variants:
+  - Base × week/month/sixMonth/year
+  - Pro × week/month/sixMonth/year
+- id: Paywall.purchase
+  title: Успешная покупка выбранного плана
+  profiles:
+  - none
+  preconditions:
+  - Отдельные чистые владельцы для Base и Pro; тестовый магазин YooKassa. Apple Sandbox временно исключён
+    по запросу пользователя.
+  steps:
+  - action: Выбрать план и подтвердить тестовую покупку
+    expect: Доступ появляется только после подтверждения именно выбранного продукта/платежа backend.
+  - action: Перезапустить приложение
+    expect: Подписка сохранена; интерфейс и ограничения соответствуют Base или Pro.
+  covers:
+  - onTapContinue
+  - onSubscriptionChanged
+  automation:
+    kind: maestro
+    flows:
+    - e2e-paywall-yookassa-base
+    - e2e-paywall-yookassa-pro
+  variants:
+  - Base
+  - Pro
+- id: Paywall.pending-cancel
+  title: Ожидание, отмена и проверка платежа
+  profiles:
+  - none
+  - base
+  preconditions:
+  - Настоящий SDK тестового магазина YooKassa. Новый владелец без подписки для 3-D Secure; отдельно подтверждённая
+    Base для проверки запрета новой покупки. Защита от постороннего активного доступа при pending проверяется
+    на ViewModel.
+  steps:
+  - action: Попробовать купить Pro при активной Base
+    expect: Текущий backend отклоняет новую покупку; Base остаётся активной, новый платёж не создаётся.
+  - action: Новым владельцем начать покупку Pro с 3-D Secure и закрыть подтверждение
+    expect: Paywall остаётся в ожидании; канонический платёж pending и не выдаёт доступ.
+  - action: Проверить оплату, перезапустить клиент и продолжить тот же продукт
+    expect: До подтверждения доступа нет; новый заказ не создаётся; снова открывается подтверждение прежнего
+      платежа.
+  - action: Подтвердить 3-D Secure
+    expect: Доступ появляется после подтверждения именно выбранного продукта и прежнего ID платежа.
+  - action: Отменить ввод карты; закрыть доступный Paywall
+    expect: Без отправленного платежа доступ не выдаётся. В отдельной проверке ViewModel посторонняя активная
+      подписка не завершает pending-покупку.
+  covers:
+  - onTapCheckPayment
+  - onTapClose
+  - onDisappear
+  automation:
+    kind: mixed
+    flows:
+    - e2e-paywall-yookassa-active-rejected
+    - e2e-paywall-yookassa-pending
+    - e2e-paywall-yookassa-confirmed
+    - e2e-paywall-yookassa-cancel
+    nativeTests:
+    - PaywallTests/pendingPurchaseDoesNotCompleteFromUnrelatedBaseAccess()
+- id: Paywall.errors-restore-documents
+  title: Загрузка, ошибка покупки, восстановление и документы
+  profiles:
+  - none
+  preconditions:
+  - Настоящий SDK тестового магазина YooKassa; отказ провайдера и повтор выбранного продукта. Ошибка каталога,
+    повтор и поздние ответы проверяются на ViewModel в обязательных XCTest. Apple Sandbox исключён по
+    запросу пользователя.
+  steps:
+  - action: Вызвать ошибку каталога и повторить
+    expect: Показана ошибка загрузки; после повтора доступны планы.
+  - action: Вызвать ошибку покупки и повторить
+    expect: Выбранный план сохранён; повтор не меняет продукт и не создаёт двойную оплату.
+  - action: Восстановить покупку; открыть оба юридических документа
+    expect: Восстановление требует проверенной покупки; документы открывают соответствующие страницы.
+  covers:
+  - onTapRetry
+  - onTapRestore
+  - onTapPrivacyPolicy
+  - onTapTerms
+  automation:
+    kind: mixed
+    flows:
+    - e2e-paywall-yookassa-declined
+    - e2e-paywall-yookassa-declined-retry
+    - e2e-subscriptionrecovery-restore-key
+    - e2e-paywall-documents
+    nativeTests:
+    - PaywallTests/loadingRetriesAndRestorationUpdatesSharedState(isSubscriptionActive:)
+    - PaywallTests/cancelledCatalogDiscardsLateSuccessAndFailure(isFailure:)
+    - PaywallTests/closeIgnoresALateCatalogResponse()

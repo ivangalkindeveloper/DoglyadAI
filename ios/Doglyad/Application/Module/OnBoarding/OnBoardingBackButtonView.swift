@@ -16,6 +16,9 @@ struct OnBoardingBackButtonView: DViewProtocol {
             .dStyle(
                 .circle,
             )
+            .accessibilityIdentifier(
+                "onboarding.back",
+            )
             .transition(
                 .scale
                     .combined(

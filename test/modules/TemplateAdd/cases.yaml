@@ -1,0 +1,90 @@
+schemaVersion: 1
+module: TemplateAdd
+source: ios/Doglyad/Application/Module/Template/TemplateAdd
+cases:
+- id: TemplateAdd.create
+  title: Создать и сохранить шаблон
+  profiles:
+  - pro
+  preconditions:
+  - Активна Pro; открыт список шаблонов
+  steps:
+  - action: Добавить шаблон, задать имя Regression template и текст Description and conclusion
+    expect: Поля содержат введённые значения; тип исследования виден.
+  - action: Сохранить, перезапустить и открыть шаблон
+    expect: Имя, тип и текст совпадают с введёнными; запись существует в одном экземпляре.
+  covers:
+  - onInit
+  - onTapSave
+  automation:
+    kind: maestro
+    flows:
+    - e2e-templateadd-template-create
+- id: TemplateAdd.fields
+  title: Тип, клавиатура и ограничения полей
+  profiles:
+  - pro
+  preconditions:
+  - Открыта новая форма шаблона
+  steps:
+  - action: Выбрать другой тип исследования
+    expect: Форма показывает новый тип.
+  - action: Перейти между полями стрелками и Return; скрыть клавиатуру
+    expect: Фокус идёт по полям; текст не теряется.
+  - action: Проверить пустые значения и границы длины из application.templateAdd
+    expect: Пустые имя и содержимое блокируют сохранение и переводят фокус на первое незаполненное поле.
+      Ввод ограничен максимальной длиной; значение сверх максимума не сохраняется.
+  covers:
+  - onTapExaminationType
+  - onFocusChanged
+  - onSubmit
+  - onTapToolbarUp
+  - onTapToolbarDown
+  automation:
+    kind: mixed
+    flows:
+    - e2e-templatelist-two-types
+    nativeTests:
+    - RegressionFormTests/testTemplateBoundariesRejectWritesAndKeepFullContent()
+  variants:
+  - nameMaxLength−1 / nameMaxLength / nameMaxLength+1
+  - contentMaxLength−1 / contentMaxLength / contentMaxLength+1
+- id: TemplateAdd.cancel-and-failure
+  title: Отмена и ошибка сохранения
+  profiles:
+  - pro
+  preconditions:
+  - Новая форма; для второй ветки сбой записи шаблона
+  steps:
+  - action: Ввести данные и выйти назад без сохранения
+    expect: Новая запись не появляется в списке.
+  - action: Повторить ввод, вызвать сбой записи и сохранить
+    expect: Показана ошибка; введённые значения остаются; нет ложного уведомления об успехе.
+  - action: Устранить сбой и сохранить
+    expect: Появляется ровно один шаблон.
+  covers:
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-templateadd-cancel
+    - e2e-templateadd-save-failure
+- id: TemplateAdd.ready-made
+  title: Применить готовый шаблон в форме
+  profiles:
+  - pro
+  preconditions:
+  - Открыта новая форма; backend отдаёт каталог шаблонов
+  steps:
+  - action: Открыть готовые шаблоны и выбрать thyroidGlandStandard
+    expect: В форме заполнены название, тип thyroidGland и полный текст из локализованного каталога.
+  - action: Сохранить и повторно открыть
+    expect: Все три значения сохранены без обрезания или подмены.
+  covers:
+  - onTapReadyMadeTemplates
+  - onReadyMadeTemplateSelected
+  automation:
+    kind: maestro
+    flows:
+    - e2e-readymadetemplatelist-ready-templates
+    - e2e-settingsai-request-parameters

@@ -130,5 +130,8 @@ struct ScanSpeechProposalCardView: DViewProtocol {
                 )
             }
         }
+        .accessibilityIdentifier(
+            "scanSpeech.proposal.\(proposal.id.rawValue).selected.\(isSelected)",
+        )
     }
 }

@@ -1,0 +1,52 @@
+appId: ${APP_ID}
+name: e2e-settingsai-request-parameters
+tags:
+- e2e
+- SettingsAI
+- Scan
+- SelectTemplate
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Настройки AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.markdown
+    direction: DOWN
+    centerElement: true
+- runFlow:
+    when:
+      visible:
+        id: settingsAI.markdown
+        selected: false
+    commands:
+    - tapOn:
+        id: settingsAI.markdown
+- assertVisible:
+    id: settingsAI.markdown
+    selected: true
+- tapOn: ^Сохранить$
+- runFlow: ../../../maestro/support/main.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.template
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: scan.template
+- tapOn: ^УЗИ Щитовидной железы$
+- assertVisible: ^УЗИ Щитовидной железы$
+- tapOn: ^Сгенерировать протокол$
+- extendedWaitUntil:
+    visible:
+      text: ^К протоколу$
+    timeout: 180000
+- takeScreenshot: ReportReceived-request-parameters-verified
+- tapOn: ^К протоколу$
+- scrollUntilVisible:
+    element: {text: "Протокол локального мокового режима.*"}
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: Протокол локального мокового режима.*
+- takeScreenshot: ReportDetail-request-parameters-verified

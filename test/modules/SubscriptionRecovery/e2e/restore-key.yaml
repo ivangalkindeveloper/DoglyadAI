@@ -1,0 +1,37 @@
+appId: ${APP_ID}
+name: e2e-subscriptionrecovery-restore-key
+tags: [e2e, SubscriptionRecovery, yookassa]
+---
+- tapOn: {id: subscriptionRecovery.input, index: 1}
+- waitForAnimationToEnd
+- eraseText: 60
+- inputText: '000000000000000000000000000000000000000000000000'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: ^Восстановить доступ$
+- extendedWaitUntil:
+    visible: '^Не удалось восстановить доступ. Проверьте ключ и подключение.$'
+    timeout: 30000
+- assertNotVisible: {id: scan.settings}
+- tapOn: {id: subscriptionRecovery.input, index: 1}
+- waitForAnimationToEnd
+- eraseText: 60
+- longPressOn: {id: subscriptionRecovery.input, index: 1}
+- tapOn: ^Вставить$
+- runFlow:
+    when: {visible: '^Разрешить вставку$'}
+    commands:
+    - tapOn: ^Разрешить вставку$
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: ^Восстановить доступ$
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element: {text: '^Управление подпиской$'}
+    direction: DOWN
+- tapOn: ^Управление подпиской$
+- assertVisible: ^Подписка Pro$
+- assertVisible: ^Активна$
+- assertVisible: ^Автопродление отключено$
+- takeScreenshot: SubscriptionRecovery-restored-clean-client

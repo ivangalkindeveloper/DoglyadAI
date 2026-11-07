@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-storageclearprotocols-4d149c4a17
+tags:
+- atlas
+- StorageClearProtocols
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-storageclearprotocols-4d149c4a17
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-storageclearprotocols-4d149c4a17
+    timeout: 15000
+- takeScreenshot: 01-StorageClearProtocols-4d149c4a17

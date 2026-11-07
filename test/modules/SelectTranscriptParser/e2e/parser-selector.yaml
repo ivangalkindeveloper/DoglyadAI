@@ -1,0 +1,25 @@
+appId: ${APP_ID}
+name: e2e-selecttranscriptparser-parser-selector
+tags:
+- e2e
+- SelectTranscriptParser
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Настройки\ AI$
+- tapOn:
+    text: ^Парсер\ разбора\ транскрипта$
+- assertVisible:
+    text: ^Парсер\ разбора\ транскрипта$
+- assertVisible:
+    text: ^Серверный\ парсинг$
+- takeScreenshot: 042-SelectTranscriptParser
+- tapOn:
+    text: ^Серверный\ парсинг$
+- tapOn:
+    text: ^Сохранить$
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Настройки\ AI$
+- assertVisible:
+    text: ^Серверный\ парсинг$

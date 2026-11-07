@@ -5,7 +5,17 @@
     import SwiftUI
 
     #Preview(
-        "TemplateAddDefaultState",
+        "01 TemplateAddLoadingState",
+    ) {
+        TemplateAddPreviewView(
+            state: TemplateAddLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "02 TemplateAddDefaultState",
     ) {
         TemplateAddPreviewView(
             state: TemplateAddDefaultState(),
@@ -15,7 +25,7 @@
     }
 
     #Preview(
-        "TemplateAddFailedState",
+        "03 TemplateAddFailedState",
     ) {
         TemplateAddPreviewView(
             state: TemplateAddFailedState(
@@ -23,16 +33,6 @@
                     .notConnectedToInternet,
                 ),
             ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "TemplateAddLoadingState",
-    ) {
-        TemplateAddPreviewView(
-            state: TemplateAddLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

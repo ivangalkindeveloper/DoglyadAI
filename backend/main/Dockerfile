@@ -1,9 +1,13 @@
+# syntax=docker/dockerfile:1
 FROM python:3.11-slim
 
 WORKDIR /app
 
 COPY requirements.txt /app/requirements.txt
-RUN pip install --no-cache-dir -r /app/requirements.txt
+# Keep completed downloads across rebuilds and interrupted installations.
+# This cache belongs to BuildKit and is not copied into the application image.
+RUN --mount=type=cache,id=doglyad-main-pip,target=/root/.cache/pip,sharing=locked \
+    pip install --disable-pip-version-check -r /app/requirements.txt
 RUN groupadd --gid 10001 doglyad \
     && useradd --uid 10001 --gid doglyad --no-create-home --shell /usr/sbin/nologin doglyad \
     && mkdir -p /app/logs \

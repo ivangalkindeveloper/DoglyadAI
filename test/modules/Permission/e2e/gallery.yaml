@@ -1,0 +1,46 @@
+appId: ${APP_ID}
+name: e2e-permission-gallery
+tags: [e2e, Permission]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.clear}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.clear}
+- launchApp:
+    permissions: {all: deny}
+    arguments:
+      regressionPreview: ''
+      regressionFault: ''
+      regressionSpeech: review
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- waitForAnimationToEnd
+- tapOn: {id: scan.importMedia}
+- tapOn: ^Галерея$
+- assertVisible: ^Предоставьте приложению разрешение на доступ к галерее, чтобы добавлять снимки исследования из галереи$
+- takeScreenshot: Permission-gallery-denied
+- tapOn: ^В настройки$
+# iOS 26.5 Simulator routes UIApplication.openSettingsURLString to Settings' root.
+- assertVisible: {id: com.apple.settings.general}
+- assertVisible: {id: breadcrumb, text: '.*Догляд AI.*'}
+- takeScreenshot: Permission-gallery-system-settings
+- setPermissions:
+    permissions: {all: allow}
+# Simulator caches the denied authorization until this process restarts.
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionSpeech: review
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- waitForAnimationToEnd
+- tapOn: {id: scan.importMedia}
+- tapOn: ^Галерея$
+- extendedWaitUntil:
+    visible: {id: PXGGridLayout-Info, index: 0}
+    timeout: 30000
+- takeScreenshot: Permission-gallery-allowed

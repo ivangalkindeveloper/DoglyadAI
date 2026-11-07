@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: e2e-share-external-email
+tags: [e2e, Share]
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Рабочие настройки$
+- tapOn: ^regression@example.invalid$
+- eraseText: 100
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: ^Сохранить$
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionExternalApps: 'true'
+      regressionFault: ''
+      regressionNewBillingOwner: 'false'
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- tapOn: {id: scan.settings}
+- tapOn: ^История исследований$
+- tapOn: ^Photo regression$
+- tapOn: {id: reportDetail.share}
+- assertNotVisible: {id: share.workEmail}
+- takeScreenshot: Share-without-work-email
+- tapOn: ^Отправить e-mail$
+- assertVisible: ^Почтовый клиент$
+- tapOn: ^Отмена$
+- assertVisible: ^Протокол$
+- takeScreenshot: Share-external-email-canceled
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Рабочие настройки$
+- tapOn: ^my_email@work-email.com$
+- inputText: regression@example.invalid
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: ^Сохранить$

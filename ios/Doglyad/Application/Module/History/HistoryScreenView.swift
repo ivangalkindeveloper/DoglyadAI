@@ -90,6 +90,9 @@ struct HistoryScreenView: DViewProtocol {
                         bottomHeight + size.s16,
                     )
                 }
+                .accessibilityIdentifier(
+                    "history.loadedCount.\(viewModel.sections.reduce(0) { $0 + $1.reports.count })",
+                )
                 .contentMargins(
                     .top,
                     toolbarInset,

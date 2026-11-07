@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-importmedia-a9fb9b7616
+tags:
+- atlas
+- ImportMedia
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-importmedia-a9fb9b7616
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-importmedia-a9fb9b7616
+    timeout: 15000
+- takeScreenshot: 01-ImportMedia-a9fb9b7616

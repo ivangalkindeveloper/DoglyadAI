@@ -1,27 +1,60 @@
 #if DEBUG
-    import Combine
-    import DoglyadUI
-    import Router
     import SwiftUI
 
     #Preview(
-        "PhotoViewContentState",
+        "01 PhotoViewState",
     ) {
         PhotoViewPreviewView(
-            state: PhotoViewContentState(),
             photos: ModulePreviewFactory.photos,
-        ).previewable(
+        )
+        .previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "PhotoViewEmptyState",
+        "02 PhotoViewRemarks",
     ) {
         PhotoViewPreviewView(
-            state: PhotoViewEmptyState(),
-            photos: [],
-        ).previewable(
+            photos: ModulePreviewFactory.photos,
+            remarks: ModulePreviewFactory.photoRemarks,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "03 PhotoViewSavedReport",
+    ) {
+        PhotoViewPreviewView(
+            photos: ModulePreviewFactory.photos,
+            remarks: ModulePreviewFactory.photoRemarks,
+            isDeletionAvailable: false,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 PhotoViewPortrait",
+    ) {
+        PhotoViewPreviewView(
+            photos: PhotoViewPreviewFactory.portraitPhotos,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "05 PhotoViewSquare",
+    ) {
+        PhotoViewPreviewView(
+            photos: PhotoViewPreviewFactory.squarePhotos,
+        )
+        .previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }

@@ -104,6 +104,9 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
                                 keyboardType: .asciiCapable,
                                 autocapitalization: .never,
                             )
+                            .accessibilityIdentifier(
+                                "subscriptionRecovery.input",
+                            )
                             .privacySensitive().id(
                                 SubscriptionRecoveryFocus.key,
                             )

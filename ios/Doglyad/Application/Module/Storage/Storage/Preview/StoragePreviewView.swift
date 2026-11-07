@@ -11,6 +11,11 @@
         let state: any StorageStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as StorageFailedState: true
+            default: false
+            }
+
             let model = StorageViewModel(
                 container: container,
                 messager: messager,
@@ -33,6 +38,9 @@
             )
             return StorageScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

@@ -7,6 +7,10 @@ struct WebDocumentBottomSheetView: DViewProtocol {
     @StateObject var viewModel: WebDocumentViewModel
 
     var body: some View {
+        let stateIdentifier = viewModel.state is WebDocumentLoadedState
+            ? "webDocument.loaded"
+            : viewModel.state is WebDocumentFailedState ? "webDocument.failed" : "webDocument.loading"
+
         DBottomSheet(
             title: viewModel.title,
             fraction: 0.8,
@@ -18,6 +22,7 @@ struct WebDocumentBottomSheetView: DViewProtocol {
                     bottomInset: bottomHeight,
                     onLoaded: viewModel.onDocumentLoaded,
                     onFailed: viewModel.onDocumentFailed,
+                    stateIdentifier: stateIdentifier,
                 )
 
                 switch viewModel.state {

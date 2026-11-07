@@ -1,0 +1,21 @@
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Running 
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Healthy 
+{"healthy": "vllm_medgemma_27b"}
+{"profile": "seq8-kv12", "wave": "warmup", "seconds": 61.84424967200903, "valid": true, "over120": 0}
+{"profile": "seq8-kv12", "wave": "light1", "seconds": 50.893192447008914, "valid": true, "over120": 0}
+{"profile": "seq8-kv12", "wave": "report4-1", "seconds": 58.458112852007616, "valid": true, "over120": 0}
+{"profile": "seq8-kv12", "wave": "report4-2", "seconds": 56.87142228799348, "valid": true, "over120": 0}
+{"profile": "seq8-kv12", "wave": "report8-1", "seconds": 66.1112467310013, "valid": true, "over120": 0}
+{"profile": "seq8-kv12", "wave": "report8-2", "seconds": 65.98383320801076, "valid": true, "over120": 0}
+{"profile": "seq8-kv12", "wave": "mixed8", "seconds": 73.79056701200898, "valid": true, "over120": 0}
+{"profile": "seq8-kv12", "wave": "pressure4", "seconds": 102.08581542500178, "valid": true, "over120": 0}
+{"profile": "seq8-kv12", "wave": "pressure8", "seconds": 195.73079160899215, "valid": true, "over120": 7}

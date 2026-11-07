@@ -5,6 +5,7 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
+    let transcriptFocus: FocusState<Bool?>.Binding
 
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
@@ -32,6 +33,10 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
 
             DTextField(
                 inputTextController: viewModel.transcriptTextController,
+                focus: DTextFieldFocus(
+                    value: true,
+                    state: transcriptFocus,
+                ),
                 title: l10n[
                     .scanSpeechReviewFieldTitle,
                 ],
@@ -41,6 +46,9 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
                 mode: DTextFieldMultiLineMode(
                     lineLimit: 6 ... 14,
                 ),
+            )
+            .accessibilityIdentifier(
+                "scanSpeech.transcript",
             )
             .disabled(
                 isProcessing,

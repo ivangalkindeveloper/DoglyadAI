@@ -1,0 +1,87 @@
+{
+  "status": "applied",
+  "unix": 1793912322.2080302,
+  "decision": {
+    "profile": "seq8",
+    "decided_utc": "2026-11-05T20:50:14.704729+00:00",
+    "max_num_seqs_per_model": 8,
+    "api_concurrency_per_model": 8,
+    "kv_gib_4b_15_4b_27b": [
+      4,
+      4,
+      8
+    ],
+    "ngram_tokens": 8,
+    "dtype": "bfloat16",
+    "reason": "8 slots reduce report8 waves from115.4–115.8s to65.8–68.8s; ordinary over120=0. KV12 has similar ordinary latency and pressure8 195.73s vs197.78s but7/8 requests over120 instead of5/8. Keep smaller KV allocation."
+  },
+  "profile_fingerprint": "fae41db17737573227d51eab296db61a554c01ee2c3c5bd65cab9fcdafe42b08",
+  "canonical_matches_runtime": true,
+  "images_unchanged": true,
+  "env_unchanged": true,
+  "same_boot_during_deployment": true,
+  "engine_services_recreated": [
+    "vllm_medgemma_27b"
+  ],
+  "backend_restarted": true,
+  "readiness": {
+    "api": {
+      "/v1/generation": 401,
+      "/v1/generation/stream": 401
+    },
+    "engines": {
+      "google/medgemma-27b-it": {
+        "status": 200,
+        "model_present": true
+      },
+      "google/medgemma-4b-it": {
+        "status": 200,
+        "model_present": true
+      },
+      "google/medgemma-1.5-4b-it": {
+        "status": 200,
+        "model_present": true
+      }
+    },
+    "config": {
+      "default_max_body_bytes": 65536,
+      "vllm": {
+        "connect_timeout_seconds": 5,
+        "read_timeout_seconds": 120,
+        "write_timeout_seconds": 20,
+        "pool_timeout_seconds": 2,
+        "operation_timeout_seconds": 120
+      },
+      "generation": {
+        "max_body_bytes": 50331648,
+        "max_images": 6,
+        "max_image_bytes": 4194304,
+        "max_concurrent_requests": 8,
+        "max_waiting_requests": 1,
+        "queue_timeout_seconds": 2,
+        "retry_after_seconds": 5
+      }
+    }
+  },
+  "host": {
+    "unix": 1793912322.2298634,
+    "memory_kib": {
+      "MemFree": 1408816,
+      "MemAvailable": 26113748,
+      "Cached": 25768600,
+      "SwapTotal": 16777212,
+      "SwapFree": 4165168,
+      "Dirty": 2380
+    },
+    "vmstat": {
+      "pswpin": 5984067,
+      "pswpout": 15160944,
+      "pgmajfault": 2789943,
+      "oom_kill": 0
+    },
+    "gpu": "45, 10.90 W, 2405 MHz, [N/A], P0, Not Active, Not Active, Not Active",
+    "loadavg": "0.92 1.18 1.31 1/1553 2242814",
+    "memory_pressure": "some avg10=0.00 avg60=0.10 avg300=0.19 total=25395055\nfull avg10=0.00 avg60=0.10 avg300=0.19 total=25357208"
+  },
+  "authenticated_client_generation_tested": false
+}

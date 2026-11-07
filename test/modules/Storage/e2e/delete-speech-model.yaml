@@ -1,0 +1,34 @@
+appId: ${APP_ID}
+name: e2e-storage-delete-speech-model
+tags: [e2e, Storage, ScanSpeech]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionSeedSpeechModel: 'true'
+      regressionSpeech: cached-model
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- tapOn: {id: scan.settings}
+- scrollUntilVisible:
+    element: {text: '^Хранилище$'}
+    direction: DOWN
+- tapOn: ^Хранилище$
+- assertVisible: ^Удалить модель распознавания речи$
+- takeScreenshot: Storage-speech-model-present
+- tapOn: ^Удалить модель распознавания речи$
+- assertVisible: ^Модель удалена$
+- assertVisible: ^Настройки$
+- tapOn: ^Хранилище$
+- assertNotVisible: ^Удалить модель распознавания речи$
+- takeScreenshot: Storage-speech-model-removed
+- tapOn: {id: navigation.back}
+- tapOn: {id: navigation.back}
+- tapOn: {id: scan.speech}
+- assertVisible: '(?s)^Скачиваем модель распознавания речи\..*'
+- assertNotVisible: {text: '^Начать запись$', enabled: true}
+- takeScreenshot: ScanSpeech-model-download-required
+- tapOn: {id: bottomSheet.close}
+- runFlow: ../../../maestro/support/main.yaml

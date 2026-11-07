@@ -35,6 +35,7 @@ struct ScanCameraPhotoListView: DViewProtocol {
                                             },
                                         ),
                                     ),
+                                    accessibilityID: "scanCamera.photo.\(photo.id)",
                                     onTap: {
                                         viewModel.onTapPhoto(
                                             photo,
@@ -77,6 +78,9 @@ struct ScanCameraPhotoListView: DViewProtocol {
                         size.s16,
                     )
                 }
+                .accessibilityIdentifier(
+                    "scanCamera.photoCount.\(viewModel.photos.count)",
+                )
                 .transition(
                     .opacity,
                 )

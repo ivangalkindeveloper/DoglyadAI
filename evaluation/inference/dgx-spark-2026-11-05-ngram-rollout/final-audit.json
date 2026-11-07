@@ -1,0 +1,203 @@
+{
+  "status": "complete",
+  "ngram_enabled_for_all_three_models": true,
+  "smoke_main_validator_passed": true,
+  "canonical_profile_matches_runtime": true,
+  "memory_recheck": [
+    {
+      "model": "4b",
+      "case": "report-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 17.070626672997605
+    },
+    {
+      "model": "15-4b",
+      "case": "report-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 17.635727529006545
+    },
+    {
+      "model": "27b",
+      "case": "report-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 63.18809801200405
+    },
+    {
+      "model": "4b",
+      "case": "conflict-greedy-0",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 20.289804223997635
+    },
+    {
+      "model": "15-4b",
+      "case": "conflict-greedy-0",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 22.93716897298873
+    },
+    {
+      "model": "27b",
+      "case": "conflict-greedy-0",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 53.19550292700296
+    },
+    {
+      "model": "4b",
+      "case": "dictation-greedy-0",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 24.720808885002043
+    },
+    {
+      "model": "15-4b",
+      "case": "dictation-greedy-0",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 42.73487387600471
+    },
+    {
+      "model": "27b",
+      "case": "dictation-greedy-0",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 51.219659335998585
+    },
+    {
+      "model": "4b",
+      "case": "vision-2",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 2.987559279004927
+    },
+    {
+      "model": "15-4b",
+      "case": "vision-2",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 5.000520221990882
+    },
+    {
+      "model": "27b",
+      "case": "vision-2",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 16.521853515994735
+    },
+    {
+      "model": "4b",
+      "case": "bladder-correction-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 8.451960515987594
+    },
+    {
+      "model": "15-4b",
+      "case": "bladder-correction-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 7.884622772995499
+    },
+    {
+      "model": "27b",
+      "case": "bladder-correction-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 31.708831754993298
+    },
+    {
+      "model": "4b",
+      "case": "bladder-en-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 6.7529457039927365
+    },
+    {
+      "model": "15-4b",
+      "case": "bladder-en-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 8.03252364200307
+    },
+    {
+      "model": "27b",
+      "case": "bladder-en-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 26.87884124799166
+    },
+    {
+      "model": "4b",
+      "case": "conflict-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 19.97125075200165
+    },
+    {
+      "model": "15-4b",
+      "case": "conflict-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 20.634320946992375
+    },
+    {
+      "model": "27b",
+      "case": "conflict-sample-42",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 1,
+      "seconds": 42.07730171599542
+    },
+    {
+      "model": "4b",
+      "case": "vision-1",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 1.8693318029982038
+    },
+    {
+      "model": "15-4b",
+      "case": "vision-1",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 3.327742177003529
+    },
+    {
+      "model": "27b",
+      "case": "vision-1",
+      "natural_stop": true,
+      "schema_valid": true,
+      "maximum_sentence_copies": 0,
+      "seconds": 11.221550634989399
+    }
+  ],
+  "known_driver_warning": "NV_ERR_NO_MEMORY at 2026-11-05 22:15:01 MSK; cause unknown",
+  "clinical_equivalence_established": false,
+  "quantization_changed": false
+}

@@ -1,0 +1,8 @@
+appId: ${APP_ID}
+name: support-paywall-ready
+---
+- extendedWaitUntil:
+    visible:
+      id: paywall.continue
+      enabled: true
+    timeout: 60000

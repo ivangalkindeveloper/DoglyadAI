@@ -1,0 +1,63 @@
+{
+  "profile": "baseline",
+  "waves": [
+    [
+      "warmup",
+      4,
+      "report"
+    ],
+    [
+      "light1",
+      1,
+      "report"
+    ],
+    [
+      "report4-1",
+      4,
+      "report"
+    ],
+    [
+      "report4-2",
+      4,
+      "report"
+    ],
+    [
+      "report8-1",
+      8,
+      "report"
+    ],
+    [
+      "report8-2",
+      8,
+      "report"
+    ],
+    [
+      "mixed8",
+      8,
+      "mixed"
+    ],
+    [
+      "pressure4",
+      4,
+      "pressure"
+    ],
+    [
+      "pressure8",
+      8,
+      "pressure"
+    ]
+  ],
+  "mixed_cases": [
+    "report-sample-42",
+    "conflict-greedy-0",
+    "dictation-greedy-0",
+    "vision-2",
+    "bladder-correction-sample-42",
+    "bladder-en-sample-42",
+    "conflict-sample-42",
+    "vision-1"
+  ],
+  "engine_benchmark_not_authenticated_api": true,
+  "baseline_c8_exceeds_current_api_admission": true,
+  "pressure_not_application_report": true
+}

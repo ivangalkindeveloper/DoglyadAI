@@ -53,9 +53,13 @@ public extension View {
         )
     }
 
-    func dMessage() -> some View {
+    func dMessage(
+        isPersistent: Bool = false,
+    ) -> some View {
         modifier(
-            DMessageModifier(),
+            DMessageModifier(
+                isPersistent: isPersistent,
+            ),
         )
     }
 

@@ -11,6 +11,11 @@
         let state: any ShareStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as ShareFailedState: true
+            default: false
+            }
+
             let model = ShareViewModel(
                 container: container,
                 messager: messager,
@@ -42,6 +47,9 @@
                     viewModel: model,
                 )
             }
+            .previewError(
+                isPresented: isErrorPresented,
+            )
             .id(
                 ObjectIdentifier(
                     state,

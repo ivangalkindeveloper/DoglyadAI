@@ -1,0 +1,56 @@
+appId: ${APP_ID}
+name: e2e-scanspeech-cancel
+tags: [e2e, ScanSpeech, Scan]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: DOWN
+- copyTextFrom: {id: scan.patientName, index: 1}
+- evalScript: ${output.retainedPatientName = maestro.copiedText}
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionSpeech: review
+      regressionFault: ''
+      regressionDelay: ultrasoundReportRepository.parseDictation
+      regressionDelaySeconds: '15'
+- extendedWaitUntil:
+    visible: {id: scan.speech}
+    timeout: 60000
+- tapOn: {id: scan.speech}
+- extendedWaitUntil:
+    visible: ^Начать запись$
+    timeout: 30000
+- tapOn: ^Начать запись$
+- assertVisible: ^Разобрать диктовку$
+- takeScreenshot: ScanSpeech-cancel-recording
+- tapOn: {id: bottomSheet.close}
+- assertVisible: {id: scan.settings}
+- tapOn: {id: scan.speech}
+- extendedWaitUntil:
+    visible: ^Начать запись$
+    timeout: 30000
+- tapOn: ^Начать запись$
+- tapOn: ^Разобрать диктовку$
+- takeScreenshot: ScanSpeech-cancel-parsing
+- tapOn: {id: bottomSheet.close}
+- assertVisible: {id: scan.settings}
+- evalScript: ${output.cancellationDeadline = Date.now() + 17000}
+- repeat:
+    while:
+      true: ${Date.now() < output.cancellationDeadline}
+    commands:
+    - assertVisible: {id: scan.settings}
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: DOWN
+- assertVisible: {id: scan.patientName, text: '${output.retainedPatientName}'}
+- assertVisible: {id: scan.patientHeightCM, text: '^180[.,]0$'}
+- assertVisible: {id: scan.patientWeightKG, text: '^75[.,]0$'}
+- takeScreenshot: ScanSpeech-cancel-retained-automatic-fields
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: DOWN
+- assertVisible: {id: scan.patientName, text: '${output.retainedPatientName}'}

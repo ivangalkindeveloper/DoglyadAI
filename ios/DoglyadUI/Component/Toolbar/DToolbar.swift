@@ -53,6 +53,9 @@ public struct DToolbar: DViewProtocol {
                 ),
                 action: onTapDone,
             )
+            .accessibilityIdentifier(
+                "keyboard.done",
+            )
 
             ForEach(
                 trailButtons.indices,

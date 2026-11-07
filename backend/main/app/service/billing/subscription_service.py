@@ -36,12 +36,11 @@ from app.model.billing.billing_catalog import BillingCatalog
 from app.model.billing.billing_checkout_response import BillingCheckoutResponse
 from app.model.billing.billing_identity_response import BillingIdentityResponse
 from app.model.billing.billing_product_config import BillingProductConfig
-from app.model.billing.billing_product_response import BillingProductResponse
 from app.model.billing.billing_products_response import BillingProductsResponse
 from app.model.billing.billing_status_response import BillingStatusResponse
-from app.model.billing.billing_tier_response import BillingTierResponse
 from app.model.ultrasound.us_examination_request import USExaminationRequest
 from app.service.billing.apple_subscription_verifier import AppleSubscriptionVerifier
+from app.service.billing.billing_catalog_response_service import BillingCatalogResponseService
 from app.service.billing.yookassa_payment_provider import YooKassaPaymentProvider
 
 
@@ -188,41 +187,10 @@ class SubscriptionService:
         self,
         language: LanguageCode,
     ) -> BillingProductsResponse:
-        return BillingProductsResponse(
-            tiers=[
-                BillingTierResponse(
-                    id=tier.id,
-                    title=self._configuration.text(
-                        language,
-                        tier.titleLocaleKey,
-                    ),
-                    features=[
-                        self._configuration.text(
-                            language,
-                            key,
-                        )
-                        for key in tier.featureLocaleKeys
-                    ],
-                )
-                for tier in self._catalog.tiers
-            ],
-            products=[
-                BillingProductResponse(
-                    id=plan.id,
-                    period=plan.period,
-                    entitlement=plan.entitlement,
-                    price=plan.price,
-                    title=self._configuration.text(
-                        language,
-                        plan.titleLocaleKey,
-                    ),
-                    priceTemplate=self._configuration.text(
-                        language,
-                        plan.priceTemplateLocaleKey,
-                    ),
-                )
-                for plan in self._catalog.products
-            ],
+        return BillingCatalogResponseService.make(
+            self._catalog,
+            self._configuration,
+            language,
         )
 
     async def status(

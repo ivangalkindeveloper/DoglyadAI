@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: e2e-webdocument-network-failure
+tags: [e2e, WebDocument]
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionDocumentFailure: 'true'
+      regressionResetLegalConsent: 'false'
+      regressionFault: ''
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- tapOn: {id: scan.settings}
+- scrollUntilVisible:
+    element: {text: '^Политика конфиденциальности$'}
+    direction: DOWN
+- tapOn: ^Политика конфиденциальности$
+- extendedWaitUntil:
+    visible: {id: webDocument.failed}
+    timeout: 30000
+- assertNotVisible: {id: webDocument.loading}
+- takeScreenshot: WebDocument-network-failed
+- tapOn: {id: bottomSheet.close}
+- assertVisible: ^Политика конфиденциальности$
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element: {text: '^Политика конфиденциальности$'}
+    direction: DOWN
+- tapOn: ^Политика конфиденциальности$
+- extendedWaitUntil:
+    visible: {id: webDocument.loaded}
+    timeout: 30000
+- assertVisible: .*Ответственный за обработку данных.*
+- takeScreenshot: WebDocument-network-recovered
+- tapOn: {id: bottomSheet.close}

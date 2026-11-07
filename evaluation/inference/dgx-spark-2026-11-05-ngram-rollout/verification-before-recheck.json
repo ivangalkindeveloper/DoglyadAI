@@ -1,0 +1,82 @@
+{
+  "unix": 1793906880.990223,
+  "profile_fingerprint": "8c7588df11e4c3a3a55741529c75150dfa970bc696a0bc0db84128ce2fff4aa2",
+  "commands_match_canonical_profile": true,
+  "containers": {
+    "doglyad-dgx-vllm_medgemma_4b-1": {
+      "id": true,
+      "image": true,
+      "command": true,
+      "restart_policy": true,
+      "running": true
+    },
+    "doglyad-dgx-vllm_medgemma_15_4b-1": {
+      "id": true,
+      "image": true,
+      "command": true,
+      "restart_policy": true,
+      "running": true
+    },
+    "doglyad-dgx-vllm_medgemma_27b-1": {
+      "id": true,
+      "image": true,
+      "command": true,
+      "restart_policy": true,
+      "running": true
+    },
+    "doglyad-dgx-backend_inference-1": {
+      "id": true,
+      "image": true,
+      "command": true,
+      "restart_policy": true,
+      "running": true
+    }
+  },
+  "backend_never_restarted": true,
+  "unauthenticated_api_status": {
+    "/v1/generation": 401,
+    "/v1/generation/stream": 401
+  },
+  "backend_engine_routes": {
+    "google/medgemma-27b-it": {
+      "health_status": 200,
+      "configured_model_present": true
+    },
+    "google/medgemma-4b-it": {
+      "health_status": 200,
+      "configured_model_present": true
+    },
+    "google/medgemma-1.5-4b-it": {
+      "health_status": 200,
+      "configured_model_present": true
+    }
+  },
+  "same_boot": true,
+  "boot_id": "a1c6a91f-b23b-4da4-a0ce-5fb1a5dfd218",
+  "only_expected_running_containers": true,
+  "other_stopped_containers": [
+    "doglyad-download-medgemma-15-4b",
+    "doglyad-download-medgemma-27b",
+    "doglyad-download-medgemma-27b-parallel"
+  ],
+  "host": {
+    "unix": 1793906881.0128202,
+    "memory_kib": {
+      "MemFree": 3321536,
+      "MemAvailable": 20495408,
+      "Cached": 18205656,
+      "SwapTotal": 16777212,
+      "SwapFree": 9696004,
+      "Dirty": 6396
+    },
+    "vmstat": {
+      "pswpin": 4149728,
+      "pswpout": 10262157,
+      "pgmajfault": 2003556,
+      "oom_kill": 0
+    },
+    "gpu": "47, 11.10 W, 2405 MHz, [N/A], P0, Not Active, Not Active, Not Active",
+    "loadavg": "0.89 0.97 0.98 1/1554 2055436",
+    "memory_pressure": "some avg10=0.00 avg60=0.00 avg300=0.00 total=17690886\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=17663323"
+  }
+}

@@ -38,6 +38,9 @@ struct ShareWorkEmailButtonView: DViewProtocol {
             .disabled(
                 isProcessing,
             )
+            .accessibilityIdentifier(
+                "share.workEmail",
+            )
             .paidBadge(
                 viewModel.subscriptionAvailability(
                     of: .sendingReportByEmail,

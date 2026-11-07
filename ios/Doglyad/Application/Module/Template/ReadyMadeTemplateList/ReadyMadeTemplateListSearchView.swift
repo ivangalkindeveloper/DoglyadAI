@@ -27,6 +27,9 @@ struct ReadyMadeTemplateListSearchView: DViewProtocol {
                 ),
                 autocapitalization: .never,
             )
+            .accessibilityIdentifier(
+                "readyMade.search",
+            )
             .padding(
                 .top,
                 size.s8,

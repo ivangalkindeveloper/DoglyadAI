@@ -5,17 +5,17 @@
     import SwiftUI
 
     #Preview(
-        "SettingsContentState",
+        "01 SettingsLoadingState",
     ) {
         SettingsPreviewView(
-            state: SettingsContentState(),
+            state: SettingsLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "SettingsFailedState",
+        "02 SettingsFailedState",
     ) {
         SettingsPreviewView(
             state: SettingsFailedState(
@@ -29,10 +29,10 @@
     }
 
     #Preview(
-        "SettingsLoadingState",
+        "03 SettingsContentState",
     ) {
         SettingsPreviewView(
-            state: SettingsLoadingState(),
+            state: SettingsContentState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

@@ -102,6 +102,9 @@ struct ReportDetailModelReportCardView: DViewProtocol {
                     .buttonStyle(
                         .plain,
                     )
+                    .accessibilityIdentifier(
+                        "reportDetail.copy.\(report.modelId)",
+                    )
                     .padding(
                         .leading,
                         size.s8,

@@ -1,0 +1,17 @@
+appId: ${APP_ID}
+name: e2e-settingsai-ai-settings
+tags:
+- e2e
+- SettingsAI
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Настройки\ AI$
+- assertVisible:
+    text: ^Настройки\ AI$
+- takeScreenshot: 040-SettingsAI
+- tapOn:
+    text: ^Транскрибатор\ речи$
+- assertVisible:
+    text: ^Транскрибатор$
+- takeScreenshot: 041-SelectTranscriber

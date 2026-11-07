@@ -10,6 +10,11 @@
         let state: any LegalUpdateStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as LegalUpdateFailedState: true
+            default: false
+            }
+
             let model = LegalUpdateViewModel(
                 container: container,
                 router: router,
@@ -31,6 +36,9 @@
             )
             return LegalUpdateScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

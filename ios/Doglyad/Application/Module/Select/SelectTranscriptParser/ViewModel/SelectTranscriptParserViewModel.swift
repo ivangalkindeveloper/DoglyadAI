@@ -8,6 +8,7 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
     let options = TranscriptParserType.allCases
     let currentValue: TranscriptParserType
     private let arguments: SelectTranscriptParserArguments
+    private let getFoundationModelsAvailability: () -> Bool
 
     @Published private(set) var isFoundationModelsAvailable: Bool
     private var availabilityObservation: AnyCancellable?
@@ -21,10 +22,15 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
         onRefreshSubscriptionStatus: @escaping () async -> Void,
+        getFoundationModelsAvailability: (() -> Bool)? = nil,
     ) {
         self.arguments = arguments
         currentValue = arguments.currentValue
-        isFoundationModelsAvailable = container.examinationNeuralModelFactory.isFoundationModelsAvailable
+        let availability = getFoundationModelsAvailability ?? {
+            container.examinationNeuralModelFactory.isFoundationModelsAvailable
+        }
+        self.getFoundationModelsAvailability = availability
+        isFoundationModelsAvailable = availability()
         super.init(
             state: SelectTranscriptParserState(),
             container: container,
@@ -81,6 +87,6 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
     }
 
     private func refreshAvailability() {
-        isFoundationModelsAvailable = container.examinationNeuralModelFactory.isFoundationModelsAvailable
+        isFoundationModelsAvailable = getFoundationModelsAvailability()
     }
 }

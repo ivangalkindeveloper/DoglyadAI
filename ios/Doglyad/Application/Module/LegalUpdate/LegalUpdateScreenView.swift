@@ -62,6 +62,9 @@ struct LegalUpdateScreenView: DViewProtocol {
                                 set: viewModel.onLegalAcceptedChanged,
                             ),
                         )
+                        .accessibilityIdentifier(
+                            "legalUpdate.acceptLegal",
+                        )
                         .padding(
                             .trailing,
                             size.s8,
@@ -120,6 +123,9 @@ struct LegalUpdateScreenView: DViewProtocol {
                 )
                 .dStyle(
                     .primaryButton,
+                )
+                .accessibilityIdentifier(
+                    "legalUpdate.accept",
                 )
                 .padding(
                     size.s16,

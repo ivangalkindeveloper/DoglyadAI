@@ -1,0 +1,972 @@
+{
+  "unit": "Unicode characters; not model tokens or measured cache hits",
+  "cases": 192,
+  "checks": {
+    "schema_unchanged": 192,
+    "patient_text_preserved": 192,
+    "foreign_photo_id_rejected": 24,
+    "environment_parity": 48
+  },
+  "comparisons": [
+    {
+      "model": "4b",
+      "scenario": "ru-photo0-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo0-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo0-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo0-template0",
+      "variant": "combined",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo0-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo0-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo0-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo0-template0",
+      "variant": "combined",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo0-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo0-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo0-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo0-template0",
+      "variant": "combined",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5080,
+        5080
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo0-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo0-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 4166,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo0-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo0-template1",
+      "variant": "combined",
+      "common_prefix_characters": 4166,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo0-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo0-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 4166,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo0-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo0-template1",
+      "variant": "combined",
+      "common_prefix_characters": 4166,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo0-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo0-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 4166,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo0-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3443,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo0-template1",
+      "variant": "combined",
+      "common_prefix_characters": 4166,
+      "input_text_characters": [
+        5803,
+        5803
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo1-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        7510,
+        7510
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo1-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        7510,
+        7510
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo1-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5706,
+      "input_text_characters": [
+        7462,
+        7462
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo1-template0",
+      "variant": "combined",
+      "common_prefix_characters": 5706,
+      "input_text_characters": [
+        7462,
+        7462
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo1-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        7510,
+        7510
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo1-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        7510,
+        7510
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo1-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5706,
+      "input_text_characters": [
+        7462,
+        7462
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo1-template0",
+      "variant": "combined",
+      "common_prefix_characters": 5706,
+      "input_text_characters": [
+        7462,
+        7462
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo1-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        7510,
+        7510
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo1-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        7510,
+        7510
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo1-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5706,
+      "input_text_characters": [
+        7462,
+        7462
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo1-template0",
+      "variant": "combined",
+      "common_prefix_characters": 5706,
+      "input_text_characters": [
+        7462,
+        7462
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        8233,
+        8233
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        8233,
+        8233
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5706,
+      "input_text_characters": [
+        8185,
+        8185
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "combined",
+      "common_prefix_characters": 6429,
+      "input_text_characters": [
+        8185,
+        8185
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        8233,
+        8233
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        8233,
+        8233
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5706,
+      "input_text_characters": [
+        8185,
+        8185
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "combined",
+      "common_prefix_characters": 6429,
+      "input_text_characters": [
+        8185,
+        8185
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo1-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        8233,
+        8233
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo1-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 4136,
+      "input_text_characters": [
+        8233,
+        8233
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo1-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5706,
+      "input_text_characters": [
+        8185,
+        8185
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "ru-photo1-template1",
+      "variant": "combined",
+      "common_prefix_characters": 6429,
+      "input_text_characters": [
+        8185,
+        8185
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo0-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo0-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo0-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo0-template0",
+      "variant": "combined",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo0-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo0-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo0-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo0-template0",
+      "variant": "combined",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo0-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo0-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo0-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo0-template0",
+      "variant": "combined",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3578,
+        3578
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo0-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo0-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 3688,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo0-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo0-template1",
+      "variant": "combined",
+      "common_prefix_characters": 3688,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo0-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo0-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 3688,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo0-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo0-template1",
+      "variant": "combined",
+      "common_prefix_characters": 3688,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo0-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo0-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 3688,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo0-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 3346,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo0-template1",
+      "variant": "combined",
+      "common_prefix_characters": 3688,
+      "input_text_characters": [
+        3920,
+        3920
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo1-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 3944,
+      "input_text_characters": [
+        5848,
+        5848
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo1-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 3944,
+      "input_text_characters": [
+        5848,
+        5848
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo1-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5466,
+      "input_text_characters": [
+        5800,
+        5800
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo1-template0",
+      "variant": "combined",
+      "common_prefix_characters": 5466,
+      "input_text_characters": [
+        5800,
+        5800
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo1-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 3944,
+      "input_text_characters": [
+        5848,
+        5848
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo1-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 3944,
+      "input_text_characters": [
+        5848,
+        5848
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo1-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5466,
+      "input_text_characters": [
+        5800,
+        5800
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo1-template0",
+      "variant": "combined",
+      "common_prefix_characters": 5466,
+      "input_text_characters": [
+        5800,
+        5800
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo1-template0",
+      "variant": "baseline",
+      "common_prefix_characters": 3944,
+      "input_text_characters": [
+        5848,
+        5848
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo1-template0",
+      "variant": "template_first",
+      "common_prefix_characters": 3944,
+      "input_text_characters": [
+        5848,
+        5848
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo1-template0",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5466,
+      "input_text_characters": [
+        5800,
+        5800
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo1-template0",
+      "variant": "combined",
+      "common_prefix_characters": 5466,
+      "input_text_characters": [
+        5800,
+        5800
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo1-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 3943,
+      "input_text_characters": [
+        6190,
+        6190
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo1-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 3943,
+      "input_text_characters": [
+        6190,
+        6190
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo1-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5466,
+      "input_text_characters": [
+        6142,
+        6142
+      ]
+    },
+    {
+      "model": "4b",
+      "scenario": "en-photo1-template1",
+      "variant": "combined",
+      "common_prefix_characters": 5808,
+      "input_text_characters": [
+        6142,
+        6142
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo1-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 3943,
+      "input_text_characters": [
+        6190,
+        6190
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo1-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 3943,
+      "input_text_characters": [
+        6190,
+        6190
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo1-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5466,
+      "input_text_characters": [
+        6142,
+        6142
+      ]
+    },
+    {
+      "model": "15-4b",
+      "scenario": "en-photo1-template1",
+      "variant": "combined",
+      "common_prefix_characters": 5808,
+      "input_text_characters": [
+        6142,
+        6142
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo1-template1",
+      "variant": "baseline",
+      "common_prefix_characters": 3943,
+      "input_text_characters": [
+        6190,
+        6190
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo1-template1",
+      "variant": "template_first",
+      "common_prefix_characters": 3943,
+      "input_text_characters": [
+        6190,
+        6190
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo1-template1",
+      "variant": "stable_schema",
+      "common_prefix_characters": 5466,
+      "input_text_characters": [
+        6142,
+        6142
+      ]
+    },
+    {
+      "model": "27b",
+      "scenario": "en-photo1-template1",
+      "variant": "combined",
+      "common_prefix_characters": 5808,
+      "input_text_characters": [
+        6142,
+        6142
+      ]
+    }
+  ]
+}

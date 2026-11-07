@@ -37,6 +37,9 @@ struct ReportDetailScreenView: DViewProtocol {
                     .dStyle(
                         .circle,
                     )
+                    .accessibilityIdentifier(
+                        "reportDetail.share",
+                    )
                 }
             },
         ) { toolbarInset, bottomInset in

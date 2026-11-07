@@ -1,0 +1,22 @@
+schemaVersion: 1
+module: RequestLimitExceeded
+source: ios/Doglyad/Application/Module/LimitExceeded
+cases:
+- id: RequestLimitExceeded.limit
+  title: Лимит и переход на тариф
+  profiles:
+  - exhausted
+  preconditions:
+  - Сервер сообщает нулевой остаток запросов
+  steps:
+  - action: Попробовать генерацию
+    expect: Показан лимит; задание не запускается сверх разрешённого количества.
+  - action: Вернуться и открыть повышение тарифа
+    expect: Возврат сохраняет черновик; повышение открывает Paywall без автоматической покупки.
+  covers:
+  - onTapBack
+  - onTapUpgrade
+  automation:
+    kind: maestro
+    flows:
+    - e2e-requestlimitexceeded-limit

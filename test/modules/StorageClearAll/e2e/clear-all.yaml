@@ -1,0 +1,65 @@
+appId: ${APP_ID}
+name: e2e-storageclearall-clear-all
+tags: [e2e, StorageClearAll, Storage, OnBoarding]
+---
+- runFlow: ../../../maestro/support/one-photo.yaml
+- assertVisible: {id: 'scan.photo\..*'}
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element: {text: '^Хранилище$'}
+    direction: DOWN
+- tapOn: ^Хранилище$
+- tapOn: ^Очистить все$
+- tapOn:
+    text: ^Очистить все$
+    below: {id: bottomSheet.close}
+- extendedWaitUntil:
+    visible: ^Добро пожаловать в Догляд!$
+    timeout: 30000
+- takeScreenshot: StorageClearAll-onboarding-after-clear
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionFault: ''
+- extendedWaitUntil:
+    visible: ^Добро пожаловать в Догляд!$
+    timeout: 60000
+- tapOn: ^Далее$
+- tapOn: ^Далее$
+- assertVisible: {id: onboarding.acceptLegal, selected: false}
+- tapOn: {id: onboarding.acceptLegal}
+- tapOn: ^Принять$
+- tapOn: ^Выбрать тип$
+- scrollUntilVisible:
+    element: {id: examinationType.thyroidGland}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: examinationType.thyroidGland}
+- tapOn: ^Давайте начнем!$
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- assertVisible: '(?s)^Список последних протоколов пуст\..*'
+- takeScreenshot: StorageClearAll-empty-history
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Шаблоны протоколов$
+- assertVisible: .*Тут пока нет шаблонов.*
+- assertNotVisible: ^Retry template$
+- takeScreenshot: StorageClearAll-empty-templates
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Рабочие настройки$
+- assertNotVisible: regression@example.invalid
+- takeScreenshot: StorageClearAll-reset-work-settings
+- runFlow: ../../../maestro/support/main.yaml
+- assertNotVisible: {id: 'scan.photo\..*'}
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element: {text: '^Управление подпиской$'}
+    direction: DOWN
+- tapOn: ^Управление подпиской$
+- assertVisible: ^Подписка Pro$
+- assertVisible: ^Активна$
+- takeScreenshot: StorageClearAll-subscription-preserved
+- runFlow: ../../../maestro/support/main.yaml

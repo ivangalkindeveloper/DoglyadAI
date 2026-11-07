@@ -1,0 +1,40 @@
+appId: ${APP_ID}
+name: e2e-paywall-select-base_monthly
+tags:
+- e2e
+- Paywall
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Управление\ подпиской$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Управление\ подпиской$
+- scrollUntilVisible:
+    element:
+      text: ^Сменить\ план$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Сменить\ план$
+- tapOn:
+    text: ^Подписка\ Base$
+- assertVisible: ^Доступ\ к\ стандартным\ медицинским\ нейронным\ моделям$
+- scrollUntilVisible:
+    element:
+      id: paywall.plan.base_monthly
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: paywall.plan.base_monthly
+- assertVisible:
+    id: paywall.plan.base_monthly
+    selected: true
+- assertVisible:
+    id: paywall.continue
+    enabled: true
+- assertVisible: ^3[\s\u00a0\u202f]*9[\s\u00a0\u202f]*9,00[\s\u00a0\u202f]*₽ / мес\.$
+- assertVisible: ^Base\ \-\ Месячный\ доступ$
+- takeScreenshot: Paywall-selected-base_monthly

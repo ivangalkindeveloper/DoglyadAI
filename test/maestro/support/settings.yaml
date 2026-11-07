@@ -1,0 +1,10 @@
+appId: ${APP_ID}
+name: support-settings
+tags:
+- support
+---
+- runFlow: ../support/main.yaml
+- tapOn:
+    id: scan.settings
+- assertVisible:
+    text: ^Настройки$

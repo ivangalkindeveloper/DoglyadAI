@@ -32,6 +32,11 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         self.messager = messager
         self.arguments = arguments
         self.speechController = speechController
+        #if DEBUG && DOGLYAD_REGRESSION
+            self.speechController = speechController ?? RegressionSpeechController.make(
+                container: container,
+            )
+        #endif
 
         _transcriptTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(

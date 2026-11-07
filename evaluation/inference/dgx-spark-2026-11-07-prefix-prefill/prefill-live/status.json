@@ -1,0 +1,9 @@
+{
+  "stage": "incomplete_restored",
+  "since": "2026-11-07T02:40:27.666882+03:00",
+  "until": "2026-11-07T03:13:29.362654+03:00",
+  "canonical_unchanged": true,
+  "original_images_commands_restored": true,
+  "controller_failed_during_restore": true,
+  "recovery": "Existing Docker restart policy; readiness awaited separately"
+}

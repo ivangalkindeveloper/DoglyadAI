@@ -1,0 +1,37 @@
+schemaVersion: 1
+module: StorageClearProtocols
+source: ios/Doglyad/Application/Module/Storage/StorageClearProtocols
+cases:
+- id: StorageClearProtocols.clear
+  title: Удалить только историю
+  profiles:
+  - pro
+  preconditions:
+  - Есть протоколы, шаблон и сохранённые настройки
+  steps:
+  - action: Подтвердить очистку истории
+    expect: История пуста; шаблон, черновик и настройки сохраняются.
+  - action: Перезапустить приложение
+    expect: История остаётся пустой; onboarding не повторяется.
+  covers:
+  - onTapConfirm
+  automation:
+    kind: mixed
+    flows:
+    - e2e-storageclearprotocols-storage-clear-history
+    nativeTests:
+    - HistoryTests/historyClearRemovesOwnedAndLegacyOrphanRecordsButKeepsTemplates()
+- id: StorageClearProtocols.cancel
+  title: Отменить очистку истории
+  profiles:
+  - pro
+  preconditions:
+  - Есть хотя бы один протокол
+  steps:
+  - action: Открыть подтверждение и закрыть его
+    expect: Протоколы остаются; повторное открытие истории показывает те же ID.
+  covers: []
+  automation:
+    kind: maestro
+    flows:
+    - e2e-storageclearprotocols-cancel

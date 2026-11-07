@@ -20,6 +20,9 @@ struct ScanSpeechStateButtonView: DViewProtocol {
             .dStyle(
                 .primaryChip,
             )
+            .accessibilityIdentifier(
+                "scan.speech",
+            )
             .paidBadge(
                 viewModel.subscriptionAvailability(
                     of: .formCompletionViaMicrophone,

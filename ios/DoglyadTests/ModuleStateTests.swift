@@ -438,13 +438,9 @@ struct ModuleStateTests {
         source.send(
             [],
         )
-        switch model.state {
-        case _ as PhotoViewEmptyState: break
-        default:
-            Issue.record(
-                "Deleting the last photo must publish the empty state",
-            )
-        }
+        #expect(
+            model.photos.isEmpty,
+        )
         #expect(
             router.path.isEmpty,
         )

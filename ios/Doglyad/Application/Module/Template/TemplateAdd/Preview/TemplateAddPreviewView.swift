@@ -11,6 +11,11 @@
         let state: any TemplateAddStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as TemplateAddFailedState: true
+            default: false
+            }
+
             let model = TemplateAddViewModel(
                 container: container,
                 router: router,
@@ -42,6 +47,9 @@
             )
             return TemplateAddScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

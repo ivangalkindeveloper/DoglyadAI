@@ -5,21 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "ShareFailedState",
-    ) {
-        SharePreviewView(
-            state: ShareFailedState(
-                error: URLError(
-                    .notConnectedToInternet,
-                ),
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "ShareReadyState",
+        "01 ShareReadyState",
     ) {
         SharePreviewView(
             state: ShareReadyState(),
@@ -29,10 +15,24 @@
     }
 
     #Preview(
-        "ShareSendingState",
+        "02 ShareSendingState",
     ) {
         SharePreviewView(
             state: ShareSendingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "03 ShareFailedState",
+    ) {
+        SharePreviewView(
+            state: ShareFailedState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

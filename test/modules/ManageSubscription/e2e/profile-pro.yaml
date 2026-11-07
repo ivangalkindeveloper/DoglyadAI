@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: e2e-managesubscription-profile-pro
+tags:
+- e2e
+- ManageSubscription
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Управление\ подпиской$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Управление\ подпиской$
+- assertVisible:
+    text: ^Моя\ подписка$
+- assertVisible:
+    text: .*Pro.*
+- takeScreenshot: ManageSubscription-pro

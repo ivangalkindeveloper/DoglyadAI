@@ -1,0 +1,5 @@
+{
+  "/opt/doglyad/inference/docker-compose.yml": "cb1afe610266bff56e0ea382b1c85ff2e97428030a055e9af739a4c51bb98222",
+  "/opt/doglyad/inference/profile.json": "b4562a8c5e5a19ecff0b91e99c0f4607ccb4e8c9a32415b2a355aca20b8749bf",
+  "/opt/doglyad/inference/config/server.json": "a369b6cfc22a1349d23eab7a1581b6940657a087c5ef2934423758ee8067feaa"
+}

@@ -1,0 +1,48 @@
+appId: ${APP_ID}
+name: e2e-scancamera-capture-delete
+tags: [e2e, ScanCamera, PhotoView]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.clear}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.clear}
+- scrollUntilVisible:
+    element: {id: scan.importMedia, below: {id: scan.type}}
+    direction: UP
+    centerElement: true
+- tapOn: {id: scan.importMedia}
+- tapOn: ^Камера$
+- extendedWaitUntil:
+    visible: {id: scanCamera.capture, enabled: true}
+    timeout: 20000
+- takeScreenshot: ScanCamera-ready
+# UIKit reports a doubled accessibility height for this SwiftUI sheet button.
+# Its visible circle occupies the upper half of that element.
+- tapOn: {id: scanCamera.capture, point: '50%,25%'}
+- assertVisible: {id: scanCamera.photoCount.1}
+- tapOn: {id: scanCamera.capture, point: '50%,25%'}
+- assertVisible: {id: scanCamera.photoCount.2}
+- tapOn: {id: scanCamera.capture, point: '50%,25%'}
+- assertVisible: {id: scanCamera.photoCount.3}
+- takeScreenshot: ScanCamera-three-photos
+- tapOn: {id: 'scanCamera.photo\..*', index: 1}
+- assertVisible: ^2 из 3$
+- takeScreenshot: PhotoView-middle-photo
+- swipe: {direction: LEFT}
+- assertVisible: ^3 из 3$
+- swipe: {direction: RIGHT}
+- assertVisible: ^2 из 3$
+- swipe: {direction: RIGHT}
+- assertVisible: ^1 из 3$
+- swipe: {direction: LEFT}
+- assertVisible: ^2 из 3$
+- tapOn: {id: photoView.delete}
+- assertVisible: ^2 из 2$
+- tapOn: {id: photoView.delete}
+- assertVisible: ^1 из 1$
+- tapOn: {id: photoView.delete}
+- assertVisible: {id: scan.settings}
+- assertNotVisible: {id: 'scan.photo\..*'}
+- takeScreenshot: Scan-after-last-photo-delete

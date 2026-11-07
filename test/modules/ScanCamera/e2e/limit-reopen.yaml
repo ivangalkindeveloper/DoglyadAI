@@ -1,0 +1,46 @@
+appId: ${APP_ID}
+name: e2e-scancamera-limit-reopen
+tags: [e2e, ScanCamera, ImportMedia]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.clear}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.clear}
+- scrollUntilVisible:
+    element: {id: scan.importMedia, below: {id: scan.type}}
+    direction: UP
+    centerElement: true
+- tapOn: {id: scan.importMedia}
+- tapOn: ^Камера$
+- extendedWaitUntil:
+    visible: {id: scanCamera.capture, enabled: true}
+    timeout: 20000
+- repeat:
+    times: 5
+    commands:
+    - tapOn: {id: scanCamera.capture, point: '50%,25%'}
+    - waitForAnimationToEnd
+- assertVisible: {id: scanCamera.photoCount.5}
+- tapOn: {id: scanCamera.capture, point: '50%,25%'}
+- assertVisible: {id: scan.settings}
+- assertVisible: {id: 'scan.photo\..*', index: 5}
+- assertNotVisible: {id: 'scan.photo\..*', index: 6}
+- takeScreenshot: ScanCamera-six-photo-limit
+- tapOn: {id: 'scan.photo\..*', index: 5}
+- assertVisible: ^6 из 6$
+- tapOn: {id: photoView.delete}
+- assertVisible: ^5 из 5$
+- tapOn: {id: navigation.back}
+- tapOn: {id: scan.importMedia}
+- tapOn: ^Камера$
+- extendedWaitUntil:
+    visible: {id: scanCamera.capture, enabled: true}
+    timeout: 20000
+- assertVisible: {id: scanCamera.photoCount.5}
+- takeScreenshot: ScanCamera-reopened
+- tapOn: {id: scanCamera.capture, point: '50%,25%'}
+- assertVisible: {id: scan.settings}
+- assertVisible: {id: 'scan.photo\..*', index: 5}
+- assertNotVisible: {id: 'scan.photo\..*', index: 6}

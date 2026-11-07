@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+name: e2e-templateadd-template-create
+tags:
+- e2e
+- TemplateAdd
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- assertVisible: .*Тут пока нет шаблонов.*
+- tapOn:
+    text: ^Добавить\ шаблон$
+- tapOn:
+    text: ^Название\ шаблона$
+- inputText: Regression template
+- tapOn:
+    text: ^Структура\ протокола,\ заголовки,\ обязательные\ разделы…$
+- inputText: Description and conclusion
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- assertVisible: Regression template
+- takeScreenshot: 030-TemplateList-created
+- assertNotVisible: {text: '^Regression template$', index: 1}
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Шаблоны протоколов$
+- assertNotVisible: {text: '^Regression template$', index: 1}
+- tapOn: ^Regression template$
+- assertVisible: ^Description and conclusion$
+- assertVisible: ^Щитовидная железа$

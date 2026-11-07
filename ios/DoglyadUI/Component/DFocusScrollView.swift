@@ -69,6 +69,21 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DViewProtocol {
                 }
                 .onReceive(
                     NotificationCenter.default.publisher(
+                        for: UIResponder.keyboardDidShowNotification,
+                    ),
+                ) { _ in
+                    guard let focus else {
+                        return
+                    }
+                    DFocusScrollController.scroll(
+                        to: focus,
+                        proxy: proxy,
+                        anchor: anchor,
+                        animation: theme.animation,
+                    )
+                }
+                .onReceive(
+                    NotificationCenter.default.publisher(
                         for: UIResponder.keyboardWillChangeFrameNotification,
                     ),
                 ) { notification in

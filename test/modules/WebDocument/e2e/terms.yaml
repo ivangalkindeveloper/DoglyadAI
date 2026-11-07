@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: e2e-webdocument-terms
+tags:
+- e2e
+- WebDocument
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Условия\ и\ Положения$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Условия\ и\ Положения$
+- extendedWaitUntil:
+    visible:
+      text: .*Сведения о Разработчике.*
+    timeout: 30000
+- takeScreenshot: WebDocument-terms
+- scrollUntilVisible:
+    element: {text: '^19\. Контактная информация$'}
+    direction: DOWN
+    timeout: 180000
+    speed: 100
+- takeScreenshot: WebDocument-terms-end
+- tapOn: {id: bottomSheet.close}
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Условия\ и\ Положения$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Условия\ и\ Положения$
+- assertVisible:
+    text: .*Сведения о Разработчике.*

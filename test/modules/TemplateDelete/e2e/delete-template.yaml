@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+name: e2e-templatedelete-delete-template
+tags:
+- e2e
+- TemplateDelete
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- tapOn: Regression template edited
+- tapOn:
+    id: template.delete
+- assertVisible:
+    text: ^Удаление\ шаблона$
+- takeScreenshot: 080-TemplateDelete-confirm
+- tapOn:
+    text: ^Удалить$
+- assertNotVisible: Regression template edited
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Шаблоны\ протоколов$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- assertNotVisible: Regression template edited
+- takeScreenshot: TemplateDelete-after-relaunch
+- assertVisible:
+    text: ^УЗИ\ Щитовидной\ железы$

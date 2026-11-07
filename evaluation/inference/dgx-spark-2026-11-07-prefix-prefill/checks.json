@@ -1,0 +1,80 @@
+{
+  "date": "2026-11-07",
+  "application_code_changed": false,
+  "deployment_changed": false,
+  "new_gpu_measurements": true,
+  "live_measurement_state": "finished_candidate_startup_failed_original_restored",
+  "prefix_static_cases": 192,
+  "archived_prefill_requests_recomputed": 132,
+  "backend_tests": {
+    "command": "../../.venv311/bin/python -m pytest tests/test_report_remarks.py tests/test_report_content.py tests/test_ultrasound_report.py -q",
+    "cwd": "backend/main",
+    "exit_code": 0,
+    "passed": 92
+  },
+  "ruff": {
+    "command": ".venv311/bin/python -m ruff check evaluation/inference/dgx-spark-2026-11-07-prefix-prefill",
+    "exit_code": 0
+  },
+  "architecture": {
+    "command": "make check-architecture",
+    "exit_code": 2,
+    "finding_count": 13,
+    "rule": "swift.view-fragment",
+    "scope": "Swift files not modified by this task",
+    "files": {
+      "ios/Doglyad/Application/Application/View/ExpandableContentView.swift": [
+        123,
+        147,
+        163
+      ],
+      "ios/Doglyad/Application/Application/View/PhotoCardView.swift": [
+        61
+      ],
+      "ios/Doglyad/Application/Application/View/SectionHeaderView.swift": [
+        71
+      ],
+      "ios/DoglyadUI/Component/Base/DScreen.swift": [
+        313,
+        339,
+        368
+      ],
+      "ios/DoglyadUI/Component/Button/DButton.swift": [
+        59
+      ],
+      "ios/DoglyadUI/Component/Toolbar/DToolbarButton.swift": [
+        45,
+        59,
+        78,
+        117
+      ]
+    }
+  },
+  "network": {
+    "mac_address": "192.168.0.25",
+    "dgx_address_confirmed_by_user": "192.168.0.30",
+    "ssh_active_on_dgx_confirmed_by_user": true,
+    "previous_ssh_from_agent": "timeout before authentication",
+    "ssh_from_agent": "connected to spark-bfd6; host key matches former 192.168.0.29",
+    "ping_from_agent": "3 packets transmitted, 3 received",
+    "host_key_checking": "StrictHostKeyChecking=yes, HostKeyAlias=192.168.0.29"
+  },
+  "temporary_engine_restarts": true,
+  "permanent_deployment_changed": false,
+  "live_prefill_measured_budgets": [
+    2048
+  ],
+  "live_prefill_requests_including_warmup": 99,
+  "live_prefill_4096_requests": 0,
+  "original_runtime_restored": true,
+  "prefix_fixed_requests": 144,
+  "prefix_full_requests": 48,
+  "prefix_full_invalid": 28,
+  "template_holdout_requests": 24,
+  "template_holdout_invalid": 12,
+  "restored_smoke_requests": 6,
+  "restored_smoke_invalid": 0,
+  "backend_restarted": false,
+  "full_ios_app_check_generation_tested": false,
+  "source_hashes_unchanged": true
+}

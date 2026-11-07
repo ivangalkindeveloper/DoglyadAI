@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: e2e-paywall-yookassa-declined-retry
+tags: [e2e, Paywall, yookassa]
+---
+- assertVisible: {id: paywall.plan.base_weekly, selected: true}
+- tapOn: {id: paywall.continue}
+- extendedWaitUntil:
+    visible: '^Банковская карта$'
+    timeout: 30000
+- assertVisible: ^Base - Недельный доступ$
+- assertVisible: ^149[,.]00₽$
+- takeScreenshot: Paywall-yookassa-retry-same-product
+- swipe:
+    start: 50%,42%
+    end: 50%,95%
+    duration: 400
+- extendedWaitUntil:
+    visible: {id: paywall.continue, enabled: true}
+    timeout: 30000
+- assertVisible: {id: paywall.plan.base_weekly, selected: true}
+- assertNotVisible: {id: scan.settings}
+- takeScreenshot: Paywall-yookassa-retry-canceled

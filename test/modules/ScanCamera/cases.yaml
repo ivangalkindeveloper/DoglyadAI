@@ -1,0 +1,50 @@
+schemaVersion: 1
+module: ScanCamera
+source: ios/Doglyad/Application/Module/Scan/ScanCamera
+cases:
+- id: ScanCamera.capture
+  title: Подготовка и захват снимка
+  profiles:
+  - pro
+  preconditions:
+  - Выделенный iOS Simulator; синтетическое изображение SimulatorCameraImageFactory
+  steps:
+  - action: Открыть камеру и дождаться готовности
+    expect: Предпросмотр камеры виден; захват доступен только после подготовки.
+  - action: Сделать снимок
+    expect: Изображение добавлено один раз; повторное нажатие во время захвата не создаёт дубль.
+  - action: Открыть снимок и удалить его
+    expect: PhotoView показывает снимок; удаление отражается в камере и Scan.
+  covers:
+  - onCameraAppear
+  - onTapCapture
+  - onCapture
+  - onTapPhoto
+  - onTapDeletePhoto
+  automation:
+    kind: mixed
+    flows:
+    - e2e-scancamera-capture-delete
+    nativeTests:
+    - ScanCameraRegressionTests/testCaptureRejectsDuplicatesLateCallbacksAndLimitOverflow()
+- id: ScanCamera.stop-limit
+  title: Лимит и остановка камеры
+  profiles:
+  - pro
+  preconditions:
+  - Выделенный iOS Simulator; лимит Development — 6 снимков; SimulatorCameraImageFactory
+  steps:
+  - action: Достичь максимума снимков
+    expect: Дополнительный захват недоступен; существующие фото сохранены.
+  - action: Закрыть камеру или свернуть приложение во время подготовки/захвата
+    expect: Камера останавливается; поздний callback не добавляет фото в закрытый модуль.
+  - action: Открыть снова
+    expect: Камера может снова подготовиться и работать.
+  covers:
+  - onDisappear
+  automation:
+    kind: mixed
+    flows:
+    - e2e-scancamera-limit-reopen
+    nativeTests:
+    - ScanCameraRegressionTests/testCaptureRejectsDuplicatesLateCallbacksAndLimitOverflow()

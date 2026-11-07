@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: e2e-selectneuralmodel-model-1
+tags:
+- e2e
+- SelectNeuralModel
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- scrollUntilVisible:
+    element:
+      text: ^Нейронная\ модель$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Нейронная\ модель$
+- tapOn:
+    text: ^Google\ MedGemma\ 4B$
+- tapOn:
+    id: navigation.back
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- assertVisible:
+    text: ^Google\ MedGemma\ 4B$
+- takeScreenshot: SelectNeuralModel-choice-1

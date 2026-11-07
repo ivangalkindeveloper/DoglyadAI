@@ -1,0 +1,17 @@
+appId: ${APP_ID}
+name: e2e-about-about
+tags:
+- e2e
+- About
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^О\ приложении$
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    text: ^О\ приложении$
+- assertVisible:
+    text: Догляд — ИИ-ассистент для генерации протоколов УЗИ.*
+- takeScreenshot: 070-About

@@ -38,6 +38,22 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
+      <Testables>
+         <TestableReference skipped = "NO">
+            <BuildableReference BuildableIdentifier = "primary"
+               BlueprintIdentifier = "77AC58C02E929E800028250A"
+               BuildableName = "DoglyadTests.xctest" BlueprintName = "DoglyadTests"
+               ReferencedContainer = "container:Doglyad.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference skipped = "NO">
+            <BuildableReference BuildableIdentifier = "primary"
+               BlueprintIdentifier = "77AC58CA2E929E800028250A"
+               BuildableName = "DoglyadUITests.xctest" BlueprintName = "DoglyadUITests"
+               ReferencedContainer = "container:Doglyad.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug-Local"

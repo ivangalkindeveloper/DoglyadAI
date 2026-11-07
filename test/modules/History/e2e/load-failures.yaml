@@ -1,0 +1,48 @@
+appId: ${APP_ID}
+name: e2e-history-load-failures
+tags: [e2e, History]
+---
+- runFlow:
+    file: ../../../maestro/support/settings-with-fault.yaml
+    env:
+      REPOSITORY_FAULT: ultrasoundReportRepository.getReports
+- tapOn: ^История исследований$
+- assertVisible: {id: history.loadedCount.0}
+- assertVisible: Произошла неизвестная ошибка.*
+- takeScreenshot: History-first-page-failed
+- tapOn: ^Обновить$
+- assertVisible: ^History 041$
+- assertVisible: {id: history.loadedCount.20}
+- assertNotVisible: Произошла неизвестная ошибка.*
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionSeed: ''
+      regressionFault: ultrasoundReportRepository.getReports
+      regressionFaultAfter: '1'
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- tapOn: {id: scan.settings}
+- tapOn: ^История исследований$
+- assertVisible: ^History 041$
+- scrollUntilVisible:
+    element: {text: '^Обновить$'}
+    direction: DOWN
+    timeout: 30000
+- assertVisible: {id: history.loadedCount.20}
+- assertVisible: ^History 022$
+- assertVisible: Произошла неизвестная ошибка.*
+- takeScreenshot: History-next-page-failed
+- tapOn: ^Обновить$
+- scrollUntilVisible:
+    element: {text: '^History 021$'}
+    direction: DOWN
+- assertVisible: {id: history.loadedCount.40}
+- assertNotVisible: {text: '^History 021$', index: 1}
+- takeScreenshot: History-next-page-retried
+- scrollUntilVisible:
+    element: {text: '^History 041$'}
+    direction: UP
+    timeout: 30000
+- assertVisible: ^History 041$

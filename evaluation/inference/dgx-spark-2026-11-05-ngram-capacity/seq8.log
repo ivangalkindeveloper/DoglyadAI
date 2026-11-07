@@ -1,0 +1,42 @@
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopped 
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Healthy 
+{"healthy": "vllm_medgemma_27b"}
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Healthy 
+{"healthy": "vllm_medgemma_4b"}
+ Container doglyad-dgx-vllm_medgemma_4b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Healthy 
+{"healthy": "vllm_medgemma_15_4b"}
+{"profile": "seq8", "wave": "warmup", "seconds": 61.39280159201007, "valid": true, "over120": 0}
+{"profile": "seq8", "wave": "light1", "seconds": 50.60142042799271, "valid": true, "over120": 0}
+{"profile": "seq8", "wave": "report4-1", "seconds": 58.15975091898872, "valid": true, "over120": 0}
+{"profile": "seq8", "wave": "report4-2", "seconds": 58.18153125800018, "valid": true, "over120": 0}
+{"profile": "seq8", "wave": "report8-1", "seconds": 68.82892364700092, "valid": true, "over120": 0}
+{"profile": "seq8", "wave": "report8-2", "seconds": 65.8025975710043, "valid": true, "over120": 0}
+{"profile": "seq8", "wave": "mixed8", "seconds": 73.07172239900683, "valid": true, "over120": 0}
+{"profile": "seq8", "wave": "pressure4", "seconds": 101.64644982600294, "valid": true, "over120": 0}
+{"profile": "seq8", "wave": "pressure8", "seconds": 197.78486245499516, "valid": true, "over120": 5}

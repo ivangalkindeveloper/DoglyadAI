@@ -2,98 +2,7 @@
     import SwiftUI
 
     #Preview(
-        "Pro · App Store",
-    ) {
-        ManageSubscriptionPreviewView(
-            scenario: .applePro,
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(
-                code: "ru",
-            ),
-        )
-    }
-
-    #Preview(
-        "Base · App Store",
-    ) {
-        ManageSubscriptionPreviewView(
-            scenario: .appleBase,
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(
-                code: "ru",
-            ),
-        )
-    }
-
-    #Preview(
-        "App Store · автопродление отключено",
-    ) {
-        ManageSubscriptionPreviewView(
-            scenario: .appleRenewalOff,
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(
-                code: "ru",
-            ),
-        )
-    }
-
-    #Preview(
-        "Base · ЮКасса",
-    ) {
-        ManageSubscriptionPreviewView(
-            scenario: .yooKassaBase,
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(
-                code: "ru",
-            ),
-        )
-    }
-
-    #Preview(
-        "Pro · ЮКасса",
-    ) {
-        ManageSubscriptionPreviewView(
-            scenario: .yooKassaPro,
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(
-                code: "ru",
-            ),
-        )
-    }
-
-    #Preview(
-        "Автопродление отключено",
-    ) {
-        ManageSubscriptionPreviewView(
-            scenario: .renewalOff,
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(
-                code: "ru",
-            ),
-        )
-    }
-
-    #Preview(
-        "Без подписки",
-    ) {
-        ManageSubscriptionPreviewView(
-            scenario: .inactive,
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(
-                code: "ru",
-            ),
-        )
-    }
-
-    #Preview(
-        "Загрузка",
+        "01 Загрузка",
     ) {
         ManageSubscriptionPreviewView(
             scenario: .loading,
@@ -106,20 +15,7 @@
     }
 
     #Preview(
-        "Обновление подписки",
-    ) {
-        ManageSubscriptionPreviewView(
-            scenario: .updating,
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(
-                code: "ru",
-            ),
-        )
-    }
-
-    #Preview(
-        "Ошибка загрузки",
+        "02 Ошибка загрузки",
     ) {
         ManageSubscriptionPreviewView(
             scenario: .failed,
@@ -132,10 +28,10 @@
     }
 
     #Preview(
-        "Ошибка операции",
+        "03 Без подписки",
     ) {
         ManageSubscriptionPreviewView(
-            scenario: .operationFailed,
+            scenario: .inactive,
         )
         .previewable(
             container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -145,14 +41,105 @@
     }
 
     #Preview(
-        "Pro · English",
+        "04 Base · App Store",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .appleBase,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
+            ),
+        )
+    }
+
+    #Preview(
+        "05 Base · ЮКасса",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .yooKassaBase,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
+            ),
+        )
+    }
+
+    #Preview(
+        "06 Pro · App Store",
     ) {
         ManageSubscriptionPreviewView(
             scenario: .applePro,
         )
         .previewable(
             container: ManageSubscriptionPreviewFactory.makeContainer(
-                code: "en",
+                code: "ru",
+            ),
+        )
+    }
+
+    #Preview(
+        "07 Pro · ЮКасса",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .yooKassaPro,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
+            ),
+        )
+    }
+
+    #Preview(
+        "08 Обновление подписки",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .updating,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
+            ),
+        )
+    }
+
+    #Preview(
+        "09 App Store · автопродление отключено",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .appleRenewalOff,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
+            ),
+        )
+    }
+
+    #Preview(
+        "10 Автопродление отключено",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .renewalOff,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
+            ),
+        )
+    }
+
+    #Preview(
+        "11 Ошибка операции",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .operationFailed,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
             ),
         )
     }

@@ -116,21 +116,49 @@ public actor DExaminationReportsStore {
     }
 
     public func clearAllExaminationReports() throws {
-        let descriptor = FetchDescriptor<USExaminationReportDB>(
-            sortBy: [SortDescriptor(
-                \.date,
-                order: .forward,
-            )],
-        )
-        let reports = try modelContext.fetch(
-            descriptor,
-        )
-        for report in reports {
+        do {
+            try deleteAll(
+                USExaminationReportDB.self,
+            )
+            // Also remove records left by older schemas without cascade ownership.
+            try deleteAll(
+                USExaminationDataDB.self,
+            )
+            try deleteAll(
+                SettingsAIDB.self,
+            )
+            try deleteAll(
+                USExaminationScanPhotoDB.self,
+            )
+            try deleteAll(
+                USExaminationModelReportDB.self,
+            )
+            try deleteAll(
+                USExaminationPhotoRemarksDB.self,
+            )
+            try deleteAll(
+                USExaminationPhotoRemarkPointDB.self,
+            )
+            try deleteAll(
+                USReportGenerationDB.self,
+            )
+            try saveChanges()
+        } catch {
+            modelContext.rollback()
+            throw error
+        }
+    }
+
+    private func deleteAll<T: PersistentModel>(
+        _: T.Type,
+    ) throws {
+        for value in try modelContext.fetch(
+            FetchDescriptor<T>(),
+        ) {
             modelContext.delete(
-                report,
+                value,
             )
         }
-        try saveChanges()
     }
 
     private func saveChanges() throws {

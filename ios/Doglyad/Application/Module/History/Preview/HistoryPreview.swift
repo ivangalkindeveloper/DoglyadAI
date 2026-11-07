@@ -1,9 +1,89 @@
 #if DEBUG
+    import DoglyadCamera
     import DoglyadUI
     import Router
     import SwiftUI
 
-    #Preview {
+    #Preview(
+        "01 Загрузка истории",
+    ) {
+        HistoryPreviewView(
+            scenario: .loading,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "02 Ошибка загрузки истории",
+    ) {
+        HistoryPreviewView(
+            scenario: .failed,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "03 Пустая история",
+    ) {
+        HistoryPreviewView(
+            scenario: .empty,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 Одно исследование",
+    ) {
+        HistoryPreviewView(
+            scenario: .singleReport,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "05 История · группы дат и разные протоколы",
+    ) {
+        HistoryPreviewView(
+            scenario: .groupedReports,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "06 Загрузка следующей страницы",
+    ) {
+        HistoryPreviewView(
+            scenario: .loadingNextPage,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "07 Ошибка следующей страницы",
+    ) {
+        HistoryPreviewView(
+            scenario: .nextPageFailed,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "08 Карточка исследования",
+    ) {
         HistoryCardView(
             report: USExaminationReport(
                 date: Date(),
@@ -17,18 +97,18 @@
                     usExaminationTypeId: "thyroidGland",
                     photos: [
                         USExaminationScanPhoto(
-                            image: UIImage(
-                                resource: .alertInfo,
+                            image: SimulatorCameraImageFactory.makeImage(
+                                captureNumber: 1,
                             ),
                         ),
                         USExaminationScanPhoto(
-                            image: UIImage(
-                                resource: .alertInfo,
+                            image: SimulatorCameraImageFactory.makeImage(
+                                captureNumber: 1,
                             ),
                         ),
                         USExaminationScanPhoto(
-                            image: UIImage(
-                                resource: .alertInfo,
+                            image: SimulatorCameraImageFactory.makeImage(
+                                captureNumber: 1,
                             ),
                         ),
                     ],
@@ -104,82 +184,5 @@
         )
         .padding()
         .dThemeWrapper()
-    }
-
-    #Preview(
-        "Загрузка истории",
-    ) {
-        HistoryPreviewView(
-            scenario: .loading,
-        )
-        .previewable(
-            container: HistoryPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "Пустая история",
-    ) {
-        HistoryPreviewView(
-            scenario: .empty,
-        )
-        .previewable(
-            container: HistoryPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "Ошибка загрузки истории",
-    ) {
-        HistoryPreviewView(
-            scenario: .failed,
-        )
-        .previewable(
-            container: HistoryPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "Одно исследование",
-    ) {
-        HistoryPreviewView(
-            scenario: .singleReport,
-        )
-        .previewable(
-            container: HistoryPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "История · группы дат и разные протоколы",
-    ) {
-        HistoryPreviewView(
-            scenario: .groupedReports,
-        )
-        .previewable(
-            container: HistoryPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "Загрузка следующей страницы",
-    ) {
-        HistoryPreviewView(
-            scenario: .loadingNextPage,
-        )
-        .previewable(
-            container: HistoryPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "Ошибка следующей страницы",
-    ) {
-        HistoryPreviewView(
-            scenario: .nextPageFailed,
-        )
-        .previewable(
-            container: HistoryPreviewFactory.makeContainer(),
-        )
     }
 #endif

@@ -39,6 +39,22 @@ def _engine(profile: HostProfile, model: dict[str, Any]) -> dict[str, Any]:
         command.extend(
             ["--limit-mm-per-prompt", json.dumps({"image": model["maxImages"]})]
         )
+    if "speculativeConfig" in model:
+        config = model["speculativeConfig"]
+        command.extend(
+            [
+                "--speculative-config",
+                json.dumps(
+                    {
+                        "method": config["method"],
+                        "num_speculative_tokens": config["numSpeculativeTokens"],
+                        "prompt_lookup_min": config["promptLookupMin"],
+                        "prompt_lookup_max": config["promptLookupMax"],
+                    },
+                    separators=(",", ":"),
+                ),
+            ]
+        )
     if model["isEager"]:
         command.append("--enforce-eager")
     command.append(

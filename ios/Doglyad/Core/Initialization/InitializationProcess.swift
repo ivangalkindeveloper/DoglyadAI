@@ -41,7 +41,12 @@ final class InitializationProcess: DependencyInitializationProcess {
     var version: String?
 
     var toContainer: DependencyContainer {
-        DependencyContainer(
+        #if DEBUG && DOGLYAD_REGRESSION
+            RegressionRepositoryAdapters.install(
+                on: self,
+            )
+        #endif
+        return DependencyContainer(
             analytics: analytics!,
             environment: environment!,
             connectionManager: connectionManager!,

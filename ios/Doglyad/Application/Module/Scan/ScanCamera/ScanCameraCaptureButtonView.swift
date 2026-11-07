@@ -18,6 +18,9 @@ struct ScanCameraCaptureButtonView: DViewProtocol {
             .dStyle(
                 .primaryCircle,
             )
+            .accessibilityIdentifier(
+                "scanCamera.capture",
+            )
         default: EmptyView()
         }
     }

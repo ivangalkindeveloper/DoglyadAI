@@ -10,6 +10,11 @@
         let state: any SelectTemplateStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as SelectTemplateFailedState: true
+            default: false
+            }
+
             let model = SelectTemplateViewModel(
                 container: container,
                 router: router,
@@ -42,6 +47,9 @@
                     viewModel: model,
                 )
             }
+            .previewError(
+                isPresented: isErrorPresented,
+            )
             .id(
                 ObjectIdentifier(
                     state,

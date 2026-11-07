@@ -18,6 +18,8 @@ struct SubscriptionRecoveryStateView: DViewProtocol {
                     key.key,
                 ).dStyle(
                     font: typography.textSmall,
+                ).accessibilityIdentifier(
+                    "subscriptionRecovery.generatedKey",
                 ).textSelection(
                     .enabled,
                 ).privacySensitive()

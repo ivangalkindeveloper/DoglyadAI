@@ -1,0 +1,138 @@
+{
+  "baseline": {
+    "requests_including_warmup": 60,
+    "measured_requests": 48,
+    "all_natural_stop": true,
+    "all_schema_valid": true,
+    "all_vision_correct": true,
+    "maximum_sentence_copies": 1,
+    "main_failures": [
+      {
+        "profile": "baseline",
+        "wave": "mixed-1",
+        "model": "15-4b",
+        "case": "conflict-greedy-0",
+        "client": 1,
+        "seconds": 46.83159425899794,
+        "over_120_seconds": false,
+        "natural_stop": true,
+        "schema_valid": true,
+        "main_valid": false,
+        "same_prompt_ids": true,
+        "same_output": true,
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "profile": "baseline",
+        "wave": "mixed-2",
+        "model": "4b",
+        "case": "conflict-sample-42",
+        "client": 2,
+        "seconds": 43.09312098499504,
+        "over_120_seconds": false,
+        "natural_stop": true,
+        "schema_valid": true,
+        "main_valid": false,
+        "same_prompt_ids": true,
+        "same_output": true,
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      }
+    ],
+    "over_120_seconds": [
+      {
+        "profile": "baseline",
+        "wave": "mixed-1",
+        "model": "27b",
+        "case": "report-sample-42",
+        "client": 0,
+        "seconds": 127.10493794300419,
+        "over_120_seconds": true,
+        "natural_stop": true,
+        "schema_valid": true,
+        "main_valid": true,
+        "same_prompt_ids": true,
+        "same_output": true,
+        "maximum_sentence_copies": 1
+      }
+    ],
+    "minimum_available_gib": 24.124927520751953,
+    "maximum_temperature_c": 64,
+    "oom_kill_delta": 0,
+    "exact_request_accounting": true,
+    "preemptions": 0.0,
+    "draft_tokens": 0,
+    "accepted_tokens": 0
+  },
+  "ngram8": {
+    "requests_including_warmup": 60,
+    "measured_requests": 48,
+    "all_natural_stop": true,
+    "all_schema_valid": true,
+    "all_vision_correct": true,
+    "maximum_sentence_copies": 1,
+    "main_failures": [
+      {
+        "profile": "ngram8",
+        "wave": "mixed-1",
+        "model": "15-4b",
+        "case": "conflict-greedy-0",
+        "client": 1,
+        "seconds": 22.540965952997794,
+        "over_120_seconds": false,
+        "natural_stop": true,
+        "schema_valid": true,
+        "main_valid": false,
+        "same_prompt_ids": true,
+        "same_output": true,
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "profile": "ngram8",
+        "wave": "mixed-2",
+        "model": "15-4b",
+        "case": "conflict-sample-42",
+        "client": 2,
+        "seconds": 20.181617523994646,
+        "over_120_seconds": false,
+        "natural_stop": true,
+        "schema_valid": true,
+        "main_valid": false,
+        "same_prompt_ids": true,
+        "same_output": false,
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      }
+    ],
+    "over_120_seconds": [],
+    "minimum_available_gib": 18.83298110961914,
+    "maximum_temperature_c": 69,
+    "oom_kill_delta": 0,
+    "exact_request_accounting": true,
+    "preemptions": 0.0,
+    "draft_tokens": 14365.0,
+    "accepted_tokens": 6508.0
+  },
+  "new_validation_failures": [
+    {
+      "profile": "ngram8",
+      "wave": "mixed-2",
+      "model": "15-4b",
+      "case": "conflict-sample-42",
+      "client": 2,
+      "seconds": 20.181617523994646,
+      "over_120_seconds": false,
+      "natural_stop": true,
+      "schema_valid": true,
+      "main_valid": false,
+      "same_prompt_ids": true,
+      "same_output": false,
+      "maximum_sentence_copies": 1,
+      "validation_error": "reportMeasurementsMismatch"
+    }
+  ],
+  "all_prompt_ids_identical": true,
+  "identical_outputs": 35
+}

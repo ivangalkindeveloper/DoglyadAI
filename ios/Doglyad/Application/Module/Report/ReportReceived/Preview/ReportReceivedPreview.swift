@@ -4,7 +4,7 @@
     import SwiftUI
 
     #Preview(
-        "Генерация · ожидание первого токена",
+        "01 Генерация · ожидание первого токена",
     ) {
         ReportReceivedPreviewView(
             scenario: .waitingForFirstToken,
@@ -13,7 +13,7 @@
     }
 
     #Preview(
-        "Генерация · первый токен",
+        "02 Генерация · первый токен",
     ) {
         ReportReceivedPreviewView(
             scenario: .firstToken,
@@ -22,7 +22,7 @@
     }
 
     #Preview(
-        "Генерация · описание",
+        "03 Генерация · описание",
     ) {
         ReportReceivedPreviewView(
             scenario: .streamingDescription,
@@ -31,7 +31,7 @@
     }
 
     #Preview(
-        "Генерация · заключение",
+        "04 Генерация · заключение",
     ) {
         ReportReceivedPreviewView(
             scenario: .streamingConclusion,
@@ -40,7 +40,7 @@
     }
 
     #Preview(
-        "Готовый протокол",
+        "05 Готовый протокол",
     ) {
         ReportReceivedPreviewView(
             scenario: .completed,
@@ -49,7 +49,7 @@
     }
 
     #Preview(
-        "Готовый протокол · рекомендации и замечания",
+        "06 Готовый протокол · рекомендации и замечания",
     ) {
         ReportReceivedPreviewView(
             scenario: .completedWithRemarks,
@@ -58,7 +58,7 @@
     }
 
     #Preview(
-        "Готовый протокол · из деталей",
+        "07 Готовый протокол · из деталей",
     ) {
         ReportReceivedPreviewView(
             scenario: .fromReportDetail,
@@ -67,7 +67,7 @@
     }
 
     #Preview(
-        "Готовый протокол · почта не задана",
+        "08 Готовый протокол · почта не задана",
     ) {
         ReportReceivedPreviewView(
             scenario: .withoutEmail,
@@ -76,7 +76,7 @@
     }
 
     #Preview(
-        "Готовый протокол · почта требует Pro",
+        "09 Готовый протокол · почта требует Pro",
     ) {
         ReportReceivedPreviewView(
             scenario: .emailOffered,
@@ -85,7 +85,7 @@
     }
 
     #Preview(
-        "Готовый протокол · отправка недоступна",
+        "10 Готовый протокол · отправка недоступна",
     ) {
         ReportReceivedPreviewView(
             scenario: .emailUnavailable,
@@ -94,7 +94,7 @@
     }
 
     #Preview(
-        "Отправка на почту",
+        "11 Отправка на почту",
     ) {
         ReportReceivedPreviewView(
             scenario: .sendingEmail,
@@ -103,7 +103,7 @@
     }
 
     #Preview(
-        "Ошибка отправки на почту",
+        "12 Ошибка отправки на почту",
     ) {
         ReportReceivedPreviewView(
             scenario: .deliveryFailed,
@@ -112,7 +112,7 @@
     }
 
     #Preview(
-        "Генерация прервана · без текста",
+        "13 Генерация прервана · без текста",
     ) {
         ReportReceivedPreviewView(
             scenario: .interruptedWithoutText,
@@ -121,7 +121,7 @@
     }
 
     #Preview(
-        "Генерация прервана · частичный текст",
+        "14 Генерация прервана · частичный текст",
     ) {
         ReportReceivedPreviewView(
             scenario: .interrupted,
@@ -130,7 +130,7 @@
     }
 
     #Preview(
-        "Ошибка генерации · без текста",
+        "15 Ошибка генерации · без текста",
     ) {
         ReportReceivedPreviewView(
             scenario: .failedWithoutText,
@@ -139,7 +139,7 @@
     }
 
     #Preview(
-        "Ошибка генерации · частичный текст",
+        "16 Ошибка генерации · частичный текст",
     ) {
         ReportReceivedPreviewView(
             scenario: .failed,
@@ -148,7 +148,7 @@
     }
 
     #Preview(
-        "Генерация отменена",
+        "17 Генерация отменена",
     ) {
         ReportReceivedPreviewView(
             scenario: .cancelled,

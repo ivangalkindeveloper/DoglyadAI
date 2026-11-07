@@ -1,0 +1,25 @@
+schemaVersion: 1
+module: PhotoLibraryPicker
+source: ios/Doglyad/Application/Module/Permission/Library
+cases:
+- id: PhotoLibraryPicker.selection
+  title: Выбор, отмена и лимит медиатеки
+  profiles:
+  - pro
+  preconditions:
+  - Медиатека с несколькими синтетическими изображениями и невалидным/недоступным объектом
+  steps:
+  - action: Выбрать несколько изображений и подтвердить
+    expect: В Scan добавлены выбранные доступные изображения в ожидаемом порядке и пределах лимита.
+  - action: Повторно открыть и отменить
+    expect: Коллекция не изменена.
+  - action: Выбрать недоступный объект
+    expect: Ошибка не уничтожает уже выбранные изображения.
+  covers:
+  - onComplete
+  automation:
+    kind: mixed
+    flows:
+    - e2e-photolibrarypicker-selection-limit
+    nativeTests:
+    - PhotoLibraryRegressionTests/testUnavailableImageDoesNotDropOtherSelectedImagesOrChangeTheirOrder()

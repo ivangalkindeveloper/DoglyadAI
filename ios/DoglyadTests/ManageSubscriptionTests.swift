@@ -321,6 +321,109 @@
         }
 
         @Test
+        func catalogRetryLoadsTheSameActiveSubscription() async throws {
+            let container = ManageSubscriptionPreviewFactory.makeContainer()
+            let status = ManageSubscriptionPreviewFactory.makeStatus(
+                source: .yookassa,
+            )
+            var requests = 0
+            let model = ManageSubscriptionPreviewFactory.makeViewModel(
+                container: container,
+                router: DRouter(
+                    initialRoute: RouteScreen(
+                        type: .settings,
+                    ),
+                ),
+                status: status,
+                fetchProducts: {
+                    requests += 1
+                    if requests == 1 {
+                        throw URLError(
+                            .notConnectedToInternet,
+                        )
+                    }
+                    return try await SubscriptionPreviewRepository(
+                        locale: container.l10n.locale,
+                    ).fetchProducts()
+                },
+            )
+            model.onAppear()
+            await model.lastTask?.value
+            #expect(
+                model.state is ManageSubscriptionFailedState,
+            )
+            model.onTapRetry()
+            await model.lastTask?.value
+            let active = try #require(
+                model.state as? ManageSubscriptionActiveState,
+            )
+            #expect(
+                requests == 2 && active.status == status && active.tier.id == .pro,
+            )
+            model.onDisappear()
+        }
+
+        @Test(
+            arguments: [false, true],
+        )
+        func leavingDiscardsLateManagementSuccessAndFailure(
+            isFailure: Bool,
+        ) async throws {
+            let container = ManageSubscriptionPreviewFactory.makeContainer()
+            let router = DRouter(
+                initialRoute: RouteScreen(
+                    type: .settings,
+                ),
+            )
+            router.push(
+                route: RouteScreen(
+                    type: .manageSubscription,
+                ),
+            )
+            var response: CheckedContinuation<Void, Never>?
+            var calls = 0
+            let model = ManageSubscriptionPreviewFactory.makeViewModel(
+                container: container,
+                router: router,
+                status: ManageSubscriptionPreviewFactory.makeStatus(
+                    source: .yookassa,
+                ),
+                manageOperation: {
+                    calls += 1
+                    await withCheckedContinuation {
+                        response = $0
+                    }
+                    if isFailure {
+                        throw URLError(
+                            .notConnectedToInternet,
+                        )
+                    }
+                },
+            )
+            model.onAppear()
+            await model.lastTask?.value
+            let active = try #require(
+                model.state as? ManageSubscriptionActiveState,
+            )
+            model.onTapManageSubscription()
+            while response == nil {
+                await Task.yield()
+            }
+            let task = model.operationTask
+            model.onTapBack()
+            model.onDisappear()
+            let closedState = model.state
+            response?.resume()
+            await task?.value
+            #expect(
+                calls == 1 && router.path.isEmpty && model.state === closedState,
+            )
+            #expect(
+                (model.state as? ManageSubscriptionActiveState)?.status == active.status,
+            )
+        }
+
+        @Test
         func leavingBeforeManagementStartsDoesNotSendTheOperation() async {
             var calls = 0
             let container = ManageSubscriptionPreviewFactory.makeContainer()

@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-reportreceived-40f2fc3312
+tags:
+- atlas
+- ReportReceived
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-reportreceived-40f2fc3312
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-reportreceived-40f2fc3312
+    timeout: 15000
+- takeScreenshot: 07-ReportReceived-40f2fc3312

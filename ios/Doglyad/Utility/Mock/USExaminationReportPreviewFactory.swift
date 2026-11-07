@@ -1,4 +1,5 @@
 #if DEBUG
+    import DoglyadCamera
     import Foundation
     import UIKit
 
@@ -29,8 +30,8 @@
                     usExaminationTypeId: "thyroidGland",
                     photos: isPhotosIncluded ? [
                         USExaminationScanPhoto(
-                            image: UIImage(
-                                resource: .alertInfo,
+                            image: SimulatorCameraImageFactory.makeImage(
+                                captureNumber: 1,
                             ),
                         ),
                     ] : [],

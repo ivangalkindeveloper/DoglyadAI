@@ -21,9 +21,19 @@ extension UIApplication {
         appleUpdateUrl: URL,
         id: String,
     ) {
-        let url = appleUpdateUrl.appendingPathComponent(
-            id,
-        )
+        // Configuration supplies the App Store prefix ending in /app/id.
+        guard let url = URL(
+            string: appleUpdateUrl.absoluteString + id,
+        ) else {
+            return
+        }
+        #if DEBUG && DOGLYAD_REGRESSION
+            if RegressionExternalActions.handle(
+                url,
+            ) {
+                return
+            }
+        #endif
         guard shared.canOpenURL(
             url,
         ) else {
@@ -60,6 +70,13 @@ extension UIApplication {
         ) else {
             return
         }
+        #if DEBUG && DOGLYAD_REGRESSION
+            if RegressionExternalActions.handle(
+                url,
+            ) {
+                return
+            }
+        #endif
         shared.open(
             url,
         )

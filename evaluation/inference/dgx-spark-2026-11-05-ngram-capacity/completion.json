@@ -1,0 +1,14 @@
+{
+  "finished_utc": "2026-11-05T21:02:19.832936+00:00",
+  "deployment_tests": 50,
+  "targeted_inference_tests": 32,
+  "ruff": "passed",
+  "git_diff_check": "passed",
+  "source_fingerprints": "unchanged",
+  "render_check": "passed",
+  "benchmark_requests": 369,
+  "adapter_requests": 24,
+  "adapter_main_valid": 24,
+  "profile": "seq8",
+  "authenticated_end_to_end_tested": false
+}

@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "SettingsAIDefaultState",
+        "01 SettingsAIDefaultState",
     ) {
         SettingsAIPreviewView(
             state: SettingsAIDefaultState(),
@@ -15,7 +15,17 @@
     }
 
     #Preview(
-        "SettingsAIFailedState",
+        "02 SettingsAILoadingState",
+    ) {
+        SettingsAIPreviewView(
+            state: SettingsAILoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "03 SettingsAIFailedState",
     ) {
         SettingsAIPreviewView(
             state: SettingsAIFailedState(
@@ -23,16 +33,6 @@
                     .notConnectedToInternet,
                 ),
             ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "SettingsAILoadingState",
-    ) {
-        SettingsAIPreviewView(
-            state: SettingsAILoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

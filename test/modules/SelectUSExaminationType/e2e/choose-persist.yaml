@@ -1,0 +1,28 @@
+appId: ${APP_ID}
+name: e2e-selectusexaminationtype-choose-persist
+tags:
+- e2e
+- SelectUSExaminationType
+---
+- runFlow: ../../../maestro/support/main.yaml
+- tapOn:
+    id: scan.type
+- scrollUntilVisible:
+    element:
+      id: examinationType.echocardiography
+    direction: UP
+    timeout: 20000
+- tapOn:
+    id: examinationType.echocardiography
+- assertVisible:
+    id: scan.type
+    text: ^Эхокардиография$
+- runFlow: ../../../maestro/support/main.yaml
+- assertVisible:
+    id: scan.type
+    text: ^Эхокардиография$
+- takeScreenshot: SelectUSExaminationType-restored
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- assertVisible:
+    id: scan.type
+    text: ^Щитовидная\ железа$

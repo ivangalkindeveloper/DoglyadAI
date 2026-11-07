@@ -11,6 +11,11 @@
         let state: any UserSettingsStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as UserSettingsFailedState: true
+            default: false
+            }
+
             let model = UserSettingsViewModel(
                 container: container,
                 messager: messager,
@@ -46,6 +51,9 @@
             )
             return UserSettingsScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

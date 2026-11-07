@@ -1,0 +1,34 @@
+appId: ${APP_ID}
+name: e2e-history-pending-generation
+tags: [e2e, History, ReportReceived]
+---
+- runFlow:
+    file: ../../../maestro/support/controlled-generation.yaml
+    env:
+      EXAMINATION_NUMBER: REG-PENDING
+- assertNotVisible: ^К протоколу$
+- assertNotVisible: ^Повторить$
+- tapOn: {id: bottomSheet.close}
+- tapOn: {id: scan.settings}
+- tapOn: ^История исследований$
+- assertVisible: '^Regression REG-PENDING$'
+- takeScreenshot: History-pending-generation
+- tapOn: '^Regression REG-PENDING$'
+- assertNotVisible: ^К протоколу$
+- assertNotVisible: ^Повторить$
+- takeScreenshot: ReportReceived-pending-reopened
+- pressKey: Home
+- launchApp:
+    stopApp: false
+- extendedWaitUntil:
+    visible: {text: '^К протоколу$'}
+    timeout: 180000
+- waitForAnimationToEnd
+- tapOn: ^К протоколу$
+- extendedWaitUntil:
+    notVisible: {id: bottomSheet.close}
+    timeout: 10000
+- assertVisible: ^Протокол$
+- assertVisible: ^Regression REG-PENDING$
+- assertVisible: ^REG-PENDING$
+- takeScreenshot: ReportDetail-pending-completed

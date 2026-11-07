@@ -1,0 +1,107 @@
+schemaVersion: 1
+module: ManageSubscription
+source: ios/Doglyad/Application/Module/Subscription/ManageSubscription
+cases:
+- id: ManageSubscription.tiers
+  title: Нет подписки, Base и Pro
+  profiles:
+  - none
+  - base
+  - pro
+  - expired
+  - revoked
+  preconditions:
+  - Отдельные тестовые профили none/Base/Pro/expired/revoked
+  steps:
+  - action: Открыть управление и обновить статус
+    expect: Активный план, источник, срок и преимущества совпадают с сервером; истёкшая/отозванная подписка
+      не даёт активный доступ.
+  - action: Сменить профиль на сервере и вернуться в приложение
+    expect: Статус обновлён; устаревшие преимущества не показываются.
+  covers:
+  - onInit
+  - onRefresh
+  - onSubscriptionChanged
+  automation:
+    kind: maestro
+    flows:
+    - e2e-managesubscription-subscription
+    - e2e-managesubscription-profile-base
+    - e2e-managesubscription-profile-pro
+    - e2e-paywall-none
+    - e2e-paywall-expired
+    - e2e-managesubscription-background-before-revocation
+    - e2e-managesubscription-revoked
+- id: ManageSubscription.navigation
+  title: Смена плана, ключ, поддержка и возврат
+  profiles:
+  - pro
+  preconditions:
+  - Активная подписка известного источника
+  - Внешний почтовый клиент заменён тестовым адаптером; точный mailto проверяется по отдельному отчёту,
+    после отмены локальные данные не меняются.
+  steps:
+  - action: Открыть смену плана и вернуться
+    expect: Paywall показывает планы; возврат ведёт в управление подпиской.
+  - action: Открыть восстановление, поддержку и возврат средств
+    expect: Открываются предусмотренные маршруты/контакты; подписка сама не меняется.
+  - action: Вернуться в Scan
+    expect: Черновик сохранён.
+  covers:
+  - onTapChangeType
+  - onTapRecovery
+  - onTapSupport
+  - onTapRefund
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-managesubscription-support-refund
+    - e2e-subscriptionrecovery-recovery
+    - e2e-paywall-select-base_weekly
+    - e2e-paywall-select-pro_weekly
+- id: ManageSubscription.provider-actions
+  title: Управление продлением и восстановление
+  profiles:
+  - pro
+  preconditions:
+  - Подтверждённая подписка тестового магазина YooKassa. Apple Sandbox исключён по запросу пользователя.
+  steps:
+  - action: Отменить автопродление YooKassa в управлении подпиской и перезапустить приложение
+    expect: Период оплачен до прежней даты; автопродление выключено.
+  - action: Восстановить подтверждённую покупку
+    expect: Активируется только подтверждённая провайдером подписка; неверный источник не подменяет покупку.
+  covers:
+  - onTapManageSubscription
+  - onTapRestore
+  automation:
+    kind: maestro
+    flows:
+    - e2e-managesubscription-cancel-renewal
+    - e2e-subscriptionrecovery-restore-key
+- id: ManageSubscription.failure-cancel
+  title: Ошибка загрузки и отмена задач
+  profiles:
+  - pro
+  preconditions:
+  - Маршрут проверяется в Maestro с подпиской YooKassa. Сетевой сбой, повтор и поздние ответы проверяются
+    на настоящей ViewModel в обязательных XCTest; эти проверки не подтверждают оплату.
+  steps:
+  - action: Открыть управление и повторить после восстановления
+    expect: Ошибка сменяется актуальным статусом.
+  - action: Закрыть экран во время запроса
+    expect: Поздний ответ не открывает закрытый экран и не запускает действие повторно.
+  covers:
+  - onTapRetry
+  - onDisappear
+  automation:
+    kind: mixed
+    flows:
+    - e2e-managesubscription-support-refund
+    - e2e-managesubscription-cancel-renewal
+    nativeTests:
+    - ManageSubscriptionTests/aCatalogFailureIsDistinctFromAnUnsubscribedOwner()
+    - ManageSubscriptionTests/catalogRetryLoadsTheSameActiveSubscription()
+    - ManageSubscriptionTests/failedManagementRetainsTheCurrentSubscriptionSnapshot()
+    - ManageSubscriptionTests/leavingBeforeManagementStartsDoesNotSendTheOperation()
+    - ManageSubscriptionTests/leavingDiscardsLateManagementSuccessAndFailure(isFailure:)

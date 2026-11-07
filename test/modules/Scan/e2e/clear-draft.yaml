@@ -1,0 +1,41 @@
+appId: ${APP_ID}
+name: e2e-scan-clear-draft
+tags:
+- e2e
+- Scan
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.clear
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- tapOn:
+    id: scan.clear
+- scrollUntilVisible:
+    element:
+      id: scan.patientName
+    direction: UP
+    timeout: 20000
+- assertVisible:
+    id: scan.patientName
+    text: ^Пациент\#1$
+- scrollUntilVisible:
+    element:
+      id: scan.patientComplaints
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: scan.patientComplaints
+    text: ^Пациент\ жалуется\ на\ боли\ в\ области\.\.\.$
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.examinationDescription
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: scan.examinationDescription
+    text: ^Объем\ и\ форма\ исследуемых\ объектов,\ состояние\ кривизны\ показывает\.\.\.$
+- takeScreenshot: Scan-cleared-draft

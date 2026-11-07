@@ -11,6 +11,11 @@
         let state: any ScanStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as ScanInitializationFailedState, _ as ScanFailedState: true
+            default: false
+            }
+
             let model = ScanViewModel(
                 container: container,
                 messager: messager,
@@ -58,6 +63,9 @@
             )
             return ScanScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

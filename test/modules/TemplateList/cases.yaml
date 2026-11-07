@@ -1,0 +1,47 @@
+schemaVersion: 1
+module: TemplateList
+source: ios/Doglyad/Application/Module/Template/TemplateList
+cases:
+- id: TemplateList.list
+  title: Пустой и заполненный список шаблонов
+  profiles:
+  - pro
+  preconditions:
+  - Сначала нет шаблонов; затем сохранить два шаблона с разными типами
+  steps:
+  - action: Открыть список без шаблонов
+    expect: Показано пустое состояние и действие добавления.
+  - action: Создать два шаблона и открыть список заново
+    expect: Обе записи отображаются с названиями и типами.
+  - action: Открыть запись и вернуться
+    expect: TemplateEdit соответствует выбранному ID; список не изменён.
+  covers:
+  - onInit
+  - onTapTemplate
+  - onTapAdd
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-templateadd-template-create
+    - e2e-templatelist-two-types
+    - e2e-templateedit-template-edit
+    - e2e-templatedelete-cancel
+    - e2e-templatedelete-delete-template
+- id: TemplateList.load-failure
+  title: Ошибка загрузки шаблонов
+  profiles:
+  - pro
+  preconditions:
+  - Сбой чтения TemplateRepository
+  steps:
+  - action: Открыть список при сбое
+    expect: Показана ошибка; пустой список не выдаётся за результат загрузки.
+  - action: Устранить сбой и повторить
+    expect: Появляются сохранённые шаблоны.
+  covers:
+  - onTapRetry
+  automation:
+    kind: maestro
+    flows:
+    - e2e-templatelist-load-failure

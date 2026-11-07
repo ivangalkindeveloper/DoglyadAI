@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: support-generate-report
+---
+- runFlow: fill-scan.yaml
+- tapOn:
+    text: ^Сгенерировать\ протокол$
+- extendedWaitUntil:
+    visible:
+      text: ^К\ протоколу$
+    timeout: 180000
+- tapOn:
+    text: ^К\ протоколу$
+- assertVisible:
+    text: ^Протокол$
+- assertNotVisible:
+    text: '^Протокол\ сформирован\ не\ полностью\.\
+
+      Повторите\ генерацию\ перед\ использованием\.$'
+- assertNotVisible:
+    text: '^Связь\ с\ сервером\ прервалась\.\
+
+      Протокол\ получен\ не\ полностью\.$'

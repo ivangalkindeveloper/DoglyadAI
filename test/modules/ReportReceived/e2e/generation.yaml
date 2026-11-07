@@ -1,0 +1,27 @@
+appId: ${APP_ID}
+name: e2e-reportreceived-generation
+tags:
+- e2e
+- ReportReceived
+---
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- tapOn:
+    text: ^Сгенерировать\ протокол$
+- extendedWaitUntil:
+    visible:
+      text: ^К\ протоколу$
+    timeout: 180000
+- takeScreenshot: 050-ReportReceived-ready
+- tapOn:
+    text: ^К\ протоколу$
+- assertVisible:
+    text: ^Протокол$
+- assertNotVisible:
+    text: '^Протокол\ сформирован\ не\ полностью\.\
+
+      Повторите\ генерацию\ перед\ использованием\.$'
+- assertNotVisible:
+    text: '^Связь\ с\ сервером\ прервалась\.\
+
+      Протокол\ получен\ не\ полностью\.$'
+- takeScreenshot: 051-ReportDetail-generated

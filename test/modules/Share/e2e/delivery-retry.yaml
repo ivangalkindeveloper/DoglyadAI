@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+name: e2e-share-delivery-retry
+tags: [e2e, Share, ReportDetail]
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- tapOn: ^Photo regression$
+- assertVisible: ^Протокол$
+- tapOn: {id: reportDetail.share}
+- assertVisible: {id: share.workEmail}
+- tapOn: {id: share.copy}
+- assertVisible: {id: message.success}
+- takeScreenshot: Share-report-copied
+- extendedWaitUntil:
+    notVisible: {id: message.success}
+    timeout: 15000
+- tapOn: {id: reportDetail.share}
+- tapOn: {id: share.workEmail}
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 60000
+- assertVisible: {id: share.workEmail, enabled: true}
+- takeScreenshot: Share-delivery-failed
+- tapOn: {id: share.workEmail}
+- extendedWaitUntil:
+    visible: {text: '^Протокол отправлен$'}
+    timeout: 60000
+- assertVisible: ^Протокол$
+- assertNotVisible: {id: share.workEmail}
+- takeScreenshot: ReportDetail-delivery-succeeded

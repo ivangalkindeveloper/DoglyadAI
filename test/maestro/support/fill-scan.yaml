@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: support-fill-scan
+tags:
+- support
+---
+- runFlow: ../support/main.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Заполнить\ \(DEV\)$
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    text: ^Заполнить\ \(DEV\)$
+- scrollUntilVisible:
+    element:
+      text: ^Сгенерировать\ протокол$
+    direction: DOWN
+    timeout: 15000

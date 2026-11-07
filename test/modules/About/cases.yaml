@@ -1,0 +1,25 @@
+schemaVersion: 1
+module: About
+source: ios/Doglyad/Application/Module/About
+cases:
+- id: About.content-email
+  title: Описание, версия и контакт
+  profiles:
+  - pro
+  preconditions:
+  - Открыты настройки; установлен почтовый клиент для второй части
+  - Внешний почтовый клиент заменён тестовым адаптером; точный mailto проверяется по отдельному отчёту,
+    после отмены локальные данные не меняются.
+  steps:
+  - action: Открыть сведения о приложении
+    expect: Показаны описание, версия текущей сборки и контакт.
+  - action: Нажать контакт и отменить письмо
+    expect: Почтовый клиент получает правильного адресата; отмена возвращает в приложение без изменения
+      данных.
+  covers:
+  - onTapEmail
+  automation:
+    kind: maestro
+    flows:
+    - e2e-about-about
+    - e2e-about-contact

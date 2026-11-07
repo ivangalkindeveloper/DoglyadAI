@@ -45,7 +45,7 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         getSourcePhotos = arguments.getPhotos
 
         super.init(
-            state: initialPhotos.isEmpty ? PhotoViewEmptyState() : PhotoViewContentState(),
+            state: PhotoViewState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -187,9 +187,6 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         )
         photos = updated
         guard !photos.isEmpty else {
-            emit(
-                PhotoViewEmptyState(),
-            )
             onTapBack()
             return
         }
@@ -205,9 +202,6 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
                 ),
             ].id
         }
-        emit(
-            PhotoViewContentState(),
-        )
     }
 
     func fittedImageSize(

@@ -94,6 +94,9 @@ struct ScanFormView: DViewProtocol {
                     },
                 ],
             )
+            .accessibilityIdentifier(
+                "scan.patientGender.\(viewModel.patientGender.rawValue)",
+            )
             .padding(
                 .bottom,
                 size.s4,
@@ -245,6 +248,9 @@ struct ScanFormView: DViewProtocol {
             )
             .dStyle(
                 .primaryText,
+            )
+            .accessibilityIdentifier(
+                "scan.clear",
             )
 
             switch viewModel.environmentType {

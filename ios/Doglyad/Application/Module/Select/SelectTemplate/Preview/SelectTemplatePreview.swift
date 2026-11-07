@@ -5,27 +5,17 @@
     import SwiftUI
 
     #Preview(
-        "SelectTemplateContentState",
+        "01 SelectTemplateLoadingState",
     ) {
         SelectTemplatePreviewView(
-            state: SelectTemplateContentState(),
+            state: SelectTemplateLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "SelectTemplateEmptyState",
-    ) {
-        SelectTemplatePreviewView(
-            state: SelectTemplateEmptyState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "SelectTemplateFailedState",
+        "02 SelectTemplateFailedState",
     ) {
         SelectTemplatePreviewView(
             state: SelectTemplateFailedState(
@@ -39,10 +29,20 @@
     }
 
     #Preview(
-        "SelectTemplateLoadingState",
+        "03 SelectTemplateEmptyState",
     ) {
         SelectTemplatePreviewView(
-            state: SelectTemplateLoadingState(),
+            state: SelectTemplateEmptyState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 SelectTemplateContentState",
+    ) {
+        SelectTemplatePreviewView(
+            state: SelectTemplateContentState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

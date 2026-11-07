@@ -6,17 +6,7 @@
     import SwiftUI
 
     #Preview(
-        "ScanCameraCapturingState",
-    ) {
-        ScanCameraPreviewView(
-            state: ScanCameraCapturingState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "ScanCameraPreparingState",
+        "01 ScanCameraPreparingState",
     ) {
         ScanCameraPreviewView(
             state: ScanCameraPreparingState(),
@@ -26,7 +16,7 @@
     }
 
     #Preview(
-        "ScanCameraReadyState",
+        "02 ScanCameraReadyState",
     ) {
         ScanCameraPreviewView(
             state: ScanCameraReadyState(),
@@ -36,7 +26,17 @@
     }
 
     #Preview(
-        "ScanCameraStoppedState",
+        "03 ScanCameraCapturingState",
+    ) {
+        ScanCameraPreviewView(
+            state: ScanCameraCapturingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 ScanCameraStoppedState",
     ) {
         ScanCameraPreviewView(
             state: ScanCameraStoppedState(),

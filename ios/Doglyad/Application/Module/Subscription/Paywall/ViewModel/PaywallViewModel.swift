@@ -219,6 +219,12 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
         analytics.buttonTapped(
             .paywallRestoreStarted,
         )
+        if selectableContent?.selectedPlan?.source == .yookassa {
+            coordinator.screen(
+                .subscriptionRecovery,
+            )
+            return
+        }
         let previous = state
         let restoring = PaywallRestoringState(
             previousState: previous,

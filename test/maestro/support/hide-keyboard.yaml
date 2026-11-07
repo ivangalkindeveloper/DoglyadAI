@@ -1,0 +1,7 @@
+appId: ${APP_ID}
+name: support-hide-keyboard
+---
+- tapOn:
+    id: keyboard.done
+- assertNotVisible:
+    id: keyboard.done

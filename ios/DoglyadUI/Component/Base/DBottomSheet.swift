@@ -153,6 +153,9 @@ public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, 
                             DCloseButton {
                                 dismiss()
                             }
+                            .accessibilityIdentifier(
+                                "bottomSheet.close",
+                            )
                         } else {
                             Color.clear.frame(
                                 width: 22,

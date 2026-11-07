@@ -77,7 +77,15 @@ class PromptFactory:
                 "reportConclusionSectionPattern",
             ),
         )
-        prompt = self._configuration.text(
+        prompt = ""
+        if template is not None:
+            prompt = self._configuration.text(
+                self._language_code,
+                "reportTemplatePrompt",
+            ).format(
+                value=template,
+            )
+        prompt += self._configuration.text(
             self._language_code,
             "reportExaminationPrompt",
         ).format(
@@ -93,7 +101,6 @@ class PromptFactory:
             ("reportPatientComplaintsPrompt", examination.patientComplaints),
             ("reportExaminationDescriptionPrompt", dictated.description or None),
             ("reportDictatedConclusionPrompt", dictated.conclusion),
-            ("reportTemplatePrompt", template),
         )
         for key, value in sections:
             if value is not None:

@@ -1,0 +1,20 @@
+appId: ${APP_ID}
+name: e2e-templatelist-load-failure
+tags:
+- e2e
+- TemplateList
+---
+- runFlow:
+    file: ../../../maestro/support/settings-with-fault.yaml
+    env:
+      REPOSITORY_FAULT: templateRepository.getTemplates
+- tapOn:
+    text: ^Шаблоны протоколов$
+- assertVisible: Произошла неизвестная ошибка.*
+- assertNotVisible: Тут пока нет шаблонов.*
+- takeScreenshot: TemplateList-load-failed
+- tapOn:
+    text: ^Обновить$
+- assertVisible: Retry template
+- assertNotVisible: Произошла неизвестная ошибка.*
+- takeScreenshot: TemplateList-load-retried

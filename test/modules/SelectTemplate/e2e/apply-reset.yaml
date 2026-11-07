@@ -1,0 +1,34 @@
+appId: ${APP_ID}
+name: e2e-selecttemplate-apply-reset
+tags:
+- e2e
+- SelectTemplate
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.template
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- tapOn:
+    id: scan.template
+- tapOn:
+    text: ^УЗИ\ Щитовидной\ железы$
+- assertVisible:
+    text: ^УЗИ\ Щитовидной\ железы$
+- takeScreenshot: SelectTemplate-applied
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.template
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible:
+    text: ^УЗИ\ Щитовидной\ железы$
+- tapOn:
+    id: scan.template.reset
+- assertVisible:
+    text: ^Шаблон\ не\ выбран$
+- takeScreenshot: SelectTemplate-reset

@@ -2,7 +2,7 @@
     import SwiftUI
 
     #Preview(
-        "Начальное состояние",
+        "01 Начальное состояние",
     ) {
         SubscriptionRecoveryPreviewView(
             state: SubscriptionRecoveryDefaultState(),
@@ -13,7 +13,20 @@
     }
 
     #Preview(
-        "Создан ключ",
+        "02 Создание ключа",
+    ) {
+        SubscriptionRecoveryPreviewView(
+            state: SubscriptionRecoveryLoadingState(
+                previousState: SubscriptionRecoveryDefaultState(),
+            ),
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "03 Создан ключ",
     ) {
         SubscriptionRecoveryPreviewView(
             state: SubscriptionRecoveryKeyState(
@@ -26,7 +39,7 @@
     }
 
     #Preview(
-        "Восстановление",
+        "04 Восстановление",
     ) {
         SubscriptionRecoveryPreviewView(
             state: SubscriptionRecoveryLoadingState(
@@ -41,7 +54,7 @@
     }
 
     #Preview(
-        "Ошибка",
+        "05 Ошибка",
     ) {
         SubscriptionRecoveryPreviewView(
             state: SubscriptionRecoveryFailedState(
@@ -57,20 +70,7 @@
     }
 
     #Preview(
-        "Создание ключа",
-    ) {
-        SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryLoadingState(
-                previousState: SubscriptionRecoveryDefaultState(),
-            ),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "Ошибка · ключ сохранён",
+        "06 Ошибка · ключ сохранён",
     ) {
         SubscriptionRecoveryPreviewView(
             state: SubscriptionRecoveryFailedState(

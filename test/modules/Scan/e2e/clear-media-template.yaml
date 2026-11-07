@@ -1,0 +1,38 @@
+appId: ${APP_ID}
+name: e2e-scan-clear-media-template
+tags: [e2e, Scan, SelectTemplate]
+---
+- runFlow: ../../../maestro/support/one-photo.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- scrollUntilVisible:
+    element: {id: scan.template}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.template}
+- tapOn: ^УЗИ Щитовидной железы$
+- assertVisible: ^УЗИ Щитовидной железы$
+- scrollUntilVisible:
+    element: {id: scan.clear}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.clear}
+- scrollUntilVisible:
+    element: {id: scan.template}
+    direction: UP
+    centerElement: true
+- assertVisible: ^УЗИ Щитовидной железы$
+- scrollUntilVisible:
+    element: {id: scan.importMedia}
+    direction: UP
+- assertNotVisible: {id: 'scan.photo\..*'}
+- assertVisible: {id: scan.patientName, text: '^Пациент#1$'}
+- assertVisible: {id: scan.patientGender.male}
+- takeScreenshot: Scan-cleared-media-retained-template
+- runFlow: ../../../maestro/support/main.yaml
+- assertNotVisible: {id: 'scan.photo\..*'}
+- scrollUntilVisible:
+    element: {id: scan.template}
+    direction: DOWN
+    centerElement: true
+- assertVisible: ^УЗИ Щитовидной железы$
+- takeScreenshot: Scan-clear-template-restored

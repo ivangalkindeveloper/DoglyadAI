@@ -1,0 +1,15 @@
+appId: ${APP_ID}
+name: e2e-scan-base-voice-gate
+tags:
+- e2e
+- Scan
+---
+- runFlow: ../../../maestro/support/main.yaml
+- tapOn:
+    id: scan.speech
+- extendedWaitUntil:
+    visible:
+      text: ^Начните\ работать\ уже\ сегодня!$
+    timeout: 60000
+- runFlow: ../../../maestro/support/paywall-ready.yaml
+- takeScreenshot: Scan-voice-base-paywall

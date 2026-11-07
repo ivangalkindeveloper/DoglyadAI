@@ -5,21 +5,17 @@
     import SwiftUI
 
     #Preview(
-        "StorageFailedState",
+        "01 StorageReadyState",
     ) {
         StoragePreviewView(
-            state: StorageFailedState(
-                error: URLError(
-                    .notConnectedToInternet,
-                ),
-            ),
+            state: StorageReadyState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "StorageLoadingState",
+        "02 StorageLoadingState",
     ) {
         StoragePreviewView(
             state: StorageLoadingState(),
@@ -29,10 +25,14 @@
     }
 
     #Preview(
-        "StorageReadyState",
+        "03 StorageFailedState",
     ) {
         StoragePreviewView(
-            state: StorageReadyState(),
+            state: StorageFailedState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

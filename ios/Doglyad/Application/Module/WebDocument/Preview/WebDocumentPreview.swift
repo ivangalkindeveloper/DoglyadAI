@@ -5,21 +5,17 @@
     import SwiftUI
 
     #Preview(
-        "WebDocumentFailedState",
+        "01 WebDocumentLoadingState",
     ) {
         WebDocumentPreviewView(
-            state: WebDocumentFailedState(
-                error: URLError(
-                    .notConnectedToInternet,
-                ),
-            ),
+            state: WebDocumentLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "WebDocumentLoadedState",
+        "02 WebDocumentLoadedState",
     ) {
         WebDocumentPreviewView(
             state: WebDocumentLoadedState(),
@@ -29,10 +25,14 @@
     }
 
     #Preview(
-        "WebDocumentLoadingState",
+        "03 WebDocumentFailedState",
     ) {
         WebDocumentPreviewView(
-            state: WebDocumentLoadingState(),
+            state: WebDocumentFailedState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

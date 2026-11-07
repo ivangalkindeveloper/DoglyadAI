@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-storage-d0255baf12
+tags:
+- atlas
+- Storage
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-storage-d0255baf12
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-storage-d0255baf12
+    timeout: 15000
+- takeScreenshot: 02-Storage-d0255baf12

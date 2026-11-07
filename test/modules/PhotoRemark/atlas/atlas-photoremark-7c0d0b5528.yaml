@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-photoremark-7c0d0b5528
+tags:
+- atlas
+- PhotoRemark
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-photoremark-7c0d0b5528
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-photoremark-7c0d0b5528
+    timeout: 15000
+- takeScreenshot: 01-PhotoRemark-7c0d0b5528

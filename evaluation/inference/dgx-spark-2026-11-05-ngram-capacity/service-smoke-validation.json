@@ -1,0 +1,146 @@
+[
+  {
+    "model": "4b",
+    "client": 0,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "15-4b",
+    "client": 0,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "27b",
+    "client": 0,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "4b",
+    "client": 1,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "15-4b",
+    "client": 1,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "27b",
+    "client": 1,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "4b",
+    "client": 2,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "15-4b",
+    "client": 2,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "27b",
+    "client": 2,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "4b",
+    "client": 3,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "15-4b",
+    "client": 3,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "27b",
+    "client": 3,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "4b",
+    "client": 4,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "15-4b",
+    "client": 4,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "27b",
+    "client": 4,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "4b",
+    "client": 5,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "15-4b",
+    "client": 5,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "27b",
+    "client": 5,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "4b",
+    "client": 6,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "15-4b",
+    "client": 6,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "27b",
+    "client": 6,
+    "method": "stream",
+    "main_valid": true
+  },
+  {
+    "model": "4b",
+    "client": 7,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "15-4b",
+    "client": 7,
+    "method": "generate",
+    "main_valid": true
+  },
+  {
+    "model": "27b",
+    "client": 7,
+    "method": "generate",
+    "main_valid": true
+  }
+]

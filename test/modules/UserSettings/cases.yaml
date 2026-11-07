@@ -1,0 +1,81 @@
+schemaVersion: 1
+module: UserSettings
+source: ios/Doglyad/Application/Module/UserSettings
+cases:
+- id: UserSettings.email
+  title: Рабочая почта сохраняется
+  profiles:
+  - pro
+  preconditions:
+  - Открыты рабочие настройки
+  steps:
+  - action: Ввести regression@example.invalid и сохранить
+    expect: Показан успех, форма закрывается.
+  - action: Перезапустить и открыть настройки
+    expect: Отображается точный сохранённый адрес.
+  covers:
+  - onTapSave
+  automation:
+    kind: maestro
+    flows:
+    - e2e-usersettings-work-settings
+- id: UserSettings.flags
+  title: Все три переключателя
+  profiles:
+  - pro
+  preconditions:
+  - Открыты рабочие настройки; известны начальные значения
+  steps:
+  - action: Выключить рекомендации, замечания по описанию и снимкам; сохранить и перезапустить
+    expect: Все три переключателя выключены.
+  - action: Включить каждый переключатель; сохранить и перезапустить
+    expect: Все три включены; изменение одного не меняет остальные.
+  - action: Сгенерировать отчёт для каждого сочетания
+    expect: Флаги запроса соответствуют настройкам; отключённые разделы не возвращаются; замечания по
+      фото привязаны только к переданным photoId.
+  covers:
+  - toggleRecommendationsIncluded
+  - toggleDescriptionRemarks
+  - togglePhotoRemarks
+  automation:
+    kind: maestro
+    flows:
+    - e2e-usersettings-flags-000
+    - e2e-usersettings-flags-001
+    - e2e-usersettings-flags-010
+    - e2e-usersettings-flags-011
+    - e2e-usersettings-flags-100
+    - e2e-usersettings-flags-101
+    - e2e-usersettings-flags-110
+    - e2e-usersettings-flags-111
+  variants:
+  - '000'
+  - '001'
+  - '010'
+  - '011'
+  - '100'
+  - '101'
+  - '110'
+  - '111'
+- id: UserSettings.validation-cancel-failure
+  title: Валидация почты, отмена и ошибка записи
+  profiles:
+  - pro
+  preconditions:
+  - Сохранена рабочая почта; для ветки сбоя отказ репозитория
+  steps:
+  - action: Ввести адрес без @ и сохранить
+    expect: Показана ошибка поля; старый адрес не заменён.
+  - action: Исправить адрес, скрыть клавиатуру и выйти без сохранения
+    expect: Старая почта остаётся после повторного открытия.
+  - action: Сохранить валидный адрес при сбое записи
+    expect: Ввод сохранён в форме; успех не показан; после устранения сбоя можно сохранить.
+  covers:
+  - onFocusChanged
+  - onSubmit
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-usersettings-invalid-email
+    - e2e-usersettings-save-failure

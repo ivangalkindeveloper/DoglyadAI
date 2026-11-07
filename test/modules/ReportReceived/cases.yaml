@@ -1,0 +1,67 @@
+schemaVersion: 1
+module: ReportReceived
+source: ios/Doglyad/Application/Module/Report/ReportReceived
+cases:
+- id: ReportReceived.completed
+  title: Получить и открыть готовый протокол
+  profiles:
+  - pro
+  preconditions:
+  - Pro; заполнен Scan; backend в mock-режиме
+  steps:
+  - action: Запустить генерацию
+    expect: Показан процесс получения ответа; незавершённый текст не выдаётся за готовый протокол.
+  - action: Дождаться завершения
+    expect: Доступны переход к протоколу и копирование; нет сообщения о неполном ответе.
+  - action: Открыть протокол
+    expect: Данные пациента и ответ соответствуют запросу; запись доступна в истории.
+  covers:
+  - onInit
+  - onTapReport
+  automation:
+    kind: maestro
+    flows:
+    - e2e-reportreceived-generation
+    - e2e-reportreceived-failure-retry
+    - e2e-history-pending-generation
+- id: ReportReceived.copy-email
+  title: Копирование и рабочая почта
+  profiles:
+  - pro
+  preconditions:
+  - Готовый отчёт; Pro; настроен локальный SMTP-приёмник
+  steps:
+  - action: Скопировать протокол
+    expect: Буфер содержит весь финальный ответ модели; он точно совпадает с разделом актуального ответа в письме.
+      Данные пациента входят в письмо отдельно.
+  - action: Отправить на рабочую почту
+    expect: Получатель, тема и вложения соответствуют отчёту; показан успех.
+  - action: Повторить при ошибке SMTP
+    expect: Показана ошибка доставки; отчёт остаётся доступным; повтор не создаёт новый отчёт.
+  covers:
+  - onTapCopy
+  - onTapUserEmail
+  automation:
+    kind: maestro
+    flows:
+    - e2e-reportreceived-delivery-retry
+- id: ReportReceived.retry
+  title: Ошибка, обрыв и повтор генерации
+  profiles:
+  - pro
+  preconditions:
+  - 'Управляемый однократный сбой только на границе локальной модели: до ответа и после передачи настоящего частичного
+    текста. App Check, HTTP, очередь, worker и SwiftData работают штатно.'
+  steps:
+  - action: Вызвать ошибку генерации
+    expect: Показана ошибка или неполнота; успешные действия не доступны для незавершённого результата.
+  - action: Устранить ошибку и повторить
+    expect: Backend подтверждает failed → completed для двух разных ID запроса; данные исследования не изменены.
+      SwiftData содержит один новый отчёт, который открывается из истории после перезапуска.
+  covers:
+  - onTapRetryGeneration
+  automation:
+    kind: maestro
+    flows:
+    - e2e-reportreceived-failure-retry
+    - e2e-reportreceived-partial-retry

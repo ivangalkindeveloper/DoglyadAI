@@ -1,0 +1,46 @@
+schemaVersion: 1
+module: SelectTranscriptParser
+source: ios/Doglyad/Application/Module/Select/SelectTranscriptParser
+cases:
+- id: SelectTranscriptParser.server
+  title: Серверный парсер и сохранение
+  profiles:
+  - pro
+  preconditions:
+  - Открыты настройки AI
+  steps:
+  - action: Открыть селектор, выбрать серверный парсер и сохранить
+    expect: Селектор закрыт; серверный парсер выбран.
+  - action: Перезапустить приложение
+    expect: Выбор сохранён.
+  covers:
+  - onSelect
+  automation:
+    kind: maestro
+    flows:
+    - e2e-settingsai-providers
+    - e2e-selecttranscriptparser-parser-selector
+- id: SelectTranscriptParser.apple-availability
+  title: Доступность Apple Foundation Models
+  profiles:
+  - pro
+  preconditions:
+  - Отдельно совместимое и несовместимое устройство/язык
+  - Варианты возможностей Apple проверяются нативными тестами с управляемым ответом проверки доступности; настоящая
+    запись и inference Apple не запускаются.
+  steps:
+  - action: Открыть селектор на несовместимом устройстве
+    expect: Apple-вариант недоступен; серверный вариант доступен.
+  - action: На поддерживаемом устройстве выбрать Apple и сохранить
+    expect: Выбор сохранён после перезапуска.
+  - action: Изменить доступность и вернуть приложение из фона
+    expect: Доступность обновлена; неподдерживаемый выбор не сохраняется.
+  covers:
+  - onInit
+  automation:
+    kind: mixed
+    flows:
+    - e2e-selecttranscriptparser-parser-selector
+    nativeTests:
+    - RegressionFormTests/testParserAvailabilityRefreshesOnForegroundAndBlocksUnavailableSelection()
+    - SettingsAITests/speechChoicesSurviveRepositoryReloadAndReportStorage(transcriber:parser:)

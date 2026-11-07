@@ -4,29 +4,23 @@
 
     @MainActor
     enum ModulePreviewFactory {
-        static let examinationType = USExaminationType(
-            id: "thyroidGland",
-            title: "Щитовидная железа",
-            contextualStrings: [],
-        )
-        static let neuralModel = USExaminationNeuralModel(
-            id: "google/medgemma-4b-it",
-            title: "MedGemma",
-            entitlement: .base,
-            accessibility: .available,
-            contextLength: 8192,
-            description: "Анализ ультразвукового исследования",
-        )
+        static let development = DevelopmentPreviewFactory.make()
+        static let examinationType = development.examinationTypes.flatMap(
+            \.examinationTypes,
+        ).first {
+            $0.id == "thyroidGland"
+        }!
+        static let neuralModel = development.neuralModels.first {
+            $0.id == "google/medgemma-4b-it"
+        }!
+        static let readyMadeTemplates = development.readyMadeTemplates
+        static let readyMadeTemplate = readyMadeTemplates.first {
+            $0.examinationType == examinationType.id
+        }!
         static let template = USExaminationTemplate(
             usExaminationType: examinationType,
-            name: "Щитовидная железа — норма",
-            content: USExaminationReportPreviewFactory.description,
-        )
-        static let readyMadeTemplate = USExaminationReadyMadeTemplate(
-            id: "thyroid-normal",
-            examinationType: examinationType.id,
-            title: template.name,
-            content: template.content,
+            name: readyMadeTemplate.title,
+            content: readyMadeTemplate.content,
         )
         static let report = USExaminationReportPreviewFactory.makeReport(
             date: Date(
@@ -35,6 +29,26 @@
             isPhotosIncluded: true,
         )
         static let photos = report.examinationData.photos
+        static let photoRemarks = photos.map { photo in
+            USExaminationPhotoRemarks(
+                photoId: photo.id,
+                points: [
+                    USExaminationPhotoRemarkPoint(
+                        x: 0.46,
+                        y: 0.42,
+                        title: "Проверьте контур",
+                        description: "Учебное замечание к синтетическому снимку. Уточните границу области измерения.",
+                    ),
+                    USExaminationPhotoRemarkPoint(
+                        x: 0.65,
+                        y: 0.61,
+                        title: "Область измерения",
+                        description: "Учебная отметка модели. Снимок не предназначен для диагностики.",
+                    ),
+                ],
+            )
+        }
+
         static let subscription = ManageSubscriptionPreviewFactory.makeStatus(
             source: .yookassa,
         )
@@ -50,21 +64,30 @@
             patientComplaints: "Нет",
             examinationDescription: USExaminationReportPreviewFactory.description,
         )
-        static let paywallPlan = SubscriptionPlan(
-            id: "pro_monthly",
-            source: .yookassa,
-            type: .pro,
-            period: .monthly,
-            title: "Pro — месяц",
-            price: "990 ₽ в месяц",
-        )
+        static let paywallPlans = development.products.products.map { product in
+            SubscriptionPlan(
+                id: product.id,
+                source: .yookassa,
+                type: product.entitlement,
+                period: product.period,
+                title: product.title,
+                price: product.formattedPrice(
+                    product.price.amountMinor.formattedCurrencyFromMinorUnits(
+                        code: product.price.currencyIso2Code,
+                        locale: Locale(
+                            identifier: "ru",
+                        ),
+                    ),
+                ),
+            )
+        }
+
+        static let paywallPlan = paywallPlans.first {
+            $0.type == .pro && $0.period == .monthly
+        }!
         static let paywallContent = PaywallDefaultState(
-            tiers: [SubscriptionTier(
-                id: .pro,
-                title: "Pro",
-                features: ["20 протоколов в день", "Заполнение голосом", "Отправка на почту"],
-            )],
-            plans: [paywallPlan],
+            tiers: development.products.tiers,
+            plans: paywallPlans,
             selectedType: .pro,
             selectedPlanID: paywallPlan.id,
         )
@@ -77,13 +100,6 @@
         static func makeContainer() -> DependencyContainer {
             DependencyContainer.makePreviewable(
                 l10n: L10NPreviewFactory.make(),
-                usExaminationTypesById: [examinationType.id: examinationType],
-                usExaminationTypeGroups: [USExaminationTypeGroup(
-                    id: "general",
-                    title: "Общие исследования",
-                    examinationTypes: [examinationType],
-                )],
-                usExaminationNeuralModels: [neuralModel],
             )
         }
     }

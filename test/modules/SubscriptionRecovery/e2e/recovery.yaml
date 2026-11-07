@@ -1,0 +1,28 @@
+appId: ${APP_ID}
+name: e2e-subscriptionrecovery-recovery
+tags:
+- e2e
+- SubscriptionRecovery
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Управление\ подпиской$
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    text: ^Управление\ подпиской$
+- scrollUntilVisible:
+    element:
+      text: ^Ключ\ восстановления$
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    text: ^Ключ\ восстановления$
+- assertVisible:
+    text: ^Восстановление\ доступа$
+- tapOn:
+    text: ^Создать\ ключ\ восстановления$
+- assertVisible:
+    text: ^Скопировать\ ключ$
+- takeScreenshot: 061-SubscriptionRecovery-key

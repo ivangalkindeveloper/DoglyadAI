@@ -89,6 +89,54 @@ class InferenceProfileTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Duplicate"):
             HostProfile.load(path)
 
+    def test_ngram_configuration_is_serialized_as_one_cli_argument(self) -> None:
+        document = compose_document(self.profile)
+        for service in self.profile.models.values():
+            command = document["services"][service]["command"]
+            self.assertEqual(command.count("--speculative-config"), 1)
+            config = json.loads(command[command.index("--speculative-config") + 1])
+            self.assertEqual(
+                config,
+                {
+                    "method": "ngram",
+                    "num_speculative_tokens": 8,
+                    "prompt_lookup_min": 2,
+                    "prompt_lookup_max": 5,
+                },
+            )
+        other = HostProfile.load(DIRECTORY / "profiles/medgemma-4b-amd64.json")
+        for service in other.models.values():
+            self.assertNotIn(
+                "--speculative-config",
+                compose_document(other)["services"][service]["command"],
+            )
+
+    def test_invalid_ngram_configuration_is_rejected(self) -> None:
+        valid = {
+            "method": "ngram",
+            "numSpeculativeTokens": 8,
+            "promptLookupMin": 2,
+            "promptLookupMax": 5,
+        }
+        invalid = [
+            None,
+            [],
+            {},
+            dict(valid, method="eagle"),
+            dict(valid, numSpeculativeTokens=True),
+            dict(valid, numSpeculativeTokens=0),
+            dict(valid, promptLookupMin=0),
+            dict(valid, promptLookupMax="5"),
+            dict(valid, promptLookupMax=1),
+            dict(valid, unknown=1),
+        ]
+        for config in invalid:
+            with self.subTest(config=config):
+                data = copy.deepcopy(self.profile.data)
+                data["models"][0]["speculativeConfig"] = config
+                with self.assertRaises(ValueError):
+                    HostProfile(data, self.profile.server_config)
+
     @unittest.skipUnless(shutil.which("docker"), "Docker Compose CLI is not installed")
     def test_docker_compose_accepts_generated_arm64_and_amd64_stacks(self) -> None:
         for name in ["dgx-spark", "medgemma-4b-amd64"]:

@@ -1,0 +1,326 @@
+appId: ${APP_ID}
+name: e2e-history-pagination
+tags:
+- e2e
+- History
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionSeed: history41
+      regressionFault: ''
+      regressionNewBillingOwner: 'false'
+      regressionCaptureSplash: 'false'
+- extendedWaitUntil:
+    visible:
+      id: scan.settings
+    timeout: 60000
+- tapOn:
+    id: scan.settings
+- tapOn: ^История исследований$
+- assertVisible: ^Сегодня$
+- assertVisible: ^History 041$
+- assertVisible:
+    id: history.loadedCount.20
+- takeScreenshot: History-page-one
+- scrollUntilVisible:
+    element:
+      text: ^History 040$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 040$
+- scrollUntilVisible:
+    element:
+      text: ^History 039$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 039$
+- scrollUntilVisible:
+    element:
+      text: ^History 038$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 038$
+- scrollUntilVisible:
+    element:
+      text: ^History 037$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 037$
+- scrollUntilVisible:
+    element:
+      text: ^History 036$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 036$
+- scrollUntilVisible:
+    element:
+      text: ^History 035$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 035$
+- scrollUntilVisible:
+    element:
+      text: ^History 034$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 034$
+- scrollUntilVisible:
+    element:
+      text: ^History 033$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 033$
+- scrollUntilVisible:
+    element:
+      text: ^History 032$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 032$
+- scrollUntilVisible:
+    element:
+      text: ^History 031$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 031$
+- scrollUntilVisible:
+    element:
+      text: ^History 030$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 030$
+- scrollUntilVisible:
+    element:
+      text: ^History 029$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 029$
+- scrollUntilVisible:
+    element:
+      text: ^History 028$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 028$
+- scrollUntilVisible:
+    element:
+      text: ^History 027$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 027$
+- assertVisible: ^Вчера$
+- takeScreenshot: History-yesterday
+- scrollUntilVisible:
+    element:
+      text: ^History 026$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 026$
+- scrollUntilVisible:
+    element:
+      text: ^History 025$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 025$
+- scrollUntilVisible:
+    element:
+      text: ^History 024$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 024$
+- scrollUntilVisible:
+    element:
+      text: ^History 023$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 023$
+- scrollUntilVisible:
+    element:
+      text: ^History 022$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 022$
+- scrollUntilVisible:
+    element:
+      text: ^History 021$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 021$
+- scrollUntilVisible:
+    element:
+      text: ^History 020$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 020$
+- assertVisible:
+    id: history.loadedCount.40
+- takeScreenshot: History-page-two
+- scrollUntilVisible:
+    element:
+      text: ^History 019$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 019$
+- scrollUntilVisible:
+    element:
+      text: ^History 018$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 018$
+- scrollUntilVisible:
+    element:
+      text: ^History 017$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 017$
+- scrollUntilVisible:
+    element:
+      text: ^History 016$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 016$
+- scrollUntilVisible:
+    element:
+      text: ^History 015$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 015$
+- scrollUntilVisible:
+    element:
+      text: ^History 014$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 014$
+- scrollUntilVisible:
+    element:
+      text: ^History 013$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 013$
+- assertVisible: .*2020.*
+- scrollUntilVisible:
+    element:
+      text: ^History 012$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 012$
+- scrollUntilVisible:
+    element:
+      text: ^History 011$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 011$
+- scrollUntilVisible:
+    element:
+      text: ^History 010$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 010$
+- scrollUntilVisible:
+    element:
+      text: ^History 009$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 009$
+- scrollUntilVisible:
+    element:
+      text: ^History 008$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 008$
+- scrollUntilVisible:
+    element:
+      text: ^History 007$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 007$
+- scrollUntilVisible:
+    element:
+      text: ^History 006$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 006$
+- scrollUntilVisible:
+    element:
+      text: ^History 005$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 005$
+- scrollUntilVisible:
+    element:
+      text: ^History 004$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 004$
+- scrollUntilVisible:
+    element:
+      text: ^History 003$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 003$
+- scrollUntilVisible:
+    element:
+      text: ^History 002$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 002$
+- scrollUntilVisible:
+    element:
+      text: ^History 001$
+    direction: DOWN
+    centerElement: true
+    timeout: 20000
+- assertVisible: ^History 001$
+- assertVisible:
+    id: history.loadedCount.41
+- takeScreenshot: History-page-three
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- assertVisible: ^Сегодня$
+- assertVisible: ^History 041$
+- scrollUntilVisible:
+    element:
+      text: ^History 001$
+    direction: DOWN
+    timeout: 45000
+- assertVisible:
+    id: history.loadedCount.41
+- takeScreenshot: History-restored

@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: e2e-templateedit-template-edit
+tags:
+- e2e
+- TemplateEdit
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- tapOn: Regression template
+- assertVisible:
+    text: ^Шаблон$
+- assertVisible: Description and conclusion
+- tapOn:
+    text: ^Regression template$
+- eraseText
+- inputText: Regression template edited
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: Description and conclusion
+- eraseText
+- inputText: Edited description and conclusion
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- assertVisible: Regression template edited
+- assertNotVisible:
+    text: ^Regression\ template$
+- assertNotVisible:
+    text: ^Regression\ template\ edited$
+    index: 1
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- tapOn: Regression template edited
+- assertVisible: Edited description and conclusion
+- takeScreenshot: 031-TemplateEdit-content

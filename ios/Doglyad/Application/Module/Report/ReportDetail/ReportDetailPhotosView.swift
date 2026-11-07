@@ -23,6 +23,7 @@ struct ReportDetailPhotosView: DViewProtocol {
                         configuration: viewModel.photoCardConfiguration(
                             for: photo.id,
                         ),
+                        accessibilityID: "reportDetail.photo.\(photo.id)",
                         onTap: {
                             viewModel.onTapPhoto(
                                 photo,

@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "StorageClearAllState",
+        "01 StorageClearAllState",
     ) {
         StorageClearAllPreviewView(
             state: StorageClearAllState(),

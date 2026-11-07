@@ -1,0 +1,40 @@
+schemaVersion: 1
+module: SelectUSExaminationType
+source: ios/Doglyad/Application/Module/Select/SelectUSExaminationType
+cases:
+- id: SelectUSExaminationType.selection
+  title: Группы, выбор типа и сохранение
+  profiles:
+  - pro
+  preconditions:
+  - Открыт Scan с выбранным типом
+  steps:
+  - action: Открыть список и выбрать тип из другой группы
+    expect: Список закрыт; Scan показывает новый тип.
+  - action: Перезапустить приложение
+    expect: Выбор сохранён; несовместимый шаблон не применяется к другому типу.
+  covers:
+  - onInit
+  - onTypeTap
+  automation:
+    kind: maestro
+    flows:
+    - e2e-selectusexaminationtype-choose-persist
+    - e2e-selecttemplate-type-filter-failure
+- id: SelectUSExaminationType.failure
+  title: Ошибка выбора и повтор
+  profiles:
+  - pro
+  preconditions:
+  - Сбой получения или сохранения типа
+  steps:
+  - action: Открыть список при сбое и повторить после восстановления
+    expect: Показан доступный список; прежний выбор не теряется.
+  - action: Выбрать тип при сбое сохранения
+    expect: Показана ошибка выбора; нет ложного изменения типа.
+  covers:
+  - onTapRetry
+  automation:
+    kind: maestro
+    flows:
+    - e2e-selectusexaminationtype-failures

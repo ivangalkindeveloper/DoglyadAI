@@ -72,6 +72,7 @@ venv:
 
 pip-install:
 	pip3 install -r backend/main/requirements.txt
+	pip3 install -r test/requirements.txt
 
 pip-install-dev:
 	pip3 install -r backend/main/requirements-dev.txt
@@ -87,7 +88,7 @@ check-architecture:
 
 regression-check:
 	python3 test/scripts/catalog.py --check
-	python3 test/scripts/coverage.py --check
+	python3 test/scripts/scenario_coverage.py --check
 	python3 test/scripts/regression.py validate
 
 regression-doctor:
@@ -100,7 +101,7 @@ regression-figma:
 	python3 test/scripts/regression.py run --publish
 
 regression-publish:
-	@test -n "$(RUN)" || (echo 'Use RUN=test/runs/<run-id>'; exit 1)
+	@test -n "$(RUN)" || (echo 'Use RUN=build/regression/runs/<run-id>'; exit 1)
 	python3 test/scripts/figma_bridge.py "$(RUN)"
 
 format: format-ios format-backend

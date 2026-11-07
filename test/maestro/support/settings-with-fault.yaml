@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: support-settings-with-fault
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionFault: ${REPOSITORY_FAULT}
+      regressionFaultModule: ${REPOSITORY_FAULT_MODULE || ""}
+      regressionFaultAfter: '0'
+- extendedWaitUntil:
+    visible:
+      id: scan.settings
+      enabled: true
+    timeout: 60000
+- waitForAnimationToEnd
+- tapOn:
+    id: scan.settings
+- assertVisible:
+    text: ^Настройки$

@@ -1,0 +1,69 @@
+schemaVersion: 1
+module: TemplateEdit
+source: ios/Doglyad/Application/Module/Template/TemplateEdit
+cases:
+- id: TemplateEdit.edit
+  title: Изменение и сохранение шаблона
+  profiles:
+  - pro
+  preconditions:
+  - Сохранён Regression template
+  steps:
+  - action: Открыть шаблон, изменить название и текст
+    expect: Форма содержит новые значения.
+  - action: Сохранить и перезапустить приложение
+    expect: Список и повторно открытая форма содержат новые значения; отдельная копия не создана.
+  covers:
+  - onInit
+  - onTapSave
+  automation:
+    kind: maestro
+    flows:
+    - e2e-templateedit-template-edit
+- id: TemplateEdit.fields-and-cancel
+  title: Тип, фокус, границы и выход без сохранения
+  profiles:
+  - pro
+  preconditions:
+  - Существует сохранённый шаблон с известными значениями
+  steps:
+  - action: Изменить тип, пройти поля клавиатурой, проверить пределы длины
+    expect: Тип меняется; фокус переходит по полям; лимиты соответствуют application.templateEdit.
+  - action: Выйти назад без сохранения и открыть снова
+    expect: Сохранённые ранее значения не заменены несохранённым вводом.
+  - action: Нажать удаление
+    expect: Открывается подтверждение TemplateDelete для текущего ID.
+  covers:
+  - onTapExaminationType
+  - onFocusChanged
+  - onSubmit
+  - onTapToolbarUp
+  - onTapToolbarDown
+  - onTapBack
+  - onTapDelete
+  automation:
+    kind: mixed
+    flows:
+    - e2e-templateedit-cancel
+    - e2e-templatedelete-cancel
+    nativeTests:
+    - RegressionFormTests/testTemplateEditBoundariesAndFocusKeepTheExistingIdentity()
+- id: TemplateEdit.failures
+  title: Ошибки загрузки и сохранения
+  profiles:
+  - pro
+  preconditions:
+  - Сбой чтения или записи одного существующего шаблона
+  steps:
+  - action: Открыть шаблон при ошибке чтения
+    expect: Показана ошибка инициализации, доступен повтор.
+  - action: Устранить ошибку и повторить
+    expect: Открываются данные того же шаблона.
+  - action: Изменить данные и вызвать сбой сохранения
+    expect: Ввод остаётся; исходная запись не повреждена; повтор после устранения сбоя сохраняет изменения.
+  covers:
+  - onTapRetryInitialization
+  automation:
+    kind: maestro
+    flows:
+    - e2e-templateedit-failures

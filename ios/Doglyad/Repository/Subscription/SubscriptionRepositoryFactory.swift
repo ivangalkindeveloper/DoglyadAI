@@ -11,7 +11,13 @@ final class SubscriptionRepositoryFactory {
         storeKit: SubscriptionRepositoryProtocol,
         yooKassa: SubscriptionRepositoryProtocol,
         getStorefrontCountryCode: @escaping () async -> String? = {
-            await Storefront.current?.countryCode
+            #if DEBUG && DOGLYAD_REGRESSION
+                // The Russian UI suite uses the backend's YooKassa catalog.
+                // A clean simulator has no App Store products or signed-in account.
+                "RUS"
+            #else
+                await Storefront.current?.countryCode
+            #endif
         },
     ) {
         self.storeKit = storeKit

@@ -1,0 +1,104 @@
+appId: ${APP_ID}
+name: e2e-settings-navigation
+tags: [e2e, Settings]
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^История исследований$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^История исследований$
+- assertVisible: ^История исследований$
+- tapOn:
+    id: navigation.back
+- assertVisible: ^Настройки$
+- scrollUntilVisible:
+    element:
+      text: ^Шаблоны протоколов$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Шаблоны протоколов$
+- assertVisible: ^Шаблоны протоколов$
+- tapOn:
+    id: navigation.back
+- assertVisible: ^Настройки$
+- scrollUntilVisible:
+    element:
+      text: ^Рабочие настройки$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Рабочие настройки$
+- assertVisible: ^Рабочие настройки$
+- tapOn:
+    id: navigation.back
+- assertVisible: ^Настройки$
+- scrollUntilVisible:
+    element:
+      text: ^Настройки AI$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Настройки AI$
+- assertVisible: ^Настройки AI$
+- tapOn:
+    id: navigation.back
+- assertVisible: ^Настройки$
+- scrollUntilVisible:
+    element:
+      text: ^Управление подпиской$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Управление подпиской$
+- assertVisible: ^Моя подписка$
+- tapOn:
+    id: navigation.back
+- assertVisible: ^Настройки$
+- scrollUntilVisible:
+    element:
+      text: ^Хранилище$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Хранилище$
+- assertVisible: ^Хранилище$
+- tapOn:
+    id: navigation.back
+- assertVisible: ^Настройки$
+- scrollUntilVisible:
+    element:
+      text: ^Политика конфиденциальности$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Политика конфиденциальности$
+- extendedWaitUntil:
+    visible: .*Ответственный за обработку данных.*
+    timeout: 30000
+- tapOn:
+    id: bottomSheet.close
+- assertVisible: ^Настройки$
+- scrollUntilVisible:
+    element:
+      text: ^Условия и Положения$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Условия и Положения$
+- extendedWaitUntil:
+    visible: .*Сведения о Разработчике.*
+    timeout: 30000
+- tapOn:
+    id: bottomSheet.close
+- assertVisible: ^Настройки$
+- scrollUntilVisible:
+    element:
+      text: ^О приложении$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^О приложении$
+- assertVisible: ^О приложении$
+- tapOn:
+    id: bottomSheet.close
+- takeScreenshot: Settings-all-routes-returned
+- tapOn:
+    id: navigation.back
+- assertVisible:
+    id: scan.settings
+- takeScreenshot: Scan-draft-after-settings-routes

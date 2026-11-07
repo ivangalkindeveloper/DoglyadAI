@@ -1,0 +1,27 @@
+appId: ${APP_ID}
+name: e2e-about-contact
+tags: [e2e, About]
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionExternalApps: 'true'
+      regressionVersionPolicy: ''
+      regressionFault: ''
+      regressionNewBillingOwner: 'false'
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- tapOn: {id: scan.settings}
+- scrollUntilVisible:
+    element: {text: '^О приложении$'}
+    direction: DOWN
+- tapOn: ^О приложении$
+- assertVisible: '^Версия: ${APP_VERSION}$'
+- tapOn: {text: '.*support@doglyad.ru.*', point: '50%,90%'}
+- assertVisible: ^Почтовый клиент$
+- tapOn: ^Отмена$
+- assertVisible: '^Версия: ${APP_VERSION}$'
+- takeScreenshot: About-contact-canceled
+- tapOn: {id: bottomSheet.close}
+- assertVisible: ^Настройки$

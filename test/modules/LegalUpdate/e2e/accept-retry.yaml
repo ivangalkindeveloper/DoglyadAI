@@ -1,0 +1,46 @@
+appId: ${APP_ID}
+name: e2e-legalupdate-accept-retry
+tags: [e2e, LegalUpdate, WebDocument]
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionCaptureSplash: 'false'
+      regressionResetLegalConsent: 'true'
+      regressionFault: sharedRepository.acceptLegal
+      regressionFaultAfter: '0'
+- extendedWaitUntil:
+    visible: ^Документы обновлены$
+    timeout: 60000
+- assertVisible: {id: legalUpdate.accept, enabled: false}
+- assertVisible: {id: legalUpdate.acceptLegal, selected: false}
+- takeScreenshot: LegalUpdate-consent-required
+- tapOn: ^Политику конфиденциальности$
+- extendedWaitUntil:
+    visible: .*Ответственный за обработку данных.*
+    timeout: 30000
+- assertVisible: {id: webDocument.loaded}
+- takeScreenshot: WebDocument-legalupdate-privacy
+- tapOn: {id: bottomSheet.close}
+- assertVisible: {id: legalUpdate.acceptLegal, selected: false}
+# The multiline link's AX rectangle overlaps the preceding privacy link.
+- tapOn: {id: terms, point: '10%,80%'}
+- extendedWaitUntil:
+    visible: .*Сведения о Разработчике.*
+    timeout: 30000
+- takeScreenshot: WebDocument-legalupdate-terms
+- tapOn: {id: bottomSheet.close}
+- assertVisible: {id: legalUpdate.acceptLegal, selected: false}
+- tapOn: {id: legalUpdate.acceptLegal}
+- tapOn: {id: legalUpdate.accept}
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 15000
+- assertVisible: ^Документы обновлены$
+- takeScreenshot: LegalUpdate-save-failed
+- tapOn: {id: legalUpdate.accept}
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- runFlow: ../../../maestro/support/main.yaml
+- assertNotVisible: ^Документы обновлены$

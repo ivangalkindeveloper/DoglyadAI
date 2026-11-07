@@ -5,6 +5,7 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: ScanSpeechViewModel
+    @FocusState private var transcriptFocus: Bool?
 
     var body: some View {
         let fraction: CGFloat = switch viewModel.state {
@@ -12,19 +13,32 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
         default: 0.5
         }
 
-        DBottomSheet(
-            type: .blur,
-            title: l10n[
-                .scanSpeechTitle,
-            ],
-            fraction: fraction,
-        ) { toolbarHeight, bottomHeight in
-            ScanSpeechContentStateView(
-                toolbarHeight: toolbarHeight,
-                bottomHeight: bottomHeight,
-            )
-        } bottom: {
-            ScanSpeechBottomView()
+        VStack(
+            spacing: .zero,
+        ) {
+            DBottomSheet(
+                type: .blur,
+                title: l10n[
+                    .scanSpeechTitle,
+                ],
+                fraction: fraction,
+            ) { toolbarHeight, bottomHeight in
+                ScanSpeechContentStateView(
+                    toolbarHeight: toolbarHeight,
+                    bottomHeight: bottomHeight,
+                    transcriptFocus: $transcriptFocus,
+                )
+            } bottom: {
+                ScanSpeechBottomView()
+            }
+
+            if transcriptFocus != nil {
+                DToolbar(
+                    onTapDone: {
+                        transcriptFocus = nil
+                    },
+                )
+            }
         }
         .onAppear(
             perform: viewModel.onAppear,

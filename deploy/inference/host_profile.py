@@ -131,7 +131,13 @@ class HostProfile:
                     "isEager",
                     "isPrefixCachingEnabled",
                 },
-                {"image", "maxImages", "kvCacheMemoryBytes", "revision"},
+                {
+                    "image",
+                    "maxImages",
+                    "kvCacheMemoryBytes",
+                    "revision",
+                    "speculativeConfig",
+                },
             )
             model_id = model["modelId"]
             if (
@@ -188,3 +194,17 @@ class HostProfile:
                 or not re.fullmatch(r"[0-9a-f]{40}", model["revision"])
             ):
                 raise ValueError("Model revision must be a full commit SHA")
+            if "speculativeConfig" in model:
+                self._validate_speculation(model["speculativeConfig"])
+
+    def _validate_speculation(self, config: Any) -> None:
+        self._keys(
+            config,
+            {"method", "numSpeculativeTokens", "promptLookupMin", "promptLookupMax"},
+        )
+        if config["method"] != "ngram":
+            raise ValueError("Only ngram speculative decoding is supported")
+        for key in ("numSpeculativeTokens", "promptLookupMin", "promptLookupMax"):
+            self._integer(config[key])
+        if config["promptLookupMin"] > config["promptLookupMax"]:
+            raise ValueError("promptLookupMin must not exceed promptLookupMax")

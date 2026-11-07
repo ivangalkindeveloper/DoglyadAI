@@ -1,0 +1,17 @@
+appId: ${APP_ID}
+name: atlas-photolibrarypicker-022398461f
+tags:
+- atlas
+- PhotoLibraryPicker
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-photolibrarypicker-022398461f
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-photolibrarypicker-022398461f
+    timeout: 15000
+- extendedWaitUntil:
+    visible: ^Фото$
+    timeout: 30000
+- takeScreenshot: 01-PhotoLibraryPicker-022398461f

@@ -1,0 +1,75 @@
+appId: ${APP_ID}
+name: e2e-photoview-report-remarks
+tags: [e2e, PhotoView, PhotoRemark, ReportDetail]
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Рабочие настройки$
+- scrollUntilVisible:
+    element: {id: userSettings.photoRemarks}
+    direction: DOWN
+- runFlow:
+    when:
+      visible: {id: userSettings.photoRemarks, selected: false}
+    commands:
+    - tapOn: {id: userSettings.photoRemarks}
+- assertVisible: {id: userSettings.photoRemarks, selected: true}
+- tapOn: ^Сохранить$
+- runFlow: ../../../maestro/support/one-photo.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: UP
+    centerElement: true
+- tapOn: {id: scan.patientName, index: 1}
+- eraseText
+- inputText: Photo regression
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element: {text: '^Сгенерировать протокол$'}
+    direction: DOWN
+- tapOn: ^Сгенерировать протокол$
+- extendedWaitUntil:
+    visible: {text: '^К протоколу$'}
+    timeout: 180000
+- tapOn: ^К протоколу$
+- assertVisible: ^Протокол$
+- scrollUntilVisible:
+    element: {id: 'reportDetail.photo\..*'}
+    direction: DOWN
+- tapOn: {id: 'reportDetail.photo\..*'}
+- assertVisible: ^1 из 1$
+- assertNotVisible: {id: photoView.delete}
+- runFlow:
+    when:
+      visible: {id: photoView.remarksVisible, checked: false}
+    commands:
+    - tapOn: {id: photoView.remarksVisible}
+- assertVisible: {text: '^Проверьте измерение$'}
+- assertVisible: {text: '^Уточните границы области$'}
+- takeScreenshot: PhotoView-backend-remarks
+- tapOn: ^Проверьте измерение$
+- assertVisible: Демонстрационное замечание по снимку.*положение измерительных маркеров.*
+- takeScreenshot: PhotoRemark-measurement
+- tapOn: ^Назад$
+- assertVisible: ^1 из 1$
+# Double tap and pinch are mandatory native XCTest checks (test/scripts/native_checks.py).
+- tapOn: {id: photoView.remarksVisible}
+- assertVisible: {id: photoView.remarksVisible, checked: false}
+- assertNotVisible: {id: 'photoView.remark\..*'}
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- tapOn: ^Photo regression$
+- scrollUntilVisible:
+    element: {id: 'reportDetail.photo\..*'}
+    direction: DOWN
+- tapOn: {id: 'reportDetail.photo\..*'}
+- assertVisible: {id: photoView.remarksVisible, checked: false}
+- assertNotVisible: {id: 'photoView.remark\..*'}
+- takeScreenshot: PhotoView-hidden-remarks-restored
+- tapOn: {id: photoView.remarksVisible}
+- assertVisible: ^Проверьте измерение$
+- tapOn: ^Уточните границы области$
+- assertVisible: Демонстрационное замечание по снимку.*исследуемая область полностью.*
+- takeScreenshot: PhotoRemark-boundary
+- tapOn: ^Назад$
+- assertVisible: ^1 из 1$

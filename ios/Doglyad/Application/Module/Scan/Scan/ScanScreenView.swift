@@ -39,6 +39,9 @@ struct ScanScreenView: DViewProtocol {
                 .dStyle(
                     .primaryChip,
                 )
+                .accessibilityIdentifier(
+                    "scan.type",
+                )
                 .disabled(
                     isProcessing,
                 )
@@ -64,8 +67,14 @@ struct ScanScreenView: DViewProtocol {
                         isProcessing: isProcessing,
                         isMediaSelectionDisabled: isMediaSelectionDisabled,
                     )
-                    ScanBottomView()
+                    if !(viewModel.state is ScanInitializationFailedState) {
+                        ScanBottomView()
+                    }
                 }
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                )
             },
         )
         .onSubmit {

@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+name: e2e-settings-history-summary-retry
+tags: [e2e, Settings, History]
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- copyTextFrom: '^Проведено медицинских исследований: [1-9][0-9]*$'
+- evalScript: ${output.originalHistorySummary = maestro.copiedText}
+- runFlow:
+    commands:
+    - launchApp:
+        arguments:
+          regressionPreview: ''
+          regressionFault: ultrasoundReportRepository.getReportsCount
+          regressionFaultModule: SettingsViewModel
+          regressionFaultAfter: '0'
+    - extendedWaitUntil:
+        visible: {id: scan.settings, enabled: true}
+        timeout: 60000
+    - tapOn: {id: scan.settings}
+- assertVisible: ^Обновить$
+- assertNotVisible: '^Проведено медицинских исследований: [1-9][0-9]*$'
+- assertVisible: ^Шаблоны протоколов$
+- assertVisible: ^Рабочие настройки$
+- takeScreenshot: Settings-history-summary-failed
+- tapOn: ^Обновить$
+- assertVisible: ${output.originalHistorySummary}
+- takeScreenshot: Settings-history-summary-recovered
+- tapOn: ^История исследований$
+- assertVisible: {id: 'history.loadedCount.[1-9][0-9]*'}
+- tapOn: {id: navigation.back}
+- assertVisible: ${output.originalHistorySummary}
+- tapOn: {id: navigation.back}
+- assertVisible: {id: scan.settings}

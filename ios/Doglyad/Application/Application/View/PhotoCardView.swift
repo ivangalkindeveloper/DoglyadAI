@@ -6,15 +6,18 @@ struct PhotoCardView: DViewProtocol {
 
     let image: UIImage
     let configuration: PhotoCardConfiguration
+    let accessibilityID: String
     let onTap: (() -> Void)?
 
     init(
         image: UIImage,
         configuration: PhotoCardConfiguration = .init(),
+        accessibilityID: String = "photoCard.image",
         onTap: (() -> Void)? = nil,
     ) {
         self.image = image
         self.configuration = configuration
+        self.accessibilityID = accessibilityID
         self.onTap = onTap
     }
 
@@ -36,7 +39,9 @@ struct PhotoCardView: DViewProtocol {
         .onTapGesture {
             onTap?()
         }
-
+        .accessibilityIdentifier(
+            accessibilityID,
+        )
         .if(
             configuration.isBadgeVisible,
         ) { view in

@@ -134,6 +134,129 @@ struct HistoryTests {
     }
 
     @Test
+    func historyClearRemovesOwnedAndLegacyOrphanRecordsButKeepsTemplates() async throws {
+        let schema = Schema(
+            [
+                USExaminationReportDB.self,
+                SettingsAIDB.self,
+                USExaminationDataDB.self,
+                USExaminationScanPhotoDB.self,
+                USExaminationModelReportDB.self,
+                USExaminationPhotoRemarksDB.self,
+                USExaminationPhotoRemarkPointDB.self,
+                USReportGenerationDB.self,
+                USExaminationTemplateDB.self,
+            ],
+        )
+        let container = try ModelContainer(
+            for: schema,
+            configurations: ModelConfiguration(
+                isStoredInMemoryOnly: true,
+            ),
+        )
+        let store = DExaminationReportsStore(
+            modelContainer: container,
+        )
+        let report = databaseReport(
+            at: Date(),
+        )
+        report.examinationData.photos = [USExaminationScanPhotoDB(
+            data: Data(
+                [1, 2, 3],
+            ),
+        )]
+        try await store.setExaminationReport(
+            value: report,
+        )
+        // Old application versions left these records after deleting their report.
+        let context = ModelContext(
+            container,
+        )
+        let legacy = databaseReport(
+            at: Date(),
+        )
+        context.insert(
+            legacy.settingsAI,
+        )
+        context.insert(
+            legacy.examinationData,
+        )
+        context.insert(
+            USExaminationScanPhotoDB(
+                data: Data(
+                    [4, 5, 6],
+                ),
+            ),
+        )
+        let templateID = UUID()
+        context.insert(
+            USExaminationTemplateDB(
+                id: templateID,
+                usExaminationTypeId: "test",
+                name: "Keep",
+                content: "Full template",
+            ),
+        )
+        try context.save()
+        try await store.clearAllExaminationReports()
+        let check = ModelContext(
+            container,
+        )
+        #expect(
+            try check.fetchCount(
+                FetchDescriptor<USExaminationReportDB>(),
+            ) == 0,
+        )
+        #expect(
+            try check.fetchCount(
+                FetchDescriptor<USExaminationDataDB>(),
+            ) == 0,
+        )
+        #expect(
+            try check.fetchCount(
+                FetchDescriptor<SettingsAIDB>(),
+            ) == 0,
+        )
+        #expect(
+            try check.fetchCount(
+                FetchDescriptor<USExaminationScanPhotoDB>(),
+            ) == 0,
+        )
+        #expect(
+            try check.fetchCount(
+                FetchDescriptor<USExaminationModelReportDB>(),
+            ) == 0,
+        )
+        #expect(
+            try check.fetchCount(
+                FetchDescriptor<USExaminationPhotoRemarksDB>(),
+            ) == 0,
+        )
+        #expect(
+            try check.fetchCount(
+                FetchDescriptor<USExaminationPhotoRemarkPointDB>(),
+            ) == 0,
+        )
+        #expect(
+            try check.fetchCount(
+                FetchDescriptor<USReportGenerationDB>(),
+            ) == 0,
+        )
+        let templates = try check.fetch(
+            FetchDescriptor<USExaminationTemplateDB>(),
+        )
+        #expect(
+            templates.count == 1,
+        )
+        #expect(
+            templates.first?.id == templateID,
+        )
+        #expect(
+            templates.first?.content == "Full template",
+        )
+    }
+
+    @Test
     func databaseFetchesReportPagesNewestFirst() async throws {
         let schema = Schema(
             [

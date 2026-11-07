@@ -1,0 +1,19 @@
+schemaVersion: 1
+module: PhotoRemark
+source: ios/Doglyad/Application/Module/PhotoRemark
+cases:
+- id: PhotoRemark.content-close
+  title: Просмотр замечания и возврат
+  profiles:
+  - pro
+  preconditions:
+  - Открыта конкретная точка на фото
+  steps:
+  - action: Проверить текст замечания и закрыть окно
+    expect: Текст относится к выбранной точке; возврат к тому же фото и положению.
+  covers:
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-photoview-report-remarks

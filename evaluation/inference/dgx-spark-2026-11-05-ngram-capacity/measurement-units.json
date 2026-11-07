@@ -1,0 +1,9 @@
+{
+  "host": "spark-bfd6",
+  "page_size_bytes": 4096,
+  "page_size_source": "getconf PAGESIZE on DGX",
+  "memory_kib_unit_bytes": 1024,
+  "GiB_bytes": 1073741824,
+  "TTFT": "First nonempty SSE fragment; can be a JSON brace, not necessarily displayed medical text",
+  "latency_scope": "Private engine request on DGX, no main backend/iOS/network-to-client latency"
+}

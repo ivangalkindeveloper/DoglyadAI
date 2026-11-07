@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "ReportDetailContentState",
+        "01 ReportDetailContentState",
     ) {
         ReportDetailPreviewView(
             state: ReportDetailContentState(),
@@ -15,7 +15,29 @@
     }
 
     #Preview(
-        "ReportDetailFailedState",
+        "02 ReportDetailLoadingState",
+    ) {
+        ReportDetailPreviewView(
+            state: ReportDetailLoadingState(
+                candidate: ModulePreviewFactory.report,
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "03 ReportDetailGeneratingState",
+    ) {
+        ReportDetailPreviewView(
+            state: ReportDetailGeneratingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 ReportDetailFailedState",
     ) {
         ReportDetailPreviewView(
             state: ReportDetailFailedState(
@@ -29,28 +51,8 @@
     }
 
     #Preview(
-        "ReportDetailGeneratingState",
+        "05 Раскрываемый Markdown",
     ) {
-        ReportDetailPreviewView(
-            state: ReportDetailGeneratingState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "ReportDetailLoadingState",
-    ) {
-        ReportDetailPreviewView(
-            state: ReportDetailLoadingState(
-                candidate: ModulePreviewFactory.report,
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview {
         VStack(
             alignment: .leading,
             spacing: 24,
@@ -77,7 +79,7 @@
     }
 
     #Preview(
-        "Одна строка — лимит 3",
+        "06 Одна строка — лимит 3",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -90,7 +92,7 @@
     }
 
     #Preview(
-        "Три строки — лимит 3",
+        "07 Три строки — лимит 3",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -103,7 +105,7 @@
     }
 
     #Preview(
-        "Четыре строки — лимит 3",
+        "08 Четыре строки — лимит 3",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -116,7 +118,7 @@
     }
 
     #Preview(
-        "Длинный текст — ширина 360",
+        "09 Длинный текст — ширина 360",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -129,7 +131,7 @@
     }
 
     #Preview(
-        "Длинный текст — ширина 260",
+        "10 Длинный текст — ширина 260",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -142,7 +144,7 @@
     }
 
     #Preview(
-        "Длинный текст — лимит 1",
+        "11 Длинный текст — лимит 1",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -154,7 +156,9 @@
         )
     }
 
-    #Preview {
+    #Preview(
+        "12 Карточка ответа модели",
+    ) {
         ReportDetailModelReportCardView(
             report: USExaminationModelReport(
                 date: Date(),

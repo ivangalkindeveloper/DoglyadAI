@@ -1,0 +1,27 @@
+schemaVersion: 1
+module: SelectDateOfBirth
+source: ios/Doglyad/Application/Module/Select/SelectDateOfBirth
+cases:
+- id: SelectDateOfBirth.date
+  title: Выбор даты рождения
+  profiles:
+  - pro
+  preconditions:
+  - Scan с известной датой рождения; зафиксирована текущая дата устройства
+  steps:
+  - action: Выбрать дату рождения и подтвердить
+    expect: Дата перенесена в Scan; возраст вычислен относительно текущей даты устройства.
+  - action: Открыть календарь, изменить дату и закрыть без подтверждения
+    expect: Прежняя подтверждённая дата сохраняется.
+  - action: Проверить будущую дату и високосный день
+    expect: Будущая дата и дата более чем 100 лет назад недоступны; 29 февраля выбирается для високосного года.
+  covers:
+  - onDateChanged
+  - onTapSelect
+  automation:
+    kind: mixed
+    flows:
+    - e2e-selectdateofbirth-confirm-cancel
+    nativeTests:
+    - RegressionFormTests/testDateSelectionKeepsChangesUnconfirmedAndAllowsLeapDay()
+    - ModuleStateTests/dateSelectionPublishesChangesAndConfirmsLatestValue()

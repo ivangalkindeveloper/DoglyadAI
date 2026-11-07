@@ -1,0 +1,2726 @@
+{
+  "bootstrap": {
+    "id": "bootstrap-onboarding",
+    "flow": "modules/OnBoarding/e2e/bootstrap.yaml",
+    "screenshots": [
+      "000-ApplicationSplash-initial",
+      "001-OnBoarding-welcome",
+      "002-OnBoarding-legal",
+      "WebDocument-onboarding-privacy",
+      "WebDocument-onboarding-terms",
+      "OnBoarding-completion-failed",
+      "003-Paywall-initial"
+    ],
+    "screen": "OnBoarding",
+    "kind": "functional",
+    "module": "OnBoarding"
+  },
+  "cases": [
+    {
+      "id": "e2e-history-history-empty",
+      "title": "История пуста на новом стенде",
+      "kind": "functional",
+      "flow": "modules/History/e2e/history-empty.yaml",
+      "sources": [
+        "History"
+      ],
+      "screenshots": [
+        "010-History-empty"
+      ],
+      "screen": "History",
+      "module": "History",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-reportreceived-generation",
+      "title": "Сгенерировать и открыть протокол через локальный backend",
+      "kind": "functional",
+      "flow": "modules/ReportReceived/e2e/generation.yaml",
+      "sources": [
+        "Scan",
+        "ReportReceived",
+        "ReportDetail"
+      ],
+      "screenshots": [
+        "050-ReportReceived-ready",
+        "051-ReportDetail-generated"
+      ],
+      "screen": "ReportReceived",
+      "module": "ReportReceived",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-reportreceived-partial-retry",
+      "title": "Ошибка генерации и успешный повтор: fail-after-preview",
+      "module": "ReportReceived",
+      "screen": "ReportReceived",
+      "kind": "functional",
+      "flow": "modules/ReportReceived/e2e/partial-retry.yaml",
+      "screenshots": [
+        "ReportReceived-partial-retry-failed",
+        "ReportReceived-partial-retry-completed",
+        "ReportDetail-partial-retry-restored"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-reportreceived-generation"
+      ],
+      "backendAssertions": {
+        "attemptStatuses": [
+          "failed",
+          "completed"
+        ],
+        "examinationData": {
+          "patientName": "Regression REG-PARTIAL",
+          "examinationNumber": "REG-PARTIAL",
+          "usExaminationTypeId": "thyroidGland"
+        },
+        "worker": {
+          "mode": "fail-after-preview",
+          "examinationNumber": "REG-PARTIAL"
+        },
+        "partialAttempt": 0
+      },
+      "localAssertions": {
+        "countDelta": {
+          "reports": 1
+        },
+        "preserved": [
+          "templates"
+        ]
+      }
+    },
+    {
+      "id": "e2e-reportreceived-failure-retry",
+      "title": "Ошибка генерации и успешный повтор: fail-before",
+      "module": "ReportReceived",
+      "screen": "ReportReceived",
+      "kind": "functional",
+      "flow": "modules/ReportReceived/e2e/failure-retry.yaml",
+      "screenshots": [
+        "ReportReceived-failure-retry-failed",
+        "ReportReceived-failure-retry-completed",
+        "ReportDetail-failure-retry-restored"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-reportreceived-generation"
+      ],
+      "backendAssertions": {
+        "attemptStatuses": [
+          "failed",
+          "completed"
+        ],
+        "examinationData": {
+          "patientName": "Regression REG-BEFORE",
+          "examinationNumber": "REG-BEFORE",
+          "usExaminationTypeId": "thyroidGland"
+        },
+        "worker": {
+          "mode": "fail-before",
+          "examinationNumber": "REG-BEFORE"
+        }
+      },
+      "localAssertions": {
+        "countDelta": {
+          "reports": 1
+        },
+        "preserved": [
+          "templates"
+        ]
+      }
+    },
+    {
+      "id": "e2e-history-pending-generation",
+      "module": "History",
+      "screen": "History",
+      "title": "Открыть выполняющийся отчёт из истории и дождаться завершения после возврата в приложение",
+      "kind": "functional",
+      "flow": "modules/History/e2e/pending-generation.yaml",
+      "screenshots": [
+        "History-pending-generation",
+        "ReportReceived-pending-reopened",
+        "ReportDetail-pending-completed"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-reportreceived-generation"
+      ],
+      "backendAssertions": {
+        "attemptStatuses": [
+          "completed"
+        ],
+        "examinationData": {
+          "patientName": "Regression REG-PENDING",
+          "examinationNumber": "REG-PENDING",
+          "usExaminationTypeId": "thyroidGland"
+        },
+        "worker": {
+          "mode": "delay-completion",
+          "examinationNumber": "REG-PENDING"
+        },
+        "partialAttempt": 0
+      },
+      "localAssertions": {
+        "countDelta": {
+          "reports": 1
+        },
+        "preserved": [
+          "templates"
+        ]
+      }
+    },
+    {
+      "id": "e2e-scan-draft-persistence",
+      "title": "Черновик сохраняется после перезапуска",
+      "kind": "functional",
+      "module": "Scan",
+      "screen": "Scan",
+      "sources": [
+        "Scan"
+      ],
+      "flow": "modules/Scan/e2e/draft-persistence.yaml",
+      "screenshots": [
+        "Scan-restored-draft"
+      ],
+      "subscriptionProfile": "pro",
+      "timeoutSeconds": 600,
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-selectdateofbirth-confirm-cancel",
+      "title": "Подтверждение даты рождения, отмена и сохранение после перезапуска",
+      "kind": "functional",
+      "module": "SelectDateOfBirth",
+      "screen": "SelectDateOfBirth",
+      "flow": "modules/SelectDateOfBirth/e2e/confirm-cancel.yaml",
+      "screenshots": [
+        "SelectDateOfBirth-open",
+        "Scan-birth-date-restored"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-scan-gender-persistence",
+      "module": "Scan",
+      "screen": "Scan",
+      "title": "Выбор пола и сохранение после перезапуска",
+      "kind": "functional",
+      "flow": "modules/Scan/e2e/gender-persistence.yaml",
+      "screenshots": [
+        "Scan-gender-female",
+        "Scan-gender-male-restored"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-selectdateofbirth-confirm-cancel"
+      ]
+    },
+    {
+      "id": "e2e-scan-development-fill-return",
+      "module": "Scan",
+      "screen": "Scan",
+      "title": "DEV-заполнение и возврат из настроек",
+      "kind": "functional",
+      "flow": "modules/Scan/e2e/development-fill-return.yaml",
+      "screenshots": [
+        "Scan-development-fill-return"
+      ]
+    },
+    {
+      "id": "e2e-scan-clear-draft",
+      "module": "Scan",
+      "screen": "Scan",
+      "title": "Очистка и перезапуск черновика",
+      "kind": "functional",
+      "flow": "modules/Scan/e2e/clear-draft.yaml",
+      "screenshots": [
+        "Scan-cleared-draft"
+      ]
+    },
+    {
+      "id": "e2e-scan-validation-empty",
+      "title": "Пустое описание блокирует генерацию до HTTP-запроса",
+      "kind": "functional",
+      "module": "Scan",
+      "screen": "Scan",
+      "flow": "modules/Scan/e2e/validation-empty.yaml",
+      "screenshots": [
+        "Scan-empty-description-validation"
+      ],
+      "backendAssertions": {
+        "absent": true
+      }
+    },
+    {
+      "id": "e2e-scan-initialization-retry",
+      "title": "Ошибка загрузки Scan сохраняет черновик",
+      "kind": "functional",
+      "module": "Scan",
+      "screen": "Scan",
+      "flow": "modules/Scan/e2e/initialization-retry.yaml",
+      "screenshots": [
+        "Scan-initialization-failed",
+        "Scan-initialization-restored-draft"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-scan-validation-empty"
+      ],
+      "backendAssertions": {
+        "absent": true
+      },
+      "localAssertions": {
+        "preserved": [
+          "reports",
+          "templates"
+        ]
+      }
+    },
+    {
+      "id": "e2e-scan-draft-save-retry",
+      "title": "Ошибка записи черновика и повторное сохранение",
+      "kind": "functional",
+      "module": "Scan",
+      "screen": "Scan",
+      "flow": "modules/Scan/e2e/draft-save-retry.yaml",
+      "screenshots": [
+        "Scan-draft-save-failed",
+        "Scan-draft-save-retried"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-scan-initialization-retry"
+      ],
+      "backendAssertions": {
+        "absent": true
+      },
+      "localAssertions": {
+        "preserved": [
+          "reports",
+          "templates"
+        ]
+      }
+    },
+    {
+      "id": "e2e-scan-generation-save-retry",
+      "title": "Ошибка записи отчёта перед генерацией и успешный повтор",
+      "kind": "functional",
+      "module": "Scan",
+      "screen": "Scan",
+      "flow": "modules/Scan/e2e/generation-save-retry.yaml",
+      "screenshots": [
+        "Scan-report-save-failed",
+        "Scan-report-save-retried"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-scan-draft-save-retry"
+      ],
+      "backendAssertions": {
+        "examinationData": {
+          "patientName": "Regression scan save",
+          "examinationNumber": "REG-SCAN-SAVE",
+          "usExaminationTypeId": "thyroidGland"
+        },
+        "photoCount": 1
+      },
+      "localAssertions": {
+        "countDelta": {
+          "reports": 1
+        },
+        "preserved": [
+          "templates"
+        ]
+      }
+    },
+    {
+      "id": "e2e-selectusexaminationtype-choose-persist",
+      "module": "SelectUSExaminationType",
+      "screen": "SelectUSExaminationType",
+      "title": "Выбор типа и сохранение",
+      "kind": "functional",
+      "flow": "modules/SelectUSExaminationType/e2e/choose-persist.yaml",
+      "screenshots": [
+        "SelectUSExaminationType-restored"
+      ]
+    },
+    {
+      "id": "e2e-selectusexaminationtype-failures",
+      "title": "Ошибка чтения и выбора типа: сохранить прежний выбор и повторить",
+      "kind": "functional",
+      "module": "SelectUSExaminationType",
+      "screen": "SelectUSExaminationType",
+      "flow": "modules/SelectUSExaminationType/e2e/failures.yaml",
+      "screenshots": [
+        "SelectUSExaminationType-load-failed",
+        "SelectUSExaminationType-selection-failed"
+      ]
+    },
+    {
+      "id": "e2e-history-saved-report",
+      "title": "Сгенерировать отчёт и открыть из истории после перезапуска",
+      "kind": "functional",
+      "module": "History",
+      "screen": "History",
+      "flow": "modules/History/e2e/saved-report.yaml",
+      "sources": [
+        "History"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "History-saved-report-opened"
+      ]
+    },
+    {
+      "id": "e2e-history-pagination",
+      "title": "41 сохранённый протокол: три страницы, группы дат и перезапуск",
+      "kind": "functional",
+      "module": "History",
+      "screen": "History",
+      "sources": [
+        "History"
+      ],
+      "flow": "modules/History/e2e/pagination.yaml",
+      "screenshots": [
+        "History-page-one",
+        "History-yesterday",
+        "History-page-two",
+        "History-page-three",
+        "History-restored"
+      ],
+      "subscriptionProfile": "pro",
+      "timeoutSeconds": 900,
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-settings-history-summary-retry",
+      "module": "Settings",
+      "screen": "Settings",
+      "title": "Ошибка счётчика истории и повтор загрузки",
+      "kind": "functional",
+      "flow": "modules/Settings/e2e/history-summary-retry.yaml",
+      "screenshots": [
+        "Settings-history-summary-failed",
+        "Settings-history-summary-recovered"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [],
+      "localAssertions": {
+        "minimumBefore": {
+          "reports": 1
+        },
+        "preserved": [
+          "reports",
+          "templates",
+          "draft",
+          "settings"
+        ]
+      }
+    },
+    {
+      "id": "e2e-settings-navigation",
+      "title": "Все пункты настроек в порядке экрана и возврат без изменений",
+      "kind": "functional",
+      "module": "Settings",
+      "screen": "Settings",
+      "flow": "modules/Settings/e2e/navigation.yaml",
+      "screenshots": [
+        "Settings-all-routes-returned",
+        "Scan-draft-after-settings-routes"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-settings-history-summary-retry"
+      ],
+      "localAssertions": {
+        "preserved": [
+          "reports",
+          "templates",
+          "draft",
+          "settings"
+        ]
+      }
+    },
+    {
+      "id": "e2e-history-load-failures",
+      "title": "Ошибка первой и следующей страниц истории",
+      "kind": "functional",
+      "flow": "modules/History/e2e/load-failures.yaml",
+      "module": "History",
+      "screen": "History",
+      "sources": [
+        "History"
+      ],
+      "screenshots": [
+        "History-first-page-failed",
+        "History-next-page-failed",
+        "History-next-page-retried"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-history-pagination"
+      ]
+    },
+    {
+      "id": "e2e-templateadd-template-create",
+      "title": "Создать шаблон и проверить сохранение",
+      "kind": "functional",
+      "flow": "modules/TemplateAdd/e2e/template-create.yaml",
+      "sources": [
+        "TemplateAdd",
+        "TemplateList"
+      ],
+      "screenshots": [
+        "030-TemplateList-created"
+      ],
+      "screen": "TemplateAdd",
+      "module": "TemplateAdd",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-templateadd-cancel",
+      "module": "TemplateAdd",
+      "screen": "TemplateAdd",
+      "title": "Выход без создания шаблона",
+      "kind": "functional",
+      "flow": "modules/TemplateAdd/e2e/cancel.yaml",
+      "screenshots": [
+        "TemplateAdd-cancelled"
+      ]
+    },
+    {
+      "id": "e2e-templateadd-save-failure",
+      "kind": "functional",
+      "screen": "TemplateAdd",
+      "title": "Ошибка сохранения шаблона, повтор и отсутствие дубля",
+      "flow": "modules/TemplateAdd/e2e/save-failure.yaml",
+      "screenshots": [
+        "TemplateAdd-save-failed",
+        "TemplateList-retry-saved"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-templateadd-cancel"
+      ],
+      "sources": [
+        "TemplateAdd"
+      ],
+      "module": "TemplateAdd"
+    },
+    {
+      "id": "e2e-templatelist-load-failure",
+      "kind": "functional",
+      "module": "TemplateList",
+      "screen": "TemplateList",
+      "sources": [
+        "TemplateList"
+      ],
+      "title": "Ошибка загрузки шаблонов и повтор",
+      "flow": "modules/TemplateList/e2e/load-failure.yaml",
+      "screenshots": [
+        "TemplateList-load-failed",
+        "TemplateList-load-retried"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-templateadd-save-failure"
+      ]
+    },
+    {
+      "id": "e2e-templatelist-two-types",
+      "title": "Два шаблона разных типов: открыть, вернуться и перезапустить",
+      "kind": "functional",
+      "module": "TemplateList",
+      "screen": "TemplateList",
+      "flow": "modules/TemplateList/e2e/two-types.yaml",
+      "screenshots": [
+        "TemplateList-two-examination-types"
+      ],
+      "dependsOn": [
+        "e2e-templateadd-save-failure"
+      ]
+    },
+    {
+      "id": "e2e-templateedit-template-edit",
+      "title": "Изменить шаблон и проверить сохранение после перезапуска",
+      "kind": "functional",
+      "flow": "modules/TemplateEdit/e2e/template-edit.yaml",
+      "sources": [
+        "TemplateEdit"
+      ],
+      "screenshots": [
+        "031-TemplateEdit-content"
+      ],
+      "screen": "TemplateEdit",
+      "module": "TemplateEdit",
+      "dependsOn": [
+        "e2e-templateadd-template-create"
+      ],
+      "subscriptionProfile": "pro"
+    },
+    {
+      "id": "e2e-templateedit-cancel",
+      "module": "TemplateEdit",
+      "screen": "TemplateEdit",
+      "title": "Выход без изменения сохранённого шаблона",
+      "kind": "functional",
+      "flow": "modules/TemplateEdit/e2e/cancel.yaml",
+      "screenshots": [
+        "TemplateEdit-cancelled"
+      ],
+      "dependsOn": [
+        "e2e-templateedit-template-edit"
+      ]
+    },
+    {
+      "id": "e2e-readymadetemplatelist-ready-templates",
+      "title": "Найти готовый шаблон, применить и проверить сохранённое содержимое",
+      "kind": "functional",
+      "flow": "modules/ReadyMadeTemplateList/e2e/ready-templates.yaml",
+      "sources": [
+        "ReadyMadeTemplateList"
+      ],
+      "screenshots": [
+        "032-ReadyMadeTemplateList",
+        "ReadyMadeTemplateList-applied-saved"
+      ],
+      "screen": "ReadyMadeTemplateList",
+      "module": "ReadyMadeTemplateList",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-readymadetemplatelist-empty-failure-cancel",
+      "title": "Пустой каталог, ошибка загрузки и отмена выбора",
+      "kind": "functional",
+      "module": "ReadyMadeTemplateList",
+      "screen": "ReadyMadeTemplateList",
+      "flow": "modules/ReadyMadeTemplateList/e2e/empty-failure-cancel.yaml",
+      "screenshots": [
+        "ReadyMadeTemplateList-empty-catalog",
+        "ReadyMadeTemplateList-catalog-failed",
+        "ReadyMadeTemplateList-catalog-recovered"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-selecttemplate-apply-reset",
+      "title": "Выбрать сохранённый шаблон, перезапустить и сбросить",
+      "kind": "functional",
+      "module": "SelectTemplate",
+      "screen": "SelectTemplate",
+      "sources": [
+        "SelectTemplate"
+      ],
+      "flow": "modules/SelectTemplate/e2e/apply-reset.yaml",
+      "screenshots": [
+        "SelectTemplate-applied",
+        "SelectTemplate-reset"
+      ],
+      "subscriptionProfile": "pro",
+      "timeoutSeconds": 600,
+      "dependsOn": [
+        "e2e-readymadetemplatelist-ready-templates"
+      ]
+    },
+    {
+      "id": "e2e-selecttemplate-type-filter-failure",
+      "title": "Шаблон другого типа, пустой список и повтор после ошибки чтения",
+      "kind": "functional",
+      "module": "SelectTemplate",
+      "screen": "SelectTemplate",
+      "flow": "modules/SelectTemplate/e2e/type-filter-failure.yaml",
+      "screenshots": [
+        "Scan-template-type-mismatch",
+        "SelectTemplate-no-matching-type",
+        "SelectTemplate-load-failed"
+      ],
+      "dependsOn": [
+        "e2e-readymadetemplatelist-ready-templates"
+      ]
+    },
+    {
+      "id": "e2e-scan-clear-media-template",
+      "module": "Scan",
+      "screen": "Scan",
+      "title": "Очистить фото и поля, сохранив историю, шаблоны и выбранный шаблон",
+      "kind": "functional",
+      "flow": "modules/Scan/e2e/clear-media-template.yaml",
+      "screenshots": [
+        "Scan-cleared-media-retained-template",
+        "Scan-clear-template-restored"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-readymadetemplatelist-ready-templates"
+      ],
+      "localAssertions": {
+        "preserved": [
+          "reports",
+          "templates"
+        ],
+        "minimumBefore": {
+          "reports": 1,
+          "templates": 1
+        }
+      }
+    },
+    {
+      "id": "e2e-templatedelete-cancel",
+      "title": "Отмена удаления сохраняет шаблон",
+      "kind": "functional",
+      "module": "TemplateDelete",
+      "screen": "TemplateDelete",
+      "flow": "modules/TemplateDelete/e2e/cancel.yaml",
+      "sources": [
+        "TemplateDelete"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "TemplateDelete-cancel"
+      ],
+      "dependsOn": [
+        "e2e-templateedit-template-edit"
+      ]
+    },
+    {
+      "id": "e2e-templatedelete-delete-template",
+      "title": "Удалить созданный тестом шаблон",
+      "kind": "functional",
+      "flow": "modules/TemplateDelete/e2e/delete-template.yaml",
+      "sources": [
+        "TemplateDelete"
+      ],
+      "screenshots": [
+        "080-TemplateDelete-confirm",
+        "TemplateDelete-after-relaunch"
+      ],
+      "screen": "TemplateDelete",
+      "module": "TemplateDelete",
+      "dependsOn": [
+        "e2e-templateedit-template-edit"
+      ],
+      "subscriptionProfile": "pro"
+    },
+    {
+      "id": "e2e-usersettings-work-settings",
+      "title": "Рабочий email сохраняется после перезапуска",
+      "kind": "functional",
+      "flow": "modules/UserSettings/e2e/work-settings.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "screenshots": [
+        "020-UserSettings-saved"
+      ],
+      "screen": "UserSettings",
+      "module": "UserSettings",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-usersettings-flags-000",
+      "title": "Переключатели: 000 сохраняются после перезапуска",
+      "kind": "functional",
+      "module": "UserSettings",
+      "screen": "UserSettings",
+      "flow": "modules/UserSettings/e2e/flags-000.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "UserSettings-flags-000",
+        "ReportReceived-flags-000"
+      ],
+      "backendAssertions": {
+        "photoCount": 1,
+        "isRecommendationsIncluded": false,
+        "isPhotoRemarks": false,
+        "isDescriptionRemarks": false,
+        "reportSections": {
+          "recommendations": false,
+          "photoRemarks": false,
+          "descriptionRemarks": false
+        }
+      }
+    },
+    {
+      "id": "e2e-usersettings-flags-001",
+      "title": "Переключатели: 001 сохраняются после перезапуска",
+      "kind": "functional",
+      "module": "UserSettings",
+      "screen": "UserSettings",
+      "flow": "modules/UserSettings/e2e/flags-001.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "UserSettings-flags-001",
+        "ReportReceived-flags-001"
+      ],
+      "backendAssertions": {
+        "photoCount": 1,
+        "isRecommendationsIncluded": false,
+        "isPhotoRemarks": false,
+        "isDescriptionRemarks": true,
+        "reportSections": {
+          "recommendations": false,
+          "photoRemarks": false,
+          "descriptionRemarks": true
+        }
+      },
+      "dependsOn": [
+        "e2e-usersettings-flags-000"
+      ]
+    },
+    {
+      "id": "e2e-usersettings-flags-010",
+      "title": "Переключатели: 010 сохраняются после перезапуска",
+      "kind": "functional",
+      "module": "UserSettings",
+      "screen": "UserSettings",
+      "flow": "modules/UserSettings/e2e/flags-010.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "UserSettings-flags-010",
+        "ReportReceived-flags-010"
+      ],
+      "backendAssertions": {
+        "photoCount": 1,
+        "isRecommendationsIncluded": false,
+        "isPhotoRemarks": true,
+        "isDescriptionRemarks": false,
+        "reportSections": {
+          "recommendations": false,
+          "photoRemarks": true,
+          "descriptionRemarks": false
+        }
+      },
+      "dependsOn": [
+        "e2e-usersettings-flags-000"
+      ]
+    },
+    {
+      "id": "e2e-usersettings-flags-011",
+      "title": "Переключатели: 011 сохраняются после перезапуска",
+      "kind": "functional",
+      "module": "UserSettings",
+      "screen": "UserSettings",
+      "flow": "modules/UserSettings/e2e/flags-011.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "UserSettings-flags-011",
+        "ReportReceived-flags-011"
+      ],
+      "backendAssertions": {
+        "photoCount": 1,
+        "isRecommendationsIncluded": false,
+        "isPhotoRemarks": true,
+        "isDescriptionRemarks": true,
+        "reportSections": {
+          "recommendations": false,
+          "photoRemarks": true,
+          "descriptionRemarks": true
+        }
+      },
+      "dependsOn": [
+        "e2e-usersettings-flags-000"
+      ]
+    },
+    {
+      "id": "e2e-usersettings-flags-100",
+      "title": "Переключатели: 100 сохраняются после перезапуска",
+      "kind": "functional",
+      "module": "UserSettings",
+      "screen": "UserSettings",
+      "flow": "modules/UserSettings/e2e/flags-100.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "UserSettings-flags-100",
+        "ReportReceived-flags-100"
+      ],
+      "backendAssertions": {
+        "photoCount": 1,
+        "isRecommendationsIncluded": true,
+        "isPhotoRemarks": false,
+        "isDescriptionRemarks": false,
+        "reportSections": {
+          "recommendations": true,
+          "photoRemarks": false,
+          "descriptionRemarks": false
+        }
+      },
+      "dependsOn": [
+        "e2e-usersettings-flags-000"
+      ]
+    },
+    {
+      "id": "e2e-usersettings-flags-101",
+      "title": "Переключатели: 101 сохраняются после перезапуска",
+      "kind": "functional",
+      "module": "UserSettings",
+      "screen": "UserSettings",
+      "flow": "modules/UserSettings/e2e/flags-101.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "UserSettings-flags-101",
+        "ReportReceived-flags-101"
+      ],
+      "backendAssertions": {
+        "photoCount": 1,
+        "isRecommendationsIncluded": true,
+        "isPhotoRemarks": false,
+        "isDescriptionRemarks": true,
+        "reportSections": {
+          "recommendations": true,
+          "photoRemarks": false,
+          "descriptionRemarks": true
+        }
+      },
+      "dependsOn": [
+        "e2e-usersettings-flags-000"
+      ]
+    },
+    {
+      "id": "e2e-usersettings-flags-110",
+      "title": "Переключатели: 110 сохраняются после перезапуска",
+      "kind": "functional",
+      "module": "UserSettings",
+      "screen": "UserSettings",
+      "flow": "modules/UserSettings/e2e/flags-110.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "UserSettings-flags-110",
+        "ReportReceived-flags-110"
+      ],
+      "backendAssertions": {
+        "photoCount": 1,
+        "isRecommendationsIncluded": true,
+        "isPhotoRemarks": true,
+        "isDescriptionRemarks": false,
+        "reportSections": {
+          "recommendations": true,
+          "photoRemarks": true,
+          "descriptionRemarks": false
+        }
+      },
+      "dependsOn": [
+        "e2e-usersettings-flags-000"
+      ]
+    },
+    {
+      "id": "e2e-usersettings-flags-111",
+      "title": "Переключатели: 111 сохраняются после перезапуска",
+      "kind": "functional",
+      "module": "UserSettings",
+      "screen": "UserSettings",
+      "flow": "modules/UserSettings/e2e/flags-111.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "UserSettings-flags-111",
+        "ReportReceived-flags-111"
+      ],
+      "backendAssertions": {
+        "photoCount": 1,
+        "isRecommendationsIncluded": true,
+        "isPhotoRemarks": true,
+        "isDescriptionRemarks": true,
+        "reportSections": {
+          "recommendations": true,
+          "photoRemarks": true,
+          "descriptionRemarks": true
+        }
+      },
+      "dependsOn": [
+        "e2e-usersettings-flags-000"
+      ]
+    },
+    {
+      "id": "e2e-usersettings-invalid-email",
+      "title": "Неверная почта не заменяет сохранённую",
+      "kind": "functional",
+      "module": "UserSettings",
+      "screen": "UserSettings",
+      "flow": "modules/UserSettings/e2e/invalid-email.yaml",
+      "sources": [
+        "UserSettings"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "UserSettings-email-error"
+      ],
+      "dependsOn": [
+        "e2e-usersettings-work-settings"
+      ]
+    },
+    {
+      "id": "e2e-usersettings-save-failure",
+      "kind": "functional",
+      "screen": "UserSettings",
+      "title": "Отмена правки почты, ошибка записи и повтор",
+      "flow": "modules/UserSettings/e2e/save-failure.yaml",
+      "screenshots": [
+        "UserSettings-save-failed",
+        "UserSettings-retry-saved"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-usersettings-invalid-email"
+      ],
+      "sources": [
+        "UserSettings"
+      ],
+      "module": "UserSettings"
+    },
+    {
+      "id": "e2e-settingsai-ai-settings",
+      "title": "Открыть настройки и выбор транскрибатора",
+      "kind": "functional",
+      "flow": "modules/SettingsAI/e2e/ai-settings.yaml",
+      "sources": [
+        "SettingsAI",
+        "SelectTranscriber"
+      ],
+      "screenshots": [
+        "040-SettingsAI",
+        "041-SelectTranscriber"
+      ],
+      "screen": "SettingsAI",
+      "module": "SettingsAI",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-settingsai-providers",
+      "title": "Выбрать WhisperKit и серверный парсер и сохранить",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/providers.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-providers-saved"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-parameters-0-1",
+      "title": "Сохранить температуру 0 и 1 токенов",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/parameters-0-1.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-parameters-0-1"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-parameters-0_7-1024",
+      "title": "Сохранить температуру 0.7 и 1024 токенов",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/parameters-0_7-1024.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-parameters-0_7-1024"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-request-parameters",
+      "title": "Параметры AI и полный шаблон доходят до задания backend",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/request-parameters.yaml",
+      "screenshots": [
+        "ReportReceived-request-parameters-verified",
+        "ReportDetail-request-parameters-verified"
+      ],
+      "dependsOn": [
+        "e2e-settingsai-parameters-0_7-1024",
+        "e2e-readymadetemplatelist-ready-templates"
+      ],
+      "backendAssertions": {
+        "settingsAI": {
+          "temperature": 0.7,
+          "maxTokens": 1024,
+          "isMarkdown": true
+        },
+        "templateId": "thyroidGlandStandard"
+      }
+    },
+    {
+      "id": "e2e-scan-template-model-request",
+      "title": "Из Scan: сброс/выбор шаблона, модель и AI-параметры реального запроса",
+      "kind": "functional",
+      "module": "Scan",
+      "screen": "Scan",
+      "flow": "modules/Scan/e2e/template-model-request.yaml",
+      "screenshots": [
+        "Scan-patient-preserved-after-ai-settings",
+        "Scan-template-model-request-completed"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-settingsai-request-parameters"
+      ],
+      "backendAssertions": {
+        "templateId": "thyroidGlandStandard",
+        "photoCount": 1,
+        "settingsAI": {
+          "selectedNeuralModelId": "google/medgemma-1.5-4b-it",
+          "temperature": 0.7,
+          "maxTokens": 1024
+        },
+        "examinationData": {
+          "patientName": "Regression REG-TEMPLATE-MODEL",
+          "examinationNumber": "REG-TEMPLATE-MODEL",
+          "usExaminationTypeId": "thyroidGland"
+        }
+      },
+      "localAssertions": {
+        "countDelta": {
+          "reports": 1
+        },
+        "preserved": [
+          "templates"
+        ]
+      }
+    },
+    {
+      "id": "e2e-settingsai-save-failure",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "sources": [
+        "SettingsAI"
+      ],
+      "title": "Ошибка сохранения параметров модели и повтор",
+      "flow": "modules/SettingsAI/e2e/save-failure.yaml",
+      "screenshots": [
+        "SettingsAI-save-failed",
+        "SettingsAI-save-retried"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-settingsai-parameters-0_7-1024"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-parameters-2-4096",
+      "title": "Сохранить температуру 2 и 4096 токенов",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/parameters-2-4096.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-parameters-2-4096"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-temperature-high",
+      "title": "Отклонить недопустимое значение 2.1",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/temperature-high.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-temperature-high"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-tokens-zero",
+      "title": "Отклонить недопустимое значение 0",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/tokens-zero.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-tokens-zero"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-tokens-high",
+      "title": "Отклонить недопустимое значение 4097",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/tokens-high.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-tokens-high"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-markdown-false",
+      "title": "Сохранить Markdown False",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/markdown-false.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-markdown-false"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-markdown-true",
+      "title": "Сохранить Markdown True",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/markdown-true.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SettingsAI-markdown-true"
+      ]
+    },
+    {
+      "id": "e2e-settingsai-base-restrictions",
+      "title": "Base блокирует настройки генерации",
+      "kind": "functional",
+      "module": "SettingsAI",
+      "screen": "SettingsAI",
+      "flow": "modules/SettingsAI/e2e/base-restrictions.yaml",
+      "sources": [
+        "SettingsAI"
+      ],
+      "subscriptionProfile": "base",
+      "screenshots": [
+        "SettingsAI-base-disabled"
+      ]
+    },
+    {
+      "id": "e2e-scan-base-voice-gate",
+      "module": "Scan",
+      "screen": "Scan",
+      "title": "Голосовой ввод требует Pro",
+      "kind": "functional",
+      "flow": "modules/Scan/e2e/base-voice-gate.yaml",
+      "screenshots": [
+        "Scan-voice-base-paywall"
+      ],
+      "subscriptionProfile": "base"
+    },
+    {
+      "id": "e2e-selecttranscriptparser-parser-selector",
+      "title": "Открыть выбор парсера транскрипта",
+      "kind": "functional",
+      "flow": "modules/SelectTranscriptParser/e2e/parser-selector.yaml",
+      "sources": [
+        "SelectTranscriptParser"
+      ],
+      "screenshots": [
+        "042-SelectTranscriptParser"
+      ],
+      "screen": "SelectTranscriptParser",
+      "module": "SelectTranscriptParser",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-selectneuralmodel-model-1",
+      "title": "Выбрать Google MedGemma 4B и проверить после перезапуска",
+      "kind": "functional",
+      "module": "SelectNeuralModel",
+      "screen": "SelectNeuralModel",
+      "flow": "modules/SelectNeuralModel/e2e/model-1.yaml",
+      "sources": [
+        "SelectNeuralModel"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SelectNeuralModel-choice-1"
+      ]
+    },
+    {
+      "id": "e2e-selectneuralmodel-model-2",
+      "title": "Выбрать Google MedGemma 1.5 4B и проверить после перезапуска",
+      "kind": "functional",
+      "module": "SelectNeuralModel",
+      "screen": "SelectNeuralModel",
+      "flow": "modules/SelectNeuralModel/e2e/model-2.yaml",
+      "sources": [
+        "SelectNeuralModel"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SelectNeuralModel-choice-2"
+      ]
+    },
+    {
+      "id": "e2e-selectneuralmodel-model-3",
+      "title": "Выбрать Google MedGemma 27B и проверить после перезапуска",
+      "kind": "functional",
+      "module": "SelectNeuralModel",
+      "screen": "SelectNeuralModel",
+      "flow": "modules/SelectNeuralModel/e2e/model-3.yaml",
+      "sources": [
+        "SelectNeuralModel"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "SelectNeuralModel-choice-3"
+      ]
+    },
+    {
+      "id": "e2e-managesubscription-subscription",
+      "title": "Проверить подготовленную тестовую подписку",
+      "kind": "functional",
+      "flow": "modules/ManageSubscription/e2e/subscription.yaml",
+      "sources": [
+        "ManageSubscription"
+      ],
+      "screenshots": [
+        "060-ManageSubscription-active"
+      ],
+      "screen": "ManageSubscription",
+      "module": "ManageSubscription",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-managesubscription-profile-base",
+      "title": "Активная подписка base",
+      "kind": "functional",
+      "module": "ManageSubscription",
+      "screen": "ManageSubscription",
+      "flow": "modules/ManageSubscription/e2e/profile-base.yaml",
+      "sources": [
+        "ManageSubscription"
+      ],
+      "subscriptionProfile": "base",
+      "screenshots": [
+        "ManageSubscription-base"
+      ]
+    },
+    {
+      "id": "e2e-managesubscription-profile-pro",
+      "title": "Активная подписка pro",
+      "kind": "functional",
+      "module": "ManageSubscription",
+      "screen": "ManageSubscription",
+      "flow": "modules/ManageSubscription/e2e/profile-pro.yaml",
+      "sources": [
+        "ManageSubscription"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "ManageSubscription-pro"
+      ]
+    },
+    {
+      "id": "e2e-managesubscription-support-refund",
+      "title": "Поддержка и запрос возврата не меняют подписку",
+      "kind": "functional",
+      "module": "ManageSubscription",
+      "screen": "ManageSubscription",
+      "flow": "modules/ManageSubscription/e2e/support-refund.yaml",
+      "screenshots": [
+        "ManageSubscription-support-refund-canceled"
+      ],
+      "subscriptionProfile": "pro",
+      "externalActions": [
+        {
+          "kind": "support",
+          "subject": "Моя подписка"
+        },
+        {
+          "kind": "support",
+          "subject": "Моя подписка"
+        }
+      ],
+      "localAssertions": {
+        "preserved": [
+          "reports",
+          "templates",
+          "draft",
+          "settings"
+        ]
+      },
+      "dependsOn": [
+        "e2e-managesubscription-profile-pro"
+      ]
+    },
+    {
+      "id": "e2e-paywall-none",
+      "title": "Paywall при профиле none",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/none.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "none",
+      "screenshots": [
+        "Paywall-none"
+      ],
+      "dependsOn": [
+        "e2e-history-saved-report"
+      ]
+    },
+    {
+      "id": "e2e-requestlimitexceeded-limit",
+      "module": "RequestLimitExceeded",
+      "screen": "RequestLimitExceeded",
+      "title": "Проверить серверное ограничение: exhausted",
+      "kind": "functional",
+      "flow": "modules/RequestLimitExceeded/e2e/limit.yaml",
+      "screenshots": [
+        "RequestLimitExceeded-exhausted",
+        "RequestLimitExceeded-upgrade"
+      ],
+      "subscriptionProfile": "exhausted",
+      "backendAssertions": {
+        "absent": true
+      },
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-managesubscription-background-before-revocation",
+      "title": "Активная Pro перед отзывом доступа в фоне",
+      "kind": "functional",
+      "module": "ManageSubscription",
+      "screen": "ManageSubscription",
+      "flow": "modules/ManageSubscription/e2e/background-before-revocation.yaml",
+      "screenshots": [
+        "ManageSubscription-before-revocation"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-managesubscription-revoked",
+      "module": "ManageSubscription",
+      "screen": "ManageSubscription",
+      "title": "Проверить серверное ограничение: revoked",
+      "kind": "functional",
+      "flow": "modules/ManageSubscription/e2e/revoked.yaml",
+      "screenshots": [
+        "ManageSubscription-revoked",
+        "Paywall-revoked"
+      ],
+      "subscriptionProfile": "revoked",
+      "backendAssertions": {
+        "absent": true
+      },
+      "dependsOn": [
+        "e2e-managesubscription-background-before-revocation"
+      ]
+    },
+    {
+      "id": "e2e-paywall-expired",
+      "title": "Paywall при профиле expired",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/expired.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "expired",
+      "screenshots": [
+        "Paywall-expired"
+      ],
+      "dependsOn": [
+        "e2e-history-saved-report"
+      ]
+    },
+    {
+      "id": "e2e-paywall-select-base_annual",
+      "title": "Выбор base_annual без покупки",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/select-base_annual.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "Paywall-selected-base_annual"
+      ]
+    },
+    {
+      "id": "e2e-paywall-select-base_six_months",
+      "title": "Выбор base_six_months без покупки",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/select-base_six_months.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "Paywall-selected-base_six_months"
+      ]
+    },
+    {
+      "id": "e2e-paywall-select-base_monthly",
+      "title": "Выбор base_monthly без покупки",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/select-base_monthly.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "Paywall-selected-base_monthly"
+      ]
+    },
+    {
+      "id": "e2e-paywall-select-base_weekly",
+      "title": "Выбор base_weekly без покупки",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/select-base_weekly.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "Paywall-selected-base_weekly"
+      ]
+    },
+    {
+      "id": "e2e-paywall-select-pro_annual",
+      "title": "Выбор pro_annual без покупки",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/select-pro_annual.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "Paywall-selected-pro_annual"
+      ]
+    },
+    {
+      "id": "e2e-paywall-select-pro_six_months",
+      "title": "Выбор pro_six_months без покупки",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/select-pro_six_months.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "Paywall-selected-pro_six_months"
+      ]
+    },
+    {
+      "id": "e2e-paywall-select-pro_monthly",
+      "title": "Выбор pro_monthly без покупки",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/select-pro_monthly.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "Paywall-selected-pro_monthly"
+      ]
+    },
+    {
+      "id": "e2e-paywall-select-pro_weekly",
+      "title": "Выбор pro_weekly без покупки",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/select-pro_weekly.yaml",
+      "sources": [
+        "Paywall"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "Paywall-selected-pro_weekly"
+      ]
+    },
+    {
+      "id": "e2e-paywall-documents",
+      "title": "Документы из Paywall сохраняют выбор плана",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/documents.yaml",
+      "screenshots": [
+        "WebDocument-paywall-privacy",
+        "WebDocument-paywall-terms"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-subscriptionrecovery-recovery",
+      "title": "Создать ключ восстановления тестовой подписки",
+      "kind": "functional",
+      "flow": "modules/SubscriptionRecovery/e2e/recovery.yaml",
+      "sources": [
+        "SubscriptionRecovery"
+      ],
+      "screenshots": [
+        "061-SubscriptionRecovery-key"
+      ],
+      "screen": "SubscriptionRecovery",
+      "module": "SubscriptionRecovery",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-storageclearprotocols-cancel",
+      "module": "StorageClearProtocols",
+      "screen": "StorageClearProtocols",
+      "title": "Отмена очистки сохраняет историю",
+      "kind": "functional",
+      "flow": "modules/StorageClearProtocols/e2e/cancel.yaml",
+      "screenshots": [
+        "StorageClearProtocols-cancel-confirmation",
+        "StorageClearProtocols-retained-history"
+      ],
+      "dependsOn": [
+        "e2e-history-pagination"
+      ],
+      "localAssertions": {
+        "minimumBefore": {
+          "reports": 1,
+          "templates": 1
+        },
+        "preserved": [
+          "reports",
+          "templates",
+          "settings",
+          "draft"
+        ]
+      }
+    },
+    {
+      "id": "e2e-storageclearall-cancel",
+      "module": "StorageClearAll",
+      "screen": "StorageClearAll",
+      "title": "Отмена очистки сохраняет историю",
+      "kind": "functional",
+      "flow": "modules/StorageClearAll/e2e/cancel.yaml",
+      "screenshots": [
+        "StorageClearAll-cancel-confirmation",
+        "StorageClearAll-retained-history"
+      ],
+      "dependsOn": [
+        "e2e-history-pagination"
+      ],
+      "localAssertions": {
+        "minimumBefore": {
+          "reports": 1,
+          "templates": 1
+        },
+        "preserved": [
+          "reports",
+          "templates",
+          "settings",
+          "draft"
+        ]
+      }
+    },
+    {
+      "id": "e2e-storage-delete-speech-model",
+      "module": "Storage",
+      "screen": "Storage",
+      "title": "Удаление локальной речевой модели и повторная подготовка",
+      "kind": "functional",
+      "flow": "modules/Storage/e2e/delete-speech-model.yaml",
+      "screenshots": [
+        "Storage-speech-model-present",
+        "Storage-speech-model-removed",
+        "ScanSpeech-model-download-required"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-storageclearall-cancel"
+      ],
+      "localAssertions": {
+        "minimumBefore": {
+          "reports": 1,
+          "templates": 1
+        },
+        "preserved": [
+          "reports",
+          "templates",
+          "draft",
+          "settings"
+        ],
+        "cleared": [
+          "speechModel"
+        ]
+      }
+    },
+    {
+      "id": "e2e-storage-clear-failure-cancel",
+      "title": "Сбой очистки и отмена операции при уходе с экрана",
+      "kind": "functional",
+      "module": "Storage",
+      "screen": "Storage",
+      "flow": "modules/Storage/e2e/clear-failure-cancel.yaml",
+      "screenshots": [
+        "Storage-clear-failed",
+        "Storage-cancelled-clear-retains-history"
+      ],
+      "subscriptionProfile": "pro",
+      "localAssertions": {
+        "minimumBefore": {
+          "reports": 1,
+          "templates": 1
+        },
+        "preserved": [
+          "reports",
+          "templates",
+          "settings",
+          "draft"
+        ]
+      },
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-storageclearprotocols-storage-clear-history",
+      "title": "Очистить историю и проверить пустой список",
+      "kind": "functional",
+      "flow": "modules/StorageClearProtocols/e2e/storage-clear-history.yaml",
+      "sources": [
+        "Storage",
+        "StorageClearProtocols",
+        "History"
+      ],
+      "screenshots": [
+        "090-StorageClearProtocols-confirm",
+        "091-History-after-clear",
+        "Scan-draft-preserved-after-history-clear"
+      ],
+      "screen": "StorageClearProtocols",
+      "module": "StorageClearProtocols",
+      "subscriptionProfile": "pro",
+      "dependsOn": [],
+      "localAssertions": {
+        "cleared": [
+          "reports"
+        ],
+        "preserved": [
+          "templates",
+          "settings"
+        ],
+        "minimumBefore": {
+          "reports": 1,
+          "templates": 1
+        }
+      }
+    },
+    {
+      "id": "e2e-webdocument-privacy",
+      "title": "Открыть документ Политика конфиденциальности",
+      "kind": "functional",
+      "module": "WebDocument",
+      "screen": "WebDocument",
+      "flow": "modules/WebDocument/e2e/privacy.yaml",
+      "sources": [
+        "WebDocument"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "WebDocument-privacy",
+        "WebDocument-privacy-end"
+      ]
+    },
+    {
+      "id": "e2e-webdocument-terms",
+      "title": "Открыть документ Условия и Положения",
+      "kind": "functional",
+      "module": "WebDocument",
+      "screen": "WebDocument",
+      "flow": "modules/WebDocument/e2e/terms.yaml",
+      "sources": [
+        "WebDocument"
+      ],
+      "subscriptionProfile": "pro",
+      "screenshots": [
+        "WebDocument-terms",
+        "WebDocument-terms-end"
+      ]
+    },
+    {
+      "id": "e2e-webdocument-network-failure",
+      "title": "Ошибка загрузки документа и повторное открытие",
+      "kind": "functional",
+      "module": "WebDocument",
+      "screen": "WebDocument",
+      "flow": "modules/WebDocument/e2e/network-failure.yaml",
+      "screenshots": [
+        "WebDocument-network-failed",
+        "WebDocument-network-recovered"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-legalupdate-accept-retry",
+      "title": "Повторное согласие с документами и ошибка сохранения",
+      "kind": "functional",
+      "module": "LegalUpdate",
+      "screen": "LegalUpdate",
+      "flow": "modules/LegalUpdate/e2e/accept-retry.yaml",
+      "screenshots": [
+        "LegalUpdate-consent-required",
+        "WebDocument-legalupdate-privacy",
+        "WebDocument-legalupdate-terms",
+        "LegalUpdate-save-failed"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-about-about",
+      "title": "Открыть сведения о приложении",
+      "kind": "functional",
+      "flow": "modules/About/e2e/about.yaml",
+      "sources": [
+        "About"
+      ],
+      "screenshots": [
+        "070-About"
+      ],
+      "screen": "About",
+      "module": "About",
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-about-contact",
+      "title": "Контактный адрес и версия приложения",
+      "kind": "functional",
+      "module": "About",
+      "screen": "About",
+      "flow": "modules/About/e2e/contact.yaml",
+      "screenshots": [
+        "About-contact-canceled"
+      ],
+      "subscriptionProfile": "pro",
+      "externalActions": [
+        {
+          "kind": "support"
+        }
+      ],
+      "localAssertions": {
+        "preserved": [
+          "reports",
+          "templates",
+          "draft",
+          "settings"
+        ]
+      },
+      "dependsOn": [
+        "e2e-about-about"
+      ]
+    },
+    {
+      "id": "e2e-newversion-required-update",
+      "title": "Обязательное major-обновление и совместимая minor-версия",
+      "kind": "functional",
+      "module": "NewVersion",
+      "screen": "NewVersion",
+      "flow": "modules/NewVersion/e2e/required-update.yaml",
+      "screenshots": [
+        "NewVersion-required-major-update",
+        "Scan-compatible-minor-version"
+      ],
+      "subscriptionProfile": "pro",
+      "externalActions": [
+        {
+          "kind": "store"
+        }
+      ],
+      "localAssertions": {
+        "preserved": [
+          "reports",
+          "templates",
+          "draft",
+          "settings"
+        ]
+      },
+      "dependsOn": [
+        "e2e-about-contact"
+      ]
+    },
+    {
+      "id": "e2e-scancamera-capture-delete",
+      "title": "Захват трёх фото и удаление через PhotoView",
+      "kind": "functional",
+      "flow": "modules/ScanCamera/e2e/capture-delete.yaml",
+      "module": "ScanCamera",
+      "screen": "ScanCamera",
+      "sources": [
+        "ScanCamera",
+        "PhotoView",
+        "Scan"
+      ],
+      "screenshots": [
+        "ScanCamera-ready",
+        "ScanCamera-three-photos",
+        "PhotoView-middle-photo",
+        "Scan-after-last-photo-delete"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-photolibrarypicker-selection-limit",
+      "module": "PhotoLibraryPicker",
+      "screen": "PhotoLibraryPicker",
+      "title": "Галерея: выбор, отмена, порядок и лимит снимков",
+      "kind": "functional",
+      "flow": "modules/PhotoLibraryPicker/e2e/selection-limit.yaml",
+      "screenshots": [
+        "ImportMedia-sources",
+        "PhotoLibraryPicker-gallery",
+        "PhotoLibraryPicker-three-selected",
+        "PhotoView-gallery-second",
+        "PhotoView-gallery-third",
+        "PhotoView-gallery-first",
+        "PhotoLibraryPicker-remaining-limit",
+        "PhotoView-gallery-six",
+        "Scan-gallery-five-after-delete"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-scancamera-capture-delete"
+      ],
+      "localAssertions": {
+        "draftPhotoAspects": [
+          "landscape",
+          "landscape",
+          "landscape",
+          "portrait",
+          "square"
+        ]
+      }
+    },
+    {
+      "id": "e2e-permission-gallery",
+      "module": "Permission",
+      "screen": "Permission",
+      "title": "Разрешение медиатеки: отказ и возврат из настроек",
+      "kind": "functional",
+      "flow": "modules/Permission/e2e/gallery.yaml",
+      "screenshots": [
+        "Permission-gallery-denied",
+        "Permission-gallery-system-settings",
+        "Permission-gallery-allowed"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-permission-speech",
+      "module": "Permission",
+      "screen": "Permission",
+      "title": "Разрешение микрофона: отказ и возврат из настроек",
+      "kind": "functional",
+      "flow": "modules/Permission/e2e/speech.yaml",
+      "screenshots": [
+        "Permission-speech-denied",
+        "Permission-speech-system-settings",
+        "Permission-speech-allowed"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-permission-camera",
+      "module": "Permission",
+      "screen": "Permission",
+      "title": "Разрешение камеры: отказ и возврат из настроек",
+      "kind": "functional",
+      "flow": "modules/Permission/e2e/camera.yaml",
+      "screenshots": [
+        "Permission-camera-denied",
+        "Permission-camera-system-settings",
+        "Permission-camera-allowed"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-scancamera-limit-reopen",
+      "title": "Лимит шести снимков и повторное открытие камеры",
+      "kind": "functional",
+      "module": "ScanCamera",
+      "screen": "ScanCamera",
+      "flow": "modules/ScanCamera/e2e/limit-reopen.yaml",
+      "screenshots": [
+        "ScanCamera-six-photo-limit",
+        "ScanCamera-reopened"
+      ]
+    },
+    {
+      "id": "e2e-templateedit-failures",
+      "title": "Ошибки чтения и сохранения шаблона",
+      "kind": "functional",
+      "flow": "modules/TemplateEdit/e2e/failures.yaml",
+      "module": "TemplateEdit",
+      "screen": "TemplateEdit",
+      "sources": [
+        "TemplateEdit"
+      ],
+      "screenshots": [
+        "TemplateEdit-load-failed",
+        "TemplateEdit-save-failed",
+        "TemplateEdit-retry-saved"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-templateadd-save-failure"
+      ]
+    },
+    {
+      "id": "e2e-photoview-report-remarks",
+      "title": "Замечания backend, масштабирование и видимость",
+      "kind": "functional",
+      "flow": "modules/PhotoView/e2e/report-remarks.yaml",
+      "module": "PhotoView",
+      "screen": "PhotoView",
+      "sources": [
+        "PhotoView",
+        "PhotoRemark",
+        "ReportDetail",
+        "ScanCamera"
+      ],
+      "screenshots": [
+        "PhotoView-backend-remarks",
+        "PhotoRemark-measurement",
+        "PhotoView-hidden-remarks-restored",
+        "PhotoRemark-boundary"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-scanspeech-record-review",
+      "title": "Ошибка подготовки, диктовка и выбор полей",
+      "kind": "functional",
+      "flow": "modules/ScanSpeech/e2e/record-review.yaml",
+      "module": "ScanSpeech",
+      "screen": "ScanSpeech",
+      "sources": [
+        "ScanSpeech",
+        "Scan"
+      ],
+      "screenshots": [
+        "ScanSpeech-model-preparation-failed",
+        "ScanSpeech-model-ready",
+        "ScanSpeech-recording",
+        "ScanSpeech-selected-name",
+        "ScanSpeech-only-selected-fields-applied"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-scanspeech-parsing-retry",
+      "title": "Ошибка разбора, повтор, пустой транскрипт и перезапись",
+      "kind": "functional",
+      "module": "ScanSpeech",
+      "screen": "ScanSpeech",
+      "flow": "modules/ScanSpeech/e2e/parsing-retry.yaml",
+      "screenshots": [
+        "ScanSpeech-parsing-failed-transcript-kept",
+        "ScanSpeech-parsing-retried",
+        "ScanSpeech-empty-transcript",
+        "ScanSpeech-edited-transcript-parsed"
+      ],
+      "backendAssertions": {
+        "dictationText": "Regression edited transcript"
+      }
+    },
+    {
+      "id": "e2e-scanspeech-cancel",
+      "module": "ScanSpeech",
+      "screen": "ScanSpeech",
+      "title": "Отмена записи и разбора без изменения черновика",
+      "kind": "functional",
+      "flow": "modules/ScanSpeech/e2e/cancel.yaml",
+      "screenshots": [
+        "ScanSpeech-cancel-recording",
+        "ScanSpeech-cancel-parsing",
+        "ScanSpeech-cancel-retained-automatic-fields"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-scanspeech-parsing-retry"
+      ],
+      "backendAssertions": {
+        "absent": true,
+        "dictationAbsent": true
+      }
+    },
+    {
+      "id": "e2e-reportreceived-delivery-retry",
+      "module": "ReportReceived",
+      "screen": "ReportReceived",
+      "title": "Копирование ответа и повтор реальной доставки из окна получения",
+      "kind": "functional",
+      "flow": "modules/ReportReceived/e2e/delivery-retry.yaml",
+      "screenshots": [
+        "ReportReceived-copied",
+        "ReportReceived-delivery-failed",
+        "ReportReceived-delivery-succeeded"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-usersettings-work-settings"
+      ],
+      "delivery": {
+        "recipient": "regression@example.invalid",
+        "patientName": "Regression REG-DELIVERY",
+        "attachmentCount": 1,
+        "failNext": true,
+        "clipboardMode": "model-report"
+      },
+      "localAssertions": {
+        "countDelta": {
+          "reports": 1
+        },
+        "preserved": [
+          "templates"
+        ]
+      },
+      "backendAssertions": {
+        "photoCount": 1,
+        "examinationData": {
+          "patientName": "Regression REG-DELIVERY",
+          "examinationNumber": "REG-DELIVERY",
+          "usExaminationTypeId": "thyroidGland"
+        }
+      }
+    },
+    {
+      "id": "e2e-share-delivery-retry",
+      "title": "Копирование и SMTP: содержимое, вложение, ошибка и повтор",
+      "kind": "functional",
+      "module": "Share",
+      "screen": "Share",
+      "flow": "modules/Share/e2e/delivery-retry.yaml",
+      "screenshots": [
+        "Share-report-copied",
+        "Share-delivery-failed",
+        "ReportDetail-delivery-succeeded"
+      ],
+      "dependsOn": [
+        "e2e-photoview-report-remarks",
+        "e2e-usersettings-save-failure"
+      ],
+      "delivery": {
+        "recipient": "regression@example.invalid",
+        "patientName": "Photo regression",
+        "attachmentCount": 1,
+        "failNext": true
+      }
+    },
+    {
+      "id": "e2e-share-external-email",
+      "title": "Письмо совпадает с SMTP; отмена и отсутствие рабочего адреса",
+      "kind": "functional",
+      "module": "Share",
+      "screen": "Share",
+      "flow": "modules/Share/e2e/external-email.yaml",
+      "screenshots": [
+        "Share-without-work-email",
+        "Share-external-email-canceled"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-share-delivery-retry"
+      ],
+      "backendAssertions": {
+        "absent": true,
+        "emailAbsent": true
+      },
+      "localAssertions": {
+        "preserved": [
+          "reports",
+          "templates"
+        ]
+      },
+      "externalActions": [
+        {
+          "kind": "report",
+          "patientName": "Photo regression"
+        }
+      ]
+    },
+    {
+      "id": "e2e-share-base-email-gate",
+      "title": "Base блокирует оба способа отправки по почте",
+      "kind": "functional",
+      "module": "Share",
+      "screen": "Share",
+      "flow": "modules/Share/e2e/base-email-gate.yaml",
+      "screenshots": [
+        "Share-base-work-email-gate",
+        "Share-base-custom-email-gate"
+      ],
+      "subscriptionProfile": "base",
+      "dependsOn": [
+        "e2e-share-delivery-retry"
+      ],
+      "backendAssertions": {
+        "absent": true,
+        "emailAbsent": true
+      },
+      "localAssertions": {
+        "preserved": [
+          "reports",
+          "templates"
+        ]
+      }
+    },
+    {
+      "id": "e2e-reportdetail-saved-report",
+      "title": "Сохранённые поля, фото, полный текст и копирование ответа",
+      "module": "ReportDetail",
+      "screen": "ReportDetail",
+      "kind": "functional",
+      "flow": "modules/ReportDetail/e2e/saved-report.yaml",
+      "screenshots": [
+        "ReportDetail-expanded-saved-fields",
+        "ReportDetail-original-response-restored"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-share-base-email-gate"
+      ],
+      "reportAssertions": {
+        "patientName": "Regression REG-DETAIL",
+        "actualModel": "google/medgemma-4b-it",
+        "clipboardModel": "google/medgemma-4b-it",
+        "versionCount": 1,
+        "completedCount": 1,
+        "failedCount": 0,
+        "preserveExamination": false
+      },
+      "localAssertions": {
+        "preserved": [
+          "templates"
+        ],
+        "countDelta": {
+          "reports": 1
+        }
+      },
+      "backendAssertions": {
+        "examinationData": {
+          "patientName": "Regression REG-DETAIL",
+          "examinationNumber": "REG-DETAIL",
+          "usExaminationTypeId": "thyroidGland"
+        },
+        "photoCount": 1,
+        "settingsAI": {
+          "selectedNeuralModelId": "google/medgemma-4b-it"
+        },
+        "isRecommendationsIncluded": true
+      }
+    },
+    {
+      "id": "e2e-reportdetail-regenerate-retry",
+      "title": "Повтор другим AI: ошибка, сохранность старого ответа, успешный повтор",
+      "module": "ReportDetail",
+      "screen": "ReportDetail",
+      "kind": "functional",
+      "flow": "modules/ReportDetail/e2e/regenerate-retry.yaml",
+      "screenshots": [
+        "ReportDetail-regeneration-failed",
+        "ReportDetail-previous-response-after-failure",
+        "ReportDetail-current-response-after-retry"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-reportdetail-saved-report"
+      ],
+      "reportAssertions": {
+        "patientName": "Regression REG-DETAIL",
+        "actualModel": "google/medgemma-1.5-4b-it",
+        "clipboardModel": "google/medgemma-1.5-4b-it",
+        "versionCount": 3,
+        "completedCount": 2,
+        "failedCount": 1,
+        "preserveExamination": true,
+        "distinctResponses": true
+      },
+      "localAssertions": {
+        "preserved": [
+          "templates"
+        ],
+        "countDelta": {
+          "reports": 0
+        }
+      },
+      "backendAssertions": {
+        "examinationData": {
+          "patientName": "Regression REG-DETAIL",
+          "examinationNumber": "REG-DETAIL",
+          "usExaminationTypeId": "thyroidGland"
+        },
+        "photoCount": 1,
+        "settingsAI": {
+          "selectedNeuralModelId": "google/medgemma-1.5-4b-it",
+          "temperature": 0.7,
+          "maxTokens": 1024
+        },
+        "isRecommendationsIncluded": false,
+        "attemptStatuses": [
+          "failed",
+          "completed"
+        ],
+        "worker": {
+          "mode": "fail-before",
+          "examinationNumber": "REG-DETAIL"
+        }
+      }
+    },
+    {
+      "id": "e2e-reportdetail-copy-previous",
+      "title": "Копирование предыдущей версии и меню доставки отчёта",
+      "module": "ReportDetail",
+      "screen": "ReportDetail",
+      "kind": "functional",
+      "flow": "modules/ReportDetail/e2e/copy-previous.yaml",
+      "screenshots": [
+        "ReportDetail-previous-response-copied",
+        "ReportDetail-share-saved-report"
+      ],
+      "subscriptionProfile": "pro",
+      "dependsOn": [
+        "e2e-reportdetail-regenerate-retry"
+      ],
+      "reportAssertions": {
+        "patientName": "Regression REG-DETAIL",
+        "actualModel": "google/medgemma-1.5-4b-it",
+        "clipboardModel": "google/medgemma-4b-it",
+        "versionCount": 3,
+        "completedCount": 2,
+        "failedCount": 1,
+        "preserveExamination": true,
+        "distinctResponses": true
+      },
+      "localAssertions": {
+        "preserved": [
+          "templates"
+        ],
+        "countDelta": {
+          "reports": 0
+        }
+      }
+    },
+    {
+      "id": "e2e-storageclearall-clear-all",
+      "title": "Полная локальная очистка и повторное прохождение onboarding",
+      "kind": "functional",
+      "module": "StorageClearAll",
+      "screen": "StorageClearAll",
+      "flow": "modules/StorageClearAll/e2e/clear-all.yaml",
+      "screenshots": [
+        "StorageClearAll-onboarding-after-clear",
+        "StorageClearAll-empty-history",
+        "StorageClearAll-empty-templates",
+        "StorageClearAll-reset-work-settings",
+        "StorageClearAll-subscription-preserved"
+      ],
+      "subscriptionProfile": "pro",
+      "localAssertions": {
+        "minimumBefore": {
+          "reports": 1,
+          "templates": 1
+        },
+        "cleared": [
+          "reports",
+          "templates"
+        ],
+        "preferencesCleared": [
+          "userEmail",
+          "isRecommendationsIncluded",
+          "isPhotoRemarks",
+          "isDescriptionRemarks",
+          "isRemarksVisible",
+          "selectedUSExaminationTemplateId"
+        ],
+        "settingsAIValues": {
+          "isMarkdown": false,
+          "temperature": null,
+          "maxTokens": null
+        },
+        "draftPhotoAspects": []
+      },
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-paywall-yookassa-cancel",
+      "title": "Отмена оплаты в настоящем SDK ЮКассы не выдаёт доступ",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/yookassa-cancel.yaml",
+      "screenshots": [
+        "Paywall-yookassa-cancel-selected",
+        "Paywall-yookassa-cancel-sdk",
+        "Paywall-yookassa-cancel-returned"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "base_weekly",
+      "paymentOutcome": "canceled",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-paywall-yookassa-declined",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "title": "YooKassa: реальный отказ тестовой карты без выдачи доступа",
+      "kind": "functional",
+      "flow": "modules/Paywall/e2e/yookassa-declined.yaml",
+      "screenshots": [
+        "Paywall-yookassa-declined-selected",
+        "Paywall-yookassa-declined-sdk",
+        "Paywall-yookassa-declined-returned"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "base_weekly",
+      "paymentOutcome": "declined",
+      "dependsOn": []
+    },
+    {
+      "id": "e2e-paywall-yookassa-declined-retry",
+      "title": "Повтор после отказа YooKassa: тот же продукт, отмена без второго платежа",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/yookassa-declined-retry.yaml",
+      "screenshots": [
+        "Paywall-yookassa-retry-same-product",
+        "Paywall-yookassa-retry-canceled"
+      ],
+      "provider": "yookassa",
+      "paymentPlan": "base_weekly",
+      "paymentOutcome": "declined-retry",
+      "dependsOn": [
+        "e2e-paywall-yookassa-declined"
+      ],
+      "subscriptionProfile": "provider"
+    },
+    {
+      "id": "e2e-paywall-yookassa-base",
+      "title": "Покупка Base через SDK тестового магазина YooKassa",
+      "kind": "functional",
+      "flow": "modules/Paywall/e2e/yookassa-base.yaml",
+      "sources": [
+        "Paywall",
+        "ManageSubscription"
+      ],
+      "screen": "Paywall",
+      "module": "Paywall",
+      "screenshots": [
+        "Paywall-yookassa-base-selected",
+        "Paywall-yookassa-base-sdk",
+        "ManageSubscription-yookassa-base-purchased"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "base_weekly",
+      "dependsOn": [
+        "e2e-about-about"
+      ]
+    },
+    {
+      "id": "e2e-paywall-yookassa-active-rejected",
+      "title": "Активная Base блокирует новую покупку без дополнительного платежа",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/yookassa-active-rejected.yaml",
+      "screenshots": [
+        "Paywall-yookassa-active-pro-selected",
+        "Paywall-yookassa-active-purchase-rejected",
+        "ManageSubscription-base-preserved-after-rejection"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "base_weekly",
+      "paymentOutcome": "active-rejected",
+      "dependsOn": [
+        "e2e-paywall-yookassa-base"
+      ]
+    },
+    {
+      "id": "e2e-paywall-yookassa-pending",
+      "title": "Платёж с 3-D Secure остаётся pending без выдачи доступа",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/yookassa-pending.yaml",
+      "screenshots": [
+        "Paywall-yookassa-pending-selected",
+        "Paywall-yookassa-pending-sdk",
+        "Paywall-yookassa-3ds-challenge",
+        "Paywall-yookassa-pending",
+        "Paywall-yookassa-still-pending"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "pro_weekly",
+      "paymentOutcome": "pending",
+      "dependsOn": [
+        "e2e-paywall-yookassa-active-rejected"
+      ]
+    },
+    {
+      "id": "e2e-paywall-yookassa-confirmed",
+      "title": "Подтвердить прежний платёж после перезапуска без второго заказа",
+      "kind": "functional",
+      "module": "Paywall",
+      "screen": "Paywall",
+      "flow": "modules/Paywall/e2e/yookassa-confirmed.yaml",
+      "screenshots": [
+        "Paywall-yookassa-3ds-resumed",
+        "Paywall-yookassa-3ds-provider-success",
+        "ManageSubscription-yookassa-3ds-confirmed"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "pro_weekly",
+      "paymentOutcome": "confirmed",
+      "dependsOn": [
+        "e2e-paywall-yookassa-pending"
+      ]
+    },
+    {
+      "id": "e2e-paywall-yookassa-pro",
+      "title": "Покупка Pro через SDK тестового магазина YooKassa",
+      "kind": "functional",
+      "flow": "modules/Paywall/e2e/yookassa-pro.yaml",
+      "sources": [
+        "Paywall",
+        "ManageSubscription"
+      ],
+      "screen": "Paywall",
+      "module": "Paywall",
+      "screenshots": [
+        "Paywall-yookassa-pro-selected",
+        "Paywall-yookassa-pro-sdk",
+        "ManageSubscription-yookassa-pro-purchased"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "pro_weekly",
+      "dependsOn": [
+        "e2e-paywall-yookassa-base"
+      ]
+    },
+    {
+      "id": "e2e-managesubscription-cancel-renewal",
+      "title": "Отмена продления сохраняет оплаченный доступ YooKassa",
+      "kind": "functional",
+      "module": "ManageSubscription",
+      "screen": "ManageSubscription",
+      "flow": "modules/ManageSubscription/e2e/cancel-renewal.yaml",
+      "screenshots": [
+        "ManageSubscription-renewal-disabled"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "pro_weekly",
+      "paymentOutcome": "action-passed",
+      "providerAction": "cancel-renewal",
+      "dependsOn": [
+        "e2e-paywall-yookassa-pro"
+      ]
+    },
+    {
+      "id": "e2e-subscriptionrecovery-create-key",
+      "title": "Копирование ключа настоящей тестовой подписки",
+      "kind": "functional",
+      "module": "SubscriptionRecovery",
+      "screen": "SubscriptionRecovery",
+      "flow": "modules/SubscriptionRecovery/e2e/create-key.yaml",
+      "screenshots": [
+        "SubscriptionRecovery-original-key"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "pro_weekly",
+      "paymentOutcome": "action-passed",
+      "providerAction": "create-key",
+      "dependsOn": [
+        "e2e-managesubscription-cancel-renewal"
+      ]
+    },
+    {
+      "id": "e2e-subscriptionrecovery-rotate-key",
+      "title": "Замена ключа восстановления",
+      "kind": "functional",
+      "module": "SubscriptionRecovery",
+      "screen": "SubscriptionRecovery",
+      "flow": "modules/SubscriptionRecovery/e2e/rotate-key.yaml",
+      "screenshots": [
+        "SubscriptionRecovery-key-rotated"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "pro_weekly",
+      "paymentOutcome": "action-passed",
+      "providerAction": "rotate-key",
+      "dependsOn": [
+        "e2e-subscriptionrecovery-create-key"
+      ]
+    },
+    {
+      "id": "e2e-subscriptionrecovery-reject-old-key",
+      "title": "Старый ключ не даёт доступ чистому клиенту",
+      "kind": "functional",
+      "module": "SubscriptionRecovery",
+      "screen": "SubscriptionRecovery",
+      "flow": "modules/SubscriptionRecovery/e2e/reject-old-key.yaml",
+      "screenshots": [
+        "SubscriptionRecovery-replaced-key-rejected"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "pro_weekly",
+      "paymentOutcome": "action-passed",
+      "providerAction": "reject-old-key",
+      "dependsOn": [
+        "e2e-subscriptionrecovery-rotate-key"
+      ]
+    },
+    {
+      "id": "e2e-subscriptionrecovery-restore-key",
+      "title": "Новый ключ восстанавливает прежний оплаченный период",
+      "kind": "functional",
+      "module": "SubscriptionRecovery",
+      "screen": "SubscriptionRecovery",
+      "flow": "modules/SubscriptionRecovery/e2e/restore-key.yaml",
+      "screenshots": [
+        "SubscriptionRecovery-restored-clean-client"
+      ],
+      "subscriptionProfile": "provider",
+      "provider": "yookassa",
+      "paymentPlan": "pro_weekly",
+      "paymentOutcome": "action-passed",
+      "providerAction": "restore-key",
+      "dependsOn": [
+        "e2e-subscriptionrecovery-reject-old-key"
+      ]
+    }
+  ],
+  "moduleOrder": [
+    "ApplicationSplash",
+    "OnBoarding",
+    "WebDocument",
+    "SelectUSExaminationType",
+    "Paywall",
+    "Scan",
+    "Settings",
+    "History",
+    "ReportDetail",
+    "TemplateList",
+    "TemplateAdd",
+    "ReadyMadeTemplateList",
+    "TemplateEdit",
+    "TemplateDelete",
+    "UserSettings",
+    "SettingsAI",
+    "SelectTranscriber",
+    "SelectTranscriptParser",
+    "SelectNeuralModel",
+    "ManageSubscription",
+    "SubscriptionRecovery",
+    "Storage",
+    "StorageClearProtocols",
+    "StorageClearAll",
+    "About",
+    "SelectDateOfBirth",
+    "SelectTemplate",
+    "ImportMedia",
+    "Permission",
+    "ScanCamera",
+    "PhotoLibraryPicker",
+    "PhotoView",
+    "PhotoRemark",
+    "ScanSpeech",
+    "ReportReceived",
+    "Share",
+    "RequestLimitExceeded",
+    "LegalUpdate",
+    "NewVersion"
+  ]
+}

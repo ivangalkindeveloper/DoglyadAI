@@ -1,0 +1,45 @@
+schemaVersion: 1
+module: LegalUpdate
+source: ios/Doglyad/Application/Module/LegalUpdate
+cases:
+- id: LegalUpdate.accept
+  title: Повторное юридическое согласие
+  profiles:
+  - pro
+  preconditions:
+  - Сохранено согласие со старой датой, предшествующей Development application.legalDate; для ветки ошибки
+    включён однократный сбой sharedRepository.acceptLegal.
+  steps:
+  - action: Перезапустить приложение
+    expect: Появляется LegalUpdate; старое согласие не считается принятием новой версии.
+  - action: Просмотреть документы, включить галочку и принять
+    expect: Оба документа правильные; новая версия согласия сохранена; приложение продолжает основной сценарий.
+  - action: Перезапустить
+    expect: LegalUpdate для той же версии не повторяется.
+  covers:
+  - onLegalAcceptedChanged
+  - onLegalAttributedEnvironment
+  - onTapAccept
+  - onTapPrivacyPolicy
+  - onTapTermsAndConditions
+  automation:
+    kind: maestro
+    flows:
+    - e2e-legalupdate-accept-retry
+- id: LegalUpdate.save-failure
+  title: Ошибка сохранения согласия
+  profiles:
+  - pro
+  preconditions:
+  - Сохранено согласие со старой датой, предшествующей Development application.legalDate; для ветки ошибки
+    включён однократный сбой sharedRepository.acceptLegal.
+  steps:
+  - action: Принять условия при сбое
+    expect: Показана ошибка; пользователь остаётся на юридическом экране.
+  - action: Устранить сбой и принять снова
+    expect: Сохранена новая версия; переход происходит один раз.
+  covers: []
+  automation:
+    kind: maestro
+    flows:
+    - e2e-legalupdate-accept-retry

@@ -1,0 +1,62 @@
+schemaVersion: 1
+module: OnBoarding
+source: ios/Doglyad/Application/Module/OnBoarding
+cases:
+- id: OnBoarding.first-launch
+  title: Первый запуск и завершение onboarding
+  profiles:
+  - none
+  preconditions:
+  - Новый симулятор; пустые SwiftData и Keychain; доступный backend; нет подписки
+  steps:
+  - action: Запустить приложение, перейти со вступительного экрана на второй
+    expect: Заголовки и содержимое меняются; кнопка назад доступна со второго экрана.
+  - action: Вернуться назад и снова дойти до юридического экрана
+    expect: Порядок страниц сохраняется; завершение невозможно без принятия условий.
+  - action: Включить согласие и перейти к выбору исследования
+    expect: Открывается список типов; выбранный тип отображается на странице onboarding.
+  - action: Завершить onboarding и перезапустить приложение
+    expect: Появляется Paywall; вступительные страницы не повторяются.
+  covers:
+  - onPressedNext
+  - onPressedBack
+  - onLegalAcceptedChanged
+  automation:
+    kind: maestro
+    flows:
+    - bootstrap-onboarding
+- id: OnBoarding.legal-links
+  title: Документы до согласия
+  profiles:
+  - none
+  preconditions:
+  - Свежий onboarding на юридическом экране
+  steps:
+  - action: Открыть по очереди условия и политику
+    expect: Открывается соответствующий WebDocument с содержимым документа.
+  - action: Закрыть документ
+    expect: Возврат к тому же шагу; галочка сама не включается.
+  covers:
+  - onTapPrivacyPolicy
+  - onTapTermsAndConditions
+  - onLegalAttributedEnvironment
+  automation:
+    kind: maestro
+    flows:
+    - bootstrap-onboarding
+- id: OnBoarding.completion-failure
+  title: Ошибка сохранения onboarding
+  profiles:
+  - none
+  preconditions:
+  - Свежий onboarding; контролируемый сбой записи настроек
+  steps:
+  - action: Завершить onboarding во время сбоя
+    expect: Показана ошибка; приложение не считает onboarding завершённым.
+  - action: Устранить сбой и повторить
+    expect: Согласие и выбранный тип сохранены; после перезапуска открывается Paywall.
+  covers: []
+  automation:
+    kind: maestro
+    flows:
+    - bootstrap-onboarding

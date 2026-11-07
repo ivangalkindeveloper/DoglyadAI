@@ -1,0 +1,39 @@
+appId: ${APP_ID}
+name: e2e-settingsai-providers
+tags:
+- e2e
+- SettingsAI
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- tapOn:
+    text: ^Транскрибатор\ речи$
+- tapOn:
+    text: ^WhisperKit$
+- tapOn:
+    text: ^Парсер\ разбора\ транскрипта$
+- tapOn:
+    text: ^Серверный\ парсинг$
+- tapOn:
+    text: ^Сохранить$
+- assertVisible:
+    text: ^Настройки\ сохранены$
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- assertVisible:
+    text: ^WhisperKit$
+- assertVisible:
+    text: ^Серверный\ парсинг$
+- takeScreenshot: SettingsAI-providers-saved

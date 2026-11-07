@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-newversion-affc69b859
+tags:
+- atlas
+- NewVersion
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-newversion-affc69b859
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-newversion-affc69b859
+    timeout: 15000
+- takeScreenshot: 01-NewVersion-affc69b859

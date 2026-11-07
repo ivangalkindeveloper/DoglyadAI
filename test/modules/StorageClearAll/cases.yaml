@@ -1,0 +1,39 @@
+schemaVersion: 1
+module: StorageClearAll
+source: ios/Doglyad/Application/Module/Storage/StorageClearAll
+cases:
+- id: StorageClearAll.clear
+  title: Полная локальная очистка
+  profiles:
+  - pro
+  preconditions:
+  - Есть история, шаблоны, настройки и принятый onboarding
+  steps:
+  - action: Подтвердить полную очистку
+    expect: Приложение возвращается к onboarding; локальные данные и настройки удалены согласно контракту
+      StorageRepository.
+  - action: Перезапустить приложение
+    expect: Onboarding остаётся обязательным; удалённые данные не восстанавливаются сами; серверная платёжная
+      история не удалена.
+  covers:
+  - onTapConfirm
+  automation:
+    kind: mixed
+    flows:
+    - e2e-storageclearall-clear-all
+    nativeTests:
+    - HistoryTests/historyClearRemovesOwnedAndLegacyOrphanRecordsButKeepsTemplates()
+- id: StorageClearAll.cancel
+  title: Отменить полную очистку
+  profiles:
+  - pro
+  preconditions:
+  - Есть локальные данные
+  steps:
+  - action: Открыть подтверждение и отменить
+    expect: История, шаблоны, настройки и текущая подписка не изменились.
+  covers: []
+  automation:
+    kind: maestro
+    flows:
+    - e2e-storageclearall-cancel

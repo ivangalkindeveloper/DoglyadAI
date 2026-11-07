@@ -1,12 +1,12 @@
 import UIKit
 
-enum SimulatorCameraImageFactory {
+public enum SimulatorCameraImageFactory {
     private static let imageSize = CGSize(
         width: 1024,
         height: 768,
     )
 
-    static func makeImage(
+    public static func makeImage(
         captureNumber: Int,
     ) -> UIImage {
         let format = UIGraphicsImageRendererFormat()

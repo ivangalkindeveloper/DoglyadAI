@@ -1,0 +1,39 @@
+appId: ${APP_ID}
+name: e2e-paywall-documents
+tags: [e2e, Paywall, WebDocument]
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element: {text: '^Управление подпиской$'}
+    direction: DOWN
+- tapOn: ^Управление подпиской$
+- tapOn: ^Сменить план$
+- runFlow: ../../../maestro/support/paywall-ready.yaml
+- tapOn: ^Подписка Pro$
+- scrollUntilVisible:
+    element: {id: paywall.plan.pro_weekly}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: paywall.plan.pro_weekly}
+- scrollUntilVisible:
+    element: {text: '^Политика конфиденциальности$'}
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Политика конфиденциальности$
+- extendedWaitUntil:
+    visible: .*Ответственный за обработку данных.*
+    timeout: 30000
+- takeScreenshot: WebDocument-paywall-privacy
+- tapOn: {id: bottomSheet.close}
+- tapOn: ^Условия и Положения$
+- extendedWaitUntil:
+    visible: .*Сведения о Разработчике.*
+    timeout: 30000
+- takeScreenshot: WebDocument-paywall-terms
+- tapOn: {id: bottomSheet.close}
+- scrollUntilVisible:
+    element: {id: paywall.plan.pro_weekly}
+    direction: UP
+    centerElement: true
+- assertVisible: {id: paywall.plan.pro_weekly, selected: true}
+- assertVisible: {id: paywall.continue, enabled: true}

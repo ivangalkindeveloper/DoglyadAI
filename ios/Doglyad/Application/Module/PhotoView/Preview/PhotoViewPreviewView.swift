@@ -7,8 +7,9 @@
     struct PhotoViewPreviewView: View {
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
-        let state: any PhotoViewStateProtocol
         let photos: [USExaminationScanPhoto]
+        var remarks: [USExaminationPhotoRemarks] = []
+        var isDeletionAvailable: Bool = true
 
         var body: some View {
             let model = PhotoViewViewModel(
@@ -29,22 +30,20 @@
                     getPhotos: {
                         photos
                     },
+                    getPhotoRemarks: {
+                        remarks
+                    },
                     initialPhotoID: photos.first?.id ?? UUID(),
-                    subTitle: "Щитовидная железа",
-                    onDelete: { _ in },
+                    subTitle: ModulePreviewFactory.examinationType.title,
+                    onDelete: isDeletionAvailable ? { _ in } : nil,
                 ),
             )
 
             model.preparePreview(
-                state: state,
+                state: PhotoViewState(),
             )
             return PhotoViewScreenView(
                 viewModel: model,
-            )
-            .id(
-                ObjectIdentifier(
-                    state,
-                ),
             )
         }
     }

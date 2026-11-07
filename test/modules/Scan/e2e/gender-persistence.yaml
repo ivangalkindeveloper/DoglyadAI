@@ -1,0 +1,26 @@
+appId: ${APP_ID}
+name: e2e-scan-gender-persistence
+tags: [e2e, Scan]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {text: '^Женщина$'}
+    direction: DOWN
+- tapOn: ^Женщина$
+- assertVisible: {id: scan.patientGender.female}
+- takeScreenshot: Scan-gender-female
+- pressKey: Home
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {text: '^Женщина$'}
+    direction: DOWN
+- assertVisible: {id: scan.patientGender.female}
+- tapOn: ^Мужчина$
+- assertVisible: {id: scan.patientGender.male}
+- pressKey: Home
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {text: '^Мужчина$'}
+    direction: DOWN
+- assertVisible: {id: scan.patientGender.male}
+- takeScreenshot: Scan-gender-male-restored

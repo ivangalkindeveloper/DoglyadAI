@@ -1,0 +1,25 @@
+appId: ${APP_ID}
+name: e2e-history-saved-report
+tags:
+- e2e
+- History
+---
+- runFlow: ../../../maestro/support/generate-report.yaml
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^История\ исследований$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^История\ исследований$
+- assertNotVisible:
+    text: '^Список\ последних\ протоколов\ пуст\.\
+
+      Пожалуйста,\ сгенерируйте\ хотя\ бы\ одно\ исследование,\ чтобы\ посмотреть\
+      историю\ протоколов\.$'
+- tapOn:
+    text: Щитовидная железа
+- assertVisible:
+    text: ^Протокол$
+- takeScreenshot: History-saved-report-opened

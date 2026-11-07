@@ -1,0 +1,22 @@
+appId: ${APP_ID}
+name: e2e-usersettings-work-settings
+tags:
+- e2e
+- UserSettings
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Рабочие\ настройки$
+- tapOn:
+    text: ^my_email@work\-email\.com$
+- inputText: regression@example.invalid
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- assertVisible:
+    text: ^Настройки\ сохранены$
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Рабочие\ настройки$
+- assertVisible: regression@example.invalid
+- takeScreenshot: 020-UserSettings-saved

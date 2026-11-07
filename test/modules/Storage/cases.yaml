@@ -1,0 +1,63 @@
+schemaVersion: 1
+module: Storage
+source: ios/Doglyad/Application/Module/Storage/Storage
+cases:
+- id: Storage.summary
+  title: Переходы и отмена очистки
+  profiles:
+  - pro
+  preconditions:
+  - Есть история и шаблоны. В изолированной сборке подготовлены маленькие файлы структуры WhisperKit; удаление выполняет
+    настоящий файловый сервис. Веса модели не скачиваются и распознавание этим сценарием не проверяется.
+  steps:
+  - action: Открыть хранилище
+    expect: Доступны очистка истории и всех данных; удаление speech-модели показано только при наличии модели.
+  - action: Открыть по очереди очистку истории и всех данных, отменить
+    expect: Данные не удалены; подтверждения соответствуют выбранному действию.
+  - action: Вернуться в настройки
+    expect: Открываются настройки; данные не изменены.
+  covers:
+  - onTapClearProtocols
+  - onTapClearAll
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-storageclearall-cancel
+    - e2e-storageclearprotocols-cancel
+    - e2e-storage-delete-speech-model
+- id: Storage.speech-model
+  title: Удаление speech-модели
+  profiles:
+  - pro
+  preconditions:
+  - Есть история и шаблоны. В изолированной сборке подготовлены маленькие файлы структуры WhisperKit; удаление выполняет
+    настоящий файловый сервис. Веса модели не скачиваются и распознавание этим сценарием не проверяется.
+  steps:
+  - action: Удалить модель
+    expect: Действие удаления модели исчезает после удаления; история и шаблоны сохранены.
+  - action: Открыть ScanSpeech повторно
+    expect: Требуется повторная подготовка модели; отсутствует ложная готовность.
+  covers:
+  - onTapDeleteSpeechModel
+  automation:
+    kind: maestro
+    flows:
+    - e2e-storage-delete-speech-model
+- id: Storage.failure-lifecycle
+  title: Ошибка очистки и уход с экрана
+  profiles:
+  - pro
+  preconditions:
+  - Управляемая ошибка удаления
+  steps:
+  - action: Вызвать ошибку очистки или удаления модели
+    expect: Показана ошибка; операция не объявлена успешной.
+  - action: Закрыть во время операции
+    expect: Поздний результат не открывает экран заново и не запускает повторное удаление.
+  covers:
+  - onDisappear
+  automation:
+    kind: maestro
+    flows:
+    - e2e-storage-clear-failure-cancel

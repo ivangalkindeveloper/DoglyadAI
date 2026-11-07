@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "UserSettingsDefaultState",
+        "01 UserSettingsDefaultState",
     ) {
         UserSettingsPreviewView(
             state: UserSettingsDefaultState(),
@@ -15,7 +15,17 @@
     }
 
     #Preview(
-        "UserSettingsFailedState",
+        "02 UserSettingsLoadingState",
+    ) {
+        UserSettingsPreviewView(
+            state: UserSettingsLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "03 UserSettingsFailedState",
     ) {
         UserSettingsPreviewView(
             state: UserSettingsFailedState(
@@ -23,16 +33,6 @@
                     .notConnectedToInternet,
                 ),
             ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "UserSettingsLoadingState",
-    ) {
-        UserSettingsPreviewView(
-            state: UserSettingsLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

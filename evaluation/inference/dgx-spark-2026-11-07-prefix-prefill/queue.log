@@ -1,0 +1,12 @@
+{"stage": "prefix-fixed", "state": "starting"}
+{"stage": "prefix-fixed", "exit_code": 0}
+{"stage": "template-holdout", "state": "starting"}
+{"stage": "template-holdout", "exit_code": 0}
+{"stage": "prefill", "state": "starting"}
+{"stage": "prefill", "exit_code": 1}
+Traceback (most recent call last):
+  File "/var/tmp/doglyad-prefix-prefill-20261107/continue_measurements.py", line 101, in <module>
+    main()
+  File "/var/tmp/doglyad-prefix-prefill-20261107/continue_measurements.py", line 94, in main
+    raise RuntimeError(f"Stage failed: {name}")
+RuntimeError: Stage failed: prefill

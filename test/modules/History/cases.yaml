@@ -1,0 +1,80 @@
+schemaVersion: 1
+module: History
+source: ios/Doglyad/Application/Module/History
+cases:
+- id: History.empty
+  title: Пустая история
+  profiles:
+  - pro
+  preconditions:
+  - В SwiftData нет протоколов
+  steps:
+  - action: Открыть историю
+    expect: Показан текст пустого списка; карточек протоколов нет.
+  - action: Вернуться
+    expect: Открываются настройки.
+  covers:
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-history-history-empty
+- id: History.pages
+  title: Заполненная история и подгрузка
+  profiles:
+  - pro
+  preconditions:
+  - 'Тестовая фикстура сохраняет 41 протокол через настоящий SwiftData-репозиторий. Уникальные номера HISTORY-001…041;
+    даты: сегодня, вчера и 02.01.2020. Это проверка истории; генерация через backend проверяется отдельно.'
+  steps:
+  - action: Открыть историю
+    expect: Первая страница содержит до history.pageSize записей (сейчас 20), новые сверху; заголовки дней соответствуют
+      датам.
+  - action: Прокрутить до второй и последней страницы
+    expect: Появляются все 41 уникальный номер; первые карточки сохраняются; дубликатов нет.
+  - action: Перезапустить приложение и открыть историю
+    expect: Те же записи и порядок сохраняются.
+  covers:
+  - onInit
+  - onOffsetAppear
+  automation:
+    kind: maestro
+    flows:
+    - e2e-history-pagination
+- id: History.open-report
+  title: Открытие готового и текущего протокола
+  profiles:
+  - pro
+  preconditions:
+  - В истории есть готовый отчёт и отчёт с активной генерацией
+  steps:
+  - action: Открыть готовую запись
+    expect: ReportDetail показывает её номер, данные пациента и сохранённый ответ.
+  - action: Открыть запись в процессе генерации
+    expect: Открывается ReportReceived; завершение обновляет состояние этой же записи, без дубля.
+  covers:
+  - onTapReport
+  automation:
+    kind: maestro
+    flows:
+    - e2e-history-saved-report
+    - e2e-history-pending-generation
+- id: History.load-failure
+  title: Ошибки первой и следующей страницы
+  profiles:
+  - pro
+  preconditions:
+  - Контролируемый сбой чтения репозитория
+  steps:
+  - action: Открыть пустой загруженный список при сбое
+    expect: Показана ошибка и повтор.
+  - action: Устранить сбой и повторить; затем вызвать сбой следующей страницы
+    expect: Первая страница восстановлена; при следующем сбое уже загруженные записи не исчезают.
+  - action: Повторить подгрузку
+    expect: Нужная страница добавлена один раз.
+  covers:
+  - onTapRetry
+  automation:
+    kind: maestro
+    flows:
+    - e2e-history-load-failures

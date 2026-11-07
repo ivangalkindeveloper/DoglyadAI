@@ -1,0 +1,77 @@
+{"budget": 2048, "wave": "warmup", "requests": 3, "seconds": 48.72321930198814, "complete": true, "over120": 0}
+{"budget": 2048, "wave": "technical4-1", "requests": 12, "seconds": 77.0294639810163, "complete": true, "over120": 0}
+{"budget": 2048, "wave": "technical8-1", "requests": 24, "seconds": 138.40009958200972, "complete": true, "over120": 2}
+{"budget": 2048, "wave": "technical8-2", "requests": 24, "seconds": 138.4705378159997, "complete": true, "over120": 2}
+{"budget": 2048, "wave": "technical4-2", "requests": 12, "seconds": 77.04419838101603, "complete": true, "over120": 0}
+{"budget": 2048, "wave": "report8", "requests": 24, "seconds": 67.46379120799247, "complete": true, "over120": 0}
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Stopped 
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Healthy 
+{"healthy": "vllm_medgemma_27b", "override": "budget4096.json"}
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Waiting 
+container doglyad-dgx-vllm_medgemma_4b-1 is unhealthy
+ Container doglyad-dgx-vllm_medgemma_4b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Stopping 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Stopped 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Stopped 
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Healthy 
+{"healthy": "vllm_medgemma_27b", "override": "original-commands.json"}
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Healthy 
+{"healthy": "vllm_medgemma_4b", "override": "original-commands.json"}
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Waiting 
+container doglyad-dgx-vllm_medgemma_15_4b-1 is unhealthy
+Traceback (most recent call last):
+  File "/var/tmp/doglyad-prefix-prefill-20261107/prefill_controller.py", line 153, in main
+    start(service, candidate_override, log)
+  File "/var/tmp/doglyad-prefix-prefill-20261107/prefill_controller.py", line 64, in start
+    assert process.returncode == 0, f"Startup failed: {service}"
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Startup failed: vllm_medgemma_4b
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/var/tmp/doglyad-prefix-prefill-20261107/prefill_controller.py", line 227, in <module>
+    main()
+  File "/var/tmp/doglyad-prefix-prefill-20261107/prefill_controller.py", line 174, in main
+    start(service, original_override, log)
+  File "/var/tmp/doglyad-prefix-prefill-20261107/prefill_controller.py", line 64, in start
+    assert process.returncode == 0, f"Startup failed: {service}"
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Startup failed: vllm_medgemma_15_4b

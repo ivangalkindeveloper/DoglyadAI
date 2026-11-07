@@ -1,0 +1,30 @@
+schemaVersion: 1
+module: Permission
+source: ios/Doglyad/Application/Module/Permission
+cases:
+- id: Permission.denied-settings
+  title: Разрешение камеры, речи и медиатеки
+  profiles:
+  - pro
+  preconditions:
+  - На выделенном Simulator для каждого вида доступа заранее установлен реальный отказ TCC.
+  steps:
+  - action: Попробовать соответствующее действие
+    expect: Открывается Permission с объяснением именно нужного разрешения.
+  - action: Открыть системные настройки; разрешить доступ через TCC и перезапустить клиент
+    expect: Переход в системные настройки выполнен; после изменения доступа и перезапуска камера, запись или
+      галерея доступны.
+  covers:
+  - onTapOpenSettings
+  automation:
+    kind: maestro
+    flows:
+    - e2e-permission-camera
+    - e2e-permission-speech
+    - e2e-permission-gallery
+  variants:
+  - camera
+  - speech
+  - photoLibrary
+  knownLimitation: iOS 26.5 Simulator открывает корень Settings и кеширует отказ AVFoundation до перезапуска.
+    Прямой переход в карточку приложения на физическом iPhone этим прогоном не проверяется.

@@ -1,0 +1,139 @@
+appId: ${APP_ID}
+name: e2e-reportdetail-saved-report
+tags:
+- e2e
+- ReportDetail
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Рабочие настройки$
+- scrollUntilVisible:
+    element:
+      id: userSettings.recommendations
+    direction: DOWN
+    centerElement: true
+- runFlow:
+    when:
+      visible:
+        id: userSettings.recommendations
+        selected: false
+    commands:
+    - tapOn:
+        id: userSettings.recommendations
+- assertVisible:
+    id: userSettings.recommendations
+    selected: true
+- scrollUntilVisible:
+    element:
+      id: userSettings.photoRemarks
+    direction: DOWN
+    centerElement: true
+- runFlow:
+    when:
+      visible:
+        id: userSettings.photoRemarks
+        selected: false
+    commands:
+    - tapOn:
+        id: userSettings.photoRemarks
+- assertVisible:
+    id: userSettings.photoRemarks
+    selected: true
+- scrollUntilVisible:
+    element:
+      id: userSettings.descriptionRemarks
+    direction: DOWN
+    centerElement: true
+- runFlow:
+    when:
+      visible:
+        id: userSettings.descriptionRemarks
+        selected: false
+    commands:
+    - tapOn:
+        id: userSettings.descriptionRemarks
+- assertVisible:
+    id: userSettings.descriptionRemarks
+    selected: true
+- tapOn: ^Сохранить$
+- runFlow: ../../../maestro/support/one-photo.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Осталось запросов:$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Осталось запросов:$
+- tapOn: ^Google MedGemma 4B$
+- runFlow:
+    file: ../../../maestro/support/controlled-generation.yaml
+    env:
+      EXAMINATION_NUMBER: REG-DETAIL
+- extendedWaitUntil:
+    visible: ^К протоколу$
+    timeout: 180000
+- tapOn: ^К протоколу$
+- assertVisible: ^Regression REG-DETAIL$
+- assertVisible: ^REG-DETAIL$
+- scrollUntilVisible:
+    element:
+      id: reportDetail.photo\..*
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: reportDetail.photo\..*
+- assertVisible: ^1 из 1$
+- runFlow:
+    when:
+      visible:
+        id: photoView.remarksVisible
+        checked: false
+    commands:
+    - tapOn:
+        id: photoView.remarksVisible
+- assertVisible: ^Проверьте измерение$
+- tapOn: ^Проверьте измерение$
+- assertVisible: Демонстрационное замечание по снимку.*положение измерительных маркеров.*
+- tapOn: ^Назад$
+- tapOn:
+    id: navigation.back
+- scrollUntilVisible:
+    element:
+      text: ^Раскрыть$
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    text: ^Раскрыть$
+    index: 0
+- scrollUntilVisible:
+    element:
+      text: ^Свернуть$
+    direction: DOWN
+    centerElement: true
+- assertVisible: ^Свернуть$
+- takeScreenshot: ReportDetail-expanded-saved-fields
+- tapOn:
+    text: ^Свернуть$
+    index: 0
+- scrollUntilVisible:
+    element:
+      id: reportDetail.copy.google/medgemma-4b-it
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: reportDetail.copy.google/medgemma-4b-it
+- assertVisible:
+    id: message.success
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- tapOn: ^Regression REG-DETAIL$
+- assertVisible: ^Протокол$
+- scrollUntilVisible:
+    element:
+      id: reportDetail.copy.google/medgemma-4b-it
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: reportDetail.copy.google/medgemma-4b-it
+- assertVisible:
+    id: message.success
+- takeScreenshot: ReportDetail-original-response-restored

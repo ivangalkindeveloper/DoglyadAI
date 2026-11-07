@@ -10,6 +10,11 @@
         let state: any SelectUSExaminationTypeStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as SelectUSExaminationTypeFailedState: true
+            default: false
+            }
+
             let model = SelectUSExaminationTypeViewModel(
                 container: container,
                 router: router,
@@ -40,6 +45,9 @@
                     viewModel: model,
                 )
             }
+            .previewError(
+                isPresented: isErrorPresented,
+            )
             .id(
                 ObjectIdentifier(
                     state,

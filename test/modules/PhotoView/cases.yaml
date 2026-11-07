@@ -1,0 +1,73 @@
+schemaVersion: 1
+module: PhotoView
+source: ios/Doglyad/Application/Module/PhotoView
+cases:
+- id: PhotoView.navigation-zoom
+  title: Выбор фото и масштабирование
+  profiles:
+  - pro
+  preconditions:
+  - Есть три синтетических фото разного соотношения сторон
+  steps:
+  - action: Открыть второе фото и перейти между изображениями
+    expect: Выбранные фото соответствуют порядку; показан правильный текущий индекс.
+  - action: Дважды нажать и выполнить pinch/pan
+    expect: Масштаб и смещение меняются; изображение остаётся доступным; переход к другому фото корректно
+      обновляет трансформацию.
+  - action: Вернуться
+    expect: Исходная коллекция фото не изменена.
+  covers:
+  - onInit
+  - onPhotoSelected
+  - onDoubleTapPhoto
+  - onTapBack
+  automation:
+    kind: mixed
+    flows:
+    - e2e-photolibrarypicker-selection-limit
+    nativeTests:
+    - PhotoViewGestureTests/testDoubleTapAndPinch()
+    - PhotoViewGestureTests/testPortraitDoubleTapAndPinch()
+    - PhotoViewGestureTests/testSquareDoubleTapAndPinch()
+    - ModuleStateTests/photoViewerTracksSourceChangesAndDeletesThroughArguments()
+- id: PhotoView.delete
+  title: Удаление среднего и последнего фото
+  profiles:
+  - pro
+  preconditions:
+  - Коллекция из трёх фото; удаление разрешено
+  steps:
+  - action: Удалить среднее фото
+    expect: Удалён только выбранный ID; соседнее фото доступно.
+  - action: Удалить оставшиеся фото
+    expect: После последнего удаления PhotoView закрывается; нет обращения к несуществующему индексу.
+  - action: Открыть фото сохранённого протокола без права удаления
+    expect: Действие удаления недоступно.
+  covers:
+  - onTapDelete
+  automation:
+    kind: maestro
+    flows:
+    - e2e-scancamera-capture-delete
+    - e2e-photoview-report-remarks
+- id: PhotoView.remarks
+  title: Точки замечаний и сохранение видимости
+  profiles:
+  - pro
+  preconditions:
+  - Отчёт содержит фото с нормализованными координатами замечаний
+  steps:
+  - action: Показать точки, открыть одну, масштабировать фото
+    expect: Точки соответствуют нужным фото и координатам; PhotoRemark содержит текст выбранного замечания.
+  - action: Скрыть точки и перезапустить приложение
+    expect: Настройка видимости сохраняется; сами замечания не удалены.
+  covers:
+  - onTapRemark
+  - setRemarksVisibility
+  automation:
+    kind: mixed
+    flows:
+    - e2e-photoview-report-remarks
+    nativeTests:
+    - PhotoViewGestureTests/testDoubleTapAndPinch()
+    - ModuleStateTests/photoRemarksFollowTheNewReportWhenPhotosHaveNotChanged()

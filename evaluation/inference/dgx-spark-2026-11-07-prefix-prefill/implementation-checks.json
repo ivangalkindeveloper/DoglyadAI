@@ -1,0 +1,46 @@
+{
+  "date": "2026-11-07",
+  "change": "Move report template before patient data",
+  "changed_application_files": [
+    "backend/main/app/prompt/prompt_factory.py"
+  ],
+  "prompt_factory_sha256": "03a83ab639318b1118c450c2b6574e71f84380a03d4439a29673d315653c486d",
+  "deployed_to_server": false,
+  "photo_ids_preserved_in_user_prompt_system_prompt_and_strict_schema": true,
+  "prefill_budget_changed": false,
+  "exact_matches_to_archived_template_first": 96,
+  "environments": [
+    "development",
+    "production"
+  ],
+  "new_gpu_generations": 0,
+  "main_pytest": {
+    "command": "../../.venv311/bin/python -m pytest",
+    "cwd": "backend/main",
+    "exit_code": 0,
+    "passed": 587,
+    "skipped": 5
+  },
+  "main_ruff": {
+    "command": "../../.venv311/bin/python -m ruff check app tests",
+    "cwd": "backend/main",
+    "exit_code": 0
+  },
+  "main_mypy": {
+    "command": "../../.venv311/bin/python -m mypy",
+    "cwd": "backend/main",
+    "exit_code": 0,
+    "source_files": 280
+  },
+  "format": {
+    "command": ".venv311/bin/python tools/format_python.py backend/main/app/prompt/prompt_factory.py",
+    "exit_code": 0
+  },
+  "architecture": {
+    "command": "make check-architecture",
+    "exit_code": 2,
+    "finding_count": 13,
+    "rule": "swift.view-fragment",
+    "scope": "Existing violations in Swift files not modified by this task"
+  }
+}

@@ -1,0 +1,92 @@
+schemaVersion: 1
+module: ScanSpeech
+source: ios/Doglyad/Application/Module/Scan/ScanSpeech
+cases:
+- id: ScanSpeech.record
+  title: Подготовка, запись и остановка
+  profiles:
+  - pro
+  preconditions:
+  - Pro; управляемый RegressionSpeechController возвращает контрольную диктовку; разбор идёт через настоящий локальный
+    backend
+  steps:
+  - action: Открыть голосовой ввод и дождаться модели
+    expect: До готовности запись недоступна; после готовности появляется управление записью.
+  - action: Записать контрольную фразу и остановить
+    expect: Появляется транскрипт или автоматический разбор; двойное нажатие не создаёт вторую запись.
+  covers:
+  - onInit
+  - onTapSpeech
+  automation:
+    kind: mixed
+    flows:
+    - e2e-scanspeech-record-review
+    nativeTests:
+    - ScanSpeechRegressionTests/testRecordingRejectsDuplicateActionsAndLateTranscript()
+- id: ScanSpeech.review
+  title: Исправить транскрипт и выбрать поля
+  profiles:
+  - pro
+  preconditions:
+  - Контрольная речь содержит уверенные и неоднозначные данные пациента
+  steps:
+  - action: Исправить транскрипт и продолжить
+    expect: Парсер получает исправленный текст; пустой или слишком длинный текст не отправляется.
+  - action: Снять выбор с одного предложения, вернуться к тексту, повторить разбор
+    expect: Состояние не теряет надёжные данные; предложения соответствуют актуальному тексту.
+  - action: Применить выбранные поля
+    expect: В Scan изменены только выбранные/автоматически подтверждённые поля; непроверенные значения не подставлены.
+  covers:
+  - onTapContinue
+  - onTapProposal
+  - onTapBackToTranscript
+  - onTapApplySelected
+  automation:
+    kind: mixed
+    flows:
+    - e2e-scanspeech-record-review
+    - e2e-scanspeech-parsing-retry
+    nativeTests:
+    - ScanSpeechRegressionTests/testEmptyAndOversizedTranscriptCannotStartParsing()
+- id: ScanSpeech.cancel-rerecord
+  title: Перезапись и отмена
+  profiles:
+  - pro
+  preconditions:
+  - Голосовой ввод после записи или во время разбора
+  steps:
+  - action: Нажать записать заново
+    expect: Предыдущая запись не подмешивается в новый транскрипт.
+  - action: Закрыть окно во время записи/парсинга
+    expect: Запись и задачи остановлены; поздний ответ не меняет закрытую форму; ранее автоматически применённые
+      подтверждённые поля не теряются.
+  covers:
+  - onTapRecordAgain
+  - onTapBack
+  - onDisappear
+  automation:
+    kind: mixed
+    flows:
+    - e2e-scanspeech-parsing-retry
+    - e2e-scanspeech-cancel
+    nativeTests:
+    - ScanSpeechRegressionTests/testRecordingRejectsDuplicateActionsAndLateTranscript()
+- id: ScanSpeech.failures
+  title: Ошибка подготовки модели и парсинга
+  profiles:
+  - pro
+  preconditions:
+  - Отдельно недоступная модель и сбой серверного парсера
+  steps:
+  - action: Открыть при ошибке модели, затем устранить её и повторить
+    expect: Показана ошибка подготовки; повтор приводит к готовности записи.
+  - action: Вызвать ошибку разбора после записи
+    expect: Транскрипт остаётся доступным для исправления и повторной попытки.
+  covers:
+  - onTapRetryModelPreparation
+  - onParsingFailed
+  automation:
+    kind: maestro
+    flows:
+    - e2e-scanspeech-record-review
+    - e2e-scanspeech-parsing-retry

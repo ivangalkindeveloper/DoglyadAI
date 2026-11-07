@@ -1,0 +1,155 @@
+appId: ${APP_ID}
+name: e2e-reportdetail-regenerate-retry
+tags:
+- e2e
+- ReportDetail
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Рабочие настройки$
+- scrollUntilVisible:
+    element:
+      id: userSettings.recommendations
+    direction: DOWN
+    centerElement: true
+- runFlow:
+    when:
+      visible:
+        id: userSettings.recommendations
+        selected: true
+    commands:
+    - tapOn:
+        id: userSettings.recommendations
+- assertVisible:
+    id: userSettings.recommendations
+    selected: false
+- scrollUntilVisible:
+    element:
+      id: userSettings.photoRemarks
+    direction: DOWN
+    centerElement: true
+- runFlow:
+    when:
+      visible:
+        id: userSettings.photoRemarks
+        selected: false
+    commands:
+    - tapOn:
+        id: userSettings.photoRemarks
+- assertVisible:
+    id: userSettings.photoRemarks
+    selected: true
+- scrollUntilVisible:
+    element:
+      id: userSettings.descriptionRemarks
+    direction: DOWN
+    centerElement: true
+- runFlow:
+    when:
+      visible:
+        id: userSettings.descriptionRemarks
+        selected: false
+    commands:
+    - tapOn:
+        id: userSettings.descriptionRemarks
+- assertVisible:
+    id: userSettings.descriptionRemarks
+    selected: true
+- tapOn: ^Сохранить$
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- tapOn: ^Regression REG-DETAIL$
+- assertVisible: ^Протокол$
+- scrollUntilVisible:
+    element:
+      text: ^Температура:$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Температура:$
+- assertVisible: ^Настройки AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.temperature
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: settingsAI.temperature
+    index: 1
+- eraseText: 100
+- inputText: '0.7'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element:
+      id: settingsAI.maxTokens
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: settingsAI.maxTokens
+    index: 1
+- eraseText: 100
+- inputText: '1024'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: ^Сохранить$
+- assertVisible: ^Протокол$
+- scrollUntilVisible:
+    element:
+      text: ^Осталось запросов:$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Осталось запросов:$
+- tapOn: ^Google MedGemma 1\.5 4B$
+- scrollUntilVisible:
+    element:
+      text: ^Повторить генерацию$
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Повторить генерацию$
+- extendedWaitUntil:
+    visible: ^Повторить$
+    timeout: 60000
+- takeScreenshot: ReportDetail-regeneration-failed
+- tapOn:
+    id: bottomSheet.close
+- scrollUntilVisible:
+    element:
+      id: reportDetail.copy.google/medgemma-4b-it
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: reportDetail.copy.google/medgemma-4b-it
+- assertVisible:
+    id: message.success
+- takeScreenshot: ReportDetail-previous-response-after-failure
+- scrollUntilVisible:
+    element:
+      text: ^Повторить генерацию$
+    direction: UP
+    centerElement: true
+- tapOn: ^Повторить генерацию$
+- extendedWaitUntil:
+    visible: ^Копировать$
+    timeout: 180000
+- tapOn:
+    id: bottomSheet.close
+- scrollUntilVisible:
+    element:
+      id: reportDetail.copy.google/medgemma-1\.5-4b-it
+    direction: UP
+    centerElement: true
+- tapOn:
+    id: reportDetail.copy.google/medgemma-1\.5-4b-it
+- assertVisible:
+    id: message.success
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- tapOn: ^Regression REG-DETAIL$
+- assertVisible: ^Протокол$
+- scrollUntilVisible:
+    element:
+      id: reportDetail.copy.google/medgemma-1\.5-4b-it
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: reportDetail.copy.google/medgemma-1\.5-4b-it
+- assertVisible:
+    id: message.success
+- takeScreenshot: ReportDetail-current-response-after-retry

@@ -11,6 +11,11 @@
         let state: any SettingsAIStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as SettingsAIFailedState: true
+            default: false
+            }
+
             let model = SettingsAIViewModel(
                 container: container,
                 getInitialNeuralModel: {
@@ -47,6 +52,9 @@
             )
             return SettingsAIScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

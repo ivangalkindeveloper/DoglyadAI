@@ -89,7 +89,9 @@ struct MainRootView: View {
             ultrasoundViewModel.onAppear()
             viewModel.onAppear(
                 requestReview: {
-                    requestReview()
+                    #if !DOGLYAD_REGRESSION
+                        requestReview()
+                    #endif
                 },
             )
         }

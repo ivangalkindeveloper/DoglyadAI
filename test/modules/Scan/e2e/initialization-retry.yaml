@@ -1,0 +1,32 @@
+appId: ${APP_ID}
+name: e2e-scan-initialization-retry
+tags: [e2e, Scan]
+---
+- runFlow: ../../../maestro/support/one-photo.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: UP
+    centerElement: true
+- tapOn: {id: scan.patientName, index: 1}
+- eraseText: 100
+- inputText: Regression initialization
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- pressKey: Home
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionFault: ultrasoundDraftRepository.getDraft
+      regressionFaultAfter: '0'
+- extendedWaitUntil:
+    visible: '^Обновить$'
+    timeout: 60000
+- assertNotVisible: {id: scan.patientName}
+- takeScreenshot: Scan-initialization-failed
+- tapOn: ^Обновить$
+- extendedWaitUntil:
+    visible: {id: scan.patientName}
+    timeout: 30000
+- assertVisible: {id: 'scan.photo\..*'}
+- assertVisible: {id: scan.patientName, text: '^Regression initialization$'}
+- takeScreenshot: Scan-initialization-restored-draft

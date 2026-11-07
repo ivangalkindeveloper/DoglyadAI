@@ -1,0 +1,43 @@
+appId: ${APP_ID}
+name: e2e-templatelist-two-types
+tags: [e2e, TemplateList, TemplateAdd]
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Шаблоны протоколов$
+- assertVisible: ^Retry template$
+- tapOn: ^Добавить шаблон$
+- tapOn: ^Название шаблона$
+- inputText: Regression bladder
+- tapOn: ^Структура протокола, заголовки, обязательные разделы…$
+- inputText: Bladder description and conclusion
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: ^Щитовидная железа$
+- scrollUntilVisible:
+    element:
+      id: '^examinationType\.bladder$'
+      below: {id: bottomSheet.close}
+      above: '(?s)^Если Вы не обнаружили.*'
+    direction: DOWN
+    centerElement: false
+- waitForAnimationToEnd
+- tapOn:
+    id: '^examinationType\.bladder$'
+    below: {id: bottomSheet.close}
+    above: '(?s)^Если Вы не обнаружили.*'
+- assertVisible: ^Мочевой пузырь$
+- tapOn: ^Сохранить$
+- assertVisible: ^Regression bladder$
+- assertVisible: ^Retry template$
+- takeScreenshot: TemplateList-two-examination-types
+- tapOn: ^Regression bladder$
+- assertVisible: ^Мочевой пузырь$
+- assertVisible: Bladder description and conclusion
+- tapOn: {id: navigation.back}
+- tapOn: ^Retry template$
+- assertVisible: ^Щитовидная железа$
+- assertVisible: Retained description and conclusion
+- tapOn: {id: navigation.back}
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Шаблоны протоколов$
+- assertVisible: ^Regression bladder$
+- assertVisible: ^Retry template$

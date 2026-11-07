@@ -1,0 +1,59 @@
+.....................Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmpr0ayu_dp/dgx-spark. Review files, then configure .env and secrets before startup.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmpr0ayu_dp/medgemma-4b-amd64. Review files, then configure .env and secrets before startup.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmp8129nb6e/host. Review files, then configure .env and secrets before startup.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmpcp6ftonq/host. Review files, then configure .env and secrets before startup.
+Generated deployment matches profile.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmp4h1us1zs/host. Review files, then configure .env and secrets before startup.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmpsmbfv0iq/host. Review files, then configure .env and secrets before startup.
+Build dispatched for original
+.Build dispatched for sha
+Actions: run-url
+Build dispatched for sha
+Actions: run-url
+Build dispatched for sha
+Actions: run-url
+.Build dispatched for sha
+Actions: run-url
+.Updated inference spark:/opt/doglyad/first: digest
+Rolled back spark:/opt/doglyad/second
+Rolled back spark:/opt/doglyad/first
+.Updated inference gpu:/opt/doglyad: digest
+Rolled back dev:/opt/doglyad
+Rolled back gpu:/opt/doglyad
+....Ready: development dev:/opt/doglyad (digest)
+Ready: production prod:/opt/doglyad (digest)
+Main-only scope: inference availability/routes are not checked.
+Updated development dev:/opt/doglyad: digest
+Rolled back prod:/opt/doglyad
+Rolled back dev:/opt/doglyad
+Retained recovery lock: prod:/opt/doglyad release=ceaaaae2961c42ada475e1d100c6f884
+Retained recovery lock: dev:/opt/doglyad release=ceaaaae2961c42ada475e1d100c6f884
+.Ready: development dev:/opt/doglyad (digest)
+Ready: production prod:/opt/doglyad (digest)
+Main-only scope: inference availability/routes are not checked.
+Updated development dev:/opt/doglyad: digest
+Updated production prod:/opt/doglyad: digest
+.Updated scope=main: sha
+run-url
+Caddy/vLLM preserved. Generation not tested.
+Ready: development dev:/opt/doglyad (digest)
+Ready: production prod:/opt/doglyad (digest)
+...Main-only scope: inference availability/routes are not checked.
+Preflight passed. No changes made. Generation not tested.
+Ready: inference spark:/opt/doglyad/inference (digest)
+Ready: development dev:/opt/doglyad (digest)
+Ready: production prod:/opt/doglyad (digest)
+.Preflight passed. No changes made. Generation not tested.
+Updated inference gpu:/opt/doglyad: digest
+Updated development dev:/opt/doglyad: digest
+Updated production prod:/opt/doglyad: digest
+.Updated inference spark:/opt/doglyad/medgemma-4b: digest
+Updated inference spark:/opt/doglyad/medgemma-15-4b: digest
+Updated inference spark:/opt/doglyad/medgemma-27b: digest
+Updated development dev:/opt/doglyad: digest
+Updated production prod:/opt/doglyad: digest
+..............
+----------------------------------------------------------------------
+Ran 50 tests in 0.619s
+
+OK

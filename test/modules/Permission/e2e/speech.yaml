@@ -1,0 +1,44 @@
+appId: ${APP_ID}
+name: e2e-permission-speech
+tags: [e2e, Permission]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.clear}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.clear}
+- launchApp:
+    permissions: {all: deny}
+    arguments:
+      regressionPreview: ''
+      regressionFault: ''
+      regressionSpeech: review
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- waitForAnimationToEnd
+- tapOn: {id: scan.speech}
+- assertVisible: ^Предоставьте приложению разрешение на использование микрофона для записи вашего голоса и распознование речи$
+- takeScreenshot: Permission-speech-denied
+- tapOn: ^В настройки$
+# iOS 26.5 Simulator routes UIApplication.openSettingsURLString to Settings' root.
+- assertVisible: {id: com.apple.settings.general}
+- assertVisible: {id: breadcrumb, text: '.*Догляд AI.*'}
+- takeScreenshot: Permission-speech-system-settings
+- setPermissions:
+    permissions: {all: allow}
+# Simulator caches the denied authorization until this process restarts.
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionSpeech: review
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- waitForAnimationToEnd
+- tapOn: {id: scan.speech}
+- extendedWaitUntil:
+    visible: ^Начать запись$
+    timeout: 30000
+- takeScreenshot: Permission-speech-allowed

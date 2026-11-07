@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: e2e-scan-validation-empty
+tags: [e2e, Scan]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.clear}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.clear}
+- tapOn: ^Сгенерировать протокол$
+- assertVisible: {id: scan.settings}
+- assertNotVisible: ^К протоколу$
+- scrollUntilVisible:
+    element: {id: scan.examinationDescription}
+    direction: DOWN
+    centerElement: true
+- assertVisible: {id: scan.examinationDescription, text: '^Объем и форма исследуемых объектов, состояние кривизны показывает\.\.\.$'}
+- takeScreenshot: Scan-empty-description-validation

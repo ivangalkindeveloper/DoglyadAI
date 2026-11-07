@@ -1,0 +1,53 @@
+appId: ${APP_ID}
+name: e2e-scan-generation-save-retry
+tags: [e2e, Scan]
+---
+- runFlow: ../../../maestro/support/one-photo.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- scrollUntilVisible:
+    element: {id: scan.examinationNumber}
+    direction: UP
+    centerElement: true
+- tapOn: {id: scan.examinationNumber, index: 1}
+- eraseText: 100
+- inputText: REG-SCAN-SAVE
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: UP
+    centerElement: true
+- tapOn: {id: scan.patientName, index: 1}
+- eraseText: 100
+- inputText: Regression scan save
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- pressKey: Home
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionFault: ultrasoundReportRepository.setReport
+      regressionFaultAfter: '0'
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- scrollUntilVisible:
+    element: {text: '^Сгенерировать протокол$'}
+    direction: DOWN
+- tapOn: ^Сгенерировать протокол$
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 15000
+- assertNotVisible: ^К протоколу$
+- takeScreenshot: Scan-report-save-failed
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: UP
+- assertVisible: {id: scan.patientName, text: '^Regression scan save$'}
+- assertVisible: {id: 'scan.photo\..*'}
+- scrollUntilVisible:
+    element: {text: '^Сгенерировать протокол$'}
+    direction: DOWN
+- tapOn: ^Сгенерировать протокол$
+- extendedWaitUntil:
+    visible: '^К протоколу$'
+    timeout: 180000
+- takeScreenshot: Scan-report-save-retried

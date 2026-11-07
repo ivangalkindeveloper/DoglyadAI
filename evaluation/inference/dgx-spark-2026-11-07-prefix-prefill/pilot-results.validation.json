@@ -1,0 +1,35 @@
+{
+  "runner_complete": false,
+  "validation_scope": "JSON Schema and application content/measurement/remark validators; not a clinical assessment",
+  "summary": [
+    {
+      "model": "4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "baseline",
+      "phase": "cold",
+      "requests": 1,
+      "median_seconds": 23.29238740200526,
+      "median_ttft": 4.1872339230030775,
+      "invalid": 1
+    }
+  ],
+  "validations": [
+    {
+      "id": "4b:ru-photo1-template1:baseline:0",
+      "model_key": "4b",
+      "scenario": "ru-photo1-template1",
+      "variant": "baseline",
+      "patient": 0,
+      "is_synthetic_image": true,
+      "repetition": 0,
+      "phase": "cold",
+      "seconds": 23.29238740200526,
+      "ttft": 4.1872339230030775,
+      "schema_valid": false,
+      "main_valid": false,
+      "natural_stop": false,
+      "over_120_seconds": false,
+      "validation_error": "JSONDecodeError"
+    }
+  ]
+}

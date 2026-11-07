@@ -1,0 +1,62 @@
+appId: ${APP_ID}
+name: e2e-readymadetemplatelist-empty-failure-cancel
+tags: [e2e, ReadyMadeTemplateList, TemplateAdd]
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionEmptyReadyMadeTemplates: 'true'
+      regressionFault: ''
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- tapOn: {id: scan.settings}
+- tapOn: ^Шаблоны протоколов$
+- tapOn: ^Добавить шаблон$
+- tapOn: ^Название шаблона$
+- inputText: Retained unsaved template
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element: {text: '^Готовые шаблоны$'}
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Готовые шаблоны$
+- assertVisible: ^Готовых шаблонов пока нет$
+- assertNotVisible: ^Не удалось загрузить шаблоны$
+- takeScreenshot: ReadyMadeTemplateList-empty-catalog
+- tapOn: {id: navigation.back}
+- assertVisible: ^Retained unsaved template$
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionEmptyReadyMadeTemplates: 'false'
+      regressionFault: templateRepository.getReadyMadeTemplates
+      regressionFaultAfter: '0'
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- tapOn: {id: scan.settings}
+- tapOn: ^Шаблоны протоколов$
+- tapOn: ^Добавить шаблон$
+- tapOn: ^Название шаблона$
+- inputText: Retained unsaved template
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element: {text: '^Готовые шаблоны$'}
+    direction: DOWN
+    centerElement: true
+- tapOn: ^Готовые шаблоны$
+- assertVisible: ^Не удалось загрузить шаблоны$
+- assertNotVisible: ^Готовых шаблонов пока нет$
+- takeScreenshot: ReadyMadeTemplateList-catalog-failed
+- tapOn: ^Повторить$
+- scrollUntilVisible:
+    element: {text: '^УЗИ Щитовидной железы$'}
+    direction: DOWN
+    centerElement: true
+- assertVisible: ^УЗИ Щитовидной железы$
+- takeScreenshot: ReadyMadeTemplateList-catalog-recovered
+- tapOn: {id: navigation.back}
+- assertVisible: ^Retained unsaved template$
+- tapOn: {id: navigation.back}
+- assertNotVisible: ^Retained unsaved template$

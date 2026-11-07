@@ -135,10 +135,35 @@ extension DependencyContainer {
     static func makePreviewable(
         l10n: L10N? = nil,
         subscriptionRepositoryFactory: SubscriptionRepositoryFactory? = nil,
-        usExaminationTypesById: [String: USExaminationType] = [:],
-        usExaminationTypeGroups: [USExaminationTypeGroup] = [],
-        usExaminationNeuralModels: [USExaminationNeuralModel] = [],
+        usExaminationTypesById: [String: USExaminationType]? = nil,
+        usExaminationTypeGroups: [USExaminationTypeGroup]? = nil,
+        usExaminationNeuralModels: [USExaminationNeuralModel]? = nil,
     ) -> DependencyContainer {
+        #if DEBUG
+            let fixtures = DevelopmentPreviewFactory.make(
+                code: l10n?.locale.language.languageCode?.identifier ?? "ru",
+            )
+            let applicationConfig = fixtures.application
+            let l10n = l10n ?? (try! L10N(
+                localization: fixtures.localization,
+            ))
+            let usExaminationTypeGroups = usExaminationTypeGroups ?? fixtures.examinationTypes
+            let usExaminationNeuralModels = usExaminationNeuralModels ?? fixtures.neuralModels
+        #else
+            let applicationConfig = ApplicationConfig.default
+            let l10n = l10n ?? L10N.previewable(
+                code: "ru",
+            )
+            let usExaminationTypeGroups = usExaminationTypeGroups ?? []
+            let usExaminationNeuralModels = usExaminationNeuralModels ?? []
+        #endif
+        let usExaminationTypesById = usExaminationTypesById ?? Dictionary(
+            uniqueKeysWithValues: usExaminationTypeGroups.flatMap(
+                \.examinationTypes,
+            ).map {
+                ($0.id, $0)
+            },
+        )
         let environment = EnvironmentBase(
             type: .development,
             baseUrl: URL(
@@ -183,12 +208,9 @@ extension DependencyContainer {
                 backend: subscriptionBackendRepository,
             ),
         )
-        let applicationConfig = ApplicationConfig.default
         let language = Language(
             localeConfig: applicationConfig.locale,
-            preferredLanguageIdentifiers: l10n.map {
-                [$0.locale.identifier]
-            } ?? Locale.preferredLanguages,
+            preferredLanguageIdentifiers: [l10n.locale.identifier],
         )
 
         return DependencyContainer(
@@ -209,9 +231,7 @@ extension DependencyContainer {
             subscriptionRepositoryFactory: subscriptionRepositoryFactory,
             applicationConfig: applicationConfig,
             language: language,
-            l10n: l10n ?? L10N.previewable(
-                code: language.currentCode,
-            ),
+            l10n: l10n,
             usExaminationTypeGroups: usExaminationTypeGroups,
             usExaminationTypesById: usExaminationTypesById,
             usExaminationTypeDefault: usExaminationTypeGroups.first?.examinationTypes.first ?? .init(

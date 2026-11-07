@@ -1,0 +1,80 @@
+# The UI tree exposes only 512 characters here; request-parameters.yaml verifies the complete saved template at the backend.
+appId: ${APP_ID}
+name: e2e-readymadetemplatelist-ready-templates
+tags:
+- e2e
+- ReadyMadeTemplateList
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- tapOn:
+    text: ^Добавить\ шаблон$
+- scrollUntilVisible:
+    element:
+      text: ^Готовые\ шаблоны$
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    text: ^Готовые\ шаблоны$
+- assertVisible:
+    text: ^Готовые\ шаблоны$
+- takeScreenshot: 032-ReadyMadeTemplateList
+- tapOn:
+    id: readyMade.search
+    index: 1
+- eraseText
+- inputText: NoSuchTemplateRegression
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- assertVisible:
+    text: ^Подходящие\ шаблоны\ не\ найдены$
+- tapOn:
+    id: readyMade.search
+    index: 1
+- eraseText
+- inputText: Щитовидная железа
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- assertVisible:
+    text: ^УЗИ\ Щитовидной\ железы$
+- tapOn:
+    id: readyMade.search
+    index: 1
+- eraseText
+- inputText: Толщина перешейка
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- assertVisible:
+    text: ^УЗИ\ Щитовидной\ железы$
+- tapOn:
+    id: readyMade.search
+    index: 1
+- eraseText
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- assertVisible:
+    text: ^УЗИ\ Брюшной\ полости$
+- tapOn:
+    id: readyMade.search
+    index: 1
+- inputText: УЗИ Щитовидной железы
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^УЗИ\ Щитовидной\ железы$
+- assertVisible:
+    text: ^УЗИ\ Щитовидной\ железы$
+- assertVisible:
+    text: .*Толщина\ перешейка:\ ___\ мм\..*
+- tapOn:
+    text: ^Сохранить$
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Шаблоны\ протоколов$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- tapOn:
+    text: ^УЗИ\ Щитовидной\ железы$
+- assertVisible:
+    text: .*Толщина\ перешейка:\ ___\ мм\..*
+- assertVisible: ^Щитовидная железа$
+- takeScreenshot: ReadyMadeTemplateList-applied-saved

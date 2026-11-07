@@ -1,0 +1,89 @@
+[
+  {
+    "profile": "baseline",
+    "model": "4b",
+    "requests": 8,
+    "median_seconds": 31.919196664501214,
+    "median_ttft": 1.6357584395009326,
+    "median_output_tps": 7.612974497692704,
+    "median_decode_tps": 8.017683984603643,
+    "maximum_seconds": 31.99195639800746,
+    "completion_tokens": [
+      243
+    ],
+    "over_120_seconds": 0
+  },
+  {
+    "profile": "baseline",
+    "model": "15-4b",
+    "requests": 8,
+    "median_seconds": 29.991078706501867,
+    "median_ttft": 1.62733829649369,
+    "median_output_tps": 7.3688709218247395,
+    "median_decode_tps": 7.792103339739281,
+    "maximum_seconds": 30.07643732499855,
+    "completion_tokens": [
+      221
+    ],
+    "over_120_seconds": 0
+  },
+  {
+    "profile": "baseline",
+    "model": "27b",
+    "requests": 8,
+    "median_seconds": 90.90293195850245,
+    "median_ttft": 10.064489785494516,
+    "median_output_tps": 3.039349099867274,
+    "median_decode_tps": 3.414837848195016,
+    "maximum_seconds": 91.3509506600094,
+    "completion_tokens": [
+      275,
+      277
+    ],
+    "over_120_seconds": 0
+  },
+  {
+    "profile": "ngram8",
+    "model": "4b",
+    "requests": 8,
+    "median_seconds": 18.328557550506957,
+    "median_ttft": 1.5957270375001826,
+    "median_output_tps": 13.237132332632203,
+    "median_decode_tps": 14.488096033955937,
+    "maximum_seconds": 18.513297033001436,
+    "completion_tokens": [
+      240,
+      243
+    ],
+    "over_120_seconds": 0
+  },
+  {
+    "profile": "ngram8",
+    "model": "15-4b",
+    "requests": 8,
+    "median_seconds": 17.407584956999926,
+    "median_ttft": 1.5980125089918147,
+    "median_output_tps": 12.695615195733842,
+    "median_decode_tps": 14.00348761234087,
+    "maximum_seconds": 17.589456020999933,
+    "completion_tokens": [
+      221
+    ],
+    "over_120_seconds": 0
+  },
+  {
+    "profile": "ngram8",
+    "model": "27b",
+    "requests": 8,
+    "median_seconds": 56.13302818650118,
+    "median_ttft": 9.97120683400135,
+    "median_output_tps": 4.913536987399338,
+    "median_decode_tps": 5.8659219467658605,
+    "maximum_seconds": 56.715271917011705,
+    "completion_tokens": [
+      244,
+      277
+    ],
+    "over_120_seconds": 0
+  }
+]

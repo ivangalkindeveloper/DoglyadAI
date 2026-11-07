@@ -1,0 +1,123 @@
+appId: ${APP_ID}
+name: e2e-scan-draft-persistence
+tags:
+- e2e
+- Scan
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.examinationNumber
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: scan.examinationNumber
+    index: 1
+- eraseText
+- inputText: REG-DRAFT
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.patientName
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: scan.patientName
+    index: 1
+- eraseText
+- inputText: Regression draft
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.patientHeightCM
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: scan.patientHeightCM
+    index: 1
+- eraseText
+- inputText: '170'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.patientWeightKG
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: scan.patientWeightKG
+    index: 1
+- eraseText
+- inputText: '65'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.patientComplaints
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: scan.patientComplaints
+    index: 1
+- eraseText
+- inputText: Regression complaints
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.examinationDescription
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: scan.examinationDescription
+    index: 1
+- eraseText
+- inputText: Regression description
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element:
+      id: scan.examinationNumber
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: scan.examinationNumber
+    text: ^REG\-DRAFT$
+- scrollUntilVisible:
+    element:
+      id: scan.patientName
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: scan.patientName
+    text: ^Regression\ draft$
+- scrollUntilVisible:
+    element:
+      id: scan.patientHeightCM
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: scan.patientHeightCM
+    text: ^170$
+- scrollUntilVisible:
+    element:
+      id: scan.patientWeightKG
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: scan.patientWeightKG
+    text: ^65$
+- scrollUntilVisible:
+    element:
+      id: scan.patientComplaints
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: scan.patientComplaints
+    text: ^Regression\ complaints$
+- scrollUntilVisible:
+    element:
+      id: scan.examinationDescription
+    direction: DOWN
+    timeout: 20000
+- assertVisible:
+    id: scan.examinationDescription
+    text: ^Regression\ description$
+- takeScreenshot: Scan-restored-draft

@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+name: e2e-templatedelete-cancel
+tags:
+- e2e
+- TemplateDelete
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Шаблоны\ протоколов$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- tapOn: Regression template edited
+- tapOn:
+    id: template.delete
+- swipe:
+    direction: DOWN
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Шаблоны\ протоколов$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- assertVisible: Regression template edited
+- takeScreenshot: TemplateDelete-cancel
+- tapOn:
+    text: ^Regression\ template\ edited$
+- assertVisible:
+    text: ^Edited\ description\ and\ conclusion$

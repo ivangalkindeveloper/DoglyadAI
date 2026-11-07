@@ -1,0 +1,31 @@
+appId: ${APP_ID}
+name: e2e-settingsai-temperature-high
+tags:
+- e2e
+- SettingsAI
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.temperature
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: settingsAI.temperature
+    index: 1
+- eraseText
+- inputText: '2.1'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- assertVisible:
+    text: ^Введите\ температуру\ от\ 0\ до\ 2$
+- takeScreenshot: SettingsAI-temperature-high

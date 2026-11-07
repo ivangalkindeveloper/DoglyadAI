@@ -13,6 +13,7 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
     let bottomInset: CGFloat
     let onLoaded: () -> Void
     let onFailed: (Error) -> Void
+    var stateIdentifier = "webDocument.loading"
 
     func makeCoordinator() -> Coordinator {
         Coordinator(
@@ -59,6 +60,16 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
             url: components?.url ?? url,
         )
         request.cachePolicy = .reloadIgnoringLocalCacheData
+        #if DEBUG && DOGLYAD_REGRESSION
+            if UserDefaults.standard.bool(
+                forKey: "regressionDocumentFailure",
+            ) {
+                request.url = URL(
+                    string: "http://127.0.0.1:18766/regression-document",
+                )!
+            }
+        #endif
+        webView.accessibilityIdentifier = stateIdentifier
         webView.load(
             request,
         )
@@ -69,6 +80,7 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
         _ webView: WKWebView,
         context: Context,
     ) {
+        webView.accessibilityIdentifier = stateIdentifier
         context.coordinator.parent = self
         context.coordinator.applyInsets(
             to: webView,

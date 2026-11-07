@@ -1,0 +1,26 @@
+schemaVersion: 1
+module: NewVersion
+source: ios/Doglyad/Application/Module/NewVersion
+cases:
+- id: NewVersion.update
+  title: Обязательное обновление при более новой major-версии
+  profiles:
+  - none
+  preconditions:
+  - application.actualVersion.major выше major-версии клиента и appStoreId не пустой; затем конфигурация
+    совместима с клиентом. Minor-обновление само по себе не блокирует вход.
+  - Проверка меняет только actualVersion после настоящей загрузки Development-конфигурации. App Store
+    заменён адаптером внешнего приложения; полный URL проверяется отдельно.
+  steps:
+  - action: Запустить клиент ниже application.actualVersion
+    expect: Показан NewVersion; обязательное обновление не обходится обычной навигацией.
+  - action: Нажать обновить
+    expect: Открывается настроенный App Store URL; данные приложения не удаляются.
+  - action: Вернуть совместимую конфигурацию и перезапустить
+    expect: Основной сценарий доступен.
+  covers:
+  - onTapUpdate
+  automation:
+    kind: maestro
+    flows:
+    - e2e-newversion-required-update

@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "TemplateDeleteState",
+        "01 TemplateDeleteState",
     ) {
         TemplateDeletePreviewView(
             state: TemplateDeleteState(),

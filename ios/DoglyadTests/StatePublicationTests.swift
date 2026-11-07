@@ -8,6 +8,37 @@ import Testing
 @MainActor
 struct StatePublicationTests {
     @Test
+    func synchronousRenderingDoesNotRetainThePreviousPhase() {
+        let model = DStateViewModel<any ScanStateProtocol>(
+            state: ScanInitializingState(),
+        )
+        var rendered: (any ScanStateProtocol)?
+        var publications = 0
+        let viewObservation = model.objectWillChange.sink {
+            // Model the synchronous redraw observed while SwiftUI flushes input updates.
+            rendered = model.state
+        }
+        let stateObservation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
+        defer {
+            viewObservation.cancel()
+            stateObservation.cancel()
+        }
+
+        let ready = ScanDefaultState()
+        model.emit(
+            ready,
+        )
+        #expect(
+            rendered === ready,
+        )
+        #expect(
+            publications == 1,
+        )
+    }
+
+    @Test
     func equalStatelessStatesDoNotPublishOrReplaceTheCurrentInstance() {
         let initial = ScanSpeechReadyState()
         let model = DStateViewModel<any ScanSpeechStateProtocol>(

@@ -1,0 +1,126 @@
+schemaVersion: 1
+module: SettingsAI
+source: ios/Doglyad/Application/Module/Settings/SettingsAI
+cases:
+- id: SettingsAI.choices
+  title: Выбор транскрибатора, парсера и модели
+  profiles:
+  - pro
+  preconditions:
+  - Активна Pro; известен список возможностей устройства
+  - Варианты возможностей Apple проверяются нативными тестами с управляемым ответом проверки доступности; настоящая
+    запись и inference Apple не запускаются.
+  steps:
+  - action: Выбрать каждый доступный транскрибатор и парсер, сохранить и перезапустить
+    expect: Выбранные значения отображаются после перезапуска; неподдерживаемый вариант нельзя сохранить.
+  - action: Выбрать доступную модель
+    expect: Модель обновлена в настройках и Scan; после перезапуска выбор сохраняется.
+  covers:
+  - onTapTranscriber
+  - onTapTranscriptParser
+  - onTapNeuralModelSelection
+  - onTapSave
+  automation:
+    kind: mixed
+    flows:
+    - e2e-settingsai-ai-settings
+    - e2e-settingsai-providers
+    - e2e-selectneuralmodel-model-1
+    - e2e-selectneuralmodel-model-2
+    - e2e-selectneuralmodel-model-3
+    nativeTests:
+    - RegressionFormTests/testParserAvailabilityRefreshesOnForegroundAndBlocksUnavailableSelection()
+    - RegressionFormTests/testTranscriberAvailabilityRefreshesOnForegroundWithoutDuplicates()
+    - SettingsAITests/speechChoicesSurviveRepositoryReloadAndReportStorage(transcriber:parser:)
+- id: SettingsAI.generation-settings
+  title: Markdown, температура и токены
+  profiles:
+  - pro
+  preconditions:
+  - Активна Pro
+  steps:
+  - action: Изменить Markdown, температуру на 0.7 и токены на 1024; сохранить
+    expect: Показан успех; значения отображаются после повторного входа и перезапуска.
+  - action: Сгенерировать отчёт
+    expect: Запрос содержит сохранённые параметры; формат соответствует выбранному Markdown.
+  covers:
+  - toggleIsMarkdown
+  automation:
+    kind: maestro
+    flows:
+    - e2e-settingsai-parameters-0-1
+    - e2e-settingsai-parameters-0_7-1024
+    - e2e-settingsai-parameters-2-4096
+    - e2e-settingsai-markdown-false
+    - e2e-settingsai-markdown-true
+    - e2e-settingsai-request-parameters
+- id: SettingsAI.limits
+  title: Границы температуры и токенов
+  profiles:
+  - pro
+  preconditions:
+  - Активна Pro; открыты настройки генерации
+  steps:
+  - action: По очереди сохранить температуры 0 и 2, токены 1 и 4096
+    expect: Граничные значения принимаются и сохраняются.
+  - action: Ввести температуру 2.1, токены 0 и 4097
+    expect: Сохранение блокируется ошибкой соответствующего поля; предыдущие настройки не изменены.
+  - action: Очистить необязательные поля, пройти фокус стрелками и Return
+    expect: Применяется предусмотренное кодом значение по умолчанию; фокус не теряет введённый текст.
+  covers:
+  - onFocusChanged
+  - onSubmit
+  - onTapToolbarUp
+  - onTapToolbarDown
+  automation:
+    kind: mixed
+    flows:
+    - e2e-settingsai-parameters-0-1
+    - e2e-settingsai-parameters-0_7-1024
+    - e2e-settingsai-parameters-2-4096
+    - e2e-settingsai-temperature-high
+    - e2e-settingsai-tokens-zero
+    - e2e-settingsai-tokens-high
+    nativeTests:
+    - RegressionFormTests/testSettingsAIEmptyFieldsAndKeyboardPreserveOptionalValues()
+- id: SettingsAI.base-gate
+  title: Ограничения Base и смена подписки
+  profiles:
+  - base
+  - pro
+  preconditions:
+  - Активна Base; затем сервер меняет статус на Pro и обратно
+  steps:
+  - action: Открыть AI-настройки с Base
+    expect: Параметры генерации недоступны для изменения; помечены платной возможностью.
+  - action: Обновить статус до Pro
+    expect: Параметры становятся доступны.
+  - action: Вернуть Base во время редактирования
+    expect: Редактирование закрывается; недоступные значения не сохраняются; после возврата назад остальные
+      настройки сохранены.
+  covers:
+  - onSubscriptionChanged
+  - onTapBack
+  automation:
+    kind: mixed
+    flows:
+    - e2e-settingsai-base-restrictions
+    nativeTests:
+    - RegressionFormTests/testSettingsAISubscriptionDowngradeDoesNotSaveRestrictedEdits()
+    - SettingsAITests/losingProRemovesFocusAndUpdatesControlAvailabilityWithoutLosingSpeechChoices()
+- id: SettingsAI.save-failure
+  title: Ошибка сохранения AI-настроек
+  profiles:
+  - pro
+  preconditions:
+  - Сбой репозитория настроек
+  steps:
+  - action: Изменить значения и сохранить при сбое
+    expect: Ошибка показана; значения остаются в форме; нет ложного успеха.
+  - action: Устранить сбой и сохранить
+    expect: Изменения сохранены ровно один раз.
+  covers: []
+  automation:
+    kind: maestro
+    flows:
+    - e2e-settingsai-save-failure

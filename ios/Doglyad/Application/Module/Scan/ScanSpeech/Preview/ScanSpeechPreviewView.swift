@@ -233,6 +233,7 @@
     }
 
     private struct ScanSpeechTranscriptPreviewContentView: DViewProtocol {
+        @FocusState private var transcriptFocus: Bool?
         @EnvironmentObject private var l10n: L10N
         @EnvironmentObject var theme: DTheme
         @StateObject var viewModel: ScanSpeechViewModel
@@ -255,6 +256,7 @@
                     fraction: 0.9,
                 ) { toolbarHeight, bottomHeight in
                     ScanSpeechReviewTranscriptView(
+                        transcriptFocus: $transcriptFocus,
                         toolbarHeight: toolbarHeight,
                         bottomHeight: bottomHeight,
                     )

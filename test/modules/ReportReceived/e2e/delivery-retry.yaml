@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+name: e2e-reportreceived-delivery-retry
+tags: [e2e, ReportReceived, Share]
+---
+- runFlow: ../../../maestro/support/one-photo.yaml
+- runFlow:
+    file: ../../../maestro/support/controlled-generation.yaml
+    env:
+      EXAMINATION_NUMBER: REG-DELIVERY
+- extendedWaitUntil:
+    visible: {text: '^К протоколу$'}
+    timeout: 180000
+- tapOn: ^Копировать$
+- assertVisible: {id: message.success}
+- takeScreenshot: ReportReceived-copied
+- extendedWaitUntil:
+    notVisible: {id: message.success}
+    timeout: 15000
+- tapOn: '.*Отправить на.*'
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 60000
+- assertVisible: ^К протоколу$
+- assertVisible: ^Копировать$
+- takeScreenshot: ReportReceived-delivery-failed
+- tapOn: '.*Отправить на.*'
+- extendedWaitUntil:
+    visible: {text: '^Протокол отправлен$'}
+    timeout: 60000
+- assertVisible: ^К протоколу$
+- takeScreenshot: ReportReceived-delivery-succeeded
+- tapOn: ^К протоколу$
+- assertVisible: ^Протокол$

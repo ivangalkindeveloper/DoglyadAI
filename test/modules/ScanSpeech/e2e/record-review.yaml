@@ -1,0 +1,70 @@
+appId: ${APP_ID}
+name: e2e-scanspeech-record-review
+tags: [e2e, ScanSpeech]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.clear}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.clear}
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionSpeech: prepare-failure
+      regressionFault: ''
+- extendedWaitUntil:
+    visible: {id: scan.speech}
+    timeout: 60000
+- waitForAnimationToEnd
+- tapOn: {id: scan.speech}
+- extendedWaitUntil:
+    visible: {text: '^Повторить$'}
+    timeout: 15000
+- assertNotVisible: ^Начать запись$
+- takeScreenshot: ScanSpeech-model-preparation-failed
+- tapOn: ^Повторить$
+- extendedWaitUntil:
+    visible: {text: '^Начать запись$'}
+    timeout: 15000
+- takeScreenshot: ScanSpeech-model-ready
+- tapOn: ^Начать запись$
+- assertVisible: ^Разобрать диктовку$
+- takeScreenshot: ScanSpeech-recording
+- tapOn: ^Разобрать диктовку$
+- extendedWaitUntil:
+    visible: {text: '^Вернуться к диктовке$'}
+    timeout: 60000
+- assertVisible: Иванов Иван Иванович
+- assertVisible: {id: scanSpeech.proposal.examinationNumber.selected.false}
+- assertNotVisible: ^Применить выбранные поля$
+- tapOn: {id: scanSpeech.proposal.patientName.selected.false}
+- assertVisible: {id: scanSpeech.proposal.patientName.selected.true}
+- tapOn: {id: scanSpeech.proposal.patientName.selected.true}
+- assertNotVisible: ^Применить выбранные поля$
+- tapOn: {id: scanSpeech.proposal.patientName.selected.false}
+- takeScreenshot: ScanSpeech-selected-name
+- tapOn: ^Применить выбранные поля$
+- assertVisible: {id: scan.settings}
+- scrollUntilVisible:
+    element: {id: scan.patientName, text: '^Иванов Иван Иванович$'}
+    direction: UP
+# The current parser flags this number for review. It was not selected above.
+- assertVisible: {id: scan.examinationNumber, text: '^Исследование#[0-9]+$'}
+- assertNotVisible: {id: scan.examinationNumber, text: '^123$'}
+- scrollUntilVisible:
+    element: {id: scan.patientHeightCM}
+    direction: DOWN
+- assertVisible: {id: scan.patientHeightCM, text: '^180[.,]0$'}
+- assertVisible: {id: scan.patientWeightKG, text: '^75[.,]0$'}
+- scrollUntilVisible:
+    element: {id: scan.patientComplaints}
+    direction: DOWN
+- assertVisible: {id: scan.patientComplaints, text: '^Пациент жалуется на боли в области\.\.\.$'}
+- assertNotVisible: {id: scan.patientComplaints, text: '^боль в животе$'}
+- takeScreenshot: ScanSpeech-only-selected-fields-applied
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: DOWN
+- assertVisible: {id: scan.patientName, text: '^Иванов Иван Иванович$'}

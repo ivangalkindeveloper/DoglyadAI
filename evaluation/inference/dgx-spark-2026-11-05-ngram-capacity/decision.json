@@ -1,0 +1,14 @@
+{
+  "profile": "seq8",
+  "decided_utc": "2026-11-05T20:50:14.704729+00:00",
+  "max_num_seqs_per_model": 8,
+  "api_concurrency_per_model": 8,
+  "kv_gib_4b_15_4b_27b": [
+    4,
+    4,
+    8
+  ],
+  "ngram_tokens": 8,
+  "dtype": "bfloat16",
+  "reason": "8 slots reduce report8 waves from115.4–115.8s to65.8–68.8s; ordinary over120=0. KV12 has similar ordinary latency and pressure8 195.73s vs197.78s but7/8 requests over120 instead of5/8. Keep smaller KV allocation."
+}

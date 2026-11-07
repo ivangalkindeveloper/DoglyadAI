@@ -1,0 +1,49 @@
+appId: ${APP_ID}
+name: e2e-templateadd-save-failure
+tags:
+- e2e
+- TemplateAdd
+---
+- runFlow:
+    file: ../../../maestro/support/settings-with-fault.yaml
+    env:
+      REPOSITORY_FAULT: templateRepository.saveTemplate
+- tapOn:
+    text: ^Шаблоны протоколов$
+- tapOn:
+    text: ^Добавить шаблон$
+- tapOn:
+    text: ^Название шаблона$
+- inputText: Retry template
+- tapOn:
+    text: ^Структура протокола, заголовки, обязательные разделы…$
+- inputText: Retained description and conclusion
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- extendedWaitUntil:
+    visible:
+      id: message.error
+    timeout: 10000
+- assertVisible: Retry template
+- assertVisible: Retained description and conclusion
+- assertNotVisible:
+    id: message.success
+- takeScreenshot: TemplateAdd-save-failed
+- tapOn:
+    text: ^Сохранить$
+- assertVisible: Retry template
+- assertNotVisible:
+    text: ^Retry template$
+    index: 1
+- takeScreenshot: TemplateList-retry-saved
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Шаблоны протоколов$
+- assertVisible: Retry template
+- assertNotVisible:
+    text: ^Retry template$
+    index: 1
+- tapOn:
+    text: ^Retry template$
+- assertVisible: Retained description and conclusion

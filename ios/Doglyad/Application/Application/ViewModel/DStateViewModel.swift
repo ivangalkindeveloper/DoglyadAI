@@ -33,6 +33,10 @@ class DStateViewModel<State>: Handler<DHttpApiError, DHttpConnectionError>, Obse
             animation: animation,
         ) {
             state = newState
+            // SwiftUI can render synchronously from Published.willSet while flushing
+            // nested controller updates. Invalidate again with the assigned phase so
+            // those views cannot retain the previous loading/disabled state.
+            objectWillChange.send()
         }
     }
 

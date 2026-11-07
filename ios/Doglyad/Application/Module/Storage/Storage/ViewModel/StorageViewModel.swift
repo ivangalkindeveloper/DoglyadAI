@@ -68,16 +68,20 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             .storageClearProtocols,
             arguments: StorageClearProtocolsArguments(
                 onConfirm: { [weak self] in
-                    guard let self else {
+                    guard let self, let id = presentationID else {
                         return
                     }
 
+                    let loading = StorageLoadingState()
                     emit(
-                        StorageLoadingState(),
+                        loading,
                     )
-                    handle {
+                    operationTask = handle {
                         try await self.container.ultrasoundReportRepository.clearAllReports()
                     } onMainSuccess: { _ in
+                        guard self.presentationID == id, self.state === loading else {
+                            return
+                        }
                         self.emit(
                             StorageReadyState(),
                         )
@@ -92,6 +96,9 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                         )
                         self.coordinator.pop()
                     } onMainUnknownError: { error in
+                        guard self.presentationID == id, self.state === loading else {
+                            return
+                        }
                         self.emit(
                             StorageFailedState(
                                 error: error,
@@ -122,7 +129,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
         emit(
             loading,
         )
-        handle {
+        operationTask = handle {
             try await DSpeechWhisperKitModel.shared.deleteDownloadedModel()
         } onMainSuccess: { _ in
             guard self.presentationID == id, self.state === loading else {
@@ -169,16 +176,20 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             .storageClearAll,
             arguments: StorageClearAllArguments(
                 onConfirm: { [weak self] in
-                    guard let self else {
+                    guard let self, let id = presentationID else {
                         return
                     }
 
+                    let loading = StorageLoadingState()
                     emit(
-                        StorageLoadingState(),
+                        loading,
                     )
-                    handle {
+                    operationTask = handle {
                         try await self.container.ultrasoundReportRepository.clearAll()
                     } onMainSuccess: { _ in
+                        guard self.presentationID == id, self.state === loading else {
+                            return
+                        }
                         self.emit(
                             StorageReadyState(),
                         )
@@ -193,6 +204,9 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                         )
                         self.coordinator.resetToOnBoarding()
                     } onMainUnknownError: { error in
+                        guard self.presentationID == id, self.state === loading else {
+                            return
+                        }
                         self.emit(
                             StorageFailedState(
                                 error: error,

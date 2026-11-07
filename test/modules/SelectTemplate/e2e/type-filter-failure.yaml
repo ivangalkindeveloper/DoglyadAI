@@ -1,0 +1,59 @@
+appId: ${APP_ID}
+name: e2e-selecttemplate-type-filter-failure
+tags: [e2e, SelectTemplate, SelectUSExaminationType]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- scrollUntilVisible:
+    element: {id: scan.template}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.template}
+- tapOn: ^УЗИ Щитовидной железы$
+- assertVisible: ^УЗИ Щитовидной железы$
+- tapOn: {id: scan.type}
+- scrollUntilVisible:
+    element: {id: examinationType.echocardiography}
+    direction: UP
+    centerElement: true
+- tapOn: {id: examinationType.echocardiography}
+- assertVisible: {id: scan.type, text: '^Эхокардиография$'}
+- scrollUntilVisible:
+    element: {id: scan.template}
+    direction: DOWN
+    centerElement: true
+- assertVisible: ^Выбранный тип исследования не совпадает с типом исследования шаблона$
+- takeScreenshot: Scan-template-type-mismatch
+- tapOn: {id: scan.template}
+- assertVisible: ^Новый шаблон$
+- assertVisible: ^Эхокардиография$
+- assertNotVisible: ^УЗИ Щитовидной железы$
+- takeScreenshot: SelectTemplate-no-matching-type
+- tapOn: {id: navigation.back}
+- runFlow: ../../../maestro/support/main.yaml
+- assertVisible: {id: scan.type, text: '^Эхокардиография$'}
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionFault: templateRepository.getTemplates
+      regressionFaultAfter: '1'
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- scrollUntilVisible:
+    element: {id: scan.template}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.template}
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 15000
+- assertNotVisible: .*Тут пока нет шаблонов.*
+- takeScreenshot: SelectTemplate-load-failed
+- tapOn: ^Обновить$
+- assertVisible: ^УЗИ Щитовидной железы$
+- tapOn: ^УЗИ Щитовидной железы$
+- assertVisible: ^УЗИ Щитовидной железы$
+- tapOn: {id: scan.template.reset}
+- assertVisible: ^Шаблон не выбран$

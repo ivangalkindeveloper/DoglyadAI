@@ -1,0 +1,59 @@
+{
+  "waves": [
+    [
+      "warmup",
+      [
+        "report-greedy-0",
+        "report-greedy-0",
+        "report-greedy-0",
+        "report-greedy-0"
+      ]
+    ],
+    [
+      "report-1",
+      [
+        "report-greedy-0",
+        "report-greedy-0",
+        "report-greedy-0",
+        "report-greedy-0"
+      ]
+    ],
+    [
+      "report-2",
+      [
+        "report-greedy-0",
+        "report-greedy-0",
+        "report-greedy-0",
+        "report-greedy-0"
+      ]
+    ],
+    [
+      "mixed-1",
+      [
+        "report-sample-42",
+        "conflict-greedy-0",
+        "dictation-greedy-0",
+        "vision-2"
+      ]
+    ],
+    [
+      "mixed-2",
+      [
+        "bladder-correction-sample-42",
+        "bladder-en-sample-42",
+        "conflict-sample-42",
+        "vision-1"
+      ]
+    ]
+  ],
+  "endpoints": {
+    "4b": "http://172.21.0.4:8000",
+    "15-4b": "http://172.21.0.5:8000",
+    "27b": "http://172.21.0.3:8000"
+  },
+  "concurrency": [
+    4,
+    4,
+    4
+  ]
+}

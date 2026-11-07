@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: e2e-share-base-email-gate
+tags: [e2e, Share]
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- tapOn: ^Photo regression$
+- tapOn: {id: reportDetail.share}
+- tapOn: {id: share.workEmail}
+- runFlow: ../../../maestro/support/paywall-ready.yaml
+- takeScreenshot: Share-base-work-email-gate
+- tapOn: ^Back$
+- assertVisible: ^Протокол$
+- tapOn: {id: reportDetail.share}
+- tapOn: ^Отправить e-mail$
+- runFlow: ../../../maestro/support/paywall-ready.yaml
+- takeScreenshot: Share-base-custom-email-gate
+- tapOn: ^Back$
+- assertVisible: ^Протокол$

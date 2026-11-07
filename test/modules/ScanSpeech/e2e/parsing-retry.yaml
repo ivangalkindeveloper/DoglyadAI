@@ -1,0 +1,59 @@
+appId: ${APP_ID}
+name: e2e-scanspeech-parsing-retry
+tags: [e2e, ScanSpeech]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionSpeech: review
+      regressionFault: ultrasoundReportRepository.parseDictation
+      regressionFaultAfter: '0'
+- extendedWaitUntil:
+    visible: {id: scan.speech}
+    timeout: 60000
+- waitForAnimationToEnd
+- tapOn: {id: scan.speech}
+- extendedWaitUntil:
+    visible: {text: '^Начать запись$'}
+    timeout: 15000
+- tapOn: ^Начать запись$
+- tapOn: ^Разобрать диктовку$
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 60000
+- assertVisible: {id: scanSpeech.transcript}
+- assertVisible: .*Иванов Иван Иванович.*
+- assertVisible: ^Продолжить заполнение$
+- takeScreenshot: ScanSpeech-parsing-failed-transcript-kept
+- tapOn: ^Продолжить заполнение$
+- extendedWaitUntil:
+    visible: {text: '^Вернуться к диктовке$'}
+    timeout: 60000
+- assertVisible: Иванов Иван Иванович
+- takeScreenshot: ScanSpeech-parsing-retried
+- tapOn: ^Вернуться к диктовке$
+- assertVisible: {id: scanSpeech.transcript}
+- tapOn: {id: scanSpeech.transcript, index: 1, point: '99%,99%'}
+- eraseText: 500
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- assertVisible: {text: '^Продолжить заполнение$', enabled: false}
+- takeScreenshot: ScanSpeech-empty-transcript
+- tapOn: {id: scanSpeech.transcript, index: 1, point: '99%,99%'}
+- inputText: Regression edited transcript
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: ^Продолжить заполнение$
+- extendedWaitUntil:
+    visible: {id: scanSpeech.transcript, text: '^Regression edited transcript$', enabled: true}
+    timeout: 60000
+- takeScreenshot: ScanSpeech-edited-transcript-parsed
+- tapOn: ^Записать заново$
+- assertVisible: ^Разобрать диктовку$
+- tapOn: ^Разобрать диктовку$
+- extendedWaitUntil:
+    visible: {text: '^Вернуться к диктовке$'}
+    timeout: 60000
+- assertVisible: Иванов Иван Иванович
+- assertNotVisible: Regression edited transcript
+- tapOn: {id: bottomSheet.close}
+- assertVisible: {id: scan.settings}

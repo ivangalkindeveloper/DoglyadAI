@@ -1,0 +1,87 @@
+<!doctype html>
+<meta charset="utf-8">
+<style>body{font:14px Inter,system-ui;padding:16px}button{box-sizing:border-box;width:100%;padding:10px;margin:8px 0}p{overflow-wrap:anywhere}</style>
+<p>Оставьте плагин открытым. После успешного регресса экраны обновятся автоматически.</p>
+<p id="status">Ожидание успешного прогона…</p>
+<button id="import">Проверить сейчас</button>
+<script>
+/* DOGlyad_SHA256_BUNDLE */
+const base = 'http://localhost:8765';
+const bridgeKey = /* DOGlyad_BRIDGE_KEY */;
+const status = document.getElementById('status');
+let pending = null;
+let busy = false;
+let pollTimer = null;
+let lastReceipt = null;
+function send(message) { parent.postMessage({ pluginMessage: message }, '*'); }
+function expect(type) {
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => { pending = null; reject(new Error('Figma did not respond.')); }, 60000);
+    pending = { type, resolve: value => { clearTimeout(timeout); resolve(value); }, reject: error => { clearTimeout(timeout); reject(error); } };
+  });
+}
+window.onmessage = event => {
+  const message = event.data.pluginMessage;
+  if (!message || !pending) return;
+  if (message.type === 'error') { const p = pending; pending = null; p.reject(new Error(message.message)); }
+  else if (message.type === pending.type || message.type === 'done') { const p = pending; pending = null; p.resolve(message); }
+};
+async function request(path, options = {}) {
+  const response = await fetch(base + path, { ...options, headers: {
+    Authorization: 'Bearer ' + bridgeKey,
+    'X-Doglyad-Regression-Protocol': '6',
+    ...(options.headers || {})
+  }});
+  if (response.status === 426) throw new Error('Закройте и заново откройте Doglyad AI Regression: код плагина обновлён.');
+  if (!response.ok) throw new Error('Сервер отклонил передачу: ' + response.status);
+  return response;
+}
+async function sync() {
+  if (busy) return;
+  clearTimeout(pollTimer);
+  busy = true;
+  document.getElementById('import').disabled = true;
+  let connected = false;
+  try {
+    const manifest = await (await request('/manifest')).json();
+    connected = true;
+    let ready = expect('ready');
+    send({ type: 'begin', manifest });
+    let receipt = await ready;
+    if (receipt.type !== 'done') {
+      for (let i = 0; i < manifest.images.length; i++) {
+        const image = manifest.images[i];
+        status.textContent = `${i + 1}/${manifest.images.length}: ${image.screen}`;
+        const bytes = await (await request('/image/' + image.id)).arrayBuffer();
+        const digest = sha256(new Uint8Array(bytes));
+        if (digest !== image.sha256) throw new Error('Контрольная сумма снимка не совпала.');
+        const received = expect('received');
+        send({ type: 'image', id: image.id, bytes: Array.from(new Uint8Array(bytes)) });
+        await received;
+      }
+      // Recheck the successful-run manifest immediately before replacing old screenshots.
+      const verified = await (await request('/manifest')).json();
+      if (JSON.stringify(verified) !== JSON.stringify(manifest)) throw new Error('Прогон изменился во время импорта.');
+      const done = expect('done');
+      send({ type: 'commit' });
+      receipt = await done;
+    }
+    await request('/ack', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(receipt) });
+    lastReceipt = receipt;
+    status.textContent = `Обновлено ${receipt.visibleImageCount ?? receipt.imageCount} снимков. Прогон: ${receipt.runId}`;
+  } catch (error) {
+    send({ type: 'abort' });
+    status.textContent = !connected && error instanceof TypeError
+      ? lastReceipt
+        ? `Обновлено ${lastReceipt.imageCount} снимков. Ожидание следующего прогона…`
+        : 'Ожидание успешного прогона… Запустите make regression-figma.'
+      : String(error.message || error);
+  } finally {
+    busy = false;
+    document.getElementById('import').disabled = false;
+    pollTimer = setTimeout(sync, 5000);
+  }
+}
+document.getElementById('import').onclick = sync;
+pollTimer = setTimeout(sync, 0);
+</script>

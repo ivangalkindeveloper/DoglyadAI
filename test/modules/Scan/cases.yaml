@@ -1,0 +1,183 @@
+schemaVersion: 1
+module: Scan
+source: ios/Doglyad/Application/Module/Scan/Scan
+cases:
+- id: Scan.draft
+  title: Поля пациента, клавиатура и черновик
+  profiles:
+  - pro
+  preconditions:
+  - Новый Scan; активна Pro
+  steps:
+  - action: Заполнить номер, имя, пол, дату рождения, рост, вес, жалобы и описание
+    expect: Поля показывают введённые значения; пол и дата соответствуют селекторам.
+  - action: Перейти по полям стрелками и Return, перезапустить приложение
+    expect: Фокус меняется последовательно; черновик восстановлен без потери текста и единиц.
+  - action: Изменить тип исследования
+    expect: Новый тип сохранён; выбранный шаблон согласован с типом.
+  covers:
+  - onInit
+  - onFocusChanged
+  - onSubmit
+  - onTapToolbarUp
+  - onTapToolbarDown
+  - onTapPatientGender
+  - onTapPatientDateOfBirth
+  - onTapUSExaminationType
+  automation:
+    kind: mixed
+    flows:
+    - e2e-scan-draft-persistence
+    - e2e-scan-gender-persistence
+    - e2e-selectdateofbirth-confirm-cancel
+    - e2e-selectusexaminationtype-choose-persist
+    - e2e-selecttemplate-type-filter-failure
+    nativeTests:
+    - RegressionFormTests/testScanRejectsInvalidRestoredFieldsAndPreservesFocusOrder()
+- id: Scan.validation
+  title: Границы и обязательные данные
+  profiles:
+  - pro
+  preconditions:
+  - Пустой Scan
+  steps:
+  - action: Нажать генерацию без обязательных данных
+    expect: Показаны ошибки полей; запрос генерации не создан.
+  - action: Проверить границы чисел и максимальные длины из application.scan
+    expect: Недопустимые значения не отправляются; значения на границе сохраняются.
+  covers:
+  - onTapScan
+  automation:
+    kind: mixed
+    flows:
+    - e2e-scan-validation-empty
+    nativeTests:
+    - RegressionFormTests/testScanRejectsInvalidRestoredFieldsAndPreservesFocusOrder()
+  variants:
+  - пусто / минимум / максимум / значение вне диапазона
+  - длина N−1 / N / N+1 для каждого текстового поля
+- id: Scan.template-model
+  title: Шаблон, модель и параметры генерации
+  profiles:
+  - pro
+  preconditions:
+  - Есть шаблон текущего типа и две доступные модели
+  steps:
+  - action: Выбрать шаблон и модель, открыть AI-настройки и сохранить параметры
+    expect: Выбор отражён в Scan; настройки не меняют данные пациента.
+  - action: Сбросить шаблон, выбрать снова и запустить генерацию
+    expect: Запрос использует итоговый шаблон и выбранную модель.
+  covers:
+  - onTapSelectedTemplate
+  - onTapResetTemplate
+  - onTapNeuralModelSelection
+  - onTapSettingsAI
+  automation:
+    kind: maestro
+    flows:
+    - e2e-scan-template-model-request
+- id: Scan.media
+  title: Импорт, просмотр и удаление фото
+  profiles:
+  - pro
+  preconditions:
+  - В медиатеке есть синтетические снимки; активна Pro
+  steps:
+  - action: Добавить снимки через импорт и галерею, открыть один
+    expect: Количество и порядок фото сохранены; PhotoView показывает выбранное изображение.
+  - action: Удалить одну фотографию
+    expect: Удаляется только выбранный снимок; число фото уменьшено.
+  - action: Достичь лимита фото и добавить ещё
+    expect: Лимит из конфигурации соблюдён; выбранные ранее фото не теряются.
+  covers:
+  - onTapImport
+  - onTapGallery
+  - onSelectGalleryImages
+  - onTapPhoto
+  - onTapDeletePhoto
+  - onTapCamera
+  automation:
+    kind: maestro
+    flows:
+    - e2e-photolibrarypicker-selection-limit
+- id: Scan.speech-gating
+  title: Голосовой ввод по подписке
+  profiles:
+  - base
+  - pro
+  preconditions:
+  - Отдельно профили Base и Pro
+  steps:
+  - action: Нажать голосовой ввод с Base
+    expect: Показано предусмотренное ограничение или Paywall; запись не начинается.
+  - action: Нажать с Pro и разрешённым микрофоном
+    expect: Открывается ScanSpeech; ручной черновик сохраняется при возврате.
+  covers:
+  - onTapSpeech
+  automation:
+    kind: maestro
+    flows:
+    - e2e-scan-base-voice-gate
+    - e2e-scanspeech-record-review
+    - e2e-scanspeech-cancel
+- id: Scan.clear
+  title: Очистить черновик
+  profiles:
+  - pro
+  preconditions:
+  - Заполнены все поля и прикреплены фото
+  steps:
+  - action: Нажать очистку
+    expect: Поля возвращаются к исходным значениям; фото удалены из черновика. Выбранный шаблон — отдельная
+      настройка, очистка формы его не сбрасывает.
+  - action: Перезапустить приложение
+    expect: Очищенное состояние сохраняется; история и сохранённые шаблоны не удалены.
+  covers:
+  - onTapClear
+  automation:
+    kind: maestro
+    flows:
+    - e2e-scan-clear-draft
+    - e2e-scan-clear-media-template
+- id: Scan.errors
+  title: Ошибки загрузки, черновика и генерации
+  profiles:
+  - pro
+  preconditions:
+  - Управляемый однократный сбой чтения/записи черновика или записи отчёта до постановки задания в backend.
+  steps:
+  - action: Открыть Scan при сбое инициализации и повторить после восстановления
+    expect: Рабочая форма появляется без потери сохранённого черновика.
+  - action: Вызвать сбой сохранения черновика, затем сбой записи отчёта перед генерацией
+    expect: Показаны ошибки; поля и фотографии остаются. До успешного сохранения отчёта запрос генерации
+      не отправляется.
+  - action: Устранить сбои и повторить
+    expect: Нет дублированных отчётов или незавершённых лишних заданий.
+  covers:
+  - onTapRetryInitialization
+  - onDraftSaveFailed
+  - onGenerationFailed
+  automation:
+    kind: maestro
+    flows:
+    - e2e-scan-initialization-retry
+    - e2e-scan-draft-save-retry
+    - e2e-scan-generation-save-retry
+- id: Scan.settings-dev
+  title: Переход в настройки и DEV-заполнение
+  profiles:
+  - pro
+  preconditions:
+  - Тестовая DEBUG-сборка; открыт Scan
+  steps:
+  - action: Открыть настройки и вернуться
+    expect: Восстановлен тот же черновик.
+  - action: Нажать Заполнить (DEV)
+    expect: Поля заполнены существующей development-фикстурой; это только подготовка последующих UI-сценариев.
+  covers:
+  - onTapSettings
+  - onTapFillDevelopment
+  automation:
+    kind: maestro
+    flows:
+    - e2e-scan-development-fill-return

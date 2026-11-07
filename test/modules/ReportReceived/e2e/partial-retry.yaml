@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+name: e2e-reportreceived-partial-retry
+tags: [e2e, ReportReceived, ReportDetail, History]
+---
+- runFlow:
+    file: ../../../maestro/support/controlled-generation.yaml
+    env:
+      EXAMINATION_NUMBER: REG-PARTIAL
+- extendedWaitUntil:
+    visible: {text: '^Повторить$'}
+    timeout: 60000
+- assertVisible: '(?s)Протокол сформирован не полностью.*'
+- assertNotVisible: ^К протоколу$
+- assertNotVisible: ^Копировать$
+- takeScreenshot: ReportReceived-partial-retry-failed
+- tapOn: ^Повторить$
+- extendedWaitUntil:
+    visible: {text: '^К протоколу$'}
+    timeout: 180000
+- assertNotVisible: ^Повторить$
+- assertNotVisible: '(?s)Протокол сформирован не полностью.*'
+- takeScreenshot: ReportReceived-partial-retry-completed
+- tapOn: ^К протоколу$
+- assertVisible: ^Протокол$
+- assertVisible: ^Regression REG-PARTIAL$
+- assertVisible: ^REG-PARTIAL$
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- tapOn: '^Regression REG-PARTIAL$'
+- assertVisible: ^Протокол$
+- assertVisible: ^Regression REG-PARTIAL$
+- assertVisible: ^REG-PARTIAL$
+- takeScreenshot: ReportDetail-partial-retry-restored

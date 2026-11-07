@@ -50,6 +50,9 @@ struct PhotoViewZoomableImage: DViewProtocol {
                     x: center.x + displayed.offset.width,
                     y: center.y + displayed.offset.height,
                 )
+                .accessibilityIdentifier(
+                    "photoView.image.\(photoId).offset.\(Int(displayed.offset.width)).\(Int(displayed.offset.height)).scale.\(Int(displayed.scale * 100))",
+                )
                 switch viewModel.isRemarksVisible {
                 case true:
                     ForEach(
@@ -64,6 +67,9 @@ struct PhotoViewZoomableImage: DViewProtocol {
                                     point,
                                 )
                             },
+                        )
+                        .accessibilityIdentifier(
+                            "photoView.remark.\(point.id)",
                         )
                         .position(
                             displayed.position(

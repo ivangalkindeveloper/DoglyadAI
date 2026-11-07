@@ -1,6 +1,18 @@
 import SwiftUI
 
 extension View {
+    #if DEBUG
+        func previewError(
+            isPresented: Bool,
+        ) -> some View {
+            modifier(
+                PreviewErrorModifier(
+                    isPresented: isPresented,
+                ),
+            )
+        }
+    #endif
+
     /// Supplies the catalog and the matching locale to the whole view hierarchy.
     func localization(
         _ l10n: L10N,

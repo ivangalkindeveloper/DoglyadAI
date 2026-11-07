@@ -5,29 +5,17 @@
     import SwiftUI
 
     #Preview(
-        "TemplateListContentState",
+        "01 TemplateListLoadingState",
     ) {
         TemplateListPreviewView(
-            state: TemplateListContentState(
-                templates: [ModulePreviewFactory.template],
-            ),
+            state: TemplateListLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "TemplateListEmptyState",
-    ) {
-        TemplateListPreviewView(
-            state: TemplateListEmptyState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "TemplateListFailedState",
+        "02 TemplateListFailedState",
     ) {
         TemplateListPreviewView(
             state: TemplateListFailedState(
@@ -41,10 +29,22 @@
     }
 
     #Preview(
-        "TemplateListLoadingState",
+        "03 TemplateListEmptyState",
     ) {
         TemplateListPreviewView(
-            state: TemplateListLoadingState(),
+            state: TemplateListEmptyState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 TemplateListContentState",
+    ) {
+        TemplateListPreviewView(
+            state: TemplateListContentState(
+                templates: [ModulePreviewFactory.template],
+            ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

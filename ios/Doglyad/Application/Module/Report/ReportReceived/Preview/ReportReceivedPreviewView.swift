@@ -26,13 +26,9 @@
             .background(
                 .black,
             )
-            .onAppear {
-                if scenario == .deliveryFailed {
-                    messager.showUnknownError(
-                        l10n: container.l10n,
-                    )
-                }
-            }
+            .previewError(
+                isPresented: scenario == .deliveryFailed,
+            )
         }
     }
 #endif

@@ -1,0 +1,43 @@
+schemaVersion: 1
+module: Share
+source: ios/Doglyad/Application/Module/Share
+cases:
+- id: Share.copy
+  title: Копирование из меню
+  profiles:
+  - pro
+  preconditions:
+  - Открыт Share готового отчёта
+  steps:
+  - action: Нажать копировать
+    expect: Полный текст отчёта в буфере; данные отчёта не изменены.
+  covers:
+  - onTapCopy
+  automation:
+    kind: maestro
+    flows:
+    - e2e-share-delivery-retry
+- id: Share.email
+  title: Рабочая и системная почта
+  profiles:
+  - pro
+  - base
+  preconditions:
+  - Pro и Base; отдельно заданный и отсутствующий рабочий email; локальный SMTP с STARTTLS/AUTH. Системный
+    почтовый клиент заменён тестовым адаптером с проверкой точного адреса, темы и текста.
+  steps:
+  - action: Отправить на рабочую почту
+    expect: SMTP-приёмник получил правильного адресата, текст и вложения; UI показал успех.
+  - action: Открыть системное письмо и отменить
+    expect: Письмо заполнено данными отчёта; отмена не удаляет отчёт.
+  - action: Проверить отсутствие email, запрет Base и ошибку SMTP
+    expect: Доступность соответствует подписке и настройкам; ошибка сохраняет возможность повторной отправки.
+  covers:
+  - onTapUserEmail
+  - onTapEmail
+  automation:
+    kind: maestro
+    flows:
+    - e2e-share-delivery-retry
+    - e2e-share-external-email
+    - e2e-share-base-email-gate

@@ -1,0 +1,31 @@
+appId: ${APP_ID}
+name: e2e-reportdetail-copy-previous
+tags:
+- e2e
+- ReportDetail
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^История исследований$
+- tapOn: ^Regression REG-DETAIL$
+- assertVisible: ^Протокол$
+- scrollUntilVisible:
+    element:
+      id: reportDetail.copy.google/medgemma-4b-it
+    direction: DOWN
+    centerElement: true
+- tapOn:
+    id: reportDetail.copy.google/medgemma-4b-it
+- assertVisible:
+    id: message.success
+- takeScreenshot: ReportDetail-previous-response-copied
+- extendedWaitUntil:
+    notVisible: {id: message.success}
+    timeout: 15000
+- tapOn:
+    id: reportDetail.share
+- assertVisible:
+    id: share.copy
+- takeScreenshot: ReportDetail-share-saved-report
+- tapOn:
+    id: bottomSheet.close
+- assertVisible: ^Протокол$

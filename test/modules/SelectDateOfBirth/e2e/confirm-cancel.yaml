@@ -1,0 +1,37 @@
+appId: ${APP_ID}
+name: e2e-selectdateofbirth-confirm-cancel
+tags: [e2e, SelectDateOfBirth, Scan]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {text: '^Дата рождения:.*'}
+    direction: DOWN
+    centerElement: true
+- copyTextFrom: '^Дата рождения:.*'
+- evalScript: ${output.originalBirthDate = maestro.copiedText}
+- tapOn: '^Дата рождения:.*'
+- takeScreenshot: SelectDateOfBirth-open
+- swipe:
+    start: 23%,70%
+    end: 23%,78%
+    duration: 500
+- tapOn: ^Выбрать$
+- copyTextFrom: '^Дата рождения:.*'
+- evalScript: ${output.confirmedBirthDate = maestro.copiedText}
+- assertTrue: ${output.confirmedBirthDate != output.originalBirthDate}
+- tapOn: '^Дата рождения:.*'
+- swipe:
+    start: 23%,70%
+    end: 23%,78%
+    duration: 500
+- tapOn: {id: bottomSheet.close}
+- copyTextFrom: '^Дата рождения:.*'
+- assertTrue: ${maestro.copiedText == output.confirmedBirthDate}
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {text: '^Дата рождения:.*'}
+    direction: DOWN
+    centerElement: true
+- copyTextFrom: '^Дата рождения:.*'
+- assertTrue: ${maestro.copiedText == output.confirmedBirthDate}
+- takeScreenshot: Scan-birth-date-restored

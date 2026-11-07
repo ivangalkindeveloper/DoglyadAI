@@ -10,6 +10,11 @@
         let state: any OnBoardingStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as OnBoardingFailedState: true
+            default: false
+            }
+
             let model = OnBoardingViewModel(
                 container: container,
                 router: router,
@@ -31,6 +36,9 @@
             )
             return OnBoardingScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

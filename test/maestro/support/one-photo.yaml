@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+name: support-one-photo
+---
+- runFlow: main.yaml
+- scrollUntilVisible:
+    element: {id: scan.clear}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.clear}
+- scrollUntilVisible:
+    element: {id: scan.importMedia, below: {id: scan.type}}
+    direction: UP
+    centerElement: true
+- tapOn: {id: scan.importMedia, below: {id: scan.type}}
+- tapOn: ^Камера$
+- extendedWaitUntil:
+    visible: {id: scanCamera.capture, enabled: true}
+    timeout: 20000
+- tapOn: {id: scanCamera.capture, point: '50%,25%'}
+- assertVisible: {id: scanCamera.photoCount.1}
+- tapOn: {id: bottomSheet.close}

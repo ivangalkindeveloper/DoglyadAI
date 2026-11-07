@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-share-ac05fd8940
+tags:
+- atlas
+- Share
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-share-ac05fd8940
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-share-ac05fd8940
+    timeout: 15000
+- takeScreenshot: 01-Share-ac05fd8940

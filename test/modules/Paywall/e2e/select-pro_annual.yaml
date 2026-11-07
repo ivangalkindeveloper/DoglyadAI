@@ -1,0 +1,42 @@
+appId: ${APP_ID}
+name: e2e-paywall-select-pro_annual
+tags:
+- e2e
+- Paywall
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Управление\ подпиской$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Управление\ подпиской$
+- scrollUntilVisible:
+    element:
+      text: ^Сменить\ план$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Сменить\ план$
+- tapOn:
+    text: ^Подписка\ Pro$
+- assertVisible: ^Доступ\ к\ продвинутым\ медицинским\ нейронным\ моделям$
+- assertVisible: ^Заполнение\ медицинского\ осмотра\ с\ помощью\ голоса$
+- assertVisible: ^Отправка\ медицинских\ заключений\ на\ рабочую\ почту$
+- scrollUntilVisible:
+    element:
+      id: paywall.plan.pro_annual
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: paywall.plan.pro_annual
+- assertVisible:
+    id: paywall.plan.pro_annual
+    selected: true
+- assertVisible:
+    id: paywall.continue
+    enabled: true
+- assertVisible: ^8[\s\u00a0\u202f]*5[\s\u00a0\u202f]*9[\s\u00a0\u202f]*9,00[\s\u00a0\u202f]*₽ / год$
+- assertVisible: ^Pro\ \-\ Годовой\ доступ$
+- takeScreenshot: Paywall-selected-pro_annual

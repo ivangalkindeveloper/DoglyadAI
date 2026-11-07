@@ -110,6 +110,11 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Initial ultrasound conclusions",
                 run: { (process: InitializationProcess) async throws in
+                    #if DEBUG && DOGLYAD_REGRESSION
+                        try await RegressionFixtures.prepareHistory(
+                            repository: process.ultrasoundReportRepository!,
+                        )
+                    #endif
                     let count = try await process.ultrasoundReportRepository!.getReportsCount()
                     await MainActor.run {
                         process.initialUltrasoundReportsCount = count

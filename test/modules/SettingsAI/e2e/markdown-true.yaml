@@ -1,0 +1,48 @@
+appId: ${APP_ID}
+name: e2e-settingsai-markdown-true
+tags:
+- e2e
+- SettingsAI
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.markdown
+    direction: DOWN
+    timeout: 15000
+- runFlow:
+    when:
+      visible:
+        id: settingsAI.markdown
+        selected: false
+    commands:
+    - tapOn:
+        id: settingsAI.markdown
+- tapOn:
+    text: ^Сохранить$
+- assertVisible:
+    text: ^Настройки\ сохранены$
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.markdown
+    direction: DOWN
+    timeout: 15000
+- assertVisible:
+    id: settingsAI.markdown
+    selected: true
+- takeScreenshot: SettingsAI-markdown-true

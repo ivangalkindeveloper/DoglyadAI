@@ -11,6 +11,11 @@
         let state: any ReportDetailStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as ReportDetailFailedState: true
+            default: false
+            }
+
             let model = ReportDetailViewModel(
                 container: container,
                 messager: messager,
@@ -53,6 +58,9 @@
             )
             return ReportDetailScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

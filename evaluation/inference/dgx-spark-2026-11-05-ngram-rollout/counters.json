@@ -1,0 +1,572 @@
+[
+  {
+    "profile": "baseline",
+    "wave": "warmup",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 972.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "warmup",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 884.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "warmup",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1104.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "report-1",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 972.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "report-1",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 884.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "report-1",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1104.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "report-2",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 972.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "report-2",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 884.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "report-2",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1104.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "mixed-1",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 4561.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 4561.0,
+      "vllm:prompt_tokens_by_source_total": 4561.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1095.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "mixed-1",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 4561.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 4561.0,
+      "vllm:prompt_tokens_by_source_total": 4561.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1288.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "mixed-1",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 4561.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 4561.0,
+      "vllm:prompt_tokens_by_source_total": 4561.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 654.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "mixed-2",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 3168.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 3168.0,
+      "vllm:prompt_tokens_by_source_total": 3168.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 470.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "mixed-2",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 3168.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 3168.0,
+      "vllm:prompt_tokens_by_source_total": 3168.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 420.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "baseline",
+    "wave": "mixed-2",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:prefix_cache_queries_total": 3168.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 3168.0,
+      "vllm:prompt_tokens_by_source_total": 3168.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 417.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "warmup",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 152.0,
+      "vllm:spec_decode_num_draft_tokens_total": 1179.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 503.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 503.0,
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 969.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "warmup",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 112.0,
+      "vllm:spec_decode_num_draft_tokens_total": 896.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 452.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 452.0,
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 884.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "warmup",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 153.0,
+      "vllm:spec_decode_num_draft_tokens_total": 1156.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 443.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 443.0,
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1041.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "report-1",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 152.0,
+      "vllm:spec_decode_num_draft_tokens_total": 1179.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 503.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 503.0,
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 969.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "report-1",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 112.0,
+      "vllm:spec_decode_num_draft_tokens_total": 896.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 452.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 452.0,
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 884.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "report-1",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 158.0,
+      "vllm:spec_decode_num_draft_tokens_total": 1196.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 466.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 466.0,
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1075.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "report-2",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 152.0,
+      "vllm:spec_decode_num_draft_tokens_total": 1179.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 503.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 503.0,
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 969.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "report-2",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 112.0,
+      "vllm:spec_decode_num_draft_tokens_total": 896.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 452.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 452.0,
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 884.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "report-2",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 158.0,
+      "vllm:spec_decode_num_draft_tokens_total": 1196.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 466.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 466.0,
+      "vllm:prefix_cache_queries_total": 5092.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 5092.0,
+      "vllm:prompt_tokens_by_source_total": 5092.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1075.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "mixed-1",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 160.0,
+      "vllm:spec_decode_num_draft_tokens_total": 1139.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 680.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 680.0,
+      "vllm:prefix_cache_queries_total": 4561.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 4561.0,
+      "vllm:prompt_tokens_by_source_total": 4561.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1110.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "mixed-1",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 234.0,
+      "vllm:spec_decode_num_draft_tokens_total": 1542.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 766.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 766.0,
+      "vllm:prefix_cache_queries_total": 4561.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 4561.0,
+      "vllm:prompt_tokens_by_source_total": 4561.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 1357.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "mixed-1",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 92.0,
+      "vllm:spec_decode_num_draft_tokens_total": 638.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 296.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 296.0,
+      "vllm:prefix_cache_queries_total": 4561.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 4561.0,
+      "vllm:prompt_tokens_by_source_total": 4561.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 624.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "mixed-2",
+    "container": "doglyad-dgx-vllm_medgemma_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 62.0,
+      "vllm:spec_decode_num_draft_tokens_total": 467.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 208.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 208.0,
+      "vllm:prefix_cache_queries_total": 3168.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 3168.0,
+      "vllm:prompt_tokens_by_source_total": 3168.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 454.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "mixed-2",
+    "container": "doglyad-dgx-vllm_medgemma_15_4b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 59.0,
+      "vllm:spec_decode_num_draft_tokens_total": 453.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 167.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 167.0,
+      "vllm:prefix_cache_queries_total": 3168.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 3168.0,
+      "vllm:prompt_tokens_by_source_total": 3168.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 391.0,
+      "vllm:request_success_total": 4.0
+    }
+  },
+  {
+    "profile": "ngram8",
+    "wave": "mixed-2",
+    "container": "doglyad-dgx-vllm_medgemma_27b-1",
+    "deltas": {
+      "vllm:spec_decode_num_drafts_total": 48.0,
+      "vllm:spec_decode_num_draft_tokens_total": 353.0,
+      "vllm:spec_decode_num_accepted_tokens_total": 151.0,
+      "vllm:spec_decode_num_accepted_tokens_per_pos_total": 151.0,
+      "vllm:prefix_cache_queries_total": 3168.0,
+      "vllm:prefix_cache_hits_total": 0.0,
+      "vllm:external_prefix_cache_queries_total": 0.0,
+      "vllm:external_prefix_cache_hits_total": 0.0,
+      "vllm:num_preemptions_total": 0.0,
+      "vllm:prompt_tokens_total": 3168.0,
+      "vllm:prompt_tokens_by_source_total": 3168.0,
+      "vllm:prompt_tokens_cached_total": 0.0,
+      "vllm:generation_tokens_total": 372.0,
+      "vllm:request_success_total": 4.0
+    }
+  }
+]

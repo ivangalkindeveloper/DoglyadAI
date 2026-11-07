@@ -23,7 +23,18 @@
             .sheet(
                 isPresented: $isPresented,
             ) {
-                content
+                #if DOGLYAD_REGRESSION
+                    // A sheet hides its presenting view from the accessibility tree.
+                    content
+                        .accessibilityElement(
+                            children: .contain,
+                        )
+                        .accessibilityIdentifier(
+                            "regression.\(UserDefaults.standard.string(forKey: "regressionPreview") ?? "unknown")",
+                        )
+                #else
+                    content
+                #endif
             }
         }
     }

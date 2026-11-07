@@ -10,5 +10,11 @@ struct ApplicationSplashView: DViewProtocol {
                 .splash,
             ).scaledToFill()
         }.ignoresSafeArea()
+            .accessibilityElement(
+                children: .ignore,
+            )
+            .accessibilityIdentifier(
+                "application.splash",
+            )
     }
 }

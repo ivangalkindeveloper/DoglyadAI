@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-selecttemplate-fe15c31af1
+tags:
+- atlas
+- SelectTemplate
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-selecttemplate-fe15c31af1
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-selecttemplate-fe15c31af1
+    timeout: 15000
+- takeScreenshot: 01-SelectTemplate-fe15c31af1

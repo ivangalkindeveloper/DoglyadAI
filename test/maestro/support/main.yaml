@@ -1,0 +1,28 @@
+appId: ${APP_ID}
+name: support-main
+tags:
+- support
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionExternalApps: 'false'
+      regressionVersionPolicy: ''
+      regressionSeed: ''
+      regressionSeedSpeechModel: 'false'
+      regressionFault: ''
+      regressionFaultModule: ''
+      regressionFaultAfter: '0'
+      regressionNewBillingOwner: 'false'
+      regressionSpeech: ''
+      regressionDelay: ''
+      regressionDelaySeconds: '5'
+      regressionResetLegalConsent: 'false'
+      regressionEmptyReadyMadeTemplates: 'false'
+      regressionDocumentFailure: 'false'
+- extendedWaitUntil:
+    visible:
+      id: scan.settings
+      enabled: true
+    timeout: 60000
+- waitForAnimationToEnd

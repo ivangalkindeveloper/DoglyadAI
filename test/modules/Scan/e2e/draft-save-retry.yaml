@@ -1,0 +1,34 @@
+appId: ${APP_ID}
+name: e2e-scan-draft-save-retry
+tags: [e2e, Scan]
+---
+- runFlow: ../../../maestro/support/one-photo.yaml
+- tapOn: {id: scan.patientName, index: 1}
+- eraseText: 100
+- inputText: Retained after draft failure
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- pressKey: Home
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionFault: ultrasoundDraftRepository.saveForm
+      regressionFaultAfter: '0'
+      regressionDelay: ultrasoundDraftRepository.saveForm
+      regressionDelaySeconds: '5'
+- extendedWaitUntil:
+    visible: {id: scan.patientName}
+    timeout: 60000
+- tapOn: {id: scan.patientName, index: 1, point: '99%,50%'}
+- inputText: ' retained'
+- extendedWaitUntil:
+    visible: '^Не удалось сохранить черновик$'
+    timeout: 15000
+- assertVisible: {id: scan.patientName, text: '^Retained after draft failure retained$'}
+- takeScreenshot: Scan-draft-save-failed
+- inputText: ' retry'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- pressKey: Home
+- runFlow: ../../../maestro/support/main.yaml
+- assertVisible: {id: scan.patientName, text: '^Retained after draft failure retained retry$'}
+- assertVisible: {id: 'scan.photo\..*'}
+- takeScreenshot: Scan-draft-save-retried

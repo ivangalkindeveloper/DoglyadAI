@@ -1,0 +1,52 @@
+appId: ${APP_ID}
+name: e2e-settingsai-save-failure
+tags:
+- e2e
+- SettingsAI
+---
+- runFlow:
+    file: ../../../maestro/support/settings-with-fault.yaml
+    env:
+      REPOSITORY_FAULT: settingsAIRepository.saveSettings
+- tapOn:
+    text: ^Настройки AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.temperature
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: settingsAI.temperature
+    index: 1
+- eraseText: 100
+- inputText: '0.7'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- extendedWaitUntil:
+    visible:
+      id: message.error
+    timeout: 10000
+- assertVisible:
+    id: settingsAI.temperature
+    text: 0[.,]7
+- assertNotVisible:
+    id: message.success
+- takeScreenshot: SettingsAI-save-failed
+- tapOn:
+    text: ^Сохранить$
+- assertVisible: Настройки сохранены
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Настройки AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.temperature
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- assertVisible:
+    id: settingsAI.temperature
+    text: 0[.,]7
+- takeScreenshot: SettingsAI-save-retried

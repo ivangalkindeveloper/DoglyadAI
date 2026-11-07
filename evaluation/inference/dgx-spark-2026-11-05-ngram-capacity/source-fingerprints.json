@@ -1,0 +1,8 @@
+{
+  "deploy/inference/profiles/dgx-spark.json": "fe2ab3b61cb0051b75447cc5bb2afa7977e5be2c3a8149c4d2878974458aa3d0",
+  "deploy/dgx-spark/config/server.json": "731b86438089f318b3c9d898f122e2072ce811a56416c20f43606fc468042f00",
+  "deploy/inference/host_profile.py": "d042f088b4a4035c35af5a09bbd5f8264da9fe81c544388ad91e7a730b7f33a8",
+  "deploy/inference/compose_document.py": "a02b314f3c45d40ce86c5db9591cc7f86be767b9d29fb53aaca79abb2c1d5365",
+  "deploy/inference/start.py": "1a55f819dda0b0ebd7c9e5ee6954e1b540a21dccace6d30d323801d077160788",
+  "backend/inference/app/service/vllm_service.py": "8dde23dda7f5f8a871b7ec795fa658eb66393133dbba9f58ddaac2d9e29059eb"
+}

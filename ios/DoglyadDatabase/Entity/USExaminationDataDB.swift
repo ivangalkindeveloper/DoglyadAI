@@ -4,7 +4,9 @@ import SwiftData
 @Model
 public final class USExaminationDataDB {
     public var usExaminationTypeId: String
-    @Relationship public var photos: [USExaminationScanPhotoDB]
+    @Relationship(
+        deleteRule: .cascade,
+    ) public var photos: [USExaminationScanPhotoDB]
     public var examinationNumber: String
     public var patientName: String
     public var patientGenderRawValue: String

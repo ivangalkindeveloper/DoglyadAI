@@ -1,0 +1,32 @@
+appId: ${APP_ID}
+name: e2e-usersettings-invalid-email
+tags:
+- e2e
+- UserSettings
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Рабочие\ настройки$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Рабочие\ настройки$
+- tapOn: regression@example.invalid
+- eraseText
+- inputText: invalid-email
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- assertVisible:
+    text: ^Введите\ корректный\ адрес\ электронной\ почты$
+- takeScreenshot: UserSettings-email-error
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Рабочие\ настройки$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Рабочие\ настройки$
+- assertVisible: regression@example.invalid

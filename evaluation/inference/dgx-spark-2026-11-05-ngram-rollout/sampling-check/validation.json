@@ -1,0 +1,347 @@
+{
+  "baseline": {
+    "requests": 16,
+    "main_failures": 9,
+    "all_natural_stop": true,
+    "all_schema_valid": true,
+    "results": [
+      {
+        "seed": 0,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 13.792686272994615,
+        "output_sha256": "062655c1fe59b9fae9557e373ba777b5b89bc9667f94eef6be074a54b47d512a",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 1,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 8.811457179996069,
+        "output_sha256": "be17fffccfe2b0361561670d6cc193a5aac7a17a3812d7e25e7f885626e32c02",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 2,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 9.38781048299279,
+        "output_sha256": "570eea884cbe6c88d6fb43b64fb3efd2a5d40fbcaf130cf4131235f29621b46e",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 3,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 8.670562680010335,
+        "output_sha256": "a16618d42a37027666b298d8418ff9bd5d794d02328a8f00bda92674a4b96e75",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 4,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 11.680479433009168,
+        "output_sha256": "b67f23c12cd3ed91cc16d67d9154562380e5cf4f1b44cde908f515daa1db495d",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 5,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 8.60094377900532,
+        "output_sha256": "86eee3e45fb8af06571fedf882a350390d3976775650f4708d89724ecbf1c1d5",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 6,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 16.453433842005325,
+        "output_sha256": "6116be5ec595eedae386d568aedbbc82f577992a8667c2f6840e71faceeab548",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 7,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 9.779317828986677,
+        "output_sha256": "b2f15f9e4180255f9d3ad51d1f4bf76994c8b33c60054afc88b9d6d750b07dbc",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 8,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 12.949548561999109,
+        "output_sha256": "d2835a83a8f8b353660d5a8d966fa245ab51373274bc1e342de437d6bffdb17e",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 9,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 12.263654071008204,
+        "output_sha256": "35415818e546ee8c4658f5655312e61304f5c0f2f263e356b47dd2394286164b",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 10,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 12.128838231001282,
+        "output_sha256": "1ed904e8890051aaf0cceb77e95d6f461fa1474975a5fb926710040f60c720ab",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 11,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 9.664432064004359,
+        "output_sha256": "d17cc8f9b975abcf0f4f6e091c7acf2cfa44b48a5607d3248f1e2756823b80d6",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 12,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 8.889618556000642,
+        "output_sha256": "e701ba30e57bd91f822f6329feacf242db123290592378a7ea88b2b7670398a1",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 13,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 13.60061692299496,
+        "output_sha256": "2c5f6b39af021130d312e4aeea3589ccf5c81f7f8bf593fe39cb397c43c54bc4",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 14,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 8.506083211992518,
+        "output_sha256": "8852f9e37979c91b4a4800fb716403b3ca2c2515d9de497d7bac725aed4eb3ec",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 42,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 9.804926219003391,
+        "output_sha256": "906e2a4ed761a42f3a85f81623117eb9a7c7ed5a6e8bdf6876e1566c11db2c28",
+        "maximum_sentence_copies": 1
+      }
+    ]
+  },
+  "ngram8": {
+    "requests": 16,
+    "main_failures": 6,
+    "all_natural_stop": true,
+    "all_schema_valid": true,
+    "results": [
+      {
+        "seed": 0,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 5.874937717002467,
+        "output_sha256": "3407cf9820ec31a551996750aa41cddf5fb8a0bb7996ef7cc4185c7dcfeccf4d",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 1,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 4.415646663997904,
+        "output_sha256": "1272de67ca58c7ea97bfbc6d3c38b44bb3c6ef1ba4ee50ca630554b236b2424e",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 2,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 5.363072581996676,
+        "output_sha256": "679aa2f4619daa57126cbacb5a0df81294aa2080192e61a263b1af432a0fd46a",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 3,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 5.7594173129909905,
+        "output_sha256": "d3eaf2459cba7fcf950f2d3fe16c39ad744737dd42bf8cc2021ce7939d18fbc9",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 4,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 5.159834944002796,
+        "output_sha256": "95001b54b57f82b2dd5e04831b1dcf5d409004013dfc3d12aebadf7789220426",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 5,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 5.970219281007303,
+        "output_sha256": "7c78f6be429f0c81c103e00a4720f8230e95b75be9b5f3d42c367ab1c9275762",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 6,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 5.811712454989902,
+        "output_sha256": "7c0bb7fe8eb6246317d1dab7f9dcfb913c5f3c96f098af77403f5f194b2f90ae",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 7,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 6.1241885280032875,
+        "output_sha256": "8b6d40f18a654f9ea19842bee1e3536cf67b34446605e3871cf2ccb496380d9b",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 8,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 6.403155930005596,
+        "output_sha256": "c3d500e33c3951c4416eb767ba58984901c55e600b03f9d9ed0e0ba4a618f835",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 9,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 5.5533708480070345,
+        "output_sha256": "a1de6a2ecb733a7b08421a4a5f219fa844826227e495ac3ccc4b641f7aa4a63b",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 10,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 5.707173970993608,
+        "output_sha256": "82049efe4d0eb8b98fb47270d309eeb53266bdfd35eaac5c7311ab3208d744af",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 11,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 4.748672188012279,
+        "output_sha256": "cdb9acbd47a62aa35299dcb2e75ea532cd99cdfa06a9ba56637cadecdebb77fb",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 12,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 6.773357255995506,
+        "output_sha256": "d2c5a3e49301dbb42592130b86e416744f0fa18f3370670361e0f307bd839155",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 13,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 6.467627082995023,
+        "output_sha256": "378e89cb4e6e447274f66944e6b2d446f9e36ce649c0c5e2e704019a7ce7a1c9",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      },
+      {
+        "seed": 14,
+        "schema_valid": true,
+        "main_valid": true,
+        "natural_stop": true,
+        "seconds": 4.67825245000131,
+        "output_sha256": "16a82a17ec1b7acbe3a83e944482144aa47efd8b702a55b6e64404aac12859bb",
+        "maximum_sentence_copies": 1
+      },
+      {
+        "seed": 42,
+        "schema_valid": true,
+        "main_valid": false,
+        "natural_stop": true,
+        "seconds": 6.270146609007497,
+        "output_sha256": "61b7498b07da88edfedaeb335e3fe22e9eba10da2cd6df0971b7078575d5b393",
+        "maximum_sentence_copies": 1,
+        "validation_error": "reportMeasurementsMismatch"
+      }
+    ]
+  },
+  "paired_seed_outcomes": {
+    "both_pass": [
+      7,
+      9,
+      12,
+      14
+    ],
+    "both_fail": [
+      3,
+      8,
+      13
+    ],
+    "baseline_only_pass": [
+      0,
+      6,
+      42
+    ],
+    "ngram_only_pass": [
+      1,
+      2,
+      4,
+      5,
+      10,
+      11
+    ]
+  }
+}

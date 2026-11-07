@@ -1,0 +1,54 @@
+appId: ${APP_ID}
+name: e2e-selectusexaminationtype-failures
+tags: [e2e, SelectUSExaminationType]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionFault: ultrasoundReportRepository.getRecentExaminationTypeIds
+      regressionFaultAfter: '0'
+- extendedWaitUntil:
+    visible: {id: scan.type}
+    timeout: 60000
+- tapOn: {id: scan.type}
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 15000
+- takeScreenshot: SelectUSExaminationType-load-failed
+- tapOn: ^Обновить$
+- assertVisible: {id: examinationType.thyroidGland}
+- tapOn: {id: bottomSheet.close}
+- assertVisible: {id: scan.type, text: '^Щитовидная железа$'}
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionFault: ultrasoundReportRepository.recordRecentExaminationTypeId
+      regressionFaultAfter: '0'
+- extendedWaitUntil:
+    visible: {id: scan.type}
+    timeout: 60000
+- tapOn: {id: scan.type}
+- scrollUntilVisible:
+    element: {id: examinationType.echocardiography}
+    direction: UP
+    centerElement: true
+- tapOn: {id: examinationType.echocardiography}
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 15000
+- assertVisible: {id: examinationType.thyroidGland}
+- takeScreenshot: SelectUSExaminationType-selection-failed
+- tapOn: {id: bottomSheet.close}
+- assertVisible: {id: scan.type, text: '^Щитовидная железа$'}
+- tapOn: {id: scan.type}
+- scrollUntilVisible:
+    element: {id: examinationType.echocardiography}
+    direction: UP
+    centerElement: true
+- tapOn: {id: examinationType.echocardiography}
+- assertVisible: {id: scan.type, text: '^Эхокардиография$'}
+- runFlow: ../../../maestro/support/main.yaml
+- assertVisible: {id: scan.type, text: '^Эхокардиография$'}
+- runFlow: ../../../maestro/support/fill-scan.yaml

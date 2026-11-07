@@ -11,6 +11,17 @@ extension InitializationProcess {
                 AsyncInitializationStep<InitializationProcess>(
                     title: "Local billing identity reset",
                     run: { @MainActor (process: InitializationProcess) async throws in
+                        #if DEBUG && DOGLYAD_REGRESSION
+                            if process.environment?.type == .development,
+                               bundleIdentifier == "com.medical.doglyad.local",
+                               UserDefaults.standard.bool(
+                                   forKey: "regressionNewBillingOwner",
+                               )
+                            {
+                                try await process.securityDatabase!.removeBillingIdentity()
+                                return
+                            }
+                        #endif
                         #if DEBUG
                             guard process.environment?.type == .development,
                                   bundleIdentifier == "com.medical.doglyad.local",

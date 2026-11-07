@@ -1,0 +1,11 @@
+{
+  "firebaseCredentials": "backend/main/secrets/firebase.json",
+  "backendBuildTimeoutSeconds": 3600,
+  "simulatorDeviceType": "com.apple.CoreSimulator.SimDeviceType.iPhone-17",
+  "simulatorRuntime": "",
+  "scheme": "Doglyad-Debug-Local",
+  "appId": "com.medical.doglyad.local",
+  "yookassaCredentialsFile": "backend/main/secrets/.env.development",
+  "figmaFileKey": "",
+  "figmaPageName": "Doglyad Regression"
+}

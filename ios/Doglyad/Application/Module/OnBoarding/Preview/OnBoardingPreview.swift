@@ -5,51 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "OnBoardingCompletingState",
-    ) {
-        OnBoardingPreviewView(
-            state: OnBoardingCompletingState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "OnBoardingExaminationTypeState",
-    ) {
-        OnBoardingPreviewView(
-            state: OnBoardingExaminationTypeState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "OnBoardingFailedState",
-    ) {
-        OnBoardingPreviewView(
-            state: OnBoardingFailedState(
-                error: URLError(
-                    .notConnectedToInternet,
-                ),
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "OnBoardingFinalState",
-    ) {
-        OnBoardingPreviewView(
-            state: OnBoardingFinalState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "OnBoardingFirstState",
+        "01 OnBoardingFirstState",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingFirstState(),
@@ -59,17 +15,7 @@
     }
 
     #Preview(
-        "OnBoardingLegalState",
-    ) {
-        OnBoardingPreviewView(
-            state: OnBoardingLegalState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "OnBoardingSecondState",
+        "02 OnBoardingSecondState",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingSecondState(),
@@ -79,11 +25,65 @@
     }
 
     #Preview(
-        "Согласие принято",
+        "03 OnBoardingLegalState",
+    ) {
+        OnBoardingPreviewView(
+            state: OnBoardingLegalState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 Согласие принято",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingLegalState(
                 isLegalAccepted: true,
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "05 OnBoardingExaminationTypeState",
+    ) {
+        OnBoardingPreviewView(
+            state: OnBoardingExaminationTypeState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "06 OnBoardingFinalState",
+    ) {
+        OnBoardingPreviewView(
+            state: OnBoardingFinalState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "07 OnBoardingCompletingState",
+    ) {
+        OnBoardingPreviewView(
+            state: OnBoardingCompletingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "08 OnBoardingFailedState",
+    ) {
+        OnBoardingPreviewView(
+            state: OnBoardingFailedState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
             ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),

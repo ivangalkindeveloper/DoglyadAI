@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "PermissionState",
+        "01 PermissionState",
     ) {
         PermissionPreviewView(
             state: PermissionState(),
@@ -16,7 +16,7 @@
     }
 
     #Preview(
-        "Permission · speech",
+        "02 Permission · speech",
     ) {
         PermissionPreviewView(
             state: PermissionState(),
@@ -27,7 +27,7 @@
     }
 
     #Preview(
-        "Permission · photoLibrary",
+        "03 Permission · photoLibrary",
     ) {
         PermissionPreviewView(
             state: PermissionState(),

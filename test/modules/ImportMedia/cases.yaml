@@ -1,0 +1,26 @@
+schemaVersion: 1
+module: ImportMedia
+source: ios/Doglyad/Application/Module/ImportMedia
+cases:
+- id: ImportMedia.sources
+  title: Выбор камеры и галереи
+  profiles:
+  - pro
+  preconditions:
+  - Открыт импорт фотографий из Scan
+  steps:
+  - action: Выбрать камеру и вернуться
+    expect: Открывается ScanCamera либо Permission при запрете; повторный импорт доступен.
+  - action: Выбрать галерею и отменить выбор
+    expect: Открывается системная медиатека; прежние снимки не изменены.
+  - action: Закрыть импорт без выбора
+    expect: Scan остаётся с прежними данными.
+  covers:
+  - onTapCamera
+  - onTapGallery
+  - onDisappear
+  automation:
+    kind: maestro
+    flows:
+    - e2e-photolibrarypicker-selection-limit
+    - e2e-scancamera-capture-delete

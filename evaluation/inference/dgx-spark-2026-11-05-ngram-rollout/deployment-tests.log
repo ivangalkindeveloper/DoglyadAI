@@ -1,0 +1,109 @@
+test_docker_compose_accepts_generated_arm64_and_amd64_stacks (test_inference_profile.InferenceProfileTests.test_docker_compose_accepts_generated_arm64_and_amd64_stacks) ... ok
+test_duplicate_json_keys_are_rejected (test_inference_profile.InferenceProfileTests.test_duplicate_json_keys_are_rejected) ... ok
+test_each_profile_exposes_only_its_own_models_and_private_engines (test_inference_profile.InferenceProfileTests.test_each_profile_exposes_only_its_own_models_and_private_engines) ... ok
+test_failed_engine_stops_sequence_before_next_engine_and_api (test_inference_profile.InferenceProfileTests.test_failed_engine_stops_sequence_before_next_engine_and_api) ... ok
+test_generation_is_portable_and_preserves_operational_files (test_inference_profile.InferenceProfileTests.test_generation_is_portable_and_preserves_operational_files) ... ok
+test_invalid_ngram_configuration_is_rejected (test_inference_profile.InferenceProfileTests.test_invalid_ngram_configuration_is_rejected) ... ok
+test_ngram_configuration_is_serialized_as_one_cli_argument (test_inference_profile.InferenceProfileTests.test_ngram_configuration_is_serialized_as_one_cli_argument) ... ok
+test_output_symlink_cannot_overwrite_another_file (test_inference_profile.InferenceProfileTests.test_output_symlink_cannot_overwrite_another_file) ... ok
+test_rejects_invalid_profiles_before_any_files_are_written (test_inference_profile.InferenceProfileTests.test_rejects_invalid_profiles_before_any_files_are_written) ... ok
+test_startup_guards_fail_before_any_container_mutation (test_inference_profile.InferenceProfileTests.test_startup_guards_fail_before_any_container_mutation) ... ok
+test_startup_waits_for_each_engine_before_api (test_inference_profile.InferenceProfileTests.test_startup_waits_for_each_engine_before_api) ... ok
+test_engine_probe_rejects_foreign_routes_and_wrong_served_model (test_inference_rollout.InferenceRolloutTests.test_engine_probe_rejects_foreign_routes_and_wrong_served_model) ... ok
+test_old_single_engine_snapshot_remains_recoverable (test_inference_rollout.InferenceRolloutTests.test_old_single_engine_snapshot_remains_recoverable) ... ok
+test_preflight_records_every_engine_for_preservation (test_inference_rollout.InferenceRolloutTests.test_preflight_records_every_engine_for_preservation) ... ok
+test_public_backend_binding_blocks_rollout (test_inference_rollout.InferenceRolloutTests.test_public_backend_binding_blocks_rollout) ... ok
+test_restart_of_any_engine_fails_readiness (test_inference_rollout.InferenceRolloutTests.test_restart_of_any_engine_fails_readiness) ... ok
+test_running_engine_drift_blocks_backend_rollout (test_inference_rollout.InferenceRolloutTests.test_running_engine_drift_blocks_backend_rollout) ... ok
+test_unhealthy_or_public_engine_blocks_rollout (test_inference_rollout.InferenceRolloutTests.test_unhealthy_or_public_engine_blocks_rollout) ... ok
+test_credentials_are_read_only_for_app_group_and_logs_are_writable (test_prepare_backend_storage.BackendStorageTests.test_credentials_are_read_only_for_app_group_and_logs_are_writable) ... ok
+test_non_root_helper_is_rejected (test_prepare_backend_storage.BackendStorageTests.test_non_root_helper_is_rejected) ... ok
+test_symlink_cannot_change_permissions_outside_mounted_directory (test_prepare_backend_storage.BackendStorageTests.test_symlink_cannot_change_permissions_outside_mounted_directory) ... ok
+test_branch_race_does_not_deploy (test_update_infrastructure.DeploymentTests.test_branch_race_does_not_deploy) ... Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmp7jihglne/dgx-spark. Review files, then configure .env and secrets before startup.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmp7jihglne/medgemma-4b-amd64. Review files, then configure .env and secrets before startup.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmpw8kpp5q8/host. Review files, then configure .env and secrets before startup.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmp1w_gke4y/host. Review files, then configure .env and secrets before startup.
+Generated deployment matches profile.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmpivky47gb/host. Review files, then configure .env and secrets before startup.
+Generated /var/folders/27/fqh_j1455_58llxdmlfv72r00000gn/T/tmpw0cpsd65/host. Review files, then configure .env and secrets before startup.
+Build dispatched for original
+ok
+test_build_requires_both_publications_and_all_checks (test_update_infrastructure.DeploymentTests.test_build_requires_both_publications_and_all_checks) ... Build dispatched for sha
+Actions: run-url
+Build dispatched for sha
+Actions: run-url
+Build dispatched for sha
+Actions: run-url
+ok
+test_failed_build_does_not_return_a_release (test_update_infrastructure.DeploymentTests.test_failed_build_does_not_return_a_release) ... Build dispatched for sha
+Actions: run-url
+ok
+test_failure_on_shared_host_rolls_back_only_attempted_model_directories (test_update_infrastructure.DeploymentTests.test_failure_on_shared_host_rolls_back_only_attempted_model_directories) ... Updated inference spark:/opt/doglyad/first: digest
+Rolled back spark:/opt/doglyad/second
+Rolled back spark:/opt/doglyad/first
+ok
+test_failure_rolls_back_attempted_hosts_in_reverse (test_update_infrastructure.DeploymentTests.test_failure_rolls_back_attempted_hosts_in_reverse) ... Updated inference gpu:/opt/doglyad: digest
+Rolled back dev:/opt/doglyad
+Rolled back gpu:/opt/doglyad
+ok
+test_inventory_rejects_ambiguous_profile_and_duplicate_model_hosts (test_update_infrastructure.DeploymentTests.test_inventory_rejects_ambiguous_profile_and_duplicate_model_hosts) ... ok
+test_inventory_rejects_missing_production_and_ssh_injection (test_update_infrastructure.DeploymentTests.test_inventory_rejects_missing_production_and_ssh_injection) ... ok
+test_inventory_rejects_unsafe_or_duplicate_stack_directories (test_update_infrastructure.DeploymentTests.test_inventory_rejects_unsafe_or_duplicate_stack_directories) ... ok
+test_main_scope_failure_rolls_back_both_main_hosts (test_update_infrastructure.DeploymentTests.test_main_scope_failure_rolls_back_both_main_hosts) ... Ready: development dev:/opt/doglyad (digest)
+Ready: production prod:/opt/doglyad (digest)
+Main-only scope: inference availability/routes are not checked.
+Updated development dev:/opt/doglyad: digest
+Rolled back prod:/opt/doglyad
+Rolled back dev:/opt/doglyad
+Retained recovery lock: prod:/opt/doglyad release=945825ea07c84b3d8a00aaeb5110a3aa
+Retained recovery lock: dev:/opt/doglyad release=945825ea07c84b3d8a00aaeb5110a3aa
+ok
+test_main_scope_keeps_model_coverage_and_never_contacts_gpu (test_update_infrastructure.DeploymentTests.test_main_scope_keeps_model_coverage_and_never_contacts_gpu) ... Ready: development dev:/opt/doglyad (digest)
+Ready: production prod:/opt/doglyad (digest)
+Main-only scope: inference availability/routes are not checked.
+Updated development dev:/opt/doglyad: digest
+Updated production prod:/opt/doglyad: digest
+ok
+test_main_scope_preflight_never_builds_or_checks_inference (test_update_infrastructure.DeploymentTests.test_main_scope_preflight_never_builds_or_checks_inference) ... Updated scope=main: sha
+run-url
+Caddy/vLLM preserved. Generation not tested.
+Ready: development dev:/opt/doglyad (digest)
+Ready: production prod:/opt/doglyad (digest)
+ok
+test_manifest_pins_amd64_digest (test_update_infrastructure.DeploymentTests.test_manifest_pins_amd64_digest) ... ok
+test_manifest_selects_arm64_and_rejects_missing_platform (test_update_infrastructure.DeploymentTests.test_manifest_selects_arm64_and_rejects_missing_platform) ... ok
+test_profile_expands_one_host_into_all_models (test_update_infrastructure.DeploymentTests.test_profile_expands_one_host_into_all_models) ... Main-only scope: inference availability/routes are not checked.
+Preflight passed. No changes made. Generation not tested.
+Ready: inference spark:/opt/doglyad/inference (digest)
+Ready: development dev:/opt/doglyad (digest)
+Ready: production prod:/opt/doglyad (digest)
+ok
+test_success_orders_inference_before_main (test_update_infrastructure.DeploymentTests.test_success_orders_inference_before_main) ... Preflight passed. No changes made. Generation not tested.
+Updated inference gpu:/opt/doglyad: digest
+Updated development dev:/opt/doglyad: digest
+Updated production prod:/opt/doglyad: digest
+ok
+test_three_models_can_share_one_arm64_host_in_distinct_directories (test_update_infrastructure.DeploymentTests.test_three_models_can_share_one_arm64_host_in_distinct_directories) ... Updated inference spark:/opt/doglyad/medgemma-4b: digest
+Updated inference spark:/opt/doglyad/medgemma-15-4b: digest
+Updated inference spark:/opt/doglyad/medgemma-27b: digest
+Updated development dev:/opt/doglyad: digest
+Updated production prod:/opt/doglyad: digest
+ok
+test_architecture_mismatch_fails_before_compose (test_update_remote.RemoteTransactionTests.test_architecture_mismatch_fails_before_compose) ... ok
+test_changed_host_profile_blocks_update_and_rollback_before_mutation (test_update_remote.RemoteTransactionTests.test_changed_host_profile_blocks_update_and_rollback_before_mutation) ... ok
+test_dgx_directory_selects_its_own_storage (test_update_remote.RemoteTransactionTests.test_dgx_directory_selects_its_own_storage) ... ok
+test_environment_mismatch_fails_before_request (test_update_remote.RemoteTransactionTests.test_environment_mismatch_fails_before_request) ... ok
+test_foreign_release_cannot_unlock (test_update_remote.RemoteTransactionTests.test_foreign_release_cannot_unlock) ... ok
+test_invalid_stack_directory_does_not_change_working_directory (test_update_remote.RemoteTransactionTests.test_invalid_stack_directory_does_not_change_working_directory) ... ok
+test_multi_model_update_and_recovery_preserve_all_engine_snapshots (test_update_remote.RemoteTransactionTests.test_multi_model_update_and_recovery_preserve_all_engine_snapshots) ... ok
+test_new_non_root_container_passes_readiness (test_update_remote.RemoteTransactionTests.test_new_non_root_container_passes_readiness) ... ok
+test_new_running_root_container_fails_readiness (test_update_remote.RemoteTransactionTests.test_new_running_root_container_fails_readiness) ... ok
+test_published_release_replaces_local_spark_image_and_rollback_restores_it (test_update_remote.RemoteTransactionTests.test_published_release_replaces_local_spark_image_and_rollback_restores_it) ... ok
+test_report_worker_updates_and_rolls_back_with_api (test_update_remote.RemoteTransactionTests.test_report_worker_updates_and_rolls_back_with_api) ... ok
+test_rollback_restores_env_and_pins_previous_image_id (test_update_remote.RemoteTransactionTests.test_rollback_restores_env_and_pins_previous_image_id) ... ok
+test_stage_prepares_storage_before_new_image_validation (test_update_remote.RemoteTransactionTests.test_stage_prepares_storage_before_new_image_validation) ... ok
+
+----------------------------------------------------------------------
+Ran 50 tests in 0.989s
+
+OK

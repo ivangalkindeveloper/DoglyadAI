@@ -11,6 +11,11 @@
         let state: any TemplateEditStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as TemplateEditInitializationFailedState, _ as TemplateEditFailedState: true
+            default: false
+            }
+
             let model = TemplateEditViewModel(
                 container: container,
                 router: router,
@@ -46,6 +51,9 @@
             )
             return TemplateEditScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

@@ -165,9 +165,18 @@ The two services have almost identical `init_app_check.py` and `verify_app_check
 - `generation`: maximum body size (48 MiB, allowing transport/prompt overhead above main's 40 MiB input), image count (six), decoded image size (4 MiB), concurrent operations (16), waiting requests (16), queue wait (2 seconds), and `Retry-After` (5 seconds).
 - `default_max_body_bytes`: body limit for unrecognized paths.
 
-Capacity checks are per model and per service process. Run one worker per GPU host, as the supplied Uvicorn command does. The default 16 concurrent slots apply separately to each model; DGX overrides this to four running and one waiting request per model (up to 12 running requests across its three models). Each DGX engine also sets `maxNumSeqs: 4`; its profile enables compilation and CUDA Graphs with `isEager: false`. Actual throughput depends on the model and GPU. A full queue or an expired queue wait returns `503`. Queue slots are released after completion, errors and cancellation. These limits are separate from client subscription quotas. An HTTP deadline bounds this service's wait; engine-side cancellation of a generation is controlled by vLLM.
+Capacity checks are per model and per service process. Run one worker per GPU host, as the supplied Uvicorn command does. The default 16 concurrent slots apply separately to each model; DGX overrides this to eight running and one waiting request per model (up to 24 running requests across its three models). Each DGX engine also sets `maxNumSeqs: 8`; its profile enables compilation and CUDA Graphs with `isEager: false`. Actual throughput depends on the model and GPU. A full queue or an expired queue wait returns `503`. Queue slots are released after completion, errors and cancellation. These limits are separate from client subscription quotas. An HTTP deadline bounds this service's wait; engine-side cancellation of a generation is controlled by vLLM.
 
 `VLLM_REQUEST_TIMEOUT_SECONDS` no longer controls the Python service; edit `vllm` in `server.json`. Engine routes and Firebase credentials still come from environment settings.
+
+The DGX host profile also enables N-gram speculative decoding with eight draft
+tokens and a prompt lookup range of 2–5. The target model verifies these tokens;
+weights remain BF16. On vLLM 0.28.0 this selects Model Runner V1 and disables
+async scheduling, while allowing eight concurrent sequences per model. Long
+inputs can reduce actual concurrency because KV cache capacity is finite. See the
+[capacity evaluation](../../evaluation/inference/dgx-spark-2026-11-05-ngram-capacity/README.md)
+for full-answer latency, validation results and deployment evidence. Other host
+profiles do not inherit this setting.
 
 
 ## API errors

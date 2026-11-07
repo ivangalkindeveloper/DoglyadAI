@@ -1,0 +1,29 @@
+appId: ${APP_ID}
+name: support-new-payment-owner
+tags: [support]
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionCaptureSplash: 'false'
+      regressionNewBillingOwner: 'true'
+      regressionFault: ''
+      regressionResetLegalConsent: 'false'
+      regressionDocumentFailure: 'false'
+      regressionEmptyReadyMadeTemplates: 'false'
+- extendedWaitUntil:
+    visible: {id: '(scan.settings|paywall.continue)', enabled: true}
+    timeout: 60000
+# Existing local reports remain available after changing the billing identity.
+- runFlow:
+    when:
+      visible: {id: scan.settings}
+    commands:
+    - tapOn: {id: scan.settings}
+    - scrollUntilVisible:
+        element: {text: '^Управление подпиской$'}
+        direction: DOWN
+    - tapOn: ^Управление подпиской$
+    - assertVisible: ^Нет активной подписки$
+    - tapOn: ^Сменить план$
+- runFlow: paywall-ready.yaml

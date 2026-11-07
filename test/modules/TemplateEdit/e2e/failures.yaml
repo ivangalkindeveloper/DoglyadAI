@@ -1,0 +1,50 @@
+appId: ${APP_ID}
+name: e2e-templateedit-failures
+tags: [e2e, TemplateEdit]
+---
+# The root also reads a selected template during startup. Keep it selected to
+# verify that only TemplateEdit consumes the injected read failure.
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.template}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.template}
+- tapOn: ^Retry template$
+- assertVisible: ^Retry template$
+- runFlow:
+    file: ../../../maestro/support/settings-with-fault.yaml
+    env:
+      REPOSITORY_FAULT: templateRepository.getTemplate
+      REPOSITORY_FAULT_MODULE: TemplateEditViewModel
+- tapOn: ^Шаблоны протоколов$
+- tapOn: ^Retry template$
+- assertVisible: {id: message.error}
+- assertVisible: ^Обновить$
+- takeScreenshot: TemplateEdit-load-failed
+- tapOn: ^Обновить$
+- assertVisible: ^Retry template$
+- assertVisible: Retained description and conclusion
+- runFlow:
+    file: ../../../maestro/support/settings-with-fault.yaml
+    env:
+      REPOSITORY_FAULT: templateRepository.saveTemplate
+- tapOn: ^Шаблоны протоколов$
+- tapOn: ^Retry template$
+- tapOn: Retained description and conclusion
+- eraseText
+- inputText: Changed after retry
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn: ^Сохранить$
+- assertVisible: {id: message.error}
+- assertVisible: Changed after retry
+- assertNotVisible: {id: message.success}
+- takeScreenshot: TemplateEdit-save-failed
+- tapOn: ^Сохранить$
+- assertVisible: ^Retry template$
+- assertNotVisible: {text: '^Retry template$', index: 1}
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn: ^Шаблоны протоколов$
+- tapOn: ^Retry template$
+- assertVisible: Changed after retry
+- takeScreenshot: TemplateEdit-retry-saved

@@ -36,6 +36,9 @@ struct ShareActionsView: DViewProtocol {
             }.disabled(
                 isProcessing,
             )
+            .accessibilityIdentifier(
+                "share.copy",
+            )
 
             DShareLink(
                 item: viewModel.shareMessage,

@@ -5,18 +5,32 @@ struct DMessageModifier: ViewModifier {
     @EnvironmentObject private var theme: DTheme
 
     @StateObject var messager = DMessager()
+    var isPersistent = false
 
     func body(
         content: Content,
     ) -> some View {
-        content
+        var configuration = SwiftMessages.Config()
+        if isPersistent {
+            configuration.duration = .forever
+
+            configuration.presentationContext = .window(
+                windowLevel: .alert,
+            )
+        }
+
+        return content
             .swiftMessage(
                 message: $messager.message,
+                config: configuration,
             ) { message in
                 DMessageCard(
                     type: message.type,
                     title: message.title,
                     description: message.description,
+                )
+                .accessibilityIdentifier(
+                    "message.\(message.type)",
                 )
                 // SwiftMessages creates a separate UIHostingController.
                 .environmentObject(

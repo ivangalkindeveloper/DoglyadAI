@@ -1,0 +1,35 @@
+schemaVersion: 1
+module: TemplateDelete
+source: ios/Doglyad/Application/Module/Template/TempalteDelete
+cases:
+- id: TemplateDelete.cancel
+  title: Отмена удаления
+  profiles:
+  - pro
+  preconditions:
+  - Открыт существующий шаблон
+  steps:
+  - action: Нажать удалить и закрыть подтверждение
+    expect: Шаблон остаётся в списке и открывается с теми же данными.
+  covers: []
+  automation:
+    kind: maestro
+    flows:
+    - e2e-templatedelete-cancel
+- id: TemplateDelete.confirm
+  title: Удаление сохраняется после перезапуска
+  profiles:
+  - pro
+  preconditions:
+  - Существует отдельный шаблон Regression template edited
+  steps:
+  - action: Подтвердить удаление
+    expect: Удалённый шаблон отсутствует в списке.
+  - action: Перезапустить приложение и открыть список
+    expect: Удалённая запись не восстановилась; другие шаблоны сохранены.
+  covers:
+  - onTapConfirm
+  automation:
+    kind: maestro
+    flows:
+    - e2e-templatedelete-delete-template

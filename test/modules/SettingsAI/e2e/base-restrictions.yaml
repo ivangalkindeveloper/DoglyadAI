@@ -1,0 +1,51 @@
+appId: ${APP_ID}
+name: e2e-settingsai-base-restrictions
+tags:
+- e2e
+- SettingsAI
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.markdown
+    direction: DOWN
+    timeout: 15000
+- assertVisible:
+    id: settingsAI.markdown
+    enabled: false
+- scrollUntilVisible:
+    element:
+      id: settingsAI.temperature
+      index: 1
+      enabled: false
+    direction: DOWN
+    timeout: 15000
+- assertVisible:
+    id: settingsAI.temperature
+    index: 1
+    enabled: false
+# Move the form to its end so the fixed Save footer cannot cover maxTokens.
+- swipe:
+    start: 50%,70%
+    end: 50%,30%
+    duration: 600
+- waitForAnimationToEnd
+- scrollUntilVisible:
+    element:
+      id: settingsAI.maxTokens
+      index: 1
+      enabled: false
+    direction: DOWN
+    timeout: 15000
+- assertVisible:
+    id: settingsAI.maxTokens
+    index: 1
+    enabled: false
+- takeScreenshot: SettingsAI-base-disabled

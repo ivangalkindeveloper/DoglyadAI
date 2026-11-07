@@ -1,0 +1,27 @@
+{"profile": "ngram8", "seeds": [0, 1, 2, 3], "finished": true}
+{"profile": "ngram8", "seeds": [4, 5, 6, 7], "finished": true}
+{"profile": "ngram8", "seeds": [8, 9, 10, 11], "finished": true}
+{"profile": "ngram8", "seeds": [12, 13, 14, 42], "finished": true}
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Healthy 
+{"profile": "baseline", "seeds": [0, 1, 2, 3], "finished": true}
+{"profile": "baseline", "seeds": [4, 5, 6, 7], "finished": true}
+{"profile": "baseline", "seeds": [8, 9, 10, 11], "finished": true}
+{"profile": "baseline", "seeds": [12, 13, 14, 42], "finished": true}
+ Container doglyad-dgx-vllm_medgemma_27b-1 Running 
+ Container doglyad-dgx-backend_inference-1 Running 
+ Container doglyad-dgx-vllm_medgemma_4b-1 Running 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Recreate 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Recreated 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Starting 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Started 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Waiting 
+ Container doglyad-dgx-vllm_medgemma_15_4b-1 Healthy 
+{"healthy": "vllm_medgemma_15_4b", "unix": 1793906856.2732625}

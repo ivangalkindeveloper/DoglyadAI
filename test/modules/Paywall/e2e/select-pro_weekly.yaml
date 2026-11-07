@@ -1,0 +1,42 @@
+appId: ${APP_ID}
+name: e2e-paywall-select-pro_weekly
+tags:
+- e2e
+- Paywall
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Управление\ подпиской$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Управление\ подпиской$
+- scrollUntilVisible:
+    element:
+      text: ^Сменить\ план$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Сменить\ план$
+- tapOn:
+    text: ^Подписка\ Pro$
+- assertVisible: ^Доступ\ к\ продвинутым\ медицинским\ нейронным\ моделям$
+- assertVisible: ^Заполнение\ медицинского\ осмотра\ с\ помощью\ голоса$
+- assertVisible: ^Отправка\ медицинских\ заключений\ на\ рабочую\ почту$
+- scrollUntilVisible:
+    element:
+      id: paywall.plan.pro_weekly
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    id: paywall.plan.pro_weekly
+- assertVisible:
+    id: paywall.plan.pro_weekly
+    selected: true
+- assertVisible:
+    id: paywall.continue
+    enabled: true
+- assertVisible: ^2[\s\u00a0\u202f]*4[\s\u00a0\u202f]*9,00[\s\u00a0\u202f]*₽ / нед\.$
+- assertVisible: ^Pro\ \-\ Недельный\ доступ$
+- takeScreenshot: Paywall-selected-pro_weekly

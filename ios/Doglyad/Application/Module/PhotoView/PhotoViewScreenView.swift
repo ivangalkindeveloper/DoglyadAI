@@ -23,6 +23,9 @@ struct PhotoViewScreenView: DViewProtocol {
                     .dStyle(
                         .circle,
                     )
+                    .accessibilityIdentifier(
+                        "photoView.delete",
+                    )
                 }
             },
         ) { toolbarInset, _ in
@@ -63,8 +66,7 @@ struct PhotoViewScreenView: DViewProtocol {
                 )
                 .ignoresSafeArea()
 
-                switch viewModel.state {
-                case _ as PhotoViewContentState:
+                if !viewModel.photos.isEmpty {
                     PhotoViewControlsView()
                         .padding(
                             size.s16,
@@ -77,8 +79,6 @@ struct PhotoViewScreenView: DViewProtocol {
                         ) { height in
                             controlsHeight = height
                         }
-                case _ as PhotoViewEmptyState: EmptyView()
-                default: EmptyView()
                 }
             }
         }

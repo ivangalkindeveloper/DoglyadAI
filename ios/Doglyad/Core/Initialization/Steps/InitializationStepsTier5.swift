@@ -120,6 +120,11 @@ extension InitializationProcess {
             AsyncInitializationStep<InitializationProcess>(
                 title: "Initial navigation",
                 run: { @MainActor (process: InitializationProcess) async throws in
+                    #if DEBUG && DOGLYAD_REGRESSION
+                        try await RegressionRepositoryAdapters.prepareNavigation(
+                            on: process,
+                        )
+                    #endif
                     process.initialRoute = try await Coordinator.initialRoute(
                         for: InitialNavigationContext(
                             applicationConfig: process.applicationConfig!,

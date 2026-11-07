@@ -1,0 +1,40 @@
+appId: ${APP_ID}
+name: e2e-templateedit-cancel
+tags:
+- e2e
+- TemplateEdit
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- tapOn:
+    text: ^Regression\ template\ edited$
+- tapOn: ^Щитовидная железа$
+- scrollUntilVisible:
+    element:
+      id: '^examinationType\.bladder$'
+      below: {id: bottomSheet.close}
+      above: '(?s)^Если Вы не обнаружили.*'
+    direction: DOWN
+    centerElement: false
+- waitForAnimationToEnd
+- tapOn:
+    id: '^examinationType\.bladder$'
+    below: {id: bottomSheet.close}
+    above: '(?s)^Если Вы не обнаружили.*'
+- assertVisible: ^Мочевой пузырь$
+- tapOn:
+    text: ^Regression\ template\ edited$
+- eraseText
+- inputText: Unsaved edit
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    id: navigation.back
+- assertNotVisible:
+    text: ^Unsaved\ edit$
+- tapOn:
+    text: ^Regression\ template\ edited$
+- assertVisible:
+    text: ^Edited\ description\ and\ conclusion$
+- assertVisible: ^Щитовидная железа$
+- takeScreenshot: TemplateEdit-cancelled

@@ -1,0 +1,29 @@
+schemaVersion: 1
+module: SelectNeuralModel
+source: ios/Doglyad/Application/Module/Select/SelectNeuralModel
+cases:
+- id: SelectNeuralModel.models
+  title: Выбор модели и доступность
+  profiles:
+  - base
+  - pro
+  preconditions:
+  - Все три модели Development доступны. Maestro выбирает их через UI. Нативная проверка перебирает available/unavailable/comingSoon
+    × Base/Pro модели × нет подписки/Base/Pro; вызов покупки не подменяется успешным результатом.
+  steps:
+  - action: Открыть список моделей
+    expect: Названия, ограничения и текущая модель соответствуют каталогу.
+  - action: Выбрать available-модель
+    expect: Селектор закрывается; выбранная модель видна на экране-источнике и после перезапуска.
+  - action: Нажать unavailable/comingSoon и Pro-модель с Base
+    expect: Недоступный выбор не применяется; платное ограничение соответствует типу подписки.
+  covers:
+  - onModelTap
+  automation:
+    kind: mixed
+    flows:
+    - e2e-selectneuralmodel-model-1
+    - e2e-selectneuralmodel-model-2
+    - e2e-selectneuralmodel-model-3
+    nativeTests:
+    - RegressionFormTests/testModelAvailabilityAndSubscriptionGateEverySelection()

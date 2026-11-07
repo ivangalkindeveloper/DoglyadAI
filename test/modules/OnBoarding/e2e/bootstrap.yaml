@@ -1,0 +1,102 @@
+appId: ${APP_ID}
+name: bootstrap-onboarding
+tags:
+- bootstrap
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionCaptureSplash: 'true'
+      regressionFault: sharedRepository.setOnBoardingCompleted
+      regressionFaultModule: ''
+      regressionFaultAfter: '0'
+- extendedWaitUntil:
+    visible:
+      id: application.splash
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: 000-ApplicationSplash-initial
+- tapOn:
+    id: application.splash
+- extendedWaitUntil:
+    visible:
+      text: ^Добро\ пожаловать\ в\ Догляд!$
+    timeout: 60000
+- extendedWaitUntil:
+    notVisible:
+      id: application.splash
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: 001-OnBoarding-welcome
+- tapOn:
+    text: ^Далее$
+- assertVisible:
+    text: ^Призван\ помогать\ врачам$
+- tapOn: {id: onboarding.back}
+- assertVisible: ^Добро пожаловать в Догляд!$
+- tapOn: ^Далее$
+- assertVisible: ^Призван помогать врачам$
+- tapOn:
+    text: ^Далее$
+- assertVisible:
+    text: ^Условия\ и\ политика\ конфиденциальности$
+- takeScreenshot: 002-OnBoarding-legal
+- assertVisible: {id: onboarding.acceptLegal, selected: false}
+- assertVisible: {id: onboarding.primary, enabled: false}
+- tapOn: {id: onboarding.primary}
+- assertVisible: ^Условия и политика конфиденциальности$
+- tapOn: ^Политику конфиденциальности$
+- extendedWaitUntil:
+    visible: .*Ответственный за обработку данных.*
+    timeout: 30000
+- takeScreenshot: WebDocument-onboarding-privacy
+- tapOn: {id: bottomSheet.close}
+- assertVisible: {id: onboarding.acceptLegal, selected: false}
+# The multiline link's AX rectangle overlaps the preceding privacy link.
+- tapOn: {id: terms, point: '10%,80%'}
+- extendedWaitUntil:
+    visible: .*Сведения о Разработчике.*
+    timeout: 30000
+- takeScreenshot: WebDocument-onboarding-terms
+- tapOn: {id: bottomSheet.close}
+- assertVisible: {id: onboarding.acceptLegal, selected: false}
+- tapOn:
+    id: onboarding.acceptLegal
+- tapOn:
+    text: ^Принять$
+- tapOn:
+    text: ^Выбрать\ тип$
+- scrollUntilVisible:
+    element:
+      id: examinationType.thyroidGland
+    direction: DOWN
+    timeout: 30000
+    centerElement: true
+- tapOn:
+    id: examinationType.thyroidGland
+- assertVisible:
+    text: ^Начинайте\ генерировать!$
+- tapOn:
+    text: ^Давайте\ начнем!$
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 15000
+- assertVisible: ^Начинайте генерировать!$
+- assertNotVisible: ^Начните работать уже сегодня!$
+- takeScreenshot: OnBoarding-completion-failed
+- tapOn: ^Давайте начнем!$
+- extendedWaitUntil:
+    visible:
+      text: ^Начните\ работать\ уже\ сегодня!$
+    timeout: 60000
+- runFlow: ../../../maestro/support/paywall-ready.yaml
+- takeScreenshot: 003-Paywall-initial
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionCaptureSplash: 'false'
+      regressionFault: ''
+- extendedWaitUntil:
+    visible: {text: '^Начните работать уже сегодня!$'}
+    timeout: 60000
+- assertNotVisible: ^Добро пожаловать в Догляд!$

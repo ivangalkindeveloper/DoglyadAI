@@ -14,15 +14,21 @@ final class PhotoLibraryPickerCoordinator: NSObject, PHPickerViewControllerDeleg
         _: PHPickerViewController,
         didFinishPicking results: [PHPickerResult],
     ) {
-        let providers = results
-            .map(
+        loadSelection(
+            providers: results.map(
                 \.itemProvider,
+            ),
+        )
+    }
+
+    func loadSelection(
+        providers candidates: [NSItemProvider],
+    ) {
+        let providers = candidates.filter {
+            $0.canLoadObject(
+                ofClass: UIImage.self,
             )
-            .filter {
-                $0.canLoadObject(
-                    ofClass: UIImage.self,
-                )
-            }
+        }
 
         guard !providers.isEmpty else {
             onComplete(

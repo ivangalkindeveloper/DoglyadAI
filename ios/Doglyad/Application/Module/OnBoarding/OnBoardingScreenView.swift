@@ -69,6 +69,9 @@ struct OnBoardingScreenView: DViewProtocol {
                     .dStyle(
                         .primaryButton,
                     )
+                    .accessibilityIdentifier(
+                        "onboarding.primary",
+                    )
                 }
                 .padding(
                     size.s16,

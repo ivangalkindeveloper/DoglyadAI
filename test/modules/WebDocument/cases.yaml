@@ -1,0 +1,45 @@
+schemaVersion: 1
+module: WebDocument
+source: ios/Doglyad/Application/Module/WebDocument
+cases:
+- id: WebDocument.documents
+  title: Политика и условия из всех точек входа
+  profiles:
+  - pro
+  preconditions:
+  - Документы доступны; известны их URL и заголовки
+  steps:
+  - action: Открыть политику и условия из настроек, onboarding, Paywall и LegalUpdate
+    expect: Загружен текст соответствующего документа; заголовок и URL не перепутаны.
+  - action: Прокрутить содержимое и закрыть
+    expect: Текст доступен до конца; возврат в исходное окно; согласие не изменяется от просмотра.
+  covers:
+  - onDocumentLoaded
+  automation:
+    kind: maestro
+    flows:
+    - bootstrap-onboarding
+    - e2e-legalupdate-accept-retry
+    - e2e-paywall-documents
+    - e2e-webdocument-privacy
+    - e2e-webdocument-terms
+- id: WebDocument.network-failure
+  title: Ошибка загрузки документа
+  profiles:
+  - pro
+  preconditions:
+  - Контролируемый сетевой отказ на URL документа
+  steps:
+  - action: Открыть документ при отказе
+    expect: Лоадер исчезает, приложение остаётся отзывчивым и документ можно закрыть. В текущем коде FailedState
+      не выводит отдельное сообщение об ошибке.
+  - action: Закрыть, восстановить сеть и открыть снова
+    expect: Документ загружается; предыдущее состояние ошибки не остаётся.
+  covers:
+  - onDocumentFailed
+  automation:
+    kind: maestro
+    flows:
+    - e2e-webdocument-network-failure
+  knownLimitation: WebDocumentBottomSheetView отображает EmptyView для FailedState; отдельный UI ошибки
+    отсутствует.

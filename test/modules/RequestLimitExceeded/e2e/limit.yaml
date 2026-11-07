@@ -1,0 +1,35 @@
+appId: ${APP_ID}
+name: e2e-requestlimitexceeded-limit
+tags: [e2e, RequestLimitExceeded, Scan]
+---
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: UP
+    centerElement: true
+- tapOn: {id: scan.patientName, index: 1}
+- eraseText: 100
+- inputText: Regression daily limit
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element: {text: '^Сгенерировать протокол$'}
+    direction: DOWN
+- tapOn: ^Сгенерировать протокол$
+- assertVisible: ^Лимит запросов достигнут$
+- assertVisible: ^Вы достигли дневного лимита запросов. Пожалуйста, попробуйте завтра.$
+- assertNotVisible: ^К протоколу$
+- takeScreenshot: RequestLimitExceeded-exhausted
+- tapOn: ^Назад$
+- assertVisible: {id: scan.settings}
+- scrollUntilVisible:
+    element: {id: scan.patientName}
+    direction: UP
+- assertVisible: {id: scan.patientName, text: '^Regression daily limit$'}
+- scrollUntilVisible:
+    element: {text: '^Сгенерировать протокол$'}
+    direction: DOWN
+- tapOn: ^Сгенерировать протокол$
+- tapOn: ^Управление подпиской$
+- runFlow: ../../../maestro/support/paywall-ready.yaml
+- assertVisible: {id: paywall.continue, enabled: true}
+- takeScreenshot: RequestLimitExceeded-upgrade

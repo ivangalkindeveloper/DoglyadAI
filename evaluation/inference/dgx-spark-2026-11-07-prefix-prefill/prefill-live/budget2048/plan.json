@@ -1,0 +1,38 @@
+{
+  "budget": 2048,
+  "waves": [
+    [
+      "warmup",
+      1,
+      "technical"
+    ],
+    [
+      "technical4-1",
+      4,
+      "technical"
+    ],
+    [
+      "technical8-1",
+      8,
+      "technical"
+    ],
+    [
+      "technical8-2",
+      8,
+      "technical"
+    ],
+    [
+      "technical4-2",
+      4,
+      "technical"
+    ],
+    [
+      "report8",
+      8,
+      "report"
+    ]
+  ],
+  "namespace": "prefill-study-62a0d29d582f4128a714312de3355ae1",
+  "all_three_models_concurrent": true,
+  "engine_benchmark_not_authenticated_api": true
+}

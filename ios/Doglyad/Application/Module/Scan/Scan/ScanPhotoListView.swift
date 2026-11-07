@@ -44,8 +44,11 @@ struct ScanPhotoListView: DViewProtocol {
                             }
 
                             ForEach(
-                                viewModel.photos,
-                            ) { photo in
+                                Array(
+                                    viewModel.photos.enumerated(),
+                                ),
+                                id: \.element.id,
+                            ) { index, photo in
                                 PhotoCardView(
                                     image: photo.thumbnail,
                                     configuration: PhotoCardConfiguration(
@@ -57,6 +60,7 @@ struct ScanPhotoListView: DViewProtocol {
                                             },
                                         ),
                                     ),
+                                    accessibilityID: "scan.photo.\(index + 1).\(photo.id)",
                                     onTap: {
                                         viewModel.onTapPhoto(
                                             photo,

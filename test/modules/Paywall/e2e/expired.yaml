@@ -1,0 +1,29 @@
+appId: ${APP_ID}
+name: e2e-paywall-expired
+tags:
+- e2e
+- Paywall
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Управление\ подпиской$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Управление\ подпиской$
+- assertVisible:
+    text: ^Нет\ активной\ подписки$
+- scrollUntilVisible:
+    element:
+      text: ^Сменить\ план$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Сменить\ план$
+- extendedWaitUntil:
+    visible:
+      text: ^Начните\ работать\ уже\ сегодня!$
+    timeout: 60000
+- runFlow: ../../../maestro/support/paywall-ready.yaml
+- takeScreenshot: Paywall-expired

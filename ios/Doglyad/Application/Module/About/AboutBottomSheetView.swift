@@ -82,8 +82,15 @@ struct AboutBottomSheetView: DViewProtocol {
             )
             .environment(
                 \.openURL,
-                OpenURLAction { _ in
+                OpenURLAction { url in
                     viewModel.onTapEmail()
+                    #if DEBUG && DOGLYAD_REGRESSION
+                        if RegressionExternalActions.handle(
+                            url,
+                        ) {
+                            return .handled
+                        }
+                    #endif
                     return .systemAction
                 },
             )

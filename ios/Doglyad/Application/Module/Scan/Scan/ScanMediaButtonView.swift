@@ -63,6 +63,9 @@ struct ScanMediaButtonView: DViewProtocol {
                 )
             }
         }
+        .accessibilityIdentifier(
+            "scan.importMedia",
+        )
         .frame(
             width: isCompact ? compactButtonSize : nil,
             height: isCompact ? compactButtonSize : buttonHeight,

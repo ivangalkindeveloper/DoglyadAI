@@ -1,0 +1,20 @@
+schemaVersion: 1
+module: ApplicationSplash
+source: ios/Doglyad/Application/Application/Application
+cases:
+- id: ApplicationSplash.first-launch
+  title: Сплеш и переход к первому экрану
+  profiles:
+  - none
+  preconditions:
+  - Новый симулятор; чистый backend; тестовая сборка удерживает начало инициализации до снимка
+  steps:
+  - action: Запустить приложение и сохранить снимок сплеша
+    expect: Видна только заставка ApplicationSplash без onboarding.
+  - action: Разрешить инициализацию и дождаться исчезновения сплеша и завершения анимации
+    expect: Видно приветствие onboarding без остатка сплеша; сохранён отдельный снимок.
+  covers: []
+  automation:
+    kind: maestro
+    flows:
+    - bootstrap-onboarding

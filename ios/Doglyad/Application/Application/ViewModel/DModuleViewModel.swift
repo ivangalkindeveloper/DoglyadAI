@@ -124,7 +124,20 @@ class DModuleViewModel<State>: DStateViewModel<State> {
             return
         }
         isInitialized = true
-        onInit()
+        #if DEBUG && DOGLYAD_REGRESSION
+            // Child tasks inherit the module scope; unrelated startup reads stay real.
+            RegressionRepositoryFaults.$module.withValue(
+                String(
+                    describing: type(
+                        of: self,
+                    ),
+                ),
+            ) {
+                onInit()
+            }
+        #else
+            onInit()
+        #endif
     }
 
     func onInit() {}

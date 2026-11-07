@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-selectneuralmodel-b5c8080bb6
+tags:
+- atlas
+- SelectNeuralModel
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-selectneuralmodel-b5c8080bb6
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-selectneuralmodel-b5c8080bb6
+    timeout: 15000
+- takeScreenshot: 01-SelectNeuralModel-b5c8080bb6

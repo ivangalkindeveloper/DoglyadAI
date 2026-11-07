@@ -1,0 +1,77 @@
+{
+  "unix": 1794010583.0598314,
+  "containers": {
+    "doglyad-dgx-vllm_medgemma_4b-1": {
+      "original_image": true,
+      "original_command": true,
+      "original_restart_policy": true,
+      "running": true,
+      "healthy": true
+    },
+    "doglyad-dgx-vllm_medgemma_15_4b-1": {
+      "original_image": true,
+      "original_command": true,
+      "original_restart_policy": true,
+      "running": true,
+      "healthy": true
+    },
+    "doglyad-dgx-vllm_medgemma_27b-1": {
+      "original_image": true,
+      "original_command": true,
+      "original_restart_policy": true,
+      "running": true,
+      "healthy": true
+    },
+    "doglyad-dgx-backend_inference-1": {
+      "original_image": true,
+      "original_command": true,
+      "original_restart_policy": true,
+      "running": true
+    }
+  },
+  "backend_unchanged": true,
+  "canonical_unchanged": true,
+  "unauthenticated_api_status": {
+    "/v1/generation": 401,
+    "/v1/generation/stream": 401
+  },
+  "backend_engine_routes": {
+    "google/medgemma-27b-it": {
+      "health_status": 200,
+      "configured_model_present": true
+    },
+    "google/medgemma-4b-it": {
+      "health_status": 200,
+      "configured_model_present": true
+    },
+    "google/medgemma-1.5-4b-it": {
+      "health_status": 200,
+      "configured_model_present": true
+    }
+  },
+  "host": {
+    "unix": 1794010583.0849178,
+    "memory_kib": {
+      "MemFree": 2744684,
+      "MemAvailable": 19338296,
+      "Cached": 18030560,
+      "SwapTotal": 16777212,
+      "SwapFree": 9024628,
+      "Dirty": 2468
+    },
+    "vmstat": {
+      "pswpin": 7185800,
+      "pswpout": 16828365,
+      "pgmajfault": 3441058,
+      "oom_kill": 0
+    },
+    "gpu": "48, 11.46 W, 2405 MHz, [N/A], P0, Not Active, Not Active, Not Active",
+    "loadavg": "0.56 1.06 1.25 1/1558 407666",
+    "memory_pressure": "some avg10=0.00 avg60=0.03 avg300=0.32 total=29782329\nfull avg10=0.00 avg60=0.03 avg300=0.32 total=29739235"
+  },
+  "kernel_since_restore": {
+    "returncode": 1,
+    "stdout": "-- No entries --\n",
+    "stderr": ""
+  }
+}

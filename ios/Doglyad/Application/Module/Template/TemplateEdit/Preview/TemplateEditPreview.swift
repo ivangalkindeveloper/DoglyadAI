@@ -5,31 +5,17 @@
     import SwiftUI
 
     #Preview(
-        "TemplateEditDefaultState",
+        "01 TemplateEditLoadingState",
     ) {
         TemplateEditPreviewView(
-            state: TemplateEditDefaultState(),
+            state: TemplateEditLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "TemplateEditFailedState",
-    ) {
-        TemplateEditPreviewView(
-            state: TemplateEditFailedState(
-                error: URLError(
-                    .notConnectedToInternet,
-                ),
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "TemplateEditInitializationFailedState",
+        "02 TemplateEditInitializationFailedState",
     ) {
         TemplateEditPreviewView(
             state: TemplateEditInitializationFailedState(
@@ -43,10 +29,24 @@
     }
 
     #Preview(
-        "TemplateEditLoadingState",
+        "03 TemplateEditDefaultState",
     ) {
         TemplateEditPreviewView(
-            state: TemplateEditLoadingState(),
+            state: TemplateEditDefaultState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 TemplateEditFailedState",
+    ) {
+        TemplateEditPreviewView(
+            state: TemplateEditFailedState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

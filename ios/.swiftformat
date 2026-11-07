@@ -27,3 +27,6 @@
 --exclude **/.build
 --exclude **/Build
 --exclude DerivedData
+
+--exclude Doglyad/Regression/RegressionScreens.swift
+--exclude Doglyad/Regression/RegressionRepositoryAdapters.swift

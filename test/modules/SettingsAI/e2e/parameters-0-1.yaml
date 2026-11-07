@@ -1,0 +1,69 @@
+appId: ${APP_ID}
+name: e2e-settingsai-parameters-0-1
+tags:
+- e2e
+- SettingsAI
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.temperature
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: settingsAI.temperature
+    index: 1
+- eraseText
+- inputText: '0'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element:
+      id: settingsAI.maxTokens
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- tapOn:
+    id: settingsAI.maxTokens
+    index: 1
+- eraseText
+- inputText: '1'
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- assertVisible:
+    text: ^Настройки\ сохранены$
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Настройки\ AI$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Настройки\ AI$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.temperature
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- assertVisible:
+    id: settingsAI.temperature
+    text: ^0([.,]0+)?$
+- scrollUntilVisible:
+    element:
+      id: settingsAI.maxTokens
+    direction: DOWN
+    centerElement: true
+    timeout: 15000
+- assertVisible:
+    id: settingsAI.maxTokens
+    text: '1'
+- takeScreenshot: SettingsAI-parameters-0-1

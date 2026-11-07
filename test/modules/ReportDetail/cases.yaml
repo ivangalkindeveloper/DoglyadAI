@@ -1,0 +1,67 @@
+schemaVersion: 1
+module: ReportDetail
+source: ios/Doglyad/Application/Module/Report/ReportDetail
+cases:
+- id: ReportDetail.saved
+  title: Просмотр сохранённого отчёта
+  profiles:
+  - pro
+  preconditions:
+  - Есть готовый протокол с фото, пациентом и замечаниями
+  steps:
+  - action: Открыть отчёт из истории
+    expect: Поля и текст совпадают с сохранёнными данными; фотографии относятся к этому отчёту.
+  - action: Раскрыть длинные разделы, открыть фото и вернуться
+    expect: Полный текст доступен; фото и замечания соответствуют выбранному ID.
+  - action: Перезапустить и открыть снова
+    expect: Содержимое и история ответов сохранены.
+  covers:
+  - onInit
+  - onTapPhoto
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-reportdetail-saved-report
+- id: ReportDetail.regenerate
+  title: Повторная генерация и предыдущие ответы
+  profiles:
+  - pro
+  preconditions:
+  - Открыт готовый протокол; Pro
+  steps:
+  - action: Выбрать другую модель и изменить AI-настройки
+    expect: Выбор применяется к повторному запросу.
+  - action: Повторить генерацию
+    expect: Новый ответ становится актуальным; предыдущий ответ доступен в истории версий; данные исследования
+      сохранены.
+  - action: Вызвать ошибку повтора
+    expect: Старый успешный ответ не исчезает; ошибка показана для новой попытки.
+  covers:
+  - onTapNeuralModelSelection
+  - onTapSettingsAI
+  - onTapRepeatScan
+  - onGenerationFailed
+  automation:
+    kind: maestro
+    flows:
+    - e2e-reportdetail-regenerate-retry
+- id: ReportDetail.delivery
+  title: Копирование и меню доставки
+  profiles:
+  - pro
+  preconditions:
+  - Открыт завершённый отчёт
+  steps:
+  - action: Скопировать актуальный и предыдущий ответ
+    expect: В буфере текст именно выбранной версии.
+  - action: Открыть меню отправки
+    expect: Share относится к текущему отчёту; закрытие сохраняет данные.
+  covers:
+  - onTapCopy
+  - onTapShare
+  automation:
+    kind: maestro
+    flows:
+    - e2e-reportdetail-regenerate-retry
+    - e2e-reportdetail-copy-previous

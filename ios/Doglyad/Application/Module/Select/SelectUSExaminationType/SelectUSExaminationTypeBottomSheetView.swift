@@ -47,6 +47,9 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
                                         item.type,
                                     ),
                                 )
+                                .accessibilityIdentifier(
+                                    "examinationType.\(item.type.id)",
+                                )
                                 .padding(
                                     .bottom,
                                     size.s4,

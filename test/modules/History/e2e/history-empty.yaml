@@ -1,0 +1,20 @@
+appId: ${APP_ID}
+name: e2e-history-history-empty
+tags:
+- e2e
+- History
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^История\ исследований$
+- assertVisible:
+    text: ^История\ исследований$
+- assertVisible:
+    text: '^Список\ последних\ протоколов\ пуст\.\
+
+      Пожалуйста,\ сгенерируйте\ хотя\ бы\ одно\ исследование,\ чтобы\ посмотреть\
+      историю\ протоколов\.$'
+- takeScreenshot: 010-History-empty
+- tapOn:
+    id: navigation.back
+- assertVisible: ^Настройки$

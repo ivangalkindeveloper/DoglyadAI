@@ -23,13 +23,12 @@
             SubscriptionStatus(
                 planId: "\(type.rawValue)_monthly",
                 type: type,
-                entitlement: SubscriptionEntitlement(
-                    requestCountPerDay: 20,
-                    formCompletionViaMicrophone: .available,
-                    sendingReportByEmail: .available,
-                    settingsAI: .available,
-                ),
-                availableCountPerDay: 17,
+                entitlement: DevelopmentPreviewFactory.make().application.entitlements[
+                    type,
+                ]!,
+                availableCountPerDay: DevelopmentPreviewFactory.make().application.entitlements[
+                    type,
+                ]!.requestCountPerDay - 3,
                 source: source,
                 expiresAt: Date(
                     timeIntervalSince1970: 1796126400,

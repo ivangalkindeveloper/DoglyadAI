@@ -1,0 +1,42 @@
+[
+  {
+    "profile": "baseline",
+    "samples": 168,
+    "minimum_available_gib": 19.09078598022461,
+    "maximum_gpu_temperature_c": 83,
+    "oom_kill_delta": 0,
+    "swap_read_pages": 5054,
+    "swap_write_pages": 0,
+    "maximum_swap_used_gib": 6.778926849365234
+  },
+  {
+    "profile": "seq8",
+    "samples": 147,
+    "minimum_available_gib": 15.690906524658203,
+    "maximum_gpu_temperature_c": 82,
+    "oom_kill_delta": 0,
+    "swap_read_pages": 78288,
+    "swap_write_pages": 33193,
+    "startup": {
+      "minimum_available_gib": 16.23849105834961,
+      "swap_read_pages": 70923,
+      "swap_write_pages": 848656
+    },
+    "maximum_swap_used_gib": 4.550506591796875
+  },
+  {
+    "profile": "seq8-kv12",
+    "samples": 146,
+    "minimum_available_gib": 18.466217041015625,
+    "maximum_gpu_temperature_c": 83,
+    "oom_kill_delta": 0,
+    "swap_read_pages": 138477,
+    "swap_write_pages": 3328,
+    "startup": {
+      "minimum_available_gib": 16.825767517089844,
+      "swap_read_pages": 574764,
+      "swap_write_pages": 2810955
+    },
+    "maximum_swap_used_gib": 11.349437713623047
+  }
+]

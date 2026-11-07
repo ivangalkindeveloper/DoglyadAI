@@ -1,0 +1,30 @@
+appId: ${APP_ID}
+name: e2e-templateadd-cancel
+tags:
+- e2e
+- TemplateAdd
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Шаблоны\ протоколов$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- tapOn:
+    text: ^Добавить\ шаблон$
+- tapOn:
+    text: ^Название\ шаблона$
+- inputText: Unsaved template
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    id: navigation.back
+- assertNotVisible:
+    text: ^Unsaved\ template$
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^Шаблоны\ протоколов$
+- assertNotVisible:
+    text: ^Unsaved\ template$
+- takeScreenshot: TemplateAdd-cancelled

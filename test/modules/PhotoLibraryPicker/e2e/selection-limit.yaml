@@ -1,0 +1,80 @@
+appId: ${APP_ID}
+name: e2e-photolibrarypicker-selection-limit
+tags: [e2e, PhotoLibraryPicker, ImportMedia, PhotoView]
+---
+- runFlow: ../../../maestro/support/main.yaml
+- scrollUntilVisible:
+    element: {id: scan.clear}
+    direction: DOWN
+    centerElement: true
+- tapOn: {id: scan.clear}
+- scrollUntilVisible:
+    element: {id: scan.importMedia, below: {id: scan.type}}
+    direction: UP
+    centerElement: true
+- waitForAnimationToEnd
+- tapOn: {id: scan.importMedia}
+- takeScreenshot: ImportMedia-sources
+- tapOn: {id: bottomSheet.close}
+- waitForAnimationToEnd
+- assertVisible: {id: scan.importMedia}
+- tapOn: {id: scan.importMedia}
+- tapOn: ^Камера$
+- assertVisible: {id: scanCamera.capture}
+- tapOn: {id: bottomSheet.close}
+- waitForAnimationToEnd
+- assertNotVisible: {id: 'scan.photo\..*'}
+- tapOn: {id: scan.importMedia}
+- tapOn: ^Галерея$
+- extendedWaitUntil:
+    visible: {id: PXGGridLayout-Info, index: 0}
+    timeout: 30000
+- takeScreenshot: PhotoLibraryPicker-gallery
+- tapOn: {id: PXGGridLayout-Info, index: 0}
+- tapOn: {id: PXGGridLayout-Info, index: 4}
+- tapOn: {id: PXGGridLayout-Info, index: 5}
+- takeScreenshot: PhotoLibraryPicker-three-selected
+- tapOn: {id: Add}
+- assertVisible: {id: scan.settings}
+- tapOn: {id: 'scan.photo\.2\..*'}
+- assertVisible: ^2 из 3$
+- takeScreenshot: PhotoView-gallery-second
+# Double tap, pinch, pan and reset for all three aspect ratios are mandatory XCTest checks.
+- swipe: {direction: LEFT}
+- assertVisible: ^3 из 3$
+- assertVisible: {id: 'photoView.image\..*\.offset\.0\.0\.scale\.100'}
+- takeScreenshot: PhotoView-gallery-third
+- swipe: {direction: RIGHT}
+- swipe: {direction: RIGHT}
+- assertVisible: ^1 из 3$
+- takeScreenshot: PhotoView-gallery-first
+- tapOn: {id: navigation.back}
+- waitForAnimationToEnd
+- tapOn: {id: scan.importMedia}
+- tapOn: ^Галерея$
+- tapOn: {id: Cancel}
+- assertVisible: {id: scan.settings}
+- tapOn: {id: 'scan.photo\.2\..*'}
+- assertVisible: ^2 из 3$
+- tapOn: {id: navigation.back}
+- waitForAnimationToEnd
+- tapOn: {id: scan.importMedia}
+- tapOn: ^Галерея$
+- assertVisible: ^Выберите максимум 3[\s\u00a0]*фото\.$
+- tapOn: {id: PXGGridLayout-Info, index: 0}
+- tapOn: {id: PXGGridLayout-Info, index: 1}
+- tapOn: {id: PXGGridLayout-Info, index: 2}
+- tapOn: {id: PXGGridLayout-Info, index: 3}
+- assertVisible: '^3[\s\u00a0]*фото$'
+- takeScreenshot: PhotoLibraryPicker-remaining-limit
+- tapOn: {id: Add}
+- assertNotVisible: {id: scan.importMedia}
+# The last thumbnail can be clipped at the horizontal scroll edge.
+- tapOn: {id: 'scan.photo\.6\..*', point: '10%,50%'}
+- assertVisible: '^6 из 6$'
+- takeScreenshot: PhotoView-gallery-six
+- tapOn: {id: photoView.delete}
+- assertVisible: '^5 из 5$'
+- tapOn: {id: navigation.back}
+- assertVisible: {id: scan.importMedia}
+- takeScreenshot: Scan-gallery-five-after-delete

@@ -1,0 +1,68 @@
+schemaVersion: 1
+module: SubscriptionRecovery
+source: ios/Doglyad/Application/Module/Subscription/SubscriptionRecovery
+cases:
+- id: SubscriptionRecovery.create-copy
+  title: Создание и копирование ключа
+  profiles:
+  - pro
+  preconditions:
+  - Активна тестовая ЮКасса-подписка
+  steps:
+  - action: Создать ключ и скопировать
+    expect: Показан непустой ключ; скопирован именно показанный текст.
+  - action: Создать новый ключ
+    expect: Новый ключ заменяет прежний; старая строка больше не восстанавливает доступ.
+  covers:
+  - onTapCreateKey
+  - onTapCopyKey
+  automation:
+    kind: maestro
+    flows:
+    - e2e-subscriptionrecovery-create-key
+    - e2e-subscriptionrecovery-rotate-key
+    - e2e-subscriptionrecovery-reject-old-key
+- id: SubscriptionRecovery.restore
+  title: Восстановление на другом клиенте
+  profiles:
+  - pro
+  preconditions:
+  - Подтверждённая подписка тестового магазина YooKassa; ключ заменён; данные приложения очищены, создан
+    новый владелец. Исходный и новый bearer различаются.
+  steps:
+  - action: Ввести ключ и восстановить
+    expect: Второй клиент получает подтверждённый доступ того же владельца без дублирования оплаченного
+      периода.
+  - action: Повторить с неверным и заменённым ключом
+    expect: Доступ не предоставляется; показана ошибка без утечки чужих данных.
+  covers:
+  - onTapRestore
+  - onFocusChanged
+  automation:
+    kind: maestro
+    flows:
+    - e2e-subscriptionrecovery-reject-old-key
+    - e2e-subscriptionrecovery-restore-key
+- id: SubscriptionRecovery.failure-back
+  title: Ошибка сети и выход
+  profiles:
+  - pro
+  preconditions:
+  - Отказ восстановления проверяется через реальный backend. Ошибка сети и поздний ответ после закрытия
+    проверяются отдельно в XCTest на настоящей ViewModel; они не подтверждают оплату.
+  steps:
+  - action: Отправить ключ при сбое
+    expect: Ввод остаётся; нет ложного успеха.
+  - action: Закрыть экран во время операции
+    expect: Операция отменяется/завершается без изменения закрытого UI; возврат ведёт в управление.
+  covers:
+  - onTapBack
+  - onDisappear
+  automation:
+    kind: mixed
+    flows:
+    - e2e-subscriptionrecovery-reject-old-key
+    - e2e-subscriptionrecovery-restore-key
+    nativeTests:
+    - RegressionFormTests/testRecoveryIgnoresLateResponseAfterLeavingAndRetainsFailedInput()
+    - SubscriptionRecoveryTests/generatedKeyIsRetainedWhenAnOperationFails()

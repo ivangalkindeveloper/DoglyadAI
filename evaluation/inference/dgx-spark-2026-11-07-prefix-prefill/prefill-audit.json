@@ -1,0 +1,124 @@
+{
+  "source_date": "2026-11-05",
+  "audit_date": "2026-11-07",
+  "new_gpu_measurements": false,
+  "verified_groups": 11,
+  "verified_measured_requests": 132,
+  "conditions": {
+    "concurrency": 4,
+    "prompt_tokens_approximate": 8000,
+    "output_tokens": 128,
+    "prefix_cache": "isolated per request",
+    "speculative_decoding": false
+  },
+  "limitation": "Current profile uses 8 slots and N-gram 8; archived measurements do not test that combination or full medical reports.",
+  "unavailable": {
+    "model": "27b",
+    "budget": 8192,
+    "reason": "Startup requires 8.76 GiB KV cache; allocated 8 GiB",
+    "source": "../dgx-spark-2026-11-05/runs/27b-prefill8192/container.log"
+  },
+  "summary": [
+    {
+      "model": "15-4b",
+      "budget": 2048,
+      "requests": 12,
+      "ttft_seconds": 2.576521452999941,
+      "latency_seconds": 8.576031867499978,
+      "maximum_delta_gap_seconds": 0.26846455799977775
+    },
+    {
+      "model": "15-4b",
+      "budget": 1024,
+      "requests": 12,
+      "ttft_seconds": 2.6397801984999205,
+      "latency_seconds": 8.528957599000023,
+      "maximum_delta_gap_seconds": 0.138858932000403
+    },
+    {
+      "model": "15-4b",
+      "budget": 4096,
+      "requests": 12,
+      "ttft_seconds": 2.515452223000011,
+      "latency_seconds": 8.657094889499604,
+      "maximum_delta_gap_seconds": 0.5176978999998028
+    },
+    {
+      "model": "15-4b",
+      "budget": 8192,
+      "requests": 12,
+      "ttft_seconds": 2.656744717000038,
+      "latency_seconds": 8.719930769500479,
+      "maximum_delta_gap_seconds": 0.9676244620004582
+    },
+    {
+      "model": "27b",
+      "budget": 2048,
+      "requests": 12,
+      "ttft_seconds": 15.207409251000172,
+      "latency_seconds": 52.76735973350014,
+      "maximum_delta_gap_seconds": 1.554729636999582
+    },
+    {
+      "model": "27b",
+      "budget": 1024,
+      "requests": 12,
+      "ttft_seconds": 16.403546532999826,
+      "latency_seconds": 53.73283401400022,
+      "maximum_delta_gap_seconds": 0.8558150009994279
+    },
+    {
+      "model": "27b",
+      "budget": 4096,
+      "requests": 12,
+      "ttft_seconds": 14.996294348000447,
+      "latency_seconds": 53.96022566800002,
+      "maximum_delta_gap_seconds": 2.99497495399919
+    },
+    {
+      "model": "4b",
+      "budget": 2048,
+      "requests": 12,
+      "ttft_seconds": 2.543745915499926,
+      "latency_seconds": 8.491005612999857,
+      "maximum_delta_gap_seconds": 0.26223465900011433
+    },
+    {
+      "model": "4b",
+      "budget": 1024,
+      "requests": 12,
+      "ttft_seconds": 2.6252901069999552,
+      "latency_seconds": 8.490012353499992,
+      "maximum_delta_gap_seconds": 0.13953516499987018
+    },
+    {
+      "model": "4b",
+      "budget": 4096,
+      "requests": 12,
+      "ttft_seconds": 2.528051946000005,
+      "latency_seconds": 8.66514515699987,
+      "maximum_delta_gap_seconds": 0.5178899640000054
+    },
+    {
+      "model": "4b",
+      "budget": 8192,
+      "requests": 12,
+      "ttft_seconds": 2.5992425110000568,
+      "latency_seconds": 8.597880923500043,
+      "maximum_delta_gap_seconds": 0.9485708769998382
+    }
+  ],
+  "source_sha256": {
+    "dgx-spark-2026-11-05/02-prefill-budget/15-4b/baseline/results.jsonl": "da9615c47726c69c758719596dce391626a3f42607a3a12ebc4f6e066c24ff12",
+    "dgx-spark-2026-11-05/02-prefill-budget/15-4b/prefill1024/results.jsonl": "66e7138c4c20b0b71d46b803755c8650bdf0305fd6541171f4e64a728736ea83",
+    "dgx-spark-2026-11-05/02-prefill-budget/15-4b/prefill4096/results.jsonl": "29e23430d31b25562c865d65a1f5234eca55f95559564db0f6dcd9a3d3fb10c5",
+    "dgx-spark-2026-11-05/02-prefill-budget/15-4b/prefill8192/results.jsonl": "f277907be5eb15fb1dd1829defc8f9bc5798b3f469a9365aa12c5e32a177db9b",
+    "dgx-spark-2026-11-05/02-prefill-budget/27b/baseline/results.jsonl": "8490250d653f465ee710b21f83b41eb3c5a7552c1ba62ec5874135b4fdd4bfde",
+    "dgx-spark-2026-11-05/02-prefill-budget/27b/prefill1024/results.jsonl": "53e4fc32b5c2de8fad931bc54a2461c7c2d9124162841d86660625afce572240",
+    "dgx-spark-2026-11-05/02-prefill-budget/27b/prefill4096/results.jsonl": "f5bbd49eb19d40197ddab874357963a20b9f4a50701b90cb6657231aa371dbd3",
+    "dgx-spark-2026-11-05/02-prefill-budget/4b/baseline/results.jsonl": "0b921cbec1c9b1420ce081b05c0a1c33d34727a0507c6c4d68718b66c06d9c0b",
+    "dgx-spark-2026-11-05/02-prefill-budget/4b/prefill1024/results.jsonl": "a29ea186c83eebf23f6d2e4e4ee9e0f6ba2ca825a0c9a7ad414d7021ab3138ff",
+    "dgx-spark-2026-11-05/02-prefill-budget/4b/prefill4096/results.jsonl": "9c0f24db166e6e397b894891dba183665f81d3e771c86e111a1ecd6cc53708d5",
+    "dgx-spark-2026-11-05/02-prefill-budget/4b/prefill8192/results.jsonl": "fd1da787404d88c1e0dddbdb41575aca0ed5dbf81e168fe1285ced38c7a9ac0c"
+  }
+}

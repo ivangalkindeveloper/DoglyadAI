@@ -5,19 +5,17 @@
     import SwiftUI
 
     #Preview(
-        "ReadyMadeTemplateListContentState",
+        "01 ReadyMadeTemplateListLoadingState",
     ) {
         ReadyMadeTemplateListPreviewView(
-            state: ReadyMadeTemplateListContentState(
-                templates: [ModulePreviewFactory.readyMadeTemplate],
-            ),
+            state: ReadyMadeTemplateListLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "ReadyMadeTemplateListFailedState",
+        "02 ReadyMadeTemplateListFailedState",
     ) {
         ReadyMadeTemplateListPreviewView(
             state: ReadyMadeTemplateListFailedState(
@@ -31,16 +29,33 @@
     }
 
     #Preview(
-        "ReadyMadeTemplateListLoadingState",
+        "03 Каталог пуст",
     ) {
         ReadyMadeTemplateListPreviewView(
-            state: ReadyMadeTemplateListLoadingState(),
+            state: ReadyMadeTemplateListContentState(
+                templates: [],
+            ),
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 ReadyMadeTemplateListContentState",
+    ) {
+        ReadyMadeTemplateListPreviewView(
+            state: ReadyMadeTemplateListContentState(
+                templates: ModulePreviewFactory.readyMadeTemplates,
+            ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
-    #Preview {
+    #Preview(
+        "05 Раскрываемый текст шаблона",
+    ) {
         VStack(
             alignment: .leading,
             spacing: 24,
@@ -66,7 +81,9 @@
         )
     }
 
-    #Preview {
+    #Preview(
+        "06 Карточка готового шаблона",
+    ) {
         ReadyMadeTemplateListItemCardView(
             template: USExaminationReadyMadeTemplate(
                 id: "thyroidGlandStandard",
@@ -79,18 +96,5 @@
         )
         .padding()
         .dThemeWrapper()
-    }
-
-    #Preview(
-        "Каталог пуст",
-    ) {
-        ReadyMadeTemplateListPreviewView(
-            state: ReadyMadeTemplateListContentState(
-                templates: [],
-            ),
-        )
-        .previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
     }
 #endif

@@ -1,0 +1,46 @@
+schemaVersion: 1
+module: ReadyMadeTemplateList
+source: ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList
+cases:
+- id: ReadyMadeTemplateList.search-and-apply
+  title: Поиск и применение готового шаблона
+  profiles:
+  - pro
+  preconditions:
+  - Новая форма TemplateAdd; доступен каталог backend
+  steps:
+  - action: Открыть каталог и найти шаблон по названию, типу и фрагменту содержимого
+    expect: Выдача включает соответствующий шаблон для каждого вида поиска.
+  - action: Ввести заведомо отсутствующий текст и очистить поиск
+    expect: Показано пустое состояние поиска; после очистки восстановлен каталог.
+  - action: Выбрать шаблон
+    expect: Возврат в TemplateAdd; имя, тип и содержимое перенесены полностью.
+  covers:
+  - onInit
+  - onFocusChanged
+  - onTapTemplate
+  automation:
+    kind: maestro
+    flows:
+    - e2e-readymadetemplatelist-ready-templates
+    - e2e-settingsai-request-parameters
+- id: ReadyMadeTemplateList.empty-error-back
+  title: Пустой каталог, ошибка, повтор и отмена
+  profiles:
+  - pro
+  preconditions:
+  - 'Отдельно: пустой ответ backend и сетевой сбой'
+  steps:
+  - action: Открыть пустой каталог
+    expect: Показано состояние «готовых шаблонов пока нет», без ошибки сети.
+  - action: Вызвать сетевую ошибку; восстановить сеть и повторить
+    expect: Ошибка отличается от пустого ответа; повтор показывает каталог.
+  - action: Вернуться без выбора
+    expect: Исходная форма не изменена.
+  covers:
+  - onTapRetry
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-readymadetemplatelist-empty-failure-cancel

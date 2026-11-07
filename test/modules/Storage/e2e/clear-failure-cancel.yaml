@@ -1,0 +1,48 @@
+appId: ${APP_ID}
+name: e2e-storage-clear-failure-cancel
+tags: [e2e, Storage]
+---
+- runFlow:
+    file: ../../../maestro/support/settings-with-fault.yaml
+    env:
+      REPOSITORY_FAULT: ultrasoundReportRepository.clearAllReports
+- scrollUntilVisible:
+    element: {text: '^Хранилище$'}
+    direction: DOWN
+- tapOn: ^Хранилище$
+- tapOn: ^Удалить историю протоколов$
+- tapOn: ^Очистить$
+- extendedWaitUntil:
+    visible: {id: message.error}
+    timeout: 15000
+- assertVisible: ^Хранилище$
+- takeScreenshot: Storage-clear-failed
+- runFlow: ../../../maestro/support/main.yaml
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionFault: ''
+      regressionDelay: ultrasoundReportRepository.clearAllReports
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- tapOn: {id: scan.settings}
+- scrollUntilVisible:
+    element: {text: '^Хранилище$'}
+    direction: DOWN
+- tapOn: ^Хранилище$
+- tapOn: ^Удалить историю протоколов$
+- tapOn: ^Очистить$
+- tapOn: {id: navigation.back}
+- assertVisible: ^Настройки$
+# The repository adapter delays five seconds; observe the closed screen beyond that delay.
+- evalScript: ${output.cancellationDeadline = Date.now() + 7000}
+- repeat:
+    while:
+      true: ${Date.now() < output.cancellationDeadline}
+    commands:
+    - assertVisible: ^Настройки$
+- tapOn: ^История исследований$
+- assertVisible: {id: 'history.loadedCount.[1-9][0-9]*'}
+- takeScreenshot: Storage-cancelled-clear-retains-history
+- runFlow: ../../../maestro/support/main.yaml

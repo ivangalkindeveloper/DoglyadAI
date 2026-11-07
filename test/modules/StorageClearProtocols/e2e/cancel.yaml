@@ -1,0 +1,24 @@
+appId: ${APP_ID}
+name: e2e-storageclearprotocols-cancel
+tags:
+- e2e
+- StorageClearProtocols
+---
+- runFlow: ../../../maestro/support/settings.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Хранилище$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Хранилище$
+- tapOn:
+    text: ^Удалить\ историю\ протоколов$
+- takeScreenshot: StorageClearProtocols-cancel-confirmation
+- tapOn: {id: bottomSheet.close}
+- runFlow: ../../../maestro/support/settings.yaml
+- tapOn:
+    text: ^История\ исследований$
+- assertVisible:
+    id: 'history.loadedCount.[1-9][0-9]*'
+- takeScreenshot: StorageClearProtocols-retained-history

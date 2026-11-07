@@ -5,8 +5,12 @@ import SwiftData
 public final class USExaminationReportDB {
     public var id: UUID
     public var date: Date
-    public var settingsAI: SettingsAIDB
-    public var examinationData: USExaminationDataDB
+    @Relationship(
+        deleteRule: .cascade,
+    ) public var settingsAI: SettingsAIDB
+    @Relationship(
+        deleteRule: .cascade,
+    ) public var examinationData: USExaminationDataDB
     @Relationship(
         deleteRule: .cascade,
     ) public var actualModelReport: USExaminationModelReportDB

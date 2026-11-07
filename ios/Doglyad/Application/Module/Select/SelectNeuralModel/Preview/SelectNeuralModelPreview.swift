@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "SelectNeuralModelContentState",
+        "01 SelectNeuralModelContentState",
     ) {
         SelectNeuralModelPreviewView(
             state: SelectNeuralModelContentState(),
@@ -15,7 +15,7 @@
     }
 
     #Preview(
-        "SelectNeuralModelSelectingState",
+        "02 SelectNeuralModelSelectingState",
     ) {
         SelectNeuralModelPreviewView(
             state: SelectNeuralModelSelectingState(),
