@@ -6,10 +6,10 @@
     import SwiftUI
 
     #Preview(
-        "01 ScanCameraPreparingState",
+        "01 ScanCameraPreparationLoadingState",
     ) {
         ScanCameraPreviewView(
-            state: ScanCameraPreparingState(),
+            state: ScanCameraPreparationLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
@@ -26,10 +26,10 @@
     }
 
     #Preview(
-        "03 ScanCameraCapturingState",
+        "03 ScanCameraCaptureLoadingState",
     ) {
         ScanCameraPreviewView(
-            state: ScanCameraCapturingState(),
+            state: ScanCameraCaptureLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

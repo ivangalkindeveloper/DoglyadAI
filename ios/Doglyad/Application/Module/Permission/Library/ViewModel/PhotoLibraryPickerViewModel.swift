@@ -20,7 +20,7 @@ final class PhotoLibraryPickerViewModel: DModuleViewModel<any PhotoLibraryPicker
         selectionLimit = arguments.selectionLimit
         self.arguments = arguments
         super.init(
-            state: PhotoLibraryPickerState(),
+            state: PhotoLibraryPickerDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

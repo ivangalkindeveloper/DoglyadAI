@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 TemplateDeleteState",
+        "01 TemplateDeleteDefaultState",
     ) {
         TemplateDeletePreviewView(
-            state: TemplateDeleteState(),
+            state: TemplateDeleteDefaultState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

@@ -25,8 +25,8 @@ struct AboutBottomSheetView: DViewProtocol {
                 )
                 .scaledToFit()
                 .frame(
-                    maxWidth: .infinity,
-                    maxHeight: .infinity,
+                    width: size.screenWidth / 3,
+                    height: size.screenWidth / 3,
                     alignment: .center,
                 )
 

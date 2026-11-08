@@ -74,7 +74,7 @@
             switch scenario {
             case .sendingEmail:
                 model.emit(
-                    ReportReceivedSendingState(
+                    ReportReceivedLoadingState(
                         report: report,
                     ),
                     animation: nil,

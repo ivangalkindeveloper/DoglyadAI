@@ -190,7 +190,7 @@ struct ReportDetailModelReportCardView: DViewProtocol {
             color.grayscaleBackground,
         )
         .cornerRadius(
-            size.s16,
+            size.cardCornerRadius,
         )
     }
 }

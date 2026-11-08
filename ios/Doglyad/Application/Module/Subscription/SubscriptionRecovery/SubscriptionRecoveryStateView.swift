@@ -9,7 +9,7 @@ struct SubscriptionRecoveryStateView: DViewProtocol {
 
     var body: some View {
         switch state {
-        case let key as SubscriptionRecoveryKeyState:
+        case let key as SubscriptionRecoverySuccessState:
             VStack(
                 alignment: .leading,
                 spacing: size.s12,
@@ -47,7 +47,7 @@ struct SubscriptionRecoveryStateView: DViewProtocol {
             )
             .background(
                 DCardBackground(
-                    cornerRadius: size.s16,
+                    cornerRadius: size.cardCornerRadius,
                     color: color.grayscaleBackground,
                 ),
             )
@@ -70,7 +70,7 @@ struct SubscriptionRecoveryStateView: DViewProtocol {
                 font: typography.textSmall,
                 color: color.dangerDefault,
             )
-        case _ as SubscriptionRecoveryDefaultState: EmptyView()
+        case _ as SubscriptionRecoveryInitialState: EmptyView()
         default: EmptyView()
         }
     }

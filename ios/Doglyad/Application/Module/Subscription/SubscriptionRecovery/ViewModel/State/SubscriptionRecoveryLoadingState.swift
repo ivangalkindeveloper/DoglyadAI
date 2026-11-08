@@ -1,5 +1,5 @@
 @MainActor
-final class SubscriptionRecoveryLoadingState: SubscriptionRecoveryStateProtocol, @MainActor Equatable {
+class SubscriptionRecoveryLoadingState: SubscriptionRecoveryStateProtocol, @MainActor Equatable {
     let previousState: any SubscriptionRecoveryStateProtocol
 
     init(
@@ -12,7 +12,11 @@ final class SubscriptionRecoveryLoadingState: SubscriptionRecoveryStateProtocol,
         lhs: SubscriptionRecoveryLoadingState,
         rhs: SubscriptionRecoveryLoadingState,
     ) -> Bool {
-        guard let previous = lhs.previousState as? any Equatable else {
+        guard type(
+            of: lhs,
+        ) == type(
+            of: rhs,
+        ), let previous = lhs.previousState as? any Equatable else {
             return false
         }
         return previous.isEqual(

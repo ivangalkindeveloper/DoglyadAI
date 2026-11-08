@@ -80,7 +80,7 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
         )
 
         super.init(
-            state: TemplateAddLoadingState(),
+            state: TemplateAddInitializationLoadingState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -132,9 +132,9 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
             try await self.container.ultrasoundReportRepository.getSelectedExaminationTypeId()
         } onDefer: {
             switch self.state {
-            case _ as TemplateAddLoadingState:
+            case _ as TemplateAddInitializationLoadingState:
                 self.emit(
-                    TemplateAddDefaultState(),
+                    TemplateAddInitialState(),
                 )
             default: break
             }
@@ -241,7 +241,7 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
 
     func onTapSave() {
         switch state {
-        case _ as TemplateAddLoadingState: return
+        case _ as TemplateAddInitializationLoadingState, _ as TemplateAddSaveLoadingState: return
         default: break
         }
 
@@ -268,7 +268,7 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
             content: content,
         )
         emit(
-            TemplateAddLoadingState(),
+            TemplateAddSaveLoadingState(),
         )
         handle {
             try await self.onSaveTemplate(
@@ -276,9 +276,9 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
             )
         } onDefer: {
             switch self.state {
-            case _ as TemplateAddLoadingState:
+            case _ as TemplateAddSaveLoadingState:
                 self.emit(
-                    TemplateAddDefaultState(),
+                    TemplateAddInitialState(),
                 )
             default: break
             }

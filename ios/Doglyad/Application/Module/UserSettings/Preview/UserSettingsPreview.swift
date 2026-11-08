@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 UserSettingsDefaultState",
+        "01 UserSettingsInitialState",
     ) {
         UserSettingsPreviewView(
-            state: UserSettingsDefaultState(),
+            state: UserSettingsInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

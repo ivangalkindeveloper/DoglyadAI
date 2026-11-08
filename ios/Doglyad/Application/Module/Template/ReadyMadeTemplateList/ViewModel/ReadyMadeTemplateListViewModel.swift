@@ -77,7 +77,7 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
     var filteredTemplates: [USExaminationReadyMadeTemplate] {
         let templates: [USExaminationReadyMadeTemplate]
         switch state {
-        case let state as ReadyMadeTemplateListContentState: templates = state.templates
+        case let state as ReadyMadeTemplateListSuccessState: templates = state.templates
         default: return []
         }
         guard let query else {
@@ -164,7 +164,7 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
             try await self.container.templateRepository.getReadyMadeTemplates()
         } onMainSuccess: { templates in
             self.emit(
-                ReadyMadeTemplateListContentState(
+                ReadyMadeTemplateListSuccessState(
                     templates: templates,
                 ),
             )

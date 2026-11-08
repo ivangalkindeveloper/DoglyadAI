@@ -5,27 +5,47 @@
     import SwiftUI
 
     #Preview(
-        "01 StorageReadyState",
+        "01 StorageInitialState",
     ) {
         StoragePreviewView(
-            state: StorageReadyState(),
+            state: StorageInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "02 StorageLoadingState",
+        "02 StorageProtocolsClearLoadingState",
     ) {
         StoragePreviewView(
-            state: StorageLoadingState(),
+            state: StorageProtocolsClearLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "03 StorageFailedState",
+        "03 StorageSpeechModelDeleteLoadingState",
+    ) {
+        StoragePreviewView(
+            state: StorageSpeechModelDeleteLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 StorageAllClearLoadingState",
+    ) {
+        StoragePreviewView(
+            state: StorageAllClearLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "05 StorageFailedState",
     ) {
         StoragePreviewView(
             state: StorageFailedState(

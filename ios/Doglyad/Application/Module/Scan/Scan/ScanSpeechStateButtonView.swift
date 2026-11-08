@@ -8,7 +8,7 @@ struct ScanSpeechStateButtonView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: EmptyView()
+        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: EmptyView()
         default:
             DButton(
                 image: .microphone,

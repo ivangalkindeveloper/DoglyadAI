@@ -10,7 +10,7 @@ struct StatePublicationTests {
     @Test
     func synchronousRenderingDoesNotRetainThePreviousPhase() {
         let model = DStateViewModel<any ScanStateProtocol>(
-            state: ScanInitializingState(),
+            state: ScanInitializationLoadingState(),
         )
         var rendered: (any ScanStateProtocol)?
         var publications = 0
@@ -26,7 +26,7 @@ struct StatePublicationTests {
             stateObservation.cancel()
         }
 
-        let ready = ScanDefaultState()
+        let ready = ScanInitialState()
         model.emit(
             ready,
         )
@@ -80,7 +80,7 @@ struct StatePublicationTests {
     @Test
     func differentPhasesPublishEvenWhenTheirPayloadMatches() {
         let model = DStateViewModel<any ScanSpeechStateProtocol>(
-            state: ScanSpeechAutomaticParsingState(
+            state: ScanSpeechAutomaticParsingLoadingState(
                 parsedText: "Weight 70 kg",
             ),
         )
@@ -92,7 +92,7 @@ struct StatePublicationTests {
             observation.cancel()
         }
 
-        let next = ScanSpeechReviewParsingState(
+        let next = ScanSpeechReviewParsingLoadingState(
             parsedText: "Weight 70 kg",
         )
         model.emit(
@@ -109,7 +109,7 @@ struct StatePublicationTests {
     @Test
     func progressChangesPublishWithinTheSamePhase() {
         let model = DStateViewModel<any ScanSpeechStateProtocol>(
-            state: ScanSpeechPreparingModelState(
+            state: ScanSpeechModelLoadingState(
                 preparation: .downloading(
                     progress: nil,
                 ),
@@ -124,35 +124,35 @@ struct StatePublicationTests {
         }
 
         model.emit(
-            ScanSpeechPreparingModelState(
+            ScanSpeechModelLoadingState(
                 preparation: .downloading(
                     progress: nil,
                 ),
             ),
         )
         model.emit(
-            ScanSpeechPreparingModelState(
+            ScanSpeechModelLoadingState(
                 preparation: .downloading(
                     progress: 0.2,
                 ),
             ),
         )
         model.emit(
-            ScanSpeechPreparingModelState(
+            ScanSpeechModelLoadingState(
                 preparation: .downloading(
                     progress: 0.2,
                 ),
             ),
         )
         model.emit(
-            ScanSpeechPreparingModelState(
+            ScanSpeechModelLoadingState(
                 preparation: .downloading(
                     progress: 0.3,
                 ),
             ),
         )
         model.emit(
-            ScanSpeechPreparingModelState(
+            ScanSpeechModelLoadingState(
                 preparation: .loading,
             ),
         )
@@ -256,7 +256,7 @@ struct StatePublicationTests {
     @Test
     func preservedStatesCompareTheirContentsThroughTheFeatureProtocol() {
         let model = DStateViewModel<any PaywallStateProtocol>(
-            state: PaywallRestoringState(
+            state: PaywallRestoreLoadingState(
                 previousState: PaywallLoadingFailedState(
                     errorDescription: "First failure",
                 ),
@@ -271,14 +271,14 @@ struct StatePublicationTests {
         }
 
         model.emit(
-            PaywallRestoringState(
+            PaywallRestoreLoadingState(
                 previousState: PaywallLoadingFailedState(
                     errorDescription: "First failure",
                 ),
             ),
         )
         model.emit(
-            PaywallRestoringState(
+            PaywallRestoreLoadingState(
                 previousState: PaywallLoadingFailedState(
                     errorDescription: "Second failure",
                 ),
@@ -312,7 +312,7 @@ struct StatePublicationTests {
             title: "Year",
             price: "$99",
         )
-        let content = PaywallDefaultState(
+        let content = PaywallSuccessState(
             tiers: [tier],
             plans: [first, second],
             selectedType: .pro,
@@ -329,14 +329,14 @@ struct StatePublicationTests {
             observation.cancel()
         }
         model.emit(
-            PaywallDefaultState(
+            PaywallSuccessState(
                 copying: content,
             ),
         )
         #expect(
             publications == 0,
         )
-        let selected = PaywallDefaultState(
+        let selected = PaywallSuccessState(
             tiers: [tier],
             plans: [first, second],
             selectedType: .pro,
@@ -346,13 +346,13 @@ struct StatePublicationTests {
             selected,
         )
         model.emit(
-            PaywallPurchasingState(
+            PaywallPurchaseLoadingState(
                 content: selected,
                 plan: second,
             ),
         )
         model.emit(
-            PaywallPurchasingState(
+            PaywallPurchaseLoadingState(
                 content: selected,
                 plan: second,
             ),

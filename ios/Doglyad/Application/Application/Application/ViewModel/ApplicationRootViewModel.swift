@@ -16,7 +16,7 @@ final class ApplicationRootViewModel: DStateViewModel<any ApplicationRootStatePr
     @MainActor
     func initialize() {
         switch state {
-        case _ as ApplicationRootInitializingState: return
+        case _ as ApplicationRootLoadingState: return
         default: break
         }
         let previousFailure: ApplicationRootFailedState? = switch state {
@@ -24,7 +24,7 @@ final class ApplicationRootViewModel: DStateViewModel<any ApplicationRootStatePr
         default: nil
         }
         emit(
-            ApplicationRootInitializingState(
+            ApplicationRootLoadingState(
                 previousFailure: previousFailure,
             ),
         )
@@ -53,7 +53,7 @@ final class ApplicationRootViewModel: DStateViewModel<any ApplicationRootStatePr
 
                     analytics = result.container.analytics
                     emit(
-                        ApplicationRootReadyState(
+                        ApplicationRootSuccessState(
                             container: result.container,
                         ),
                     )

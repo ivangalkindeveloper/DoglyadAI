@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-selecttranscriber-36a9930fdd
+tags:
+- atlas
+- SelectTranscriber
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-selecttranscriber-36a9930fdd
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-selecttranscriber-36a9930fdd
+    timeout: 15000
+- takeScreenshot: 01-SelectTranscriber-36a9930fdd

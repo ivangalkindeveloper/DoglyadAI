@@ -14,17 +14,31 @@ struct ManageSubscriptionScreenView: DViewProtocol {
             ],
             onTapBack: viewModel.onTapBack,
         ) { toolbarInset, bottomInset in
-            DScrollVStack(
-                spacing: size.s8,
-                padding: EdgeInsets(
-                    top: toolbarInset + size.s16,
-                    leading: size.s16,
-                    bottom: bottomInset + size.s32,
-                    trailing: size.s16,
-                ),
-            ) {
-                ManageSubscriptionStateView(
+            switch viewModel.state {
+            case let failed as ManageSubscriptionFailedState where failed.previousState == nil:
+                ManageSubscriptionLoadingErrorView(
+                    state: failed,
+                )
+                .padding(
+                    size.s16,
+                )
+                .padding(
+                    .top,
+                    toolbarInset,
+                )
+                .padding(
+                    .bottom,
+                    bottomInset,
+                )
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                )
+            default:
+                ManageSubscriptionScrollableView(
                     state: viewModel.state,
+                    toolbarInset: toolbarInset,
+                    bottomInset: bottomInset,
                 )
             }
         }

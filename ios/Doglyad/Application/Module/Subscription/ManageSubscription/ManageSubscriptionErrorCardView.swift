@@ -31,7 +31,7 @@ struct ManageSubscriptionErrorCardView: DViewProtocol {
             size.s16,
         ).background(
             DCardBackground(
-                cornerRadius: size.s16,
+                cornerRadius: size.cardCornerRadius,
                 color: color.grayscaleBackground,
             ),
         )

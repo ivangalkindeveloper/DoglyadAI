@@ -16,7 +16,7 @@ final class StorageClearProtocolsViewModel: DModuleViewModel<any StorageClearPro
     ) {
         self.arguments = arguments
         super.init(
-            state: StorageClearProtocolsState(),
+            state: StorageClearProtocolsDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

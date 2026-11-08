@@ -10,7 +10,7 @@ struct ScanScreenView: DViewProtocol {
 
     var body: some View {
         let (isProcessing, isMediaSelectionDisabled): (Bool, Bool) = switch viewModel.state {
-        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState: (true, true)
+        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState: (true, true)
         default: (false, viewModel.isPhotoLimitReached)
         }
 

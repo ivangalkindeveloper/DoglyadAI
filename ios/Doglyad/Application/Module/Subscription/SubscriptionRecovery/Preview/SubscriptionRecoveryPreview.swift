@@ -5,7 +5,7 @@
         "01 Начальное состояние",
     ) {
         SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryDefaultState(),
+            state: SubscriptionRecoveryInitialState(),
         )
         .previewable(
             container: ManageSubscriptionPreviewFactory.makeContainer(),
@@ -16,8 +16,8 @@
         "02 Создание ключа",
     ) {
         SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryLoadingState(
-                previousState: SubscriptionRecoveryDefaultState(),
+            state: SubscriptionRecoveryKeyCreationLoadingState(
+                previousState: SubscriptionRecoveryInitialState(),
             ),
         )
         .previewable(
@@ -29,7 +29,7 @@
         "03 Создан ключ",
     ) {
         SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryKeyState(
+            state: SubscriptionRecoverySuccessState(
                 key: "Preview-MixedCase-Recovery-Key",
             ),
         )
@@ -42,8 +42,8 @@
         "04 Восстановление",
     ) {
         SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryLoadingState(
-                previousState: SubscriptionRecoveryKeyState(
+            state: SubscriptionRecoveryRestoreLoadingState(
+                previousState: SubscriptionRecoverySuccessState(
                     key: "Preview-MixedCase-Recovery-Key",
                 ),
             ),
@@ -58,7 +58,7 @@
     ) {
         SubscriptionRecoveryPreviewView(
             state: SubscriptionRecoveryFailedState(
-                previousState: SubscriptionRecoveryDefaultState(),
+                previousState: SubscriptionRecoveryInitialState(),
                 errorDescription: L10NPreviewFactory.make().text(
                     .subscriptionRecoveryFailedDescription,
                 ),
@@ -74,7 +74,7 @@
     ) {
         SubscriptionRecoveryPreviewView(
             state: SubscriptionRecoveryFailedState(
-                previousState: SubscriptionRecoveryKeyState(
+                previousState: SubscriptionRecoverySuccessState(
                     key: "Preview-MixedCase-Recovery-Key",
                 ),
                 errorDescription: "Не удалось восстановить подписку.",

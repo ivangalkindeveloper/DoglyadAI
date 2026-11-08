@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-neuralmodelvaluerow-2eea50c922
+tags:
+- atlas
+- NeuralModelValueRow
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-neuralmodelvaluerow-2eea50c922
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-neuralmodelvaluerow-2eea50c922
+    timeout: 15000
+- takeScreenshot: 01-NeuralModelValueRow-2eea50c922

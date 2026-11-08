@@ -5,7 +5,7 @@ struct ManageSubscriptionActionsView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: ManageSubscriptionViewModel
-    let state: ManageSubscriptionContentState
+    let state: ManageSubscriptionSuccessState
 
     var body: some View {
         VStack(

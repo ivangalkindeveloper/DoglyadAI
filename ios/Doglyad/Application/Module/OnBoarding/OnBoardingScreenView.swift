@@ -13,7 +13,7 @@ struct OnBoardingScreenView: DViewProtocol {
     var body: some View {
         let (isDisabled, isProcessing): (Bool, Bool) = switch viewModel.state {
         case let state as OnBoardingLegalState: (!state.isLegalAccepted, false)
-        case _ as OnBoardingCompletingState: (true, true)
+        case _ as OnBoardingLoadingState: (true, true)
         default: (false, false)
         }
 

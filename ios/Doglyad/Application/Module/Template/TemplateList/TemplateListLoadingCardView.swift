@@ -55,10 +55,10 @@ struct TemplateListLoadingCardView: DViewProtocol {
             color.grayscaleBackground,
         )
         .cornerRadius(
-            size.adaptiveCardCornerRadius,
+            size.cardCornerRadius,
         )
         .dShimmer(
-            cornerRadius: size.adaptiveCardCornerRadius,
+            cornerRadius: size.cardCornerRadius,
         )
     }
 }

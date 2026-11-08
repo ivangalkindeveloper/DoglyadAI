@@ -15,4 +15,4 @@ tags:
     visible:
       id: message.error
     timeout: 15000
-- takeScreenshot: 04-TemplateEdit-ddace9f930
+- takeScreenshot: 06-TemplateEdit-ddace9f930

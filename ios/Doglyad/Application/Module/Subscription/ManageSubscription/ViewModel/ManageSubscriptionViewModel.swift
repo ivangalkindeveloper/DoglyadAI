@@ -33,7 +33,7 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         self.restorePurchases = restorePurchases
         self.requestRefund = requestRefund
         super.init(
-            state: ManageSubscriptionLoadingState(),
+            state: ManageSubscriptionCatalogLoadingState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -101,9 +101,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         }
     }
 
-    private var content: ManageSubscriptionContentState? {
+    private var content: ManageSubscriptionSuccessState? {
         switch state {
-        case let content as ManageSubscriptionContentState: content
+        case let content as ManageSubscriptionSuccessState: content
         case let loading as ManageSubscriptionLoadingState: loading.previousState
         case let failed as ManageSubscriptionFailedState: failed.previousState
         default: nil
@@ -118,7 +118,7 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         _ status: SubscriptionStatus?,
     ) {
         switch state {
-        case let content as ManageSubscriptionContentState:
+        case let content as ManageSubscriptionSuccessState:
             showContent(
                 catalog: content.catalog,
                 status: status,
@@ -187,7 +187,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         analytics.buttonTapped(
             .manageSubscriptionRestoreStarted,
         )
-        perform {
+        perform(
+            loadingType: ManageSubscriptionRestoreLoadingState.self,
+        ) {
             let status = try await self.restorePurchases()
             guard !Task.isCancelled else {
                 return
@@ -209,7 +211,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         guard isManageAvailable else {
             return
         }
-        perform {
+        perform(
+            loadingType: ManageSubscriptionManagementLoadingState.self,
+        ) {
             try await self.manageSubscription()
         }
     }
@@ -240,7 +244,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         switch subscriptionStatus?.source {
         case .yookassa, .none: onTapSupport()
         case .apple:
-            perform {
+            perform(
+                loadingType: ManageSubscriptionRefundLoadingState.self,
+            ) {
                 try await self.requestRefund()
             }
         }
@@ -257,7 +263,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         guard !isProcessing, content != nil, !isDismissalRequested else {
             return
         }
-        perform {
+        perform(
+            loadingType: ManageSubscriptionRefreshLoadingState.self,
+        ) {
             await self.refreshStatus()
         }
     }
@@ -346,7 +354,7 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         catalog: BillingProductsResponse,
         status: SubscriptionStatus?,
         notice: String? = nil,
-    ) -> ManageSubscriptionContentState? {
+    ) -> ManageSubscriptionSuccessState? {
         guard let status else {
             return ManageSubscriptionInactiveState(
                 catalog: catalog,
@@ -395,7 +403,7 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
     private func load() {
         lastTask?.cancel()
         emit(
-            ManageSubscriptionLoadingState(
+            ManageSubscriptionCatalogLoadingState(
                 previousState: content,
             ),
         )
@@ -445,13 +453,14 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
     }
 
     private func perform(
+        loadingType: ManageSubscriptionLoadingState.Type,
         _ operation: @escaping () async throws -> Void,
         noSubscriptionNotice: (() -> String)? = nil,
     ) {
         guard !isProcessing, !isDismissalRequested, let previous = content else {
             return
         }
-        let loading = ManageSubscriptionLoadingState(
+        let loading = loadingType.init(
             previousState: previous,
         )
         emit(

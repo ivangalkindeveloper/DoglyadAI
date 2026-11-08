@@ -24,7 +24,7 @@
             model.onTapSpeech()
             model.onTapSpeech()
             XCTAssertTrue(
-                model.state is ScanSpeechTranscribingState,
+                model.state is ScanSpeechTranscriptionLoadingState,
             )
             // Let the asynchronous stop begin, then close before its delayed result.
             try await Task.sleep(

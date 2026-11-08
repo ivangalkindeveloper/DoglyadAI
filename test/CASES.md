@@ -4,7 +4,7 @@
 
 Список создаёт `python3 test/scripts/catalog.py`. Это перечень проверок, а не результат запуска.
 
-Платформа: iOS. Модулей: 39. Функциональных кейсов с вводным сценарием: 129. Кейсов отображения: 154.
+Платформа: iOS. Модулей: 39. Функциональных кейсов с вводным сценарием: 129. Кейсов отображения: 207.
 
 ## Функциональные сценарии
 
@@ -142,47 +142,49 @@
 | [e2e-subscriptionrecovery-reject-old-key](modules/SubscriptionRecovery/e2e/reject-old-key.yaml) | Старый ключ не даёт доступ чистому клиенту | 1 |
 | [e2e-subscriptionrecovery-restore-key](modules/SubscriptionRecovery/e2e/restore-key.yaml) | Новый ключ восстанавливает прежний оплаченный период | 1 |
 
-## Отображение состояний модулей
+## Отображение модулей и общих компонентов
 
-Каждый кейс запускает существующий preview модуля, проверяет его идентификатор и делает снимок.
+Каждый кейс запускает существующий Preview модуля или компонента, проверяет его идентификатор и делает снимок.
 Эти кейсы не проверяют переходы в состояния или работу внешних интеграций. Ограничения описаны в [README](README.md#покрытие-и-ограничения).
 
 | Модуль | Состояние и YAML | Исходник |
 |---|---|---|
 | ApplicationSplash | [01 ApplicationSplash](modules/ApplicationSplash/atlas/atlas-applicationsplash-686139405c.yaml) | [Preview](../ios/Doglyad/Application/Application/Application/Preview/ApplicationSplashPreview.swift) |
-| OnBoarding | [01 OnBoardingFirstState](modules/OnBoarding/atlas/atlas-onboarding-d9d62fc1e3.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
+| OnBoarding | [01 OnBoardingInitialState](modules/OnBoarding/atlas/atlas-onboarding-ba6f4599a6.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
 | OnBoarding | [02 OnBoardingSecondState](modules/OnBoarding/atlas/atlas-onboarding-22931274f9.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
 | OnBoarding | [03 OnBoardingLegalState](modules/OnBoarding/atlas/atlas-onboarding-64023d86bc.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
 | OnBoarding | [04 Согласие принято](modules/OnBoarding/atlas/atlas-onboarding-6491f10c7e.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
 | OnBoarding | [05 OnBoardingExaminationTypeState](modules/OnBoarding/atlas/atlas-onboarding-393cd796b5.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
 | OnBoarding | [06 OnBoardingFinalState](modules/OnBoarding/atlas/atlas-onboarding-827b47baa8.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
-| OnBoarding | [07 OnBoardingCompletingState](modules/OnBoarding/atlas/atlas-onboarding-e0feec1a6e.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
+| OnBoarding | [07 OnBoardingLoadingState](modules/OnBoarding/atlas/atlas-onboarding-45d0b3daf8.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
 | OnBoarding | [08 OnBoardingFailedState](modules/OnBoarding/atlas/atlas-onboarding-660276f3c0.yaml) | [Preview](../ios/Doglyad/Application/Module/OnBoarding/Preview/OnBoardingPreview.swift) |
 | WebDocument | [01 WebDocumentLoadingState](modules/WebDocument/atlas/atlas-webdocument-74aa813450.yaml) | [Preview](../ios/Doglyad/Application/Module/WebDocument/Preview/WebDocumentPreview.swift) |
-| WebDocument | [02 WebDocumentLoadedState](modules/WebDocument/atlas/atlas-webdocument-0c11461a57.yaml) | [Preview](../ios/Doglyad/Application/Module/WebDocument/Preview/WebDocumentPreview.swift) |
+| WebDocument | [02 WebDocumentSuccessState](modules/WebDocument/atlas/atlas-webdocument-ef15ad0e62.yaml) | [Preview](../ios/Doglyad/Application/Module/WebDocument/Preview/WebDocumentPreview.swift) |
 | WebDocument | [03 WebDocumentFailedState](modules/WebDocument/atlas/atlas-webdocument-8b51e76f05.yaml) | [Preview](../ios/Doglyad/Application/Module/WebDocument/Preview/WebDocumentPreview.swift) |
-| SelectUSExaminationType | [01 SelectUSExaminationTypeLoadingState](modules/SelectUSExaminationType/atlas/atlas-selectusexaminationtype-d7d1e43cbe.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectUSExaminationType/Preview/SelectUSExaminationTypePreview.swift) |
+| SelectUSExaminationType | [01 SelectUSExaminationTypeRecentTypesLoadingState](modules/SelectUSExaminationType/atlas/atlas-selectusexaminationtype-75a49c9136.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectUSExaminationType/Preview/SelectUSExaminationTypePreview.swift) |
 | SelectUSExaminationType | [02 SelectUSExaminationTypeFailedState](modules/SelectUSExaminationType/atlas/atlas-selectusexaminationtype-b3093417e8.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectUSExaminationType/Preview/SelectUSExaminationTypePreview.swift) |
 | SelectUSExaminationType | [03 SelectUSExaminationTypeContentState](modules/SelectUSExaminationType/atlas/atlas-selectusexaminationtype-966f691d4f.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectUSExaminationType/Preview/SelectUSExaminationTypePreview.swift) |
-| SelectUSExaminationType | [04 SelectUSExaminationTypeSelectingState](modules/SelectUSExaminationType/atlas/atlas-selectusexaminationtype-ccc0fffcbe.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectUSExaminationType/Preview/SelectUSExaminationTypePreview.swift) |
-| Paywall | [01 PaywallLoadingState](modules/Paywall/atlas/atlas-paywall-156b703e99.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
+| SelectUSExaminationType | [04 SelectUSExaminationTypeSelectionLoadingState](modules/SelectUSExaminationType/atlas/atlas-selectusexaminationtype-31422ce04b.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectUSExaminationType/Preview/SelectUSExaminationTypePreview.swift) |
+| Paywall | [01 PaywallCatalogLoadingState](modules/Paywall/atlas/atlas-paywall-c6c810cc24.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
 | Paywall | [02 PaywallLoadingFailedState](modules/Paywall/atlas/atlas-paywall-ae8aab4ea7.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [03 PaywallDefaultState](modules/Paywall/atlas/atlas-paywall-d681dd4b3b.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
+| Paywall | [03 PaywallSuccessState](modules/Paywall/atlas/atlas-paywall-497f187946.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
 | Paywall | [04 Русский](modules/Paywall/atlas/atlas-paywall-6da140fdd4.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
 | Paywall | [05 Каталог без предложений](modules/Paywall/atlas/atlas-paywall-5687a8e2b0.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
 | Paywall | [06 Обновление тарифов](modules/Paywall/atlas/atlas-paywall-5b7e4afd88.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [07 PaywallPurchasingState](modules/Paywall/atlas/atlas-paywall-56dbd6283c.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
+| Paywall | [07 PaywallPurchaseLoadingState](modules/Paywall/atlas/atlas-paywall-7a967dcbc3.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
 | Paywall | [08 PaywallPendingState](modules/Paywall/atlas/atlas-paywall-93c932ac6f.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
 | Paywall | [09 PaywallOperationFailedState](modules/Paywall/atlas/atlas-paywall-6e1176fbf4.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [10 PaywallRestoringState](modules/Paywall/atlas/atlas-paywall-5061371ef7.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [11 Восстановление без каталога](modules/Paywall/atlas/atlas-paywall-9567bc35b4.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Scan | [01 ScanInitializingState](modules/Scan/atlas/atlas-scan-fcfbf6227f.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Paywall | [10 PaywallPaymentCheckLoadingState](modules/Paywall/atlas/atlas-paywall-e578e549c9.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
+| Paywall | [11 PaywallRestoreLoadingState](modules/Paywall/atlas/atlas-paywall-78d1fb4e34.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
+| Paywall | [12 Восстановление без каталога](modules/Paywall/atlas/atlas-paywall-9567bc35b4.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
+| Scan | [01 ScanInitializationLoadingState](modules/Scan/atlas/atlas-scan-feca1f0f09.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Scan | [02 ScanInitializationFailedState](modules/Scan/atlas/atlas-scan-eaa41d57a9.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
-| Scan | [03 ScanDefaultState](modules/Scan/atlas/atlas-scan-b902f0dd58.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
-| Scan | [04 ScanGeneratingState](modules/Scan/atlas/atlas-scan-6d7db7f8f8.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
-| Scan | [05 ScanLoadingState](modules/Scan/atlas/atlas-scan-828ea2d5eb.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
-| Scan | [06 ScanClearingState](modules/Scan/atlas/atlas-scan-511dd131cc.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [03 ScanInitialState](modules/Scan/atlas/atlas-scan-5f36357d96.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [04 ScanGenerationLoadingState](modules/Scan/atlas/atlas-scan-c2a6c2af6d.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [05 ScanReportSaveLoadingState](modules/Scan/atlas/atlas-scan-485269c5a1.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [06 ScanClearLoadingState](modules/Scan/atlas/atlas-scan-18516644a6.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Scan | [07 ScanFailedState](modules/Scan/atlas/atlas-scan-6307577c52.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [08 Кнопка добавления снимков](modules/Scan/atlas/atlas-scan-e7a654c429.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Settings | [01 SettingsLoadingState](modules/Settings/atlas/atlas-settings-32ad4fc9be.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift) |
 | Settings | [02 SettingsFailedState](modules/Settings/atlas/atlas-settings-b5c02a3d31.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift) |
 | Settings | [03 SettingsContentState](modules/Settings/atlas/atlas-settings-c86c0ece67.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift) |
@@ -193,36 +195,50 @@
 | History | [05 История · группы дат и разные протоколы](modules/History/atlas/atlas-history-f6362aeb89.yaml) | [Preview](../ios/Doglyad/Application/Module/History/Preview/HistoryPreview.swift) |
 | History | [06 Загрузка следующей страницы](modules/History/atlas/atlas-history-59976b934b.yaml) | [Preview](../ios/Doglyad/Application/Module/History/Preview/HistoryPreview.swift) |
 | History | [07 Ошибка следующей страницы](modules/History/atlas/atlas-history-89033663fd.yaml) | [Preview](../ios/Doglyad/Application/Module/History/Preview/HistoryPreview.swift) |
+| History | [08 Карточка исследования](modules/History/atlas/atlas-history-be53ad2f71.yaml) | [Preview](../ios/Doglyad/Application/Module/History/Preview/HistoryPreview.swift) |
 | ReportDetail | [01 ReportDetailContentState](modules/ReportDetail/atlas/atlas-reportdetail-3c375c3930.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
-| ReportDetail | [02 ReportDetailLoadingState](modules/ReportDetail/atlas/atlas-reportdetail-0e4adde340.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
-| ReportDetail | [03 ReportDetailGeneratingState](modules/ReportDetail/atlas/atlas-reportdetail-9ecf859368.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [02 ReportDetailSaveLoadingState](modules/ReportDetail/atlas/atlas-reportdetail-f8ef2d844c.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [03 ReportDetailGenerationLoadingState](modules/ReportDetail/atlas/atlas-reportdetail-059db56064.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
 | ReportDetail | [04 ReportDetailFailedState](modules/ReportDetail/atlas/atlas-reportdetail-eb8db8a872.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [05 Раскрываемый Markdown](modules/ReportDetail/atlas/atlas-reportdetail-e421972101.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [06 Одна строка — лимит 3](modules/ReportDetail/atlas/atlas-reportdetail-d0ceefabae.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [07 Три строки — лимит 3](modules/ReportDetail/atlas/atlas-reportdetail-52cd329097.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [08 Четыре строки — лимит 3](modules/ReportDetail/atlas/atlas-reportdetail-f9e70832f7.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [09 Длинный текст — ширина 360](modules/ReportDetail/atlas/atlas-reportdetail-ed9317f52e.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [10 Длинный текст — ширина 260](modules/ReportDetail/atlas/atlas-reportdetail-7c5f22bfb6.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [11 Длинный текст — лимит 1](modules/ReportDetail/atlas/atlas-reportdetail-261282d155.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
+| ReportDetail | [12 Карточка ответа модели](modules/ReportDetail/atlas/atlas-reportdetail-92de649adf.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportDetail/Preview/ReportDetailPreview.swift) |
 | TemplateList | [01 TemplateListLoadingState](modules/TemplateList/atlas/atlas-templatelist-ae8997d3b5.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateList/Preview/TemplateListPreview.swift) |
 | TemplateList | [02 TemplateListFailedState](modules/TemplateList/atlas/atlas-templatelist-03855e8c3f.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateList/Preview/TemplateListPreview.swift) |
 | TemplateList | [03 TemplateListEmptyState](modules/TemplateList/atlas/atlas-templatelist-1f8dfe97cf.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateList/Preview/TemplateListPreview.swift) |
 | TemplateList | [04 TemplateListContentState](modules/TemplateList/atlas/atlas-templatelist-84499cf1eb.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateList/Preview/TemplateListPreview.swift) |
-| TemplateAdd | [01 TemplateAddLoadingState](modules/TemplateAdd/atlas/atlas-templateadd-d6cf7578d7.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateAdd/Preview/TemplateAddPreview.swift) |
-| TemplateAdd | [02 TemplateAddDefaultState](modules/TemplateAdd/atlas/atlas-templateadd-d732216ec4.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateAdd/Preview/TemplateAddPreview.swift) |
-| TemplateAdd | [03 TemplateAddFailedState](modules/TemplateAdd/atlas/atlas-templateadd-780cf44421.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateAdd/Preview/TemplateAddPreview.swift) |
+| TemplateAdd | [01 TemplateAddInitializationLoadingState](modules/TemplateAdd/atlas/atlas-templateadd-52b30ebbfb.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateAdd/Preview/TemplateAddPreview.swift) |
+| TemplateAdd | [02 TemplateAddInitialState](modules/TemplateAdd/atlas/atlas-templateadd-2beeb4e83a.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateAdd/Preview/TemplateAddPreview.swift) |
+| TemplateAdd | [03 TemplateAddSaveLoadingState](modules/TemplateAdd/atlas/atlas-templateadd-163860b6a4.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateAdd/Preview/TemplateAddPreview.swift) |
+| TemplateAdd | [04 TemplateAddFailedState](modules/TemplateAdd/atlas/atlas-templateadd-780cf44421.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateAdd/Preview/TemplateAddPreview.swift) |
 | ReadyMadeTemplateList | [01 ReadyMadeTemplateListLoadingState](modules/ReadyMadeTemplateList/atlas/atlas-readymadetemplatelist-b2303cf106.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/Preview/ReadyMadeTemplateListPreview.swift) |
 | ReadyMadeTemplateList | [02 ReadyMadeTemplateListFailedState](modules/ReadyMadeTemplateList/atlas/atlas-readymadetemplatelist-579ef5fc0d.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/Preview/ReadyMadeTemplateListPreview.swift) |
 | ReadyMadeTemplateList | [03 Каталог пуст](modules/ReadyMadeTemplateList/atlas/atlas-readymadetemplatelist-6db21dc344.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/Preview/ReadyMadeTemplateListPreview.swift) |
-| ReadyMadeTemplateList | [04 ReadyMadeTemplateListContentState](modules/ReadyMadeTemplateList/atlas/atlas-readymadetemplatelist-36a13cb7d8.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/Preview/ReadyMadeTemplateListPreview.swift) |
-| TemplateEdit | [01 TemplateEditLoadingState](modules/TemplateEdit/atlas/atlas-templateedit-7370b58af0.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
+| ReadyMadeTemplateList | [04 ReadyMadeTemplateListSuccessState](modules/ReadyMadeTemplateList/atlas/atlas-readymadetemplatelist-ec70b9ae6e.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/Preview/ReadyMadeTemplateListPreview.swift) |
+| ReadyMadeTemplateList | [05 Раскрываемый текст шаблона](modules/ReadyMadeTemplateList/atlas/atlas-readymadetemplatelist-d34818bc9a.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/Preview/ReadyMadeTemplateListPreview.swift) |
+| ReadyMadeTemplateList | [06 Карточка готового шаблона](modules/ReadyMadeTemplateList/atlas/atlas-readymadetemplatelist-24a75b07c0.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/Preview/ReadyMadeTemplateListPreview.swift) |
+| TemplateEdit | [01 TemplateEditInitializationLoadingState](modules/TemplateEdit/atlas/atlas-templateedit-6d4925d7d8.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
 | TemplateEdit | [02 TemplateEditInitializationFailedState](modules/TemplateEdit/atlas/atlas-templateedit-e453ba653b.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
-| TemplateEdit | [03 TemplateEditDefaultState](modules/TemplateEdit/atlas/atlas-templateedit-16e73e44db.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
-| TemplateEdit | [04 TemplateEditFailedState](modules/TemplateEdit/atlas/atlas-templateedit-ddace9f930.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
-| TemplateDelete | [01 TemplateDeleteState](modules/TemplateDelete/atlas/atlas-templatedelete-bfb2715107.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TempalteDelete/Preview/TemplateDeletePreview.swift) |
-| UserSettings | [01 UserSettingsDefaultState](modules/UserSettings/atlas/atlas-usersettings-0fd932d31b.yaml) | [Preview](../ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift) |
+| TemplateEdit | [03 TemplateEditInitialState](modules/TemplateEdit/atlas/atlas-templateedit-b372e7de63.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
+| TemplateEdit | [04 TemplateEditSaveLoadingState](modules/TemplateEdit/atlas/atlas-templateedit-06a8956f3e.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
+| TemplateEdit | [05 TemplateEditDeleteLoadingState](modules/TemplateEdit/atlas/atlas-templateedit-d827e6844a.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
+| TemplateEdit | [06 TemplateEditFailedState](modules/TemplateEdit/atlas/atlas-templateedit-ddace9f930.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
+| TemplateDelete | [01 TemplateDeleteDefaultState](modules/TemplateDelete/atlas/atlas-templatedelete-99e3dc49e5.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TempalteDelete/Preview/TemplateDeletePreview.swift) |
+| UserSettings | [01 UserSettingsInitialState](modules/UserSettings/atlas/atlas-usersettings-765706ab8d.yaml) | [Preview](../ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift) |
 | UserSettings | [02 UserSettingsLoadingState](modules/UserSettings/atlas/atlas-usersettings-0a6fe5a8ec.yaml) | [Preview](../ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift) |
 | UserSettings | [03 UserSettingsFailedState](modules/UserSettings/atlas/atlas-usersettings-60c11651e6.yaml) | [Preview](../ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift) |
-| SettingsAI | [01 SettingsAIDefaultState](modules/SettingsAI/atlas/atlas-settingsai-225f1c3b13.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift) |
+| SettingsAI | [01 SettingsAIInitialState](modules/SettingsAI/atlas/atlas-settingsai-2fdb6b688a.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift) |
 | SettingsAI | [02 SettingsAILoadingState](modules/SettingsAI/atlas/atlas-settingsai-a8c8bdedf3.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift) |
 | SettingsAI | [03 SettingsAIFailedState](modules/SettingsAI/atlas/atlas-settingsai-1c1e50d046.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift) |
-| SelectTranscriber | [01 SelectTranscriberState](modules/SelectTranscriber/atlas/atlas-selecttranscriber-ad445bc911.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriber/Preview/SelectTranscriberPreview.swift) |
-| SelectTranscriptParser | [01 SelectTranscriptParserState](modules/SelectTranscriptParser/atlas/atlas-selecttranscriptparser-155ac575dd.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriptParser/Preview/SelectTranscriptParserPreview.swift) |
-| SelectNeuralModel | [01 SelectNeuralModelContentState](modules/SelectNeuralModel/atlas/atlas-selectneuralmodel-b5c8080bb6.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectNeuralModel/Preview/SelectNeuralModelPreview.swift) |
-| SelectNeuralModel | [02 SelectNeuralModelSelectingState](modules/SelectNeuralModel/atlas/atlas-selectneuralmodel-129d16a080.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectNeuralModel/Preview/SelectNeuralModelPreview.swift) |
+| SelectTranscriber | [01 SelectTranscriberInitialState](modules/SelectTranscriber/atlas/atlas-selecttranscriber-36a9930fdd.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriber/Preview/SelectTranscriberPreview.swift) |
+| SelectTranscriptParser | [01 SelectTranscriptParserDefaultState](modules/SelectTranscriptParser/atlas/atlas-selecttranscriptparser-dbf7d13abf.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriptParser/Preview/SelectTranscriptParserPreview.swift) |
+| SelectNeuralModel | [01 SelectNeuralModelInitialState](modules/SelectNeuralModel/atlas/atlas-selectneuralmodel-9f31658382.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectNeuralModel/Preview/SelectNeuralModelPreview.swift) |
+| SelectNeuralModel | [02 SelectNeuralModelSelectionLoadingState](modules/SelectNeuralModel/atlas/atlas-selectneuralmodel-9b5bc61d7d.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectNeuralModel/Preview/SelectNeuralModelPreview.swift) |
 | ManageSubscription | [01 Загрузка](modules/ManageSubscription/atlas/atlas-managesubscription-111213e773.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/ManageSubscription/Preview/ManageSubscriptionPreview.swift) |
 | ManageSubscription | [02 Ошибка загрузки](modules/ManageSubscription/atlas/atlas-managesubscription-bd54852c08.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/ManageSubscription/Preview/ManageSubscriptionPreview.swift) |
 | ManageSubscription | [03 Без подписки](modules/ManageSubscription/atlas/atlas-managesubscription-2394bc4a3e.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/ManageSubscription/Preview/ManageSubscriptionPreview.swift) |
@@ -234,50 +250,68 @@
 | ManageSubscription | [09 App Store · автопродление отключено](modules/ManageSubscription/atlas/atlas-managesubscription-db046fc75f.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/ManageSubscription/Preview/ManageSubscriptionPreview.swift) |
 | ManageSubscription | [10 Автопродление отключено](modules/ManageSubscription/atlas/atlas-managesubscription-afb913e2aa.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/ManageSubscription/Preview/ManageSubscriptionPreview.swift) |
 | ManageSubscription | [11 Ошибка операции](modules/ManageSubscription/atlas/atlas-managesubscription-4bec9461e5.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/ManageSubscription/Preview/ManageSubscriptionPreview.swift) |
+| ManageSubscription | [12 Восстановление покупок](modules/ManageSubscription/atlas/atlas-managesubscription-dd3d4c5e50.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/ManageSubscription/Preview/ManageSubscriptionPreview.swift) |
+| ManageSubscription | [13 Управление автопродлением](modules/ManageSubscription/atlas/atlas-managesubscription-5fafc5b541.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/ManageSubscription/Preview/ManageSubscriptionPreview.swift) |
+| ManageSubscription | [14 Запрос возврата](modules/ManageSubscription/atlas/atlas-managesubscription-cc9a19763b.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/ManageSubscription/Preview/ManageSubscriptionPreview.swift) |
 | SubscriptionRecovery | [01 Начальное состояние](modules/SubscriptionRecovery/atlas/atlas-subscriptionrecovery-0b31ba96fa.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionRecovery/Preview/SubscriptionRecoveryPreview.swift) |
 | SubscriptionRecovery | [02 Создание ключа](modules/SubscriptionRecovery/atlas/atlas-subscriptionrecovery-eabcd2f2c6.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionRecovery/Preview/SubscriptionRecoveryPreview.swift) |
 | SubscriptionRecovery | [03 Создан ключ](modules/SubscriptionRecovery/atlas/atlas-subscriptionrecovery-5e81636cda.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionRecovery/Preview/SubscriptionRecoveryPreview.swift) |
 | SubscriptionRecovery | [04 Восстановление](modules/SubscriptionRecovery/atlas/atlas-subscriptionrecovery-844267b67b.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionRecovery/Preview/SubscriptionRecoveryPreview.swift) |
 | SubscriptionRecovery | [05 Ошибка](modules/SubscriptionRecovery/atlas/atlas-subscriptionrecovery-bf22dfeeba.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionRecovery/Preview/SubscriptionRecoveryPreview.swift) |
 | SubscriptionRecovery | [06 Ошибка · ключ сохранён](modules/SubscriptionRecovery/atlas/atlas-subscriptionrecovery-a368edb595.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionRecovery/Preview/SubscriptionRecoveryPreview.swift) |
-| Storage | [01 StorageReadyState](modules/Storage/atlas/atlas-storage-e3878f9ab6.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
-| Storage | [02 StorageLoadingState](modules/Storage/atlas/atlas-storage-d0255baf12.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
-| Storage | [03 StorageFailedState](modules/Storage/atlas/atlas-storage-81abc7153c.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
-| StorageClearProtocols | [01 StorageClearProtocolsState](modules/StorageClearProtocols/atlas/atlas-storageclearprotocols-4d149c4a17.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/StorageClearProtocols/Preview/StorageClearProtocolsPreview.swift) |
-| StorageClearAll | [01 StorageClearAllState](modules/StorageClearAll/atlas/atlas-storageclearall-36506c3d0e.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/StorageClearAll/Preview/StorageClearAllPreview.swift) |
-| About | [01 AboutState](modules/About/atlas/atlas-about-eb18083f1a.yaml) | [Preview](../ios/Doglyad/Application/Module/About/Preview/AboutPreview.swift) |
-| SelectDateOfBirth | [01 SelectDateOfBirthState](modules/SelectDateOfBirth/atlas/atlas-selectdateofbirth-4d2a5587eb.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectDateOfBirth/Preview/SelectDateOfBirthPreview.swift) |
-| SelectTemplate | [01 SelectTemplateLoadingState](modules/SelectTemplate/atlas/atlas-selecttemplate-fe15c31af1.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTemplate/Preview/SelectTemplatePreview.swift) |
+| Storage | [01 StorageInitialState](modules/Storage/atlas/atlas-storage-7972f70483.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
+| Storage | [02 StorageProtocolsClearLoadingState](modules/Storage/atlas/atlas-storage-284fc5d091.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
+| Storage | [03 StorageSpeechModelDeleteLoadingState](modules/Storage/atlas/atlas-storage-5c0ab02675.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
+| Storage | [04 StorageAllClearLoadingState](modules/Storage/atlas/atlas-storage-b49d676ce1.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
+| Storage | [05 StorageFailedState](modules/Storage/atlas/atlas-storage-81abc7153c.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
+| StorageClearProtocols | [01 StorageClearProtocolsDefaultState](modules/StorageClearProtocols/atlas/atlas-storageclearprotocols-8fdb5d5c0d.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/StorageClearProtocols/Preview/StorageClearProtocolsPreview.swift) |
+| StorageClearAll | [01 StorageClearAllDefaultState](modules/StorageClearAll/atlas/atlas-storageclearall-0983efdd26.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/StorageClearAll/Preview/StorageClearAllPreview.swift) |
+| About | [01 AboutDefaultState](modules/About/atlas/atlas-about-54651a6e4c.yaml) | [Preview](../ios/Doglyad/Application/Module/About/Preview/AboutPreview.swift) |
+| SelectDateOfBirth | [01 SelectDateOfBirthDefaultState](modules/SelectDateOfBirth/atlas/atlas-selectdateofbirth-0ea35caf8b.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectDateOfBirth/Preview/SelectDateOfBirthPreview.swift) |
+| SelectTemplate | [01 SelectTemplateTemplatesLoadingState](modules/SelectTemplate/atlas/atlas-selecttemplate-968bcb6990.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTemplate/Preview/SelectTemplatePreview.swift) |
 | SelectTemplate | [02 SelectTemplateFailedState](modules/SelectTemplate/atlas/atlas-selecttemplate-4d9e2cd5e4.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTemplate/Preview/SelectTemplatePreview.swift) |
 | SelectTemplate | [03 SelectTemplateEmptyState](modules/SelectTemplate/atlas/atlas-selecttemplate-c677e31a90.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTemplate/Preview/SelectTemplatePreview.swift) |
 | SelectTemplate | [04 SelectTemplateContentState](modules/SelectTemplate/atlas/atlas-selecttemplate-9d2d4a513c.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTemplate/Preview/SelectTemplatePreview.swift) |
-| ImportMedia | [01 ImportMediaState](modules/ImportMedia/atlas/atlas-importmedia-a9fb9b7616.yaml) | [Preview](../ios/Doglyad/Application/Module/ImportMedia/Preview/ImportMediaPreview.swift) |
-| Permission | [01 PermissionState](modules/Permission/atlas/atlas-permission-dc09229dfa.yaml) | [Preview](../ios/Doglyad/Application/Module/Permission/Preview/PermissionPreview.swift) |
+| SelectTemplate | [05 Применение выбранного шаблона](modules/SelectTemplate/atlas/atlas-selecttemplate-8391a67f95.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTemplate/Preview/SelectTemplatePreview.swift) |
+| ImportMedia | [01 ImportMediaDefaultState](modules/ImportMedia/atlas/atlas-importmedia-0eb2f0b208.yaml) | [Preview](../ios/Doglyad/Application/Module/ImportMedia/Preview/ImportMediaPreview.swift) |
+| Permission | [01 PermissionDefaultState](modules/Permission/atlas/atlas-permission-9fe14ba257.yaml) | [Preview](../ios/Doglyad/Application/Module/Permission/Preview/PermissionPreview.swift) |
 | Permission | [02 Permission · speech](modules/Permission/atlas/atlas-permission-8656f97c64.yaml) | [Preview](../ios/Doglyad/Application/Module/Permission/Preview/PermissionPreview.swift) |
 | Permission | [03 Permission · photoLibrary](modules/Permission/atlas/atlas-permission-3554c50972.yaml) | [Preview](../ios/Doglyad/Application/Module/Permission/Preview/PermissionPreview.swift) |
-| ScanCamera | [01 ScanCameraPreparingState](modules/ScanCamera/atlas/atlas-scancamera-887053334f.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanCamera/Preview/ScanCameraPreview.swift) |
+| ScanCamera | [01 ScanCameraPreparationLoadingState](modules/ScanCamera/atlas/atlas-scancamera-a3057432bc.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanCamera/Preview/ScanCameraPreview.swift) |
 | ScanCamera | [02 ScanCameraReadyState](modules/ScanCamera/atlas/atlas-scancamera-6ecb9a3bd7.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanCamera/Preview/ScanCameraPreview.swift) |
-| ScanCamera | [03 ScanCameraCapturingState](modules/ScanCamera/atlas/atlas-scancamera-2c11689d15.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanCamera/Preview/ScanCameraPreview.swift) |
+| ScanCamera | [03 ScanCameraCaptureLoadingState](modules/ScanCamera/atlas/atlas-scancamera-fbb53f1d03.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanCamera/Preview/ScanCameraPreview.swift) |
 | ScanCamera | [04 ScanCameraStoppedState](modules/ScanCamera/atlas/atlas-scancamera-0d371deaf0.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanCamera/Preview/ScanCameraPreview.swift) |
-| PhotoLibraryPicker | [01 PhotoLibraryPickerState](modules/PhotoLibraryPicker/atlas/atlas-photolibrarypicker-022398461f.yaml) | [Preview](../ios/Doglyad/Application/Module/Permission/Library/Preview/PhotoLibraryPickerPreview.swift) |
-| PhotoView | [01 PhotoViewState](modules/PhotoView/atlas/atlas-photoview-96ab4ea43b.yaml) | [Preview](../ios/Doglyad/Application/Module/PhotoView/Preview/PhotoViewPreview.swift) |
+| PhotoLibraryPicker | [01 PhotoLibraryPickerDefaultState](modules/PhotoLibraryPicker/atlas/atlas-photolibrarypicker-ad3ba7c6e9.yaml) | [Preview](../ios/Doglyad/Application/Module/Permission/Library/Preview/PhotoLibraryPickerPreview.swift) |
+| PhotoView | [01 PhotoViewInitialState](modules/PhotoView/atlas/atlas-photoview-9036f21d8e.yaml) | [Preview](../ios/Doglyad/Application/Module/PhotoView/Preview/PhotoViewPreview.swift) |
 | PhotoView | [02 PhotoViewRemarks](modules/PhotoView/atlas/atlas-photoview-23a69732c2.yaml) | [Preview](../ios/Doglyad/Application/Module/PhotoView/Preview/PhotoViewPreview.swift) |
 | PhotoView | [03 PhotoViewSavedReport](modules/PhotoView/atlas/atlas-photoview-6eb3a4e379.yaml) | [Preview](../ios/Doglyad/Application/Module/PhotoView/Preview/PhotoViewPreview.swift) |
 | PhotoView | [04 PhotoViewPortrait](modules/PhotoView/atlas/atlas-photoview-a3683bb854.yaml) | [Preview](../ios/Doglyad/Application/Module/PhotoView/Preview/PhotoViewPreview.swift) |
 | PhotoView | [05 PhotoViewSquare](modules/PhotoView/atlas/atlas-photoview-dd0eb85c9e.yaml) | [Preview](../ios/Doglyad/Application/Module/PhotoView/Preview/PhotoViewPreview.swift) |
-| PhotoRemark | [01 PhotoRemarkState](modules/PhotoRemark/atlas/atlas-photoremark-7c0d0b5528.yaml) | [Preview](../ios/Doglyad/Application/Module/PhotoRemark/Preview/PhotoRemarkPreview.swift) |
+| PhotoRemark | [01 PhotoRemarkDefaultState](modules/PhotoRemark/atlas/atlas-photoremark-50b9e1bf86.yaml) | [Preview](../ios/Doglyad/Application/Module/PhotoRemark/Preview/PhotoRemarkPreview.swift) |
 | ScanSpeech | [01 Проверка модели](modules/ScanSpeech/atlas/atlas-scanspeech-f3253b2782.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [02 Загрузка без прогресса](modules/ScanSpeech/atlas/atlas-scanspeech-e3120ff04d.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [03 ScanSpeechPreparingModelState](modules/ScanSpeech/atlas/atlas-scanspeech-f45a93c961.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [03 ScanSpeechModelLoadingState](modules/ScanSpeech/atlas/atlas-scanspeech-0f7c7bbd68.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [04 Загрузка модели в память](modules/ScanSpeech/atlas/atlas-scanspeech-50e5e3c571.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [05 ScanSpeechModelPreparationFailedState](modules/ScanSpeech/atlas/atlas-scanspeech-c4ff582aef.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [06 ScanSpeechReadyState](modules/ScanSpeech/atlas/atlas-scanspeech-527388b442.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [07 ScanSpeechPreparingRecordingState](modules/ScanSpeech/atlas/atlas-scanspeech-5214dc81f5.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [07 ScanSpeechRecordingPreparationLoadingState](modules/ScanSpeech/atlas/atlas-scanspeech-d5eb7a84b9.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [08 ScanSpeechRecordingState](modules/ScanSpeech/atlas/atlas-scanspeech-7f2ced87c9.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [09 ScanSpeechTranscribingState](modules/ScanSpeech/atlas/atlas-scanspeech-d14902fd9a.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [10 ScanSpeechAutomaticParsingState](modules/ScanSpeech/atlas/atlas-scanspeech-849290d205.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [09 ScanSpeechTranscriptionLoadingState](modules/ScanSpeech/atlas/atlas-scanspeech-58cffebcfc.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [10 ScanSpeechAutomaticParsingLoadingState](modules/ScanSpeech/atlas/atlas-scanspeech-5656ebbe4d.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [11 ScanSpeechReviewTranscriptState](modules/ScanSpeech/atlas/atlas-scanspeech-0b2ba9583c.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
-| ScanSpeech | [12 ScanSpeechReviewParsingState](modules/ScanSpeech/atlas/atlas-scanspeech-a66545cfa7.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [12 ScanSpeechReviewParsingLoadingState](modules/ScanSpeech/atlas/atlas-scanspeech-de6918e489.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [13 Нужно проверить](modules/ScanSpeech/atlas/atlas-scanspeech-2a18390cc1.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [14 Выбрано](modules/ScanSpeech/atlas/atlas-scanspeech-9cf249e2a8.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [15 Число и единицы](modules/ScanSpeech/atlas/atlas-scanspeech-547cc290c1.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [16 Сторона и отрицание](modules/ScanSpeech/atlas/atlas-scanspeech-2d4b3536aa.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [17 Несколько полей](modules/ScanSpeech/atlas/atlas-scanspeech-c860e9dcfa.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [18 Частичный результат](modules/ScanSpeech/atlas/atlas-scanspeech-dd77f0a008.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [19 Длинный клинический текст](modules/ScanSpeech/atlas/atlas-scanspeech-8a8db86235.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [20 Ничего не распознано](modules/ScanSpeech/atlas/atlas-scanspeech-0b3c217c69.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [21 Диктовка готова](modules/ScanSpeech/atlas/atlas-scanspeech-f4f1ae8c7f.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [22 Длинная прерванная запись](modules/ScanSpeech/atlas/atlas-scanspeech-cd201d1158.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [23 Речь не распознана](modules/ScanSpeech/atlas/atlas-scanspeech-042ba06a44.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [24 Разбор диктовки](modules/ScanSpeech/atlas/atlas-scanspeech-23c08fcada.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ReportReceived | [01 Генерация · ожидание первого токена](modules/ReportReceived/atlas/atlas-reportreceived-2ab1ec595f.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportReceived/Preview/ReportReceivedPreview.swift) |
 | ReportReceived | [02 Генерация · первый токен](modules/ReportReceived/atlas/atlas-reportreceived-39ebed2d82.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportReceived/Preview/ReportReceivedPreview.swift) |
 | ReportReceived | [03 Генерация · описание](modules/ReportReceived/atlas/atlas-reportreceived-07e73daa3d.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportReceived/Preview/ReportReceivedPreview.swift) |
@@ -295,11 +329,30 @@
 | ReportReceived | [15 Ошибка генерации · без текста](modules/ReportReceived/atlas/atlas-reportreceived-183c7bec7c.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportReceived/Preview/ReportReceivedPreview.swift) |
 | ReportReceived | [16 Ошибка генерации · частичный текст](modules/ReportReceived/atlas/atlas-reportreceived-01ea2a847a.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportReceived/Preview/ReportReceivedPreview.swift) |
 | ReportReceived | [17 Генерация отменена](modules/ReportReceived/atlas/atlas-reportreceived-9b2b54e80e.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportReceived/Preview/ReportReceivedPreview.swift) |
-| Share | [01 ShareReadyState](modules/Share/atlas/atlas-share-ac05fd8940.yaml) | [Preview](../ios/Doglyad/Application/Module/Share/Preview/SharePreview.swift) |
-| Share | [02 ShareSendingState](modules/Share/atlas/atlas-share-ef49654fd7.yaml) | [Preview](../ios/Doglyad/Application/Module/Share/Preview/SharePreview.swift) |
+| Share | [01 ShareInitialState](modules/Share/atlas/atlas-share-23af9c548c.yaml) | [Preview](../ios/Doglyad/Application/Module/Share/Preview/SharePreview.swift) |
+| Share | [02 ShareLoadingState](modules/Share/atlas/atlas-share-1ad0f080b3.yaml) | [Preview](../ios/Doglyad/Application/Module/Share/Preview/SharePreview.swift) |
 | Share | [03 ShareFailedState](modules/Share/atlas/atlas-share-ba8c14a5dc.yaml) | [Preview](../ios/Doglyad/Application/Module/Share/Preview/SharePreview.swift) |
-| RequestLimitExceeded | [01 RequestLimitExceededState](modules/RequestLimitExceeded/atlas/atlas-requestlimitexceeded-318f21618a.yaml) | [Preview](../ios/Doglyad/Application/Module/LimitExceeded/Preview/RequestLimitExceededPreview.swift) |
+| RequestLimitExceeded | [01 RequestLimitExceededDefaultState](modules/RequestLimitExceeded/atlas/atlas-requestlimitexceeded-9e84b5cf89.yaml) | [Preview](../ios/Doglyad/Application/Module/LimitExceeded/Preview/RequestLimitExceededPreview.swift) |
 | LegalUpdate | [01 LegalUpdateAwaitingAcceptanceState](modules/LegalUpdate/atlas/atlas-legalupdate-fe1e41baa7.yaml) | [Preview](../ios/Doglyad/Application/Module/LegalUpdate/Preview/LegalUpdatePreview.swift) |
 | LegalUpdate | [02 LegalUpdateLoadingState](modules/LegalUpdate/atlas/atlas-legalupdate-8a74474207.yaml) | [Preview](../ios/Doglyad/Application/Module/LegalUpdate/Preview/LegalUpdatePreview.swift) |
 | LegalUpdate | [03 LegalUpdateFailedState](modules/LegalUpdate/atlas/atlas-legalupdate-c43a01a6c4.yaml) | [Preview](../ios/Doglyad/Application/Module/LegalUpdate/Preview/LegalUpdatePreview.swift) |
-| NewVersion | [01 NewVersionState](modules/NewVersion/atlas/atlas-newversion-affc69b859.yaml) | [Preview](../ios/Doglyad/Application/Module/NewVersion/Preview/NewVersionPreview.swift) |
+| NewVersion | [01 NewVersionDefaultState](modules/NewVersion/atlas/atlas-newversion-2dcd5c4751.yaml) | [Preview](../ios/Doglyad/Application/Module/NewVersion/Preview/NewVersionPreview.swift) |
+| NeuralModelCard | [01 Доступны запросы](components/NeuralModelCard/atlas/atlas-neuralmodelcard-a1a1435738.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/NeuralModelCardPreview.swift) |
+| NeuralModelCard | [02 Лимит запросов исчерпан](components/NeuralModelCard/atlas/atlas-neuralmodelcard-03aec08916.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/NeuralModelCardPreview.swift) |
+| SettingsAICard | [01 Настройки по умолчанию](components/SettingsAICard/atlas/atlas-settingsaicard-a538c5897a.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/SettingsAICardPreview.swift) |
+| SettingsAICard | [02 Markdown включён](components/SettingsAICard/atlas/atlas-settingsaicard-c7ef2017e3.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/SettingsAICardPreview.swift) |
+| TemplateListItemCard | [01 Шаблон](components/TemplateListItemCard/atlas/atlas-templatelistitemcard-fff8b34d92.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/TemplateListItemCardPreview.swift) |
+| TemplateListItemCard | [02 Выбранный шаблон](components/TemplateListItemCard/atlas/atlas-templatelistitemcard-7f6fc383fb.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/TemplateListItemCardPreview.swift) |
+| NeuralModelValueRow | [01 Название модели](components/NeuralModelValueRow/atlas/atlas-neuralmodelvaluerow-2eea50c922.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/NeuralModelValueRowPreview.swift) |
+| NeuralModelValueRow | [02 Числовое значение](components/NeuralModelValueRow/atlas/atlas-neuralmodelvaluerow-b1b676d3cf.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/NeuralModelValueRowPreview.swift) |
+| SectionHeader | [01 Локализованный заголовок](components/SectionHeader/atlas/atlas-sectionheader-fc36b7a869.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/SectionHeaderPreview.swift) |
+| SectionHeader | [02 Заголовок из конфигурации](components/SectionHeader/atlas/atlas-sectionheader-fc7ec09ca9.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/SectionHeaderPreview.swift) |
+| ErrorBody | [01 Ошибка загрузки](components/ErrorBody/atlas/atlas-errorbody-bd54852c08.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/ErrorBodyPreview.swift) |
+| ErrorPagination | [01 Ошибка подгрузки страницы](components/ErrorPagination/atlas/atlas-errorpagination-1068246ef6.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/ErrorPaginationPreview.swift) |
+| ExpandableContent | [01 Одна строка — лимит 3](components/ExpandableContent/atlas/atlas-expandablecontent-d0ceefabae.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/ExpandableContentPreview.swift) |
+| ExpandableContent | [02 Три строки — лимит 3](components/ExpandableContent/atlas/atlas-expandablecontent-52cd329097.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/ExpandableContentPreview.swift) |
+| ExpandableContent | [03 Четыре строки — лимит 3](components/ExpandableContent/atlas/atlas-expandablecontent-f9e70832f7.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/ExpandableContentPreview.swift) |
+| ExpandableContent | [04 Длинный текст — ширина 360](components/ExpandableContent/atlas/atlas-expandablecontent-ed9317f52e.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/ExpandableContentPreview.swift) |
+| ExpandableContent | [05 Длинный текст — ширина 260](components/ExpandableContent/atlas/atlas-expandablecontent-7c5f22bfb6.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/ExpandableContentPreview.swift) |
+| ExpandableContent | [06 Длинный текст — лимит 1](components/ExpandableContent/atlas/atlas-expandablecontent-261282d155.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/ExpandableContentPreview.swift) |
+| ExpandableContent | [07 Markdown — лимит 3](components/ExpandableContent/atlas/atlas-expandablecontent-800e561772.yaml) | [Preview](../ios/Doglyad/Application/Application/View/Preview/ExpandableContentPreview.swift) |

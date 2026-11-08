@@ -25,7 +25,7 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         self.arguments = arguments
         currentTemplateID = arguments.currentValue?.id
         super.init(
-            state: SelectTemplateLoadingState(),
+            state: SelectTemplateTemplatesLoadingState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -98,7 +98,7 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         default: return
         }
         emit(
-            SelectTemplateLoadingState(),
+            SelectTemplateSelectionLoadingState(),
         )
         handle {
             try await self.arguments.onSelected(

@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 NewVersionState",
+        "01 NewVersionDefaultState",
     ) {
         NewVersionPreviewView(
-            state: NewVersionState(),
+            state: NewVersionDefaultState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

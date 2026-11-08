@@ -22,7 +22,7 @@ struct SelectTemplateBottomSheetView: DViewProtocol {
                     spacing: size.s4,
                 ) {
                     let isLoading = switch viewModel.state {
-                    case _ as SelectTemplateLoadingState: true
+                    case _ as SelectTemplateTemplatesLoadingState, _ as SelectTemplateSelectionLoadingState: true
                     default: false
                     }
                     SelectTemplateStateView(

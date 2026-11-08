@@ -37,7 +37,7 @@ final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
         examinationTypesById = container.usExaminationTypesById
 
         super.init(
-            state: ShareReadyState(),
+            state: ShareInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -138,11 +138,11 @@ private extension ShareViewModel {
         to userEmail: String,
     ) {
         switch state {
-        case _ as ShareSendingState: return
+        case _ as ShareLoadingState: return
         default: break
         }
         emit(
-            ShareSendingState(),
+            ShareLoadingState(),
         )
         let ultrasoundConfig = container.applicationConfig.ultrasound
         handle {
@@ -159,9 +159,9 @@ private extension ShareViewModel {
             )
         } onDefer: {
             switch self.state {
-            case _ as ShareSendingState:
+            case _ as ShareLoadingState:
                 self.emit(
-                    ShareReadyState(),
+                    ShareInitialState(),
                 )
             default: break
             }

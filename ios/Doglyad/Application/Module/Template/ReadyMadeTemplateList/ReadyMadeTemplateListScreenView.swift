@@ -52,26 +52,10 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                     VStack(
                         spacing: size.s16,
                     ) {
-                        DText(
-                            l10n[
-                                .readyMadeTemplateListErrorTitle,
-                            ],
-                        )
-                        .dStyle(
-                            font: typography.linkLarge,
-                        )
-
-                        DText(
-                            l10n[
+                        ErrorBodyView(
+                            description: l10n.text(
                                 .readyMadeTemplateListErrorDescription,
-                            ],
-                        )
-                        .dStyle(
-                            font: typography.linkSmall,
-                            color: color.grayscalePlacehold,
-                        )
-                        .multilineTextAlignment(
-                            .center,
+                            ),
                         )
 
                         DButton(
@@ -81,7 +65,7 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                             action: viewModel.onTapRetry,
                         )
                         .dStyle(
-                            .primaryButton,
+                            .primaryChip,
                         )
                     }
                     .padding(
@@ -98,7 +82,7 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                     .transition(
                         .opacity,
                     )
-                case _ as ReadyMadeTemplateListContentState:
+                case _ as ReadyMadeTemplateListSuccessState:
                     ScrollView(
                         showsIndicators: false,
                     ) {

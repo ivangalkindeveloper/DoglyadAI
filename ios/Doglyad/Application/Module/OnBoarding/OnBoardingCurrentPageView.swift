@@ -11,7 +11,7 @@ struct OnBoardingCurrentPageView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as OnBoardingFirstState:
+        case _ as OnBoardingInitialState:
             OnBoardingPageView(
                 tag: 0,
                 title: l10n[
@@ -107,7 +107,7 @@ struct OnBoardingCurrentPageView: DViewProtocol {
                     .onBoardingFourthDescription,
                 ],
             )
-        case _ as OnBoardingFinalState, _ as OnBoardingCompletingState, _ as OnBoardingFailedState:
+        case _ as OnBoardingFinalState, _ as OnBoardingLoadingState, _ as OnBoardingFailedState:
             OnBoardingPageView(
                 tag: 4,
                 title: l10n[

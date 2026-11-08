@@ -18,7 +18,7 @@ final class ImportMediaViewModel: DModuleViewModel<any ImportMediaStateProtocol>
     ) {
         self.arguments = arguments
         super.init(
-            state: ImportMediaState(),
+            state: ImportMediaDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

@@ -24,7 +24,7 @@ struct ErrorView<Description: View>: DViewProtocol {
 
     var body: some View {
         let isInitializing = switch applicationViewModel.state {
-        case _ as ApplicationRootInitializingState: true
+        case _ as ApplicationRootLoadingState: true
         default: false
         }
 

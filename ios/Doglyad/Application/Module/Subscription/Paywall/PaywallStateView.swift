@@ -7,7 +7,7 @@ struct PaywallStateView: DViewProtocol {
 
     var body: some View {
         switch state {
-        case let loading as PaywallLoadingState:
+        case let loading as PaywallCatalogLoadingState:
             if let previous = loading.previousState {
                 PaywallOffersView(
                     state: previous,
@@ -15,13 +15,13 @@ struct PaywallStateView: DViewProtocol {
             } else {
                 PaywallLoadingView()
             }
-        case let restoring as PaywallRestoringState:
+        case let restoring as PaywallVerificationLoadingState:
             PaywallStateView(
                 state: restoring.previousState,
             )
         case let failed as PaywallLoadingFailedState:
-            PaywallErrorView(
-                errorDescription: failed.errorDescription,
+            PaywallLoadingErrorView(
+                state: failed,
             )
         case let failed as PaywallOperationFailedState:
             PaywallFailedContentView(

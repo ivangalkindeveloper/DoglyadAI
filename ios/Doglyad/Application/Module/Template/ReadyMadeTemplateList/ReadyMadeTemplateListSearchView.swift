@@ -9,7 +9,7 @@ struct ReadyMadeTemplateListSearchView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as ReadyMadeTemplateListContentState:
+        case _ as ReadyMadeTemplateListSuccessState:
             DTextField(
                 inputTextController: viewModel.searchTextController,
                 focus: DTextFieldFocus(

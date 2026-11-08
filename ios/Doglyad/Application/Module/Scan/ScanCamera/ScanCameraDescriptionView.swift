@@ -8,7 +8,7 @@ struct ScanCameraDescriptionView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as ScanCameraReadyState, _ as ScanCameraCapturingState:
+        case _ as ScanCameraReadyState, _ as ScanCameraCaptureLoadingState:
             DText(
                 l10n[
                     .scanCaptureDescription,

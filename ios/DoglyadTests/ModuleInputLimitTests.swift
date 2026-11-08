@@ -35,7 +35,7 @@ struct ModuleInputLimitTests {
             container: container,
         )
         model.emit(
-            ScanDefaultState(),
+            ScanInitialState(),
         )
         model.usExaminationType = echo
         model.patientComplaintsTextController.setText(

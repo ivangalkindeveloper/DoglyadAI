@@ -7,7 +7,7 @@ struct OnBoardingBackButtonView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as OnBoardingFirstState, _ as OnBoardingCompletingState: EmptyView()
+        case _ as OnBoardingInitialState, _ as OnBoardingLoadingState: EmptyView()
         default:
             DButton(
                 image: .back,

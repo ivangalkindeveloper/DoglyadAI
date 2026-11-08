@@ -26,7 +26,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
     ) {
         self.messager = messager
         super.init(
-            state: StorageReadyState(),
+            state: StorageInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -57,7 +57,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
 
     func onTapClearProtocols() {
         switch state {
-        case _ as StorageLoadingState: return
+        case _ as StorageProtocolsClearLoadingState, _ as StorageSpeechModelDeleteLoadingState, _ as StorageAllClearLoadingState: return
         default: break
         }
 
@@ -72,7 +72,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                         return
                     }
 
-                    let loading = StorageLoadingState()
+                    let loading = StorageProtocolsClearLoadingState()
                     emit(
                         loading,
                     )
@@ -83,7 +83,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                             return
                         }
                         self.emit(
-                            StorageReadyState(),
+                            StorageInitialState(),
                         )
                         self.messager.show(
                             type: .success,
@@ -118,14 +118,14 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             return
         }
         switch state {
-        case _ as StorageLoadingState: return
+        case _ as StorageProtocolsClearLoadingState, _ as StorageSpeechModelDeleteLoadingState, _ as StorageAllClearLoadingState: return
         default: break
         }
 
         analytics.buttonTapped(
             .storageDeleteSpeechModel,
         )
-        let loading = StorageLoadingState()
+        let loading = StorageSpeechModelDeleteLoadingState()
         emit(
             loading,
         )
@@ -136,7 +136,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                 return
             }
             self.emit(
-                StorageReadyState(),
+                StorageInitialState(),
             )
             self.messager.show(
                 type: .success,
@@ -165,7 +165,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
 
     func onTapClearAll() {
         switch state {
-        case _ as StorageLoadingState: return
+        case _ as StorageProtocolsClearLoadingState, _ as StorageSpeechModelDeleteLoadingState, _ as StorageAllClearLoadingState: return
         default: break
         }
 
@@ -180,7 +180,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                         return
                     }
 
-                    let loading = StorageLoadingState()
+                    let loading = StorageAllClearLoadingState()
                     emit(
                         loading,
                     )
@@ -191,7 +191,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                             return
                         }
                         self.emit(
-                            StorageReadyState(),
+                            StorageInitialState(),
                         )
                         self.messager.show(
                             type: .success,

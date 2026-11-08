@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 OnBoardingFirstState",
+        "01 OnBoardingInitialState",
     ) {
         OnBoardingPreviewView(
-            state: OnBoardingFirstState(),
+            state: OnBoardingInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
@@ -67,10 +67,10 @@
     }
 
     #Preview(
-        "07 OnBoardingCompletingState",
+        "07 OnBoardingLoadingState",
     ) {
         OnBoardingPreviewView(
-            state: OnBoardingCompletingState(),
+            state: OnBoardingLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

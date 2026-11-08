@@ -9,7 +9,7 @@ struct ScanCameraBottomSheetView: DViewProtocol {
 
     var body: some View {
         let isCapturing = switch viewModel.state {
-        case _ as ScanCameraCapturingState: true
+        case _ as ScanCameraCaptureLoadingState: true
         default: false
         }
 

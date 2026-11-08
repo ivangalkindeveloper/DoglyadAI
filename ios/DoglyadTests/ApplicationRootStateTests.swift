@@ -7,8 +7,8 @@ struct ApplicationRootStateTests {
     @Test
     func startingInitializationKeepsSplashIdentity() {
         let initial = ApplicationRootInitialState()
-        let initializing = ApplicationRootInitializingState()
-        let ready = ApplicationRootReadyState(
+        let initializing = ApplicationRootLoadingState()
+        let ready = ApplicationRootSuccessState(
             container: .previewable,
         )
         #expect(
@@ -30,7 +30,7 @@ struct ApplicationRootStateTests {
                 code: 1,
             ),
         )
-        let retry = ApplicationRootInitializingState(
+        let retry = ApplicationRootLoadingState(
             previousFailure: failure,
         )
         let nextFailure = ApplicationRootFailedState(

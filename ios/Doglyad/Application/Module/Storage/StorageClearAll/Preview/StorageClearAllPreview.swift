@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 StorageClearAllState",
+        "01 StorageClearAllDefaultState",
     ) {
         StorageClearAllPreviewView(
-            state: StorageClearAllState(),
+            state: StorageClearAllDefaultState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

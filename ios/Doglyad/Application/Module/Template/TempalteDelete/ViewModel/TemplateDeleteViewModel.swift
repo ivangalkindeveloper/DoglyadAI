@@ -16,7 +16,7 @@ final class TemplateDeleteViewModel: DModuleViewModel<any TemplateDeleteStatePro
     ) {
         self.arguments = arguments
         super.init(
-            state: TemplateDeleteState(),
+            state: TemplateDeleteDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

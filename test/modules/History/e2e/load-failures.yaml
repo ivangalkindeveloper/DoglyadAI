@@ -27,14 +27,14 @@ tags: [e2e, History]
 - tapOn: ^История исследований$
 - assertVisible: ^History 041$
 - scrollUntilVisible:
-    element: {text: '^Обновить$'}
+    element: {text: '^Повторить$'}
     direction: DOWN
     timeout: 30000
 - assertVisible: {id: history.loadedCount.20}
 - assertVisible: ^History 022$
 - assertVisible: Произошла неизвестная ошибка.*
 - takeScreenshot: History-next-page-failed
-- tapOn: ^Обновить$
+- tapOn: ^Повторить$
 - scrollUntilVisible:
     element: {text: '^History 021$'}
     direction: DOWN

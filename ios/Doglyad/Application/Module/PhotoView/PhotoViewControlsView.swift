@@ -65,7 +65,7 @@ struct PhotoViewControlsView: DViewProtocol {
         )
         .background(
             DCardBackground(
-                cornerRadius: size.adaptiveCardCornerRadius,
+                cornerRadius: size.cardCornerRadius,
                 material: .ultraThinMaterial,
             ),
         )

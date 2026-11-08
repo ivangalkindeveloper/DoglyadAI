@@ -108,7 +108,7 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
         )
 
         super.init(
-            state: SettingsAIDefaultState(),
+            state: SettingsAIInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -374,7 +374,7 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
             switch self.state {
             case _ as SettingsAILoadingState:
                 self.emit(
-                    SettingsAIDefaultState(),
+                    SettingsAIInitialState(),
                 )
             default: break
             }

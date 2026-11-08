@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-paywall-c6c810cc24
+tags:
+- atlas
+- Paywall
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-paywall-c6c810cc24
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-paywall-c6c810cc24
+    timeout: 15000
+- takeScreenshot: 01-Paywall-c6c810cc24

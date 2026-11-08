@@ -61,10 +61,10 @@ struct HistoryLoadingCardView: DViewProtocol {
             color.grayscaleBackground,
         )
         .cornerRadius(
-            size.s16,
+            size.cardCornerRadius,
         )
         .dShimmer(
-            cornerRadius: size.s16,
+            cornerRadius: size.cardCornerRadius,
         )
     }
 }

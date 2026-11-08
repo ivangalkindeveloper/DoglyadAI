@@ -39,7 +39,7 @@
             model.onAppear()
             await model.lastTask?.value
             let content = try #require(
-                model.state as? PaywallDefaultState,
+                model.state as? PaywallSuccessState,
             )
             #expect(
                 content.plans.count == 8,
@@ -68,7 +68,7 @@
                 .base,
             )
             let base = try #require(
-                model.state as? PaywallDefaultState,
+                model.state as? PaywallSuccessState,
             )
             #expect(
                 base.displayedPlans.count == 4 && base.selectedPlan?.id == "base_annual",
@@ -88,7 +88,7 @@
             model.onTapContinue()
             for _ in 0 ..< 50 {
                 switch model.state {
-                case _ as PaywallPurchasingState: await Task.yield()
+                case _ as PaywallPurchaseLoadingState: await Task.yield()
                 default: break
                 }
             }

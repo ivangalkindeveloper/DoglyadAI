@@ -72,7 +72,7 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
         )
 
         super.init(
-            state: UserSettingsDefaultState(),
+            state: UserSettingsInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -176,7 +176,7 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
             switch self.state {
             case _ as UserSettingsLoadingState:
                 self.emit(
-                    UserSettingsDefaultState(),
+                    UserSettingsInitialState(),
                 )
             default: break
             }

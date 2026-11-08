@@ -62,7 +62,7 @@ struct ReadyMadeTemplateListItemCardView: DViewProtocol {
             color.grayscaleBackground,
         )
         .cornerRadius(
-            size.s16,
+            size.cardCornerRadius,
         )
     }
 }

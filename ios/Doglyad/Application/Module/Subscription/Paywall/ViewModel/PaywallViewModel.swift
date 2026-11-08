@@ -30,7 +30,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
         self.restorePurchases = restorePurchases
         self.checkPurchase = checkPurchase
         super.init(
-            state: PaywallLoadingState(),
+            state: PaywallCatalogLoadingState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -50,7 +50,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
 
     var isProcessing: Bool {
         switch state {
-        case _ as PaywallLoadingState, _ as PaywallPurchasingState, _ as PaywallRestoringState: true
+        case _ as PaywallCatalogLoadingState, _ as PaywallPurchaseLoadingState, _ as PaywallVerificationLoadingState: true
         default: false
         }
     }
@@ -61,7 +61,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
 
     private var selectableContent: PaywallContentState? {
         switch state {
-        case let content as PaywallDefaultState: content
+        case let content as PaywallSuccessState: content
         case let failed as PaywallOperationFailedState:
             switch failed.previousState {
             case _ as PaywallPendingState: nil
@@ -88,7 +88,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
             case _ as PaywallPendingState: onTapCheckPayment()
             default: break
             }
-        case _ as PaywallDefaultState, _ as PaywallLoadingFailedState, _ as PaywallLoadingState:
+        case _ as PaywallSuccessState, _ as PaywallLoadingFailedState, _ as PaywallCatalogLoadingState:
             guard !isInitiallySubscribed else {
                 return
             }
@@ -100,13 +100,13 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     override func onDisappear() {
         super.onDisappear()
         switch state {
-        case let purchasing as PaywallPurchasingState:
+        case let purchasing as PaywallPurchaseLoadingState:
             emit(
-                PaywallDefaultState(
+                PaywallSuccessState(
                     copying: purchasing,
                 ),
             )
-        case let restoring as PaywallRestoringState:
+        case let restoring as PaywallVerificationLoadingState:
             emit(
                 restoring.previousState,
             )
@@ -143,7 +143,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
             $0.type == type
         }?.id
         emit(
-            PaywallDefaultState(
+            PaywallSuccessState(
                 tiers: content.tiers,
                 plans: content.plans,
                 selectedType: type,
@@ -163,7 +163,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
             return
         }
         emit(
-            PaywallDefaultState(
+            PaywallSuccessState(
                 tiers: content.tiers,
                 plans: content.plans,
                 selectedType: content.selectedType,
@@ -189,7 +189,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                     previous: failed.previousState,
                 )
             }
-        case let content as PaywallDefaultState:
+        case let content as PaywallSuccessState:
             requestCatalog(
                 previous: content,
             )
@@ -203,7 +203,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
             return
         }
         switch state {
-        case _ as PaywallRestoringState, _ as PaywallPurchasingState, _ as PaywallLoadingState: return
+        case _ as PaywallVerificationLoadingState, _ as PaywallPurchaseLoadingState, _ as PaywallCatalogLoadingState: return
         case _ as PaywallPendingState:
             onTapCheckPayment()
             return
@@ -226,7 +226,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
             return
         }
         let previous = state
-        let restoring = PaywallRestoringState(
+        let restoring = PaywallRestoreLoadingState(
             previousState: previous,
         )
         emit(
@@ -304,7 +304,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                 )],
             ),
         )
-        let purchasing = PaywallPurchasingState(
+        let purchasing = PaywallPurchaseLoadingState(
             content: content,
             plan: plan,
         )
@@ -329,7 +329,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                     )
                 case .cancelled:
                     emit(
-                        PaywallDefaultState(
+                        PaywallSuccessState(
                             copying: content,
                         ),
                     )
@@ -346,7 +346,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                         return
                     }
                     emit(
-                        PaywallDefaultState(
+                        PaywallSuccessState(
                             copying: content,
                         ),
                     )
@@ -380,7 +380,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
             }
         default: return
         }
-        let checking = PaywallRestoringState(
+        let checking = PaywallPaymentCheckLoadingState(
             previousState: pending,
         )
         emit(
@@ -403,7 +403,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                         return
                     }
                     emit(
-                        PaywallDefaultState(
+                        PaywallSuccessState(
                             copying: pending,
                         ),
                     )
@@ -474,7 +474,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
     ) {
         lastTask?.cancel()
         emit(
-            PaywallLoadingState(
+            PaywallCatalogLoadingState(
                 previousState: previous,
             ),
         )
@@ -518,7 +518,7 @@ final class PaywallViewModel: DModuleViewModel<any PaywallStateProtocol> {
                 $0.id == previous?.selectedPlanID
             }?.id ?? available.first?.id
             self.emit(
-                PaywallDefaultState(
+                PaywallSuccessState(
                     tiers: catalog.tiers,
                     plans: plans,
                     selectedType: selectedType,

@@ -472,7 +472,7 @@ struct PaywallTests {
             repository.purchaseCount == 1,
         )
         switch model.state {
-        case _ as PaywallLoadingState, _ as PaywallPurchasingState, _ as PaywallRestoringState:
+        case _ as PaywallCatalogLoadingState, _ as PaywallPurchaseLoadingState, _ as PaywallVerificationLoadingState:
             Issue.record(
                 "Purchase must leave its processing state",
             )
@@ -932,13 +932,13 @@ struct PaywallTests {
             model,
         )
         let original = try #require(
-            model.state as? PaywallDefaultState,
+            model.state as? PaywallSuccessState,
         )
         model.onTapPlan(
             repository.plan,
         )
         let selected = try #require(
-            model.state as? PaywallDefaultState,
+            model.state as? PaywallSuccessState,
         )
         #expect(
             original.selectedPlan == annual,
@@ -951,7 +951,7 @@ struct PaywallTests {
         )
         model.onTapContinue()
         let purchasing = try #require(
-            model.state as? PaywallPurchasingState,
+            model.state as? PaywallPurchaseLoadingState,
         )
         #expect(
             purchasing.selectedPlan == repository.plan && purchasing.plans == original.plans,
@@ -977,7 +977,7 @@ struct PaywallTests {
             model,
         )
         let cancelled = try #require(
-            model.state as? PaywallDefaultState,
+            model.state as? PaywallSuccessState,
         )
         #expect(
             cancelled.selectedPlan == repository.plan && original.selectedPlan == annual,
@@ -1016,7 +1016,7 @@ struct PaywallTests {
             repository.plan,
         )
         let selected = try #require(
-            model.state as? PaywallDefaultState,
+            model.state as? PaywallSuccessState,
         )
         repository.onRestore = {
             throw SubscriptionError.offeringsUnavailable
@@ -1040,7 +1040,7 @@ struct PaywallTests {
         }
         model.onTapRestore()
         #expect(
-            model.state is PaywallRestoringState,
+            model.state is PaywallVerificationLoadingState,
         )
         let operation = model.operationTask
         model.onDisappear()
@@ -1055,7 +1055,7 @@ struct PaywallTests {
             model,
         )
         let retried = try #require(
-            model.state as? PaywallDefaultState,
+            model.state as? PaywallSuccessState,
         )
         #expect(
             retried.selectedPlan == repository.plan,
@@ -1180,7 +1180,7 @@ struct PaywallTests {
     ) async {
         for await state in model.$state.values {
             switch state {
-            case _ as PaywallLoadingState, _ as PaywallPurchasingState, _ as PaywallRestoringState: continue
+            case _ as PaywallCatalogLoadingState, _ as PaywallPurchaseLoadingState, _ as PaywallVerificationLoadingState: continue
             default: return
             }
         }

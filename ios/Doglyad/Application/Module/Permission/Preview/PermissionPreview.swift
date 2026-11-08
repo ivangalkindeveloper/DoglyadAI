@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 PermissionState",
+        "01 PermissionDefaultState",
     ) {
         PermissionPreviewView(
-            state: PermissionState(),
+            state: PermissionDefaultState(),
             kind: .camera,
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
@@ -19,7 +19,7 @@
         "02 Permission · speech",
     ) {
         PermissionPreviewView(
-            state: PermissionState(),
+            state: PermissionDefaultState(),
             kind: .speech,
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
@@ -30,7 +30,7 @@
         "03 Permission · photoLibrary",
     ) {
         PermissionPreviewView(
-            state: PermissionState(),
+            state: PermissionDefaultState(),
             kind: .photoLibrary,
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),

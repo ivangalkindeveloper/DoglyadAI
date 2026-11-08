@@ -32,7 +32,7 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
         self.getFoundationModelsAvailability = availability
         isFoundationModelsAvailable = availability()
         super.init(
-            state: SelectTranscriptParserState(),
+            state: SelectTranscriptParserDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

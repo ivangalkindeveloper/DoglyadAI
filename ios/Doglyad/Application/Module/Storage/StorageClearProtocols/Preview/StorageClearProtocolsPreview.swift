@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 StorageClearProtocolsState",
+        "01 StorageClearProtocolsDefaultState",
     ) {
         StorageClearProtocolsPreviewView(
-            state: StorageClearProtocolsState(),
+            state: StorageClearProtocolsDefaultState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

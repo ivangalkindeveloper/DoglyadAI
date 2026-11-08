@@ -5,20 +5,20 @@
     import SwiftUI
 
     #Preview(
-        "01 ShareReadyState",
+        "01 ShareInitialState",
     ) {
         SharePreviewView(
-            state: ShareReadyState(),
+            state: ShareInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "02 ShareSendingState",
+        "02 ShareLoadingState",
     ) {
         SharePreviewView(
-            state: ShareSendingState(),
+            state: ShareLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

@@ -9,7 +9,7 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
 
     var body: some View {
         let fraction: CGFloat = switch viewModel.state {
-        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechReviewProposalState: 0.9
+        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechReviewProposalState: 0.9
         default: 0.5
         }
 

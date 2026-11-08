@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-expandablecontent-52cd329097
+tags:
+- atlas
+- ExpandableContent
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-expandablecontent-52cd329097
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-expandablecontent-52cd329097
+    timeout: 15000
+- takeScreenshot: 02-ExpandableContent-52cd329097

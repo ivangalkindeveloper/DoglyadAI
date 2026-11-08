@@ -20,7 +20,7 @@ final class OnBoardingViewModel: DModuleViewModel<any OnBoardingStateProtocol> {
     ) {
         self.messager = messager
         super.init(
-            state: OnBoardingFirstState(),
+            state: OnBoardingInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -173,10 +173,10 @@ final class OnBoardingViewModel: DModuleViewModel<any OnBoardingStateProtocol> {
             ),
         )
         switch state {
-        case _ as OnBoardingFirstState, _ as OnBoardingCompletingState: break
+        case _ as OnBoardingInitialState, _ as OnBoardingLoadingState: break
         case _ as OnBoardingSecondState:
             emit(
-                OnBoardingFirstState(),
+                OnBoardingInitialState(),
             )
         case _ as OnBoardingLegalState:
             emit(
@@ -211,7 +211,7 @@ extension OnBoardingViewModel {
             ),
         )
         switch state {
-        case _ as OnBoardingFirstState:
+        case _ as OnBoardingInitialState:
             emit(
                 OnBoardingSecondState(),
             )
@@ -245,7 +245,7 @@ extension OnBoardingViewModel {
             )
         case _ as OnBoardingFinalState, _ as OnBoardingFailedState:
             completeOnBoarding()
-        case _ as OnBoardingCompletingState: break
+        case _ as OnBoardingLoadingState: break
         default:
             preconditionFailure(
                 "Unexpected onboarding state",
@@ -257,7 +257,7 @@ extension OnBoardingViewModel {
 private extension OnBoardingViewModel {
     func completeOnBoarding() {
         emit(
-            OnBoardingCompletingState(),
+            OnBoardingLoadingState(),
         )
         handle {
             try await self.container.sharedRepository.acceptLegal(

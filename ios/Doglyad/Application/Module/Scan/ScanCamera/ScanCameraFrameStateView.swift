@@ -7,7 +7,7 @@ struct ScanCameraFrameStateView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as ScanCameraPreparingState: Spacer()
+        case _ as ScanCameraPreparationLoadingState: Spacer()
         default:
             ScanCameraFrameView(
                 onFrameChanged: viewModel.updateCaptureFrame,

@@ -1,5 +1,5 @@
 @MainActor
-final class ManageSubscriptionInactiveState: ManageSubscriptionContentState {
+final class ManageSubscriptionInactiveState: ManageSubscriptionSuccessState {
     let notice: String?
 
     init(
@@ -13,7 +13,7 @@ final class ManageSubscriptionInactiveState: ManageSubscriptionContentState {
     }
 
     override func equals(
-        _ other: ManageSubscriptionContentState,
+        _ other: ManageSubscriptionSuccessState,
     ) -> Bool {
         guard let other = other as? ManageSubscriptionInactiveState else {
             return false

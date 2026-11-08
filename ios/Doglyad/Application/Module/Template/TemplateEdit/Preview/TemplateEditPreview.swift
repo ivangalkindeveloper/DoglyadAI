@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 TemplateEditLoadingState",
+        "01 TemplateEditInitializationLoadingState",
     ) {
         TemplateEditPreviewView(
-            state: TemplateEditLoadingState(),
+            state: TemplateEditInitializationLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
@@ -29,17 +29,37 @@
     }
 
     #Preview(
-        "03 TemplateEditDefaultState",
+        "03 TemplateEditInitialState",
     ) {
         TemplateEditPreviewView(
-            state: TemplateEditDefaultState(),
+            state: TemplateEditInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "04 TemplateEditFailedState",
+        "04 TemplateEditSaveLoadingState",
+    ) {
+        TemplateEditPreviewView(
+            state: TemplateEditSaveLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "05 TemplateEditDeleteLoadingState",
+    ) {
+        TemplateEditPreviewView(
+            state: TemplateEditDeleteLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "06 TemplateEditFailedState",
     ) {
         TemplateEditPreviewView(
             state: TemplateEditFailedState(

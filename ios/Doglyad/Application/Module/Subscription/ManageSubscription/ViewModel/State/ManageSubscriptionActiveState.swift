@@ -1,5 +1,5 @@
 @MainActor
-final class ManageSubscriptionActiveState: ManageSubscriptionContentState {
+final class ManageSubscriptionActiveState: ManageSubscriptionSuccessState {
     let status: SubscriptionStatus
     let tier: SubscriptionTier
 
@@ -22,7 +22,7 @@ final class ManageSubscriptionActiveState: ManageSubscriptionContentState {
     }
 
     override func equals(
-        _ other: ManageSubscriptionContentState,
+        _ other: ManageSubscriptionSuccessState,
     ) -> Bool {
         guard let other = other as? ManageSubscriptionActiveState else {
             return false

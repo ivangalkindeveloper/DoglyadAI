@@ -39,7 +39,7 @@ struct ManageSubscriptionStateView: DViewProtocol {
                     state: previous,
                 )
             }
-        case let content as ManageSubscriptionContentState:
+        case let content as ManageSubscriptionSuccessState:
             ManageSubscriptionContentView(
                 state: content,
             )

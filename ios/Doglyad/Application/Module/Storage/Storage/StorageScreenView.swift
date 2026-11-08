@@ -9,7 +9,7 @@ struct StorageScreenView: DViewProtocol {
 
     var body: some View {
         let isProcessing = switch viewModel.state {
-        case _ as StorageLoadingState: true
+        case _ as StorageProtocolsClearLoadingState, _ as StorageSpeechModelDeleteLoadingState, _ as StorageAllClearLoadingState: true
         default: false
         }
 

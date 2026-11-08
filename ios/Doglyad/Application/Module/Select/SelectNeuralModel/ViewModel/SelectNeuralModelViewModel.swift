@@ -31,7 +31,7 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
         currentValue = (arguments?.currentValue)
 
         super.init(
-            state: SelectNeuralModelContentState(),
+            state: SelectNeuralModelInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -110,12 +110,12 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
             ),
         )
         switch state {
-        case _ as SelectNeuralModelSelectingState: return
+        case _ as SelectNeuralModelSelectionLoadingState: return
         default: break
         }
 
         emit(
-            SelectNeuralModelSelectingState(),
+            SelectNeuralModelSelectionLoadingState(),
         )
         handle {
             try await self.coordinator.selectNeuralModel(
@@ -128,7 +128,7 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
             }
         } onDefer: {
             self.emit(
-                SelectNeuralModelContentState(),
+                SelectNeuralModelInitialState(),
             )
         } onMainUnknownError: { _ in
             self.messager?.showUnknownError(

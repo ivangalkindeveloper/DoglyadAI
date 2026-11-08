@@ -4,7 +4,6 @@ import SwiftUI
 struct TemplateListScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-    @EnvironmentObject private var container: DependencyContainer
 
     @StateObject var viewModel: TemplateListViewModel
 
@@ -15,50 +14,74 @@ struct TemplateListScreenView: DViewProtocol {
             ],
             onTapBack: viewModel.onTapBack,
             content: { toolbarInset, bottomInset in
-                ZStack(
-                    alignment: .bottom,
-                ) {
+                let padding = EdgeInsets(
+                    top: toolbarInset + size.s8,
+                    leading: size.s16,
+                    bottom: bottomInset + size.s16,
+                    trailing: size.s16,
+                )
+                switch viewModel.state {
+                case _ as TemplateListLoadingState:
                     DScrollVStack(
                         spacing: size.s4,
-                        padding: EdgeInsets(
-                            top: toolbarInset + size.s8,
-                            leading: size.s16,
-                            bottom: bottomInset + size.s16,
-                            trailing: size.s16,
-                        ),
+                        padding: padding,
                     ) {
-                        switch viewModel.state {
-                        case _ as TemplateListLoadingState:
-                            TemplateListLoadingView()
-                                .transition(
-                                    .opacity,
-                                )
-                        case _ as TemplateListEmptyState:
-                            TemplateListEmptyView()
-                                .transition(
-                                    .opacity,
-                                )
-                        case let state as TemplateListContentState:
-                            ForEach(
-                                state.templates,
-                            ) { template in
-                                TemplateListItemCardView(
-                                    template: template,
-                                    action: {
-                                        viewModel.onTapTemplate(
-                                            template,
-                                        )
-                                    },
-                                )
-                            }
-                        case _ as TemplateListFailedState:
-                            LoadingErrorView(
-                                onRetry: viewModel.onTapRetry,
+                        TemplateListLoadingView()
+                    }
+                case _ as TemplateListEmptyState:
+                    DScrollVStack(
+                        spacing: size.s4,
+                        padding: padding,
+                    ) {
+                        TemplateListEmptyView()
+                    }
+                case let state as TemplateListContentState:
+                    DScrollVStack(
+                        spacing: size.s4,
+                        padding: padding,
+                    ) {
+                        ForEach(
+                            state.templates,
+                        ) { template in
+                            TemplateListItemCardView(
+                                template: template,
+                                action: {
+                                    viewModel.onTapTemplate(
+                                        template,
+                                    )
+                                },
                             )
-                        default:
-                            EmptyView()
                         }
                     }
+                case _ as TemplateListFailedState:
+                    VStack(
+                        spacing: size.s16,
+                    ) {
+                        ErrorBodyView(
+                            description: l10n.text(
+                                .errorUnknownDescription,
+                            ),
+                        )
+
+                        DButton(
+                            title: l10n[
+                                .buttonUpdate,
+                            ],
+                            action: viewModel.onTapRetry,
+                        )
+                        .dStyle(
+                            .primaryChip,
+                        )
+                    }
+                    .padding(
+                        padding,
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                        maxHeight: .infinity,
+                    )
+                default:
+                    EmptyView()
                 }
             },
             bottom: {

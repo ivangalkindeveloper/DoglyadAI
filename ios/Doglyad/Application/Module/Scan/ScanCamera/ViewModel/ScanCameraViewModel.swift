@@ -41,7 +41,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
         photoMaxCount = arguments.photoMaxCount
 
         super.init(
-            state: ScanCameraPreparingState(),
+            state: ScanCameraPreparationLoadingState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -142,7 +142,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
             return
         }
         emit(
-            ScanCameraCapturingState(),
+            ScanCameraCaptureLoadingState(),
         )
 
         analytics.buttonTapped(
@@ -209,7 +209,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
             return
         }
         emit(
-            ScanCameraCapturingState(),
+            ScanCameraCaptureLoadingState(),
         )
         Task { [weak self] in
             let photo = await USExaminationScanPhoto.make(
@@ -263,7 +263,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
             return
         }
         switch state {
-        case _ as ScanCameraCapturingState: return
+        case _ as ScanCameraCaptureLoadingState: return
         default: break
         }
 
@@ -276,11 +276,11 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
         switch (cameraController.isLoading, cameraController.isCapturing, cameraController.isRunning) {
         case (true, _, _):
             emit(
-                ScanCameraPreparingState(),
+                ScanCameraPreparationLoadingState(),
             )
         case (false, true, _):
             emit(
-                ScanCameraCapturingState(),
+                ScanCameraCaptureLoadingState(),
             )
         case (false, false, true):
             emit(

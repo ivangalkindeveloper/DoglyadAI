@@ -20,7 +20,14 @@ tags: [e2e, WebDocument]
     visible: {id: webDocument.failed}
     timeout: 30000
 - assertNotVisible: {id: webDocument.loading}
+- assertVisible: Произошла неизвестная ошибка.*
+- assertVisible: ^Повторить$
 - takeScreenshot: WebDocument-network-failed
+- tapOn: ^Повторить$
+- extendedWaitUntil:
+    visible: {id: webDocument.failed}
+    timeout: 30000
+- assertVisible: ^Повторить$
 - tapOn: {id: bottomSheet.close}
 - assertVisible: ^Политика конфиденциальности$
 - runFlow: ../../../maestro/support/settings.yaml

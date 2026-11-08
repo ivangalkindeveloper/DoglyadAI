@@ -24,7 +24,7 @@ Every module contains four types, each in its own file:
 
 Descendant views obtain their feature view model only through private `@EnvironmentObject`. Do not pass it to descendant constructors or store it as `@ObservedObject`. Externally owned controllers are distinct from feature view models.
 
-Use `DView` and declare its theme directly as `@EnvironmentObject var theme: DTheme`. Other environment objects are private. Views contain properties, initializers, and declarative layout. Move methods into the feature view model; express reusable rendering through separate view types. Framework-adapter exceptions are defined in `harness/instructions/ios.md`.
+Use `DViewProtocol` and declare its theme directly as `@EnvironmentObject var theme: DTheme`. Other environment objects are private. Views contain properties, initializers, and declarative layout. Move methods into the feature view model; express reusable rendering through separate view types. Framework-adapter exceptions are defined in `harness/instructions/ios.md`.
 
 Arrange public interactions in visible order from the top of the screen to the bottom. Initialization and lifecycle methods come first, private helpers last. The owning view model publishes immutable phase states; presentation views select and render those states under the rules in `harness/instructions/ios.md`.
 
@@ -35,6 +35,16 @@ Pass the whole `DependencyContainer` when the feature needs its repositories or 
 `DModuleViewModel` receives subscription getter, observer, update, neural-settings getter, and request-count callback closures. Preserve reactive changes using cancellable observation closures, as in `ScanScreen` and `ScanViewModel`. Do not bypass these boundaries through the container.
 
 Modules communicate through closures in the destination's `FeatureArguments`, forwarded to its initializer. Do not call or retain another module's view model.
+
+## State names
+
+Follow the state composition and phase-name rules in `harness/instructions/ios.md`.
+Use `FeatureInitialState` for an initial screen with asynchronous scenarios,
+`FeatureDefaultState` for a screen without them, and `FeatureSuccessState` for
+requested backend data. A waiting phase ends in `LoadingState`; qualify each
+loading scenario when there is more than one, such as `FeatureUploadLoadingState`.
+Keep meaningful screen-specific states. Apply these names even to a single-state
+module, and keep filenames, previews and tests aligned with their types.
 
 ## UI and localization
 

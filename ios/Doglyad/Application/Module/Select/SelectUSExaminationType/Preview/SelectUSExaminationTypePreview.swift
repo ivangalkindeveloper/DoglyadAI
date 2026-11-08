@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 SelectUSExaminationTypeLoadingState",
+        "01 SelectUSExaminationTypeRecentTypesLoadingState",
     ) {
         SelectUSExaminationTypePreviewView(
-            state: SelectUSExaminationTypeLoadingState(),
+            state: SelectUSExaminationTypeRecentTypesLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
@@ -39,10 +39,10 @@
     }
 
     #Preview(
-        "04 SelectUSExaminationTypeSelectingState",
+        "04 SelectUSExaminationTypeSelectionLoadingState",
     ) {
         SelectUSExaminationTypePreviewView(
-            state: SelectUSExaminationTypeSelectingState(),
+            state: SelectUSExaminationTypeSelectionLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

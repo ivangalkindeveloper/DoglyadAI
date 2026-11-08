@@ -19,7 +19,7 @@ public struct DShimmerPlaceholder: DViewProtocol {
     public var body: some View {
         Group {
             RoundedRectangle(
-                cornerRadius: cornerRadius ?? size.s16,
+                cornerRadius: cornerRadius ?? size.cardCornerRadius,
             )
             .fill(
                 color.grayscaleLine.opacity(
@@ -27,7 +27,7 @@ public struct DShimmerPlaceholder: DViewProtocol {
                 ),
             )
             .dShimmer(
-                cornerRadius: cornerRadius ?? size.s16,
+                cornerRadius: cornerRadius ?? size.cardCornerRadius,
             )
         }
         .modifier(

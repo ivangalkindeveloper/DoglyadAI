@@ -289,7 +289,7 @@ struct ModuleStateTests {
         )
         model?.onAppear()
         for _ in 0 ..< 1000 {
-            guard model?.state is ScanInitializingState else {
+            guard model?.state is ScanInitializationLoadingState else {
                 break
             }
             try? await Task.sleep(
@@ -299,7 +299,7 @@ struct ModuleStateTests {
             )
         }
         #expect(
-            !(model?.state is ScanInitializingState),
+            !(model?.state is ScanInitializationLoadingState),
         )
         weak let weakModel = model
         selectedModel = USExaminationNeuralModel(
@@ -743,7 +743,7 @@ struct ModuleStateTests {
             transitions == 0,
         )
         model.emit(
-            TemplateAddDefaultState(),
+            TemplateAddInitialState(),
         )
         #expect(
             transitions == 1,

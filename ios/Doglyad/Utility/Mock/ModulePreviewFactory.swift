@@ -85,7 +85,7 @@
         static let paywallPlan = paywallPlans.first {
             $0.type == .pro && $0.period == .monthly
         }!
-        static let paywallContent = PaywallDefaultState(
+        static let paywallContent = PaywallSuccessState(
             tiers: development.products.tiers,
             plans: paywallPlans,
             selectedType: .pro,

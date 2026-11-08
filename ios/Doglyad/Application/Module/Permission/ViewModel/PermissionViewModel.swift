@@ -18,7 +18,7 @@ final class PermissionViewModel: DModuleViewModel<any PermissionStateProtocol> {
     ) {
         kind = arguments.kind
         super.init(
-            state: PermissionState(),
+            state: PermissionDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

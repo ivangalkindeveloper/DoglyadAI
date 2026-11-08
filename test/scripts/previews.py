@@ -36,6 +36,7 @@ def runtime(config: dict) -> str:
 
 def render(run: Path, config: dict, catalog: dict, workers: int) -> dict:
     cases = catalog["atlas"]
+    functional = json.loads((TEST / "functional.json").read_text())
     source_hash = inventory()["files"]
     if source_hash != catalog["inventory"]["files"]:
         raise ValueError("Source catalog is stale; refresh regression cases first")
@@ -53,7 +54,9 @@ def render(run: Path, config: dict, catalog: dict, workers: int) -> dict:
         "results": [], "images": [], "junitHashes": {}, "batchExitCodes": {},
         "cleanupStatus": "failed",
         "coverageStatus": "not-evaluated",
-        "coverage": {"modules": [{"module": name} for name in json.loads((TEST / "functional.json").read_text())["moduleOrder"]]},
+        "coverage": {"modules": [{"module": name} for name in (
+            functional["moduleOrder"] + functional["sharedPreviewOrder"]
+        )]},
     }
     try:
         for index in range(min(workers, len(cases))):

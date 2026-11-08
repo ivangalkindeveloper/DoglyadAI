@@ -8,6 +8,7 @@
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
         let state: any SelectTemplateStateProtocol
+        let templates: [USExaminationTemplate]
 
         var body: some View {
             let isErrorPresented = switch state {
@@ -30,13 +31,13 @@
                 },
                 onRefreshSubscriptionStatus: {},
                 arguments: SelectTemplateArguments(
-                    currentValue: ModulePreviewFactory.template,
+                    currentValue: templates.first,
                     onSelected: { _ in },
                 ),
             )
 
             model.setPreviewTemplates(
-                [ModulePreviewFactory.template],
+                templates,
             )
 
             model.preparePreview(

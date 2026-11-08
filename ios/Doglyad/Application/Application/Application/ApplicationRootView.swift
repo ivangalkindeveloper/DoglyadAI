@@ -10,14 +10,14 @@ struct ApplicationRootView: View {
                 switch (viewModel.state.id, viewModel.state) {
                 case (.splash, _):
                     ApplicationSplashView()
-                case let (.error, state as ApplicationRootInitializingState):
+                case let (.error, state as ApplicationRootLoadingState):
                     if let failure = state.previousFailure {
                         ErrorRootView(
                             error: failure.error,
                             analytics: viewModel.analytics,
                         )
                     }
-                case let (.main, state as ApplicationRootReadyState):
+                case let (.main, state as ApplicationRootSuccessState):
                     MainRootView(
                         dependencyContainer: state.container,
                     )

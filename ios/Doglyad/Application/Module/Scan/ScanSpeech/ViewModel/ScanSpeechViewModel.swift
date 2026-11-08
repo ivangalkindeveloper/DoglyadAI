@@ -60,7 +60,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         )
 
         super.init(
-            state: ScanSpeechPreparingModelState(
+            state: ScanSpeechModelLoadingState(
                 preparation: .checking,
             ),
             container: container,
@@ -153,7 +153,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         }
         let engine = settingsAI.transcriberType.speechEngine
         emit(
-            ScanSpeechPreparingModelState(
+            ScanSpeechModelLoadingState(
                 preparation: .checking,
             ),
         )
@@ -286,7 +286,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                     .voiceTranscriptEdited,
                 )
             }
-            let parsing = ScanSpeechReviewParsingState(
+            let parsing = ScanSpeechReviewParsingLoadingState(
                 parsedText: speech,
             )
             emit(
@@ -513,7 +513,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             return
         }
         switch state {
-        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechAutomaticParsingState, _ as ScanSpeechReviewProposalState: return
+        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechAutomaticParsingLoadingState, _ as ScanSpeechReviewProposalState: return
         default: break
         }
 
@@ -523,16 +523,16 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         }
         switch speechController.modelPreparationStatus {
         case .checking, .downloading, .loading:
-            next = ScanSpeechPreparingModelState(
+            next = ScanSpeechModelLoadingState(
                 preparation: speechController.modelPreparationStatus,
             )
         case .failed:
             next = ScanSpeechModelPreparationFailedState()
         case .ready:
             switch speechController.recordingStatus {
-            case .preparing: next = ScanSpeechPreparingRecordingState()
+            case .preparing: next = ScanSpeechRecordingPreparationLoadingState()
             case .recording: next = ScanSpeechRecordingState()
-            case .transcribing: next = ScanSpeechTranscribingState()
+            case .transcribing: next = ScanSpeechTranscriptionLoadingState()
             case .stopped:
                 if let transcript = speechController.lastTranscript {
                     processTranscript(
@@ -553,7 +553,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             return
         }
         emit(
-            ScanSpeechTranscribingState(),
+            ScanSpeechTranscriptionLoadingState(),
         )
         Task { [weak self] in
             let transcript = await speechController.stop()
@@ -561,7 +561,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 return
             }
             switch state {
-            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState, _ as ScanSpeechAutomaticParsingState, _ as ScanSpeechReviewProposalState: return
+            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechAutomaticParsingLoadingState, _ as ScanSpeechReviewProposalState: return
             default: break
             }
             guard let transcript else {
@@ -587,7 +587,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             showTranscriptReview()
             return
         }
-        let parsing = ScanSpeechAutomaticParsingState(
+        let parsing = ScanSpeechAutomaticParsingLoadingState(
             parsedText: transcriptTextController.text,
         )
         emit(

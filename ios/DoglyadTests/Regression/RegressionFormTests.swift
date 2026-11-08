@@ -237,7 +237,7 @@
                             candidate,
                         )
                         for _ in 0 ..< 100 {
-                            if model.state is SelectNeuralModelContentState {
+                            if model.state is SelectNeuralModelInitialState {
                                 break
                             }
                             try? await Task.sleep(
@@ -460,7 +460,7 @@
                 },
             )
             model.preparePreview(
-                state: ScanDefaultState(),
+                state: ScanInitialState(),
             )
             let config = container.applicationConfig.scan
             let fields: [(DTextFieldController, Int, ScanFocus, Bool)] = [
@@ -511,7 +511,7 @@
                     focus,
                 )
                 XCTAssertTrue(
-                    model.state is ScanDefaultState,
+                    model.state is ScanInitialState,
                 )
                 field.clear()
                 field.setText(
@@ -556,7 +556,7 @@
                         focus,
                     )
                     XCTAssertTrue(
-                        model.state is ScanDefaultState,
+                        model.state is ScanInitialState,
                     )
                 }
                 for value in ["", "0.1", String(
@@ -654,7 +654,7 @@
                 },
             )
             model.preparePreview(
-                state: TemplateAddDefaultState(),
+                state: TemplateAddInitialState(),
             )
             let limits: [(DTextFieldController, Int, TemplateAddFocus)] = [
                 (model.nameTextController, container.applicationConfig.templateAdd.nameMaxLength, .name),
@@ -680,7 +680,7 @@
                         focus,
                     )
                     XCTAssertTrue(
-                        model.state is TemplateAddDefaultState,
+                        model.state is TemplateAddInitialState,
                     )
                 }
                 for length in [maximum - 1, maximum] {
@@ -816,7 +816,7 @@
                 },
             )
             model.preparePreview(
-                state: TemplateEditDefaultState(),
+                state: TemplateEditInitialState(),
             )
             let limits: [(DTextFieldController, Int, TemplateEditFocus)] = [
                 (model.nameTextController, container.applicationConfig.templateEdit.nameMaxLength, .name),
@@ -842,7 +842,7 @@
                         focus,
                     )
                     XCTAssertTrue(
-                        model.state is TemplateEditDefaultState,
+                        model.state is TemplateEditInitialState,
                     )
                 }
                 for length in [maximum - 1, maximum] {

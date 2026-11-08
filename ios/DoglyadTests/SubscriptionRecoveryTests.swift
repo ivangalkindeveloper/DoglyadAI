@@ -19,7 +19,7 @@
                 isFailure: true,
             )
             model.emit(
-                SubscriptionRecoveryKeyState(
+                SubscriptionRecoverySuccessState(
                     key: "Saved-MixedCase-Key",
                 ),
             )
@@ -32,7 +32,7 @@
                 model.state as? SubscriptionRecoveryFailedState,
             )
             #expect(
-                (failed.previousState as? SubscriptionRecoveryKeyState)?.key == "Saved-MixedCase-Key",
+                (failed.previousState as? SubscriptionRecoverySuccessState)?.key == "Saved-MixedCase-Key",
             )
             #expect(
                 model.recoveryTextController.text == "Wrong-Key",
@@ -67,7 +67,7 @@
             model.onTapCreateKey()
             await model.operationTask?.value
             let key = try #require(
-                model.state as? SubscriptionRecoveryKeyState,
+                model.state as? SubscriptionRecoverySuccessState,
             )
             #expect(
                 key.key == "Preview-MixedCase-Recovery-Key" && router.path.count == 1,

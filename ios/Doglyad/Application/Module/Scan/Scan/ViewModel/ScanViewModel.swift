@@ -222,7 +222,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         )
 
         super.init(
-            state: ScanInitializingState(),
+            state: ScanInitializationLoadingState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -364,7 +364,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             template = getSelectedTemplate()
         }
         emit(
-            ScanInitializingState(),
+            ScanInitializationLoadingState(),
         )
         handle {
             if let usExaminationTypeId = try await self.container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
@@ -403,7 +403,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             }
             self.startDraftObservation()
             self.emit(
-                ScanDefaultState(),
+                ScanInitialState(),
             )
         } onMainUnknownError: { error in
             self.emit(
@@ -502,7 +502,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     func onTapImport() {
         switch (state, isPhotoLimitReached) {
-        case (_ as ScanInitializingState, _), (_ as ScanGeneratingState, _), (_ as ScanLoadingState, _), (_ as ScanClearingState, _), (_, true): return
+        case (_ as ScanInitializationLoadingState, _), (_ as ScanGenerationLoadingState, _), (_ as ScanReportSaveLoadingState, _), (_ as ScanClearLoadingState, _), (_, true): return
         default: break
         }
 
@@ -728,7 +728,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     func onTapClear() {
         switch state {
-        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: return
+        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: return
         default: break
         }
         analytics.buttonTapped(
@@ -736,7 +736,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         )
         let previous = state
         emit(
-            ScanClearingState(
+            ScanClearLoadingState(
                 previousState: previous,
             ),
         )
@@ -745,7 +745,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             try await self.clearDraftAndReset()
         } onMainSuccess: { _ in
             self.emit(
-                ScanDefaultState(),
+                ScanInitialState(),
             )
         } onMainUnknownError: { _ in
             self.emit(
@@ -759,7 +759,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     func onTapFillDevelopment() {
         switch state {
-        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: return
+        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: return
         default: break
         }
         analytics.buttonTapped(
@@ -809,7 +809,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     func onTapScan() {
         switch state {
-        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: return
+        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: return
         default: break
         }
         analytics.buttonTapped(
@@ -1031,7 +1031,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     private func onTapCamera() {
         switch (state, isPhotoLimitReached) {
-        case (_ as ScanInitializingState, _), (_ as ScanGeneratingState, _), (_ as ScanLoadingState, _), (_ as ScanClearingState, _), (_, true): return
+        case (_ as ScanInitializationLoadingState, _), (_ as ScanGenerationLoadingState, _), (_ as ScanReportSaveLoadingState, _), (_ as ScanClearLoadingState, _), (_, true): return
         default: break
         }
 
@@ -1070,7 +1070,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     private func onTapGallery() {
         switch (state, isPhotoLimitReached) {
-        case (_ as ScanInitializingState, _), (_ as ScanGeneratingState, _), (_ as ScanLoadingState, _), (_ as ScanClearingState, _), (_, true): return
+        case (_ as ScanInitializationLoadingState, _), (_ as ScanGenerationLoadingState, _), (_ as ScanReportSaveLoadingState, _), (_ as ScanClearLoadingState, _), (_, true): return
         default: break
         }
 
@@ -1182,7 +1182,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     private func performScan() {
         switch state {
-        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState, _ as ScanInitializationFailedState: return
+        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: return
         default: break
         }
 
@@ -1212,7 +1212,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         let settings = settingsAI
         let template = getSelectedTemplate()?.content
         emit(
-            ScanGeneratingState(
+            ScanGenerationLoadingState(
                 snapshot: snapshot,
             ),
         )
@@ -1255,7 +1255,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         snapshot: USExaminationDraftForm,
     ) {
         emit(
-            ScanLoadingState(
+            ScanReportSaveLoadingState(
                 report: report,
                 snapshot: snapshot,
             ),
@@ -1276,7 +1276,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             }
         } onMainSuccess: { _ in
             self.emit(
-                ScanDefaultState(),
+                ScanInitialState(),
             )
             self.coordinator.sheet(
                 .reportReceived,

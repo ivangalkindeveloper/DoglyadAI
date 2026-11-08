@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 ScanInitializingState",
+        "01 ScanInitializationLoadingState",
     ) {
         ScanPreviewView(
-            state: ScanInitializingState(),
+            state: ScanInitializationLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
@@ -29,20 +29,20 @@
     }
 
     #Preview(
-        "03 ScanDefaultState",
+        "03 ScanInitialState",
     ) {
         ScanPreviewView(
-            state: ScanDefaultState(),
+            state: ScanInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "04 ScanGeneratingState",
+        "04 ScanGenerationLoadingState",
     ) {
         ScanPreviewView(
-            state: ScanGeneratingState(
+            state: ScanGenerationLoadingState(
                 snapshot: ModulePreviewFactory.draft,
             ),
         ).previewable(
@@ -51,10 +51,10 @@
     }
 
     #Preview(
-        "05 ScanLoadingState",
+        "05 ScanReportSaveLoadingState",
     ) {
         ScanPreviewView(
-            state: ScanLoadingState(
+            state: ScanReportSaveLoadingState(
                 report: ModulePreviewFactory.report,
                 snapshot: ModulePreviewFactory.draft,
             ),
@@ -64,11 +64,11 @@
     }
 
     #Preview(
-        "06 ScanClearingState",
+        "06 ScanClearLoadingState",
     ) {
         ScanPreviewView(
-            state: ScanClearingState(
-                previousState: ScanDefaultState(),
+            state: ScanClearLoadingState(
+                previousState: ScanInitialState(),
             ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),

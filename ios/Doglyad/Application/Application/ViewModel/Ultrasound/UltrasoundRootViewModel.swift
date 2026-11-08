@@ -55,7 +55,7 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         isDescriptionRemarks = userSettings.isDescriptionRemarks
 
         super.init(
-            state: UltrasoundRootState(),
+            state: UltrasoundRootInitialState(),
         )
     }
 

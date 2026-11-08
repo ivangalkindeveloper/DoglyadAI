@@ -45,7 +45,7 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         getSourcePhotos = arguments.getPhotos
 
         super.init(
-            state: PhotoViewState(),
+            state: PhotoViewInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

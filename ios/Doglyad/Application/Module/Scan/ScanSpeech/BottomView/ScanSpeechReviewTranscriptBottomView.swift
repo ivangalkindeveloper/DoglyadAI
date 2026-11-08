@@ -8,7 +8,7 @@ struct ScanSpeechReviewTranscriptBottomView: DViewProtocol {
 
     var body: some View {
         let isProcessing = switch viewModel.state {
-        case _ as ScanSpeechReviewParsingState: true
+        case _ as ScanSpeechReviewParsingLoadingState: true
         default: false
         }
 

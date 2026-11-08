@@ -32,7 +32,7 @@
         "03 Каталог пуст",
     ) {
         ReadyMadeTemplateListPreviewView(
-            state: ReadyMadeTemplateListContentState(
+            state: ReadyMadeTemplateListSuccessState(
                 templates: [],
             ),
         )
@@ -42,10 +42,10 @@
     }
 
     #Preview(
-        "04 ReadyMadeTemplateListContentState",
+        "04 ReadyMadeTemplateListSuccessState",
     ) {
         ReadyMadeTemplateListPreviewView(
-            state: ReadyMadeTemplateListContentState(
+            state: ReadyMadeTemplateListSuccessState(
                 templates: ModulePreviewFactory.readyMadeTemplates,
             ),
         ).previewable(
@@ -61,16 +61,12 @@
             spacing: 24,
         ) {
             ReadyMadeTemplateListExpandableTextView(
-                text: "Short plain text, including literal **asterisks**.",
+                text: "Описание исследования: буквальные **звёздочки** остаются текстом.",
                 backgroundColor: .white,
             )
 
             ReadyMadeTemplateListExpandableTextView(
-                text: """
-                This is long plain text that should be truncated after several lines. \
-                Markdown characters such as **bold** and [links](https://example.com) remain literal text. \
-                The expanded view shows the entire text, and short content has no expand or collapse button.
-                """,
+                text: ModulePreviewFactory.readyMadeTemplate.content,
                 backgroundColor: .white,
             )
         }
@@ -85,16 +81,13 @@
         "06 Карточка готового шаблона",
     ) {
         ReadyMadeTemplateListItemCardView(
-            template: USExaminationReadyMadeTemplate(
-                id: "thyroidGlandStandard",
-                examinationType: "thyroidGland",
-                title: "Thyroid ultrasound",
-                content: "**Examination description:**\n\nThe thyroid gland is located in the typical position.",
-            ),
-            examinationTypeTitle: "Thyroid gland",
+            template: ModulePreviewFactory.readyMadeTemplate,
+            examinationTypeTitle: ModulePreviewFactory.examinationType.localizedTitle,
             action: {},
         )
         .padding()
-        .dThemeWrapper()
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
     }
 #endif

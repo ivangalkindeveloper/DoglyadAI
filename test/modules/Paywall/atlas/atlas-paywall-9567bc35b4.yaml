@@ -11,4 +11,4 @@ tags:
     visible:
       id: regression.atlas-paywall-9567bc35b4
     timeout: 15000
-- takeScreenshot: 11-Paywall-9567bc35b4
+- takeScreenshot: 12-Paywall-9567bc35b4

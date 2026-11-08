@@ -27,7 +27,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
         self.createRecoveryKey = createRecoveryKey
         self.recover = recover
         super.init(
-            state: SubscriptionRecoveryDefaultState(),
+            state: SubscriptionRecoveryInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -98,7 +98,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
         }
         unfocus()
         let previous = stableState
-        let loading = SubscriptionRecoveryLoadingState(
+        let loading = SubscriptionRecoveryKeyCreationLoadingState(
             previousState: previous,
         )
         emit(
@@ -114,7 +114,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
                     return
                 }
                 emit(
-                    SubscriptionRecoveryKeyState(
+                    SubscriptionRecoverySuccessState(
                         key: key,
                     ),
                 )
@@ -136,7 +136,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
 
     func onTapCopyKey() {
         switch stableState {
-        case let key as SubscriptionRecoveryKeyState: UIPasteboard.general.string = key.key
+        case let key as SubscriptionRecoverySuccessState: UIPasteboard.general.string = key.key
         default: break
         }
     }
@@ -150,7 +150,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
             in: .whitespacesAndNewlines,
         )
         let previous = stableState
-        let loading = SubscriptionRecoveryLoadingState(
+        let loading = SubscriptionRecoveryRestoreLoadingState(
             previousState: previous,
         )
         emit(

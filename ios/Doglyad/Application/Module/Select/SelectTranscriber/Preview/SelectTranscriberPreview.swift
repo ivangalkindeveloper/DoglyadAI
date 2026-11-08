@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 SelectTranscriberState",
+        "01 SelectTranscriberInitialState",
     ) {
         SelectTranscriberPreviewView(
-            state: SelectTranscriberState(),
+            state: SelectTranscriberInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

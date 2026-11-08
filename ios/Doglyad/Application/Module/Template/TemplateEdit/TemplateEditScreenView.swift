@@ -11,7 +11,7 @@ struct TemplateEditScreenView: DViewProtocol {
     var body: some View {
         let (isSaveDisabled, isProcessing) = switch viewModel.state {
         case _ as TemplateEditInitializationFailedState: (true, false)
-        case _ as TemplateEditLoadingState: (false, true)
+        case _ as TemplateEditInitializationLoadingState, _ as TemplateEditSaveLoadingState, _ as TemplateEditDeleteLoadingState: (false, true)
         default: (false, false)
         }
 

@@ -2,10 +2,10 @@
     import SwiftUI
 
     #Preview(
-        "01 PaywallLoadingState",
+        "01 PaywallCatalogLoadingState",
     ) {
         PaywallPreviewView(
-            state: PaywallLoadingState(),
+            state: PaywallCatalogLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
@@ -24,7 +24,7 @@
     }
 
     #Preview(
-        "03 PaywallDefaultState",
+        "03 PaywallSuccessState",
     ) {
         PaywallPreviewView(
             state: ModulePreviewFactory.paywallContent,
@@ -48,7 +48,7 @@
         "05 Каталог без предложений",
     ) {
         PaywallPreviewView(
-            state: PaywallDefaultState(
+            state: PaywallSuccessState(
                 tiers: [],
                 plans: [],
                 selectedType: .pro,
@@ -63,7 +63,7 @@
         "06 Обновление тарифов",
     ) {
         PaywallPreviewView(
-            state: PaywallLoadingState(
+            state: PaywallCatalogLoadingState(
                 previousState: ModulePreviewFactory.paywallContent,
             ),
         ).previewable(
@@ -72,10 +72,10 @@
     }
 
     #Preview(
-        "07 PaywallPurchasingState",
+        "07 PaywallPurchaseLoadingState",
     ) {
         PaywallPreviewView(
-            state: PaywallPurchasingState(
+            state: PaywallPurchaseLoadingState(
                 content: ModulePreviewFactory.paywallContent,
                 plan: ModulePreviewFactory.paywallPlan,
             ),
@@ -111,10 +111,25 @@
     }
 
     #Preview(
-        "10 PaywallRestoringState",
+        "10 PaywallPaymentCheckLoadingState",
     ) {
         PaywallPreviewView(
-            state: PaywallRestoringState(
+            state: PaywallPaymentCheckLoadingState(
+                previousState: PaywallPendingState(
+                    content: ModulePreviewFactory.paywallContent,
+                    plan: ModulePreviewFactory.paywallPlan,
+                ),
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "11 PaywallRestoreLoadingState",
+    ) {
+        PaywallPreviewView(
+            state: PaywallRestoreLoadingState(
                 previousState: ModulePreviewFactory.paywallContent,
             ),
         ).previewable(
@@ -123,11 +138,11 @@
     }
 
     #Preview(
-        "11 Восстановление без каталога",
+        "12 Восстановление без каталога",
     ) {
         PaywallPreviewView(
-            state: PaywallRestoringState(
-                previousState: PaywallLoadingState(),
+            state: PaywallRestoreLoadingState(
+                previousState: PaywallCatalogLoadingState(),
             ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),

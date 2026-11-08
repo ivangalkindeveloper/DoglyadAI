@@ -10,7 +10,7 @@ struct TemplateAddScreenView: DViewProtocol {
 
     var body: some View {
         let isProcessing = switch viewModel.state {
-        case _ as TemplateAddLoadingState: true
+        case _ as TemplateAddInitializationLoadingState, _ as TemplateAddSaveLoadingState: true
         default: false
         }
 

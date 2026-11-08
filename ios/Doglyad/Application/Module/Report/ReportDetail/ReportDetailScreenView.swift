@@ -18,7 +18,7 @@ struct ReportDetailScreenView: DViewProtocol {
 
     var body: some View {
         let isProcessing = switch viewModel.state {
-        case _ as ReportDetailGeneratingState, _ as ReportDetailLoadingState: true
+        case _ as ReportDetailGenerationLoadingState, _ as ReportDetailSaveLoadingState: true
         default: false
         }
 

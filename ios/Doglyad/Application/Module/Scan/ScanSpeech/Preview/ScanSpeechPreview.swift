@@ -8,7 +8,7 @@
         "01 Проверка модели",
     ) {
         ScanSpeechPreviewView(
-            state: ScanSpeechPreparingModelState(
+            state: ScanSpeechModelLoadingState(
                 preparation: .checking,
             ),
         ).previewable(
@@ -20,7 +20,7 @@
         "02 Загрузка без прогресса",
     ) {
         ScanSpeechPreviewView(
-            state: ScanSpeechPreparingModelState(
+            state: ScanSpeechModelLoadingState(
                 preparation: .downloading(
                     progress: nil,
                 ),
@@ -31,10 +31,10 @@
     }
 
     #Preview(
-        "03 ScanSpeechPreparingModelState",
+        "03 ScanSpeechModelLoadingState",
     ) {
         ScanSpeechPreviewView(
-            state: ScanSpeechPreparingModelState(
+            state: ScanSpeechModelLoadingState(
                 preparation: .downloading(
                     progress: 0.45,
                 ),
@@ -48,7 +48,7 @@
         "04 Загрузка модели в память",
     ) {
         ScanSpeechPreviewView(
-            state: ScanSpeechPreparingModelState(
+            state: ScanSpeechModelLoadingState(
                 preparation: .loading,
             ),
         ).previewable(
@@ -77,10 +77,10 @@
     }
 
     #Preview(
-        "07 ScanSpeechPreparingRecordingState",
+        "07 ScanSpeechRecordingPreparationLoadingState",
     ) {
         ScanSpeechPreviewView(
-            state: ScanSpeechPreparingRecordingState(),
+            state: ScanSpeechRecordingPreparationLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
@@ -97,20 +97,20 @@
     }
 
     #Preview(
-        "09 ScanSpeechTranscribingState",
+        "09 ScanSpeechTranscriptionLoadingState",
     ) {
         ScanSpeechPreviewView(
-            state: ScanSpeechTranscribingState(),
+            state: ScanSpeechTranscriptionLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "10 ScanSpeechAutomaticParsingState",
+        "10 ScanSpeechAutomaticParsingLoadingState",
     ) {
         ScanSpeechPreviewView(
-            state: ScanSpeechAutomaticParsingState(
+            state: ScanSpeechAutomaticParsingLoadingState(
                 parsedText: USExaminationReportPreviewFactory.description,
             ),
         ).previewable(
@@ -129,10 +129,10 @@
     }
 
     #Preview(
-        "12 ScanSpeechReviewParsingState",
+        "12 ScanSpeechReviewParsingLoadingState",
     ) {
         ScanSpeechPreviewView(
-            state: ScanSpeechReviewParsingState(
+            state: ScanSpeechReviewParsingLoadingState(
                 parsedText: USExaminationReportPreviewFactory.description,
             ),
         ).previewable(

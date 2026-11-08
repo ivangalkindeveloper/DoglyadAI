@@ -143,4 +143,44 @@
             ),
         )
     }
+
+    #Preview(
+        "12 Восстановление покупок",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .restoring,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
+            ),
+        )
+    }
+
+    #Preview(
+        "13 Управление автопродлением",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .managing,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
+            ),
+        )
+    }
+
+    #Preview(
+        "14 Запрос возврата",
+    ) {
+        ManageSubscriptionPreviewView(
+            scenario: .refunding,
+        )
+        .previewable(
+            container: ManageSubscriptionPreviewFactory.makeContainer(
+                code: "ru",
+            ),
+        )
+    }
+
 #endif

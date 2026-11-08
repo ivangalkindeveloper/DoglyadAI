@@ -149,7 +149,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         _ photo: USExaminationScanPhoto,
     ) {
         switch state {
-        case _ as ReportDetailGeneratingState, _ as ReportDetailLoadingState: return
+        case _ as ReportDetailGenerationLoadingState, _ as ReportDetailSaveLoadingState: return
         default: break
         }
         coordinator.screen(
@@ -212,7 +212,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         toolbarInset: CGFloat,
     ) {
         switch state {
-        case _ as ReportDetailGeneratingState, _ as ReportDetailLoadingState: return
+        case _ as ReportDetailGenerationLoadingState, _ as ReportDetailSaveLoadingState: return
         default: break
         }
 
@@ -282,7 +282,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         toolbarInset _: CGFloat,
     ) {
         switch state {
-        case _ as ReportDetailGeneratingState, _ as ReportDetailLoadingState: return
+        case _ as ReportDetailGenerationLoadingState, _ as ReportDetailSaveLoadingState: return
         default: break
         }
         if report.actualModelReport.generation.status == .generating {
@@ -297,7 +297,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         }
         let original = report
         emit(
-            ReportDetailGeneratingState(),
+            ReportDetailGenerationLoadingState(),
         )
         handle {
             let settings = self.settingsAI

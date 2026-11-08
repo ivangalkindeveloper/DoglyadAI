@@ -14,89 +14,75 @@ struct HistoryScreenView: DViewProtocol {
             ],
             onTapBack: viewModel.onTapBack,
             content: { toolbarInset, bottomHeight in
-                ScrollView(
-                    showsIndicators: false,
-                ) {
-                    LazyVStack(
-                        alignment: .leading,
-                        spacing: .zero,
-                        pinnedViews: [.sectionHeaders],
-                    ) {
-                        switch (viewModel.state, viewModel.sections.isEmpty) {
-                        case (_ as HistoryLoadingState, true):
+                ZStack {
+                    switch (viewModel.state, viewModel.sections.isEmpty) {
+                    case (_ as HistoryReportsLoadingState, true):
+                        DScrollVStack(
+                            padding: EdgeInsets(
+                                top: size.s16,
+                                leading: size.s16,
+                                bottom: size.s16,
+                                trailing: size.s16,
+                            ),
+                        ) {
                             HistoryLoadingView(
                                 cardCount: viewModel.pageSize,
                             )
-                            .transition(
-                                .opacity,
-                            )
-                        case (_ as HistoryEmptyState, true):
-                            HistoryEmptyView()
-                                .transition(
-                                    .opacity,
-                                )
-                        case (_, false):
-                            ForEach(
-                                viewModel.sections,
-                            ) { section in
-                                Section {
-                                    ForEach(
-                                        section.reports,
-                                    ) { report in
-                                        HistoryCardView(
-                                            report: report,
-                                            onTap: {
-                                                viewModel.onTapReport(
-                                                    value: report,
-                                                )
-                                            },
-                                        )
-                                        .padding(
-                                            .bottom,
-                                            size.s4,
-                                        )
-                                    }
-                                } header: {
-                                    SectionHeaderView(
-                                        title: section.title,
-                                    )
-                                } footer: {
-                                    Color.clear
-                                        .frame(
-                                            height: size.s12,
-                                        )
-                                }
-                            }
-
-                            HistoryPaginationView()
-                        case (_ as HistoryFailedState, true):
-                            LoadingErrorView(
-                                onRetry: viewModel.onTapRetry,
-                            )
-                        default:
-                            EmptyView()
                         }
+                    case (_ as HistoryEmptyState, true):
+                        DScrollVStack(
+                            padding: EdgeInsets(
+                                top: size.s16,
+                                leading: size.s16,
+                                bottom: size.s16,
+                                trailing: size.s16,
+                            ),
+                        ) {
+                            HistoryEmptyView()
+                        }
+                    case (_, false):
+                        HistoryListView()
+                    case (_ as HistoryFailedState, true):
+                        VStack(
+                            spacing: size.s16,
+                        ) {
+                            ErrorBodyView(
+                                description: l10n.text(
+                                    .errorUnknownDescription,
+                                ),
+                            )
+
+                            DButton(
+                                title: l10n[
+                                    .buttonUpdate,
+                                ],
+                                action: viewModel.onTapRetry,
+                            )
+                            .dStyle(
+                                .primaryChip,
+                            )
+                        }
+                        .padding(
+                            size.s16,
+                        )
+                    default:
+                        EmptyView()
                     }
-                    .padding(
-                        .top,
-                        size.s16,
-                    )
-                    .padding(
-                        .horizontal,
-                        size.s16,
-                    )
-                    .padding(
-                        .bottom,
-                        bottomHeight + size.s16,
-                    )
                 }
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                )
                 .accessibilityIdentifier(
                     "history.loadedCount.\(viewModel.sections.reduce(0) { $0 + $1.reports.count })",
                 )
-                .contentMargins(
+                .padding(
                     .top,
                     toolbarInset,
-                    for: .scrollContent,
+                )
+                .padding(
+                    .bottom,
+                    bottomHeight,
                 )
             },
             bottom: {

@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct SelectTemplateStateView: DViewProtocol {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: SelectTemplateViewModel
     let isLoading: Bool
@@ -24,13 +25,36 @@ struct SelectTemplateStateView: DViewProtocol {
             }.disabled(
                 isLoading,
             )
-        case (_ as SelectTemplateLoadingState, true):
+        case (_ as SelectTemplateTemplatesLoadingState, true):
             TemplateListLoadingView()
         case (_ as SelectTemplateEmptyState, true):
             TemplateListEmptyView()
         case (_ as SelectTemplateFailedState, true):
-            LoadingErrorView(
-                onRetry: viewModel.onTapRetry,
+            VStack(
+                spacing: size.s16,
+            ) {
+                ErrorBodyView(
+                    description: l10n.text(
+                        .errorUnknownDescription,
+                    ),
+                )
+
+                DButton(
+                    title: l10n[
+                        .buttonUpdate,
+                    ],
+                    action: viewModel.onTapRetry,
+                )
+                .dStyle(
+                    .primaryChip,
+                )
+            }
+            .padding(
+                size.s16,
+            )
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity,
             )
         default:
             EmptyView()

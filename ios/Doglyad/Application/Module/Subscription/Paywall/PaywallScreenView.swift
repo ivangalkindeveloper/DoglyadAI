@@ -9,36 +9,57 @@ struct PaywallScreenView: DViewProtocol {
     var body: some View {
         DScreen(
             content: { _, bottomInset in
-                DScrollVStack(
-                    alignment: .center,
-                    spacing: .zero,
-                ) {
-                    DStretchyHeader(
-                        height: 240,
-                    ) {
-                        DImage(
-                            .paywallHeader,
+                Group {
+                    switch viewModel.state {
+                    case let failed as PaywallLoadingFailedState:
+                        PaywallLoadingErrorView(
+                            state: failed,
                         )
-                        .scaledToFill()
-                    }
-                    PaywallContentView()
                         .padding(
                             .horizontal,
                             size.s16,
                         )
                         .padding(
                             .bottom,
-                            bottomInset + size.s32,
+                            bottomInset,
                         )
+                        .frame(
+                            maxWidth: .infinity,
+                            maxHeight: .infinity,
+                        )
+                    default:
+                        DScrollVStack(
+                            alignment: .center,
+                            spacing: .zero,
+                        ) {
+                            DStretchyHeader(
+                                height: 240,
+                            ) {
+                                DImage(
+                                    .paywallHeader,
+                                )
+                                .scaledToFill()
+                            }
+                            PaywallContentView()
+                                .padding(
+                                    .horizontal,
+                                    size.s16,
+                                )
+                                .padding(
+                                    .bottom,
+                                    bottomInset + size.s32,
+                                )
+                        }
+                        .scrollBounceBehavior(
+                            .always,
+                            axes: .vertical,
+                        )
+                        .ignoresSafeArea(
+                            .container,
+                            edges: .top,
+                        )
+                    }
                 }
-                .scrollBounceBehavior(
-                    .always,
-                    axes: .vertical,
-                )
-                .ignoresSafeArea(
-                    .container,
-                    edges: .top,
-                )
                 .overlay(
                     alignment: .topLeading,
                 ) {

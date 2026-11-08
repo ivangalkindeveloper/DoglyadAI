@@ -11,11 +11,11 @@ struct ScanSpeechRecordingView: DViewProtocol {
 
     var body: some View {
         let description: LocalizedStringResource? = switch viewModel.state {
-        case _ as ScanSpeechPreparingRecordingState:
+        case _ as ScanSpeechRecordingPreparationLoadingState:
             l10n[
                 .scanSpeechProcessPreparingDescription,
             ]
-        case _ as ScanSpeechTranscribingState:
+        case _ as ScanSpeechTranscriptionLoadingState:
             l10n[
                 .scanSpeechProcessTranscribingDescription,
             ]

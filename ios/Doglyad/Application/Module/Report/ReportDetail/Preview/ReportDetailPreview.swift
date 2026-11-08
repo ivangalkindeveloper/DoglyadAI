@@ -15,10 +15,10 @@
     }
 
     #Preview(
-        "02 ReportDetailLoadingState",
+        "02 ReportDetailSaveLoadingState",
     ) {
         ReportDetailPreviewView(
-            state: ReportDetailLoadingState(
+            state: ReportDetailSaveLoadingState(
                 candidate: ModulePreviewFactory.report,
             ),
         ).previewable(
@@ -27,10 +27,10 @@
     }
 
     #Preview(
-        "03 ReportDetailGeneratingState",
+        "03 ReportDetailGenerationLoadingState",
     ) {
         ReportDetailPreviewView(
-            state: ReportDetailGeneratingState(),
+            state: ReportDetailGenerationLoadingState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
@@ -58,16 +58,14 @@
             spacing: 24,
         ) {
             ReportDetailExpandableMarkdownView(
-                text: "Short **Markdown** content.",
+                text: "**Описание исследования:** без особенностей.",
                 backgroundColor: .white,
             )
 
             ReportDetailExpandableMarkdownView(
-                text: """
-                This is **long** Markdown content that should be truncated after several lines. \
-                The expanded view shows all markup. The collapsed view shows a gradient and an expand button. \
-                Short content remains fully visible without an expand or collapse button.
-                """,
+                text: ExpandableContentPreviewFixture(
+                    scenario: .markdown,
+                ).text,
                 backgroundColor: .white,
             )
         }
@@ -160,19 +158,12 @@
         "12 Карточка ответа модели",
     ) {
         ReportDetailModelReportCardView(
-            report: USExaminationModelReport(
-                date: Date(),
-                modelId: "google/medgemma-1.5-4b-it",
-                description: "The thyroid is normally positioned with homogeneous parenchyma and smooth contours.",
-                conclusion: "No sonographic evidence of focal thyroid lesions.",
-                recommendations: "Routine follow-up when clinically indicated.",
-            ),
+            report: ModulePreviewFactory.report.actualModelReport,
             onTapCopy: {},
         )
         .padding()
-        .dThemeWrapper()
-        .localization(
-            DependencyContainer.previewable.l10n,
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
         )
     }
 #endif

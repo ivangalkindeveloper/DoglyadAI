@@ -51,7 +51,7 @@
                     source: .apple,
                     isAutoRenewing: false,
                 )
-            case .applePro:
+            case .applePro, .refunding:
                 makeStatus(
                     source: .apple,
                 )
@@ -60,7 +60,7 @@
                     source: .yookassa,
                     type: .base,
                 )
-            case .yooKassaPro, .updating, .operationFailed:
+            case .yooKassaPro, .updating, .operationFailed, .restoring, .managing:
                 makeStatus(
                     source: .yookassa,
                 )
@@ -154,18 +154,39 @@
                 await Task.yield()
             }
             await model.lastTask?.value
-            guard let content = model.state as? ManageSubscriptionContentState else {
+            guard let content = model.state as? ManageSubscriptionSuccessState else {
                 return
             }
             switch scenario {
             case .loading:
                 model.emit(
-                    ManageSubscriptionLoadingState(),
+                    ManageSubscriptionCatalogLoadingState(),
                     animation: nil,
                 )
             case .updating:
                 model.emit(
-                    ManageSubscriptionLoadingState(
+                    ManageSubscriptionRefreshLoadingState(
+                        previousState: content,
+                    ),
+                    animation: nil,
+                )
+            case .restoring:
+                model.emit(
+                    ManageSubscriptionRestoreLoadingState(
+                        previousState: content,
+                    ),
+                    animation: nil,
+                )
+            case .managing:
+                model.emit(
+                    ManageSubscriptionManagementLoadingState(
+                        previousState: content,
+                    ),
+                    animation: nil,
+                )
+            case .refunding:
+                model.emit(
+                    ManageSubscriptionRefundLoadingState(
                         previousState: content,
                     ),
                     animation: nil,

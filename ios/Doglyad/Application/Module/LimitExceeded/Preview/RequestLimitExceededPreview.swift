@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 RequestLimitExceededState",
+        "01 RequestLimitExceededDefaultState",
     ) {
         RequestLimitExceededPreviewView(
-            state: RequestLimitExceededState(),
+            state: RequestLimitExceededDefaultState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

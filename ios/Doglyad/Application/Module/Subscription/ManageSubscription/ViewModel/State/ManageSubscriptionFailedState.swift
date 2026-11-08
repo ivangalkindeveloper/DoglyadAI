@@ -1,10 +1,10 @@
 @MainActor
 final class ManageSubscriptionFailedState: ManageSubscriptionStateProtocol, @MainActor Equatable {
-    let previousState: ManageSubscriptionContentState?
+    let previousState: ManageSubscriptionSuccessState?
     let errorDescription: String
 
     init(
-        previousState: ManageSubscriptionContentState? = nil,
+        previousState: ManageSubscriptionSuccessState? = nil,
         errorDescription: String,
     ) {
         self.previousState = previousState

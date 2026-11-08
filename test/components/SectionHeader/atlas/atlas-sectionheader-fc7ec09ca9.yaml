@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-sectionheader-fc7ec09ca9
+tags:
+- atlas
+- SectionHeader
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-sectionheader-fc7ec09ca9
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-sectionheader-fc7ec09ca9
+    timeout: 15000
+- takeScreenshot: 02-SectionHeader-fc7ec09ca9

@@ -39,20 +39,47 @@ final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol>
         )
     }
 
-    func onDocumentLoaded() {
+    var documentStateIdentifier: String {
+        switch state {
+        case _ as WebDocumentSuccessState: "webDocument.loaded"
+        case _ as WebDocumentFailedState: "webDocument.failed"
+        default: "webDocument.loading"
+        }
+    }
+
+    func onTapRetry() {
+        switch state {
+        case _ as WebDocumentFailedState:
+            emit(
+                WebDocumentLoadingState(),
+            )
+        default: break
+        }
+    }
+
+    func onDocumentLoaded(
+        from sourceState: any WebDocumentStateProtocol,
+    ) {
+        guard state === sourceState else {
+            return
+        }
         #if DEBUG
             guard !isPreviewSnapshot else {
                 return
             }
         #endif
         emit(
-            WebDocumentLoadedState(),
+            WebDocumentSuccessState(),
         )
     }
 
     func onDocumentFailed(
         _ error: Error,
+        from sourceState: any WebDocumentStateProtocol,
     ) {
+        guard state === sourceState else {
+            return
+        }
         #if DEBUG
             guard !isPreviewSnapshot else {
                 return

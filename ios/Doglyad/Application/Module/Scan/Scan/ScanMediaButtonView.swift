@@ -56,7 +56,7 @@ struct ScanMediaButtonView: DViewProtocol {
             )
             .background {
                 DCardBackground(
-                    cornerRadius: cornerRadius,
+                    cornerRadius: size.cardCornerRadius,
                     color: isEnabled ? color.grayscaleBackground : color.grayscaleInput,
                     borderColor: color.primaryDefault,
                     lineWidth: 1,
@@ -86,9 +86,5 @@ struct ScanMediaButtonView: DViewProtocol {
 
     private var buttonHeight: CGFloat {
         size.s64 + size.s8
-    }
-
-    private var cornerRadius: CGFloat {
-        isCompact ? size.adaptiveCornerRadius / 4 : size.adaptiveCardCornerRadius
     }
 }

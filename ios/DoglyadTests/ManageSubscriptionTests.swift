@@ -211,9 +211,25 @@
                 to: model,
             )
             switch scenario {
-            case .loading, .updating:
+            case .loading:
                 #expect(
-                    model.state is ManageSubscriptionLoadingState,
+                    model.state is ManageSubscriptionCatalogLoadingState,
+                )
+            case .updating:
+                #expect(
+                    model.state is ManageSubscriptionRefreshLoadingState,
+                )
+            case .restoring:
+                #expect(
+                    model.state is ManageSubscriptionRestoreLoadingState,
+                )
+            case .managing:
+                #expect(
+                    model.state is ManageSubscriptionManagementLoadingState,
+                )
+            case .refunding:
+                #expect(
+                    model.state is ManageSubscriptionRefundLoadingState,
                 )
             case .failed, .operationFailed:
                 #expect(

@@ -21,7 +21,7 @@ final class AboutViewModel: DModuleViewModel<any AboutStateProtocol> {
         version = container.version
         versionDescription = "\(container.l10n.text(.aboutVersionLabel)): \(container.version)"
         super.init(
-            state: AboutState(),
+            state: AboutDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

@@ -16,7 +16,7 @@ final class StorageClearAllViewModel: DModuleViewModel<any StorageClearAllStateP
     ) {
         self.arguments = arguments
         super.init(
-            state: StorageClearAllState(),
+            state: StorageClearAllDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

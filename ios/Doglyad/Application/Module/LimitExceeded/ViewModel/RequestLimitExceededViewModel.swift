@@ -13,7 +13,7 @@ final class RequestLimitExceededViewModel: DModuleViewModel<any RequestLimitExce
         onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         super.init(
-            state: RequestLimitExceededState(),
+            state: RequestLimitExceededDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

@@ -96,7 +96,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
             ) {
                 ZStack {
                     RoundedRectangle(
-                        cornerRadius: size.s16,
+                        cornerRadius: size.cardCornerRadius,
                     )
                     .fill(
                         fillColor,

@@ -10,7 +10,7 @@ struct ScanCameraFeedView: DViewProtocol {
     var body: some View {
         Group {
             switch viewModel.state {
-            case _ as ScanCameraPreparingState:
+            case _ as ScanCameraPreparationLoadingState:
                 color.grayscaleBackground
                     .dShimmer(
                         cornerRadius: .zero,

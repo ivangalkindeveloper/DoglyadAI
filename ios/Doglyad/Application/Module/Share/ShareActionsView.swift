@@ -9,7 +9,7 @@ struct ShareActionsView: DViewProtocol {
 
     var body: some View {
         let isProcessing = switch viewModel.state {
-        case _ as ShareSendingState: true
+        case _ as ShareLoadingState: true
         default: false
         }
 

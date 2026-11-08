@@ -45,8 +45,36 @@ struct SettingsScreenView: DViewProtocol {
                             .opacity,
                         )
                     case _ as SettingsFailedState:
-                        LoadingErrorView(
-                            onRetry: viewModel.onTapRetry,
+                        VStack(
+                            spacing: size.s16,
+                        ) {
+                            DText(
+                                l10n[
+                                    .errorUnknownDescription,
+                                ],
+                            )
+                            .dStyle(
+                                font: typography.textSmall,
+                                color: color.grayscalePlacehold,
+                                alignment: .center,
+                            )
+
+                            DButton(
+                                title: l10n[
+                                    .buttonUpdate,
+                                ],
+                                action: viewModel.onTapRetry,
+                            )
+                            .dStyle(
+                                .primaryChip,
+                            )
+                        }
+                        .padding(
+                            size.s16,
+                        )
+                        .frame(
+                            maxWidth: .infinity,
+                            maxHeight: .infinity,
                         )
                     default: EmptyView()
                     }

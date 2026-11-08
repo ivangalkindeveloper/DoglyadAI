@@ -14,7 +14,7 @@ final class NewVersionViewModel: DModuleViewModel<any NewVersionStateProtocol> {
         onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         super.init(
-            state: NewVersionState(),
+            state: NewVersionDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

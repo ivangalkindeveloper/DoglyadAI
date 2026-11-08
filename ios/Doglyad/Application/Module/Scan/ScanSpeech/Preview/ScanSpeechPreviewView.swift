@@ -59,6 +59,8 @@
                             .scanSpeechTitle,
                         ],
                         fraction: 0.9,
+                        accessibilityElement: .contain,
+                        accessibilityIdentifier: "regression.\(UserDefaults.standard.string(forKey: "regressionPreview") ?? "unknown")",
                     ) { toolbarHeight, bottomHeight in
                         ScanSpeechReviewProposalView(
                             state: state,
@@ -254,6 +256,8 @@
                         .scanSpeechTitle,
                     ],
                     fraction: 0.9,
+                    accessibilityElement: .contain,
+                    accessibilityIdentifier: "regression.\(UserDefaults.standard.string(forKey: "regressionPreview") ?? "unknown")",
                 ) { toolbarHeight, bottomHeight in
                     ScanSpeechReviewTranscriptView(
                         transcriptFocus: $transcriptFocus,

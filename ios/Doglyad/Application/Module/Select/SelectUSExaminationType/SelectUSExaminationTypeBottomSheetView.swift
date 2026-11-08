@@ -10,7 +10,7 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
 
     var body: some View {
         let isSelecting = switch viewModel.state {
-        case _ as SelectUSExaminationTypeSelectingState: true
+        case _ as SelectUSExaminationTypeSelectionLoadingState: true
         default: false
         }
 

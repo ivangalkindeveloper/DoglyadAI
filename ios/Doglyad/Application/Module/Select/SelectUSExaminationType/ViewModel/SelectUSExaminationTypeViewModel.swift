@@ -36,7 +36,7 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
         currentValue = (arguments?.currentValue)
 
         super.init(
-            state: SelectUSExaminationTypeLoadingState(),
+            state: SelectUSExaminationTypeRecentTypesLoadingState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -95,7 +95,7 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
 
     override func onInit() {
         emit(
-            SelectUSExaminationTypeLoadingState(),
+            SelectUSExaminationTypeRecentTypesLoadingState(),
         )
         // Equal states keep the existing instance in emit.
         let loading = state
@@ -144,12 +144,12 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
             .selectUSExaminationType,
         )
         switch state {
-        case _ as SelectUSExaminationTypeSelectingState: return
+        case _ as SelectUSExaminationTypeSelectionLoadingState: return
         default: break
         }
 
         emit(
-            SelectUSExaminationTypeSelectingState(),
+            SelectUSExaminationTypeSelectionLoadingState(),
         )
         handle {
             try await self.container.ultrasoundReportRepository.recordRecentExaminationTypeId(

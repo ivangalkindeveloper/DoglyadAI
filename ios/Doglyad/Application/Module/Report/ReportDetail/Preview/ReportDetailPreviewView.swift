@@ -103,7 +103,7 @@
             )
             .background {
                 DCardBackground(
-                    cornerRadius: size.s16,
+                    cornerRadius: size.cardCornerRadius,
                     color: color.grayscaleBackgroundWeak,
                 )
             }

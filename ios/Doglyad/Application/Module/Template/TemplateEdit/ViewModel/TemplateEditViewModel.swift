@@ -86,7 +86,7 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
         )
 
         super.init(
-            state: TemplateEditLoadingState(),
+            state: TemplateEditInitializationLoadingState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -135,7 +135,7 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
 
     override func onInit() {
         emit(
-            TemplateEditLoadingState(),
+            TemplateEditInitializationLoadingState(),
         )
         handle {
             try await self.container.templateRepository.getTemplate(
@@ -144,9 +144,9 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             )
         } onDefer: {
             switch self.state {
-            case _ as TemplateEditLoadingState:
+            case _ as TemplateEditInitializationLoadingState:
                 self.emit(
-                    TemplateEditDefaultState(),
+                    TemplateEditInitialState(),
                 )
             default: break
             }
@@ -259,7 +259,7 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
 
     func onTapSave() {
         switch state {
-        case _ as TemplateEditLoadingState, _ as TemplateEditInitializationFailedState: return
+        case _ as TemplateEditInitializationLoadingState, _ as TemplateEditSaveLoadingState, _ as TemplateEditDeleteLoadingState, _ as TemplateEditInitializationFailedState: return
         default: break
         }
 
@@ -286,7 +286,7 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             content: content,
         )
         emit(
-            TemplateEditLoadingState(),
+            TemplateEditSaveLoadingState(),
         )
         handle {
             try await self.onSaveTemplate(
@@ -294,9 +294,9 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             )
         } onDefer: {
             switch self.state {
-            case _ as TemplateEditLoadingState:
+            case _ as TemplateEditSaveLoadingState:
                 self.emit(
-                    TemplateEditDefaultState(),
+                    TemplateEditInitialState(),
                 )
             default: break
             }
@@ -326,7 +326,7 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
 
     func onTapDelete() {
         switch state {
-        case _ as TemplateEditLoadingState, _ as TemplateEditInitializationFailedState: return
+        case _ as TemplateEditInitializationLoadingState, _ as TemplateEditSaveLoadingState, _ as TemplateEditDeleteLoadingState, _ as TemplateEditInitializationFailedState: return
         default: break
         }
 
@@ -345,11 +345,11 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
 
     private func deleteTemplate() {
         switch state {
-        case _ as TemplateEditLoadingState, _ as TemplateEditInitializationFailedState: return
+        case _ as TemplateEditInitializationLoadingState, _ as TemplateEditSaveLoadingState, _ as TemplateEditDeleteLoadingState, _ as TemplateEditInitializationFailedState: return
         default: break
         }
         emit(
-            TemplateEditLoadingState(),
+            TemplateEditDeleteLoadingState(),
         )
         unfocus()
 
@@ -359,9 +359,9 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             )
         } onDefer: {
             switch self.state {
-            case _ as TemplateEditLoadingState:
+            case _ as TemplateEditDeleteLoadingState:
                 self.emit(
-                    TemplateEditDefaultState(),
+                    TemplateEditInitialState(),
                 )
             default: break
             }

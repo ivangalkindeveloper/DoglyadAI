@@ -10,7 +10,7 @@ struct ScanBottomView: DViewProtocol {
     var body: some View {
         let (isGenerationDisabled, isProcessing) = switch viewModel.state {
         case _ as ScanInitializationFailedState: (true, false)
-        case _ as ScanInitializingState, _ as ScanGeneratingState, _ as ScanLoadingState, _ as ScanClearingState: (false, true)
+        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState: (false, true)
         default: (false, false)
         }
 

@@ -48,7 +48,7 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         userEmail = getUserEmail()
 
         super.init(
-            state: ReportReceivedDefaultState(
+            state: ReportReceivedContentState(
                 report: report,
             ),
             container: container,
@@ -139,22 +139,22 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
                 return
             }
             switch state {
-            case _ as ReportReceivedSendingState:
+            case _ as ReportReceivedLoadingState:
                 emit(
-                    ReportReceivedSendingState(
+                    ReportReceivedLoadingState(
                         report: updated,
                     ),
                 )
             default:
                 emit(
-                    ReportReceivedDefaultState(
+                    ReportReceivedContentState(
                         report: updated,
                     ),
                 )
             }
         }
         emit(
-            ReportReceivedDefaultState(
+            ReportReceivedContentState(
                 report: currentReport(
                     report,
                 ),
@@ -178,7 +178,7 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
                     report,
                 )
                 emit(
-                    ReportReceivedDefaultState(
+                    ReportReceivedContentState(
                         report: updated,
                     ),
                 )
@@ -258,11 +258,11 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         to userEmail: String,
     ) {
         switch state {
-        case _ as ReportReceivedSendingState: return
+        case _ as ReportReceivedLoadingState: return
         default: break
         }
         emit(
-            ReportReceivedSendingState(
+            ReportReceivedLoadingState(
                 report: report,
             ),
         )
@@ -282,9 +282,9 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
             )
         } onDefer: {
             switch self.state {
-            case _ as ReportReceivedSendingState:
+            case _ as ReportReceivedLoadingState:
                 self.emit(
-                    ReportReceivedDefaultState(
+                    ReportReceivedContentState(
                         report: self.report,
                     ),
                 )

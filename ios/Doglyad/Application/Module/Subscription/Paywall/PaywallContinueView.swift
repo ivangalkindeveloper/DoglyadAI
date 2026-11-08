@@ -10,7 +10,7 @@ struct PaywallContinueView: DViewProtocol {
 
     var body: some View {
         switch state {
-        case let restoring as PaywallRestoringState:
+        case let restoring as PaywallVerificationLoadingState:
             PaywallContinueView(
                 state: restoring.previousState,
             )

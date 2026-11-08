@@ -31,7 +31,7 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
         self.getAvailableAppleEngine = getAvailableAppleEngine
         currentValue = arguments.currentValue
         super.init(
-            state: SelectTranscriberState(),
+            state: SelectTranscriberInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-templatelistitemcard-7f6fc383fb
+tags:
+- atlas
+- TemplateListItemCard
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-templatelistitemcard-7f6fc383fb
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-templatelistitemcard-7f6fc383fb
+    timeout: 15000
+- takeScreenshot: 02-TemplateListItemCard-7f6fc383fb

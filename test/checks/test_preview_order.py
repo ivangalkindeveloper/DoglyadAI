@@ -20,7 +20,7 @@ class PreviewOrderTests(unittest.TestCase):
         self.assertEqual([p["previewOrder"] for p in ordered[1:]], list(range(1, 11)))
 
     def test_unnamed_and_unnumbered_previews_are_rejected(self):
-        for title in ["", "OnBoardingFirstState", "0 First", "1 "]:
+        for title in ["", "OnBoardingInitialState", "0 First", "1 "]:
             with self.subTest(title=title), self.assertRaises(ValueError):
                 ordered_previews([self.preview(title)], ["Example"])
 

@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 ImportMediaState",
+        "01 ImportMediaDefaultState",
     ) {
         ImportMediaPreviewView(
-            state: ImportMediaState(),
+            state: ImportMediaDefaultState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

@@ -5,10 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 PhotoRemarkState",
+        "01 PhotoRemarkDefaultState",
     ) {
         PhotoRemarkPreviewView(
-            state: PhotoRemarkState(),
+            state: PhotoRemarkDefaultState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

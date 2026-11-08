@@ -7,7 +7,7 @@ struct ReportReceivedEmailButtonView: DViewProtocol {
 
     private var isSending: Bool {
         switch viewModel.state {
-        case _ as ReportReceivedSendingState: true
+        case _ as ReportReceivedLoadingState: true
         default: false
         }
     }

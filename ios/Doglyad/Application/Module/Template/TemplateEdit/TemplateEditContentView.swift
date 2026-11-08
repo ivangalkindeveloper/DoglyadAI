@@ -13,8 +13,39 @@ struct TemplateEditContentView: DViewProtocol {
     var body: some View {
         switch viewModel.state {
         case _ as TemplateEditInitializationFailedState:
-            LoadingErrorView(
-                onRetry: viewModel.onTapRetryInitialization,
+            VStack(
+                spacing: size.s16,
+            ) {
+                ErrorBodyView(
+                    description: l10n.text(
+                        .errorUnknownDescription,
+                    ),
+                )
+
+                DButton(
+                    title: l10n[
+                        .buttonUpdate,
+                    ],
+                    action: viewModel.onTapRetryInitialization,
+                )
+                .dStyle(
+                    .primaryChip,
+                )
+            }
+            .padding(
+                size.s16,
+            )
+            .padding(
+                .top,
+                toolbarInset,
+            )
+            .padding(
+                .bottom,
+                bottomInset,
+            )
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity,
             )
         default:
             DFocusScrollView(

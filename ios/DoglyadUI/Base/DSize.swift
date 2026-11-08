@@ -42,11 +42,11 @@ public extension DSize {
         UIScreen.main.bounds.width
     }
 
-    var adaptiveCornerRadius: CGFloat {
-        UIScreen.main.cornerRadius < s16 ? s16 : UIScreen.main.cornerRadius
+    var cardCornerRadius: CGFloat {
+        s16
     }
 
-    var adaptiveCardCornerRadius: CGFloat {
-        UIScreen.main.cornerRadius < s32 ? UIScreen.main.cornerRadius : s32
+    var adaptiveCornerRadius: CGFloat {
+        UIScreen.main.cornerRadius < s16 ? s16 : UIScreen.main.cornerRadius
     }
 }

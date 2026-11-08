@@ -19,7 +19,7 @@ final class PhotoRemarkViewModel: DModuleViewModel<any PhotoRemarkStateProtocol>
         title = arguments.title
         description = arguments.description
         super.init(
-            state: PhotoRemarkState(),
+            state: PhotoRemarkDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

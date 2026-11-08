@@ -8,6 +8,8 @@ The backend is split into two independently deployable services: `backend/main` 
 - **Inference service** (`backend/inference/`) — Python, FastAPI, Docker. Runs once per GPU host beside one or more local vLLM engines. It validates App Check, selects the configured engine by `modelId`, and performs model-agnostic structured generation. Existing single-model VMs remain supported; DGX Spark uses one backend and three vLLM containers.
 - **iOS application** — SwiftUI, MVVM, SwiftData, Alamofire, Apple Foundation Models for on-device inference, Firebase, StoreKit 2, and backend-owned subscriptions.
 
+Module and root view models use `InitialState`, scenario-specific `LoadingState`, backend-data `SuccessState`, synchronous-screen `DefaultState`, and meaningful screen-specific states. Keep the feature prefix. Follow the complete state composition and naming rules in [the iOS instructions](ios.md#swift-ios), including single-state modules and equality between loading scenarios.
+
 A report-generation request follows this path:
 
 ```text

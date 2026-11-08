@@ -10,17 +10,17 @@ struct ScanSpeechContentStateView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as ScanSpeechPreparingModelState, _ as ScanSpeechModelPreparationFailedState:
+        case _ as ScanSpeechModelLoadingState, _ as ScanSpeechModelPreparationFailedState:
             ScanSpeechModelPreparationView(
                 toolbarHeight: toolbarHeight,
                 bottomHeight: bottomHeight,
             )
-        case _ as ScanSpeechReadyState, _ as ScanSpeechPreparingRecordingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscribingState, _ as ScanSpeechAutomaticParsingState:
+        case _ as ScanSpeechReadyState, _ as ScanSpeechRecordingPreparationLoadingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscriptionLoadingState, _ as ScanSpeechAutomaticParsingLoadingState:
             ScanSpeechRecordingView(
                 toolbarHeight: toolbarHeight,
                 bottomHeight: bottomHeight,
             )
-        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingState:
+        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState:
             ScanSpeechReviewTranscriptView(
                 transcriptFocus: transcriptFocus,
                 toolbarHeight: toolbarHeight,

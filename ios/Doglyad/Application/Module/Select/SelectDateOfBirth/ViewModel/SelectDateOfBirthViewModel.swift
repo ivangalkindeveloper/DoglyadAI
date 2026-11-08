@@ -29,7 +29,7 @@ final class SelectDateOfBirthViewModel: DModuleViewModel<any SelectDateOfBirthSt
             to: toDate,
         )!
         super.init(
-            state: SelectDateOfBirthState(),
+            state: SelectDateOfBirthDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,

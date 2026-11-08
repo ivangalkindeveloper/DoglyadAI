@@ -84,7 +84,7 @@ public struct DMessageCard: DViewProtocol {
             )
             .background(
                 RoundedRectangle(
-                    cornerRadius: theme.size.adaptiveCardCornerRadius,
+                    cornerRadius: theme.size.cardCornerRadius,
                 )
                 .fill(
                     backgroundColor,

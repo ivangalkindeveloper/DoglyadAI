@@ -9,7 +9,7 @@ struct ScanPhotoListView: DViewProtocol {
 
     var body: some View {
         let isMediaSelectionDisabled = switch (viewModel.state, viewModel.isPhotoLimitReached) {
-        case (_ as ScanInitializingState, _), (_ as ScanGeneratingState, _), (_ as ScanLoadingState, _), (_ as ScanClearingState, _), (_, true): true
+        case (_ as ScanInitializationLoadingState, _), (_ as ScanGenerationLoadingState, _), (_ as ScanReportSaveLoadingState, _), (_ as ScanClearLoadingState, _), (_, true): true
         default: false
         }
 

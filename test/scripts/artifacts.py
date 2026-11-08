@@ -98,7 +98,7 @@ def validate_suite() -> list[dict]:
     declared = {TEST / c["flow"] for c in suite}
     actual = set((TEST / "modules").glob("*/atlas/*.yaml")) | set(
         (TEST / "modules").glob("*/e2e/*.yaml")
-    )
+    ) | set((TEST / "components").glob("*/atlas/*.yaml"))
     if declared != actual:
         raise ValueError(f"Unregistered or missing flows: {declared ^ actual}")
     provider_phase = False

@@ -2,6 +2,7 @@ import DoglyadUI
 import SwiftUI
 
 struct ScanContentStateView: DViewProtocol {
+    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanViewModel
     let focus: FocusState<ScanFocus?>.Binding
@@ -12,8 +13,35 @@ struct ScanContentStateView: DViewProtocol {
     var body: some View {
         switch viewModel.state {
         case _ as ScanInitializationFailedState:
-            LoadingErrorView(
-                onRetry: viewModel.onTapRetryInitialization,
+            VStack(
+                spacing: size.s16,
+            ) {
+                ErrorBodyView(
+                    description: l10n.text(
+                        .errorUnknownDescription,
+                    ),
+                )
+
+                DButton(
+                    title: l10n[
+                        .buttonUpdate,
+                    ],
+                    action: viewModel.onTapRetryInitialization,
+                )
+                .dStyle(
+                    .primaryChip,
+                )
+            }
+            .padding(
+                size.s16,
+            )
+            .padding(
+                .top,
+                toolbarHeight,
+            )
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: .infinity,
             )
         default:
             DFocusScrollView(

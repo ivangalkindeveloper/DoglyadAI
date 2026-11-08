@@ -10,7 +10,7 @@ struct SelectNeuralModelBottomSheetView: DViewProtocol {
 
     var body: some View {
         let isSelecting = switch viewModel.state {
-        case _ as SelectNeuralModelSelectingState: true
+        case _ as SelectNeuralModelSelectionLoadingState: true
         default: false
         }
 

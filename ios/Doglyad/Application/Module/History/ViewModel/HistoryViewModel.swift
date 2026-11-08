@@ -47,7 +47,7 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         )
         historyConfig = container.applicationConfig.history
         super.init(
-            state: HistoryLoadingState(),
+            state: HistoryReportsLoadingState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -169,7 +169,7 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
             }
         #endif
         emit(
-            HistoryLoadingState(),
+            HistoryReportsLoadingState(),
         )
         handle {
             try await self.container.ultrasoundReportRepository.getReports(
@@ -203,11 +203,11 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
             return
         }
         switch state {
-        case _ as HistoryLoadingState: return;
+        case _ as HistoryReportsLoadingState, _ as HistoryPaginationLoadingState: return;
         default: break
         }
         emit(
-            HistoryLoadingState(),
+            HistoryPaginationLoadingState(),
         )
         offsetLoadingTask = handle {
             try await self.container.ultrasoundReportRepository.getReports(

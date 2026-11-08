@@ -47,7 +47,7 @@
             case .finished, .interrupted, .failed:
                 ScanSpeechReviewTranscriptState()
             case .parsing:
-                ScanSpeechReviewParsingState(
+                ScanSpeechReviewParsingLoadingState(
                     parsedText: text,
                 )
             }

@@ -53,7 +53,7 @@
             let nextOffset: Int?
             switch scenario {
             case .loading:
-                state = HistoryLoadingState()
+                state = HistoryReportsLoadingState()
                 reports = []
                 nextOffset = nil
             case .empty:
@@ -77,7 +77,7 @@
                 reports = makeReports()
                 nextOffset = nil
             case .loadingNextPage:
-                state = HistoryLoadingState()
+                state = HistoryPaginationLoadingState()
                 reports = [USExaminationReportPreviewFactory.makeReport()]
                 nextOffset = model.pageSize
             case .nextPageFailed:

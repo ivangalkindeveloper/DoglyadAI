@@ -1,9 +1,9 @@
 @MainActor
-final class ManageSubscriptionLoadingState: ManageSubscriptionStateProtocol, @MainActor Equatable {
-    let previousState: ManageSubscriptionContentState?
+class ManageSubscriptionLoadingState: ManageSubscriptionStateProtocol, @MainActor Equatable {
+    let previousState: ManageSubscriptionSuccessState?
 
-    init(
-        previousState: ManageSubscriptionContentState? = nil,
+    required init(
+        previousState: ManageSubscriptionSuccessState? = nil,
     ) {
         self.previousState = previousState
     }
@@ -12,6 +12,10 @@ final class ManageSubscriptionLoadingState: ManageSubscriptionStateProtocol, @Ma
         lhs: ManageSubscriptionLoadingState,
         rhs: ManageSubscriptionLoadingState,
     ) -> Bool {
-        lhs.previousState == rhs.previousState
+        type(
+            of: lhs,
+        ) == type(
+            of: rhs,
+        ) && lhs.previousState == rhs.previousState
     }
 }

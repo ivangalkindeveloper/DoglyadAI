@@ -15,10 +15,10 @@
     }
 
     #Preview(
-        "02 WebDocumentLoadedState",
+        "02 WebDocumentSuccessState",
     ) {
         WebDocumentPreviewView(
-            state: WebDocumentLoadedState(),
+            state: WebDocumentSuccessState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

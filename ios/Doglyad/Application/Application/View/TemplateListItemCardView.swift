@@ -81,27 +81,3 @@ struct TemplateListItemCardView: DViewProtocol {
         }
     }
 }
-
-#Preview {
-    TemplateListItemCardView(
-        template: USExaminationTemplate(
-            usExaminationType: USExaminationType(
-                id: "thyroid",
-                title: "Thyroid gland",
-                contextualStrings: [],
-            ),
-            name: "Standard examination",
-            content: """
-            An ultrasound examination was performed.
-            The lobes are symmetrical.
-            The parenchyma is homogeneous.
-            No focal lesions were identified.
-            An additional line demonstrates truncation.
-            """,
-        ),
-        action: {},
-        isSelected: true,
-    )
-    .padding()
-    .dThemeWrapper()
-}

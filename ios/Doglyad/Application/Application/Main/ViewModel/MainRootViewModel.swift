@@ -11,7 +11,7 @@ final class MainRootViewModel: DStateViewModel<any MainRootStateProtocol> {
     ) {
         self.container = container
         super.init(
-            state: MainRootState(),
+            state: MainRootDefaultState(),
         )
     }
 

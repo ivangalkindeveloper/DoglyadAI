@@ -2,7 +2,7 @@
     import SwiftUI
 
     #Preview(
-        "01 PhotoViewState",
+        "01 PhotoViewInitialState",
     ) {
         PhotoViewPreviewView(
             photos: ModulePreviewFactory.photos,

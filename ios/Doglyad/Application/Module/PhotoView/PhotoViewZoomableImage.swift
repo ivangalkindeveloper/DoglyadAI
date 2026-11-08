@@ -44,7 +44,7 @@ struct PhotoViewZoomableImage: DViewProtocol {
                 )
                 .clipShape(
                     RoundedRectangle(
-                        cornerRadius: size.s16,
+                        cornerRadius: size.cardCornerRadius,
                     ),
                 )
                 .position(
