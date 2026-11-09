@@ -7,6 +7,24 @@ tags:
 - runFlow: ../../../maestro/support/fill-scan.yaml
 - tapOn:
     text: ^Сгенерировать\ протокол$
+- assertVisible: Согласие пациента
+- assertVisible:
+    id: patientConsent.doNotAsk.unselected
+- takeScreenshot: PatientConsent-request
+- tapOn:
+    id: bottomSheet.close
+- assertVisible:
+    id: scan.generate
+- assertNotVisible: Согласие пациента
+- tapOn:
+    text: ^Сгенерировать\ протокол$
+- tapOn:
+    id: patientConsent.doNotAsk.unselected
+- assertVisible:
+    id: patientConsent.doNotAsk.selected
+- takeScreenshot: PatientConsent-do-not-ask
+- tapOn:
+    text: ^Подтвердить$
 - extendedWaitUntil:
     visible:
       text: ^К\ протоколу$

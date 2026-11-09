@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+name: atlas-menu-2c9b354081
+tags:
+- atlas
+- Menu
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-menu-2c9b354081
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-menu-2c9b354081
+    timeout: 15000
+- assertNotVisible:
+    id: message.error
+- extendedWaitUntil:
+    visible:
+      id: preview.scrollEnd.ready
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: 02-Menu-2c9b354081

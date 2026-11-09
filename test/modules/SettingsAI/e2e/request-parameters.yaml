@@ -6,7 +6,7 @@ tags:
 - Scan
 - SelectTemplate
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Настройки AI$
 - scrollUntilVisible:
     element:

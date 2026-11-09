@@ -38,6 +38,9 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                 .storage,
             ),
         )
+    }
+
+    override func onInit() {
         speechModelObservation = DSpeechWhisperKitModel.shared.$state.sink { [weak self] _ in
             self?.isSpeechModelAvailable = DSpeechWhisperKitModel.shared.isDownloaded
         }
@@ -112,45 +115,20 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
     }
 
     func onTapDeleteSpeechModel() {
-        guard isSpeechModelAvailable, let id = presentationID else {
+        guard isSpeechModelAvailable, presentationID != nil else {
             return
         }
-
         analytics.buttonTapped(
             .storageDeleteSpeechModel,
         )
-        performLocalOperation {
-            try await DSpeechWhisperKitModel.shared.deleteDownloadedModel()
-        } onSuccess: { _ in
-            guard self.presentationID == id else {
-                return
-            }
-            self.emit(
-                StorageInitialState(),
-            )
-            self.messager.show(
-                type: .success,
-                title: self.l10n[
-                    .storageDeleteSpeechModelSuccessMessageTitle,
-                ],
-                description: self.l10n[
-                    .storageDeleteSpeechModelSuccessMessageDescription,
-                ],
-            )
-            self.coordinator.pop()
-        } onFailure: { error in
-            guard self.presentationID == id else {
-                return
-            }
-            self.emit(
-                StorageErrorState(
-                    error: error,
-                ),
-            )
-            self.messager.showUnknownError(
-                l10n: self.l10n,
-            )
-        }
+        coordinator.sheet(
+            .storageClearSpeechModel,
+            arguments: StorageClearSpeechModelArguments(
+                onConfirm: { [weak self] in
+                    self?.deleteSpeechModel()
+                },
+            ),
+        )
     }
 
     func onTapClearAll() {
@@ -199,5 +177,43 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                 },
             ),
         )
+    }
+
+    private func deleteSpeechModel() {
+        guard isSpeechModelAvailable, let id = presentationID else {
+            return
+        }
+        performLocalOperation {
+            try await DSpeechWhisperKitModel.shared.deleteDownloadedModel()
+        } onSuccess: { _ in
+            guard self.presentationID == id else {
+                return
+            }
+            self.emit(
+                StorageInitialState(),
+            )
+            self.messager.show(
+                type: .success,
+                title: self.l10n[
+                    .storageDeleteSpeechModelSuccessMessageTitle,
+                ],
+                description: self.l10n[
+                    .storageDeleteSpeechModelSuccessMessageDescription,
+                ],
+            )
+            self.coordinator.pop()
+        } onFailure: { error in
+            guard self.presentationID == id else {
+                return
+            }
+            self.emit(
+                StorageErrorState(
+                    error: error,
+                ),
+            )
+            self.messager.showUnknownError(
+                l10n: self.l10n,
+            )
+        }
     }
 }

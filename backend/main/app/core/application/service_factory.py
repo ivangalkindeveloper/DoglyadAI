@@ -98,7 +98,7 @@ class ServiceFactory:
             report_email=ReportEmailService(
                 variables,
                 configuration.server.email,
-                configuration.modules.userSettings,
+                configuration.modules.workSettings,
             ),
             subscriptions=subscriptions,
             sdk_payments=SDKPaymentService(

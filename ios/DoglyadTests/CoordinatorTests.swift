@@ -106,7 +106,7 @@ struct CoordinatorTests {
             templateAdd: defaultConfig.templateAdd,
             templateEdit: defaultConfig.templateEdit,
             readyMadeTemplateList: defaultConfig.readyMadeTemplateList,
-            userSettings: defaultConfig.userSettings,
+            workSettings: defaultConfig.workSettings,
             settingsAI: defaultConfig.settingsAI,
         )
     }

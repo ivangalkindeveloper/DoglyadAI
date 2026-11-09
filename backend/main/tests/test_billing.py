@@ -285,6 +285,7 @@ def test_report_jobs_count_each_completed_generation_once(
                     "patientName": "Test Patient",
                     "patientGender": "female",
                     "patientDateOfBirth": "1990-01-01T00:00:00Z",
+                    "isPatientConsent": True,
                     "examinationDescription": "Findings",
                 },
             }

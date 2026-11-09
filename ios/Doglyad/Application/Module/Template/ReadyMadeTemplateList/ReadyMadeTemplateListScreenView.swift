@@ -67,12 +67,20 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                         description: viewModel.emptyDescription,
                     )
                     .padding(
+                        .horizontal,
+                        size.s16,
+                    )
+                    .padding(
                         .top,
                         toolbarInset,
                     )
                     .padding(
                         .bottom,
                         bottomInset,
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                        maxHeight: .infinity,
                     )
                 case _ as ReadyMadeTemplateListSuccessState:
                     ScrollView(

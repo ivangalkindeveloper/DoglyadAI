@@ -4,7 +4,7 @@ import Testing
 
 struct ModuleConfigTests {
     @Test(
-        arguments: ["scan", "scanSpeech", "templateAdd", "templateEdit", "readyMadeTemplateList", "userSettings", "settingsAI"],
+        arguments: ["scan", "scanSpeech", "templateAdd", "templateEdit", "readyMadeTemplateList", "workSettings", "settingsAI"],
     )
     func moduleSectionsAreRequired(
         section: String,

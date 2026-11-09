@@ -31,7 +31,7 @@ tags: [e2e, WebDocument]
 - assertVisible: ^Повторить$
 - tapOn: {id: bottomSheet.close}
 - assertVisible: ^Политика конфиденциальности$
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element: {text: '^Политика конфиденциальности$'}
     direction: DOWN

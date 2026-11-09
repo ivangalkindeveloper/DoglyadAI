@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-patientconsent-65ab0d7fc4
+tags:
+- atlas
+- PatientConsent
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-patientconsent-65ab0d7fc4
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-patientconsent-65ab0d7fc4
+    timeout: 15000
+- takeScreenshot: 01-PatientConsent-65ab0d7fc4

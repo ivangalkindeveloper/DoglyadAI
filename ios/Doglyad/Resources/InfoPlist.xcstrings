@@ -41,13 +41,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Required to take photos of the ultrasound examination."
+            "value" : "Required to take photos of the ultrasound examination"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Необходимо для съёмки фотографий ультразвукового исследования."
+            "value" : "Необходимо для съёмки фотографий ультразвукового исследования"
           }
         }
       }
@@ -59,13 +59,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Local network access is required to connect to a local development server."
+            "value" : "Local network access is required to connect to a local development server"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Для подключения к локальному серверу разработки требуется доступ к локальной сети."
+            "value" : "Для подключения к локальному серверу разработки требуется доступ к локальной сети"
           }
         }
       }
@@ -76,13 +76,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Required for recording voice when filling in medical research data."
+            "value" : "Required for recording voice when filling in medical research data"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Необходимо для записи голоса при заполнении данных медицинского исследования."
+            "value" : "Необходимо для записи голоса при заполнении данных медицинского исследования"
           }
         }
       }
@@ -111,13 +111,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Required for speech recognition when filling in medical research data."
+            "value" : "Required for speech recognition when filling in medical research data"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Необходимо для распознавания речи при заполнении данных медицинского исследования."
+            "value" : "Необходимо для распознавания речи при заполнении данных медицинского исследования"
           }
         }
       }

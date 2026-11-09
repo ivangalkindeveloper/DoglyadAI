@@ -262,6 +262,7 @@ def request_body() -> USReportGenerationRequest:
                     "patientName": "Synthetic Patient",
                     "patientGender": "female",
                     "patientDateOfBirth": "1991-01-01T00:00:00Z",
+                    "isPatientConsent": True,
                     "examinationDescription": "Synthetic examination.",
                 },
                 "isRecommendationsIncluded": False,

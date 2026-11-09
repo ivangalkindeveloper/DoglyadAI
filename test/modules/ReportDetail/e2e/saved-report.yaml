@@ -4,7 +4,7 @@ tags:
 - e2e
 - ReportDetail
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Рабочие настройки$
 - scrollUntilVisible:
     element:
@@ -123,7 +123,7 @@ tags:
     id: reportDetail.copy.google/medgemma-4b-it
 - assertVisible:
     id: message.success
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^История исследований$
 - tapOn: ^Regression REG-DETAIL$
 - assertVisible: ^Протокол$

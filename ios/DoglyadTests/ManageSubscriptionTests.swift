@@ -13,7 +13,7 @@
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
-                        type: .settings,
+                        type: .menu,
                     ),
                 ),
             )
@@ -37,7 +37,7 @@
             let container = ManageSubscriptionPreviewFactory.makeContainer()
             let router = DRouter(
                 initialRoute: RouteScreen(
-                    type: .settings,
+                    type: .menu,
                 ),
             )
             router.push(
@@ -90,7 +90,7 @@
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
-                        type: .settings,
+                        type: .menu,
                     ),
                 ),
                 status: ManageSubscriptionPreviewFactory.makeStatus(
@@ -158,7 +158,7 @@
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
-                        type: .settings,
+                        type: .menu,
                     ),
                 ),
             )
@@ -198,7 +198,7 @@
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
-                        type: .settings,
+                        type: .menu,
                     ),
                 ),
                 status: ManageSubscriptionPreviewFactory.status(
@@ -254,7 +254,7 @@
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
-                        type: .settings,
+                        type: .menu,
                     ),
                 ),
                 status: ManageSubscriptionPreviewFactory.makeStatus(
@@ -280,7 +280,7 @@
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
-                        type: .settings,
+                        type: .menu,
                     ),
                 ),
                 status: ManageSubscriptionPreviewFactory.makeStatus(
@@ -308,7 +308,7 @@
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
-                        type: .settings,
+                        type: .menu,
                     ),
                 ),
                 status: ManageSubscriptionPreviewFactory.makeStatus(
@@ -347,7 +347,7 @@
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
-                        type: .settings,
+                        type: .menu,
                     ),
                 ),
                 status: status,
@@ -388,7 +388,7 @@
             let container = ManageSubscriptionPreviewFactory.makeContainer()
             let router = DRouter(
                 initialRoute: RouteScreen(
-                    type: .settings,
+                    type: .menu,
                 ),
             )
             router.push(
@@ -445,7 +445,7 @@
             let container = ManageSubscriptionPreviewFactory.makeContainer()
             let router = DRouter(
                 initialRoute: RouteScreen(
-                    type: .settings,
+                    type: .menu,
                 ),
             )
             router.push(

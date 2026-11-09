@@ -2,7 +2,7 @@ appId: ${APP_ID}
 name: e2e-managesubscription-cancel-renewal
 tags: [e2e, ManageSubscription, yookassa]
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element: {text: '^Управление подпиской$'}
     direction: DOWN
@@ -20,7 +20,7 @@ tags: [e2e, ManageSubscription, yookassa]
     timeout: 30000
 - assertVisible: ^Активна$
 - takeScreenshot: ManageSubscription-renewal-disabled
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element: {text: '^Управление подпиской$'}
     direction: DOWN

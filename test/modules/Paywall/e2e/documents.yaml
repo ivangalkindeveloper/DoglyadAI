@@ -2,7 +2,7 @@ appId: ${APP_ID}
 name: e2e-paywall-documents
 tags: [e2e, Paywall, WebDocument]
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element: {text: '^Управление подпиской$'}
     direction: DOWN

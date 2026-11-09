@@ -4,7 +4,7 @@ tags:
 - e2e
 - WebDocument
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Политика\ конфиденциальности$
@@ -24,7 +24,7 @@ tags:
     speed: 100
 - takeScreenshot: WebDocument-privacy-end
 - tapOn: {id: bottomSheet.close}
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Политика\ конфиденциальности$

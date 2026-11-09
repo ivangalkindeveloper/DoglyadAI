@@ -1,0 +1,39 @@
+appId: ${APP_ID}
+name: e2e-menu-history-summary-retry
+tags: [e2e, Menu, History]
+---
+- runFlow: ../../../maestro/support/menu.yaml
+- copyTextFrom: '^Проведено медицинских исследований: [1-9][0-9]*$'
+- evalScript: ${output.originalHistorySummary = maestro.copiedText}
+- runFlow:
+    commands:
+    - launchApp:
+        arguments:
+          regressionPreview: ''
+          regressionFault: ultrasoundReportRepository.getReportsCount
+          regressionFaultModule: MenuViewModel
+          regressionFaultAfter: '0'
+    - extendedWaitUntil:
+        visible: {id: scan.settings, enabled: true}
+        timeout: 60000
+    - tapOn: {id: scan.settings}
+- assertNotVisible: ^Обновить$
+- assertNotVisible: {id: message.error}
+- assertNotVisible: '^Проведено медицинских исследований: [1-9][0-9]*$'
+- assertVisible: ^Просмотр завершённых медицинских исследований$
+- assertVisible: {text: '^История исследований$', enabled: true}
+- assertVisible: {text: '^Шаблоны протоколов$', enabled: true}
+- takeScreenshot: Menu-history-summary-unavailable
+- tapOn: ^История исследований$
+- assertVisible: {id: 'history.loadedCount.[1-9][0-9]*'}
+- tapOn: {id: navigation.back}
+- tapOn: {id: navigation.back}
+- tapOn: {id: scan.settings}
+- assertVisible: ${output.originalHistorySummary}
+- takeScreenshot: Menu-history-summary-recovered
+- tapOn: ^История исследований$
+- assertVisible: {id: 'history.loadedCount.[1-9][0-9]*'}
+- tapOn: {id: navigation.back}
+- assertVisible: ${output.originalHistorySummary}
+- tapOn: {id: navigation.back}
+- assertVisible: {id: scan.settings}

@@ -4,7 +4,7 @@ tags:
 - e2e
 - StorageClearAll
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Хранилище$
@@ -13,10 +13,10 @@ tags:
 - tapOn:
     text: ^Хранилище$
 - tapOn:
-    text: ^Очистить\ все$
+    text: ^Очистить\ все\ данные$
 - takeScreenshot: StorageClearAll-cancel-confirmation
 - tapOn: {id: bottomSheet.close}
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^История\ исследований$
 - assertVisible:

@@ -40,6 +40,7 @@ function browser({ corruptImage = false, changeManifest = false, rejectAck = fal
     fetch: async (url, options) => {
       if (controls.offline) throw new TypeError('Failed to fetch');
       assert.equal(options.headers.Authorization, 'Bearer test-token');
+      assert.equal(options.headers['X-Doglyad-Regression-Protocol'], '10');
       assert.ok(url.startsWith('http://localhost:8765/'));
       requests.push(url);
       if (url.endsWith('/manifest')) {

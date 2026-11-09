@@ -19,6 +19,12 @@ tags: [e2e, Storage, ScanSpeech]
 - assertVisible: ^Удалить модель распознавания речи$
 - takeScreenshot: Storage-speech-model-present
 - tapOn: ^Удалить модель распознавания речи$
+- assertVisible: ^Удаление модели речи$
+- takeScreenshot: StorageClearSpeechModel-confirmation
+- tapOn: {id: bottomSheet.close}
+- assertVisible: ^Удалить модель распознавания речи$
+- tapOn: ^Удалить модель распознавания речи$
+- tapOn: ^Удалить$
 - assertVisible: ^Модель удалена$
 - assertVisible: ^Настройки$
 - tapOn: ^Хранилище$

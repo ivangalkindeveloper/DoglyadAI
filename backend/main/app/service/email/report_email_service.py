@@ -17,7 +17,7 @@ from app.error import (
 )
 from app.model.email_config import EmailConfig
 from app.model.report_email import ReportEmail
-from app.model.user_settings_config import UserSettingsConfig
+from app.model.work_settings_config import WorkSettingsConfig
 from app.service.validation.text_length_validator import TextLengthValidator
 
 logger = logging.getLogger(
@@ -30,11 +30,11 @@ class ReportEmailService:
         self,
         variables: Variables,
         config: EmailConfig,
-        user_settings: UserSettingsConfig,
+        work_settings: WorkSettingsConfig,
     ) -> None:
         self._variables = variables
         self._config = config
-        self._user_settings = user_settings
+        self._work_settings = work_settings
 
     async def send(
         self,
@@ -42,7 +42,7 @@ class ReportEmailService:
     ) -> None:
         TextLengthValidator.validate(
             body.recipientEmail,
-            self._user_settings.emailMaxLength,
+            self._work_settings.emailMaxLength,
             ["body", "recipientEmail"],
         )
         sizes = [

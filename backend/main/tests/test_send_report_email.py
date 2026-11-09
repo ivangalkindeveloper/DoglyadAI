@@ -50,7 +50,7 @@ def service(
     return ReportEmailService(
         variables,
         configuration.server.email,
-        configuration.modules.userSettings,
+        configuration.modules.workSettings,
     )
 
 

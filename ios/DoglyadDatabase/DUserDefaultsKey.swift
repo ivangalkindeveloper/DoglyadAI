@@ -7,6 +7,7 @@ enum DUserDefaultsKey: String, CaseIterable {
     case recentUSExaminationTypeIds
     case selectedUSExaminationTemplateId
     case userEmail
+    case isNeedPatientConsent
     case isRecommendationsIncluded
     case isPhotoRemarks
     case isDescriptionRemarks

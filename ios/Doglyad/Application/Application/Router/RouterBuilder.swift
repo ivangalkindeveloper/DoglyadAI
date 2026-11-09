@@ -53,10 +53,10 @@ final class RouterBuilder: RouterBuilderProtocol {
                     arguments: route.arguments as! ReportDetailArguments,
                 ),
             )
-        case .settings:
+        case .menu:
             AnyView(
-                SettingsScreen(
-                    arguments: route.arguments as? SettingsArguments,
+                MenuScreen(
+                    arguments: route.arguments as? MenuArguments,
                 ),
             )
         case .settingsAI:
@@ -95,10 +95,10 @@ final class RouterBuilder: RouterBuilderProtocol {
                     arguments: route.arguments as? StorageArguments,
                 ),
             )
-        case .userSettings:
+        case .workSettings:
             AnyView(
-                UserSettingsScreen(
-                    arguments: route.arguments as? UserSettingsArguments,
+                WorkSettingsScreen(
+                    arguments: route.arguments as? WorkSettingsArguments,
                 ),
             )
         case .subscriptionRecovery:
@@ -216,6 +216,12 @@ final class RouterBuilder: RouterBuilderProtocol {
                     arguments: route.arguments as! PhotoLibraryPickerArguments,
                 ),
             )
+        case .patientConsent:
+            AnyView(
+                PatientConsentBottomSheet(
+                    arguments: route.arguments as! PatientConsentArguments,
+                ),
+            )
         case .reportReceived:
             AnyView(
                 ReportReceivedBottomSheet(
@@ -232,6 +238,12 @@ final class RouterBuilder: RouterBuilderProtocol {
             AnyView(
                 StorageClearProtocolsBottomSheet(
                     arguments: route.arguments as? StorageClearProtocolsArguments,
+                ),
+            )
+        case .storageClearSpeechModel:
+            AnyView(
+                StorageClearSpeechModelBottomSheet(
+                    arguments: route.arguments as! StorageClearSpeechModelArguments,
                 ),
             )
         case .storageClearAll:

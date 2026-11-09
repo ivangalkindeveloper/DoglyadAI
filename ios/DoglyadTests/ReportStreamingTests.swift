@@ -183,6 +183,7 @@ struct ReportStreamingTests {
                 patientName: "Synthetic",
                 patientGender: .female,
                 patientDateOfBirth: Date(),
+                isPatientConsent: true,
                 patientHeight: nil,
                 patientWeight: nil,
                 patientComplaints: nil,

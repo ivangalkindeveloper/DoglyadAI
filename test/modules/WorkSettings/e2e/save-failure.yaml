@@ -1,0 +1,56 @@
+appId: ${APP_ID}
+name: e2e-worksettings-save-failure
+tags:
+- e2e
+- WorkSettings
+---
+- runFlow: ../../../maestro/support/menu.yaml
+- tapOn:
+    text: ^Рабочие настройки$
+- tapOn:
+    text: ^regression@example.invalid$
+- eraseText: 100
+- inputText: cancelled@example.invalid
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    id: navigation.back
+- tapOn:
+    text: ^Рабочие настройки$
+- assertVisible: regression@example.invalid
+- runFlow:
+    file: ../../../maestro/support/menu-with-fault.yaml
+    env:
+      REPOSITORY_FAULT: userSettingsRepository.setUserEmail
+- tapOn:
+    text: ^Рабочие настройки$
+- tapOn:
+    text: ^regression@example.invalid$
+- eraseText: 100
+- inputText: retry@example.invalid
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- extendedWaitUntil:
+    visible:
+      id: message.error
+    timeout: 10000
+- assertVisible: retry@example.invalid
+- assertNotVisible:
+    id: message.success
+- takeScreenshot: WorkSettings-save-failed
+- tapOn:
+    text: ^Сохранить$
+- assertVisible: Настройки сохранены
+- runFlow: ../../../maestro/support/menu.yaml
+- tapOn:
+    text: ^Рабочие настройки$
+- assertVisible: retry@example.invalid
+- takeScreenshot: WorkSettings-retry-saved
+- tapOn:
+    text: ^retry@example.invalid$
+- eraseText: 100
+- inputText: regression@example.invalid
+- runFlow: ../../../maestro/support/hide-keyboard.yaml
+- tapOn:
+    text: ^Сохранить$
+- assertVisible: Настройки сохранены

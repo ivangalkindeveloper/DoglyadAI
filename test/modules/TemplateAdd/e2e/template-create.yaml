@@ -4,7 +4,7 @@ tags:
 - e2e
 - TemplateAdd
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^Шаблоны\ протоколов$
 - assertVisible: .*Тут пока нет шаблонов.*
@@ -22,7 +22,7 @@ tags:
 - assertVisible: Regression template
 - takeScreenshot: 030-TemplateList-created
 - assertNotVisible: {text: '^Regression template$', index: 1}
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Шаблоны протоколов$
 - assertNotVisible: {text: '^Regression template$', index: 1}
 - tapOn: ^Regression template$

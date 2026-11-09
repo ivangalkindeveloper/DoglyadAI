@@ -15,6 +15,7 @@ class USExaminationData(BaseModel):
     patientName: str
     patientGender: Literal["male", "female"]
     patientDateOfBirth: datetime
+    isPatientConsent: bool
     patientHeight: float | None = Field(
         default=None,
         gt=0,

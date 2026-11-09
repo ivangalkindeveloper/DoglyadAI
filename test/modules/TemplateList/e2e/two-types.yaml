@@ -2,7 +2,7 @@ appId: ${APP_ID}
 name: e2e-templatelist-two-types
 tags: [e2e, TemplateList, TemplateAdd]
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Шаблоны протоколов$
 - assertVisible: ^Retry template$
 - tapOn: ^Добавить шаблон$
@@ -37,7 +37,7 @@ tags: [e2e, TemplateList, TemplateAdd]
 - assertVisible: ^Щитовидная железа$
 - assertVisible: Retained description and conclusion
 - tapOn: {id: navigation.back}
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Шаблоны протоколов$
 - assertVisible: ^Regression bladder$
 - assertVisible: ^Retry template$

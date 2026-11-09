@@ -5,7 +5,7 @@ tags:
 - History
 ---
 - runFlow: ../../../maestro/support/generate-report.yaml
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^История\ исследований$

@@ -110,6 +110,7 @@ extension InitializationProcess {
                     let repository = process.userSettingsRepository!
                     process.initialUserSettings = try await UserSettings(
                         email: repository.getUserEmail(),
+                        isNeedPatientConsent: repository.getIsNeedPatientConsent(),
                         isRecommendationsIncluded: repository.getIsRecommendationsIncluded(),
                         isPhotoRemarks: repository.getIsPhotoRemarks(),
                         isDescriptionRemarks: repository.getIsDescriptionRemarks(),

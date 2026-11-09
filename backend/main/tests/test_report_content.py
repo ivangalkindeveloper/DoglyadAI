@@ -142,6 +142,7 @@ def _examination(
             1,
             tzinfo=UTC,
         ),
+        isPatientConsent=True,
         patientComplaints=complaints,
         examinationDescription=description,
     )

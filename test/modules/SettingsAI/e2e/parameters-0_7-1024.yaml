@@ -4,7 +4,7 @@ tags:
 - e2e
 - SettingsAI
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Настройки\ AI$
@@ -40,7 +40,7 @@ tags:
     text: ^Сохранить$
 - assertVisible:
     text: ^Настройки\ сохранены$
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Настройки\ AI$

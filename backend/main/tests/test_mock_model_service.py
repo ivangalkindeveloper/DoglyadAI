@@ -159,6 +159,7 @@ def _report_request(
                 15,
                 tzinfo=UTC,
             ),
+            isPatientConsent=True,
             examinationDescription="Test description",
         ),
         isRecommendationsIncluded=is_recommendations,

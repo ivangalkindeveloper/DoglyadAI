@@ -2,7 +2,7 @@ appId: ${APP_ID}
 name: e2e-managesubscription-background-before-revocation
 tags: [e2e, ManageSubscription]
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element: {text: '^Управление подпиской$'}
     direction: DOWN

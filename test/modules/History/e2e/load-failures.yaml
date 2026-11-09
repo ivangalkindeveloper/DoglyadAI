@@ -3,7 +3,7 @@ name: e2e-history-load-failures
 tags: [e2e, History]
 ---
 - runFlow:
-    file: ../../../maestro/support/settings-with-fault.yaml
+    file: ../../../maestro/support/menu-with-fault.yaml
     env:
       REPOSITORY_FAULT: ultrasoundReportRepository.getReports
 - tapOn: ^История исследований$

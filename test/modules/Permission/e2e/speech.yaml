@@ -22,7 +22,7 @@ tags: [e2e, Permission]
 - assertVisible: ^Предоставьте приложению разрешение на использование микрофона для записи вашего голоса и распознование речи$
 - takeScreenshot: Permission-speech-denied
 - tapOn: ^В настройки$
-# iOS 26.5 Simulator routes UIApplication.openSettingsURLString to Settings' root.
+# iOS 26.5 Simulator routes UIApplication.openSettingsURLString to Menu' root.
 - assertVisible: {id: com.apple.settings.general}
 - assertVisible: {id: breadcrumb, text: '.*Догляд AI.*'}
 - takeScreenshot: Permission-speech-system-settings

@@ -9,8 +9,8 @@
       "ios/Config/Config.Local.xcconfig": "5e6d6d7b0e53356e16eeb6d3ff08cdd319a3b02959e55ef6f2dd7bd71195a4f5",
       "ios/Config/Config.Production.xcconfig": "78e02721b45faa79cf39947413108ba17bb3ce4e051a5fbc5f364a9d0099230b",
       "ios/Doglyad/Application/Application/Analytics/AnalyticsAction.swift": "b390dc4f01e7ed512d1bd38b0709d9bb96f6451e77e7cea82aa3a6b305b45072",
-      "ios/Doglyad/Application/Application/Analytics/AnalyticsBottomSheet.swift": "02d3858723dcd1d553ea6b2cc05a560005c8deed389c35223ba2b22f6d02d0c2",
-      "ios/Doglyad/Application/Application/Analytics/AnalyticsButton.swift": "7f67c3468fb71b49ef9eb2fba67adf3dbfaeee62cb854c24cc7575b3813878ba",
+      "ios/Doglyad/Application/Application/Analytics/AnalyticsBottomSheet.swift": "12ffedb694ae12ad3126c458be06e2c134bedbf001f1f564e4c9bcdf4a321888",
+      "ios/Doglyad/Application/Application/Analytics/AnalyticsButton.swift": "655325dc91dc23d0c57cb351f187695f7811dcf1a6d649e9efa45289ce2d29f7",
       "ios/Doglyad/Application/Application/Analytics/AnalyticsDocument.swift": "6b3560706473e482355499ea23087b4c27cd1c52819d4c4fff1ad924ea0eb6e7",
       "ios/Doglyad/Application/Application/Analytics/AnalyticsEvent.swift": "881d40f32234a8ad7c483b54b3efe01fa15e42e593ed2f7406ce68c41758c940",
       "ios/Doglyad/Application/Application/Analytics/AnalyticsManager.swift": "ad211f05f611eca91f901303c3455e1f883c331ab7d8c04e4153961b53acc204",
@@ -18,7 +18,7 @@
       "ios/Doglyad/Application/Application/Analytics/AnalyticsParameters+Context.swift": "8c52c1294bbc92ecc0d58242b213b80dba774c927e247ed8e235b5be8c722160",
       "ios/Doglyad/Application/Application/Analytics/AnalyticsParameters.swift": "4a18f409aecc4880b40d23c38ed919c91c72d7c2251b69364d8dae163c31ec88",
       "ios/Doglyad/Application/Application/Analytics/AnalyticsRouteDestination.swift": "0e491f51d5dfe9f2eaab3fa707e5a3e9aee859ef93058aab53d3f0aa4a0bc4a3",
-      "ios/Doglyad/Application/Application/Analytics/AnalyticsScreen.swift": "af24f30a30220023415de1dc2458e430b95f68f6e3470c117dbb2a44251e12b1",
+      "ios/Doglyad/Application/Application/Analytics/AnalyticsScreen.swift": "26fe3ea056bea3825bb5a5ced3823aa1ee5a27b148357eff4472d7ad009e4947",
       "ios/Doglyad/Application/Application/Analytics/AnalyticsValue.swift": "3ebdcd970a3521854c7ab414e9307e4228f4ea195bca29fe9b8d46fad08d3ddb",
       "ios/Doglyad/Application/Application/Analytics/AnalyticsVoiceProposalSource.swift": "e1103e312be5c2728bb35afa79ab24af3b2d601ed8ffc0a69162a8f4ca526776",
       "ios/Doglyad/Application/Application/Application/Application.swift": "e859c0557d8eb65ad7837019acded6297f5226e8855e3b7525a3d1483476bb0d",
@@ -48,7 +48,7 @@
       "ios/Doglyad/Application/Application/Error/ViewModel/State/ErrorRootUnknownErrorState.swift": "40428b4c637ddb04e2d14b5d31f85c22ba58771dcacc554e58fb48e0d657e250",
       "ios/Doglyad/Application/Application/L10N/L10N.swift": "6946c99ab63896ceaf7327a153d83ba55f2db6303e5b7410c2e6a4dd1e202c54",
       "ios/Doglyad/Application/Application/L10N/L10NError.swift": "ce723571971dfcd103e25180cee3fc2adbc3ddff458387512b64f67670b7c465",
-      "ios/Doglyad/Application/Application/L10N/L10NKey.swift": "ae35c7ab649493f3637c496b4364b8ff67ac90ba5368c94fe46a94e5ce9b74d9",
+      "ios/Doglyad/Application/Application/L10N/L10NKey.swift": "ff986c7a79fe6fee0e83ae84b7f3bab9c3fe88fd6ab6eb59ada866720242cd3c",
       "ios/Doglyad/Application/Application/L10N/L10NParameter.swift": "dce4a17f296c65d458e3ee9992dece98dc9ec87d450a3acdc94a1a885a135114",
       "ios/Doglyad/Application/Application/Main/MainRootView.swift": "1c446cc181a114e9172386d050e62702e5b6b5382decfb04a085cf05e43a615a",
       "ios/Doglyad/Application/Application/Main/ViewModel/MainRootViewModel.swift": "d189f9ea53ac57a349d034615be5b8bfb8cb2c1b200bd411b76d73c45bdfef1a",
@@ -57,9 +57,9 @@
       "ios/Doglyad/Application/Application/Manager/ConnectionManager.swift": "d5d4abd0454de1c433c4eda8be095602a20f093ab78eaa7a5245ef9e211b56c7",
       "ios/Doglyad/Application/Application/Manager/PermissionManager.swift": "0187c1f300fc40716d7dd91067663c215907904875816e08ac1ff3ffbf69bad3",
       "ios/Doglyad/Application/Application/Router/DRouter.swift": "8957166c81b5bef99189e016abef98fdc87a0b353b355de7298cda5e186d6de0",
-      "ios/Doglyad/Application/Application/Router/RouteType.swift": "9f33fc59d885d998d0e1dd6ade5f91111ce07cb08220af63e864c06219bcb33a",
-      "ios/Doglyad/Application/Application/Router/RouterBuilder.swift": "e73f894035c36add136e7dbba8a8d867bdb1dd0cf9de34a29fa0a4350deba980",
-      "ios/Doglyad/Application/Application/View/EmptyTemplatesBodyView.swift": "73c1e12ea5b7d9e94d7a4b7ae5608a192080e702da6b0bb2013856b40624eeac",
+      "ios/Doglyad/Application/Application/Router/RouteType.swift": "0ca03c36756326b7992983ae638eebb97389698f9fd8ea743ec7efa38455ce54",
+      "ios/Doglyad/Application/Application/Router/RouterBuilder.swift": "98101e9091c580012331b2bed7dda11be4d3939fe0559a88e954e86de803a07c",
+      "ios/Doglyad/Application/Application/View/EmptyTemplatesBodyView.swift": "041f2c38c11e3a91d90dae48264274f1fe498e803d74453e319a9af926d5f8e6",
       "ios/Doglyad/Application/Application/View/ErrorBodyView.swift": "a811ba1405d37233558b9cf6305f47636c194e9b62eac631ddaac6ce42f3a470",
       "ios/Doglyad/Application/Application/View/ErrorPaginationView.swift": "0f582a83596c593c3706c758ed68eca428c972ed0144550bcde0f29a00f64bcc",
       "ios/Doglyad/Application/Application/View/ExpandableContentView.swift": "4be7e5f5b1ec3e13e8c9a9bcb586ca515f68177cdec67c4d7d9d431834fcaac7",
@@ -89,10 +89,10 @@
       "ios/Doglyad/Application/Application/ViewModel/Subscription/SubscriptionRootViewModel.swift": "f5ed9eed6622ee14d05caed173542497d701bd4ead858ff3c62823d1f53c0e43",
       "ios/Doglyad/Application/Application/ViewModel/Ultrasound/State/UltrasoundRootInitialState.swift": "76b834c2d862f06b906b0c1cc91f68296c08ae9b2979cf60744f0c7948af3f99",
       "ios/Doglyad/Application/Application/ViewModel/Ultrasound/State/UltrasoundRootStateProtocol.swift": "0c55ee5d8b4a9691e64eec59831de43d5c9296b8cbc822cb4a659436acd43169",
-      "ios/Doglyad/Application/Application/ViewModel/Ultrasound/UltrasoundRootViewModel.swift": "440ac063b29c5c9322c81cbe835052bd452e6ecc6ff7bd1e7a1d9e8206b324dc",
+      "ios/Doglyad/Application/Application/ViewModel/Ultrasound/UltrasoundRootViewModel.swift": "f469df97596e62582c8d9c71bd118575742230c45170e4c314fe812df55a4848",
       "ios/Doglyad/Application/Module/About/AboutArguments.swift": "50b427670d91989f66b21263eb51153902b7ce99e9170f309713070aa67d0013",
       "ios/Doglyad/Application/Module/About/AboutBottomSheet.swift": "1878e7549abddc6cf0538412128ae8c9a39d307235f96b431f03f11108bcc126",
-      "ios/Doglyad/Application/Module/About/AboutBottomSheetView.swift": "1ac8b149696d5c00cfcf2d80446a470f122369d7050157690991d793dbeed1a9",
+      "ios/Doglyad/Application/Module/About/AboutBottomSheetView.swift": "a4ea7fea1ea9825cafdd0030814173e14d0ea49aa59a11588ab34967cd5e5ac1",
       "ios/Doglyad/Application/Module/About/Preview/AboutPreview.swift": "1ff831321fb004270254d3516bcd6567f40fa769cb1f4d8ca6995c5858f40825",
       "ios/Doglyad/Application/Module/About/Preview/AboutPreviewView.swift": "1669d63b79c3fa7ad43392ec820481445cb4b73559afa0e7ad4b1fa600fd4ce0",
       "ios/Doglyad/Application/Module/About/ViewModel/AboutViewModel.swift": "7b5ca2d04bc15733ab09ee4b52d3bb2c231561c87998fb95f2df42b2b518a21d",
@@ -141,6 +141,14 @@
       "ios/Doglyad/Application/Module/LimitExceeded/ViewModel/RequestLimitExceededViewModel.swift": "e1699ab3af3309e3ef9fbc41e26e02c8c0529807ce56ccb618e3b2a5bdc58ea1",
       "ios/Doglyad/Application/Module/LimitExceeded/ViewModel/State/RequestLimitExceededDefaultState.swift": "e58748bf852c24ac7d98aa74b72400ae18cb14f204c52d4747a93b82647f2deb",
       "ios/Doglyad/Application/Module/LimitExceeded/ViewModel/State/RequestLimitExceededStateProtocol.swift": "c54d6534058019db625b9193a2ebdc6279e94c3f8ed104abc944727f2f83287b",
+      "ios/Doglyad/Application/Module/Menu/MenuArguments.swift": "3b0063f7def25575ee2e5a4a235f9b99a163e00b04c6777598f5b7634204f1c8",
+      "ios/Doglyad/Application/Module/Menu/MenuScreen.swift": "c529237e4421dc5be4a4b7a4132808fc7e78af678dc10349ac9c97bd13b9e95d",
+      "ios/Doglyad/Application/Module/Menu/MenuScreenView.swift": "75967b4dc69a9a0e90a99040880122dd8b6cf5cdf12cd872555f8a67ea1c3002",
+      "ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift": "1e1ad463d2dc737e04f2e78292982442309ee76a21ddc6c5ce5155f63c54c85d",
+      "ios/Doglyad/Application/Module/Menu/Preview/MenuPreviewView.swift": "da2561a8b68314562135d0ef038a83e67aab7d2371e001e911d71d14f03b7a42",
+      "ios/Doglyad/Application/Module/Menu/ViewModel/MenuViewModel.swift": "2c2d8aef30697c68c4d689b21a88fe864c61a94fb3766738fa83ac71cdbefb24",
+      "ios/Doglyad/Application/Module/Menu/ViewModel/State/MenuContentState.swift": "aeb68d50f4aa806f5340fc19573e1dbe782d56cec9677ff873001f8e03a0ee14",
+      "ios/Doglyad/Application/Module/Menu/ViewModel/State/MenuStateProtocol.swift": "158f80a5bf7248f48884fa0f2daf93b901e62c0609651a2e3aba4190ee36404b",
       "ios/Doglyad/Application/Module/NewVersion/NewVersionArguments.swift": "d845c1c6b3f811a7b268d70f1cb5a6e6d7858a6aff2ffd73265d0c328639116a",
       "ios/Doglyad/Application/Module/NewVersion/NewVersionScreen.swift": "3822e5181e3601ad79e250590add816b79a2051b960d9181556dfb69768d23dd",
       "ios/Doglyad/Application/Module/NewVersion/NewVersionScreenView.swift": "e16bc6783dfb429ec3e7898681f02a57661107bc09aaf22c59dc689b31bd7f4f",
@@ -167,6 +175,15 @@
       "ios/Doglyad/Application/Module/OnBoarding/ViewModel/State/OnBoardingLoadingState.swift": "692593d9875fb5050b50840de8789e13102849b8862a7222fb12a06226f27d85",
       "ios/Doglyad/Application/Module/OnBoarding/ViewModel/State/OnBoardingSecondState.swift": "5274e8c644bd319a4261084bfe0b65460fa80348c2f7bced7249262f7a317bb5",
       "ios/Doglyad/Application/Module/OnBoarding/ViewModel/State/OnBoardingStateProtocol.swift": "660c918f22b2c461240bd7084a9c4ac25599b10e5b2d086caa7ee42aa9fcdf52",
+      "ios/Doglyad/Application/Module/PatientConsent/PatientConsentArguments.swift": "9aa5459f926ee70734a4f52b94c243320f54c5155c03dbebda937d156f2b5c85",
+      "ios/Doglyad/Application/Module/PatientConsent/PatientConsentBottomSheet.swift": "29939124e22d1654fa22fad5a54724f784be465827a58cc615200603879e7485",
+      "ios/Doglyad/Application/Module/PatientConsent/PatientConsentBottomSheetView.swift": "02ba19cdfcfa24899c134d6df92f24979bc2d066a4b3d80473a94554238a4162",
+      "ios/Doglyad/Application/Module/PatientConsent/PatientConsentCheckboxView.swift": "f810aaf6af70edc95c142bc05161e8db4e78a1d8d612266f3b37036465b27fc0",
+      "ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift": "1d42f522367bad16c4328b215cbd800654ee16e20ab632ed3e7d5dc455d9dfbf",
+      "ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreviewView.swift": "973bee1d72763b5776c7459960109d586d5d243cc668f6036f2b09263e9e24a6",
+      "ios/Doglyad/Application/Module/PatientConsent/ViewModel/PatientConsentViewModel.swift": "6e0ccd9eeb74f73eceff1d057f4a35aaf816def428c053ea1c7766a82644f2ee",
+      "ios/Doglyad/Application/Module/PatientConsent/ViewModel/State/PatientConsentInitialState.swift": "1402b2ae578e4295b2899c07ed5934644ca0d7573f9df93b616a80a1be7d2aa3",
+      "ios/Doglyad/Application/Module/PatientConsent/ViewModel/State/PatientConsentStateProtocol.swift": "b62820ee1e1c68fbddc173c3f645b79da90f8936f58e898c75be7002d44d2377",
       "ios/Doglyad/Application/Module/Permission/Library/PhotoLibraryPickerArguments.swift": "072a7e1426815499d0ca921f48527e7e0797f8d7b2e45a40da4c9bbc7b7617ce",
       "ios/Doglyad/Application/Module/Permission/Library/PhotoLibraryPickerBottomSheet.swift": "a36daaea50a84089a4c7cb8e3ceebc6570265c01b2b30635ca6290d75402c929",
       "ios/Doglyad/Application/Module/Permission/Library/PhotoLibraryPickerBottomSheetView.swift": "d27c859bcdc6caf7771cf045db7fd7a7b23eed686bef2d859e052d53f6e021fe",
@@ -250,7 +267,7 @@
       "ios/Doglyad/Application/Module/Scan/Scan/ScanSpeechStateButtonView.swift": "29e476216cc18fe840b31ea79d3b77b4541415325c7915d09b7fbf5fc3829bdc",
       "ios/Doglyad/Application/Module/Scan/Scan/ScanTemplateCardView.swift": "3e367f0b958e9ac4df77ac05c91d667ecbbd2ae34ee758f540ed4bef10aafe1d",
       "ios/Doglyad/Application/Module/Scan/Scan/ViewModel/ScanFocus.swift": "f5709d34d2ee47a74dedbc34743f46ae00f60f9675ac0cc6f1a0ab05224a2b42",
-      "ios/Doglyad/Application/Module/Scan/Scan/ViewModel/ScanViewModel.swift": "155f503768604f9b059d0fdcd9111cbda358212d3167a8e38515eac45634df90",
+      "ios/Doglyad/Application/Module/Scan/Scan/ViewModel/ScanViewModel.swift": "245789aceb04549c82b657acb3161b8063c1e686a5a91161cf545c333f832ebc",
       "ios/Doglyad/Application/Module/Scan/Scan/ViewModel/State/ScanErrorState.swift": "2630a164d0dfb78737e2c2e19267f42c3bf01fe114cec23785cc9b9ed551bf02",
       "ios/Doglyad/Application/Module/Scan/Scan/ViewModel/State/ScanGenerationLoadingState.swift": "093c2ebdcba34d6b2f359dd5709848236d33a80256fe82502db439fed66efb2b",
       "ios/Doglyad/Application/Module/Scan/Scan/ViewModel/State/ScanInitialState.swift": "cd99371bbfe52188c70f075a3d03b823f25998f8260b1701631b7b51dfb8bf6f",
@@ -357,24 +374,16 @@
       "ios/Doglyad/Application/Module/Select/SelectUSExaminationType/ViewModel/SelectUSExaminationTypeViewModel.swift": "2d1dff707b684b1bf14de821535f8ad8fa7301f3cc821eba5af5d4c822ea546b",
       "ios/Doglyad/Application/Module/Select/SelectUSExaminationType/ViewModel/State/SelectUSExaminationTypeContentState.swift": "e581bfb7a2d568576e308a66ae9e3a3b51d8b544c1d951e523d58e06a959f61b",
       "ios/Doglyad/Application/Module/Select/SelectUSExaminationType/ViewModel/State/SelectUSExaminationTypeStateProtocol.swift": "4bd35533d2b175ddc2db1c70a0742f966008e0dd9bce6d66fd66b0a1937b4a68",
-      "ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift": "c08c804ada5ab58fd57460dc79ba5decb4cc6dfb750d283ccdd4601fbd0cda62",
-      "ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreviewView.swift": "c9b2ac7d12f61ba21762cc98af0dc300f1425acbeed46643bb7f6458e56be216",
-      "ios/Doglyad/Application/Module/Settings/Settings/SettingsArguments.swift": "4fe2356d1f787742c5b245a8c279225f8578dca770a7f618082e71300bfc0a84",
-      "ios/Doglyad/Application/Module/Settings/Settings/SettingsScreen.swift": "501c5e2e728e280a10fd196156ec1be3a94c00e1f0047a7917a50ada5dc26d06",
-      "ios/Doglyad/Application/Module/Settings/Settings/SettingsScreenView.swift": "b91324510f913f1620a0fde00f3f2b11de5cba4a447ab49d36c55cd5a6d1b3d9",
-      "ios/Doglyad/Application/Module/Settings/Settings/ViewModel/SettingsViewModel.swift": "52e53ae1ccde9d3cbe9337075216885bad0d33f95a97e90dd5bfefef5ed3f67f",
-      "ios/Doglyad/Application/Module/Settings/Settings/ViewModel/State/SettingsContentState.swift": "ca7377b834e47bd5e0ab39bbdd9ce2d9e4772601be9a8e0d76b272aa03c493e9",
-      "ios/Doglyad/Application/Module/Settings/Settings/ViewModel/State/SettingsStateProtocol.swift": "9ea6ae5f5869b0ac3172398f653572b440289f83575222eaf8756764c0fb6ada",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift": "02284ad73de117a22c067191406c6240ff477393089abd8bd667233e9241527d",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreviewView.swift": "8f2b1f75aa136e9677fd17b56c76e9ecd901ec1566985a6386a20e05f2941380",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/SettingsAIArguments.swift": "0df4e69fb91a91f1a4aa37e630413865f9c27d0f014731fa5f3021969c6b4a55",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/SettingsAIScreen.swift": "da9c95f4c1a411e4f8eff90ccead4766dbe066cc9277615b02fd91b1f9dc9962",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/SettingsAIScreenView.swift": "313d0095240d5e2e4e0361c6614e2552cf010c5b58279d525bde6fac5f3d83ca",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/ViewModel/SettingsAIFocus.swift": "270d206881bd76ca3a1e532654993272ca0cc8cdc4cf45110a7d97d765755538",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/ViewModel/SettingsAIViewModel.swift": "498307662fb990e87d16a4e06939bee4949c199efdcc3bdc4b1c89f97ea02cca",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/ViewModel/State/SettingsAIErrorState.swift": "ad6d2c378597ef094b320eb15673a7c128647fd2eb3d2ed0727a3f316375620a",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/ViewModel/State/SettingsAIInitialState.swift": "ec75f55f988edf0038d031e55d714781ddc31a4368d9ba3f1173e727d7a1a603",
-      "ios/Doglyad/Application/Module/Settings/SettingsAI/ViewModel/State/SettingsAIStateProtocol.swift": "276e35536604fe9a5d2d1ec9bb5ded8455090ca71bf7efc8f941f40162c1a8f4",
+      "ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift": "02284ad73de117a22c067191406c6240ff477393089abd8bd667233e9241527d",
+      "ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreviewView.swift": "8f2b1f75aa136e9677fd17b56c76e9ecd901ec1566985a6386a20e05f2941380",
+      "ios/Doglyad/Application/Module/SettingsAI/SettingsAIArguments.swift": "0df4e69fb91a91f1a4aa37e630413865f9c27d0f014731fa5f3021969c6b4a55",
+      "ios/Doglyad/Application/Module/SettingsAI/SettingsAIScreen.swift": "da9c95f4c1a411e4f8eff90ccead4766dbe066cc9277615b02fd91b1f9dc9962",
+      "ios/Doglyad/Application/Module/SettingsAI/SettingsAIScreenView.swift": "313d0095240d5e2e4e0361c6614e2552cf010c5b58279d525bde6fac5f3d83ca",
+      "ios/Doglyad/Application/Module/SettingsAI/ViewModel/SettingsAIFocus.swift": "270d206881bd76ca3a1e532654993272ca0cc8cdc4cf45110a7d97d765755538",
+      "ios/Doglyad/Application/Module/SettingsAI/ViewModel/SettingsAIViewModel.swift": "498307662fb990e87d16a4e06939bee4949c199efdcc3bdc4b1c89f97ea02cca",
+      "ios/Doglyad/Application/Module/SettingsAI/ViewModel/State/SettingsAIErrorState.swift": "ad6d2c378597ef094b320eb15673a7c128647fd2eb3d2ed0727a3f316375620a",
+      "ios/Doglyad/Application/Module/SettingsAI/ViewModel/State/SettingsAIInitialState.swift": "ec75f55f988edf0038d031e55d714781ddc31a4368d9ba3f1173e727d7a1a603",
+      "ios/Doglyad/Application/Module/SettingsAI/ViewModel/State/SettingsAIStateProtocol.swift": "276e35536604fe9a5d2d1ec9bb5ded8455090ca71bf7efc8f941f40162c1a8f4",
       "ios/Doglyad/Application/Module/Share/Preview/SharePreview.swift": "4021145c6404507361a36f1bd93dae4f21ad3a50124d7ec4749521f878e83ae6",
       "ios/Doglyad/Application/Module/Share/Preview/SharePreviewView.swift": "808ffb86b048998b857949bd8f13a10c498f54a92f9e9cb404c85ceea07b0647",
       "ios/Doglyad/Application/Module/Share/ShareActionsView.swift": "4734277da3952639826a182e59c01dafd7999b768d80694148516305e5e336be",
@@ -396,7 +405,7 @@
       "ios/Doglyad/Application/Module/Storage/Storage/ViewModel/State/StorageErrorState.swift": "87fe7a7d36251358ac72eef47cd5c887776a29299d42d583ef89101d098d3598",
       "ios/Doglyad/Application/Module/Storage/Storage/ViewModel/State/StorageInitialState.swift": "84b60528a3a3428e056827f39517bb3eef2f241eb3f39f1edc06e9aca4dbf794",
       "ios/Doglyad/Application/Module/Storage/Storage/ViewModel/State/StorageStateProtocol.swift": "821477ce1b31e10aa858a498f50d7753a25db4f10c8ddb1049b225e6feda2f59",
-      "ios/Doglyad/Application/Module/Storage/Storage/ViewModel/StorageViewModel.swift": "645e7aa3f42109668b050b56b1b47becf54fb477be709fa80db238cda51d58ca",
+      "ios/Doglyad/Application/Module/Storage/Storage/ViewModel/StorageViewModel.swift": "8da33bd21b7b2bbecc7b9d5b4a6801ea7c31bbf9dfef6c428af6ebb8ac806884",
       "ios/Doglyad/Application/Module/Storage/StorageClearAll/Preview/StorageClearAllPreview.swift": "cd88e0e258c9a601a7c17753f4befbcf1ed3a68314dd97f17a5e6ca2c8cedef5",
       "ios/Doglyad/Application/Module/Storage/StorageClearAll/Preview/StorageClearAllPreviewView.swift": "d2b655b5a83a2ac9e17dac731c729e033e5c8d91586285651c216ca0c40e5284",
       "ios/Doglyad/Application/Module/Storage/StorageClearAll/StorageClearAllArguments.swift": "0d4f1aa5bff930f3562443c8e43dc36b1a89227ff567a75adc39afa00647e3c5",
@@ -409,10 +418,18 @@
       "ios/Doglyad/Application/Module/Storage/StorageClearProtocols/Preview/StorageClearProtocolsPreviewView.swift": "9dd434e1b97ca664147a12b1a7c84cd8fa1e444355fe46f08881d325703e33cb",
       "ios/Doglyad/Application/Module/Storage/StorageClearProtocols/StorageClearProtocolsArguments.swift": "0667d9f559de83b66ed34da3db678469ff8da58dfd53319ba27bb1d26d7654d1",
       "ios/Doglyad/Application/Module/Storage/StorageClearProtocols/StorageClearProtocolsBottomSheet.swift": "21cb759795ab6e2846b9d4119c80d4d1cfc54bce8a9976247ecd26f9e6bcb3bc",
-      "ios/Doglyad/Application/Module/Storage/StorageClearProtocols/StorageClearProtocolsBottomSheetView.swift": "5d28d029bb0498ef1dbaed498cd9e5a7d7599ab97695c037afec42fc70a28bbc",
+      "ios/Doglyad/Application/Module/Storage/StorageClearProtocols/StorageClearProtocolsBottomSheetView.swift": "898256ce689ef06b22bad01779d2a79d4ce3dfa572a8577592c6af1032887739",
       "ios/Doglyad/Application/Module/Storage/StorageClearProtocols/ViewModel/State/StorageClearProtocolsDefaultState.swift": "962fbfec28d6b50ed2b7a335e40147fb65fccaa6f4a961b4d7b5d50699d1bc25",
       "ios/Doglyad/Application/Module/Storage/StorageClearProtocols/ViewModel/State/StorageClearProtocolsStateProtocol.swift": "a72c013d9dbd4626182ff61bf25aa0b5ed355bbdf47ac8d96b99c689bc7ab868",
       "ios/Doglyad/Application/Module/Storage/StorageClearProtocols/ViewModel/StorageClearProtocolsViewModel.swift": "00a354a195361cdd7dfd3a550fd32b48a10c1e2cdfc4eae21f78cc3dff6fd5dc",
+      "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/Preview/StorageClearSpeechModelPreview.swift": "81575313f9fe1491bbc0c72eab50d1fc90c8099e47130574e9b28da36d888f61",
+      "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/Preview/StorageClearSpeechModelPreviewView.swift": "3773752d9ebda5e8012b374c50004989f392faedef696444da7843dd4d9723ad",
+      "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/StorageClearSpeechModelArguments.swift": "ec9b18e1f365f7333486243019098244fe331298e469b400a086b4ebc2df8429",
+      "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/StorageClearSpeechModelBottomSheet.swift": "d4c5409476c9a57534671297b92e5ade19554b4f3b9ff56deb1e130d20cfa7a9",
+      "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/StorageClearSpeechModelBottomSheetView.swift": "fc7d2d71d314788c9b624aa06a1fd55d6e979b11aeab67ffa5069668796d3c12",
+      "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/ViewModel/State/StorageClearSpeechModelDefaultState.swift": "f245603ac1d9d7c4c30aa0e659d94089e4f962bbd0221d51e58fc2aa38478725",
+      "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/ViewModel/State/StorageClearSpeechModelStateProtocol.swift": "416611b78d6defbd9bbc8f41c1acd585873a589c86fb9befd8f20576fe4bdca3",
+      "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/ViewModel/StorageClearSpeechModelViewModel.swift": "8004eed63e067b379aed5cb3a34402d6258daf62d76f47d79abaa3d58971babd",
       "ios/Doglyad/Application/Module/Subscription/ManageSubscription/ManageSubscriptionActionsView.swift": "24ac32c5dd9314ddc7890e06c08487ce3929b9e9bfeed16ee98c7b72aed6c1a2",
       "ios/Doglyad/Application/Module/Subscription/ManageSubscription/ManageSubscriptionArguments.swift": "d9a73d72bd34e3f545f61f81ad9259d710835c6082a1c43d4638034b990c124d",
       "ios/Doglyad/Application/Module/Subscription/ManageSubscription/ManageSubscriptionBottomView.swift": "06b941d826efc8c564fa0b973fde416698218ea9791c7736fa7b099463da5461",
@@ -492,7 +509,7 @@
       "ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/ReadyMadeTemplateListItemCardView.swift": "ed101391e89ce4dd927d893a2e832f14684c8a67b341074a69196c40f4b68754",
       "ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/ReadyMadeTemplateListLoadingCardView.swift": "f80c9d5c4a810c058ef0e4469b538b9bef48b4f463580fc3b0d19b258771d893",
       "ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/ReadyMadeTemplateListScreen.swift": "c7d373fff5afb95523596605628f005e3a4bcfb997bcf5f00d4844505940d27d",
-      "ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/ReadyMadeTemplateListScreenView.swift": "cd247eb056f67653861b05b9fcd3071db41f1a00974a5c8166e6097a4745aa96",
+      "ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/ReadyMadeTemplateListScreenView.swift": "2b32111ab74f37d91935212a6f30dac368e83454e2ea17baaaad9c11f45d88f0",
       "ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/ReadyMadeTemplateListSearchView.swift": "b7984c5bfaff56011367298588693a9ef712d3dca453250a6c531c9d775fe368",
       "ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/ViewModel/ReadyMadeTemplateListFocus.swift": "a5dea6163fb242f3f7e21e46db6f7f268357394bd4ffc40f7c686a2177518c16",
       "ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/ViewModel/ReadyMadeTemplateListViewModel.swift": "cd35f790cdff1eb7205e259fa95a13e88c799bdc1e75a2b00eff7b0c3d24e06d",
@@ -534,7 +551,7 @@
       "ios/Doglyad/Application/Module/Template/TemplateList/Preview/TemplateListPreviewView.swift": "3ccd6cbdc9aa1789281ba067d3f420d44574d389f388512d4fa62315de75bc08",
       "ios/Doglyad/Application/Module/Template/TemplateList/TemplateListArguments.swift": "6b5c14ee4579b9e8392d2cc888c720fe530faedbdfaa38db93681c288bb95e2d",
       "ios/Doglyad/Application/Module/Template/TemplateList/TemplateListBottomView.swift": "4802f2c33633f8bc037c26273a2ff262ae3233eea039a6dc8614d473f6303564",
-      "ios/Doglyad/Application/Module/Template/TemplateList/TemplateListEmptyView.swift": "aeb4d2e1a5e11ea55b7eefcbcbc7ada7511fcddb24f260dbf7e7b0069ad049c2",
+      "ios/Doglyad/Application/Module/Template/TemplateList/TemplateListEmptyView.swift": "54397cc33414fe7d0ab76f40378a69dc87a5d4b7c66932222a54293edf2a1941",
       "ios/Doglyad/Application/Module/Template/TemplateList/TemplateListLoadingCardView.swift": "1b4fdefcd9bb874d5dcb4771c19ec9974bdf1cea9bdbbce7549d91c041073bb9",
       "ios/Doglyad/Application/Module/Template/TemplateList/TemplateListScreen.swift": "8da13f2d5aa6badede05b8cd744c6c7384f641622e3b185450267eee205cda7d",
       "ios/Doglyad/Application/Module/Template/TemplateList/TemplateListScreenView.swift": "977f0b822b357b1c16027eed5231f03f4645399439153b271ed4f7a57b88d233",
@@ -544,16 +561,6 @@
       "ios/Doglyad/Application/Module/Template/TemplateList/ViewModel/State/TemplateListInitialState.swift": "71cdc298167dd021f56953b3bcdedd18a00818f2ca78e5162cc813b60ecba713",
       "ios/Doglyad/Application/Module/Template/TemplateList/ViewModel/State/TemplateListStateProtocol.swift": "b9a4fa49b499bbfb9173c1871541bcc64c80c9fc5cbf74e829cacb5522c3538e",
       "ios/Doglyad/Application/Module/Template/TemplateList/ViewModel/TemplateListViewModel.swift": "9e9913753cfc9aebe2f616280e11a018f1c8dee3826f0984a4f9477c2085fe50",
-      "ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift": "b158e1c2a7dec8e0a08559585642df0cb6d16fdee42bb70e31b587917c2cffce",
-      "ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreviewView.swift": "3f5fc3e29a5f7ce660feca59af24d651db009d4a235e9180c71770d516f35b04",
-      "ios/Doglyad/Application/Module/UserSettings/UserSettingsArguments.swift": "16f87889773a21db64ec748fa8881124ecec50822e9546f1a6d7d5b8ca7815c6",
-      "ios/Doglyad/Application/Module/UserSettings/UserSettingsScreen.swift": "d1258c8174ebbbd10c5807fb5654af01e5c0340168eab2e293d163b4e18d8b74",
-      "ios/Doglyad/Application/Module/UserSettings/UserSettingsScreenView.swift": "7e81bc7ff6c6b96938f87e1e45e1b623f2e06343c1480725b650a08b7b1ad7fd",
-      "ios/Doglyad/Application/Module/UserSettings/ViewModel/State/UserSettingsErrorState.swift": "923c0865d197a351a2c83cb21b903cafd9d4ab8e9af60728f4519439ecf4d9ae",
-      "ios/Doglyad/Application/Module/UserSettings/ViewModel/State/UserSettingsInitialState.swift": "25aa12397c76a01c0224b4e8a035e7a705e1d628b9fea889348c8db48627ebed",
-      "ios/Doglyad/Application/Module/UserSettings/ViewModel/State/UserSettingsStateProtocol.swift": "ffd313cc7baed9b0c77973b93c902b21ef98c2ad485531310bb51bedeb03f119",
-      "ios/Doglyad/Application/Module/UserSettings/ViewModel/UserSettingsFocus.swift": "87ea6fcbe1fdea4193c2bc17b06c73008769efc3fbb641420a81c0930b11aef5",
-      "ios/Doglyad/Application/Module/UserSettings/ViewModel/UserSettingsViewModel.swift": "0aa40a4e5a0585405ef5104daee3c9c568a9ebf0ece87ecea94b7176a7179aad",
       "ios/Doglyad/Application/Module/WebDocument/Preview/WebDocumentPreview.swift": "1e390dc12ea37ccfe90992d913660f7cc53236d4164a5e36f4079b29ae1ebc77",
       "ios/Doglyad/Application/Module/WebDocument/Preview/WebDocumentPreviewDocument.swift": "5906d8b8b4f80df7aede17f97c9ff2f06c8c896bdeaab7b35c34ecd25be612c1",
       "ios/Doglyad/Application/Module/WebDocument/Preview/WebDocumentPreviewView.swift": "a3c199d084d2c88f1223f0c4d7b5326e84a937278474796cfccba5b60f0600ce",
@@ -568,6 +575,16 @@
       "ios/Doglyad/Application/Module/WebDocument/WebDocumentBottomView.swift": "20c846251ebc7436445e96caedf57f79a1b639005948449c965d0640f84c0087",
       "ios/Doglyad/Application/Module/WebDocument/WebDocumentContentView.swift": "5e3276259670b6d1779a4b5faf48077f7220dcb5d580fc2b6fe1c8ba95d7f7b5",
       "ios/Doglyad/Application/Module/WebDocument/WebDocumentWebView.swift": "e6a437de344ce966264f7d5829f542f89d1f15c658829cf167a4b0ccfcab5864",
+      "ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift": "b502559d3022ba71f3a0c623430cefa21db4987266aa0340b211429e442fe9a5",
+      "ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreviewView.swift": "31c2c8ab8b0e017c1451d3da41147d6392ddb80afdc007f10abbc1d5923ab517",
+      "ios/Doglyad/Application/Module/WorkSettings/ViewModel/State/WorkSettingsErrorState.swift": "a318e3b57bbb7b6afff1ea4f7690e29cd751ad8bf6cb194a926eb2a94a137cb9",
+      "ios/Doglyad/Application/Module/WorkSettings/ViewModel/State/WorkSettingsInitialState.swift": "194b026be9db2a31445411cbfbd684d204b54e6263b4bcbfea4c300c6e3b9c07",
+      "ios/Doglyad/Application/Module/WorkSettings/ViewModel/State/WorkSettingsStateProtocol.swift": "6d8811d3d608d1036edda062f07047491cb2e97d8704cfa3dfc1b38809cd2580",
+      "ios/Doglyad/Application/Module/WorkSettings/ViewModel/WorkSettingsFocus.swift": "51b0dc5a3a3ed5e8d0559d48279f75f386c2f7eb14e6b0f9c09d7223e5a3f4ab",
+      "ios/Doglyad/Application/Module/WorkSettings/ViewModel/WorkSettingsViewModel.swift": "58e8267e5efff1d603143eef41f83061b8d990c7b9177bf244889dfa808c1bb6",
+      "ios/Doglyad/Application/Module/WorkSettings/WorkSettingsArguments.swift": "c3a80c6d99857a5e9992b3aae23fb9587ac7c36a2e0caf5232efb8fdb3671718",
+      "ios/Doglyad/Application/Module/WorkSettings/WorkSettingsScreen.swift": "5f9e5a6183bb30f7512c0857cbfd5152fb4f6e4014df1b75c7dc7380c3f7e1a8",
+      "ios/Doglyad/Application/Module/WorkSettings/WorkSettingsScreenView.swift": "780488c8a58f740212507083776b723e86a5963c308d4ac6db488a8c5093dffb",
       "ios/Doglyad/Core/DependencyContainer.swift": "1e17d22d8ccaad67fc326021b39d5e91d7b24549e716351755525ab132045e94",
       "ios/Doglyad/Core/Environment/Environment.swift": "27cf51e05f37bcc3eebd2cfd3b313b4c039437fd2a2475796d63914d0ce2d058",
       "ios/Doglyad/Core/Environment/EnvironmentProtocol.swift": "331571dcdec3c8c8d4e93173c34e50ba83f5ef44f9fb5ae0fbafbd98bd75b1d6",
@@ -580,7 +597,7 @@
       "ios/Doglyad/Core/Initialization/Steps/InitializationStepsTier2.swift": "abace063bcd70f49429582c10ca86968c8b3c8634edfe11e77fd3fa2622bad55",
       "ios/Doglyad/Core/Initialization/Steps/InitializationStepsTier3.swift": "ec9ba79a44a114ec1191ef4d9748939658a1cdd573226952362be86e07defee9",
       "ios/Doglyad/Core/Initialization/Steps/InitializationStepsTier4.swift": "92830831327540516d50db6f547339fd0eac40d5717e119b9589eea0d979a42d",
-      "ios/Doglyad/Core/Initialization/Steps/InitializationStepsTier5.swift": "df7c6907721fc3705dfde102545fff2f637786f490196fe700e6931d2f1bec4e",
+      "ios/Doglyad/Core/Initialization/Steps/InitializationStepsTier5.swift": "978270652ac3d6ed673344b2e2d78f24a79cfe2c791c93b70eac8c932778b400",
       "ios/Doglyad/Doglyad.entitlements": "ed464295880ba5a788d12e2248ba1cbd3d9592dd817de1fdeef5d2746e3711a9",
       "ios/Doglyad/Domain/Billing/BillingAppleRequest.swift": "a3c9dad76bffc18d05c53c182d6c1ef5b9c2098bd05be704252fbed0a3a7e7ec",
       "ios/Doglyad/Domain/Billing/BillingCheckPaymentRequest.swift": "4116d8a54e171a1568e5c69b2cb915abf33d50a9807b38614e1f4ee5587366f5",
@@ -596,7 +613,7 @@
       "ios/Doglyad/Domain/Billing/BillingRecoveryResponse.swift": "df390f7a0b46bd89ffea7eb65274595de1e8332cbe964bc613a704605cfd2378",
       "ios/Doglyad/Domain/Billing/BillingStatusResponse.swift": "4f05e9e55df5dbe2738349f7c399a3ce13c8165a32b7227d576866bdeb17e370",
       "ios/Doglyad/Domain/Billing/BillingTokenizePaymentRequest.swift": "31800df9169f3995f05b0958affd4a843ecc949eac93ac1b0421a2f7a96b5598",
-      "ios/Doglyad/Domain/Config/ApplicationConfig.swift": "36be14d916ab41235b5946e2c09cb96ff315315b34a9aee42f2e65b215ab73ce",
+      "ios/Doglyad/Domain/Config/ApplicationConfig.swift": "3e6689e443ec11a2cfde83a97ed1dd2fc4a00710b00d0afdb25d203eb7d0ec0a",
       "ios/Doglyad/Domain/Config/HistoryConfig.swift": "89dadedbc0b587c60d830a9766e7a0dfff006806734285701ea463c472b0ca61",
       "ios/Doglyad/Domain/Config/LocaleConfig.swift": "d52cd90afebf7d321b8eee9b2cc666c5bf48bbf5021fdbf95c7f819a0aae0a66",
       "ios/Doglyad/Domain/Config/NetworkConfig.swift": "2fead03c191410390a73bb17a1c0a17711a0acbad073276a23fcc5c2f1d2d176",
@@ -609,8 +626,8 @@
       "ios/Doglyad/Domain/Config/UltrasoundConfig.swift": "9c43f66e43b917700ad1ecc0f85347d99400f70cbe7f55cf8d6ccafe4425af23",
       "ios/Doglyad/Domain/Config/UltrasoundExaminationNeuralModelConfig.swift": "c4588091401786939f3f3a2ae5a1f6c138e9fb41f62dbbf35c6798f065733a43",
       "ios/Doglyad/Domain/Config/UltrasoundNeuralModelConfig.swift": "2f9c7f2066cb40db466420a25854ed77a3d855f6682ff51ff999c855c2b072b1",
-      "ios/Doglyad/Domain/Config/UserSettingsConfig.swift": "15b113d4423f177993676466fa5561c261bccb750040c94a4f530028ff29533e",
       "ios/Doglyad/Domain/Config/Version.swift": "30d6dd8754a74afef80578bdfb11327257667d29d5e808382237a191ec7814b9",
+      "ios/Doglyad/Domain/Config/WorkSettingsConfig.swift": "62f9af2ea7e74791cb310613c3c1f9e759e60d648b2da1381018e8a240ad307d",
       "ios/Doglyad/Domain/Localization/Language.swift": "3c67b27b762b1b94272bb50fd6a88e9bf3fe2b67be2674ebdceb3812d9ef2062",
       "ios/Doglyad/Domain/Localization/Localization.swift": "1e6f877a7f2b85a39fc3131a9c78a6eae063d6e68ca698aa79ac7bc2d6f98646",
       "ios/Doglyad/Domain/Localization/VoiceLocalization.swift": "9fe4c948722f062a7d3be56263f6769f9e7700f0b21105cd3f634c9beb5fa642",
@@ -635,7 +652,7 @@
       "ios/Doglyad/Domain/Subscription/SubscriptionType.swift": "81909a1aa2de0719de4ec06444374d05664514c49f4eef922bf9bdbc65aec81c",
       "ios/Doglyad/Domain/TranscriberType.swift": "8cbde24997931e7b59e1a03dc44956d3990384469d7c5c6cc72699d5b540568b",
       "ios/Doglyad/Domain/TranscriptParserType.swift": "d1a2c7eed9d9898b15cdb46e9580e7eeff4c6548b5726db45e1d90dae297cac1",
-      "ios/Doglyad/Domain/Ultrasound/USExaminationData.swift": "5cf29411a652e56ad20875338e436ec3bcb95e29c3b4fad29272564667018654",
+      "ios/Doglyad/Domain/Ultrasound/USExaminationData.swift": "6a2d3b5f4eb122d476be52a45297ed70797cd88b3884d9cc5d9b2f50d9c12e2d",
       "ios/Doglyad/Domain/Ultrasound/USExaminationDraft.swift": "aa5049b3441707760a41b0a7a3833ec85bb04c5c0a8b539ff28bf5fb3d269e85",
       "ios/Doglyad/Domain/Ultrasound/USExaminationModelReport.swift": "c9c6c50e2128be7d0329fa363d881c0d3d17ef1acb51c045fe6018b5032c319a",
       "ios/Doglyad/Domain/Ultrasound/USExaminationNeuralModel.swift": "ce6da06485be783d3f79f60912ce5be13daf3c580643673cc508af1af43dd653",
@@ -657,14 +674,14 @@
       "ios/Doglyad/Domain/Ultrasound/USReportGenerationStatus.swift": "fbcaf435ad156801a9634630cc90203031c7a3b621a03b17851e50a64921ecf9",
       "ios/Doglyad/Domain/Ultrasound/USReportPreviewResponse.swift": "8d55b33841b4f7e47d7b955d2580df26c1b1376ca22c5a88ad5ed9394869f22d",
       "ios/Doglyad/Domain/Ultrasound/USVoiceFormParseRequest.swift": "51a4e53d9b738a31b4b4bd8a99c1ca278cdcedf6eceb7d1357af1de7a76945b4",
-      "ios/Doglyad/Domain/UserSettings.swift": "4164e534f71c93ffd819b0a128261fa040d51767d2728cb7ab4b05039e4b78a4",
+      "ios/Doglyad/Domain/UserSettings.swift": "cee72afd63c9f09a10a207af1ad5637405d73a840f0f4a9203e8d0199aab536b",
       "ios/Doglyad/LaunchScreen.storyboard": "19e1fd13407846071f1d394ed87e8550bbb621dbb1e00aa909eeb41d453f30f5",
       "ios/Doglyad/Regression/RegressionApplication.swift": "e102871dbc3eeaa9da701a423301ff5513c4160c3691f9b4ec78b090ec53b332",
       "ios/Doglyad/Regression/RegressionConfiguration.swift": "13dcbc9fcd333b567c42ed671f40f7dfbfa4b841399a24bebcc714f6eca6260e",
       "ios/Doglyad/Regression/RegressionExternalActions.swift": "e1d245ac6ed1a74106af642b24688779877db07da6448c8e02fa2c49730cb76f",
-      "ios/Doglyad/Regression/RegressionFixtures.swift": "8268fe19ea8666b965b66d0818a9079059b91c1688a2c2812f82463241011829",
-      "ios/Doglyad/Regression/RegressionRepositoryAdapters.swift": "b6e1587fb2ee7b868f13b5d7371a218c55ba56b3441f04ebe9d5c5ce7e08e56c",
-      "ios/Doglyad/Regression/RegressionScreens.swift": "acf254ed0a1578d1e57c8766d4247f0e2a91c62eed9a6a851b3e712c2381b406",
+      "ios/Doglyad/Regression/RegressionFixtures.swift": "e30003c49de060c0868123b4fb770a1bf92572bf90c55d4ca27ee2beb49f6c97",
+      "ios/Doglyad/Regression/RegressionRepositoryAdapters.swift": "6aa78b8d0c315276f05466623c6a50c63c25cfef5d019d1f58aba33c87566ff2",
+      "ios/Doglyad/Regression/RegressionScreens.swift": "fcf7de626109d0dda685d6f060f89803e5cc574d106a510cff054a6f08895937",
       "ios/Doglyad/Regression/RegressionSpeechController.swift": "ea031bd57410a6cc68a2d9294f75f0776179fc540a1eda22bd66781516e9bcee",
       "ios/Doglyad/Repository/Draft/UltrasoundDraftRepository.swift": "f5d773064a2bcebe731d0b5a339ec655f15cc10c681f23aacddb70b927a35a7c",
       "ios/Doglyad/Repository/Draft/UltrasoundDraftRepositoryProtocol.swift": "82db6262dc6fb7ecf006d2630f24f1196103e15647a3fb5951aba1a4871e6f7d",
@@ -682,8 +699,8 @@
       "ios/Doglyad/Repository/Subscription/SubscriptionYooKassaRepository.swift": "c0a93bbae3aef6a4c8d83b4a8c5e4adae9ba2d812f872782a536d6565f4d8e7c",
       "ios/Doglyad/Repository/Template/TemplateRepository.swift": "5ffa617790375efc064b8d35e5bce16d1bfda084a54e6f286e101d8039fe2708",
       "ios/Doglyad/Repository/Template/TemplateRepositoryProtocol.swift": "04d8fbbeb185188789c8fd70283ff43dcd21688f5f144bc380fa88b84928a35d",
-      "ios/Doglyad/Repository/UserSettings/UserSettingsRepository.swift": "c9cd18cf28c2c9f38975c5c1e1288e76a3790679458ac1a02cda419789109d90",
-      "ios/Doglyad/Repository/UserSettings/UserSettingsRepositoryProtocol.swift": "91159b1cc9533334f6d636728010d8fae7bf9a91b2fee191970b1a62708643ae",
+      "ios/Doglyad/Repository/UserSettings/UserSettingsRepository.swift": "054310f351111edcd726d1acfa08864c7b5dd757ad5e1c4b6d2bbd633e3f13ab",
+      "ios/Doglyad/Repository/UserSettings/UserSettingsRepositoryProtocol.swift": "dd9864821f65af7d92d0eb78955d0820030fd1c56001ffa9044c540a52d71d2b",
       "ios/Doglyad/Resources/Assets.xcassets/AppIcon.appiconset/Contents.json": "deef758719ab8c1a9a29345251c85d52e79688cf4ca08f14bce3898c787fc9d3",
       "ios/Doglyad/Resources/Assets.xcassets/AppIcon.appiconset/Icon.png": "a1dcf9f322c49a2cec4ed76b41847d0247bf1f81fcd7710e844b91586c6d6d24",
       "ios/Doglyad/Resources/Assets.xcassets/AppIconDevelopment.appiconset/Contents.json": "25b216526c86b3c651dba28059a6338be90d5749a0d0e2aed32f8d176620df7d",
@@ -729,8 +746,8 @@
       "ios/Doglyad/Resources/Assets.xcassets/PaywallHeader.imageset/Paywall header.png": "461a538ffcd869b858a35ff6a1887cfab3c01665afc07edc4c8bb1c9a8b8dd2b",
       "ios/Doglyad/Resources/Assets.xcassets/Splash.imageset/Contents.json": "abc12e5bc5210728dff1590bebf2731ac4731dd837cebd8c3c7d38d6c499fadd",
       "ios/Doglyad/Resources/Assets.xcassets/Splash.imageset/Splash.png": "edd691e9a2c455c6699e04a7fac76da03d8c85b22c7f3d97bf25a4096c21bf93",
-      "ios/Doglyad/Resources/InfoPlist.xcstrings": "456f5ca23c624ef830b94ba69ecd217cafd3f5d18481b82b01e4539ba48c6d78",
-      "ios/Doglyad/Resources/Localizable.xcstrings": "ec6e1a357b0090c103b0e7b4feba027db773db4df4af2390dfadd44edc7dd91f",
+      "ios/Doglyad/Resources/InfoPlist.xcstrings": "a146d8206eb2d0d0b20f2dc2b6565579d94a75050d019c27ec37440c15842f5d",
+      "ios/Doglyad/Resources/Localizable.xcstrings": "886acb6d99394779017a0c640adbdc34d7da8d4bef96bca85d541b7bc65c0422",
       "ios/Doglyad/Utility/AppCheck/AppCheckHttpInterceptor.swift": "fe657a42b5dbafb8d2d10e898ee10498e70a40245d523a3faa62f16a346f835d",
       "ios/Doglyad/Utility/AppCheck/AppCheckProviderFactory.swift": "719cc1ff415b659c3f5cdd7c540af30876d362d87ca4f641fb2c2514c304832d",
       "ios/Doglyad/Utility/Extension/Array+USExaminationScanPhoto.swift": "b2e187370158040925f0820125a389d072abdc35cc125dadabc777288ff29d82",
@@ -763,7 +780,7 @@
       "ios/Doglyad/Utility/Mock/ScanSpeechTranscriptPreviewFixture.swift": "ca2c5bd41466f9eb7f23864187d0c61513c7bca154d3f7f60a9bb38e6dd60cd5",
       "ios/Doglyad/Utility/Mock/SubscriptionPreviewRepository.swift": "bca62182fcaf73847f9b56684d1b7f6a29cfcf357a14ec748bb450f647ff285f",
       "ios/Doglyad/Utility/Mock/SubscriptionRecoveryPreviewFactory.swift": "62693dd60ce97eff2487732626c70293b052426c1ae87fc55fcd210f6ed9170a",
-      "ios/Doglyad/Utility/Mock/USExaminationReportPreviewFactory.swift": "342e226ca743ffd42ac2964bc2619fcfa765b696a66a03710e3ca376b5ee5312",
+      "ios/Doglyad/Utility/Mock/USExaminationReportPreviewFactory.swift": "11730226c992dcb12232485f78f12f0d51f3fae696ef5c51c0288876626e9996",
       "ios/Doglyad/Utility/Modifier/PaidBadgeModifier.swift": "e55fdc82618c2cbc3005e7bea55918c573ff250375961041ae99a388c7a12ff0",
       "ios/Doglyad/Utility/Modifier/PreviewErrorModifier.swift": "4fca82567e1fbbe5e7386715cebf897b2a6686fd82b633b0e802aacba5b7ebdb",
       "ios/Doglyad/Utility/Modifier/PreviewScrollEndController.swift": "8f245f6d8d93d81f1f1ac4aed78aa3cd66a5ced023a37b6bca3db9775fede041",
@@ -787,7 +804,7 @@
       "ios/DoglyadCamera/DCameraPreviewUIView.swift": "ce93c1e398aa456809f499fe0fdc5b30484295c108ccf12c52826cc962fd5bff",
       "ios/DoglyadCamera/DCameraView.swift": "bf7660099a3325d29c11a9c24beef4c41d61edec7d86662df64a8896542c1c5a",
       "ios/DoglyadCamera/SimulatorCameraImageFactory.swift": "c7af7a5d67ee56e16b8f3535934c301745a461cef4756b0b4da307c5794120b5",
-      "ios/DoglyadDatabase/DDatabase.swift": "bf2e998c27b98e2020d1be2279bf8b6c98be7238951db40907f9e53d7a22e3be",
+      "ios/DoglyadDatabase/DDatabase.swift": "3eccdf9d4aad7c31a48c018aa78d8fb315e16ae1f1fd3fb7eae65acb80af417f",
       "ios/DoglyadDatabase/DDatabaseClearProtocol.swift": "83338806cd560a6659b3dad1656b097033899edc40d4b23bcd444391f2cf25dc",
       "ios/DoglyadDatabase/DDatabaseError.swift": "9ac63681f4a040c2a8575a6735046d1d16506089c3490067cd7dcdbddee65f41",
       "ios/DoglyadDatabase/DDatabaseLegalProtocol.swift": "dab43edd81590a16773c34db4e547b2775435d86c6d8afc8489b121783620135",
@@ -796,11 +813,11 @@
       "ios/DoglyadDatabase/DDatabaseSettingsAIProtocol.swift": "74d9b9368226ed2110feee57e019274a1499b4f114306adb7a4c7793d7231059",
       "ios/DoglyadDatabase/DDatabaseUSExaminationTemplateProtocol.swift": "d904f910b963e6c10e22d90077aac2c48af53339001ec7d11383b55e40ec7b8e",
       "ios/DoglyadDatabase/DDatabaseUSExaminationTypeProtocol.swift": "487b1fd9f0cce2c68ddbadc5031ad1a8667e746ef34cccd30b66f64813a29bb4",
-      "ios/DoglyadDatabase/DDatabaseUserSettingsProtocol.swift": "9f4d7b3338ca023c6bab04033154f52a005a4d642ed236434d302093b62a38b7",
-      "ios/DoglyadDatabase/DUserDefaultsKey.swift": "3531e557cd75afe538c1416fc00de96aa19556daca5704df584d3fe5c24e7b20",
+      "ios/DoglyadDatabase/DDatabaseUserSettingsProtocol.swift": "a012621dbb5b4253b62e978c3568af57f46bf11eb98c94c4079887f12bb55929",
+      "ios/DoglyadDatabase/DUserDefaultsKey.swift": "8ef2b78963f671dfa0e86f46322810e9308a9b8546199a614de8051fdb6df34e",
       "ios/DoglyadDatabase/Entity/BillingIdentityDB.swift": "2c609fc280d8b987803b753e4617fc4869cc6c7b0f1853870cb559009034bfd4",
       "ios/DoglyadDatabase/Entity/SettingsAIDB.swift": "bf665b8e40ba67533aaf148eefd0a86d0b7655e7fbb28e97b927b3fa2cdf8c95",
-      "ios/DoglyadDatabase/Entity/USExaminationDataDB.swift": "97db3128ccfe2805c2c938821fd2aecf18149d4c27c1daf2c264ca269773932f",
+      "ios/DoglyadDatabase/Entity/USExaminationDataDB.swift": "90476fd91959129b20d328033d992e3236f2f608fdbd62c7fc850a7521ec9b0b",
       "ios/DoglyadDatabase/Entity/USExaminationDraftDB.swift": "9459a0df1f186caa95a09d53c92be7cbd0dac3bd9977f9a6b4fce0884a5298aa",
       "ios/DoglyadDatabase/Entity/USExaminationDraftPhotoDB.swift": "9af9874c7b0a0bbc030cefa3f995ddee7cd64cf50058220f7baa643b2f1970ca",
       "ios/DoglyadDatabase/Entity/USExaminationModelReportDB.swift": "923ec27fdebf489e8134403a257815c004cd6bfff132a63eb2a68335cb7cf357",
@@ -913,8 +930,8 @@
       "ios/DoglyadTests/BootstrapErrorPreviewTests.swift": "dd2d762e7defd49df58a73dae10cd636b2441d94bb9ca6bd44efdae590f56a73",
       "ios/DoglyadTests/CameraCropTests.swift": "d87547e0fb25581f63e893728aebcc059fdf3543e07468d5a18f7ba790b36aed",
       "ios/DoglyadTests/ConfigTests.swift": "98f47d2728618539177c64d5a5ec216ec48392472cac19174c3e347704577f99",
-      "ios/DoglyadTests/ContentDesignTests.swift": "18e239db910cb234bd007ceed6fbfa063a9b8b448959614fc1b04531dece86fa",
-      "ios/DoglyadTests/CoordinatorTests.swift": "ab5560f37b65a7c642a8f4a1fc52dc276f845de206f4557b601f5c71d91de261",
+      "ios/DoglyadTests/ContentDesignTests.swift": "645b55e470490e0bf10faa2c311d3a185703d42e0c4bf22718071b5c14fa55d0",
+      "ios/DoglyadTests/CoordinatorTests.swift": "4aa4dc78134fe67d7dfe9b5e5e1500a451afb3253eeb72b47268060ab9941bfa",
       "ios/DoglyadTests/DInteractivePopGestureControllerTests.swift": "9a0eef52a59fa371ede48378d950ba331a7f6b90e81e45cf35c3e29686a4a4d3",
       "ios/DoglyadTests/DSpeechClinicalCorrectionTests.swift": "44d3ce758496fa7a136e734d87f10ddec58af50185dd8f3ac84d35ce0ccf0199",
       "ios/DoglyadTests/DSpeechFailingFileManager.swift": "d51ec729df155fe36ee8339565be716fa35fcde951f9d93ef92b35ec239f4203",
@@ -939,48 +956,53 @@
       "ios/DoglyadTests/DictationSessionTests.swift": "649503e9d7664124bae0a8d3b41d52e32a5968917a85f0423e400114b24f257d",
       "ios/DoglyadTests/DoglyadTests.swift": "a2ff67d11e243d1f390ee6aba5174d7d60d95cc98cc0a153e4d608be490b1579",
       "ios/DoglyadTests/DraftTests.swift": "b70840ba8065b921a81bb5f495ed180b905a3953dcaca69b388895a585b2fe8f",
-      "ios/DoglyadTests/HistoryTests.swift": "7a3a20a2fda42359bbe93cb4a4f88cb175d9868be95d8efa4ca2d0b8b493d2d6",
+      "ios/DoglyadTests/HistoryTests.swift": "0ac9297d77cf8f0cc75b20301a006ac515c83b04978a375e1f708f05f590ed8c",
       "ios/DoglyadTests/L10NInitializationTests.swift": "3ff798e9a37f1271be2214275bbae7e569164d39ddb615bfd1174f070fb81f74",
       "ios/DoglyadTests/L10NTests.swift": "4c956f6d5f0017411ebd662c7fedc111a8a7210d78f9892e75a318404ae15a03",
       "ios/DoglyadTests/LoadingStatePublicationTests.swift": "6cf67d1760e301a74b8db601566562e8d883082065798e2f5441082999daf3e5",
       "ios/DoglyadTests/LocalBillingResetInitializationTests.swift": "55615f46a341e09b523856638fb806d8060eecd74148a3145a74038863755a16",
-      "ios/DoglyadTests/LocalFormOperationTests.swift": "b21d60e3d90c8c5e00ccf109f93ded02cce41549ddf54af64db8deeda6cfe769",
+      "ios/DoglyadTests/LocalFormOperationTests.swift": "6682b6cc0a7d0a36f029d43842792c74be5ee52778eebb27f8eabc3c29ca092a",
       "ios/DoglyadTests/LocalOperationTests.swift": "10471e2f8234e89fa773881fc3e5b6c97e093196000701a5fe3cbedb3e9fc68e",
-      "ios/DoglyadTests/LocalizationFixtures/strings-en.json": "33d439200ef76e658abee01f20e2d9c79196a01d07aa23747fcf5c11bd40af1e",
-      "ios/DoglyadTests/LocalizationFixtures/strings-ru.json": "36ab239be4826c43f10bd13a54c6876129186cab7428147bbf86245e8ddcbba0",
+      "ios/DoglyadTests/LocalizationFixtures/strings-en.json": "47f8524b5bf55238b30ea322c0a006c278701a2bb4b023965b23c802137a4625",
+      "ios/DoglyadTests/LocalizationFixtures/strings-ru.json": "78028624b69c1a829e0f6713a1b15aa2d2fc425a614f07752f13906b0aed7aa0",
       "ios/DoglyadTests/LocalizationFixtures/voice-en.json": "617ebc44c389b9a5cd049a921f95c28eb5f1b17ab0ac40cca744840a18504049",
       "ios/DoglyadTests/LocalizationFixtures/voice-ru.json": "1dd456e954558a7b5d06dc84ad7ba23ce9b90780613cc9561b04bed9f9eee19a",
-      "ios/DoglyadTests/ManageSubscriptionTests.swift": "e74153b2d5da8f93b8939e431826b633f09719f15c148a023835d1763facc5bd",
-      "ios/DoglyadTests/ModuleConfigTests.swift": "35dcbacee940af895925002e6f883c8596430eece49fc90ea8d48f8d0e096fa7",
+      "ios/DoglyadTests/ManageSubscriptionTests.swift": "e420d33bd41212415faa8355077bc4d71a75006030efba339ac794f4067db019",
+      "ios/DoglyadTests/ModuleConfigTests.swift": "54af531135be1e597bbcd80bae103c4062efd75b2aeb815cc75f5c1d86e6843b",
       "ios/DoglyadTests/ModuleInputLimitTests.swift": "4a57009918c82467e5012c427b98657d23e1c94a19f3814f16a93ce70b160c8b",
-      "ios/DoglyadTests/ModuleStateTests.swift": "5f26827bb45b39f4872ad0ae76f2869a7964c6fde1a3d9ac0da145b1672487d9",
+      "ios/DoglyadTests/ModuleStateTests.swift": "e8e8b69918d09d0e1af6ed122c9fcad66d2b7705984c0d2cb0b01ff1440c9cd8",
+      "ios/DoglyadTests/PatientConsentPersistenceTests.swift": "c5b4d83f7b210ae3add7c876119782fd6cfd3777ab628f4fc683518c0901c148",
+      "ios/DoglyadTests/PatientConsentRepository.swift": "d5bcf37eba74da6b989969b3abd1933d75a65097ea2604dd59dda09daed13c2c",
+      "ios/DoglyadTests/PatientConsentTests.swift": "904fcecde369cbd3ffa9df16b7c00065948eed010171049c769f14d2860bbc67",
       "ios/DoglyadTests/PaywallPreviewTests.swift": "fdbc05c17fc2a55b31c49cc67b6f5432e467fa3d7650a0a72b194e8cd070ef59",
-      "ios/DoglyadTests/PaywallTests.swift": "872052c87b23c57492cdf3b1bc6d1bf56cd40718cfbcec81824cfd571f2c9c96",
+      "ios/DoglyadTests/PaywallTests.swift": "a7d79a14282c7981200e7684b70fee57034ff0f5705a6bc9145e1b71d8438311",
       "ios/DoglyadTests/PhotoViewImageTransformTests.swift": "05f31ea011c7bcfadd1f158324f0287056a3ef2ed2aec2c4250af33f599f2b72",
       "ios/DoglyadTests/PreviewScrollEndTests.swift": "5c32bf875305204da87966441cf5ada05bbd1bbb8b2ff5515d4d2dac774a9d05",
       "ios/DoglyadTests/Regression/PhotoLibraryRegressionTests.swift": "0c56a34f08d3c384cede5ea4055824de1dce1b81e52a3beb7975f700cf24d6d8",
       "ios/DoglyadTests/Regression/RegressionFormTests.swift": "0b9c6834bdb655aa305d3e6e6a952f9c650bd1ff0f5c28cc5ca7cf8832e9f787",
       "ios/DoglyadTests/Regression/ScanCameraRegressionTests.swift": "0897424fa81a8f5d8c9520de55c564dea0e0c3a96f5ccd3765331d74bd3e9c6c",
       "ios/DoglyadTests/Regression/ScanSpeechRegressionTests.swift": "88adb1f53dde35cab001fa66ef4e2519a7424834f9fd62f923b79dc0605a46e4",
-      "ios/DoglyadTests/ReportEmailTests.swift": "5fecfb7fc351fed9ea7816a60a730ce8001be4de147772fcddf8b39874c8730b",
-      "ios/DoglyadTests/ReportRemarksTests.swift": "6d00d15eea396c1e6c7a89bb087c108fd3e47885cc803ba21f4bdc810d317a93",
-      "ios/DoglyadTests/ReportStreamingTests.swift": "86ea2c180a9818f0b4f26994180c47b29c52199a92c516cc3c3eff663fb68ad7",
+      "ios/DoglyadTests/ReportEmailTests.swift": "71639e6a017bf35ef23bbbf75d447b7e9b4afb7a37f2f4083e183d0f57031d3b",
+      "ios/DoglyadTests/ReportRemarksTests.swift": "d2ff4787ac7fff581c2044652edda56a7b97156bac6de46106e0c45200c2c621",
+      "ios/DoglyadTests/ReportStreamingTests.swift": "bdfc8228734f47508fba8db26a37397e9ef49940cb66b9fdd5c3129b94bd7cbe",
       "ios/DoglyadTests/RepositoryOperationTests.swift": "e3b15b9ad676144197937cce7d3d368d8bc78316055f8f297b442ad195164954",
       "ios/DoglyadTests/ScanDraftRestorationTests.swift": "e24729496c87a0414c9b17601a8d064420f54f8969385b627cc9ab0e467952e8",
       "ios/DoglyadTests/ScanFormPatchTests.swift": "adee2c23d2488ccc248721bbcc1615df8ec797fcec4a86cfbb3ac4baddf30da6",
+      "ios/DoglyadTests/ScanPatientConsentTests.swift": "8467b643dc588bdcec7c347ec585287f5e8a4ff07e6a6bd22163bab2be143be7",
       "ios/DoglyadTests/ScanSpeechConfidencePolicyTests.swift": "f56b044cfece852a7a0f9f89fc9ca9b662cb82866bce90daf5ed5d0559bb44ef",
       "ios/DoglyadTests/ScanSpeechObservationTests.swift": "805917d44606216baff22fab83b99c41f0143f8ab77fe5814886a6ff5cdab515",
       "ios/DoglyadTests/ScanSpeechReviewPlanTests.swift": "4bd9befdef4a65acba03e99a8f8d13afb06d68f169d44a704efcb4ceb4067fc2",
       "ios/DoglyadTests/ScanSpeechTestController.swift": "c6f28f8624b0ca09e885da58edecb9824cd8f9bb35df7e6c3bf5a15ccad2beb7",
       "ios/DoglyadTests/SecurityDatabaseTests.swift": "3256c3c9f18e483180a40f6baee96af1821f9c638f4009d68552e1ff8bc86560",
       "ios/DoglyadTests/SelectUSExaminationTypeTests.swift": "4624b6b7d7739b3480b6fd423ca2e2b7d8251579ae0a44a1a1f26557feb70162",
-      "ios/DoglyadTests/SettingsAITests.swift": "83bc28e03d29a5b5272a1821c9b9d1c698f185a8dc8fb4c8741b1689f7e015aa",
+      "ios/DoglyadTests/SettingsAITests.swift": "f10f9cb8f2ceba193c8872aaa32126dd0e7f7b4a1c4c598eedabbac015b74ac2",
       "ios/DoglyadTests/StateAnimationProbeView.swift": "a65a1a56559fd2bed46588e39bf39577c799601d0b6453a511da189a1573696c",
       "ios/DoglyadTests/StateAnimationTests.swift": "c76fc818ebc17482e05d6b20589f632796fb719ad792cb7b8ddd7b0a764b75d0",
       "ios/DoglyadTests/StateDraftRepository.swift": "498d7f78ef6879eee5f6e7694c805754893e7c25deb0dbfd96c1752aee80a3a8",
-      "ios/DoglyadTests/StatePersistenceTests.swift": "3e9c2f045afcc9508f2a84f5bce287ce18d6d1d9fe79e36bb65191e1d42e76dd",
+      "ios/DoglyadTests/StatePersistenceTests.swift": "9ebd36778aa5c39ae10258edd06c8918e3c54bca9afc41d1b659d44e01b69f23",
       "ios/DoglyadTests/StatePublicationTests.swift": "fbfb540dd5b8fd421526672a58a7a9d7caadd1476cf899240922230263335897",
       "ios/DoglyadTests/StateReportRepository.swift": "91931956f24f1ef964c90513a676469681378d3eab860a1790caec7b48ae4ccb",
+      "ios/DoglyadTests/StorageConfirmationTests.swift": "a3a029a65655f9cf4f6b42493fb4dc94d0b3d75f189f154c3fc6ca854b1b6f3a",
       "ios/DoglyadTests/StoredStateInitializationTests.swift": "3fb8d23eb7235c97bc3ffce020f6cfa2d04fecc7221e9282dd59c94f77196173",
       "ios/DoglyadTests/SubscriptionCatalogTests.swift": "2750b5345e39f79c7dc6e43645bbf37953b0ce82b7ec9d54f6f10549cef07dcc",
       "ios/DoglyadTests/SubscriptionPurchaseVerificationTests.swift": "4ec152f798544a0483f1fcd8d482df61a115d6e44c6dfaf16ec268e8f3a7faed",
@@ -1025,13 +1047,13 @@
       "ios/DoglyadTests/WebDocumentTests.swift": "c36cdd0a2d6d050e6ab9c78becd5fe050b3a219c292dae46e71bfb33f4af229c",
       "ios/DoglyadTests/YooKassaPaymentTests.swift": "4898f9248fe45d9984d9b141223affb8aa93ec482cc71f3b0f42dde7e5362426",
       "ios/DoglyadTests/YooKassaSDKPresentationTests.swift": "52410fb205ead010b488cdf8ace1b9674700184deb45536709bd80b3d446b58b",
-      "ios/DoglyadTests/makeStateTestContainer.swift": "86aa1721e4bf23247387fd278010c681141d3a54398c0c20f9659dbdb92ae2fb",
+      "ios/DoglyadTests/makeStateTestContainer.swift": "c9875010483287d40310bc8f222ff72a886ebcee231503315bd280cf5ea694c5",
       "ios/DoglyadUI/Base/DColor.swift": "9461a8fba86d186c7a47a8c27a95b1ebbabdce9a15881068dc4d624d43ee69f2",
       "ios/DoglyadUI/Base/DFontFamily.swift": "f2c82f9ce0929b6cb7a774c788fd6198ec5323d8fab5c0d835da1ebbdb797655",
       "ios/DoglyadUI/Base/DSize.swift": "32bc312db9d53a969a52963e6565929a9147fb31273caf0d7109cf31fc4d9b2d",
       "ios/DoglyadUI/Base/DTypography.swift": "155058ea5d64ad0635eca128583a795b58a56417dc9ff19ba7ffd86d8ff19374",
       "ios/DoglyadUI/Component/Base/DBottomSheet.swift": "0fd6f1e896d76311ac015d3471c28177f923bab700b64146aae86f03542cb4b0",
-      "ios/DoglyadUI/Component/Base/DInfoBottomSheet.swift": "5228751a047a940b3a12770e6b0f28130edcddb70bf20566f65ba5d50c2d25ee",
+      "ios/DoglyadUI/Component/Base/DInfoBottomSheet.swift": "b7b3d1897e60c4c04569cb281038a2ce8575c0bebb9e0b3809f402b44c86f99e",
       "ios/DoglyadUI/Component/Base/DScreen.swift": "95e596cb9469ffedcd6fe43df2a4e9c4610e0c5e99694ea71080ed3f0de4cf9d",
       "ios/DoglyadUI/Component/Button/DButton.swift": "a6bbb383abb7521242b99efc42c1044d34f3b63547c426697e1a8ae658b45619",
       "ios/DoglyadUI/Component/Button/DButtonBadge.swift": "cc36befce24b2fa388b8ac1a864d264f623ae7a6d5babf619d233ceb0c9f81d0",
@@ -1300,7 +1322,7 @@
       "backend/main/app/core/application/main_container.py": "2b8bfc52e2e76249f348acae13d5d45bc09debbf09af0a935edd29ca26a30d85",
       "backend/main/app/core/application/main_lifespan.py": "95e055faeeaaf3783aa6467523b5533ac6122a9e971a9fab6223587b715d7e20",
       "backend/main/app/core/application/service_dependencies.py": "4857f7f53fa904433ab6a8bbca38f29f337ecadd082d1779b4030e4f2c50a139",
-      "backend/main/app/core/application/service_factory.py": "96dadbeac089ccaae46c1c4acd0b9d2a0f049a1933f678418a423b37462fb293",
+      "backend/main/app/core/application/service_factory.py": "9eaa53eebba8284479bbff48170f7e15d27d21fd3f6521c6d24872d0dbe37a5d",
       "backend/main/app/core/billing/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
       "backend/main/app/core/billing/billing_dependencies.py": "c62d69ca9c0a2d7aae6d8d3035160d1c908f2094a20b11a79eeb4776c923bfa3",
       "backend/main/app/core/configuration/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
@@ -1389,7 +1411,7 @@
       "backend/main/app/model/api_error_response.py": "e3c6c72f9ea4d1ef11b37ec43ca5c2059600a8c5e203c57b41319c3e7b36e70a",
       "backend/main/app/model/api_validation_issue_response.py": "965b3f534487db6d612fdc4a01e0ab1d770767bd363013ea8bcc7098a8245125",
       "backend/main/app/model/application_locale_config.py": "18510c6a4ee417d72c51e071efba09e847d24570d872f99ba2724ebf97364c84",
-      "backend/main/app/model/application_module_config.py": "8f0035005d9c172903e7a9c50a150c0f38566735d8cc969775f3a24c37c54dc2",
+      "backend/main/app/model/application_module_config.py": "a2fa29635a1dfe24a698e1a7d587bbbcba0d0db5c6a642200c250c013d031c15",
       "backend/main/app/model/billing/billing_apple_request.py": "440de21e42e665187c5a6aab6d291850c4d99d6d144d6e50009640cc1ab6f933",
       "backend/main/app/model/billing/billing_catalog.py": "5b730c3297826c5c947c742737220842e0e9114a958addec82324a564428a648",
       "backend/main/app/model/billing/billing_check_payment_request.py": "da949aa06e268ea000de25d286db1222c9db810f2ce5ed966efacab1e5d653b6",
@@ -1441,7 +1463,7 @@
       "backend/main/app/model/ultrasound/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "backend/main/app/model/ultrasound/us_dictated_report_sections.py": "d444ad8818cbc6f769ea5479cf6f3e4c3dda12493f7d8dbce1e57d64f8f48250",
       "backend/main/app/model/ultrasound/us_examination_contextual_strings.py": "70c1e037483191892425e33a9ff92a238b68f6390ff603f649dedf0ddf10a4d1",
-      "backend/main/app/model/ultrasound/us_examination_data.py": "57e2e34e1dc773c7368b3eb1648c0c52dce7f8d3f2a280e9fa75b5f2fa8ef295",
+      "backend/main/app/model/ultrasound/us_examination_data.py": "2f0258f9c62afe539bc0efe8f7cf0c74e62232e296d6a6f365b35a9b18cbc5ec",
       "backend/main/app/model/ultrasound/us_examination_model_report_response.py": "e0822924e13545bd484b257782bab65e01040b6e9edee5bdc4c98fe95a3bfeb9",
       "backend/main/app/model/ultrasound/us_examination_neural_model.py": "6ee63fb275d825b382b9ca2d04834b880e349965b541974350b8cecbab20375a",
       "backend/main/app/model/ultrasound/us_examination_neural_model_accessibility.py": "65fdb0b559d8b31cdecb5cc613e654fcb9208eb008d8fd7b599973195c1c6fef",
@@ -1474,7 +1496,7 @@
       "backend/main/app/model/ultrasound/us_voice_numeric_field_generation.py": "75c24c15c2e850d31225a8b00a20937783a5d6f9a45ca011e974aa971577ff6a",
       "backend/main/app/model/ultrasound/us_voice_source_localization.py": "8f47f613a3817d345977c9792b1a07c5e8a0cdd499eb9127e3ca4fc22e518bb0",
       "backend/main/app/model/ultrasound/us_voice_text_field_generation.py": "7883ec5d1ed75ea75a78e79b2af812ff54d9acaea4ed351ac8ff9963f37a4e04",
-      "backend/main/app/model/user_settings_config.py": "aad97272ce293ac3a24185b8cc447ba037d0edfd749aff39297ccfec3365e264",
+      "backend/main/app/model/work_settings_config.py": "01059b90b34c98f0f97b86af772bedffb2c7341fb03aaa15fc1b4b35cd809b61",
       "backend/main/app/payment_main.py": "2202305c0df485214a326f8265c8621c1c354151f9440c5bc504871bca35f716",
       "backend/main/app/prompt/__init__.py": "dcde16e8be5ccc7caac3577cd1158b0760e76981486270149bc14e613cfa4b49",
       "backend/main/app/prompt/prompt_factory.py": "03a83ab639318b1118c450c2b6574e71f84380a03d4439a29673d315653c486d",
@@ -1550,7 +1572,7 @@
       "backend/main/app/service/dictation/split_dictated_report_sections.py": "5742f2423e69209fb73bdbebe66894331692e0454f0485eeb4f6aa2e77601fcd",
       "backend/main/app/service/dictation/voice_form_validator.py": "19c215e083aa200371bb8495d16fccfc26a2f6ee10da011ac74100a24e44b256",
       "backend/main/app/service/email/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
-      "backend/main/app/service/email/report_email_service.py": "aa991564bec55af2e234e9b507014a5e6763beb13d821e6c36880ca5464785e6",
+      "backend/main/app/service/email/report_email_service.py": "bf78ee4d278d24a0ba2aab6a7fa6c9df2b343bd7f9b35e939457c8b84aed4c72",
       "backend/main/app/service/http/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
       "backend/main/app/service/http/request_limiter.py": "085040288f8c0a192d841057d8c419f2f0e9206af7e6802f864b6b933d0e9896",
       "backend/main/app/service/http/sse_decoder.py": "bc63f04e481871be07b8f3dbdb45be9a29902b4dbed2647dde36ed3e1c863761",
@@ -1569,16 +1591,16 @@
       "backend/main/app/service/validation/__init__.py": "5384bfdb2df380b6557cc7a71d16891415bccaa87699406e236f752c6415389f",
       "backend/main/app/service/validation/image_request_validator.py": "50f417e6c7c0cdf119efcb3dd24fb78c0c82dd5f33f7f54505478b6cf7312977",
       "backend/main/app/service/validation/text_length_validator.py": "dff66f3ea7962e98eeccdf06ad8df6b76d5f1fc47d0eac149a2c31bf1af73a01",
-      "backend/main/config/development/application.json": "a2e20527f3a3145a770866359438105061dcaf3b79b70e1fa507ea3c1e60b852",
+      "backend/main/config/development/application.json": "b53a16586a6d1a074ee0b8f5d32ce9959b9575ea571e6b4fa4b7f69590041803",
       "backend/main/config/development/billing.json": "30fff302cb1414134db2441e852af416c0c815058482f8f933b704c2a8da9330",
-      "backend/main/config/development/en/l10n.json": "082668b6d49f63d0ac08858d7eecaf05836d981829dec40c6edf9653f848bc7a",
-      "backend/main/config/development/en/l10n_application.json": "33d439200ef76e658abee01f20e2d9c79196a01d07aa23747fcf5c11bd40af1e",
+      "backend/main/config/development/en/l10n.json": "4a4676367dae4e04a78b725423cd7f383ad1dbb27a0c20d5e26283087bcb72cd",
+      "backend/main/config/development/en/l10n_application.json": "47f8524b5bf55238b30ea322c0a006c278701a2bb4b023965b23c802137a4625",
       "backend/main/config/development/en/l10n_ultrasound_examination_contextual_strings.json": "29fb67b2d91fd32b718e403c0adb2acfe746a9b369381f8965bb0bec62eb11c2",
       "backend/main/config/development/en/l10n_voice_parsing.json": "617ebc44c389b9a5cd049a921f95c28eb5f1b17ab0ac40cca744840a18504049",
       "backend/main/config/development/en/l10n_voice_source_validation.json": "6e20e2de44d0fdb141f0122643c8c2a0ec92035257d727026da9e65bc9fa76c4",
       "backend/main/config/development/ready_made_templates.json": "d5899cbbfcce2bf96b8a6cd305f762c3d88df3e1844b9aa3394ef0a4481e0492",
-      "backend/main/config/development/ru/l10n.json": "43fa57b31de847140346655ebca1fec7cc12453b8af11604d0df65686c6df46f",
-      "backend/main/config/development/ru/l10n_application.json": "36ab239be4826c43f10bd13a54c6876129186cab7428147bbf86245e8ddcbba0",
+      "backend/main/config/development/ru/l10n.json": "304b72fcab510f52c067d0bb2e2faa749b7d34d49ef3ef7e73086984c5c38de7",
+      "backend/main/config/development/ru/l10n_application.json": "78028624b69c1a829e0f6713a1b15aa2d2fc425a614f07752f13906b0aed7aa0",
       "backend/main/config/development/ru/l10n_ultrasound_examination_contextual_strings.json": "21f06f7c989ac71320ec25b212758018549b5aca3de3a4279e6c58f75f635a31",
       "backend/main/config/development/ru/l10n_voice_parsing.json": "1dd456e954558a7b5d06dc84ad7ba23ce9b90780613cc9561b04bed9f9eee19a",
       "backend/main/config/development/ru/l10n_voice_source_validation.json": "46bfb05c36d94ef687107f1e55fa600ff58be635ba1286e5944eb0b5579ebc02",
@@ -1748,6 +1770,29 @@
         ]
       },
       {
+        "module": "Menu",
+        "source": "ios/Doglyad/Application/Module/Menu",
+        "entries": [
+          "ios/Doglyad/Application/Module/Menu/MenuScreen.swift"
+        ],
+        "states": [
+          "MenuContentState"
+        ],
+        "actions": [
+          "onInit",
+          "onTapAboutApp",
+          "onTapBack",
+          "onTapHistory",
+          "onTapPrivacyPolicy",
+          "onTapSettingsAI",
+          "onTapStorage",
+          "onTapSubscription",
+          "onTapTemplates",
+          "onTapTermsAndConditions",
+          "onTapWorkSettings"
+        ]
+      },
+      {
         "module": "NewVersion",
         "source": "ios/Doglyad/Application/Module/NewVersion",
         "entries": [
@@ -1782,6 +1827,21 @@
           "onPressedNext",
           "onTapPrivacyPolicy",
           "onTapTermsAndConditions"
+        ]
+      },
+      {
+        "module": "PatientConsent",
+        "source": "ios/Doglyad/Application/Module/PatientConsent",
+        "entries": [
+          "ios/Doglyad/Application/Module/PatientConsent/PatientConsentBottomSheet.swift"
+        ],
+        "states": [
+          "PatientConsentInitialState"
+        ],
+        "actions": [
+          "onDisappear",
+          "onDoNotAskAgainChanged",
+          "onTapConfirm"
         ]
       },
       {
@@ -2062,33 +2122,10 @@
         ]
       },
       {
-        "module": "Settings",
-        "source": "ios/Doglyad/Application/Module/Settings/Settings",
-        "entries": [
-          "ios/Doglyad/Application/Module/Settings/Settings/SettingsScreen.swift"
-        ],
-        "states": [
-          "SettingsContentState"
-        ],
-        "actions": [
-          "onInit",
-          "onTapAboutApp",
-          "onTapBack",
-          "onTapHistory",
-          "onTapPrivacyPolicy",
-          "onTapSettingsAI",
-          "onTapStorage",
-          "onTapSubscription",
-          "onTapTemplates",
-          "onTapTermsAndConditions",
-          "onTapUserSettings"
-        ]
-      },
-      {
         "module": "SettingsAI",
-        "source": "ios/Doglyad/Application/Module/Settings/SettingsAI",
+        "source": "ios/Doglyad/Application/Module/SettingsAI",
         "entries": [
-          "ios/Doglyad/Application/Module/Settings/SettingsAI/SettingsAIScreen.swift"
+          "ios/Doglyad/Application/Module/SettingsAI/SettingsAIScreen.swift"
         ],
         "states": [
           "SettingsAIErrorState",
@@ -2137,6 +2174,7 @@
         ],
         "actions": [
           "onDisappear",
+          "onInit",
           "onTapBack",
           "onTapClearAll",
           "onTapClearProtocols",
@@ -2166,6 +2204,20 @@
           "StorageClearProtocolsDefaultState"
         ],
         "actions": [
+          "onTapConfirm"
+        ]
+      },
+      {
+        "module": "StorageClearSpeechModel",
+        "source": "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel",
+        "entries": [
+          "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/StorageClearSpeechModelBottomSheet.swift"
+        ],
+        "states": [
+          "StorageClearSpeechModelDefaultState"
+        ],
+        "actions": [
+          "onDisappear",
           "onTapConfirm"
         ]
       },
@@ -2356,26 +2408,6 @@
         ]
       },
       {
-        "module": "UserSettings",
-        "source": "ios/Doglyad/Application/Module/UserSettings",
-        "entries": [
-          "ios/Doglyad/Application/Module/UserSettings/UserSettingsScreen.swift"
-        ],
-        "states": [
-          "UserSettingsErrorState",
-          "UserSettingsInitialState"
-        ],
-        "actions": [
-          "onFocusChanged",
-          "onSubmit",
-          "onTapBack",
-          "onTapSave",
-          "toggleDescriptionRemarks",
-          "togglePhotoRemarks",
-          "toggleRecommendationsIncluded"
-        ]
-      },
-      {
         "module": "WebDocument",
         "source": "ios/Doglyad/Application/Module/WebDocument",
         "entries": [
@@ -2391,6 +2423,27 @@
           "onDocumentLoaded",
           "onTapRetry"
         ]
+      },
+      {
+        "module": "WorkSettings",
+        "source": "ios/Doglyad/Application/Module/WorkSettings",
+        "entries": [
+          "ios/Doglyad/Application/Module/WorkSettings/WorkSettingsScreen.swift"
+        ],
+        "states": [
+          "WorkSettingsErrorState",
+          "WorkSettingsInitialState"
+        ],
+        "actions": [
+          "onFocusChanged",
+          "onSubmit",
+          "onTapBack",
+          "onTapSave",
+          "toggleDescriptionRemarks",
+          "togglePatientConsent",
+          "togglePhotoRemarks",
+          "toggleRecommendationsIncluded"
+        ]
       }
     ],
     "routes": [
@@ -2401,14 +2454,14 @@
       "scan",
       "history",
       "reportDetail",
-      "settings",
+      "menu",
       "settingsAI",
       "templateList",
       "readyMadeTemplateList",
       "templateAdd",
       "templateEdit",
       "storage",
-      "userSettings",
+      "workSettings",
       "subscriptionRecovery",
       "manageSubscription",
       "paywall",
@@ -2427,9 +2480,11 @@
       "permissionSpeech",
       "permissionPhotoLibrary",
       "photoLibraryPicker",
+      "patientConsent",
       "reportReceived",
       "webDocument",
       "storageClearProtocols",
+      "storageClearSpeechModel",
       "storageClearAll",
       "templateDelete",
       "about",
@@ -3077,81 +3132,81 @@
       ]
     },
     {
-      "id": "atlas-settings-26a0860026",
+      "id": "atlas-menu-76d8e41335",
       "kind": "render",
-      "screen": "Settings",
-      "title": "01 SettingsContentState HistoryCountAvailable",
+      "screen": "Menu",
+      "title": "01 MenuContentState HistoryCountAvailable",
       "previewOrder": 1,
-      "source": "ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift",
-      "flow": "modules/Settings/atlas/atlas-settings-26a0860026.yaml",
+      "source": "ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift",
+      "flow": "modules/Menu/atlas/atlas-menu-76d8e41335.yaml",
       "previewScope": "module",
       "screenshots": [
-        "01-Settings-26a0860026"
+        "01-Menu-76d8e41335"
       ]
     },
     {
-      "id": "atlas-settings-3b6a500558",
+      "id": "atlas-menu-2c9b354081",
       "kind": "render",
-      "screen": "Settings",
-      "title": "02 SettingsContentState HistoryCountAvailable ScrollEnd",
+      "screen": "Menu",
+      "title": "02 MenuContentState HistoryCountAvailable ScrollEnd",
       "previewOrder": 2,
-      "source": "ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift",
-      "flow": "modules/Settings/atlas/atlas-settings-3b6a500558.yaml",
+      "source": "ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift",
+      "flow": "modules/Menu/atlas/atlas-menu-2c9b354081.yaml",
       "previewScope": "module",
       "screenshots": [
-        "02-Settings-3b6a500558"
+        "02-Menu-2c9b354081"
       ]
     },
     {
-      "id": "atlas-settings-7eee4ba2e0",
+      "id": "atlas-menu-2858e3b34a",
       "kind": "render",
-      "screen": "Settings",
-      "title": "03 SettingsContentState HistoryCountUnavailable",
+      "screen": "Menu",
+      "title": "03 MenuContentState HistoryCountUnavailable",
       "previewOrder": 3,
-      "source": "ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift",
-      "flow": "modules/Settings/atlas/atlas-settings-7eee4ba2e0.yaml",
+      "source": "ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift",
+      "flow": "modules/Menu/atlas/atlas-menu-2858e3b34a.yaml",
       "previewScope": "module",
       "screenshots": [
-        "03-Settings-7eee4ba2e0"
+        "03-Menu-2858e3b34a"
       ]
     },
     {
-      "id": "atlas-settings-fb934d7d87",
+      "id": "atlas-menu-fbd534a5f9",
       "kind": "render",
-      "screen": "Settings",
-      "title": "04 SettingsContentState HistoryCountUnavailable ScrollEnd",
+      "screen": "Menu",
+      "title": "04 MenuContentState HistoryCountUnavailable ScrollEnd",
       "previewOrder": 4,
-      "source": "ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift",
-      "flow": "modules/Settings/atlas/atlas-settings-fb934d7d87.yaml",
+      "source": "ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift",
+      "flow": "modules/Menu/atlas/atlas-menu-fbd534a5f9.yaml",
       "previewScope": "module",
       "screenshots": [
-        "04-Settings-fb934d7d87"
+        "04-Menu-fbd534a5f9"
       ]
     },
     {
-      "id": "atlas-settings-673a09dc7c",
+      "id": "atlas-menu-6f4c5438d5",
       "kind": "render",
-      "screen": "Settings",
-      "title": "05 SettingsContentState NoCompletedReports",
+      "screen": "Menu",
+      "title": "05 MenuContentState NoCompletedReports",
       "previewOrder": 5,
-      "source": "ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift",
-      "flow": "modules/Settings/atlas/atlas-settings-673a09dc7c.yaml",
+      "source": "ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift",
+      "flow": "modules/Menu/atlas/atlas-menu-6f4c5438d5.yaml",
       "previewScope": "module",
       "screenshots": [
-        "05-Settings-673a09dc7c"
+        "05-Menu-6f4c5438d5"
       ]
     },
     {
-      "id": "atlas-settings-eaf4ecbc63",
+      "id": "atlas-menu-741bfb004e",
       "kind": "render",
-      "screen": "Settings",
-      "title": "06 SettingsContentState NoCompletedReports ScrollEnd",
+      "screen": "Menu",
+      "title": "06 MenuContentState NoCompletedReports ScrollEnd",
       "previewOrder": 6,
-      "source": "ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift",
-      "flow": "modules/Settings/atlas/atlas-settings-eaf4ecbc63.yaml",
+      "source": "ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift",
+      "flow": "modules/Menu/atlas/atlas-menu-741bfb004e.yaml",
       "previewScope": "module",
       "screenshots": [
-        "06-Settings-eaf4ecbc63"
+        "06-Menu-741bfb004e"
       ]
     },
     {
@@ -3636,55 +3691,81 @@
       ]
     },
     {
-      "id": "atlas-usersettings-75e8f38e10",
+      "id": "atlas-worksettings-c6fac5aeb8",
       "kind": "render",
-      "screen": "UserSettings",
-      "title": "01 UserSettingsInitialState WorkPreferences",
+      "screen": "WorkSettings",
+      "title": "01 WorkSettingsInitialState WorkPreferences",
       "previewOrder": 1,
-      "source": "ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift",
-      "flow": "modules/UserSettings/atlas/atlas-usersettings-75e8f38e10.yaml",
+      "source": "ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift",
+      "flow": "modules/WorkSettings/atlas/atlas-worksettings-c6fac5aeb8.yaml",
       "previewScope": "module",
       "screenshots": [
-        "01-UserSettings-75e8f38e10"
+        "01-WorkSettings-c6fac5aeb8"
       ]
     },
     {
-      "id": "atlas-usersettings-0f8b559c14",
+      "id": "atlas-worksettings-e718ace8f4",
       "kind": "render",
-      "screen": "UserSettings",
-      "title": "02 UserSettingsInitialState WorkPreferences ScrollEnd",
+      "screen": "WorkSettings",
+      "title": "02 WorkSettingsInitialState WorkPreferences ScrollEnd",
       "previewOrder": 2,
-      "source": "ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift",
-      "flow": "modules/UserSettings/atlas/atlas-usersettings-0f8b559c14.yaml",
+      "source": "ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift",
+      "flow": "modules/WorkSettings/atlas/atlas-worksettings-e718ace8f4.yaml",
       "previewScope": "module",
       "screenshots": [
-        "02-UserSettings-0f8b559c14"
+        "02-WorkSettings-e718ace8f4"
       ]
     },
     {
-      "id": "atlas-usersettings-30229e999a",
+      "id": "atlas-worksettings-b6ae9979bc",
       "kind": "render",
-      "screen": "UserSettings",
-      "title": "03 UserSettingsErrorState PreferencesSaveFailed",
+      "screen": "WorkSettings",
+      "title": "03 WorkSettingsInitialState PatientConsentDisabled",
       "previewOrder": 3,
-      "source": "ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift",
-      "flow": "modules/UserSettings/atlas/atlas-usersettings-30229e999a.yaml",
+      "source": "ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift",
+      "flow": "modules/WorkSettings/atlas/atlas-worksettings-b6ae9979bc.yaml",
       "previewScope": "module",
       "screenshots": [
-        "03-UserSettings-30229e999a"
+        "03-WorkSettings-b6ae9979bc"
       ]
     },
     {
-      "id": "atlas-usersettings-1474835e1a",
+      "id": "atlas-worksettings-a27c17f5ce",
       "kind": "render",
-      "screen": "UserSettings",
-      "title": "04 UserSettingsErrorState PreferencesSaveFailed ScrollEnd",
+      "screen": "WorkSettings",
+      "title": "04 WorkSettingsInitialState PatientConsentDisabled ScrollEnd",
       "previewOrder": 4,
-      "source": "ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift",
-      "flow": "modules/UserSettings/atlas/atlas-usersettings-1474835e1a.yaml",
+      "source": "ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift",
+      "flow": "modules/WorkSettings/atlas/atlas-worksettings-a27c17f5ce.yaml",
       "previewScope": "module",
       "screenshots": [
-        "04-UserSettings-1474835e1a"
+        "04-WorkSettings-a27c17f5ce"
+      ]
+    },
+    {
+      "id": "atlas-worksettings-17a6512eb4",
+      "kind": "render",
+      "screen": "WorkSettings",
+      "title": "05 WorkSettingsErrorState PreferencesSaveFailed",
+      "previewOrder": 5,
+      "source": "ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift",
+      "flow": "modules/WorkSettings/atlas/atlas-worksettings-17a6512eb4.yaml",
+      "previewScope": "module",
+      "screenshots": [
+        "05-WorkSettings-17a6512eb4"
+      ]
+    },
+    {
+      "id": "atlas-worksettings-ebdef23f53",
+      "kind": "render",
+      "screen": "WorkSettings",
+      "title": "06 WorkSettingsErrorState PreferencesSaveFailed ScrollEnd",
+      "previewOrder": 6,
+      "source": "ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift",
+      "flow": "modules/WorkSettings/atlas/atlas-worksettings-ebdef23f53.yaml",
+      "previewScope": "module",
+      "screenshots": [
+        "06-WorkSettings-ebdef23f53"
       ]
     },
     {
@@ -3693,7 +3774,7 @@
       "screen": "SettingsAI",
       "title": "01 SettingsAIInitialState CurrentPreferences",
       "previewOrder": 1,
-      "source": "ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift",
+      "source": "ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift",
       "flow": "modules/SettingsAI/atlas/atlas-settingsai-f46a59b1b3.yaml",
       "previewScope": "module",
       "screenshots": [
@@ -3706,7 +3787,7 @@
       "screen": "SettingsAI",
       "title": "02 SettingsAIInitialState CurrentPreferences ScrollEnd",
       "previewOrder": 2,
-      "source": "ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift",
+      "source": "ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift",
       "flow": "modules/SettingsAI/atlas/atlas-settingsai-b7209852fc.yaml",
       "previewScope": "module",
       "screenshots": [
@@ -3719,7 +3800,7 @@
       "screen": "SettingsAI",
       "title": "03 SettingsAIErrorState PreferencesSaveFailed",
       "previewOrder": 3,
-      "source": "ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift",
+      "source": "ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift",
       "flow": "modules/SettingsAI/atlas/atlas-settingsai-e993ef39f9.yaml",
       "previewScope": "module",
       "screenshots": [
@@ -3732,7 +3813,7 @@
       "screen": "SettingsAI",
       "title": "04 SettingsAIErrorState PreferencesSaveFailed ScrollEnd",
       "previewOrder": 4,
-      "source": "ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift",
+      "source": "ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift",
       "flow": "modules/SettingsAI/atlas/atlas-settingsai-9e6402ea61.yaml",
       "previewScope": "module",
       "screenshots": [
@@ -4416,6 +4497,19 @@
       ]
     },
     {
+      "id": "atlas-storageclearspeechmodel-09b7f0db3a",
+      "kind": "render",
+      "screen": "StorageClearSpeechModel",
+      "title": "01 StorageClearSpeechModelDefaultState ConfirmModelDeletion",
+      "previewOrder": 1,
+      "source": "ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/Preview/StorageClearSpeechModelPreview.swift",
+      "flow": "modules/StorageClearSpeechModel/atlas/atlas-storageclearspeechmodel-09b7f0db3a.yaml",
+      "previewScope": "module",
+      "screenshots": [
+        "01-StorageClearSpeechModel-09b7f0db3a"
+      ]
+    },
+    {
       "id": "atlas-storageclearall-95d9776313",
       "kind": "render",
       "screen": "StorageClearAll",
@@ -4894,6 +4988,45 @@
       "previewScope": "module",
       "screenshots": [
         "15-ScanSpeech-65a5940d07"
+      ]
+    },
+    {
+      "id": "atlas-patientconsent-65ab0d7fc4",
+      "kind": "render",
+      "screen": "PatientConsent",
+      "title": "01 PatientConsentInitialState RequestConsent",
+      "previewOrder": 1,
+      "source": "ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift",
+      "flow": "modules/PatientConsent/atlas/atlas-patientconsent-65ab0d7fc4.yaml",
+      "previewScope": "module",
+      "screenshots": [
+        "01-PatientConsent-65ab0d7fc4"
+      ]
+    },
+    {
+      "id": "atlas-patientconsent-1e3a9361b8",
+      "kind": "render",
+      "screen": "PatientConsent",
+      "title": "02 PatientConsentInitialState DoNotAskAgainSelected",
+      "previewOrder": 2,
+      "source": "ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift",
+      "flow": "modules/PatientConsent/atlas/atlas-patientconsent-1e3a9361b8.yaml",
+      "previewScope": "module",
+      "screenshots": [
+        "02-PatientConsent-1e3a9361b8"
+      ]
+    },
+    {
+      "id": "atlas-patientconsent-578517b21f",
+      "kind": "render",
+      "screen": "PatientConsent",
+      "title": "03 PatientConsentInitialState PreferenceSaveFailed",
+      "previewOrder": 3,
+      "source": "ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift",
+      "flow": "modules/PatientConsent/atlas/atlas-patientconsent-578517b21f.yaml",
+      "previewScope": "module",
+      "screenshots": [
+        "03-PatientConsent-578517b21f"
       ]
     },
     {

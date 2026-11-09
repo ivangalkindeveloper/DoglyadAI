@@ -18,7 +18,7 @@ whether a failure should block the user. Local database I/O does not introduce a
   or fail. Omit an unavailable section or use a general description. Do not disable
   the main controls, replace the screen, offer Retry, or show `DMessager` for these
   failures. For example, keep the complete examination-type catalog available if
-  recent types cannot load or be recorded. Keep Settings navigation available if
+  recent types cannot load or be recorded. Keep Menu navigation available if
   the report count cannot load; show the history card's purpose instead of a count.
   Repository failures still propagate; the owning view model explicitly handles
   this optional result without pretending that required persistence succeeded.

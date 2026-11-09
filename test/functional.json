@@ -39,10 +39,13 @@
       "flow": "modules/ReportReceived/e2e/generation.yaml",
       "sources": [
         "Scan",
+        "PatientConsent",
         "ReportReceived",
         "ReportDetail"
       ],
       "screenshots": [
+        "PatientConsent-request",
+        "PatientConsent-do-not-ask",
         "050-ReportReceived-ready",
         "051-ReportDetail-generated"
       ],
@@ -397,15 +400,15 @@
       "dependsOn": []
     },
     {
-      "id": "e2e-settings-history-summary-retry",
-      "module": "Settings",
-      "screen": "Settings",
+      "id": "e2e-menu-history-summary-retry",
+      "module": "Menu",
+      "screen": "Menu",
       "title": "Недоступный счётчик истории не блокирует настройки",
       "kind": "functional",
-      "flow": "modules/Settings/e2e/history-summary-retry.yaml",
+      "flow": "modules/Menu/e2e/history-summary-retry.yaml",
       "screenshots": [
-        "Settings-history-summary-unavailable",
-        "Settings-history-summary-recovered"
+        "Menu-history-summary-unavailable",
+        "Menu-history-summary-recovered"
       ],
       "subscriptionProfile": "pro",
       "dependsOn": [],
@@ -422,19 +425,19 @@
       }
     },
     {
-      "id": "e2e-settings-navigation",
+      "id": "e2e-menu-navigation",
       "title": "Все пункты настроек в порядке экрана и возврат без изменений",
       "kind": "functional",
-      "module": "Settings",
-      "screen": "Settings",
-      "flow": "modules/Settings/e2e/navigation.yaml",
+      "module": "Menu",
+      "screen": "Menu",
+      "flow": "modules/Menu/e2e/navigation.yaml",
       "screenshots": [
-        "Settings-all-routes-returned",
+        "Menu-all-routes-returned",
         "Scan-draft-after-settings-routes"
       ],
       "subscriptionProfile": "pro",
       "dependsOn": [
-        "e2e-settings-history-summary-retry"
+        "e2e-menu-history-summary-retry"
       ],
       "localAssertions": {
         "preserved": [
@@ -709,34 +712,34 @@
       "subscriptionProfile": "pro"
     },
     {
-      "id": "e2e-usersettings-work-settings",
+      "id": "e2e-worksettings-work-settings",
       "title": "Рабочий email сохраняется после перезапуска",
       "kind": "functional",
-      "flow": "modules/UserSettings/e2e/work-settings.yaml",
+      "flow": "modules/WorkSettings/e2e/work-settings.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "screenshots": [
-        "020-UserSettings-saved"
+        "020-WorkSettings-saved"
       ],
-      "screen": "UserSettings",
-      "module": "UserSettings",
+      "screen": "WorkSettings",
+      "module": "WorkSettings",
       "subscriptionProfile": "pro",
       "dependsOn": []
     },
     {
-      "id": "e2e-usersettings-flags-000",
+      "id": "e2e-worksettings-flags-000",
       "title": "Переключатели: 000 сохраняются после перезапуска",
       "kind": "functional",
-      "module": "UserSettings",
-      "screen": "UserSettings",
-      "flow": "modules/UserSettings/e2e/flags-000.yaml",
+      "module": "WorkSettings",
+      "screen": "WorkSettings",
+      "flow": "modules/WorkSettings/e2e/flags-000.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "UserSettings-flags-000",
+        "WorkSettings-flags-000",
         "ReportReceived-flags-000"
       ],
       "backendAssertions": {
@@ -752,18 +755,18 @@
       }
     },
     {
-      "id": "e2e-usersettings-flags-001",
+      "id": "e2e-worksettings-flags-001",
       "title": "Переключатели: 001 сохраняются после перезапуска",
       "kind": "functional",
-      "module": "UserSettings",
-      "screen": "UserSettings",
-      "flow": "modules/UserSettings/e2e/flags-001.yaml",
+      "module": "WorkSettings",
+      "screen": "WorkSettings",
+      "flow": "modules/WorkSettings/e2e/flags-001.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "UserSettings-flags-001",
+        "WorkSettings-flags-001",
         "ReportReceived-flags-001"
       ],
       "backendAssertions": {
@@ -778,22 +781,22 @@
         }
       },
       "dependsOn": [
-        "e2e-usersettings-flags-000"
+        "e2e-worksettings-flags-000"
       ]
     },
     {
-      "id": "e2e-usersettings-flags-010",
+      "id": "e2e-worksettings-flags-010",
       "title": "Переключатели: 010 сохраняются после перезапуска",
       "kind": "functional",
-      "module": "UserSettings",
-      "screen": "UserSettings",
-      "flow": "modules/UserSettings/e2e/flags-010.yaml",
+      "module": "WorkSettings",
+      "screen": "WorkSettings",
+      "flow": "modules/WorkSettings/e2e/flags-010.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "UserSettings-flags-010",
+        "WorkSettings-flags-010",
         "ReportReceived-flags-010"
       ],
       "backendAssertions": {
@@ -808,22 +811,22 @@
         }
       },
       "dependsOn": [
-        "e2e-usersettings-flags-000"
+        "e2e-worksettings-flags-000"
       ]
     },
     {
-      "id": "e2e-usersettings-flags-011",
+      "id": "e2e-worksettings-flags-011",
       "title": "Переключатели: 011 сохраняются после перезапуска",
       "kind": "functional",
-      "module": "UserSettings",
-      "screen": "UserSettings",
-      "flow": "modules/UserSettings/e2e/flags-011.yaml",
+      "module": "WorkSettings",
+      "screen": "WorkSettings",
+      "flow": "modules/WorkSettings/e2e/flags-011.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "UserSettings-flags-011",
+        "WorkSettings-flags-011",
         "ReportReceived-flags-011"
       ],
       "backendAssertions": {
@@ -838,22 +841,22 @@
         }
       },
       "dependsOn": [
-        "e2e-usersettings-flags-000"
+        "e2e-worksettings-flags-000"
       ]
     },
     {
-      "id": "e2e-usersettings-flags-100",
+      "id": "e2e-worksettings-flags-100",
       "title": "Переключатели: 100 сохраняются после перезапуска",
       "kind": "functional",
-      "module": "UserSettings",
-      "screen": "UserSettings",
-      "flow": "modules/UserSettings/e2e/flags-100.yaml",
+      "module": "WorkSettings",
+      "screen": "WorkSettings",
+      "flow": "modules/WorkSettings/e2e/flags-100.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "UserSettings-flags-100",
+        "WorkSettings-flags-100",
         "ReportReceived-flags-100"
       ],
       "backendAssertions": {
@@ -868,22 +871,22 @@
         }
       },
       "dependsOn": [
-        "e2e-usersettings-flags-000"
+        "e2e-worksettings-flags-000"
       ]
     },
     {
-      "id": "e2e-usersettings-flags-101",
+      "id": "e2e-worksettings-flags-101",
       "title": "Переключатели: 101 сохраняются после перезапуска",
       "kind": "functional",
-      "module": "UserSettings",
-      "screen": "UserSettings",
-      "flow": "modules/UserSettings/e2e/flags-101.yaml",
+      "module": "WorkSettings",
+      "screen": "WorkSettings",
+      "flow": "modules/WorkSettings/e2e/flags-101.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "UserSettings-flags-101",
+        "WorkSettings-flags-101",
         "ReportReceived-flags-101"
       ],
       "backendAssertions": {
@@ -898,22 +901,22 @@
         }
       },
       "dependsOn": [
-        "e2e-usersettings-flags-000"
+        "e2e-worksettings-flags-000"
       ]
     },
     {
-      "id": "e2e-usersettings-flags-110",
+      "id": "e2e-worksettings-flags-110",
       "title": "Переключатели: 110 сохраняются после перезапуска",
       "kind": "functional",
-      "module": "UserSettings",
-      "screen": "UserSettings",
-      "flow": "modules/UserSettings/e2e/flags-110.yaml",
+      "module": "WorkSettings",
+      "screen": "WorkSettings",
+      "flow": "modules/WorkSettings/e2e/flags-110.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "UserSettings-flags-110",
+        "WorkSettings-flags-110",
         "ReportReceived-flags-110"
       ],
       "backendAssertions": {
@@ -928,22 +931,22 @@
         }
       },
       "dependsOn": [
-        "e2e-usersettings-flags-000"
+        "e2e-worksettings-flags-000"
       ]
     },
     {
-      "id": "e2e-usersettings-flags-111",
+      "id": "e2e-worksettings-flags-111",
       "title": "Переключатели: 111 сохраняются после перезапуска",
       "kind": "functional",
-      "module": "UserSettings",
-      "screen": "UserSettings",
-      "flow": "modules/UserSettings/e2e/flags-111.yaml",
+      "module": "WorkSettings",
+      "screen": "WorkSettings",
+      "flow": "modules/WorkSettings/e2e/flags-111.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "UserSettings-flags-111",
+        "WorkSettings-flags-111",
         "ReportReceived-flags-111"
       ],
       "backendAssertions": {
@@ -958,45 +961,45 @@
         }
       },
       "dependsOn": [
-        "e2e-usersettings-flags-000"
+        "e2e-worksettings-flags-000"
       ]
     },
     {
-      "id": "e2e-usersettings-invalid-email",
+      "id": "e2e-worksettings-invalid-email",
       "title": "Неверная почта не заменяет сохранённую",
       "kind": "functional",
-      "module": "UserSettings",
-      "screen": "UserSettings",
-      "flow": "modules/UserSettings/e2e/invalid-email.yaml",
+      "module": "WorkSettings",
+      "screen": "WorkSettings",
+      "flow": "modules/WorkSettings/e2e/invalid-email.yaml",
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "UserSettings-email-error"
+        "WorkSettings-email-error"
       ],
       "dependsOn": [
-        "e2e-usersettings-work-settings"
+        "e2e-worksettings-work-settings"
       ]
     },
     {
-      "id": "e2e-usersettings-save-failure",
+      "id": "e2e-worksettings-save-failure",
       "kind": "functional",
-      "screen": "UserSettings",
+      "screen": "WorkSettings",
       "title": "Отмена правки почты, ошибка записи и повтор",
-      "flow": "modules/UserSettings/e2e/save-failure.yaml",
+      "flow": "modules/WorkSettings/e2e/save-failure.yaml",
       "screenshots": [
-        "UserSettings-save-failed",
-        "UserSettings-retry-saved"
+        "WorkSettings-save-failed",
+        "WorkSettings-retry-saved"
       ],
       "subscriptionProfile": "pro",
       "dependsOn": [
-        "e2e-usersettings-invalid-email"
+        "e2e-worksettings-invalid-email"
       ],
       "sources": [
-        "UserSettings"
+        "WorkSettings"
       ],
-      "module": "UserSettings"
+      "module": "WorkSettings"
     },
     {
       "id": "e2e-settingsai-ai-settings",
@@ -1697,6 +1700,7 @@
       "flow": "modules/Storage/e2e/delete-speech-model.yaml",
       "screenshots": [
         "Storage-speech-model-present",
+        "StorageClearSpeechModel-confirmation",
         "Storage-speech-model-removed",
         "ScanSpeech-model-download-required"
       ],
@@ -1718,7 +1722,12 @@
         "cleared": [
           "speechModel"
         ]
-      }
+      },
+      "sources": [
+        "Storage",
+        "ScanSpeech",
+        "StorageClearSpeechModel"
+      ]
     },
     {
       "id": "e2e-storage-clear-failure-cancel",
@@ -2139,7 +2148,7 @@
       ],
       "subscriptionProfile": "pro",
       "dependsOn": [
-        "e2e-usersettings-work-settings"
+        "e2e-worksettings-work-settings"
       ],
       "delivery": {
         "recipient": "regression@example.invalid",
@@ -2179,7 +2188,7 @@
       ],
       "dependsOn": [
         "e2e-photoview-report-remarks",
-        "e2e-usersettings-save-failure"
+        "e2e-worksettings-save-failure"
       ],
       "delivery": {
         "recipient": "regression@example.invalid",
@@ -2691,7 +2700,7 @@
     "SelectUSExaminationType",
     "Paywall",
     "Scan",
-    "Settings",
+    "Menu",
     "History",
     "ReportDetail",
     "TemplateList",
@@ -2699,7 +2708,7 @@
     "ReadyMadeTemplateList",
     "TemplateEdit",
     "TemplateDelete",
-    "UserSettings",
+    "WorkSettings",
     "SettingsAI",
     "SelectTranscriber",
     "SelectTranscriptParser",
@@ -2708,6 +2717,7 @@
     "SubscriptionRecovery",
     "Storage",
     "StorageClearProtocols",
+    "StorageClearSpeechModel",
     "StorageClearAll",
     "About",
     "SelectDateOfBirth",
@@ -2719,6 +2729,7 @@
     "PhotoView",
     "PhotoRemark",
     "ScanSpeech",
+    "PatientConsent",
     "ReportReceived",
     "Share",
     "RequestLimitExceeded"

@@ -26,5 +26,5 @@ cases:
   - camera
   - speech
   - photoLibrary
-  knownLimitation: iOS 26.5 Simulator открывает корень Settings и кеширует отказ AVFoundation до перезапуска.
+  knownLimitation: iOS 26.5 Simulator открывает корень Menu и кеширует отказ AVFoundation до перезапуска.
     Прямой переход в карточку приложения на физическом iPhone этим прогоном не проверяется.

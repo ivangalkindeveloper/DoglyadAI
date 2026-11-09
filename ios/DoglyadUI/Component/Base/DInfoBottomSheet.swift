@@ -1,11 +1,12 @@
 import SwiftUI
 
-public struct DInfoBottomSheet: DViewProtocol {
+public struct DInfoBottomSheet<Content: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let fraction: Double
     private let title: LocalizedStringResource
     private let image: ImageResource
     private let description: LocalizedStringResource
+    private let content: Content
     private let buttonTitle: LocalizedStringResource
     private let action: () -> Void
     private let accessibilityElement: AccessibilityChildBehavior?
@@ -16,6 +17,7 @@ public struct DInfoBottomSheet: DViewProtocol {
         title: LocalizedStringResource,
         image: ImageResource,
         description: LocalizedStringResource,
+        @ViewBuilder content: () -> Content,
         buttonTitle: LocalizedStringResource,
         action: @escaping () -> Void,
         accessibilityElement: AccessibilityChildBehavior? = nil,
@@ -25,11 +27,37 @@ public struct DInfoBottomSheet: DViewProtocol {
         self.title = title
         self.image = image
         self.description = description
+        self.content = content()
         self.buttonTitle = buttonTitle
 
         self.action = action
         self.accessibilityElement = accessibilityElement
         self.accessibilityIdentifier = accessibilityIdentifier
+    }
+
+    public init(
+        fraction: Double = 0.3,
+        title: LocalizedStringResource,
+        image: ImageResource,
+        description: LocalizedStringResource,
+        buttonTitle: LocalizedStringResource,
+        action: @escaping () -> Void,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
+    ) where Content == EmptyView {
+        self.init(
+            fraction: fraction,
+            title: title,
+            image: image,
+            description: description,
+            content: {
+                EmptyView()
+            },
+            buttonTitle: buttonTitle,
+            action: action,
+            accessibilityElement: accessibilityElement,
+            accessibilityIdentifier: accessibilityIdentifier,
+        )
     }
 
     public var body: some View {
@@ -63,6 +91,8 @@ public struct DInfoBottomSheet: DViewProtocol {
                             horizontal: false,
                             vertical: true,
                         )
+
+                        content
                     }
                     .frame(
                         maxWidth: .infinity,

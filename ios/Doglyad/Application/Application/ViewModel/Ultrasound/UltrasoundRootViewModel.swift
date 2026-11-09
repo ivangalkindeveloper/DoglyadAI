@@ -13,6 +13,7 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
     @Published var transcriptParserType: TranscriptParserType
     @Published var template: USExaminationTemplate?
     @Published var userEmail: String?
+    @Published var isNeedPatientConsent: Bool
     @Published var isRecommendationsIncluded: Bool
     @Published var isPhotoRemarks: Bool
     @Published var isDescriptionRemarks: Bool
@@ -47,6 +48,7 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         template = nil
         let userSettings = container.initialUserSettings
         userEmail = userSettings.email
+        isNeedPatientConsent = userSettings.isNeedPatientConsent
         isRecommendationsIncluded = userSettings.isRecommendationsIncluded
         isPhotoRemarks = userSettings.isPhotoRemarks
         isDescriptionRemarks = userSettings.isDescriptionRemarks
@@ -102,6 +104,7 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
 
     func saveUserSettings(
         userEmail: String?,
+        isNeedPatientConsent: Bool,
         isRecommendationsIncluded: Bool,
         isPhotoRemarks: Bool,
         isDescriptionRemarks: Bool,
@@ -119,10 +122,24 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         try await repository.setIsDescriptionRemarks(
             isDescriptionRemarks,
         )
+        try await repository.setIsNeedPatientConsent(
+            isNeedPatientConsent,
+        )
         self.userEmail = userEmail
+        self.isNeedPatientConsent = isNeedPatientConsent
         self.isRecommendationsIncluded = isRecommendationsIncluded
         self.isPhotoRemarks = isPhotoRemarks
         self.isDescriptionRemarks = isDescriptionRemarks
+        changes.send()
+    }
+
+    func saveIsNeedPatientConsent(
+        _ isNeedPatientConsent: Bool,
+    ) async throws {
+        try await container.userSettingsRepository.setIsNeedPatientConsent(
+            isNeedPatientConsent,
+        )
+        self.isNeedPatientConsent = isNeedPatientConsent
         changes.send()
     }
 

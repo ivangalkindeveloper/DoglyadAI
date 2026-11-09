@@ -550,8 +550,8 @@
 
     struct RegressionCase48: View {
         var body: some View {
-            SettingsPreviewView(
-                state: SettingsContentState(),
+            MenuPreviewView(
+                state: MenuContentState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -560,8 +560,8 @@
 
     struct RegressionCase49: View {
         var body: some View {
-            SettingsPreviewView(
-                state: SettingsContentState(),
+            MenuPreviewView(
+                state: MenuContentState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -571,8 +571,8 @@
 
     struct RegressionCase50: View {
         var body: some View {
-            SettingsPreviewView(
-                state: SettingsContentState(),
+            MenuPreviewView(
+                state: MenuContentState(),
                 reportsCount: nil,
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -582,8 +582,8 @@
 
     struct RegressionCase51: View {
         var body: some View {
-            SettingsPreviewView(
-                state: SettingsContentState(),
+            MenuPreviewView(
+                state: MenuContentState(),
                 reportsCount: nil,
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -594,8 +594,8 @@
 
     struct RegressionCase52: View {
         var body: some View {
-            SettingsPreviewView(
-                state: SettingsContentState(),
+            MenuPreviewView(
+                state: MenuContentState(),
                 reportsCount: 0,
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -605,8 +605,8 @@
 
     struct RegressionCase53: View {
         var body: some View {
-            SettingsPreviewView(
-                state: SettingsContentState(),
+            MenuPreviewView(
+                state: MenuContentState(),
                 reportsCount: 0,
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -1063,8 +1063,8 @@
 
     struct RegressionCase91: View {
         var body: some View {
-            UserSettingsPreviewView(
-                state: UserSettingsInitialState(),
+            WorkSettingsPreviewView(
+                state: WorkSettingsInitialState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1073,8 +1073,8 @@
 
     struct RegressionCase92: View {
         var body: some View {
-            UserSettingsPreviewView(
-                state: UserSettingsInitialState(),
+            WorkSettingsPreviewView(
+                state: WorkSettingsInitialState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1084,12 +1084,9 @@
 
     struct RegressionCase93: View {
         var body: some View {
-            UserSettingsPreviewView(
-                state: UserSettingsErrorState(
-                    error: URLError(
-                        .notConnectedToInternet,
-                    ),
-                ),
+            WorkSettingsPreviewView(
+                state: WorkSettingsInitialState(),
+                isNeedPatientConsent: false,
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1098,12 +1095,9 @@
 
     struct RegressionCase94: View {
         var body: some View {
-            UserSettingsPreviewView(
-                state: UserSettingsErrorState(
-                    error: URLError(
-                        .notConnectedToInternet,
-                    ),
-                ),
+            WorkSettingsPreviewView(
+                state: WorkSettingsInitialState(),
+                isNeedPatientConsent: false,
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1113,8 +1107,12 @@
 
     struct RegressionCase95: View {
         var body: some View {
-            SettingsAIPreviewView(
-                state: SettingsAIInitialState(),
+            WorkSettingsPreviewView(
+                state: WorkSettingsErrorState(
+                    error: URLError(
+                        .notConnectedToInternet,
+                    ),
+                ),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1123,8 +1121,12 @@
 
     struct RegressionCase96: View {
         var body: some View {
-            SettingsAIPreviewView(
-                state: SettingsAIInitialState(),
+            WorkSettingsPreviewView(
+                state: WorkSettingsErrorState(
+                    error: URLError(
+                        .notConnectedToInternet,
+                    ),
+                ),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1135,6 +1137,27 @@
     struct RegressionCase97: View {
         var body: some View {
             SettingsAIPreviewView(
+                state: SettingsAIInitialState(),
+            ).previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
+        }
+    }
+
+    struct RegressionCase98: View {
+        var body: some View {
+            SettingsAIPreviewView(
+                state: SettingsAIInitialState(),
+            ).previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
+            .previewScrollToEnd()
+        }
+    }
+
+    struct RegressionCase99: View {
+        var body: some View {
+            SettingsAIPreviewView(
                 state: SettingsAIErrorState(
                     error: URLError(
                         .notConnectedToInternet,
@@ -1146,7 +1169,7 @@
         }
     }
 
-    struct RegressionCase98: View {
+    struct RegressionCase100: View {
         var body: some View {
             SettingsAIPreviewView(
                 state: SettingsAIErrorState(
@@ -1161,31 +1184,10 @@
         }
     }
 
-    struct RegressionCase99: View {
-        var body: some View {
-            SelectTranscriberPreviewView(
-                state: SelectTranscriberInitialState(),
-            ).previewable(
-                container: ModulePreviewFactory.makeContainer(),
-            )
-        }
-    }
-
-    struct RegressionCase100: View {
-        var body: some View {
-            SelectTranscriberPreviewView(
-                state: SelectTranscriberInitialState(),
-            ).previewable(
-                container: ModulePreviewFactory.makeContainer(),
-            )
-            .previewScrollToEnd()
-        }
-    }
-
     struct RegressionCase101: View {
         var body: some View {
-            SelectTranscriptParserPreviewView(
-                state: SelectTranscriptParserDefaultState(),
+            SelectTranscriberPreviewView(
+                state: SelectTranscriberInitialState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1194,8 +1196,8 @@
 
     struct RegressionCase102: View {
         var body: some View {
-            SelectTranscriptParserPreviewView(
-                state: SelectTranscriptParserDefaultState(),
+            SelectTranscriberPreviewView(
+                state: SelectTranscriberInitialState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1205,8 +1207,8 @@
 
     struct RegressionCase103: View {
         var body: some View {
-            SelectNeuralModelPreviewView(
-                state: SelectNeuralModelInitialState(),
+            SelectTranscriptParserPreviewView(
+                state: SelectTranscriptParserDefaultState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1215,8 +1217,8 @@
 
     struct RegressionCase104: View {
         var body: some View {
-            SelectNeuralModelPreviewView(
-                state: SelectNeuralModelInitialState(),
+            SelectTranscriptParserPreviewView(
+                state: SelectTranscriptParserDefaultState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -1226,26 +1228,20 @@
 
     struct RegressionCase105: View {
         var body: some View {
-            ManageSubscriptionPreviewView(
-                scenario: .loading,
-            )
-            .previewable(
-                container: ManageSubscriptionPreviewFactory.makeContainer(
-                    code: "ru",
-                ),
+            SelectNeuralModelPreviewView(
+                state: SelectNeuralModelInitialState(),
+            ).previewable(
+                container: ModulePreviewFactory.makeContainer(),
             )
         }
     }
 
     struct RegressionCase106: View {
         var body: some View {
-            ManageSubscriptionPreviewView(
-                scenario: .loading,
-            )
-            .previewable(
-                container: ManageSubscriptionPreviewFactory.makeContainer(
-                    code: "ru",
-                ),
+            SelectNeuralModelPreviewView(
+                state: SelectNeuralModelInitialState(),
+            ).previewable(
+                container: ModulePreviewFactory.makeContainer(),
             )
             .previewScrollToEnd()
         }
@@ -1254,7 +1250,7 @@
     struct RegressionCase107: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .failed,
+                scenario: .loading,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1267,20 +1263,7 @@
     struct RegressionCase108: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .inactive,
-            )
-            .previewable(
-                container: ManageSubscriptionPreviewFactory.makeContainer(
-                    code: "ru",
-                ),
-            )
-        }
-    }
-
-    struct RegressionCase109: View {
-        var body: some View {
-            ManageSubscriptionPreviewView(
-                scenario: .inactive,
+                scenario: .loading,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1291,10 +1274,23 @@
         }
     }
 
+    struct RegressionCase109: View {
+        var body: some View {
+            ManageSubscriptionPreviewView(
+                scenario: .failed,
+            )
+            .previewable(
+                container: ManageSubscriptionPreviewFactory.makeContainer(
+                    code: "ru",
+                ),
+            )
+        }
+    }
+
     struct RegressionCase110: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .appleBase,
+                scenario: .inactive,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1307,7 +1303,7 @@
     struct RegressionCase111: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .appleBase,
+                scenario: .inactive,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1321,7 +1317,7 @@
     struct RegressionCase112: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .yooKassaBase,
+                scenario: .appleBase,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1334,7 +1330,7 @@
     struct RegressionCase113: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .yooKassaBase,
+                scenario: .appleBase,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1348,7 +1344,7 @@
     struct RegressionCase114: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .applePro,
+                scenario: .yooKassaBase,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1361,7 +1357,7 @@
     struct RegressionCase115: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .applePro,
+                scenario: .yooKassaBase,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1375,7 +1371,7 @@
     struct RegressionCase116: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .yooKassaPro,
+                scenario: .applePro,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1388,7 +1384,7 @@
     struct RegressionCase117: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .yooKassaPro,
+                scenario: .applePro,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1402,7 +1398,7 @@
     struct RegressionCase118: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .updating,
+                scenario: .yooKassaPro,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1415,7 +1411,7 @@
     struct RegressionCase119: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .updating,
+                scenario: .yooKassaPro,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1429,7 +1425,7 @@
     struct RegressionCase120: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .appleRenewalOff,
+                scenario: .updating,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1442,7 +1438,7 @@
     struct RegressionCase121: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .appleRenewalOff,
+                scenario: .updating,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1456,7 +1452,7 @@
     struct RegressionCase122: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .renewalOff,
+                scenario: .appleRenewalOff,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1469,7 +1465,7 @@
     struct RegressionCase123: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .renewalOff,
+                scenario: .appleRenewalOff,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1483,7 +1479,7 @@
     struct RegressionCase124: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .operationFailed,
+                scenario: .renewalOff,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1496,7 +1492,7 @@
     struct RegressionCase125: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .operationFailed,
+                scenario: .renewalOff,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1510,7 +1506,7 @@
     struct RegressionCase126: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .restoring,
+                scenario: .operationFailed,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1523,7 +1519,7 @@
     struct RegressionCase127: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .restoring,
+                scenario: .operationFailed,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1537,7 +1533,7 @@
     struct RegressionCase128: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .managing,
+                scenario: .restoring,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1550,7 +1546,7 @@
     struct RegressionCase129: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .managing,
+                scenario: .restoring,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1564,7 +1560,7 @@
     struct RegressionCase130: View {
         var body: some View {
             ManageSubscriptionPreviewView(
-                scenario: .refunding,
+                scenario: .managing,
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(
@@ -1575,6 +1571,33 @@
     }
 
     struct RegressionCase131: View {
+        var body: some View {
+            ManageSubscriptionPreviewView(
+                scenario: .managing,
+            )
+            .previewable(
+                container: ManageSubscriptionPreviewFactory.makeContainer(
+                    code: "ru",
+                ),
+            )
+            .previewScrollToEnd()
+        }
+    }
+
+    struct RegressionCase132: View {
+        var body: some View {
+            ManageSubscriptionPreviewView(
+                scenario: .refunding,
+            )
+            .previewable(
+                container: ManageSubscriptionPreviewFactory.makeContainer(
+                    code: "ru",
+                ),
+            )
+        }
+    }
+
+    struct RegressionCase133: View {
         var body: some View {
             ManageSubscriptionPreviewView(
                 scenario: .refunding,
@@ -1588,35 +1611,10 @@
         }
     }
 
-    struct RegressionCase132: View {
-        var body: some View {
-            SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoveryInitialState(),
-            )
-            .previewable(
-                container: ManageSubscriptionPreviewFactory.makeContainer(),
-            )
-        }
-    }
-
-    struct RegressionCase133: View {
-        var body: some View {
-            SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoveryInitialState(),
-            )
-            .previewable(
-                container: ManageSubscriptionPreviewFactory.makeContainer(),
-            )
-            .previewScrollToEnd()
-        }
-    }
-
     struct RegressionCase134: View {
         var body: some View {
             SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoveryKeyCreationLoadingState(
-                    previousState: SubscriptionRecoveryInitialState(),
-                ),
+                state: SubscriptionRecoveryInitialState(),
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(),
@@ -1627,9 +1625,7 @@
     struct RegressionCase135: View {
         var body: some View {
             SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoveryKeyCreationLoadingState(
-                    previousState: SubscriptionRecoveryInitialState(),
-                ),
+                state: SubscriptionRecoveryInitialState(),
             )
             .previewable(
                 container: ManageSubscriptionPreviewFactory.makeContainer(),
@@ -1641,8 +1637,8 @@
     struct RegressionCase136: View {
         var body: some View {
             SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoverySuccessState(
-                    key: "Preview-MixedCase-Recovery-Key",
+                state: SubscriptionRecoveryKeyCreationLoadingState(
+                    previousState: SubscriptionRecoveryInitialState(),
                 ),
             )
             .previewable(
@@ -1654,8 +1650,8 @@
     struct RegressionCase137: View {
         var body: some View {
             SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoverySuccessState(
-                    key: "Preview-MixedCase-Recovery-Key",
+                state: SubscriptionRecoveryKeyCreationLoadingState(
+                    previousState: SubscriptionRecoveryInitialState(),
                 ),
             )
             .previewable(
@@ -1668,10 +1664,8 @@
     struct RegressionCase138: View {
         var body: some View {
             SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoveryRestoreLoadingState(
-                    previousState: SubscriptionRecoverySuccessState(
-                        key: "Preview-MixedCase-Recovery-Key",
-                    ),
+                state: SubscriptionRecoverySuccessState(
+                    key: "Preview-MixedCase-Recovery-Key",
                 ),
             )
             .previewable(
@@ -1683,10 +1677,8 @@
     struct RegressionCase139: View {
         var body: some View {
             SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoveryRestoreLoadingState(
-                    previousState: SubscriptionRecoverySuccessState(
-                        key: "Preview-MixedCase-Recovery-Key",
-                    ),
+                state: SubscriptionRecoverySuccessState(
+                    key: "Preview-MixedCase-Recovery-Key",
                 ),
             )
             .previewable(
@@ -1699,10 +1691,9 @@
     struct RegressionCase140: View {
         var body: some View {
             SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoveryErrorState(
-                    previousState: SubscriptionRecoveryInitialState(),
-                    errorDescription: L10NPreviewFactory.make().text(
-                        .subscriptionRecoveryFailedDescription,
+                state: SubscriptionRecoveryRestoreLoadingState(
+                    previousState: SubscriptionRecoverySuccessState(
+                        key: "Preview-MixedCase-Recovery-Key",
                     ),
                 ),
             )
@@ -1715,10 +1706,9 @@
     struct RegressionCase141: View {
         var body: some View {
             SubscriptionRecoveryPreviewView(
-                state: SubscriptionRecoveryErrorState(
-                    previousState: SubscriptionRecoveryInitialState(),
-                    errorDescription: L10NPreviewFactory.make().text(
-                        .subscriptionRecoveryFailedDescription,
+                state: SubscriptionRecoveryRestoreLoadingState(
+                    previousState: SubscriptionRecoverySuccessState(
+                        key: "Preview-MixedCase-Recovery-Key",
                     ),
                 ),
             )
@@ -1733,6 +1723,39 @@
         var body: some View {
             SubscriptionRecoveryPreviewView(
                 state: SubscriptionRecoveryErrorState(
+                    previousState: SubscriptionRecoveryInitialState(),
+                    errorDescription: L10NPreviewFactory.make().text(
+                        .subscriptionRecoveryFailedDescription,
+                    ),
+                ),
+            )
+            .previewable(
+                container: ManageSubscriptionPreviewFactory.makeContainer(),
+            )
+        }
+    }
+
+    struct RegressionCase143: View {
+        var body: some View {
+            SubscriptionRecoveryPreviewView(
+                state: SubscriptionRecoveryErrorState(
+                    previousState: SubscriptionRecoveryInitialState(),
+                    errorDescription: L10NPreviewFactory.make().text(
+                        .subscriptionRecoveryFailedDescription,
+                    ),
+                ),
+            )
+            .previewable(
+                container: ManageSubscriptionPreviewFactory.makeContainer(),
+            )
+            .previewScrollToEnd()
+        }
+    }
+
+    struct RegressionCase144: View {
+        var body: some View {
+            SubscriptionRecoveryPreviewView(
+                state: SubscriptionRecoveryErrorState(
                     previousState: SubscriptionRecoverySuccessState(
                         key: "Preview-MixedCase-Recovery-Key",
                     ),
@@ -1745,7 +1768,7 @@
         }
     }
 
-    struct RegressionCase143: View {
+    struct RegressionCase145: View {
         var body: some View {
             SubscriptionRecoveryPreviewView(
                 state: SubscriptionRecoveryErrorState(
@@ -1762,34 +1785,11 @@
         }
     }
 
-    struct RegressionCase144: View {
-        var body: some View {
-            StoragePreviewView(
-                state: StorageInitialState(),
-            ).previewable(
-                container: ModulePreviewFactory.makeContainer(),
-            )
-        }
-    }
-
-    struct RegressionCase145: View {
-        var body: some View {
-            StoragePreviewView(
-                state: StorageInitialState(),
-            ).previewable(
-                container: ModulePreviewFactory.makeContainer(),
-            )
-            .previewScrollToEnd()
-        }
-    }
-
     struct RegressionCase146: View {
         var body: some View {
             StoragePreviewView(
                 state: StorageInitialState(),
-                isSpeechModelAvailable: false,
-            )
-            .previewable(
+            ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
         }
@@ -1799,9 +1799,7 @@
         var body: some View {
             StoragePreviewView(
                 state: StorageInitialState(),
-                isSpeechModelAvailable: false,
-            )
-            .previewable(
+            ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
             .previewScrollToEnd()
@@ -1811,6 +1809,31 @@
     struct RegressionCase148: View {
         var body: some View {
             StoragePreviewView(
+                state: StorageInitialState(),
+                isSpeechModelAvailable: false,
+            )
+            .previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
+        }
+    }
+
+    struct RegressionCase149: View {
+        var body: some View {
+            StoragePreviewView(
+                state: StorageInitialState(),
+                isSpeechModelAvailable: false,
+            )
+            .previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
+            .previewScrollToEnd()
+        }
+    }
+
+    struct RegressionCase150: View {
+        var body: some View {
+            StoragePreviewView(
                 state: StorageErrorState(
                     error: URLError(
                         .notConnectedToInternet,
@@ -1822,7 +1845,7 @@
         }
     }
 
-    struct RegressionCase149: View {
+    struct RegressionCase151: View {
         var body: some View {
             StoragePreviewView(
                 state: StorageErrorState(
@@ -1837,7 +1860,7 @@
         }
     }
 
-    struct RegressionCase150: View {
+    struct RegressionCase152: View {
         var body: some View {
             StorageClearProtocolsPreviewView(
                 state: StorageClearProtocolsDefaultState(),
@@ -1847,7 +1870,17 @@
         }
     }
 
-    struct RegressionCase151: View {
+    struct RegressionCase153: View {
+        var body: some View {
+            StorageClearSpeechModelPreviewView(
+                state: StorageClearSpeechModelDefaultState(),
+            ).previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
+        }
+    }
+
+    struct RegressionCase154: View {
         var body: some View {
             StorageClearAllPreviewView(
                 state: StorageClearAllDefaultState(),
@@ -1857,7 +1890,7 @@
         }
     }
 
-    struct RegressionCase152: View {
+    struct RegressionCase155: View {
         var body: some View {
             AboutPreviewView(
                 state: AboutDefaultState(),
@@ -1867,7 +1900,7 @@
         }
     }
 
-    struct RegressionCase153: View {
+    struct RegressionCase156: View {
         var body: some View {
             SelectDateOfBirthPreviewView(
                 state: SelectDateOfBirthDefaultState(),
@@ -1877,7 +1910,7 @@
         }
     }
 
-    struct RegressionCase154: View {
+    struct RegressionCase157: View {
         var body: some View {
             SelectTemplatePreviewView(
                 state: SelectTemplateContentState(),
@@ -1888,7 +1921,7 @@
         }
     }
 
-    struct RegressionCase155: View {
+    struct RegressionCase158: View {
         var body: some View {
             SelectTemplatePreviewView(
                 state: SelectTemplateContentState(),
@@ -1900,7 +1933,7 @@
         }
     }
 
-    struct RegressionCase156: View {
+    struct RegressionCase159: View {
         var body: some View {
             ImportMediaPreviewView(
                 state: ImportMediaDefaultState(),
@@ -1910,7 +1943,7 @@
         }
     }
 
-    struct RegressionCase157: View {
+    struct RegressionCase160: View {
         var body: some View {
             PermissionPreviewView(
                 state: PermissionDefaultState(),
@@ -1921,7 +1954,7 @@
         }
     }
 
-    struct RegressionCase158: View {
+    struct RegressionCase161: View {
         var body: some View {
             PermissionPreviewView(
                 state: PermissionDefaultState(),
@@ -1932,7 +1965,7 @@
         }
     }
 
-    struct RegressionCase159: View {
+    struct RegressionCase162: View {
         var body: some View {
             PermissionPreviewView(
                 state: PermissionDefaultState(),
@@ -1943,7 +1976,7 @@
         }
     }
 
-    struct RegressionCase160: View {
+    struct RegressionCase163: View {
         var body: some View {
             ScanCameraPreviewView(
                 state: ScanCameraPreparationLoadingState(),
@@ -1953,7 +1986,7 @@
         }
     }
 
-    struct RegressionCase161: View {
+    struct RegressionCase164: View {
         var body: some View {
             ScanCameraPreviewView(
                 state: ScanCameraReadyState(),
@@ -1963,7 +1996,7 @@
         }
     }
 
-    struct RegressionCase162: View {
+    struct RegressionCase165: View {
         var body: some View {
             ScanCameraPreviewView(
                 state: ScanCameraCaptureLoadingState(),
@@ -1973,7 +2006,7 @@
         }
     }
 
-    struct RegressionCase163: View {
+    struct RegressionCase166: View {
         var body: some View {
             ScanCameraPreviewView(
                 state: ScanCameraStoppedState(),
@@ -1983,7 +2016,7 @@
         }
     }
 
-    struct RegressionCase164: View {
+    struct RegressionCase167: View {
         var body: some View {
             ScanCameraPreviewView(
                 state: ScanCameraReadyState(),
@@ -1999,7 +2032,7 @@
         }
     }
 
-    struct RegressionCase165: View {
+    struct RegressionCase168: View {
         var body: some View {
             ScanCameraPreviewView(
                 state: ScanCameraReadyState(),
@@ -2011,7 +2044,7 @@
         }
     }
 
-    struct RegressionCase166: View {
+    struct RegressionCase169: View {
         var body: some View {
             PhotoLibraryPickerPreviewView(
                 state: PhotoLibraryPickerDefaultState(),
@@ -2021,7 +2054,7 @@
         }
     }
 
-    struct RegressionCase167: View {
+    struct RegressionCase170: View {
         var body: some View {
             PhotoViewPreviewView(
                 photos: ModulePreviewFactory.photos,
@@ -2032,7 +2065,7 @@
         }
     }
 
-    struct RegressionCase168: View {
+    struct RegressionCase171: View {
         var body: some View {
             PhotoViewPreviewView(
                 photos: ModulePreviewFactory.photos,
@@ -2044,7 +2077,7 @@
         }
     }
 
-    struct RegressionCase169: View {
+    struct RegressionCase172: View {
         var body: some View {
             PhotoViewPreviewView(
                 photos: ModulePreviewFactory.photos,
@@ -2057,7 +2090,7 @@
         }
     }
 
-    struct RegressionCase170: View {
+    struct RegressionCase173: View {
         var body: some View {
             PhotoViewPreviewView(
                 photos: PhotoViewPreviewFactory.portraitPhotos,
@@ -2068,7 +2101,7 @@
         }
     }
 
-    struct RegressionCase171: View {
+    struct RegressionCase174: View {
         var body: some View {
             PhotoViewPreviewView(
                 photos: PhotoViewPreviewFactory.squarePhotos,
@@ -2079,7 +2112,7 @@
         }
     }
 
-    struct RegressionCase172: View {
+    struct RegressionCase175: View {
         var body: some View {
             PhotoRemarkPreviewView(
                 state: PhotoRemarkDefaultState(),
@@ -2089,7 +2122,7 @@
         }
     }
 
-    struct RegressionCase173: View {
+    struct RegressionCase176: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechModelLoadingState(
@@ -2101,7 +2134,7 @@
         }
     }
 
-    struct RegressionCase174: View {
+    struct RegressionCase177: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechModelLoadingState(
@@ -2115,7 +2148,7 @@
         }
     }
 
-    struct RegressionCase175: View {
+    struct RegressionCase178: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechModelLoadingState(
@@ -2129,7 +2162,7 @@
         }
     }
 
-    struct RegressionCase176: View {
+    struct RegressionCase179: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechModelLoadingState(
@@ -2141,7 +2174,7 @@
         }
     }
 
-    struct RegressionCase177: View {
+    struct RegressionCase180: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechModelPreparationErrorState(),
@@ -2151,7 +2184,7 @@
         }
     }
 
-    struct RegressionCase178: View {
+    struct RegressionCase181: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechReadyState(),
@@ -2161,7 +2194,7 @@
         }
     }
 
-    struct RegressionCase179: View {
+    struct RegressionCase182: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechRecordingPreparationLoadingState(),
@@ -2171,7 +2204,7 @@
         }
     }
 
-    struct RegressionCase180: View {
+    struct RegressionCase183: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechRecordingState(),
@@ -2181,7 +2214,7 @@
         }
     }
 
-    struct RegressionCase181: View {
+    struct RegressionCase184: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechTranscriptionLoadingState(),
@@ -2191,55 +2224,55 @@
         }
     }
 
-    struct RegressionCase182: View {
-        var body: some View {
-            ScanSpeechPreviewView(
-                state: ScanSpeechReviewTranscriptState(),
-            ).previewable(
-                container: ModulePreviewFactory.makeContainer(),
-            )
-        }
-    }
-
-    struct RegressionCase183: View {
-        var body: some View {
-            ScanSpeechPreviewView(
-                state: ScanSpeechReviewTranscriptState(),
-            ).previewable(
-                container: ModulePreviewFactory.makeContainer(),
-            )
-            .previewScrollToEnd()
-        }
-    }
-
-    struct RegressionCase184: View {
-        var body: some View {
-            ScanSpeechPreviewView(
-                state: ScanSpeechReviewParsingLoadingState(
-                    parsedText: USExaminationReportPreviewFactory.description,
-                ),
-            ).previewable(
-                container: ModulePreviewFactory.makeContainer(),
-            )
-        }
-    }
-
     struct RegressionCase185: View {
         var body: some View {
             ScanSpeechPreviewView(
-                state: ScanSpeechReviewParsingLoadingState(
-                    parsedText: USExaminationReportPreviewFactory.description,
-                ),
+                state: ScanSpeechReviewTranscriptState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
-            .previewScrollToEnd()
         }
     }
 
     struct RegressionCase186: View {
         var body: some View {
             ScanSpeechPreviewView(
+                state: ScanSpeechReviewTranscriptState(),
+            ).previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
+            .previewScrollToEnd()
+        }
+    }
+
+    struct RegressionCase187: View {
+        var body: some View {
+            ScanSpeechPreviewView(
+                state: ScanSpeechReviewParsingLoadingState(
+                    parsedText: USExaminationReportPreviewFactory.description,
+                ),
+            ).previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
+        }
+    }
+
+    struct RegressionCase188: View {
+        var body: some View {
+            ScanSpeechPreviewView(
+                state: ScanSpeechReviewParsingLoadingState(
+                    parsedText: USExaminationReportPreviewFactory.description,
+                ),
+            ).previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
+            .previewScrollToEnd()
+        }
+    }
+
+    struct RegressionCase189: View {
+        var body: some View {
+            ScanSpeechPreviewView(
                 state: ScanSpeechProposalPreviewFixture(
                     scenario: .multipleFields,
                 ).state,
@@ -2249,7 +2282,7 @@
         }
     }
 
-    struct RegressionCase187: View {
+    struct RegressionCase190: View {
         var body: some View {
             ScanSpeechPreviewView(
                 state: ScanSpeechProposalPreviewFixture(
@@ -2262,67 +2295,47 @@
         }
     }
 
-    struct RegressionCase188: View {
-        var body: some View {
-            ReportReceivedPreviewView(
-                scenario: .waitingForFirstToken,
-            )
-            .previewable()
-        }
-    }
-
-    struct RegressionCase189: View {
-        var body: some View {
-            ReportReceivedPreviewView(
-                scenario: .waitingForFirstToken,
-            )
-            .previewable()
-            .previewScrollToEnd()
-        }
-    }
-
-    struct RegressionCase190: View {
-        var body: some View {
-            ReportReceivedPreviewView(
-                scenario: .firstToken,
-            )
-            .previewable()
-        }
-    }
-
     struct RegressionCase191: View {
         var body: some View {
-            ReportReceivedPreviewView(
-                scenario: .firstToken,
+            PatientConsentPreviewView(
+                state: PatientConsentInitialState(),
             )
-            .previewable()
-            .previewScrollToEnd()
+            .previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
         }
     }
 
     struct RegressionCase192: View {
         var body: some View {
-            ReportReceivedPreviewView(
-                scenario: .streamingDescription,
+            PatientConsentPreviewView(
+                state: PatientConsentInitialState(
+                    isDoNotAskAgain: true,
+                ),
             )
-            .previewable()
+            .previewable(
+                container: ModulePreviewFactory.makeContainer(),
+            )
         }
     }
 
     struct RegressionCase193: View {
         var body: some View {
-            ReportReceivedPreviewView(
-                scenario: .streamingDescription,
+            PatientConsentPreviewView(
+                state: PatientConsentInitialState(
+                    isDoNotAskAgain: true,
+                ),
+                isErrorPresented: true,
+            ).previewable(
+                container: ModulePreviewFactory.makeContainer(),
             )
-            .previewable()
-            .previewScrollToEnd()
         }
     }
 
     struct RegressionCase194: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .streamingConclusion,
+                scenario: .waitingForFirstToken,
             )
             .previewable()
         }
@@ -2331,7 +2344,7 @@
     struct RegressionCase195: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .streamingConclusion,
+                scenario: .waitingForFirstToken,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2341,7 +2354,7 @@
     struct RegressionCase196: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .completed,
+                scenario: .firstToken,
             )
             .previewable()
         }
@@ -2350,7 +2363,7 @@
     struct RegressionCase197: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .completed,
+                scenario: .firstToken,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2360,7 +2373,7 @@
     struct RegressionCase198: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .completedWithRemarks,
+                scenario: .streamingDescription,
             )
             .previewable()
         }
@@ -2369,7 +2382,7 @@
     struct RegressionCase199: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .completedWithRemarks,
+                scenario: .streamingDescription,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2379,7 +2392,7 @@
     struct RegressionCase200: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .fromReportDetail,
+                scenario: .streamingConclusion,
             )
             .previewable()
         }
@@ -2388,7 +2401,7 @@
     struct RegressionCase201: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .fromReportDetail,
+                scenario: .streamingConclusion,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2398,7 +2411,7 @@
     struct RegressionCase202: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .withoutEmail,
+                scenario: .completed,
             )
             .previewable()
         }
@@ -2407,7 +2420,7 @@
     struct RegressionCase203: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .withoutEmail,
+                scenario: .completed,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2417,7 +2430,7 @@
     struct RegressionCase204: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .emailOffered,
+                scenario: .completedWithRemarks,
             )
             .previewable()
         }
@@ -2426,7 +2439,7 @@
     struct RegressionCase205: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .emailOffered,
+                scenario: .completedWithRemarks,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2436,7 +2449,7 @@
     struct RegressionCase206: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .emailUnavailable,
+                scenario: .fromReportDetail,
             )
             .previewable()
         }
@@ -2445,7 +2458,7 @@
     struct RegressionCase207: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .emailUnavailable,
+                scenario: .fromReportDetail,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2455,7 +2468,7 @@
     struct RegressionCase208: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .sendingEmail,
+                scenario: .withoutEmail,
             )
             .previewable()
         }
@@ -2464,7 +2477,7 @@
     struct RegressionCase209: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .sendingEmail,
+                scenario: .withoutEmail,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2474,7 +2487,7 @@
     struct RegressionCase210: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .deliveryFailed,
+                scenario: .emailOffered,
             )
             .previewable()
         }
@@ -2483,7 +2496,7 @@
     struct RegressionCase211: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .deliveryFailed,
+                scenario: .emailOffered,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2493,7 +2506,7 @@
     struct RegressionCase212: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .interruptedWithoutText,
+                scenario: .emailUnavailable,
             )
             .previewable()
         }
@@ -2502,7 +2515,7 @@
     struct RegressionCase213: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .interruptedWithoutText,
+                scenario: .emailUnavailable,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2512,7 +2525,7 @@
     struct RegressionCase214: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .interrupted,
+                scenario: .sendingEmail,
             )
             .previewable()
         }
@@ -2521,7 +2534,7 @@
     struct RegressionCase215: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .interrupted,
+                scenario: .sendingEmail,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2531,7 +2544,7 @@
     struct RegressionCase216: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .failedWithoutText,
+                scenario: .deliveryFailed,
             )
             .previewable()
         }
@@ -2540,7 +2553,7 @@
     struct RegressionCase217: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .failedWithoutText,
+                scenario: .deliveryFailed,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2550,7 +2563,7 @@
     struct RegressionCase218: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .failed,
+                scenario: .interruptedWithoutText,
             )
             .previewable()
         }
@@ -2559,7 +2572,7 @@
     struct RegressionCase219: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .failed,
+                scenario: .interruptedWithoutText,
             )
             .previewable()
             .previewScrollToEnd()
@@ -2569,13 +2582,70 @@
     struct RegressionCase220: View {
         var body: some View {
             ReportReceivedPreviewView(
-                scenario: .cancelled,
+                scenario: .interrupted,
             )
             .previewable()
         }
     }
 
     struct RegressionCase221: View {
+        var body: some View {
+            ReportReceivedPreviewView(
+                scenario: .interrupted,
+            )
+            .previewable()
+            .previewScrollToEnd()
+        }
+    }
+
+    struct RegressionCase222: View {
+        var body: some View {
+            ReportReceivedPreviewView(
+                scenario: .failedWithoutText,
+            )
+            .previewable()
+        }
+    }
+
+    struct RegressionCase223: View {
+        var body: some View {
+            ReportReceivedPreviewView(
+                scenario: .failedWithoutText,
+            )
+            .previewable()
+            .previewScrollToEnd()
+        }
+    }
+
+    struct RegressionCase224: View {
+        var body: some View {
+            ReportReceivedPreviewView(
+                scenario: .failed,
+            )
+            .previewable()
+        }
+    }
+
+    struct RegressionCase225: View {
+        var body: some View {
+            ReportReceivedPreviewView(
+                scenario: .failed,
+            )
+            .previewable()
+            .previewScrollToEnd()
+        }
+    }
+
+    struct RegressionCase226: View {
+        var body: some View {
+            ReportReceivedPreviewView(
+                scenario: .cancelled,
+            )
+            .previewable()
+        }
+    }
+
+    struct RegressionCase227: View {
         var body: some View {
             ReportReceivedPreviewView(
                 scenario: .cancelled,
@@ -2585,7 +2655,7 @@
         }
     }
 
-    struct RegressionCase222: View {
+    struct RegressionCase228: View {
         var body: some View {
             SharePreviewView(
                 state: ShareInitialState(),
@@ -2595,7 +2665,7 @@
         }
     }
 
-    struct RegressionCase223: View {
+    struct RegressionCase229: View {
         var body: some View {
             SharePreviewView(
                 state: ShareLoadingState(),
@@ -2605,7 +2675,7 @@
         }
     }
 
-    struct RegressionCase224: View {
+    struct RegressionCase230: View {
         var body: some View {
             SharePreviewView(
                 state: ShareErrorState(
@@ -2619,7 +2689,7 @@
         }
     }
 
-    struct RegressionCase225: View {
+    struct RegressionCase231: View {
         var body: some View {
             RequestLimitExceededPreviewView(
                 state: RequestLimitExceededDefaultState(),
@@ -3010,53 +3080,53 @@
                     .accessibilityIdentifier(
                         "regression.atlas-scan-a1ffa711d4",
                     )
-            case "atlas-settings-26a0860026":
+            case "atlas-menu-76d8e41335":
                 RegressionCase48()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-settings-26a0860026",
+                        "regression.atlas-menu-76d8e41335",
                     )
-            case "atlas-settings-3b6a500558":
+            case "atlas-menu-2c9b354081":
                 RegressionCase49()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-settings-3b6a500558",
+                        "regression.atlas-menu-2c9b354081",
                     )
-            case "atlas-settings-7eee4ba2e0":
+            case "atlas-menu-2858e3b34a":
                 RegressionCase50()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-settings-7eee4ba2e0",
+                        "regression.atlas-menu-2858e3b34a",
                     )
-            case "atlas-settings-fb934d7d87":
+            case "atlas-menu-fbd534a5f9":
                 RegressionCase51()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-settings-fb934d7d87",
+                        "regression.atlas-menu-fbd534a5f9",
                     )
-            case "atlas-settings-673a09dc7c":
+            case "atlas-menu-6f4c5438d5":
                 RegressionCase52()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-settings-673a09dc7c",
+                        "regression.atlas-menu-6f4c5438d5",
                     )
-            case "atlas-settings-eaf4ecbc63":
+            case "atlas-menu-741bfb004e":
                 RegressionCase53()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-settings-eaf4ecbc63",
+                        "regression.atlas-menu-741bfb004e",
                     )
             case "atlas-history-d97e668a24":
                 RegressionCase54()
@@ -3354,40 +3424,56 @@
                     .accessibilityIdentifier(
                         "regression.atlas-templatedelete-15c7b1ef45",
                     )
-            case "atlas-usersettings-75e8f38e10":
+            case "atlas-worksettings-c6fac5aeb8":
                 RegressionCase91()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-usersettings-75e8f38e10",
+                        "regression.atlas-worksettings-c6fac5aeb8",
                     )
-            case "atlas-usersettings-0f8b559c14":
+            case "atlas-worksettings-e718ace8f4":
                 RegressionCase92()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-usersettings-0f8b559c14",
+                        "regression.atlas-worksettings-e718ace8f4",
                     )
-            case "atlas-usersettings-30229e999a":
+            case "atlas-worksettings-b6ae9979bc":
                 RegressionCase93()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-usersettings-30229e999a",
+                        "regression.atlas-worksettings-b6ae9979bc",
                     )
-            case "atlas-usersettings-1474835e1a":
+            case "atlas-worksettings-a27c17f5ce":
                 RegressionCase94()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-usersettings-1474835e1a",
+                        "regression.atlas-worksettings-a27c17f5ce",
+                    )
+            case "atlas-worksettings-17a6512eb4":
+                RegressionCase95()
+                    .accessibilityElement(
+                        children: .contain,
+                    )
+                    .accessibilityIdentifier(
+                        "regression.atlas-worksettings-17a6512eb4",
+                    )
+            case "atlas-worksettings-ebdef23f53":
+                RegressionCase96()
+                    .accessibilityElement(
+                        children: .contain,
+                    )
+                    .accessibilityIdentifier(
+                        "regression.atlas-worksettings-ebdef23f53",
                     )
             case "atlas-settingsai-f46a59b1b3":
-                RegressionCase95()
+                RegressionCase97()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3395,7 +3481,7 @@
                         "regression.atlas-settingsai-f46a59b1b3",
                     )
             case "atlas-settingsai-b7209852fc":
-                RegressionCase96()
+                RegressionCase98()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3403,7 +3489,7 @@
                         "regression.atlas-settingsai-b7209852fc",
                     )
             case "atlas-settingsai-e993ef39f9":
-                RegressionCase97()
+                RegressionCase99()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3411,7 +3497,7 @@
                         "regression.atlas-settingsai-e993ef39f9",
                     )
             case "atlas-settingsai-9e6402ea61":
-                RegressionCase98()
+                RegressionCase100()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3419,7 +3505,7 @@
                         "regression.atlas-settingsai-9e6402ea61",
                     )
             case "atlas-selecttranscriber-af860819bc":
-                RegressionCase99()
+                RegressionCase101()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3427,7 +3513,7 @@
                         "regression.atlas-selecttranscriber-af860819bc",
                     )
             case "atlas-selecttranscriber-f305449c4b":
-                RegressionCase100()
+                RegressionCase102()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3435,7 +3521,7 @@
                         "regression.atlas-selecttranscriber-f305449c4b",
                     )
             case "atlas-selecttranscriptparser-6a2d3a4672":
-                RegressionCase101()
+                RegressionCase103()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3443,7 +3529,7 @@
                         "regression.atlas-selecttranscriptparser-6a2d3a4672",
                     )
             case "atlas-selecttranscriptparser-712d83f904":
-                RegressionCase102()
+                RegressionCase104()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3451,7 +3537,7 @@
                         "regression.atlas-selecttranscriptparser-712d83f904",
                     )
             case "atlas-selectneuralmodel-5727c268ce":
-                RegressionCase103()
+                RegressionCase105()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3459,7 +3545,7 @@
                         "regression.atlas-selectneuralmodel-5727c268ce",
                     )
             case "atlas-selectneuralmodel-ffb53d6122":
-                RegressionCase104()
+                RegressionCase106()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3467,7 +3553,7 @@
                         "regression.atlas-selectneuralmodel-ffb53d6122",
                     )
             case "atlas-managesubscription-673089ff33":
-                RegressionCase105()
+                RegressionCase107()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3475,7 +3561,7 @@
                         "regression.atlas-managesubscription-673089ff33",
                     )
             case "atlas-managesubscription-da5816cab4":
-                RegressionCase106()
+                RegressionCase108()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3483,7 +3569,7 @@
                         "regression.atlas-managesubscription-da5816cab4",
                     )
             case "atlas-managesubscription-890ec5c127":
-                RegressionCase107()
+                RegressionCase109()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3491,7 +3577,7 @@
                         "regression.atlas-managesubscription-890ec5c127",
                     )
             case "atlas-managesubscription-47c3865bd5":
-                RegressionCase108()
+                RegressionCase110()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3499,7 +3585,7 @@
                         "regression.atlas-managesubscription-47c3865bd5",
                     )
             case "atlas-managesubscription-0d113db030":
-                RegressionCase109()
+                RegressionCase111()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3507,7 +3593,7 @@
                         "regression.atlas-managesubscription-0d113db030",
                     )
             case "atlas-managesubscription-db770b64b8":
-                RegressionCase110()
+                RegressionCase112()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3515,7 +3601,7 @@
                         "regression.atlas-managesubscription-db770b64b8",
                     )
             case "atlas-managesubscription-2e59d64a9a":
-                RegressionCase111()
+                RegressionCase113()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3523,7 +3609,7 @@
                         "regression.atlas-managesubscription-2e59d64a9a",
                     )
             case "atlas-managesubscription-84ce68035b":
-                RegressionCase112()
+                RegressionCase114()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3531,7 +3617,7 @@
                         "regression.atlas-managesubscription-84ce68035b",
                     )
             case "atlas-managesubscription-f07fbd2c88":
-                RegressionCase113()
+                RegressionCase115()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3539,7 +3625,7 @@
                         "regression.atlas-managesubscription-f07fbd2c88",
                     )
             case "atlas-managesubscription-3ae9771b32":
-                RegressionCase114()
+                RegressionCase116()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3547,7 +3633,7 @@
                         "regression.atlas-managesubscription-3ae9771b32",
                     )
             case "atlas-managesubscription-8da24afd04":
-                RegressionCase115()
+                RegressionCase117()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3555,7 +3641,7 @@
                         "regression.atlas-managesubscription-8da24afd04",
                     )
             case "atlas-managesubscription-d8d0000386":
-                RegressionCase116()
+                RegressionCase118()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3563,7 +3649,7 @@
                         "regression.atlas-managesubscription-d8d0000386",
                     )
             case "atlas-managesubscription-73a48fc631":
-                RegressionCase117()
+                RegressionCase119()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3571,7 +3657,7 @@
                         "regression.atlas-managesubscription-73a48fc631",
                     )
             case "atlas-managesubscription-60db48ce0a":
-                RegressionCase118()
+                RegressionCase120()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3579,7 +3665,7 @@
                         "regression.atlas-managesubscription-60db48ce0a",
                     )
             case "atlas-managesubscription-f23ba334c7":
-                RegressionCase119()
+                RegressionCase121()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3587,7 +3673,7 @@
                         "regression.atlas-managesubscription-f23ba334c7",
                     )
             case "atlas-managesubscription-ad7bc6de1e":
-                RegressionCase120()
+                RegressionCase122()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3595,7 +3681,7 @@
                         "regression.atlas-managesubscription-ad7bc6de1e",
                     )
             case "atlas-managesubscription-5272edbfdb":
-                RegressionCase121()
+                RegressionCase123()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3603,7 +3689,7 @@
                         "regression.atlas-managesubscription-5272edbfdb",
                     )
             case "atlas-managesubscription-dd9eea1ae7":
-                RegressionCase122()
+                RegressionCase124()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3611,7 +3697,7 @@
                         "regression.atlas-managesubscription-dd9eea1ae7",
                     )
             case "atlas-managesubscription-36dbf90817":
-                RegressionCase123()
+                RegressionCase125()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3619,7 +3705,7 @@
                         "regression.atlas-managesubscription-36dbf90817",
                     )
             case "atlas-managesubscription-b006dfaa0b":
-                RegressionCase124()
+                RegressionCase126()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3627,7 +3713,7 @@
                         "regression.atlas-managesubscription-b006dfaa0b",
                     )
             case "atlas-managesubscription-a72932f295":
-                RegressionCase125()
+                RegressionCase127()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3635,7 +3721,7 @@
                         "regression.atlas-managesubscription-a72932f295",
                     )
             case "atlas-managesubscription-4af13fa1b2":
-                RegressionCase126()
+                RegressionCase128()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3643,7 +3729,7 @@
                         "regression.atlas-managesubscription-4af13fa1b2",
                     )
             case "atlas-managesubscription-1e3eb53fc5":
-                RegressionCase127()
+                RegressionCase129()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3651,7 +3737,7 @@
                         "regression.atlas-managesubscription-1e3eb53fc5",
                     )
             case "atlas-managesubscription-83487d7851":
-                RegressionCase128()
+                RegressionCase130()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3659,7 +3745,7 @@
                         "regression.atlas-managesubscription-83487d7851",
                     )
             case "atlas-managesubscription-e9631fccd7":
-                RegressionCase129()
+                RegressionCase131()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3667,7 +3753,7 @@
                         "regression.atlas-managesubscription-e9631fccd7",
                     )
             case "atlas-managesubscription-46ad7017fd":
-                RegressionCase130()
+                RegressionCase132()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3675,7 +3761,7 @@
                         "regression.atlas-managesubscription-46ad7017fd",
                     )
             case "atlas-managesubscription-9913a424d2":
-                RegressionCase131()
+                RegressionCase133()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3683,7 +3769,7 @@
                         "regression.atlas-managesubscription-9913a424d2",
                     )
             case "atlas-subscriptionrecovery-5cf3ae726e":
-                RegressionCase132()
+                RegressionCase134()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3691,7 +3777,7 @@
                         "regression.atlas-subscriptionrecovery-5cf3ae726e",
                     )
             case "atlas-subscriptionrecovery-a0ef1134d3":
-                RegressionCase133()
+                RegressionCase135()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3699,7 +3785,7 @@
                         "regression.atlas-subscriptionrecovery-a0ef1134d3",
                     )
             case "atlas-subscriptionrecovery-095c9da4e1":
-                RegressionCase134()
+                RegressionCase136()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3707,7 +3793,7 @@
                         "regression.atlas-subscriptionrecovery-095c9da4e1",
                     )
             case "atlas-subscriptionrecovery-56bffe9075":
-                RegressionCase135()
+                RegressionCase137()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3715,7 +3801,7 @@
                         "regression.atlas-subscriptionrecovery-56bffe9075",
                     )
             case "atlas-subscriptionrecovery-51f360d0ea":
-                RegressionCase136()
+                RegressionCase138()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3723,7 +3809,7 @@
                         "regression.atlas-subscriptionrecovery-51f360d0ea",
                     )
             case "atlas-subscriptionrecovery-07c3664d36":
-                RegressionCase137()
+                RegressionCase139()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3731,7 +3817,7 @@
                         "regression.atlas-subscriptionrecovery-07c3664d36",
                     )
             case "atlas-subscriptionrecovery-148a1398c1":
-                RegressionCase138()
+                RegressionCase140()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3739,7 +3825,7 @@
                         "regression.atlas-subscriptionrecovery-148a1398c1",
                     )
             case "atlas-subscriptionrecovery-f82dc575be":
-                RegressionCase139()
+                RegressionCase141()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3747,7 +3833,7 @@
                         "regression.atlas-subscriptionrecovery-f82dc575be",
                     )
             case "atlas-subscriptionrecovery-1328a24cbb":
-                RegressionCase140()
+                RegressionCase142()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3755,7 +3841,7 @@
                         "regression.atlas-subscriptionrecovery-1328a24cbb",
                     )
             case "atlas-subscriptionrecovery-b41e4a20af":
-                RegressionCase141()
+                RegressionCase143()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3763,7 +3849,7 @@
                         "regression.atlas-subscriptionrecovery-b41e4a20af",
                     )
             case "atlas-subscriptionrecovery-701281a3a4":
-                RegressionCase142()
+                RegressionCase144()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3771,7 +3857,7 @@
                         "regression.atlas-subscriptionrecovery-701281a3a4",
                     )
             case "atlas-subscriptionrecovery-fdaaeb6d33":
-                RegressionCase143()
+                RegressionCase145()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3779,7 +3865,7 @@
                         "regression.atlas-subscriptionrecovery-fdaaeb6d33",
                     )
             case "atlas-storage-769a608ea9":
-                RegressionCase144()
+                RegressionCase146()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3787,7 +3873,7 @@
                         "regression.atlas-storage-769a608ea9",
                     )
             case "atlas-storage-41ea620f8e":
-                RegressionCase145()
+                RegressionCase147()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3795,7 +3881,7 @@
                         "regression.atlas-storage-41ea620f8e",
                     )
             case "atlas-storage-ce39a4e477":
-                RegressionCase146()
+                RegressionCase148()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3803,7 +3889,7 @@
                         "regression.atlas-storage-ce39a4e477",
                     )
             case "atlas-storage-9ba8134a25":
-                RegressionCase147()
+                RegressionCase149()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3811,7 +3897,7 @@
                         "regression.atlas-storage-9ba8134a25",
                     )
             case "atlas-storage-bdca658ce0":
-                RegressionCase148()
+                RegressionCase150()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3819,7 +3905,7 @@
                         "regression.atlas-storage-bdca658ce0",
                     )
             case "atlas-storage-cd219b651c":
-                RegressionCase149()
+                RegressionCase151()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3827,15 +3913,23 @@
                         "regression.atlas-storage-cd219b651c",
                     )
             case "atlas-storageclearprotocols-bb85780d0a":
-                RegressionCase150()
+                RegressionCase152()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
                         "regression.atlas-storageclearprotocols-bb85780d0a",
                     )
+            case "atlas-storageclearspeechmodel-09b7f0db3a":
+                RegressionCase153()
+                    .accessibilityElement(
+                        children: .contain,
+                    )
+                    .accessibilityIdentifier(
+                        "regression.atlas-storageclearspeechmodel-09b7f0db3a",
+                    )
             case "atlas-storageclearall-95d9776313":
-                RegressionCase151()
+                RegressionCase154()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3843,7 +3937,7 @@
                         "regression.atlas-storageclearall-95d9776313",
                     )
             case "atlas-about-34aa3c32a4":
-                RegressionCase152()
+                RegressionCase155()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3851,7 +3945,7 @@
                         "regression.atlas-about-34aa3c32a4",
                     )
             case "atlas-selectdateofbirth-da060cd631":
-                RegressionCase153()
+                RegressionCase156()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3859,7 +3953,7 @@
                         "regression.atlas-selectdateofbirth-da060cd631",
                     )
             case "atlas-selecttemplate-165e391871":
-                RegressionCase154()
+                RegressionCase157()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3867,7 +3961,7 @@
                         "regression.atlas-selecttemplate-165e391871",
                     )
             case "atlas-selecttemplate-edd39786e4":
-                RegressionCase155()
+                RegressionCase158()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3875,7 +3969,7 @@
                         "regression.atlas-selecttemplate-edd39786e4",
                     )
             case "atlas-importmedia-47b155b637":
-                RegressionCase156()
+                RegressionCase159()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3883,7 +3977,7 @@
                         "regression.atlas-importmedia-47b155b637",
                     )
             case "atlas-permission-e183ab458d":
-                RegressionCase157()
+                RegressionCase160()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3891,7 +3985,7 @@
                         "regression.atlas-permission-e183ab458d",
                     )
             case "atlas-permission-d792958d46":
-                RegressionCase158()
+                RegressionCase161()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3899,7 +3993,7 @@
                         "regression.atlas-permission-d792958d46",
                     )
             case "atlas-permission-411c377fa4":
-                RegressionCase159()
+                RegressionCase162()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3907,7 +4001,7 @@
                         "regression.atlas-permission-411c377fa4",
                     )
             case "atlas-scancamera-c90f175fbd":
-                RegressionCase160()
+                RegressionCase163()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3915,7 +4009,7 @@
                         "regression.atlas-scancamera-c90f175fbd",
                     )
             case "atlas-scancamera-2683f90c0e":
-                RegressionCase161()
+                RegressionCase164()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3923,7 +4017,7 @@
                         "regression.atlas-scancamera-2683f90c0e",
                     )
             case "atlas-scancamera-7e31b17514":
-                RegressionCase162()
+                RegressionCase165()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3931,7 +4025,7 @@
                         "regression.atlas-scancamera-7e31b17514",
                     )
             case "atlas-scancamera-e4acb2c422":
-                RegressionCase163()
+                RegressionCase166()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3939,7 +4033,7 @@
                         "regression.atlas-scancamera-e4acb2c422",
                     )
             case "atlas-scancamera-249de3119f":
-                RegressionCase164()
+                RegressionCase167()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3947,7 +4041,7 @@
                         "regression.atlas-scancamera-249de3119f",
                     )
             case "atlas-scancamera-c247afc03d":
-                RegressionCase165()
+                RegressionCase168()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3955,7 +4049,7 @@
                         "regression.atlas-scancamera-c247afc03d",
                     )
             case "atlas-photolibrarypicker-f2f3f1c67e":
-                RegressionCase166()
+                RegressionCase169()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3963,7 +4057,7 @@
                         "regression.atlas-photolibrarypicker-f2f3f1c67e",
                     )
             case "atlas-photoview-cb83f9199a":
-                RegressionCase167()
+                RegressionCase170()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3971,7 +4065,7 @@
                         "regression.atlas-photoview-cb83f9199a",
                     )
             case "atlas-photoview-9579119a99":
-                RegressionCase168()
+                RegressionCase171()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3979,7 +4073,7 @@
                         "regression.atlas-photoview-9579119a99",
                     )
             case "atlas-photoview-1d5c0d1e99":
-                RegressionCase169()
+                RegressionCase172()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3987,7 +4081,7 @@
                         "regression.atlas-photoview-1d5c0d1e99",
                     )
             case "atlas-photoview-dbe28d404c":
-                RegressionCase170()
+                RegressionCase173()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -3995,7 +4089,7 @@
                         "regression.atlas-photoview-dbe28d404c",
                     )
             case "atlas-photoview-93d5132ed4":
-                RegressionCase171()
+                RegressionCase174()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4003,7 +4097,7 @@
                         "regression.atlas-photoview-93d5132ed4",
                     )
             case "atlas-photoremark-4943bdd959":
-                RegressionCase172()
+                RegressionCase175()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4011,7 +4105,7 @@
                         "regression.atlas-photoremark-4943bdd959",
                     )
             case "atlas-scanspeech-eea0584217":
-                RegressionCase173()
+                RegressionCase176()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4019,7 +4113,7 @@
                         "regression.atlas-scanspeech-eea0584217",
                     )
             case "atlas-scanspeech-c057cb4edf":
-                RegressionCase174()
+                RegressionCase177()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4027,7 +4121,7 @@
                         "regression.atlas-scanspeech-c057cb4edf",
                     )
             case "atlas-scanspeech-fad7886b0f":
-                RegressionCase175()
+                RegressionCase178()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4035,7 +4129,7 @@
                         "regression.atlas-scanspeech-fad7886b0f",
                     )
             case "atlas-scanspeech-9b5a7f0cd6":
-                RegressionCase176()
+                RegressionCase179()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4043,7 +4137,7 @@
                         "regression.atlas-scanspeech-9b5a7f0cd6",
                     )
             case "atlas-scanspeech-ba10d2531c":
-                RegressionCase177()
+                RegressionCase180()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4051,7 +4145,7 @@
                         "regression.atlas-scanspeech-ba10d2531c",
                     )
             case "atlas-scanspeech-92fb22e583":
-                RegressionCase178()
+                RegressionCase181()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4059,7 +4153,7 @@
                         "regression.atlas-scanspeech-92fb22e583",
                     )
             case "atlas-scanspeech-afd5c37eab":
-                RegressionCase179()
+                RegressionCase182()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4067,7 +4161,7 @@
                         "regression.atlas-scanspeech-afd5c37eab",
                     )
             case "atlas-scanspeech-3a8fdfca87":
-                RegressionCase180()
+                RegressionCase183()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4075,7 +4169,7 @@
                         "regression.atlas-scanspeech-3a8fdfca87",
                     )
             case "atlas-scanspeech-ab81375794":
-                RegressionCase181()
+                RegressionCase184()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4083,7 +4177,7 @@
                         "regression.atlas-scanspeech-ab81375794",
                     )
             case "atlas-scanspeech-e014a6519e":
-                RegressionCase182()
+                RegressionCase185()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4091,7 +4185,7 @@
                         "regression.atlas-scanspeech-e014a6519e",
                     )
             case "atlas-scanspeech-9bedcb0d75":
-                RegressionCase183()
+                RegressionCase186()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4099,7 +4193,7 @@
                         "regression.atlas-scanspeech-9bedcb0d75",
                     )
             case "atlas-scanspeech-d10bd1f816":
-                RegressionCase184()
+                RegressionCase187()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4107,7 +4201,7 @@
                         "regression.atlas-scanspeech-d10bd1f816",
                     )
             case "atlas-scanspeech-9e9a530152":
-                RegressionCase185()
+                RegressionCase188()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4115,7 +4209,7 @@
                         "regression.atlas-scanspeech-9e9a530152",
                     )
             case "atlas-scanspeech-0b84d79e8e":
-                RegressionCase186()
+                RegressionCase189()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4123,15 +4217,39 @@
                         "regression.atlas-scanspeech-0b84d79e8e",
                     )
             case "atlas-scanspeech-65a5940d07":
-                RegressionCase187()
+                RegressionCase190()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
                         "regression.atlas-scanspeech-65a5940d07",
                     )
+            case "atlas-patientconsent-65ab0d7fc4":
+                RegressionCase191()
+                    .accessibilityElement(
+                        children: .contain,
+                    )
+                    .accessibilityIdentifier(
+                        "regression.atlas-patientconsent-65ab0d7fc4",
+                    )
+            case "atlas-patientconsent-1e3a9361b8":
+                RegressionCase192()
+                    .accessibilityElement(
+                        children: .contain,
+                    )
+                    .accessibilityIdentifier(
+                        "regression.atlas-patientconsent-1e3a9361b8",
+                    )
+            case "atlas-patientconsent-578517b21f":
+                RegressionCase193()
+                    .accessibilityElement(
+                        children: .contain,
+                    )
+                    .accessibilityIdentifier(
+                        "regression.atlas-patientconsent-578517b21f",
+                    )
             case "atlas-reportreceived-b3cfe90b8d":
-                RegressionCase188()
+                RegressionCase194()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4139,7 +4257,7 @@
                         "regression.atlas-reportreceived-b3cfe90b8d",
                     )
             case "atlas-reportreceived-6341165098":
-                RegressionCase189()
+                RegressionCase195()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4147,7 +4265,7 @@
                         "regression.atlas-reportreceived-6341165098",
                     )
             case "atlas-reportreceived-dc2bbae3d7":
-                RegressionCase190()
+                RegressionCase196()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4155,7 +4273,7 @@
                         "regression.atlas-reportreceived-dc2bbae3d7",
                     )
             case "atlas-reportreceived-6ae420661f":
-                RegressionCase191()
+                RegressionCase197()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4163,7 +4281,7 @@
                         "regression.atlas-reportreceived-6ae420661f",
                     )
             case "atlas-reportreceived-8b4b8be0ce":
-                RegressionCase192()
+                RegressionCase198()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4171,7 +4289,7 @@
                         "regression.atlas-reportreceived-8b4b8be0ce",
                     )
             case "atlas-reportreceived-7eaca60f66":
-                RegressionCase193()
+                RegressionCase199()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4179,7 +4297,7 @@
                         "regression.atlas-reportreceived-7eaca60f66",
                     )
             case "atlas-reportreceived-4754d3b315":
-                RegressionCase194()
+                RegressionCase200()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4187,7 +4305,7 @@
                         "regression.atlas-reportreceived-4754d3b315",
                     )
             case "atlas-reportreceived-0796d42cf6":
-                RegressionCase195()
+                RegressionCase201()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4195,7 +4313,7 @@
                         "regression.atlas-reportreceived-0796d42cf6",
                     )
             case "atlas-reportreceived-cdcf1b6cc4":
-                RegressionCase196()
+                RegressionCase202()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4203,7 +4321,7 @@
                         "regression.atlas-reportreceived-cdcf1b6cc4",
                     )
             case "atlas-reportreceived-54c562ac9e":
-                RegressionCase197()
+                RegressionCase203()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4211,7 +4329,7 @@
                         "regression.atlas-reportreceived-54c562ac9e",
                     )
             case "atlas-reportreceived-dd656c6ec4":
-                RegressionCase198()
+                RegressionCase204()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4219,7 +4337,7 @@
                         "regression.atlas-reportreceived-dd656c6ec4",
                     )
             case "atlas-reportreceived-6df7685139":
-                RegressionCase199()
+                RegressionCase205()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4227,7 +4345,7 @@
                         "regression.atlas-reportreceived-6df7685139",
                     )
             case "atlas-reportreceived-268fc0b805":
-                RegressionCase200()
+                RegressionCase206()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4235,7 +4353,7 @@
                         "regression.atlas-reportreceived-268fc0b805",
                     )
             case "atlas-reportreceived-96519e7311":
-                RegressionCase201()
+                RegressionCase207()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4243,7 +4361,7 @@
                         "regression.atlas-reportreceived-96519e7311",
                     )
             case "atlas-reportreceived-f4e6fa0577":
-                RegressionCase202()
+                RegressionCase208()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4251,7 +4369,7 @@
                         "regression.atlas-reportreceived-f4e6fa0577",
                     )
             case "atlas-reportreceived-d14639a3b9":
-                RegressionCase203()
+                RegressionCase209()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4259,7 +4377,7 @@
                         "regression.atlas-reportreceived-d14639a3b9",
                     )
             case "atlas-reportreceived-9f6fa5a70f":
-                RegressionCase204()
+                RegressionCase210()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4267,7 +4385,7 @@
                         "regression.atlas-reportreceived-9f6fa5a70f",
                     )
             case "atlas-reportreceived-a7a541e623":
-                RegressionCase205()
+                RegressionCase211()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4275,7 +4393,7 @@
                         "regression.atlas-reportreceived-a7a541e623",
                     )
             case "atlas-reportreceived-3d3273a809":
-                RegressionCase206()
+                RegressionCase212()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4283,7 +4401,7 @@
                         "regression.atlas-reportreceived-3d3273a809",
                     )
             case "atlas-reportreceived-78014bec35":
-                RegressionCase207()
+                RegressionCase213()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4291,7 +4409,7 @@
                         "regression.atlas-reportreceived-78014bec35",
                     )
             case "atlas-reportreceived-73e6563b25":
-                RegressionCase208()
+                RegressionCase214()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4299,7 +4417,7 @@
                         "regression.atlas-reportreceived-73e6563b25",
                     )
             case "atlas-reportreceived-b38ac3a6f3":
-                RegressionCase209()
+                RegressionCase215()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4307,7 +4425,7 @@
                         "regression.atlas-reportreceived-b38ac3a6f3",
                     )
             case "atlas-reportreceived-a93c9f4a3c":
-                RegressionCase210()
+                RegressionCase216()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4315,7 +4433,7 @@
                         "regression.atlas-reportreceived-a93c9f4a3c",
                     )
             case "atlas-reportreceived-4e457c9abf":
-                RegressionCase211()
+                RegressionCase217()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4323,7 +4441,7 @@
                         "regression.atlas-reportreceived-4e457c9abf",
                     )
             case "atlas-reportreceived-ea06f3e1fa":
-                RegressionCase212()
+                RegressionCase218()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4331,7 +4449,7 @@
                         "regression.atlas-reportreceived-ea06f3e1fa",
                     )
             case "atlas-reportreceived-e1655f8b80":
-                RegressionCase213()
+                RegressionCase219()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4339,7 +4457,7 @@
                         "regression.atlas-reportreceived-e1655f8b80",
                     )
             case "atlas-reportreceived-f5b346407b":
-                RegressionCase214()
+                RegressionCase220()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4347,7 +4465,7 @@
                         "regression.atlas-reportreceived-f5b346407b",
                     )
             case "atlas-reportreceived-3815e3e3db":
-                RegressionCase215()
+                RegressionCase221()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4355,7 +4473,7 @@
                         "regression.atlas-reportreceived-3815e3e3db",
                     )
             case "atlas-reportreceived-358a7b5f62":
-                RegressionCase216()
+                RegressionCase222()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4363,7 +4481,7 @@
                         "regression.atlas-reportreceived-358a7b5f62",
                     )
             case "atlas-reportreceived-e324c8204e":
-                RegressionCase217()
+                RegressionCase223()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4371,7 +4489,7 @@
                         "regression.atlas-reportreceived-e324c8204e",
                     )
             case "atlas-reportreceived-4665d336b0":
-                RegressionCase218()
+                RegressionCase224()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4379,7 +4497,7 @@
                         "regression.atlas-reportreceived-4665d336b0",
                     )
             case "atlas-reportreceived-99ed31c48b":
-                RegressionCase219()
+                RegressionCase225()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4387,7 +4505,7 @@
                         "regression.atlas-reportreceived-99ed31c48b",
                     )
             case "atlas-reportreceived-98d23f5ffc":
-                RegressionCase220()
+                RegressionCase226()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4395,7 +4513,7 @@
                         "regression.atlas-reportreceived-98d23f5ffc",
                     )
             case "atlas-reportreceived-a02f6564e6":
-                RegressionCase221()
+                RegressionCase227()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4403,7 +4521,7 @@
                         "regression.atlas-reportreceived-a02f6564e6",
                     )
             case "atlas-share-09ff44c3bb":
-                RegressionCase222()
+                RegressionCase228()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4411,7 +4529,7 @@
                         "regression.atlas-share-09ff44c3bb",
                     )
             case "atlas-share-bb9f8b8182":
-                RegressionCase223()
+                RegressionCase229()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4419,7 +4537,7 @@
                         "regression.atlas-share-bb9f8b8182",
                     )
             case "atlas-share-17db79c860":
-                RegressionCase224()
+                RegressionCase230()
                     .accessibilityElement(
                         children: .contain,
                     )
@@ -4427,7 +4545,7 @@
                         "regression.atlas-share-17db79c860",
                     )
             case "atlas-requestlimitexceeded-741f51e813":
-                RegressionCase225()
+                RegressionCase231()
                     .accessibilityElement(
                         children: .contain,
                     )

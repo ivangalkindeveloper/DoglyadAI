@@ -53,6 +53,7 @@ def _examination(
             1,
             tzinfo=UTC,
         ),
+        isPatientConsent=True,
         examinationDescription="Description",
     )
 

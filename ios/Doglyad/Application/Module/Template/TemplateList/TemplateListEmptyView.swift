@@ -11,5 +11,9 @@ struct TemplateListEmptyView: DViewProtocol {
                 .templateListEmptyDescription,
             ],
         )
+        .padding(
+            .top,
+            size.screenHeight / 6,
+        )
     }
 }

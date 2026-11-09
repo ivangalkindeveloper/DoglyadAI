@@ -1,0 +1,109 @@
+appId: ${APP_ID}
+name: e2e-worksettings-flags-100
+tags:
+- e2e
+- WorkSettings
+---
+- runFlow: ../../../maestro/support/menu.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Рабочие\ настройки$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Рабочие\ настройки$
+- scrollUntilVisible:
+    element:
+      id: userSettings.recommendations
+    direction: DOWN
+    timeout: 15000
+- runFlow:
+    when:
+      visible:
+        id: userSettings.recommendations
+        selected: false
+    commands:
+    - tapOn:
+        id: userSettings.recommendations
+- assertVisible:
+    id: userSettings.recommendations
+    selected: true
+- scrollUntilVisible:
+    element:
+      id: userSettings.photoRemarks
+    direction: DOWN
+    timeout: 15000
+- runFlow:
+    when:
+      visible:
+        id: userSettings.photoRemarks
+        selected: true
+    commands:
+    - tapOn:
+        id: userSettings.photoRemarks
+- assertVisible:
+    id: userSettings.photoRemarks
+    selected: false
+- scrollUntilVisible:
+    element:
+      id: userSettings.descriptionRemarks
+    direction: DOWN
+    timeout: 15000
+- runFlow:
+    when:
+      visible:
+        id: userSettings.descriptionRemarks
+        selected: true
+    commands:
+    - tapOn:
+        id: userSettings.descriptionRemarks
+- assertVisible:
+    id: userSettings.descriptionRemarks
+    selected: false
+- tapOn:
+    text: ^Сохранить$
+- assertVisible:
+    text: ^Настройки\ сохранены$
+- runFlow: ../../../maestro/support/menu.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Рабочие\ настройки$
+    direction: DOWN
+    timeout: 20000
+- tapOn:
+    text: ^Рабочие\ настройки$
+- scrollUntilVisible:
+    element:
+      id: userSettings.recommendations
+    direction: DOWN
+    timeout: 15000
+- assertVisible:
+    id: userSettings.recommendations
+    selected: true
+- scrollUntilVisible:
+    element:
+      id: userSettings.photoRemarks
+    direction: DOWN
+    timeout: 15000
+- assertVisible:
+    id: userSettings.photoRemarks
+    selected: false
+- scrollUntilVisible:
+    element:
+      id: userSettings.descriptionRemarks
+    direction: DOWN
+    timeout: 15000
+- assertVisible:
+    id: userSettings.descriptionRemarks
+    selected: false
+- takeScreenshot: WorkSettings-flags-100
+- runFlow: ../../../maestro/support/one-photo.yaml
+- runFlow: ../../../maestro/support/fill-scan.yaml
+- tapOn: ^Сгенерировать протокол$
+- extendedWaitUntil:
+    visible:
+      text: ^К протоколу$
+    timeout: 180000
+- takeScreenshot: ReportReceived-flags-100
+- tapOn: ^К протоколу$
+- assertVisible: ^Протокол$

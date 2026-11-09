@@ -25,6 +25,12 @@ protocol UserSettingsRepositoryProtocol: AnyObject {
         _ email: String?,
     ) async throws
 
+    func getIsNeedPatientConsent() async throws -> Bool
+
+    func setIsNeedPatientConsent(
+        _ isNeedPatientConsent: Bool,
+    ) async throws
+
     func getIsRecommendationsIncluded() async throws -> Bool
 
     func setIsRecommendationsIncluded(

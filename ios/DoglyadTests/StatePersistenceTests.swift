@@ -33,6 +33,7 @@ struct StatePersistenceTests {
                 patientName: "Synthetic",
                 patientGender: .female,
                 patientDateOfBirth: Date(),
+                isPatientConsent: true,
                 patientHeight: nil,
                 patientWeight: nil,
                 patientComplaints: nil,
@@ -123,6 +124,7 @@ struct StatePersistenceTests {
                 patientName: "Synthetic",
                 patientGender: .female,
                 patientDateOfBirth: Date(),
+                isPatientConsent: true,
                 patientHeight: nil,
                 patientWeight: nil,
                 patientComplaints: nil,
@@ -158,6 +160,21 @@ struct StatePersistenceTests {
         )
         #expect(
             repository.reports.first?.id == report.id,
+        )
+        #expect(
+            repository.reports.first?.examinationData.isPatientConsent == true,
+        )
+        let encodedRequest = try #require(
+            report.actualModelReport.generation.requestData,
+        )
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        let sentRequest = try decoder.decode(
+            USReportGenerationRequest.self,
+            from: encodedRequest,
+        )
+        #expect(
+            sentRequest.examination.examinationData.isPatientConsent,
         )
         #expect(
             report.actualModelReport.generation.status == .generating,
@@ -212,6 +229,7 @@ struct StatePersistenceTests {
                 patientName: "Synthetic",
                 patientGender: .female,
                 patientDateOfBirth: Date(),
+                isPatientConsent: true,
                 patientHeight: nil,
                 patientWeight: nil,
                 patientComplaints: nil,
@@ -304,6 +322,7 @@ struct StatePersistenceTests {
                 patientName: "Synthetic",
                 patientGender: .female,
                 patientDateOfBirth: Date(),
+                isPatientConsent: true,
                 patientHeight: nil,
                 patientWeight: nil,
                 patientComplaints: nil,
@@ -402,6 +421,7 @@ struct StatePersistenceTests {
                 patientName: "Synthetic",
                 patientGender: .female,
                 patientDateOfBirth: Date(),
+                isPatientConsent: true,
                 patientHeight: nil,
                 patientWeight: nil,
                 patientComplaints: nil,
@@ -465,10 +485,10 @@ struct StatePersistenceTests {
         )
         router.push(
             route: RouteScreen(
-                type: .userSettings,
+                type: .workSettings,
             ),
         )
-        let model = UserSettingsViewModel(
+        let model = WorkSettingsViewModel(
             container: container,
             messager: DMessager(),
             router: router,
@@ -486,6 +506,9 @@ struct StatePersistenceTests {
             getInitialEmail: {
                 nil
             },
+            getInitialIsNeedPatientConsent: {
+                true
+            },
             getInitialIsRecommendationsIncluded: {
                 false
             },
@@ -495,7 +518,7 @@ struct StatePersistenceTests {
             getInitialIsDescriptionRemarks: {
                 false
             },
-            onSaved: { _, _, _, _ in
+            onSaved: { _, _, _, _, _ in
                 throw CocoaError(
                     .fileWriteUnknown,
                 )
@@ -510,7 +533,7 @@ struct StatePersistenceTests {
         model.onTapSave()
         await model.lastTask?.value
         switch model.state {
-        case _ as UserSettingsErrorState:
+        case _ as WorkSettingsErrorState:
             #expect(
                 model.emailTextController === emailTextController,
             )

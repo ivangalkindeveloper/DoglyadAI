@@ -5,7 +5,7 @@ tags:
 - Paywall
 - yookassa
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Управление подпиской$

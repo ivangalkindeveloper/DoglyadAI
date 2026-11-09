@@ -4,7 +4,7 @@
 
 Список создаёт `python3 test/scripts/catalog.py`. Это перечень проверок, а не результат запуска.
 
-Платформа: iOS. Модулей: 39. Функциональных кейсов с вводным сценарием: 129. Кейсов отображения: 225.
+Платформа: iOS. Модулей: 41. Функциональных кейсов с вводным сценарием: 129. Кейсов отображения: 231.
 
 ## Функциональные сценарии
 
@@ -14,7 +14,7 @@
 |---|---|---|
 | [bootstrap-onboarding](modules/OnBoarding/e2e/bootstrap.yaml) | Первый запуск: onboarding, согласие, выбор исследования и paywall | 7 |
 | [e2e-history-history-empty](modules/History/e2e/history-empty.yaml) | История пуста на новом стенде | 1 |
-| [e2e-reportreceived-generation](modules/ReportReceived/e2e/generation.yaml) | Сгенерировать и открыть протокол через локальный backend | 2 |
+| [e2e-reportreceived-generation](modules/ReportReceived/e2e/generation.yaml) | Сгенерировать и открыть протокол через локальный backend | 4 |
 | [e2e-reportreceived-partial-retry](modules/ReportReceived/e2e/partial-retry.yaml) | Ошибка генерации и успешный повтор: fail-after-preview | 3 |
 | [e2e-reportreceived-failure-retry](modules/ReportReceived/e2e/failure-retry.yaml) | Ошибка генерации и успешный повтор: fail-before | 3 |
 | [e2e-history-pending-generation](modules/History/e2e/pending-generation.yaml) | Открыть выполняющийся отчёт из истории и дождаться завершения после возврата в приложение | 3 |
@@ -31,8 +31,8 @@
 | [e2e-selectusexaminationtype-failures](modules/SelectUSExaminationType/e2e/failures.yaml) | Ошибка чтения и выбора типа: сохранить прежний выбор и повторить | 2 |
 | [e2e-history-saved-report](modules/History/e2e/saved-report.yaml) | Сгенерировать отчёт и открыть из истории после перезапуска | 1 |
 | [e2e-history-pagination](modules/History/e2e/pagination.yaml) | 41 сохранённый протокол: три страницы, группы дат и перезапуск | 5 |
-| [e2e-settings-history-summary-retry](modules/Settings/e2e/history-summary-retry.yaml) | Недоступный счётчик истории не блокирует настройки | 2 |
-| [e2e-settings-navigation](modules/Settings/e2e/navigation.yaml) | Все пункты настроек в порядке экрана и возврат без изменений | 2 |
+| [e2e-menu-history-summary-retry](modules/Menu/e2e/history-summary-retry.yaml) | Недоступный счётчик истории не блокирует настройки | 2 |
+| [e2e-menu-navigation](modules/Menu/e2e/navigation.yaml) | Все пункты настроек в порядке экрана и возврат без изменений | 2 |
 | [e2e-history-load-failures](modules/History/e2e/load-failures.yaml) | Ошибка первой и следующей страниц истории | 3 |
 | [e2e-templateadd-template-create](modules/TemplateAdd/e2e/template-create.yaml) | Создать шаблон и проверить сохранение | 1 |
 | [e2e-templateadd-cancel](modules/TemplateAdd/e2e/cancel.yaml) | Выход без создания шаблона | 1 |
@@ -48,17 +48,17 @@
 | [e2e-scan-clear-media-template](modules/Scan/e2e/clear-media-template.yaml) | Очистить фото и поля, сохранив историю, шаблоны и выбранный шаблон | 2 |
 | [e2e-templatedelete-cancel](modules/TemplateDelete/e2e/cancel.yaml) | Отмена удаления сохраняет шаблон | 1 |
 | [e2e-templatedelete-delete-template](modules/TemplateDelete/e2e/delete-template.yaml) | Удалить созданный тестом шаблон | 2 |
-| [e2e-usersettings-work-settings](modules/UserSettings/e2e/work-settings.yaml) | Рабочий email сохраняется после перезапуска | 1 |
-| [e2e-usersettings-flags-000](modules/UserSettings/e2e/flags-000.yaml) | Переключатели: 000 сохраняются после перезапуска | 2 |
-| [e2e-usersettings-flags-001](modules/UserSettings/e2e/flags-001.yaml) | Переключатели: 001 сохраняются после перезапуска | 2 |
-| [e2e-usersettings-flags-010](modules/UserSettings/e2e/flags-010.yaml) | Переключатели: 010 сохраняются после перезапуска | 2 |
-| [e2e-usersettings-flags-011](modules/UserSettings/e2e/flags-011.yaml) | Переключатели: 011 сохраняются после перезапуска | 2 |
-| [e2e-usersettings-flags-100](modules/UserSettings/e2e/flags-100.yaml) | Переключатели: 100 сохраняются после перезапуска | 2 |
-| [e2e-usersettings-flags-101](modules/UserSettings/e2e/flags-101.yaml) | Переключатели: 101 сохраняются после перезапуска | 2 |
-| [e2e-usersettings-flags-110](modules/UserSettings/e2e/flags-110.yaml) | Переключатели: 110 сохраняются после перезапуска | 2 |
-| [e2e-usersettings-flags-111](modules/UserSettings/e2e/flags-111.yaml) | Переключатели: 111 сохраняются после перезапуска | 2 |
-| [e2e-usersettings-invalid-email](modules/UserSettings/e2e/invalid-email.yaml) | Неверная почта не заменяет сохранённую | 1 |
-| [e2e-usersettings-save-failure](modules/UserSettings/e2e/save-failure.yaml) | Отмена правки почты, ошибка записи и повтор | 2 |
+| [e2e-worksettings-work-settings](modules/WorkSettings/e2e/work-settings.yaml) | Рабочий email сохраняется после перезапуска | 1 |
+| [e2e-worksettings-flags-000](modules/WorkSettings/e2e/flags-000.yaml) | Переключатели: 000 сохраняются после перезапуска | 2 |
+| [e2e-worksettings-flags-001](modules/WorkSettings/e2e/flags-001.yaml) | Переключатели: 001 сохраняются после перезапуска | 2 |
+| [e2e-worksettings-flags-010](modules/WorkSettings/e2e/flags-010.yaml) | Переключатели: 010 сохраняются после перезапуска | 2 |
+| [e2e-worksettings-flags-011](modules/WorkSettings/e2e/flags-011.yaml) | Переключатели: 011 сохраняются после перезапуска | 2 |
+| [e2e-worksettings-flags-100](modules/WorkSettings/e2e/flags-100.yaml) | Переключатели: 100 сохраняются после перезапуска | 2 |
+| [e2e-worksettings-flags-101](modules/WorkSettings/e2e/flags-101.yaml) | Переключатели: 101 сохраняются после перезапуска | 2 |
+| [e2e-worksettings-flags-110](modules/WorkSettings/e2e/flags-110.yaml) | Переключатели: 110 сохраняются после перезапуска | 2 |
+| [e2e-worksettings-flags-111](modules/WorkSettings/e2e/flags-111.yaml) | Переключатели: 111 сохраняются после перезапуска | 2 |
+| [e2e-worksettings-invalid-email](modules/WorkSettings/e2e/invalid-email.yaml) | Неверная почта не заменяет сохранённую | 1 |
+| [e2e-worksettings-save-failure](modules/WorkSettings/e2e/save-failure.yaml) | Отмена правки почты, ошибка записи и повтор | 2 |
 | [e2e-settingsai-ai-settings](modules/SettingsAI/e2e/ai-settings.yaml) | Открыть настройки и выбор транскрибатора | 2 |
 | [e2e-settingsai-providers](modules/SettingsAI/e2e/providers.yaml) | Выбрать WhisperKit и серверный парсер и сохранить | 1 |
 | [e2e-settingsai-parameters-0-1](modules/SettingsAI/e2e/parameters-0-1.yaml) | Сохранить температуру 0 и 1 токенов | 1 |
@@ -99,7 +99,7 @@
 | [e2e-subscriptionrecovery-recovery](modules/SubscriptionRecovery/e2e/recovery.yaml) | Создать ключ восстановления тестовой подписки | 1 |
 | [e2e-storageclearprotocols-cancel](modules/StorageClearProtocols/e2e/cancel.yaml) | Отмена очистки сохраняет историю | 2 |
 | [e2e-storageclearall-cancel](modules/StorageClearAll/e2e/cancel.yaml) | Отмена очистки сохраняет историю | 2 |
-| [e2e-storage-delete-speech-model](modules/Storage/e2e/delete-speech-model.yaml) | Удаление локальной речевой модели и повторная подготовка | 3 |
+| [e2e-storage-delete-speech-model](modules/Storage/e2e/delete-speech-model.yaml) | Удаление локальной речевой модели и повторная подготовка | 4 |
 | [e2e-storage-clear-failure-cancel](modules/Storage/e2e/clear-failure-cancel.yaml) | Сбой очистки и отмена операции при уходе с экрана | 2 |
 | [e2e-storageclearprotocols-storage-clear-history](modules/StorageClearProtocols/e2e/storage-clear-history.yaml) | Очистить историю и проверить пустой список | 3 |
 | [e2e-webdocument-privacy](modules/WebDocument/e2e/privacy.yaml) | Открыть документ Политика конфиденциальности | 2 |
@@ -196,12 +196,12 @@
 | Scan | [08 ScanGenerationLoadingState GeneratingReport ScrollEnd](modules/Scan/atlas/atlas-scan-2b52f6f794.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Scan | [09 ScanErrorState GenerationFailed](modules/Scan/atlas/atlas-scan-dd462aebe9.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Scan | [10 ScanErrorState GenerationFailed ScrollEnd](modules/Scan/atlas/atlas-scan-a1ffa711d4.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
-| Settings | [01 SettingsContentState HistoryCountAvailable](modules/Settings/atlas/atlas-settings-26a0860026.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift) |
-| Settings | [02 SettingsContentState HistoryCountAvailable ScrollEnd](modules/Settings/atlas/atlas-settings-3b6a500558.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift) |
-| Settings | [03 SettingsContentState HistoryCountUnavailable](modules/Settings/atlas/atlas-settings-7eee4ba2e0.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift) |
-| Settings | [04 SettingsContentState HistoryCountUnavailable ScrollEnd](modules/Settings/atlas/atlas-settings-fb934d7d87.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift) |
-| Settings | [05 SettingsContentState NoCompletedReports](modules/Settings/atlas/atlas-settings-673a09dc7c.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift) |
-| Settings | [06 SettingsContentState NoCompletedReports ScrollEnd](modules/Settings/atlas/atlas-settings-eaf4ecbc63.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/Settings/Preview/SettingsPreview.swift) |
+| Menu | [01 MenuContentState HistoryCountAvailable](modules/Menu/atlas/atlas-menu-76d8e41335.yaml) | [Preview](../ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift) |
+| Menu | [02 MenuContentState HistoryCountAvailable ScrollEnd](modules/Menu/atlas/atlas-menu-2c9b354081.yaml) | [Preview](../ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift) |
+| Menu | [03 MenuContentState HistoryCountUnavailable](modules/Menu/atlas/atlas-menu-2858e3b34a.yaml) | [Preview](../ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift) |
+| Menu | [04 MenuContentState HistoryCountUnavailable ScrollEnd](modules/Menu/atlas/atlas-menu-fbd534a5f9.yaml) | [Preview](../ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift) |
+| Menu | [05 MenuContentState NoCompletedReports](modules/Menu/atlas/atlas-menu-6f4c5438d5.yaml) | [Preview](../ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift) |
+| Menu | [06 MenuContentState NoCompletedReports ScrollEnd](modules/Menu/atlas/atlas-menu-741bfb004e.yaml) | [Preview](../ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift) |
 | History | [01 HistoryErrorState ReportsReadFailed](modules/History/atlas/atlas-history-d97e668a24.yaml) | [Preview](../ios/Doglyad/Application/Module/History/Preview/HistoryPreview.swift) |
 | History | [02 HistoryEmptyState NoReports](modules/History/atlas/atlas-history-31d73cce69.yaml) | [Preview](../ios/Doglyad/Application/Module/History/Preview/HistoryPreview.swift) |
 | History | [03 HistoryEmptyState NoReports ScrollEnd](modules/History/atlas/atlas-history-667e9a82a6.yaml) | [Preview](../ios/Doglyad/Application/Module/History/Preview/HistoryPreview.swift) |
@@ -239,14 +239,16 @@
 | TemplateEdit | [05 TemplateEditErrorState TemplateOperationFailed](modules/TemplateEdit/atlas/atlas-templateedit-01a51ac046.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
 | TemplateEdit | [06 TemplateEditErrorState TemplateOperationFailed ScrollEnd](modules/TemplateEdit/atlas/atlas-templateedit-db36b1960e.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TemplateEdit/Preview/TemplateEditPreview.swift) |
 | TemplateDelete | [01 TemplateDeleteDefaultState ConfirmDeletion](modules/TemplateDelete/atlas/atlas-templatedelete-15c7b1ef45.yaml) | [Preview](../ios/Doglyad/Application/Module/Template/TempalteDelete/Preview/TemplateDeletePreview.swift) |
-| UserSettings | [01 UserSettingsInitialState WorkPreferences](modules/UserSettings/atlas/atlas-usersettings-75e8f38e10.yaml) | [Preview](../ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift) |
-| UserSettings | [02 UserSettingsInitialState WorkPreferences ScrollEnd](modules/UserSettings/atlas/atlas-usersettings-0f8b559c14.yaml) | [Preview](../ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift) |
-| UserSettings | [03 UserSettingsErrorState PreferencesSaveFailed](modules/UserSettings/atlas/atlas-usersettings-30229e999a.yaml) | [Preview](../ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift) |
-| UserSettings | [04 UserSettingsErrorState PreferencesSaveFailed ScrollEnd](modules/UserSettings/atlas/atlas-usersettings-1474835e1a.yaml) | [Preview](../ios/Doglyad/Application/Module/UserSettings/Preview/UserSettingsPreview.swift) |
-| SettingsAI | [01 SettingsAIInitialState CurrentPreferences](modules/SettingsAI/atlas/atlas-settingsai-f46a59b1b3.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift) |
-| SettingsAI | [02 SettingsAIInitialState CurrentPreferences ScrollEnd](modules/SettingsAI/atlas/atlas-settingsai-b7209852fc.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift) |
-| SettingsAI | [03 SettingsAIErrorState PreferencesSaveFailed](modules/SettingsAI/atlas/atlas-settingsai-e993ef39f9.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift) |
-| SettingsAI | [04 SettingsAIErrorState PreferencesSaveFailed ScrollEnd](modules/SettingsAI/atlas/atlas-settingsai-9e6402ea61.yaml) | [Preview](../ios/Doglyad/Application/Module/Settings/SettingsAI/Preview/SettingsAIPreview.swift) |
+| WorkSettings | [01 WorkSettingsInitialState WorkPreferences](modules/WorkSettings/atlas/atlas-worksettings-c6fac5aeb8.yaml) | [Preview](../ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift) |
+| WorkSettings | [02 WorkSettingsInitialState WorkPreferences ScrollEnd](modules/WorkSettings/atlas/atlas-worksettings-e718ace8f4.yaml) | [Preview](../ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift) |
+| WorkSettings | [03 WorkSettingsInitialState PatientConsentDisabled](modules/WorkSettings/atlas/atlas-worksettings-b6ae9979bc.yaml) | [Preview](../ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift) |
+| WorkSettings | [04 WorkSettingsInitialState PatientConsentDisabled ScrollEnd](modules/WorkSettings/atlas/atlas-worksettings-a27c17f5ce.yaml) | [Preview](../ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift) |
+| WorkSettings | [05 WorkSettingsErrorState PreferencesSaveFailed](modules/WorkSettings/atlas/atlas-worksettings-17a6512eb4.yaml) | [Preview](../ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift) |
+| WorkSettings | [06 WorkSettingsErrorState PreferencesSaveFailed ScrollEnd](modules/WorkSettings/atlas/atlas-worksettings-ebdef23f53.yaml) | [Preview](../ios/Doglyad/Application/Module/WorkSettings/Preview/WorkSettingsPreview.swift) |
+| SettingsAI | [01 SettingsAIInitialState CurrentPreferences](modules/SettingsAI/atlas/atlas-settingsai-f46a59b1b3.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
+| SettingsAI | [02 SettingsAIInitialState CurrentPreferences ScrollEnd](modules/SettingsAI/atlas/atlas-settingsai-b7209852fc.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
+| SettingsAI | [03 SettingsAIErrorState PreferencesSaveFailed](modules/SettingsAI/atlas/atlas-settingsai-e993ef39f9.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
+| SettingsAI | [04 SettingsAIErrorState PreferencesSaveFailed ScrollEnd](modules/SettingsAI/atlas/atlas-settingsai-9e6402ea61.yaml) | [Preview](../ios/Doglyad/Application/Module/SettingsAI/Preview/SettingsAIPreview.swift) |
 | SelectTranscriber | [01 SelectTranscriberInitialState AvailableTranscribers](modules/SelectTranscriber/atlas/atlas-selecttranscriber-af860819bc.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriber/Preview/SelectTranscriberPreview.swift) |
 | SelectTranscriber | [02 SelectTranscriberInitialState AvailableTranscribers ScrollEnd](modules/SelectTranscriber/atlas/atlas-selecttranscriber-f305449c4b.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriber/Preview/SelectTranscriberPreview.swift) |
 | SelectTranscriptParser | [01 SelectTranscriptParserDefaultState AvailableParsers](modules/SelectTranscriptParser/atlas/atlas-selecttranscriptparser-6a2d3a4672.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectTranscriptParser/Preview/SelectTranscriptParserPreview.swift) |
@@ -299,6 +301,7 @@
 | Storage | [05 StorageErrorState ClearOperationFailed](modules/Storage/atlas/atlas-storage-bdca658ce0.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
 | Storage | [06 StorageErrorState ClearOperationFailed ScrollEnd](modules/Storage/atlas/atlas-storage-cd219b651c.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/Storage/Preview/StoragePreview.swift) |
 | StorageClearProtocols | [01 StorageClearProtocolsDefaultState ConfirmDeletion](modules/StorageClearProtocols/atlas/atlas-storageclearprotocols-bb85780d0a.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/StorageClearProtocols/Preview/StorageClearProtocolsPreview.swift) |
+| StorageClearSpeechModel | [01 StorageClearSpeechModelDefaultState ConfirmModelDeletion](modules/StorageClearSpeechModel/atlas/atlas-storageclearspeechmodel-09b7f0db3a.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/StorageClearSpeechModel/Preview/StorageClearSpeechModelPreview.swift) |
 | StorageClearAll | [01 StorageClearAllDefaultState ConfirmDeletion](modules/StorageClearAll/atlas/atlas-storageclearall-95d9776313.yaml) | [Preview](../ios/Doglyad/Application/Module/Storage/StorageClearAll/Preview/StorageClearAllPreview.swift) |
 | About | [01 AboutDefaultState ApplicationInformation](modules/About/atlas/atlas-about-34aa3c32a4.yaml) | [Preview](../ios/Doglyad/Application/Module/About/Preview/AboutPreview.swift) |
 | SelectDateOfBirth | [01 SelectDateOfBirthDefaultState DateSelection](modules/SelectDateOfBirth/atlas/atlas-selectdateofbirth-da060cd631.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectDateOfBirth/Preview/SelectDateOfBirthPreview.swift) |
@@ -336,6 +339,9 @@
 | ScanSpeech | [13 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-9e9a530152.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [14 ScanSpeechReviewProposalState MultipleFields](modules/ScanSpeech/atlas/atlas-scanspeech-0b84d79e8e.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [15 ScanSpeechReviewProposalState MultipleFields ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-65a5940d07.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| PatientConsent | [01 PatientConsentInitialState RequestConsent](modules/PatientConsent/atlas/atlas-patientconsent-65ab0d7fc4.yaml) | [Preview](../ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift) |
+| PatientConsent | [02 PatientConsentInitialState DoNotAskAgainSelected](modules/PatientConsent/atlas/atlas-patientconsent-1e3a9361b8.yaml) | [Preview](../ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift) |
+| PatientConsent | [03 PatientConsentInitialState PreferenceSaveFailed](modules/PatientConsent/atlas/atlas-patientconsent-578517b21f.yaml) | [Preview](../ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift) |
 | ReportReceived | [01 ReportReceivedContentState WaitingForFirstToken](modules/ReportReceived/atlas/atlas-reportreceived-b3cfe90b8d.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportReceived/Preview/ReportReceivedPreview.swift) |
 | ReportReceived | [02 ReportReceivedContentState WaitingForFirstToken ScrollEnd](modules/ReportReceived/atlas/atlas-reportreceived-6341165098.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportReceived/Preview/ReportReceivedPreview.swift) |
 | ReportReceived | [03 ReportReceivedContentState FirstToken](modules/ReportReceived/atlas/atlas-reportreceived-dc2bbae3d7.yaml) | [Preview](../ios/Doglyad/Application/Module/Report/ReportReceived/Preview/ReportReceivedPreview.swift) |

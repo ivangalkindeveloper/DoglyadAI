@@ -4,7 +4,7 @@ tags:
 - e2e
 - StorageClearProtocols
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Хранилище$
@@ -16,7 +16,7 @@ tags:
     text: ^Удалить\ историю\ протоколов$
 - takeScreenshot: StorageClearProtocols-cancel-confirmation
 - tapOn: {id: bottomSheet.close}
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^История\ исследований$
 - assertVisible:

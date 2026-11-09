@@ -9,7 +9,7 @@ enum AnalyticsScreen: String {
     case reportDetail = "report_detail"
     case readyMadeTemplateList = "ready_made_template_list"
     case scan
-    case settings
+    case menu
     case storage
     case subscriptionRecovery = "subscription_recovery"
     case manageSubscription = "manage_subscription"
@@ -17,5 +17,5 @@ enum AnalyticsScreen: String {
     case templateAdd = "template_add"
     case templateEdit = "template_edit"
     case templateList = "template_list"
-    case userSettings = "user_settings"
+    case workSettings = "work_settings"
 }

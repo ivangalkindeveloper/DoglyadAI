@@ -5,6 +5,19 @@ import json
 import subprocess
 
 REQUIRED_TESTS = [
+    'StorageConfirmationTests/speechModelDeletionRequiresConfirmationAndCancellationKeepsTheModel()',
+    'StorageConfirmationTests/speechModelConfirmationDismissesAndCallsBackOnlyOnce()',
+    'PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)',
+    'PatientConsentTests/preferenceDefaultsToTrueAndSurvivesRepositoryReload()',
+    'PatientConsentTests/confirmationPersistsChoiceBeforeDismissalAndCallsBackOnce(isDoNotAskAgain:)',
+    'PatientConsentTests/failedPreferenceSaveRetainsChoiceAndAllowsRetry()',
+    'PatientConsentTests/dismissalRejectsLateConfirmation()',
+    'PatientConsentTests/sharedPreferenceUpdatesOnlyAfterSuccessfulPersistence()',
+    'PatientConsentTests/settingsCanDisableAndReenableThePersistedPrompt()',
+    'ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)',
+    'ScanPatientConsentTests/failedPreferenceReadPreservesFormAndDoesNotGenerate()',
+    'ScanPatientConsentTests/leavingScanDiscardsLatePreferenceRead()',
+
     'LocalOperationTests/leavingBeforeLocalWriteStartsDoesNotSendIt()',
     'ScanDraftRestorationTests/backgroundSaveWaitsForAnInteractiveLocalClear()',
     'LocalFormOperationTests/closingTemplateEditorRejectsLateReadResults(isFailure:)',
@@ -111,6 +124,9 @@ TEST_FILTERS = [
 ]
 
 ARGUMENT_COUNTS = {
+    'PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)': 2,
+    'PatientConsentTests/confirmationPersistsChoiceBeforeDismissalAndCallsBackOnce(isDoNotAskAgain:)': 2,
+    'ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)': 2,
     'LocalFormOperationTests/closingTemplateEditorRejectsLateReadResults(isFailure:)': 2,
     'LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)': 2,
     "SelectUSExaminationTypeTests/dismissedSelectionIgnoresLateResults(isFailure:)": 2,

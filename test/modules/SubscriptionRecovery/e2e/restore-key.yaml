@@ -26,7 +26,7 @@ tags: [e2e, SubscriptionRecovery, yookassa]
 - extendedWaitUntil:
     visible: {id: scan.settings}
     timeout: 60000
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element: {text: '^Управление подпиской$'}
     direction: DOWN

@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: atlas-worksettings-e718ace8f4
+tags:
+- atlas
+- WorkSettings
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-worksettings-e718ace8f4
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-worksettings-e718ace8f4
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: preview.scrollEnd.ready
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: 02-WorkSettings-e718ace8f4

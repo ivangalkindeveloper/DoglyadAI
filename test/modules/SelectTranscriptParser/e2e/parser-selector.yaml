@@ -4,7 +4,7 @@ tags:
 - e2e
 - SelectTranscriptParser
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^Настройки\ AI$
 - tapOn:
@@ -18,7 +18,7 @@ tags:
     text: ^Серверный\ парсинг$
 - tapOn:
     text: ^Сохранить$
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^Настройки\ AI$
 - assertVisible:

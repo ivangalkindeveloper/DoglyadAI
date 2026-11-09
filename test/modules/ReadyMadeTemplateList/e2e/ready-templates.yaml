@@ -5,7 +5,7 @@ tags:
 - e2e
 - ReadyMadeTemplateList
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^Шаблоны\ протоколов$
 - tapOn:
@@ -64,7 +64,7 @@ tags:
     text: .*Толщина\ перешейка:\ ___\ мм\..*
 - tapOn:
     text: ^Сохранить$
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Шаблоны\ протоколов$

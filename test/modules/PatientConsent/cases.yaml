@@ -1,0 +1,46 @@
+schemaVersion: 1
+module: PatientConsent
+source: ios/Doglyad/Application/Module/PatientConsent
+cases:
+- id: PatientConsent.confirmation
+  title: Подтверждение согласия до генерации
+  profiles: [pro]
+  preconditions:
+  - Новый клиент; isNeedPatientConsent по умолчанию true; Scan заполнен
+  steps:
+  - action: Запустить генерацию
+    expect: Показана шторка подтверждения с пустым чекбоксом; генерация не начинается.
+  - action: Закрыть шторку и запустить генерацию снова
+    expect: Форма сохранена; шторка появляется снова; закрытие не вызывает onConfirm.
+  - action: Подтвердить без чекбокса
+    expect: Сохраняется true; шторка закрывается; onConfirm вызывается один раз после записи. Следующая генерация снова запрашивает согласие.
+  - action: Отметить «Не спрашивать согласие пациента» и подтвердить
+    expect: Сохраняется false; шторка закрывается; генерация продолжается. Выбор сохраняется после пересоздания репозитория. В снимке исследования и локальной БД isPatientConsent равен true до отправки запроса генерации.
+  covers: [onDoNotAskAgainChanged, onTapConfirm]
+  automation:
+    kind: mixed
+    flows: [e2e-reportreceived-generation]
+    nativeTests:
+    - PatientConsentTests/preferenceDefaultsToTrueAndSurvivesRepositoryReload()
+    - PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)
+    - StatePersistenceTests/generationStartsOnlyAfterHistorySaveAndDoesNotDuplicateEntry()
+    - PatientConsentTests/confirmationPersistsChoiceBeforeDismissalAndCallsBackOnce(isDoNotAskAgain:)
+    - ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)
+- id: PatientConsent.failure-cancel
+  title: Ошибка записи и закрытие во время подтверждения
+  profiles: [pro]
+  preconditions:
+  - Открыта шторка; управляемая задержка или ошибка записи настройки
+  steps:
+  - action: Отметить чекбокс и подтвердить при ошибке записи
+    expect: Шторка и выбор остаются; DMessager показывает ошибку; onConfirm не вызывается. Повтор после устранения ошибки сохраняет настройку и продолжает сценарий.
+  - action: Подтвердить при задержке записи и закрыть шторку
+    expect: Поздний результат не запускает генерацию; повторные нажатия не дублируют запись.
+  covers: [onDisappear]
+  automation:
+    kind: mixed
+    flows: [e2e-reportreceived-generation]
+    nativeTests:
+    - PatientConsentTests/failedPreferenceSaveRetainsChoiceAndAllowsRetry()
+    - PatientConsentTests/dismissalRejectsLateConfirmation()
+    - PatientConsentTests/sharedPreferenceUpdatesOnlyAfterSuccessfulPersistence()

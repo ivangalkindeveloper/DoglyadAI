@@ -6,6 +6,7 @@ enum AnalyticsBottomSheet: String {
     case permissionPhotoLibrary = "permission_photo_library"
     case permissionSpeech = "permission_speech"
     case photoLibraryPicker = "photo_library_picker"
+    case patientConsent = "patient_consent"
     case reportReceived = "report_received"
     case requestLimitExceeded = "request_limit_exceeded"
     case scanCamera = "scan_camera"
@@ -18,6 +19,7 @@ enum AnalyticsBottomSheet: String {
     case selectUSExaminationType = "select_us_examination_type"
     case share
     case storageClearAll = "storage_clear_all"
+    case storageClearSpeechModel = "storage_clear_speech_model"
     case storageClearProtocols = "storage_clear_protocols"
     case templateDelete = "template_delete"
     case webDocument = "web_document"

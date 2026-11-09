@@ -790,6 +790,7 @@ struct ModuleStateTests {
             patientName: "Patient",
             patientGender: .male,
             patientDateOfBirth: Date(),
+            isPatientConsent: true,
             patientHeight: nil,
             patientWeight: nil,
             patientComplaints: nil,

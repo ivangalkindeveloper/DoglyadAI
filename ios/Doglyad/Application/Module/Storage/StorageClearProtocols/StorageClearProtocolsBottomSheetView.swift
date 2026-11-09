@@ -17,7 +17,7 @@ struct StorageClearProtocolsBottomSheetView: DViewProtocol {
                 .storageClearProtocolsWarningDescription,
             ],
             buttonTitle: l10n[
-                .buttonClear,
+                .buttonDelete,
             ],
             action: viewModel.onTapConfirm,
         )

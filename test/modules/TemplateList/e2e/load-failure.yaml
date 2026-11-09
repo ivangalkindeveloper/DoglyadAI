@@ -5,7 +5,7 @@ tags:
 - TemplateList
 ---
 - runFlow:
-    file: ../../../maestro/support/settings-with-fault.yaml
+    file: ../../../maestro/support/menu-with-fault.yaml
     env:
       REPOSITORY_FAULT: templateRepository.getTemplates
 - tapOn:

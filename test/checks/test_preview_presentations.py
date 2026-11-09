@@ -37,7 +37,7 @@ class PreviewPresentationTests(unittest.TestCase):
                     self.assertEqual(re.sub(r"\s+", "", preview["body"].replace(".previewScrollToEnd()", "")), re.sub(r"\s+", "", previous["body"]))
                 modules.add(Path(preview["source"]).stem.removesuffix("Preview"))
             previous = preview
-        self.assertTrue({"Scan", "Settings", "History", "WebDocument", "Paywall", "SelectUSExaminationType", "ScanSpeech"} <= modules)
+        self.assertTrue({"Scan", "Menu", "History", "WebDocument", "Paywall", "SelectUSExaminationType", "ScanSpeech"} <= modules)
 
     def test_legal_loading_has_consent_and_checked_choice_exists(self):
         legal = [p for p in self.previews if Path(p["source"]).stem == "LegalUpdatePreview"]

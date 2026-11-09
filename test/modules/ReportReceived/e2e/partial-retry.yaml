@@ -24,7 +24,7 @@ tags: [e2e, ReportReceived, ReportDetail, History]
 - assertVisible: ^Протокол$
 - assertVisible: ^Regression REG-PARTIAL$
 - assertVisible: ^REG-PARTIAL$
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^История исследований$
 - tapOn: '^Regression REG-PARTIAL$'
 - assertVisible: ^Протокол$

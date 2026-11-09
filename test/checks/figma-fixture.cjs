@@ -15,7 +15,7 @@ function environment({ managed = true, pageLimit = false } = {}) {
         if (child.parent) child.parent.children = child.parent.children.filter(n => n !== child);
         this.children.splice(index, 0, child); child.parent = this;
       },
-      resize() {}, remove() {
+      resize(width, height) { this.width = width; this.height = height; }, remove() {
         this.removed = true;
         if (this.parent) this.parent.children = this.parent.children.filter(n => n !== this);
       }
@@ -35,7 +35,10 @@ function environment({ managed = true, pageLimit = false } = {}) {
     ui: { postMessage: value => messages.push(value) }, loadAllPagesAsync: async () => {},
     loadFontAsync: async () => {}, setCurrentPageAsync: async () => {},
     createPage() { throw new Error('The Starter plan only comes with 3 pages.'); },
-    createFrame: node, createText: node, createRectangle: node,
+    createFrame: () => Object.assign(node(), { type: 'FRAME' }),
+    createText: () => Object.assign(node(), { type: 'TEXT' }),
+    createRectangle: () => Object.assign(node(), { type: 'RECTANGLE' }),
+    createVector: () => Object.assign(node(), { type: 'VECTOR' }),
     createImage: () => ({ hash: 'image' }), on() {}, viewport: { scrollAndZoomIntoView() {} } };
   vm.runInNewContext(fs.readFileSync('test/figma/code.js', 'utf8'), { figma, __html__: '', Uint8Array });
   const manifest = { runId: 'new', suiteHash: 'suite', status: 'passed', expectedScreenshots: 2,

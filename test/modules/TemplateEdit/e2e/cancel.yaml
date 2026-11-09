@@ -4,7 +4,7 @@ tags:
 - e2e
 - TemplateEdit
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^Шаблоны\ протоколов$
 - tapOn:

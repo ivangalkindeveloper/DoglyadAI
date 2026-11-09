@@ -122,8 +122,8 @@ struct ReportRemarksTests {
             ),
         )
         #expect(
-            !text.contains(
-                "Description remark",
+            text.contains(
+                "Description remarks\nDescription remark",
             ),
         )
         #expect(
@@ -217,6 +217,7 @@ struct ReportRemarksTests {
                 patientName: "Patient",
                 patientGender: .male,
                 patientDateOfBirth: Date(),
+                isPatientConsent: true,
                 patientHeight: nil,
                 patientWeight: nil,
                 patientComplaints: nil,

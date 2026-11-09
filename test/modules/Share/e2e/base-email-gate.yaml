@@ -2,7 +2,7 @@ appId: ${APP_ID}
 name: e2e-share-base-email-gate
 tags: [e2e, Share]
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^История исследований$
 - tapOn: ^Photo regression$
 - tapOn: {id: reportDetail.share}

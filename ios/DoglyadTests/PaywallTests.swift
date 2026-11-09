@@ -41,7 +41,7 @@ struct PaywallTests {
         model.onTapClose()
         router.push(
             route: RouteScreen(
-                type: .settings,
+                type: .menu,
             ),
         )
         root.update(
@@ -136,7 +136,7 @@ struct PaywallTests {
         model.onDisappear()
         router.push(
             route: RouteScreen(
-                type: .settings,
+                type: .menu,
             ),
         )
         root.update(
@@ -1159,7 +1159,7 @@ struct PaywallTests {
         model.onTapClose()
         router.push(
             route: RouteScreen(
-                type: .settings,
+                type: .menu,
             ),
         )
         response?.resume()

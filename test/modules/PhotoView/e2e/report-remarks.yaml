@@ -2,7 +2,7 @@ appId: ${APP_ID}
 name: e2e-photoview-report-remarks
 tags: [e2e, PhotoView, PhotoRemark, ReportDetail]
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Рабочие настройки$
 - scrollUntilVisible:
     element: {id: userSettings.photoRemarks}
@@ -56,7 +56,7 @@ tags: [e2e, PhotoView, PhotoRemark, ReportDetail]
 - tapOn: {id: photoView.remarksVisible}
 - assertVisible: {id: photoView.remarksVisible, checked: false}
 - assertNotVisible: {id: 'photoView.remark\..*'}
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^История исследований$
 - tapOn: ^Photo regression$
 - scrollUntilVisible:

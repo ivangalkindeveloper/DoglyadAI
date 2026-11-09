@@ -4,7 +4,7 @@ tags:
 - e2e
 - ReportDetail
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^История исследований$
 - tapOn: ^Regression REG-DETAIL$
 - assertVisible: ^Протокол$

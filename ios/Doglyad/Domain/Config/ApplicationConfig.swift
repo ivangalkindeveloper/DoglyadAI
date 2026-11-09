@@ -21,7 +21,7 @@ struct ApplicationConfig: Codable {
     let templateAdd: TemplateAddConfig
     let templateEdit: TemplateEditConfig
     let readyMadeTemplateList: ReadyMadeTemplateListConfig
-    let userSettings: UserSettingsConfig
+    let workSettings: WorkSettingsConfig
     let settingsAI: SettingsAIConfig
 }
 
@@ -58,7 +58,7 @@ extension ApplicationConfig {
         templateAdd: .default,
         templateEdit: .default,
         readyMadeTemplateList: .default,
-        userSettings: .default,
+        workSettings: .default,
         settingsAI: .default,
     )
 }
@@ -152,9 +152,9 @@ extension ApplicationConfig {
             ReadyMadeTemplateListConfig.self,
             forKey: .readyMadeTemplateList,
         )
-        userSettings = try container.decode(
-            UserSettingsConfig.self,
-            forKey: .userSettings,
+        workSettings = try container.decode(
+            WorkSettingsConfig.self,
+            forKey: .workSettings,
         )
         settingsAI = try container.decode(
             SettingsAIConfig.self,
@@ -173,7 +173,7 @@ extension ApplicationConfig {
             templateEdit.nameMaxLength,
             templateEdit.contentMaxLength,
             readyMadeTemplateList.searchMaxLength,
-            userSettings.emailMaxLength,
+            workSettings.emailMaxLength,
             settingsAI.temperatureMaxLength,
             settingsAI.maxTokensMaxLength,
         ].allSatisfy(
@@ -209,7 +209,7 @@ extension ApplicationConfig {
         case templateAdd
         case templateEdit
         case readyMadeTemplateList
-        case userSettings
+        case workSettings
         case settingsAI
     }
 
@@ -288,8 +288,8 @@ extension ApplicationConfig {
             forKey: .readyMadeTemplateList,
         )
         try container.encode(
-            userSettings,
-            forKey: .userSettings,
+            workSettings,
+            forKey: .workSettings,
         )
         try container.encode(
             settingsAI,

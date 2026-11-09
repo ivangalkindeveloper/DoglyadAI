@@ -4,7 +4,7 @@ tags:
 - e2e
 - TemplateDelete
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^Шаблоны\ протоколов$
 - tapOn: Regression template edited
@@ -16,7 +16,7 @@ tags:
 - tapOn:
     text: ^Удалить$
 - assertNotVisible: Regression template edited
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Шаблоны\ протоколов$

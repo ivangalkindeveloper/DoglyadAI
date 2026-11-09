@@ -29,7 +29,7 @@ struct ContentDesignTests {
                 type: .scan,
             ),
         )
-        let model = SettingsViewModel(
+        let model = MenuViewModel(
             messager: messager,
             container: container,
             router: router,
@@ -46,17 +46,17 @@ struct ContentDesignTests {
             onRefreshSubscriptionStatus: {},
         )
         #expect(
-            model.state is SettingsContentState && model.reportsCount == nil,
+            model.state is MenuContentState && model.reportsCount == nil,
         )
         model.onAppear()
         model.onTapHistory()
         await model.lastTask?.value
         #expect(
-            model.state is SettingsContentState && model.reportsCount == nil && errors == 0,
+            model.state is MenuContentState && model.reportsCount == nil && errors == 0,
         )
         #expect(
             model.historyDescription == container.l10n[
-                .settingsHistoryPurposeDescription,
+                .menuHistoryPurposeDescription,
             ],
         )
         #expect(

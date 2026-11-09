@@ -4,7 +4,7 @@ tags:
 - e2e
 - SelectNeuralModel
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Настройки\ AI$
@@ -29,7 +29,7 @@ tags:
     text: ^Google\ MedGemma\ 27B$
 - tapOn:
     id: navigation.back
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Настройки\ AI$

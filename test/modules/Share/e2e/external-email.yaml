@@ -2,7 +2,7 @@ appId: ${APP_ID}
 name: e2e-share-external-email
 tags: [e2e, Share]
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Рабочие настройки$
 - tapOn: ^regression@example.invalid$
 - eraseText: 100
@@ -28,7 +28,7 @@ tags: [e2e, Share]
 - tapOn: ^Отмена$
 - assertVisible: ^Протокол$
 - takeScreenshot: Share-external-email-canceled
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Рабочие настройки$
 - tapOn: ^my_email@work-email.com$
 - inputText: regression@example.invalid

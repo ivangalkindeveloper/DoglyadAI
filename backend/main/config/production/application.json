@@ -79,7 +79,7 @@
     "readyMadeTemplateList": {
         "searchMaxLength": 200
     },
-    "userSettings": {
+    "workSettings": {
         "emailMaxLength": 254
     },
     "settingsAI": {

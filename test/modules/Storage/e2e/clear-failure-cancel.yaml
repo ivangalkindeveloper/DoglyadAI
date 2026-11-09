@@ -3,7 +3,7 @@ name: e2e-storage-clear-failure-cancel
 tags: [e2e, Storage]
 ---
 - runFlow:
-    file: ../../../maestro/support/settings-with-fault.yaml
+    file: ../../../maestro/support/menu-with-fault.yaml
     env:
       REPOSITORY_FAULT: ultrasoundReportRepository.clearAllReports
 - scrollUntilVisible:
@@ -11,7 +11,7 @@ tags: [e2e, Storage]
     direction: DOWN
 - tapOn: ^Хранилище$
 - tapOn: ^Удалить историю протоколов$
-- tapOn: ^Очистить$
+- tapOn: ^Удалить$
 - extendedWaitUntil:
     visible: {id: message.error}
     timeout: 15000
@@ -32,7 +32,7 @@ tags: [e2e, Storage]
     direction: DOWN
 - tapOn: ^Хранилище$
 - tapOn: ^Удалить историю протоколов$
-- tapOn: ^Очистить$
+- tapOn: ^Удалить$
 - tapOn: {id: navigation.back}
 - assertVisible: ^Настройки$
 # The repository adapter delays five seconds; observe the closed screen beyond that delay.

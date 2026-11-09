@@ -24,7 +24,7 @@ tags: [e2e, ReportReceived, ReportDetail, History]
 - assertVisible: ^Протокол$
 - assertVisible: ^Regression REG-BEFORE$
 - assertVisible: ^REG-BEFORE$
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^История исследований$
 - tapOn: '^Regression REG-BEFORE$'
 - assertVisible: ^Протокол$

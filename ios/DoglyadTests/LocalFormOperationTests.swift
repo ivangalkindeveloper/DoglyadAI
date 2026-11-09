@@ -91,12 +91,12 @@ struct LocalFormOperationTests {
         )
         router.push(
             route: RouteScreen(
-                type: .userSettings,
+                type: .workSettings,
             ),
         )
         var resume: CheckedContinuation<Void, Never>?
         var writes: [Bool] = []
-        let model = UserSettingsViewModel(
+        let model = WorkSettingsViewModel(
             container: container,
             messager: DMessager(),
             router: router,
@@ -114,6 +114,9 @@ struct LocalFormOperationTests {
             getInitialEmail: {
                 "doctor@example.com"
             },
+            getInitialIsNeedPatientConsent: {
+                true
+            },
             getInitialIsRecommendationsIncluded: {
                 true
             },
@@ -123,7 +126,7 @@ struct LocalFormOperationTests {
             getInitialIsDescriptionRemarks: {
                 false
             },
-            onSaved: { _, recommendations, _, _ in
+            onSaved: { _, _, recommendations, _, _ in
                 writes.append(
                     recommendations,
                 )

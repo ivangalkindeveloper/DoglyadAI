@@ -304,7 +304,7 @@ def generated() -> dict[str, str]:
             "OnBoardingErrorState",
             "SelectTemplateErrorState",
             "ReportDetailErrorState",
-            "UserSettingsErrorState",
+            "WorkSettingsErrorState",
             "StorageErrorState",
             "ScanInitializationErrorState",
             "ScanErrorState",
@@ -345,7 +345,7 @@ def generated() -> dict[str, str]:
                     }
                 }
             )
-        if feature in {"SelectUSExaminationType", "Settings"}:
+        if feature in {"SelectUSExaminationType", "Menu"}:
             commands.append({"assertNotVisible": {"id": "message.error"}})
         if feature == "SelectUSExaminationType" and re.search(
             r"\bisRecentSectionVisible:\s*false", preview["body"]

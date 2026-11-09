@@ -13,7 +13,7 @@ tags: [e2e, TemplateEdit]
 - tapOn: ^Retry template$
 - assertVisible: ^Retry template$
 - runFlow:
-    file: ../../../maestro/support/settings-with-fault.yaml
+    file: ../../../maestro/support/menu-with-fault.yaml
     env:
       REPOSITORY_FAULT: templateRepository.getTemplate
       REPOSITORY_FAULT_MODULE: TemplateEditViewModel
@@ -27,7 +27,7 @@ tags: [e2e, TemplateEdit]
 - assertVisible: ^Retry template$
 - assertVisible: Retained description and conclusion
 - runFlow:
-    file: ../../../maestro/support/settings-with-fault.yaml
+    file: ../../../maestro/support/menu-with-fault.yaml
     env:
       REPOSITORY_FAULT: templateRepository.saveTemplate
 - tapOn: ^Шаблоны протоколов$
@@ -44,7 +44,7 @@ tags: [e2e, TemplateEdit]
 - tapOn: ^Сохранить$
 - assertVisible: ^Retry template$
 - assertNotVisible: {text: '^Retry template$', index: 1}
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Шаблоны протоколов$
 - tapOn: ^Retry template$
 - assertVisible: Changed after retry

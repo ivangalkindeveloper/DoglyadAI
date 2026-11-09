@@ -12,7 +12,7 @@ struct AboutBottomSheetView: DViewProtocol {
     var body: some View {
         DBottomSheet(
             title: l10n[
-                .settingsAboutAppButton,
+                .menuAboutAppButton,
             ],
             fraction: 0.6,
         ) { toolbarHeight, bottomHeight in

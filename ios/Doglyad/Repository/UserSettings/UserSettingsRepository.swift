@@ -62,6 +62,18 @@ final class UserSettingsRepository: UserSettingsRepositoryProtocol {
         )
     }
 
+    func getIsNeedPatientConsent() async throws -> Bool {
+        database.getIsNeedPatientConsent()
+    }
+
+    func setIsNeedPatientConsent(
+        _ isNeedPatientConsent: Bool,
+    ) async throws {
+        database.setIsNeedPatientConsent(
+            isNeedPatientConsent: isNeedPatientConsent,
+        )
+    }
+
     func getIsRecommendationsIncluded() async throws -> Bool {
         database.getIsRecommendationsIncluded()
     }

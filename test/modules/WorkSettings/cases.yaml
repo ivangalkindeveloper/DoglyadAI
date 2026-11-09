@@ -1,0 +1,99 @@
+schemaVersion: 1
+module: WorkSettings
+source: ios/Doglyad/Application/Module/WorkSettings
+cases:
+- id: WorkSettings.patient-consent
+  title: Включить и выключить запрос согласия пациента
+  profiles: [pro]
+  preconditions:
+  - Открыты рабочие настройки
+  steps:
+  - action: Выключить «Спрашивать согласие пациента» после поля почты и сохранить
+    expect: Репозиторий и общий снимок настроек содержат false; при повторном открытии переключатель выключен.
+  - action: Включить переключатель и сохранить
+    expect: Сохранён true; следующий запуск генерации запрашивает подтверждение.
+  covers: [togglePatientConsent]
+  automation:
+    kind: mixed
+    flows: [e2e-reportreceived-generation]
+    nativeTests:
+    - PatientConsentTests/settingsCanDisableAndReenableThePersistedPrompt()
+    - PatientConsentTests/sharedPreferenceUpdatesOnlyAfterSuccessfulPersistence()
+    - ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)
+- id: WorkSettings.email
+  title: Рабочая почта сохраняется
+  profiles:
+  - pro
+  preconditions:
+  - Открыты рабочие настройки
+  steps:
+  - action: Ввести regression@example.invalid и сохранить
+    expect: Показан успех, форма закрывается.
+  - action: Перезапустить и открыть настройки
+    expect: Отображается точный сохранённый адрес.
+  covers:
+  - onTapSave
+  automation:
+    kind: maestro
+    flows:
+    - e2e-worksettings-work-settings
+- id: WorkSettings.flags
+  title: Все три переключателя
+  profiles:
+  - pro
+  preconditions:
+  - Открыты рабочие настройки; известны начальные значения
+  steps:
+  - action: Выключить рекомендации, замечания по описанию и снимкам; сохранить и перезапустить
+    expect: Все три переключателя выключены.
+  - action: Включить каждый переключатель; сохранить и перезапустить
+    expect: Все три включены; изменение одного не меняет остальные.
+  - action: Сгенерировать отчёт для каждого сочетания
+    expect: Флаги запроса соответствуют настройкам; отключённые разделы не возвращаются; замечания по
+      фото привязаны только к переданным photoId.
+  covers:
+  - toggleRecommendationsIncluded
+  - toggleDescriptionRemarks
+  - togglePhotoRemarks
+  automation:
+    kind: maestro
+    flows:
+    - e2e-worksettings-flags-000
+    - e2e-worksettings-flags-001
+    - e2e-worksettings-flags-010
+    - e2e-worksettings-flags-011
+    - e2e-worksettings-flags-100
+    - e2e-worksettings-flags-101
+    - e2e-worksettings-flags-110
+    - e2e-worksettings-flags-111
+  variants:
+  - '000'
+  - '001'
+  - '010'
+  - '011'
+  - '100'
+  - '101'
+  - '110'
+  - '111'
+- id: WorkSettings.validation-cancel-failure
+  title: Валидация почты, отмена и ошибка записи
+  profiles:
+  - pro
+  preconditions:
+  - Сохранена рабочая почта; для ветки сбоя отказ репозитория
+  steps:
+  - action: Ввести адрес без @ и сохранить
+    expect: Показана ошибка поля; старый адрес не заменён.
+  - action: Исправить адрес, скрыть клавиатуру и выйти без сохранения
+    expect: Старая почта остаётся после повторного открытия.
+  - action: Сохранить валидный адрес при сбое записи
+    expect: Ввод сохранён в форме; успех не показан; после устранения сбоя можно сохранить.
+  covers:
+  - onFocusChanged
+  - onSubmit
+  - onTapBack
+  automation:
+    kind: maestro
+    flows:
+    - e2e-worksettings-invalid-email
+    - e2e-worksettings-save-failure

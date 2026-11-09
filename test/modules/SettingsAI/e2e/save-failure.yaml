@@ -5,7 +5,7 @@ tags:
 - SettingsAI
 ---
 - runFlow:
-    file: ../../../maestro/support/settings-with-fault.yaml
+    file: ../../../maestro/support/menu-with-fault.yaml
     env:
       REPOSITORY_FAULT: settingsAIRepository.saveSettings
 - tapOn:
@@ -37,7 +37,7 @@ tags:
 - tapOn:
     text: ^Сохранить$
 - assertVisible: Настройки сохранены
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^Настройки AI$
 - scrollUntilVisible:

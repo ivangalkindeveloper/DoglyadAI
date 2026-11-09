@@ -312,7 +312,7 @@ tags:
 - assertVisible:
     id: history.loadedCount.41
 - takeScreenshot: History-page-three
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^История исследований$
 - assertVisible: ^Сегодня$
 - assertVisible: ^History 041$

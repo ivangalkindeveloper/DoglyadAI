@@ -23,7 +23,7 @@ tags: [e2e, Permission]
 - assertVisible: ^Предоставьте приложению разрешение на доступ к галерее, чтобы добавлять снимки исследования из галереи$
 - takeScreenshot: Permission-gallery-denied
 - tapOn: ^В настройки$
-# iOS 26.5 Simulator routes UIApplication.openSettingsURLString to Settings' root.
+# iOS 26.5 Simulator routes UIApplication.openSettingsURLString to Menu' root.
 - assertVisible: {id: com.apple.settings.general}
 - assertVisible: {id: breadcrumb, text: '.*Догляд AI.*'}
 - takeScreenshot: Permission-gallery-system-settings

@@ -16,7 +16,7 @@ tags:
 - eraseText: 100
 - inputText: Storage preserved draft
 - runFlow: ../../../maestro/support/hide-keyboard.yaml
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Хранилище$
@@ -27,20 +27,20 @@ tags:
 - tapOn:
     text: ^Удалить\ историю\ протоколов$
 - assertVisible:
-    text: ^Очистить\ историю\ протоколов$
+    text: ^Удалить\ историю\ протоколов$
 - takeScreenshot: 090-StorageClearProtocols-confirm
 - tapOn:
-    text: ^Очистить$
-- runFlow: ../../../maestro/support/settings.yaml
+    text: ^Удалить$
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^История\ исследований$
 - assertVisible: '(?s)^Список последних протоколов пуст\..*'
 - takeScreenshot: 091-History-after-clear
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Шаблоны протоколов$
 - assertVisible: ^Retry template$
 - assertVisible: ^УЗИ Щитовидной железы$
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Рабочие настройки$
 - assertVisible: regression@example.invalid
 - runFlow: ../../../maestro/support/main.yaml

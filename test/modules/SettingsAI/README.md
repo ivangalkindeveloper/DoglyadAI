@@ -1,6 +1,6 @@
 # SettingsAI
 
-Исходники: [ios/Doglyad/Application/Module/Settings/SettingsAI](../../../ios/Doglyad/Application/Module/Settings/SettingsAI).
+Исходники: [ios/Doglyad/Application/Module/SettingsAI](../../../ios/Doglyad/Application/Module/SettingsAI).
 
 Сценарии и ожидаемые результаты: [cases.yaml](cases.yaml). `e2e/` содержит исполняемые Maestro-файлы, `atlas/` — только снимки Preview.
 

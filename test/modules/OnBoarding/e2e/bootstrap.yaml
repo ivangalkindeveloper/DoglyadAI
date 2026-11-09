@@ -81,7 +81,7 @@ tags:
 - extendedWaitUntil:
     visible: {id: message.error}
     timeout: 15000
-- assertVisible: ^Начинайте генерировать!$
+- assertVisible: ^Начните генерировать протоколы!$
 - assertNotVisible: ^Начните работать уже сегодня!$
 - takeScreenshot: OnBoarding-completion-failed
 - tapOn: ^Давайте начнем!$

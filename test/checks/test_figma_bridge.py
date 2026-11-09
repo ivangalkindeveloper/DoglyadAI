@@ -76,7 +76,7 @@ class FigmaBridgeTests(unittest.TestCase):
                     response = connection.getresponse()
                     self.assertEqual(response.status, 426)
                     response.read()
-                    headers["X-Doglyad-Regression-Protocol"] = "9"
+                    headers["X-Doglyad-Regression-Protocol"] = "10"
                     connection.request("GET", "/manifest", headers=headers)
                     response = connection.getresponse()
                     self.assertEqual(response.status, 200)
@@ -86,7 +86,7 @@ class FigmaBridgeTests(unittest.TestCase):
                         "fileKey": "file",
                         "imageCount": 1,
                         "nodeId": "1:2",
-                        "layoutVersion": "named-screens-v9",
+                        "layoutVersion": "iphone17-screen-v10",
                     }
                     connection.request("POST", "/ack", json.dumps(receipt), headers)
                     response = connection.getresponse()
@@ -100,7 +100,7 @@ class FigmaBridgeTests(unittest.TestCase):
                     self.assertEqual(response.status, 400)
                     response.read()
                     self.assertFalse((run / "figma-receipt.json").exists())
-                    receipt["layoutVersion"] = "named-screens-v9"
+                    receipt["layoutVersion"] = "iphone17-screen-v10"
                     connection.request("POST", "/ack", json.dumps(receipt), headers)
                     response = connection.getresponse()
                     self.assertEqual(response.status, 200)

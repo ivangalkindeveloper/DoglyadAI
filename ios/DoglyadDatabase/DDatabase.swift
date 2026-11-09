@@ -2,13 +2,15 @@ import Foundation
 import SwiftData
 
 public final class DDatabase: DDatabaseProtocol {
-    let defaults: UserDefaults = .standard
+    let defaults: UserDefaults
     var container: ModelContainer
     public let examinationReports: DExaminationReportsStore
     public let examinationTemplates: DExaminationTemplatesStore
     public let examinationDraft: DExaminationDraftStore
 
-    public init() throws {
+    public init(
+        defaults: UserDefaults = .standard,
+    ) throws {
         let schema = Schema(
             [
                 SettingsAIDB.self,
@@ -24,6 +26,7 @@ public final class DDatabase: DDatabaseProtocol {
                 USExaminationDraftPhotoDB.self,
             ],
         )
+        self.defaults = defaults
         container = try ModelContainer(
             for: schema,
         )
@@ -233,6 +236,21 @@ public final class DDatabase: DDatabaseProtocol {
                 .userEmail,
             )
         }
+    }
+
+    public func getIsNeedPatientConsent() -> Bool {
+        defaults.object(
+            forKey: DUserDefaultsKey.isNeedPatientConsent.rawValue,
+        ) as? Bool ?? true
+    }
+
+    public func setIsNeedPatientConsent(
+        isNeedPatientConsent: Bool,
+    ) {
+        setValue(
+            isNeedPatientConsent,
+            .isNeedPatientConsent,
+        )
     }
 
     public func getIsRecommendationsIncluded() -> Bool {

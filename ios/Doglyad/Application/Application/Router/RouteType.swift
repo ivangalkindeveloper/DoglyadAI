@@ -6,14 +6,14 @@ enum ScreenType: Hashable {
     case scan
     case history
     case reportDetail
-    case settings
+    case menu
     case settingsAI
     case templateList
     case readyMadeTemplateList
     case templateAdd
     case templateEdit
     case storage
-    case userSettings
+    case workSettings
     case subscriptionRecovery
     case manageSubscription
     case paywall
@@ -35,9 +35,11 @@ enum SheetType: Hashable {
     case permissionSpeech
     case permissionPhotoLibrary
     case photoLibraryPicker
+    case patientConsent
     case reportReceived
     case webDocument
     case storageClearProtocols
+    case storageClearSpeechModel
     case storageClearAll
     case templateDelete
     case about

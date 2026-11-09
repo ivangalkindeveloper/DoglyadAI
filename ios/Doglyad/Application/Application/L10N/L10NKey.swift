@@ -10,6 +10,7 @@ enum L10NKey: String, CaseIterable, Sendable {
     case buttonClear
     case buttonClearAll
     case buttonCollapse
+    case buttonConfirm
     case buttonCopy
     case buttonDelete
     case buttonExpand
@@ -75,6 +76,25 @@ enum L10NKey: String, CaseIterable, Sendable {
     case manageSubscriptionTitle
     case manageSubscriptionUpdatingDescription
     case manageSubscriptionYooKassaRefundDescription
+    case menuAboutAppButton
+    case menuHistoryDescription
+    case menuHistoryEmptyDescription
+    case menuHistoryPurposeDescription
+    case menuHistoryTitle
+    case menuPrivacyPolicyDescription
+    case menuPrivacyPolicyTitle
+    case menuSettingsAIDescription
+    case menuSettingsAITitle
+    case menuStorageDescription
+    case menuStorageTitle
+    case menuSubscriptionManageDescription
+    case menuTemplatesDescription
+    case menuTemplatesTitle
+    case menuTermsAndConditionsDescription
+    case menuTermsAndConditionsTitle
+    case menuTitle
+    case menuWorkSettingsDescription
+    case menuWorkSettingsTitle
     case neuralModelAddingDescription
     case neuralModelCardAvailableRequestsLabel
     case neuralModelCardTitleLabel
@@ -98,6 +118,9 @@ enum L10NKey: String, CaseIterable, Sendable {
     case onBoardingTermsAndConditionsLabel
     case onBoardingThirdDescription
     case onBoardingThirdTitle
+    case patientConsentDescription
+    case patientConsentDoNotAskAgainLabel
+    case patientConsentTitle
     case paywallAnnualLabel
     case paywallCancelDescription
     case paywallContinueButton
@@ -256,25 +279,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case settingsAITitle
     case settingsAITranscriberTitle
     case settingsAITranscriptParserTitle
-    case settingsAboutAppButton
-    case settingsHistoryDescription
-    case settingsHistoryEmptyDescription
-    case settingsHistoryPurposeDescription
-    case settingsHistoryTitle
-    case settingsPrivacyPolicyDescription
-    case settingsPrivacyPolicyTitle
-    case settingsSettingsAIDescription
-    case settingsSettingsAITitle
-    case settingsStorageDescription
-    case settingsStorageTitle
-    case settingsSubscriptionManageDescription
-    case settingsTemplatesDescription
-    case settingsTemplatesTitle
-    case settingsTermsAndConditionsDescription
-    case settingsTermsAndConditionsTitle
-    case settingsTitle
-    case settingsUserSettingsDescription
-    case settingsUserSettingsTitle
     case shareExaminationCopyMessageDescription
     case shareExaminationCopyMessageTitle
     case shareTitle
@@ -293,6 +297,8 @@ enum L10NKey: String, CaseIterable, Sendable {
     case storageClearProtocolsTitle
     case storageClearProtocolsWarningDescription
     case storageClearProtocolsWarningTitle
+    case storageClearSpeechModelWarningDescription
+    case storageClearSpeechModelWarningTitle
     case storageDeleteSpeechModelButton
     case storageDeleteSpeechModelDescription
     case storageDeleteSpeechModelSuccessMessageDescription
@@ -348,16 +354,18 @@ enum L10NKey: String, CaseIterable, Sendable {
     case usExaminationTypeAddingDescription
     case usExaminationTypeRecentGroupTitle
     case usExaminationTypeTitle
-    case userSettingsDescriptionRemarksDescription
-    case userSettingsDescriptionRemarksLabel
-    case userSettingsEmailDescription
-    case userSettingsEmailLabel
-    case userSettingsEmailPlaceholder
-    case userSettingsPhotoRemarksDescription
-    case userSettingsPhotoRemarksLabel
-    case userSettingsRecommendationsDescription
-    case userSettingsRecommendationsLabel
-    case userSettingsSavedSuccessMessageDescription
-    case userSettingsSavedSuccessMessageTitle
-    case userSettingsTitle
+    case workSettingsDescriptionRemarksDescription
+    case workSettingsDescriptionRemarksLabel
+    case workSettingsEmailDescription
+    case workSettingsEmailLabel
+    case workSettingsEmailPlaceholder
+    case workSettingsPatientConsentDescription
+    case workSettingsPatientConsentLabel
+    case workSettingsPhotoRemarksDescription
+    case workSettingsPhotoRemarksLabel
+    case workSettingsRecommendationsDescription
+    case workSettingsRecommendationsLabel
+    case workSettingsSavedSuccessMessageDescription
+    case workSettingsSavedSuccessMessageTitle
+    case workSettingsTitle
 }

@@ -4,7 +4,7 @@
 
 `maestro` — весь сценарий связан с flows; `mixed` — flows и обязательные проверки XCTest; `partial` — автоматизирована часть; `manual` — нужна ручная проверка или подготовка стенда.
 
-Описанных сценариев: 94. Функциональных Maestro-кейсов: 129. Preview учитываются отдельно и не закрывают функциональные пробелы.
+Описанных сценариев: 99. Функциональных Maestro-кейсов: 129. Preview учитываются отдельно и не закрывают функциональные пробелы.
 
 | Модуль | Сценариев | Maestro | Maestro + XCTest | Частично | Вручную / нужен стенд |
 |---|---:|---:|---:|---:|---:|
@@ -15,8 +15,8 @@
 | [WebDocument](modules/WebDocument/README.md) | 2 | 1 | 1 | 0 | 0 |
 | [SelectUSExaminationType](modules/SelectUSExaminationType/README.md) | 2 | 1 | 1 | 0 | 0 |
 | [Paywall](modules/Paywall/README.md) | 4 | 2 | 2 | 0 | 0 |
-| [Scan](modules/Scan/README.md) | 8 | 5 | 3 | 0 | 0 |
-| [Settings](modules/Settings/README.md) | 2 | 2 | 0 | 0 | 0 |
+| [Scan](modules/Scan/README.md) | 9 | 5 | 4 | 0 | 0 |
+| [Menu](modules/Menu/README.md) | 2 | 2 | 0 | 0 | 0 |
 | [History](modules/History/README.md) | 4 | 3 | 1 | 0 | 0 |
 | [ReportDetail](modules/ReportDetail/README.md) | 3 | 3 | 0 | 0 | 0 |
 | [TemplateList](modules/TemplateList/README.md) | 2 | 2 | 0 | 0 | 0 |
@@ -24,7 +24,7 @@
 | [ReadyMadeTemplateList](modules/ReadyMadeTemplateList/README.md) | 2 | 2 | 0 | 0 | 0 |
 | [TemplateEdit](modules/TemplateEdit/README.md) | 3 | 1 | 2 | 0 | 0 |
 | [TemplateDelete](modules/TemplateDelete/README.md) | 2 | 2 | 0 | 0 | 0 |
-| [UserSettings](modules/UserSettings/README.md) | 3 | 3 | 0 | 0 | 0 |
+| [WorkSettings](modules/WorkSettings/README.md) | 4 | 3 | 1 | 0 | 0 |
 | [SettingsAI](modules/SettingsAI/README.md) | 5 | 2 | 3 | 0 | 0 |
 | [SelectTranscriber](modules/SelectTranscriber/README.md) | 1 | 0 | 1 | 0 | 0 |
 | [SelectTranscriptParser](modules/SelectTranscriptParser/README.md) | 2 | 1 | 1 | 0 | 0 |
@@ -33,6 +33,7 @@
 | [SubscriptionRecovery](modules/SubscriptionRecovery/README.md) | 3 | 2 | 1 | 0 | 0 |
 | [Storage](modules/Storage/README.md) | 3 | 3 | 0 | 0 | 0 |
 | [StorageClearProtocols](modules/StorageClearProtocols/README.md) | 2 | 1 | 1 | 0 | 0 |
+| [StorageClearSpeechModel](modules/StorageClearSpeechModel/README.md) | 1 | 0 | 1 | 0 | 0 |
 | [StorageClearAll](modules/StorageClearAll/README.md) | 2 | 1 | 1 | 0 | 0 |
 | [About](modules/About/README.md) | 1 | 1 | 0 | 0 | 0 |
 | [SelectDateOfBirth](modules/SelectDateOfBirth/README.md) | 1 | 0 | 1 | 0 | 0 |
@@ -44,6 +45,7 @@
 | [PhotoView](modules/PhotoView/README.md) | 3 | 1 | 2 | 0 | 0 |
 | [PhotoRemark](modules/PhotoRemark/README.md) | 1 | 1 | 0 | 0 | 0 |
 | [ScanSpeech](modules/ScanSpeech/README.md) | 4 | 1 | 3 | 0 | 0 |
+| [PatientConsent](modules/PatientConsent/README.md) | 2 | 0 | 2 | 0 | 0 |
 | [ReportReceived](modules/ReportReceived/README.md) | 3 | 3 | 0 | 0 | 0 |
 | [Share](modules/Share/README.md) | 2 | 2 | 0 | 0 | 0 |
 | [RequestLimitExceeded](modules/RequestLimitExceeded/README.md) | 1 | 1 | 0 | 0 | 0 |

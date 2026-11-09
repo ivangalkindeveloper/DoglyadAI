@@ -2,6 +2,27 @@ schemaVersion: 1
 module: Scan
 source: ios/Doglyad/Application/Module/Scan/Scan
 cases:
+- id: Scan.patient-consent
+  title: Проверить согласие до запуска генерации
+  profiles: [pro]
+  preconditions:
+  - Валидная форма Scan; отдельно isNeedPatientConsent true и false
+  steps:
+  - action: Нажать генерацию с true, закрыть шторку, повторить и подтвердить
+    expect: До подтверждения генерации нет. Отмена сохраняет форму. Подтверждение продолжает обычную проверку доступа и генерацию.
+  - action: Нажать генерацию с false
+    expect: Шторки нет; генерация продолжается по обычному сценарию. Новый снимок исследования сохраняет isPatientConsent true; настройка запроса согласия и признак в исследовании независимы.
+  - action: Вызвать ошибку чтения настройки или выйти во время чтения
+    expect: При ошибке форма сохранена и показан DMessager. После выхода поздний результат игнорируется; шторка и генерация не запускаются.
+  covers: [onTapScan]
+  automation:
+    kind: mixed
+    flows: [e2e-reportreceived-generation]
+    nativeTests:
+    - ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)
+    - PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)
+    - ScanPatientConsentTests/failedPreferenceReadPreservesFormAndDoesNotGenerate()
+    - ScanPatientConsentTests/leavingScanDiscardsLatePreferenceRead()
 - id: Scan.draft
   title: Поля пациента, клавиатура и черновик
   profiles:

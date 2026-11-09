@@ -42,6 +42,7 @@ def body() -> dict[str, object]:
             "patientName": "Test Patient",
             "patientGender": "female",
             "patientDateOfBirth": "1990-01-01T00:00:00Z",
+            "isPatientConsent": True,
             "patientComplaints": "No complaints",
             "examinationDescription": "Findings",
         },

@@ -69,7 +69,7 @@ def app(
         report_email=ReportEmailService(
             variables,
             configuration.server.email,
-            configuration.modules.userSettings,
+            configuration.modules.workSettings,
         ),
     )
     from app.core.billing.billing_dependencies import BillingDependencies

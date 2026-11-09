@@ -8,8 +8,8 @@ MODULES = ROOT / 'ios/Doglyad/Application/Module'
 class LocalPresentationTests(unittest.TestCase):
     def test_database_and_preloaded_selection_modules_have_no_loading_phases(self):
         paths = [
-            'History', 'UserSettings', 'LegalUpdate',
-            'Storage/Storage', 'Settings/SettingsAI',
+            'History', 'WorkSettings', 'LegalUpdate',
+            'Storage/Storage', 'SettingsAI',
             'Template/TemplateAdd', 'Template/TemplateEdit', 'Template/TemplateList',
             'Select/SelectTemplate', 'Select/SelectNeuralModel', 'Select/SelectTranscriber',
         ]

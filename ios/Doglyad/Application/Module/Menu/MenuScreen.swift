@@ -1,0 +1,40 @@
+import DoglyadUI
+import Router
+import SwiftUI
+
+struct MenuScreen: View {
+    @EnvironmentObject private var messager: DMessager
+    @EnvironmentObject private var container: DependencyContainer
+    @EnvironmentObject private var router: DRouter
+    @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
+    let arguments: MenuArguments?
+
+    var body: some View {
+        MenuScreenView(
+            viewModel: MenuViewModel(
+                messager: messager,
+                container: container,
+                router: router,
+                getSubscriptionStatus: { [subscriptionViewModel] in
+                    subscriptionViewModel.status
+                },
+                observeSubscriptionStatus: { [subscriptionViewModel] observer in
+                    subscriptionViewModel.observeStatus(
+                        observer,
+                    )
+                },
+                onSubscriptionStatusUpdated: { [subscriptionViewModel] status in
+                    subscriptionViewModel.update(
+                        status: status,
+                    )
+                },
+                getSettingsAI: { [subscriptionViewModel] in
+                    subscriptionViewModel.resolveSettingsAI()
+                },
+                onRefreshSubscriptionStatus: { [subscriptionViewModel] in
+                    await subscriptionViewModel.refreshStatus()
+                },
+            ),
+        )
+    }
+}

@@ -99,13 +99,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The new version contains improvements, critical bug fixes, and new features."
+            "value" : "The new version contains improvements, critical bug fixes, and new features"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Новая версия содержит улучшения, исправление кртичиных ошибок и новые удобства."
+            "value" : "Новая версия содержит улучшения, исправление кртичиных ошибок и новые удобства"
           }
         }
       }

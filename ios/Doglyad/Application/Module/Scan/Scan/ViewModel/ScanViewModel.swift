@@ -403,7 +403,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             .scanSettings,
         )
         coordinator.screen(
-            .settings,
+            .menu,
         )
     }
 
@@ -789,6 +789,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
     }
 
     func onTapScan() {
+        guard operationTask == nil else {
+            return
+        }
         switch state {
         case _ as ScanGenerationLoadingState: return
         default: break
@@ -815,13 +818,25 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             )
         }
         unfocus()
-        handle {
-            try await self.coordinator.prepareReportGeneration()
-        } onMainSuccess: { resolution in
-            switch resolution {
-            case .proceed: self.performScan()
-            case .routed: break
+        performLocalOperation {
+            try await self.container.userSettingsRepository.getIsNeedPatientConsent()
+        } onSuccess: { isNeedPatientConsent in
+            if isNeedPatientConsent {
+                self.coordinator.sheet(
+                    .patientConsent,
+                    arguments: PatientConsentArguments(
+                        onConfirm: { [weak self] in
+                            self?.prepareReportGeneration()
+                        },
+                    ),
+                )
+            } else {
+                self.prepareReportGeneration()
             }
+        } onFailure: { _ in
+            self.messager.showUnknownError(
+                l10n: self.l10n,
+            )
         }
     }
 
@@ -1376,6 +1391,17 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         }
     }
 
+    private func prepareReportGeneration() {
+        handle {
+            try await self.coordinator.prepareReportGeneration()
+        } onMainSuccess: { resolution in
+            switch resolution {
+            case .proceed: self.performScan()
+            case .routed: break
+            }
+        }
+    }
+
     private func performScan() {
         guard operationTask == nil else {
             return
@@ -1399,6 +1425,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             patientName: patientName,
             patientGender: patientGender,
             patientDateOfBirth: patientDateOfBirth,
+            isPatientConsent: true,
             patientHeight: patientHeightCMTextController.value.flatMap(
                 Double.init,
             ),

@@ -4,12 +4,12 @@ tags: [e2e, StorageClearAll, Storage, OnBoarding]
 ---
 - runFlow: ../../../maestro/support/one-photo.yaml
 - assertVisible: {id: 'scan.photo\..*'}
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element: {text: '^Хранилище$'}
     direction: DOWN
 - tapOn: ^Хранилище$
-- tapOn: ^Очистить все$
+- tapOn: ^Очистить все данные$
 - tapOn:
     text: ^Очистить все$
     below: {id: bottomSheet.close}
@@ -39,22 +39,22 @@ tags: [e2e, StorageClearAll, Storage, OnBoarding]
 - extendedWaitUntil:
     visible: {id: scan.settings}
     timeout: 60000
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^История исследований$
 - assertVisible: '(?s)^Список последних протоколов пуст\..*'
 - takeScreenshot: StorageClearAll-empty-history
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Шаблоны протоколов$
 - assertVisible: .*Тут пока нет шаблонов.*
 - assertNotVisible: ^Retry template$
 - takeScreenshot: StorageClearAll-empty-templates
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn: ^Рабочие настройки$
 - assertNotVisible: regression@example.invalid
 - takeScreenshot: StorageClearAll-reset-work-settings
 - runFlow: ../../../maestro/support/main.yaml
 - assertNotVisible: {id: 'scan.photo\..*'}
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element: {text: '^Управление подпиской$'}
     direction: DOWN

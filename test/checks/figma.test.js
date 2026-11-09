@@ -291,3 +291,52 @@ test('startup gates precede onboarding and all visible preview frame names omit 
   };
   inspect(collection);
 });
+
+test('iPhone 17 outlines update retained regression images without replacing their frames or unrelated images', async () => {
+  const e = environment();
+  await publish(e, e.manifest);
+  const owner = e.page.children[0];
+  const regression = owner.children[0];
+  regression.setPluginData('doglyadSection', ''); // Historical collections predate section metadata.
+  const cards = regression.children[1].children[1].children;
+  const originals = cards.map((card, index) => {
+    card.children[0].remove();
+    const image = e.figma.createRectangle();
+    image.name = `Retained screen ${index}`;
+    image.resize(390, 2622 * 390 / 1206);
+    image.fills = [{ type: 'IMAGE', imageHash: `retained-${index}`, scaleMode: 'FIT' }];
+    image.opacity = 0.9; image.visible = true; image.locked = false; image.rotation = 0;
+    card.appendChild(image);
+    return image;
+  });
+  const unrelated = e.figma.createRectangle();
+  unrelated.fills = [{ type: 'IMAGE', imageHash: 'manual', scaleMode: 'FIT' }];
+  e.page.appendChild(unrelated);
+  const manifest = previewManifest(e);
+  await e.figma.ui.onmessage({ type: 'begin', manifest });
+  await e.figma.ui.onmessage({ type: 'image', id: manifest.images[0].id, bytes: [1] });
+  await e.figma.ui.onmessage({ type: 'abort' });
+  assert.ok(originals.every(image => !image.removed));
+  await publish(e, manifest);
+  assert.equal(e.messages.at(-1).type, 'done');
+  assert.equal(e.messages.at(-1).screenShape, 'iphone17');
+  assert.equal(e.messages.at(-1).roundedImageCount, 4);
+  assert.equal(owner.children[1], regression);
+  assert.equal(owner.getPluginData('doglyadRegressionRun'), 'new');
+  cards.forEach((card, index) => {
+    const image = card.children[0];
+    assert.equal(originals[index].removed, true);
+    assert.equal(image.type, 'VECTOR');
+    assert.equal(image.name, originals[index].name);
+    assert.equal(image.width, originals[index].width);
+    assert.equal(image.height, originals[index].height);
+    assert.deepEqual(image.fills, originals[index].fills);
+    assert.equal(image.opacity, 0.9);
+    assert.equal(image.vectorPaths[0].windingRule, 'NONZERO');
+    assert.match(image.vectorPaths[0].data, /^M .* Z$/);
+    assert.equal(image.getPluginData('doglyadScreenShape'), 'iphone17');
+  });
+  assert.equal(unrelated.removed, false);
+  assert.equal(unrelated.type, 'RECTANGLE');
+  assert.equal(unrelated.getPluginData('doglyadScreenShape'), '');
+});

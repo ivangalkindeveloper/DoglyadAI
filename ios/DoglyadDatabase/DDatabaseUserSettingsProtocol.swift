@@ -25,6 +25,12 @@ public protocol DDatabaseUserSettingsProtocol: AnyObject {
         value: String?,
     )
 
+    func getIsNeedPatientConsent() -> Bool
+
+    func setIsNeedPatientConsent(
+        isNeedPatientConsent: Bool,
+    )
+
     func getIsRecommendationsIncluded() -> Bool
 
     func setIsRecommendationsIncluded(

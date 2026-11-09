@@ -44,6 +44,7 @@ struct ReportEmailTests {
                 patientDateOfBirth: Date(
                     timeIntervalSince1970: 0,
                 ),
+                isPatientConsent: true,
                 patientHeight: 180,
                 patientWeight: 80,
                 patientComplaints: nil,

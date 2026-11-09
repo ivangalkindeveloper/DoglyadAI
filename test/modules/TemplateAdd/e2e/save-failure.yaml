@@ -5,7 +5,7 @@ tags:
 - TemplateAdd
 ---
 - runFlow:
-    file: ../../../maestro/support/settings-with-fault.yaml
+    file: ../../../maestro/support/menu-with-fault.yaml
     env:
       REPOSITORY_FAULT: templateRepository.saveTemplate
 - tapOn:
@@ -37,7 +37,7 @@ tags:
     text: ^Retry template$
     index: 1
 - takeScreenshot: TemplateList-retry-saved
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^Шаблоны протоколов$
 - assertVisible: Retry template

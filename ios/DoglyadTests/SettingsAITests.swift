@@ -744,7 +744,7 @@ struct SettingsAITests {
                 )
                 model.onTapSettingsAI()
             } else {
-                let model = SettingsViewModel(
+                let model = MenuViewModel(
                     messager: DMessager(),
                     container: container,
                     router: router,

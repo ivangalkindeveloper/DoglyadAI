@@ -261,6 +261,24 @@
             )
         }
 
+        func getIsNeedPatientConsent() async throws -> Bool {
+            try await faults.check(
+                "userSettingsRepository.getIsNeedPatientConsent",
+            )
+            return try await wrapped.getIsNeedPatientConsent()
+        }
+
+        func setIsNeedPatientConsent(
+            _ isNeedPatientConsent: Bool,
+        ) async throws {
+            try await faults.check(
+                "userSettingsRepository.setIsNeedPatientConsent",
+            )
+            return try await wrapped.setIsNeedPatientConsent(
+                isNeedPatientConsent,
+            )
+        }
+
         func getIsRecommendationsIncluded() async throws -> Bool {
             try await faults.check(
                 "userSettingsRepository.getIsRecommendationsIncluded",

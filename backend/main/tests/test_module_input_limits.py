@@ -161,6 +161,7 @@ def test_oversized_examination_fields_are_rejected_before_generation(
         "patientName": "Test Patient",
         "patientGender": "female",
         "patientDateOfBirth": "1990-01-01T00:00:00Z",
+        "isPatientConsent": True,
         "examinationDescription": "Findings",
     }
     examination[field] = "x" * (maximum + 1)
@@ -242,7 +243,7 @@ def test_dictation_limit_comes_from_its_module_before_model_execution(
     model.call.assert_not_called()
 
 
-def test_email_limit_comes_from_user_settings_before_smtp(
+def test_email_limit_comes_from_work_settings_before_smtp(
     configuration: Configuration,
     variables: Variables,
     monkeypatch: pytest.MonkeyPatch,
@@ -252,7 +253,7 @@ def test_email_limit_comes_from_user_settings_before_smtp(
         "app.service.email.report_email_service.smtplib.SMTP",
         smtp,
     )
-    settings = configuration.modules.userSettings.model_copy(
+    settings = configuration.modules.workSettings.model_copy(
         update={"emailMaxLength": 3},
     )
     service = ReportEmailService(

@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-storageclearspeechmodel-09b7f0db3a
+tags:
+- atlas
+- StorageClearSpeechModel
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-storageclearspeechmodel-09b7f0db3a
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-storageclearspeechmodel-09b7f0db3a
+    timeout: 15000
+- takeScreenshot: 01-StorageClearSpeechModel-09b7f0db3a

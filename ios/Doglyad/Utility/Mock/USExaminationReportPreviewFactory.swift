@@ -41,6 +41,7 @@
                     patientDateOfBirth: Date(
                         timeIntervalSince1970: 631152000,
                     ),
+                    isPatientConsent: true,
                     patientHeight: 168,
                     patientWeight: 62,
                     patientComplaints: nil,

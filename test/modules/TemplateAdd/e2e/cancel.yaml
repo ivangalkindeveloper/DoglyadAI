@@ -4,7 +4,7 @@ tags:
 - e2e
 - TemplateAdd
 ---
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - scrollUntilVisible:
     element:
       text: ^Шаблоны\ протоколов$
@@ -22,7 +22,7 @@ tags:
     id: navigation.back
 - assertNotVisible:
     text: ^Unsaved\ template$
-- runFlow: ../../../maestro/support/settings.yaml
+- runFlow: ../../../maestro/support/menu.yaml
 - tapOn:
     text: ^Шаблоны\ протоколов$
 - assertNotVisible:

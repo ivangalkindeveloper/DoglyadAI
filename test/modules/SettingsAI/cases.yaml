@@ -1,6 +1,6 @@
 schemaVersion: 1
 module: SettingsAI
-source: ios/Doglyad/Application/Module/Settings/SettingsAI
+source: ios/Doglyad/Application/Module/SettingsAI
 cases:
 - id: SettingsAI.choices
   title: Выбор транскрибатора, парсера и модели

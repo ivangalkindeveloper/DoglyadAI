@@ -20,8 +20,39 @@ def examination() -> dict[str, Any]:
         "patientName": "Test Patient",
         "patientGender": "female",
         "patientDateOfBirth": "1990-01-01T00:00:00Z",
+        "isPatientConsent": True,
         "examinationDescription": "Synthetic examination",
     }
+
+
+@pytest.mark.parametrize(
+    "is_patient_consent",
+    [False, True],
+)
+def test_patient_consent_round_trip_is_explicit(
+    examination: dict[str, Any],
+    is_patient_consent: bool,
+) -> None:
+    examination["isPatientConsent"] = is_patient_consent
+    value = USExaminationData.model_validate(
+        examination,
+    )
+    assert value.isPatientConsent is is_patient_consent
+    assert value.model_dump()["isPatientConsent"] is is_patient_consent
+
+
+def test_patient_consent_cannot_be_invented_for_a_missing_value(
+    examination: dict[str, Any],
+) -> None:
+    examination.pop(
+        "isPatientConsent",
+    )
+    with pytest.raises(
+        ValidationError,
+    ):
+        USExaminationData.model_validate(
+            examination,
+        )
 
 
 @pytest.mark.parametrize(

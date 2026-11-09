@@ -7,20 +7,15 @@ struct EmptyTemplatesBodyView: DViewProtocol {
 
     var body: some View {
         VStack(
-            spacing: .zero,
+            spacing: size.s24,
         ) {
             DImage(
                 .doglyadFile,
             )
             .scaledToFit()
             .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity,
-                alignment: .center,
-            )
-            .padding(
-                .horizontal,
-                size.s64,
+                width: size.screenWidth / 2,
+                height: size.screenWidth / 2,
             )
 
             DText(
@@ -31,10 +26,13 @@ struct EmptyTemplatesBodyView: DViewProtocol {
                 color: color.grayscalePlacehold,
                 alignment: .center,
             )
+            .fixedSize(
+                horizontal: false,
+                vertical: true,
+            )
         }
-        .padding(
-            .top,
-            size.screenHeight / 6,
+        .frame(
+            maxWidth: .infinity,
         )
     }
 }

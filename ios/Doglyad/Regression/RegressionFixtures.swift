@@ -107,6 +107,7 @@
                         patientName: values.patientName,
                         patientGender: values.patientGender,
                         patientDateOfBirth: values.patientDateOfBirth,
+                        isPatientConsent: true,
                         patientHeight: values.patientHeight,
                         patientWeight: values.patientWeight,
                         patientComplaints: values.patientComplaints,

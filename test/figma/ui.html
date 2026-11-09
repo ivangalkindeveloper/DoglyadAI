@@ -41,7 +41,7 @@ window.onmessage = event => {
 async function request(path, options = {}) {
   const response = await fetch(base + path, { ...options, headers: {
     Authorization: 'Bearer ' + bridgeKey,
-    'X-Doglyad-Regression-Protocol': '9',
+    'X-Doglyad-Regression-Protocol': '10',
     ...(options.headers || {})
   }});
   if (response.status === 426) throw new Error('Закройте и заново откройте Doglyad AI Regression: код плагина обновлён.');
