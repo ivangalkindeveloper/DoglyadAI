@@ -69,10 +69,11 @@ class SwiftArchitectureTests(unittest.TestCase):
         cls.binary = swift_checker()
 
     def run_source(
-        self, source: str, context: str = ""
+        self, source: str, context: str = "", relative_path: str = "Source.swift"
     ) -> subprocess.CompletedProcess[str]:
         with tempfile.TemporaryDirectory() as directory:
-            file = Path(directory) / "Source.swift"
+            file = Path(directory) / relative_path
+            file.parent.mkdir(parents=True, exist_ok=True)
             file.write_text(source)
             other = Path(directory) / "Context.swift"
             other.write_text(context)
@@ -83,6 +84,40 @@ class SwiftArchitectureTests(unittest.TestCase):
                 capture_output=True,
                 check=False,
             )
+
+    def test_accessibility_metadata_follows_fields_and_content_arguments(self) -> None:
+        result = self.run_source('''
+struct Control: View {
+    let accessibilityIdentifier: String?
+    let title: String
+    var body: some View { Button(accessibilityIdentifier: "control", action: {}) }
+}
+''')
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("swift.accessibility-field-order", result.stdout)
+        self.assertIn("swift.accessibility-argument-order", result.stdout)
+        trailing = self.run_source('let button = DCard(accessibilityIdentifier: "card") { Text("content") }')
+        self.assertIn("swift.accessibility-argument-order", trailing.stdout)
+        initializer = self.run_source('struct Control { init(accessibilityIdentifier: String?, transient: Int) {} }')
+        self.assertIn("swift.accessibility-parameter-order", initializer.stdout)
+
+    def test_labeled_content_and_domain_availability_are_not_metadata_errors(self) -> None:
+        result = self.run_source('''
+struct Control: View {
+    let title: String
+    let accessibilityIdentifier: String?
+    var body: some View { DCard(action: {}, content: { Text(title) }, accessibilityIdentifier: accessibilityIdentifier) }
+}
+struct Model { let accessibility: Int; let contextLength: Int }
+''')
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_native_disabled_is_confined_to_the_design_system(self) -> None:
+        source = 'struct Control: View { var body: some View { Button("Tap", action: {}).disabled(true) } }'
+        application = self.run_source(source, relative_path="ios/Doglyad/Control.swift")
+        self.assertIn("swift.explicit-disabled", application.stdout)
+        component = self.run_source(source, relative_path="Doglyad/ios/DoglyadUI/Control.swift")
+        self.assertEqual(component.returncode, 0, component.stdout + component.stderr)
 
     def test_view_methods_fragments_protocol_names_and_extensions(self) -> None:
         result = self.run_source(
@@ -181,6 +216,85 @@ struct Adapter: UIViewRepresentable {
         switch second { case true: break; default: break }
         return UIView()
     }
+}
+""")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_initializer_parameters_and_assignments_follow_fields(self) -> None:
+        result = self.run_source("""
+struct Value {
+    let first: Int
+    let second: Int
+    init(second: Int, first: Int) {
+        self.second = second
+        self.first = first
+    }
+}
+""")
+        self.assertEqual(result.returncode, 1, result.stderr)
+        self.assertIn("swift.initializer-parameter-order", result.stdout)
+        self.assertIn("swift.initializer-assignment-order", result.stdout)
+
+    def test_initializer_ignores_computed_static_and_local_properties(self) -> None:
+        result = self.run_source("""
+class Value {
+    static let shared = 1
+    var computed: Int { 1 }
+    let first: Int
+    var second: Int { didSet {} }
+    init(first: Int, second: Int) {
+        var first = first
+        first = first + 1
+        self.first = first
+        self.second = second
+    }
+}
+""")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_initializer_maps_wrapper_storage_and_external_labels(self) -> None:
+        result = self.run_source("""
+struct Value {
+    @Binding var first: Int
+    let second: Int
+    init(second: Int, value first: Binding<Int>) {
+        self.second = second
+        self._first = first
+    }
+}
+""")
+        self.assertIn("swift.initializer-parameter-order", result.stdout)
+        self.assertIn("swift.initializer-assignment-order", result.stdout)
+
+    def test_initializer_maps_renamed_parameters_to_assigned_fields(self) -> None:
+        result = self.run_source("""
+struct Value {
+    let first: Int
+    let second: Int
+    init(later: Int, earlier: Int) {
+        self.first = earlier
+        self.second = later
+    }
+}
+""")
+        self.assertIn("swift.initializer-parameter-order", result.stdout)
+        self.assertNotIn("swift.initializer-assignment-order", result.stdout)
+
+    def test_extension_initializer_uses_stored_fields_from_context(self) -> None:
+        result = self.run_source(
+            "extension Value { init(second: Int, first: Int) { self.second = second; self.first = first } }",
+            "struct Value { let first: Int; let second: Int }",
+        )
+        self.assertIn("swift.initializer-parameter-order", result.stdout)
+        self.assertIn("swift.initializer-assignment-order", result.stdout)
+
+    def test_each_initializer_overload_is_checked(self) -> None:
+        result = self.run_source("""
+struct Value {
+    let first: Int
+    let second: Int
+    init(first: Int) { self.first = first; second = 0 }
+    init(first: Int, second: Int) { self.first = first; self.second = second }
 }
 """)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)

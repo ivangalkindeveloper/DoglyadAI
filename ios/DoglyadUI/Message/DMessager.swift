@@ -4,6 +4,8 @@ import SwiftUI
 public final class DMessager: ObservableObject {
     @Published var message: DMessage?
 
+    public init() {}
+
     public func show(
         type: DMessageType,
         title: LocalizedStringResource,

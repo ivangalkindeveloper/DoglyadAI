@@ -6,7 +6,6 @@ struct UserSettings {
     let isPhotoRemarks: Bool
     let isDescriptionRemarks: Bool
     let isRemarksVisible: Bool
-
     static let initial = UserSettings(
         email: nil,
         isRecommendationsIncluded: true,

@@ -4,7 +4,6 @@ import SwiftUI
 struct StorageClearAllBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: StorageClearAllViewModel
 
     var body: some View {

@@ -1,8 +1,20 @@
 <!doctype html>
 <meta charset="utf-8">
-<style>body{font:14px Inter,system-ui;padding:16px}button{box-sizing:border-box;width:100%;padding:10px;margin:8px 0}p{overflow-wrap:anywhere}</style>
-<p>Оставьте плагин открытым. После успешной проверки регресса или Preview экраны обновятся автоматически.</p>
-<p id="status">Ожидание успешного прогона…</p>
+<style>
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{display:grid;grid-template-rows:auto minmax(0,1fr) 28px;gap:4px;padding:8px;background:#f7f7fc;color:#14142b;font:11px/1.2 system-ui,-apple-system,sans-serif}
+p{margin:0;overflow-wrap:anywhere}
+.hint{font-size:10px;color:#6e7191}
+#status{min-height:0;max-height:24px;overflow:auto;line-height:12px;align-self:center}
+button{width:100%;margin:0;padding:4px 8px;border:0;border-radius:999px;background:linear-gradient(135deg,#7433ff,#de5efc);color:#fcfcfc;font:600 11px/1.2 system-ui,-apple-system,sans-serif;cursor:pointer;position:relative}
+button:hover{opacity:.9}button:active{opacity:.6}button:focus-visible{outline:2px solid #a996ff;outline-offset:1px}
+button:disabled{cursor:wait;color:transparent;opacity:1}
+button:disabled::after{content:"";position:absolute;left:calc(50% - 6px);top:calc(50% - 6px);width:12px;height:12px;border:2px solid #ffffff66;border-top-color:#fcfcfc;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+<p class="hint">Оставьте открытым для автообновления.</p>
+<p id="status">Ожидание готовых экранов…</p>
 <button id="import">Проверить сейчас</button>
 <script>
 /* DOGlyad_SHA256_BUNDLE */
@@ -29,7 +41,7 @@ window.onmessage = event => {
 async function request(path, options = {}) {
   const response = await fetch(base + path, { ...options, headers: {
     Authorization: 'Bearer ' + bridgeKey,
-    'X-Doglyad-Regression-Protocol': '7',
+    'X-Doglyad-Regression-Protocol': '9',
     ...(options.headers || {})
   }});
   if (response.status === 426) throw new Error('Закройте и заново откройте Doglyad AI Regression: код плагина обновлён.');

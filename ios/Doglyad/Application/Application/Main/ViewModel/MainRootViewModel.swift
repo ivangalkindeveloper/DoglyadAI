@@ -3,7 +3,6 @@ import SwiftUI
 @MainActor
 final class MainRootViewModel: DStateViewModel<any MainRootStateProtocol> {
     private let container: DependencyContainer
-
     private var isReviewRequestChecked = false
 
     init(

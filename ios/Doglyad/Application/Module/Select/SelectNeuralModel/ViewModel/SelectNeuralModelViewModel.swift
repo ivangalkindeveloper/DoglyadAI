@@ -7,9 +7,7 @@ import Router
 @MainActor
 final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelStateProtocol> {
     let models: [USExaminationNeuralModel]
-
     @Published var currentValue: USExaminationNeuralModel?
-
     private let messager: DMessager?
     private let arguments: SelectNeuralModelArguments?
 
@@ -24,11 +22,10 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
         getSettingsAI: @escaping () -> SettingsAI,
         onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
-        self.messager = messager
-        self.arguments = arguments
-
         models = (container.usExaminationNeuralModels)
         currentValue = (arguments?.currentValue)
+        self.messager = messager
+        self.arguments = arguments
 
         super.init(
             state: SelectNeuralModelInitialState(),
@@ -36,9 +33,9 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .selectNeuralModel,
             ),
@@ -109,15 +106,7 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
                 ],
             ),
         )
-        switch state {
-        case _ as SelectNeuralModelSelectionLoadingState: return
-        default: break
-        }
-
-        emit(
-            SelectNeuralModelSelectionLoadingState(),
-        )
-        handle {
+        performLocalOperation {
             try await self.coordinator.selectNeuralModel(
                 model,
             ) { [weak self] model in
@@ -126,11 +115,8 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
                 )
                 self?.currentValue = model
             }
-        } onDefer: {
-            self.emit(
-                SelectNeuralModelInitialState(),
-            )
-        } onMainUnknownError: { _ in
+        } onSuccess: { _ in
+        } onFailure: { _ in
             self.messager?.showUnknownError(
                 l10n: self.container.l10n,
             )

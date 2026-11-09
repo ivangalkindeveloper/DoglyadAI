@@ -5,43 +5,45 @@ struct PaywallContinueView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: PaywallViewModel
-
     let state: any PaywallStateProtocol
 
     var body: some View {
         switch state {
-        case let restoring as PaywallVerificationLoadingState:
-            PaywallContinueView(
-                state: restoring.previousState,
-            )
-        case let failed as PaywallOperationFailedState:
-            PaywallContinueView(
-                state: failed.previousState,
-            )
-        case _ as PaywallPendingState:
+        case _ as PaywallCatalogLoadingState:
+            EmptyView()
+        case _ as PaywallCatalogErrorState:
             DButton(
                 title: l10n[
-                    .subscriptionPaymentRefreshButton,
+                    .paywallRetryButton,
                 ],
-                action: viewModel.onTapCheckPayment,
-                isLoading: viewModel.isProcessing,
+                action: viewModel.onTapRetry,
+                accessibilityIdentifier: "paywall.retry",
             )
             .dStyle(
                 .primaryButton,
             )
-        default:
+        case let restoring as PaywallRestoreLoadingState:
+            PaywallContinueView(
+                state: restoring.previousState,
+            )
+        case let failed as PaywallOperationErrorState:
+            PaywallContinueView(
+                state: failed.previousState,
+            )
+        case _ as PaywallContentState:
             DButton(
                 title: l10n[
                     .paywallContinueButton,
                 ],
-                accessibilityIdentifier: "paywall.continue",
                 action: viewModel.onTapContinue,
                 isLoading: viewModel.isProcessing,
-                isDisabled: !viewModel.isContinueEnabled,
+                isDisabled: !viewModel.isProcessing && !viewModel.isContinueEnabled,
+                accessibilityIdentifier: "paywall.continue",
             )
             .dStyle(
                 .primaryButton,
             )
+        default: EmptyView()
         }
     }
 }

@@ -4,7 +4,6 @@ import SwiftUI
 struct ScanCameraBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: ScanCameraViewModel
 
     var body: some View {

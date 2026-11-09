@@ -4,7 +4,6 @@ import SwiftUI
 struct ReadyMadeTemplateListScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: ReadyMadeTemplateListViewModel
     @FocusState private var focus: ReadyMadeTemplateListFocus?
 
@@ -20,54 +19,31 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                 )
             },
             onTapBody: viewModel.unfocus,
-            keyboardToolbar: {
-                if focus != nil {
-                    DToolbar(
-                        onTapDone: viewModel.unfocus,
-                    )
-                }
-            },
-            content: { toolbarInset, _ in
+            content: { toolbarInset, bottomInset in
                 switch viewModel.state {
                 case _ as ReadyMadeTemplateListLoadingState:
-                    DShimmerPlaceholder().frame(
-                        width: size.s64,
-                        height: size.s8,
-                    )
-                    .tint(
-                        color.primaryDefault,
-                    )
-                    .frame(
-                        maxWidth: .infinity,
-                        maxHeight: .infinity,
-                    )
-                    .padding(
-                        .top,
-                        toolbarInset,
-                    )
-                    .transition(
-                        .opacity,
-                    )
-                case _ as ReadyMadeTemplateListFailedState:
-                    VStack(
-                        spacing: size.s16,
+                    DScrollVStack(
+                        spacing: size.s4,
+                        padding: EdgeInsets(
+                            top: toolbarInset + size.s16,
+                            leading: size.s16,
+                            bottom: bottomInset + size.s16,
+                            trailing: size.s16,
+                        ),
                     ) {
-                        ErrorBodyView(
-                            description: l10n.text(
-                                .readyMadeTemplateListErrorDescription,
-                            ),
-                        )
-
-                        DButton(
-                            title: l10n[
-                                .readyMadeTemplateListRetryButton,
-                            ],
-                            action: viewModel.onTapRetry,
-                        )
-                        .dStyle(
-                            .primaryChip,
-                        )
+                        ForEach(
+                            0 ..< 5,
+                            id: \.self,
+                        ) { _ in
+                            ReadyMadeTemplateListLoadingCardView()
+                        }
                     }
+                case _ as ReadyMadeTemplateListErrorState:
+                    ErrorBodyView(
+                        description: l10n.text(
+                            .readyMadeTemplateListErrorDescription,
+                        ),
+                    )
                     .padding(
                         size.s16,
                     )
@@ -75,12 +51,28 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                         .top,
                         toolbarInset,
                     )
+                    .padding(
+                        .bottom,
+                        bottomInset,
+                    )
                     .frame(
                         maxWidth: .infinity,
                         maxHeight: .infinity,
                     )
                     .transition(
                         .opacity,
+                    )
+                case let state as ReadyMadeTemplateListSuccessState where state.templates.isEmpty:
+                    EmptyTemplatesBodyView(
+                        description: viewModel.emptyDescription,
+                    )
+                    .padding(
+                        .top,
+                        toolbarInset,
+                    )
+                    .padding(
+                        .bottom,
+                        bottomInset,
                     )
                 case _ as ReadyMadeTemplateListSuccessState:
                     ScrollView(
@@ -138,13 +130,23 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
                         )
                         .padding(
                             .bottom,
-                            size.s32,
+                            bottomInset + size.s32,
                         )
                     }
                     .transition(
                         .opacity,
                     )
                 default: EmptyView()
+                }
+            },
+            bottom: {
+                ReadyMadeTemplateListBottomView()
+            },
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        onTapDone: viewModel.unfocus,
+                    )
                 }
             },
         )

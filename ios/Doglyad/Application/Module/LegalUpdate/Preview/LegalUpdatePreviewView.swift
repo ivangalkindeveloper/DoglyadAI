@@ -8,10 +8,11 @@
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
         let state: any LegalUpdateStateProtocol
+        var isLegalAccepted = false
 
         var body: some View {
             let isErrorPresented = switch state {
-            case _ as LegalUpdateFailedState: true
+            case _ as LegalUpdateErrorState: true
             default: false
             }
 
@@ -30,6 +31,8 @@
                 },
                 onRefreshSubscriptionStatus: {},
             )
+
+            model.isLegalAccepted = isLegalAccepted
 
             model.preparePreview(
                 state: state,

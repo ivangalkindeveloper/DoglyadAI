@@ -510,7 +510,7 @@ struct StatePersistenceTests {
         model.onTapSave()
         await model.lastTask?.value
         switch model.state {
-        case _ as UserSettingsFailedState:
+        case _ as UserSettingsErrorState:
             #expect(
                 model.emailTextController === emailTextController,
             )

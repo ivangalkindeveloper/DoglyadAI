@@ -21,9 +21,9 @@ final class StorageClearAllViewModel: DModuleViewModel<any StorageClearAllStateP
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .storageClearAll,
             ),

@@ -11,7 +11,6 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
     private let getPhotoRemarks: () -> [USExaminationPhotoRemarks]
     private let subtitle: String?
     private let getSourcePhotos: () -> [USExaminationScanPhoto]
-
     private let messager: DMessager?
     private let arguments: PhotoViewArguments
     private var photoObservation: AnyCancellable?
@@ -28,9 +27,6 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: PhotoViewArguments,
     ) {
-        self.messager = messager
-        self.arguments = arguments
-
         let initialPhotos = arguments.getPhotos()
         photos = initialPhotos
         selectedPhotoID = initialPhotos.contains(
@@ -43,6 +39,8 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         getPhotoRemarks = arguments.getPhotoRemarks
         subtitle = arguments.subTitle
         getSourcePhotos = arguments.getPhotos
+        self.messager = messager
+        self.arguments = arguments
 
         super.init(
             state: PhotoViewInitialState(),
@@ -50,9 +48,9 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .photoView,
             ),

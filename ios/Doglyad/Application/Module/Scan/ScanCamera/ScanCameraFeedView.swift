@@ -4,7 +4,6 @@ import SwiftUI
 
 struct ScanCameraFeedView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
-
     @EnvironmentObject private var viewModel: ScanCameraViewModel
 
     var body: some View {

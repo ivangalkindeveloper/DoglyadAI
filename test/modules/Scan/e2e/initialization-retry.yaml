@@ -19,11 +19,24 @@ tags: [e2e, Scan]
       regressionFault: ultrasoundDraftRepository.getDraft
       regressionFaultAfter: '0'
 - extendedWaitUntil:
-    visible: '^Обновить$'
+    visible: {id: message.error}
     timeout: 60000
-- assertNotVisible: {id: scan.patientName}
+- assertVisible: {id: message.error}
+- assertVisible: {id: scan.patientName, enabled: true}
+- assertVisible: {id: scan.generate, enabled: true}
+- assertVisible: {id: scan.settings, enabled: true}
+- assertVisible: {id: scan.type, enabled: true}
+- assertVisible: {id: scan.speech, enabled: true}
 - takeScreenshot: Scan-initialization-failed
-- tapOn: ^Обновить$
+- assertNotVisible: {id: scan.restoreDraft}
+- extendedWaitUntil:
+    notVisible: {id: message.error}
+    timeout: 15000
+- tapOn: {id: scan.settings}
+- extendedWaitUntil:
+    visible: '^Настройки$'
+    timeout: 15000
+- tapOn: {id: navigation.back}
 - extendedWaitUntil:
     visible: {id: scan.patientName}
     timeout: 30000

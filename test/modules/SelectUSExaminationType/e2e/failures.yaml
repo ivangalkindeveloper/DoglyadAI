@@ -14,10 +14,12 @@ tags: [e2e, SelectUSExaminationType]
     timeout: 60000
 - tapOn: {id: scan.type}
 - extendedWaitUntil:
-    visible: {id: message.error}
+    visible: {id: examinationType.thyroidGland, enabled: true}
     timeout: 15000
-- takeScreenshot: SelectUSExaminationType-load-failed
-- tapOn: ^Обновить$
+- assertNotVisible: {id: message.error}
+- assertNotVisible: ^Недавние$
+- takeScreenshot: SelectUSExaminationType-recent-types-unavailable
+- assertNotVisible: ^Обновить$
 - assertVisible: {id: examinationType.thyroidGland}
 - tapOn: {id: bottomSheet.close}
 - assertVisible: {id: scan.type, text: '^Щитовидная железа$'}
@@ -36,19 +38,10 @@ tags: [e2e, SelectUSExaminationType]
     centerElement: true
 - tapOn: {id: examinationType.echocardiography}
 - extendedWaitUntil:
-    visible: {id: message.error}
+    visible: {id: scan.type, text: '^Эхокардиография$'}
     timeout: 15000
-- assertVisible: {id: examinationType.thyroidGland}
-- takeScreenshot: SelectUSExaminationType-selection-failed
-- tapOn: {id: bottomSheet.close}
-- assertVisible: {id: scan.type, text: '^Щитовидная железа$'}
-- tapOn: {id: scan.type}
-- scrollUntilVisible:
-    element: {id: examinationType.echocardiography}
-    direction: UP
-    centerElement: true
-- tapOn: {id: examinationType.echocardiography}
-- assertVisible: {id: scan.type, text: '^Эхокардиография$'}
+- assertNotVisible: {id: message.error}
+- takeScreenshot: SelectUSExaminationType-selection-without-recents
 - runFlow: ../../../maestro/support/main.yaml
 - assertVisible: {id: scan.type, text: '^Эхокардиография$'}
 - runFlow: ../../../maestro/support/fill-scan.yaml

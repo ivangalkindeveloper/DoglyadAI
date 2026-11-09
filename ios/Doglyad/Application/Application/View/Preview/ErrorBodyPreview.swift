@@ -3,7 +3,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Ошибка загрузки",
+        "01 ErrorBodyView ContentLoadFailed",
     ) {
         ErrorBodyView(
             description: L10NPreviewFactory.make().text(

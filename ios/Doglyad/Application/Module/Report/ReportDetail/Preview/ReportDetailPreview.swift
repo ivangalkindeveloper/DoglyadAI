@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 ReportDetailContentState",
+        "01 ReportDetailContentState SavedReport",
     ) {
         ReportDetailPreviewView(
             state: ReportDetailContentState(),
@@ -15,19 +15,18 @@
     }
 
     #Preview(
-        "02 ReportDetailSaveLoadingState",
+        "02 ReportDetailContentState SavedReport ScrollEnd",
     ) {
         ReportDetailPreviewView(
-            state: ReportDetailSaveLoadingState(
-                candidate: ModulePreviewFactory.report,
-            ),
+            state: ReportDetailContentState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
 
     #Preview(
-        "03 ReportDetailGenerationLoadingState",
+        "03 ReportDetailGenerationLoadingState RegeneratingReport",
     ) {
         ReportDetailPreviewView(
             state: ReportDetailGenerationLoadingState(),
@@ -37,10 +36,21 @@
     }
 
     #Preview(
-        "04 ReportDetailFailedState",
+        "04 ReportDetailGenerationLoadingState RegeneratingReport ScrollEnd",
     ) {
         ReportDetailPreviewView(
-            state: ReportDetailFailedState(
+            state: ReportDetailGenerationLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "05 ReportDetailErrorState ReportOperationFailed",
+    ) {
+        ReportDetailPreviewView(
+            state: ReportDetailErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -51,7 +61,22 @@
     }
 
     #Preview(
-        "05 Раскрываемый Markdown",
+        "06 ReportDetailErrorState ReportOperationFailed ScrollEnd",
+    ) {
+        ReportDetailPreviewView(
+            state: ReportDetailErrorState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "07 ReportDetailExpandableMarkdownView ExpandableMarkdown",
     ) {
         VStack(
             alignment: .leading,
@@ -77,7 +102,7 @@
     }
 
     #Preview(
-        "06 Одна строка — лимит 3",
+        "08 ReportDetailExpandableTextPreviewView OneLine",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -90,7 +115,7 @@
     }
 
     #Preview(
-        "07 Три строки — лимит 3",
+        "09 ReportDetailExpandableTextPreviewView ThreeLines",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -103,7 +128,7 @@
     }
 
     #Preview(
-        "08 Четыре строки — лимит 3",
+        "10 ReportDetailExpandableTextPreviewView FourLines",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -116,7 +141,7 @@
     }
 
     #Preview(
-        "09 Длинный текст — ширина 360",
+        "11 ReportDetailExpandableTextPreviewView LongTextWide",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -129,7 +154,7 @@
     }
 
     #Preview(
-        "10 Длинный текст — ширина 260",
+        "12 ReportDetailExpandableTextPreviewView LongTextNarrow",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -142,7 +167,7 @@
     }
 
     #Preview(
-        "11 Длинный текст — лимит 1",
+        "13 ReportDetailExpandableTextPreviewView OneLineLimit",
         traits: .sizeThatFitsLayout,
     ) {
         ReportDetailExpandableTextPreviewView(
@@ -155,7 +180,7 @@
     }
 
     #Preview(
-        "12 Карточка ответа модели",
+        "14 ReportDetailModelReportCardView ModelResponseCard",
     ) {
         ReportDetailModelReportCardView(
             report: ModulePreviewFactory.report.actualModelReport,

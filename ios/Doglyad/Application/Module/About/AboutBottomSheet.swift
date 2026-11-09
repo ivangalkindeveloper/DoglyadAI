@@ -4,7 +4,6 @@ struct AboutBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: AboutArguments
 
     var body: some View {

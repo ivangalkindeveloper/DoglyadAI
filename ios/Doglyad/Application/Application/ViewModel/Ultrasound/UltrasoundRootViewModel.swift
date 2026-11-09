@@ -16,18 +16,15 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
     @Published var isRecommendationsIncluded: Bool
     @Published var isPhotoRemarks: Bool
     @Published var isDescriptionRemarks: Bool
-
     let reportGenerations: ReportGenerationController
-
     private let container: DependencyContainer
     private let changes = PassthroughSubject<Void, Never>()
 
     init(
         container: DependencyContainer,
     ) {
-        self.container = container
         let config = container.applicationConfig.ultrasound
-        reportGenerations = ReportGenerationController(
+        let reportGenerations = ReportGenerationController(
             repository: container.ultrasoundReportRepository,
             photoOptions: ScanPhotoEncodingOptions(
                 resizeMaxDimension: config.scanPhotoResizeMaxDimension,
@@ -53,6 +50,8 @@ final class UltrasoundRootViewModel: DStateViewModel<any UltrasoundRootStateProt
         isRecommendationsIncluded = userSettings.isRecommendationsIncluded
         isPhotoRemarks = userSettings.isPhotoRemarks
         isDescriptionRemarks = userSettings.isDescriptionRemarks
+        self.reportGenerations = reportGenerations
+        self.container = container
 
         super.init(
             state: UltrasoundRootInitialState(),

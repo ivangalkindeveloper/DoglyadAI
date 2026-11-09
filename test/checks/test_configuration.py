@@ -36,6 +36,7 @@ class ConfigurationTests(unittest.TestCase):
         for context in (
             patch("regression.ROOT", self.root),
             patch("regression.TEST", self.test),
+            patch("regression._is_local_app_check_configured", return_value=False),
             patch.dict(os.environ, {}, clear=True),
         ):
             context.start()
@@ -66,6 +67,23 @@ class ConfigurationTests(unittest.TestCase):
         self.env_file.write_text(f"{TOKEN_NAME}=\n")
         with self.assertRaisesRegex(ValueError, r"test/secrets/\.env"):
             configuration()
+
+    def test_local_ios_config_is_sufficient_without_a_regression_override(self):
+        with patch("regression._is_local_app_check_configured", return_value=True):
+            config = configuration()
+        self.assertNotIn(TOKEN_NAME, os.environ)
+        self.assertNotIn("APP_CHECK_DEBUG_TOKEN", json.dumps(config))
+
+    def test_empty_override_uses_the_local_ios_config(self):
+        self.env_file.write_text(f"{TOKEN_NAME}=\n")
+        with patch("regression._is_local_app_check_configured", return_value=True):
+            configuration()
+
+    def test_explicit_override_does_not_need_xcode_preflight(self):
+        os.environ[TOKEN_NAME] = "environment-token"
+        with patch("regression._is_local_app_check_configured") as resolve:
+            configuration()
+        resolve.assert_not_called()
 
     def test_backend_build_timeout_can_be_configured(self):
         path = self.test / "secrets/config.local.json"

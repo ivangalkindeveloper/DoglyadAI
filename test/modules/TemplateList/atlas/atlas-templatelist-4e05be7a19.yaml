@@ -1,0 +1,18 @@
+appId: ${APP_ID}
+name: atlas-templatelist-4e05be7a19
+tags:
+- atlas
+- TemplateList
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-templatelist-4e05be7a19
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-templatelist-4e05be7a19
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: message.error
+    timeout: 15000
+- takeScreenshot: 01-TemplateList-4e05be7a19

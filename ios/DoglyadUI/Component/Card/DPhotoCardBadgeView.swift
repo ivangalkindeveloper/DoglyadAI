@@ -3,6 +3,7 @@ import SwiftUI
 struct DPhotoCardBadgeView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let badge: DPhotoCardConfiguration.Badge
+    var isDisabled: Bool = false
 
     var body: some View {
         switch badge {
@@ -12,6 +13,7 @@ struct DPhotoCardBadgeView: DViewProtocol {
             DCloseButton(
                 style: .destructive,
                 action: action,
+                isDisabled: isDisabled,
             )
         case .warning:
             DIconBadge(

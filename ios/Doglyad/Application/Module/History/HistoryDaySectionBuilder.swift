@@ -7,15 +7,15 @@ struct HistoryDaySectionBuilder {
     private let yesterdayTitle: String
 
     init(
-        todayTitle: String,
-        yesterdayTitle: String,
         calendar: Calendar = .autoupdatingCurrent,
         locale: Locale = .current,
+        todayTitle: String,
+        yesterdayTitle: String,
     ) {
-        self.todayTitle = todayTitle
-        self.yesterdayTitle = yesterdayTitle
         self.calendar = calendar
         self.locale = locale
+        self.todayTitle = todayTitle
+        self.yesterdayTitle = yesterdayTitle
     }
 
     func appending(

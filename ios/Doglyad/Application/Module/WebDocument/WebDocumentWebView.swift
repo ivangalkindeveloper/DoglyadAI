@@ -7,13 +7,13 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
         \.locale,
     ) private var locale
     @EnvironmentObject var theme: DTheme
-
     let url: URL
     let topInset: CGFloat
     let bottomInset: CGFloat
     let onLoaded: () -> Void
     let onFailed: (Error) -> Void
     var stateIdentifier = "webDocument.loading"
+    var html: String?
 
     func makeCoordinator() -> Coordinator {
         Coordinator(
@@ -69,10 +69,17 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
                 )!
             }
         #endif
-        webView.accessibilityIdentifier = stateIdentifier
-        webView.load(
-            request,
-        )
+        webView.accessibilityIdentifier = "webDocument.contentLoading"
+        if let html {
+            webView.loadHTMLString(
+                html,
+                baseURL: request.url,
+            )
+        } else {
+            webView.load(
+                request,
+            )
+        }
         return webView
     }
 
@@ -80,8 +87,10 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
         _ webView: WKWebView,
         context: Context,
     ) {
-        webView.accessibilityIdentifier = stateIdentifier
         context.coordinator.parent = self
+        if context.coordinator.isLoaded {
+            webView.accessibilityIdentifier = stateIdentifier
+        }
         context.coordinator.applyInsets(
             to: webView,
         )
@@ -89,7 +98,7 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
 
     final class Coordinator: NSObject, WKNavigationDelegate {
         var parent: WebDocumentBottomSheetWebView
-        private var isLoaded = false
+        private(set) var isLoaded = false
         private var appliedTopInset: CGFloat?
         private var appliedBottomInset: CGFloat?
 
@@ -145,6 +154,7 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
             didFinish _: WKNavigation!,
         ) {
             isLoaded = true
+            webView.accessibilityIdentifier = parent.stateIdentifier
             applyInsets(
                 to: webView,
             )

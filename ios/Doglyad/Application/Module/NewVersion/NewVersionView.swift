@@ -3,7 +3,6 @@ import SwiftUI
 
 struct NewVersionView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
-
     let onTapUpdate: () -> Void
 
     var body: some View {

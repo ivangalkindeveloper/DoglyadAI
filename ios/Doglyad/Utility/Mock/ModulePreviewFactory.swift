@@ -22,6 +22,17 @@
             name: readyMadeTemplate.title,
             content: readyMadeTemplate.content,
         )
+        static let templates = readyMadeTemplates.map { template in
+            USExaminationTemplate(
+                usExaminationType: development.examinationTypes.flatMap(
+                    \.examinationTypes,
+                ).first {
+                    $0.id == template.examinationType
+                }!,
+                name: template.title,
+                content: template.content,
+            )
+        }
         static let report = USExaminationReportPreviewFactory.makeReport(
             date: Date(
                 timeIntervalSince1970: 1793707200,
@@ -29,6 +40,16 @@
             isPhotosIncluded: true,
         )
         static let photos = report.examinationData.photos
+        static let cameraPhotos = (0 ..< 6).map { _ in
+            USExaminationScanPhoto(
+                image: photos[
+                    0,
+                ].image,
+                thumbnail: photos[
+                    0,
+                ].thumbnail,
+            )
+        }
         static let photoRemarks = photos.map { photo in
             USExaminationPhotoRemarks(
                 photoId: photo.id,
@@ -48,7 +69,6 @@
                 ],
             )
         }
-
         static let subscription = ManageSubscriptionPreviewFactory.makeStatus(
             source: .yookassa,
         )
@@ -81,7 +101,6 @@
                 ),
             )
         }
-
         static let paywallPlan = paywallPlans.first {
             $0.type == .pro && $0.period == .monthly
         }!
@@ -91,11 +110,6 @@
             selectedType: .pro,
             selectedPlanID: paywallPlan.id,
         )
-        static let documentURL = URL(
-            string: "data:text/html;base64," + Data(
-                "<html lang='ru'><meta name='viewport' content='width=device-width'><body><h1>Документ</h1><p>Пример документа для просмотра интерфейса.</p></body></html>".utf8,
-            ).base64EncodedString(),
-        )!
 
         static func makeContainer() -> DependencyContainer {
             DependencyContainer.makePreviewable(

@@ -4,7 +4,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Генерация · ожидание первого токена",
+        "01 ReportReceivedContentState WaitingForFirstToken",
     ) {
         ReportReceivedPreviewView(
             scenario: .waitingForFirstToken,
@@ -13,7 +13,17 @@
     }
 
     #Preview(
-        "02 Генерация · первый токен",
+        "02 ReportReceivedContentState WaitingForFirstToken ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .waitingForFirstToken,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "03 ReportReceivedContentState FirstToken",
     ) {
         ReportReceivedPreviewView(
             scenario: .firstToken,
@@ -22,7 +32,17 @@
     }
 
     #Preview(
-        "03 Генерация · описание",
+        "04 ReportReceivedContentState FirstToken ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .firstToken,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "05 ReportReceivedContentState StreamingDescription",
     ) {
         ReportReceivedPreviewView(
             scenario: .streamingDescription,
@@ -31,7 +51,17 @@
     }
 
     #Preview(
-        "04 Генерация · заключение",
+        "06 ReportReceivedContentState StreamingDescription ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .streamingDescription,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "07 ReportReceivedContentState StreamingConclusion",
     ) {
         ReportReceivedPreviewView(
             scenario: .streamingConclusion,
@@ -40,7 +70,17 @@
     }
 
     #Preview(
-        "05 Готовый протокол",
+        "08 ReportReceivedContentState StreamingConclusion ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .streamingConclusion,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "09 ReportReceivedContentState CompletedReport",
     ) {
         ReportReceivedPreviewView(
             scenario: .completed,
@@ -49,7 +89,17 @@
     }
 
     #Preview(
-        "06 Готовый протокол · рекомендации и замечания",
+        "10 ReportReceivedContentState CompletedReport ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .completed,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "11 ReportReceivedContentState CompletedWithRemarks",
     ) {
         ReportReceivedPreviewView(
             scenario: .completedWithRemarks,
@@ -58,7 +108,17 @@
     }
 
     #Preview(
-        "07 Готовый протокол · из деталей",
+        "12 ReportReceivedContentState CompletedWithRemarks ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .completedWithRemarks,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "13 ReportReceivedContentState OpenedFromReportDetail",
     ) {
         ReportReceivedPreviewView(
             scenario: .fromReportDetail,
@@ -67,7 +127,17 @@
     }
 
     #Preview(
-        "08 Готовый протокол · почта не задана",
+        "14 ReportReceivedContentState OpenedFromReportDetail ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .fromReportDetail,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "15 ReportReceivedContentState NoWorkEmail",
     ) {
         ReportReceivedPreviewView(
             scenario: .withoutEmail,
@@ -76,7 +146,17 @@
     }
 
     #Preview(
-        "09 Готовый протокол · почта требует Pro",
+        "16 ReportReceivedContentState NoWorkEmail ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .withoutEmail,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "17 ReportReceivedContentState EmailRequiresPro",
     ) {
         ReportReceivedPreviewView(
             scenario: .emailOffered,
@@ -85,7 +165,17 @@
     }
 
     #Preview(
-        "10 Готовый протокол · отправка недоступна",
+        "18 ReportReceivedContentState EmailRequiresPro ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .emailOffered,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "19 ReportReceivedContentState EmailUnavailable",
     ) {
         ReportReceivedPreviewView(
             scenario: .emailUnavailable,
@@ -94,7 +184,17 @@
     }
 
     #Preview(
-        "11 Отправка на почту",
+        "20 ReportReceivedContentState EmailUnavailable ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .emailUnavailable,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "21 ReportReceivedLoadingState SendingEmail",
     ) {
         ReportReceivedPreviewView(
             scenario: .sendingEmail,
@@ -103,7 +203,17 @@
     }
 
     #Preview(
-        "12 Ошибка отправки на почту",
+        "22 ReportReceivedLoadingState SendingEmail ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .sendingEmail,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "23 ReportReceivedDeliveryErrorState EmailDeliveryFailed",
     ) {
         ReportReceivedPreviewView(
             scenario: .deliveryFailed,
@@ -112,7 +222,17 @@
     }
 
     #Preview(
-        "13 Генерация прервана · без текста",
+        "24 ReportReceivedDeliveryErrorState EmailDeliveryFailed ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .deliveryFailed,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "25 ReportReceivedContentState InterruptedWithoutText",
     ) {
         ReportReceivedPreviewView(
             scenario: .interruptedWithoutText,
@@ -121,7 +241,17 @@
     }
 
     #Preview(
-        "14 Генерация прервана · частичный текст",
+        "26 ReportReceivedContentState InterruptedWithoutText ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .interruptedWithoutText,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "27 ReportReceivedContentState InterruptedWithPartialText",
     ) {
         ReportReceivedPreviewView(
             scenario: .interrupted,
@@ -130,7 +260,17 @@
     }
 
     #Preview(
-        "15 Ошибка генерации · без текста",
+        "28 ReportReceivedContentState InterruptedWithPartialText ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .interrupted,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "29 ReportReceivedContentState GenerationFailedWithoutText",
     ) {
         ReportReceivedPreviewView(
             scenario: .failedWithoutText,
@@ -139,7 +279,17 @@
     }
 
     #Preview(
-        "16 Ошибка генерации · частичный текст",
+        "30 ReportReceivedContentState GenerationFailedWithoutText ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .failedWithoutText,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "31 ReportReceivedContentState GenerationFailedWithPartialText",
     ) {
         ReportReceivedPreviewView(
             scenario: .failed,
@@ -148,11 +298,31 @@
     }
 
     #Preview(
-        "17 Генерация отменена",
+        "32 ReportReceivedContentState GenerationFailedWithPartialText ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .failed,
+        )
+        .previewable()
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "33 ReportReceivedContentState GenerationCancelled",
     ) {
         ReportReceivedPreviewView(
             scenario: .cancelled,
         )
         .previewable()
+    }
+
+    #Preview(
+        "34 ReportReceivedContentState GenerationCancelled ScrollEnd",
+    ) {
+        ReportReceivedPreviewView(
+            scenario: .cancelled,
+        )
+        .previewable()
+        .previewScrollToEnd()
     }
 #endif

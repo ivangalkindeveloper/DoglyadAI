@@ -5,6 +5,34 @@ import json
 import subprocess
 
 REQUIRED_TESTS = [
+    'LocalOperationTests/leavingBeforeLocalWriteStartsDoesNotSendIt()',
+    'ScanDraftRestorationTests/backgroundSaveWaitsForAnInteractiveLocalClear()',
+    'LocalFormOperationTests/closingTemplateEditorRejectsLateReadResults(isFailure:)',
+    'LocalFormOperationTests/settingsSaveRetainsEditsMadeDuringTheWrite()',
+    'ScanDraftRestorationTests/localClearKeepsNewEditsAndClearsUntouchedFieldsWithoutLoading()',
+
+    "RepositoryOperationTests/failedSelectionKeepsSheetOpenAndRetryDismissesOnlyAfterSaving()",
+    'LocalOperationTests/localWriteKeepsPresentationAndRejectsDuplicateActions()',
+    'LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)',
+    'LocalOperationTests/failureIsReportedWithoutInventingALoadingPresentation()',
+
+    "SelectUSExaminationTypeTests/dismissedSelectionIgnoresLateResults(isFailure:)",
+    "ScanDraftRestorationTests/selectedTypeReadFailureKeepsTheStoredDraftIntactUntilRetry()",
+    "ScanDraftRestorationTests/backgroundSaveWaitsForRestorationAndPersistsEarlyInput()",
+    "ScanDraftRestorationTests/submissionDuringReadInvalidatesRestorationBeforePreparingGeneration()",
+    "ScanDraftRestorationTests/delayedDraftMergesOnlyUntouchedValuesAndPersistsEarlyEdits()",
+    "ScanDraftRestorationTests/clearDuringReadRejectsALateDraft()",
+    "ScanDraftRestorationTests/missingDraftKeepsEarlyEditsAndRestoresUntouchedDefaults()",
+    "SelectUSExaminationTypeTests/optionalRecentWriteCompletesAfterTheSheetCloses()",
+    "ContentDesignTests/unavailableHistoryCountKeepsSettingsNavigationWithoutAnError()",
+    "SelectUSExaminationTypeTests/requiredSelectionFailurePreservesValueAndReportsError()",
+    "SelectUSExaminationTypeTests/recentWriteFailureDoesNotFailTheRequiredSelection()",
+    "ContentDesignTests/failedSpeechPreviewConstructionHasNoErrorMessageOrStartupSideEffects()",
+    "ContentDesignTests/photoImportPreservesAvailableImagesAndReportsOnlyFailures(isSomeImagesUnavailable:)",
+    "ContentDesignTests/templateInitializationRetryMergesLoadedDataWithoutReplacingEdits()",
+    "ContentDesignTests/scanInitializationRetryPreservesEditsAndRestoresUntouchedDraftFields()",
+    "ContentDesignTests/historyPaginationFailureRetainsItemsAndRetriesTheSameOffset()",
+    "WebDocumentTests/retryIgnoresCallbacksFromThePreviousDocumentLoad()",
     "HistoryTests/historyClearRemovesOwnedAndLegacyOrphanRecordsButKeepsTemplates()",
     "ManageSubscriptionTests/catalogRetryLoadsTheSameActiveSubscription()",
     "ManageSubscriptionTests/leavingDiscardsLateManagementSuccessAndFailure(isFailure:)",
@@ -83,6 +111,10 @@ TEST_FILTERS = [
 ]
 
 ARGUMENT_COUNTS = {
+    'LocalFormOperationTests/closingTemplateEditorRejectsLateReadResults(isFailure:)': 2,
+    'LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)': 2,
+    "SelectUSExaminationTypeTests/dismissedSelectionIgnoresLateResults(isFailure:)": 2,
+    "ContentDesignTests/photoImportPreservesAvailableImagesAndReportsOnlyFailures(isSomeImagesUnavailable:)": 2,
     "ManageSubscriptionTests/leavingDiscardsLateManagementSuccessAndFailure(isFailure:)": 2,
     "PaywallTests/loadingRetriesAndRestorationUpdatesSharedState(isSubscriptionActive:)": 2,
     "PaywallTests/cancelledCatalogDiscardsLateSuccessAndFailure(isFailure:)": 2,

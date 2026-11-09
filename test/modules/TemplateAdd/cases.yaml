@@ -32,20 +32,24 @@ cases:
   - action: Перейти между полями стрелками и Return; скрыть клавиатуру
     expect: Фокус идёт по полям; текст не теряется.
   - action: Проверить пустые значения и границы длины из application.templateAdd
-    expect: Пустые имя и содержимое блокируют сохранение и переводят фокус на первое незаполненное поле.
-      Ввод ограничен максимальной длиной; значение сверх максимума не сохраняется.
+    expect: Пустые имя и содержимое блокируют сохранение и переводят фокус на первое незаполненное поле. Ввод ограничен
+      максимальной длиной; значение сверх максимума не сохраняется.
   covers:
   - onTapExaminationType
   - onFocusChanged
   - onSubmit
   - onTapToolbarUp
   - onTapToolbarDown
+  - onDisappear
   automation:
     kind: mixed
     flows:
     - e2e-templatelist-two-types
     nativeTests:
     - RegressionFormTests/testTemplateBoundariesRejectWritesAndKeepFullContent()
+    - LocalOperationTests/localWriteKeepsPresentationAndRejectsDuplicateActions()
+    - LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)
+    - LocalOperationTests/failureIsReportedWithoutInventingALoadingPresentation()
   variants:
   - nameMaxLength−1 / nameMaxLength / nameMaxLength+1
   - contentMaxLength−1 / contentMaxLength / contentMaxLength+1

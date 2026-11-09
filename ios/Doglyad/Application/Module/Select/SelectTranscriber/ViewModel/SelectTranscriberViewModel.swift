@@ -27,18 +27,18 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
             )
         },
     ) {
+        currentValue = arguments.currentValue
         self.arguments = arguments
         self.getAvailableAppleEngine = getAvailableAppleEngine
-        currentValue = arguments.currentValue
         super.init(
             state: SelectTranscriberInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .selectTranscriber,
             ),
@@ -82,11 +82,15 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
     }
 
     private func refreshAvailability() {
-        handle {
+        cancelOperationTask()
+        operationTask = handle {
             await self.getAvailableAppleEngine(
                 self.container.language.currentLocale,
             )
         } onMainSuccess: { engine in
+            guard !Task.isCancelled else {
+                return
+            }
             self.options = engine.map {
                 [TranscriberType(
                     engine: $0,

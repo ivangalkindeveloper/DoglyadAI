@@ -2,10 +2,10 @@ import PhotosUI
 import UIKit
 
 final class PhotoLibraryPickerCoordinator: NSObject, PHPickerViewControllerDelegate {
-    private let onComplete: ([UIImage]) -> Void
+    private let onComplete: ([UIImage], Bool) -> Void
 
     init(
-        onComplete: @escaping ([UIImage]) -> Void,
+        onComplete: @escaping ([UIImage], Bool) -> Void,
     ) {
         self.onComplete = onComplete
     }
@@ -33,6 +33,7 @@ final class PhotoLibraryPickerCoordinator: NSObject, PHPickerViewControllerDeleg
         guard !providers.isEmpty else {
             onComplete(
                 [],
+                !candidates.isEmpty,
             )
             return
         }
@@ -63,10 +64,12 @@ final class PhotoLibraryPickerCoordinator: NSObject, PHPickerViewControllerDeleg
         group.notify(
             queue: .main,
         ) { [onComplete] in
+            let loadedImages = images.compactMap(
+                \.self,
+            )
             onComplete(
-                images.compactMap(
-                    \.self,
-                ),
+                loadedImages,
+                loadedImages.count != candidates.count,
             )
         }
     }

@@ -4,7 +4,6 @@ import SwiftUI
 struct TemplateListScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: TemplateListViewModel
 
     var body: some View {
@@ -21,13 +20,7 @@ struct TemplateListScreenView: DViewProtocol {
                     trailing: size.s16,
                 )
                 switch viewModel.state {
-                case _ as TemplateListLoadingState:
-                    DScrollVStack(
-                        spacing: size.s4,
-                        padding: padding,
-                    ) {
-                        TemplateListLoadingView()
-                    }
+                case _ as TemplateListInitialState: EmptyView()
                 case _ as TemplateListEmptyState:
                     DScrollVStack(
                         spacing: size.s4,
@@ -53,26 +46,12 @@ struct TemplateListScreenView: DViewProtocol {
                             )
                         }
                     }
-                case _ as TemplateListFailedState:
-                    VStack(
-                        spacing: size.s16,
-                    ) {
-                        ErrorBodyView(
-                            description: l10n.text(
-                                .errorUnknownDescription,
-                            ),
-                        )
-
-                        DButton(
-                            title: l10n[
-                                .buttonUpdate,
-                            ],
-                            action: viewModel.onTapRetry,
-                        )
-                        .dStyle(
-                            .primaryChip,
-                        )
-                    }
+                case _ as TemplateListErrorState:
+                    ErrorBodyView(
+                        description: l10n.text(
+                            .errorUnknownDescription,
+                        ),
+                    )
                     .padding(
                         padding,
                     )
@@ -85,18 +64,7 @@ struct TemplateListScreenView: DViewProtocol {
                 }
             },
             bottom: {
-                DButton(
-                    title: l10n[
-                        .templateListAddButton,
-                    ],
-                    action: viewModel.onTapAdd,
-                )
-                .dStyle(
-                    .primaryButton,
-                )
-                .padding(
-                    size.s16,
-                )
+                TemplateListBottomView()
             },
         )
         .onAppear {

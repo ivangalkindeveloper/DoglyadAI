@@ -10,34 +10,36 @@ cases:
   - Сохранены шаблоны двух типов; открыт Scan
   steps:
   - action: Открыть выбор шаблона
-    expect: Видны шаблоны текущего типа исследования.
+    expect: Сразу видны сохранённые шаблоны текущего типа, без шиммеров и заблокированных карточек.
   - action: Выбрать шаблон
-    expect: Scan показывает имя; генерация получает его содержимое.
+    expect: После успешного сохранения выбора шторка закрывается. Ошибка оставляет список и прежний выбор; повторные
+      нажатия не дублируют запись.
   - action: Сбросить шаблон и открыть селектор снова
     expect: В Scan нет выбранного шаблона; сохранённый шаблон остаётся в списке.
   covers:
-  - onInit
   - onTemplateTap
   automation:
-    kind: maestro
+    kind: mixed
     flows:
     - e2e-selecttemplate-apply-reset
     - e2e-settingsai-request-parameters
     - e2e-selecttemplate-type-filter-failure
+    nativeTests:
+    - RepositoryOperationTests/failedSelectionKeepsSheetOpenAndRetryDismissesOnlyAfterSaving()
+    - LocalOperationTests/localWriteKeepsPresentationAndRejectsDuplicateActions()
 - id: SelectTemplate.empty-failure
-  title: Нет шаблонов и ошибка чтения
+  title: Переход к созданию и ошибка чтения в Scan
   profiles:
   - pro
   preconditions:
   - Отдельно нет подходящих шаблонов и сбой репозитория
   steps:
   - action: Открыть селектор без подходящих записей
-    expect: Если подходящих записей нет, Scan сразу открывает создание шаблона текущего типа; чужой тип
-      не предлагается.
-  - action: Вызвать сбой чтения и повторить после восстановления
-    expect: Ошибка отличается от пустого списка; данные загружаются.
-  covers:
-  - onTapRetry
+    expect: Если подходящих записей нет, Scan сразу открывает создание шаблона текущего типа; чужой тип не предлагается.
+  - action: Вызвать сбой предварительного чтения в Scan, затем повторно нажать выбор шаблона
+    expect: Форма Scan остаётся доступной, DMessager показывает ошибку. После повтора открывается заполненный селектор,
+      пустая шторка не появляется.
+  covers: []
   automation:
     kind: maestro
     flows:

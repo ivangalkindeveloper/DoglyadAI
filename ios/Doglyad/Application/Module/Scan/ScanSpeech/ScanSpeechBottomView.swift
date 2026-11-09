@@ -7,7 +7,14 @@ struct ScanSpeechBottomView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as ScanSpeechReadyState, _ as ScanSpeechRecordingPreparationLoadingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscriptionLoadingState, _ as ScanSpeechAutomaticParsingLoadingState:
+        case _ as ScanSpeechModelPreparationErrorState:
+            ScanSpeechModelRetryButtonView(
+                preparation: .failed,
+            )
+            .padding(
+                size.s16,
+            )
+        case _ as ScanSpeechReadyState, _ as ScanSpeechRecordingPreparationLoadingState, _ as ScanSpeechRecordingState, _ as ScanSpeechTranscriptionLoadingState:
             ScanSpeechRecordingBottomView()
         case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState:
             ScanSpeechReviewTranscriptBottomView()

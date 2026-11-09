@@ -26,10 +26,10 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         getStoredSettingsAI: (() -> SettingsAI)? = nil,
     ) {
         self.container = container
-        repositoryFactory = container.subscriptionRepositoryFactory
         self.getStoredSettingsAI = getStoredSettingsAI ?? {
             container.initialSettingsAI
         }
+        repositoryFactory = container.subscriptionRepositoryFactory
         let state: any SubscriptionRootStateProtocol = switch container.initialSubscriptionStatus {
         case let .some(
             status,

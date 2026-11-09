@@ -1,15 +1,17 @@
+import DoglyadUI
 import SwiftUI
 
 struct PhotoLibraryPickerBottomSheet: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: PhotoLibraryPickerArguments
 
     var body: some View {
         PhotoLibraryPickerBottomSheetView(
             viewModel: PhotoLibraryPickerViewModel(
+                messager: messager,
                 container: container,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in

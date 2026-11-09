@@ -7,7 +7,6 @@ struct LegalUpdateScreen: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: LegalUpdateArguments?
 
     var body: some View {

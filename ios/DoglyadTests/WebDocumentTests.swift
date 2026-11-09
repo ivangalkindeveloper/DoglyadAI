@@ -1,6 +1,7 @@
 #if DEBUG
     import Combine
     @testable import Doglyad
+    @testable import DoglyadUI
     import Foundation
     import Router
     import Testing
@@ -10,7 +11,16 @@
         @Test
         func retryIgnoresCallbacksFromThePreviousDocumentLoad() {
             let container = ModulePreviewFactory.makeContainer()
+            let messager = DMessager()
+            var errorCount = 0
+            let observation = messager.$message.dropFirst().sink { _ in
+                errorCount += 1
+            }
+            defer {
+                observation.cancel()
+            }
             let model = WebDocumentViewModel(
+                messager: messager,
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
@@ -65,6 +75,9 @@
             )
             #expect(
                 model.state === retry,
+            )
+            #expect(
+                errorCount == 1,
             )
 
             model.onDocumentLoaded(

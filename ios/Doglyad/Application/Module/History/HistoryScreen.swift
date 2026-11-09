@@ -3,6 +3,7 @@ import Router
 import SwiftUI
 
 struct HistoryScreen: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
@@ -12,6 +13,7 @@ struct HistoryScreen: View {
     var body: some View {
         HistoryScreenView(
             viewModel: HistoryViewModel(
+                messager: messager,
                 container: container,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in

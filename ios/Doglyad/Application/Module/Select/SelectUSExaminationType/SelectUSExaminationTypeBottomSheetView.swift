@@ -5,15 +5,9 @@ import SwiftUI
 struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: SelectUSExaminationTypeViewModel
 
     var body: some View {
-        let isSelecting = switch viewModel.state {
-        case _ as SelectUSExaminationTypeSelectionLoadingState: true
-        default: false
-        }
-
         DBottomSheet(
             title: l10n[
                 .usExaminationTypeTitle,
@@ -28,7 +22,6 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
                     spacing: .zero,
                     pinnedViews: [.sectionHeaders],
                 ) {
-                    SelectUSExaminationTypeErrorView()
                     ForEach(
                         viewModel.sections,
                     ) { section in
@@ -38,7 +31,6 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
                             ) { item in
                                 DListButtonCard(
                                     title: item.type.localizedTitle,
-                                    accessibilityIdentifier: "examinationType.\(item.type.id)",
                                     action: {
                                         viewModel.onTypeTap(
                                             item.type,
@@ -47,6 +39,7 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
                                     isSelected: viewModel.isSelected(
                                         item.type,
                                     ),
+                                    accessibilityIdentifier: "examinationType.\(item.type.id)",
                                 )
 
                                 .padding(
@@ -66,9 +59,6 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
                         }
                     }
                 }
-                .disabled(
-                    isSelecting,
-                )
                 .padding(
                     .top,
                     size.s16,
@@ -113,6 +103,9 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
         )
         .onAppear(
             perform: viewModel.onAppear,
+        )
+        .onDisappear(
+            perform: viewModel.onDisappear,
         )
     }
 }

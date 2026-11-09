@@ -39,10 +39,12 @@ struct ScanKeyboardToolbarView: DViewProtocol {
                     ],
                 ),
                 action: viewModel.onTapScan,
+                isDisabled:
+                isProcessing,
             )].compactMap(
                 \.self,
             ),
-        ).disabled(
+            isDisabled:
             isProcessing,
         )
     }

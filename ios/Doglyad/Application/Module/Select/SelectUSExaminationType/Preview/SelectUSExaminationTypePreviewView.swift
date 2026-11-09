@@ -8,13 +8,17 @@
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
         let state: any SelectUSExaminationTypeStateProtocol
+        let isRecentSectionVisible: Bool
+
+        init(
+            state: any SelectUSExaminationTypeStateProtocol,
+            isRecentSectionVisible: Bool = true,
+        ) {
+            self.state = state
+            self.isRecentSectionVisible = isRecentSectionVisible
+        }
 
         var body: some View {
-            let isErrorPresented = switch state {
-            case _ as SelectUSExaminationTypeFailedState: true
-            default: false
-            }
-
             let model = SelectUSExaminationTypeViewModel(
                 container: container,
                 router: router,
@@ -30,12 +34,20 @@
                 },
                 onRefreshSubscriptionStatus: {},
                 arguments: SelectUSExaminationTypeArguments(
-                    currentValue: ModulePreviewFactory.examinationType,
+                    currentValue: isRecentSectionVisible ? ModulePreviewFactory.examinationType : nil,
                     onSelected: { _ in },
                 ),
             )
 
-            model.recentTypeIds = [ModulePreviewFactory.examinationType.id]
+            model.recentTypeIds = isRecentSectionVisible
+                ? [ModulePreviewFactory.examinationType.id] + Array(
+                    container.usExaminationTypesById.keys.sorted().filter {
+                        $0 != ModulePreviewFactory.examinationType.id
+                    }.prefix(
+                        USExaminationRecentTypes.maximumCount - 1,
+                    ),
+                )
+                : []
 
             model.preparePreview(
                 state: state,
@@ -45,9 +57,6 @@
                     viewModel: model,
                 )
             }
-            .previewError(
-                isPresented: isErrorPresented,
-            )
             .id(
                 ObjectIdentifier(
                     state,

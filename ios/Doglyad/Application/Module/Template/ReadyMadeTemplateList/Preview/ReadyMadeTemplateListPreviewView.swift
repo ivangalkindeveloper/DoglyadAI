@@ -10,7 +10,13 @@
         let state: any ReadyMadeTemplateListStateProtocol
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as ReadyMadeTemplateListErrorState: true
+            default: false
+            }
+
             let model = ReadyMadeTemplateListViewModel(
+                messager: DMessager(),
                 container: container,
                 router: router,
                 getSubscriptionStatus: {
@@ -34,6 +40,9 @@
             )
             return ReadyMadeTemplateListScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 ObjectIdentifier(

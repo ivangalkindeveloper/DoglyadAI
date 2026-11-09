@@ -5,7 +5,6 @@ struct ReportDetailScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: ReportDetailViewModel
 
     private var report: USExaminationReport {
@@ -18,7 +17,7 @@ struct ReportDetailScreenView: DViewProtocol {
 
     var body: some View {
         let isProcessing = switch viewModel.state {
-        case _ as ReportDetailGenerationLoadingState, _ as ReportDetailSaveLoadingState: true
+        case _ as ReportDetailGenerationLoadingState: true
         default: false
         }
 
@@ -32,8 +31,9 @@ struct ReportDetailScreenView: DViewProtocol {
                 if report.actualModelReport.generation.status.isCompleted {
                     DButton(
                         image: .export,
-                        accessibilityIdentifier: "reportDetail.share",
                         action: viewModel.onTapShare,
+                        isDisabled: isProcessing,
+                        accessibilityIdentifier: "reportDetail.share",
                     )
                     .dStyle(
                         .circle,
@@ -69,7 +69,10 @@ struct ReportDetailScreenView: DViewProtocol {
                         size.s16,
                     )
 
-                    ReportDetailPhotosView()
+                    ReportDetailPhotosView(
+                        isDisabled:
+                        isProcessing,
+                    )
 
                     VStack(
                         alignment: .leading,
@@ -313,6 +316,8 @@ struct ReportDetailScreenView: DViewProtocol {
                                     report: report.actualModelReport,
                                 )
                             },
+                            isDisabled:
+                            isProcessing,
                         )
                         .padding(
                             .top,
@@ -336,6 +341,8 @@ struct ReportDetailScreenView: DViewProtocol {
                             modelTitle: viewModel.selectedNeuralModelTitle,
                             availableRequestCount: viewModel.availableRequestCount,
                             onTap: viewModel.onTapNeuralModelSelection,
+                            isDisabled:
+                            isProcessing,
                         )
                         .padding(
                             .bottom,
@@ -345,6 +352,8 @@ struct ReportDetailScreenView: DViewProtocol {
                         SettingsAICardView(
                             settings: viewModel.settingsAI,
                             onTap: viewModel.onTapSettingsAI,
+                            isDisabled:
+                            isProcessing,
                         )
 
                         DButton(
@@ -401,6 +410,8 @@ struct ReportDetailScreenView: DViewProtocol {
                                                 report: modelReport,
                                             )
                                         },
+                                        isDisabled:
+                                        isProcessing,
                                     )
                                     .padding(
                                         .bottom,

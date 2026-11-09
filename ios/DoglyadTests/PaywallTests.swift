@@ -1,5 +1,6 @@
 import Combine
 @testable import Doglyad
+import DoglyadUI
 import Foundation
 import Router
 import Testing
@@ -49,7 +50,6 @@ struct PaywallTests {
         model.onTapClose()
         model.onTapContinue()
         model.onTapRestore()
-        model.onTapCheckPayment()
         #expect(
             router.path.count == 1,
         )
@@ -280,9 +280,8 @@ struct PaywallTests {
         model.onSelectType(
             .pro,
         )
-        model.onTapContinue()
         #expect(
-            (model.state as? PaywallContentState)?.selectedPlan == nil && !model.isContinueEnabled && repository.purchaseCount == 0,
+            (model.state as? PaywallContentState)?.selectedPlan == baseAnnual && model.isContinueEnabled && repository.purchaseCount == 0,
         )
         model.onSelectType(
             .base,
@@ -464,20 +463,29 @@ struct PaywallTests {
             repository.plan,
         )
         model.onTapContinue()
-        await waitUntilIdle(
-            model,
-        )
+        if result == .pending {
+            await waitUntilPurchaseStarted(
+                repository,
+            )
+        } else {
+            await waitUntilIdle(
+                model,
+            )
+        }
 
         #expect(
             repository.purchaseCount == 1,
         )
-        switch model.state {
-        case _ as PaywallCatalogLoadingState, _ as PaywallPurchaseLoadingState, _ as PaywallVerificationLoadingState:
-            Issue.record(
-                "Purchase must leave its processing state",
-            )
-        default: break
+        if result != .pending {
+            switch model.state {
+            case _ as PaywallCatalogLoadingState, _ as PaywallPurchaseLoadingState, _ as PaywallRestoreLoadingState:
+                Issue.record(
+                    "Purchase must leave its processing state",
+                )
+            default: break
+            }
         }
+
         switch result {
         case .cancelled:
             #expect(
@@ -524,7 +532,7 @@ struct PaywallTests {
                 updates == 0,
             )
             switch model.state {
-            case _ as PaywallPendingState: break
+            case _ as PaywallPurchaseLoadingState: break
             default:
                 Issue.record(
                     "Pending payment must await a verified backend result",
@@ -538,10 +546,10 @@ struct PaywallTests {
                 !router.path.isEmpty,
             )
             switch model.state {
-            case let state as PaywallOperationFailedState:
+            case let state as PaywallOperationErrorState:
                 #expect(
                     state.errorDescription == container.l10n.text(
-                        .errorUnknownDescription,
+                        .subscriptionPurchaseErrorDescription,
                     ),
                 )
                 #expect(
@@ -558,6 +566,7 @@ struct PaywallTests {
                 updates == 0,
             )
         }
+        model.onDisappear()
     }
 
     @Test(
@@ -597,7 +606,7 @@ struct PaywallTests {
             model,
         )
         switch model.state {
-        case let state as PaywallLoadingFailedState:
+        case let state as PaywallCatalogErrorState:
             #expect(
                 state.errorDescription == container.l10n.text(
                     .subscriptionOfferingsUnavailableDescription,
@@ -679,11 +688,11 @@ struct PaywallTests {
             repository.plan,
         )
         model.onTapContinue()
-        await waitUntilIdle(
-            model,
+        await waitUntilPurchaseStarted(
+            repository,
         )
         switch model.state {
-        case _ as PaywallPendingState: break
+        case _ as PaywallPurchaseLoadingState: break
         default:
             Issue.record(
                 "Expected a pending purchase",
@@ -697,18 +706,17 @@ struct PaywallTests {
                 (),
             ),
         )
-        for _ in 0 ..< 100 {
-            if router.path.isEmpty {
-                break
-            }
-            await Task.yield()
-        }
+        await waitUntilIdle(
+            model,
+        )
+
         #expect(
             root.status?.type == .pro,
         )
         #expect(
             router.path.isEmpty,
         )
+        model.onDisappear()
     }
 
     @Test
@@ -752,20 +760,23 @@ struct PaywallTests {
             repository.plan,
         )
         model.onTapContinue()
-        await waitUntilIdle(
-            model,
+        await waitUntilPurchaseStarted(
+            repository,
         )
         repository.backend.isAccessAvailable = true
-        model.onTapCheckPayment()
-        await waitUntilIdle(
-            model,
+        try? await Task.sleep(
+            for: .milliseconds(
+                40,
+            ),
         )
         model.onTapRestore()
-        await waitUntilIdle(
-            model,
+        try? await Task.sleep(
+            for: .milliseconds(
+                40,
+            ),
         )
         #expect(
-            model.state is PaywallPendingState && repository.restoreCount == 0,
+            model.state is PaywallPurchaseLoadingState && repository.restoreCount == 0,
         )
         #expect(
             root.status?.type == .base,
@@ -773,6 +784,7 @@ struct PaywallTests {
         #expect(
             !router.path.isEmpty,
         )
+        model.onDisappear()
     }
 
     @Test(
@@ -869,8 +881,8 @@ struct PaywallTests {
             repository.plan,
         )
         model.onTapContinue()
-        await waitUntilIdle(
-            model,
+        await waitUntilPurchaseStarted(
+            repository,
         )
         repository.backend.payments[
             id,
@@ -881,7 +893,6 @@ struct PaywallTests {
             confirmationUrl: nil,
             paymentMethodType: "bank_card",
         )
-        model.onTapCheckPayment()
         await waitUntilIdle(
             model,
         )
@@ -895,6 +906,7 @@ struct PaywallTests {
         #expect(
             root.status == nil && (model.state as? PaywallContentState)?.plans == [repository.plan],
         )
+        model.onDisappear()
     }
 
     @Test
@@ -966,7 +978,7 @@ struct PaywallTests {
             model,
         )
         let failed = try #require(
-            model.state as? PaywallOperationFailedState,
+            model.state as? PaywallOperationErrorState,
         )
         #expect(
             failed.previousState === selected && failed.selectedPlan == repository.plan,
@@ -1026,7 +1038,7 @@ struct PaywallTests {
             model,
         )
         let failed = try #require(
-            model.state as? PaywallOperationFailedState,
+            model.state as? PaywallOperationErrorState,
         )
         #expect(
             failed.previousState === selected && failed.selectedPlan == repository.plan,
@@ -1040,7 +1052,7 @@ struct PaywallTests {
         }
         model.onTapRestore()
         #expect(
-            model.state is PaywallVerificationLoadingState,
+            model.state is PaywallRestoreLoadingState,
         )
         let operation = model.operationTask
         model.onDisappear()
@@ -1175,15 +1187,38 @@ struct PaywallTests {
         )
     }
 
+    private func waitUntilPurchaseStarted(
+        _ repository: SubscriptionTestRepository,
+    ) async {
+        for _ in 0 ..< 1000 {
+            if repository.purchaseCount > 0 {
+                break
+            }
+            await Task.yield()
+        }
+        try? await Task.sleep(
+            for: .milliseconds(
+                25,
+            ),
+        )
+    }
+
     private func waitUntilIdle(
         _ model: PaywallViewModel,
     ) async {
-        for await state in model.$state.values {
-            switch state {
-            case _ as PaywallCatalogLoadingState, _ as PaywallPurchaseLoadingState, _ as PaywallVerificationLoadingState: continue
-            default: return
+        for _ in 0 ..< 500 {
+            if !model.isProcessing {
+                return
             }
+            try? await Task.sleep(
+                for: .milliseconds(
+                    10,
+                ),
+            )
         }
+        Issue.record(
+            "Expected the checkout operation to reach a terminal state within five seconds",
+        )
     }
 
     private func makeModel(
@@ -1194,6 +1229,7 @@ struct PaywallTests {
     ) -> PaywallViewModel {
         root.onInit()
         return PaywallViewModel(
+            messager: DMessager(),
             container: container,
             router: router,
             getSubscriptionStatus: {
@@ -1225,6 +1261,13 @@ struct PaywallTests {
             },
             checkPurchase: {
                 try await root.checkPurchase()
+            },
+            waitForPaymentCheck: {
+                try await Task.sleep(
+                    for: .milliseconds(
+                        10,
+                    ),
+                )
             },
         )
     }

@@ -3,7 +3,6 @@ import SwiftUI
 
 public struct DMarkdown: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     private let content: String
     private let textColor: Color?
     private let accessibilityElement: AccessibilityChildBehavior?

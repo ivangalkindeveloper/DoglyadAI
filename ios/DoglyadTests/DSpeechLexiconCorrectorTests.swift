@@ -32,7 +32,6 @@ struct DSpeechLexiconCorrectorTests {
         "васкуляризация снижена",
         "асцит не определяется",
     ]
-
     private let corrector = DSpeechLexiconCorrector(
         terms: terms,
         localization: VoiceLocalizationTestSupport.speech(

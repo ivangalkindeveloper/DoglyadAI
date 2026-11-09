@@ -11,11 +11,6 @@
         let templates: [USExaminationTemplate]
 
         var body: some View {
-            let isErrorPresented = switch state {
-            case _ as SelectTemplateFailedState: true
-            default: false
-            }
-
             let model = SelectTemplateViewModel(
                 container: container,
                 router: router,
@@ -31,6 +26,7 @@
                 },
                 onRefreshSubscriptionStatus: {},
                 arguments: SelectTemplateArguments(
+                    templates: templates,
                     currentValue: templates.first,
                     onSelected: { _ in },
                 ),
@@ -48,9 +44,6 @@
                     viewModel: model,
                 )
             }
-            .previewError(
-                isPresented: isErrorPresented,
-            )
             .id(
                 ObjectIdentifier(
                     state,

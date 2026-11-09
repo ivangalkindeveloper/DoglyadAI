@@ -375,7 +375,6 @@ private extension DraftTests {
             patientDateOfBirth: .distantPast,
             photoIds: [],
         )
-
         let examinationNumber: String
         let patientGender: PatientGender
         let patientDateOfBirth: Date

@@ -29,7 +29,7 @@
             model.onTapRestore()
             await model.operationTask?.value
             let failed = try #require(
-                model.state as? SubscriptionRecoveryFailedState,
+                model.state as? SubscriptionRecoveryErrorState,
             )
             #expect(
                 (failed.previousState as? SubscriptionRecoverySuccessState)?.key == "Saved-MixedCase-Key",

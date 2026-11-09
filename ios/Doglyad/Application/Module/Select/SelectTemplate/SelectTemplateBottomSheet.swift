@@ -7,7 +7,6 @@ struct SelectTemplateBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: SelectTemplateArguments
 
     var body: some View {

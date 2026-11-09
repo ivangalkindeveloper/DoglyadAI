@@ -5,9 +5,9 @@ struct ReportDetailModelReportCardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject var theme: DTheme
-
     let report: USExaminationModelReport
     let onTapCopy: () -> Void
+    var isDisabled: Bool = false
 
     private var generationFailureTitle: L10NKey? {
         switch report.generation.status {
@@ -89,17 +89,18 @@ struct ReportDetailModelReportCardView: DViewProtocol {
                 Spacer()
 
                 if report.generation.status.isCompleted {
-                    DButtonCard(
-                        isPlain: true,
-                        accessibilityIdentifier: "reportDetail.copy.\(report.modelId)",
+                    DTextButton(
                         action: onTapCopy,
-                    ) {
-                        DIcon(
-                            .copy,
-                            color: color.primaryDefault,
-                            height: size.s20,
-                        )
-                    }
+                        content: {
+                            DIcon(
+                                .copy,
+                                color: color.primaryDefault,
+                                height: size.s20,
+                            )
+                        },
+                        isDisabled: isDisabled,
+                        accessibilityIdentifier: "reportDetail.copy.\(report.modelId)",
+                    )
                     .buttonStyle(
                         .plain,
                     )
@@ -136,6 +137,7 @@ struct ReportDetailModelReportCardView: DViewProtocol {
                     ],
                     text: report.description,
                     collapsedLineLimit: 12,
+                    isDisabled: isDisabled,
                 )
 
                 ReportDetailModelReportSectionView(
@@ -144,6 +146,7 @@ struct ReportDetailModelReportCardView: DViewProtocol {
                     ],
                     text: report.conclusion,
                     collapsedLineLimit: 8,
+                    isDisabled: isDisabled,
                 )
                 .padding(
                     .top,
@@ -157,6 +160,7 @@ struct ReportDetailModelReportCardView: DViewProtocol {
                         ],
                         text: recommendations,
                         collapsedLineLimit: 8,
+                        isDisabled: isDisabled,
                     )
                     .padding(
                         .top,
@@ -170,6 +174,7 @@ struct ReportDetailModelReportCardView: DViewProtocol {
                         ],
                         text: descriptionRemarks,
                         collapsedLineLimit: 8,
+                        isDisabled: isDisabled,
                     )
                     .padding(
                         .top,

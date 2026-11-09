@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 AboutDefaultState",
+        "01 AboutDefaultState ApplicationInformation",
     ) {
         AboutPreviewView(
             state: AboutDefaultState(),

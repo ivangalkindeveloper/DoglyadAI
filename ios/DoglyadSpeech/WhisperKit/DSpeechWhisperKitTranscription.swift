@@ -17,19 +17,15 @@ struct DSpeechWhisperKitTranscription: Sendable {
         decodingSeconds: TimeInterval = 0,
         recheckSeconds: TimeInterval = 0,
     ) {
-        segments = results.flatMap(
-            \.segments,
-        )
-        self.repeatedTexts = repeatedTexts
-        self.speechActivity = speechActivity
-        self.decodingSeconds = decodingSeconds
-        self.recheckSeconds = recheckSeconds
         rawText = results.map(
             \.text,
         ).joined(
             separator: " ",
         ).trimmingCharacters(
             in: .whitespacesAndNewlines,
+        )
+        let segments = results.flatMap(
+            \.segments,
         )
         var cursor = rawText.startIndex
         var spans: [DSpeechDecodingSpan] = []
@@ -80,6 +76,11 @@ struct DSpeechWhisperKitTranscription: Sendable {
             )
         }
         decodingSpans = spans
+        self.segments = segments
+        self.repeatedTexts = repeatedTexts
+        self.speechActivity = speechActivity
+        self.decodingSeconds = decodingSeconds
+        self.recheckSeconds = recheckSeconds
     }
 
     static func transcribe(

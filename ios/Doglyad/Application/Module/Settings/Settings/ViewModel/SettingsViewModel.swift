@@ -9,9 +9,10 @@ import SwiftUI
 
 @MainActor
 final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
-    @Published var reportsCount = 0
+    @Published var reportsCount: Int?
 
     init(
+        messager _: DMessager,
         container: DependencyContainer,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
@@ -21,14 +22,14 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
         onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         super.init(
-            state: SettingsLoadingState(),
+            state: SettingsContentState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .settings,
             ),
@@ -36,7 +37,12 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
     }
 
     var historyDescription: LocalizedStringResource {
-        reportsCount == 0 ? l10n[
+        guard let reportsCount else {
+            return l10n[
+                .settingsHistoryPurposeDescription,
+            ]
+        }
+        return reportsCount == 0 ? l10n[
             .settingsHistoryEmptyDescription,
         ] : l10n.resource(
             .settingsHistoryDescription,
@@ -47,27 +53,16 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
     }
 
     override func onInit() {
-        emit(
-            SettingsLoadingState(),
-        )
         handle {
             try await self.container.ultrasoundReportRepository.getReportsCount()
         } onMainSuccess: { count in
+            guard !Task.isCancelled else {
+                return
+            }
             self.reportsCount = count
-            self.emit(
-                SettingsContentState(),
-            )
-        } onMainUnknownError: { error in
-            self.emit(
-                SettingsFailedState(
-                    error: error,
-                ),
-            )
+        } onMainUnknownError: { _ in
+            // The summary is optional; all Settings destinations remain available.
         }
-    }
-
-    func onTapRetry() {
-        onInit()
     }
 
     func onTapBack() {
@@ -83,7 +78,7 @@ final class SettingsViewModel: DModuleViewModel<any SettingsStateProtocol> {
             parameters: AnalyticsParameters(
                 [
                     .itemCount: .int(
-                        reportsCount,
+                        reportsCount ?? 0,
                     ),
                 ],
             ),

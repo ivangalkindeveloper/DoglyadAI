@@ -1,6 +1,6 @@
 /* Verify and stage all images, then clear the regression page before showing the new collection. */
-figma.showUI(__html__, { width: 420, height: 220 });
-const layoutVersion = 'ordered-white-text-v7';
+figma.showUI(__html__, { width: 210, height: 110 });
+const layoutVersion = 'named-screens-v9';
 let stage = null;
 let manifest = null;
 let received = new Set();
@@ -55,8 +55,9 @@ function prepareRows(value) {
   for (const kind of ['Preview', 'Регресс']) {
     const images = value.images.filter(image => visibleImage(image) && imageGroup(image).kind === kind);
     if (!images.length) continue;
-    const section = frame(stage, kind, 'VERTICAL', 40);
-    text(section, `${kind} · ${images.length} снимков`
+    const section = frame(stage, kind === 'Preview' ? 'Макеты' : kind, 'VERTICAL', 40);
+    section.setPluginData('doglyadSection', kind === 'Preview' ? 'previews' : 'regression');
+    text(section, `${kind === 'Preview' ? 'Макеты' : kind} · ${images.length} снимков`
       + (value.scope === 'previews' ? ` · ${value.runId}` : ''), 40);
     const modules = [...new Set(images.map(image => imageGroup(image).module))];
     modules.sort((a, b) => {
@@ -64,7 +65,7 @@ function prepareRows(value) {
       return rank(a) - rank(b);
     });
     for (const module of modules) {
-      const group = frame(section, `${kind} / ${module}`, 'VERTICAL', 32);
+      const group = frame(section, kind === 'Preview' ? module : `${kind} / ${module}`, 'VERTICAL', 32);
       text(group, module, 28);
       const row = frame(group, `${module} · экраны`, 'HORIZONTAL', 20);
       const ordered = images.filter(item => imageGroup(item).module === module);
@@ -79,8 +80,8 @@ function prepareRows(value) {
         const title = kind === 'Preview'
           ? image.state.replace(/^\d+ /, `${String(index + 1).padStart(2, '0')} `)
           : group.shot || image.state;
-        const card = frame(row, `${kind} · ${module} · ${title}`, 'VERTICAL', 16);
-        text(card, `${kind} · ${title}`, 16, 390);
+        const card = frame(row, kind === 'Preview' ? title : `${kind} · ${module} · ${title}`, 'VERTICAL', 16);
+
         imageCards.set(image.id, card);
       }
     }
@@ -96,7 +97,7 @@ function rollback() {
 }
 
 function focusCollection(collection) {
-  const section = ['Preview', 'Регресс'].includes(collection.name)
+  const section = ['Макеты', 'Preview', 'Регресс'].includes(collection.name)
     ? collection : collection.children[0];
   const firstModule = section && section.children && section.children[1];
   figma.viewport.scrollAndZoomIntoView([firstModule || section || collection]);
@@ -108,7 +109,7 @@ function previewOwner() {
 }
 
 function previewSection(owner) {
-  return owner && owner.children.find(node => node.name === 'Preview');
+  return owner && owner.children.find(node => node.getPluginData('doglyadSection') === 'previews' || node.name === 'Preview');
 }
 
 function receipt(value, collection) {
@@ -159,7 +160,7 @@ async function handle(message) {
     const gaps = value.coverage && value.coverage.missingExecution
       ? value.coverage.missingExecution.length : 0;
     const runTitle = value.runId.replace(/^(\d{8}T\d{6}Z)-[0-9a-f]{8}$/, '$1');
-    stage.name = `${value.scope === 'previews' ? 'Preview' : value.figmaPageName || 'Doglyad Regression'} · ${runTitle}`
+    stage.name = `${value.scope === 'previews' ? 'Макеты' : value.figmaPageName || 'Doglyad Regression'} · ${runTitle}`
       + (gaps ? ` · ${gaps} сценариев требуют автоматизации` : '');
     stage.visible = false;
     stage.setPluginData(value.scope === 'previews' ? 'doglyadPreviewRun' : 'doglyadRegressionRun', value.runId);
@@ -180,7 +181,7 @@ async function handle(message) {
     const image = figma.createImage(new Uint8Array(message.bytes));
     const row = imageCards.get(expected.id);
     const rectangle = figma.createRectangle();
-    rectangle.name = expected.id;
+    rectangle.name = imageCards.get(expected.id).name;
     rectangle.resize(390, expected.height * 390 / expected.width);
     rectangle.fills = [{ type: 'IMAGE', scaleMode: 'FIT', imageHash: image.hash }];
     row.appendChild(rectangle);

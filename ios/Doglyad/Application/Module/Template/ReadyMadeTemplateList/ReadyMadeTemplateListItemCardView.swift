@@ -3,7 +3,6 @@ import SwiftUI
 
 struct ReadyMadeTemplateListItemCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
-
     let template: USExaminationReadyMadeTemplate
     let examinationTypeTitle: LocalizedStringResource
     let action: () -> Void
@@ -13,8 +12,7 @@ struct ReadyMadeTemplateListItemCardView: DViewProtocol {
             alignment: .leading,
             spacing: size.s8,
         ) {
-            DButtonCard(
-                isPlain: true,
+            DTextButton(
                 action: action,
             ) {
                 VStack(
@@ -44,9 +42,6 @@ struct ReadyMadeTemplateListItemCardView: DViewProtocol {
                     Rectangle(),
                 )
             }
-            .buttonStyle(
-                .plain,
-            )
 
             ReadyMadeTemplateListExpandableTextView(
                 text: template.content,

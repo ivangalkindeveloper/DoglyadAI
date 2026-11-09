@@ -7,15 +7,9 @@ struct LegalUpdateScreenView: DViewProtocol {
         \.locale,
     ) private var locale
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: LegalUpdateViewModel
 
     var body: some View {
-        let (isDisabled, isProcessing): (Bool, Bool) = switch viewModel.state {
-        case _ as LegalUpdateLoadingState: (true, true)
-        default: (!viewModel.isLegalAccepted, false)
-        }
-
         DScreen(
             title: l10n[
                 .legalUpdateTitle,
@@ -116,10 +110,9 @@ struct LegalUpdateScreenView: DViewProtocol {
                     title: l10n[
                         .buttonAccept,
                     ],
-                    accessibilityIdentifier: "legalUpdate.accept",
                     action: viewModel.onTapAccept,
-                    isLoading: isProcessing,
-                    isDisabled: isDisabled,
+                    isDisabled: !viewModel.isLegalAccepted,
+                    accessibilityIdentifier: "legalUpdate.accept",
                 )
                 .dStyle(
                     .primaryButton,

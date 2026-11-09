@@ -4,49 +4,16 @@ import SwiftUI
 struct TemplateAddScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: TemplateAddViewModel
     @FocusState private var focus: TemplateAddFocus?
 
     var body: some View {
-        let isProcessing = switch viewModel.state {
-        case _ as TemplateAddInitializationLoadingState, _ as TemplateAddSaveLoadingState: true
-        default: false
-        }
-
         DScreen(
             title: l10n[
                 .templateAddTitle,
             ],
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
-            keyboardToolbar: {
-                if focus != nil {
-                    DToolbar(
-                        onTapUp: viewModel.isPreviousFieldFocusable ? {
-                            viewModel.onTapToolbarUp()
-                        } : nil,
-                        onTapDown: viewModel.isNextFieldFocusable ? {
-                            viewModel.onTapToolbarDown()
-                        } : nil,
-                        onTapDone: viewModel.unfocus,
-                        trailButtons: [
-                            DToolbarButton(
-                                style: .primaryDefault,
-                                content: .text(
-                                    l10n[
-                                        .buttonSave,
-                                    ],
-                                ),
-                                action: viewModel.onTapSave,
-                            ),
-                        ],
-                    )
-                    .disabled(
-                        isProcessing,
-                    )
-                }
-            },
             content: { toolbarInset, bottomInset in
                 DFocusScrollView(
                     focus: focus,
@@ -198,9 +165,6 @@ struct TemplateAddScreenView: DViewProtocol {
                         .bottom,
                         bottomInset + size.s16,
                     )
-                    .disabled(
-                        isProcessing,
-                    )
                 }
                 .scrollDismissesKeyboard(
                     .interactively,
@@ -212,7 +176,6 @@ struct TemplateAddScreenView: DViewProtocol {
                         .buttonSave,
                     ],
                     action: viewModel.onTapSave,
-                    isLoading: isProcessing,
                 )
                 .dStyle(
                     .primaryButton,
@@ -220,6 +183,30 @@ struct TemplateAddScreenView: DViewProtocol {
                 .padding(
                     size.s16,
                 )
+            },
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        onTapUp: viewModel.isPreviousFieldFocusable ? {
+                            viewModel.onTapToolbarUp()
+                        } : nil,
+                        onTapDown: viewModel.isNextFieldFocusable ? {
+                            viewModel.onTapToolbarDown()
+                        } : nil,
+                        onTapDone: viewModel.unfocus,
+                        trailButtons: [
+                            DToolbarButton(
+                                style: .primaryDefault,
+                                content: .text(
+                                    l10n[
+                                        .buttonSave,
+                                    ],
+                                ),
+                                action: viewModel.onTapSave,
+                            ),
+                        ],
+                    )
+                }
             },
         )
         .onAppear(

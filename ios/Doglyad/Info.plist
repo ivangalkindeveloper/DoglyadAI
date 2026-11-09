@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>BASE_URL</key>
-	<string>$(BASE_URL)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -13,15 +11,19 @@
 			</array>
 		</dict>
 	</array>
-	<key>ENVIRONMENT</key>
-	<string>$(ENVIRONMENT)</string>
-	<key>FirebaseAutomaticScreenReportingEnabled</key>
-	<false/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>ENVIRONMENT</key>
+	<string>$(ENVIRONMENT)</string>
+	<key>BASE_URL</key>
+	<string>$(BASE_URL)</string>
+	<key>APP_CHECK_DEBUG_TOKEN</key>
+	<string>$(APP_CHECK_DEBUG_TOKEN)</string>
+	<key>FirebaseAutomaticScreenReportingEnabled</key>
+	<false/>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Montserrat-Regular.ttf</string>

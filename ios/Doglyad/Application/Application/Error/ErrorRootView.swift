@@ -4,7 +4,6 @@ import SwiftUI
 struct ErrorRootView: DViewProtocol {
     @EnvironmentObject private var applicationViewModel: ApplicationRootViewModel
     @EnvironmentObject var theme: DTheme
-
     @StateObject private var viewModel: ErrorRootViewModel
 
     init(
@@ -26,7 +25,7 @@ struct ErrorRootView: DViewProtocol {
                 NewVersionView(
                     onTapUpdate: viewModel.onTapNewVersionUpdate,
                 )
-            case _ as ErrorRootOfflineState:
+            case _ as ErrorRootOfflineErrorState:
                 ErrorView(
                     title: .errorNoInternetConnectionTitle,
                     buttonTitle: .buttonUpdate,
@@ -45,7 +44,7 @@ struct ErrorRootView: DViewProtocol {
                         alignment: .center,
                     )
                 }
-            case let state as ErrorRootServiceUnavailableState:
+            case let state as ErrorRootServiceUnavailableErrorState:
                 ErrorView(
                     title: .serviceUnavailableTitle,
                 ) {
@@ -61,8 +60,7 @@ struct ErrorRootView: DViewProtocol {
                             alignment: .center,
                         )
 
-                        DButtonCard(
-                            isPlain: true,
+                        DTextButton(
                             action: viewModel.onTapServiceUnavailableEmail,
                         ) {
                             DText(
@@ -83,7 +81,7 @@ struct ErrorRootView: DViewProtocol {
                         )
                     }
                 }
-            case _ as ErrorRootUnknownState:
+            case _ as ErrorRootUnknownErrorState:
                 ErrorView(
                     title: .errorUnknownTitle,
                     buttonTitle: .buttonUpdate,
@@ -109,14 +107,4 @@ struct ErrorRootView: DViewProtocol {
             perform: viewModel.onAppear,
         )
     }
-}
-
-#Preview {
-    ErrorRootView(
-        error: InitializationError.noInternetConnection,
-        analytics: AnalyticsManager(
-            isEnabled: false,
-        ),
-    )
-    .previewable()
 }

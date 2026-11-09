@@ -9,7 +9,6 @@ struct ScanPhotoEncodingOptions {
 struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
     static let thumbnailMaxDimension: CGFloat = 192
     static let thumbnailCompressionQuality: CGFloat = 0.8
-
     var id: UUID = .init()
     let image: UIImage
     let thumbnail: UIImage

@@ -17,7 +17,6 @@ public final class DSpeechControllerWhisperKit: DSpeechControllerProtocol {
     private var transcriptionTask: Task<DSpeechWhisperKitTranscription, Error>?
     private var lastPartialText = ""
     private var session = DSpeechSessionGate()
-
     @Published public private(set) var recordingStatus: DSpeechRecordingStatus = .stopped
     @Published public private(set) var text: String?
     @Published public private(set) var audioMeter: Float = 0

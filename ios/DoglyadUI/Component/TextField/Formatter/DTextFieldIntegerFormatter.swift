@@ -2,7 +2,6 @@ public final class DTextFieldIntegerFormatter: DTextFieldFormatterProtocol {
     private static let digits = Set(
         "0123456789",
     )
-
     private let isNegativeAllowed: Bool
 
     public init(

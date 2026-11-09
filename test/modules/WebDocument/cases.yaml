@@ -31,15 +31,17 @@ cases:
   - Контролируемый сетевой отказ на URL документа
   steps:
   - action: Открыть документ при отказе
-    expect: Лоадер исчезает. В теле шторки показаны DoglyadQuestion, описание ошибки и кнопка «Повторить».
+    expect: Шиммеры заголовков и абзацев без карточек исчезают. В теле шторки показан ErrorBodyView с DoglyadQuestion и описанием; основная кнопка «Повторить» находится в bottom DBottomSheet. DMessager сообщает об ошибке.
   - action: Нажать «Повторить», пока сеть недоступна
-    expect: Документ загружается повторно и возвращается в состояние ошибки. Шторку можно закрыть.
+    expect: Во время повторной загрузки кнопка «Повторить» скрыта; документ возвращается в состояние ошибки, и кнопка появляется снова. Шторку можно закрыть.
   - action: Закрыть, восстановить сеть и открыть снова
     expect: Документ загружается; предыдущее состояние ошибки не остаётся.
   covers:
   - onDocumentFailed
   - onTapRetry
   automation:
-    kind: maestro
+    kind: mixed
     flows:
     - e2e-webdocument-network-failure
+    nativeTests:
+    - WebDocumentTests/retryIgnoresCallbacksFromThePreviousDocumentLoad()

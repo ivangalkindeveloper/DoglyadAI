@@ -4,7 +4,6 @@ import SwiftUI
 struct ErrorView<Description: View>: DViewProtocol {
     @EnvironmentObject private var applicationViewModel: ApplicationRootViewModel
     @EnvironmentObject var theme: DTheme
-
     private let title: LocalizedStringResource
     private let buttonTitle: LocalizedStringResource?
     private let action: (() -> Void)?

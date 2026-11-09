@@ -9,10 +9,11 @@
         @EnvironmentObject private var router: DRouter
         @EnvironmentObject private var messager: DMessager
         let state: any ScanStateProtocol
+        var isDraftPresent = true
 
         var body: some View {
             let isErrorPresented = switch state {
-            case _ as ScanInitializationFailedState, _ as ScanFailedState: true
+            case _ as ScanInitializationErrorState, _ as ScanErrorState: true
             default: false
             }
 
@@ -48,15 +49,17 @@
                 },
             )
 
-            model.patientNameTextController.setText(
-                "Тестовый пациент",
-            )
+            if isDraftPresent {
+                model.patientNameTextController.setText(
+                    "Тестовый пациент",
+                )
 
-            model.examinationDescriptionTextController.setText(
-                USExaminationReportPreviewFactory.description,
-            )
+                model.examinationDescriptionTextController.setText(
+                    USExaminationReportPreviewFactory.description,
+                )
 
-            model.photos = ModulePreviewFactory.photos
+                model.photos = ModulePreviewFactory.photos
+            }
 
             model.preparePreview(
                 state: state,

@@ -2,29 +2,30 @@ import SwiftUI
 
 public struct DToolbar: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-    private let accessibilityElement: AccessibilityChildBehavior?
-    private let accessibilityIdentifier: String?
-
     private let onTapUp: (() -> Void)?
     private let onTapDown: (() -> Void)?
     private let onTapDone: () -> Void
     private let trailButtons: [DToolbarButton]
+    private let isDisabled: Bool
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     public init(
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         onTapUp: (() -> Void)? = nil,
         onTapDown: (() -> Void)? = nil,
         onTapDone: @escaping () -> Void,
         trailButtons: [DToolbarButton] = [],
+        isDisabled: Bool = false,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
-        self.trailButtons = trailButtons
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
-
         self.onTapUp = onTapUp
         self.onTapDown = onTapDown
         self.onTapDone = onTapDone
+        self.trailButtons = trailButtons
+        self.isDisabled = isDisabled
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
@@ -59,8 +60,8 @@ public struct DToolbar: DViewProtocol {
                     content: .icon(
                         .check,
                     ),
-                    accessibilityIdentifier: "keyboard.done",
                     action: onTapDone,
+                    accessibilityIdentifier: "keyboard.done",
                 )
 
                 ForEach(
@@ -81,6 +82,9 @@ public struct DToolbar: DViewProtocol {
                 minHeight: size.s48,
             )
         }
+        .disabled(
+            isDisabled,
+        )
         .modifier(
             DAccessibilityModifier(
                 element: accessibilityElement,

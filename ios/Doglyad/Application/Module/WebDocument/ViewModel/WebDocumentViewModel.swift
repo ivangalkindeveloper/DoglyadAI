@@ -1,14 +1,20 @@
 import Combine
+import DoglyadUI
 import Foundation
 import SwiftUI
 
 @MainActor
 final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol> {
+    private let messager: DMessager
     let url: URL
-
     let title: LocalizedStringResource
 
+    #if DEBUG
+        var previewHTML: String?
+    #endif
+
     init(
+        messager: DMessager,
         container: DependencyContainer,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
@@ -18,6 +24,7 @@ final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol>
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: WebDocumentArguments,
     ) {
+        self.messager = messager
         url = arguments.url
         title = arguments.title
 
@@ -27,9 +34,9 @@ final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol>
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .webDocument,
             ),
@@ -42,14 +49,14 @@ final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol>
     var documentStateIdentifier: String {
         switch state {
         case _ as WebDocumentSuccessState: "webDocument.loaded"
-        case _ as WebDocumentFailedState: "webDocument.failed"
+        case _ as WebDocumentErrorState: "webDocument.failed"
         default: "webDocument.loading"
         }
     }
 
     func onTapRetry() {
         switch state {
-        case _ as WebDocumentFailedState:
+        case _ as WebDocumentErrorState:
             emit(
                 WebDocumentLoadingState(),
             )
@@ -86,9 +93,12 @@ final class WebDocumentViewModel: DModuleViewModel<any WebDocumentStateProtocol>
             }
         #endif
         emit(
-            WebDocumentFailedState(
+            WebDocumentErrorState(
                 error: error,
             ),
+        )
+        messager.showUnknownError(
+            l10n: l10n,
         )
     }
 

@@ -5,7 +5,6 @@ import UIKit
 struct ExpandableContentView<Content: View>: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     private let text: String
     private let backgroundColor: Color
     private let collapsedLineLimit: Int
@@ -13,9 +12,9 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
     private let collapsedLineSpacing: CGFloat
     private let onTapContent: (() -> Void)?
     private let content: Content
-
     @State private var isExpanded = false
     @State private var contentHeight: CGFloat = 0
+    private let isDisabled: Bool
 
     init(
         text: String,
@@ -25,6 +24,7 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
         collapsedLineSpacing: CGFloat = 16 * 0.15,
         onTapContent: (() -> Void)?,
         @ViewBuilder content: () -> Content,
+        isDisabled: Bool = false,
     ) {
         self.text = text
         self.backgroundColor = backgroundColor
@@ -33,6 +33,7 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
         self.collapsedLineSpacing = collapsedLineSpacing
         self.onTapContent = onTapContent
         self.content = content()
+        self.isDisabled = isDisabled
     }
 
     private var collapsedHeight: CGFloat {
@@ -121,8 +122,7 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
     }
 
     private var expandButton: some View {
-        DButtonCard(
-            isPlain: true,
+        DTextButton(
             action: {
                 withAnimation(
                     theme.animation,
@@ -130,30 +130,30 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
                     isExpanded.toggle()
                 }
             },
-        ) {
-            DText(
-                l10n[
-                    isShowingExpandedContent ? .buttonCollapse : .buttonExpand,
-                ],
-            )
-            .dStyle(
-                font: typography.linkSmall,
-                color: color.primaryDefault,
-            )
-        }
+            content: {
+                DText(
+                    l10n[
+                        isShowingExpandedContent ? .buttonCollapse : .buttonExpand,
+                    ],
+                )
+                .dStyle(
+                    font: typography.linkSmall,
+                    color: color.primaryDefault,
+                )
+            },
+            isDisabled: isDisabled,
+        )
     }
 
     @ViewBuilder
     private var tappableContent: some View {
         if let onTapContent {
-            DButtonCard(
-                isPlain: true,
+            DTextButton(
                 action: onTapContent,
-            ) {
-                alignedContent
-            }
-            .buttonStyle(
-                .plain,
+                content: {
+                    alignedContent
+                },
+                isDisabled: isDisabled,
             )
         } else {
             alignedContent

@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 WebDocumentLoadingState",
+        "01 WebDocumentLoadingState LoadingDocument",
     ) {
         WebDocumentPreviewView(
             state: WebDocumentLoadingState(),
@@ -15,7 +15,18 @@
     }
 
     #Preview(
-        "02 WebDocumentSuccessState",
+        "02 WebDocumentLoadingState LoadingDocument ScrollEnd",
+    ) {
+        WebDocumentPreviewView(
+            state: WebDocumentLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "03 WebDocumentSuccessState PrivacyPolicy",
     ) {
         WebDocumentPreviewView(
             state: WebDocumentSuccessState(),
@@ -25,10 +36,46 @@
     }
 
     #Preview(
-        "03 WebDocumentFailedState",
+        "04 WebDocumentSuccessState PrivacyPolicy ScrollEnd",
     ) {
         WebDocumentPreviewView(
-            state: WebDocumentFailedState(
+            state: WebDocumentSuccessState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "05 WebDocumentSuccessState TermsAndConditions",
+    ) {
+        WebDocumentPreviewView(
+            state: WebDocumentSuccessState(),
+            document: .termsAndConditions,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "06 WebDocumentSuccessState TermsAndConditions ScrollEnd",
+    ) {
+        WebDocumentPreviewView(
+            state: WebDocumentSuccessState(),
+            document: .termsAndConditions,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "07 WebDocumentErrorState DocumentRequestFailed",
+    ) {
+        WebDocumentPreviewView(
+            state: WebDocumentErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),

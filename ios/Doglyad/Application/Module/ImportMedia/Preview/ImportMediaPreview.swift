@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 ImportMediaDefaultState",
+        "01 ImportMediaDefaultState MediaSources",
     ) {
         ImportMediaPreviewView(
             state: ImportMediaDefaultState(),

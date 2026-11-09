@@ -5,15 +5,9 @@ import SwiftUI
 struct SelectNeuralModelBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: SelectNeuralModelViewModel
 
     var body: some View {
-        let isSelecting = switch viewModel.state {
-        case _ as SelectNeuralModelSelectionLoadingState: true
-        default: false
-        }
-
         DBottomSheet(
             title: l10n[
                 .selectNeuralModelTitle,
@@ -80,8 +74,7 @@ struct SelectNeuralModelBottomSheetView: DViewProtocol {
                                 isSelected: viewModel.isSelected(
                                     model,
                                 ),
-                            )
-                            .disabled(
+                                isDisabled:
                                 !viewModel.isSelectionEnabled(
                                     for: model,
                                 ),
@@ -92,9 +85,7 @@ struct SelectNeuralModelBottomSheetView: DViewProtocol {
                         .bottom,
                         size.s8,
                     )
-                }.disabled(
-                    isSelecting,
-                )
+                }
             }
         }
         bottom: {

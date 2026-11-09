@@ -1,12 +1,13 @@
 #if DEBUG
     import Combine
+    import DoglyadUI
     import Foundation
     import Router
 
     @MainActor
     enum HistoryPreviewFactory {
         enum Scenario: Hashable {
-            case loading, empty, failed, singleReport, groupedReports, loadingNextPage, nextPageFailed
+            case empty, failed, singleReport, groupedReports, nextPageFailed
         }
 
         static func makeContainer() -> DependencyContainer {
@@ -28,6 +29,7 @@
             router: DRouter,
         ) -> HistoryViewModel {
             let model = HistoryViewModel(
+                messager: DMessager(),
                 container: container,
                 router: router,
                 getSubscriptionStatus: {
@@ -52,16 +54,12 @@
             let reports: [USExaminationReport]
             let nextOffset: Int?
             switch scenario {
-            case .loading:
-                state = HistoryReportsLoadingState()
-                reports = []
-                nextOffset = nil
             case .empty:
                 state = HistoryEmptyState()
                 reports = []
                 nextOffset = nil
             case .failed:
-                state = HistoryFailedState(
+                state = HistoryErrorState(
                     error: CocoaError(
                         .fileReadCorruptFile,
                     ),
@@ -76,12 +74,8 @@
                 state = HistoryContentState()
                 reports = makeReports()
                 nextOffset = nil
-            case .loadingNextPage:
-                state = HistoryPaginationLoadingState()
-                reports = [USExaminationReportPreviewFactory.makeReport()]
-                nextOffset = model.pageSize
             case .nextPageFailed:
-                state = HistoryFailedState(
+                state = HistoryErrorState(
                     error: CocoaError(
                         .fileReadCorruptFile,
                     ),

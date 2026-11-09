@@ -78,6 +78,16 @@ final class ArgumentLineBreaks: SyntaxRewriter {
                 let isGroupBoundary = ClassMemberGroup(previous.decl) != ClassMemberGroup(result.decl)
                 if isGroupBoundary || isCallable(previous.decl) || isCallable(result.decl) {
                     result.leadingTrivia = startingAfterBlankLine(result.leadingTrivia)
+                } else if ClassMemberGroup(previous.decl) == .field,
+                          ClassMemberGroup(result.decl) == .field {
+                    result.leadingTrivia = Trivia(pieces: result.leadingTrivia.map { piece in
+                        switch piece {
+                        case .newlines: .newlines(1)
+                        case .carriageReturns: .carriageReturns(1)
+                        case .carriageReturnLineFeeds: .carriageReturnLineFeeds(1)
+                        default: piece
+                        }
+                    })
                 }
             }
             return result
@@ -92,7 +102,18 @@ final class ArgumentLineBreaks: SyntaxRewriter {
 
     override func visit(_ node: CodeBlockItemListSyntax) -> CodeBlockItemListSyntax {
         let statements = super.visit(node)
-        guard isViewBuilderScope(node) else { return statements }
+        guard isViewBuilderScope(node) else {
+            return CodeBlockItemListSyntax(statements.enumerated().map { index, statement in
+                var result = statement
+                if index > 0 {
+                    let previous = statements[statements.index(statements.startIndex, offsetBy: index - 1)]
+                    if isScopeDeclaration(previous) || isScopeDeclaration(statement) {
+                        result.leadingTrivia = startingAfterBlankLine(result.leadingTrivia)
+                    }
+                }
+                return result
+            })
+        }
         return CodeBlockItemListSyntax(statements.enumerated().map { index, statement in
             var result = statement
             if index > 0, isPresentation(statement) {
@@ -100,6 +121,12 @@ final class ArgumentLineBreaks: SyntaxRewriter {
             }
             return result
         })
+    }
+
+    private func isScopeDeclaration(_ item: CodeBlockItemSyntax) -> Bool {
+        item.item.is(ClassDeclSyntax.self) || item.item.is(StructDeclSyntax.self)
+            || item.item.is(EnumDeclSyntax.self) || item.item.is(ExtensionDeclSyntax.self)
+            || item.item.is(ProtocolDeclSyntax.self) || item.item.is(FunctionDeclSyntax.self)
     }
 
     override func visit(_ node: CodeBlockSyntax) -> CodeBlockSyntax {

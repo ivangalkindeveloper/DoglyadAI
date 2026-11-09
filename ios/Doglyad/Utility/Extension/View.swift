@@ -2,12 +2,37 @@ import SwiftUI
 
 extension View {
     #if DEBUG
+        func previewScrollToEnd() -> some View {
+            defaultScrollAnchor(
+                .bottomLeading,
+                for: .initialOffset,
+            )
+            .overlay(
+                alignment: .topLeading,
+            ) {
+                PreviewScrollEndView()
+                    .frame(
+                        width: 1,
+                        height: 1,
+                    )
+                    .allowsHitTesting(
+                        false,
+                    )
+            }
+            .environment(
+                \.isPreviewScrollEnd,
+                true,
+            )
+        }
+
         func previewError(
             isPresented: Bool,
+            description: String? = nil,
         ) -> some View {
             modifier(
                 PreviewErrorModifier(
                     isPresented: isPresented,
+                    description: description,
                 ),
             )
         }

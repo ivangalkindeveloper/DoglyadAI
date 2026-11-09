@@ -4,7 +4,6 @@ public final class DTextFieldController: ObservableObject {
     @Published public private(set) var text: String
     @Published private(set) var isError: Bool = false
     @Published private(set) var errorText: String?
-
     private let isRequired: Bool
     private let formatters: [any DTextFieldFormatterProtocol]
     private let validators: [any DTextFieldValidatorProtocol]
@@ -16,10 +15,6 @@ public final class DTextFieldController: ObservableObject {
         formatters: [any DTextFieldFormatterProtocol] = [],
         validators: [any DTextFieldValidatorProtocol] = [],
     ) {
-        self.isRequired = isRequired
-        self.formatters = formatters
-        self.validators = validators
-
         var formattedText = initialText
         for formatter in formatters {
             formattedText = formatter.format(
@@ -28,6 +23,9 @@ public final class DTextFieldController: ObservableObject {
             )
         }
         text = formattedText
+        self.isRequired = isRequired
+        self.formatters = formatters
+        self.validators = validators
     }
 
     public var value: String? {

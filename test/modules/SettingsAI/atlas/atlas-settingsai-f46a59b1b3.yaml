@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-settingsai-f46a59b1b3
+tags:
+- atlas
+- SettingsAI
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-settingsai-f46a59b1b3
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-settingsai-f46a59b1b3
+    timeout: 15000
+- takeScreenshot: 01-SettingsAI-f46a59b1b3

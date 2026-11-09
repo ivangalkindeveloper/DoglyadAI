@@ -22,6 +22,7 @@ tags: [e2e, WebDocument]
 - assertNotVisible: {id: webDocument.loading}
 - assertVisible: Произошла неизвестная ошибка.*
 - assertVisible: ^Повторить$
+- assertVisible: {id: message.error}
 - takeScreenshot: WebDocument-network-failed
 - tapOn: ^Повторить$
 - extendedWaitUntil:

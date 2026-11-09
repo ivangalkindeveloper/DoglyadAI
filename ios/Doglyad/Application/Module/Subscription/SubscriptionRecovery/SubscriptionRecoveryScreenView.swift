@@ -14,25 +14,6 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
             ],
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
-            keyboardToolbar: {
-                if focus != nil {
-                    DToolbar(
-                        onTapDone: viewModel.unfocus,
-                        trailButtons: [DToolbarButton(
-                            style: .primaryDefault,
-                            content: .text(
-                                l10n[
-                                    .subscriptionRecoveryRestoreButton,
-                                ],
-                            ),
-                            action: viewModel.onTapRestore,
-                        )],
-                    )
-                    .disabled(
-                        viewModel.isProcessing,
-                    )
-                }
-            },
             content: { toolbarInset, bottomInset in
                 DFocusScrollView(
                     focus: focus,
@@ -67,6 +48,8 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
                                     .subscriptionRecoveryCreateDescription,
                                 ],
                                 action: viewModel.onTapCreateKey,
+                                isDisabled:
+                                viewModel.isProcessing,
                             )
                             SubscriptionRecoveryStateView(
                                 state: viewModel.state,
@@ -103,6 +86,8 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
                                 ],
                                 keyboardType: .asciiCapable,
                                 autocapitalization: .never,
+                                isDisabled:
+                                viewModel.isProcessing,
                                 accessibilityIdentifier: "subscriptionRecovery.input",
                             )
 
@@ -110,9 +95,7 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
                                 SubscriptionRecoveryFocus.key,
                             )
                         }
-                    }.disabled(
-                        viewModel.isProcessing,
-                    )
+                    }
                     .padding(
                         .horizontal,
                         size.s16,
@@ -134,13 +117,33 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
                     ],
                     action: viewModel.onTapRestore,
                     isLoading: viewModel.isProcessing,
-                    isDisabled: !viewModel.isRestoreEnabled,
+                    isDisabled: !viewModel.isProcessing && !viewModel.isRestoreEnabled,
                 )
                 .dStyle(
                     .primaryButton,
                 ).padding(
                     size.s16,
                 )
+            },
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        onTapDone: viewModel.unfocus,
+                        trailButtons: [DToolbarButton(
+                            style: .primaryDefault,
+                            content: .text(
+                                l10n[
+                                    .subscriptionRecoveryRestoreButton,
+                                ],
+                            ),
+                            action: viewModel.onTapRestore,
+                            isDisabled:
+                            viewModel.isProcessing,
+                        )],
+                        isDisabled:
+                        viewModel.isProcessing,
+                    )
+                }
             },
         )
         .environmentObject(

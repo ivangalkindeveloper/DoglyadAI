@@ -2,7 +2,6 @@ import SwiftUI
 
 struct DStreamingMarkdownBlockView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
-
     let block: DStreamingMarkdownBlock
     let date: Date
     let textColor: Color?

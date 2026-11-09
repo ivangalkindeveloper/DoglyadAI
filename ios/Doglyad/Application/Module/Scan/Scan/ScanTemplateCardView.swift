@@ -4,11 +4,10 @@ import SwiftUI
 struct ScanTemplateCardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @EnvironmentObject private var viewModel: ScanViewModel
+    var isDisabled: Bool = false
 
     var body: some View {
-        let backgroundColor: Color? = viewModel.isTemplateCompatible ? nil : color.dangerBackground
         let trailingInset: CGFloat = viewModel.template == nil ? .zero : size.s32
 
         VStack(
@@ -36,85 +35,87 @@ struct ScanTemplateCardView: DViewProtocol {
             ZStack(
                 alignment: .topTrailing,
             ) {
-                DButtonCard(
-                    backgroundColor: backgroundColor,
-                    accessibilityIdentifier: "scan.template",
+                DCard(
                     action: viewModel.onTapSelectedTemplate,
-                ) {
-                    VStack(
-                        alignment: .leading,
-                        spacing: size.s4,
-                    ) {
-                        switch viewModel.template {
-                        case let .some(
-                            template,
-                        ):
-                            DText(
-                                template.usExaminationType.localizedTitle,
-                            )
-                            .dStyle(
-                                font: typography.linkSmall,
-                            )
+                    content: {
+                        VStack(
+                            alignment: .leading,
+                            spacing: size.s4,
+                        ) {
+                            switch viewModel.template {
+                            case let .some(
+                                template,
+                            ):
+                                DText(
+                                    template.usExaminationType.localizedTitle,
+                                )
+                                .dStyle(
+                                    font: typography.linkSmall,
+                                )
 
-                            DText(
-                                template.name,
-                            )
-                            .dStyle(
-                                font: typography.textSmall,
-                                color: color.grayscalePlacehold,
-                            )
+                                DText(
+                                    template.name,
+                                )
+                                .dStyle(
+                                    font: typography.textSmall,
+                                    color: color.grayscalePlacehold,
+                                )
 
-                            DText(
-                                template.content,
-                            )
-                            .dStyle(
-                                font: typography.textXSmall,
-                                color: color.grayscalePlacehold,
-                            )
-                            .frame(
-                                maxWidth: .infinity,
-                                alignment: .leading,
-                            )
-                            .lineLimit(
-                                4,
-                            )
-                        case .none:
-                            DText(
-                                viewModel.usExaminationType.localizedTitle,
-                            )
-                            .dStyle(
-                                font: typography.linkSmall,
-                            )
+                                DText(
+                                    template.content,
+                                )
+                                .dStyle(
+                                    font: typography.textXSmall,
+                                    color: color.grayscalePlacehold,
+                                )
+                                .frame(
+                                    maxWidth: .infinity,
+                                    alignment: .leading,
+                                )
+                                .lineLimit(
+                                    4,
+                                )
+                            case .none:
+                                DText(
+                                    viewModel.usExaminationType.localizedTitle,
+                                )
+                                .dStyle(
+                                    font: typography.linkSmall,
+                                )
 
-                            DText(
-                                l10n[
-                                    .scanTemplateCardNoTemplateLabel,
-                                ],
-                            )
-                            .dStyle(
-                                font: typography.textXSmall,
-                                color: color.grayscalePlacehold,
-                            )
-                            .frame(
-                                maxWidth: .infinity,
-                                alignment: .leading,
-                            )
+                                DText(
+                                    l10n[
+                                        .scanTemplateCardNoTemplateLabel,
+                                    ],
+                                )
+                                .dStyle(
+                                    font: typography.textXSmall,
+                                    color: color.grayscalePlacehold,
+                                )
+                                .frame(
+                                    maxWidth: .infinity,
+                                    alignment: .leading,
+                                )
+                            }
                         }
-                    }
-                    .padding(
-                        .trailing,
-                        trailingInset,
-                    )
-                    .frame(
-                        maxWidth: .infinity,
-                        alignment: .leading,
-                    )
-                }
+                        .padding(
+                            .trailing,
+                            trailingInset,
+                        )
+                        .frame(
+                            maxWidth: .infinity,
+                            alignment: .leading,
+                        )
+                    },
+                    isDisabled: isDisabled,
+                    accessibilityIdentifier: "scan.template",
+                )
 
                 if viewModel.template != nil {
                     DCloseButton(
-                        accessibilityIdentifier: "scan.template.reset",
                         action: viewModel.onTapResetTemplate,
+                        isDisabled: isDisabled,
+                        accessibilityIdentifier: "scan.template.reset",
                     )
 
                     .padding(

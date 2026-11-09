@@ -14,7 +14,6 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
     @Published var isMarkdown: Bool = false
     @NestedObservableObject var temperatureTextController: DTextFieldController
     @NestedObservableObject var maxTokensTextController: DTextFieldController
-
     private let getInitialIsMarkdown: () -> Bool
     private let getInitialTemperature: () -> Double
     private let getInitialMaxTokens: () -> Int
@@ -41,12 +40,7 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
         transcriberType = getSettingsAI().transcriberType
         transcriptParserType = getSettingsAI().transcriptParserType
         neuralModel = getInitialNeuralModel()
-        self.onNeuralModelSelected = onNeuralModelSelected
-        self.getInitialIsMarkdown = getInitialIsMarkdown
-        self.getInitialTemperature = getInitialTemperature
-        self.getInitialMaxTokens = getInitialMaxTokens
-        self.messager = messager
-        self.onSettingsSaved = onSettingsSaved
+        isMarkdown = getInitialIsMarkdown()
 
         _temperatureTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
@@ -106,6 +100,12 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
                 ],
             ),
         )
+        self.getInitialIsMarkdown = getInitialIsMarkdown
+        self.getInitialTemperature = getInitialTemperature
+        self.getInitialMaxTokens = getInitialMaxTokens
+        self.messager = messager
+        self.onNeuralModelSelected = onNeuralModelSelected
+        self.onSettingsSaved = onSettingsSaved
 
         super.init(
             state: SettingsAIInitialState(),
@@ -113,16 +113,15 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .settingsAI,
             ),
         )
         _ = temperatureTextController
         _ = maxTokensTextController
-        isMarkdown = getInitialIsMarkdown()
         temperatureTextController.restoreText(
             String(
                 getInitialTemperature(),
@@ -313,11 +312,6 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
     }
 
     func onTapSave() {
-        switch state {
-        case _ as SettingsAILoadingState: return
-        default: break
-        }
-
         analytics.buttonTapped(
             .settingsAISave,
             parameters: AnalyticsParameters(
@@ -345,9 +339,6 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
         }
 
         unfocus()
-        emit(
-            SettingsAILoadingState(),
-        )
 
         let isMarkdown = isReportGenerationSettingsEnabled ? isMarkdown : getInitialIsMarkdown()
         let temperature = isReportGenerationSettingsEnabled
@@ -362,23 +353,17 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
                     $0,
                 )
             } : getInitialMaxTokens()
-        handle {
+        let transcriberType = transcriberType
+        let transcriptParserType = transcriptParserType
+        performLocalOperation {
             try await self.onSettingsSaved(
-                self.transcriberType,
-                self.transcriptParserType,
+                transcriberType,
+                transcriptParserType,
                 isMarkdown,
                 temperature,
                 maxTokens,
             )
-        } onDefer: {
-            switch self.state {
-            case _ as SettingsAILoadingState:
-                self.emit(
-                    SettingsAIInitialState(),
-                )
-            default: break
-            }
-        } onMainSuccess: { _ in
+        } onSuccess: { _ in
             self.messager.show(
                 type: .success,
                 title: self.container.l10n[
@@ -388,10 +373,18 @@ final class SettingsAIViewModel: DModuleViewModel<any SettingsAIStateProtocol>, 
                     .settingsAISavedSuccessMessageDescription,
                 ],
             )
-            self.coordinator.pop()
-        } onMainUnknownError: { error in
+            if self.transcriberType == transcriberType, self.transcriptParserType == transcriptParserType,
+               !self.isReportGenerationSettingsEnabled || (self.isMarkdown == isMarkdown && self.temperatureTextController.value.flatMap(
+                   Double.init,
+               ) == temperature && self.maxTokensTextController.value.flatMap(
+                   Int.init,
+               ) == maxTokens)
+            {
+                self.coordinator.pop()
+            }
+        } onFailure: { error in
             self.emit(
-                SettingsAIFailedState(
+                SettingsAIErrorState(
                     error: error,
                 ),
             )

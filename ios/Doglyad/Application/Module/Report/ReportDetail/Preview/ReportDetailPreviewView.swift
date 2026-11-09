@@ -12,7 +12,7 @@
 
         var body: some View {
             let isErrorPresented = switch state {
-            case _ as ReportDetailFailedState: true
+            case _ as ReportDetailErrorState: true
             default: false
             }
 
@@ -72,7 +72,6 @@
 
     struct ReportDetailExpandableTextPreviewView: DViewProtocol {
         @EnvironmentObject var theme: DTheme
-
         private let fixture: ExpandableContentPreviewFixture
         let scenario: ExpandableContentPreviewFixture.Scenario
 

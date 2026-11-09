@@ -21,7 +21,7 @@ struct ScanSpeechReviewTranscriptBottomView: DViewProtocol {
                 ],
                 action: viewModel.onTapContinue,
                 isLoading: isProcessing,
-                isDisabled: viewModel.textForParsing == nil,
+                isDisabled: !isProcessing && viewModel.textForParsing == nil,
             )
             .dStyle(
                 .primaryButton,

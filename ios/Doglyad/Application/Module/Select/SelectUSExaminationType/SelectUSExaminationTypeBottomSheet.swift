@@ -7,7 +7,6 @@ struct SelectUSExaminationTypeBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: SelectUSExaminationTypeArguments?
 
     var body: some View {

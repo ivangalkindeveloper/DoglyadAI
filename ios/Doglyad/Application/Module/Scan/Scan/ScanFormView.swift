@@ -4,9 +4,9 @@ import SwiftUI
 struct ScanFormView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @EnvironmentObject private var viewModel: ScanViewModel
     let focus: FocusState<ScanFocus?>.Binding
+    var isDisabled: Bool = false
 
     var body: some View {
         VStack(
@@ -29,6 +29,7 @@ struct ScanFormView: DViewProtocol {
                     submitLabel: .next,
                 ),
                 keyboardType: .default,
+                isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.examinationNumber",
             )
 
@@ -56,6 +57,7 @@ struct ScanFormView: DViewProtocol {
                     submitLabel: .next,
                 ),
                 keyboardType: .default,
+                isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.patientName",
             )
 
@@ -91,23 +93,24 @@ struct ScanFormView: DViewProtocol {
                         )
                     },
                 ],
-            )
-            .accessibilityIdentifier(
-                "scan.patientGender.\(viewModel.patientGender.rawValue)",
+                isDisabled: isDisabled,
+                accessibilityIdentifier: "scan.patientGender.\(viewModel.patientGender.rawValue)",
             )
             .padding(
                 .bottom,
                 size.s4,
             )
 
-            ScanDateOfBirthCardView()
-                .contentTransition(
-                    .opacity,
-                )
-                .padding(
-                    .bottom,
-                    size.s4,
-                )
+            ScanDateOfBirthCardView(
+                isDisabled: isDisabled,
+            )
+            .contentTransition(
+                .opacity,
+            )
+            .padding(
+                .bottom,
+                size.s4,
+            )
 
             DTextField(
                 inputTextController: viewModel.patientHeightCMTextController,
@@ -125,6 +128,7 @@ struct ScanFormView: DViewProtocol {
                     submitLabel: .next,
                 ),
                 keyboardType: .decimalPad,
+                isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.patientHeightCM",
             )
 
@@ -152,6 +156,7 @@ struct ScanFormView: DViewProtocol {
                     submitLabel: .next,
                 ),
                 keyboardType: .decimalPad,
+                isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.patientWeightKG",
             )
 
@@ -177,6 +182,7 @@ struct ScanFormView: DViewProtocol {
                 ],
                 mode: DTextFieldMultiLineMode(),
                 keyboardType: .default,
+                isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.patientComplaints",
             )
 
@@ -202,6 +208,7 @@ struct ScanFormView: DViewProtocol {
                 ],
                 mode: DTextFieldMultiLineMode(),
                 keyboardType: .default,
+                isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.examinationDescription",
             )
 
@@ -213,16 +220,19 @@ struct ScanFormView: DViewProtocol {
                 size.s16,
             )
 
-            ScanTemplateCardView()
-                .padding(
-                    .bottom,
-                    size.s16,
-                )
+            ScanTemplateCardView(
+                isDisabled: isDisabled,
+            )
+            .padding(
+                .bottom,
+                size.s16,
+            )
 
             NeuralModelCardView(
                 modelTitle: viewModel.selectedNeuralModelTitle,
                 availableRequestCount: viewModel.availableRequestCount,
                 onTap: viewModel.onTapNeuralModelSelection,
+                isDisabled: isDisabled,
             )
             .padding(
                 .bottom,
@@ -232,14 +242,16 @@ struct ScanFormView: DViewProtocol {
             SettingsAICardView(
                 settings: viewModel.settingsAI,
                 onTap: viewModel.onTapSettingsAI,
+                isDisabled: isDisabled,
             )
 
             DButton(
                 title: l10n[
                     .buttonClear,
                 ],
-                accessibilityIdentifier: "scan.clear",
                 action: viewModel.onTapClear,
+                isDisabled: isDisabled,
+                accessibilityIdentifier: "scan.clear",
             )
             .dStyle(
                 .primaryText,
@@ -252,6 +264,7 @@ struct ScanFormView: DViewProtocol {
                         .scanFillDevelopmentButton,
                     ],
                     action: viewModel.onTapFillDevelopment,
+                    isDisabled: isDisabled,
                 )
                 .dStyle(
                     .primaryText,

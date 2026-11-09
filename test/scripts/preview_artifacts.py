@@ -33,6 +33,10 @@ def preview_publication(run: Path) -> dict:
     if sha(catalog_path) != data["catalogSha256"]:
         raise ValueError("Preview catalog changed")
     cases = json.loads(catalog_path.read_text())["atlas"]
+    if any(case.get("previewScope") != "module" for case in cases):
+        raise ValueError(
+            "Only full-module Preview captures can be published; capture the current catalog"
+        )
     expected = [case["id"] for case in cases]
     if (
         not expected
@@ -64,9 +68,7 @@ def preview_publication(run: Path) -> dict:
             )
         ):
             raise ValueError("A Preview failed or was skipped")
-    required = [
-        (case["id"], shot) for case in cases for shot in case["screenshots"]
-    ]
+    required = [(case["id"], shot) for case in cases for shot in case["screenshots"]]
     if (
         len(data["images"]) != len(required)
         or data["expectedScreenshots"] != len(required)

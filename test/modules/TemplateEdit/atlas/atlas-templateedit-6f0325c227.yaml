@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: atlas-templateedit-6f0325c227
+tags:
+- atlas
+- TemplateEdit
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-templateedit-6f0325c227
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-templateedit-6f0325c227
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: preview.scrollEnd.ready
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: 04-TemplateEdit-6f0325c227

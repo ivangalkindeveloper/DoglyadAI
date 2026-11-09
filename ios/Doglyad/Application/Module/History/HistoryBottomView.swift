@@ -7,13 +7,17 @@ struct HistoryBottomView: DViewProtocol {
     @EnvironmentObject private var viewModel: HistoryViewModel
 
     var body: some View {
-        switch viewModel.state {
-        case _ as HistoryEmptyState:
+        let (title, action): (L10NKey?, () -> Void) = switch viewModel.state {
+        case _ as HistoryErrorState: (viewModel.sections.isEmpty ? .buttonUpdate : nil, viewModel.onTapRetry)
+        case _ as HistoryEmptyState: (.buttonBack, viewModel.onTapBack)
+        default: (nil, viewModel.onTapBack)
+        }
+        if let title {
             DButton(
                 title: l10n[
-                    .buttonBack,
+                    title,
                 ],
-                action: viewModel.onTapBack,
+                action: action,
             )
             .dStyle(
                 .primaryButton,
@@ -24,12 +28,10 @@ struct HistoryBottomView: DViewProtocol {
             .transition(
                 .move(
                     edge: .bottom,
-                )
-                .combined(
+                ).combined(
                     with: .opacity,
                 ),
             )
-        default: EmptyView()
         }
     }
 }

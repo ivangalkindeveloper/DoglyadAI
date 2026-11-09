@@ -11,6 +11,7 @@
 
         var body: some View {
             let model = PhotoLibraryPickerViewModel(
+                messager: DMessager(),
                 container: container,
                 router: router,
                 getSubscriptionStatus: {

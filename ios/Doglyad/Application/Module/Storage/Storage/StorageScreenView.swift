@@ -4,15 +4,9 @@ import SwiftUI
 struct StorageScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: StorageViewModel
 
     var body: some View {
-        let isProcessing = switch viewModel.state {
-        case _ as StorageProtocolsClearLoadingState, _ as StorageSpeechModelDeleteLoadingState, _ as StorageAllClearLoadingState: true
-        default: false
-        }
-
         DScreen(
             title: l10n[
                 .storageTitle,
@@ -59,9 +53,7 @@ struct StorageScreenView: DViewProtocol {
                         ],
                         action: viewModel.onTapClearAll,
                     )
-                }.disabled(
-                    isProcessing,
-                )
+                }
             }
         }
         .onAppear(

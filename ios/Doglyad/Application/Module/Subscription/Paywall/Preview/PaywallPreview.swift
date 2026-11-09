@@ -2,7 +2,7 @@
     import SwiftUI
 
     #Preview(
-        "01 PaywallCatalogLoadingState",
+        "01 PaywallCatalogLoadingState LoadingPlans",
     ) {
         PaywallPreviewView(
             state: PaywallCatalogLoadingState(),
@@ -12,11 +12,24 @@
     }
 
     #Preview(
-        "02 PaywallLoadingFailedState",
+        "02 PaywallCatalogLoadingState LoadingPlans ScrollEnd",
     ) {
         PaywallPreviewView(
-            state: PaywallLoadingFailedState(
-                errorDescription: "Не удалось загрузить тарифы. Проверьте подключение к интернету.",
+            state: PaywallCatalogLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "03 PaywallCatalogErrorState PlansRequestFailed",
+    ) {
+        PaywallPreviewView(
+            state: PaywallCatalogErrorState(
+                errorDescription: ModulePreviewFactory.makeContainer().l10n.text(
+                    .subscriptionOfferingsUnavailableDescription,
+                ),
             ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
@@ -24,7 +37,7 @@
     }
 
     #Preview(
-        "03 PaywallSuccessState",
+        "04 PaywallSuccessState AvailablePlans",
     ) {
         PaywallPreviewView(
             state: ModulePreviewFactory.paywallContent,
@@ -34,45 +47,18 @@
     }
 
     #Preview(
-        "04 Русский",
-    ) {
-        PaywallPreviewView()
-            .previewable(
-                container: PaywallPreviewFactory.makeContainer(
-                    code: "ru",
-                ),
-            )
-    }
-
-    #Preview(
-        "05 Каталог без предложений",
+        "05 PaywallSuccessState AvailablePlans ScrollEnd",
     ) {
         PaywallPreviewView(
-            state: PaywallSuccessState(
-                tiers: [],
-                plans: [],
-                selectedType: .pro,
-                selectedPlanID: nil,
-            ),
+            state: ModulePreviewFactory.paywallContent,
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
 
     #Preview(
-        "06 Обновление тарифов",
-    ) {
-        PaywallPreviewView(
-            state: PaywallCatalogLoadingState(
-                previousState: ModulePreviewFactory.paywallContent,
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "07 PaywallPurchaseLoadingState",
+        "06 PaywallPurchaseLoadingState PurchasingOrRestoring",
     ) {
         PaywallPreviewView(
             state: PaywallPurchaseLoadingState(
@@ -85,51 +71,27 @@
     }
 
     #Preview(
-        "08 PaywallPendingState",
+        "07 PaywallPurchaseLoadingState PurchasingOrRestoring ScrollEnd",
     ) {
         PaywallPreviewView(
-            state: PaywallPendingState(
+            state: PaywallPurchaseLoadingState(
                 content: ModulePreviewFactory.paywallContent,
                 plan: ModulePreviewFactory.paywallPlan,
             ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
 
     #Preview(
-        "09 PaywallOperationFailedState",
+        "08 PaywallOperationErrorState PaymentOperationFailed",
     ) {
         PaywallPreviewView(
-            state: PaywallOperationFailedState(
-                previousState: ModulePreviewFactory.paywallContent,
-                errorDescription: "Не удалось завершить оплату. Повторите попытку.",
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "10 PaywallPaymentCheckLoadingState",
-    ) {
-        PaywallPreviewView(
-            state: PaywallPaymentCheckLoadingState(
-                previousState: PaywallPendingState(
-                    content: ModulePreviewFactory.paywallContent,
-                    plan: ModulePreviewFactory.paywallPlan,
+            state: PaywallOperationErrorState(
+                errorDescription: ModulePreviewFactory.makeContainer().l10n.text(
+                    .subscriptionPurchaseErrorDescription,
                 ),
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "11 PaywallRestoreLoadingState",
-    ) {
-        PaywallPreviewView(
-            state: PaywallRestoreLoadingState(
                 previousState: ModulePreviewFactory.paywallContent,
             ),
         ).previewable(
@@ -138,14 +100,19 @@
     }
 
     #Preview(
-        "12 Восстановление без каталога",
+        "09 PaywallOperationErrorState PaymentOperationFailed ScrollEnd",
     ) {
         PaywallPreviewView(
-            state: PaywallRestoreLoadingState(
-                previousState: PaywallCatalogLoadingState(),
+            state: PaywallOperationErrorState(
+                errorDescription: ModulePreviewFactory.makeContainer().l10n.text(
+                    .subscriptionPurchaseErrorDescription,
+                ),
+                previousState: ModulePreviewFactory.paywallContent,
             ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
+
 #endif

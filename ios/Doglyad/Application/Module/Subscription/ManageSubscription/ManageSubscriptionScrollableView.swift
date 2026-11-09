@@ -3,6 +3,7 @@ import SwiftUI
 
 struct ManageSubscriptionScrollableView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
+    @EnvironmentObject private var viewModel: ManageSubscriptionViewModel
     let state: any ManageSubscriptionStateProtocol
     let toolbarInset: CGFloat
     let bottomInset: CGFloat

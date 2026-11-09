@@ -103,13 +103,16 @@ extension InitializationProcess {
                 SyncInitializationStep<InitializationProcess>(
                     title: "Firebase",
                     run: { (process: InitializationProcess) in
-                        if !getIsFirebaseConfigured() {
-                            AppCheck.setAppCheckProviderFactory(
-                                DAppCheckProviderFactory(),
-                            )
-                            FirebaseApp.configure()
-                            onFirebaseConfigured()
+                        guard !getIsFirebaseConfigured() else {
+                            return
                         }
+
+                        DAppCheckProviderFactory.configureDebugToken()
+                        AppCheck.setAppCheckProviderFactory(
+                            DAppCheckProviderFactory(),
+                        )
+                        FirebaseApp.configure()
+                        onFirebaseConfigured()
 
                         process.analytics!.applicationOpened(
                             environment: process.environment!.type,

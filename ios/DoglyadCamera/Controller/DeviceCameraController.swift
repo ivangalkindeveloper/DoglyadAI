@@ -9,14 +9,11 @@ public final class DeviceCameraController: DCameraControllerProtocol {
     @Published public private(set) var isLoading = true
     @Published public private(set) var isRunning = false
     @Published public private(set) var isCapturing = false
-
     private nonisolated let session = AVCaptureSession()
     private let previewLayer = AVCaptureVideoPreviewLayer()
     private nonisolated let output = AVCapturePhotoOutput()
     private var captureDelegate: DevicePhotoCaptureDelegate?
-
     private var capturePhotoCompletion: ((UIImage) -> Void)?
-
     private nonisolated let sessionQueue = DispatchQueue(
         label: "com.doglyad.camera.session",
         qos: .userInitiated,

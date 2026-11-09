@@ -3,7 +3,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Ошибка подгрузки страницы",
+        "01 ErrorPaginationView NextPageLoadFailed",
     ) {
         ErrorPaginationView(
             description: L10NPreviewFactory.make().text(

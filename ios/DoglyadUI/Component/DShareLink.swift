@@ -3,22 +3,24 @@ import SwiftUI
 public struct DShareLink<Content: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let item: String
+    private let content: Content
+    private let isDisabled: Bool
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
 
-    private let content: Content
-
     public init(
         item: String,
+        @ViewBuilder content: () -> Content,
+        isDisabled: Bool = false,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        @ViewBuilder content: () -> Content,
     ) {
         self.item = item
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.content = content()
+        self.isDisabled = isDisabled
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
@@ -34,6 +36,9 @@ public struct DShareLink<Content: View>: DViewProtocol {
                 ),
             )
         }
+        .disabled(
+            isDisabled,
+        )
         .modifier(
             DAccessibilityModifier(
                 element: accessibilityElement,

@@ -36,6 +36,8 @@ struct ManageSubscriptionContentView: DViewProtocol {
                     .manageSubscriptionRecoveryDescription,
                 ],
                 action: viewModel.onTapRecovery,
+                isDisabled:
+                viewModel.isProcessing,
             )
 
             DListButtonCard(
@@ -46,13 +48,13 @@ struct ManageSubscriptionContentView: DViewProtocol {
                     .manageSubscriptionSupportDescription,
                 ],
                 action: viewModel.onTapSupport,
+                isDisabled:
+                viewModel.isProcessing,
             )
 
             ManageSubscriptionRefundCardView(
                 state: state,
             )
-        }.disabled(
-            viewModel.isProcessing,
-        )
+        }
     }
 }

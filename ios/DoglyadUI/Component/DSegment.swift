@@ -19,20 +19,22 @@ public struct DSegmentItem<T: Equatable>: Identifiable {
 
 public struct DSegment<T: Equatable>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     let currentValue: T?
     let items: [DSegmentItem<T>]
+    private let isDisabled: Bool
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
 
     public init(
         currentValue: T?,
         items: [DSegmentItem<T>],
+        isDisabled: Bool = false,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
     ) {
         self.currentValue = currentValue
         self.items = items
+        self.isDisabled = isDisabled
         self.accessibilityElement = accessibilityElement
         self.accessibilityIdentifier = accessibilityIdentifier
     }
@@ -69,6 +71,9 @@ public struct DSegment<T: Equatable>: DViewProtocol {
                 value: currentValue,
             )
         }
+        .disabled(
+            isDisabled,
+        )
         .modifier(
             DAccessibilityModifier(
                 element: accessibilityElement,

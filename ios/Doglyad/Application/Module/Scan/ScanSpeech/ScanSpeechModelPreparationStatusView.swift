@@ -16,7 +16,7 @@ struct ScanSpeechModelPreparationStatusView: DViewProtocol {
             progress,
         ): (.scanSpeechModelDownloadDescription, color.grayscaleBackgroundWeak, progress ?? 0)
         case .loading: (.scanSpeechModelLoadingDescription, color.grayscaleBackgroundWeak, 1)
-        case .failed: (.scanSpeechModelLoadFailedDescription, color.warningDefaultStrong, nil)
+        case .failed: (.scanSpeechModelLoadFailedDescription, color.grayscaleBackgroundWeak, nil)
         case .ready: (nil, color.grayscaleBackgroundWeak, nil)
         }
 
@@ -36,9 +36,6 @@ struct ScanSpeechModelPreparationStatusView: DViewProtocol {
                 )
             }
 
-            ScanSpeechModelRetryButtonView(
-                preparation: preparation,
-            )
             if let progress {
                 DText(
                     "\(Int(progress * 100))%",

@@ -8,13 +8,13 @@ import SwiftUI
 
 @MainActor
 final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTemplateListStateProtocol> {
+    private let messager: DMessager
     @Published var focus: ReadyMadeTemplateListFocus?
-
     @NestedObservableObject var searchTextController: DTextFieldController
-
     private let arguments: ReadyMadeTemplateListArguments
 
     init(
+        messager: DMessager,
         container: DependencyContainer,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
@@ -24,7 +24,7 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: ReadyMadeTemplateListArguments,
     ) {
-        self.arguments = arguments
+        self.messager = messager
 
         _searchTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
@@ -46,6 +46,7 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
                 ],
             ),
         )
+        self.arguments = arguments
 
         super.init(
             state: ReadyMadeTemplateListLoadingState(),
@@ -53,9 +54,9 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .readyMadeTemplateList,
             ),
@@ -170,21 +171,30 @@ final class ReadyMadeTemplateListViewModel: DModuleViewModel<any ReadyMadeTempla
             )
         } onMainApiError: { error in
             self.emit(
-                ReadyMadeTemplateListFailedState(
+                ReadyMadeTemplateListErrorState(
                     error: error,
                 ),
+            )
+            self.messager.showUnknownError(
+                l10n: self.l10n,
             )
         } onMainConnectionError: { error in
             self.emit(
-                ReadyMadeTemplateListFailedState(
+                ReadyMadeTemplateListErrorState(
                     error: error,
                 ),
             )
+            self.messager.showUnknownError(
+                l10n: self.l10n,
+            )
         } onMainUnknownError: { error in
             self.emit(
-                ReadyMadeTemplateListFailedState(
+                ReadyMadeTemplateListErrorState(
                     error: error,
                 ),
+            )
+            self.messager.showUnknownError(
+                l10n: self.l10n,
             )
         }
     }

@@ -11,7 +11,7 @@ struct PaywallScreenView: DViewProtocol {
             content: { _, bottomInset in
                 Group {
                     switch viewModel.state {
-                    case let failed as PaywallLoadingFailedState:
+                    case let failed as PaywallCatalogErrorState:
                         PaywallLoadingErrorView(
                             state: failed,
                         )
@@ -89,13 +89,6 @@ struct PaywallScreenView: DViewProtocol {
         .onAppear(
             perform: viewModel.onAppear,
         )
-        .onReceive(
-            NotificationCenter.default.publisher(
-                for: UIApplication.didBecomeActiveNotification,
-            ),
-        ) { _ in
-            viewModel.onTapCheckPayment()
-        }
         .onDisappear(
             perform: viewModel.onDisappear,
         )

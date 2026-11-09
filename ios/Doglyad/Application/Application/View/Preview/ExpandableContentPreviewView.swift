@@ -4,7 +4,6 @@
 
     struct ExpandableContentPreviewView: DViewProtocol {
         @EnvironmentObject var theme: DTheme
-
         private let fixture: ExpandableContentPreviewFixture
         let scenario: ExpandableContentPreviewFixture.Scenario
 

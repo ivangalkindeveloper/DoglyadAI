@@ -2,7 +2,6 @@ import SwiftUI
 
 public struct DStreamingMarkdown: View {
     @StateObject private var controller: DStreamingMarkdownController
-
     private let streamID: UUID
     private let content: String
     private let isStreaming: Bool

@@ -86,6 +86,7 @@ final class Coordinator {
 extension Coordinator {
     func navigateAfterOnBoarding() async throws {
         let status = try await refreshSubscriptionStatus()
+        try Task.checkCancellation()
         switch status {
         case .some:
             root(

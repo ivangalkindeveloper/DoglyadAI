@@ -48,6 +48,7 @@ tags: [e2e, ReadyMadeTemplateList, TemplateAdd]
 - tapOn: ^Готовые шаблоны$
 - assertVisible: ^Не удалось загрузить шаблоны$
 - assertNotVisible: ^Готовых шаблонов пока нет$
+- assertVisible: {id: message.error}
 - takeScreenshot: ReadyMadeTemplateList-catalog-failed
 - tapOn: ^Повторить$
 - scrollUntilVisible:

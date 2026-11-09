@@ -2,22 +2,21 @@ import SwiftUI
 
 public struct DStretchyHeader<Content: View>: View {
     private let height: CGFloat
+    private let content: Content
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
 
-    private let content: Content
-
     public init(
         height: CGFloat,
+        @ViewBuilder content: () -> Content,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        @ViewBuilder content: () -> Content,
     ) {
         self.height = height
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.content = content()
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {

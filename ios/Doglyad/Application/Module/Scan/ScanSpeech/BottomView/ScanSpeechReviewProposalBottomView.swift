@@ -5,7 +5,6 @@ struct ScanSpeechReviewProposalBottomView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     @EnvironmentObject var theme: DTheme
-
     let state: ScanSpeechReviewProposalState
 
     var body: some View {

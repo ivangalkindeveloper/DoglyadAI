@@ -14,7 +14,7 @@ from artifacts import publication
 from configure_figma import bridge_key, configure
 from preview_artifacts import preview_publication
 
-LAYOUT_VERSION = "ordered-white-text-v7"
+LAYOUT_VERSION = "named-screens-v9"
 
 
 def serve(run: Path, timeout: int = 900, *, previews: bool = False) -> bool:
@@ -62,7 +62,7 @@ def serve(run: Path, timeout: int = 900, *, previews: bool = False) -> bool:
             if not self.is_authorized():
                 self.respond(401, b"{}")
                 return
-            if self.headers.get("X-Doglyad-Regression-Protocol") != "7":
+            if self.headers.get("X-Doglyad-Regression-Protocol") != "9":
                 self.respond(
                     426, b'{"error":"Restart the updated Doglyad AI Regression plugin"}'
                 )

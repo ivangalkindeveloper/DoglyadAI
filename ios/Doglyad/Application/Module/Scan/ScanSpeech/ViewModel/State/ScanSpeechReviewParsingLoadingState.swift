@@ -1,7 +1,7 @@
 import Foundation
 
 @MainActor
-final class ScanSpeechReviewParsingLoadingState: ScanSpeechStateProtocol, ScanSpeechParsingStateProtocol, @MainActor Equatable {
+final class ScanSpeechReviewParsingLoadingState: ScanSpeechStateProtocol, @MainActor Equatable {
     let parsedText: String
 
     init(

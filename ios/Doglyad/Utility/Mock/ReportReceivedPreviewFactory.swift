@@ -81,7 +81,7 @@
                 )
             case .deliveryFailed:
                 model.emit(
-                    ReportReceivedDeliveryFailedState(
+                    ReportReceivedDeliveryErrorState(
                         report: report,
                         error: URLError(
                             .notConnectedToInternet,

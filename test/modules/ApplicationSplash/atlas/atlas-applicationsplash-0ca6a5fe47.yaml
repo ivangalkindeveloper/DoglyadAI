@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-applicationsplash-0ca6a5fe47
+tags:
+- atlas
+- ApplicationSplash
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-applicationsplash-0ca6a5fe47
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-applicationsplash-0ca6a5fe47
+    timeout: 15000
+- takeScreenshot: 03-ApplicationSplash-0ca6a5fe47

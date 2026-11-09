@@ -13,35 +13,39 @@ struct ManageSubscriptionScreenView: DViewProtocol {
                 .manageSubscriptionTitle,
             ],
             onTapBack: viewModel.onTapBack,
-        ) { toolbarInset, bottomInset in
-            switch viewModel.state {
-            case let failed as ManageSubscriptionFailedState where failed.previousState == nil:
-                ManageSubscriptionLoadingErrorView(
-                    state: failed,
-                )
-                .padding(
-                    size.s16,
-                )
-                .padding(
-                    .top,
-                    toolbarInset,
-                )
-                .padding(
-                    .bottom,
-                    bottomInset,
-                )
-                .frame(
-                    maxWidth: .infinity,
-                    maxHeight: .infinity,
-                )
-            default:
-                ManageSubscriptionScrollableView(
-                    state: viewModel.state,
-                    toolbarInset: toolbarInset,
-                    bottomInset: bottomInset,
-                )
-            }
-        }
+            content: { toolbarInset, bottomInset in
+                switch viewModel.state {
+                case let failed as ManageSubscriptionErrorState where failed.previousState == nil:
+                    ManageSubscriptionLoadingErrorView(
+                        state: failed,
+                    )
+                    .padding(
+                        size.s16,
+                    )
+                    .padding(
+                        .top,
+                        toolbarInset,
+                    )
+                    .padding(
+                        .bottom,
+                        bottomInset,
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                        maxHeight: .infinity,
+                    )
+                default:
+                    ManageSubscriptionScrollableView(
+                        state: viewModel.state,
+                        toolbarInset: toolbarInset,
+                        bottomInset: bottomInset,
+                    )
+                }
+            },
+            bottom: {
+                ManageSubscriptionBottomView()
+            },
+        )
         .environmentObject(
             viewModel,
         )

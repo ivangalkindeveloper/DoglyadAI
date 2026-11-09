@@ -23,8 +23,7 @@ struct SubscriptionRecoveryStateView: DViewProtocol {
                     .enabled,
                 ).privacySensitive()
 
-                DButtonCard(
-                    isPlain: true,
+                DTextButton(
                     action: viewModel.onTapCopyKey,
                 ) {
                     DText(
@@ -51,26 +50,19 @@ struct SubscriptionRecoveryStateView: DViewProtocol {
                     color: color.grayscaleBackground,
                 ),
             )
+
         case let loading as SubscriptionRecoveryLoadingState:
             SubscriptionRecoveryStateView(
                 state: loading.previousState,
             )
 
-            DShimmerPlaceholder().frame(
-                height: size.s8,
-            )
-        case let failed as SubscriptionRecoveryFailedState:
+        case let failed as SubscriptionRecoveryErrorState:
             SubscriptionRecoveryStateView(
                 state: failed.previousState,
             )
 
-            DText(
-                failed.errorDescription,
-            ).dStyle(
-                font: typography.textSmall,
-                color: color.dangerDefault,
-            )
         case _ as SubscriptionRecoveryInitialState: EmptyView()
+
         default: EmptyView()
         }
     }

@@ -5,7 +5,6 @@ struct StorageClearAllBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: StorageClearAllArguments?
 
     var body: some View {

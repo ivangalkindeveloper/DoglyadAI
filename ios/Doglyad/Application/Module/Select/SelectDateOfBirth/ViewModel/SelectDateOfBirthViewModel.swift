@@ -6,7 +6,6 @@ final class SelectDateOfBirthViewModel: DModuleViewModel<any SelectDateOfBirthSt
     @Published private(set) var date: Date
     let fromDate: Date
     let toDate: Date
-
     private let arguments: SelectDateOfBirthArguments?
 
     init(
@@ -19,24 +18,24 @@ final class SelectDateOfBirthViewModel: DModuleViewModel<any SelectDateOfBirthSt
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: SelectDateOfBirthArguments?,
     ) {
-        self.arguments = arguments
         let toDate = Date()
-        self.toDate = toDate
         date = arguments?.currentValue ?? toDate
         fromDate = Calendar.current.date(
             byAdding: .year,
             value: -100,
             to: toDate,
         )!
+        self.toDate = toDate
+        self.arguments = arguments
         super.init(
             state: SelectDateOfBirthDefaultState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .selectDateOfBirth,
             ),

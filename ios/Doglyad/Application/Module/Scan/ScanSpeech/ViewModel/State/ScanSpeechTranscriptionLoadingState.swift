@@ -2,10 +2,18 @@ import DoglyadSpeech
 
 @MainActor
 final class ScanSpeechTranscriptionLoadingState: ScanSpeechStateProtocol, @MainActor Equatable {
+    let parsedText: String?
+
+    init(
+        parsedText: String? = nil,
+    ) {
+        self.parsedText = parsedText
+    }
+
     static func == (
-        _: ScanSpeechTranscriptionLoadingState,
-        _: ScanSpeechTranscriptionLoadingState,
+        lhs: ScanSpeechTranscriptionLoadingState,
+        rhs: ScanSpeechTranscriptionLoadingState,
     ) -> Bool {
-        true
+        lhs.parsedText == rhs.parsedText
     }
 }

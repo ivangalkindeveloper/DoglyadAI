@@ -68,11 +68,61 @@ def configuration() -> dict:
         or config.get("scheme") != "Doglyad-Debug-Local"
     ):
         raise ValueError("Regression uses only the local app ID and local scheme")
-    if not os.environ.get("REGRESSION_APP_CHECK_DEBUG_TOKEN"):
+    if (
+        not os.environ.get("REGRESSION_APP_CHECK_DEBUG_TOKEN")
+        and not _is_local_app_check_configured()
+    ):
         raise ValueError(
-            "Set REGRESSION_APP_CHECK_DEBUG_TOKEN in test/secrets/.env or the process environment to a registered Firebase development debug token"
+            "Set APP_CHECK_DEBUG_TOKEN in ios/Config/Config.Local.xcconfig, "
+            "or override it with REGRESSION_APP_CHECK_DEBUG_TOKEN in test/secrets/.env "
+            "or the process environment. Register the token in Firebase development App Check."
         )
     return config
+
+
+def _is_local_app_check_configured() -> bool:
+    """Resolve xcconfig includes/macros with Xcode without publishing build settings."""
+    try:
+        result = subprocess.run(
+            [
+                "xcodebuild",
+                "-project",
+                str(ROOT / "ios/Doglyad.xcodeproj"),
+                "-scheme",
+                "Doglyad-Debug-Local",
+                "-showBuildSettings",
+                "-json",
+                "-derivedDataPath",
+                str(TEST / "cache/DerivedData"),
+                "-disableAutomaticPackageResolution",
+                "-skipPackageUpdates",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=60,
+        )
+        if result.returncode:
+            return False
+        targets = json.loads(result.stdout)
+        for target in targets:
+            if target.get("target") != "Doglyad":
+                continue
+            settings = target["buildSettings"]
+            token = settings.get("APP_CHECK_DEBUG_TOKEN", "").strip()
+            return (
+                settings.get("CONFIGURATION") == "Debug-Local"
+                and settings.get("PRODUCT_BUNDLE_IDENTIFIER")
+                == "com.medical.doglyad.local"
+                and bool(token)
+                and "$(" not in token
+                and "${" not in token
+            )
+    except (OSError, subprocess.TimeoutExpired, ValueError, KeyError, TypeError):
+        # Captured output and exception arguments can contain the token.
+        return False
+    return False
 
 
 def maestro_executable() -> str:
@@ -286,7 +336,9 @@ def cleanup(device: str | None, compose: list[str], run: Path, env: dict) -> boo
 
 def execute(config: dict, publish: bool) -> int:
     if publish and not config.get("figmaFileKey"):
-        raise ValueError("Set figmaFileKey in test/secrets/config.local.json before --publish")
+        raise ValueError(
+            "Set figmaFileKey in test/secrets/config.local.json before --publish"
+        )
     suite = validate_suite()
     coverage = review()
     maestro = maestro_executable()
@@ -374,19 +426,20 @@ def execute(config: dict, publish: bool) -> int:
             progress="Booting iOS Simulator",
         )
         # The token is never included in the report, YAML, screenshots, or command logs.
-        required(
-            [
-                "xcrun",
-                "simctl",
-                "spawn",
-                device,
-                "launchctl",
-                "setenv",
-                "AppCheckDebugToken",
-                env["REGRESSION_APP_CHECK_DEBUG_TOKEN"],
-            ],
-            run / "device.log",
-        )
+        if token := env.get("REGRESSION_APP_CHECK_DEBUG_TOKEN"):
+            required(
+                [
+                    "xcrun",
+                    "simctl",
+                    "spawn",
+                    device,
+                    "launchctl",
+                    "setenv",
+                    "AppCheckDebugToken",
+                    token,
+                ],
+                run / "device.log",
+            )
         required(
             [
                 "xcrun",

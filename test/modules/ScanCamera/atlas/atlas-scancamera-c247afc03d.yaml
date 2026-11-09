@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-scancamera-c247afc03d
+tags:
+- atlas
+- ScanCamera
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-scancamera-c247afc03d
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-scancamera-c247afc03d
+    timeout: 15000
+- takeScreenshot: 06-ScanCamera-c247afc03d

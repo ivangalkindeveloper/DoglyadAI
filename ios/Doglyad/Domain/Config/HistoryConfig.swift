@@ -6,7 +6,6 @@ struct HistoryConfig: Codable {
 
 extension HistoryConfig {
     private static let defaultPageSize = 20
-
     static let `default` = HistoryConfig(
         pageSize: defaultPageSize,
     )

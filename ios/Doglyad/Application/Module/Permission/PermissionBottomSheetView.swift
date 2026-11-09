@@ -5,7 +5,6 @@ import SwiftUI
 struct PermissionBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: PermissionViewModel
 
     var body: some View {

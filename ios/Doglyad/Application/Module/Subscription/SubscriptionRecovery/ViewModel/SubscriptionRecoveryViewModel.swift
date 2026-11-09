@@ -6,6 +6,7 @@ import UIKit
 
 @MainActor
 final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionRecoveryStateProtocol> {
+    private let messager: DMessager
     @Published var focus: SubscriptionRecoveryFocus?
     @NestedObservableObject var recoveryTextController = DTextFieldController()
     private let createRecoveryKey: () async throws -> String
@@ -13,6 +14,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
     private var isDismissalRequested = false
 
     init(
+        messager: DMessager,
         container: DependencyContainer,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
@@ -24,6 +26,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
         createRecoveryKey: @escaping () async throws -> String,
         recover: @escaping (String) async throws -> SubscriptionStatus?,
     ) {
+        self.messager = messager
         self.createRecoveryKey = createRecoveryKey
         self.recover = recover
         super.init(
@@ -32,9 +35,9 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .subscriptionRecovery,
             ),
@@ -57,7 +60,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
     private var stableState: any SubscriptionRecoveryStateProtocol {
         switch state {
         case let loading as SubscriptionRecoveryLoadingState: loading.previousState
-        case let failed as SubscriptionRecoveryFailedState: failed.previousState
+        case let failed as SubscriptionRecoveryErrorState: failed.previousState
         default: state
         }
     }
@@ -123,12 +126,15 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
                     return
                 }
                 emit(
-                    SubscriptionRecoveryFailedState(
+                    SubscriptionRecoveryErrorState(
                         previousState: previous,
                         errorDescription: l10n.text(
                             .errorUnknownDescription,
                         ),
                     ),
+                )
+                messager.showUnknownError(
+                    l10n: l10n,
                 )
             }
         }
@@ -177,12 +183,15 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
                     return
                 }
                 emit(
-                    SubscriptionRecoveryFailedState(
+                    SubscriptionRecoveryErrorState(
                         previousState: previous,
                         errorDescription: l10n.text(
                             .subscriptionRecoveryFailedDescription,
                         ),
                     ),
+                )
+                messager.showUnknownError(
+                    l10n: l10n,
                 )
             }
         }

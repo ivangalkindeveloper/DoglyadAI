@@ -12,7 +12,7 @@
 
         var body: some View {
             let isErrorPresented = switch state {
-            case _ as SettingsAIFailedState: true
+            case _ as SettingsAIErrorState: true
             default: false
             }
 

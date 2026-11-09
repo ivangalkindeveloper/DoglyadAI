@@ -3,7 +3,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Локализованный заголовок",
+        "01 SectionHeaderView LocalizedTitle",
         traits: .sizeThatFitsLayout,
     ) {
         SectionHeaderView(
@@ -18,7 +18,7 @@
     }
 
     #Preview(
-        "02 Заголовок из конфигурации",
+        "02 SectionHeaderView ConfigurationTitle",
         traits: .sizeThatFitsLayout,
     ) {
         SectionHeaderView(

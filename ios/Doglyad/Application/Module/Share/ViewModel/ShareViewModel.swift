@@ -10,11 +10,8 @@ import UIKit
 @MainActor
 final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
     let report: USExaminationReport
-
     let userEmail: String?
-
     private let examinationTypesById: [String: USExaminationType]
-
     private let messager: DMessager
 
     init(
@@ -29,12 +26,11 @@ final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         getUserEmail: @escaping () -> String?,
     ) {
-        self.messager = messager
-
         report = (arguments.report)
         userEmail = getUserEmail()
 
         examinationTypesById = container.usExaminationTypesById
+        self.messager = messager
 
         super.init(
             state: ShareInitialState(),
@@ -42,9 +38,9 @@ final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .share,
             ),
@@ -178,7 +174,7 @@ private extension ShareViewModel {
             )
         } onMainUnknownError: { error in
             self.emit(
-                ShareFailedState(
+                ShareErrorState(
                     error: error,
                 ),
             )

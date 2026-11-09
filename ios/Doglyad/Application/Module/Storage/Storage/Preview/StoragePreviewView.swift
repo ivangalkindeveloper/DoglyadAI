@@ -9,10 +9,11 @@
         @EnvironmentObject private var router: DRouter
         @EnvironmentObject private var messager: DMessager
         let state: any StorageStateProtocol
+        var isSpeechModelAvailable = true
 
         var body: some View {
             let isErrorPresented = switch state {
-            case _ as StorageFailedState: true
+            case _ as StorageErrorState: true
             default: false
             }
 
@@ -31,6 +32,10 @@
                     container.initialSettingsAI
                 },
                 onRefreshSubscriptionStatus: {},
+            )
+
+            model.configurePreviewSpeechModel(
+                isAvailable: isSpeechModelAvailable,
             )
 
             model.preparePreview(

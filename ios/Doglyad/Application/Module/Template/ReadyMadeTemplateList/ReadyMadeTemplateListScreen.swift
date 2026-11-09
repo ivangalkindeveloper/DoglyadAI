@@ -1,16 +1,18 @@
+import DoglyadUI
 import Router
 import SwiftUI
 
 struct ReadyMadeTemplateListScreen: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: ReadyMadeTemplateListArguments
 
     var body: some View {
         ReadyMadeTemplateListScreenView(
             viewModel: ReadyMadeTemplateListViewModel(
+                messager: messager,
                 container: container,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in

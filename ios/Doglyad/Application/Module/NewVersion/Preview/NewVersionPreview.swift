@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 NewVersionDefaultState",
+        "01 NewVersionDefaultState MandatoryUpdate",
     ) {
         NewVersionPreviewView(
             state: NewVersionDefaultState(),

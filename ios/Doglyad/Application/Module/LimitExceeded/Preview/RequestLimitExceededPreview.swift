@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 RequestLimitExceededDefaultState",
+        "01 RequestLimitExceededDefaultState DailyLimitReached",
     ) {
         RequestLimitExceededPreviewView(
             state: RequestLimitExceededDefaultState(),

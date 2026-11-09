@@ -5,24 +5,27 @@ public struct DToggleCard: DViewProtocol {
     private let title: LocalizedStringResource
     private let description: LocalizedStringResource
     @Binding private var isOn: Bool
+    private let action: () -> Void
+    private let isDisabled: Bool
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
-    private let action: () -> Void
 
     public init(
         title: LocalizedStringResource,
         description: LocalizedStringResource,
         isOn: Binding<Bool>,
+        action: @escaping () -> Void,
+        isDisabled: Bool = false,
         accessibilityElement: AccessibilityChildBehavior? = .combine,
         accessibilityIdentifier: String? = nil,
-        action: @escaping () -> Void,
     ) {
         self.title = title
         self.description = description
         _isOn = isOn
+        self.action = action
+        self.isDisabled = isDisabled
         self.accessibilityElement = accessibilityElement
         self.accessibilityIdentifier = accessibilityIdentifier
-        self.action = action
     }
 
     public var body: some View {
@@ -30,43 +33,45 @@ public struct DToggleCard: DViewProtocol {
             alignment: .leading,
             spacing: size.s4,
         ) {
-            DButtonCard(
+            DCard(
+                action: action,
+                content: {
+                    HStack {
+                        DText(
+                            title,
+                        ).dStyle(
+                            font: typography.linkSmall,
+                        )
+
+                        Spacer(
+                            minLength: size.s16,
+                        )
+
+                        DToggle(
+                            title,
+                            isOn: $isOn,
+                        )
+                        .labelsHidden()
+                        .toggleStyle(
+                            .switch,
+                        )
+                        .allowsHitTesting(
+                            false,
+                        )
+                    }
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading,
+                    )
+                    .foregroundStyle(
+                        color.grayscaleHeader,
+                    )
+                },
+                isDisabled: isDisabled,
                 accessibilityElement: accessibilityElement,
                 accessibilityIdentifier: accessibilityIdentifier,
                 accessibilityTraits: isOn ? .isSelected : [],
-                action: action,
-            ) {
-                HStack {
-                    DText(
-                        title,
-                    ).dStyle(
-                        font: typography.linkSmall,
-                    )
-
-                    Spacer(
-                        minLength: size.s16,
-                    )
-
-                    DToggle(
-                        title,
-                        isOn: $isOn,
-                    )
-                    .labelsHidden()
-                    .toggleStyle(
-                        .switch,
-                    )
-                    .allowsHitTesting(
-                        false,
-                    )
-                }
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: .leading,
-                )
-                .foregroundStyle(
-                    color.grayscaleHeader,
-                )
-            }
+            )
 
             DText(
                 description,

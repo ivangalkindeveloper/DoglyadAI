@@ -3,8 +3,8 @@ import SwiftUI
 
 struct ReportDetailPhotosView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
-
     @EnvironmentObject private var viewModel: ReportDetailViewModel
+    var isDisabled: Bool = false
 
     var body: some View {
         ScrollView(
@@ -23,12 +23,13 @@ struct ReportDetailPhotosView: DViewProtocol {
                         configuration: viewModel.photoCardConfiguration(
                             for: photo.id,
                         ),
-                        accessibilityIdentifier: "reportDetail.photo.\(photo.id)",
                         onTap: {
                             viewModel.onTapPhoto(
                                 photo,
                             )
                         },
+                        isDisabled: isDisabled,
+                        accessibilityIdentifier: "reportDetail.photo.\(photo.id)",
                     )
                 }
             }

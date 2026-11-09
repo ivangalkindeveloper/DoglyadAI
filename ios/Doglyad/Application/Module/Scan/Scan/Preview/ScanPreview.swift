@@ -5,20 +5,33 @@
     import SwiftUI
 
     #Preview(
-        "01 ScanInitializationLoadingState",
+        "01 ScanInitialState BeforeDraftRestoration",
     ) {
         ScanPreviewView(
-            state: ScanInitializationLoadingState(),
+            state: ScanInitialState(),
+            isDraftPresent: false,
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "02 ScanInitializationFailedState",
+        "02 ScanInitialState BeforeDraftRestoration ScrollEnd",
     ) {
         ScanPreviewView(
-            state: ScanInitializationFailedState(
+            state: ScanInitialState(),
+            isDraftPresent: false,
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "03 ScanInitializationErrorState DraftReadFailed",
+    ) {
+        ScanPreviewView(
+            state: ScanInitializationErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -29,7 +42,22 @@
     }
 
     #Preview(
-        "03 ScanInitialState",
+        "04 ScanInitializationErrorState DraftReadFailed ScrollEnd",
+    ) {
+        ScanPreviewView(
+            state: ScanInitializationErrorState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "05 ScanInitialState RestoredDraft",
     ) {
         ScanPreviewView(
             state: ScanInitialState(),
@@ -39,7 +67,18 @@
     }
 
     #Preview(
-        "04 ScanGenerationLoadingState",
+        "06 ScanInitialState RestoredDraft ScrollEnd",
+    ) {
+        ScanPreviewView(
+            state: ScanInitialState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "07 ScanGenerationLoadingState GeneratingReport",
     ) {
         ScanPreviewView(
             state: ScanGenerationLoadingState(
@@ -51,35 +90,23 @@
     }
 
     #Preview(
-        "05 ScanReportSaveLoadingState",
+        "08 ScanGenerationLoadingState GeneratingReport ScrollEnd",
     ) {
         ScanPreviewView(
-            state: ScanReportSaveLoadingState(
-                report: ModulePreviewFactory.report,
+            state: ScanGenerationLoadingState(
                 snapshot: ModulePreviewFactory.draft,
             ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
 
     #Preview(
-        "06 ScanClearLoadingState",
+        "09 ScanErrorState GenerationFailed",
     ) {
         ScanPreviewView(
-            state: ScanClearLoadingState(
-                previousState: ScanInitialState(),
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "07 ScanFailedState",
-    ) {
-        ScanPreviewView(
-            state: ScanFailedState(
+            state: ScanErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -90,7 +117,22 @@
     }
 
     #Preview(
-        "08 Кнопка добавления снимков",
+        "10 ScanErrorState GenerationFailed ScrollEnd",
+    ) {
+        ScanPreviewView(
+            state: ScanErrorState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "11 ScanMediaButtonView AddPhotos",
     ) {
         VStack {
             ScanMediaButtonView(

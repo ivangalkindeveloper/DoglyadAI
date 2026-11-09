@@ -13,7 +13,6 @@ struct ScanSpeechBottomSheet: View {
         ScanSpeechBottomSheetView(
             viewModel: ScanSpeechViewModel(
                 container: container,
-                messager: messager,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in
                     subscriptionViewModel.status
@@ -34,6 +33,7 @@ struct ScanSpeechBottomSheet: View {
                 onRefreshSubscriptionStatus: { [subscriptionViewModel] in
                     await subscriptionViewModel.refreshStatus()
                 },
+                messager: messager,
                 arguments: arguments,
             ),
         )

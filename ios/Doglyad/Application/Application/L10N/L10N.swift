@@ -30,11 +30,11 @@ final class L10N: ObservableObject, Sendable {
                 key,
             ] = value
         }
-        self.strings = strings
         locale = Locale(
             identifier: localization.code,
         )
         voice = localization.voice
+        self.strings = strings
     }
 
     subscript(

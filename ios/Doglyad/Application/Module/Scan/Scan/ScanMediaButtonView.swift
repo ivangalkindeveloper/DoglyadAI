@@ -7,63 +7,66 @@ struct ScanMediaButtonView: DViewProtocol {
         \.isEnabled,
     ) private var isEnabled
     @EnvironmentObject var theme: DTheme
-
     let isCompact: Bool
     let action: () -> Void
+    private let isDisabled: Bool
 
     init(
         isCompact: Bool = false,
         action: @escaping () -> Void,
+        isDisabled: Bool = false,
     ) {
         self.isCompact = isCompact
         self.action = action
+        self.isDisabled = isDisabled
     }
 
     var body: some View {
-        DButtonCard(
-            isPlain: true,
-            accessibilityIdentifier: "scan.importMedia",
+        DTextButton(
             action: action,
-        ) {
-            HStack(
-                spacing: size.s8,
-            ) {
-                DIcon(
-                    .import,
-                    color: color.primaryDefault,
-                    height: size.s24,
-                )
-
-                if !isCompact {
-                    DText(
-                        l10n[
-                            .scanImportButton,
-                        ],
-                    )
-                    .dStyle(
-                        font: typography.linkSmall,
+            content: {
+                HStack(
+                    spacing: size.s8,
+                ) {
+                    DIcon(
+                        .import,
                         color: color.primaryDefault,
-                        alignment: .center,
+                        height: size.s24,
+                    )
+
+                    if !isCompact {
+                        DText(
+                            l10n[
+                                .scanImportButton,
+                            ],
+                        )
+                        .dStyle(
+                            font: typography.linkSmall,
+                            color: color.primaryDefault,
+                            alignment: .center,
+                        )
+                    }
+                }
+                .padding(
+                    isCompact ? .zero : size.s16,
+                )
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                )
+                .background {
+                    DCardBackground(
+                        cornerRadius: size.cardCornerRadius,
+                        color: isEnabled && !isDisabled ? color.grayscaleBackground : color.grayscaleInput,
+                        borderColor: color.primaryDefault,
+                        lineWidth: 1,
+                        dash: [size.s8, size.s4],
                     )
                 }
-            }
-            .padding(
-                isCompact ? .zero : size.s16,
-            )
-            .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity,
-            )
-            .background {
-                DCardBackground(
-                    cornerRadius: size.cardCornerRadius,
-                    color: isEnabled ? color.grayscaleBackground : color.grayscaleInput,
-                    borderColor: color.primaryDefault,
-                    lineWidth: 1,
-                    dash: [size.s8, size.s4],
-                )
-            }
-        }
+            },
+            isDisabled: isDisabled,
+            accessibilityIdentifier: "scan.importMedia",
+        )
 
         .frame(
             width: isCompact ? compactButtonSize : nil,

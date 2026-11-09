@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 OnBoardingInitialState",
+        "01 OnBoardingInitialState Welcome",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingInitialState(),
@@ -15,7 +15,7 @@
     }
 
     #Preview(
-        "02 OnBoardingSecondState",
+        "02 OnBoardingSecondState Features",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingSecondState(),
@@ -25,7 +25,7 @@
     }
 
     #Preview(
-        "03 OnBoardingLegalState",
+        "03 OnBoardingLegalState ConsentNotSelected",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingLegalState(),
@@ -35,7 +35,7 @@
     }
 
     #Preview(
-        "04 Согласие принято",
+        "04 OnBoardingLegalState ConsentSelected",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingLegalState(
@@ -47,7 +47,7 @@
     }
 
     #Preview(
-        "05 OnBoardingExaminationTypeState",
+        "05 OnBoardingExaminationTypeState ChooseExaminationType",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingExaminationTypeState(),
@@ -57,7 +57,7 @@
     }
 
     #Preview(
-        "06 OnBoardingFinalState",
+        "06 OnBoardingFinalState ReadyToStart",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingFinalState(),
@@ -67,7 +67,7 @@
     }
 
     #Preview(
-        "07 OnBoardingLoadingState",
+        "07 OnBoardingLoadingState SavingPreferences",
     ) {
         OnBoardingPreviewView(
             state: OnBoardingLoadingState(),
@@ -77,10 +77,10 @@
     }
 
     #Preview(
-        "08 OnBoardingFailedState",
+        "08 OnBoardingErrorState PreferencesSaveFailed",
     ) {
         OnBoardingPreviewView(
-            state: OnBoardingFailedState(
+            state: OnBoardingErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),

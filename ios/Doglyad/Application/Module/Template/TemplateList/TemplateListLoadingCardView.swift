@@ -5,60 +5,35 @@ struct TemplateListLoadingCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     var body: some View {
-        VStack(
-            alignment: .leading,
-            spacing: size.s8,
+        DCard(
+            action: {},
         ) {
-            DShimmerPlaceholder(
-                cornerRadius: .infinity,
-            )
-            .frame(
-                width: size.s128,
-                height: size.s14,
-            )
-
-            DShimmerPlaceholder(
-                cornerRadius: .infinity,
-            )
-            .frame(
-                width: size.s96,
-                height: size.s14,
-            )
-
             VStack(
                 alignment: .leading,
                 spacing: size.s4,
             ) {
-                ForEach(
-                    0 ..< 4,
-                    id: \.self,
-                ) { _ in
-                    DShimmerPlaceholder(
-                        cornerRadius: .infinity,
-                    )
-                    .frame(
-                        maxWidth: .infinity,
-                        minHeight: size.s12,
-                        maxHeight: size.s12,
-                    )
-                }
+                DShimmerTextLines(
+                    lineHeight: size.s18,
+                    lineWidths: [0.62],
+                )
+
+                DShimmerTextLines(
+                    lineHeight: size.s18,
+                    lineWidths: [0.78],
+                )
+
+                DShimmerTextLines(
+                    lineHeight: size.s16,
+                    lineWidths: [0.92, 0.76, 0.85, 0.56],
+                )
             }
+            .frame(
+                maxWidth: .infinity,
+                alignment: .leading,
+            )
         }
-        .padding(
-            size.s14,
-        )
-        .frame(
-            maxWidth: .infinity,
-            alignment: .leading,
-        )
-        .background(
-            color.grayscaleBackground,
-        )
-        .cornerRadius(
-            size.cardCornerRadius,
-        )
-        .dShimmer(
-            cornerRadius: size.cardCornerRadius,
+        .allowsHitTesting(
+            false,
         )
     }
 }

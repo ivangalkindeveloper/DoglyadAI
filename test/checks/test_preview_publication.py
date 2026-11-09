@@ -17,22 +17,51 @@ class PreviewPublicationTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.run = Path(self.temporary.name)
-        cases = [{"id": "atlas-one", "screenshots": ["one"]}, {"id": "atlas-two", "screenshots": ["two"]}]
+        cases = [
+            {"id": "atlas-one", "previewScope": "module", "screenshots": ["one"]},
+            {"id": "atlas-two", "previewScope": "module", "screenshots": ["two"]},
+        ]
         (self.run / "catalog.json").write_text(json.dumps({"atlas": cases}))
-        (self.run / "junit.xml").write_text('<testsuite tests="2" failures="0"><testcase name="atlas-one"/><testcase name="atlas-two"/></testsuite>')
-        png = base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=')
+        (self.run / "junit.xml").write_text(
+            '<testsuite tests="2" failures="0"><testcase name="atlas-one"/><testcase name="atlas-two"/></testsuite>'
+        )
+        png = base64.b64decode(
+            "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+        )
         images = []
         for case in cases:
             shot = case["screenshots"][0]
             path = self.run / (shot + ".png")
             path.write_bytes(png)
-            images.append({"id": case["id"] + "--" + shot, "caseId": case["id"], "shot": shot,
-                           "kind": "render", "locale": "ru", "path": path.name, "sha256": sha(path), "width": 1, "height": 1})
-        self.data = {"scope": "previews", "status": "passed", "functionalTestsRun": False,
-                     "cleanupStatus": "passed", "suiteHash": "hash", "batchExitCodes": {"junit.xml": 0},
-                     "catalogSha256": sha(self.run / "catalog.json"), "expectedCases": [c["id"] for c in cases],
-                     "results": [{"id": c["id"], "exitCode": 0, "junit": "junit.xml"} for c in cases],
-                     "images": images, "expectedScreenshots": 2, "junitHashes": {"junit.xml": sha(self.run / "junit.xml")}}
+            images.append(
+                {
+                    "id": case["id"] + "--" + shot,
+                    "caseId": case["id"],
+                    "shot": shot,
+                    "kind": "render",
+                    "locale": "ru",
+                    "path": path.name,
+                    "sha256": sha(path),
+                    "width": 1,
+                    "height": 1,
+                }
+            )
+        self.data = {
+            "scope": "previews",
+            "status": "passed",
+            "functionalTestsRun": False,
+            "cleanupStatus": "passed",
+            "suiteHash": "hash",
+            "batchExitCodes": {"junit.xml": 0},
+            "catalogSha256": sha(self.run / "catalog.json"),
+            "expectedCases": [c["id"] for c in cases],
+            "results": [
+                {"id": c["id"], "exitCode": 0, "junit": "junit.xml"} for c in cases
+            ],
+            "images": images,
+            "expectedScreenshots": 2,
+            "junitHashes": {"junit.xml": sha(self.run / "junit.xml")},
+        }
 
     def publish(self):
         (self.run / "preview-report.json").write_text(json.dumps(self.data))
@@ -41,6 +70,15 @@ class PreviewPublicationTests(unittest.TestCase):
     def test_complete_preview_capture_is_publishable_without_functional_results(self):
         self.assertEqual(self.publish()["scope"], "previews")
         self.assertTrue((self.run / "preview-publication.json").exists())
+
+    def test_component_capture_cannot_be_published_as_module_previews(self):
+        path = self.run / "catalog.json"
+        catalog = json.loads(path.read_text())
+        catalog["atlas"][0]["previewScope"] = "component"
+        path.write_text(json.dumps(catalog))
+        self.data["catalogSha256"] = sha(path)
+        with self.assertRaisesRegex(ValueError, "full-module"):
+            self.publish()
 
     def test_a_subset_cannot_be_presented_as_a_complete_preview_collection(self):
         self.data["expectedCases"].pop()
@@ -52,7 +90,9 @@ class PreviewPublicationTests(unittest.TestCase):
 
     def test_skipped_preview_rejects_publication_even_with_updated_junit_hash(self):
         path = self.run / "junit.xml"
-        path.write_text('<testsuite><testcase name="atlas-one"><skipped/></testcase><testcase name="atlas-two"/></testsuite>')
+        path.write_text(
+            '<testsuite><testcase name="atlas-one"><skipped/></testcase><testcase name="atlas-two"/></testsuite>'
+        )
         self.data["junitHashes"]["junit.xml"] = sha(path)
         with self.assertRaisesRegex(ValueError, "failed or was skipped"):
             self.publish()

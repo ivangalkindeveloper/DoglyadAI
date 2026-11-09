@@ -16,6 +16,7 @@ class DModuleViewModel<State>: DStateViewModel<State> {
     let router: DRouter
     @Published private(set) var subscriptionStatus: SubscriptionStatus?
     var operationTask: Task<Void, Never>?
+    private var localOperationID: UUID?
     private var subscriptionObservation: AnyCancellable?
     private let observeSubscriptionStatus: (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable
     private let getSettingsAI: () -> SettingsAI
@@ -31,9 +32,9 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
-        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
         onRefreshSubscriptionStatus: @escaping () async -> Void,
+        onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         analyticsDestination: AnalyticsRouteDestination,
         analyticsParameters: AnalyticsParameters = .empty,
     ) {
@@ -44,14 +45,14 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         self.getSettingsAI = getSettingsAI
         self.onRefreshSubscriptionStatus = onRefreshSubscriptionStatus
         self.onSubscriptionStatusUpdated = onSubscriptionStatusUpdated
-        self.analyticsDestination = analyticsDestination
-        self.analyticsParameters = analyticsParameters
         coordinator = Coordinator(
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
         )
+        self.analyticsDestination = analyticsDestination
+        self.analyticsParameters = analyticsParameters
         super.init(
             state: state,
         )
@@ -148,7 +149,50 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         subscriptionObservation = nil
     }
 
+    /// Local persistence keeps the current presentation. The task owns duplicate/stale guards.
+    final func performLocalOperation<Value>(
+        _ execute: @escaping @MainActor () async throws -> Value,
+        onSuccess: @escaping @MainActor (Value) -> Void,
+        onFailure: @escaping @MainActor (Error) -> Void,
+    ) {
+        guard operationTask == nil else {
+            return
+        }
+        let id = UUID()
+        localOperationID = id
+        let task = Task { @MainActor [weak self] in
+            defer {
+                if self?.localOperationID == id {
+                    self?.localOperationID = nil
+                    self?.operationTask = nil
+                }
+            }
+            do {
+                try Task.checkCancellation()
+                let value = try await execute()
+                guard let self, !Task.isCancelled, localOperationID == id else {
+                    return
+                }
+                onSuccess(
+                    value,
+                )
+            } catch is CancellationError {
+                return
+            } catch {
+                guard let self, !Task.isCancelled, localOperationID == id else {
+                    return
+                }
+                onFailure(
+                    error,
+                )
+            }
+        }
+        operationTask = task
+        lastTask = task
+    }
+
     final func cancelOperationTask() {
+        localOperationID = nil
         operationTask?.cancel()
         operationTask = nil
     }

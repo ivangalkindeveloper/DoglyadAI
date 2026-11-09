@@ -16,15 +16,15 @@ final class ErrorRootViewModel: DStateViewModel<any ErrorRootStateProtocol> {
                 error: error,
             )
         case .noInternetConnection:
-            ErrorRootOfflineState(
+            ErrorRootOfflineErrorState(
                 error: error,
             )
         case .serviceUnavailable:
-            ErrorRootServiceUnavailableState(
+            ErrorRootServiceUnavailableErrorState(
                 error: error,
             )
         case .usExaminationTypesEmpty, .usExaminationNeuralModelsEmpty, .common, .none:
-            ErrorRootUnknownState(
+            ErrorRootUnknownErrorState(
                 error: error,
             )
         }
@@ -39,7 +39,7 @@ final class ErrorRootViewModel: DStateViewModel<any ErrorRootStateProtocol> {
             analytics?.screenViewed(
                 .newVersion,
             )
-        case _ as ErrorRootOfflineState, _ as ErrorRootServiceUnavailableState, _ as ErrorRootUnknownState:
+        case _ as ErrorRootOfflineErrorState, _ as ErrorRootServiceUnavailableErrorState, _ as ErrorRootUnknownErrorState:
             analytics?.screenViewed(
                 .initializationError,
                 parameters: .initializationError(
@@ -69,7 +69,7 @@ final class ErrorRootViewModel: DStateViewModel<any ErrorRootStateProtocol> {
 
         let email: String
         switch state {
-        case let state as ErrorRootServiceUnavailableState: email = state.email
+        case let state as ErrorRootServiceUnavailableErrorState: email = state.email
         default: return
         }
         guard let encodedEmail = email.addingPercentEncoding(

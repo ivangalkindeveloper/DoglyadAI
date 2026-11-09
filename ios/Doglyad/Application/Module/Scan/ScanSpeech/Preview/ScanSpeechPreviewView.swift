@@ -1,5 +1,6 @@
 #if DEBUG
     import Combine
+    import DoglyadNeuralModel
     import DoglyadUI
     import Router
     import SwiftUI
@@ -11,6 +12,20 @@
         let state: any ScanSpeechStateProtocol
 
         var body: some View {
+            let (isErrorPresented, automaticFieldIds): (Bool, Set<DNeuralUltrasoundVoiceFieldId>) = switch state {
+            case _ as ScanSpeechModelPreparationErrorState: (true, [])
+            case let proposal as ScanSpeechReviewProposalState:
+                (false, Set(
+                    proposal.proposal.proposals.map(
+                        \.id,
+                    ),
+                ).subtracting(
+                    proposal.reviewProposals.map(
+                        \.id,
+                    ),
+                ))
+            default: (false, [])
+            }
             let model = ScanSpeechTranscriptPreviewFixture(
                 scenario: .finished,
             ).makeViewModel(
@@ -18,6 +33,8 @@
                 messager: messager,
                 router: router,
             )
+
+            model.automaticFieldIds = automaticFieldIds
 
             model.preparePreview(
                 state: state,
@@ -27,6 +44,9 @@
                     viewModel: model,
                 )
             }
+            .previewError(
+                isPresented: isErrorPresented,
+            )
             .id(
                 ObjectIdentifier(
                     state,
@@ -59,22 +79,24 @@
                             .scanSpeechTitle,
                         ],
                         fraction: 0.9,
+                        content: { toolbarHeight, bottomHeight in
+                            ScanSpeechReviewProposalView(
+                                state: state,
+                                toolbarHeight: toolbarHeight,
+                                bottomHeight: bottomHeight,
+                            )
+                        },
+                        bottom: {
+                            ScanSpeechReviewProposalBottomView(
+                                state: state,
+                            )
+                            .allowsHitTesting(
+                                false,
+                            )
+                        },
                         accessibilityElement: .contain,
                         accessibilityIdentifier: "regression.\(UserDefaults.standard.string(forKey: "regressionPreview") ?? "unknown")",
-                    ) { toolbarHeight, bottomHeight in
-                        ScanSpeechReviewProposalView(
-                            state: state,
-                            toolbarHeight: toolbarHeight,
-                            bottomHeight: bottomHeight,
-                        )
-                    } bottom: {
-                        ScanSpeechReviewProposalBottomView(
-                            state: state,
-                        )
-                        .allowsHitTesting(
-                            false,
-                        )
-                    }
+                    )
                 }
             case .card:
                 if let proposal = state.reviewProposals.first {
@@ -113,7 +135,6 @@
     struct ScanSpeechProposalPreviewView: DViewProtocol {
         @EnvironmentObject private var messager: DMessager
         @EnvironmentObject var theme: DTheme
-
         private let container: DependencyContainer
         private let router: DRouter
         private let fixture: ScanSpeechProposalPreviewFixture
@@ -194,7 +215,6 @@
     struct ScanSpeechTranscriptPreviewView: DViewProtocol {
         @EnvironmentObject private var messager: DMessager
         @EnvironmentObject var theme: DTheme
-
         private let container: DependencyContainer
         private let router: DRouter
         private let fixture: ScanSpeechTranscriptPreviewFixture
@@ -231,6 +251,12 @@
             .localization(
                 container.l10n,
             )
+            .previewError(
+                isPresented: scenario == .failed,
+            )
+            .environmentObject(
+                container,
+            )
         }
     }
 
@@ -256,20 +282,22 @@
                         .scanSpeechTitle,
                     ],
                     fraction: 0.9,
+                    content: { toolbarHeight, bottomHeight in
+                        ScanSpeechReviewTranscriptView(
+                            transcriptFocus: $transcriptFocus,
+                            toolbarHeight: toolbarHeight,
+                            bottomHeight: bottomHeight,
+                        )
+                    },
+                    bottom: {
+                        ScanSpeechReviewTranscriptBottomView()
+                            .allowsHitTesting(
+                                false,
+                            )
+                    },
                     accessibilityElement: .contain,
                     accessibilityIdentifier: "regression.\(UserDefaults.standard.string(forKey: "regressionPreview") ?? "unknown")",
-                ) { toolbarHeight, bottomHeight in
-                    ScanSpeechReviewTranscriptView(
-                        transcriptFocus: $transcriptFocus,
-                        toolbarHeight: toolbarHeight,
-                        bottomHeight: bottomHeight,
-                    )
-                } bottom: {
-                    ScanSpeechReviewTranscriptBottomView()
-                        .allowsHitTesting(
-                            false,
-                        )
-                }
+                )
             }
             .environmentObject(
                 viewModel,

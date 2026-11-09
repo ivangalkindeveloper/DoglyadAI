@@ -9,6 +9,8 @@ cases:
   preconditions:
   - Новый Scan; активна Pro
   steps:
+  - action: Открыть Scan при задержке чтения черновика и начать заполнять форму
+    expect: Поля, выбор типа, фото, настройки, голос и генерация доступны сразу. Черновик заполняет только нетронутые значения и не затирает ввод, включая очищенный текст. До успешного чтения исходный черновик не перезаписывается.
   - action: Заполнить номер, имя, пол, дату рождения, рост, вес, жалобы и описание
     expect: Поля показывают введённые значения; пол и дата соответствуют селекторам.
   - action: Перейти по полям стрелками и Return, перезапустить приложение
@@ -17,6 +19,7 @@ cases:
     expect: Новый тип сохранён; выбранный шаблон согласован с типом.
   covers:
   - onInit
+  - onBackground
   - onFocusChanged
   - onSubmit
   - onTapToolbarUp
@@ -34,6 +37,11 @@ cases:
     - e2e-selecttemplate-type-filter-failure
     nativeTests:
     - RegressionFormTests/testScanRejectsInvalidRestoredFieldsAndPreservesFocusOrder()
+    - ScanDraftRestorationTests/delayedDraftMergesOnlyUntouchedValuesAndPersistsEarlyEdits()
+    - ScanDraftRestorationTests/clearDuringReadRejectsALateDraft()
+    - ScanDraftRestorationTests/missingDraftKeepsEarlyEditsAndRestoresUntouchedDefaults()
+    - ScanDraftRestorationTests/submissionDuringReadInvalidatesRestorationBeforePreparingGeneration()
+    - ScanDraftRestorationTests/backgroundSaveWaitsForRestorationAndPersistsEarlyInput()
 - id: Scan.validation
   title: Границы и обязательные данные
   profiles:
@@ -147,22 +155,26 @@ cases:
   - Управляемый однократный сбой чтения/записи черновика или записи отчёта до постановки задания в backend.
   steps:
   - action: Открыть Scan при сбое инициализации и повторить после восстановления
-    expect: Рабочая форма появляется без потери сохранённого черновика.
+    expect: Форма остаётся доступной при ошибке; DMessager показывает сообщение. Кнопки обновления нет; основная генерация, голос и все поля остаются доступны. При возвращении на экран чтение черновика повторяется. Сохранённый черновик восстанавливается, правки после сбоя сохраняются.
   - action: Вызвать сбой сохранения черновика, затем сбой записи отчёта перед генерацией
     expect: Показаны ошибки; поля и фотографии остаются. До успешного сохранения отчёта запрос генерации
       не отправляется.
   - action: Устранить сбои и повторить
     expect: Нет дублированных отчётов или незавершённых лишних заданий.
   covers:
-  - onTapRetryInitialization
+  - onResume
   - onDraftSaveFailed
   - onGenerationFailed
   automation:
-    kind: maestro
+    kind: mixed
     flows:
     - e2e-scan-initialization-retry
     - e2e-scan-draft-save-retry
     - e2e-scan-generation-save-retry
+    nativeTests:
+    - ContentDesignTests/scanInitializationRetryPreservesEditsAndRestoresUntouchedDraftFields()
+    - ScanDraftRestorationTests/selectedTypeReadFailureKeepsTheStoredDraftIntactUntilRetry()
+
 - id: Scan.settings-dev
   title: Переход в настройки и DEV-заполнение
   profiles:

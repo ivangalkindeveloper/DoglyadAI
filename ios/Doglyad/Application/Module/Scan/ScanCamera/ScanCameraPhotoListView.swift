@@ -4,10 +4,14 @@ import SwiftUI
 struct ScanCameraPhotoListView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @EnvironmentObject private var viewModel: ScanCameraViewModel
 
     var body: some View {
+        let isLoading = switch viewModel.state {
+        case _ as ScanCameraPreparationLoadingState, _ as ScanCameraCaptureLoadingState: true
+        default: false
+        }
+
         Group {
             if !viewModel.photos.isEmpty {
                 VStack(
@@ -35,12 +39,14 @@ struct ScanCameraPhotoListView: DViewProtocol {
                                             },
                                         ),
                                     ),
-                                    accessibilityIdentifier: "scanCamera.photo.\(photo.id)",
                                     onTap: {
                                         viewModel.onTapPhoto(
                                             photo,
                                         )
                                     },
+                                    isDisabled:
+                                    isLoading,
+                                    accessibilityIdentifier: "scanCamera.photo.\(photo.id)",
                                 )
                                 .transition(
                                     .opacity,

@@ -4,15 +4,13 @@ import SwiftUI
 struct TemplateEditScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: TemplateEditViewModel
     @FocusState private var focus: TemplateEditFocus?
 
     var body: some View {
-        let (isSaveDisabled, isProcessing) = switch viewModel.state {
-        case _ as TemplateEditInitializationFailedState: (true, false)
-        case _ as TemplateEditInitializationLoadingState, _ as TemplateEditSaveLoadingState, _ as TemplateEditDeleteLoadingState: (false, true)
-        default: (false, false)
+        let (title, action, isDeleteDisabled): (L10NKey, () -> Void, Bool) = switch viewModel.state {
+        case _ as TemplateEditInitializationErrorState: (.buttonUpdate, viewModel.onTapRetryInitialization, true)
+        default: (.buttonSave, viewModel.onTapSave, false)
         }
 
         DScreen(
@@ -23,18 +21,38 @@ struct TemplateEditScreenView: DViewProtocol {
             trailing: {
                 DButton(
                     image: .delete,
-                    accessibilityIdentifier: "template.delete",
                     action: viewModel.onTapDelete,
+                    isDisabled:
+                    isDeleteDisabled,
+                    accessibilityIdentifier: "template.delete",
                 )
                 .dStyle(
                     .circle,
                 )
-
-                .disabled(
-                    isProcessing,
-                )
             },
             onTapBody: viewModel.unfocus,
+            content: { toolbarInset, bottomInset in
+                TemplateEditContentView(
+                    focus: $focus,
+                    toolbarInset: toolbarInset,
+                    bottomInset: bottomInset,
+                    isProcessing: false,
+                )
+            },
+            bottom: {
+                DButton(
+                    title: l10n[
+                        title,
+                    ],
+                    action: action,
+                )
+                .dStyle(
+                    .primaryButton,
+                )
+                .padding(
+                    size.s16,
+                )
+            },
             keyboardToolbar: {
                 if focus != nil {
                     DToolbar(
@@ -57,34 +75,7 @@ struct TemplateEditScreenView: DViewProtocol {
                             ),
                         ],
                     )
-                    .disabled(
-                        isProcessing,
-                    )
                 }
-            },
-            content: { toolbarInset, bottomInset in
-                TemplateEditContentView(
-                    focus: $focus,
-                    toolbarInset: toolbarInset,
-                    bottomInset: bottomInset,
-                    isProcessing: isProcessing,
-                )
-            },
-            bottom: {
-                DButton(
-                    title: l10n[
-                        .buttonSave,
-                    ],
-                    action: viewModel.onTapSave,
-                    isLoading: isProcessing,
-                    isDisabled: isSaveDisabled,
-                )
-                .dStyle(
-                    .primaryButton,
-                )
-                .padding(
-                    size.s16,
-                )
             },
         )
         .onAppear {

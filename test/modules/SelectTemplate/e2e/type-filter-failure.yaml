@@ -28,16 +28,22 @@ tags: [e2e, SelectTemplate, SelectUSExaminationType]
 - assertVisible: ^Новый шаблон$
 - assertVisible: ^Эхокардиография$
 - assertNotVisible: ^УЗИ Щитовидной железы$
-- takeScreenshot: SelectTemplate-no-matching-type
+- takeScreenshot: TemplateAdd-no-matching-template
 - tapOn: {id: navigation.back}
 - runFlow: ../../../maestro/support/main.yaml
 - assertVisible: {id: scan.type, text: '^Эхокардиография$'}
+- tapOn: {id: scan.type}
+- scrollUntilVisible:
+    element: {id: examinationType.thyroidGland}
+    direction: UP
+    centerElement: true
+- tapOn: {id: examinationType.thyroidGland}
 - runFlow: ../../../maestro/support/fill-scan.yaml
 - launchApp:
     arguments:
       regressionPreview: ''
       regressionFault: templateRepository.getTemplates
-      regressionFaultAfter: '1'
+      regressionFaultAfter: '0'
 - extendedWaitUntil:
     visible: {id: scan.settings}
     timeout: 60000
@@ -50,8 +56,11 @@ tags: [e2e, SelectTemplate, SelectUSExaminationType]
     visible: {id: message.error}
     timeout: 15000
 - assertNotVisible: .*Тут пока нет шаблонов.*
-- takeScreenshot: SelectTemplate-load-failed
-- tapOn: ^Обновить$
+- takeScreenshot: Scan-template-list-read-failed
+- extendedWaitUntil:
+    notVisible: {id: message.error}
+    timeout: 15000
+- tapOn: {id: scan.template}
 - assertVisible: ^УЗИ Щитовидной железы$
 - tapOn: ^УЗИ Щитовидной железы$
 - assertVisible: ^УЗИ Щитовидной железы$

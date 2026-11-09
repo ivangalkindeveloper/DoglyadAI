@@ -4,12 +4,12 @@ import SwiftUI
 struct ScanPhotoListView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @EnvironmentObject private var viewModel: ScanViewModel
+    var isDisabled: Bool = false
 
     var body: some View {
         let isMediaSelectionDisabled = switch (viewModel.state, viewModel.isPhotoLimitReached) {
-        case (_ as ScanInitializationLoadingState, _), (_ as ScanGenerationLoadingState, _), (_ as ScanReportSaveLoadingState, _), (_ as ScanClearLoadingState, _), (_, true): true
+        case (_ as ScanGenerationLoadingState, _), (_, true): true
         default: false
         }
 
@@ -30,9 +30,7 @@ struct ScanPhotoListView: DViewProtocol {
                                 ScanMediaButtonView(
                                     isCompact: true,
                                     action: viewModel.onTapImport,
-                                )
-                                .disabled(
-                                    isMediaSelectionDisabled,
+                                    isDisabled: isMediaSelectionDisabled || isDisabled,
                                 )
                                 .padding(
                                     .trailing,
@@ -60,12 +58,13 @@ struct ScanPhotoListView: DViewProtocol {
                                             },
                                         ),
                                     ),
-                                    accessibilityIdentifier: "scan.photo.\(index + 1).\(photo.id)",
                                     onTap: {
                                         viewModel.onTapPhoto(
                                             photo,
                                         )
                                     },
+                                    isDisabled: isDisabled,
+                                    accessibilityIdentifier: "scan.photo.\(index + 1).\(photo.id)",
                                 )
                                 .transition(
                                     .opacity,

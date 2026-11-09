@@ -4,7 +4,6 @@ import SwiftUI
 struct PhotoViewZoomableImage: DViewProtocol {
     @EnvironmentObject private var viewModel: PhotoViewViewModel
     @EnvironmentObject var theme: DTheme
-
     let photoId: UUID
     let image: UIImage
     let isSelected: Bool
@@ -61,12 +60,12 @@ struct PhotoViewZoomableImage: DViewProtocol {
                     ) { point in
                         DImageAnnotationMarker(
                             title: point.title,
-                            accessibilityIdentifier: "photoView.remark.\(point.id)",
                             action: {
                                 viewModel.onTapRemark(
                                     point,
                                 )
                             },
+                            accessibilityIdentifier: "photoView.remark.\(point.id)",
                         )
 
                         .position(

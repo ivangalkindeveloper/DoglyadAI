@@ -20,7 +20,7 @@
         ) -> ScanSpeechViewModel {
             ScanSpeechViewModel(
                 container: container,
-                messager: messager,
+                speechController: speechController,
                 router: router,
                 getSubscriptionStatus: {
                     nil
@@ -33,13 +33,13 @@
                     container.initialSettingsAI
                 },
                 onRefreshSubscriptionStatus: {},
+                messager: messager,
                 arguments: ScanSpeechArguments(
                     examinationType: container.usExaminationTypeDefault,
                     onConfirm: { _ in
                         true
                     },
                 ),
-                speechController: speechController,
             )
         }
     }

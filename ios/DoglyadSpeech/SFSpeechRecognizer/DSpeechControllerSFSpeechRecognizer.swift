@@ -19,7 +19,6 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     private static let finalizationTimeout: Duration = .seconds(
         3,
     )
-
     private let speechRecognizer: SFSpeechRecognizer?
     private let locale: Locale
     /// Hints for the recognizer: examination-specific vocabulary for the current locale.
@@ -37,7 +36,6 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
             self?.audioMeter = level
         }
     }
-
     private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     private var recognitionTask: SFSpeechRecognitionTask?
     private var session = DSpeechSessionGate()
@@ -45,7 +43,6 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     private var finalizationCompletion: DSpeechCompletion = .finished
     private var isSegmentUnfinalized = false
     private var isTapInstalled = false
-
     /// Marks an active session: tells a restart on the duration limit (keep going)
     /// apart from a stop by the user (do not restart).
     private var isRunning = false
@@ -56,7 +53,6 @@ public final class DSpeechControllerSFSpeechRecognizer: DSpeechControllerProtoco
     private var lastPartial = ""
     /// Waiting for the final result after `stop()`.
     private var finalizationContinuation: CheckedContinuation<String, Never>?
-
     @Published public var recordingStatus: DSpeechRecordingStatus = .stopped
     @Published public var text: String?
     @Published public var audioMeter: Float = 0.0

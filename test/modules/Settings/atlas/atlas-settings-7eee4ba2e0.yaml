@@ -1,0 +1,16 @@
+appId: ${APP_ID}
+name: atlas-settings-7eee4ba2e0
+tags:
+- atlas
+- Settings
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-settings-7eee4ba2e0
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-settings-7eee4ba2e0
+    timeout: 15000
+- assertNotVisible:
+    id: message.error
+- takeScreenshot: 03-Settings-7eee4ba2e0

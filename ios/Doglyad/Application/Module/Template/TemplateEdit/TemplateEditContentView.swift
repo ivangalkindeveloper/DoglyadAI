@@ -11,186 +11,151 @@ struct TemplateEditContentView: DViewProtocol {
     let isProcessing: Bool
 
     var body: some View {
-        switch viewModel.state {
-        case _ as TemplateEditInitializationFailedState:
+        DFocusScrollView(
+            focus: focus.wrappedValue,
+        ) {
             VStack(
-                spacing: size.s16,
+                alignment: .leading,
+                spacing: .zero,
             ) {
-                ErrorBodyView(
-                    description: l10n.text(
-                        .errorUnknownDescription,
-                    ),
+                DListButtonCard(
+                    title: l10n[
+                        .templateExaminationTypeLabel,
+                    ],
+                    description: viewModel.usExaminationType.localizedTitle,
+                    action: viewModel.onTapExaminationType,
+                    isDisabled:
+                    isProcessing,
+                )
+                .contentTransition(
+                    .opacity,
+                )
+                .padding(
+                    .bottom,
+                    size.s4,
                 )
 
-                DButton(
+                DTextField(
+                    inputTextController: viewModel.nameTextController,
+                    focus: DTextFieldFocus(
+                        value: .name,
+                        state: focus,
+                    ),
                     title: l10n[
-                        .buttonUpdate,
+                        .templateNameLabel,
                     ],
-                    action: viewModel.onTapRetryInitialization,
+                    placeholder: l10n[
+                        .templateNamePlaceholder,
+                    ],
+                    mode: DTextFieldSingleLineMode(
+                        submitLabel: .next,
+                    ),
+                    isDisabled:
+                    isProcessing,
                 )
-                .dStyle(
-                    .primaryChip,
+                .id(
+                    TemplateEditFocus.name,
                 )
-            }
-            .padding(
-                size.s16,
-            )
-            .padding(
-                .top,
-                toolbarInset,
-            )
-            .padding(
-                .bottom,
-                bottomInset,
-            )
-            .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity,
-            )
-        default:
-            DFocusScrollView(
-                focus: focus.wrappedValue,
-            ) {
+                .padding(
+                    .bottom,
+                    size.s4,
+                )
+
+                DTextField(
+                    inputTextController: viewModel.templateTextController,
+                    focus: DTextFieldFocus(
+                        value: .content,
+                        state: focus,
+                    ),
+                    title: l10n[
+                        .templateContentLabel,
+                    ],
+                    placeholder: l10n[
+                        .templateContentPlaceholder,
+                    ],
+                    mode: DTextFieldMultiLineMode(),
+                    isDisabled:
+                    isProcessing,
+                )
+                .id(
+                    TemplateEditFocus.content,
+                )
+                .padding(
+                    .bottom,
+                    size.s8,
+                )
+
                 VStack(
                     alignment: .leading,
                     spacing: .zero,
                 ) {
-                    DListButtonCard(
-                        title: l10n[
-                            .templateExaminationTypeLabel,
+                    DText(
+                        l10n[
+                            .templateContentDescription,
                         ],
-                        description: viewModel.usExaminationType.localizedTitle,
-                        action: viewModel.onTapExaminationType,
                     )
-                    .contentTransition(
-                        .opacity,
+                    .dStyle(
+                        font: typography.textXSmall,
+                        color: color.grayscalePlacehold,
                     )
                     .padding(
-                        .bottom,
-                        size.s4,
-                    )
-
-                    DTextField(
-                        inputTextController: viewModel.nameTextController,
-                        focus: DTextFieldFocus(
-                            value: .name,
-                            state: focus,
-                        ),
-                        title: l10n[
-                            .templateNameLabel,
-                        ],
-                        placeholder: l10n[
-                            .templateNamePlaceholder,
-                        ],
-                        mode: DTextFieldSingleLineMode(
-                            submitLabel: .next,
-                        ),
-                    )
-                    .id(
-                        TemplateEditFocus.name,
-                    )
-                    .padding(
-                        .bottom,
-                        size.s4,
-                    )
-
-                    DTextField(
-                        inputTextController: viewModel.templateTextController,
-                        focus: DTextFieldFocus(
-                            value: .content,
-                            state: focus,
-                        ),
-                        title: l10n[
-                            .templateContentLabel,
-                        ],
-                        placeholder: l10n[
-                            .templateContentPlaceholder,
-                        ],
-                        mode: DTextFieldMultiLineMode(),
-                    )
-                    .id(
-                        TemplateEditFocus.content,
+                        .horizontal,
+                        size.s8,
                     )
                     .padding(
                         .bottom,
                         size.s8,
                     )
 
-                    VStack(
-                        alignment: .leading,
-                        spacing: .zero,
-                    ) {
-                        DText(
-                            l10n[
-                                .templateContentDescription,
-                            ],
-                        )
-                        .dStyle(
-                            font: typography.textXSmall,
-                            color: color.grayscalePlacehold,
-                        )
-                        .padding(
-                            .horizontal,
-                            size.s8,
-                        )
-                        .padding(
-                            .bottom,
-                            size.s8,
-                        )
-
-                        DText(
-                            l10n[
-                                .templateExampleDescription,
-                            ],
-                        )
-                        .dStyle(
-                            font: typography.textXSmall,
-                            color: color.grayscalePlacehold,
-                        )
-                        .padding(
-                            size.s8,
-                        )
-                        .frame(
-                            maxWidth: .infinity,
-                            alignment: .leading,
-                        )
-                        .background(
-                            color.grayscaleInput.opacity(
-                                0.6,
-                            ),
-                        )
-                        .cornerRadius(
-                            size.s12,
-                        )
-                    }
-                    .padding(
-                        .horizontal,
-                        size.s4,
+                    DText(
+                        l10n[
+                            .templateExampleDescription,
+                        ],
+                    )
+                    .dStyle(
+                        font: typography.textXSmall,
+                        color: color.grayscalePlacehold,
                     )
                     .padding(
-                        .bottom,
-                        size.s16,
+                        size.s8,
+                    )
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading,
+                    )
+                    .background(
+                        color.grayscaleInput.opacity(
+                            0.6,
+                        ),
+                    )
+                    .cornerRadius(
+                        size.s12,
                     )
                 }
                 .padding(
-                    .top,
-                    toolbarInset + size.s8,
-                )
-                .padding(
                     .horizontal,
-                    size.s16,
+                    size.s4,
                 )
                 .padding(
                     .bottom,
-                    bottomInset + size.s16,
-                )
-                .disabled(
-                    isProcessing,
+                    size.s16,
                 )
             }
-            .scrollDismissesKeyboard(
-                .interactively,
+            .padding(
+                .top,
+                toolbarInset + size.s8,
+            )
+            .padding(
+                .horizontal,
+                size.s16,
+            )
+            .padding(
+                .bottom,
+                bottomInset + size.s16,
             )
         }
+        .scrollDismissesKeyboard(
+            .interactively,
+        )
     }
 }

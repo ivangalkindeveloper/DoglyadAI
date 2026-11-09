@@ -5,7 +5,6 @@ public final class DTextFieldDecimalFormatter: DTextFieldFormatterProtocol {
     private static let decimalSeparators = Set(
         ".,",
     )
-
     private let isNegativeAllowed: Bool
     private let maxFractionLength: Int?
 

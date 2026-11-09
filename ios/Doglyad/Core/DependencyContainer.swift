@@ -52,16 +52,16 @@ final class DependencyContainer: ObservableObject {
         applicationConfig: ApplicationConfig,
         language: Language,
         l10n: L10N,
+        examinationNeuralModelFactory: DNeuralUltrasoundModelFactory,
         usExaminationTypeGroups: [USExaminationTypeGroup],
         usExaminationTypesById: [String: USExaminationType],
         usExaminationTypeDefault: USExaminationType,
         usExaminationNeuralModels: [USExaminationNeuralModel],
         usExaminationNeuralModelsById: [String: USExaminationNeuralModel],
         usExaminationNeuralModelDefault: USExaminationNeuralModel,
-        examinationNeuralModelFactory: DNeuralUltrasoundModelFactory,
-        initialSubscriptionStatus: SubscriptionStatus?,
         initialUserSettings: UserSettings = .initial,
         initialSettingsAI: SettingsAI? = nil,
+        initialSubscriptionStatus: SubscriptionStatus?,
         initialRoute: RouteScreen<ScreenType>,
         version: String,
     ) {
@@ -81,13 +81,13 @@ final class DependencyContainer: ObservableObject {
         self.applicationConfig = applicationConfig
         self.language = language
         self.l10n = l10n
+        self.examinationNeuralModelFactory = examinationNeuralModelFactory
         self.usExaminationTypeGroups = usExaminationTypeGroups
         self.usExaminationTypesById = usExaminationTypesById
         self.usExaminationTypeDefault = usExaminationTypeDefault
         self.usExaminationNeuralModels = usExaminationNeuralModels
         self.usExaminationNeuralModelsById = usExaminationNeuralModelsById
         self.usExaminationNeuralModelDefault = usExaminationNeuralModelDefault
-        self.examinationNeuralModelFactory = examinationNeuralModelFactory
         self.initialUserSettings = initialUserSettings
         self.initialSettingsAI = initialSettingsAI ?? SettingsAI(
             selectedNeuralModelId: usExaminationNeuralModelDefault.id,
@@ -232,6 +232,16 @@ extension DependencyContainer {
             applicationConfig: applicationConfig,
             language: language,
             l10n: l10n,
+            examinationNeuralModelFactory: DNeuralUltrasoundModelFactory(
+                locale: language.currentLocale,
+                proposalPrompt: applicationConfig.ultrasound.examinationNeuralModel.proposalPrompt,
+                parameters: DNeuralGenerationParameters(
+                    temperature: applicationConfig.ultrasound.examinationNeuralModel.temperature,
+                    maxTokens: applicationConfig.ultrasound.examinationNeuralModel.maxTokens,
+                    maxContextTokens: applicationConfig.ultrasound.examinationNeuralModel.maxContextTokens,
+                ),
+                parseDictation: ultrasoundReportRepository.parseDictation,
+            ),
             usExaminationTypeGroups: usExaminationTypeGroups,
             usExaminationTypesById: usExaminationTypesById,
             usExaminationTypeDefault: usExaminationTypeGroups.first?.examinationTypes.first ?? .init(
@@ -252,16 +262,6 @@ extension DependencyContainer {
                 accessibility: .available,
                 contextLength: 0,
                 description: "",
-            ),
-            examinationNeuralModelFactory: DNeuralUltrasoundModelFactory(
-                locale: language.currentLocale,
-                proposalPrompt: applicationConfig.ultrasound.examinationNeuralModel.proposalPrompt,
-                parameters: DNeuralGenerationParameters(
-                    temperature: applicationConfig.ultrasound.examinationNeuralModel.temperature,
-                    maxTokens: applicationConfig.ultrasound.examinationNeuralModel.maxTokens,
-                    maxContextTokens: applicationConfig.ultrasound.examinationNeuralModel.maxContextTokens,
-                ),
-                parseDictation: ultrasoundReportRepository.parseDictation,
             ),
             initialSubscriptionStatus: nil,
             initialRoute: RouteScreen(

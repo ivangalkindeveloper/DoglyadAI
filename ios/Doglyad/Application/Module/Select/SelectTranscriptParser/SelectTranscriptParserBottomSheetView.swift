@@ -39,8 +39,7 @@ struct SelectTranscriptParserBottomSheetView: DViewProtocol {
                             )
                         },
                         isSelected: viewModel.currentValue == option,
-                    )
-                    .disabled(
+                        isDisabled:
                         !viewModel.isSelectionEnabled(
                             for: option,
                         ),

@@ -4,18 +4,15 @@ internal import Alamofire
 public final class DHttpClient: DHttpClientProtocol {
     public let baseUrl: String
     public let baseVersionPrefix: String
-
     /// Rebuilt by `updateConfiguration`, hence a `var`.
     private var session: Session
     /// Kept so the session can be rebuilt with the same interceptors and order.
     private let interceptors: [any DHttpInterceptorProtocol]
-
     private let jsonEncoder: JSONEncoder = {
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601
         return encoder
     }()
-
     private let jsonDecoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
@@ -29,7 +26,6 @@ public final class DHttpClient: DHttpClientProtocol {
     ) {
         self.baseUrl = baseUrl
         self.baseVersionPrefix = baseVersionPrefix
-        self.interceptors = interceptors
 
         // Placeholders until the remote config arrives; see NetworkConfig.default.
         session = Self.makeSession(
@@ -37,6 +33,7 @@ public final class DHttpClient: DHttpClientProtocol {
             timeoutIntervalForRequest: 300,
             timeoutIntervalForResource: 300,
         )
+        self.interceptors = interceptors
     }
 
     private var baseApiUrl: String {

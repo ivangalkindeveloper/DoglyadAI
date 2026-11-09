@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-requestlimitexceeded-741f51e813
+tags:
+- atlas
+- RequestLimitExceeded
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-requestlimitexceeded-741f51e813
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-requestlimitexceeded-741f51e813
+    timeout: 15000
+- takeScreenshot: 01-RequestLimitExceeded-741f51e813

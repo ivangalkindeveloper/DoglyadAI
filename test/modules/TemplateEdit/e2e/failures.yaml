@@ -21,6 +21,7 @@ tags: [e2e, TemplateEdit]
 - tapOn: ^Retry template$
 - assertVisible: {id: message.error}
 - assertVisible: ^Обновить$
+- assertVisible: ^Название$
 - takeScreenshot: TemplateEdit-load-failed
 - tapOn: ^Обновить$
 - assertVisible: ^Retry template$

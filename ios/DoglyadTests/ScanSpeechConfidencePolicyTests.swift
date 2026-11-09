@@ -170,6 +170,7 @@ struct ScanSpeechConfidencePolicyTests {
                 ),
             ],
         )
+
         func transcript(
             score: Double,
             repeated: String?,
@@ -192,6 +193,7 @@ struct ScanSpeechConfidencePolicyTests {
                 )],
             )
         }
+
         let strong = ScanSpeechConfidencePolicy.plan(
             proposal: proposal,
             transcript: transcript(

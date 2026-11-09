@@ -10,39 +10,36 @@ public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, 
         \.dismiss,
     ) private var dismiss
     @EnvironmentObject public var theme: DTheme
-
     @State private var toolbarHeight: CGFloat = 0
     @State private var bottomHeight: CGFloat = 0
-
     let type: DBottomSheetType
     let title: LocalizedStringResource
     let isCloseButtonVisible: Bool
     let fraction: Double
-    private let accessibilityElement: AccessibilityChildBehavior?
-    private let accessibilityIdentifier: String?
-
     let content: (CGFloat, CGFloat) -> Content
     let bottom: Bottom?
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     public init(
         type: DBottomSheetType = .default,
         title: LocalizedStringResource,
         isCloseButtonVisible: Bool = true,
         fraction: Double = 0.3,
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
         @ViewBuilder bottom: () -> Bottom?,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
         self.type = type
         self.title = title
         self.isCloseButtonVisible = isCloseButtonVisible
         self.fraction = fraction
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.content = content
         self.bottom = bottom()
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public init(
@@ -50,19 +47,19 @@ public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, 
         title: LocalizedStringResource,
         isCloseButtonVisible: Bool = true,
         fraction: Double = 0.3,
+        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
     ) where Bottom == EmptyView {
         self.type = type
         self.title = title
         self.isCloseButtonVisible = isCloseButtonVisible
         self.fraction = fraction
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.content = content
         bottom = nil
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
@@ -165,10 +162,11 @@ public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, 
                             Spacer()
                             if isCloseButtonVisible {
                                 DCloseButton(
+                                    action: {
+                                        dismiss()
+                                    },
                                     accessibilityIdentifier: "bottomSheet.close",
-                                ) {
-                                    dismiss()
-                                }
+                                )
 
                             } else {
                                 Color.clear.frame(

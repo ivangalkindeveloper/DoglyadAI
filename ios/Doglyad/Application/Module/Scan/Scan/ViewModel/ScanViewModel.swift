@@ -26,8 +26,10 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
     @Published var neuralModel: USExaminationNeuralModel
     @Published var template: USExaminationTemplate?
     let environmentType: EnvironmentType
-
     private let config: UltrasoundConfig
+    private(set) var draftRestorationTask: Task<Void, Never>?
+    private var draftRestorationChangedFields = Set<PartialKeyPath<ScanViewModel>>()
+    private var draftRestorationCancellables = Set<AnyCancellable>()
     private let messager: DMessager
     private let observeExaminationChanges: (@escaping () -> Void) -> AnyCancellable
     private let getSelectedTemplate: () -> USExaminationTemplate?
@@ -63,20 +65,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         onNeuralModelSelected: @escaping (USExaminationNeuralModel) async throws -> Void,
         onStartReportGeneration: @escaping (USExaminationRequest) async throws -> USExaminationReport,
     ) {
-        self.messager = messager
-        self.observeExaminationChanges = observeExaminationChanges
-        self.getSelectedTemplate = getSelectedTemplate
-        self.onTemplateSelected = onTemplateSelected
-        self.onTemplateReset = onTemplateReset
-        self.getNeuralModel = getNeuralModel
-        self.onNeuralModelSelected = onNeuralModelSelected
-        self.onStartReportGeneration = onStartReportGeneration
-
-        neuralModel = getNeuralModel()
-        template = getSelectedTemplate()
-        environmentType = container.environment.type
-        config = container.applicationConfig.ultrasound
-
         usExaminationType = container.usExaminationTypeDefault
 
         _examinationNumberTextController = NestedObservableObject(
@@ -115,47 +103,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                             .errorFieldLengthExceededDescription,
                             values: [.maxLength: String(
                                 container.applicationConfig.scan.patientNameMaxLength,
-                            )],
-                        ),
-                    ),
-                ],
-            ),
-        )
-        _patientComplaintsTextController = NestedObservableObject(
-            wrappedValue: DTextFieldController(
-                formatters: [
-                    DTextFieldMaxLengthFormatter(
-                        maxLength: container.applicationConfig.scan.patientComplaintsMaxLength,
-                    ),
-                ],
-                validators: [
-                    DTextFieldLengthValidator(
-                        validRange: 0 ... container.applicationConfig.scan.patientComplaintsMaxLength,
-                        invalidValueErrorText: container.l10n.text(
-                            .errorFieldLengthExceededDescription,
-                            values: [.maxLength: String(
-                                container.applicationConfig.scan.patientComplaintsMaxLength,
-                            )],
-                        ),
-                    ),
-                ],
-            ),
-        )
-        _examinationDescriptionTextController = NestedObservableObject(
-            wrappedValue: DTextFieldController(
-                isRequired: true,
-                formatters: [
-                    DTextFieldMaxLengthFormatter(
-                        maxLength: container.applicationConfig.scan.examinationDescriptionMaxLength,
-                    ),
-                ],
-                validators: [
-                    DTextFieldLengthValidator(
-                        validRange: 0 ... container.applicationConfig.scan.examinationDescriptionMaxLength,
-                        invalidValueErrorText: container.l10n.text(
-                            .errorFieldLengthExceededDescription,
-                            values: [.maxLength: String(
-                                container.applicationConfig.scan.examinationDescriptionMaxLength,
                             )],
                         ),
                     ),
@@ -220,16 +167,70 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                 ],
             ),
         )
+        _patientComplaintsTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.scan.patientComplaintsMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.scan.patientComplaintsMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.scan.patientComplaintsMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
+        _examinationDescriptionTextController = NestedObservableObject(
+            wrappedValue: DTextFieldController(
+                isRequired: true,
+                formatters: [
+                    DTextFieldMaxLengthFormatter(
+                        maxLength: container.applicationConfig.scan.examinationDescriptionMaxLength,
+                    ),
+                ],
+                validators: [
+                    DTextFieldLengthValidator(
+                        validRange: 0 ... container.applicationConfig.scan.examinationDescriptionMaxLength,
+                        invalidValueErrorText: container.l10n.text(
+                            .errorFieldLengthExceededDescription,
+                            values: [.maxLength: String(
+                                container.applicationConfig.scan.examinationDescriptionMaxLength,
+                            )],
+                        ),
+                    ),
+                ],
+            ),
+        )
+
+        neuralModel = getNeuralModel()
+        template = getSelectedTemplate()
+        environmentType = container.environment.type
+        config = container.applicationConfig.ultrasound
+        self.messager = messager
+        self.observeExaminationChanges = observeExaminationChanges
+        self.getSelectedTemplate = getSelectedTemplate
+        self.onTemplateSelected = onTemplateSelected
+        self.onTemplateReset = onTemplateReset
+        self.getNeuralModel = getNeuralModel
+        self.onNeuralModelSelected = onNeuralModelSelected
+        self.onStartReportGeneration = onStartReportGeneration
 
         super.init(
-            state: ScanInitializationLoadingState(),
+            state: ScanInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .scan,
             ),
@@ -352,7 +353,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     private enum DraftInitializationResult {
         case draft(USExaminationDraft)
-        case defaults(reportsCount: Int)
+        case defaults(reportsCount: Int?)
     }
 
     override func onInit() {
@@ -363,59 +364,38 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             neuralModel = getNeuralModel()
             template = getSelectedTemplate()
         }
-        emit(
-            ScanInitializationLoadingState(),
-        )
+        startDraftLifecycleObservation()
+        loadInitialDraft()
+    }
+
+    func onBackground() {
+        let backgroundTask = UIApplication.shared.beginBackgroundTask()
         handle {
-            if let usExaminationTypeId = try await self.container.ultrasoundReportRepository.getSelectedExaminationTypeId(),
-               let storedType = self.container.usExaminationTypesById[
-                   usExaminationTypeId,
-               ]
-            {
-                self.usExaminationType = storedType
+            await self.draftRestorationTask?.value
+            await self.operationTask?.value
+            self.flushPendingDraftSave()
+            try await self.waitForPendingDraftSave()
+        } onDefer: {
+            guard backgroundTask != .invalid else {
+                return
             }
 
-            let draft = try await self.loadDraft()
-            if let draft {
-                return DraftInitializationResult.draft(
-                    draft,
-                )
-            }
-
-            let reportsCount = try await self.container.ultrasoundReportRepository.getReportsCount()
-            return DraftInitializationResult.defaults(
-                reportsCount: reportsCount,
-            )
-        } onMainSuccess: { result in
-            switch result {
-            case let .draft(
-                draft,
-            ):
-                self.applyDraft(
-                    draft,
-                )
-            case let .defaults(
-                reportsCount,
-            ):
-                self.applyDefaultValues(
-                    reportsCount: reportsCount,
-                )
-            }
-            self.startDraftObservation()
-            self.emit(
-                ScanInitialState(),
-            )
-        } onMainUnknownError: { error in
-            self.emit(
-                ScanInitializationFailedState(
-                    error: error,
-                ),
+            UIApplication.shared.endBackgroundTask(
+                backgroundTask,
             )
         }
     }
 
-    func onTapRetryInitialization() {
-        onInit()
+    func onResume() {
+        #if DEBUG
+            guard !isPreviewSnapshot else {
+                return
+            }
+        #endif
+        switch state {
+        case _ as ScanInitializationErrorState: loadInitialDraft()
+        default: break
+        }
     }
 
     func onTapSettings() {
@@ -502,7 +482,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     func onTapImport() {
         switch (state, isPhotoLimitReached) {
-        case (_ as ScanInitializationLoadingState, _), (_ as ScanGenerationLoadingState, _), (_ as ScanReportSaveLoadingState, _), (_ as ScanClearLoadingState, _), (_, true): return
+        case (_ as ScanGenerationLoadingState, _), (_, true): return
         default: break
         }
 
@@ -648,11 +628,11 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             let templates = try await self.container.templateRepository.getTemplates(
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
-            return templates.contains {
+            return templates.filter {
                 $0.usExaminationType.id == usExaminationId
             }
-        } onMainSuccess: { [self] hasTemplates in
-            guard hasTemplates else {
+        } onMainSuccess: { [self] templates in
+            guard !templates.isEmpty else {
                 return coordinator.screen(
                     .templateAdd,
                     arguments: TemplateAddArguments(
@@ -668,7 +648,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             coordinator.sheet(
                 .selectTemplate,
                 arguments: SelectTemplateArguments(
-                    usExaminationId: usExaminationId,
+                    templates: templates,
                     currentValue: getSelectedTemplate(),
                     onSelected: { [weak self] template in
                         try await self?.onTemplateSelected(
@@ -676,6 +656,10 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                         )
                     },
                 ),
+            )
+        } onMainUnknownError: { _ in
+            self.messager.showUnknownError(
+                l10n: self.l10n,
             )
         }
     }
@@ -728,26 +712,23 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     func onTapClear() {
         switch state {
-        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: return
+        case _ as ScanGenerationLoadingState: return
         default: break
         }
         analytics.buttonTapped(
             .scanClear,
         )
         let previous = state
-        emit(
-            ScanClearLoadingState(
-                previousState: previous,
-            ),
-        )
+        stopDraftRestoration()
+
         unfocus()
-        handle {
+        performLocalOperation {
             try await self.clearDraftAndReset()
-        } onMainSuccess: { _ in
+        } onSuccess: { _ in
             self.emit(
                 ScanInitialState(),
             )
-        } onMainUnknownError: { _ in
+        } onFailure: { _ in
             self.emit(
                 previous,
             )
@@ -759,7 +740,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     func onTapFillDevelopment() {
         switch state {
-        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: return
+        case _ as ScanGenerationLoadingState: return
         default: break
         }
         analytics.buttonTapped(
@@ -809,7 +790,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     func onTapScan() {
         switch state {
-        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: return
+        case _ as ScanGenerationLoadingState: return
         default: break
         }
         analytics.buttonTapped(
@@ -825,6 +806,13 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         if let invalidFocus = firstInvalidFocus() {
             focus = invalidFocus
             return
+        }
+        if draftRestorationTask != nil || !draftRestorationCancellables.isEmpty {
+            stopDraftRestoration()
+            startDraftObservation()
+            saveCurrentDraft(
+                isPhotosChanged: true,
+            )
         }
         unfocus()
         handle {
@@ -964,6 +952,225 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         ]
     }
 
+    private func loadInitialDraft() {
+        guard draftRestorationTask == nil else {
+            return
+        }
+        trackDraftRestorationChanges()
+        emit(
+            ScanInitialState(),
+        )
+        draftRestorationTask = Task { [weak self] in
+            guard let self else {
+                return
+            }
+            do {
+                let typeID = try await container.ultrasoundReportRepository.getSelectedExaminationTypeId()
+                let draft = try await loadDraft()
+                let result: DraftInitializationResult = if let draft {
+                    .draft(
+                        draft,
+                    )
+                } else {
+                    await .defaults(
+                        reportsCount: try? container.ultrasoundReportRepository.getReportsCount(),
+                    )
+                }
+                guard !Task.isCancelled else {
+                    return
+                }
+                draftRestorationCancellables.removeAll()
+                applyInitialDraft(
+                    result,
+                    typeID: typeID,
+                )
+                let isEdited = !draftRestorationChangedFields.isEmpty
+                let isPhotosChanged = draftRestorationChangedFields.contains(
+                    \.photos,
+                )
+                draftRestorationChangedFields.removeAll()
+                draftRestorationTask = nil
+                startDraftObservation()
+                if isEdited {
+                    saveCurrentDraft(
+                        isPhotosChanged: isPhotosChanged,
+                    )
+                }
+            } catch {
+                guard !Task.isCancelled else {
+                    return
+                }
+                draftRestorationTask = nil
+                // Keep the original stored draft intact until a successful read or an explicit main action.
+                emit(
+                    ScanInitializationErrorState(
+                        error: error,
+                    ),
+                )
+                messager.showUnknownError(
+                    l10n: l10n,
+                )
+            }
+        }
+    }
+
+    private func trackDraftRestorationChanges() {
+        guard draftRestorationCancellables.isEmpty else {
+            return
+        }
+        let fields: [(PartialKeyPath<ScanViewModel>, AnyPublisher<Void, Never>)] = [
+            (\.examinationNumberTextController, examinationNumberTextController.$text.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+            (\.patientNameTextController, patientNameTextController.$text.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+            (\.patientGender, $patientGender.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+            (\.patientDateOfBirth, $patientDateOfBirth.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+            (\.patientHeightCMTextController, patientHeightCMTextController.$text.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+            (\.patientWeightKGTextController, patientWeightKGTextController.$text.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+            (\.patientComplaintsTextController, patientComplaintsTextController.$text.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+            (\.examinationDescriptionTextController, examinationDescriptionTextController.$text.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+            (\.photos, $photos.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+            (\.usExaminationType, $usExaminationType.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
+        ]
+        for (field, publisher) in fields {
+            publisher.sink { [weak self] _ in
+                self?.draftRestorationChangedFields.insert(
+                    field,
+                )
+            }.store(
+                in: &draftRestorationCancellables,
+            )
+        }
+    }
+
+    private func applyInitialDraft(
+        _ result: DraftInitializationResult,
+        typeID: String?,
+    ) {
+        let form: USExaminationDraftForm?
+        switch result {
+        case let .draft(
+            draft,
+        ):
+            form = draft.form
+            if !draftRestorationChangedFields.contains(
+                \.photos,
+            ) {
+                photos = Array(
+                    draft.photos.prefix(
+                        photoMaxCount,
+                    ),
+                )
+            }
+        case let .defaults(
+            reportsCount,
+        ):
+            form = reportsCount.map { count in
+                USExaminationDraftForm(
+                    examinationNumber: l10n.text(
+                        .scanExaminationDefaultNumberLabel,
+                        values: [.count: String(
+                            count,
+                        )],
+                    ),
+                    patientName: l10n.text(
+                        .scanPatientDefaultNameLabel,
+                        values: [.count: String(
+                            count,
+                        )],
+                    ),
+                    patientGender: .male,
+                    patientDateOfBirth: defaultPatientDateOfBirth,
+                    patientHeightCM: "",
+                    patientWeightKG: "",
+                    patientComplaints: "",
+                    examinationDescription: "",
+                )
+            }
+        }
+        if !draftRestorationChangedFields.contains(
+            \.usExaminationType,
+        ), let typeID, let type = container.usExaminationTypesById[
+            typeID,
+        ] {
+            usExaminationType = type
+        }
+        guard let form else {
+            return
+        }
+        let textFields: [(PartialKeyPath<ScanViewModel>, DTextFieldController, String)] = [
+            (\.examinationNumberTextController, examinationNumberTextController, form.examinationNumber),
+            (\.patientNameTextController, patientNameTextController, form.patientName),
+            (\.patientHeightCMTextController, patientHeightCMTextController, form.patientHeightCM),
+            (\.patientWeightKGTextController, patientWeightKGTextController, form.patientWeightKG),
+            (\.patientComplaintsTextController, patientComplaintsTextController, form.patientComplaints),
+            (\.examinationDescriptionTextController, examinationDescriptionTextController, form.examinationDescription),
+        ]
+        for (field, inputTextController, value) in textFields where !draftRestorationChangedFields.contains(
+            field,
+        ) {
+            inputTextController.restoreText(
+                value,
+            )
+        }
+        if !draftRestorationChangedFields.contains(
+            \.patientGender,
+        ) {
+            patientGender = form.patientGender
+        }
+        if !draftRestorationChangedFields.contains(
+            \.patientDateOfBirth,
+        ) {
+            patientDateOfBirth = form.patientDateOfBirth
+        }
+    }
+
+    private func stopDraftRestoration() {
+        draftRestorationTask?.cancel()
+        draftRestorationTask = nil
+        draftRestorationCancellables.removeAll()
+        draftRestorationChangedFields.removeAll()
+    }
+
+    private func saveCurrentDraft(
+        isPhotosChanged: Bool,
+    ) {
+        let form = makeDraftSnapshot()
+        let currentPhotos = photos
+        draftAutosaver.enqueue { [weak self] in
+            guard let self else {
+                return
+            }
+            try await saveDraftSnapshot(
+                form,
+            )
+            if isPhotosChanged {
+                try await container.ultrasoundDraftRepository.savePhotos(
+                    currentPhotos,
+                    currentForm: form,
+                )
+            }
+        }
+    }
+
     private func startDraftObservation() {
         startDraftAutosave()
 
@@ -980,12 +1187,19 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                 )
             }
 
+        startDraftLifecycleObservation()
+    }
+
+    private func startDraftLifecycleObservation() {
+        guard draftLifecycleCancellable == nil else {
+            return
+        }
         draftLifecycleCancellable = NotificationCenter.default
             .publisher(
                 for: UIApplication.willResignActiveNotification,
             )
             .sink { [weak self] _ in
-                self?.saveDraftBeforeBackground()
+                self?.onBackground()
             }
     }
 
@@ -993,8 +1207,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         stopDraftAutosave()
         draftPhotosCancellable?.cancel()
         draftPhotosCancellable = nil
-        draftLifecycleCancellable?.cancel()
-        draftLifecycleCancellable = nil
     }
 
     private func saveDraftPhotos(
@@ -1013,25 +1225,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         }
     }
 
-    private func saveDraftBeforeBackground() {
-        let backgroundTask = UIApplication.shared.beginBackgroundTask()
-        handle {
-            self.flushPendingDraftSave()
-            try await self.waitForPendingDraftSave()
-        } onDefer: {
-            guard backgroundTask != .invalid else {
-                return
-            }
-
-            UIApplication.shared.endBackgroundTask(
-                backgroundTask,
-            )
-        }
-    }
-
     private func onTapCamera() {
         switch (state, isPhotoLimitReached) {
-        case (_ as ScanInitializationLoadingState, _), (_ as ScanGenerationLoadingState, _), (_ as ScanReportSaveLoadingState, _), (_ as ScanClearLoadingState, _), (_, true): return
+        case (_ as ScanGenerationLoadingState, _), (_, true): return
         default: break
         }
 
@@ -1070,7 +1266,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     private func onTapGallery() {
         switch (state, isPhotoLimitReached) {
-        case (_ as ScanInitializationLoadingState, _), (_ as ScanGenerationLoadingState, _), (_ as ScanReportSaveLoadingState, _), (_ as ScanClearLoadingState, _), (_, true): return
+        case (_ as ScanGenerationLoadingState, _), (_, true): return
         default: break
         }
 
@@ -1181,8 +1377,11 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
     }
 
     private func performScan() {
+        guard operationTask == nil else {
+            return
+        }
         switch state {
-        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: return
+        case _ as ScanGenerationLoadingState: return
         default: break
         }
 
@@ -1254,12 +1453,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         _ report: USExaminationReport,
         snapshot: USExaminationDraftForm,
     ) {
-        emit(
-            ScanReportSaveLoadingState(
-                report: report,
-                snapshot: snapshot,
-            ),
-        )
         handle {
             if snapshot == self.makeDraftSnapshot(), report.examinationData.photos.map(
                 \.id,
@@ -1295,7 +1488,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         _ error: Error,
     ) {
         emit(
-            ScanFailedState(
+            ScanErrorState(
                 error: error,
             ),
         )
@@ -1306,48 +1499,33 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
 
     private func clearDraftAndReset() async throws {
         stopDraftObservation()
+        trackDraftRestorationChanges()
         defer {
+            let isEdited = !draftRestorationChangedFields.isEmpty
+            draftRestorationCancellables.removeAll()
+            draftRestorationChangedFields.removeAll()
             startDraftObservation()
+            if isEdited {
+                saveCurrentDraft(
+                    isPhotosChanged: true,
+                )
+            }
         }
-
         try await waitForPendingDraftSave()
         try await clearDraft()
         let reportsCount = try await container.ultrasoundReportRepository.getReportsCount()
-        applyDefaultValues(
-            reportsCount: reportsCount,
-        )
-    }
-
-    private func applyDefaultValues(
-        reportsCount: Int,
-    ) {
-        photos.removeAll()
-        examinationNumberTextController.setText(
-            String(
-                localized: container.l10n.resource(
-                    .scanExaminationDefaultNumberLabel,
-                    values: [.count: String(
-                        reportsCount,
-                    )],
-                ),
+        draftRestorationCancellables.removeAll()
+        applyInitialDraft(
+            .defaults(
+                reportsCount: reportsCount,
             ),
+            typeID: nil,
         )
-        patientNameTextController.setText(
-            String(
-                localized: container.l10n.resource(
-                    .scanPatientDefaultNameLabel,
-                    values: [.count: String(
-                        reportsCount,
-                    )],
-                ),
-            ),
-        )
-        patientGender = .male
-        patientDateOfBirth = defaultPatientDateOfBirth
-        patientHeightCMTextController.clear()
-        patientWeightKGTextController.clear()
-        patientComplaintsTextController.clear()
-        examinationDescriptionTextController.clear()
+        if !draftRestorationChangedFields.contains(
+            \.photos,
+        ) {
+            photos.removeAll()
+        }
     }
 
     private func clearForm() {

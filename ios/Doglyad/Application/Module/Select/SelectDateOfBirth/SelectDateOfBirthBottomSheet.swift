@@ -5,7 +5,6 @@ struct SelectDateOfBirthBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: SelectDateOfBirthArguments?
 
     var body: some View {

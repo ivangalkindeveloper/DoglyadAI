@@ -10,18 +10,17 @@ struct ReportReceivedLoadingView: DViewProtocol {
             l10n[
                 .reportReceivedGeneratingLabel,
             ],
+            accessibilityIdentifier: "reportReceived.generating",
         )
         .dStyle(
-            font: typography.textMedium,
+            font: typography.textSmall,
             color: color.grayscaleBackgroundWeak,
-        )
-        .dShimmer(
-            cornerRadius: 0,
-            masksContent: true,
+            alignment: .leading,
         )
         .frame(
             maxWidth: .infinity,
             alignment: .leading,
         )
+        .dShimmer()
     }
 }

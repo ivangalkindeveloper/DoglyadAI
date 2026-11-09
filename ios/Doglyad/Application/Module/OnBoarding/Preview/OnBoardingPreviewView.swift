@@ -11,7 +11,7 @@
 
         var body: some View {
             let isErrorPresented = switch state {
-            case _ as OnBoardingFailedState: true
+            case _ as OnBoardingErrorState: true
             default: false
             }
 

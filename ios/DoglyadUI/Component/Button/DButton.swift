@@ -2,39 +2,37 @@ import SwiftUI
 
 public struct DButton: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     let image: ImageResource?
     let title: LocalizedStringResource?
     let truncatingTitleSuffix: String?
     let badge: DButtonBadge?
-    private let accessibilityElement: AccessibilityChildBehavior?
-    private let accessibilityIdentifier: String?
-
     let action: () -> Void
     let isLoading: Bool
     let isDisabled: Bool
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     public init(
         image: ImageResource? = nil,
         title: LocalizedStringResource? = nil,
         truncatingTitleSuffix: String? = nil,
         badge: DButtonBadge? = nil,
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         action: @escaping () -> Void,
         isLoading: Bool = false,
         isDisabled: Bool = false,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
         self.image = image
         self.title = title
         self.truncatingTitleSuffix = truncatingTitleSuffix
         self.badge = badge
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.action = action
         self.isLoading = isLoading
         self.isDisabled = isDisabled
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {

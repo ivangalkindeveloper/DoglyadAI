@@ -11,11 +11,8 @@ import UIKit
 @MainActor
 final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtocol> {
     @Published var report: USExaminationReport
-
     @Published var neuralModel: USExaminationNeuralModel
-
     @Published var template: USExaminationTemplate?
-
     private var reportObservation: AnyCancellable?
     private let messager: DMessager
     private let observeExaminationChanges: (@escaping () -> Void) -> AnyCancellable
@@ -45,6 +42,11 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         observeReports: @escaping (@escaping (USExaminationReport) -> Void) -> AnyCancellable,
         onStartReportGeneration: @escaping (USExaminationRequest, USExaminationReport) async throws -> USExaminationReport,
     ) {
+        report = currentReport(
+            initialReport,
+        )
+        neuralModel = getNeuralModel()
+        template = getSelectedTemplate()
         self.messager = messager
         self.observeExaminationChanges = observeExaminationChanges
         self.getSelectedTemplate = getSelectedTemplate
@@ -54,21 +56,15 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         self.observeReports = observeReports
         self.onStartReportGeneration = onStartReportGeneration
 
-        report = currentReport(
-            initialReport,
-        )
-        neuralModel = getNeuralModel()
-        template = getSelectedTemplate()
-
         super.init(
             state: ReportDetailContentState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .reportDetail,
             ),
@@ -149,7 +145,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         _ photo: USExaminationScanPhoto,
     ) {
         switch state {
-        case _ as ReportDetailGenerationLoadingState, _ as ReportDetailSaveLoadingState: return
+        case _ as ReportDetailGenerationLoadingState: return
         default: break
         }
         coordinator.screen(
@@ -212,7 +208,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         toolbarInset: CGFloat,
     ) {
         switch state {
-        case _ as ReportDetailGenerationLoadingState, _ as ReportDetailSaveLoadingState: return
+        case _ as ReportDetailGenerationLoadingState: return
         default: break
         }
 
@@ -282,7 +278,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         toolbarInset _: CGFloat,
     ) {
         switch state {
-        case _ as ReportDetailGenerationLoadingState, _ as ReportDetailSaveLoadingState: return
+        case _ as ReportDetailGenerationLoadingState: return
         default: break
         }
         if report.actualModelReport.generation.status == .generating {
@@ -344,7 +340,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         _ error: Error,
     ) {
         emit(
-            ReportDetailFailedState(
+            ReportDetailErrorState(
                 error: error,
             ),
         )

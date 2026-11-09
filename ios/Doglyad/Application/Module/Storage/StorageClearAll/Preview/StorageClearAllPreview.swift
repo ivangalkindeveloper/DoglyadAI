@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 StorageClearAllDefaultState",
+        "01 StorageClearAllDefaultState ConfirmDeletion",
     ) {
         StorageClearAllPreviewView(
             state: StorageClearAllDefaultState(),

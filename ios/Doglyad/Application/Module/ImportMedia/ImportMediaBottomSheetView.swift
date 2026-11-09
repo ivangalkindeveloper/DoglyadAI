@@ -4,7 +4,6 @@ import SwiftUI
 struct ImportMediaBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: ImportMediaViewModel
 
     var body: some View {

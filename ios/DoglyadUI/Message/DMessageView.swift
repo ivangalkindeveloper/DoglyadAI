@@ -3,7 +3,6 @@ internal import SwiftMessages
 
 struct DMessageModifier: ViewModifier {
     @EnvironmentObject private var theme: DTheme
-
     @StateObject var messager = DMessager()
     var isPersistent = false
 

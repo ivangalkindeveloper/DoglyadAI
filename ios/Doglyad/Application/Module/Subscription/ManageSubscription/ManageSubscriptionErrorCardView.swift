@@ -5,7 +5,7 @@ struct ManageSubscriptionErrorCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: ManageSubscriptionViewModel
-    let state: ManageSubscriptionFailedState
+    let state: ManageSubscriptionErrorState
 
     var body: some View {
         VStack(
@@ -19,14 +19,6 @@ struct ManageSubscriptionErrorCardView: DViewProtocol {
                 color: color.dangerDefault,
             )
 
-            DButton(
-                title: l10n[
-                    .buttonRetry,
-                ],
-                action: viewModel.onTapRetry,
-            ).dStyle(
-                .primaryButton,
-            )
         }.padding(
             size.s16,
         ).background(

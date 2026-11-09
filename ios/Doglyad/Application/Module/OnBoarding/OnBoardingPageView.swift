@@ -3,7 +3,6 @@ import SwiftUI
 
 struct OnBoardingPageView<BottomContent: View>: DViewProtocol {
     @EnvironmentObject var theme: DTheme
-
     let tag: Int
     let title: LocalizedStringResource
     let image: ImageResource

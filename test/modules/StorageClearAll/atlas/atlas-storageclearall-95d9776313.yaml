@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-storageclearall-95d9776313
+tags:
+- atlas
+- StorageClearAll
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-storageclearall-95d9776313
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-storageclearall-95d9776313
+    timeout: 15000
+- takeScreenshot: 01-StorageClearAll-95d9776313

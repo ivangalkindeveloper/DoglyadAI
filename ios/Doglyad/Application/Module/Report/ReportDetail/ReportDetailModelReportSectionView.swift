@@ -6,6 +6,7 @@ struct ReportDetailModelReportSectionView: DViewProtocol {
     let title: LocalizedStringResource
     let text: String
     let collapsedLineLimit: Int
+    var isDisabled: Bool = false
 
     var body: some View {
         VStack(
@@ -24,6 +25,7 @@ struct ReportDetailModelReportSectionView: DViewProtocol {
                 text: text,
                 backgroundColor: color.grayscaleBackground,
                 collapsedLineLimit: collapsedLineLimit,
+                isDisabled: isDisabled,
             )
         }
     }

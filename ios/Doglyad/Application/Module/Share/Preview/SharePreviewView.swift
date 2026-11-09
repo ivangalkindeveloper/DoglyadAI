@@ -12,7 +12,7 @@
 
         var body: some View {
             let isErrorPresented = switch state {
-            case _ as ShareFailedState: true
+            case _ as ShareErrorState: true
             default: false
             }
 

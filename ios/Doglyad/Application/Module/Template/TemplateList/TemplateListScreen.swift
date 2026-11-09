@@ -3,6 +3,7 @@ import Router
 import SwiftUI
 
 struct TemplateListScreen: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
@@ -11,6 +12,7 @@ struct TemplateListScreen: View {
     var body: some View {
         TemplateListScreenView(
             viewModel: TemplateListViewModel(
+                messager: messager,
                 container: container,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in

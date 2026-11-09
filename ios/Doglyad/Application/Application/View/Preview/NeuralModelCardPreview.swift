@@ -3,7 +3,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Доступны запросы",
+        "01 NeuralModelCardView RequestsAvailable",
         traits: .sizeThatFitsLayout,
     ) {
         NeuralModelCardView(
@@ -21,7 +21,7 @@
     }
 
     #Preview(
-        "02 Лимит запросов исчерпан",
+        "02 NeuralModelCardView DailyLimitReached",
         traits: .sizeThatFitsLayout,
     ) {
         NeuralModelCardView(

@@ -20,6 +20,8 @@ struct ManageSubscriptionActionsView: DViewProtocol {
                     .manageSubscriptionChangeTypeDescription,
                 ],
                 action: viewModel.onTapChangeType,
+                isDisabled:
+                viewModel.isProcessing,
             )
 
             DListButtonCard(
@@ -30,6 +32,8 @@ struct ManageSubscriptionActionsView: DViewProtocol {
                     .manageSubscriptionRestoreDescription,
                 ],
                 action: viewModel.onTapRestore,
+                isDisabled:
+                viewModel.isProcessing,
             )
 
             if viewModel.isManageAvailable {
@@ -37,14 +41,14 @@ struct ManageSubscriptionActionsView: DViewProtocol {
                     title: viewModel.manageTitle,
                     description: viewModel.manageDescription,
                     action: viewModel.onTapManageSubscription,
+                    isDisabled:
+                    viewModel.isProcessing,
                 )
             }
 
             ManageSubscriptionRenewalNoticeView(
                 status: (state as? ManageSubscriptionActiveState)?.status,
             )
-        }.disabled(
-            viewModel.isProcessing,
-        )
+        }
     }
 }

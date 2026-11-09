@@ -100,7 +100,7 @@ struct ScanSpeechObservationTests {
         let container = DependencyContainer.previewable
         return ScanSpeechViewModel(
             container: container,
-            messager: DMessager(),
+            speechController: speechController,
             router: DRouter(
                 initialRoute: RouteScreen(
                     type: .scan,
@@ -117,13 +117,13 @@ struct ScanSpeechObservationTests {
                 container.initialSettingsAI
             },
             onRefreshSubscriptionStatus: {},
+            messager: DMessager(),
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
                 onConfirm: { _ in
                     true
                 },
             ),
-            speechController: speechController,
         )
     }
 }

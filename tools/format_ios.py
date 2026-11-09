@@ -85,6 +85,17 @@ def argument_formatter() -> Path:
     return executable
 
 
+def format_swift_source(source: str) -> str:
+    rewritten = subprocess.check_output(
+        [str(argument_formatter()), "--stdin"], input=source, text=True
+    )
+    return subprocess.check_output(
+        ["swiftformat", "stdin", "--config", str(IOS / ".swiftformat"), "--quiet"],
+        input=rewritten,
+        text=True,
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Format iOS arguments, member order, block bodies, and view spacing."

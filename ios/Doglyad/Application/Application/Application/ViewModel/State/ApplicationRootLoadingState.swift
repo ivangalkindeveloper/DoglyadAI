@@ -1,13 +1,13 @@
 @MainActor
 final class ApplicationRootLoadingState: ApplicationRootStateProtocol, @MainActor Equatable {
     let id: ApplicationRootViewType
-    let previousFailure: ApplicationRootFailedState?
+    let previousFailure: ApplicationRootErrorState?
 
     init(
-        previousFailure: ApplicationRootFailedState? = nil,
+        previousFailure: ApplicationRootErrorState? = nil,
     ) {
-        self.previousFailure = previousFailure
         id = previousFailure?.id ?? .splash
+        self.previousFailure = previousFailure
     }
 
     static func == (

@@ -31,6 +31,7 @@ class PublicationTests(unittest.TestCase):
             {
                 "id": "case-b",
                 "kind": "render",
+                "previewScope": "module",
                 "screen": "Parent",
                 "screenshots": ["screen-b"],
             },
@@ -62,6 +63,12 @@ class PublicationTests(unittest.TestCase):
                 {"figmaFileKey": "test"},
             )
 
+    def test_component_previews_cannot_be_published_with_a_full_run(self) -> None:
+        self.suite[1]["previewScope"] = "component"
+        with self.assertRaisesRegex(ValueError, "full-module"):
+            self.finalize()
+        self.assertFalse((self.run / "publication.json").exists())
+
     def test_complete_run_is_publishable_with_named_images(self) -> None:
         self.assertEqual(self.finalize()["status"], "passed")
         data = publication(self.run)
@@ -71,7 +78,9 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(data["images"][1]["kind"], "render")
         self.assertTrue((self.run / "index.html").is_file())
 
-    def test_failed_run_links_diagnostics_and_distinguishes_unattempted_cases(self) -> None:
+    def test_failed_run_links_diagnostics_and_distinguishes_unattempted_cases(
+        self,
+    ) -> None:
         self.results[0]["exitCode"] = 1
         (self.run / "case-a/maestro.log").write_text("UI assertion failed")
         (self.run / "failure.txt").write_text("Expected <button> was absent")

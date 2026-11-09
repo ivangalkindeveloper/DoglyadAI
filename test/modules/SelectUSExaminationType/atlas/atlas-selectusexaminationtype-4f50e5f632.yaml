@@ -1,0 +1,16 @@
+appId: ${APP_ID}
+name: atlas-selectusexaminationtype-4f50e5f632
+tags:
+- atlas
+- SelectUSExaminationType
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-selectusexaminationtype-4f50e5f632
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-selectusexaminationtype-4f50e5f632
+    timeout: 15000
+- assertNotVisible:
+    id: message.error
+- takeScreenshot: 03-SelectUSExaminationType-4f50e5f632

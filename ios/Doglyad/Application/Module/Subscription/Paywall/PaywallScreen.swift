@@ -1,7 +1,9 @@
+import DoglyadUI
 import Router
 import SwiftUI
 
 struct PaywallScreen: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
@@ -10,6 +12,7 @@ struct PaywallScreen: View {
     var body: some View {
         PaywallScreenView(
             viewModel: PaywallViewModel(
+                messager: messager,
                 container: container,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in

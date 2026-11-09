@@ -3,7 +3,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Название модели",
+        "01 NeuralModelValueRowView ModelName",
         traits: .sizeThatFitsLayout,
     ) {
         NeuralModelValueRowView(
@@ -19,7 +19,7 @@
     }
 
     #Preview(
-        "02 Числовое значение",
+        "02 NeuralModelValueRowView NumericValue",
         traits: .sizeThatFitsLayout,
     ) {
         NeuralModelValueRowView(

@@ -63,28 +63,21 @@
                 contextualStrings: [],
                 lexiconLocalization: container.l10n.voice.speech,
             )
-            // An empty recognition result initializes review without starting parsing.
-            // Fill the editable text afterwards, keeping Canvas offline and deterministic.
-            speechController.lastTranscript = DSpeechTranscript(
-                rawText: "",
-                correctedText: "",
-                locale: container.language.currentLocale,
-                engine: .whisperKit,
-                completion: completion,
-            )
             let model = ScanSpeechPreviewFactory.makeViewModel(
                 container: container,
                 messager: messager,
                 router: router,
                 speechController: speechController,
             )
-            model.onInit()
-            model.transcriptTextController.setText(
-                text,
-            )
-            model.emit(
-                state,
-                animation: nil,
+            model.configureTranscriptPreview(
+                transcript: DSpeechTranscript(
+                    rawText: text,
+                    correctedText: text,
+                    locale: container.language.currentLocale,
+                    engine: .whisperKit,
+                    completion: completion,
+                ),
+                state: state,
             )
             return model
         }

@@ -96,13 +96,17 @@ def validate_suite() -> list[dict]:
     if not suite or len(set(ids)) != len(ids):
         raise ValueError("Suite is empty or has duplicate case IDs")
     declared = {TEST / c["flow"] for c in suite}
-    actual = set((TEST / "modules").glob("*/atlas/*.yaml")) | set(
-        (TEST / "modules").glob("*/e2e/*.yaml")
-    ) | set((TEST / "components").glob("*/atlas/*.yaml"))
+    actual = (
+        set((TEST / "modules").glob("*/atlas/*.yaml"))
+        | set((TEST / "modules").glob("*/e2e/*.yaml"))
+        | set((TEST / "components").glob("*/atlas/*.yaml"))
+    )
     if declared != actual:
         raise ValueError(f"Unregistered or missing flows: {declared ^ actual}")
     provider_phase = False
     for case in suite:
+        if case.get("kind") == "render" and case.get("previewScope") != "module":
+            raise ValueError("Only full-module Preview cases can be registered")
         if case.get("subscriptionProfile") == "provider":
             if case.get("provider") != "yookassa" or not case.get("paymentPlan"):
                 raise ValueError(
@@ -481,6 +485,7 @@ def finish(
                     "screen": screen,
                     "module": screen,
                     "kind": case["kind"],
+                    "previewScope": case.get("previewScope"),
                     "displayOrder": case.get("previewOrder", len(images) + 1),
                     "state": case.get("title", screenshot),
                     "platform": "ios",
@@ -568,26 +573,39 @@ def write_index(run: Path, report: dict) -> None:
                 for title, path in candidates.items()
                 if (run / path).exists()
             )
-        rows.append(f"<tr><td>{html.escape(identity)}</td><td>{status}</td><td>{links}</td></tr>")
+        rows.append(
+            f"<tr><td>{html.escape(identity)}</td><td>{status}</td><td>{links}</td></tr>"
+        )
     logs = " · ".join(
         f'<a href="{name}">{name}</a>'
-        for name in ("report.json", "failure.txt", "build.log", "environment.log", "services.log")
+        for name in (
+            "report.json",
+            "failure.txt",
+            "build.log",
+            "environment.log",
+            "services.log",
+        )
         if (run / name).is_file()
     )
     failure = run / "failure.txt"
-    error = f"<pre>{html.escape(failure.read_text())}</pre>" if failure.is_file() else ""
+    error = (
+        f"<pre>{html.escape(failure.read_text())}</pre>" if failure.is_file() else ""
+    )
     cards = "".join(
         f'<figure><figcaption>{html.escape(i["screen"])} · {html.escape(i["state"])}</figcaption><a href="{html.escape(i["path"], quote=True)}"><img loading="lazy" src="{html.escape(i["path"], quote=True)}"></a></figure>'
         for i in report["images"]
     )
     (run / "index.html").write_text(
         f'<!doctype html><meta charset="utf-8"><title>{html.escape(run.name)}</title>'
-        '<style>body{font:16px system-ui}main{display:flex;flex-wrap:wrap;gap:24px}figure{width:280px;margin:0}img{width:100%}figcaption{min-height:60px}td{padding:6px 12px;border-bottom:1px solid #ddd}pre{white-space:pre-wrap}</style>'
-        f'<h1>{html.escape(run.name)}: {html.escape(report["status"])}</h1>'
-        f'<p>{report["passedCases"]}/{len(report["expectedCases"])} кейсов; {len(report["images"])}/{report["expectedScreenshots"]} снимков.</p>'
-        f'<p>{logs}</p>{error}<details open><summary>Результаты кейсов</summary>'
-        '<table><tr><th>Кейс</th><th>Результат</th><th>Диагностика</th></tr>'
-        + "".join(rows) + "</table></details><main>" + cards + "</main>"
+        "<style>body{font:16px system-ui}main{display:flex;flex-wrap:wrap;gap:24px}figure{width:280px;margin:0}img{width:100%}figcaption{min-height:60px}td{padding:6px 12px;border-bottom:1px solid #ddd}pre{white-space:pre-wrap}</style>"
+        f"<h1>{html.escape(run.name)}: {html.escape(report['status'])}</h1>"
+        f"<p>{report['passedCases']}/{len(report['expectedCases'])} кейсов; {len(report['images'])}/{report['expectedScreenshots']} снимков.</p>"
+        f"<p>{logs}</p>{error}<details open><summary>Результаты кейсов</summary>"
+        "<table><tr><th>Кейс</th><th>Результат</th><th>Диагностика</th></tr>"
+        + "".join(rows)
+        + "</table></details><main>"
+        + cards
+        + "</main>"
     )
 
 
@@ -606,6 +624,13 @@ def publication(run: Path) -> dict:
         or (run / "failure.txt").exists()
     ):
         raise ValueError("Only a complete successful run can be published")
+    if any(
+        image.get("kind") == "render" and image.get("previewScope") != "module"
+        for image in report["images"]
+    ):
+        raise ValueError(
+            "Only full-module Preview captures can be published; capture the current catalog"
+        )
     data = {
         **report,
         "status": "passed",

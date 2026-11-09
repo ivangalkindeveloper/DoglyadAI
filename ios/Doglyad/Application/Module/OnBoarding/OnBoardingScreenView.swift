@@ -7,13 +7,12 @@ struct OnBoardingScreenView: DViewProtocol {
         \.locale,
     ) private var locale
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: OnBoardingViewModel
 
     var body: some View {
         let (isDisabled, isProcessing): (Bool, Bool) = switch viewModel.state {
         case let state as OnBoardingLegalState: (!state.isLegalAccepted, false)
-        case _ as OnBoardingLoadingState: (true, true)
+        case _ as OnBoardingLoadingState: (false, true)
         default: (false, false)
         }
 
@@ -62,10 +61,10 @@ struct OnBoardingScreenView: DViewProtocol {
                         title: l10n[
                             viewModel.state.primaryButtonTitleKey,
                         ],
-                        accessibilityIdentifier: "onboarding.primary",
                         action: viewModel.onPressedNext,
                         isLoading: isProcessing,
                         isDisabled: isDisabled,
+                        accessibilityIdentifier: "onboarding.primary",
                     )
                     .dStyle(
                         .primaryButton,

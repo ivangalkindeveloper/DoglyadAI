@@ -2,7 +2,6 @@ import SwiftUI
 
 public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     @ObservedObject private var inputTextController: DTextFieldController
     private let focus: DTextFieldFocus<Focus>?
     private let title: LocalizedStringResource
@@ -10,14 +9,13 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
     private let mode: any DTextFieldModeProtocol
     private let keyboardType: UIKeyboardType
     private let autocapitalization: TextInputAutocapitalization?
-    private let accessibilityElement: AccessibilityChildBehavior?
-    private let accessibilityIdentifier: String?
-
     private let leading: Leading
     private let trailing: Trailing
-
     @FocusState private var isInternallyFocused: Bool
     @State private var inputText: String
+    private let isDisabled: Bool
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     private var isFocused: Bool {
         focus?.isFocused ?? isInternallyFocused
@@ -31,14 +29,15 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         mode: any DTextFieldModeProtocol = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
         },
         @ViewBuilder trailing: @escaping (() -> Trailing) = {
             EmptyView()
         },
+        isDisabled: Bool = false,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
         self.inputTextController = inputTextController
         self.focus = focus
@@ -47,14 +46,15 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         self.mode = mode
         self.keyboardType = keyboardType
         self.autocapitalization = autocapitalization
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.leading = leading()
         self.trailing = trailing()
         _inputText = State(
             initialValue: inputTextController.text,
         )
+        self.isDisabled = isDisabled
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public init(
@@ -64,14 +64,15 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
         mode: any DTextFieldModeProtocol = DTextFieldSingleLineMode(),
         keyboardType: UIKeyboardType = .default,
         autocapitalization: TextInputAutocapitalization? = .sentences,
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
         },
         @ViewBuilder trailing: @escaping (() -> Trailing) = {
             EmptyView()
         },
+        isDisabled: Bool = false,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) where Focus == Bool {
         self.init(
             inputTextController: inputTextController,
@@ -81,10 +82,11 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
             mode: mode,
             keyboardType: keyboardType,
             autocapitalization: autocapitalization,
-            accessibilityElement: accessibilityElement,
-            accessibilityIdentifier: accessibilityIdentifier,
             leading: leading,
             trailing: trailing,
+            isDisabled: isDisabled,
+            accessibilityElement: accessibilityElement,
+            accessibilityIdentifier: accessibilityIdentifier,
         )
     }
 
@@ -230,7 +232,7 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
                 vertical: true,
             )
             .onTapGesture {
-                guard focus == nil, isFocused == false else {
+                guard !isDisabled, focus == nil, isFocused == false else {
                     return
                 }
                 isInternallyFocused = true
@@ -267,6 +269,9 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
                 value: inputTextController.errorText,
             )
         }
+        .disabled(
+            isDisabled,
+        )
         .modifier(
             DAccessibilityModifier(
                 element: accessibilityElement,

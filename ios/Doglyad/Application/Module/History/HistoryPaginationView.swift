@@ -8,7 +8,7 @@ struct HistoryPaginationView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as HistoryFailedState:
+        case _ as HistoryErrorState:
             ErrorPaginationView(
                 description: l10n.text(
                     .errorUnknownDescription,
@@ -17,8 +17,8 @@ struct HistoryPaginationView: DViewProtocol {
             )
         default:
             if viewModel.nextOffset != nil {
-                HistoryOffsetLoadingView().transition(
-                    .opacity,
+                Color.clear.frame(
+                    height: 1,
                 ).onAppear {
                     viewModel.onOffsetAppear()
                 }

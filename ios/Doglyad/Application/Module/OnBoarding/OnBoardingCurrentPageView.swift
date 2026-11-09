@@ -107,7 +107,7 @@ struct OnBoardingCurrentPageView: DViewProtocol {
                     .onBoardingFourthDescription,
                 ],
             )
-        case _ as OnBoardingFinalState, _ as OnBoardingLoadingState, _ as OnBoardingFailedState:
+        case _ as OnBoardingFinalState, _ as OnBoardingLoadingState, _ as OnBoardingErrorState:
             OnBoardingPageView(
                 tag: 4,
                 title: l10n[

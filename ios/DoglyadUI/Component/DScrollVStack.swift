@@ -5,26 +5,25 @@ public struct DScrollVStack<Content: View>: DViewProtocol {
     private let alignment: HorizontalAlignment
     private let spacing: CGFloat?
     private let padding: EdgeInsets
+    private let content: Content
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
-
-    private let content: Content
 
     public init(
         alignment: HorizontalAlignment = .leading,
         spacing: CGFloat? = nil,
         padding: EdgeInsets = EdgeInsets(),
+        @ViewBuilder content: () -> Content,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        @ViewBuilder content: () -> Content,
     ) {
         self.alignment = alignment
         self.spacing = spacing
         self.padding = padding
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.content = content()
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {

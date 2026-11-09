@@ -186,7 +186,8 @@
 				Component/Button/DButtonStyle.swift,
 				Component/Button/DCloseButton.swift,
 				Component/Button/DListButton.swift,
-				Component/Card/DButtonCard.swift,
+				Component/Button/DTextButton.swift,
+				Component/Card/DCard.swift,
 				Component/Card/DListButtonCard.swift,
 				Component/Card/DPhotoCard.swift,
 				Component/Card/DPhotoCardBadgeView.swift,
@@ -215,7 +216,8 @@
 				Component/DScrollVStack.swift,
 				Component/DSegment.swift,
 				Component/DShareLink.swift,
-				Component/DShimmerPlaceholder.swift,
+				Component/Shimmer/DShimmerPlaceholder.swift,
+				Component/Shimmer/DShimmerTextLines.swift,
 				Component/DStretchyHeader.swift,
 				Component/DText.swift,
 				Component/DTextFade.swift,
@@ -286,7 +288,8 @@
 				Component/Button/DButtonStyle.swift,
 				Component/Button/DCloseButton.swift,
 				Component/Button/DListButton.swift,
-				Component/Card/DButtonCard.swift,
+				Component/Button/DTextButton.swift,
+				Component/Card/DCard.swift,
 				Component/Card/DListButtonCard.swift,
 				Component/Card/DPhotoCard.swift,
 				Component/Card/DPhotoCardBadgeView.swift,
@@ -315,7 +318,8 @@
 				Component/DScrollVStack.swift,
 				Component/DSegment.swift,
 				Component/DShareLink.swift,
-				Component/DShimmerPlaceholder.swift,
+				Component/Shimmer/DShimmerPlaceholder.swift,
+				Component/Shimmer/DShimmerTextLines.swift,
 				Component/DStretchyHeader.swift,
 				Component/DText.swift,
 				Component/DTextFade.swift,
@@ -1080,6 +1084,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nSOURCE=\"${SRCROOT}/Firebase/${CONFIGURATION}/GoogleService-Info.plist\"\nDESTINATION=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist\"\n\nif [ ! -f \"${SOURCE}\" ]; then\n    echo \"error: GoogleService-Info.plist for configuration '${CONFIGURATION}' not found at ${SOURCE}\"\n    exit 1\nfi\n\ncp \"${SOURCE}\" \"${DESTINATION}\"\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1433,6 +1438,7 @@
 			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
 			baseConfigurationReferenceRelativePath = Config.Development.xcconfig;
 			buildSettings = {
+				APP_CHECK_DEBUG_TOKEN = "";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDevelopment;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
@@ -1854,6 +1860,7 @@
 			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
 			baseConfigurationReferenceRelativePath = Config.Production.xcconfig;
 			buildSettings = {
+				APP_CHECK_DEBUG_TOKEN = "";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;
@@ -2484,6 +2491,7 @@
 			baseConfigurationReferenceAnchor = 77C3EE2C2FD617FF00DC4D6A /* Config */;
 			baseConfigurationReferenceRelativePath = Config.Development.xcconfig;
 			buildSettings = {
+				APP_CHECK_DEBUG_TOKEN = "";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconDevelopment;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Doglyad/Doglyad.entitlements;

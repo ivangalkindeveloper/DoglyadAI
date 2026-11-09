@@ -18,10 +18,8 @@ final class DSpeechAudioRelay: @unchecked Sendable {
     /// How much audio is kept for the hand-off. A second covers the task recreation
     /// window; anything more only duplicates already recognized text.
     private static let replaySeconds: Double = 1.0
-
     private let lock = NSLock()
     private var request: SFSpeechAudioBufferRecognitionRequest?
-
     /// A ring of pre-allocated buffers: allocations on the audio thread cause audio
     /// dropouts, so the memory is taken once at start.
     private var ring: [AVAudioPCMBuffer] = []

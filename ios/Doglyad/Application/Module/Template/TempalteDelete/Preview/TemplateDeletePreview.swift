@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 TemplateDeleteDefaultState",
+        "01 TemplateDeleteDefaultState ConfirmDeletion",
     ) {
         TemplateDeletePreviewView(
             state: TemplateDeleteDefaultState(),

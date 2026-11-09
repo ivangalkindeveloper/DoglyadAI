@@ -5,7 +5,6 @@ public struct DCheck: DViewProtocol {
     @Environment(
         \.displayScale,
     ) private var displayScale
-
     private let isChecked: Bool
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?

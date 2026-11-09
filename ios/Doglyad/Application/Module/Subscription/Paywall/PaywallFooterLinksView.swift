@@ -16,6 +16,8 @@ struct PaywallFooterLinksView: DViewProtocol {
                     .paywallRestoreButton,
                 ],
                 action: viewModel.onTapRestore,
+                isDisabled:
+                viewModel.isProcessing,
             )
 
             PaywallFooterLinkButton(

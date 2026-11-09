@@ -6,6 +6,7 @@ import UIKit
 
 @MainActor
 final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscriptionStateProtocol> {
+    private let messager: DMessager
     private let fetchProducts: () async throws -> BillingProductsResponse
     private let manageSubscription: () async throws -> Void
     private let restorePurchases: () async throws -> SubscriptionStatus?
@@ -13,6 +14,7 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
     private var isDismissalRequested = false
 
     init(
+        messager: DMessager,
         container: DependencyContainer,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
@@ -21,11 +23,12 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         getSettingsAI: @escaping () -> SettingsAI,
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments _: ManageSubscriptionArguments?,
+        fetchProducts: (() async throws -> BillingProductsResponse)? = nil,
         manageSubscription: @escaping () async throws -> Void,
         restorePurchases: @escaping () async throws -> SubscriptionStatus?,
         requestRefund: @escaping () async throws -> Void,
-        fetchProducts: (() async throws -> BillingProductsResponse)? = nil,
     ) {
+        self.messager = messager
         self.fetchProducts = fetchProducts ?? {
             try await container.subscriptionBackendRepository.fetchPlans()
         }
@@ -38,9 +41,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .manageSubscription,
             ),
@@ -105,7 +108,7 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
         switch state {
         case let content as ManageSubscriptionSuccessState: content
         case let loading as ManageSubscriptionLoadingState: loading.previousState
-        case let failed as ManageSubscriptionFailedState: failed.previousState
+        case let failed as ManageSubscriptionErrorState: failed.previousState
         default: nil
         }
     }
@@ -123,12 +126,12 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
                 catalog: content.catalog,
                 status: status,
             )
-        case let failed as ManageSubscriptionFailedState:
+        case let failed as ManageSubscriptionErrorState:
             guard let previous = failed.previousState else {
                 return
             }
             emit(
-                ManageSubscriptionFailedState(
+                ManageSubscriptionErrorState(
                     previousState: resolvedContent(
                         catalog: previous.catalog,
                         status: status,
@@ -386,12 +389,15 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
             notice: notice,
         ) else {
             emit(
-                ManageSubscriptionFailedState(
+                ManageSubscriptionErrorState(
                     previousState: content,
                     errorDescription: l10n.text(
                         .manageSubscriptionLoadFailedDescription,
                     ),
                 ),
+            )
+            messager.showUnknownError(
+                l10n: l10n,
             )
             return
         }
@@ -443,12 +449,15 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
             return
         }
         emit(
-            ManageSubscriptionFailedState(
+            ManageSubscriptionErrorState(
                 previousState: content,
                 errorDescription: l10n.text(
                     .manageSubscriptionLoadFailedDescription,
                 ),
             ),
+        )
+        messager.showUnknownError(
+            l10n: l10n,
         )
     }
 
@@ -485,7 +494,7 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
                     return
                 }
                 emit(
-                    ManageSubscriptionFailedState(
+                    ManageSubscriptionErrorState(
                         previousState: resolvedContent(
                             catalog: previous.catalog,
                             status: subscriptionStatus,
@@ -494,6 +503,9 @@ final class ManageSubscriptionViewModel: DModuleViewModel<any ManageSubscription
                             .errorUnknownDescription,
                         ),
                     ),
+                )
+                messager.showUnknownError(
+                    l10n: l10n,
                 )
             }
         }

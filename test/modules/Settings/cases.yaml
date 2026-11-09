@@ -33,7 +33,7 @@ cases:
     - e2e-settings-navigation
     - e2e-settings-history-summary-retry
 - id: Settings.history-summary
-  title: Счётчик истории и повтор загрузки
+  title: Необязательный счётчик истории
   profiles:
   - pro
   preconditions:
@@ -41,12 +41,11 @@ cases:
     при запуске.
   steps:
   - action: Открыть настройки при ошибке чтения
-    expect: Показана ошибка загрузки блока истории; остальные пункты доступны.
-  - action: Устранить сбой и нажать повтор
+    expect: Все пункты доступны; карточка истории показывает общее назначение. Нет DMessager и кнопки повтора.
+  - action: Открыть историю, вернуться на Scan и заново открыть настройки
     expect: Описание истории снова содержит исходное число записей; переход открывает непустую историю.
   covers:
   - onInit
-  - onTapRetry
   automation:
     kind: maestro
     flows:

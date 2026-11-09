@@ -30,7 +30,7 @@ struct ManageSubscriptionStateView: DViewProtocol {
             } else {
                 ManageSubscriptionLoadingView()
             }
-        case let failed as ManageSubscriptionFailedState:
+        case let failed as ManageSubscriptionErrorState:
             ManageSubscriptionErrorCardView(
                 state: failed,
             )

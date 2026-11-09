@@ -5,7 +5,6 @@ struct StorageClearProtocolsBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: StorageClearProtocolsArguments?
 
     var body: some View {

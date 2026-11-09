@@ -39,17 +39,13 @@ tags:
 - tapOn:
     point: 9%,13%
 - extendedWaitUntil:
-    visible: ^Проверить оплату$
+    visible: {id: paywall.continue}
     timeout: 30000
-- assertNotVisible:
-    id: scan.settings
+- assertVisible: {id: paywall.plan.pro_weekly, selected: true}
+- assertNotVisible: ^Проверить оплату$
+- assertNotVisible: {id: scan.settings}
 - takeScreenshot: Paywall-yookassa-pending
-- tapOn: ^Проверить оплату$
-- extendedWaitUntil:
-    visible:
-      text: ^Проверить оплату$
-      enabled: true
-    timeout: 30000
-- assertNotVisible:
-    id: scan.settings
+- waitForAnimationToEnd
+- assertVisible: {id: paywall.continue}
+- assertNotVisible: {id: scan.settings}
 - takeScreenshot: Paywall-yookassa-still-pending

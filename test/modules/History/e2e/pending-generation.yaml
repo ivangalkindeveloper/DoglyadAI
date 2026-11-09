@@ -8,6 +8,8 @@ tags: [e2e, History, ReportReceived]
       EXAMINATION_NUMBER: REG-PENDING
 - assertNotVisible: ^К протоколу$
 - assertNotVisible: ^Повторить$
+- assertNotVisible: {id: reportReceived.copy}
+- assertNotVisible: {id: reportReceived.sendEmail}
 - tapOn: {id: bottomSheet.close}
 - tapOn: {id: scan.settings}
 - tapOn: ^История исследований$
@@ -16,6 +18,8 @@ tags: [e2e, History, ReportReceived]
 - tapOn: '^Regression REG-PENDING$'
 - assertNotVisible: ^К протоколу$
 - assertNotVisible: ^Повторить$
+- assertNotVisible: {id: reportReceived.copy}
+- assertNotVisible: {id: reportReceived.sendEmail}
 - takeScreenshot: ReportReceived-pending-reopened
 - pressKey: Home
 - launchApp:

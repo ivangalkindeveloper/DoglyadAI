@@ -4,11 +4,8 @@ import FoundationModels
 @FoundationModels.Generable
 struct DNeuralUltrasoundFoundationProposalItem {
     let field_id: String
-
     let value: String
-
     let evidence: String
-
     let accuracy: String
 
     static func arraySchema(

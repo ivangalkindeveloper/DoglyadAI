@@ -5,6 +5,9 @@
     /// Present sheets at their real detent instead of stretching them across Canvas.
     struct ModuleBottomSheetPreviewView<Content: View>: DViewProtocol {
         @EnvironmentObject var theme: DTheme
+        @Environment(
+            \.isPreviewScrollEnd,
+        ) private var isPreviewScrollEnd
         @State private var isPresented = true
         let content: Content
 
@@ -26,6 +29,20 @@
                 #if DOGLYAD_REGRESSION
                     // A sheet hides its presenting view from the accessibility tree.
                     content
+                        .overlay(
+                            alignment: .topLeading,
+                        ) {
+                            if isPreviewScrollEnd {
+                                PreviewScrollEndView()
+                                    .frame(
+                                        width: 1,
+                                        height: 1,
+                                    )
+                                    .allowsHitTesting(
+                                        false,
+                                    )
+                            }
+                        }
                         .accessibilityElement(
                             children: .contain,
                         )
@@ -34,6 +51,20 @@
                         )
                 #else
                     content
+                        .overlay(
+                            alignment: .topLeading,
+                        ) {
+                            if isPreviewScrollEnd {
+                                PreviewScrollEndView()
+                                    .frame(
+                                        width: 1,
+                                        height: 1,
+                                    )
+                                    .allowsHitTesting(
+                                        false,
+                                    )
+                            }
+                        }
                 #endif
             }
         }

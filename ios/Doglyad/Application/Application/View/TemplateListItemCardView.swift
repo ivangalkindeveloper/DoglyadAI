@@ -3,7 +3,6 @@ import SwiftUI
 
 struct TemplateListItemCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
-
     let template: USExaminationTemplate
     let action: () -> Void
     let isSelected: Bool
@@ -19,7 +18,7 @@ struct TemplateListItemCardView: DViewProtocol {
     }
 
     var body: some View {
-        DButtonCard(
+        DCard(
             action: action,
         ) {
             VStack(

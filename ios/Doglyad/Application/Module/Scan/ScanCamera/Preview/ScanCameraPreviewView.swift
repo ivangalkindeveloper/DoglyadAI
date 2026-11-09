@@ -9,6 +9,7 @@
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
         let state: any ScanCameraStateProtocol
+        var photos: [USExaminationScanPhoto] = ModulePreviewFactory.photos
 
         var body: some View {
             let model = ScanCameraViewModel(
@@ -28,7 +29,7 @@
                 arguments: ScanCameraArguments(
                     cameraController: DCameraControllerFactory.make(),
                     getPhotos: {
-                        ModulePreviewFactory.photos
+                        photos
                     },
                     onPhotosUpdated: { _ in },
                     photoMaxCount: 6,

@@ -1,0 +1,33 @@
+appId: ${APP_ID}
+name: atlas-scan-6d3b1d4aa3
+tags:
+- atlas
+- Scan
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-scan-6d3b1d4aa3
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-scan-6d3b1d4aa3
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: message.error
+    timeout: 15000
+- assertVisible:
+    id: scan.generate
+    enabled: true
+- assertVisible:
+    id: scan.settings
+    enabled: true
+- assertVisible:
+    id: scan.type
+    enabled: true
+- assertVisible:
+    id: scan.patientName
+    enabled: true
+- assertVisible:
+    id: scan.speech
+    enabled: true
+- takeScreenshot: 03-Scan-6d3b1d4aa3

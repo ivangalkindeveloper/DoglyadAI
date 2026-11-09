@@ -9,10 +9,14 @@ tags: [e2e, History]
 - tapOn: ^История исследований$
 - assertVisible: {id: history.loadedCount.0}
 - assertVisible: Произошла неизвестная ошибка.*
+- assertVisible: {id: message.error}
 - takeScreenshot: History-first-page-failed
 - tapOn: ^Обновить$
 - assertVisible: ^History 041$
 - assertVisible: {id: history.loadedCount.20}
+- extendedWaitUntil:
+    notVisible: {id: message.error}
+    timeout: 15000
 - assertNotVisible: Произошла неизвестная ошибка.*
 - launchApp:
     arguments:

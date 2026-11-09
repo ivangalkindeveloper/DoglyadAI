@@ -25,17 +25,11 @@ final class DNeuralUltrasoundLegacyModelFoundationModels {
     @FoundationModels.Generable
     struct DNeuralUltrasoundResponse {
         let patientName: String?
-
         let patientGender: DNeuralUltrasoundGender?
-
         let patientDateOfBirth: String?
-
         let patientHeightCM: Double?
-
         let patientWeightKG: Double?
-
         let patientComplaints: String?
-
         let examinationDescription: String?
 
         static func schema(

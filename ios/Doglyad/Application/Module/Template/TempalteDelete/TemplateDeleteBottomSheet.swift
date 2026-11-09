@@ -5,7 +5,6 @@ struct TemplateDeleteBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: TemplateDeleteArguments?
 
     var body: some View {

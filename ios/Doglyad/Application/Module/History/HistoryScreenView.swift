@@ -4,7 +4,6 @@ import SwiftUI
 struct HistoryScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: HistoryViewModel
 
     var body: some View {
@@ -16,19 +15,7 @@ struct HistoryScreenView: DViewProtocol {
             content: { toolbarInset, bottomHeight in
                 ZStack {
                     switch (viewModel.state, viewModel.sections.isEmpty) {
-                    case (_ as HistoryReportsLoadingState, true):
-                        DScrollVStack(
-                            padding: EdgeInsets(
-                                top: size.s16,
-                                leading: size.s16,
-                                bottom: size.s16,
-                                trailing: size.s16,
-                            ),
-                        ) {
-                            HistoryLoadingView(
-                                cardCount: viewModel.pageSize,
-                            )
-                        }
+                    case (_ as HistoryInitialState, true): EmptyView()
                     case (_ as HistoryEmptyState, true):
                         DScrollVStack(
                             padding: EdgeInsets(
@@ -42,26 +29,12 @@ struct HistoryScreenView: DViewProtocol {
                         }
                     case (_, false):
                         HistoryListView()
-                    case (_ as HistoryFailedState, true):
-                        VStack(
-                            spacing: size.s16,
-                        ) {
-                            ErrorBodyView(
-                                description: l10n.text(
-                                    .errorUnknownDescription,
-                                ),
-                            )
-
-                            DButton(
-                                title: l10n[
-                                    .buttonUpdate,
-                                ],
-                                action: viewModel.onTapRetry,
-                            )
-                            .dStyle(
-                                .primaryChip,
-                            )
-                        }
+                    case (_ as HistoryErrorState, true):
+                        ErrorBodyView(
+                            description: l10n.text(
+                                .errorUnknownDescription,
+                            ),
+                        )
                         .padding(
                             size.s16,
                         )

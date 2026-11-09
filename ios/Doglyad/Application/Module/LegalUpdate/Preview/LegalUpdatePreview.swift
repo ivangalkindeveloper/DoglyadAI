@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 LegalUpdateAwaitingAcceptanceState",
+        "01 LegalUpdateAwaitingAcceptanceState ConsentNotSelected",
     ) {
         LegalUpdatePreviewView(
             state: LegalUpdateAwaitingAcceptanceState(),
@@ -15,24 +15,26 @@
     }
 
     #Preview(
-        "02 LegalUpdateLoadingState",
+        "02 LegalUpdateAwaitingAcceptanceState ConsentSelected",
     ) {
         LegalUpdatePreviewView(
-            state: LegalUpdateLoadingState(),
+            state: LegalUpdateAwaitingAcceptanceState(),
+            isLegalAccepted: true,
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "03 LegalUpdateFailedState",
+        "03 LegalUpdateErrorState ConsentSaveFailed",
     ) {
         LegalUpdatePreviewView(
-            state: LegalUpdateFailedState(
+            state: LegalUpdateErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
             ),
+            isLegalAccepted: true,
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )

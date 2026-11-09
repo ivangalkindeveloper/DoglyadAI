@@ -5,35 +5,33 @@ public struct DListButton: DViewProtocol {
     @Environment(
         \.isEnabled,
     ) private var isEnabled
-
     private let icon: ImageResource
     private let title: LocalizedStringResource
-    private let accessibilityElement: AccessibilityChildBehavior?
-    private let accessibilityIdentifier: String?
-
     private let action: (() -> Void)?
     private let shareItem: String?
     private let isLoading: Bool
     private let isDisabled: Bool
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     public init(
         icon: ImageResource,
         title: LocalizedStringResource,
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         action: @escaping () -> Void,
         isLoading: Bool = false,
         isDisabled: Bool = false,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
         self.icon = icon
         self.title = title
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.action = action
         shareItem = nil
         self.isLoading = isLoading
         self.isDisabled = isDisabled
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public init(
@@ -47,13 +45,13 @@ public struct DListButton: DViewProtocol {
     ) {
         self.icon = icon
         self.title = title
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         action = nil
         self.shareItem = shareItem
         self.isLoading = isLoading
         self.isDisabled = isDisabled
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
@@ -98,7 +96,7 @@ public struct DListButton: DViewProtocol {
             .ifLet(
                 action,
             ) { label, action in
-                DButtonCard(
+                DCard(
                     action: action,
                 ) {
                     label

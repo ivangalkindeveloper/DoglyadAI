@@ -13,9 +13,7 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
     let isReportNavigationAvailable: Bool
     private var reportObservation: AnyCancellable?
     private var retryTask: Task<Void, Never>?
-
     let userEmail: String?
-
     private let messager: DMessager
     private let currentReport: (USExaminationReport) -> USExaminationReport
     private let observeReports: (@escaping (USExaminationReport) -> Void) -> AnyCancellable
@@ -36,16 +34,15 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         observeReports: @escaping (@escaping (USExaminationReport) -> Void) -> AnyCancellable,
         retryGeneration: @escaping (USExaminationReport) async throws -> USExaminationReport,
     ) {
+        let report = currentReport(
+            arguments.report,
+        )
+        isReportNavigationAvailable = arguments.isReportNavigationAvailable
+        userEmail = getUserEmail()
         self.messager = messager
         self.currentReport = currentReport
         self.observeReports = observeReports
         self.retryGeneration = retryGeneration
-
-        isReportNavigationAvailable = arguments.isReportNavigationAvailable
-        let report = currentReport(
-            arguments.report,
-        )
-        userEmail = getUserEmail()
 
         super.init(
             state: ReportReceivedContentState(
@@ -55,9 +52,9 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .reportReceived,
             ),
@@ -137,6 +134,16 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         reportObservation = observeReports { [weak self] updated in
             guard let self, updated.id == self.report.id else {
                 return
+            }
+            let previousStatus = actualModelReport.generation.status
+            if previousStatus != updated.actualModelReport.generation.status {
+                switch updated.actualModelReport.generation.status {
+                case .failed, .interrupted:
+                    messager.showUnknownError(
+                        l10n: l10n,
+                    )
+                case .generating, .completed, .cancelled: break
+                }
             }
             switch state {
             case _ as ReportReceivedLoadingState:
@@ -302,7 +309,7 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
             )
         } onMainUnknownError: { error in
             self.emit(
-                ReportReceivedDeliveryFailedState(
+                ReportReceivedDeliveryErrorState(
                     report: self.report,
                     error: error,
                 ),

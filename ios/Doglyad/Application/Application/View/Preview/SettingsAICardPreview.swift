@@ -3,7 +3,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Настройки по умолчанию",
+        "01 SettingsAICardView DefaultPreferences",
         traits: .sizeThatFitsLayout,
     ) {
         SettingsAICardView(
@@ -20,7 +20,7 @@
     }
 
     #Preview(
-        "02 Markdown включён",
+        "02 SettingsAICardView MarkdownEnabled",
         traits: .sizeThatFitsLayout,
     ) {
         let settings = ModulePreviewFactory.makeContainer().initialSettingsAI

@@ -19,25 +19,16 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
 
     init(
         container: DependencyContainer,
-        messager: DMessager,
+        speechController: (any DSpeechControllerProtocol)? = nil,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
         observeSubscriptionStatus: @escaping (@escaping (SubscriptionStatus?) -> Void) -> AnyCancellable,
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
         onRefreshSubscriptionStatus: @escaping () async -> Void,
+        messager: DMessager,
         arguments: ScanSpeechArguments,
-        speechController: (any DSpeechControllerProtocol)? = nil,
     ) {
-        self.messager = messager
-        self.arguments = arguments
-        self.speechController = speechController
-        #if DEBUG && DOGLYAD_REGRESSION
-            self.speechController = speechController ?? RegressionSpeechController.make(
-                container: container,
-            )
-        #endif
-
         _transcriptTextController = NestedObservableObject(
             wrappedValue: DTextFieldController(
                 formatters: [
@@ -58,6 +49,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 ],
             ),
         )
+        #if DEBUG && DOGLYAD_REGRESSION
+            let speechController = speechController ?? RegressionSpeechController.make(
+                container: container,
+            )
+        #endif
+        self.speechController = speechController
+        self.messager = messager
+        self.arguments = arguments
 
         super.init(
             state: ScanSpeechModelLoadingState(
@@ -67,9 +66,9 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .scanSpeech,
             ),
@@ -145,6 +144,21 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         }
     }
 
+    #if DEBUG
+        func configureTranscriptPreview(
+            transcript: DSpeechTranscript,
+            state: any ScanSpeechStateProtocol,
+        ) {
+            originalTranscript = transcript
+            transcriptTextController.restoreText(
+                transcript.correctedText,
+            )
+            preparePreview(
+                state: state,
+            )
+        }
+    #endif
+
     override func onInit() {
         if let speechController {
             speechController.prepareModel()
@@ -177,7 +191,10 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 return
             }
             self.emit(
-                ScanSpeechModelPreparationFailedState(),
+                ScanSpeechModelPreparationErrorState(),
+            )
+            self.messager.showUnknownError(
+                l10n: self.l10n,
             )
         }
     }
@@ -294,6 +311,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             )
             parseProposals(
                 parsing,
+                parsedText: parsing.parsedText,
             )
         default: break
         }
@@ -513,7 +531,8 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             return
         }
         switch state {
-        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechAutomaticParsingLoadingState, _ as ScanSpeechReviewProposalState: return
+        case let transcription as ScanSpeechTranscriptionLoadingState where transcription.parsedText != nil: return
+        case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechReviewProposalState: return
         default: break
         }
 
@@ -527,7 +546,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 preparation: speechController.modelPreparationStatus,
             )
         case .failed:
-            next = ScanSpeechModelPreparationFailedState()
+            switch state {
+            case _ as ScanSpeechModelPreparationErrorState: break
+            default:
+                messager.showUnknownError(
+                    l10n: l10n,
+                )
+            }
+            next = ScanSpeechModelPreparationErrorState()
         case .ready:
             switch speechController.recordingStatus {
             case .preparing: next = ScanSpeechRecordingPreparationLoadingState()
@@ -561,7 +587,8 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 return
             }
             switch state {
-            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechAutomaticParsingLoadingState, _ as ScanSpeechReviewProposalState: return
+            case let transcription as ScanSpeechTranscriptionLoadingState where transcription.parsedText != nil: return
+            case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechReviewProposalState: return
             default: break
             }
             guard let transcript else {
@@ -579,6 +606,11 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     private func processTranscript(
         _ original: DSpeechTranscript,
     ) {
+        if original.completion == .failed {
+            messager.showUnknownError(
+                l10n: l10n,
+            )
+        }
         originalTranscript = original
         transcriptTextController.restoreText(
             original.correctedText,
@@ -587,7 +619,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             showTranscriptReview()
             return
         }
-        let parsing = ScanSpeechAutomaticParsingLoadingState(
+        let parsing = ScanSpeechTranscriptionLoadingState(
             parsedText: transcriptTextController.text,
         )
         emit(
@@ -595,6 +627,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         )
         parseProposals(
             parsing,
+            parsedText: transcriptTextController.text,
         )
     }
 
@@ -611,7 +644,8 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     private func parseProposals(
-        _ parsing: any ScanSpeechParsingStateProtocol,
+        _ parsing: any ScanSpeechStateProtocol,
+        parsedText: String,
     ) {
         guard let originalTranscript else {
             return
@@ -619,7 +653,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         let factory = container.examinationNeuralModelFactory
         let request = DNeuralUltrasoundDictationParseRequest(
             selectedNeuralModelId: settingsAI.selectedNeuralModelId,
-            text: parsing.parsedText,
+            text: parsedText,
             examinationTypeId: arguments.examinationType.id,
             examinationTypeTitle: arguments.examinationType.title,
             locale: container.language.currentLocale,
@@ -641,7 +675,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             let plan = ScanSpeechConfidencePolicy.plan(
                 proposal: proposal,
                 transcript: originalTranscript,
-                parsedText: parsing.parsedText,
+                parsedText: parsedText,
                 noComplaintsPattern: self.l10n.voice.dictation.pattern(
                     .noComplaintsValue,
                 ),
@@ -712,7 +746,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
 
     private func onParsingFailed(
         _: Error,
-        parsing: any ScanSpeechParsingStateProtocol,
+        parsing: any ScanSpeechStateProtocol,
     ) {
         guard isPresentationActive, state === parsing else {
             return

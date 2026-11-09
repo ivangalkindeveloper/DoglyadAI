@@ -331,7 +331,7 @@ struct SettingsAITests {
         model.onTapSave()
         await model.lastTask?.value
         #expect(
-            model.state is SettingsAIFailedState,
+            model.state is SettingsAIErrorState,
         )
         #expect(
             model.transcriberType == .sfSpeechRecognizer,
@@ -745,6 +745,7 @@ struct SettingsAITests {
                 model.onTapSettingsAI()
             } else {
                 let model = SettingsViewModel(
+                    messager: DMessager(),
                     container: container,
                     router: router,
                     getSubscriptionStatus: {

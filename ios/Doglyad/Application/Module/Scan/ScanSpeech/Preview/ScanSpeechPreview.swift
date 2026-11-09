@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Проверка модели",
+        "01 ScanSpeechModelLoadingState CheckingModel",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechModelLoadingState(
@@ -17,7 +17,7 @@
     }
 
     #Preview(
-        "02 Загрузка без прогресса",
+        "02 ScanSpeechModelLoadingState DownloadingWithoutProgress",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechModelLoadingState(
@@ -31,7 +31,7 @@
     }
 
     #Preview(
-        "03 ScanSpeechModelLoadingState",
+        "03 ScanSpeechModelLoadingState DownloadingWithProgress",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechModelLoadingState(
@@ -45,7 +45,7 @@
     }
 
     #Preview(
-        "04 Загрузка модели в память",
+        "04 ScanSpeechModelLoadingState LoadingModelIntoMemory",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechModelLoadingState(
@@ -57,17 +57,17 @@
     }
 
     #Preview(
-        "05 ScanSpeechModelPreparationFailedState",
+        "05 ScanSpeechModelPreparationErrorState ModelPreparationFailed",
     ) {
         ScanSpeechPreviewView(
-            state: ScanSpeechModelPreparationFailedState(),
+            state: ScanSpeechModelPreparationErrorState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "06 ScanSpeechReadyState",
+        "06 ScanSpeechReadyState ReadyToRecord",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechReadyState(),
@@ -77,7 +77,7 @@
     }
 
     #Preview(
-        "07 ScanSpeechRecordingPreparationLoadingState",
+        "07 ScanSpeechRecordingPreparationLoadingState PreparingRecording",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechRecordingPreparationLoadingState(),
@@ -87,7 +87,7 @@
     }
 
     #Preview(
-        "08 ScanSpeechRecordingState",
+        "08 ScanSpeechRecordingState RecordingSpeech",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechRecordingState(),
@@ -97,7 +97,7 @@
     }
 
     #Preview(
-        "09 ScanSpeechTranscriptionLoadingState",
+        "09 ScanSpeechTranscriptionLoadingState TranscribingSpeech",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechTranscriptionLoadingState(),
@@ -107,19 +107,7 @@
     }
 
     #Preview(
-        "10 ScanSpeechAutomaticParsingLoadingState",
-    ) {
-        ScanSpeechPreviewView(
-            state: ScanSpeechAutomaticParsingLoadingState(
-                parsedText: USExaminationReportPreviewFactory.description,
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "11 ScanSpeechReviewTranscriptState",
+        "10 ScanSpeechReviewTranscriptState TranscriptReview",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechReviewTranscriptState(),
@@ -129,7 +117,18 @@
     }
 
     #Preview(
-        "12 ScanSpeechReviewParsingLoadingState",
+        "11 ScanSpeechReviewTranscriptState TranscriptReview ScrollEnd",
+    ) {
+        ScanSpeechPreviewView(
+            state: ScanSpeechReviewTranscriptState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "12 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript",
     ) {
         ScanSpeechPreviewView(
             state: ScanSpeechReviewParsingLoadingState(
@@ -141,7 +140,45 @@
     }
 
     #Preview(
-        "13 Нужно проверить",
+        "13 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript ScrollEnd",
+    ) {
+        ScanSpeechPreviewView(
+            state: ScanSpeechReviewParsingLoadingState(
+                parsedText: USExaminationReportPreviewFactory.description,
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "14 ScanSpeechReviewProposalState MultipleFields",
+    ) {
+        ScanSpeechPreviewView(
+            state: ScanSpeechProposalPreviewFixture(
+                scenario: .multipleFields,
+            ).state,
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "15 ScanSpeechReviewProposalState MultipleFields ScrollEnd",
+    ) {
+        ScanSpeechPreviewView(
+            state: ScanSpeechProposalPreviewFixture(
+                scenario: .multipleFields,
+            ).state,
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "16 ScanSpeechProposalPreviewView ReviewRequired",
         traits: .sizeThatFitsLayout,
     ) {
         ScanSpeechProposalPreviewView(
@@ -153,7 +190,7 @@
     }
 
     #Preview(
-        "14 Выбрано",
+        "17 ScanSpeechProposalPreviewView SelectedProposal",
         traits: .sizeThatFitsLayout,
     ) {
         ScanSpeechProposalPreviewView(
@@ -166,7 +203,7 @@
     }
 
     #Preview(
-        "15 Число и единицы",
+        "18 ScanSpeechProposalPreviewView MeasurementAndUnit",
         traits: .sizeThatFitsLayout,
     ) {
         ScanSpeechProposalPreviewView(
@@ -178,7 +215,7 @@
     }
 
     #Preview(
-        "16 Сторона и отрицание",
+        "19 ScanSpeechProposalPreviewView SideAndNegation",
         traits: .sizeThatFitsLayout,
     ) {
         ScanSpeechProposalPreviewView(
@@ -190,7 +227,7 @@
     }
 
     #Preview(
-        "17 Несколько полей",
+        "20 ScanSpeechProposalPreviewView MultipleFields",
     ) {
         ScanSpeechProposalPreviewView(
             scenario: .multipleFields,
@@ -201,7 +238,7 @@
     }
 
     #Preview(
-        "18 Частичный результат",
+        "21 ScanSpeechProposalPreviewView PartialResult",
     ) {
         ScanSpeechProposalPreviewView(
             scenario: .partialResult,
@@ -212,7 +249,7 @@
     }
 
     #Preview(
-        "19 Длинный клинический текст",
+        "22 ScanSpeechProposalPreviewView LongClinicalText",
     ) {
         ScanSpeechProposalPreviewView(
             scenario: .clinicalText,
@@ -223,7 +260,7 @@
     }
 
     #Preview(
-        "20 Ничего не распознано",
+        "23 ScanSpeechProposalPreviewView NoRecognizedFields",
     ) {
         ScanSpeechProposalPreviewView(
             scenario: .empty,
@@ -234,7 +271,7 @@
     }
 
     #Preview(
-        "21 Диктовка готова",
+        "24 ScanSpeechTranscriptPreviewView FinishedDictation",
     ) {
         ScanSpeechTranscriptPreviewView(
             scenario: .finished,
@@ -244,7 +281,7 @@
     }
 
     #Preview(
-        "22 Длинная прерванная запись",
+        "25 ScanSpeechTranscriptPreviewView InterruptedLongDictation",
     ) {
         ScanSpeechTranscriptPreviewView(
             scenario: .interrupted,
@@ -254,7 +291,7 @@
     }
 
     #Preview(
-        "23 Речь не распознана",
+        "26 ScanSpeechTranscriptPreviewView NoRecognizedSpeech",
     ) {
         ScanSpeechTranscriptPreviewView(
             scenario: .failed,
@@ -264,7 +301,7 @@
     }
 
     #Preview(
-        "24 Разбор диктовки",
+        "27 ScanSpeechTranscriptPreviewView ParsingDictation",
     ) {
         ScanSpeechTranscriptPreviewView(
             scenario: .parsing,

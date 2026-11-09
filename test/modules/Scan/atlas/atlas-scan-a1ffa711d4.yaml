@@ -1,0 +1,23 @@
+appId: ${APP_ID}
+name: atlas-scan-a1ffa711d4
+tags:
+- atlas
+- Scan
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-scan-a1ffa711d4
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-scan-a1ffa711d4
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: message.error
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: preview.scrollEnd.ready
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: 10-Scan-a1ffa711d4

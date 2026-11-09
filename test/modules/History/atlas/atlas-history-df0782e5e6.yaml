@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: atlas-history-df0782e5e6
+tags:
+- atlas
+- History
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-history-df0782e5e6
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-history-df0782e5e6
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: preview.scrollEnd.ready
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: 05-History-df0782e5e6

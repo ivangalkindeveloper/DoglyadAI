@@ -6,7 +6,6 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     let transcriptFocus: FocusState<Bool?>.Binding
-
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
 
@@ -46,11 +45,9 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
                 mode: DTextFieldMultiLineMode(
                     lineLimit: 6 ... 14,
                 ),
-                accessibilityIdentifier: "scanSpeech.transcript",
-            )
-
-            .disabled(
+                isDisabled:
                 isProcessing,
+                accessibilityIdentifier: "scanSpeech.transcript",
             )
         }
         .scrollDismissesKeyboard(

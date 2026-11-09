@@ -1,13 +1,15 @@
 import Combine
+import DoglyadUI
 import UIKit
 
 @MainActor
 final class PhotoLibraryPickerViewModel: DModuleViewModel<any PhotoLibraryPickerStateProtocol> {
+    private let messager: DMessager
     let selectionLimit: Int
-
     private let arguments: PhotoLibraryPickerArguments
 
     init(
+        messager: DMessager,
         container: DependencyContainer,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
@@ -17,6 +19,7 @@ final class PhotoLibraryPickerViewModel: DModuleViewModel<any PhotoLibraryPicker
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: PhotoLibraryPickerArguments,
     ) {
+        self.messager = messager
         selectionLimit = arguments.selectionLimit
         self.arguments = arguments
         super.init(
@@ -25,9 +28,9 @@ final class PhotoLibraryPickerViewModel: DModuleViewModel<any PhotoLibraryPicker
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .photoLibraryPicker,
             ),
@@ -43,7 +46,13 @@ final class PhotoLibraryPickerViewModel: DModuleViewModel<any PhotoLibraryPicker
 
     func onComplete(
         _ images: [UIImage],
+        isSomeImagesUnavailable: Bool,
     ) {
+        if isSomeImagesUnavailable {
+            messager.showUnknownError(
+                l10n: l10n,
+            )
+        }
         if images.isEmpty {
             analytics.buttonTapped(
                 .photoLibraryCancel,

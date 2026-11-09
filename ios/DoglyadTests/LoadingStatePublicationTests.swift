@@ -11,13 +11,8 @@
                 catalog: ModulePreviewFactory.development.products,
             )
             let recovery = SubscriptionRecoveryInitialState()
-            let paywall = PaywallCatalogLoadingState()
+            let paywall = ModulePreviewFactory.paywallContent
             let scenarios: [[Any]] = [
-                [HistoryReportsLoadingState(), HistoryPaginationLoadingState()],
-                [SelectTemplateTemplatesLoadingState(), SelectTemplateSelectionLoadingState()],
-                [StorageProtocolsClearLoadingState(), StorageSpeechModelDeleteLoadingState(), StorageAllClearLoadingState()],
-                [TemplateAddInitializationLoadingState(), TemplateAddSaveLoadingState()],
-                [TemplateEditInitializationLoadingState(), TemplateEditSaveLoadingState(), TemplateEditDeleteLoadingState()],
                 [
                     ManageSubscriptionCatalogLoadingState(
                         previousState: subscription,
@@ -45,8 +40,9 @@
                 ],
                 [PaywallRestoreLoadingState(
                     previousState: paywall,
-                ), PaywallPaymentCheckLoadingState(
-                    previousState: paywall,
+                ), PaywallPurchaseLoadingState(
+                    content: paywall,
+                    plan: paywall.selectedPlan!,
                 )],
             ]
             for states in scenarios {
@@ -74,15 +70,15 @@
 
         @Test
         func repeatingTheSameLoadingSnapshotDoesNotPublish() {
-            let model = DStateViewModel<any HistoryStateProtocol>(
-                state: HistoryReportsLoadingState(),
+            let model = DStateViewModel<any PaywallStateProtocol>(
+                state: PaywallCatalogLoadingState(),
             )
             var publications = 0
             let observation = model.$state.dropFirst().sink { _ in
                 publications += 1
             }
             model.emit(
-                HistoryReportsLoadingState(),
+                PaywallCatalogLoadingState(),
                 animation: nil,
             )
             #expect(

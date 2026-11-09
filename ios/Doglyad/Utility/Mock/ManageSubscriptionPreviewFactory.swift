@@ -1,5 +1,6 @@
 #if DEBUG
     import Combine
+    import DoglyadUI
     import Foundation
     import Router
 
@@ -85,6 +86,7 @@
                 status,
             )
             return ManageSubscriptionViewModel(
+                messager: DMessager(),
                 container: container,
                 router: router,
                 getSubscriptionStatus: {
@@ -105,6 +107,19 @@
                 },
                 onRefreshSubscriptionStatus: {},
                 arguments: nil,
+                fetchProducts: {
+                    if let fetchProducts {
+                        return try await fetchProducts()
+                    }
+                    if isLoadingFailed {
+                        throw URLError(
+                            .notConnectedToInternet,
+                        )
+                    }
+                    return try await SubscriptionPreviewRepository(
+                        locale: container.l10n.locale,
+                    ).fetchProducts()
+                },
                 manageSubscription: {
                     if let manageOperation {
                         try await manageOperation()
@@ -126,19 +141,6 @@
                     statuses.value
                 },
                 requestRefund: {},
-                fetchProducts: {
-                    if let fetchProducts {
-                        return try await fetchProducts()
-                    }
-                    if isLoadingFailed {
-                        throw URLError(
-                            .notConnectedToInternet,
-                        )
-                    }
-                    return try await SubscriptionPreviewRepository(
-                        locale: container.l10n.locale,
-                    ).fetchProducts()
-                },
             )
         }
 
@@ -193,7 +195,7 @@
                 )
             case .failed:
                 model.emit(
-                    ManageSubscriptionFailedState(
+                    ManageSubscriptionErrorState(
                         errorDescription: model.l10n.text(
                             .manageSubscriptionLoadFailedDescription,
                         ),
@@ -202,7 +204,7 @@
                 )
             case .operationFailed:
                 model.emit(
-                    ManageSubscriptionFailedState(
+                    ManageSubscriptionErrorState(
                         previousState: content,
                         errorDescription: model.l10n.text(
                             .errorUnknownDescription,

@@ -67,14 +67,22 @@ cases:
   - Контролируемый сбой чтения репозитория
   steps:
   - action: Открыть пустой загруженный список при сбое
-    expect: В теле экрана показаны DoglyadQuestion, описание ошибки и кнопка повтора.
+    expect: В теле экрана показан ErrorBodyView с DoglyadQuestion и описанием; основная кнопка повтора находится
+      в bottom DScreen. Ошибка также показана через DMessager.
   - action: Устранить сбой и повторить; затем вызвать сбой следующей страницы
-    expect: Первая страница восстановлена. При сбое подгрузки записи остаются, под ними показаны описание ошибки и компактная кнопка «Повторить».
+    expect: Первая страница восстановлена. При сбое подгрузки записи остаются, под ними показан ErrorPaginationView
+      с компактной кнопкой «Повторить»; DMessager сообщает об ошибке.
   - action: Повторить подгрузку
     expect: Нужная страница добавлена один раз.
   covers:
   - onTapRetry
+  - onDisappear
   automation:
-    kind: maestro
+    kind: mixed
     flows:
     - e2e-history-load-failures
+    nativeTests:
+    - ContentDesignTests/historyPaginationFailureRetainsItemsAndRetriesTheSameOffset()
+    - LocalOperationTests/localWriteKeepsPresentationAndRejectsDuplicateActions()
+    - LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)
+    - LocalOperationTests/failureIsReportedWithoutInventingALoadingPresentation()

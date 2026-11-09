@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 PhotoRemarkDefaultState",
+        "01 PhotoRemarkDefaultState ModelRemark",
     ) {
         PhotoRemarkPreviewView(
             state: PhotoRemarkDefaultState(),

@@ -11,88 +11,54 @@ struct ScanContentStateView: DViewProtocol {
     let isMediaSelectionDisabled: Bool
 
     var body: some View {
-        switch viewModel.state {
-        case _ as ScanInitializationFailedState:
+        DFocusScrollView(
+            focus: focus.wrappedValue,
+        ) {
             VStack(
-                spacing: size.s16,
+                alignment: .leading,
+                spacing: .zero,
             ) {
-                ErrorBodyView(
-                    description: l10n.text(
-                        .errorUnknownDescription,
-                    ),
-                )
-
-                DButton(
-                    title: l10n[
-                        .buttonUpdate,
-                    ],
-                    action: viewModel.onTapRetryInitialization,
-                )
-                .dStyle(
-                    .primaryChip,
-                )
-            }
-            .padding(
-                size.s16,
-            )
-            .padding(
-                .top,
-                toolbarHeight,
-            )
-            .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity,
-            )
-        default:
-            DFocusScrollView(
-                focus: focus.wrappedValue,
-            ) {
-                VStack(
-                    alignment: .leading,
-                    spacing: .zero,
-                ) {
-                    if viewModel.photos.isEmpty {
-                        ScanMediaButtonView(
-                            action: viewModel.onTapImport,
+                if viewModel.photos.isEmpty {
+                    ScanMediaButtonView(
+                        action: viewModel.onTapImport,
+                        isDisabled: isMediaSelectionDisabled || isProcessing,
+                    )
+                    .padding(
+                        .horizontal,
+                        size.s16,
+                    )
+                    .padding(
+                        .bottom,
+                        size.s4,
+                    )
+                    .transition(
+                        .move(
+                            edge: .top,
                         )
-                        .disabled(
-                            isMediaSelectionDisabled,
-                        )
-                        .padding(
-                            .horizontal,
-                            size.s16,
-                        )
-                        .padding(
-                            .bottom,
-                            size.s4,
-                        )
-                        .transition(
-                            .move(
-                                edge: .top,
-                            )
-                            .combined(
-                                with: .opacity,
-                            ),
-                        )
-                    }
-
-                    ScanPhotoListView()
-
-                    ScanFormView(
-                        focus: focus,
+                        .combined(
+                            with: .opacity,
+                        ),
                     )
                 }
-                .padding(
-                    .top,
-                    toolbarHeight + size.s16,
+
+                ScanPhotoListView(
+                    isDisabled:
+                    isProcessing,
                 )
-                .padding(
-                    .bottom,
-                    size.s136 * 2,
+
+                ScanFormView(
+                    focus: focus,
+                    isDisabled:
+                    isProcessing,
                 )
             }
-            .disabled(
-                isProcessing,
+            .padding(
+                .top,
+                toolbarHeight + size.s16,
+            )
+            .padding(
+                .bottom,
+                size.s136 * 2,
             )
         }
     }

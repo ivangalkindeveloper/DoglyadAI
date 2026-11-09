@@ -19,6 +19,7 @@
                 var completion: CheckedContinuation<SubscriptionStatus?, Error>?
                 var statusUpdates = 0
                 let model = SubscriptionRecoveryViewModel(
+                    messager: DMessager(),
                     container: container,
                     router: navigation,
                     getSubscriptionStatus: {
@@ -110,6 +111,7 @@
             var restoreCalls = 0
             var purchaseCalls = 0
             let model = PaywallViewModel(
+                messager: DMessager(),
                 container: container,
                 router: navigation,
                 getSubscriptionStatus: {
@@ -236,16 +238,8 @@
                         model.onModelTap(
                             candidate,
                         )
-                        for _ in 0 ..< 100 {
-                            if model.state is SelectNeuralModelInitialState {
-                                break
-                            }
-                            try? await Task.sleep(
-                                for: .milliseconds(
-                                    10,
-                                ),
-                            )
-                        }
+                        await model.lastTask?.value
+
                         let allowed = availability == .available && (entitlement == .base || tier == .pro)
                         XCTAssertEqual(
                             selected,
@@ -469,6 +463,7 @@
                 (model.patientComplaintsTextController, config.patientComplaintsMaxLength, .patientComplaints, false),
                 (model.examinationDescriptionTextController, config.examinationDescriptionMaxLength, .examinationDescription, true),
             ]
+
             func validForm() {
                 for (field, _, _, _) in fields {
                     field.restoreText(
@@ -482,6 +477,7 @@
                     "65",
                 )
             }
+
             for (field, maximum, focus, required) in fields {
                 validForm()
                 for length in [maximum - 1, maximum] {

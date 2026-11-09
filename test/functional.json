@@ -356,8 +356,8 @@
       "screen": "SelectUSExaminationType",
       "flow": "modules/SelectUSExaminationType/e2e/failures.yaml",
       "screenshots": [
-        "SelectUSExaminationType-load-failed",
-        "SelectUSExaminationType-selection-failed"
+        "SelectUSExaminationType-recent-types-unavailable",
+        "SelectUSExaminationType-selection-without-recents"
       ]
     },
     {
@@ -400,11 +400,11 @@
       "id": "e2e-settings-history-summary-retry",
       "module": "Settings",
       "screen": "Settings",
-      "title": "Ошибка счётчика истории и повтор загрузки",
+      "title": "Недоступный счётчик истории не блокирует настройки",
       "kind": "functional",
       "flow": "modules/Settings/e2e/history-summary-retry.yaml",
       "screenshots": [
-        "Settings-history-summary-failed",
+        "Settings-history-summary-unavailable",
         "Settings-history-summary-recovered"
       ],
       "subscriptionProfile": "pro",
@@ -638,8 +638,8 @@
       "flow": "modules/SelectTemplate/e2e/type-filter-failure.yaml",
       "screenshots": [
         "Scan-template-type-mismatch",
-        "SelectTemplate-no-matching-type",
-        "SelectTemplate-load-failed"
+        "TemplateAdd-no-matching-template",
+        "Scan-template-list-read-failed"
       ],
       "dependsOn": [
         "e2e-readymadetemplatelist-ready-templates"
@@ -2684,6 +2684,8 @@
   ],
   "moduleOrder": [
     "ApplicationSplash",
+    "NewVersion",
+    "LegalUpdate",
     "OnBoarding",
     "WebDocument",
     "SelectUSExaminationType",
@@ -2719,18 +2721,6 @@
     "ScanSpeech",
     "ReportReceived",
     "Share",
-    "RequestLimitExceeded",
-    "LegalUpdate",
-    "NewVersion"
-  ],
-  "sharedPreviewOrder": [
-    "NeuralModelCard",
-    "SettingsAICard",
-    "TemplateListItemCard",
-    "NeuralModelValueRow",
-    "SectionHeader",
-    "ErrorBody",
-    "ErrorPagination",
-    "ExpandableContent"
+    "RequestLimitExceeded"
   ]
 }

@@ -8,9 +8,11 @@
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
         let state: any SettingsStateProtocol
+        var reportsCount: Int? = 12
 
         var body: some View {
             let model = SettingsViewModel(
+                messager: DMessager(),
                 container: container,
                 router: router,
                 getSubscriptionStatus: {
@@ -26,7 +28,7 @@
                 onRefreshSubscriptionStatus: {},
             )
 
-            model.reportsCount = 12
+            model.reportsCount = reportsCount
 
             model.preparePreview(
                 state: state,

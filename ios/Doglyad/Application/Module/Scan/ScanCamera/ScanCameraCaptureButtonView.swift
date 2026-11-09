@@ -11,10 +11,10 @@ struct ScanCameraCaptureButtonView: DViewProtocol {
         case _ as ScanCameraReadyState, _ as ScanCameraCaptureLoadingState:
             DButton(
                 image: .camera,
-                accessibilityIdentifier: "scanCamera.capture",
                 action: viewModel.onTapCapture,
                 isLoading: isCapturing,
-                isDisabled: !viewModel.isCaptureFrameReady,
+                isDisabled: !isCapturing && !viewModel.isCaptureFrameReady,
+                accessibilityIdentifier: "scanCamera.capture",
             )
             .dStyle(
                 .primaryCircle,

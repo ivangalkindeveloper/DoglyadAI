@@ -7,7 +7,6 @@ struct AboutBottomSheetView: DViewProtocol {
         \.locale,
     ) private var locale: Locale
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: AboutViewModel
 
     var body: some View {

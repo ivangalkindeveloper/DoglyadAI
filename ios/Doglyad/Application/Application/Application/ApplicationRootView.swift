@@ -21,7 +21,7 @@ struct ApplicationRootView: View {
                     MainRootView(
                         dependencyContainer: state.container,
                     )
-                case let (.error, state as ApplicationRootFailedState):
+                case let (.error, state as ApplicationRootErrorState):
                     ErrorRootView(
                         error: state.error,
                         analytics: viewModel.analytics,

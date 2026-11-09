@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 SelectNeuralModelInitialState",
+        "01 SelectNeuralModelInitialState AvailableModels",
     ) {
         SelectNeuralModelPreviewView(
             state: SelectNeuralModelInitialState(),
@@ -15,12 +15,14 @@
     }
 
     #Preview(
-        "02 SelectNeuralModelSelectionLoadingState",
+        "02 SelectNeuralModelInitialState AvailableModels ScrollEnd",
     ) {
         SelectNeuralModelPreviewView(
-            state: SelectNeuralModelSelectionLoadingState(),
+            state: SelectNeuralModelInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
+
 #endif

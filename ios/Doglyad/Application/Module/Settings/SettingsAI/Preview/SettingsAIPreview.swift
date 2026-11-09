@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 SettingsAIInitialState",
+        "01 SettingsAIInitialState CurrentPreferences",
     ) {
         SettingsAIPreviewView(
             state: SettingsAIInitialState(),
@@ -15,20 +15,21 @@
     }
 
     #Preview(
-        "02 SettingsAILoadingState",
+        "02 SettingsAIInitialState CurrentPreferences ScrollEnd",
     ) {
         SettingsAIPreviewView(
-            state: SettingsAILoadingState(),
+            state: SettingsAIInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
 
     #Preview(
-        "03 SettingsAIFailedState",
+        "03 SettingsAIErrorState PreferencesSaveFailed",
     ) {
         SettingsAIPreviewView(
-            state: SettingsAIFailedState(
+            state: SettingsAIErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -36,5 +37,20 @@
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+    }
+
+    #Preview(
+        "04 SettingsAIErrorState PreferencesSaveFailed ScrollEnd",
+    ) {
+        SettingsAIPreviewView(
+            state: SettingsAIErrorState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
     }
 #endif

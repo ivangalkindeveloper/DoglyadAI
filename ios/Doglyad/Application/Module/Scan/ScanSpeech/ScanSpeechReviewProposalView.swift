@@ -5,7 +5,6 @@ struct ScanSpeechReviewProposalView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
-
     let state: ScanSpeechReviewProposalState
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat

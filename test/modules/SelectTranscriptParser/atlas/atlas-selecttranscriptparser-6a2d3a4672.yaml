@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-selecttranscriptparser-6a2d3a4672
+tags:
+- atlas
+- SelectTranscriptParser
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-selecttranscriptparser-6a2d3a4672
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-selecttranscriptparser-6a2d3a4672
+    timeout: 15000
+- takeScreenshot: 01-SelectTranscriptParser-6a2d3a4672

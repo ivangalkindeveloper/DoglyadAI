@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-permission-e183ab458d
+tags:
+- atlas
+- Permission
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-permission-e183ab458d
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-permission-e183ab458d
+    timeout: 15000
+- takeScreenshot: 01-Permission-e183ab458d

@@ -4,43 +4,16 @@ import SwiftUI
 struct UserSettingsScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: UserSettingsViewModel
     @FocusState private var focus: UserSettingsFocus?
 
     var body: some View {
-        let isProcessing = switch viewModel.state {
-        case _ as UserSettingsLoadingState: true
-        default: false
-        }
-
         DScreen(
             title: l10n[
                 .userSettingsTitle,
             ],
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
-            keyboardToolbar: {
-                if focus != nil {
-                    DToolbar(
-                        onTapDone: viewModel.unfocus,
-                        trailButtons: [
-                            DToolbarButton(
-                                style: .primaryDefault,
-                                content: .text(
-                                    l10n[
-                                        .buttonSave,
-                                    ],
-                                ),
-                                action: viewModel.onTapSave,
-                            ),
-                        ],
-                    )
-                    .disabled(
-                        isProcessing,
-                    )
-                }
-            },
             content: { toolbarInset, bottomInset in
                 DFocusScrollView(
                     focus: focus,
@@ -103,8 +76,8 @@ struct UserSettingsScreenView: DViewProtocol {
                             isOn: .constant(
                                 viewModel.isRecommendationsIncluded,
                             ),
-                            accessibilityIdentifier: "userSettings.recommendations",
                             action: viewModel.toggleRecommendationsIncluded,
+                            accessibilityIdentifier: "userSettings.recommendations",
                         )
                         .padding(
                             .bottom,
@@ -121,8 +94,8 @@ struct UserSettingsScreenView: DViewProtocol {
                             isOn: .constant(
                                 viewModel.isPhotoRemarks,
                             ),
-                            accessibilityIdentifier: "userSettings.photoRemarks",
                             action: viewModel.togglePhotoRemarks,
+                            accessibilityIdentifier: "userSettings.photoRemarks",
                         )
                         .padding(
                             .bottom,
@@ -139,8 +112,8 @@ struct UserSettingsScreenView: DViewProtocol {
                             isOn: .constant(
                                 viewModel.isDescriptionRemarks,
                             ),
-                            accessibilityIdentifier: "userSettings.descriptionRemarks",
                             action: viewModel.toggleDescriptionRemarks,
+                            accessibilityIdentifier: "userSettings.descriptionRemarks",
                         )
                     }
                     .padding(
@@ -154,9 +127,6 @@ struct UserSettingsScreenView: DViewProtocol {
                         .bottom,
                         bottomInset,
                     )
-                    .disabled(
-                        isProcessing,
-                    )
                 }
             },
             bottom: {
@@ -165,7 +135,6 @@ struct UserSettingsScreenView: DViewProtocol {
                         .buttonSave,
                     ],
                     action: viewModel.onTapSave,
-                    isLoading: isProcessing,
                 )
                 .dStyle(
                     .primaryButton,
@@ -173,6 +142,24 @@ struct UserSettingsScreenView: DViewProtocol {
                 .padding(
                     size.s16,
                 )
+            },
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        onTapDone: viewModel.unfocus,
+                        trailButtons: [
+                            DToolbarButton(
+                                style: .primaryDefault,
+                                content: .text(
+                                    l10n[
+                                        .buttonSave,
+                                    ],
+                                ),
+                                action: viewModel.onTapSave,
+                            ),
+                        ],
+                    )
+                }
             },
         )
         .environmentObject(

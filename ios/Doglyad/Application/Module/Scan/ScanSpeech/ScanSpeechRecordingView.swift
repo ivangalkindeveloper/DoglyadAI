@@ -5,21 +5,21 @@ struct ScanSpeechRecordingView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     @EnvironmentObject var theme: DTheme
-
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
 
     var body: some View {
-        let description: LocalizedStringResource? = switch viewModel.state {
+        let (description, isInstructionVisible): (LocalizedStringResource?, Bool) = switch viewModel.state {
         case _ as ScanSpeechRecordingPreparationLoadingState:
-            l10n[
+            (l10n[
                 .scanSpeechProcessPreparingDescription,
-            ]
+            ], false)
         case _ as ScanSpeechTranscriptionLoadingState:
-            l10n[
+            (l10n[
                 .scanSpeechProcessTranscribingDescription,
-            ]
-        default: nil
+            ], false)
+        case _ as ScanSpeechRecordingState: (nil, false)
+        default: (nil, true)
         }
 
         VStack(
@@ -49,22 +49,24 @@ struct ScanSpeechRecordingView: DViewProtocol {
 
             } else {
                 Group {
-                    DText(
-                        l10n[
-                            .scanSpeechProcessDescription,
-                        ],
-                    ).dStyle(
-                        font: typography.textSmall,
-                        color: color.grayscaleBackgroundWeak,
-                        alignment: .center,
-                    )
-                    .padding(
-                        .horizontal,
-                        size.s16,
-                    ).padding(
-                        .bottom,
-                        size.s8,
-                    )
+                    if isInstructionVisible {
+                        DText(
+                            l10n[
+                                .scanSpeechProcessDescription,
+                            ],
+                        ).dStyle(
+                            font: typography.textSmall,
+                            color: color.grayscaleBackgroundWeak,
+                            alignment: .center,
+                        )
+                        .padding(
+                            .horizontal,
+                            size.s16,
+                        ).padding(
+                            .bottom,
+                            size.s8,
+                        )
+                    }
 
                     DText(
                         l10n[

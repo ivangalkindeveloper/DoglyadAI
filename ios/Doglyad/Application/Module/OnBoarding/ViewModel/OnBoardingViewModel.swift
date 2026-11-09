@@ -25,9 +25,9 @@ final class OnBoardingViewModel: DModuleViewModel<any OnBoardingStateProtocol> {
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .onBoarding,
             ),
@@ -173,7 +173,12 @@ final class OnBoardingViewModel: DModuleViewModel<any OnBoardingStateProtocol> {
             ),
         )
         switch state {
-        case _ as OnBoardingInitialState, _ as OnBoardingLoadingState: break
+        case _ as OnBoardingInitialState: break
+        case _ as OnBoardingLoadingState:
+            cancelOperationTask()
+            emit(
+                OnBoardingExaminationTypeState(),
+            )
         case _ as OnBoardingSecondState:
             emit(
                 OnBoardingInitialState(),
@@ -186,7 +191,7 @@ final class OnBoardingViewModel: DModuleViewModel<any OnBoardingStateProtocol> {
             emit(
                 OnBoardingLegalState(),
             )
-        case _ as OnBoardingFinalState, _ as OnBoardingFailedState:
+        case _ as OnBoardingFinalState, _ as OnBoardingErrorState:
             emit(
                 OnBoardingExaminationTypeState(),
             )
@@ -243,7 +248,7 @@ extension OnBoardingViewModel {
                     },
                 ),
             )
-        case _ as OnBoardingFinalState, _ as OnBoardingFailedState:
+        case _ as OnBoardingFinalState, _ as OnBoardingErrorState:
             completeOnBoarding()
         case _ as OnBoardingLoadingState: break
         default:
@@ -256,20 +261,29 @@ extension OnBoardingViewModel {
 
 private extension OnBoardingViewModel {
     func completeOnBoarding() {
+        let loading = OnBoardingLoadingState()
         emit(
-            OnBoardingLoadingState(),
+            loading,
         )
-        handle {
+        operationTask = handle {
             try await self.container.sharedRepository.acceptLegal(
                 documentDate: self.container.applicationConfig.legalDate,
             )
+            try Task.checkCancellation()
             try await self.container.sharedRepository.setOnBoardingCompleted(
                 isCompleted: true,
             )
+            try Task.checkCancellation()
+            guard self.state === loading else {
+                return
+            }
             try await self.coordinator.navigateAfterOnBoarding()
         } onMainUnknownError: { error in
+            guard !Task.isCancelled, self.state === loading else {
+                return
+            }
             self.emit(
-                OnBoardingFailedState(
+                OnBoardingErrorState(
                     error: error,
                 ),
             )

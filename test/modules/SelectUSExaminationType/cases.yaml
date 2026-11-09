@@ -16,25 +16,32 @@ cases:
   covers:
   - onInit
   - onTypeTap
+  - onDisappear
   automation:
     kind: maestro
     flows:
     - e2e-selectusexaminationtype-choose-persist
     - e2e-selecttemplate-type-filter-failure
 - id: SelectUSExaminationType.failure
-  title: Ошибка выбора и повтор
+  title: Необязательные недавние типы и ошибка основного выбора
   profiles:
   - pro
   preconditions:
-  - Сбой получения или сохранения типа
+  - Сбой чтения недавних типов или сохранения выбора
   steps:
-  - action: Открыть список при сбое и повторить после восстановления
-    expect: Показан доступный список; прежний выбор не теряется.
-  - action: Выбрать тип при сбое сохранения
-    expect: Показана ошибка выбора; нет ложного изменения типа.
+  - action: Открыть список при сбое чтения недавних типов
+    expect: Каталог доступен сразу, все кнопки доступны. Недавние скрыты; DMessager и кнопки обновления нет. Прежний выбор не теряется.
+  - action: Выбрать тип при сбое записи недавних
+    expect: Основной выбор сохраняется и шторка закрывается без сообщения об ошибке.
+  - action: Выбрать тип при сбое обязательного onSelected
+    expect: Выбор не меняется, шторка остаётся открытой, DMessager сообщает об ошибке.
   covers:
-  - onTapRetry
+  - onInit
+  - onTypeTap
   automation:
-    kind: maestro
+    kind: mixed
     flows:
     - e2e-selectusexaminationtype-failures
+    nativeTests:
+    - SelectUSExaminationTypeTests/requiredSelectionFailurePreservesValueAndReportsError()
+    - SelectUSExaminationTypeTests/dismissedSelectionIgnoresLateResults(isFailure:)

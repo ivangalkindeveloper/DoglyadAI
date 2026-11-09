@@ -1,0 +1,15 @@
+appId: ${APP_ID}
+name: atlas-managesubscription-47c3865bd5
+tags:
+- atlas
+- ManageSubscription
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-managesubscription-47c3865bd5
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-managesubscription-47c3865bd5
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: 04-ManageSubscription-47c3865bd5

@@ -5,20 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 TemplateListLoadingState",
+        "01 TemplateListErrorState TemplatesReadFailed",
     ) {
         TemplateListPreviewView(
-            state: TemplateListLoadingState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "02 TemplateListFailedState",
-    ) {
-        TemplateListPreviewView(
-            state: TemplateListFailedState(
+            state: TemplateListErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -29,7 +19,7 @@
     }
 
     #Preview(
-        "03 TemplateListEmptyState",
+        "02 TemplateListEmptyState NoSavedTemplates",
     ) {
         TemplateListPreviewView(
             state: TemplateListEmptyState(),
@@ -39,14 +29,38 @@
     }
 
     #Preview(
-        "04 TemplateListContentState",
+        "03 TemplateListEmptyState NoSavedTemplates ScrollEnd",
+    ) {
+        TemplateListPreviewView(
+            state: TemplateListEmptyState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "04 TemplateListContentState SavedTemplates",
     ) {
         TemplateListPreviewView(
             state: TemplateListContentState(
-                templates: [ModulePreviewFactory.template],
+                templates: ModulePreviewFactory.templates,
             ),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+    }
+
+    #Preview(
+        "05 TemplateListContentState SavedTemplates ScrollEnd",
+    ) {
+        TemplateListPreviewView(
+            state: TemplateListContentState(
+                templates: ModulePreviewFactory.templates,
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
     }
 #endif

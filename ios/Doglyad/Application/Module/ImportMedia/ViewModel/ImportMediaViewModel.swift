@@ -23,9 +23,9 @@ final class ImportMediaViewModel: DModuleViewModel<any ImportMediaStateProtocol>
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .importMedia,
             ),
@@ -40,19 +40,11 @@ final class ImportMediaViewModel: DModuleViewModel<any ImportMediaStateProtocol>
     }
 
     func onTapCamera() {
-        guard actionAfterDismiss == nil else {
-            return
-        }
-
         actionAfterDismiss = arguments.onTapCamera
         coordinator.dismissSheet()
     }
 
     func onTapGallery() {
-        guard actionAfterDismiss == nil else {
-            return
-        }
-
         actionAfterDismiss = arguments.onTapGallery
         coordinator.dismissSheet()
     }

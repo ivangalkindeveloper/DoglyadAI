@@ -7,23 +7,25 @@ public struct DCloseButton: DViewProtocol {
     }
 
     @EnvironmentObject public var theme: DTheme
-
     let style: Style
+    let action: () -> Void
+    private let isDisabled: Bool
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
-    let action: () -> Void
 
     public init(
         style: Style = .regular,
+        action: @escaping () -> Void,
+        isDisabled: Bool = false,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        action: @escaping () -> Void,
     ) {
         self.style = style
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.action = action
+        self.isDisabled = isDisabled
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
@@ -46,8 +48,7 @@ public struct DCloseButton: DViewProtocol {
                     )
                 }
             case .destructive:
-                DButtonCard(
-                    isPlain: true,
+                DTextButton(
                     action: action,
                 ) {
                     DIcon(
@@ -67,6 +68,9 @@ public struct DCloseButton: DViewProtocol {
                 }
             }
         }
+        .disabled(
+            isDisabled,
+        )
         .modifier(
             DAccessibilityModifier(
                 element: accessibilityElement,

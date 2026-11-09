@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-onboarding-6ecb6a6c5d
+tags:
+- atlas
+- OnBoarding
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-onboarding-6ecb6a6c5d
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-onboarding-6ecb6a6c5d
+    timeout: 15000
+- takeScreenshot: 04-OnBoarding-6ecb6a6c5d

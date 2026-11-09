@@ -102,7 +102,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case paywallCancelDescription
     case paywallContinueButton
     case paywallDescription
-    case paywallEmptyPlansDescription
     case paywallMonthlyLabel
     case paywallPlanTitle
     case paywallRestoreButton
@@ -260,6 +259,7 @@ enum L10NKey: String, CaseIterable, Sendable {
     case settingsAboutAppButton
     case settingsHistoryDescription
     case settingsHistoryEmptyDescription
+    case settingsHistoryPurposeDescription
     case settingsHistoryTitle
     case settingsPrivacyPolicyDescription
     case settingsPrivacyPolicyTitle
@@ -300,6 +300,7 @@ enum L10NKey: String, CaseIterable, Sendable {
     case storageTitle
     case subscriptionBaseLabel
     case subscriptionOfferingsUnavailableDescription
+    case subscriptionPaymentCheckErrorDescription
     case subscriptionPaymentCodeLabel
     case subscriptionPaymentCompleteDescription
     case subscriptionPaymentConsentDescription
@@ -310,6 +311,7 @@ enum L10NKey: String, CaseIterable, Sendable {
     case subscriptionPaymentTitle
     case subscriptionPendingDescription
     case subscriptionProLabel
+    case subscriptionPurchaseErrorDescription
     case subscriptionRecoveryCopyButton
     case subscriptionRecoveryCreateButton
     case subscriptionRecoveryCreateDescription
@@ -322,6 +324,7 @@ enum L10NKey: String, CaseIterable, Sendable {
     case subscriptionRecoveryRestoreTitle
     case subscriptionRecoverySaveTitle
     case subscriptionRecoveryTitle
+    case subscriptionRestoreErrorDescription
     case templateAddReadyMadeTemplatesButton
     case templateAddTitle
     case templateContentDescription

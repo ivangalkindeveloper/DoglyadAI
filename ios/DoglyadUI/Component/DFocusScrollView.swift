@@ -2,17 +2,14 @@ import SwiftUI
 
 public struct DFocusScrollView<Focus: Hashable, Content: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     @State private var keyboardHeight: CGFloat = .zero
-
     private let focus: Focus?
     private let axes: Axis.Set
     private let isIndicatorsVisible: Bool
     private let anchor: UnitPoint
+    private let content: Content
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
-
-    private let content: Content
 
     public init(
         focus: Focus?,
@@ -22,18 +19,18 @@ public struct DFocusScrollView<Focus: Hashable, Content: View>: DViewProtocol {
             x: 0.5,
             y: 0.35,
         ),
+        @ViewBuilder content: () -> Content,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        @ViewBuilder content: () -> Content,
     ) {
         self.focus = focus
         self.axes = axes
         self.isIndicatorsVisible = isIndicatorsVisible
         self.anchor = anchor
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.content = content()
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {

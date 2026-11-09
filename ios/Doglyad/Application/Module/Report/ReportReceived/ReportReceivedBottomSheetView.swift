@@ -4,11 +4,15 @@ import SwiftUI
 struct ReportReceivedBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: ReportReceivedViewModel
     @State private var generationFailureCardHeight: CGFloat = 0
 
     var body: some View {
+        let isSending = switch viewModel.state {
+        case _ as ReportReceivedLoadingState: true
+        default: false
+        }
+
         DBottomSheet(
             type: .blur,
             title: l10n[
@@ -79,6 +83,7 @@ struct ReportReceivedBottomSheetView: DViewProtocol {
                                     .reportGenerationRetryButton,
                                 ],
                                 action: viewModel.onTapRetryGeneration,
+                                accessibilityIdentifier: "reportReceived.retryGeneration",
                             ).dStyle(
                                 .primaryButton,
                             )
@@ -90,6 +95,8 @@ struct ReportReceivedBottomSheetView: DViewProtocol {
                                         .reportReceivedOpenReportButton,
                                     ],
                                     action: viewModel.onTapReport,
+                                    isDisabled: isSending,
+                                    accessibilityIdentifier: "reportReceived.openReport",
                                 )
                                 .dStyle(
                                     .primaryButton,
@@ -104,6 +111,8 @@ struct ReportReceivedBottomSheetView: DViewProtocol {
                                     .buttonCopy,
                                 ],
                                 action: viewModel.onTapCopy,
+                                isDisabled: isSending,
+                                accessibilityIdentifier: "reportReceived.copy",
                             )
                             .dStyle(
                                 .textWeak,

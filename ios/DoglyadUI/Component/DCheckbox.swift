@@ -2,17 +2,19 @@ import SwiftUI
 
 public struct DCheckbox: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     @Binding var isChecked: Bool
+    private let isDisabled: Bool
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
 
     public init(
         isChecked: Binding<Bool>,
+        isDisabled: Bool = false,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
     ) {
         _isChecked = isChecked
+        self.isDisabled = isDisabled
         self.accessibilityElement = accessibilityElement
         self.accessibilityIdentifier = accessibilityIdentifier
     }
@@ -74,6 +76,9 @@ public struct DCheckbox: DViewProtocol {
                 value: isChecked,
             )
         }
+        .disabled(
+            isDisabled,
+        )
         .modifier(
             DAccessibilityModifier(
                 element: accessibilityElement,

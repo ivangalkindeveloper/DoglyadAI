@@ -29,9 +29,9 @@ struct ShareActionsView: DViewProtocol {
                 title: l10n[
                     .buttonCopy,
                 ],
-                accessibilityIdentifier: "share.copy",
                 action: viewModel.onTapCopy,
                 isDisabled: isProcessing,
+                accessibilityIdentifier: "share.copy",
             )
 
             DListButton(

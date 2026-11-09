@@ -4,7 +4,6 @@ import SwiftUI
 struct TemplateDeleteBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: TemplateDeleteViewModel
 
     var body: some View {

@@ -10,8 +10,8 @@ public struct DDatePicker: DViewProtocol {
 
     public init(
         _ title: LocalizedStringResource,
-        selection: Binding<Date>,
         in range: ClosedRange<Date>,
+        selection: Binding<Date>,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
     ) {

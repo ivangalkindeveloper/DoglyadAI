@@ -5,7 +5,6 @@ public struct DColor {
     public let primaryDefaultStrong: Color
     public let primaryDefaultWeak: Color
     public let primaryBackgroundStrong: Color
-
     public let grayscaleHeader: Color
     public let grayscaleHeaderWeak: Color
     public let grayscaleBody: Color
@@ -15,31 +14,26 @@ public struct DColor {
     public let grayscaleInput: Color
     public let grayscaleBackgroundWeak: Color
     public let grayscaleBackground: Color
-
     public let secondaryDefault: Color
     public let secondaryDefaultStrong: Color
     public let secondaryDefaultWeak: Color
     public let secondaryBackgroundStrong: Color
     public let secondaryBackground: Color
-
     public let successDefault: Color
     public let successDefaultStrong: Color
     public let successDefaultWeak: Color
     public let successBackgroundStrong: Color
     public let successBackground: Color
-
     public let warningDefault: Color
     public let warningDefaultStrong: Color
     public let warningDefaultWeak: Color
     public let warningBackgroundStrong: Color
     public let warningBackground: Color
-
     public let dangerDefault: Color
     public let dangerDefaultStrong: Color
     public let dangerDefaultWeak: Color
     public let dangerBackgroundStrong: Color
     public let dangerBackground: Color
-
     public let gradientPrimary: LinearGradient
     public let gradientPrimaryWeak: LinearGradient
     public let gradientSecondary: LinearGradient

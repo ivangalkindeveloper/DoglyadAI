@@ -4,7 +4,6 @@ import SwiftUI
 struct SelectTemplateBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: SelectTemplateViewModel
 
     var body: some View {
@@ -13,41 +12,36 @@ struct SelectTemplateBottomSheetView: DViewProtocol {
                 .selectTemplateTitle,
             ],
             fraction: 0.6,
-        ) { toolbarHeight, bottomHeight in
-            ScrollView(
-                showsIndicators: false,
-            ) {
-                LazyVStack(
-                    alignment: .leading,
-                    spacing: size.s4,
+            content: { toolbarHeight, bottomHeight in
+                ScrollView(
+                    showsIndicators: false,
                 ) {
-                    let isLoading = switch viewModel.state {
-                    case _ as SelectTemplateTemplatesLoadingState, _ as SelectTemplateSelectionLoadingState: true
-                    default: false
+                    LazyVStack(
+                        alignment: .leading,
+                        spacing: size.s4,
+                    ) {
+                        SelectTemplateStateView()
                     }
-                    SelectTemplateStateView(
-                        isLoading: isLoading,
+                    .padding(
+                        .top,
+                        size.s16,
+                    )
+                    .padding(
+                        .horizontal,
+                        size.s16,
+                    )
+                    .padding(
+                        .bottom,
+                        bottomHeight + size.s16,
                     )
                 }
-                .padding(
+                .contentMargins(
                     .top,
-                    size.s16,
+                    toolbarHeight,
+                    for: .scrollContent,
                 )
-                .padding(
-                    .horizontal,
-                    size.s16,
-                )
-                .padding(
-                    .bottom,
-                    bottomHeight + size.s16,
-                )
-            }
-            .contentMargins(
-                .top,
-                toolbarHeight,
-                for: .scrollContent,
-            )
-        }
+            },
+        )
         .environmentObject(
             viewModel,
         )

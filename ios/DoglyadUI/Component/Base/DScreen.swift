@@ -10,16 +10,11 @@ public struct DScreen<
     KeyboardToolbar: View,
 >: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     @State private var toolbarHeight: CGFloat = 0
     @State private var bottomHeight: CGFloat = 0
-
     let title: LocalizedStringResource?
     let subTitle: String?
     let backgroundColor: Color?
-    private let accessibilityElement: AccessibilityChildBehavior?
-    private let accessibilityIdentifier: String?
-
     let onTapBack: (() -> Void)?
     let leading: Leading
     let titleContent: Title
@@ -29,13 +24,13 @@ public struct DScreen<
     let content: (CGFloat, CGFloat) -> Content
     let bottom: Bottom?
     let keyboardToolbar: KeyboardToolbar
+    private let accessibilityElement: AccessibilityChildBehavior?
+    private let accessibilityIdentifier: String?
 
     public init(
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         onTapBack: (() -> Void)? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
@@ -51,12 +46,12 @@ public struct DScreen<
         },
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) where Bottom == EmptyView, KeyboardToolbar == EmptyView {
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.onTapBack = onTapBack
         self.leading = leading()
@@ -67,14 +62,14 @@ public struct DScreen<
         self.content = content
         bottom = nil
         keyboardToolbar = EmptyView()
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public init(
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         onTapBack: (() -> Void)? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
@@ -91,12 +86,12 @@ public struct DScreen<
         onTapBody: (() -> Void)? = nil,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
         @ViewBuilder bottom: () -> Bottom?,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) where KeyboardToolbar == EmptyView {
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.onTapBack = onTapBack
         self.leading = leading()
@@ -107,14 +102,14 @@ public struct DScreen<
         self.content = content
         self.bottom = bottom()
         keyboardToolbar = EmptyView()
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public init(
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         onTapBack: (() -> Void)? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
@@ -129,14 +124,14 @@ public struct DScreen<
             EmptyView()
         },
         onTapBody: (() -> Void)? = nil,
-        @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
+        @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) where Bottom == EmptyView {
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.onTapBack = onTapBack
         self.leading = leading()
@@ -147,14 +142,14 @@ public struct DScreen<
         self.content = content
         bottom = nil
         self.keyboardToolbar = keyboardToolbar()
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public init(
         title: LocalizedStringResource? = nil,
         subTitle: String? = nil,
         backgroundColor: Color? = nil,
-        accessibilityElement: AccessibilityChildBehavior? = nil,
-        accessibilityIdentifier: String? = nil,
         onTapBack: (() -> Void)? = nil,
         @ViewBuilder leading: @escaping (() -> Leading) = {
             EmptyView()
@@ -169,15 +164,15 @@ public struct DScreen<
             EmptyView()
         },
         onTapBody: (() -> Void)? = nil,
-        @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
         @ViewBuilder content: @escaping (CGFloat, CGFloat) -> Content,
         @ViewBuilder bottom: () -> Bottom?,
+        @ViewBuilder keyboardToolbar: @escaping () -> KeyboardToolbar,
+        accessibilityElement: AccessibilityChildBehavior? = nil,
+        accessibilityIdentifier: String? = nil,
     ) {
         self.title = title
         self.subTitle = subTitle
         self.backgroundColor = backgroundColor
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.onTapBack = onTapBack
         self.leading = leading()
@@ -188,6 +183,8 @@ public struct DScreen<
         self.content = content
         self.bottom = bottom()
         self.keyboardToolbar = keyboardToolbar()
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
@@ -348,8 +345,8 @@ public struct DScreen<
             if let onTapBack {
                 DButton(
                     image: .back,
-                    accessibilityIdentifier: "navigation.back",
                     action: onTapBack,
+                    accessibilityIdentifier: "navigation.back",
                 )
                 .dStyle(
                     .circle,

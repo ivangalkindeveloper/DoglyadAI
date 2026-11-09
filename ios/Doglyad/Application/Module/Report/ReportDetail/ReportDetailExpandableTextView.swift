@@ -3,7 +3,6 @@ import SwiftUI
 
 struct ReportDetailExpandableTextView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
-
     let text: String
     let backgroundColor: Color
     let collapsedLineLimit: Int

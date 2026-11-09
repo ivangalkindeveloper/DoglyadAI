@@ -12,7 +12,7 @@
 
         var body: some View {
             let isErrorPresented = switch state {
-            case _ as TemplateEditInitializationFailedState, _ as TemplateEditFailedState: true
+            case _ as TemplateEditInitializationErrorState, _ as TemplateEditErrorState: true
             default: false
             }
 

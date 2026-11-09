@@ -14,8 +14,28 @@ func typeName(_ type: TypeSyntax) -> String {
     return type.trimmedDescription
 }
 
+func storedPropertyNames(_ members: MemberBlockItemListSyntax) -> [String] {
+    members.flatMap { member -> [String] in
+        guard let property = member.decl.as(VariableDeclSyntax.self),
+              !property.modifiers.contains(where: { ["static", "class"].contains($0.name.text) })
+        else { return [] }
+        return property.bindings.compactMap { binding in
+            if let block = binding.accessorBlock {
+                switch block.accessors {
+                case .getter: return nil
+                case let .accessors(values):
+                    guard values.allSatisfy({ ["willSet", "didSet"].contains($0.accessorSpecifier.text) }) else { return nil }
+                @unknown default: return nil
+                }
+            }
+            return binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text
+        }
+    }
+}
+
 final class Conformances: SyntaxVisitor {
     var parents: [String: Set<String>] = [:]
+    var properties: [String: [String]] = [:]
 
     init() { super.init(viewMode: .sourceAccurate) }
 
@@ -25,11 +45,13 @@ final class Conformances: SyntaxVisitor {
 
     override func visit(_ node: StructDeclSyntax) -> SyntaxVisitorContinueKind {
         record(node.name.text, node.inheritanceClause)
+        properties[node.name.text] = storedPropertyNames(node.memberBlock.members)
         return .visitChildren
     }
 
     override func visit(_ node: ClassDeclSyntax) -> SyntaxVisitorContinueKind {
         record(node.name.text, node.inheritanceClause)
+        properties[node.name.text] = storedPropertyNames(node.memberBlock.members)
         return .visitChildren
     }
 
@@ -87,6 +109,32 @@ final class ArchitectureChecks: SyntaxVisitor {
         let location = locations.location(for: node.positionAfterSkippingLeadingTrivia)
         print("\(path):\(location.line):\(location.column): \(rule): \(message)")
         count += 1
+    }
+
+    func isAccessibilityMetadata(_ name: String) -> Bool {
+        name.hasPrefix("accessibility") && name != "accessibility"
+    }
+
+    override func visit(_ node: MemberBlockItemListSyntax) -> SyntaxVisitorContinueKind {
+        let fields = storedPropertyNames(node)
+        if let first = fields.firstIndex(where: isAccessibilityMetadata),
+           fields.dropFirst(first).contains(where: { !isAccessibilityMetadata($0) }) {
+            report(node, "swift.accessibility-field-order", "Place accessibility fields after all other stored fields.")
+        }
+        return .visitChildren
+    }
+
+    override func visit(_ node: FunctionCallExprSyntax) -> SyntaxVisitorContinueKind {
+        let labels = node.arguments.map { $0.label?.text ?? "" }
+        if let first = labels.firstIndex(where: isAccessibilityMetadata),
+           labels.dropFirst(first).contains(where: { !isAccessibilityMetadata($0) }) || node.trailingClosure != nil {
+            report(node, "swift.accessibility-argument-order", "Pass accessibility arguments last; pass view-builder content as a labeled argument before them.")
+        }
+        if path.contains("/ios/Doglyad/") || path.hasPrefix("ios/Doglyad/"),
+           node.calledExpression.as(MemberAccessExprSyntax.self)?.declName.baseName.text == "disabled" {
+            report(node, "swift.explicit-disabled", "Pass isDisabled to each interactive design-system component instead of disabling a view or container.")
+        }
+        return .visitChildren
     }
 
     func owner(_ node: some SyntaxProtocol) -> String? {
@@ -153,6 +201,60 @@ final class ArchitectureChecks: SyntaxVisitor {
             return member.declName.baseName.text == "modifier" && member.base?.trimmedDescription == "self"
         }
         return false
+    }
+
+    override func visit(_ node: InitializerDeclSyntax) -> SyntaxVisitorContinueKind {
+        let labels = node.signature.parameterClause.parameters.map { $0.firstName.text }
+        if let first = labels.firstIndex(where: isAccessibilityMetadata),
+           labels.dropFirst(first).contains(where: { !isAccessibilityMetadata($0) }) {
+            report(node, "swift.accessibility-parameter-order", "Place accessibility parameters last in the initializer.")
+        }
+        var parent = node.parent
+        var fields: [String] = []
+        while let value = parent {
+            if let value = value.as(ClassDeclSyntax.self) {
+                fields = storedPropertyNames(value.memberBlock.members); break
+            }
+            if let value = value.as(StructDeclSyntax.self) {
+                fields = storedPropertyNames(value.memberBlock.members); break
+            }
+            if let value = value.as(ExtensionDeclSyntax.self) {
+                fields = conformances.properties[typeName(value.extendedType)] ?? []; break
+            }
+            parent = value.parent
+        }
+        guard !fields.isEmpty, let body = node.body else { return .visitChildren }
+        let parameters = node.signature.parameterClause.parameters.map { ($0.secondName ?? $0.firstName).text }
+        var shadowed = Set(parameters)
+        var assignments: [(String, String)] = []
+        for statement in body.statements {
+            if let declaration = statement.item.as(VariableDeclSyntax.self) {
+                shadowed.formUnion(declaration.bindings.compactMap { $0.pattern.as(IdentifierPatternSyntax.self)?.identifier.text })
+            }
+            guard let expression = statement.item.as(SequenceExprSyntax.self) else { continue }
+            let parts = Array(expression.elements)
+            guard parts.count >= 3, parts[1].is(AssignmentExprSyntax.self) else { continue }
+            let raw: String
+            if let member = parts[0].as(MemberAccessExprSyntax.self), member.base?.trimmedDescription == "self" {
+                raw = member.declName.baseName.text
+            } else if let reference = parts[0].as(DeclReferenceExprSyntax.self), !shadowed.contains(reference.baseName.text) {
+                raw = reference.baseName.text
+            } else { continue }
+            let field = fields.contains(raw) ? raw : raw.hasPrefix("_") ? String(raw.dropFirst()) : raw
+            if fields.contains(field) { assignments.append((field, parts.dropFirst(2).map(\.description).joined().trimmingCharacters(in: .whitespacesAndNewlines))) }
+        }
+        let mapped = parameters.compactMap { parameter -> String? in
+            if fields.contains(parameter) { return parameter }
+            return assignments.first { $0.1 == parameter }?.0
+        }
+        if mapped != mapped.sorted(by: { fields.firstIndex(of: $0)! < fields.firstIndex(of: $1)! }) {
+            report(node, "swift.initializer-parameter-order", "Order initializer parameters by their stored property declarations.")
+        }
+        let assigned = assignments.map(\.0)
+        if assigned != assigned.sorted(by: { fields.firstIndex(of: $0)! < fields.firstIndex(of: $1)! }) {
+            report(node, "swift.initializer-assignment-order", "Assign stored properties in declaration order; compute dependent values in local variables first.")
+        }
+        return .visitChildren
     }
 
     override func visit(_ node: ProtocolDeclSyntax) -> SyntaxVisitorContinueKind {

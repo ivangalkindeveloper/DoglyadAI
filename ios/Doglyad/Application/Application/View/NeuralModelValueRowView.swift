@@ -3,7 +3,6 @@ import SwiftUI
 
 struct NeuralModelValueRowView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
-
     let title: LocalizedStringResource
     let value: String
 

@@ -1,0 +1,18 @@
+appId: ${APP_ID}
+name: atlas-subscriptionrecovery-701281a3a4
+tags:
+- atlas
+- SubscriptionRecovery
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-subscriptionrecovery-701281a3a4
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-subscriptionrecovery-701281a3a4
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: message.error
+    timeout: 15000
+- takeScreenshot: 11-SubscriptionRecovery-701281a3a4

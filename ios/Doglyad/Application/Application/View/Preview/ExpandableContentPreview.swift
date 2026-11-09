@@ -3,7 +3,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Одна строка — лимит 3",
+        "01 ExpandableContentView OneLine",
         traits: .sizeThatFitsLayout,
     ) {
         ExpandableContentPreviewView(
@@ -16,7 +16,7 @@
     }
 
     #Preview(
-        "02 Три строки — лимит 3",
+        "02 ExpandableContentView ThreeLines",
         traits: .sizeThatFitsLayout,
     ) {
         ExpandableContentPreviewView(
@@ -29,7 +29,7 @@
     }
 
     #Preview(
-        "03 Четыре строки — лимит 3",
+        "03 ExpandableContentView FourLines",
         traits: .sizeThatFitsLayout,
     ) {
         ExpandableContentPreviewView(
@@ -42,7 +42,7 @@
     }
 
     #Preview(
-        "04 Длинный текст — ширина 360",
+        "04 ExpandableContentView LongTextWide",
         traits: .sizeThatFitsLayout,
     ) {
         ExpandableContentPreviewView(
@@ -55,7 +55,7 @@
     }
 
     #Preview(
-        "05 Длинный текст — ширина 260",
+        "05 ExpandableContentView LongTextNarrow",
         traits: .sizeThatFitsLayout,
     ) {
         ExpandableContentPreviewView(
@@ -68,7 +68,7 @@
     }
 
     #Preview(
-        "06 Длинный текст — лимит 1",
+        "06 ExpandableContentView OneLineLimit",
         traits: .sizeThatFitsLayout,
     ) {
         ExpandableContentPreviewView(
@@ -81,7 +81,7 @@
     }
 
     #Preview(
-        "07 Markdown — лимит 3",
+        "07 ExpandableContentView Markdown",
         traits: .sizeThatFitsLayout,
     ) {
         ExpandableContentPreviewView(

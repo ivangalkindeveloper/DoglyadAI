@@ -12,9 +12,13 @@ tags:
     text: ^Шаблоны протоколов$
 - assertVisible: Произошла неизвестная ошибка.*
 - assertNotVisible: Тут пока нет шаблонов.*
+- assertVisible: {id: message.error}
 - takeScreenshot: TemplateList-load-failed
 - tapOn:
     text: ^Обновить$
 - assertVisible: Retry template
+- extendedWaitUntil:
+    notVisible: {id: message.error}
+    timeout: 15000
 - assertNotVisible: Произошла неизвестная ошибка.*
 - takeScreenshot: TemplateList-load-retried

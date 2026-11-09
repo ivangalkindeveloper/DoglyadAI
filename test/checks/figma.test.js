@@ -109,11 +109,11 @@ test('Preview precedes regression with quadrupled gap, transparent frames, white
   assert.equal(collection.name, 'Regression · 20261107T104711Z');
   assert.equal(collection.getPluginData('doglyadRegressionRun'), e.manifest.runId);
   assert.equal(collection.itemSpacing, 1920);
-  assert.deepEqual(collection.children.map(n => n.name), ['Preview', 'Регресс']);
+  assert.deepEqual(collection.children.map(n => n.name), ['Макеты', 'Регресс']);
   const [previews, regression] = collection.children;
   assert.equal(previews.itemSpacing, 40);
   assert.equal(regression.itemSpacing, 40);
-  assert.deepEqual(previews.children.slice(1).map(n => n.name), ['Preview / OnBoarding', 'Preview / Paywall']);
+  assert.deepEqual(previews.children.slice(1).map(n => n.name), ['OnBoarding', 'Paywall']);
   assert.deepEqual(regression.children.slice(1).map(n => n.name), ['Регресс / ApplicationSplash', 'Регресс / OnBoarding', 'Регресс / Paywall']);
   const row = previews.children[1].children[1];
   assert.equal(row.layoutMode, 'HORIZONTAL');
@@ -149,8 +149,12 @@ test('preview cards sort numerically before images arrive; regression retains sc
   await e.figma.ui.onmessage({ type: 'commit' });
   const [preview, regression] = e.page.children[0].children;
   const cards = section => section.children[1].children[1].children;
-  assert.deepEqual(cards(preview).map(n => n.children[1].name), [samples[3].id, samples[2].id, samples[1].id]);
-  assert.deepEqual(cards(regression).map(n => n.children[1].name), [samples[0].id, samples[4].id]);
+  assert.deepEqual(cards(preview).map(n => n.name), ['01 First', '02 Middle', '03 Last']);
+  for (const card of cards(preview)) {
+    assert.equal(card.children.length, 1, 'A caption must not shift the screenshot');
+    assert.equal(card.children[0].name, card.name);
+  }
+  assert.deepEqual(cards(regression).map(n => n.children[0].name), ['Регресс · B · B-first', 'Регресс · B · B-second']);
 });
 
 test('same run is rebuilt after a layout upgrade, then reused on acknowledgment retry', async () => {
@@ -192,7 +196,7 @@ test('historical English previews are validated but omitted from the Russian col
   const [previews, regression] = e.page.children[0].children;
   assert.equal(previews.children[1].children[1].children.length, 1);
   assert.equal(regression.children[1].children[1].children.length, 1);
-  assert.equal(previews.children[1].children[1].children[0].name, 'Preview · Paywall · 01 Русский');
+  assert.equal(previews.children[1].children[1].children[0].name, '01 Русский');
 });
 
 function previewManifest(e) {
@@ -262,4 +266,28 @@ test('Preview-only mode rejects functional screenshots', async () => {
   await e.figma.ui.onmessage({ type: 'begin', manifest });
   assert.equal(e.messages.at(-1).type, 'error');
   assert.equal(e.old.removed, false);
+});
+
+test('startup gates precede onboarding and all visible preview frame names omit Preview', async () => {
+  const e = environment({ managed: false });
+  const order = ['ApplicationSplash', 'NewVersion', 'LegalUpdate', 'OnBoarding'];
+  const manifest = previewManifest(e);
+  manifest.coverage = { modules: order.map(module => ({ module })) };
+  manifest.images = [...order].reverse().map((module, i) => ({
+    id: `atlas-${module}--one`, caseId: `atlas-${module}`, kind: 'render',
+    module, state: '01 Экран', width: 390, height: 844,
+  }));
+  manifest.expectedScreenshots = manifest.images.length;
+  await publish(e, manifest);
+  assert.equal(e.messages.at(-1).type, 'done');
+  const collection = e.page.children.at(-1);
+  const section = collection.children[0];
+  assert.equal(section.name, 'Макеты');
+  assert.deepEqual(section.children.slice(1).map(n => n.name), order);
+  const inspect = node => {
+    assert.doesNotMatch(node.name || '', /Preview/);
+    if (node.characters) assert.doesNotMatch(node.characters, /Preview/);
+    node.children.forEach(inspect);
+  };
+  inspect(collection);
 });

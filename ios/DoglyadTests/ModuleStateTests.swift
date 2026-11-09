@@ -38,15 +38,15 @@ struct ModuleStateTests {
                     observation.cancel()
                 }
             },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
+            onRefreshSubscriptionStatus: {},
             onSubscriptionStatusUpdated: {
                 statuses.send(
                     $0,
                 )
             },
-            getSettingsAI: {
-                container.initialSettingsAI
-            },
-            onRefreshSubscriptionStatus: {},
             analyticsDestination: .screen(
                 .paywall,
             ),
@@ -118,6 +118,7 @@ struct ModuleStateTests {
         var subscriptionRefreshCount = 0
         var observationCancelled = false
         var model: ManageSubscriptionViewModel? = ManageSubscriptionViewModel(
+            messager: DMessager(),
             container: container,
             router: DRouter(
                 initialRoute: RouteScreen(
@@ -148,11 +149,6 @@ struct ModuleStateTests {
                 subscriptionRefreshCount += 1
             },
             arguments: nil,
-            manageSubscription: {},
-            restorePurchases: {
-                nil
-            },
-            requestRefund: {},
             fetchProducts: {
                 BillingProductsResponse(
                     products: [],
@@ -163,6 +159,11 @@ struct ModuleStateTests {
                     )],
                 )
             },
+            manageSubscription: {},
+            restorePurchases: {
+                nil
+            },
+            requestRefund: {},
         )
         weak let weakModel = model
         #expect(
@@ -288,18 +289,9 @@ struct ModuleStateTests {
             },
         )
         model?.onAppear()
-        for _ in 0 ..< 1000 {
-            guard model?.state is ScanInitializationLoadingState else {
-                break
-            }
-            try? await Task.sleep(
-                for: .milliseconds(
-                    2,
-                ),
-            )
-        }
+        await model?.draftRestorationTask?.value
         #expect(
-            !(model?.state is ScanInitializationLoadingState),
+            model?.state is ScanInitialState,
         )
         weak let weakModel = model
         selectedModel = USExaminationNeuralModel(
@@ -596,7 +588,6 @@ struct ModuleStateTests {
         var appliedFieldIds: [DNeuralUltrasoundVoiceFieldId] = []
         let model = ScanSpeechViewModel(
             container: container,
-            messager: DMessager(),
             router: DRouter(
                 initialRoute: RouteScreen(
                     type: .scan,
@@ -613,6 +604,7 @@ struct ModuleStateTests {
                 container.initialSettingsAI
             },
             onRefreshSubscriptionStatus: {},
+            messager: DMessager(),
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
                 onConfirm: { proposals in
@@ -743,7 +735,11 @@ struct ModuleStateTests {
             transitions == 0,
         )
         model.emit(
-            TemplateAddInitialState(),
+            TemplateAddErrorState(
+                error: CocoaError(
+                    .fileWriteUnknown,
+                ),
+            ),
         )
         #expect(
             transitions == 1,

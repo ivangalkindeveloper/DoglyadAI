@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 PhotoLibraryPickerDefaultState",
+        "01 PhotoLibraryPickerDefaultState PhotoLibrary",
     ) {
         PhotoLibraryPickerPreviewView(
             state: PhotoLibraryPickerDefaultState(),

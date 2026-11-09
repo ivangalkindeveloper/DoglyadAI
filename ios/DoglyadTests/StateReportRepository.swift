@@ -5,10 +5,16 @@ import Foundation
 
 @MainActor
 final class StateReportRepository: UltrasoundReportRepositoryProtocol {
+    var isReportsReadFailed = false
+    var failedReportsOffset: Int?
     var isSaveFailed = true
     var isGeneratedSaveFailed = false
     var isSelectionSaveFailed = false
+    var isSelectionReadFailed = false
     var isRecentTypesReadFailed = false
+    var isRecentTypesWriteFailed = false
+    var isReportCountReadFailed = false
+    var onRecentTypeRecord: (() async throws -> Void)?
     var isServerGenerating = false
     var eventContinuation: AsyncThrowingStream<DServerEvent, Error>.Continuation?
     private(set) var generationCount = 0
@@ -81,7 +87,12 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     }
 
     func getSelectedExaminationTypeId() async throws -> String? {
-        selectedExaminationTypeId
+        guard !isSelectionReadFailed else {
+            throw CocoaError(
+                .fileReadUnknown,
+            )
+        }
+        return selectedExaminationTypeId
     }
 
     func setSelectedExaminationTypeId(
@@ -114,6 +125,12 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     func recordRecentExaminationTypeId(
         _ id: String,
     ) async throws {
+        try await onRecentTypeRecord?()
+        guard !isRecentTypesWriteFailed else {
+            throw CocoaError(
+                .fileWriteUnknown,
+            )
+        }
         recentExaminationTypeIds = USExaminationRecentTypes.recording(
             id,
             in: recentExaminationTypeIds,
@@ -121,10 +138,21 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     }
 
     func getReports(
-        limit _: Int,
-        offset _: Int,
+        limit: Int,
+        offset: Int,
     ) async throws -> [USExaminationReport] {
-        reports
+        if isReportsReadFailed || failedReportsOffset == offset {
+            throw CocoaError(
+                .fileReadUnknown,
+            )
+        }
+        return Array(
+            reports.dropFirst(
+                offset,
+            ).prefix(
+                limit,
+            ),
+        )
     }
 
     func interruptPendingGenerations() async throws {
@@ -141,7 +169,12 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     }
 
     func getReportsCount() async throws -> Int {
-        reports.count
+        guard !isReportCountReadFailed else {
+            throw CocoaError(
+                .fileReadUnknown,
+            )
+        }
+        return reports.count
     }
 
     func setReport(

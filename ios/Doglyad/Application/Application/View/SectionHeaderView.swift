@@ -8,7 +8,6 @@ struct SectionHeaderView: DViewProtocol {
     }
 
     @EnvironmentObject var theme: DTheme
-
     private let title: Title
 
     init(

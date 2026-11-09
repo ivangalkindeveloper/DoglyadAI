@@ -5,46 +5,48 @@
     import SwiftUI
 
     #Preview(
-        "01 SelectUSExaminationTypeRecentTypesLoadingState",
-    ) {
-        SelectUSExaminationTypePreviewView(
-            state: SelectUSExaminationTypeRecentTypesLoadingState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "02 SelectUSExaminationTypeFailedState",
-    ) {
-        SelectUSExaminationTypePreviewView(
-            state: SelectUSExaminationTypeFailedState(
-                error: URLError(
-                    .notConnectedToInternet,
-                ),
-            ),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "03 SelectUSExaminationTypeContentState",
+        "01 SelectUSExaminationTypeContentState FirstUse",
     ) {
         SelectUSExaminationTypePreviewView(
             state: SelectUSExaminationTypeContentState(),
+            isRecentSectionVisible: false,
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "04 SelectUSExaminationTypeSelectionLoadingState",
+        "02 SelectUSExaminationTypeContentState FirstUse ScrollEnd",
     ) {
         SelectUSExaminationTypePreviewView(
-            state: SelectUSExaminationTypeSelectionLoadingState(),
+            state: SelectUSExaminationTypeContentState(),
+            isRecentSectionVisible: false,
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "03 SelectUSExaminationTypeContentState MaximumRecentTypes",
+    ) {
+        SelectUSExaminationTypePreviewView(
+            state: SelectUSExaminationTypeContentState(),
+            isRecentSectionVisible: true,
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "04 SelectUSExaminationTypeContentState MaximumRecentTypes ScrollEnd",
+    ) {
+        SelectUSExaminationTypePreviewView(
+            state: SelectUSExaminationTypeContentState(),
+            isRecentSectionVisible: true,
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
     }
 #endif

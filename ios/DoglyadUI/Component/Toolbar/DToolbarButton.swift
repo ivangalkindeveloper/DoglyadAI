@@ -13,29 +13,31 @@ public struct DToolbarButton: DViewProtocol {
     }
 
     @EnvironmentObject public var theme: DTheme
-
     private let style: Style
     private let badge: DButtonBadge?
     private let content: Content
+    private let action: () -> Void
+    private let isDisabled: Bool
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
-    private let action: () -> Void
 
     public init(
         style: Style,
         badge: DButtonBadge? = nil,
         content: Content,
+        action: @escaping () -> Void,
+        isDisabled: Bool = false,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        action: @escaping () -> Void,
     ) {
         self.style = style
         self.badge = badge
         self.content = content
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.action = action
+        self.isDisabled = isDisabled
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
@@ -49,6 +51,9 @@ public struct DToolbarButton: DViewProtocol {
                 .plain,
             )
         }
+        .disabled(
+            isDisabled,
+        )
         .modifier(
             DAccessibilityModifier(
                 element: accessibilityElement,

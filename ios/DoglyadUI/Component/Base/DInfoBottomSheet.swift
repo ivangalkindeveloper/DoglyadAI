@@ -2,16 +2,14 @@ import SwiftUI
 
 public struct DInfoBottomSheet: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     private let fraction: Double
     private let title: LocalizedStringResource
     private let image: ImageResource
     private let description: LocalizedStringResource
     private let buttonTitle: LocalizedStringResource
+    private let action: () -> Void
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
-
-    private let action: () -> Void
 
     public init(
         fraction: Double = 0.3,
@@ -19,19 +17,19 @@ public struct DInfoBottomSheet: DViewProtocol {
         image: ImageResource,
         description: LocalizedStringResource,
         buttonTitle: LocalizedStringResource,
+        action: @escaping () -> Void,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        action: @escaping () -> Void,
     ) {
         self.fraction = fraction
         self.title = title
         self.image = image
         self.description = description
         self.buttonTitle = buttonTitle
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.action = action
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {

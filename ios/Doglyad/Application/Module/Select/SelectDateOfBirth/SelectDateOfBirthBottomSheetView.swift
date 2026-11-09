@@ -4,7 +4,6 @@ import SwiftUI
 struct SelectDateOfBirthBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: SelectDateOfBirthViewModel
 
     var body: some View {
@@ -21,13 +20,13 @@ struct SelectDateOfBirthBottomSheetView: DViewProtocol {
                     l10n[
                         .selectDateOfBirthTitle,
                     ],
+                    in: viewModel.fromDate ... viewModel.toDate,
                     selection: Binding(
                         get: {
                             viewModel.date
                         },
                         set: viewModel.onDateChanged,
                     ),
-                    in: viewModel.fromDate ... viewModel.toDate,
                 )
                 .labelsHidden()
                 .datePickerStyle(

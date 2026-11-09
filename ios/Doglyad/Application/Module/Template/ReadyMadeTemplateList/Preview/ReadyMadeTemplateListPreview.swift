@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 ReadyMadeTemplateListLoadingState",
+        "01 ReadyMadeTemplateListLoadingState LoadingCatalog",
     ) {
         ReadyMadeTemplateListPreviewView(
             state: ReadyMadeTemplateListLoadingState(),
@@ -15,10 +15,21 @@
     }
 
     #Preview(
-        "02 ReadyMadeTemplateListFailedState",
+        "02 ReadyMadeTemplateListLoadingState LoadingCatalog ScrollEnd",
     ) {
         ReadyMadeTemplateListPreviewView(
-            state: ReadyMadeTemplateListFailedState(
+            state: ReadyMadeTemplateListLoadingState(),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "03 ReadyMadeTemplateListErrorState CatalogRequestFailed",
+    ) {
+        ReadyMadeTemplateListPreviewView(
+            state: ReadyMadeTemplateListErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -29,7 +40,7 @@
     }
 
     #Preview(
-        "03 Каталог пуст",
+        "04 ReadyMadeTemplateListSuccessState EmptyCatalog",
     ) {
         ReadyMadeTemplateListPreviewView(
             state: ReadyMadeTemplateListSuccessState(
@@ -42,7 +53,7 @@
     }
 
     #Preview(
-        "04 ReadyMadeTemplateListSuccessState",
+        "05 ReadyMadeTemplateListSuccessState AvailableTemplates",
     ) {
         ReadyMadeTemplateListPreviewView(
             state: ReadyMadeTemplateListSuccessState(
@@ -54,7 +65,20 @@
     }
 
     #Preview(
-        "05 Раскрываемый текст шаблона",
+        "06 ReadyMadeTemplateListSuccessState AvailableTemplates ScrollEnd",
+    ) {
+        ReadyMadeTemplateListPreviewView(
+            state: ReadyMadeTemplateListSuccessState(
+                templates: ModulePreviewFactory.readyMadeTemplates,
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "07 ReadyMadeTemplateListExpandableTextView ExpandableTemplate",
     ) {
         VStack(
             alignment: .leading,
@@ -78,7 +102,7 @@
     }
 
     #Preview(
-        "06 Карточка готового шаблона",
+        "08 ReadyMadeTemplateListItemCardView ReadyMadeTemplateCard",
     ) {
         ReadyMadeTemplateListItemCardView(
             template: ModulePreviewFactory.readyMadeTemplate,

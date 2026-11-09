@@ -6,7 +6,6 @@ import Foundation
 final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStateProtocol> {
     @Published private(set) var templates: [USExaminationTemplate] = []
     @Published private(set) var currentTemplateID: UUID?
-
     private let messager: DMessager?
     private let arguments: SelectTemplateArguments
 
@@ -21,18 +20,19 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: SelectTemplateArguments,
     ) {
+        templates = arguments.templates
+        currentTemplateID = arguments.currentValue?.id
         self.messager = messager
         self.arguments = arguments
-        currentTemplateID = arguments.currentValue?.id
         super.init(
-            state: SelectTemplateTemplatesLoadingState(),
+            state: SelectTemplateContentState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .selectTemplate,
             ),
@@ -54,64 +54,24 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         }
     #endif
 
-    override func onInit() {
-        let usExaminationId = arguments.usExaminationId
-        handle {
-            let templates = try await self.container.templateRepository.getTemplates(
-                usExaminationTypesById: self.container.usExaminationTypesById,
-            )
-            guard let usExaminationId else {
-                return templates
-            }
-            return templates.filter {
-                $0.usExaminationType.id == usExaminationId
-            }
-        } onMainSuccess: { templates in
-            self.templates = templates
-            self.emit(
-                templates.isEmpty ? SelectTemplateEmptyState() : SelectTemplateContentState(),
-            )
-        } onMainUnknownError: { error in
-            self.emit(
-                SelectTemplateFailedState(
-                    error: error,
-                ),
-            )
-            self.messager?.showUnknownError(
-                l10n: self.container.l10n,
-            )
-        }
-    }
-
-    func onTapRetry() {
-        onInit()
-    }
-
     func onTemplateTap(
         _ template: USExaminationTemplate,
     ) {
         analytics.buttonTapped(
             .selectTemplate,
         )
-        switch state {
-        case _ as SelectTemplateContentState: break
-        default: return
-        }
-        emit(
-            SelectTemplateSelectionLoadingState(),
-        )
-        handle {
+        performLocalOperation {
             try await self.arguments.onSelected(
                 template,
             )
         }
-        onMainSuccess: { _ in
+        onSuccess: { _ in
             self.currentTemplateID = template.id
             self.emit(
                 SelectTemplateContentState(),
             )
             self.coordinator.dismissSheet()
-        } onMainUnknownError: { _ in
+        } onFailure: { _ in
             self.emit(
                 SelectTemplateContentState(),
             )

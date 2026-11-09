@@ -4,49 +4,16 @@ import SwiftUI
 struct SettingsAIScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: SettingsAIViewModel
     @FocusState private var focus: SettingsAIFocus?
 
     var body: some View {
-        let isProcessing = switch viewModel.state {
-        case _ as SettingsAILoadingState: true
-        default: false
-        }
-
         DScreen(
             title: l10n[
                 .settingsAITitle,
             ],
             onTapBack: viewModel.onTapBack,
             onTapBody: viewModel.unfocus,
-            keyboardToolbar: {
-                if focus != nil {
-                    DToolbar(
-                        onTapUp: viewModel.isPreviousFieldFocusable ? {
-                            viewModel.onTapToolbarUp()
-                        } : nil,
-                        onTapDown: viewModel.isNextFieldFocusable ? {
-                            viewModel.onTapToolbarDown()
-                        } : nil,
-                        onTapDone: viewModel.unfocus,
-                        trailButtons: [
-                            DToolbarButton(
-                                style: .primaryDefault,
-                                content: .text(
-                                    l10n[
-                                        .buttonSave,
-                                    ],
-                                ),
-                                action: viewModel.onTapSave,
-                            ),
-                        ],
-                    )
-                    .disabled(
-                        isProcessing,
-                    )
-                }
-            },
             content: { toolbarInset, bottomInset in
                 DFocusScrollView(
                     focus: focus,
@@ -112,55 +79,56 @@ struct SettingsAIScreenView: DViewProtocol {
                                 size.s4,
                             )
 
-                            DButtonCard(
-                                accessibilityElement: .combine,
-                                accessibilityIdentifier: "settingsAI.markdown",
-                                accessibilityTraits: viewModel.isMarkdown ? .isSelected : [],
+                            DCard(
                                 action: {
                                     viewModel.toggleIsMarkdown()
                                 },
-                            ) {
-                                HStack(
-                                    alignment: .center,
-                                ) {
-                                    DText(
-                                        l10n[
-                                            .settingsAIMarkdownLabel,
-                                        ],
-                                    )
-                                    .dStyle(
-                                        font: typography.linkSmall,
-                                    )
+                                content: {
+                                    HStack(
+                                        alignment: .center,
+                                    ) {
+                                        DText(
+                                            l10n[
+                                                .settingsAIMarkdownLabel,
+                                            ],
+                                        )
+                                        .dStyle(
+                                            font: typography.linkSmall,
+                                        )
 
-                                    Spacer(
-                                        minLength: size.s16,
-                                    )
+                                        Spacer(
+                                            minLength: size.s16,
+                                        )
 
-                                    DToggle(
-                                        "",
-                                        isOn: .constant(
-                                            viewModel.isMarkdown,
-                                        ),
+                                        DToggle(
+                                            "",
+                                            isOn: .constant(
+                                                viewModel.isMarkdown,
+                                            ),
+                                            isDisabled:
+                                            !viewModel.isReportGenerationSettingsEnabled,
+                                        )
+                                        .labelsHidden()
+                                        .toggleStyle(
+                                            .switch,
+                                        )
+                                        .allowsHitTesting(
+                                            false,
+                                        )
+                                    }
+                                    .frame(
+                                        maxWidth: .infinity,
+                                        alignment: .leading,
                                     )
-                                    .labelsHidden()
-                                    .toggleStyle(
-                                        .switch,
+                                    .foregroundStyle(
+                                        color.grayscaleHeader,
                                     )
-                                    .allowsHitTesting(
-                                        false,
-                                    )
-                                }
-                                .frame(
-                                    maxWidth: .infinity,
-                                    alignment: .leading,
-                                )
-                                .foregroundStyle(
-                                    color.grayscaleHeader,
-                                )
-                            }
-
-                            .disabled(
+                                },
+                                isDisabled:
                                 !viewModel.isReportGenerationSettingsEnabled,
+                                accessibilityElement: .combine,
+                                accessibilityIdentifier: "settingsAI.markdown",
+                                accessibilityTraits: viewModel.isMarkdown ? .isSelected : [],
                             )
                             .paidBadge(
                                 viewModel.reportGenerationSettingsAvailability,
@@ -204,10 +172,9 @@ struct SettingsAIScreenView: DViewProtocol {
                                     submitLabel: .next,
                                 ),
                                 keyboardType: .decimalPad,
-                                accessibilityIdentifier: "settingsAI.temperature",
-                            )
-                            .disabled(
+                                isDisabled:
                                 !viewModel.isReportGenerationSettingsEnabled,
+                                accessibilityIdentifier: "settingsAI.temperature",
                             )
                             .paidBadge(
                                 viewModel.reportGenerationSettingsAvailability,
@@ -255,10 +222,9 @@ struct SettingsAIScreenView: DViewProtocol {
                                     submitLabel: .done,
                                 ),
                                 keyboardType: .numberPad,
-                                accessibilityIdentifier: "settingsAI.maxTokens",
-                            )
-                            .disabled(
+                                isDisabled:
                                 !viewModel.isReportGenerationSettingsEnabled,
+                                accessibilityIdentifier: "settingsAI.maxTokens",
                             )
                             .paidBadge(
                                 viewModel.reportGenerationSettingsAvailability,
@@ -296,9 +262,6 @@ struct SettingsAIScreenView: DViewProtocol {
                     .padding(
                         size.s16,
                     )
-                    .disabled(
-                        isProcessing,
-                    )
                 }
                 .contentMargins(
                     .top,
@@ -317,7 +280,6 @@ struct SettingsAIScreenView: DViewProtocol {
                         .buttonSave,
                     ],
                     action: viewModel.onTapSave,
-                    isLoading: isProcessing,
                 )
                 .dStyle(
                     .primaryButton,
@@ -325,6 +287,30 @@ struct SettingsAIScreenView: DViewProtocol {
                 .padding(
                     size.s16,
                 )
+            },
+            keyboardToolbar: {
+                if focus != nil {
+                    DToolbar(
+                        onTapUp: viewModel.isPreviousFieldFocusable ? {
+                            viewModel.onTapToolbarUp()
+                        } : nil,
+                        onTapDown: viewModel.isNextFieldFocusable ? {
+                            viewModel.onTapToolbarDown()
+                        } : nil,
+                        onTapDone: viewModel.unfocus,
+                        trailButtons: [
+                            DToolbarButton(
+                                style: .primaryDefault,
+                                content: .text(
+                                    l10n[
+                                        .buttonSave,
+                                    ],
+                                ),
+                                action: viewModel.onTapSave,
+                            ),
+                        ],
+                    )
+                }
             },
         )
         .environmentObject(

@@ -1,7 +1,9 @@
+import DoglyadUI
 import Router
 import SwiftUI
 
 struct ManageSubscriptionScreen: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
@@ -10,6 +12,7 @@ struct ManageSubscriptionScreen: View {
     var body: some View {
         ManageSubscriptionScreenView(
             viewModel: ManageSubscriptionViewModel(
+                messager: messager,
                 container: container,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in

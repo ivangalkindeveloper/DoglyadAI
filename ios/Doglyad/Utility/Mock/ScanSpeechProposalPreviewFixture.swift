@@ -77,12 +77,6 @@
             case .multipleFields: [.patientName]
             case .patientName, .measurement, .clinicalText, .partialResult, .empty: []
             }
-
-            automaticFieldIds = Set(
-                automaticProposals.map(
-                    \.id,
-                ),
-            )
             state = ScanSpeechReviewProposalState(
                 proposal: DNeuralUltrasoundDictationProposal(
                     source: .serverModel,
@@ -94,6 +88,12 @@
                         \.id,
                     ),
                 ) : selectedFieldIds,
+            )
+
+            automaticFieldIds = Set(
+                automaticProposals.map(
+                    \.id,
+                ),
             )
         }
 

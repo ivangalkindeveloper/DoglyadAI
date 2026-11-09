@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-photoview-cb83f9199a
+tags:
+- atlas
+- PhotoView
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-photoview-cb83f9199a
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-photoview-cb83f9199a
+    timeout: 15000
+- takeScreenshot: 01-PhotoView-cb83f9199a

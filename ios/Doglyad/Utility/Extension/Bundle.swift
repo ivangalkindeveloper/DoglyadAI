@@ -32,10 +32,11 @@ extension Bundle {
     }
 
     enum KeyString: String {
-        case ENVIRONMENT
-        case BASE_URL
         case CFBundleShortVersionString
         case CFBundleVersion
+        case ENVIRONMENT
+        case BASE_URL
+        case APP_CHECK_DEBUG_TOKEN
     }
 
     static func dictionaryString(

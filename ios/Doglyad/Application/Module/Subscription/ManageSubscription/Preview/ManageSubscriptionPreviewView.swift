@@ -8,6 +8,11 @@
         let scenario: ManageSubscriptionPreviewScenario
 
         var body: some View {
+            let isErrorPresented = switch scenario {
+            case .failed, .operationFailed: true
+            default: false
+            }
+
             let model = ManageSubscriptionPreviewFactory.makeViewModel(
                 container: container,
                 router: router,
@@ -18,6 +23,9 @@
 
             ManageSubscriptionScreenView(
                 viewModel: model,
+            )
+            .previewError(
+                isPresented: isErrorPresented,
             )
             .id(
                 scenario,

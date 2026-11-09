@@ -10,17 +10,16 @@ import SwiftUI
 @MainActor
 final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtocol>, DTextFieldFocusValidatingProtocol {
     @Published var focus: TemplateEditFocus?
-
     @Published var usExaminationType: USExaminationType
-
     @NestedObservableObject var nameTextController: DTextFieldController
-
     @NestedObservableObject var templateTextController: DTextFieldController
-
+    private var initializationFailureValues: (name: String, content: String, typeID: String)?
     private let messager: DMessager
     private let arguments: TemplateEditArguments
     private let onSaveTemplate: (USExaminationTemplate) async throws -> Void
     private let onDeleteTemplate: (UUID) async throws -> Void
+    private var initializationTask: Task<Void, Never>?
+    private var initializationReadID: UUID?
 
     init(
         container: DependencyContainer,
@@ -35,11 +34,6 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
         onSaveTemplate: @escaping (USExaminationTemplate) async throws -> Void,
         onDeleteTemplate: @escaping (UUID) async throws -> Void,
     ) {
-        self.messager = messager
-        self.arguments = arguments
-        self.onSaveTemplate = onSaveTemplate
-        self.onDeleteTemplate = onDeleteTemplate
-
         usExaminationType = container.usExaminationTypeDefault
 
         _nameTextController = NestedObservableObject(
@@ -84,16 +78,20 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
                 ],
             ),
         )
+        self.messager = messager
+        self.arguments = arguments
+        self.onSaveTemplate = onSaveTemplate
+        self.onDeleteTemplate = onDeleteTemplate
 
         super.init(
-            state: TemplateEditInitializationLoadingState(),
+            state: TemplateEditInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .templateEdit,
             ),
@@ -134,26 +132,28 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
     }
 
     override func onInit() {
-        emit(
-            TemplateEditInitializationLoadingState(),
-        )
-        handle {
+        initializationTask?.cancel()
+        let readID = UUID()
+        initializationReadID = readID
+        let previousFailure = initializationFailureValues
+        let editedName = nameTextController.text
+        let editedContent = templateTextController.text
+        let editedType = usExaminationType
+
+        initializationTask = handle {
             try await self.container.templateRepository.getTemplate(
                 id: self.arguments.templateId,
                 usExaminationTypesById: self.container.usExaminationTypesById,
             )
-        } onDefer: {
-            switch self.state {
-            case _ as TemplateEditInitializationLoadingState:
-                self.emit(
-                    TemplateEditInitialState(),
-                )
-            default: break
-            }
         } onMainSuccess: { template in
+            guard !Task.isCancelled, self.initializationReadID == readID else {
+                return
+            }
+            self.initializationReadID = nil
             guard let template else {
+                self.rememberInitializationFailure()
                 self.emit(
-                    TemplateEditInitializationFailedState(
+                    TemplateEditInitializationErrorState(
                         error: CocoaError(
                             .fileReadNoSuchFile,
                         ),
@@ -164,19 +164,33 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
                 )
                 return
             }
-            self.usExaminationType = self.container.usExaminationTypesById[
-                template.usExaminationType.id,
-            ]
-                ?? self.container.usExaminationTypeDefault
-            self.nameTextController.restoreText(
-                template.name,
-            )
-            self.templateTextController.restoreText(
-                template.content,
+            if self.usExaminationType == editedType, previousFailure?.typeID == nil || previousFailure?.typeID == editedType.id {
+                self.usExaminationType = self.container.usExaminationTypesById[
+                    template.usExaminationType.id,
+                ] ?? self.container.usExaminationTypeDefault
+            }
+            if self.nameTextController.text == editedName, previousFailure?.name == nil || previousFailure?.name == editedName {
+                self.nameTextController.restoreText(
+                    template.name,
+                )
+            }
+            if self.templateTextController.text == editedContent, previousFailure?.content == nil || previousFailure?.content == editedContent {
+                self.templateTextController.restoreText(
+                    template.content,
+                )
+            }
+            self.initializationFailureValues = nil
+            self.emit(
+                TemplateEditInitialState(),
             )
         } onMainUnknownError: { error in
+            guard !Task.isCancelled, self.initializationReadID == readID else {
+                return
+            }
+            self.initializationReadID = nil
+            self.rememberInitializationFailure()
             self.emit(
-                TemplateEditInitializationFailedState(
+                TemplateEditInitializationErrorState(
                     error: error,
                 ),
             )
@@ -185,6 +199,12 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
                 l10n: self.container.l10n,
             )
         }
+    }
+
+    override func onDisappear() {
+        super.onDisappear()
+        initializationTask?.cancel()
+        initializationReadID = nil
     }
 
     func onTapRetryInitialization() {
@@ -258,11 +278,13 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
     }
 
     func onTapSave() {
+        guard initializationReadID == nil else {
+            return
+        }
         switch state {
-        case _ as TemplateEditInitializationLoadingState, _ as TemplateEditSaveLoadingState, _ as TemplateEditDeleteLoadingState, _ as TemplateEditInitializationFailedState: return
+        case _ as TemplateEditInitializationErrorState: return;
         default: break
         }
-
         analytics.buttonTapped(
             .templateEditSave,
         )
@@ -285,22 +307,12 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             name: name,
             content: content,
         )
-        emit(
-            TemplateEditSaveLoadingState(),
-        )
-        handle {
+
+        performLocalOperation {
             try await self.onSaveTemplate(
                 template,
             )
-        } onDefer: {
-            switch self.state {
-            case _ as TemplateEditSaveLoadingState:
-                self.emit(
-                    TemplateEditInitialState(),
-                )
-            default: break
-            }
-        } onMainSuccess: { _ in
+        } onSuccess: { _ in
             self.messager.show(
                 type: .success,
                 title: self.container.l10n[
@@ -310,10 +322,15 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
                     .templateSavedSuccessDescription,
                 ],
             )
-            self.coordinator.pop()
-        } onMainUnknownError: { error in
+            if self.nameTextController.value == template.name,
+               self.templateTextController.value == template.content,
+               self.usExaminationType == template.usExaminationType
+            {
+                self.coordinator.pop()
+            }
+        } onFailure: { error in
             self.emit(
-                TemplateEditFailedState(
+                TemplateEditErrorState(
                     error: error,
                 ),
             )
@@ -326,7 +343,7 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
 
     func onTapDelete() {
         switch state {
-        case _ as TemplateEditInitializationLoadingState, _ as TemplateEditSaveLoadingState, _ as TemplateEditDeleteLoadingState, _ as TemplateEditInitializationFailedState: return
+        case _ as TemplateEditInitializationErrorState: return
         default: break
         }
 
@@ -345,27 +362,17 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
 
     private func deleteTemplate() {
         switch state {
-        case _ as TemplateEditInitializationLoadingState, _ as TemplateEditSaveLoadingState, _ as TemplateEditDeleteLoadingState, _ as TemplateEditInitializationFailedState: return
+        case _ as TemplateEditInitializationErrorState: return
         default: break
         }
-        emit(
-            TemplateEditDeleteLoadingState(),
-        )
+
         unfocus()
 
-        handle {
+        performLocalOperation {
             try await self.onDeleteTemplate(
                 self.arguments.templateId,
             )
-        } onDefer: {
-            switch self.state {
-            case _ as TemplateEditDeleteLoadingState:
-                self.emit(
-                    TemplateEditInitialState(),
-                )
-            default: break
-            }
-        } onMainSuccess: { _ in
+        } onSuccess: { _ in
             self.messager.show(
                 type: .success,
                 title: self.container.l10n[
@@ -376,9 +383,9 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
                 ],
             )
             self.coordinator.pop()
-        } onMainUnknownError: { error in
+        } onFailure: { error in
             self.emit(
-                TemplateEditFailedState(
+                TemplateEditErrorState(
                     error: error,
                 ),
             )
@@ -386,6 +393,12 @@ final class TemplateEditViewModel: DModuleViewModel<any TemplateEditStateProtoco
             self.messager.showUnknownError(
                 l10n: self.container.l10n,
             )
+        }
+    }
+
+    private func rememberInitializationFailure() {
+        if initializationFailureValues == nil {
+            initializationFailureValues = (nameTextController.text, templateTextController.text, usExaminationType.id)
         }
     }
 }

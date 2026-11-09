@@ -5,18 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Загрузка истории",
-    ) {
-        HistoryPreviewView(
-            scenario: .loading,
-        )
-        .previewable(
-            container: HistoryPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "02 Ошибка загрузки истории",
+        "01 HistoryErrorState ReportsReadFailed",
     ) {
         HistoryPreviewView(
             scenario: .failed,
@@ -27,7 +16,7 @@
     }
 
     #Preview(
-        "03 Пустая история",
+        "02 HistoryEmptyState NoReports",
     ) {
         HistoryPreviewView(
             scenario: .empty,
@@ -38,7 +27,19 @@
     }
 
     #Preview(
-        "04 Одно исследование",
+        "03 HistoryEmptyState NoReports ScrollEnd",
+    ) {
+        HistoryPreviewView(
+            scenario: .empty,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "04 HistoryContentState SingleReport",
     ) {
         HistoryPreviewView(
             scenario: .singleReport,
@@ -49,7 +50,19 @@
     }
 
     #Preview(
-        "05 История · группы дат и разные протоколы",
+        "05 HistoryContentState SingleReport ScrollEnd",
+    ) {
+        HistoryPreviewView(
+            scenario: .singleReport,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "06 HistoryContentState GroupedReports",
     ) {
         HistoryPreviewView(
             scenario: .groupedReports,
@@ -60,18 +73,19 @@
     }
 
     #Preview(
-        "06 Загрузка следующей страницы",
+        "07 HistoryContentState GroupedReports ScrollEnd",
     ) {
         HistoryPreviewView(
-            scenario: .loadingNextPage,
+            scenario: .groupedReports,
         )
         .previewable(
             container: HistoryPreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
 
     #Preview(
-        "07 Ошибка следующей страницы",
+        "08 HistoryErrorState NextPageReadFailed",
     ) {
         HistoryPreviewView(
             scenario: .nextPageFailed,
@@ -82,7 +96,19 @@
     }
 
     #Preview(
-        "08 Карточка исследования",
+        "09 HistoryErrorState NextPageReadFailed ScrollEnd",
+    ) {
+        HistoryPreviewView(
+            scenario: .nextPageFailed,
+        )
+        .previewable(
+            container: HistoryPreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "10 HistoryCardView ReportCard",
     ) {
         HistoryCardView(
             report: ModulePreviewFactory.report,

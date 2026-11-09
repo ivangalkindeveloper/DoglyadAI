@@ -7,13 +7,10 @@ struct MainRootView: View {
     @Environment(
         \.requestReview,
     ) private var requestReview
-
     @Environment(
         \.scenePhase,
     ) private var scenePhase
-
     let dependencyContainer: DependencyContainer
-
     @StateObject private var viewModel: MainRootViewModel
     @StateObject private var ultrasoundViewModel: UltrasoundRootViewModel
     @StateObject private var subscriptionViewModel: SubscriptionRootViewModel

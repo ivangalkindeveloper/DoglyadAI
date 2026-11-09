@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-readymadetemplatelist-e3f98c4ed3
+tags:
+- atlas
+- ReadyMadeTemplateList
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-readymadetemplatelist-e3f98c4ed3
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-readymadetemplatelist-e3f98c4ed3
+    timeout: 15000
+- takeScreenshot: 01-ReadyMadeTemplateList-e3f98c4ed3

@@ -8,15 +8,15 @@ struct ScanSpeechStateButtonView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState, _ as ScanInitializationFailedState: EmptyView()
+        case _ as ScanGenerationLoadingState: EmptyView()
         default:
             DButton(
                 image: .microphone,
                 title: l10n[
                     .buttonSpeech,
                 ],
-                accessibilityIdentifier: "scan.speech",
                 action: viewModel.onTapSpeech,
+                accessibilityIdentifier: "scan.speech",
             )
             .dStyle(
                 .primaryChip,

@@ -6,6 +6,7 @@
         @EnvironmentObject private var messager: DMessager
         @EnvironmentObject private var container: DependencyContainer
         let isPresented: Bool
+        let description: String?
 
         func body(
             content: Content,
@@ -27,9 +28,21 @@
                     } catch {
                         return
                     }
-                    messager.showUnknownError(
-                        l10n: container.l10n,
-                    )
+                    if let description {
+                        messager.show(
+                            type: .error,
+                            title: container.l10n[
+                                .errorUnknownTitle,
+                            ],
+                            description: LocalizedStringResource(
+                                stringLiteral: description,
+                            ),
+                        )
+                    } else {
+                        messager.showUnknownError(
+                            l10n: container.l10n,
+                        )
+                    }
                 }
         }
     }

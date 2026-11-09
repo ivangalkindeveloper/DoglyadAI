@@ -31,9 +31,9 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .storage,
             ),
@@ -42,6 +42,14 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             self?.isSpeechModelAvailable = DSpeechWhisperKitModel.shared.isDownloaded
         }
     }
+
+    #if DEBUG
+        func configurePreviewSpeechModel(
+            isAvailable: Bool,
+        ) {
+            isSpeechModelAvailable = isAvailable
+        }
+    #endif
 
     override func onDisappear() {
         super.onDisappear()
@@ -56,11 +64,6 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
     }
 
     func onTapClearProtocols() {
-        switch state {
-        case _ as StorageProtocolsClearLoadingState, _ as StorageSpeechModelDeleteLoadingState, _ as StorageAllClearLoadingState: return
-        default: break
-        }
-
         analytics.buttonTapped(
             .storageClearProtocols,
         )
@@ -71,15 +74,10 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                     guard let self, let id = presentationID else {
                         return
                     }
-
-                    let loading = StorageProtocolsClearLoadingState()
-                    emit(
-                        loading,
-                    )
-                    operationTask = handle {
+                    performLocalOperation {
                         try await self.container.ultrasoundReportRepository.clearAllReports()
-                    } onMainSuccess: { _ in
-                        guard self.presentationID == id, self.state === loading else {
+                    } onSuccess: { _ in
+                        guard self.presentationID == id else {
                             return
                         }
                         self.emit(
@@ -95,12 +93,12 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                             ],
                         )
                         self.coordinator.pop()
-                    } onMainUnknownError: { error in
-                        guard self.presentationID == id, self.state === loading else {
+                    } onFailure: { error in
+                        guard self.presentationID == id else {
                             return
                         }
                         self.emit(
-                            StorageFailedState(
+                            StorageErrorState(
                                 error: error,
                             ),
                         )
@@ -117,22 +115,14 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
         guard isSpeechModelAvailable, let id = presentationID else {
             return
         }
-        switch state {
-        case _ as StorageProtocolsClearLoadingState, _ as StorageSpeechModelDeleteLoadingState, _ as StorageAllClearLoadingState: return
-        default: break
-        }
 
         analytics.buttonTapped(
             .storageDeleteSpeechModel,
         )
-        let loading = StorageSpeechModelDeleteLoadingState()
-        emit(
-            loading,
-        )
-        operationTask = handle {
+        performLocalOperation {
             try await DSpeechWhisperKitModel.shared.deleteDownloadedModel()
-        } onMainSuccess: { _ in
-            guard self.presentationID == id, self.state === loading else {
+        } onSuccess: { _ in
+            guard self.presentationID == id else {
                 return
             }
             self.emit(
@@ -148,12 +138,12 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                 ],
             )
             self.coordinator.pop()
-        } onMainUnknownError: { error in
-            guard self.presentationID == id, self.state === loading else {
+        } onFailure: { error in
+            guard self.presentationID == id else {
                 return
             }
             self.emit(
-                StorageFailedState(
+                StorageErrorState(
                     error: error,
                 ),
             )
@@ -164,11 +154,6 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
     }
 
     func onTapClearAll() {
-        switch state {
-        case _ as StorageProtocolsClearLoadingState, _ as StorageSpeechModelDeleteLoadingState, _ as StorageAllClearLoadingState: return
-        default: break
-        }
-
         analytics.buttonTapped(
             .storageClearAll,
         )
@@ -179,15 +164,10 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                     guard let self, let id = presentationID else {
                         return
                     }
-
-                    let loading = StorageAllClearLoadingState()
-                    emit(
-                        loading,
-                    )
-                    operationTask = handle {
+                    performLocalOperation {
                         try await self.container.ultrasoundReportRepository.clearAll()
-                    } onMainSuccess: { _ in
-                        guard self.presentationID == id, self.state === loading else {
+                    } onSuccess: { _ in
+                        guard self.presentationID == id else {
                             return
                         }
                         self.emit(
@@ -203,12 +183,12 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                             ],
                         )
                         self.coordinator.resetToOnBoarding()
-                    } onMainUnknownError: { error in
-                        guard self.presentationID == id, self.state === loading else {
+                    } onFailure: { error in
+                        guard self.presentationID == id else {
                             return
                         }
                         self.emit(
-                            StorageFailedState(
+                            StorageErrorState(
                                 error: error,
                             ),
                         )

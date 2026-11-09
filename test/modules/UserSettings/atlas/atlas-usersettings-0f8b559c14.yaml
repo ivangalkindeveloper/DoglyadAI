@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: atlas-usersettings-0f8b559c14
+tags:
+- atlas
+- UserSettings
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-usersettings-0f8b559c14
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-usersettings-0f8b559c14
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: preview.scrollEnd.ready
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: 02-UserSettings-0f8b559c14

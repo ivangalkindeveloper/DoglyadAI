@@ -36,12 +36,12 @@ struct HistoryTests {
     func daySectionsMergeAcrossPageBoundaryAndFormatRussianTitles() {
         let calendar = calendar()
         let builder = HistoryDaySectionBuilder(
-            todayTitle: "Сегодня",
-            yesterdayTitle: "Вчера",
             calendar: calendar,
             locale: Locale(
                 identifier: "ru_RU",
             ),
+            todayTitle: "Сегодня",
+            yesterdayTitle: "Вчера",
         )
         let now = date(
             year: 2026,

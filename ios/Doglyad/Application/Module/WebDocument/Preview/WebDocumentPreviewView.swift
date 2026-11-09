@@ -8,9 +8,16 @@
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
         let state: any WebDocumentStateProtocol
+        var document: WebDocumentPreviewDocument = .privacyPolicy
 
         var body: some View {
+            let isErrorPresented = switch state {
+            case _ as WebDocumentErrorState: true
+            default: false
+            }
+
             let model = WebDocumentViewModel(
+                messager: DMessager(),
                 container: container,
                 router: router,
                 getSubscriptionStatus: {
@@ -24,11 +31,12 @@
                     container.initialSettingsAI
                 },
                 onRefreshSubscriptionStatus: {},
-                arguments: WebDocumentArguments(
-                    url: ModulePreviewFactory.documentURL,
-                    title: "Документ",
+                arguments: document.arguments(
+                    container: container,
                 ),
             )
+
+            model.previewHTML = document.html
 
             model.preparePreview(
                 state: state,
@@ -38,6 +46,9 @@
                     viewModel: model,
                 )
             }
+            .previewError(
+                isPresented: isErrorPresented,
+            )
             .id(
                 ObjectIdentifier(
                     state,

@@ -3,6 +3,7 @@ import Router
 import SwiftUI
 
 struct SettingsScreen: View {
+    @EnvironmentObject private var messager: DMessager
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
@@ -11,6 +12,7 @@ struct SettingsScreen: View {
     var body: some View {
         SettingsScreenView(
             viewModel: SettingsViewModel(
+                messager: messager,
                 container: container,
                 router: router,
                 getSubscriptionStatus: { [subscriptionViewModel] in

@@ -14,9 +14,6 @@ final class DStreamingMarkdownController: ObservableObject {
         content: String = "",
         isStreaming: Bool = false,
     ) {
-        self.streamID = streamID
-        self.content = content
-        self.isStreaming = isStreaming
         let date = Date()
         blocks = DStreamingMarkdownParser.parse(
             content,
@@ -35,6 +32,9 @@ final class DStreamingMarkdownController: ObservableObject {
         } ? date.addingTimeInterval(
             DStreamingMarkdownBlock.Reveal.duration,
         ) : nil
+        self.streamID = streamID
+        self.content = content
+        self.isStreaming = isStreaming
     }
 
     func update(

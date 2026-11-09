@@ -1,0 +1,21 @@
+appId: ${APP_ID}
+name: atlas-webdocument-886db8ec5f
+tags:
+- atlas
+- WebDocument
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-webdocument-886db8ec5f
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-webdocument-886db8ec5f
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: webDocument.loaded
+    timeout: 30000
+- waitForAnimationToEnd
+- assertNotVisible:
+    id: webDocument.retry
+- takeScreenshot: 03-WebDocument-886db8ec5f

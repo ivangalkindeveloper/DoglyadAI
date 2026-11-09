@@ -5,17 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 TemplateAddInitializationLoadingState",
-    ) {
-        TemplateAddPreviewView(
-            state: TemplateAddInitializationLoadingState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "02 TemplateAddInitialState",
+        "01 TemplateAddInitialState EditableForm",
     ) {
         TemplateAddPreviewView(
             state: TemplateAddInitialState(),
@@ -25,20 +15,21 @@
     }
 
     #Preview(
-        "03 TemplateAddSaveLoadingState",
+        "02 TemplateAddInitialState EditableForm ScrollEnd",
     ) {
         TemplateAddPreviewView(
-            state: TemplateAddSaveLoadingState(),
+            state: TemplateAddInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
 
     #Preview(
-        "04 TemplateAddFailedState",
+        "03 TemplateAddErrorState TemplateSaveFailed",
     ) {
         TemplateAddPreviewView(
-            state: TemplateAddFailedState(
+            state: TemplateAddErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -46,5 +37,20 @@
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+    }
+
+    #Preview(
+        "04 TemplateAddErrorState TemplateSaveFailed ScrollEnd",
+    ) {
+        TemplateAddPreviewView(
+            state: TemplateAddErrorState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
     }
 #endif

@@ -5,7 +5,6 @@ import WhisperKit
 @MainActor
 public final class DSpeechWhisperKitModel: ObservableObject {
     public static let shared = DSpeechWhisperKitModel()
-
     private static let variant = "large-v3-v20240930_626MB"
     private static let folderKey = "DoglyadSpeech.whisperTurboModelFolder"
     private let directory: URL
@@ -16,7 +15,6 @@ public final class DSpeechWhisperKitModel: ObservableObject {
     private var inferenceTail: Task<Void, Never>?
     private var inferenceCancellations: [UUID: () -> Void] = [:]
     private var isDeletingModel = false
-
     @Published public private(set) var state: DSpeechModelPreparationStatus = .checking
 
     init(

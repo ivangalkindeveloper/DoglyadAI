@@ -48,9 +48,6 @@ struct PaywallContentView: DViewProtocol {
             )
 
             PaywallFooterLinksView()
-                .disabled(
-                    viewModel.isProcessing,
-                )
 
             DText(
                 l10n[

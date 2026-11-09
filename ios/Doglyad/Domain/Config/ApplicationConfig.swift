@@ -110,7 +110,7 @@ extension ApplicationConfig {
             NetworkConfig.self,
             forKey: .network,
         ) ?? .default
-        ultrasound = try container.decodeIfPresent(
+        let ultrasound = try container.decodeIfPresent(
             UltrasoundConfig.self,
             forKey: .ultrasound,
         ) ?? .default
@@ -127,6 +127,7 @@ extension ApplicationConfig {
                 }
             },
         )
+        self.ultrasound = ultrasound
         history = try container.decodeIfPresent(
             HistoryConfig.self,
             forKey: .history,

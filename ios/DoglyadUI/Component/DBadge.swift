@@ -2,20 +2,18 @@ import SwiftUI
 
 public struct DBadge<Content: View>: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     let badges: [DBadgeItem]
+    let content: () -> Content
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
-
-    let content: () -> Content
 
     public init(
         _ title: LocalizedStringResource,
         isVisible: Bool = true,
         isShimmering: Bool = false,
+        @ViewBuilder content: @escaping () -> Content,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        @ViewBuilder content: @escaping () -> Content,
     ) {
         badges = [
             DBadgeItem(
@@ -24,23 +22,23 @@ public struct DBadge<Content: View>: DViewProtocol {
                 isShimmering: isShimmering,
             ),
         ]
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.content = content
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public init(
         _ badges: [DBadgeItem],
+        @ViewBuilder content: @escaping () -> Content,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        @ViewBuilder content: @escaping () -> Content,
     ) {
         self.badges = badges
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.content = content
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
@@ -101,7 +99,7 @@ public struct DBadge<Content: View>: DViewProtocol {
             DBadge(
                 "New",
             ) {
-                DButtonCard(
+                DCard(
                     action: {},
                 ) {
                     HStack {
@@ -119,7 +117,7 @@ public struct DBadge<Content: View>: DViewProtocol {
                 "Pro",
                 isShimmering: true,
             ) {
-                DButtonCard(
+                DCard(
                     action: {},
                 ) {
                     HStack {

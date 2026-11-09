@@ -4,7 +4,6 @@ import SwiftUI
 struct SettingsScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: SettingsViewModel
 
     var body: some View {
@@ -27,57 +26,14 @@ struct SettingsScreenView: DViewProtocol {
                 VStack(
                     spacing: size.s8,
                 ) {
-                    switch viewModel.state {
-                    case _ as SettingsLoadingState:
-                        DShimmerPlaceholder().frame(
-                            height: size.s64,
-                        )
-                    case _ as SettingsContentState:
-                        DListButtonCard(
-                            image: .iconHistory,
-                            title: l10n[
-                                .settingsHistoryTitle,
-                            ],
-                            description: viewModel.historyDescription,
-                            action: viewModel.onTapHistory,
-                        )
-                        .contentTransition(
-                            .opacity,
-                        )
-                    case _ as SettingsFailedState:
-                        VStack(
-                            spacing: size.s16,
-                        ) {
-                            DText(
-                                l10n[
-                                    .errorUnknownDescription,
-                                ],
-                            )
-                            .dStyle(
-                                font: typography.textSmall,
-                                color: color.grayscalePlacehold,
-                                alignment: .center,
-                            )
-
-                            DButton(
-                                title: l10n[
-                                    .buttonUpdate,
-                                ],
-                                action: viewModel.onTapRetry,
-                            )
-                            .dStyle(
-                                .primaryChip,
-                            )
-                        }
-                        .padding(
-                            size.s16,
-                        )
-                        .frame(
-                            maxWidth: .infinity,
-                            maxHeight: .infinity,
-                        )
-                    default: EmptyView()
-                    }
+                    DListButtonCard(
+                        image: .iconHistory,
+                        title: l10n[
+                            .settingsHistoryTitle,
+                        ],
+                        description: viewModel.historyDescription,
+                        action: viewModel.onTapHistory,
+                    )
                     DListButtonCard(
                         image: .iconTemplates,
                         title: l10n[
@@ -173,6 +129,9 @@ struct SettingsScreenView: DViewProtocol {
         .onAppear {
             viewModel.onAppear()
         }
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
         .environmentObject(
             viewModel,
         )

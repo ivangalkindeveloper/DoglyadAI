@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 ShareInitialState",
+        "01 ShareInitialState AvailableActions",
     ) {
         SharePreviewView(
             state: ShareInitialState(),
@@ -15,7 +15,7 @@
     }
 
     #Preview(
-        "02 ShareLoadingState",
+        "02 ShareLoadingState PreparingDocument",
     ) {
         SharePreviewView(
             state: ShareLoadingState(),
@@ -25,10 +25,10 @@
     }
 
     #Preview(
-        "03 ShareFailedState",
+        "03 ShareErrorState DocumentPreparationFailed",
     ) {
         SharePreviewView(
-            state: ShareFailedState(
+            state: ShareErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),

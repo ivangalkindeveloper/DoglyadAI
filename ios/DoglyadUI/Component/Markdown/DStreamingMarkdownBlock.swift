@@ -11,7 +11,6 @@ struct DStreamingMarkdownBlock: Identifiable {
         struct Inline: Equatable {
             struct Style: OptionSet {
                 let rawValue: Int
-
                 static let strong = Self(
                     rawValue: 1,
                 )
@@ -49,7 +48,6 @@ struct DStreamingMarkdownBlock: Identifiable {
     struct Reveal: Equatable {
         let range: Range<Int>
         let date: Date
-
         static let duration: TimeInterval = 0.15
 
         func opacity(

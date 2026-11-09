@@ -23,7 +23,6 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     private static let finalizationTimeout: Duration = .seconds(
         3,
     )
-
     private let locale: Locale
     /// Examination vocabulary: specific terms the recognizer otherwise consistently
     /// mishears.
@@ -41,7 +40,6 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
             self?.audioMeter = level
         }
     }
-
     private var analyzer: SpeechAnalyzer?
     private var transcriber: DictationTranscriber?
     private var inputBuilder: AsyncStream<AnalyzerInput>.Continuation?
@@ -54,11 +52,9 @@ public final class DSpeechControllerAnalyzer: DSpeechControllerProtocol {
     private var isTapInstalled = false
     private var isTimedOut = false
     private var isRecognizerFailed = false
-
     /// Accumulated finalized text: the "draft" chunk of the current phrase is appended
     /// to it so that speech is visible on screen in real time.
     private var finalizedText = AttributedString()
-
     @Published public var recordingStatus: DSpeechRecordingStatus = .stopped
     @Published public var text: String?
     @Published public var audioMeter: Float = 0.0

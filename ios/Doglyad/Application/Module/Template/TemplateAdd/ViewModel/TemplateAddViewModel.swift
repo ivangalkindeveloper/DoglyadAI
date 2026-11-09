@@ -8,17 +8,14 @@ import SwiftUI
 @MainActor
 final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>, DTextFieldFocusValidatingProtocol {
     @Published var focus: TemplateAddFocus?
-
     @Published var usExaminationType: USExaminationType
-
     @NestedObservableObject var nameTextController: DTextFieldController
-
     @NestedObservableObject var templateTextController: DTextFieldController
-
     let templateId = UUID()
-
     private let messager: DMessager
     private let onSaveTemplate: (USExaminationTemplate) async throws -> Void
+    private var initializationTask: Task<Void, Never>?
+    private var initializationReadID: UUID?
 
     init(
         container: DependencyContainer,
@@ -31,9 +28,6 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
         messager: DMessager,
         onSaveTemplate: @escaping (USExaminationTemplate) async throws -> Void,
     ) {
-        self.messager = messager
-        self.onSaveTemplate = onSaveTemplate
-
         usExaminationType = container.usExaminationTypeDefault
 
         _nameTextController = NestedObservableObject(
@@ -78,16 +72,18 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
                 ],
             ),
         )
+        self.messager = messager
+        self.onSaveTemplate = onSaveTemplate
 
         super.init(
-            state: TemplateAddInitializationLoadingState(),
+            state: TemplateAddInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .templateAdd,
             ),
@@ -128,32 +124,34 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
     }
 
     override func onInit() {
-        handle {
+        initializationTask?.cancel()
+        let readID = UUID()
+        initializationReadID = readID
+        let initialTypeID = usExaminationType.id
+        initializationTask = handle {
             try await self.container.ultrasoundReportRepository.getSelectedExaminationTypeId()
-        } onDefer: {
-            switch self.state {
-            case _ as TemplateAddInitializationLoadingState:
-                self.emit(
-                    TemplateAddInitialState(),
-                )
-            default: break
-            }
         } onMainSuccess: { id in
-            if let id, let type = self.container.usExaminationTypesById[
+            guard !Task.isCancelled, self.initializationReadID == readID else {
+                return
+            }
+            self.initializationReadID = nil
+            if self.usExaminationType.id == initialTypeID, let id, let type = self.container.usExaminationTypesById[
                 id,
             ] {
                 self.usExaminationType = type
             }
-        } onMainUnknownError: { error in
-            self.emit(
-                TemplateAddFailedState(
-                    error: error,
-                ),
-            )
-            self.messager.showUnknownError(
-                l10n: self.l10n,
-            )
+        } onMainUnknownError: { _ in
+            guard !Task.isCancelled, self.initializationReadID == readID else {
+                return
+            }
+            self.initializationReadID = nil
         }
+    }
+
+    override func onDisappear() {
+        super.onDisappear()
+        initializationTask?.cancel()
+        initializationReadID = nil
     }
 
     func onTapBack() {
@@ -240,11 +238,8 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
     }
 
     func onTapSave() {
-        switch state {
-        case _ as TemplateAddInitializationLoadingState, _ as TemplateAddSaveLoadingState: return
-        default: break
-        }
-
+        initializationTask?.cancel()
+        initializationReadID = nil
         analytics.buttonTapped(
             .templateAddSave,
         )
@@ -267,22 +262,12 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
             name: name,
             content: content,
         )
-        emit(
-            TemplateAddSaveLoadingState(),
-        )
-        handle {
+
+        performLocalOperation {
             try await self.onSaveTemplate(
                 template,
             )
-        } onDefer: {
-            switch self.state {
-            case _ as TemplateAddSaveLoadingState:
-                self.emit(
-                    TemplateAddInitialState(),
-                )
-            default: break
-            }
-        } onMainSuccess: { _ in
+        } onSuccess: { _ in
             self.messager.show(
                 type: .success,
                 title: self.container.l10n[
@@ -292,10 +277,15 @@ final class TemplateAddViewModel: DModuleViewModel<any TemplateAddStateProtocol>
                     .templateSavedSuccessDescription,
                 ],
             )
-            self.coordinator.pop()
-        } onMainUnknownError: { error in
+            if self.nameTextController.value == template.name,
+               self.templateTextController.value == template.content,
+               self.usExaminationType == template.usExaminationType
+            {
+                self.coordinator.pop()
+            }
+        } onFailure: { error in
             self.emit(
-                TemplateAddFailedState(
+                TemplateAddErrorState(
                     error: error,
                 ),
             )

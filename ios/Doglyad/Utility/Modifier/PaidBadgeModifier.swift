@@ -3,7 +3,6 @@ import SwiftUI
 
 struct PaidBadgeModifier: ViewModifier {
     @EnvironmentObject private var l10n: L10N
-
     let availability: SubscriptionFeatureAvailability
 
     @ViewBuilder

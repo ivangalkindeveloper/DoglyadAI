@@ -2,25 +2,27 @@ import SwiftUI
 
 public struct DPhotoCard: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     private let image: UIImage
     private let configuration: DPhotoCardConfiguration
+    private let onTap: (() -> Void)?
+    private let isDisabled: Bool
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
-    private let onTap: (() -> Void)?
 
     public init(
         image: UIImage,
         configuration: DPhotoCardConfiguration = .init(),
+        onTap: (() -> Void)? = nil,
+        isDisabled: Bool = false,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = "photoCard.image",
-        onTap: (() -> Void)? = nil,
     ) {
         self.image = image
         self.configuration = configuration
+        self.onTap = onTap
+        self.isDisabled = isDisabled
         self.accessibilityElement = accessibilityElement
         self.accessibilityIdentifier = accessibilityIdentifier
-        self.onTap = onTap
     }
 
     public var body: some View {
@@ -41,6 +43,9 @@ public struct DPhotoCard: DViewProtocol {
             size.adaptiveCornerRadius / 4,
         )
         .onTapGesture {
+            guard !isDisabled else {
+                return
+            }
             onTap?()
         }
 
@@ -62,10 +67,14 @@ public struct DPhotoCard: DViewProtocol {
                     if let badge = configuration.badge {
                         DPhotoCardBadgeView(
                             badge: badge,
+                            isDisabled: isDisabled,
                         )
                     }
                 }
         }
+        .disabled(
+            isDisabled,
+        )
     }
 }
 

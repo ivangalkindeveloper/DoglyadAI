@@ -1,16 +1,16 @@
 import Router
 
 final class SelectTemplateArguments: RouteArgumentsProtocol {
-    let usExaminationId: String?
+    let templates: [USExaminationTemplate]
     let currentValue: USExaminationTemplate?
     let onSelected: (USExaminationTemplate) async throws -> Void
 
     init(
-        usExaminationId: String? = nil,
+        templates: [USExaminationTemplate],
         currentValue: USExaminationTemplate? = nil,
         onSelected: @escaping (USExaminationTemplate) async throws -> Void,
     ) {
-        self.usExaminationId = usExaminationId
+        self.templates = templates
         self.currentValue = currentValue
         self.onSelected = onSelected
     }

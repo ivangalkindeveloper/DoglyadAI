@@ -14,9 +14,9 @@ struct ShareWorkEmailButtonView: DViewProtocol {
             DListButton(
                 icon: .send,
                 title: viewModel.userEmailButtonTitle,
-                accessibilityIdentifier: "share.workEmail",
                 action: viewModel.onTapUserEmail,
                 isLoading: isProcessing,
+                accessibilityIdentifier: "share.workEmail",
             )
 
             .paidBadge(

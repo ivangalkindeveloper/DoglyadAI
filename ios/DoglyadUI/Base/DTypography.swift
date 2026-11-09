@@ -5,17 +5,14 @@ public struct DTypography {
     public let displayLarge: Font
     public let displayMedium: Font
     public let displaySmall: Font
-
     public let displayHugeBold: Font
     public let displayLargeBold: Font
     public let displayMediumBold: Font
     public let displaySmallBold: Font
-
     public let textLarge: Font
     public let textMedium: Font
     public let textSmall: Font
     public let textXSmall: Font
-
     public let linkLarge: Font
     public let linkMedium: Font
     public let linkSmall: Font

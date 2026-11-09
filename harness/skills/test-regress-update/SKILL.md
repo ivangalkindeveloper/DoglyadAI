@@ -57,11 +57,10 @@ The catalog is evidence of the reviewed code, not proof of test execution.
   Use the isolated worker control for generation errors and partial responses.
   Require observed terminal job states and local record-count evidence for retries;
   a retry button or screenshot alone does not prove successful recovery.
-  Include every named module and component Preview. Shared application catalogs live in
-  `ios/Doglyad/Application/Application/View/Preview/`; maintain their group order in
-  `functional.json.sharedPreviewOrder`. Their generated flows live in
-  `test/components/<Component>/atlas/`. Component captures never replace the mandatory
-  full-screen variants or functional coverage of a module.
+  Register only full-module Preview states: screens, bottom sheets and the application splash.
+  Keep component-only Preview declarations in Xcode Canvas, including the shared catalogs in
+  `ios/Doglyad/Application/Application/View/Preview/`, but exclude them from atlas YAML,
+  regression execution and Figma publication. Do not add `sharedPreviewOrder` or component flows.
   It regenerates module-state YAML and `ios/Doglyad/Regression/RegressionScreens.swift` from
   named module previews, preserving stable IDs for unchanged names. It updates
   the source inventory and removes only obsolete generated atlas cases.

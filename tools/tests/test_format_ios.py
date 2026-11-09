@@ -95,6 +95,26 @@ print(text, raw, pattern)
         )
         self.assertEqual(self.format(result), result)
 
+    def test_stored_fields_have_no_blank_lines_in_classes_and_structs(self) -> None:
+        for declaration in ("class", "struct"):
+            with self.subTest(declaration=declaration):
+                result = self.format(
+                    f"{declaration} Example {{\n"
+                    "let first = 1\n\n"
+                    "/// Second field.\n"
+                    "private var second = 2\n\n"
+                    "@State var third = false\n"
+                    "let callback: () -> Void = { print(1) }\n\n"
+                    "let last = 3\n"
+                    "init() {}\n"
+                    "}\n"
+                )
+                self.assertIn("let first = 1\n    /// Second field.\n", result)
+                self.assertIn("private var second = 2\n    @State", result)
+                self.assertIn("var third = false\n    let callback:", result)
+                self.assertIn("}\n    let last = 3\n\n    init()", result)
+                self.assertEqual(self.format(result), result)
+
     def test_class_member_order_preserves_properties_methods_and_comments(self) -> None:
         source = (
             "class Example {\n"

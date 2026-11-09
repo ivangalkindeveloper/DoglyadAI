@@ -36,6 +36,8 @@ Pass the whole `DependencyContainer` when the feature needs its repositories or 
 
 Modules communicate through closures in the destination's `FeatureArguments`, forwarded to its initializer. Do not call or retain another module's view model.
 
+Follow `harness/instructions/design.md` when designing loading, error, form and pagination states and their actions.
+
 ## State names
 
 Follow the state composition and phase-name rules in `harness/instructions/ios.md`.

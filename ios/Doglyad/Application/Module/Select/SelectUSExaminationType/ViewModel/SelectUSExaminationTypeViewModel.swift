@@ -5,16 +5,14 @@ import Foundation
 @MainActor
 final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExaminationTypeStateProtocol> {
     @Published var recentTypeIds: [String] = []
-
     private let typesById: [String: USExaminationType]
-
     private let groups: [USExaminationTypeGroup]
-
     @Published var currentValue: USExaminationType?
-
     private let messager: DMessager?
-
     private let arguments: SelectUSExaminationTypeArguments?
+    private var selectionOperation: UUID?
+    private(set) var recentTypesReadTask: Task<Void, Never>?
+    private(set) var recentTypeRecordTask: Task<Void, Never>?
 
     init(
         container: DependencyContainer,
@@ -27,23 +25,22 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: SelectUSExaminationTypeArguments?,
     ) {
-        self.messager = messager
-        self.arguments = arguments
-
         typesById = container.usExaminationTypesById
         groups = container.usExaminationTypeGroups
 
         currentValue = (arguments?.currentValue)
+        self.messager = messager
+        self.arguments = arguments
 
         super.init(
-            state: SelectUSExaminationTypeRecentTypesLoadingState(),
+            state: SelectUSExaminationTypeContentState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .selectUSExaminationType,
             ),
@@ -94,47 +91,28 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
     }
 
     override func onInit() {
-        emit(
-            SelectUSExaminationTypeRecentTypesLoadingState(),
-        )
-        // Equal states keep the existing instance in emit.
-        let loading = state
-        handle {
-            try await self.container.ultrasoundReportRepository.getRecentExaminationTypeIds()
-        }
-        onMainSuccess: { ids in
-            guard ObjectIdentifier(
-                self.state,
-            ) == ObjectIdentifier(
-                loading,
-            ) else {
+        recentTypesReadTask = Task { [weak self] in
+            guard let self else {
                 return
             }
-            self.recentTypeIds = ids
-            self.emit(
-                SelectUSExaminationTypeContentState(),
-            )
-        } onMainUnknownError: { error in
-            guard ObjectIdentifier(
-                self.state,
-            ) == ObjectIdentifier(
-                loading,
-            ) else {
-                return
+            do {
+                let ids = try await container.ultrasoundReportRepository.getRecentExaminationTypeIds()
+                guard !Task.isCancelled else {
+                    return
+                }
+                recentTypeIds = ids
+            } catch {
+                // Recent types are optional; the configured catalog stays available.
             }
-            self.emit(
-                SelectUSExaminationTypeFailedState(
-                    error: error,
-                ),
-            )
-            self.messager?.showUnknownError(
-                l10n: self.container.l10n,
-            )
         }
     }
 
-    func onTapRetry() {
-        onInit()
+    override func onDisappear() {
+        super.onDisappear()
+        lastTask?.cancel()
+        selectionOperation = nil
+        recentTypesReadTask?.cancel()
+        recentTypesReadTask = nil
     }
 
     func onTypeTap(
@@ -143,31 +121,43 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
         analytics.buttonTapped(
             .selectUSExaminationType,
         )
-        switch state {
-        case _ as SelectUSExaminationTypeSelectionLoadingState: return
-        default: break
+        guard selectionOperation == nil else {
+            return
         }
-
-        emit(
-            SelectUSExaminationTypeSelectionLoadingState(),
-        )
+        let operation = UUID()
+        selectionOperation = operation
         handle {
-            try await self.container.ultrasoundReportRepository.recordRecentExaminationTypeId(
-                type.id,
-            )
             try await self.arguments?.onSelected(
                 type,
             )
+            try Task.checkCancellation()
         } onMainSuccess: { _ in
+            guard !Task.isCancelled, self.selectionOperation == operation else {
+                return
+            }
+            self.recentTypesReadTask?.cancel()
+            // The optional write may finish after the sheet closes; reads are presentation-scoped.
+            self.recentTypeRecordTask = Task { [weak self] in
+                guard let self else {
+                    return
+                }
+                do {
+                    try Task.checkCancellation()
+                    try await container.ultrasoundReportRepository.recordRecentExaminationTypeId(
+                        type.id,
+                    )
+                } catch {
+                    // Optional metadata does not change the result of the required selection.
+                }
+            }
             self.currentValue = type
-            self.emit(
-                SelectUSExaminationTypeContentState(),
-            )
+            self.selectionOperation = nil
             self.coordinator.dismissSheet()
         } onMainUnknownError: { _ in
-            self.emit(
-                SelectUSExaminationTypeContentState(),
-            )
+            guard !Task.isCancelled, self.selectionOperation == operation else {
+                return
+            }
+            self.selectionOperation = nil
             self.messager?.showUnknownError(
                 l10n: self.container.l10n,
             )

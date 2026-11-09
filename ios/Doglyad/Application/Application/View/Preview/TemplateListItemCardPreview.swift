@@ -3,7 +3,7 @@
     import SwiftUI
 
     #Preview(
-        "01 Шаблон",
+        "01 TemplateListItemCardView UnselectedTemplate",
         traits: .sizeThatFitsLayout,
     ) {
         TemplateListItemCardView(
@@ -17,7 +17,7 @@
     }
 
     #Preview(
-        "02 Выбранный шаблон",
+        "02 TemplateListItemCardView SelectedTemplate",
         traits: .sizeThatFitsLayout,
     ) {
         TemplateListItemCardView(

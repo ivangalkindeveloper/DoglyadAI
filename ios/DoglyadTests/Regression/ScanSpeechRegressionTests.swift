@@ -141,7 +141,7 @@
             )
             let model = ScanSpeechViewModel(
                 container: container,
-                messager: DMessager(),
+                speechController: controller,
                 router: DRouter(
                     initialRoute: RouteScreen(
                         type: .scan,
@@ -158,6 +158,7 @@
                     container.initialSettingsAI
                 },
                 onRefreshSubscriptionStatus: {},
+                messager: DMessager(),
                 arguments: ScanSpeechArguments(
                     examinationType: container.usExaminationTypeDefault,
                     onConfirm: { _ in
@@ -167,7 +168,6 @@
                         return false
                     },
                 ),
-                speechController: controller,
             )
             return (model, controller)
         }

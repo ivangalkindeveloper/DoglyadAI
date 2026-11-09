@@ -8,15 +8,10 @@ import SwiftUI
 @MainActor
 final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtocol>, DTextFieldFocusValidatingProtocol {
     @Published var focus: UserSettingsFocus?
-
     @Published var isRecommendationsIncluded: Bool
-
     @Published var isPhotoRemarks: Bool
-
     @Published var isDescriptionRemarks: Bool
-
     @NestedObservableObject var emailTextController: DTextFieldController
-
     private let messager: DMessager
     private let onSaved: (String?, Bool, Bool, Bool) async throws -> Void
 
@@ -35,9 +30,6 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
         getInitialIsDescriptionRemarks: @escaping () -> Bool,
         onSaved: @escaping (String?, Bool, Bool, Bool) async throws -> Void,
     ) {
-        self.messager = messager
-        self.onSaved = onSaved
-
         isRecommendationsIncluded = getInitialIsRecommendationsIncluded()
         isPhotoRemarks = getInitialIsPhotoRemarks()
         isDescriptionRemarks = getInitialIsDescriptionRemarks()
@@ -70,6 +62,8 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
                 ],
             ),
         )
+        self.messager = messager
+        self.onSaved = onSaved
 
         super.init(
             state: UserSettingsInitialState(),
@@ -77,9 +71,9 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .userSettings,
             ),
@@ -139,11 +133,6 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
     }
 
     func onTapSave() {
-        switch state {
-        case _ as UserSettingsLoadingState: return
-        default: break
-        }
-
         let email = emailTextController.value
         analytics.buttonTapped(
             .userSettingsSave,
@@ -162,25 +151,17 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
 
         unfocus()
 
-        emit(
-            UserSettingsLoadingState(),
-        )
-        handle {
+        let isRecommendationsIncluded = isRecommendationsIncluded
+        let isPhotoRemarks = isPhotoRemarks
+        let isDescriptionRemarks = isDescriptionRemarks
+        performLocalOperation {
             try await self.onSaved(
                 email,
-                self.isRecommendationsIncluded,
-                self.isPhotoRemarks,
-                self.isDescriptionRemarks,
+                isRecommendationsIncluded,
+                isPhotoRemarks,
+                isDescriptionRemarks,
             )
-        } onDefer: {
-            switch self.state {
-            case _ as UserSettingsLoadingState:
-                self.emit(
-                    UserSettingsInitialState(),
-                )
-            default: break
-            }
-        } onMainSuccess: { _ in
+        } onSuccess: { _ in
             self.messager.show(
                 type: .success,
                 title: self.container.l10n[
@@ -190,10 +171,16 @@ final class UserSettingsViewModel: DModuleViewModel<any UserSettingsStateProtoco
                     .userSettingsSavedSuccessMessageDescription,
                 ],
             )
-            self.coordinator.pop()
-        } onMainUnknownError: { error in
+            if self.emailTextController.value == email,
+               self.isRecommendationsIncluded == isRecommendationsIncluded,
+               self.isPhotoRemarks == isPhotoRemarks,
+               self.isDescriptionRemarks == isDescriptionRemarks
+            {
+                self.coordinator.pop()
+            }
+        } onFailure: { error in
             self.emit(
-                UserSettingsFailedState(
+                UserSettingsErrorState(
                     error: error,
                 ),
             )

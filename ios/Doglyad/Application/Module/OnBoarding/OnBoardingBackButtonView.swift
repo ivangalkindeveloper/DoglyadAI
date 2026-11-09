@@ -7,12 +7,12 @@ struct OnBoardingBackButtonView: DViewProtocol {
 
     var body: some View {
         switch viewModel.state {
-        case _ as OnBoardingInitialState, _ as OnBoardingLoadingState: EmptyView()
+        case _ as OnBoardingInitialState: EmptyView()
         default:
             DButton(
                 image: .back,
-                accessibilityIdentifier: "onboarding.back",
                 action: viewModel.onPressedBack,
+                accessibilityIdentifier: "onboarding.back",
             )
             .dStyle(
                 .circle,

@@ -5,20 +5,10 @@
     import SwiftUI
 
     #Preview(
-        "01 TemplateEditInitializationLoadingState",
+        "01 TemplateEditInitializationErrorState TemplateReadFailed",
     ) {
         TemplateEditPreviewView(
-            state: TemplateEditInitializationLoadingState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "02 TemplateEditInitializationFailedState",
-    ) {
-        TemplateEditPreviewView(
-            state: TemplateEditInitializationFailedState(
+            state: TemplateEditInitializationErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -29,7 +19,22 @@
     }
 
     #Preview(
-        "03 TemplateEditInitialState",
+        "02 TemplateEditInitializationErrorState TemplateReadFailed ScrollEnd",
+    ) {
+        TemplateEditPreviewView(
+            state: TemplateEditInitializationErrorState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "03 TemplateEditInitialState EditableTemplate",
     ) {
         TemplateEditPreviewView(
             state: TemplateEditInitialState(),
@@ -39,30 +44,21 @@
     }
 
     #Preview(
-        "04 TemplateEditSaveLoadingState",
+        "04 TemplateEditInitialState EditableTemplate ScrollEnd",
     ) {
         TemplateEditPreviewView(
-            state: TemplateEditSaveLoadingState(),
+            state: TemplateEditInitialState(),
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
 
     #Preview(
-        "05 TemplateEditDeleteLoadingState",
+        "05 TemplateEditErrorState TemplateOperationFailed",
     ) {
         TemplateEditPreviewView(
-            state: TemplateEditDeleteLoadingState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "06 TemplateEditFailedState",
-    ) {
-        TemplateEditPreviewView(
-            state: TemplateEditFailedState(
+            state: TemplateEditErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -70,5 +66,20 @@
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+    }
+
+    #Preview(
+        "06 TemplateEditErrorState TemplateOperationFailed ScrollEnd",
+    ) {
+        TemplateEditPreviewView(
+            state: TemplateEditErrorState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
     }
 #endif

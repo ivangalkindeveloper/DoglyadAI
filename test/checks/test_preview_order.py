@@ -1,9 +1,11 @@
 from pathlib import Path
+import json
+import yaml
 import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from catalog import ordered_previews
+from catalog import ordered_previews, generated
 
 
 class PreviewOrderTests(unittest.TestCase):
@@ -37,3 +39,53 @@ class PreviewOrderTests(unittest.TestCase):
             [self.preview("02 First"), self.preview("01 Second")], ["Example"]
         )
         self.assertEqual(first[0]["previewName"], second[1]["previewName"])
+
+    def test_russian_error_previews_wait_for_the_message_before_capture(self):
+        output = generated()
+        atlas = json.loads(output["catalog.json"])["atlas"]
+        cases = [
+            case
+            for case in atlas
+            if case["screen"] == "SubscriptionRecovery" and "SubscriptionRecoveryErrorState" in case["title"] and not case["title"].endswith(" ScrollEnd")
+        ]
+        self.assertEqual(len(cases), 2)
+        for case in cases:
+            commands = list(yaml.safe_load_all(output[case["flow"]]))[1]
+            waits = [
+                command
+                for command in commands
+                if isinstance(command, dict)
+                and command.get("extendedWaitUntil", {}).get("visible", {}).get("id")
+                == "message.error"
+            ]
+            self.assertEqual(len(waits), 1)
+            self.assertLess(commands.index(waits[0]), len(commands) - 1)
+            self.assertIn("takeScreenshot", commands[-1])
+
+    def test_optional_recent_types_use_silent_full_module_fallback(self):
+        output = generated()
+        atlas = json.loads(output["catalog.json"])["atlas"]
+        case = next(
+            case
+            for case in atlas
+            if case["screen"] == "SelectUSExaminationType" and "FirstUse" in case["title"] and not case["title"].endswith(" ScrollEnd")
+        )
+        self.assertEqual(case["previewScope"], "module")
+        commands = list(yaml.safe_load_all(output[case["flow"]]))[1]
+        self.assertIn({"assertNotVisible": "^Недавние$"}, commands)
+        self.assertIn({"assertNotVisible": {"id": "message.error"}}, commands)
+        self.assertFalse(any(
+            isinstance(command, dict)
+            and command.get("extendedWaitUntil", {}).get("visible", {}).get("id") == "message.error"
+            for command in commands
+        ))
+
+    def test_management_previews_wait_for_the_final_layout(self):
+        output = generated()
+        atlas = json.loads(output["catalog.json"])["atlas"]
+        cases = [case for case in atlas if case["screen"] == "ManageSubscription"]
+        self.assertGreater(len(cases), 0)
+        for case in cases:
+            commands = list(yaml.safe_load_all(output[case["flow"]]))[1]
+            self.assertEqual(commands[-2], "waitForAnimationToEnd")
+            self.assertIn("takeScreenshot", commands[-1])

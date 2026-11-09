@@ -6,37 +6,10 @@ struct TemplateListEmptyView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
     var body: some View {
-        VStack(
-            spacing: .zero,
-        ) {
-            DImage(
-                .doglyadFile,
-            )
-            .scaledToFit()
-            .frame(
-                maxWidth: .infinity,
-                maxHeight: .infinity,
-                alignment: .center,
-            )
-            .padding(
-                .horizontal,
-                size.s64,
-            )
-
-            DText(
-                l10n[
-                    .templateListEmptyDescription,
-                ],
-            )
-            .dStyle(
-                font: typography.textSmall,
-                color: color.grayscalePlacehold,
-                alignment: .center,
-            )
-        }
-        .padding(
-            .top,
-            size.screenHeight / 6,
+        EmptyTemplatesBodyView(
+            description: l10n[
+                .templateListEmptyDescription,
+            ],
         )
     }
 }

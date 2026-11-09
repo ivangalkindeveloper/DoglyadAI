@@ -10,7 +10,11 @@ struct StatePublicationTests {
     @Test
     func synchronousRenderingDoesNotRetainThePreviousPhase() {
         let model = DStateViewModel<any ScanStateProtocol>(
-            state: ScanInitializationLoadingState(),
+            state: ScanInitializationErrorState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
         )
         var rendered: (any ScanStateProtocol)?
         var publications = 0
@@ -80,7 +84,7 @@ struct StatePublicationTests {
     @Test
     func differentPhasesPublishEvenWhenTheirPayloadMatches() {
         let model = DStateViewModel<any ScanSpeechStateProtocol>(
-            state: ScanSpeechAutomaticParsingLoadingState(
+            state: ScanSpeechTranscriptionLoadingState(
                 parsedText: "Weight 70 kg",
             ),
         )
@@ -257,8 +261,9 @@ struct StatePublicationTests {
     func preservedStatesCompareTheirContentsThroughTheFeatureProtocol() {
         let model = DStateViewModel<any PaywallStateProtocol>(
             state: PaywallRestoreLoadingState(
-                previousState: PaywallLoadingFailedState(
+                previousState: PaywallOperationErrorState(
                     errorDescription: "First failure",
+                    previousState: ModulePreviewFactory.paywallContent,
                 ),
             ),
         )
@@ -272,15 +277,17 @@ struct StatePublicationTests {
 
         model.emit(
             PaywallRestoreLoadingState(
-                previousState: PaywallLoadingFailedState(
+                previousState: PaywallOperationErrorState(
                     errorDescription: "First failure",
+                    previousState: ModulePreviewFactory.paywallContent,
                 ),
             ),
         )
         model.emit(
             PaywallRestoreLoadingState(
-                previousState: PaywallLoadingFailedState(
+                previousState: PaywallOperationErrorState(
                     errorDescription: "Second failure",
+                    previousState: ModulePreviewFactory.paywallContent,
                 ),
             ),
         )
@@ -358,37 +365,37 @@ struct StatePublicationTests {
             ),
         )
         model.emit(
-            PaywallPendingState(
+            PaywallPurchaseLoadingState(
                 content: selected,
                 plan: second,
             ),
         )
         model.emit(
-            PaywallPendingState(
+            PaywallPurchaseLoadingState(
                 content: selected,
                 plan: first,
             ),
         )
         model.emit(
-            PaywallOperationFailedState(
-                previousState: selected,
+            PaywallOperationErrorState(
                 errorDescription: "First",
+                previousState: selected,
             ),
         )
         model.emit(
-            PaywallOperationFailedState(
-                previousState: selected,
+            PaywallOperationErrorState(
                 errorDescription: "First",
+                previousState: selected,
             ),
         )
         model.emit(
-            PaywallOperationFailedState(
-                previousState: selected,
+            PaywallOperationErrorState(
                 errorDescription: "Second",
+                previousState: selected,
             ),
         )
         #expect(
-            publications == 6,
+            publications == 5,
         )
         #expect(
             content.selectedPlan == first && selected.selectedPlan == second,
@@ -398,7 +405,7 @@ struct StatePublicationTests {
     @Test
     func errorsWithDifferentAssociatedValuesPublishTheirChanges() {
         let model = DStateViewModel<any ErrorRootStateProtocol>(
-            state: ErrorRootServiceUnavailableState(
+            state: ErrorRootServiceUnavailableErrorState(
                 error: InitializationError.serviceUnavailable(
                     email: "first@example.com",
                 ),
@@ -413,13 +420,13 @@ struct StatePublicationTests {
         }
 
         model.emit(
-            ErrorRootServiceUnavailableState(
+            ErrorRootServiceUnavailableErrorState(
                 error: InitializationError.serviceUnavailable(
                     email: "first@example.com",
                 ),
             ),
         )
-        let next = ErrorRootServiceUnavailableState(
+        let next = ErrorRootServiceUnavailableErrorState(
             error: InitializationError.serviceUnavailable(
                 email: "second@example.com",
             ),
@@ -437,7 +444,7 @@ struct StatePublicationTests {
 
     @Test
     func opaqueSwiftErrorsDoNotCollapseToTheirBridgedErrorCode() {
-        let initial = WebDocumentFailedState(
+        let initial = WebDocumentErrorState(
             error: DecodingError.dataCorrupted(
                 .init(
                     codingPath: [],
@@ -463,7 +470,7 @@ struct StatePublicationTests {
             publications == 0,
         )
 
-        let next = WebDocumentFailedState(
+        let next = WebDocumentErrorState(
             error: DecodingError.dataCorrupted(
                 .init(
                     codingPath: [],
@@ -485,7 +492,7 @@ struct StatePublicationTests {
     @Test
     func nativeErrorsCompareTheirDomainCodeAndUserInfo() {
         let model = DStateViewModel<any WebDocumentStateProtocol>(
-            state: WebDocumentFailedState(
+            state: WebDocumentErrorState(
                 error: NSError(
                     domain: "StatePublicationTests",
                     code: 1,
@@ -502,7 +509,7 @@ struct StatePublicationTests {
         }
 
         model.emit(
-            WebDocumentFailedState(
+            WebDocumentErrorState(
                 error: NSError(
                     domain: "StatePublicationTests",
                     code: 1,
@@ -511,7 +518,7 @@ struct StatePublicationTests {
             ),
         )
         model.emit(
-            WebDocumentFailedState(
+            WebDocumentErrorState(
                 error: NSError(
                     domain: "StatePublicationTests",
                     code: 1,

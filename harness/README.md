@@ -31,10 +31,11 @@ make check-harness
 
 ## Инструкции при старте
 
-Перед работой агент обязан полностью прочитать все шесть документов в порядке
+Перед работой агент обязан полностью прочитать все семь документов в порядке
 из `AGENTS.md`: [общие правила](instructions/common.md),
 [архитектура](instructions/architecture.md), [backend](instructions/backend.md),
-[iOS](instructions/ios.md), [инфраструктура](instructions/infrastructure.md)
+[iOS](instructions/ios.md), [дизайн](instructions/design.md),
+[инфраструктура](instructions/infrastructure.md)
 и [рабочий процесс](instructions/workflow.md).
 Если вывод инструмента обрезан, агент должен дочитать документ по частям.
 
@@ -109,6 +110,12 @@ python3 harness/checks/architecture.py path/to/edited.swift path/to/edited.py
 | `swift.view-method` | View не содержит методов, кроме методов адаптеров и API модификаторов |
 | `swift.view-fragment` | View не содержит вычисляемых UI-фрагментов вне `body` |
 | `swift.view-state-switch` | В `body` одной View не больше одного `switch`, включая вложенные переключения и вычисление локальных параметров |
+| `swift.initializer-parameter-order` | Параметры инициализатора следуют порядку соответствующих хранимых полей |
+| `swift.initializer-assignment-order` | Присвоения хранимым полям идут в порядке их объявления; зависимости заранее вычисляются в локальных переменных |
+| `swift.accessibility-field-order` | Accessibility-поля объявлены после остальных хранимых полей |
+| `swift.accessibility-parameter-order` | Accessibility-параметры стоят в конце инициализатора, включая параметры без собственного поля |
+| `swift.accessibility-argument-order` | Accessibility-аргументы передаются последними; содержимое ViewBuilder перед ними передаётся явно |
+| `swift.explicit-disabled` | Приложение передаёт `isDisabled` компонентам вместо `.disabled(...)` на элементах или контейнерах |
 | `python.layer-import` | `model` не импортирует `service`/`route`; `service` не импортирует `route` |
 
 Swift разбирается через SwiftParser/SwiftSyntax установленного Xcode. При первом

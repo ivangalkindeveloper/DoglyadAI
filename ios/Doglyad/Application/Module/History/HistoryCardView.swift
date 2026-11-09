@@ -4,7 +4,6 @@ import SwiftUI
 struct HistoryCardView: DViewProtocol {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject var theme: DTheme
-
     let report: USExaminationReport
     let onTap: () -> Void
 
@@ -13,7 +12,7 @@ struct HistoryCardView: DViewProtocol {
     }
 
     var body: some View {
-        DButtonCard(
+        DCard(
             action: onTap,
         ) {
             HStack(
@@ -127,11 +126,5 @@ struct HistoryCardView: DViewProtocol {
                 )
             }
         }
-        .background(
-            color.grayscaleBackground,
-        )
-        .cornerRadius(
-            size.cardCornerRadius,
-        )
     }
 }

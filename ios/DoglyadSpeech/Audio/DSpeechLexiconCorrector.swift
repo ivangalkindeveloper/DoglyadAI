@@ -16,7 +16,6 @@ public struct DSpeechLexiconCorrector: Sendable {
     /// The allowed share of edits relative to the term length. Chosen conservatively:
     /// missing a fix is cheaper than replacing what the physician actually said.
     private static let maximumDistanceRatio = 0.16
-
     /// How far ahead of the runner-up the best candidate must be for a substitution
     /// to happen.
     ///
@@ -51,7 +50,6 @@ public struct DSpeechLexiconCorrector: Sendable {
         terms: [String],
         localization: DSpeechLexiconLocalization,
     ) {
-        self.localization = localization
         let vocabulary = Set(
             terms.flatMap {
                 Self.literalWords(
@@ -60,7 +58,7 @@ public struct DSpeechLexiconCorrector: Sendable {
                 )
             },
         )
-        medicalTermCorrections = localization.medicalTermCorrections.filter { original, replacement in
+        let medicalTermCorrections = localization.medicalTermCorrections.filter { original, replacement in
             let words = Self.literalWords(
                 in: replacement,
                 localization: localization,
@@ -140,6 +138,8 @@ public struct DSpeechLexiconCorrector: Sendable {
 
         termsByWordCount = grouped
         maximumWordCount = grouped.keys.max() ?? 0
+        self.localization = localization
+        self.medicalTermCorrections = medicalTermCorrections
     }
 
     public func correct(

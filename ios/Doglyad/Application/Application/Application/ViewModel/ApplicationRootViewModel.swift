@@ -19,8 +19,8 @@ final class ApplicationRootViewModel: DStateViewModel<any ApplicationRootStatePr
         case _ as ApplicationRootLoadingState: return
         default: break
         }
-        let previousFailure: ApplicationRootFailedState? = switch state {
-        case let state as ApplicationRootFailedState: state
+        let previousFailure: ApplicationRootErrorState? = switch state {
+        case let state as ApplicationRootErrorState: state
         default: nil
         }
         emit(
@@ -69,7 +69,7 @@ final class ApplicationRootViewModel: DStateViewModel<any ApplicationRootStatePr
                     )
                     analytics = process.analytics
                     emit(
-                        ApplicationRootFailedState(
+                        ApplicationRootErrorState(
                             error: error,
                         ),
                     )

@@ -4,7 +4,6 @@ import DoglyadNetwork
 final class UserSettingsRepository: UserSettingsRepositoryProtocol {
     let database: DDatabaseProtocol
     let httpClient: DHttpClientProtocol
-
     static let sendEmailEndpoint = "/send_report_email"
 
     init(

@@ -4,9 +4,9 @@ import SwiftUI
 struct SettingsAICardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     let settings: SettingsAI
     let onTap: () -> Void
+    var isDisabled: Bool = false
 
     var body: some View {
         VStack(
@@ -31,41 +31,44 @@ struct SettingsAICardView: DViewProtocol {
                 size.s8,
             )
 
-            DButtonCard(
+            DCard(
                 action: onTap,
-            ) {
-                VStack(
-                    alignment: .leading,
-                    spacing: size.s4,
-                ) {
-                    SettingsAIMarkdownRowView(
-                        isMarkdown: .constant(
-                            settings.isMarkdown,
-                        ),
-                    )
+                content: {
+                    VStack(
+                        alignment: .leading,
+                        spacing: size.s4,
+                    ) {
+                        SettingsAIMarkdownRowView(
+                            isMarkdown: .constant(
+                                settings.isMarkdown,
+                            ),
+                            isDisabled: isDisabled,
+                        )
 
-                    NeuralModelValueRowView(
-                        title: l10n[
-                            .settingsAICardTemperatureLabel,
-                        ],
-                        value: String(
-                            format: "%.2f",
-                            settings.temperature ?? 0,
-                        ),
-                    )
+                        NeuralModelValueRowView(
+                            title: l10n[
+                                .settingsAICardTemperatureLabel,
+                            ],
+                            value: String(
+                                format: "%.2f",
+                                settings.temperature ?? 0,
+                            ),
+                        )
 
-                    NeuralModelValueRowView(
-                        title: l10n[
-                            .settingsAICardMaxTokensLabel,
-                        ],
-                        value: "\(settings.maxTokens ?? 0)",
+                        NeuralModelValueRowView(
+                            title: l10n[
+                                .settingsAICardMaxTokensLabel,
+                            ],
+                            value: "\(settings.maxTokens ?? 0)",
+                        )
+                    }
+                    .frame(
+                        maxWidth: .infinity,
+                        alignment: .leading,
                     )
-                }
-                .frame(
-                    maxWidth: .infinity,
-                    alignment: .leading,
-                )
-            }
+                },
+                isDisabled: isDisabled,
+            )
         }
         .padding(
             .bottom,
@@ -78,10 +81,9 @@ private struct SettingsAIMarkdownRowView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     private static let switchNativeHeight: CGFloat = 31
     private static let switchNativeWidth: CGFloat = 51
-
     @EnvironmentObject var theme: DTheme
-
     @Binding var isMarkdown: Bool
+    var isDisabled: Bool = false
 
     private var switchScale: CGFloat {
         size.s12 / Self.switchNativeHeight
@@ -105,6 +107,7 @@ private struct SettingsAIMarkdownRowView: DViewProtocol {
             DToggle(
                 "",
                 isOn: $isMarkdown,
+                isDisabled: isDisabled,
             )
             .labelsHidden()
             .toggleStyle(

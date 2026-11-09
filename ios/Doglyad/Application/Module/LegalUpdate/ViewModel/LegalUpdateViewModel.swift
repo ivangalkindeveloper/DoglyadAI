@@ -7,7 +7,6 @@ import SwiftUI
 @MainActor
 final class LegalUpdateViewModel: DModuleViewModel<any LegalUpdateStateProtocol> {
     @Published var isLegalAccepted = false
-
     private let messager: DMessager?
 
     init(
@@ -27,9 +26,9 @@ final class LegalUpdateViewModel: DModuleViewModel<any LegalUpdateStateProtocol>
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .legalUpdate,
             ),
@@ -99,11 +98,6 @@ final class LegalUpdateViewModel: DModuleViewModel<any LegalUpdateStateProtocol>
     func onLegalAcceptedChanged(
         _ isAccepted: Bool,
     ) {
-        switch state {
-        case _ as LegalUpdateLoadingState: return
-        default: break
-        }
-
         analytics.buttonTapped(
             .legalUpdateLegalToggle,
             parameters: AnalyticsParameters(
@@ -175,31 +169,25 @@ extension LegalUpdateViewModel {
     }
 
     func onTapAccept() {
-        switch state {
-        case _ as LegalUpdateLoadingState: return
-        default: break
-        }
         guard isLegalAccepted else {
             return
         }
-        emit(
-            LegalUpdateLoadingState(),
-        )
+
         analytics.buttonTapped(
             .legalUpdateAccept,
         )
-        handle {
+        performLocalOperation {
             try await self.container.sharedRepository.acceptLegal(
                 documentDate: self.container.applicationConfig.legalDate,
             )
-        } onMainSuccess: { _ in
+        } onSuccess: { _ in
             self.coordinator.root(
                 .scan,
                 isAnimated: true,
             )
-        } onMainUnknownError: { error in
+        } onFailure: { error in
             self.emit(
-                LegalUpdateFailedState(
+                LegalUpdateErrorState(
                     error: error,
                 ),
             )

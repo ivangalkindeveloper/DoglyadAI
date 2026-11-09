@@ -24,7 +24,7 @@ struct ApplicationRootStateTests {
 
     @Test
     func retryKeepsErrorIdentityAndPreservesFailureData() {
-        let failure = ApplicationRootFailedState(
+        let failure = ApplicationRootErrorState(
             error: NSError(
                 domain: "Initial failure",
                 code: 1,
@@ -33,7 +33,7 @@ struct ApplicationRootStateTests {
         let retry = ApplicationRootLoadingState(
             previousFailure: failure,
         )
-        let nextFailure = ApplicationRootFailedState(
+        let nextFailure = ApplicationRootErrorState(
             error: NSError(
                 domain: "Retry failure",
                 code: 2,

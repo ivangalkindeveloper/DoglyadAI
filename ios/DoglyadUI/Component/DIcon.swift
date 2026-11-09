@@ -2,7 +2,6 @@ import SwiftUI
 
 public struct DIcon: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
-
     let resource: ImageResource
     let color: Color?
     let height: CGFloat?

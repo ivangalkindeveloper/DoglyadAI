@@ -9,15 +9,10 @@ import SwiftUI
 @MainActor
 final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     @NestedObservableObject var cameraController: DCameraControllerFactory.Controller
-
     @Published var photos: [USExaminationScanPhoto]
-
     @Published var captureFrame: CGRect = .zero
-
     @Published var previewFrame: CGRect = .zero
-
     let photoMaxCount: Int
-
     private let arguments: ScanCameraArguments
     private var cameraObservation: AnyCancellable?
     private var presentationID: UUID?
@@ -32,13 +27,12 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: ScanCameraArguments,
     ) {
-        self.arguments = arguments
-
         _cameraController = NestedObservableObject(
             wrappedValue: arguments.cameraController,
         )
         photos = arguments.getPhotos()
         photoMaxCount = arguments.photoMaxCount
+        self.arguments = arguments
 
         super.init(
             state: ScanCameraPreparationLoadingState(),
@@ -46,9 +40,9 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .bottomSheet(
                 .scanCamera,
             ),

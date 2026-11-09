@@ -1,5 +1,6 @@
 import Combine
 import DoglyadNetwork
+import DoglyadUI
 import Foundation
 import Handler
 import Router
@@ -7,15 +8,15 @@ import SwiftUI
 
 @MainActor
 final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
+    private let messager: DMessager
     @Published private(set) var sections: [HistoryDaySection] = []
     private(set) var nextOffset: Int?
-
     private var reportObservation: AnyCancellable?
     private let currentReport: (USExaminationReport) -> USExaminationReport
     private let observeReports: (@escaping (USExaminationReport) -> Void) -> AnyCancellable
     private let sectionBuilder: HistoryDaySectionBuilder
     private let historyConfig: HistoryConfig
-
+    private var offsetLoadingID: UUID?
     private var offsetLoadingTask: Task<Void, Never>?
 
     #if DEBUG
@@ -23,6 +24,7 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
     #endif
 
     init(
+        messager: DMessager,
         container: DependencyContainer,
         router: DRouter,
         getSubscriptionStatus: @escaping () -> SubscriptionStatus?,
@@ -34,27 +36,28 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         observeReports: @escaping (@escaping (USExaminationReport) -> Void) -> AnyCancellable,
         sectionBuilder: HistoryDaySectionBuilder? = nil,
     ) {
+        self.messager = messager
         self.currentReport = currentReport
         self.observeReports = observeReports
         self.sectionBuilder = sectionBuilder ?? HistoryDaySectionBuilder(
+            locale: container.language.currentLocale,
             todayTitle: container.l10n.text(
                 .dateTodayLabel,
             ),
             yesterdayTitle: container.l10n.text(
                 .dateYesterdayLabel,
             ),
-            locale: container.language.currentLocale,
         )
         historyConfig = container.applicationConfig.history
         super.init(
-            state: HistoryReportsLoadingState(),
+            state: HistoryInitialState(),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
             observeSubscriptionStatus: observeSubscriptionStatus,
-            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             getSettingsAI: getSettingsAI,
             onRefreshSubscriptionStatus: onRefreshSubscriptionStatus,
+            onSubscriptionStatusUpdated: onSubscriptionStatusUpdated,
             analyticsDestination: .screen(
                 .history,
             ),
@@ -121,6 +124,13 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         }
     #endif
 
+    override func onDisappear() {
+        super.onDisappear()
+        offsetLoadingTask?.cancel()
+        offsetLoadingTask = nil
+        offsetLoadingID = nil
+    }
+
     func onTapBack() {
         analytics.buttonTapped(
             .historyBack,
@@ -168,15 +178,17 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
                 return
             }
         #endif
-        emit(
-            HistoryReportsLoadingState(),
-        )
-        handle {
+
+        cancelOperationTask()
+        offsetLoadingTask?.cancel()
+        offsetLoadingTask = nil
+        offsetLoadingID = nil
+        performLocalOperation {
             try await self.container.ultrasoundReportRepository.getReports(
                 limit: self.pageSize,
                 offset: 0,
             )
-        } onMainSuccess: { reports in
+        } onSuccess: { reports in
             self.append(
                 reports.map(
                     self.currentReport,
@@ -184,11 +196,14 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
                 to: [],
                 offset: 0,
             )
-        } onMainUnknownError: { error in
+        } onFailure: { error in
             self.emit(
-                HistoryFailedState(
+                HistoryErrorState(
                     error: error,
                 ),
+            )
+            self.messager.showUnknownError(
+                l10n: self.l10n,
             )
         }
     }
@@ -202,20 +217,18 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         guard offsetLoadingTask == nil, let offset = nextOffset else {
             return
         }
-        switch state {
-        case _ as HistoryReportsLoadingState, _ as HistoryPaginationLoadingState: return;
-        default: break
-        }
-        emit(
-            HistoryPaginationLoadingState(),
-        )
+
+        let id = UUID()
+        offsetLoadingID = id
         offsetLoadingTask = handle {
             try await self.container.ultrasoundReportRepository.getReports(
                 limit: self.pageSize,
                 offset: offset,
             )
         } onDefer: {
-            self.offsetLoadingTask = nil
+            if self.offsetLoadingID == id {
+                self.offsetLoadingTask = nil
+            }
         }
         onMainSuccess: { reports in
             self.append(
@@ -227,10 +240,16 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
             )
         }
         onMainUnknownError: { error in
+            guard !Task.isCancelled else {
+                return
+            }
             self.emit(
-                HistoryFailedState(
+                HistoryErrorState(
                     error: error,
                 ),
+            )
+            self.messager.showUnknownError(
+                l10n: self.l10n,
             )
         }
     }

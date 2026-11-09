@@ -1,5 +1,6 @@
 #if DEBUG
     import Combine
+    import DoglyadUI
     import Foundation
 
     @MainActor
@@ -12,6 +13,7 @@
             onRecover: ((String) -> Void)? = nil,
         ) -> SubscriptionRecoveryViewModel {
             let model = SubscriptionRecoveryViewModel(
+                messager: DMessager(),
                 container: container,
                 router: router,
                 getSubscriptionStatus: {

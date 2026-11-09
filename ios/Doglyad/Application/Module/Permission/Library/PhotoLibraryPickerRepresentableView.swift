@@ -3,7 +3,7 @@ import SwiftUI
 
 struct PhotoLibraryPickerRepresentableView: UIViewControllerRepresentable {
     let selectionLimit: Int
-    let onComplete: ([UIImage]) -> Void
+    let onComplete: ([UIImage], Bool) -> Void
 
     func makeUIViewController(
         context: Context,

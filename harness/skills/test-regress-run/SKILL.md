@@ -20,11 +20,11 @@ otherwise successful execution. Preview screenshots do not prove missing E2E beh
 
 When the user asks to update only Preview and excludes full regression, run
 `make previews-figma` after refreshing the catalog with `test-regress-update`.
-This separate command renders every registered Russian Preview on isolated iOS
+This separate command renders every registered Russian full-module Preview on isolated iOS
 simulators. It does not start backend services, a database, functional flows or
 provider purchases. It writes `preview-report.json` under `build/previews/runs/`.
 Require every Preview, its screenshots, unchanged evidence and simulator cleanup
-to pass before importing. The plugin replaces only the Preview section and
+to pass before importing. Component-only previews are excluded, including shared application views; keep them in Xcode Canvas. The plugin replaces only the Preview section and
 preserves regression screenshots and unrelated page content. This result is a
 Preview capture, never a passed functional regression. Reuse a successful capture
 with `make previews-publish RUN=build/previews/runs/<run-id>` if transfer needs retry.

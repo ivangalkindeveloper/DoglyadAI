@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 SelectDateOfBirthDefaultState",
+        "01 SelectDateOfBirthDefaultState DateSelection",
     ) {
         SelectDateOfBirthPreviewView(
             state: SelectDateOfBirthDefaultState(),

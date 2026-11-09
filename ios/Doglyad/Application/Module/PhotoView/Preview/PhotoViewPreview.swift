@@ -2,7 +2,7 @@
     import SwiftUI
 
     #Preview(
-        "01 PhotoViewInitialState",
+        "01 PhotoViewInitialState LandscapePhoto",
     ) {
         PhotoViewPreviewView(
             photos: ModulePreviewFactory.photos,
@@ -13,7 +13,7 @@
     }
 
     #Preview(
-        "02 PhotoViewRemarks",
+        "02 PhotoViewInitialState ModelRemarks",
     ) {
         PhotoViewPreviewView(
             photos: ModulePreviewFactory.photos,
@@ -25,7 +25,7 @@
     }
 
     #Preview(
-        "03 PhotoViewSavedReport",
+        "03 PhotoViewInitialState SavedReportReadOnly",
     ) {
         PhotoViewPreviewView(
             photos: ModulePreviewFactory.photos,
@@ -38,7 +38,7 @@
     }
 
     #Preview(
-        "04 PhotoViewPortrait",
+        "04 PhotoViewInitialState PortraitPhoto",
     ) {
         PhotoViewPreviewView(
             photos: PhotoViewPreviewFactory.portraitPhotos,
@@ -49,7 +49,7 @@
     }
 
     #Preview(
-        "05 PhotoViewSquare",
+        "05 PhotoViewInitialState SquarePhoto",
     ) {
         PhotoViewPreviewView(
             photos: PhotoViewPreviewFactory.squarePhotos,

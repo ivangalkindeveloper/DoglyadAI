@@ -135,7 +135,7 @@ init-ios-local:
 	@set -e; \
 	IP="$$(ipconfig getifaddr en0)"; \
 	sed -i '' 's|^BASE_URL = .*|BASE_URL = http:/$$()/'''"$${IP}:8000"'|' ios/Config/Config.Local.xcconfig; \
-	cat ios/Config/Config.Local.xcconfig
+	sed -n '/^BASE_URL = /p' ios/Config/Config.Local.xcconfig
 
 build-ios-debug-local:
 	cd ios && xcodebuild build \

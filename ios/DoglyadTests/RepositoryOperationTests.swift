@@ -22,6 +22,7 @@ struct RepositoryOperationTests {
         var isStorageAvailable = false
         var selectedTemplate: USExaminationTemplate?
         let arguments = SelectTemplateArguments(
+            templates: [template],
             onSelected: { value in
                 await Task.yield()
                 guard isStorageAvailable else {

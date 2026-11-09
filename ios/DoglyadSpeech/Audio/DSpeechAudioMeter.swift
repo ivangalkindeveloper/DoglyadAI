@@ -19,7 +19,6 @@ final class DSpeechAudioMeter: @unchecked Sendable {
     private static let smoothing: Float = 0.4
     /// Lifts RMS into the meter's range: handheld speech rarely exceeds 0.07.
     private static let gain: Float = 15
-
     private let lock = NSLock()
     private var level: Float = 0
     private var lastPublishUptime: TimeInterval = 0

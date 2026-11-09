@@ -24,6 +24,7 @@ struct ReportReceivedEmailButtonView: DViewProtocol {
                 badge: viewModel.userEmailButtonBadge,
                 action: viewModel.onTapUserEmail,
                 isLoading: isSending,
+                accessibilityIdentifier: "reportReceived.sendEmail",
             )
             .dStyle(
                 .textWeak,

@@ -3,28 +3,26 @@ import SwiftUI
 public struct DImageAnnotationMarker: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     let title: String
+    let action: () -> Void
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
 
-    let action: () -> Void
-
     public init(
         title: String,
+        action: @escaping () -> Void,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
-        action: @escaping () -> Void,
     ) {
         self.title = title
-        self.accessibilityElement = accessibilityElement
-        self.accessibilityIdentifier = accessibilityIdentifier
 
         self.action = action
+        self.accessibilityElement = accessibilityElement
+        self.accessibilityIdentifier = accessibilityIdentifier
     }
 
     public var body: some View {
         Group {
-            DButtonCard(
-                isPlain: true,
+            DTextButton(
                 action: action,
             ) {
                 Circle()

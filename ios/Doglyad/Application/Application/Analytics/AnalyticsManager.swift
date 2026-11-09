@@ -3,7 +3,6 @@ import FirebaseAnalytics
 @MainActor
 final class AnalyticsManager {
     private static var isApplicationOpenedLogged = false
-
     private let isEnabled: Bool
 
     init(

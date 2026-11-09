@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-templatedelete-15c7b1ef45
+tags:
+- atlas
+- TemplateDelete
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-templatedelete-15c7b1ef45
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-templatedelete-15c7b1ef45
+    timeout: 15000
+- takeScreenshot: 01-TemplateDelete-15c7b1ef45

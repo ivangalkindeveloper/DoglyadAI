@@ -1,5 +1,6 @@
 #if DEBUG
     import Combine
+    import DoglyadUI
     import Foundation
     import Router
 
@@ -31,6 +32,7 @@
             router: DRouter,
         ) -> PaywallViewModel {
             PaywallViewModel(
+                messager: DMessager(),
                 container: container,
                 router: router,
                 getSubscriptionStatus: {

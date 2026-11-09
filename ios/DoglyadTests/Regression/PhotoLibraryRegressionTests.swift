@@ -28,10 +28,14 @@
                 return nil
             }
             var completions: [[UIImage]] = []
+            var failures: [Bool] = []
             let coordinator = PhotoLibraryPickerCoordinator(
-                onComplete: {
+                onComplete: { images, isFailure in
                     completions.append(
-                        $0,
+                        images,
+                    )
+                    failures.append(
+                        isFailure,
                     )
                 },
             )
@@ -52,6 +56,10 @@
                     ),
                 )
             }
+            XCTAssertEqual(
+                failures,
+                [true],
+            )
             XCTAssertEqual(
                 completions.count,
                 1,
@@ -77,6 +85,10 @@
             )
             XCTAssertTrue(
                 completions.last?.isEmpty == true,
+            )
+            XCTAssertEqual(
+                failures,
+                [true, false],
             )
         }
 

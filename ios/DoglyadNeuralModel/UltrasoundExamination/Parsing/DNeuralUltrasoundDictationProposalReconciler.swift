@@ -312,6 +312,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
         else {
             return false
         }
+
         func normalized(
             _ text: String,
         ) -> String {
@@ -325,6 +326,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                 separator: " ",
             )
         }
+
         return normalized(
             firstText,
         ) == normalized(

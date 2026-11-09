@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-legalupdate-590379a493
+tags:
+- atlas
+- LegalUpdate
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-legalupdate-590379a493
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-legalupdate-590379a493
+    timeout: 15000
+- takeScreenshot: 02-LegalUpdate-590379a493

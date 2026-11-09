@@ -41,6 +41,7 @@ cases:
   - onTapToolbarDown
   - onTapBack
   - onTapDelete
+  - onDisappear
   automation:
     kind: mixed
     flows:
@@ -48,6 +49,9 @@ cases:
     - e2e-templatedelete-cancel
     nativeTests:
     - RegressionFormTests/testTemplateEditBoundariesAndFocusKeepTheExistingIdentity()
+    - LocalOperationTests/localWriteKeepsPresentationAndRejectsDuplicateActions()
+    - LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)
+    - LocalOperationTests/failureIsReportedWithoutInventingALoadingPresentation()
 - id: TemplateEdit.failures
   title: Ошибки загрузки и сохранения
   profiles:
@@ -56,14 +60,16 @@ cases:
   - Сбой чтения или записи одного существующего шаблона
   steps:
   - action: Открыть шаблон при ошибке чтения
-    expect: Показана ошибка инициализации, доступен повтор.
+    expect: Показано сообщение DMessager; форма и ввод остаются на экране, доступна основная кнопка повтора.
   - action: Устранить ошибку и повторить
-    expect: Открываются данные того же шаблона.
+    expect: Загружаются данные того же шаблона; введённые после сбоя значения не заменяются.
   - action: Изменить данные и вызвать сбой сохранения
     expect: Ввод остаётся; исходная запись не повреждена; повтор после устранения сбоя сохраняет изменения.
   covers:
   - onTapRetryInitialization
   automation:
-    kind: maestro
+    kind: mixed
     flows:
     - e2e-templateedit-failures
+    nativeTests:
+    - ContentDesignTests/templateInitializationRetryMergesLoadedDataWithoutReplacingEdits()

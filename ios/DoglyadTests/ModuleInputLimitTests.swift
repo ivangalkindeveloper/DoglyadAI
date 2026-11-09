@@ -173,7 +173,7 @@ struct ModuleInputLimitTests {
         )
         let model = ScanSpeechViewModel(
             container: container,
-            messager: DMessager(),
+            speechController: speechController,
             router: makeRouter(),
             getSubscriptionStatus: {
                 nil
@@ -186,13 +186,13 @@ struct ModuleInputLimitTests {
                 container.initialSettingsAI
             },
             onRefreshSubscriptionStatus: {},
+            messager: DMessager(),
             arguments: ScanSpeechArguments(
                 examinationType: container.usExaminationTypeDefault,
                 onConfirm: { _ in
                     true
                 },
             ),
-            speechController: speechController,
         )
         model.onInit()
         #expect(

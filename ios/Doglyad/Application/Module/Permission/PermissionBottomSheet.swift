@@ -4,7 +4,6 @@ struct PermissionBottomSheet: View {
     @EnvironmentObject private var container: DependencyContainer
     @EnvironmentObject private var router: DRouter
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
-
     let arguments: PermissionArguments
 
     var body: some View {

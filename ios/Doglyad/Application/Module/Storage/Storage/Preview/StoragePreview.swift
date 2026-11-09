@@ -5,7 +5,7 @@
     import SwiftUI
 
     #Preview(
-        "01 StorageInitialState",
+        "01 StorageInitialState StoredData",
     ) {
         StoragePreviewView(
             state: StorageInitialState(),
@@ -15,40 +15,46 @@
     }
 
     #Preview(
-        "02 StorageProtocolsClearLoadingState",
+        "02 StorageInitialState StoredData ScrollEnd",
     ) {
         StoragePreviewView(
-            state: StorageProtocolsClearLoadingState(),
+            state: StorageInitialState(),
         ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "03 StorageInitialState SpeechModelNotDownloaded",
+    ) {
+        StoragePreviewView(
+            state: StorageInitialState(),
+            isSpeechModelAvailable: false,
+        )
+        .previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
     }
 
     #Preview(
-        "03 StorageSpeechModelDeleteLoadingState",
+        "04 StorageInitialState SpeechModelNotDownloaded ScrollEnd",
     ) {
         StoragePreviewView(
-            state: StorageSpeechModelDeleteLoadingState(),
-        ).previewable(
+            state: StorageInitialState(),
+            isSpeechModelAvailable: false,
+        )
+        .previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+        .previewScrollToEnd()
     }
 
     #Preview(
-        "04 StorageAllClearLoadingState",
+        "05 StorageErrorState ClearOperationFailed",
     ) {
         StoragePreviewView(
-            state: StorageAllClearLoadingState(),
-        ).previewable(
-            container: ModulePreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "05 StorageFailedState",
-    ) {
-        StoragePreviewView(
-            state: StorageFailedState(
+            state: StorageErrorState(
                 error: URLError(
                     .notConnectedToInternet,
                 ),
@@ -56,5 +62,20 @@
         ).previewable(
             container: ModulePreviewFactory.makeContainer(),
         )
+    }
+
+    #Preview(
+        "06 StorageErrorState ClearOperationFailed ScrollEnd",
+    ) {
+        StoragePreviewView(
+            state: StorageErrorState(
+                error: URLError(
+                    .notConnectedToInternet,
+                ),
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
     }
 #endif

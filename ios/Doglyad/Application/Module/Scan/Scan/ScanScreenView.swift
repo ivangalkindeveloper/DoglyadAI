@@ -4,13 +4,12 @@ import SwiftUI
 struct ScanScreenView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
-
     @StateObject var viewModel: ScanViewModel
     @FocusState private var focus: ScanFocus?
 
     var body: some View {
         let (isProcessing, isMediaSelectionDisabled): (Bool, Bool) = switch viewModel.state {
-        case _ as ScanInitializationLoadingState, _ as ScanGenerationLoadingState, _ as ScanReportSaveLoadingState, _ as ScanClearLoadingState: (true, true)
+        case _ as ScanGenerationLoadingState: (true, true)
         default: (false, viewModel.isPhotoLimitReached)
         }
 
@@ -18,43 +17,32 @@ struct ScanScreenView: DViewProtocol {
             leading: {
                 DButton(
                     image: .hambergerMenu,
-                    accessibilityIdentifier: "scan.settings",
                     action: viewModel.onTapSettings,
+                    isDisabled:
+                    isProcessing,
+                    accessibilityIdentifier: "scan.settings",
                 )
                 .dStyle(
                     .circle,
-                )
-
-                .disabled(
-                    isProcessing,
                 )
             },
             titleContent: {
                 DButton(
                     image: .down,
                     title: viewModel.usExaminationType.localizedTitle,
-                    accessibilityIdentifier: "scan.type",
                     action: viewModel.onTapUSExaminationType,
+                    isDisabled:
+                    isProcessing,
+                    accessibilityIdentifier: "scan.type",
                 )
                 .dStyle(
                     .primaryChip,
-                )
-
-                .disabled(
-                    isProcessing,
                 )
                 .contentTransition(
                     .opacity,
                 )
             },
             onTapBody: viewModel.unfocus,
-            keyboardToolbar: {
-                if focus != nil {
-                    ScanKeyboardToolbarView(
-                        isProcessing: isProcessing,
-                    )
-                }
-            },
             content: { toolbarHeight, _ in
                 ZStack(
                     alignment: .bottom,
@@ -65,14 +53,19 @@ struct ScanScreenView: DViewProtocol {
                         isProcessing: isProcessing,
                         isMediaSelectionDisabled: isMediaSelectionDisabled,
                     )
-                    if !(viewModel.state is ScanInitializationFailedState) {
-                        ScanBottomView()
-                    }
+                    ScanBottomView()
                 }
                 .frame(
                     maxWidth: .infinity,
                     maxHeight: .infinity,
                 )
+            },
+            keyboardToolbar: {
+                if focus != nil {
+                    ScanKeyboardToolbarView(
+                        isProcessing: isProcessing,
+                    )
+                }
             },
         )
         .onSubmit {
@@ -100,6 +93,7 @@ struct ScanScreenView: DViewProtocol {
         }
         .onAppear {
             viewModel.onAppear()
+            viewModel.onResume()
         }
         .environmentObject(
             viewModel,

@@ -27,7 +27,7 @@
             model.onAppear()
             await preview.value
             #expect(
-                model.state is ManageSubscriptionFailedState,
+                model.state is ManageSubscriptionErrorState,
             )
             model.onDisappear()
         }
@@ -233,7 +233,7 @@
                 )
             case .failed, .operationFailed:
                 #expect(
-                    model.state is ManageSubscriptionFailedState,
+                    model.state is ManageSubscriptionErrorState,
                 )
             case .inactive:
                 #expect(
@@ -265,7 +265,7 @@
             model.onAppear()
             await model.lastTask?.value
             #expect(
-                model.state is ManageSubscriptionFailedState,
+                model.state is ManageSubscriptionErrorState,
             )
             #expect(
                 model.subscriptionStatus?.type == .pro,
@@ -296,7 +296,7 @@
             model.onAppear()
             await model.lastTask?.value
             #expect(
-                model.state is ManageSubscriptionFailedState && model.subscriptionStatus?.type == .pro,
+                model.state is ManageSubscriptionErrorState && model.subscriptionStatus?.type == .pro,
             )
             model.onDisappear()
         }
@@ -328,7 +328,7 @@
             model.onTapManageSubscription()
             await model.operationTask?.value
             let failed = try #require(
-                model.state as? ManageSubscriptionFailedState,
+                model.state as? ManageSubscriptionErrorState,
             )
             #expect(
                 (failed.previousState as? ManageSubscriptionActiveState)?.status == before.status,
@@ -366,7 +366,7 @@
             model.onAppear()
             await model.lastTask?.value
             #expect(
-                model.state is ManageSubscriptionFailedState,
+                model.state is ManageSubscriptionErrorState,
             )
             model.onTapRetry()
             await model.lastTask?.value

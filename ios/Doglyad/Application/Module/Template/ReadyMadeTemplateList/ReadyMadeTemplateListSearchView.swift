@@ -37,7 +37,7 @@ struct ReadyMadeTemplateListSearchView: DViewProtocol {
                 .horizontal,
                 size.s16,
             )
-        case _ as ReadyMadeTemplateListLoadingState, _ as ReadyMadeTemplateListFailedState:
+        case _ as ReadyMadeTemplateListLoadingState, _ as ReadyMadeTemplateListErrorState:
             EmptyView()
         default: EmptyView()
         }

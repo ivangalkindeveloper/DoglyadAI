@@ -1,6 +1,5 @@
 struct AnalyticsParameters {
     static let empty = AnalyticsParameters()
-
     private let values: [AnalyticsParameter: AnalyticsValue]
 
     init(

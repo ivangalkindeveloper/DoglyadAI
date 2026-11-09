@@ -10,6 +10,8 @@
 # Options (inferred from existing sources — keep in sync with the code style)
 --semicolons never
 --enable wrapConditionalBodies
+# SwiftSyntax owns member spacing, including consecutive closure-valued fields.
+--disable blankLinesBetweenScopes
 --wrap-collections before-first
 --wrap-arguments before-first
 --wrap-parameters before-first

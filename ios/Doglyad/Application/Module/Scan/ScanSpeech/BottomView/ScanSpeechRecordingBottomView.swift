@@ -12,7 +12,7 @@ struct ScanSpeechRecordingBottomView: DViewProtocol {
             (.play, l10n[
                 .scanSpeechRecordingStartButton,
             ], false)
-        case _ as ScanSpeechRecordingPreparationLoadingState, _ as ScanSpeechTranscriptionLoadingState, _ as ScanSpeechAutomaticParsingLoadingState:
+        case _ as ScanSpeechRecordingPreparationLoadingState, _ as ScanSpeechTranscriptionLoadingState:
             (.check, l10n[
                 .scanSpeechRecordingParseButton,
             ], true)

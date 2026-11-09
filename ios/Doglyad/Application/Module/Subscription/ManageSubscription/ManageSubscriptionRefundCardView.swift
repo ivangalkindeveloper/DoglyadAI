@@ -16,6 +16,7 @@ struct ManageSubscriptionRefundCardView: DViewProtocol {
                 ],
                 description: viewModel.refundDescription,
                 action: viewModel.onTapRefund,
+                isDisabled: viewModel.isProcessing,
             )
         default: EmptyView()
         }
