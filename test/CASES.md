@@ -4,7 +4,7 @@
 
 Список создаёт `python3 test/scripts/catalog.py`. Это перечень проверок, а не результат запуска.
 
-Платформа: iOS. Модулей: 41. Функциональных кейсов с вводным сценарием: 129. Кейсов отображения: 231.
+Платформа: iOS. Модулей: 41. Функциональных кейсов с вводным сценарием: 129. Кейсов отображения: 235.
 
 ## Функциональные сценарии
 
@@ -192,10 +192,12 @@
 | Scan | [04 ScanInitializationErrorState DraftReadFailed ScrollEnd](modules/Scan/atlas/atlas-scan-844d87fb52.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Scan | [05 ScanInitialState RestoredDraft](modules/Scan/atlas/atlas-scan-0551015f9a.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Scan | [06 ScanInitialState RestoredDraft ScrollEnd](modules/Scan/atlas/atlas-scan-c5b63118ec.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
-| Scan | [07 ScanGenerationLoadingState GeneratingReport](modules/Scan/atlas/atlas-scan-53ce7b6acb.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
-| Scan | [08 ScanGenerationLoadingState GeneratingReport ScrollEnd](modules/Scan/atlas/atlas-scan-2b52f6f794.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
-| Scan | [09 ScanErrorState GenerationFailed](modules/Scan/atlas/atlas-scan-dd462aebe9.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
-| Scan | [10 ScanErrorState GenerationFailed ScrollEnd](modules/Scan/atlas/atlas-scan-a1ffa711d4.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [07 ScanInitialState PatientNotPrepared](modules/Scan/atlas/atlas-scan-dab9356608.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [08 ScanInitialState PatientNotPrepared ScrollEnd](modules/Scan/atlas/atlas-scan-a21e6963ef.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [09 ScanGenerationLoadingState GeneratingReport](modules/Scan/atlas/atlas-scan-53ce7b6acb.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [10 ScanGenerationLoadingState GeneratingReport ScrollEnd](modules/Scan/atlas/atlas-scan-2b52f6f794.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [11 ScanErrorState GenerationFailed](modules/Scan/atlas/atlas-scan-dd462aebe9.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
+| Scan | [12 ScanErrorState GenerationFailed ScrollEnd](modules/Scan/atlas/atlas-scan-a1ffa711d4.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Menu | [01 MenuContentState HistoryCountAvailable](modules/Menu/atlas/atlas-menu-76d8e41335.yaml) | [Preview](../ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift) |
 | Menu | [02 MenuContentState HistoryCountAvailable ScrollEnd](modules/Menu/atlas/atlas-menu-2c9b354081.yaml) | [Preview](../ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift) |
 | Menu | [03 MenuContentState HistoryCountUnavailable](modules/Menu/atlas/atlas-menu-2858e3b34a.yaml) | [Preview](../ios/Doglyad/Application/Module/Menu/Preview/MenuPreview.swift) |
@@ -339,6 +341,8 @@
 | ScanSpeech | [13 ScanSpeechReviewParsingLoadingState ParsingReviewedTranscript ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-9e9a530152.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [14 ScanSpeechReviewProposalState MultipleFields](modules/ScanSpeech/atlas/atlas-scanspeech-0b84d79e8e.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | ScanSpeech | [15 ScanSpeechReviewProposalState MultipleFields ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-65a5940d07.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [16 ScanSpeechReviewProposalState PatientNotPrepared](modules/ScanSpeech/atlas/atlas-scanspeech-44c2bb22b0.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
+| ScanSpeech | [17 ScanSpeechReviewProposalState PatientNotPrepared ScrollEnd](modules/ScanSpeech/atlas/atlas-scanspeech-7a299652b1.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/ScanSpeech/Preview/ScanSpeechPreview.swift) |
 | PatientConsent | [01 PatientConsentInitialState RequestConsent](modules/PatientConsent/atlas/atlas-patientconsent-65ab0d7fc4.yaml) | [Preview](../ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift) |
 | PatientConsent | [02 PatientConsentInitialState DoNotAskAgainSelected](modules/PatientConsent/atlas/atlas-patientconsent-1e3a9361b8.yaml) | [Preview](../ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift) |
 | PatientConsent | [03 PatientConsentInitialState PreferenceSaveFailed](modules/PatientConsent/atlas/atlas-patientconsent-578517b21f.yaml) | [Preview](../ios/Doglyad/Application/Module/PatientConsent/Preview/PatientConsentPreview.swift) |

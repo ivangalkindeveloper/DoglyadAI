@@ -12,3 +12,4 @@ class USVoiceFieldId(StrEnum):
     PATIENT_WEIGHT_KG = "patient_weight_kg"
     PATIENT_COMPLAINTS = "patient_complaints"
     EXAMINATION_DESCRIPTION = "examination_description"
+    IS_PATIENT_PREPARED_FOR_EXAMINATION = "is_patient_prepared_for_examination"

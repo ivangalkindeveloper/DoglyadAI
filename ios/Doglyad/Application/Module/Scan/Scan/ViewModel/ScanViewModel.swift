@@ -23,6 +23,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
     @NestedObservableObject var patientWeightKGTextController: DTextFieldController
     @NestedObservableObject var patientComplaintsTextController: DTextFieldController
     @NestedObservableObject var examinationDescriptionTextController: DTextFieldController
+    @Published var isPatientPreparedForExamination = true
     @Published var neuralModel: USExaminationNeuralModel
     @Published var template: USExaminationTemplate?
     let environmentType: EnvironmentType
@@ -612,6 +613,10 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         }
     }
 
+    func togglePatientPreparedForExamination() {
+        isPatientPreparedForExamination.toggle()
+    }
+
     func onTapSelectedTemplate() {
         analytics.buttonTapped(
             .scanSelectedTemplate,
@@ -873,6 +878,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         examinationDescriptionTextController.restoreText(
             draftForm.examinationDescription,
         )
+        isPatientPreparedForExamination = draftForm.isPatientPreparedForExamination
     }
 
     func clearDraft() async throws {
@@ -889,6 +895,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             patientWeightKG: patientWeightKGTextController.text,
             patientComplaints: patientComplaintsTextController.text,
             examinationDescription: examinationDescriptionTextController.text,
+            isPatientPreparedForExamination: isPatientPreparedForExamination,
         )
     }
 
@@ -959,6 +966,12 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                 }
                 .eraseToAnyPublisher(),
             examinationDescriptionTextController.$text
+                .dropFirst()
+                .map { _ in
+                    ()
+                }
+                .eraseToAnyPublisher(),
+            $isPatientPreparedForExamination
                 .dropFirst()
                 .map { _ in
                     ()
@@ -1058,6 +1071,9 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             (\.examinationDescriptionTextController, examinationDescriptionTextController.$text.dropFirst().map { _ in
                 ()
             }.eraseToAnyPublisher()),
+            (\.isPatientPreparedForExamination, $isPatientPreparedForExamination.dropFirst().map { _ in
+                ()
+            }.eraseToAnyPublisher()),
             (\.photos, $photos.dropFirst().map { _ in
                 ()
             }.eraseToAnyPublisher()),
@@ -1118,6 +1134,7 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                     patientWeightKG: "",
                     patientComplaints: "",
                     examinationDescription: "",
+                    isPatientPreparedForExamination: true,
                 )
             }
         }
@@ -1155,6 +1172,11 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             \.patientDateOfBirth,
         ) {
             patientDateOfBirth = form.patientDateOfBirth
+        }
+        if !draftRestorationChangedFields.contains(
+            \.isPatientPreparedForExamination,
+        ) {
+            isPatientPreparedForExamination = form.isPatientPreparedForExamination
         }
     }
 
@@ -1425,7 +1447,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             patientName: patientName,
             patientGender: patientGender,
             patientDateOfBirth: patientDateOfBirth,
-            isPatientConsent: true,
             patientHeight: patientHeightCMTextController.value.flatMap(
                 Double.init,
             ),
@@ -1434,6 +1455,8 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
             ),
             patientComplaints: patientComplaintsTextController.value,
             examinationDescription: description,
+            isPatientPreparedForExamination: isPatientPreparedForExamination,
+            isPatientConsent: true,
         )
         let settings = settingsAI
         let template = getSelectedTemplate()?.content
@@ -1565,5 +1588,6 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
         patientWeightKGTextController.clear()
         patientComplaintsTextController.clear()
         examinationDescriptionTextController.clear()
+        isPatientPreparedForExamination = true
     }
 }

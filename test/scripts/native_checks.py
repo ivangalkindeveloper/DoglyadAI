@@ -5,6 +5,11 @@ import json
 import subprocess
 
 REQUIRED_TESTS = [
+    "PatientReadinessTests/readinessRespectsSpeechConfidence(isReliable:)",
+    "PatientReadinessTests/readinessSurvivesReportAndDraftStorage(isPrepared:)",
+    "PatientReadinessTests/voiceReadinessRequiresOneExplicitStatement(scenario:)",
+    "PatientReadinessTests/generatedReadinessCannotInvertNegation()",
+    "ScanDraftRestorationTests/restoredReadinessRemainsFalseUntilFormClear()",
     'StorageConfirmationTests/speechModelDeletionRequiresConfirmationAndCancellationKeepsTheModel()',
     'StorageConfirmationTests/speechModelConfirmationDismissesAndCallsBackOnlyOnce()',
     'PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)',
@@ -124,6 +129,9 @@ TEST_FILTERS = [
 ]
 
 ARGUMENT_COUNTS = {
+    "PatientReadinessTests/readinessRespectsSpeechConfidence(isReliable:)": 2,
+    "PatientReadinessTests/readinessSurvivesReportAndDraftStorage(isPrepared:)": 2,
+    "PatientReadinessTests/voiceReadinessRequiresOneExplicitStatement(scenario:)": 15,
     'PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)': 2,
     'PatientConsentTests/confirmationPersistsChoiceBeforeDismissalAndCallsBackOnce(isDoNotAskAgain:)': 2,
     'ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)': 2,

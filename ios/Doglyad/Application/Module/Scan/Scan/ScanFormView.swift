@@ -32,7 +32,6 @@ struct ScanFormView: DViewProtocol {
                 isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.examinationNumber",
             )
-
             .id(
                 ScanFocus.examinationNumber,
             )
@@ -60,7 +59,6 @@ struct ScanFormView: DViewProtocol {
                 isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.patientName",
             )
-
             .id(
                 ScanFocus.patientName,
             )
@@ -131,7 +129,6 @@ struct ScanFormView: DViewProtocol {
                 isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.patientHeightCM",
             )
-
             .id(
                 ScanFocus.patientHeightCM,
             )
@@ -159,7 +156,6 @@ struct ScanFormView: DViewProtocol {
                 isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.patientWeightKG",
             )
-
             .id(
                 ScanFocus.patientWeightKG,
             )
@@ -185,7 +181,6 @@ struct ScanFormView: DViewProtocol {
                 isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.patientComplaints",
             )
-
             .id(
                 ScanFocus.patientComplaints,
             )
@@ -211,9 +206,24 @@ struct ScanFormView: DViewProtocol {
                 isDisabled: isDisabled,
                 accessibilityIdentifier: "scan.examinationDescription",
             )
-
             .id(
                 ScanFocus.examinationDescription,
+            )
+            .padding(
+                .bottom,
+                size.s4,
+            )
+
+            DToggleCard(
+                title: l10n[
+                    .scanPatientPreparedForExaminationLabel,
+                ],
+                isOn: .constant(
+                    viewModel.isPatientPreparedForExamination,
+                ),
+                action: viewModel.togglePatientPreparedForExamination,
+                isDisabled: isDisabled,
+                accessibilityIdentifier: "scan.isPatientPreparedForExamination",
             )
             .padding(
                 .bottom,

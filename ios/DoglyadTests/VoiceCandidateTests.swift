@@ -584,6 +584,12 @@ final class VoiceCandidateTests: XCTestCase {
                     formatter.string(
                         from: date,
                     )
+                case let .boolean(
+                    value,
+                ):
+                    String(
+                        value,
+                    )
                 case let .number(
                     number,
                 ): number

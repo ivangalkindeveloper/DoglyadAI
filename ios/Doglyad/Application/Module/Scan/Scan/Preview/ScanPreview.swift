@@ -78,7 +78,32 @@
     }
 
     #Preview(
-        "07 ScanGenerationLoadingState GeneratingReport",
+        "07 ScanInitialState PatientNotPrepared",
+    ) {
+        ScanPreviewView(
+            state: ScanInitialState(),
+            isPatientPreparedForExamination: false,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "08 ScanInitialState PatientNotPrepared ScrollEnd",
+    ) {
+        ScanPreviewView(
+            state: ScanInitialState(),
+            isPatientPreparedForExamination: false,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "09 ScanGenerationLoadingState GeneratingReport",
     ) {
         ScanPreviewView(
             state: ScanGenerationLoadingState(
@@ -90,7 +115,7 @@
     }
 
     #Preview(
-        "08 ScanGenerationLoadingState GeneratingReport ScrollEnd",
+        "10 ScanGenerationLoadingState GeneratingReport ScrollEnd",
     ) {
         ScanPreviewView(
             state: ScanGenerationLoadingState(
@@ -103,7 +128,7 @@
     }
 
     #Preview(
-        "09 ScanErrorState GenerationFailed",
+        "11 ScanErrorState GenerationFailed",
     ) {
         ScanPreviewView(
             state: ScanErrorState(
@@ -117,7 +142,7 @@
     }
 
     #Preview(
-        "10 ScanErrorState GenerationFailed ScrollEnd",
+        "12 ScanErrorState GenerationFailed ScrollEnd",
     ) {
         ScanPreviewView(
             state: ScanErrorState(
@@ -132,7 +157,7 @@
     }
 
     #Preview(
-        "11 ScanMediaButtonView AddPhotos",
+        "13 ScanMediaButtonView AddPhotos",
     ) {
         VStack {
             ScanMediaButtonView(

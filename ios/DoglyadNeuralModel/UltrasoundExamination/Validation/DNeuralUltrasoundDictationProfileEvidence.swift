@@ -150,7 +150,7 @@ enum DNeuralUltrasoundDictationProfileEvidence {
                     ),
                     value,
                 )
-            case .examinationDescription:
+            case .examinationDescription, .isPatientPreparedForExamination:
                 return false
             }
         }

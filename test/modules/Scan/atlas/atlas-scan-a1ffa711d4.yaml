@@ -20,4 +20,4 @@ tags:
       id: preview.scrollEnd.ready
     timeout: 30000
 - waitForAnimationToEnd
-- takeScreenshot: 10-Scan-a1ffa711d4
+- takeScreenshot: 12-Scan-a1ffa711d4

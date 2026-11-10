@@ -5,4 +5,5 @@ import Foundation
     case gender(DNeuralVoiceGender)
     case date(Date)
     case number(Double)
+    case boolean(Bool)
 }

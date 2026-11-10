@@ -151,6 +151,9 @@
       "patientIdentityQuote": "(?i)^\\s*patient\\s*[:.,]\\s*[\\p{L}]+(?:\\s+[\\p{L}]+){0,2}[.!]?\\s*$",
       "patientNameCue": "(?i)\\b(?:for|patient(?:\\s+details)?|name|examined|examining|concerns)\\b\\s*(?:is\\s+)?[:.,—–-]?\\s*$",
       "patientNameLabel": "(?:patient)",
+      "patientPreparedEvidence": "\\b(?:the\\s+)?patient\\s+(?:(?:is|was|has\\s+been)\\s+)?(?:fully\\s+)?(?:prepared|ready)\\b(?:\\s+for\\s+(?:the\\s+)?(?:examination|exam|ultrasound))?",
+      "patientReadinessUncertainty": "\\b(?:if|maybe|perhaps|possibly|might|unsure|uncertain|actually|rather|correction)\\b",
+      "patientUnpreparedEvidence": "\\b(?:the\\s+)?patient\\s+(?:(?:is|was|has\\s+been)\\s+)?(?:(?:not\\s+(?:yet\\s+|fully\\s+)?(?:prepared|ready))|unprepared)\\b(?:\\s+for\\s+(?:the\\s+)?(?:examination|exam|ultrasound))?",
       "patientWeightLabel": "(?:weight|(?:weigh|way)(?=\\s*[,.:]?\\s*\\d+(?:[.,]\\d+)?\\s*(?:kg|kilograms?|g|grams?)\\b))",
       "profileExaminationNumber": "examination\\s+number|study\\s+number",
       "profileGender": "male|female",
@@ -198,14 +201,14 @@
       "accuracy": "full only if this field and value are unambiguous in the dictation; otherwise questionable",
       "evidence": "An exact contiguous quote copied from the dictation, with no changed characters",
       "examinationDescription": "Examination description, including any technical details such as device model, probe types, and the number of saved photographs and videos",
-      "fieldId": "One of: examination_number, patient_name, patient_gender, patient_date_of_birth, patient_height_cm, patient_weight_kg, patient_complaints, examination_description",
+      "fieldId": "One of: examination_number, patient_name, patient_gender, patient_date_of_birth, patient_height_cm, patient_weight_kg, patient_complaints, examination_description, is_patient_prepared_for_examination",
       "patientComplaints": "Patient complaints",
       "patientDateOfBirth": "Patient date of birth in the following format YYYY-MM-DD",
       "patientGender": "Patient gender",
       "patientHeightCM": "Patient height in centimeters",
       "patientName": "Patient name, number, or nickname",
       "patientWeightKG": "Patient weight in kilograms",
-      "value": "The proposed value as text. Preserve leading zeros in examination_number."
+      "value": "The proposed value as text. Preserve leading zeros in examination_number. For is_patient_prepared_for_examination use only the strings \"true\" or \"false\" from an explicit patient preparation statement."
     },
     "shortUnits": {
       "milliliter": "ml",

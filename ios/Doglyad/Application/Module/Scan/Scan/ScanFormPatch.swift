@@ -14,6 +14,7 @@ enum ScanFormPatch {
         var patientWeightKG = form.patientWeightKG
         var patientComplaints = form.patientComplaints
         var examinationDescription = form.examinationDescription
+        var isPatientPreparedForExamination = form.isPatientPreparedForExamination
         var seen = Set<DNeuralUltrasoundVoiceFieldId>()
 
         for proposal in proposals {
@@ -88,6 +89,13 @@ enum ScanFormPatch {
                     return nil
                 }
                 examinationDescription = value
+            case .isPatientPreparedForExamination:
+                guard case let .boolean(
+                    value,
+                ) = proposal.value else {
+                    return nil
+                }
+                isPatientPreparedForExamination = value
             }
         }
 
@@ -100,6 +108,7 @@ enum ScanFormPatch {
             patientWeightKG: patientWeightKG,
             patientComplaints: patientComplaints,
             examinationDescription: examinationDescription,
+            isPatientPreparedForExamination: isPatientPreparedForExamination,
         )
     }
 }

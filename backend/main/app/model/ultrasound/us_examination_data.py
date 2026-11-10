@@ -15,7 +15,6 @@ class USExaminationData(BaseModel):
     patientName: str
     patientGender: Literal["male", "female"]
     patientDateOfBirth: datetime
-    isPatientConsent: bool
     patientHeight: float | None = Field(
         default=None,
         gt=0,
@@ -30,6 +29,8 @@ class USExaminationData(BaseModel):
     )
     patientComplaints: str | None = None
     examinationDescription: str
+    isPatientPreparedForExamination: bool
+    isPatientConsent: bool
 
     @field_validator(
         "photos",

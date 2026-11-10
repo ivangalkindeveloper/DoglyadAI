@@ -23,6 +23,7 @@ public actor DExaminationDraftStore {
             draft.patientWeightKG = value.patientWeightKG
             draft.patientComplaints = value.patientComplaints
             draft.examinationDescription = value.examinationDescription
+            draft.isPatientPreparedForExamination = value.isPatientPreparedForExamination
         } else {
             modelContext.insert(
                 value,

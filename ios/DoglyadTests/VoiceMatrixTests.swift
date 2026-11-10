@@ -684,6 +684,7 @@ final class VoiceMatrixTests: XCTestCase {
             patientWeightKG: "99",
             patientComplaints: "KEEP-COMPLAINTS",
             examinationDescription: "KEEP-DESCRIPTION",
+            isPatientPreparedForExamination: true,
         )
         let engine: DSpeechEngine? = switch input[
             "recognizer",
@@ -885,6 +886,12 @@ final class VoiceMatrixTests: XCTestCase {
         case let .text(
             value,
         ): value
+        case let .boolean(
+            value,
+        ):
+            String(
+                value,
+            )
         case let .number(
             value,
         ): value

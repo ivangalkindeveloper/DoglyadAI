@@ -31,7 +31,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                 }
                 let isClinical = switch candidate.id {
                 case .patientComplaints, .examinationDescription: true
-                case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG: false
+                case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .isPatientPreparedForExamination: false
                 }
                 if isGenerated, isClinical {
                     let isEquivalent = equivalent(
@@ -109,7 +109,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                                 warnings: current.warnings,
                             )
                         }
-                    case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG:
+                    case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .isPatientPreparedForExamination:
                         break
                     }
                     return
@@ -157,7 +157,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                                 }
                             }
                     case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-                         .patientHeightCM, .patientWeightKG, .examinationDescription: false
+                         .patientHeightCM, .patientWeightKG, .examinationDescription, .isPatientPreparedForExamination: false
                     }
                     if !current.warnings.isEmpty,
                        (isExplicit && candidate.warnings.isEmpty) || isComplaintBounded,
@@ -174,7 +174,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                         selected = current
                     }
                 case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-                     .patientHeightCM, .patientWeightKG:
+                     .patientHeightCM, .patientWeightKG, .isPatientPreparedForExamination:
                     selected = current
                 }
                 byId[
@@ -251,7 +251,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
                         accuracy: field.accuracy,
                         warnings: field.warnings,
                     )
-                case .examinationNumber, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription:
+                case .examinationNumber, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
                     return field
                 }
             },
@@ -301,7 +301,7 @@ enum DNeuralUltrasoundDictationProposalReconciler {
         switch fieldId {
         case .examinationNumber: return false
         case .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM,
-             .patientWeightKG, .patientComplaints, .examinationDescription: break
+             .patientWeightKG, .patientComplaints, .examinationDescription, .isPatientPreparedForExamination: break
         }
         guard case let .text(
             firstText,

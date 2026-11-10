@@ -98,6 +98,7 @@ class RegressionObserver:
                             "patientName",
                             "examinationNumber",
                             "usExaminationTypeId",
+                            "isPatientPreparedForExamination",
                         )
                         if key in data
                     }
@@ -111,6 +112,7 @@ class RegressionObserver:
                                 "transcript",
                                 "selectedNeuralModelId",
                                 "usExaminationTypeId",
+                            "isPatientPreparedForExamination",
                             )
                             if key in body
                         }

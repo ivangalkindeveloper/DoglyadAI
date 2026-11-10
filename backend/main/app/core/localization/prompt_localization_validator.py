@@ -23,6 +23,8 @@ class PromptLocalizationValidator:
             "reportNoRecommendationsPrompt",
             "reportPatientComplaintsPrompt",
             "reportPatientHeightPrompt",
+            "reportPatientPreparedPrompt",
+            "reportPatientUnpreparedPrompt",
             "reportPatientWeightPrompt",
             "reportPhotoIdentityPrompt",
             "reportPhotoRemarkPointDescriptionSchemaDescription",

@@ -919,6 +919,12 @@ final class VoiceEndToEndTests: XCTestCase {
         case let .text(
             value,
         ): value
+        case let .boolean(
+            value,
+        ):
+            String(
+                value,
+            )
         case let .number(
             value,
         ): value
@@ -969,6 +975,7 @@ final class VoiceEndToEndTests: XCTestCase {
             patientWeightKG: "99",
             patientComplaints: "KEEP-COMPLAINTS",
             examinationDescription: "KEEP-DESCRIPTION",
+            isPatientPreparedForExamination: true,
         )
     }
 

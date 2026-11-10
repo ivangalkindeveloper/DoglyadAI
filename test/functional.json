@@ -52,7 +52,12 @@
       "screen": "ReportReceived",
       "module": "ReportReceived",
       "subscriptionProfile": "pro",
-      "dependsOn": []
+      "dependsOn": [],
+      "backendAssertions": {
+        "examinationData": {
+          "isPatientPreparedForExamination": true
+        }
+      }
     },
     {
       "id": "e2e-reportreceived-partial-retry",

@@ -16,6 +16,7 @@ struct USExaminationDraftForm: Equatable, Sendable {
     let patientWeightKG: String
     let patientComplaints: String
     let examinationDescription: String
+    let isPatientPreparedForExamination: Bool
 }
 
 extension USExaminationDraft {
@@ -54,6 +55,7 @@ extension USExaminationDraftForm {
             patientWeightKG: db.patientWeightKG,
             patientComplaints: db.patientComplaints,
             examinationDescription: db.examinationDescription,
+            isPatientPreparedForExamination: db.isPatientPreparedForExamination,
         )
     }
 
@@ -69,6 +71,7 @@ extension USExaminationDraftForm {
             patientWeightKG: patientWeightKG,
             patientComplaints: patientComplaints,
             examinationDescription: examinationDescription,
+            isPatientPreparedForExamination: isPatientPreparedForExamination,
             photos: photos,
         )
     }

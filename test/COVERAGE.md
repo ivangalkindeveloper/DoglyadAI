@@ -4,7 +4,7 @@
 
 `maestro` — весь сценарий связан с flows; `mixed` — flows и обязательные проверки XCTest; `partial` — автоматизирована часть; `manual` — нужна ручная проверка или подготовка стенда.
 
-Описанных сценариев: 99. Функциональных Maestro-кейсов: 129. Preview учитываются отдельно и не закрывают функциональные пробелы.
+Описанных сценариев: 100. Функциональных Maestro-кейсов: 129. Preview учитываются отдельно и не закрывают функциональные пробелы.
 
 | Модуль | Сценариев | Maestro | Maestro + XCTest | Частично | Вручную / нужен стенд |
 |---|---:|---:|---:|---:|---:|
@@ -15,7 +15,7 @@
 | [WebDocument](modules/WebDocument/README.md) | 2 | 1 | 1 | 0 | 0 |
 | [SelectUSExaminationType](modules/SelectUSExaminationType/README.md) | 2 | 1 | 1 | 0 | 0 |
 | [Paywall](modules/Paywall/README.md) | 4 | 2 | 2 | 0 | 0 |
-| [Scan](modules/Scan/README.md) | 9 | 5 | 4 | 0 | 0 |
+| [Scan](modules/Scan/README.md) | 10 | 5 | 5 | 0 | 0 |
 | [Menu](modules/Menu/README.md) | 2 | 2 | 0 | 0 | 0 |
 | [History](modules/History/README.md) | 4 | 3 | 1 | 0 | 0 |
 | [ReportDetail](modules/ReportDetail/README.md) | 3 | 3 | 0 | 0 | 0 |

@@ -3,7 +3,7 @@ import SwiftUI
 public struct DToggleCard: DViewProtocol {
     @EnvironmentObject public var theme: DTheme
     private let title: LocalizedStringResource
-    private let description: LocalizedStringResource
+    private let description: LocalizedStringResource?
     @Binding private var isOn: Bool
     private let action: () -> Void
     private let isDisabled: Bool
@@ -12,7 +12,7 @@ public struct DToggleCard: DViewProtocol {
 
     public init(
         title: LocalizedStringResource,
-        description: LocalizedStringResource,
+        description: LocalizedStringResource? = nil,
         isOn: Binding<Bool>,
         action: @escaping () -> Void,
         isDisabled: Bool = false,
@@ -73,17 +73,19 @@ public struct DToggleCard: DViewProtocol {
                 accessibilityTraits: isOn ? .isSelected : [],
             )
 
-            DText(
-                description,
-            )
-            .dStyle(
-                font: typography.textXSmall,
-                color: color.grayscalePlacehold,
-            )
-            .padding(
-                .horizontal,
-                size.s8,
-            )
+            if let description {
+                DText(
+                    description,
+                )
+                .dStyle(
+                    font: typography.textXSmall,
+                    color: color.grayscalePlacehold,
+                )
+                .padding(
+                    .horizontal,
+                    size.s8,
+                )
+            }
         }
     }
 }

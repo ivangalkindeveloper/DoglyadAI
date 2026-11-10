@@ -53,6 +53,7 @@ struct ScanDraftRestorationTests {
         )
         model.patientDateOfBirth = date
         model.patientGender = .female
+        model.togglePatientPreparedForExamination()
         let type = USExaminationType(
             id: "new-local-selection",
             title: "New selection",
@@ -80,7 +81,7 @@ struct ScanDraftRestorationTests {
             model.patientComplaintsTextController.text == "Новые жалобы",
         )
         #expect(
-            model.patientGender == .female && model.patientDateOfBirth == date,
+            model.patientGender == .female && model.patientDateOfBirth == date && !model.isPatientPreparedForExamination,
         )
         #expect(
             model.usExaminationType == type && model.photos == Array(
@@ -149,6 +150,43 @@ struct ScanDraftRestorationTests {
         )
         #expect(
             model.state is ScanInitialState,
+        )
+        model.stopDraftAutosave()
+        model.onDisappear()
+    }
+
+    @Test
+    func restoredReadinessRemainsFalseUntilFormClear() async throws {
+        let repository = StateDraftRepository()
+        let draft = ModulePreviewFactory.draft.toDB()
+        draft.isPatientPreparedForExamination = false
+        repository.draft = USExaminationDraft(
+            form: USExaminationDraftForm.fromDB(
+                draft,
+            ),
+            photos: [],
+        )
+        let model = makeModel(
+            container: makeStateTestContainer(
+                reportRepository: StateReportRepository(),
+                draftRepository: repository,
+            ),
+        )
+        #expect(
+            model.isPatientPreparedForExamination,
+        )
+        model.onAppear()
+        await model.draftRestorationTask?.value
+        #expect(
+            !model.isPatientPreparedForExamination,
+        )
+        #expect(
+            !model.makeDraftSnapshot().isPatientPreparedForExamination,
+        )
+        model.onTapClear()
+        await model.lastTask?.value
+        #expect(
+            model.isPatientPreparedForExamination,
         )
         model.stopDraftAutosave()
         model.onDisappear()

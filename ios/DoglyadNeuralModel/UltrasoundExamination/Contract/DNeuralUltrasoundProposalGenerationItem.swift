@@ -61,7 +61,7 @@ struct DNeuralUltrasoundProposalGenerationItem: Codable, Sendable {
                 )
             }
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-             .patientComplaints, .examinationDescription:
+             .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
             value = try container.decode(
                 String.self,
                 forKey: .value,
@@ -105,7 +105,7 @@ struct DNeuralUltrasoundProposalGenerationItem: Codable, Sendable {
                 forKey: .value,
             )
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-             .patientComplaints, .examinationDescription:
+             .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
             try container.encode(
                 value,
                 forKey: .value,

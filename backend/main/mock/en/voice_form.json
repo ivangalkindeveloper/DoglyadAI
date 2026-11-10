@@ -1,5 +1,5 @@
 {
-    "transcript": "Examination number 123. Patient John Smith. Male. Date of birth January 15, 1985. Height 180 centimeters. Weight 75 kilograms. Complaints: abdominal pain. Examination description: liver contours are smooth, echogenicity is unchanged.",
+    "transcript": "Examination number 123. Patient John Smith. Male. Date of birth January 15, 1985. Height 180 centimeters. Weight 75 kilograms. Complaints: abdominal pain. Examination description: liver contours are smooth, echogenicity is unchanged. The patient is not prepared for the examination.",
     "generation": [
         {
             "field_id": "examination_number",
@@ -47,6 +47,12 @@
             "field_id": "examination_description",
             "value": "liver contours are smooth, echogenicity is unchanged.",
             "evidence": "Examination description: liver contours are smooth, echogenicity is unchanged.",
+            "accuracy": "full"
+        },
+        {
+            "field_id": "is_patient_prepared_for_examination",
+            "value": "false",
+            "evidence": "The patient is not prepared for the examination",
             "accuracy": "full"
         }
     ]

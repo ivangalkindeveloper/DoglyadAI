@@ -449,7 +449,7 @@ def test_string_measurement_is_rejected_by_generation_contract() -> None:
 def test_generation_schema_caps_repeated_items() -> None:
     schema = USVoiceFormGeneration.model_json_schema()
     assert schema["type"] == "array"
-    assert schema["maxItems"] == 8
+    assert schema["maxItems"] == 9
     variants = [
         schema["$defs"][
             item["$ref"].split(
@@ -472,6 +472,7 @@ def test_generation_schema_caps_repeated_items() -> None:
     }
     assert by_field["patient_weight_kg"]["properties"]["value"]["type"] == "number"
     assert by_field["patient_height_cm"]["properties"]["value"]["type"] == "number"
+    assert by_field["is_patient_prepared_for_examination"]["properties"]["value"]["enum"] == ["true", "false"]
     assert by_field["patient_name"]["properties"]["value"]["type"] == "string"
     assert by_field["patient_gender"]["properties"]["value"]["enum"] == ["male", "female"]
     assert by_field["patient_date_of_birth"]["properties"]["value"]["pattern"] == r"^\d{4}-\d{2}-\d{2}$"

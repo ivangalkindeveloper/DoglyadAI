@@ -104,6 +104,22 @@ def labeled_clinical_text(
             ],
             key=lambda marker: marker.start(),
         )
+    markers = sorted(
+        [
+            *markers,
+            *localization.pattern(
+                "patientPreparedEvidence",
+            ).finditer(
+                transcript,
+            ),
+            *localization.pattern(
+                "patientUnpreparedEvidence",
+            ).finditer(
+                transcript,
+            ),
+        ],
+        key=lambda marker: marker.start(),
+    )
     fields = [
         localization.labelFields[marker["label"].casefold()]
         if "label" in marker.groupdict()

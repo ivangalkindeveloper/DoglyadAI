@@ -36,12 +36,13 @@ struct ScanPatientConsentTests {
             router: router,
             onStart: { request in
                 #expect(
-                    request.examinationData.isPatientConsent,
+                    request.examinationData.isPatientConsent && !request.examinationData.isPatientPreparedForExamination,
                 )
                 generations += 1
                 return ModulePreviewFactory.report
             },
         )
+        model.isPatientPreparedForExamination = false
         model.onTapScan()
         await model.lastTask?.value
         if isNeedPatientConsent {

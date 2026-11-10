@@ -140,6 +140,9 @@ final class DictationResponseReplayTests: XCTestCase {
                 case let .text(
                     text,
                 ): text
+                case let .boolean(
+                    value,
+                ): value
                 case let .number(
                     number,
                 ): number

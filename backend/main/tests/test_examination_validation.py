@@ -20,8 +20,9 @@ def examination() -> dict[str, Any]:
         "patientName": "Test Patient",
         "patientGender": "female",
         "patientDateOfBirth": "1990-01-01T00:00:00Z",
-        "isPatientConsent": True,
         "examinationDescription": "Synthetic examination",
+        "isPatientPreparedForExamination": True,
+        "isPatientConsent": True,
     }
 
 

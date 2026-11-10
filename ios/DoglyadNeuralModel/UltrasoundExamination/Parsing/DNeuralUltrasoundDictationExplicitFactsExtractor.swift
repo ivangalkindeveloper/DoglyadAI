@@ -15,6 +15,20 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
         let text = request.text
         let locale = request.locale
         var fields: [DNeuralUltrasoundVoiceFieldProposal] = []
+        if let readiness = DNeuralUltrasoundPatientReadiness.parse(
+            text,
+            localization: localization,
+        ) {
+            append(
+                .isPatientPreparedForExamination,
+                .boolean(
+                    readiness.isPrepared,
+                ),
+                quote: readiness.quote,
+                to: &fields,
+                request: request,
+            )
+        }
         let digit = localization.pattern(
             .identifierDigit,
         )
@@ -77,6 +91,13 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
         if let match = firstUniqueMatch(
             namePatterns,
             in: text,
+        ), ![DNeuralUltrasoundDictationLocalizationKey.patientPreparedEvidence, .patientUnpreparedEvidence].contains(
+            where: {
+                localization.matches(
+                    $0,
+                    match.quote,
+                )
+            },
         ) {
             append(
                 .patientName,
@@ -372,7 +393,7 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
                 return
             }
         case .patientName, .patientDateOfBirth, .patientHeightCM,
-             .patientWeightKG, .patientComplaints, .examinationDescription:
+             .patientWeightKG, .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
             break
         }
         fields.append(

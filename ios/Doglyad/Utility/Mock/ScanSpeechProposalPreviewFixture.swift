@@ -6,6 +6,7 @@
     @MainActor
     struct ScanSpeechProposalPreviewFixture {
         enum Scenario: Hashable {
+            case patientNotPrepared
             case patientName
             case measurement
             case clinicalText
@@ -46,6 +47,14 @@
                 warnings: [.sideMismatch, .negationMismatch, .textChanged],
             )
             let reviewProposals: [DNeuralUltrasoundVoiceFieldProposal] = switch scenario {
+            case .patientNotPrepared:
+                [DNeuralUltrasoundVoiceFieldProposal(
+                    id: .isPatientPreparedForExamination,
+                    value: .boolean(
+                        false,
+                    ),
+                    sourceQuote: "Пациент не подготовлен к исследованию.",
+                )]
             case .patientName: [patientName]
             case .measurement: [measurement]
             case .clinicalText: [clinicalText]
@@ -71,11 +80,11 @@
                         sourceQuote: "Пол мужской.",
                     ),
                 ]
-            case .patientName, .measurement, .clinicalText, .empty: []
+            case .patientNotPrepared, .patientName, .measurement, .clinicalText, .empty: []
             }
             let selectedFieldIds: Set<DNeuralUltrasoundVoiceFieldId> = switch scenario {
             case .multipleFields: [.patientName]
-            case .patientName, .measurement, .clinicalText, .partialResult, .empty: []
+            case .patientNotPrepared, .patientName, .measurement, .clinicalText, .partialResult, .empty: []
             }
             state = ScanSpeechReviewProposalState(
                 proposal: DNeuralUltrasoundDictationProposal(

@@ -26,4 +26,4 @@ tags:
 - assertVisible:
     id: scan.generate
     enabled: true
-- takeScreenshot: 07-Scan-53ce7b6acb
+- takeScreenshot: 09-Scan-53ce7b6acb

@@ -51,6 +51,11 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             (.examinationDescription, localization.pattern(
                 .examinationDescriptionLabel,
             )),
+            (.isPatientPreparedForExamination, "(?:" + localization.pattern(
+                .patientPreparedEvidence,
+            ) + "|" + localization.pattern(
+                .patientUnpreparedEvidence,
+            ) + ")"),
         ]
     }
 
@@ -361,6 +366,21 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         let word = source.substring(
             with: match.range,
         ).lowercased()
+        if id == .patientName {
+            let tail = source.substring(
+                from: match.range.location,
+            )
+            for key in [DNeuralUltrasoundDictationLocalizationKey.patientPreparedEvidence, .patientUnpreparedEvidence] {
+                if let range = tail.range(
+                    of: localization.pattern(
+                        key,
+                    ),
+                    options: [.regularExpression, .caseInsensitive],
+                ), range.lowerBound == tail.startIndex {
+                    return false
+                }
+            }
+        }
         let isAlias = switch id {
         case .patientHeightCM:
             localization.matches(
@@ -373,7 +393,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 word,
             )
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-             .patientComplaints, .examinationDescription: false
+             .patientComplaints, .examinationDescription, .isPatientPreparedForExamination: false
         }
         guard isAlias else {
             return true
@@ -577,7 +597,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     isMeasurementBoundaryRecovered = true
                 }
             case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-                 .patientComplaints, .examinationDescription:
+                 .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
                 break
             }
             let correctedNumber: String = switch entry.id {
@@ -587,7 +607,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     localization: localization,
                 )
             case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-                 .patientHeightCM, .patientWeightKG, .patientComplaints:
+                 .patientHeightCM, .patientWeightKG, .patientComplaints, .isPatientPreparedForExamination:
                 rawValue
             }
             let isNumericSelfCorrectionPresent = correctedNumber != rawValue
@@ -599,7 +619,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     localization: localization,
                 )
             case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-                 .patientHeightCM, .patientWeightKG, .patientComplaints:
+                 .patientHeightCM, .patientWeightKG, .patientComplaints, .isPatientPreparedForExamination:
                 rawValue = correctedNumber
             }
             guard !isUnfinishedDescription(
@@ -638,7 +658,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                     continue
                 }
             case .examinationNumber, .patientName, .patientDateOfBirth, .patientHeightCM,
-                 .patientWeightKG, .patientComplaints, .examinationDescription:
+                 .patientWeightKG, .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
                 break
             }
             if isNumericSelfCorrectionPresent, !warnings.contains(
@@ -712,7 +732,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             switch entry.id {
             case .patientComplaints: true
             case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-                 .patientHeightCM, .patientWeightKG, .examinationDescription: false
+                 .patientHeightCM, .patientWeightKG, .examinationDescription, .isPatientPreparedForExamination: false
             }
         }
         guard !isComplaintPresent else {
@@ -729,14 +749,14 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             switch entry.id {
             case .patientWeightKG: break
             case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-                 .patientHeightCM, .patientComplaints, .examinationDescription: continue
+                 .patientHeightCM, .patientComplaints, .examinationDescription, .isPatientPreparedForExamination: continue
             }
             switch values[
                 index + 1,
             ].id {
             case .examinationDescription: break
             case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-                 .patientHeightCM, .patientWeightKG, .patientComplaints: continue
+                 .patientHeightCM, .patientWeightKG, .patientComplaints, .isPatientPreparedForExamination: continue
             }
             guard let unitPattern = measurementUnitPattern(
                 for: .patientWeightKG,
@@ -893,7 +913,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
         switch id {
         case .patientGender: true
         case .examinationNumber, .patientName, .patientDateOfBirth, .patientHeightCM,
-             .patientWeightKG, .patientComplaints, .examinationDescription: false
+             .patientWeightKG, .patientComplaints, .examinationDescription, .isPatientPreparedForExamination: false
         }
     }
 
@@ -923,6 +943,8 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             ),
             .some(
                 .examinationDescription,
+            ), .some(
+                .isPatientPreparedForExamination,
             ), .none: false
             }
         case .patientDateOfBirth:
@@ -946,10 +968,12 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             ),
             .some(
                 .examinationDescription,
+            ), .some(
+                .isPatientPreparedForExamination,
             ), .none: false
             }
         case .examinationNumber, .patientGender, .patientHeightCM, .patientWeightKG,
-             .patientComplaints, .examinationDescription:
+             .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
             false
         }
     }
@@ -975,7 +999,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 options: .regularExpression,
             ) != nil
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-             .patientComplaints, .examinationDescription: return false
+             .patientComplaints, .examinationDescription, .isPatientPreparedForExamination: return false
         }
     }
 
@@ -1214,6 +1238,8 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
             return .text(
                 raw,
             )
+        case .isPatientPreparedForExamination:
+            return nil
         }
     }
 
@@ -1285,7 +1311,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 unit,
             ) ? 0.001 : 1
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-             .patientComplaints, .examinationDescription:
+             .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
             return nil
         }
         return .number(
@@ -1307,7 +1333,7 @@ enum DNeuralUltrasoundDictationLabeledFormParser {
                 .weightUnits,
             )
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-             .patientComplaints, .examinationDescription:
+             .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
             nil
         }
     }

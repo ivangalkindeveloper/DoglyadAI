@@ -42,7 +42,7 @@ public struct DNeuralUltrasoundVoiceFieldProposalDTO: Decodable, Sendable {
                 ),
             )
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-             .patientComplaints, .examinationDescription:
+             .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
             value = try container.decode(
                 String.self,
                 forKey: .value,

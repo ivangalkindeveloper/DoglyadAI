@@ -10,6 +10,7 @@ import json
 from pathlib import Path
 import shutil
 import subprocess
+import threading
 import xml.etree.ElementTree as ET
 
 from artifacts import TEST, dimensions, sha, suite_hash
@@ -118,6 +119,8 @@ def render(run: Path, config: dict, catalog: dict, workers: int) -> dict:
             maestro_driver_port(22500 + index * 100) for index in range(len(devices))
         ]
 
+        boot_lock = threading.Lock()
+
         def capture(index: int) -> tuple[str, int]:
             device = devices[index]
             folder = run / f"batch-{index + 1}"
@@ -128,8 +131,16 @@ def render(run: Path, config: dict, catalog: dict, workers: int) -> dict:
                     TEST / case["flow"], flows / f"{position:03d}-{case['id']}.yaml"
                 )
             log = folder / "device.log"
-            required(["xcrun", "simctl", "boot", device], log)
-            required(["xcrun", "simctl", "bootstatus", device, "-b"], log, timeout=180)
+            # Fresh iOS devices share system migration services. Finish one boot
+            # before starting the next; Maestro batches still run concurrently.
+            with boot_lock:
+                required(["xcrun", "simctl", "boot", device], log)
+                required(
+                    ["xcrun", "simctl", "bootstatus", device, "-b"],
+                    log,
+                    timeout=300,
+                    progress=f"Booting Preview simulator {index + 1}/{len(devices)}",
+                )
             required(
                 [
                     "xcrun",

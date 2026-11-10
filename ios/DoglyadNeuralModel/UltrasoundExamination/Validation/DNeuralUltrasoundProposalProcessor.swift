@@ -248,7 +248,7 @@ struct DNeuralUltrasoundProposalProcessor {
                 with: "",
                 options: [.regularExpression, .caseInsensitive],
             )
-        case .patientName, .patientGender, .patientDateOfBirth:
+        case .patientName, .patientGender, .patientDateOfBirth, .isPatientPreparedForExamination:
             return value
         }
     }
@@ -390,6 +390,22 @@ struct DNeuralUltrasoundProposalProcessor {
                 sourceQuote,
                 localization: localization,
             )
+        case .isPatientPreparedForExamination:
+            guard case let .boolean(
+                isPrepared,
+            ) = value,
+                let statement = DNeuralUltrasoundPatientReadiness.parse(
+                    request.text,
+                    localization: localization,
+                ),
+                let quote = DNeuralUltrasoundPatientReadiness.parse(
+                    sourceQuote,
+                    localization: localization,
+                )
+            else {
+                return true
+            }
+            return statement.isPrepared != isPrepared || quote.isPrepared != isPrepared
         }
     }
 

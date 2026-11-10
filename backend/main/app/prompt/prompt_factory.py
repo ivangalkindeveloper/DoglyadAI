@@ -95,6 +95,12 @@ class PromptFactory:
             patientGender=examination.patientGender,
             patientDateOfBirth=examination.patientDateOfBirth.date().isoformat(),
         )
+        prompt += self._configuration.text(
+            self._language_code,
+            "reportPatientPreparedPrompt"
+            if examination.isPatientPreparedForExamination
+            else "reportPatientUnpreparedPrompt",
+        )
         sections = (
             ("reportPatientHeightPrompt", examination.patientHeight),
             ("reportPatientWeightPrompt", examination.patientWeight),

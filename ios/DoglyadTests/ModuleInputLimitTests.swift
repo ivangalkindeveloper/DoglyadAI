@@ -124,6 +124,7 @@ struct ModuleInputLimitTests {
             patientWeightKG: "80.125",
             patientComplaints: "Original complaints",
             examinationDescription: "Original examination description",
+            isPatientPreparedForExamination: true,
         )
         model.applyDraft(
             USExaminationDraft(

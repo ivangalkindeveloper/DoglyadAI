@@ -10,6 +10,7 @@
         @EnvironmentObject private var messager: DMessager
         let state: any ScanStateProtocol
         var isDraftPresent = true
+        var isPatientPreparedForExamination = true
 
         var body: some View {
             let isErrorPresented = switch state {
@@ -60,6 +61,8 @@
 
                 model.photos = ModulePreviewFactory.photos
             }
+
+            model.isPatientPreparedForExamination = isPatientPreparedForExamination
 
             model.preparePreview(
                 state: state,

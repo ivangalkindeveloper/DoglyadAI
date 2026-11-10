@@ -43,6 +43,8 @@ tags: [e2e, ScanSpeech]
 - tapOn: {id: scanSpeech.proposal.patientName.selected.true}
 - assertNotVisible: ^Применить выбранные поля$
 - tapOn: {id: scanSpeech.proposal.patientName.selected.false}
+# The negative readiness statement passes the same confidence gate as other structured fields.
+- assertNotVisible: {id: scanSpeech.proposal.isPatientPreparedForExamination.selected.false}
 - takeScreenshot: ScanSpeech-selected-name
 - tapOn: ^Применить выбранные поля$
 - assertVisible: {id: scan.settings}
@@ -62,6 +64,10 @@ tags: [e2e, ScanSpeech]
     direction: DOWN
 - assertVisible: {id: scan.patientComplaints, text: '^Пациент жалуется на боли в области\.\.\.$'}
 - assertNotVisible: {id: scan.patientComplaints, text: '^боль в животе$'}
+- scrollUntilVisible:
+    element: {id: scan.isPatientPreparedForExamination}
+    direction: DOWN
+- assertVisible: {id: scan.isPatientPreparedForExamination, selected: false}
 - takeScreenshot: ScanSpeech-only-selected-fields-applied
 - runFlow: ../../../maestro/support/main.yaml
 - scrollUntilVisible:

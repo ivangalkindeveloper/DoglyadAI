@@ -4,20 +4,26 @@ source: ios/Doglyad/Application/Module/Scan/Scan
 cases:
 - id: Scan.patient-consent
   title: Проверить согласие до запуска генерации
-  profiles: [pro]
+  profiles:
+  - pro
   preconditions:
   - Валидная форма Scan; отдельно isNeedPatientConsent true и false
   steps:
   - action: Нажать генерацию с true, закрыть шторку, повторить и подтвердить
-    expect: До подтверждения генерации нет. Отмена сохраняет форму. Подтверждение продолжает обычную проверку доступа и генерацию.
+    expect: До подтверждения генерации нет. Отмена сохраняет форму. Подтверждение продолжает обычную проверку
+      доступа и генерацию.
   - action: Нажать генерацию с false
-    expect: Шторки нет; генерация продолжается по обычному сценарию. Новый снимок исследования сохраняет isPatientConsent true; настройка запроса согласия и признак в исследовании независимы.
+    expect: Шторки нет; генерация продолжается по обычному сценарию. Новый снимок исследования сохраняет isPatientConsent
+      true; настройка запроса согласия и признак в исследовании независимы.
   - action: Вызвать ошибку чтения настройки или выйти во время чтения
-    expect: При ошибке форма сохранена и показан DMessager. После выхода поздний результат игнорируется; шторка и генерация не запускаются.
-  covers: [onTapScan]
+    expect: При ошибке форма сохранена и показан DMessager. После выхода поздний результат игнорируется; шторка
+      и генерация не запускаются.
+  covers:
+  - onTapScan
   automation:
     kind: mixed
-    flows: [e2e-reportreceived-generation]
+    flows:
+    - e2e-reportreceived-generation
     nativeTests:
     - ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)
     - PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)
@@ -31,7 +37,9 @@ cases:
   - Новый Scan; активна Pro
   steps:
   - action: Открыть Scan при задержке чтения черновика и начать заполнять форму
-    expect: Поля, выбор типа, фото, настройки, голос и генерация доступны сразу. Черновик заполняет только нетронутые значения и не затирает ввод, включая очищенный текст. До успешного чтения исходный черновик не перезаписывается.
+    expect: Поля, выбор типа, фото, настройки, голос и генерация доступны сразу. Черновик заполняет только
+      нетронутые значения и не затирает ввод, включая очищенный текст. До успешного чтения исходный черновик
+      не перезаписывается.
   - action: Заполнить номер, имя, пол, дату рождения, рост, вес, жалобы и описание
     expect: Поля показывают введённые значения; пол и дата соответствуют селекторам.
   - action: Перейти по полям стрелками и Return, перезапустить приложение
@@ -176,10 +184,12 @@ cases:
   - Управляемый однократный сбой чтения/записи черновика или записи отчёта до постановки задания в backend.
   steps:
   - action: Открыть Scan при сбое инициализации и повторить после восстановления
-    expect: Форма остаётся доступной при ошибке; DMessager показывает сообщение. Кнопки обновления нет; основная генерация, голос и все поля остаются доступны. При возвращении на экран чтение черновика повторяется. Сохранённый черновик восстанавливается, правки после сбоя сохраняются.
+    expect: Форма остаётся доступной при ошибке; DMessager показывает сообщение. Кнопки обновления нет; основная
+      генерация, голос и все поля остаются доступны. При возвращении на экран чтение черновика повторяется.
+      Сохранённый черновик восстанавливается, правки после сбоя сохраняются.
   - action: Вызвать сбой сохранения черновика, затем сбой записи отчёта перед генерацией
-    expect: Показаны ошибки; поля и фотографии остаются. До успешного сохранения отчёта запрос генерации
-      не отправляется.
+    expect: Показаны ошибки; поля и фотографии остаются. До успешного сохранения отчёта запрос генерации не
+      отправляется.
   - action: Устранить сбои и повторить
     expect: Нет дублированных отчётов или незавершённых лишних заданий.
   covers:
@@ -195,7 +205,6 @@ cases:
     nativeTests:
     - ContentDesignTests/scanInitializationRetryPreservesEditsAndRestoresUntouchedDraftFields()
     - ScanDraftRestorationTests/selectedTypeReadFailureKeepsTheStoredDraftIntactUntilRetry()
-
 - id: Scan.settings-dev
   title: Переход в настройки и DEV-заполнение
   profiles:
@@ -214,3 +223,32 @@ cases:
     kind: maestro
     flows:
     - e2e-scan-development-fill-return
+- id: Scan.patient-readiness
+  title: 'Готовность пациента: форма, черновик, диктовка и запрос'
+  profiles:
+  - pro
+  preconditions:
+  - Открыт Scan; голосовой сценарий использует контрольный транскрипт через тестовый адаптер записи
+  steps:
+  - action: Выключить готовность после описания и перезапустить приложение
+    expect: Переключатель выключен; позднее чтение черновика не перезаписывает выбор врача.
+  - action: Разобрать контрольный транскрипт с явной фразой о подготовке или отсутствии подготовки
+    expect: Подтверждённый голосом флаг применяется автоматически при достаточной уверенности распознавания;
+      сомнительный требует выбора врача. Без упоминания подготовки значение не меняется; противоречивый или
+      неуверенный текст не устанавливает готовность.
+  - action: Сгенерировать протокол с выключенной готовностью, затем очистить форму
+    expect: В данных отчёта, БД и JSON запроса сохраняется false. При очистке значение возвращается к true.
+  covers:
+  - togglePatientPreparedForExamination
+  automation:
+    kind: mixed
+    flows:
+    - e2e-scan-draft-persistence
+    - e2e-scanspeech-record-review
+    nativeTests:
+    - PatientReadinessTests/readinessSurvivesReportAndDraftStorage(isPrepared:)
+    - PatientReadinessTests/voiceReadinessRequiresOneExplicitStatement(scenario:)
+    - PatientReadinessTests/generatedReadinessCannotInvertNegation()
+    - ScanDraftRestorationTests/restoredReadinessRemainsFalseUntilFormClear()
+    - ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)
+    - PatientReadinessTests/readinessRespectsSpeechConfidence(isReliable:)

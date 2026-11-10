@@ -161,8 +161,9 @@ def test_oversized_examination_fields_are_rejected_before_generation(
         "patientName": "Test Patient",
         "patientGender": "female",
         "patientDateOfBirth": "1990-01-01T00:00:00Z",
-        "isPatientConsent": True,
         "examinationDescription": "Findings",
+        "isPatientPreparedForExamination": True,
+        "isPatientConsent": True,
     }
     examination[field] = "x" * (maximum + 1)
     client = TestClient(

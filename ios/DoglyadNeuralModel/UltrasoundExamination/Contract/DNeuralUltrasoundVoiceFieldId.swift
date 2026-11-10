@@ -7,32 +7,33 @@
     case patientWeightKG
     case patientComplaints
     case examinationDescription
+    case isPatientPreparedForExamination
 
     var isPatientDateOfBirth: Bool {
         switch self {
         case .patientDateOfBirth: true
-        case .examinationNumber, .patientName, .patientGender, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription: false
+        case .examinationNumber, .patientName, .patientGender, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription, .isPatientPreparedForExamination: false
         }
     }
 
     var isPatientComplaints: Bool {
         switch self {
         case .patientComplaints: true
-        case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .examinationDescription: false
+        case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .examinationDescription, .isPatientPreparedForExamination: false
         }
     }
 
     var isExaminationDescription: Bool {
         switch self {
         case .examinationDescription: true
-        case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .patientComplaints: false
+        case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .patientComplaints, .isPatientPreparedForExamination: false
         }
     }
 
     var isExaminationNumber: Bool {
         switch self {
         case .examinationNumber: true
-        case .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription: false
+        case .patientName, .patientGender, .patientDateOfBirth, .patientHeightCM, .patientWeightKG, .patientComplaints, .examinationDescription, .isPatientPreparedForExamination: false
         }
     }
 
@@ -46,6 +47,7 @@
         case .patientWeightKG: "patient_weight_kg"
         case .patientComplaints: "patient_complaints"
         case .examinationDescription: "examination_description"
+        case .isPatientPreparedForExamination: "is_patient_prepared_for_examination"
         }
     }
 

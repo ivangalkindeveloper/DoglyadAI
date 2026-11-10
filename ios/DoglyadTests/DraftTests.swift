@@ -38,6 +38,7 @@ struct DraftTests {
             patientWeightKG: "60.5",
             patientComplaints: "Complaints",
             examinationDescription: "Description",
+            isPatientPreparedForExamination: true,
         )
         let firstPhotoId = UUID()
         let secondPhotoId = UUID()
@@ -115,6 +116,7 @@ struct DraftTests {
             patientWeightKG: form.patientWeightKG,
             patientComplaints: form.patientComplaints,
             examinationDescription: form.examinationDescription,
+            isPatientPreparedForExamination: true,
         )
         try await store.upsertDraftForm(
             value: updatedForm.toDB(),

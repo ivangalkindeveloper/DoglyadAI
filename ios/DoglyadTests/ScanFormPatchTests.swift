@@ -96,6 +96,7 @@ struct ScanFormPatchTests {
             patientWeightKG: "75",
             patientComplaints: "Нет жалоб",
             examinationDescription: "Старое описание",
+            isPatientPreparedForExamination: true,
         )
     }
 }

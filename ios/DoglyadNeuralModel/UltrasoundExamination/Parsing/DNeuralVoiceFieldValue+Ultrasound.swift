@@ -56,6 +56,17 @@ extension DNeuralVoiceFieldValue {
             return .number(
                 number,
             )
+        case .isPatientPreparedForExamination:
+            guard let value = Bool(
+                trimmed,
+            ) else {
+                throw DNeuralUltrasoundDictationProposalError.invalidValue(
+                    fieldId,
+                )
+            }
+            return .boolean(
+                value,
+            )
         }
     }
 

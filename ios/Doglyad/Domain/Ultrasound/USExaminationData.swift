@@ -8,11 +8,12 @@ struct USExaminationData: Codable, Equatable {
     let patientName: String
     let patientGender: PatientGender
     let patientDateOfBirth: Date
-    let isPatientConsent: Bool
     let patientHeight: Double?
     let patientWeight: Double?
     let patientComplaints: String?
     let examinationDescription: String
+    let isPatientPreparedForExamination: Bool
+    let isPatientConsent: Bool
 }
 
 extension USExaminationData {
@@ -32,11 +33,12 @@ extension USExaminationData {
                 rawValue: db.patientGenderRawValue,
             ) ?? .male,
             patientDateOfBirth: db.patientDateOfBirth,
-            isPatientConsent: db.isPatientConsent,
             patientHeight: db.patientHeight,
             patientWeight: db.patientWeight,
             patientComplaints: db.patientComplaints,
             examinationDescription: db.examinationDescription,
+            isPatientPreparedForExamination: db.isPatientPreparedForExamination,
+            isPatientConsent: db.isPatientConsent,
         )
     }
 
@@ -50,11 +52,12 @@ extension USExaminationData {
             patientName: patientName,
             patientGenderRawValue: patientGender.rawValue,
             patientDateOfBirth: patientDateOfBirth,
-            isPatientConsent: isPatientConsent,
             patientHeight: patientHeight,
             patientWeight: patientWeight,
             patientComplaints: patientComplaints,
             examinationDescription: examinationDescription,
+            isPatientPreparedForExamination: isPatientPreparedForExamination,
+            isPatientConsent: isPatientConsent,
         )
     }
 }

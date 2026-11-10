@@ -83,6 +83,7 @@
             patientWeightKG: "62",
             patientComplaints: "Нет",
             examinationDescription: USExaminationReportPreviewFactory.description,
+            isPatientPreparedForExamination: true,
         )
         static let paywallPlans = development.products.products.map { product in
             SubscriptionPlan(

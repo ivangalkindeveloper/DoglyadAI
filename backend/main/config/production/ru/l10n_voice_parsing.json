@@ -150,6 +150,9 @@
       "patientIdentityQuote": "(?i)^\\s*пациент(?:ка)?\\s*[:.,]\\s*[\\p{L}]+(?:\\s+[\\p{L}]+){0,2}[.!]?\\s*$",
       "patientNameCue": "(?i)\\b(?:пациент(?:а|ка|ки|ке|ку)?|имя(?:\\s+пациента)?|фио|на\\s+при[её]ме)\\b\\s*[:.,—–-]?\\s*$",
       "patientNameLabel": "(?:пациент)",
+      "patientPreparedEvidence": "\\bпациент(?:ка)?\\s*[:—-]?\\s*(?:к\\s+(?:исследованию|узи)\\s+)?(?:(?:был|была)\\s+)?(?:подготовлен(?:а)?|готов(?:а)?)\\b(?:\\s+к\\s+(?:исследованию|узи))?",
+      "patientReadinessUncertainty": "\\b(?:если|возможно|вероятно|кажется|пожалуй|не\\s+уверен(?:а|ы)?|точнее|вернее|поправка)\\b",
+      "patientUnpreparedEvidence": "\\bпациент(?:ка)?\\s*[:—-]?\\s*(?:к\\s+(?:исследованию|узи)\\s+)?(?:(?:был|была)\\s+)?не\\s+(?:(?:был|была)\\s+)?(?:полностью\\s+)?(?:подготовлен(?:а)?|готов(?:а)?)\\b(?:\\s+к\\s+(?:исследованию|узи))?",
       "patientWeightLabel": "(?:вес)",
       "profileExaminationNumber": "номер\\s+исследования",
       "profileGender": "мужчина|женщина|мужской|женский",
@@ -197,14 +200,14 @@
       "accuracy": "full, только если поле и значение однозначно указаны в диктовке; иначе questionable",
       "evidence": "Точная непрерывная цитата из диктовки без изменения символов",
       "examinationDescription": "Описание исследования с техническими подробностями: модель аппарата, типы датчиков, количество сохранённых фотографий и видео",
-      "fieldId": "Ровно одно значение: examination_number, patient_name, patient_gender, patient_date_of_birth, patient_height_cm, patient_weight_kg, patient_complaints, examination_description",
+      "fieldId": "Ровно одно значение: examination_number, patient_name, patient_gender, patient_date_of_birth, patient_height_cm, patient_weight_kg, patient_complaints, examination_description, is_patient_prepared_for_examination",
       "patientComplaints": "Жалобы пациента",
       "patientDateOfBirth": "Дата рождения пациента в формате YYYY-MM-DD",
       "patientGender": "Пол пациента",
       "patientHeightCM": "Рост пациента в сантиметрах",
       "patientName": "Имя, номер или псевдоним пациента",
       "patientWeightKG": "Вес пациента в килограммах",
-      "value": "Извлечённое значение в виде текста. Сохранять ведущие нули в examination_number."
+      "value": "Извлечённое значение в виде текста. Сохранять ведущие нули в examination_number. Для is_patient_prepared_for_examination используй только строки \"true\" или \"false\" по явной фразе о подготовке пациента."
     },
     "shortUnits": {
       "milliliter": "мл",

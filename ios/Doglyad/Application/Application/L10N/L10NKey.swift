@@ -200,6 +200,9 @@ enum L10NKey: String, CaseIterable, Sendable {
     case scanPatientHeightCMLabel
     case scanPatientNameLabel
     case scanPatientNamePlaceholder
+    case scanPatientPreparedForExaminationLabel
+    case scanPatientPreparedLabel
+    case scanPatientUnpreparedLabel
     case scanPatientWeightKGLabel
     case scanSpeechModelCheckingDescription
     case scanSpeechModelDownloadDescription

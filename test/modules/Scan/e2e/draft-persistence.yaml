@@ -71,6 +71,15 @@ tags:
 - eraseText
 - inputText: Regression description
 - runFlow: ../../../maestro/support/hide-keyboard.yaml
+- scrollUntilVisible:
+    element: {id: scan.isPatientPreparedForExamination}
+    direction: DOWN
+- runFlow:
+    when:
+      visible: {id: scan.isPatientPreparedForExamination, selected: true}
+    commands:
+    - tapOn: {id: scan.isPatientPreparedForExamination}
+- assertVisible: {id: scan.isPatientPreparedForExamination, selected: false}
 - runFlow: ../../../maestro/support/main.yaml
 - scrollUntilVisible:
     element:
@@ -120,4 +129,8 @@ tags:
 - assertVisible:
     id: scan.examinationDescription
     text: ^Regression\ description$
+- scrollUntilVisible:
+    element: {id: scan.isPatientPreparedForExamination}
+    direction: DOWN
+- assertVisible: {id: scan.isPatientPreparedForExamination, selected: false}
 - takeScreenshot: Scan-restored-draft

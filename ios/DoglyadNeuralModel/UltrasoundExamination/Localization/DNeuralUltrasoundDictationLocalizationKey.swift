@@ -72,6 +72,9 @@ public enum DNeuralUltrasoundDictationLocalizationKey: String, CaseIterable, Sen
     case patientIdentityQuote
     case patientNameCue
     case patientNameLabel
+    case patientPreparedEvidence
+    case patientReadinessUncertainty
+    case patientUnpreparedEvidence
     case patientWeightLabel
     case profileExaminationNumber
     case profileGender

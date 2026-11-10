@@ -420,6 +420,10 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             container.l10n[
                 .scanExaminationDescriptionLabel,
             ]
+        case .isPatientPreparedForExamination:
+            container.l10n[
+                .scanPatientPreparedForExaminationLabel,
+            ]
         }
     }
 
@@ -470,6 +474,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         _ value: DNeuralVoiceFieldValue,
     ) -> String {
         switch value {
+        case let .boolean(
+            isReady,
+        ):
+            String(
+                localized: container.l10n[
+                    isReady ? .scanPatientPreparedLabel : .scanPatientUnpreparedLabel,
+                ],
+            )
         case let .text(
             text,
         ): text

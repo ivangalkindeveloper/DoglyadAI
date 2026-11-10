@@ -7,6 +7,7 @@ from pydantic import Field, RootModel
 from app.model.ultrasound.us_voice_birth_date_field_generation import USVoiceBirthDateFieldGeneration
 from app.model.ultrasound.us_voice_gender_field_generation import USVoiceGenderFieldGeneration
 from app.model.ultrasound.us_voice_numeric_field_generation import USVoiceNumericFieldGeneration
+from app.model.ultrasound.us_voice_readiness_field_generation import USVoiceReadinessFieldGeneration
 from app.model.ultrasound.us_voice_text_field_generation import USVoiceTextFieldGeneration
 
 
@@ -17,10 +18,11 @@ class USVoiceFormGeneration(
             | USVoiceNumericFieldGeneration
             | USVoiceGenderFieldGeneration
             | USVoiceBirthDateFieldGeneration
+            | USVoiceReadinessFieldGeneration
         ]
     ]
 ):
-    # The eight form fields are the upper bound on useful proposals. Capping the
+    # The nine form fields are the upper bound on useful proposals. Capping the
     # array in the generation grammar prevents repeated entries from exhausting
     # the model's token budget before it closes the JSON document.
     root: list[
@@ -28,8 +30,9 @@ class USVoiceFormGeneration(
         | USVoiceNumericFieldGeneration
         | USVoiceGenderFieldGeneration
         | USVoiceBirthDateFieldGeneration
+        | USVoiceReadinessFieldGeneration
     ] = Field(
-        max_length=8,
+        max_length=9,
     )
 
     @classmethod

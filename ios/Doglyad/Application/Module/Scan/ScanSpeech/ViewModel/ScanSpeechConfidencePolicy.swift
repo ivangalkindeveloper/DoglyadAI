@@ -113,7 +113,7 @@ enum ScanSpeechConfidencePolicy {
                     transcript: transcript,
                 )
             case .examinationNumber, .patientGender, .patientDateOfBirth,
-                 .patientHeightCM, .patientWeightKG:
+                 .patientHeightCM, .patientWeightKG, .isPatientPreparedForExamination:
                 return hasReliableWhisperEvidence(
                     for: field.sourceQuote,
                     transcript: transcript,
@@ -157,7 +157,7 @@ enum ScanSpeechConfidencePolicy {
         case .patientGender, .patientWeightKG:
             evidence = field.sourceQuote
             threshold = minimumQuoteConfidence
-        case .patientName, .patientDateOfBirth, .patientHeightCM, .patientComplaints, .examinationDescription:
+        case .patientName, .patientDateOfBirth, .patientHeightCM, .patientComplaints, .examinationDescription, .isPatientPreparedForExamination:
             return false
         }
         guard uniqueRange(

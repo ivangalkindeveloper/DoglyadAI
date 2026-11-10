@@ -24,6 +24,7 @@ from app.service.dictation.patient_name_metadata_evidence import patient_name_me
 from app.service.dictation.repair_patient_name_evidence import repair_patient_name_evidence
 from app.service.dictation.source_birth_date import source_birth_date
 from app.service.dictation.source_measurement import source_measurement
+from app.service.dictation.source_patient_readiness import source_patient_readiness
 
 
 class VoiceFormValidator:
@@ -76,6 +77,10 @@ class VoiceFormValidator:
             transcript,
             localization=localization,
         )
+        readiness_section = source_patient_readiness(
+            transcript,
+            localization=localization,
+        )
         measurements = {
             field: section
             for field in (USVoiceFieldId.PATIENT_HEIGHT_CM, USVoiceFieldId.PATIENT_WEIGHT_KG)
@@ -90,6 +95,8 @@ class VoiceFormValidator:
         }
 
         for proposal in generated.root:
+            if proposal.field_id is USVoiceFieldId.IS_PATIENT_PREPARED_FOR_EXAMINATION:
+                continue
             if proposal.field_id in measurements:
                 continue
             if proposal.field_id in seen:
@@ -262,7 +269,7 @@ class VoiceFormValidator:
         # A generated quote may contain the entire dictation, including findings.
         excluded_evidence = [
             section[1]
-            for section in (number_section, birthday_section, gender_section, *measurements.values())
+            for section in (number_section, birthday_section, gender_section, readiness_section, *measurements.values())
             if section is not None
         ]
         excluded_evidence.extend(
@@ -293,17 +300,27 @@ class VoiceFormValidator:
                 proposals.remove(
                     item,
                 )
-        return USVoiceFormParseResponse(
-            proposals=[
-                *proposals,
-                *(
-                    item
-                    for field, item in clinical_text.items()
-                    if all(
-                        (proposal.fieldId is not field for proposal in proposals),
-                    )
+        proposals.extend(
+            (
+                item
+                for field, item in clinical_text.items()
+                if all(
+                    (proposal.fieldId is not field for proposal in proposals),
+                )
+            ),
+        )
+        if readiness_section is not None:
+            value, evidence = readiness_section
+            proposals.append(
+                USVoiceFieldProposal(
+                    fieldId=USVoiceFieldId.IS_PATIENT_PREPARED_FOR_EXAMINATION,
+                    value=value,
+                    evidence=evidence,
+                    accuracy=USVoiceFieldAccuracy.FULL,
                 ),
-            ],
+            )
+        return USVoiceFormParseResponse(
+            proposals=proposals,
         )
 
     @staticmethod
@@ -312,6 +329,11 @@ class VoiceFormValidator:
         value: str | float,
     ) -> bool:
         match field:
+            case USVoiceFieldId.IS_PATIENT_PREPARED_FOR_EXAMINATION:
+                return isinstance(
+                    value,
+                    str,
+                ) and value in {"true", "false"}
             case USVoiceFieldId.PATIENT_GENDER:
                 return isinstance(
                     value,

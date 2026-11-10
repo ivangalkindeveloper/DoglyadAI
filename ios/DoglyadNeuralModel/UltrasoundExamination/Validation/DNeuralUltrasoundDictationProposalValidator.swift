@@ -178,6 +178,18 @@ enum DNeuralUltrasoundDictationProposalValidator {
                     .textChanged,
                 )
             }
+        case .isPatientPreparedForExamination:
+            guard case let .boolean(
+                isPrepared,
+            ) = value,
+                let spoken = DNeuralUltrasoundPatientReadiness.parse(
+                    sourceQuote,
+                    localization: localization,
+                ),
+                spoken.isPrepared == isPrepared
+            else {
+                return [.negationMismatch]
+            }
         }
 
         let segment = sourceSegment(
@@ -314,7 +326,7 @@ enum DNeuralUltrasoundDictationProposalValidator {
                     .ambiguousDictation,
                 )
             }
-        case .examinationNumber, .patientName, .patientHeightCM, .patientWeightKG:
+        case .examinationNumber, .patientName, .patientHeightCM, .patientWeightKG, .isPatientPreparedForExamination:
             break
         }
         return Array(
@@ -751,7 +763,7 @@ enum DNeuralUltrasoundDictationProposalValidator {
                 .weightEvidenceCue,
             )
         case .examinationNumber, .patientName, .patientGender, .patientDateOfBirth,
-             .patientComplaints, .examinationDescription: return quote
+             .patientComplaints, .examinationDescription, .isPatientPreparedForExamination: return quote
         }
         guard let start = quote.range(
             of: cue,

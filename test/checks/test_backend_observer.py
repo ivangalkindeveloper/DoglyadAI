@@ -29,7 +29,8 @@ class BackendObserverTests(unittest.TestCase):
                 "template": "template text",
                 "examinationData": {
                     "patientName": "Regression",
-                    "photos": [{"data": "PRIVATE_IMAGE_BYTES"}],
+                    "photos": [{"data": "PRIVATE_IMAGE_BYTES"}],"isPatientPreparedForExamination": False,
+
                 },
             },
         }
@@ -76,6 +77,7 @@ class BackendObserverTests(unittest.TestCase):
             raw = files[0].read_text()
             event = json.loads(raw)
             self.assertEqual(event["request"]["photoCount"], 1)
+            self.assertIs(event["request"]["examinationData"]["isPatientPreparedForExamination"], False)
             self.assertEqual(event["response"]["generationId"], "job")
             self.assertNotIn("PRIVATE_", raw)
             self.assertEqual(sent[0]["status"], 202)
