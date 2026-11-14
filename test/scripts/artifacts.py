@@ -108,9 +108,9 @@ def validate_suite() -> list[dict]:
         if case.get("kind") == "render" and case.get("previewScope") != "module":
             raise ValueError("Only full-module Preview cases can be registered")
         if case.get("subscriptionProfile") == "provider":
-            if case.get("provider") != "yookassa" or not case.get("paymentPlan"):
+            if case.get("provider") != "robokassa" or not case.get("paymentPlan"):
                 raise ValueError(
-                    "Provider cases require an actual YooKassa payment and plan evidence"
+                    "Provider cases require an actual Robokassa payment and plan evidence"
                 )
             provider_phase = True
         elif provider_phase and case["kind"] != "render":
@@ -433,20 +433,20 @@ def finish(
                         or evidence.get("autoRenewing") is not False
                     ):
                         raise ValueError("Invalid subscription action evidence")
-                    if action in {"create-key", "rotate-key"} and (
+                    if action in {"copy-key", "copy-key-again"} and (
                         evidence.get("copiedKeyVerified") is not True
                         or not re.fullmatch(
                             r"[a-f0-9]{64}", evidence.get("keySha256", "")
                         )
                     ):
                         raise ValueError("Missing recovery key proof")
-                    if action in {"reject-old-key", "restore-key"} and (
+                    if action in {"reject-invalid-key", "restore-key"} and (
                         evidence.get("cleanClient") is not True
                         or evidence.get("originalOwnerRetained") is not True
                         or evidence.get("credentialsAdded")
                         != int(action == "restore-key")
-                        or evidence.get("replacedKeyRejected")
-                        != (action == "reject-old-key")
+                        or evidence.get("invalidKeyRejected")
+                        != (action == "reject-invalid-key")
                     ):
                         raise ValueError("Missing recovery identity proof")
                 payment_evidence.append(

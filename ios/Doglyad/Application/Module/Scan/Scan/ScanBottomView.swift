@@ -6,6 +6,8 @@ struct ScanBottomView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanViewModel
 
+    init() {}
+
     var body: some View {
         let isProcessing = switch viewModel.state {
         case _ as ScanGenerationLoadingState: true

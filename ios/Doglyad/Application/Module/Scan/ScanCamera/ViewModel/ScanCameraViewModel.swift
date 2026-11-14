@@ -15,7 +15,6 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     let photoMaxCount: Int
     private let arguments: ScanCameraArguments
     private var cameraObservation: AnyCancellable?
-    private var presentationID: UUID?
 
     init(
         container: DependencyContainer,
@@ -58,10 +57,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
 
     override func onDisappear() {
         super.onDisappear()
-        presentationID = nil
-        cameraObservation?.cancel()
-        cameraObservation = nil
-        cameraController.stopSession()
+        cancelCamera()
         emit(
             ScanCameraStoppedState(),
         )
@@ -73,10 +69,9 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
                 return
             }
         #endif
-        guard presentationID == nil else {
+        guard cameraObservation == nil else {
             return
         }
-        presentationID = UUID()
         observeCamera()
         cameraController.startSession()
         refreshCameraState()
@@ -97,12 +92,12 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     func onTapPhoto(
         _ photo: USExaminationScanPhoto,
     ) {
-        guard presentationID != nil else {
+        guard cameraObservation != nil else {
             return
         }
         let getPhotos = arguments.getPhotos
         let onPhotosUpdated = arguments.onPhotosUpdated
-        presentationID = nil
+        cancelCamera()
         coordinator.dismissSheet()
         coordinator.screen(
             .photoView,
@@ -125,7 +120,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     }
 
     func onTapCapture() {
-        guard presentationID != nil else {
+        guard let observation = cameraObservation else {
             return
         }
         switch state {
@@ -158,8 +153,11 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
         )
         cameraController.takePhoto(
             cropRegion: cropRegion,
-        ) { [weak self] image in
-            self?.onCapture(
+        ) { [weak self, weak observation] image in
+            guard let self, let observation, cameraObservation === observation else {
+                return
+            }
+            onCapture(
                 image,
             )
         }
@@ -193,10 +191,17 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
         )
     }
 
+    private func cancelCamera() {
+        cancelOperationTask()
+        cameraObservation?.cancel()
+        cameraObservation = nil
+        cameraController.stopSession()
+    }
+
     private func onCapture(
         _ image: UIImage,
     ) {
-        guard let id = presentationID else {
+        guard cameraObservation != nil else {
             return
         }
         guard photos.count < photoMaxCount else {
@@ -205,11 +210,11 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
         emit(
             ScanCameraCaptureLoadingState(),
         )
-        Task { [weak self] in
+        operationTask = Task { [weak self] in
             let photo = await USExaminationScanPhoto.make(
                 image: image,
             )
-            guard let self, presentationID == id,
+            guard let self, !Task.isCancelled, cameraObservation != nil,
                   photos.count < self.photoMaxCount
             else {
                 return
@@ -228,6 +233,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
             )
             refreshCameraState()
             if photos.count >= photoMaxCount {
+                cancelCamera()
                 coordinator.dismissSheet()
             }
         }
@@ -253,7 +259,7 @@ final class ScanCameraViewModel: DModuleViewModel<any ScanCameraStateProtocol> {
     }
 
     private func refreshCameraState() {
-        guard presentationID != nil else {
+        guard cameraObservation != nil else {
             return
         }
         switch state {

@@ -7,6 +7,14 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
     @StateObject var viewModel: ScanSpeechViewModel
     @FocusState private var transcriptFocus: Bool?
 
+    init(
+        viewModel: @autoclosure @escaping () -> ScanSpeechViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         let fraction: CGFloat = switch viewModel.state {
         case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState, _ as ScanSpeechReviewProposalState: 0.9

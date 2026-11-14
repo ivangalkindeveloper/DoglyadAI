@@ -1,3 +1,5 @@
 import Router
 
-final class OnBoardingArguments: RouteArgumentsProtocol {}
+final class OnBoardingArguments: RouteArgumentsProtocol {
+    init() {}
+}

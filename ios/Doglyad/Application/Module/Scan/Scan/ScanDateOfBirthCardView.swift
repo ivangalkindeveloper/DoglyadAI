@@ -13,6 +13,12 @@ struct ScanDateOfBirthCardView: DViewProtocol {
 
     var isDisabled: Bool = false
 
+    init(
+        isDisabled: Bool = false,
+    ) {
+        self.isDisabled = isDisabled
+    }
+
     var body: some View {
         DCard(
             action: viewModel.onTapPatientDateOfBirth,

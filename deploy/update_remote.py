@@ -23,8 +23,9 @@ profile = HostProfile.load(Path('profile.json'))
 assert profile.fingerprint == sys.argv[1], 'Host profile differs from inventory'
 document = compose_document(profile)
 assert json.loads(Path('docker-compose.yml').read_text()) == document, 'Generated Compose differs from profile'
-print(json.dumps({service: {key: document['services'][service][key] for key in ['command', 'image']}
-                  for service in profile.models.values()}))
+print(json.dumps({model['service']: dict(
+    {key: document['services'][model['service']][key] for key in ['command', 'image']},
+    weightsDirectory=model.get('weightsDirectory')) for model in profile.data['models']}))
 """
 
 ENGINE_CHECK = """
@@ -111,11 +112,18 @@ def check(target: dict) -> dict:
     service = "backend_inference" if inference else "backend_main"
     backend = container(service)
     report_worker = None
-    if not inference and "report_worker" in compose("config", "--services").splitlines():
+    if (
+        not inference
+        and "report_worker" in compose("config", "--services").splitlines()
+    ):
         worker = container("report_worker")
         if not worker["State"]["Running"] or worker["Image"] != backend["Image"]:
             raise RuntimeError("Report worker must run the same release as the API")
-        report_worker = {"container": worker["Id"], "image": worker["Image"], "restarts": worker["RestartCount"]}
+        report_worker = {
+            "container": worker["Id"],
+            "image": worker["Image"],
+            "restarts": worker["RestartCount"],
+        }
     if not backend["State"]["Running"]:
         raise RuntimeError("Container not running")
     if inference:
@@ -181,6 +189,21 @@ def check(target: dict) -> dict:
                     raise RuntimeError(
                         "Running engine parameters/image differ from profile; apply the generated stack first"
                     )
+                if expected.get("weightsDirectory"):
+                    mounts = [
+                        mount
+                        for mount in item.get("Mounts", [])
+                        if mount["Destination"] == "/model"
+                    ]
+                    if (
+                        len(mounts) != 1
+                        or mounts[0]["Type"] != "bind"
+                        or mounts[0]["Source"] != expected["weightsDirectory"]
+                        or mounts[0]["RW"]
+                    ):
+                        raise RuntimeError(
+                            "Running engine weights mount differs from profile"
+                        )
             if (
                 not item["State"]["Running"]
                 or item["State"].get("Health", {}).get("Status") != "healthy"
@@ -460,7 +483,13 @@ visit(models)
             os.replace(temporary, ".env")
             compose("config", "--quiet")
             compose(
-                "up", "-d", "--no-deps", "--pull", "never", "--force-recreate", service,
+                "up",
+                "-d",
+                "--no-deps",
+                "--pull",
+                "never",
+                "--force-recreate",
+                service,
                 *(["report_worker"] if state.get("report_worker") else []),
             )
             return wait_ready(
@@ -471,10 +500,22 @@ visit(models)
             # Use the recorded local image ID, even if the old tag has moved.
             override = snapshot / "rollback.json"
             override.write_text(
-                json.dumps({"services": {
-                    service: {"image": state["image"]},
-                    **({"report_worker": {"image": state["report_worker"]["image"]}} if state.get("report_worker") else {}),
-                }})
+                json.dumps(
+                    {
+                        "services": {
+                            service: {"image": state["image"]},
+                            **(
+                                {
+                                    "report_worker": {
+                                        "image": state["report_worker"]["image"]
+                                    }
+                                }
+                                if state.get("report_worker")
+                                else {}
+                            ),
+                        }
+                    }
+                )
             )
             run(
                 "docker",

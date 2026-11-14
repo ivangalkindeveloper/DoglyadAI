@@ -21,17 +21,6 @@ class BillingPeriod(StrEnum):
     ) -> int:
         return 7 if self is self.WEEKLY else 0
 
-    @property
-    def locale_key(
-        self,
-    ) -> str:
-        return {
-            self.WEEKLY: "paywallWeeklyLabel",
-            self.MONTHLY: "paywallMonthlyLabel",
-            self.SIX_MONTH: "paywallSixMonthLabel",
-            self.ANNUAL: "paywallAnnualLabel",
-        }[self]
-
     @classmethod
     def from_interval(
         cls,

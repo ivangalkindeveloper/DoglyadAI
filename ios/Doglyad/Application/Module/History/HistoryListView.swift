@@ -5,6 +5,8 @@ struct HistoryListView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: HistoryViewModel
 
+    init() {}
+
     var body: some View {
         ScrollView(
             showsIndicators: false,

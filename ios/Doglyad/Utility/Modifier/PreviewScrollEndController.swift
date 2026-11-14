@@ -6,6 +6,8 @@
     final class PreviewScrollEndController {
         private var task: Task<Void, Never>?
 
+        init() {}
+
         func start(
             probe: UIView,
         ) {

@@ -5,6 +5,12 @@ struct ErrorBodyView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let description: String
 
+    init(
+        description: String,
+    ) {
+        self.description = description
+    }
+
     var body: some View {
         VStack(
             spacing: size.s24,

@@ -3,6 +3,7 @@ from __future__ import annotations
 import calendar
 import hashlib
 import logging
+import re
 import secrets
 from datetime import UTC, datetime, timedelta
 from decimal import Decimal
@@ -16,7 +17,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.configuration.configuration import Configuration
 from app.core.configuration.variables import Variables
 from app.core.localization.language_code import LanguageCode
-from app.database.billing_checkout_db import BillingCheckoutDB
 from app.database.billing_credential_db import BillingCredentialDB
 from app.database.billing_database import BillingDatabase
 from app.database.billing_event_db import BillingEventDB
@@ -33,7 +33,6 @@ from app.error.billing_payment_rejected_error import BillingPaymentRejectedError
 from app.error.billing_purchase_error import BillingPurchaseError
 from app.error.billing_unavailable_error import BillingUnavailableError
 from app.model.billing.billing_catalog import BillingCatalog
-from app.model.billing.billing_checkout_response import BillingCheckoutResponse
 from app.model.billing.billing_identity_response import BillingIdentityResponse
 from app.model.billing.billing_product_config import BillingProductConfig
 from app.model.billing.billing_products_response import BillingProductsResponse
@@ -41,7 +40,8 @@ from app.model.billing.billing_status_response import BillingStatusResponse
 from app.model.ultrasound.us_examination_request import USExaminationRequest
 from app.service.billing.apple_subscription_verifier import AppleSubscriptionVerifier
 from app.service.billing.billing_catalog_response_service import BillingCatalogResponseService
-from app.service.billing.yookassa_payment_provider import YooKassaPaymentProvider
+from app.service.billing.billing_recovery_key_cipher import BillingRecoveryKeyCipher
+from app.service.billing.robokassa_payment_provider import RobokassaPaymentProvider
 
 
 class SubscriptionService:
@@ -50,14 +50,17 @@ class SubscriptionService:
         database: BillingDatabase,
         configuration: Configuration,
         variables: Variables,
-        yookassa: YooKassaPaymentProvider,
+        robokassa: RobokassaPaymentProvider,
         apple: AppleSubscriptionVerifier,
     ) -> None:
         self.database = database
         self._configuration = configuration
         self._variables = variables
-        self._yookassa = yookassa
+        self._robokassa = robokassa
         self._apple = apple
+        self._recovery_cipher = BillingRecoveryKeyCipher(
+            variables.report_generation_encryption_key,
+        )
         self._catalog = BillingCatalog.model_validate_json(
             (variables.configuration_directory / "billing.json").read_text(),
         )
@@ -71,6 +74,12 @@ class SubscriptionService:
         self,
     ) -> str:
         return self._catalog.termsVersion
+
+    @property
+    def is_payment_available(
+        self,
+    ) -> bool:
+        return self._robokassa.is_available
 
     async def register(
         self,
@@ -131,18 +140,39 @@ class SubscriptionService:
         self,
         owner_id: str,
     ) -> str:
-        # Only hashes are persisted. Requesting a new key explicitly rotates the old one.
-        key = secrets.token_hex(
-            24,
-        ).upper()
         async with self.database.session() as session, session.begin():
             owner = await self.database.lock_owner(
                 session,
                 owner_id,
             )
-            owner.recovery_hash = self._hash(
-                key,
+            return self._owner_recovery_key(
+                owner,
             )
+
+    def _owner_recovery_key(
+        self,
+        owner: BillingOwnerDB,
+    ) -> str:
+        if owner.recovery_ciphertext is not None:
+            key = self._recovery_cipher.open(
+                owner.id,
+                owner.recovery_ciphertext,
+            )
+            if owner.recovery_hash != self._hash(
+                key,
+            ):
+                raise BillingPurchaseError()
+            return key
+        key = secrets.token_hex(
+            24,
+        ).upper()
+        owner.recovery_ciphertext = self._recovery_cipher.seal(
+            owner.id,
+            key,
+        )
+        owner.recovery_hash = self._hash(
+            key,
+        )
         return key
 
     async def recover(
@@ -181,6 +211,7 @@ class SubscriptionService:
                 owner_id,
             ),
             accessToken=token,
+            recoveryKey=key.strip().upper(),
         )
 
     def plans(
@@ -198,7 +229,11 @@ class SubscriptionService:
         owner_id: str,
     ) -> BillingStatusResponse | None:
         now = self._now()
-        async with self.database.session() as session:
+        async with self.database.session() as session, session.begin():
+            owner = await self.database.lock_owner(
+                session,
+                owner_id,
+            )
             subscription = await session.scalar(
                 select(
                     BillingSubscriptionDB,
@@ -208,6 +243,7 @@ class SubscriptionService:
                     BillingSubscriptionDB.is_revoked.is_(
                         False,
                     ),
+                    BillingSubscriptionDB.starts_at <= now,
                     BillingSubscriptionDB.paid_until > now,
                 )
                 .order_by(
@@ -248,6 +284,9 @@ class SubscriptionService:
                     subscription.paid_until,
                 ),
                 isAutoRenewing=subscription.is_auto_renewing,
+                recoveryKey=self._owner_recovery_key(
+                    owner,
+                ),
                 availableCountPerDay=max(
                     0,
                     int(
@@ -292,6 +331,7 @@ class SubscriptionService:
                     BillingSubscriptionDB.is_revoked.is_(
                         False,
                     ),
+                    BillingSubscriptionDB.starts_at <= now,
                     BillingSubscriptionDB.paid_until > now,
                 )
                 .order_by(
@@ -393,244 +433,9 @@ class SubscriptionService:
             ):
                 raise BillingLimitError()
 
-    async def create_checkout(
-        self,
-        owner_id: str,
-        plan_id: str,
-    ) -> BillingCheckoutResponse:
-        self._plan(
-            plan_id,
-        )
-        if not self._yookassa.is_available or not self._variables.billing_public_url:
-            raise BillingUnavailableError()
-        code = secrets.token_hex(
-            4,
-        ).upper()
-        checkout_id = str(
-            uuid4(),
-        )
-        expires = self._now() + timedelta(
-            seconds=self._configuration.server.billing.checkout_ttl_seconds,
-        )
-        async with self.database.session() as session, session.begin():
-            await self.database.lock_owner(
-                session,
-                owner_id,
-            )
-            active = await session.scalar(
-                select(
-                    BillingSubscriptionDB,
-                )
-                .where(
-                    BillingSubscriptionDB.owner_id == owner_id,
-                    BillingSubscriptionDB.is_revoked.is_(
-                        False,
-                    ),
-                    BillingSubscriptionDB.paid_until > self._now(),
-                )
-                .limit(
-                    1,
-                ),
-            )
-            if active:
-                raise BillingConflictError()
-            session.add(
-                BillingCheckoutDB(
-                    id=checkout_id,
-                    owner_id=owner_id,
-                    plan_id=plan_id,
-                    code_hash=self._hash(
-                        code,
-                    ),
-                    expires_at=expires,
-                ),
-            )
-        return BillingCheckoutResponse(
-            id=UUID(
-                checkout_id,
-            ),
-            code=code,
-            expiresAt=expires,
-        )
-
-    async def bind_checkout(
-        self,
-        code: str,
-        apple_token: str | None,
-    ) -> tuple[str, BillingProductConfig]:
-        browser_token = secrets.token_urlsafe(
-            48,
-        )
-        async with self.database.session() as session, session.begin():
-            checkout = await session.scalar(
-                select(
-                    BillingCheckoutDB,
-                )
-                .where(
-                    BillingCheckoutDB.code_hash
-                    == self._hash(
-                        code.strip().upper(),
-                    ),
-                )
-                .with_for_update(),
-            )
-            if (
-                checkout is None
-                or self._utc(
-                    checkout.expires_at,
-                )
-                <= self._now()
-                or checkout.browser_hash
-            ):
-                raise BillingAccessDeniedError()
-            checkout.browser_hash = self._hash(
-                browser_token,
-            )
-            if apple_token:
-                # Attribution only; this is never an authentication credential.
-                if (
-                    len(
-                        apple_token,
-                    )
-                    > 16384
-                ):
-                    raise BillingPurchaseError()
-                checkout.apple_token = apple_token
-            plan = self._plan(
-                checkout.plan_id,
-            )
-        return browser_token, plan
-
-    async def start_checkout_payment(
-        self,
-        browser_token: str,
-        *,
-        is_auto_renewal_accepted: bool,
-    ) -> str:
-        if not is_auto_renewal_accepted:
-            raise BillingPurchaseError()
-        async with self.database.session() as session, session.begin():
-            checkout = await session.scalar(
-                select(
-                    BillingCheckoutDB,
-                )
-                .where(
-                    BillingCheckoutDB.browser_hash
-                    == self._hash(
-                        browser_token,
-                    ),
-                )
-                .with_for_update(),
-            )
-            if (
-                checkout is None
-                or self._utc(
-                    checkout.expires_at,
-                )
-                <= self._now()
-            ):
-                raise BillingAccessDeniedError()
-            await self.database.lock_owner(
-                session,
-                checkout.owner_id,
-            )
-            if checkout.payment_id:
-                previous = await session.get(
-                    BillingPaymentDB,
-                    checkout.payment_id,
-                )
-                if previous is not None and previous.status == "canceled" and previous.provider_id is None:
-                    checkout.payment_id = None
-            if checkout.payment_id:
-                order_id = checkout.payment_id
-            else:
-                active = await session.scalar(
-                    select(
-                        BillingSubscriptionDB,
-                    )
-                    .where(
-                        BillingSubscriptionDB.owner_id == checkout.owner_id,
-                        BillingSubscriptionDB.is_revoked.is_(
-                            False,
-                        ),
-                        BillingSubscriptionDB.paid_until > self._now(),
-                    )
-                    .limit(
-                        1,
-                    ),
-                )
-                if active:
-                    raise BillingConflictError()
-                await self.replace_expired_subscriptions(
-                    session,
-                    checkout.owner_id,
-                )
-                # Serialize first purchases, including ones started from another browser.
-                pending = await session.scalar(
-                    select(
-                        BillingPaymentDB,
-                    )
-                    .where(
-                        BillingPaymentDB.owner_id == checkout.owner_id,
-                        BillingPaymentDB.status.in_(
-                            ("awaitingToken", "created", "pending", "needsReview"),
-                        ),
-                    )
-                    .limit(
-                        1,
-                    ),
-                )
-                plan = self._plan(
-                    checkout.plan_id,
-                )
-                if pending:
-                    if (
-                        pending.channel != "redirect"
-                        or pending.plan_id != plan.id
-                        or pending.subscription_id is not None
-                        or pending.status == "needsReview"
-                    ):
-                        raise BillingConflictError()
-                    order_id = pending.id
-                else:
-                    order_id = str(
-                        uuid4(),
-                    )
-                    session.add(
-                        BillingPaymentDB(
-                            id=order_id,
-                            owner_id=checkout.owner_id,
-                            plan_id=plan.id,
-                            entitlement=plan.entitlement,
-                            amount_minor=plan.price.amountMinor,
-                            currency=plan.price.currencyIso2Code,
-                            interval_months=plan.period.interval_months,
-                            interval_days=plan.period.interval_days,
-                            status="created",
-                            created_at=self._now(),
-                        ),
-                    )
-                await session.flush()
-                checkout.payment_id = order_id
-                checkout.is_auto_renewal_accepted = True
-                checkout.terms_version = self._catalog.termsVersion
-        await self.submit_payment(
-            order_id,
-        )
-        async with self.database.session() as session:
-            order = await session.get(
-                BillingPaymentDB,
-                order_id,
-            )
-            if order is None or not order.confirmation_url:
-                raise BillingPaymentError()
-            return order.confirmation_url
-
     async def submit_payment(
         self,
         order_id: str,
-        *,
-        payment_token: str | None = None,
     ) -> None:
         is_initial_attempt = False
         async with self.database.session() as session, session.begin():
@@ -648,54 +453,48 @@ class SubscriptionService:
                 order,
                 with_for_update=True,
             )
+            if order.source != "robokassa":
+                raise BillingPurchaseError()
             if order.status not in ("created", "pending"):
                 return
-            if not order.provider_id:
-                now = self._now()
-                if order.channel == "sdk" and not payment_token and order.submitted_at is None:
-                    if (
-                        self._utc(
-                            order.created_at,
-                        )
-                        + timedelta(
-                            seconds=self._configuration.server.billing.checkout_ttl_seconds,
-                        )
-                        <= now
-                    ):
-                        order.status = "canceled"
-                    return
-                anchor = order.submitted_at or order.created_at
-                if now - self._utc(
-                    anchor,
-                ) >= timedelta(
-                    seconds=self._configuration.server.billing.unknown_payment_retry_seconds,
+            now = self._now()
+            if order.subscription_id is None and order.consent_at is None:
+                if (
+                    self._utc(
+                        order.created_at,
+                    )
+                    + timedelta(
+                        seconds=self._configuration.server.billing.checkout_ttl_seconds,
+                    )
+                    <= now
                 ):
-                    raise BillingConflictError()
-                if order.channel == "sdk":
-                    if not payment_token:
+                    order.status = "canceled"
+                return
+            if order.submitted_at is None:
+                if order.subscription_id:
+                    subscription = await session.get(
+                        BillingSubscriptionDB,
+                        order.subscription_id,
+                    )
+                    if not subscription or not subscription.is_auto_renewing or not subscription.payment_method_id:
+                        order.status = "canceled"
                         return
-                    if not order.consent_at or order.payment_token_hash != self._hash(
-                        payment_token,
-                    ):
-                        raise BillingPurchaseError()
-                if order.submitted_at is None:
-                    if order.subscription_id:
-                        subscription = await session.get(
-                            BillingSubscriptionDB,
-                            order.subscription_id,
-                        )
-                        if not subscription or not subscription.is_auto_renewing or not subscription.payment_method_id:
-                            order.status = "canceled"
-                            return
-                        order.renewal_payment_method_id = subscription.payment_method_id
-                    order.submitted_at = now
-                    is_initial_attempt = True
+                    order.renewal_payment_method_id = subscription.payment_method_id
+                order.merchant_login = self._variables.robokassa_merchant_login
+                order.is_test = self._variables.is_robokassa_test
+                order.submitted_at = now
+                is_initial_attempt = True
+            elif (
+                order.merchant_login != self._variables.robokassa_merchant_login
+                or order.is_test is not self._variables.is_robokassa_test
+            ):
+                raise BillingConflictError()
         # Commit the dispatch marker and immutable renewal method BEFORE network I/O.
         # After a crash/timeout, cancellation cannot turn a possibly paid order into an unsent one.
         try:
             await self._dispatch_payment(
                 order_id,
-                payment_token=payment_token,
+                is_initial_attempt=is_initial_attempt,
             )
         except (BillingPaymentRejectedError, BillingUnavailableError) as error:
             # A rejection after an earlier unknown attempt cannot prove that earlier
@@ -732,7 +531,7 @@ class SubscriptionService:
         self,
         order_id: str,
         *,
-        payment_token: str | None,
+        is_initial_attempt: bool,
     ) -> None:
         async with self.database.session() as session, session.begin():
             order = await session.get(
@@ -749,47 +548,70 @@ class SubscriptionService:
                 order,
                 with_for_update=True,
             )
+            if order.source != "robokassa":
+                raise BillingPurchaseError()
             if order.status not in ("created", "pending"):
                 return
-            if order.provider_id:
-                data = await self._yookassa.payment(
-                    order.provider_id,
+            if not order.invoice_id:
+                raise BillingPurchaseError()
+            if not is_initial_attempt:
+                data = await self._robokassa.payment(
+                    order.invoice_id,
                 )
-            else:
-                if order.submitted_at is None or self._now() - self._utc(
-                    order.submitted_at,
-                ) >= timedelta(
-                    seconds=self._configuration.server.billing.unknown_payment_retry_seconds,
+                if (
+                    data.get(
+                        "status",
+                    )
+                    == "pending"
+                    and not order.confirmation_url
+                    and order.subscription_id is None
                 ):
+                    order.confirmation_url = await self._robokassa.invoice(
+                        order.invoice_id,
+                    )
+            else:
+                if order.submitted_at is None:
                     raise BillingConflictError()
                 payload: dict[str, Any] = {
+                    "invoice_id": order.invoice_id,
                     "amount": {"value": f"{Decimal(order.amount_minor) / 100:.2f}", "currency": order.currency},
-                    "capture": True,
-                    "description": f"Doglyad {order.plan_id}",
-                    "metadata": {"order_id": order.id},
+                    "description": (order.receipt_description or "Doglyad")[:100],
+                    "email": order.receipt_email,
+                    "is_auto_renewing": order.is_auto_renewing,
+                    "expires_at": (
+                        self._utc(
+                            order.created_at,
+                        )
+                        + timedelta(
+                            seconds=self._configuration.server.billing.checkout_ttl_seconds,
+                        )
+                    ).isoformat(),
                 }
                 if order.subscription_id:
                     if not order.renewal_payment_method_id:
                         raise BillingConflictError()
                     payload["payment_method_id"] = order.renewal_payment_method_id
-                elif order.channel == "sdk":
-                    if not payment_token:
-                        return
-                    payload["payment_token"] = payment_token
-                    payload["save_payment_method"] = True
-                else:
-                    payload["save_payment_method"] = True
-                    payload["confirmation"] = {
-                        "type": "redirect",
-                        "return_url": (self._variables.billing_public_url or "").rstrip(
-                            "/",
-                        )
-                        + "/complete",
-                    }
-                data = await self._yookassa.create(
+                data = await self._robokassa.create(
                     order_id,
                     payload,
                 )
+            data["metadata"] = {"order_id": order.id}
+            if data.get(
+                "status",
+            ) in ("succeeded", "canceled"):
+                pass
+            elif not is_initial_attempt and self._now() - self._utc(
+                order.submitted_at or order.created_at,
+            ) >= timedelta(
+                seconds=self._configuration.server.billing.unknown_payment_retry_seconds,
+            ):
+                raise BillingConflictError()
+            order.provider_invoice_uuid = (
+                data.get(
+                    "invoice_uuid",
+                )
+                or order.provider_invoice_uuid
+            )
             if (
                 not isinstance(
                     data.get(
@@ -803,7 +625,7 @@ class SubscriptionService:
             if order.provider_id and order.provider_id != data["id"]:
                 raise BillingPaymentError()
             order.provider_id = data["id"]
-            order.confirmation_url = (
+            order.confirmation_url = order.confirmation_url or (
                 data.get(
                     "confirmation",
                     {},
@@ -832,12 +654,130 @@ class SubscriptionService:
             data,
         )
 
+    async def reconcile_pending_payment(
+        self,
+        order_id: str,
+        *,
+        is_cancel_requested: bool = False,
+    ) -> None:
+        async with self.database.session() as session, session.begin():
+            order = await session.get(
+                BillingPaymentDB,
+                order_id,
+            )
+            if order is None:
+                raise BillingPurchaseError()
+            if order.status in ("succeeded", "refunded", "canceled"):
+                return
+            owner_id, invoice_id = order.owner_id, order.invoice_id
+            await self.database.lock_owner(
+                session,
+                owner_id,
+            )
+            await session.refresh(
+                order,
+                with_for_update=True,
+            )
+            is_expired = (
+                self._utc(
+                    order.created_at,
+                )
+                + timedelta(
+                    seconds=self._configuration.server.billing.checkout_ttl_seconds,
+                )
+                <= self._now()
+            )
+            if order.submitted_at is None:
+                if is_cancel_requested or is_expired:
+                    order.status = "canceled"
+                return
+            if (
+                self._utc(
+                    order.submitted_at,
+                )
+                + timedelta(
+                    seconds=self._configuration.server.billing.unknown_payment_retry_seconds,
+                )
+                <= self._now()
+            ):
+                order.status = "needsReview"
+            order.reconciliation_attempted_at = datetime.now(
+                UTC,
+            )
+            is_initial = order.period_key is None
+            is_url_missing = not order.confirmation_url
+        await self.payment_notification(
+            invoice_id,
+        )
+        async with self.database.session() as session:
+            order = await session.get(
+                BillingPaymentDB,
+                order_id,
+            )
+            if order is None or order.status in ("succeeded", "refunded", "canceled"):
+                return
+        if not is_initial or not (is_cancel_requested or is_expired or is_url_missing):
+            return
+        info = await self._robokassa.invoice_information(
+            invoice_id,
+        )
+        if info is None:
+            return
+        if (is_cancel_requested or is_expired) and info["invoiceStatus"] == "NotPaid" and not info["payments"]:
+            await self._robokassa.deactivate_invoice(
+                invoice_id,
+            )
+            info = await self._robokassa.invoice_information(
+                invoice_id,
+            )
+            if info is None:
+                raise BillingPaymentError()
+        async with self.database.session() as session, session.begin():
+            await self.database.lock_owner(
+                session,
+                owner_id,
+            )
+            order = await session.get(
+                BillingPaymentDB,
+                order_id,
+                with_for_update=True,
+            )
+            if order is None or order.status in ("succeeded", "refunded"):
+                return
+            if info["invoiceStatus"] == "Expired" and not info["payments"]:
+                order.status = "canceled"
+                return
+            if info["invoiceStatus"] == "NotPaid" and not order.confirmation_url:
+                order.confirmation_url = self._robokassa._checkout_url(
+                    info.get(
+                        "invoicePaymentUrl",
+                    ),
+                )
+                order.provider_id = invoice_id
+
     async def payment_notification(
         self,
         payment_id: str,
+        *,
+        receipt_email: str | None = None,
     ) -> None:
-        # Both payment and refund objects come from the authenticated provider API.
-        data = await self._yookassa.payment(
+        async with self.database.session() as session:
+            order = await session.scalar(
+                select(
+                    BillingPaymentDB,
+                ).where(
+                    BillingPaymentDB.invoice_id == payment_id,
+                ),
+            )
+            if order is None or order.source != "robokassa" or order.submitted_at is None:
+                raise BillingPurchaseError()
+            if (
+                order.merchant_login != self._variables.robokassa_merchant_login
+                or order.is_test is not self._variables.is_robokassa_test
+            ):
+                raise BillingPurchaseError()
+            order_id = order.id
+        data = await self._robokassa.payment(
             payment_id,
         )
         if (
@@ -847,20 +787,98 @@ class SubscriptionService:
             != payment_id
         ):
             raise BillingPurchaseError()
-        refunds = (
-            await self._yookassa.refunds(
-                payment_id,
-            )
-            if data.get(
-                "status",
-            )
-            == "succeeded"
-            else None
-        )
+        data["metadata"] = {"order_id": order_id}
+        data["receipt_email"] = receipt_email
         await self.apply_payment(
             data,
-            refunds=refunds,
         )
+        await self.reconcile_refunds(
+            order_id,
+        )
+
+    async def robokassa_notification(
+        self,
+        fields: dict[str, str],
+    ) -> None:
+        self._robokassa.verify_notification(
+            fields,
+        )
+        invoice_id = fields["InvId"]
+        email = fields.get(
+            "EMail",
+            "",
+        ).strip()
+        receipt_email = (
+            email
+            if len(
+                email,
+            )
+            <= 254
+            and re.fullmatch(
+                r"[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+",
+                email,
+            )
+            else None
+        )
+        async with self.database.session() as session:
+            order = await session.scalar(
+                select(
+                    BillingPaymentDB,
+                ).where(
+                    BillingPaymentDB.invoice_id == invoice_id,
+                ),
+            )
+            if (
+                order is None
+                or order.submitted_at is None
+                or order.merchant_login != self._variables.robokassa_merchant_login
+                or order.is_test is not self._variables.is_robokassa_test
+            ):
+                raise BillingPurchaseError()
+            if (
+                self._money_minor(
+                    fields["OutSum"],
+                )
+                != order.amount_minor
+            ):
+                raise BillingPurchaseError()
+            if (
+                fields.get(
+                    "Shp_order_id",
+                    order.id,
+                )
+                != order.id
+            ):
+                raise BillingPurchaseError()
+            order_id = order.id
+        if self._variables.is_robokassa_test:
+            data = self._robokassa._pending(
+                invoice_id,
+            )
+            data.update(
+                status="succeeded",
+                paid=True,
+                amount={"value": fields["OutSum"], "currency": "RUB"},
+                metadata={"order_id": order_id},
+                receipt_email=receipt_email,
+            )
+            await self.apply_payment(
+                data,
+            )
+        else:
+            # SuccessURL, mobile callbacks and valid signatures do not replace the
+            # production canonical read. Do not acknowledge until it is successful.
+            await self.payment_notification(
+                invoice_id,
+                receipt_email=receipt_email,
+            )
+            async with self.database.session() as session:
+                order = await session.get(
+                    BillingPaymentDB,
+                    order_id,
+                )
+                if order is None or order.status not in ("succeeded", "refunded"):
+                    raise BillingPaymentError()
 
     async def apply_payment(
         self,
@@ -868,6 +886,10 @@ class SubscriptionService:
         *,
         refunds: list[dict[str, Any]] | None = None,
     ) -> None:
+        if data.get(
+            "status",
+        ) not in ("succeeded", "canceled"):
+            return
         provider_id = data.get(
             "id",
         )
@@ -914,6 +936,14 @@ class SubscriptionService:
                 with_for_update=True,
             )
             try:
+                if (
+                    data.get(
+                        "status",
+                    )
+                    == "canceled"
+                    and "amount" not in data
+                ):
+                    data["amount"] = {"value": f"{Decimal(order.amount_minor) / 100:.2f}", "currency": order.currency}
                 amount = Decimal(
                     str(
                         data["amount"]["value"],
@@ -929,18 +959,39 @@ class SubscriptionService:
                     and str(
                         data["recipient"]["account_id"],
                     )
-                    == self._variables.yookassa_shop_id
+                    == self._variables.robokassa_merchant_login
                     and data.get(
                         "test",
                     )
-                    is self._variables.is_yookassa_test
+                    is self._variables.is_robokassa_test
+                    and order.invoice_id == provider_id
+                    and order.merchant_login == self._variables.robokassa_merchant_login
+                    and order.is_test is self._variables.is_robokassa_test
+                    and order.submitted_at is not None
                     and (order.provider_id is None or order.provider_id == provider_id)
                 )
             except (KeyError, ValueError, ArithmeticError) as error:
                 raise BillingPurchaseError() from error
             if not is_expected:
                 raise BillingPurchaseError()
+            if not order.receipt_email and data.get(
+                "receipt_email",
+            ):
+                order.receipt_email = data["receipt_email"]
+            if order.receipt_email and order.subscription_id:
+                subscription = await session.get(
+                    BillingSubscriptionDB,
+                    order.subscription_id,
+                )
+                if subscription is not None and not subscription.receipt_email:
+                    subscription.receipt_email = order.receipt_email
             order.provider_id = provider_id
+            order.provider_operation_key = (
+                data.get(
+                    "op_key",
+                )
+                or order.provider_operation_key
+            )
             state = data.get(
                 "status",
             )
@@ -964,7 +1015,7 @@ class SubscriptionService:
                 is not True
             ):
                 return
-            event_id = f"yookassa:payment:{provider_id}"
+            event_id = f"robokassa:payment:{provider_id}"
             if (
                 await session.get(
                     BillingEventDB,
@@ -982,6 +1033,29 @@ class SubscriptionService:
                     else None
                 )
                 if subscription is None:
+                    start = now
+                    if order.previous_subscription_id:
+                        previous = await session.get(
+                            BillingSubscriptionDB,
+                            order.previous_subscription_id,
+                        )
+                        if previous is None or previous.owner_id != order.owner_id or previous.source != "robokassa":
+                            raise BillingPurchaseError()
+                    previous_subscriptions = await session.scalars(
+                        select(
+                            BillingSubscriptionDB,
+                        ).where(
+                            BillingSubscriptionDB.owner_id == order.owner_id,
+                            BillingSubscriptionDB.source == "robokassa",
+                            BillingSubscriptionDB.is_revoked.is_(
+                                False,
+                            ),
+                        ),
+                    )
+                    for previous in previous_subscriptions:
+                        previous.is_revoked = True
+                        previous.is_auto_renewing = False
+                        previous.next_charge_at = None
                     method = data.get(
                         "payment_method",
                         {},
@@ -991,20 +1065,24 @@ class SubscriptionService:
                             uuid4(),
                         ),
                         owner_id=order.owner_id,
-                        source="yookassa",
+                        source="robokassa",
+                        receipt_email=order.receipt_email,
                         external_id=provider_id,
                         plan_id=order.plan_id,
                         entitlement=order.entitlement,
-                        paid_until=now,
+                        starts_at=start,
+                        paid_until=start,
                         updated_at=now,
-                        is_auto_renewing=method.get(
+                        is_auto_renewing=order.is_auto_renewing
+                        and method.get(
                             "saved",
                         )
                         is True,
                         payment_method_id=method.get(
                             "id",
                         )
-                        if method.get(
+                        if order.is_auto_renewing
+                        and method.get(
                             "saved",
                         )
                         is True
@@ -1039,7 +1117,7 @@ class SubscriptionService:
                 session.add(
                     BillingEventDB(
                         id=event_id,
-                        source="yookassa",
+                        source="robokassa",
                         received_at=now,
                     ),
                 )
@@ -1096,9 +1174,205 @@ class SubscriptionService:
                         ),
                     )
                     subscription.paid_until = last_paid or self._now()
-                    subscription.is_revoked = last_paid is None
+                    subscription.is_revoked = subscription.is_revoked or last_paid is None
                     subscription.is_auto_renewing = False
                     subscription.next_charge_at = None
+
+    async def request_refund(
+        self,
+        payment_id: str,
+        amount_minor: int,
+        operation_id: str,
+    ) -> str:
+        if self._variables.is_robokassa_test or not self._variables.robokassa_password3:
+            raise BillingUnavailableError()
+        async with self.database.session() as session, session.begin():
+            order = await session.get(
+                BillingPaymentDB,
+                payment_id,
+            )
+            if order is None:
+                raise BillingPurchaseError()
+            await self.database.lock_owner(
+                session,
+                order.owner_id,
+            )
+            await session.refresh(
+                order,
+                with_for_update=True,
+            )
+            existing = await session.get(
+                BillingRefundDB,
+                operation_id,
+            )
+            if existing:
+                if existing.payment_id != payment_id or existing.amount_minor != amount_minor:
+                    raise BillingConflictError()
+                return existing.id
+            if (
+                order.source != "robokassa"
+                or order.status != "succeeded"
+                or not order.provider_operation_key
+                or order.is_test
+                or order.merchant_login != self._variables.robokassa_merchant_login
+            ):
+                raise BillingPurchaseError()
+            reserved = await session.scalar(
+                select(
+                    func.coalesce(
+                        func.sum(
+                            BillingRefundDB.amount_minor,
+                        ),
+                        0,
+                    ),
+                ).where(
+                    BillingRefundDB.payment_id == payment_id,
+                    BillingRefundDB.status != "canceled",
+                ),
+            )
+            if (
+                not 0
+                < amount_minor
+                <= order.amount_minor
+                - int(
+                    reserved or 0,
+                )
+            ):
+                raise BillingPurchaseError()
+            now = self._now()
+            session.add(
+                BillingRefundDB(
+                    id=operation_id,
+                    payment_id=payment_id,
+                    amount_minor=amount_minor,
+                    currency=order.currency,
+                    status="needsReview",
+                    created_at=now,
+                    updated_at=now,
+                ),
+            )
+            op_key = order.provider_operation_key
+        # No automated replay of Refund/Create after a timeout/crash.
+        request_id = await self._robokassa.refund(
+            op_key,
+            f"{Decimal(amount_minor) / 100:.2f}",
+            operation_id,
+        )
+        async with self.database.session() as session, session.begin():
+            refund = await session.get(
+                BillingRefundDB,
+                operation_id,
+                with_for_update=True,
+            )
+            if refund is None:
+                raise BillingPaymentError()
+            refund.provider_request_id = request_id
+            refund.status = "pending"
+        await self.reconcile_refunds(
+            payment_id,
+        )
+        return operation_id
+
+    async def reconcile_refunds(
+        self,
+        payment_id: str,
+    ) -> None:
+        async with self.database.session() as session:
+            refunds = list(
+                await session.scalars(
+                    select(
+                        BillingRefundDB,
+                    ).where(
+                        BillingRefundDB.payment_id == payment_id,
+                        BillingRefundDB.provider_request_id.is_not(
+                            None,
+                        ),
+                        BillingRefundDB.status == "pending",
+                    ),
+                ),
+            )
+        for item in refunds:
+            if not item.provider_request_id:
+                continue
+            result = await self._robokassa.refund_state(
+                item.provider_request_id,
+            )
+            if (
+                self._money_minor(
+                    result["amount"],
+                )
+                != item.amount_minor
+            ):
+                raise BillingPurchaseError()
+            async with self.database.session() as session, session.begin():
+                order = await session.get(
+                    BillingPaymentDB,
+                    payment_id,
+                )
+                if order is None:
+                    raise BillingPurchaseError()
+                await self.database.lock_owner(
+                    session,
+                    order.owner_id,
+                )
+                refund = await session.get(
+                    BillingRefundDB,
+                    item.id,
+                    with_for_update=True,
+                )
+                if refund is None or refund.status != "pending":
+                    continue
+                refund.status = {"finished": "succeeded", "processing": "pending", "canceled": "canceled"}[
+                    result["label"]
+                ]
+                refund.updated_at = self._now()
+                await session.flush()
+                total = await session.scalar(
+                    select(
+                        func.coalesce(
+                            func.sum(
+                                BillingRefundDB.amount_minor,
+                            ),
+                            0,
+                        ),
+                    ).where(
+                        BillingRefundDB.payment_id == payment_id,
+                        BillingRefundDB.status == "succeeded",
+                    ),
+                )
+                order.refunded_amount_minor = int(
+                    total or 0,
+                )
+                if order.refunded_amount_minor > order.amount_minor:
+                    raise BillingPurchaseError()
+                if order.refunded_amount_minor == order.amount_minor:
+                    order.status = "refunded"
+                    await session.flush()
+                    subscription = (
+                        await session.get(
+                            BillingSubscriptionDB,
+                            order.subscription_id,
+                        )
+                        if order.subscription_id
+                        else None
+                    )
+                    if subscription:
+                        last_paid = await session.scalar(
+                            select(
+                                func.max(
+                                    BillingPaymentDB.period_until,
+                                ),
+                            ).where(
+                                BillingPaymentDB.subscription_id == subscription.id,
+                                BillingPaymentDB.status == "succeeded",
+                            ),
+                        )
+                        subscription.paid_until = last_paid or self._now()
+                        subscription.is_revoked = subscription.is_revoked or last_paid is None
+                        subscription.is_auto_renewing = False
+                        subscription.next_charge_at = None
+                # Receipt correction is not implied by a successful money refund.
+                order.is_receipt_pending = True
 
     async def _record_refunds(
         self,
@@ -1233,6 +1507,59 @@ class SubscriptionService:
         except (ValueError, ArithmeticError) as error:
             raise BillingPurchaseError() from error
 
+    async def set_auto_renewal(
+        self,
+        owner_id: str,
+        is_auto_renewing: bool,
+    ) -> None:
+        if is_auto_renewing:
+            raise BillingConflictError()
+        async with self.database.session() as session, session.begin():
+            await self.database.lock_owner(
+                session,
+                owner_id,
+            )
+            subscriptions = list(
+                await session.scalars(
+                    select(
+                        BillingSubscriptionDB,
+                    )
+                    .where(
+                        BillingSubscriptionDB.owner_id == owner_id,
+                        BillingSubscriptionDB.source == "robokassa",
+                        BillingSubscriptionDB.is_revoked.is_(
+                            False,
+                        ),
+                        BillingSubscriptionDB.paid_until > self._now(),
+                    )
+                    .order_by(
+                        BillingSubscriptionDB.starts_at.desc(),
+                    )
+                    .with_for_update(),
+                ),
+            )
+            if not subscriptions:
+                raise BillingPurchaseError()
+            for item in subscriptions:
+                item.is_auto_renewing = False
+                item.next_charge_at = item.paid_until if item.is_auto_renewing else None
+
+            if not is_auto_renewing:
+                await session.execute(
+                    update(
+                        BillingPaymentDB,
+                    )
+                    .where(
+                        BillingPaymentDB.owner_id == owner_id,
+                        BillingPaymentDB.status.in_(
+                            ("created", "pending", "needsReview"),
+                        ),
+                    )
+                    .values(
+                        is_auto_renewing=False,
+                    ),
+                )
+
     async def cancel(
         self,
         owner_id: str,
@@ -1248,7 +1575,7 @@ class SubscriptionService:
                 )
                 .where(
                     BillingSubscriptionDB.owner_id == owner_id,
-                    BillingSubscriptionDB.source == "yookassa",
+                    BillingSubscriptionDB.source == "robokassa",
                 )
                 .with_for_update(),
             )
@@ -1443,7 +1770,7 @@ class SubscriptionService:
                 ),
             )
         await self.reconcile_apple()
-        await self.reconcile_yookassa()
+        await self.reconcile_robokassa()
         async with self.database.session() as session:
             pending = list(
                 await session.scalars(
@@ -1451,9 +1778,14 @@ class SubscriptionService:
                         BillingPaymentDB.id,
                     )
                     .where(
+                        BillingPaymentDB.source == "robokassa",
                         BillingPaymentDB.status.in_(
-                            ("created", "pending"),
+                            ("created", "pending", "needsReview"),
                         ),
+                    )
+                    .order_by(
+                        BillingPaymentDB.reconciliation_attempted_at.asc().nullsfirst(),
+                        BillingPaymentDB.created_at,
                     )
                     .limit(
                         self._configuration.server.billing.batch_size,
@@ -1462,10 +1794,21 @@ class SubscriptionService:
             )
         for order_id in pending:
             try:
-                await self.submit_payment(
-                    order_id,
-                )
-            except BillingPaymentError:
+                async with self.database.session() as session:
+                    pending_order = await session.get(
+                        BillingPaymentDB,
+                        order_id,
+                    )
+                    is_submitted = pending_order is not None and pending_order.submitted_at is not None
+                if is_submitted:
+                    await self.reconcile_pending_payment(
+                        order_id,
+                    )
+                else:
+                    await self.submit_payment(
+                        order_id,
+                    )
+            except (BillingPaymentError, BillingPurchaseError, BillingUnavailableError):
                 logging.getLogger(
                     __name__,
                 ).warning(
@@ -1503,7 +1846,7 @@ class SubscriptionService:
                         BillingSubscriptionDB.owner_id,
                     )
                     .where(
-                        BillingSubscriptionDB.source == "yookassa",
+                        BillingSubscriptionDB.source == "robokassa",
                         BillingSubscriptionDB.is_auto_renewing.is_(
                             True,
                         ),
@@ -1540,6 +1883,22 @@ class SubscriptionService:
                     > self._now()
                 ):
                     continue
+                replacement = await session.scalar(
+                    select(
+                        BillingPaymentDB.id,
+                    )
+                    .where(
+                        BillingPaymentDB.previous_subscription_id == subscription.id,
+                        BillingPaymentDB.status.in_(
+                            ("created", "pending", "needsReview"),
+                        ),
+                    )
+                    .limit(
+                        1,
+                    ),
+                )
+                if replacement:
+                    continue
                 key = self._utc(
                     subscription.next_charge_at,
                 ).isoformat()
@@ -1568,6 +1927,7 @@ class SubscriptionService:
                         interval_months=subscription.interval_months,
                         interval_days=subscription.interval_days,
                         renewal_payment_method_id=subscription.payment_method_id,
+                        receipt_email=subscription.receipt_email,
                         status="created",
                         created_at=self._now(),
                     ),
@@ -1585,6 +1945,7 @@ class SubscriptionService:
                     BillingPaymentDB,
                 ).where(
                     BillingPaymentDB.owner_id == owner_id,
+                    BillingPaymentDB.source == "robokassa",
                     BillingPaymentDB.subscription_id.is_not(
                         None,
                     ),
@@ -1605,7 +1966,7 @@ class SubscriptionService:
                 BillingSubscriptionDB,
             ).where(
                 BillingSubscriptionDB.owner_id == owner_id,
-                BillingSubscriptionDB.source == "yookassa",
+                BillingSubscriptionDB.source == "robokassa",
                 BillingSubscriptionDB.paid_until <= self._now(),
             ),
         )
@@ -1615,7 +1976,7 @@ class SubscriptionService:
         # The next pending-order query must not reuse a just-canceled renewal.
         await session.flush()
 
-    async def reconcile_yookassa(
+    async def reconcile_robokassa(
         self,
     ) -> None:
         async with self.database.session() as session:
@@ -1625,6 +1986,7 @@ class SubscriptionService:
                         BillingPaymentDB.id,
                     )
                     .where(
+                        BillingPaymentDB.source == "robokassa",
                         BillingPaymentDB.status.in_(
                             ("succeeded", "refunded"),
                         ),
@@ -1647,12 +2009,14 @@ class SubscriptionService:
                     BillingPaymentDB,
                     order_id,
                 )
-                if order is None or not order.provider_id:
+                if order is None or not order.provider_id or not order.invoice_id:
                     continue
                 # Record attempts as well as successes so a failing provider object
                 # cannot starve the rest of the bounded reconciliation queue.
-                order.reconciliation_attempted_at = self._now()
-                provider_id = order.provider_id
+                order.reconciliation_attempted_at = datetime.now(
+                    UTC,
+                )
+                provider_id = order.invoice_id
             try:
                 await self.payment_notification(
                     provider_id,

@@ -3,6 +3,8 @@ import Foundation
 
 /// The local-only candidate benchmark does not bootstrap App Check or make server calls.
 struct DNeuralUltrasoundUnavailableTestTransport {
+    init() {}
+
     func parseDictation(
         selectedNeuralModelId _: String?,
         examinationTypeId _: String,

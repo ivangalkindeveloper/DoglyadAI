@@ -9,6 +9,14 @@ struct OnBoardingScreenView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: OnBoardingViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> OnBoardingViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         let (isDisabled, isProcessing): (Bool, Bool) = switch viewModel.state {
         case let state as OnBoardingLegalState: (!state.isLegalAccepted, false)

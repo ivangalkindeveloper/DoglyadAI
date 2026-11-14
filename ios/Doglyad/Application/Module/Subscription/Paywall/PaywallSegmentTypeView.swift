@@ -6,6 +6,12 @@ struct PaywallSegmentTypeView: DViewProtocol {
     @EnvironmentObject private var viewModel: PaywallViewModel
     let state: PaywallContentState
 
+    init(
+        state: PaywallContentState,
+    ) {
+        self.state = state
+    }
+
     var body: some View {
         DSegment(
             currentValue: state.selectedType,
@@ -32,6 +38,10 @@ struct PaywallSegmentTypeView: DViewProtocol {
                 cornerRadius: size.s64,
                 color: color.grayscaleInput,
             ),
+        )
+        .padding(
+            .bottom,
+            size.s8,
         )
     }
 }

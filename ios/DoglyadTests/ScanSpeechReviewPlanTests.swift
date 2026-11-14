@@ -18,6 +18,8 @@ struct ScanSpeechReviewPlanTests {
         sourceQuote: "Height 175 cm",
     )
 
+    init() {}
+
     @Test
     func automaticFieldsWithoutRemainingIssuesCompleteTheFlow() {
         let plan = makePlan(

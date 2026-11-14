@@ -3,6 +3,14 @@ import Foundation
 struct SettingsAIConfig: Codable, Equatable {
     let temperatureMaxLength: Int
     let maxTokensMaxLength: Int
+
+    init(
+        temperatureMaxLength: Int,
+        maxTokensMaxLength: Int,
+    ) {
+        self.temperatureMaxLength = temperatureMaxLength
+        self.maxTokensMaxLength = maxTokensMaxLength
+    }
 }
 
 extension SettingsAIConfig {

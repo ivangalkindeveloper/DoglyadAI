@@ -94,7 +94,7 @@ class PublicationTests(unittest.TestCase):
         self.assertIn("<td>case-b</td><td>Не запущен</td>", page)
 
     def test_missing_provider_evidence_blocks_publication(self) -> None:
-        self.suite[0].update(provider="yookassa", paymentPlan="base_weekly")
+        self.suite[0].update(provider="robokassa", paymentPlan="base_weekly")
         self.assertEqual(self.finalize()["executionStatus"], "failed")
         with self.assertRaises(ValueError):
             publication(self.run)
@@ -134,7 +134,7 @@ class PublicationTests(unittest.TestCase):
                 publication(self.run)
 
     def test_changed_provider_evidence_blocks_publication(self) -> None:
-        self.suite[0].update(provider="yookassa", paymentPlan="base_weekly")
+        self.suite[0].update(provider="robokassa", paymentPlan="base_weekly")
         path = self.run / "cases/case-a/payment-evidence.json"
         path.parent.mkdir(parents=True)
         path.write_text(
@@ -148,7 +148,7 @@ class PublicationTests(unittest.TestCase):
 
     def test_cancelled_payment_requires_no_provider_submission(self) -> None:
         self.suite[0].update(
-            provider="yookassa", paymentPlan="base_weekly", paymentOutcome="canceled"
+            provider="robokassa", paymentPlan="base_weekly", paymentOutcome="canceled"
         )
         path = self.run / "cases/case-a/payment-evidence.json"
         path.parent.mkdir(parents=True)
@@ -176,7 +176,7 @@ class PublicationTests(unittest.TestCase):
         paths = []
         for case, evidence in zip(self.suite, [pending, confirmed]):
             case.update(
-                provider="yookassa",
+                provider="robokassa",
                 paymentPlan="pro_weekly",
                 paymentOutcome=evidence["status"],
             )
@@ -208,7 +208,7 @@ class PublicationTests(unittest.TestCase):
         rejected = dict(base, status="active-rejected")
         for case, evidence in zip(self.suite, [base, rejected]):
             case.update(
-                provider="yookassa",
+                provider="robokassa",
                 paymentPlan="base_weekly",
                 paymentOutcome=evidence["status"],
             )

@@ -4,7 +4,7 @@
 func makeSubscriptionTestContainer(
     backend: SubscriptionBackendRepositoryProtocol,
     storeKit: SubscriptionRepositoryProtocol,
-    yooKassa: SubscriptionRepositoryProtocol,
+    robokassa: SubscriptionRepositoryProtocol,
     getStorefrontCountryCode: @escaping () async -> String? = {
         nil
     },
@@ -13,11 +13,9 @@ func makeSubscriptionTestContainer(
     let base = DependencyContainer.makePreviewable(
         l10n: l10n,
     )
-    let factory = SubscriptionRepositoryFactory(
-        storeKit: storeKit,
-        yooKassa: yooKassa,
-        getStorefrontCountryCode: getStorefrontCountryCode,
-    )
+    let factory = SubscriptionTestRepositoryFactory {
+        await getStorefrontCountryCode() == "RUS" ? robokassa : storeKit
+    }
     return DependencyContainer(
         analytics: base.analytics,
         environment: base.environment,
@@ -31,6 +29,7 @@ func makeSubscriptionTestContainer(
         ultrasoundDraftRepository: base.ultrasoundDraftRepository,
         templateRepository: base.templateRepository,
         subscriptionBackendRepository: backend,
+        subscriptionStoreKitRepository: storeKit,
         subscriptionRepositoryFactory: factory,
         applicationConfig: base.applicationConfig,
         language: base.language,

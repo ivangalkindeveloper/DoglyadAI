@@ -7,6 +7,14 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
     @StateObject var viewModel: ReadyMadeTemplateListViewModel
     @FocusState private var focus: ReadyMadeTemplateListFocus?
 
+    init(
+        viewModel: @autoclosure @escaping () -> ReadyMadeTemplateListViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[

@@ -9,6 +9,16 @@ struct ScanSpeechModelPreparationStatusView: DViewProtocol {
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
 
+    init(
+        preparation: DSpeechModelPreparationStatus,
+        toolbarHeight: CGFloat,
+        bottomHeight: CGFloat,
+    ) {
+        self.preparation = preparation
+        self.toolbarHeight = toolbarHeight
+        self.bottomHeight = bottomHeight
+    }
+
     var body: some View {
         let (descriptionKey, descriptionColor, progress): (L10NKey?, Color, Double?) = switch preparation {
         case .checking: (.scanSpeechModelCheckingDescription, color.grayscaleBackgroundWeak, 0)

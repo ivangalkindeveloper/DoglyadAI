@@ -9,7 +9,16 @@
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
         let state: any ScanCameraStateProtocol
-        var photos: [USExaminationScanPhoto] = ModulePreviewFactory.photos
+        var photos: [USExaminationScanPhoto]
+
+        @MainActor
+        init(
+            state: any ScanCameraStateProtocol,
+            photos: @autoclosure @MainActor () -> [USExaminationScanPhoto] = ModulePreviewFactory.photos,
+        ) {
+            self.state = state
+            self.photos = photos()
+        }
 
         var body: some View {
             let model = ScanCameraViewModel(

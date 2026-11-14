@@ -8,6 +8,16 @@ struct SettingsAICardView: DViewProtocol {
     let onTap: () -> Void
     var isDisabled: Bool = false
 
+    init(
+        settings: SettingsAI,
+        onTap: @escaping () -> Void,
+        isDisabled: Bool = false,
+    ) {
+        self.settings = settings
+        self.onTap = onTap
+        self.isDisabled = isDisabled
+    }
+
     var body: some View {
         VStack(
             alignment: .leading,
@@ -84,6 +94,14 @@ private struct SettingsAIMarkdownRowView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @Binding var isMarkdown: Bool
     var isDisabled: Bool = false
+
+    init(
+        isMarkdown: Binding<Bool>,
+        isDisabled: Bool = false,
+    ) {
+        _isMarkdown = isMarkdown
+        self.isDisabled = isDisabled
+    }
 
     private var switchScale: CGFloat {
         size.s12 / Self.switchNativeHeight

@@ -6,6 +6,8 @@ struct PhotoViewControlsView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: PhotoViewViewModel
 
+    init() {}
+
     var body: some View {
         VStack(
             spacing: size.s8,

@@ -8,6 +8,14 @@ final class PatientConsentInitialState: PatientConsentStateProtocol, @MainActor 
         self.isDoNotAskAgain = isDoNotAskAgain
     }
 
+    func copyWith(
+        isDoNotAskAgain: Bool? = nil,
+    ) -> Self {
+        Self(
+            isDoNotAskAgain: isDoNotAskAgain ?? self.isDoNotAskAgain,
+        )
+    }
+
     static func == (
         lhs: PatientConsentInitialState,
         rhs: PatientConsentInitialState,

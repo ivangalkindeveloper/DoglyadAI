@@ -4,6 +4,14 @@ struct PhotoViewImageTransform {
     var scale: CGFloat = 1
     var offset: CGSize = .zero
 
+    init(
+        scale: CGFloat = 1,
+        offset: CGSize = .zero,
+    ) {
+        self.scale = scale
+        self.offset = offset
+    }
+
     func position(
         normalizedPoint: CGPoint,
         imageSize: CGSize,

@@ -4,7 +4,9 @@ import DoglyadSpeech
 import Foundation
 
 /// Fixtures link to the backend catalogs and belong only to the test bundle.
-private final class LocalizationFixtureBundleMarker {}
+private final class LocalizationFixtureBundleMarker {
+    init() {}
+}
 
 enum VoiceLocalizationTestSupport {
     private static let english = try! load(

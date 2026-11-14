@@ -9,6 +9,16 @@ struct ReportDetailModelReportCardView: DViewProtocol {
     let onTapCopy: () -> Void
     var isDisabled: Bool = false
 
+    init(
+        report: USExaminationModelReport,
+        onTapCopy: @escaping () -> Void,
+        isDisabled: Bool = false,
+    ) {
+        self.report = report
+        self.onTapCopy = onTapCopy
+        self.isDisabled = isDisabled
+    }
+
     private var generationFailureTitle: L10NKey? {
         switch report.generation.status {
         case .generating, .completed: nil

@@ -19,6 +19,11 @@ logger = logging.getLogger(
 class AppCheck:
     HEADER = HttpHeader.FIREBASE_APP_CHECK.value
 
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @staticmethod
     def initialize(
         variables: Variables,

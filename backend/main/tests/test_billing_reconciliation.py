@@ -1,12 +1,12 @@
 from __future__ import annotations
 
 import asyncio
-import json
 import os
 from dataclasses import replace
 from datetime import timedelta
 from pathlib import Path
 from typing import Any
+from urllib.parse import parse_qs
 from uuid import uuid4
 
 import httpx
@@ -22,9 +22,7 @@ from app.error.billing_conflict_error import BillingConflictError
 from app.error.billing_payment_error import BillingPaymentError
 from app.error.billing_payment_rejected_error import BillingPaymentRejectedError
 from app.error.billing_purchase_error import BillingPurchaseError
-from app.error.billing_unavailable_error import BillingUnavailableError
 from app.model.billing.billing_prepare_payment_response import BillingPreparePaymentResponse
-from app.model.billing.billing_tokenize_payment_request import BillingTokenizePaymentRequest
 from tests.support.billing.billing_test_context import BillingTestContext
 
 
@@ -32,19 +30,10 @@ async def _paid(
     ctx: BillingTestContext,
     owner: str,
 ) -> tuple[BillingPreparePaymentResponse, dict[str, Any]]:
-    prepared = await ctx.sdk.prepare(
+    prepared = await ctx.checkout.prepare(
         owner,
         "monthly",
         LanguageCode.RU,
-    )
-    await ctx.sdk.tokenize(
-        owner,
-        BillingTokenizePaymentRequest(
-            paymentId=prepared.payment.id,
-            paymentToken="test-token-" + uuid4().hex,
-            termsVersion=prepared.termsVersion,
-            isAutoRenewalAccepted=True,
-        ),
     )
     payment = ctx.payments[
         str(
@@ -55,7 +44,7 @@ async def _paid(
         status="succeeded",
         paid=True,
     )
-    await ctx.sdk.check(
+    await ctx.checkout.check(
         owner,
         str(
             prepared.payment.id,
@@ -109,15 +98,10 @@ def _refund(
     "is_reserved",
     [False, True],
 )
-@pytest.mark.parametrize(
-    "channel",
-    ["sdk", "redirect"],
-)
 def test_new_purchase_replaces_only_unsent_expired_renewals(
     tmp_path: Path,
     configuration: Configuration,
     is_reserved: bool,
-    channel: str,
 ) -> None:
     async def run() -> None:
         async with BillingTestContext(
@@ -137,34 +121,10 @@ def test_new_purchase_replaces_only_unsent_expired_renewals(
             )
             if is_reserved:
                 await ctx.service.tick()
-            if channel == "sdk":
-                await _paid(
-                    ctx,
-                    owner,
-                )
-            else:
-                checkout = await ctx.service.create_checkout(
-                    owner,
-                    "monthly",
-                )
-                browser, _ = await ctx.service.bind_checkout(
-                    checkout.code,
-                    None,
-                )
-                await ctx.service.start_checkout_payment(
-                    browser,
-                    is_auto_renewal_accepted=True,
-                )
-                payment = list(
-                    ctx.payments.values(),
-                )[-1]
-                payment.update(
-                    status="succeeded",
-                    paid=True,
-                )
-                await ctx.service.payment_notification(
-                    payment["id"],
-                )
+            await _paid(
+                ctx,
+                owner,
+            )
             await ctx.service.tick()
             await ctx.service.tick()
             assert (
@@ -244,7 +204,11 @@ def test_lost_renewal_response_survives_cancellation_and_reuses_dispatch_snapsho
                     request,
                 )
                 if request.method == "POST":
-                    ctx.payments[request.headers["Idempotence-Key"]].update(
+                    ctx.payments[
+                        parse_qs(
+                            request.content.decode(),
+                        )["Shp_order_id"][0]
+                    ].update(
                         status="succeeded",
                         paid=True,
                     )
@@ -270,11 +234,18 @@ def test_lost_renewal_response_survives_cancellation_and_reuses_dispatch_snapsho
                     renewal_id,
                 )
                 assert renewal is not None and renewal.submitted_at is not None
-                assert renewal.renewal_payment_method_id == "saved-method"
+                assert (
+                    renewal.renewal_payment_method_id
+                    == ctx.payments[
+                        str(
+                            first.payment.id,
+                        )
+                    ]["id"]
+                )
             with pytest.raises(
                 BillingConflictError,
             ):
-                await ctx.sdk.prepare(
+                await ctx.checkout.prepare(
                     owner,
                     "monthly",
                     LanguageCode.RU,
@@ -304,26 +275,29 @@ def test_lost_renewal_response_survives_cancellation_and_reuses_dispatch_snapsho
             retried = [
                 request
                 for request in ctx.requests
-                if request.method == "POST" and request.headers["Idempotence-Key"] == renewal_id
+                if request.url.path.endswith(
+                    "/Recurring",
+                )
             ]
             assert (
-                json.loads(
-                    retried[-1].content,
-                )["payment_method_id"]
-                == "saved-method"
+                len(
+                    retried,
+                )
+                == 1
+            )
+            assert (
+                parse_qs(
+                    retried[0].content.decode(),
+                )["PreviousInvoiceID"][0]
+                == ctx.payments[
+                    str(
+                        first.payment.id,
+                    )
+                ]["id"]
             )
             assert (
                 len(
                     ctx.payments,
-                )
-                == 2
-            )
-            assert (
-                sum(
-                    (
-                        request.method == "POST" and request.headers["Idempotence-Key"] == renewal_id
-                        for request in ctx.requests
-                    ),
                 )
                 == 2
             )
@@ -333,7 +307,7 @@ def test_lost_renewal_response_survives_cancellation_and_reuses_dispatch_snapsho
     )
 
 
-def test_definitive_token_rejection_allows_a_new_order_and_token(
+def test_definitive_invoice_rejection_allows_a_new_order(
     tmp_path: Path,
     configuration: Configuration,
 ) -> None:
@@ -345,61 +319,40 @@ def test_definitive_token_rejection_allows_a_new_order_and_token(
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            prepared = await ctx.sdk.prepare(
-                owner,
-                "monthly",
-                LanguageCode.RU,
-            )
             original = ctx.client._transport
-
-            def reject(
-                request: httpx.Request,
-            ) -> httpx.Response:
-                if request.method == "POST":
-                    return httpx.Response(
-                        400,
-                        json={
-                            "type": "error",
-                            "id": str(
-                                uuid4(),
-                            ),
-                            "code": "invalid_request",
-                            "parameter": "payment_token",
-                        },
-                    )
-                return ctx._respond(
-                    request,
-                )
-
             ctx.client._transport = httpx.MockTransport(
-                reject,
+                lambda request: httpx.Response(
+                    200,
+                    json={"isSuccess": False},
+                ),
             )
             with pytest.raises(
                 BillingPaymentRejectedError,
             ):
-                await ctx.sdk.tokenize(
+                await ctx.checkout.prepare(
                     owner,
-                    BillingTokenizePaymentRequest(
-                        paymentId=prepared.payment.id,
-                        paymentToken="rejected-test-token",
-                        termsVersion=prepared.termsVersion,
-                        isAutoRenewalAccepted=True,
-                    ),
+                    "monthly",
+                    LanguageCode.RU,
                 )
             ctx.client._transport = original
             async with ctx.database.session() as session:
-                order = await session.get(
-                    BillingPaymentDB,
-                    str(
-                        prepared.payment.id,
+                order = await session.scalar(
+                    select(
+                        BillingPaymentDB,
                     ),
                 )
                 assert order is not None and order.status == "canceled" and order.provider_id is None
+                rejected_id = order.id
             fresh, _ = await _paid(
                 ctx,
                 owner,
             )
-            assert fresh.payment.id != prepared.payment.id
+            assert (
+                str(
+                    fresh.payment.id,
+                )
+                != rejected_id
+            )
             assert (
                 len(
                     ctx.payments,
@@ -412,134 +365,6 @@ def test_definitive_token_rejection_allows_a_new_order_and_token(
                 )
                 is not None
             )
-
-    asyncio.run(
-        run(),
-    )
-
-
-def test_failed_merchant_preflight_does_not_leave_an_unretryable_order(
-    tmp_path: Path,
-    configuration: Configuration,
-) -> None:
-    async def run() -> None:
-        async with BillingTestContext(
-            tmp_path,
-            configuration,
-            is_live=True,
-        ) as ctx:
-            owner = str(
-                (await ctx.service.register()).ownerId,
-            )
-            prepared = await ctx.sdk.prepare(
-                owner,
-                "monthly",
-                LanguageCode.RU,
-            )
-            with pytest.raises(
-                BillingUnavailableError,
-            ):
-                await ctx.sdk.tokenize(
-                    owner,
-                    BillingTokenizePaymentRequest(
-                        paymentId=prepared.payment.id,
-                        paymentToken="preflight-test-token",
-                        termsVersion=prepared.termsVersion,
-                        isAutoRenewalAccepted=True,
-                    ),
-                )
-            assert not ctx.payments
-            assert not any(
-                (request.method == "POST" for request in ctx.requests),
-            )
-            ctx.is_live = False
-            fresh, _ = await _paid(
-                ctx,
-                owner,
-            )
-            assert fresh.payment.id != prepared.payment.id
-
-    asyncio.run(
-        run(),
-    )
-
-
-def test_browser_checkout_can_retry_after_definitive_rejection(
-    tmp_path: Path,
-    configuration: Configuration,
-) -> None:
-    async def run() -> None:
-        async with BillingTestContext(
-            tmp_path,
-            configuration,
-        ) as ctx:
-            owner = str(
-                (await ctx.service.register()).ownerId,
-            )
-            checkout = await ctx.service.create_checkout(
-                owner,
-                "monthly",
-            )
-            browser, _ = await ctx.service.bind_checkout(
-                checkout.code,
-                None,
-            )
-            original = ctx.client._transport
-
-            def reject(
-                request: httpx.Request,
-            ) -> httpx.Response:
-                if request.method == "POST":
-                    return httpx.Response(
-                        400,
-                        json={
-                            "type": "error",
-                            "id": str(
-                                uuid4(),
-                            ),
-                            "code": "invalid_request",
-                        },
-                    )
-                return ctx._respond(
-                    request,
-                )
-
-            ctx.client._transport = httpx.MockTransport(
-                reject,
-            )
-            with pytest.raises(
-                BillingPaymentRejectedError,
-            ):
-                await ctx.service.start_checkout_payment(
-                    browser,
-                    is_auto_renewal_accepted=True,
-                )
-            ctx.client._transport = original
-            assert await ctx.service.start_checkout_payment(
-                browser,
-                is_auto_renewal_accepted=True,
-            )
-            assert (
-                len(
-                    ctx.payments,
-                )
-                == 1
-            )
-            async with ctx.database.session() as session:
-                assert (
-                    await session.scalar(
-                        select(
-                            func.count(),
-                        )
-                        .select_from(
-                            BillingPaymentDB,
-                        )
-                        .where(
-                            BillingPaymentDB.status == "canceled",
-                        ),
-                    )
-                    == 1
-                )
 
     asyncio.run(
         run(),
@@ -599,7 +424,7 @@ def test_completed_payment_reconciliation_advances_past_a_failing_provider_objec
             def respond(
                 request: httpx.Request,
             ) -> httpx.Response:
-                if request.url.path == "/v3/payments/" + bad_id:
+                if request.url.path == "/payments/" + bad_id:
                     return httpx.Response(
                         500,
                         json={
@@ -643,7 +468,7 @@ def test_completed_payment_reconciliation_advances_past_a_failing_provider_objec
     "status",
     [429, 500],
 )
-def test_uncertain_provider_error_does_not_allow_a_new_token_or_operation(
+def test_uncertain_provider_error_keeps_invoice_and_never_replays_submission(
     tmp_path: Path,
     configuration: Configuration,
     status: int,
@@ -656,81 +481,52 @@ def test_uncertain_provider_error_does_not_allow_a_new_token_or_operation(
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            prepared = await ctx.sdk.prepare(
-                owner,
-                "monthly",
-                LanguageCode.RU,
-            )
             original = ctx.client._transport
-
-            def fail(
-                request: httpx.Request,
-            ) -> httpx.Response:
-                if request.method == "POST":
-                    return httpx.Response(
-                        status,
-                        json={
-                            "type": "error",
-                            "id": str(
-                                uuid4(),
-                            ),
-                            "code": "internal_server_error",
-                        },
-                    )
-                return ctx._respond(
-                    request,
-                )
-
             ctx.client._transport = httpx.MockTransport(
-                fail,
-            )
-            request = BillingTokenizePaymentRequest(
-                paymentId=prepared.payment.id,
-                paymentToken="uncertain-test-token",
-                termsVersion=prepared.termsVersion,
-                isAutoRenewalAccepted=True,
+                lambda request: httpx.Response(
+                    status,
+                    json={"error": "unknown"},
+                ),
             )
             with pytest.raises(
                 BillingPaymentError,
             ):
-                await ctx.sdk.tokenize(
+                await ctx.checkout.prepare(
                     owner,
-                    request,
+                    "monthly",
+                    LanguageCode.RU,
                 )
             ctx.client._transport = original
-            reopened = await ctx.sdk.prepare(
-                owner,
-                "monthly",
-                LanguageCode.RU,
-            )
-            assert reopened.payment.id == prepared.payment.id
-            with pytest.raises(
-                BillingConflictError,
-            ):
-                await ctx.sdk.tokenize(
-                    owner,
-                    request.model_copy(
-                        update={"paymentToken": "different-test-token"},
+            async with ctx.database.session() as session:
+                order = await session.scalar(
+                    select(
+                        BillingPaymentDB,
                     ),
+                )
+                assert order is not None and order.submitted_at is not None
+                order_id, invoice_id = order.id, order.invoice_id
+            with pytest.raises(
+                BillingPaymentError,
+            ):
+                await ctx.checkout.prepare(
+                    owner,
+                    "monthly",
+                    LanguageCode.RU,
                 )
             async with ctx.database.session() as session, session.begin():
                 order = await session.get(
                     BillingPaymentDB,
-                    str(
-                        prepared.payment.id,
-                    ),
+                    order_id,
                 )
-                assert order is not None and order.submitted_at is not None
+                assert order is not None and order.invoice_id == invoice_id
                 order.submitted_at = ctx.service._now() - timedelta(
                     hours=24,
                 )
             await ctx.service.tick()
             assert (
-                await ctx.sdk.check(
+                await ctx.checkout.check(
                     owner,
-                    str(
-                        prepared.payment.id,
-                    ),
+                    order_id,
                 )
             ).status == "needsReview"
             assert not ctx.payments
@@ -744,7 +540,7 @@ def test_uncertain_provider_error_does_not_allow_a_new_token_or_operation(
     "amount_minor",
     [4000, 10000],
 )
-def test_worker_recovers_missed_refunds_and_records_provider_refund_ids(
+def test_worker_reconciles_known_refund_request_ids(
     tmp_path: Path,
     configuration: Configuration,
     amount_minor: int,
@@ -769,6 +565,21 @@ def test_worker_recovers_missed_refunds_and_records_provider_refund_ids(
                 payment,
                 amount_minor,
             )
+            async with ctx.database.session() as session, session.begin():
+                session.add(
+                    BillingRefundDB(
+                        id=refund["id"],
+                        provider_request_id=refund["id"],
+                        payment_id=str(
+                            prepared.payment.id,
+                        ),
+                        amount_minor=amount_minor,
+                        currency="RUB",
+                        status="pending",
+                        created_at=ctx.service._now(),
+                        updated_at=ctx.service._now(),
+                    ),
+                )
             await ctx.service.tick()
             await ctx.service.tick()
             async with ctx.database.session() as session:
@@ -845,6 +656,21 @@ def test_refund_status_transitions_are_idempotent_and_do_not_extend_access(
                 4000,
                 "pending",
             )
+            async with ctx.database.session() as session, session.begin():
+                session.add(
+                    BillingRefundDB(
+                        id=refund["id"],
+                        provider_request_id=refund["id"],
+                        payment_id=str(
+                            prepared.payment.id,
+                        ),
+                        amount_minor=4000,
+                        currency="RUB",
+                        status="pending",
+                        created_at=ctx.service._now(),
+                        updated_at=ctx.service._now(),
+                    ),
+                )
             await ctx.service.payment_notification(
                 payment["id"],
             )
@@ -1019,7 +845,7 @@ def test_inflight_renewal_blocks_concurrent_new_purchase(
                 5,
             )
             purchase = asyncio.create_task(
-                ctx.sdk.prepare(
+                ctx.checkout.prepare(
                     owner,
                     "monthly",
                     LanguageCode.RU,

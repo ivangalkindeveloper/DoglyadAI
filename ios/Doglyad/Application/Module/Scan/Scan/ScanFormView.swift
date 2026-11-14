@@ -8,6 +8,14 @@ struct ScanFormView: DViewProtocol {
     let focus: FocusState<ScanFocus?>.Binding
     var isDisabled: Bool = false
 
+    init(
+        focus: FocusState<ScanFocus?>.Binding,
+        isDisabled: Bool = false,
+    ) {
+        self.focus = focus
+        self.isDisabled = isDisabled
+    }
+
     var body: some View {
         VStack(
             alignment: .leading,

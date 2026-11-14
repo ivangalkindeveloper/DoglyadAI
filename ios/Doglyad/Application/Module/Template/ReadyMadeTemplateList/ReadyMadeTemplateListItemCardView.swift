@@ -7,6 +7,16 @@ struct ReadyMadeTemplateListItemCardView: DViewProtocol {
     let examinationTypeTitle: LocalizedStringResource
     let action: () -> Void
 
+    init(
+        template: USExaminationReadyMadeTemplate,
+        examinationTypeTitle: LocalizedStringResource,
+        action: @escaping () -> Void,
+    ) {
+        self.template = template
+        self.examinationTypeTitle = examinationTypeTitle
+        self.action = action
+    }
+
     var body: some View {
         VStack(
             alignment: .leading,

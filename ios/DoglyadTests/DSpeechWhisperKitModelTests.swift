@@ -6,6 +6,8 @@ import Testing
 struct DSpeechWhisperKitModelTests {
     private let folderKey = "DoglyadSpeech.whisperTurboModelFolder"
 
+    init() {}
+
     @Test
     func cancelledInferenceDoesNotLoadOrDownloadTheModel() async throws {
         try await withStore { model, _, _ in

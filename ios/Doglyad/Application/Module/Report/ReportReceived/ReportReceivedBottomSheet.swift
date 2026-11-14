@@ -10,6 +10,12 @@ struct ReportReceivedBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: ReportReceivedArguments
 
+    init(
+        arguments: ReportReceivedArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         ReportReceivedBottomSheetView(
             viewModel: ReportReceivedViewModel(

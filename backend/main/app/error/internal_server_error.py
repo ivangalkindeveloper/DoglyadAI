@@ -7,3 +7,8 @@ class InternalServerError(ApiError):
     code = "internalServerError"
     description = "Internal server error"
     status_code = 500
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

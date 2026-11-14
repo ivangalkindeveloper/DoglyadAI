@@ -22,7 +22,8 @@ final class InitializationProcess: DependencyInitializationProcess {
     var ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol?
     var templateRepository: TemplateRepositoryProtocol?
     var subscriptionBackendRepository: SubscriptionBackendRepositoryProtocol?
-    var subscriptionRepositoryFactory: SubscriptionRepositoryFactory?
+    var subscriptionStoreKitRepository: SubscriptionRepositoryProtocol?
+    var subscriptionRepositoryFactory: SubscriptionRepositoryFactoryProtocol?
     var applicationConfig: ApplicationConfig?
     var language: Language?
     var l10n: L10N?
@@ -39,6 +40,8 @@ final class InitializationProcess: DependencyInitializationProcess {
     var initialSubscriptionStatus: SubscriptionStatus?
     var initialRoute: RouteScreen<ScreenType>?
     var version: String?
+
+    init() {}
 
     var toContainer: DependencyContainer {
         #if DEBUG && DOGLYAD_REGRESSION
@@ -59,6 +62,7 @@ final class InitializationProcess: DependencyInitializationProcess {
             ultrasoundDraftRepository: ultrasoundDraftRepository!,
             templateRepository: templateRepository!,
             subscriptionBackendRepository: subscriptionBackendRepository!,
+            subscriptionStoreKitRepository: subscriptionStoreKitRepository!,
             subscriptionRepositoryFactory: subscriptionRepositoryFactory!,
             applicationConfig: applicationConfig!,
             language: language!,

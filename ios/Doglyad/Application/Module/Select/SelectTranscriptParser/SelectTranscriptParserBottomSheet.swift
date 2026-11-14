@@ -8,6 +8,12 @@ struct SelectTranscriptParserBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: SelectTranscriptParserArguments
 
+    init(
+        arguments: SelectTranscriptParserArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         SelectTranscriptParserBottomSheetView(
             viewModel: SelectTranscriptParserViewModel(

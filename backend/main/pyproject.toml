@@ -37,7 +37,7 @@ warn_redundant_casts = true
 show_error_codes = true
 
 [[tool.mypy.overrides]]
-module = ["firebase_admin.*", "regex", "yookassa.*"]
+module = ["firebase_admin.*", "regex"]
 ignore_missing_imports = true
 
 [tool.pydantic-mypy]

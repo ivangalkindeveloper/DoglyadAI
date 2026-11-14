@@ -10,6 +10,14 @@
         let state: any LegalUpdateStateProtocol
         var isLegalAccepted = false
 
+        init(
+            state: any LegalUpdateStateProtocol,
+            isLegalAccepted: Bool = false,
+        ) {
+            self.state = state
+            self.isLegalAccepted = isLegalAccepted
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as LegalUpdateErrorState: true

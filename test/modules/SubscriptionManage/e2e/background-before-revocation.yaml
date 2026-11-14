@@ -1,0 +1,13 @@
+appId: ${APP_ID}
+name: e2e-managesubscription-background-before-revocation
+tags: [e2e, SubscriptionManage]
+---
+- runFlow: ../../../maestro/support/menu.yaml
+- scrollUntilVisible:
+    element: {text: '^Управление подпиской$'}
+    direction: DOWN
+- tapOn: ^Управление подпиской$
+- assertVisible: ^Подписка Pro$
+- assertVisible: ^Активна$
+- takeScreenshot: SubscriptionManage-before-revocation
+- pressKey: Home

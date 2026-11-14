@@ -1,3 +1,5 @@
 import Router
 
-final class PaywallArguments: RouteArgumentsProtocol {}
+final class PaywallArguments: RouteArgumentsProtocol {
+    init() {}
+}

@@ -8,6 +8,20 @@ struct DScreenToolbarView<Leading: View, Title: View, Trailing: View, Content: V
     let trailingView: Trailing
     let toolbarContent: Content
 
+    init(
+        safeAreaInsetTop: CGFloat,
+        leadingView: Leading,
+        titleView: Title,
+        trailingView: Trailing,
+        toolbarContent: Content,
+    ) {
+        self.safeAreaInsetTop = safeAreaInsetTop
+        self.leadingView = leadingView
+        self.titleView = titleView
+        self.trailingView = trailingView
+        self.toolbarContent = toolbarContent
+    }
+
     var body: some View {
         VStack(
             spacing: .zero,

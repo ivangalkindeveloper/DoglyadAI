@@ -5,6 +5,12 @@ struct PaywallPlansView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let state: PaywallContentState
 
+    init(
+        state: PaywallContentState,
+    ) {
+        self.state = state
+    }
+
     var body: some View {
         VStack(
             spacing: size.s8,

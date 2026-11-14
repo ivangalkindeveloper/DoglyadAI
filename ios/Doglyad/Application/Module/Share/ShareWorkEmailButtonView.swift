@@ -6,6 +6,12 @@ struct ShareWorkEmailButtonView: DViewProtocol {
     @EnvironmentObject private var viewModel: ShareViewModel
     let isProcessing: Bool
 
+    init(
+        isProcessing: Bool,
+    ) {
+        self.isProcessing = isProcessing
+    }
+
     var body: some View {
         switch (viewModel.userEmail, viewModel.subscriptionAvailability(
             of: .sendingReportByEmail,

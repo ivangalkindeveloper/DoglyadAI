@@ -6,6 +6,8 @@ struct ScanCameraPhotoListView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanCameraViewModel
 
+    init() {}
+
     var body: some View {
         let isLoading = switch viewModel.state {
         case _ as ScanCameraPreparationLoadingState, _ as ScanCameraCaptureLoadingState: true

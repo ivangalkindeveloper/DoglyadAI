@@ -13,6 +13,7 @@ class USExaminationNeuralModelResponse(BaseModel):
 
     id: NonBlankString
     title: NonBlankString
+    format: NonBlankString
     entitlement: NonBlankString
     accessibility: USExaminationNeuralModelAccessibility
     contextLength: int

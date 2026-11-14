@@ -6,6 +6,8 @@ struct ScanCameraDescriptionView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: ScanCameraViewModel
 
+    init() {}
+
     var body: some View {
         switch viewModel.state {
         case _ as ScanCameraReadyState, _ as ScanCameraCaptureLoadingState:

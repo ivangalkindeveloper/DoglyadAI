@@ -5,6 +5,8 @@ struct ReportReceivedEmailButtonView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ReportReceivedViewModel
 
+    init() {}
+
     private var isSending: Bool {
         switch viewModel.state {
         case _ as ReportReceivedLoadingState: true

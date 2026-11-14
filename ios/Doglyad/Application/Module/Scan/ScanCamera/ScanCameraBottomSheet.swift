@@ -8,6 +8,12 @@ struct ScanCameraBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: ScanCameraArguments
 
+    init(
+        arguments: ScanCameraArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         ScanCameraBottomSheetView(
             viewModel: ScanCameraViewModel(

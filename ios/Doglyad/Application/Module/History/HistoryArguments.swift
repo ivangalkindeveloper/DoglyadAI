@@ -1,3 +1,5 @@
 import Router
 
-final class HistoryArguments: RouteArgumentsProtocol {}
+final class HistoryArguments: RouteArgumentsProtocol {
+    init() {}
+}

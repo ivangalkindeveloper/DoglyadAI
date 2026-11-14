@@ -32,6 +32,7 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
     var isLoadingFailed = false
     var isRestorableSubscriptionAvailable = true
     var onPurchase: (() async throws -> Void)?
+    private(set) var purchasedIsAutoRenewing: Bool?
     var preparedPaymentID: UUID?
     var observedUpdate: SubscriptionTransactionUpdate?
     private(set) var deliveredUpdateCount = 0
@@ -115,27 +116,33 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
 
     func purchase(
         plan: SubscriptionPlan,
-        onPurchasePrepared: @escaping (SubscriptionPurchaseReference) -> Void,
+        isAutoRenewing: Bool,
+        onPurchasePrepared: @escaping (SubscriptionPurchaseContextProtocol) -> Void,
     ) async throws -> SubscriptionPurchaseOutcome {
+        guard plan.source == self.plan.source else {
+            throw SubscriptionError.offeringsUnavailable
+        }
         purchaseCount += 1
         purchasedPlan = plan
+        purchasedIsAutoRenewing = isAutoRenewing
         try await onPurchase?()
         switch plan.source {
         case .apple:
             onPurchasePrepared(
-                .apple(
-                    previousTransactionId: 1,
+                SubscriptionStoreKitPurchaseContext(
+                    planID: plan.id,
+                    previousTransactionID: 1,
                     previousPurchaseDate: .distantPast,
                 ),
             )
-        case .yookassa:
-            if let preparedPaymentID {
-                onPurchasePrepared(
-                    .yookassa(
-                        paymentId: preparedPaymentID,
-                    ),
-                )
-            }
+        case .robokassa:
+            onPurchasePrepared(
+                SubscriptionRobokassaPurchaseContext(
+                    backend: backend,
+                    paymentID: preparedPaymentID ?? UUID(),
+                    planID: plan.id,
+                ),
+            )
         }
         switch purchaseResult {
         case .pending: return .pending
@@ -158,11 +165,16 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
         }
     }
 
-    func restorePurchases() async throws -> Bool {
+    func restorePurchases() async throws -> SubscriptionRestoreStrategy {
         restoreCount += 1
         try await onRestore?()
+        guard plan.source == .apple else {
+            return .recoveryKeyRequired
+        }
         backend.isAccessAvailable = isRestorableSubscriptionAvailable
-        return false
+        return .completed(
+            isOwnerChanged: false,
+        )
     }
 
     func synchronizeCurrentEntitlements() async throws -> Bool {

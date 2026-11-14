@@ -9,6 +9,12 @@ struct OnBoardingScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: OnBoardingArguments?
 
+    init(
+        arguments: OnBoardingArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         OnBoardingScreenView(
             viewModel: OnBoardingViewModel(

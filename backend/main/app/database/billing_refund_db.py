@@ -17,6 +17,12 @@ class BillingRefundDB(BillingBase):
         ),
         primary_key=True,
     )
+    provider_request_id: Mapped[str | None] = mapped_column(
+        String(
+            128,
+        ),
+        unique=True,
+    )
     payment_id: Mapped[str] = mapped_column(
         ForeignKey(
             "billing_payments.id",

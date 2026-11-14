@@ -6,6 +6,14 @@
         let error: Error
         var isRetrying = false
 
+        init(
+            error: Error,
+            isRetrying: Bool = false,
+        ) {
+            self.error = error
+            self.isRetrying = isRetrying
+        }
+
         var body: some View {
             let model = ApplicationRootViewModel()
             let failure = ApplicationRootErrorState(

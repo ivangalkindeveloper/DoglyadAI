@@ -10,6 +10,14 @@
         let state: any MenuStateProtocol
         var reportsCount: Int? = 12
 
+        init(
+            state: any MenuStateProtocol,
+            reportsCount: Int? = 12,
+        ) {
+            self.state = state
+            self.reportsCount = reportsCount
+        }
+
         var body: some View {
             let model = MenuViewModel(
                 messager: DMessager(),

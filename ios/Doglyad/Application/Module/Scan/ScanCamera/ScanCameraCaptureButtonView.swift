@@ -6,6 +6,12 @@ struct ScanCameraCaptureButtonView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanCameraViewModel
     let isCapturing: Bool
 
+    init(
+        isCapturing: Bool,
+    ) {
+        self.isCapturing = isCapturing
+    }
+
     var body: some View {
         switch viewModel.state {
         case _ as ScanCameraReadyState, _ as ScanCameraCaptureLoadingState:

@@ -1,5 +1,9 @@
 public protocol DHttpErrorProtocol: Error {}
 
-public class DHttpApiError: DHttpErrorProtocol {}
+public class DHttpApiError: DHttpErrorProtocol {
+    init() {}
+}
 
-public class DHttpConnectionError: DHttpErrorProtocol {}
+public class DHttpConnectionError: DHttpErrorProtocol {
+    init() {}
+}

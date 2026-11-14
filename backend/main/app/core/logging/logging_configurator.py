@@ -11,6 +11,11 @@ from app.core.logging.request_id_log_filter import RequestIdLogFilter
 class LoggingConfigurator:
     FORMAT = "%(asctime)s %(levelname)s %(name)s request_id=%(request_id)s: %(message)s"
 
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @classmethod
     def configure(
         cls,

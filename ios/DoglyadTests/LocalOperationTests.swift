@@ -6,6 +6,8 @@ import Testing
 
 @MainActor
 struct LocalOperationTests {
+    init() {}
+
     @Test
     func localWriteKeepsPresentationAndRejectsDuplicateActions() async {
         let model = makeModel()

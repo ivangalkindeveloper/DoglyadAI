@@ -5,6 +5,14 @@ struct DPhotoCardBadgeView: DViewProtocol {
     let badge: DPhotoCardConfiguration.Badge
     var isDisabled: Bool = false
 
+    init(
+        badge: DPhotoCardConfiguration.Badge,
+        isDisabled: Bool = false,
+    ) {
+        self.badge = badge
+        self.isDisabled = isDisabled
+    }
+
     var body: some View {
         switch badge {
         case let .delete(

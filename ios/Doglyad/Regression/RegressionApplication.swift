@@ -4,6 +4,8 @@
 
     @main
     struct RegressionApplication: App {
+        init() {}
+
         var body: some Scene {
             WindowGroup {
                 if let identity = UserDefaults.standard.string(
@@ -25,6 +27,8 @@
             forKey: "regressionCaptureSplash",
         )
 
+        init() {}
+
         var body: some View {
             ApplicationRootView()
                 .gesture(
@@ -40,11 +44,6 @@
                     if !waitingForSplashCapture {
                         viewModel.initialize()
                     }
-                }
-                .onOpenURL {
-                    viewModel.onOpenURL(
-                        $0,
-                    )
                 }
                 .dThemeWrapper()
                 .environmentObject(

@@ -8,6 +8,24 @@ struct SubscriptionStatus: Equatable {
     var source: SubscriptionSource?
     var expiresAt: Date?
     var isAutoRenewing: Bool = false
+
+    init(
+        planId: String,
+        type: SubscriptionType,
+        entitlement: SubscriptionEntitlement,
+        availableCountPerDay: Int,
+        source: SubscriptionSource? = nil,
+        expiresAt: Date? = nil,
+        isAutoRenewing: Bool = false,
+    ) {
+        self.planId = planId
+        self.type = type
+        self.entitlement = entitlement
+        self.availableCountPerDay = availableCountPerDay
+        self.source = source
+        self.expiresAt = expiresAt
+        self.isAutoRenewing = isAutoRenewing
+    }
 }
 
 extension SubscriptionStatus {

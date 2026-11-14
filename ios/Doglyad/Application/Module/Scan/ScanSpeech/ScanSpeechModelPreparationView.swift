@@ -8,6 +8,14 @@ struct ScanSpeechModelPreparationView: DViewProtocol {
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
 
+    init(
+        toolbarHeight: CGFloat,
+        bottomHeight: CGFloat,
+    ) {
+        self.toolbarHeight = toolbarHeight
+        self.bottomHeight = bottomHeight
+    }
+
     var body: some View {
         let preparation: DSpeechModelPreparationStatus = switch viewModel.state {
         case let state as ScanSpeechModelLoadingState: state.preparation

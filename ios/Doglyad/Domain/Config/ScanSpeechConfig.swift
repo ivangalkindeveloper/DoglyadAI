@@ -2,6 +2,12 @@ import Foundation
 
 struct ScanSpeechConfig: Codable, Equatable {
     let transcriptMaxLength: Int
+
+    init(
+        transcriptMaxLength: Int,
+    ) {
+        self.transcriptMaxLength = transcriptMaxLength
+    }
 }
 
 extension ScanSpeechConfig {

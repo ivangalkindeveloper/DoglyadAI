@@ -3,6 +3,14 @@ import Foundation
 struct UltrasoundNeuralModelConfig: Codable {
     let temperature: Double
     let maxTokens: Int
+
+    init(
+        temperature: Double,
+        maxTokens: Int,
+    ) {
+        self.temperature = temperature
+        self.maxTokens = maxTokens
+    }
 }
 
 extension UltrasoundNeuralModelConfig {

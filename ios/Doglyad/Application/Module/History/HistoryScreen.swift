@@ -10,6 +10,12 @@ struct HistoryScreen: View {
     @EnvironmentObject private var ultrasoundViewModel: UltrasoundRootViewModel
     let arguments: HistoryArguments?
 
+    init(
+        arguments: HistoryArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         HistoryScreenView(
             viewModel: HistoryViewModel(

@@ -6,6 +6,15 @@
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
         let state: any PaywallStateProtocol
+        var isPurchaseSuccessPresented: Bool = false
+
+        init(
+            state: any PaywallStateProtocol,
+            isPurchaseSuccessPresented: Bool = false,
+        ) {
+            self.state = state
+            self.isPurchaseSuccessPresented = isPurchaseSuccessPresented
+        }
 
         var body: some View {
             let errorDescription: String? = switch state {
@@ -28,6 +37,11 @@
             .previewError(
                 isPresented: errorDescription != nil,
                 description: errorDescription,
+            )
+            .previewMessage(
+                type: .success,
+                title: isPurchaseSuccessPresented ? .paywallPurchaseSuccessTitle : nil,
+                description: isPurchaseSuccessPresented ? .paywallPurchaseSuccessDescription : nil,
             )
             .id(
                 ObjectIdentifier(

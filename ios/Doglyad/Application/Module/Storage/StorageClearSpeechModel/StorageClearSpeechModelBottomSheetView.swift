@@ -6,6 +6,14 @@ struct StorageClearSpeechModelBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: StorageClearSpeechModelViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> StorageClearSpeechModelViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DInfoBottomSheet(
             fraction: 0.5,

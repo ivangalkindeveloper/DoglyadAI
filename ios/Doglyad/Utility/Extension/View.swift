@@ -1,3 +1,4 @@
+import DoglyadUI
 import SwiftUI
 
 extension View {
@@ -22,6 +23,20 @@ extension View {
             .environment(
                 \.isPreviewScrollEnd,
                 true,
+            )
+        }
+
+        func previewMessage(
+            type: DMessageType,
+            title: L10NKey?,
+            description: L10NKey? = nil,
+        ) -> some View {
+            modifier(
+                PreviewMessageModifier(
+                    type: type,
+                    title: title,
+                    description: description,
+                ),
             )
         }
 

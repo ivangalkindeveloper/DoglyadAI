@@ -6,6 +6,8 @@ import SwiftData
 import Testing
 
 struct ReportStreamingTests {
+    init() {}
+
     @Test
     func eventDecoderKeepsUTF8AcrossChunksAndRejectsTruncation() throws {
         let wire = Data(

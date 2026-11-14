@@ -6,6 +6,14 @@ struct RequestLimitExceededBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: RequestLimitExceededViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> RequestLimitExceededViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DInfoBottomSheet(
             fraction: 0.5,
@@ -17,7 +25,7 @@ struct RequestLimitExceededBottomSheetView: DViewProtocol {
                 .requestLimitExceededDescription,
             ],
             buttonTitle: l10n[
-                .buttonManageSubscription,
+                .buttonSubscriptionManage,
             ],
             action: viewModel.onTapUpgrade,
         )

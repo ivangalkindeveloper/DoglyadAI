@@ -7,6 +7,14 @@ struct PermissionBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: PermissionViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> PermissionViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DInfoBottomSheet(
             fraction: 0.5,

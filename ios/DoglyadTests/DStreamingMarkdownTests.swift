@@ -11,6 +11,8 @@ struct DStreamingMarkdownTests {
         timeIntervalSince1970: 1000,
     )
 
+    init() {}
+
     @Test
     func parsesHeadingsInlineStylesAndNestedLists() throws {
         let blocks = DStreamingMarkdownParser.parse(

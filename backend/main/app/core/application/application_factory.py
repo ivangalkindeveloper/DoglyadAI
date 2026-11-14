@@ -25,6 +25,11 @@ from app.service.http.request_limiter import RequestLimiter
 
 
 class ApplicationFactory:
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @classmethod
     def create_main(
         cls,
@@ -104,11 +109,8 @@ class ApplicationFactory:
         )
         gateway = PaymentGateway()
         for path, method, endpoint in (
-            ("/pay", "GET", gateway.page),
-            ("/pay/bind", "POST", gateway.bind),
-            ("/pay/confirm", "POST", gateway.confirm),
-            ("/pay/complete", "GET", gateway.complete),
-            ("/webhooks/yookassa", "POST", gateway.yookassa),
+            ("/payments/return", "GET", gateway.return_to_application),
+            ("/webhooks/robokassa", "POST", gateway.robokassa),
             ("/webhooks/apple", "POST", gateway.apple),
         ):
             app.add_api_route(

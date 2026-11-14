@@ -10,7 +10,7 @@ from app.core.localization.language_code import LanguageCode
 from app.core.localization.localization_dependencies import LocalizationDependencies
 from app.model.billing.billing_prepare_payment_request import BillingPreparePaymentRequest
 from app.model.billing.billing_prepare_payment_response import BillingPreparePaymentResponse
-from app.service.billing.sdk_payment_service import SDKPaymentService
+from app.service.billing.checkout_payment_service import CheckoutPaymentService
 
 router = APIRouter()
 
@@ -22,9 +22,9 @@ router = APIRouter()
 async def prepare_payment(
     body: BillingPreparePaymentRequest,
     service: Annotated[
-        SDKPaymentService,
+        CheckoutPaymentService,
         Depends(
-            ServiceDependencies.sdk_payments,
+            ServiceDependencies.checkout_payments,
         ),
     ],
     owner_id: Annotated[
@@ -44,4 +44,6 @@ async def prepare_payment(
         owner_id,
         body.planId,
         language,
+        is_auto_renewing=body.isAutoRenewing,
+        expected_price=body.price,
     )

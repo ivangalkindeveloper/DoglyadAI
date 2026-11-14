@@ -14,6 +14,34 @@ struct USExaminationData: Codable, Equatable {
     let examinationDescription: String
     let isPatientPreparedForExamination: Bool
     let isPatientConsent: Bool
+
+    init(
+        usExaminationTypeId: String,
+        photos: [USExaminationScanPhoto],
+        examinationNumber: String,
+        patientName: String,
+        patientGender: PatientGender,
+        patientDateOfBirth: Date,
+        patientHeight: Double?,
+        patientWeight: Double?,
+        patientComplaints: String?,
+        examinationDescription: String,
+        isPatientPreparedForExamination: Bool,
+        isPatientConsent: Bool,
+    ) {
+        self.usExaminationTypeId = usExaminationTypeId
+        self.photos = photos
+        self.examinationNumber = examinationNumber
+        self.patientName = patientName
+        self.patientGender = patientGender
+        self.patientDateOfBirth = patientDateOfBirth
+        self.patientHeight = patientHeight
+        self.patientWeight = patientWeight
+        self.patientComplaints = patientComplaints
+        self.examinationDescription = examinationDescription
+        self.isPatientPreparedForExamination = isPatientPreparedForExamination
+        self.isPatientConsent = isPatientConsent
+    }
 }
 
 extension USExaminationData {

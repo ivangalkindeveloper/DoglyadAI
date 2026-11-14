@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any RequestLimitExceededStateProtocol
 
+        init(
+            state: any RequestLimitExceededStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = RequestLimitExceededViewModel(
                 container: container,

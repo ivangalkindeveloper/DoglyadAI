@@ -8,6 +8,8 @@ import Testing
 import UIKit
 
 struct DraftTests {
+    init() {}
+
     @Test
     func databaseStoresDraftFieldsAndOrderedPhotos() async throws {
         let schema = Schema(
@@ -381,5 +383,17 @@ private extension DraftTests {
         let patientGender: PatientGender
         let patientDateOfBirth: Date
         let photoIds: [UUID]
+
+        init(
+            examinationNumber: String,
+            patientGender: PatientGender,
+            patientDateOfBirth: Date,
+            photoIds: [UUID],
+        ) {
+            self.examinationNumber = examinationNumber
+            self.patientGender = patientGender
+            self.patientDateOfBirth = patientDateOfBirth
+            self.photoIds = photoIds
+        }
     }
 }

@@ -9,6 +9,12 @@ struct SelectTemplateBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: SelectTemplateArguments
 
+    init(
+        arguments: SelectTemplateArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         SelectTemplateBottomSheetView(
             viewModel: SelectTemplateViewModel(

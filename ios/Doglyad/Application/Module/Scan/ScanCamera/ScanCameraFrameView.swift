@@ -5,6 +5,12 @@ struct ScanCameraFrameView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let onFrameChanged: (CGRect) -> Void
 
+    init(
+        onFrameChanged: @escaping (CGRect) -> Void,
+    ) {
+        self.onFrameChanged = onFrameChanged
+    }
+
     var body: some View {
         DCaptureFrame()
             .onGeometryChange(

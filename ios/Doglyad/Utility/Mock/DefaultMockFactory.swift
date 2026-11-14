@@ -3,6 +3,8 @@ import Foundation
 final class DefaultMockFactory: MockFactoryProtocol {
     let examinationTypeId = "thyroidGland"
 
+    init() {}
+
     func fillPatientComplaints(
         l10n: L10N,
     ) -> String {

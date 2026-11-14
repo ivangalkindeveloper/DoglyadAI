@@ -10,6 +10,12 @@ struct ShareBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: ShareArguments
 
+    init(
+        arguments: ShareArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         ShareBottomSheetView(
             viewModel: ShareViewModel(

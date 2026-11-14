@@ -6,6 +6,8 @@ struct PatientConsentCheckboxView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: PatientConsentViewModel
 
+    init() {}
+
     var body: some View {
         HStack(
             spacing: size.s16,

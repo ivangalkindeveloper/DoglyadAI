@@ -10,6 +10,12 @@ struct WorkSettingsScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: WorkSettingsArguments?
 
+    init(
+        arguments: WorkSettingsArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         WorkSettingsScreenView(
             viewModel: WorkSettingsViewModel(

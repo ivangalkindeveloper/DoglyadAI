@@ -5,6 +5,8 @@ struct ReportReceivedMarkdownView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ReportReceivedViewModel
 
+    init() {}
+
     var body: some View {
         if viewModel.isWaitingForFirstToken {
             ReportReceivedLoadingView()

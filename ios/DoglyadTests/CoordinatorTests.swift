@@ -4,6 +4,8 @@ import Testing
 
 @MainActor
 struct CoordinatorTests {
+    init() {}
+
     @Test
     func initialRouteUsesNavigationPriority() {
         let onBoardingRoute = Coordinator.initialRoute(

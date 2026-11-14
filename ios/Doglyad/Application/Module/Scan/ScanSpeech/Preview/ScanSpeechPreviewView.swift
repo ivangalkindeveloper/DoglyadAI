@@ -11,6 +11,12 @@
         @EnvironmentObject private var messager: DMessager
         let state: any ScanSpeechStateProtocol
 
+        init(
+            state: any ScanSpeechStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let (isErrorPresented, automaticFieldIds): (Bool, Set<DNeuralUltrasoundVoiceFieldId>) = switch state {
             case _ as ScanSpeechModelPreparationErrorState: (true, [])
@@ -61,6 +67,16 @@
         let state: ScanSpeechReviewProposalState
         let layout: ScanSpeechProposalPreviewLayout
         @Binding var isPresented: Bool
+
+        init(
+            state: ScanSpeechReviewProposalState,
+            layout: ScanSpeechProposalPreviewLayout,
+            isPresented: Binding<Bool>,
+        ) {
+            self.state = state
+            self.layout = layout
+            _isPresented = isPresented
+        }
 
         var body: some View {
             switch layout {
@@ -130,6 +146,16 @@
         let scenario: ScanSpeechProposalPreviewFixture.Scenario
         let layout: ScanSpeechProposalPreviewLayout
         let isSelected: Bool
+
+        init(
+            scenario: ScanSpeechProposalPreviewFixture.Scenario,
+            layout: ScanSpeechProposalPreviewLayout,
+            isSelected: Bool,
+        ) {
+            self.scenario = scenario
+            self.layout = layout
+            self.isSelected = isSelected
+        }
     }
 
     struct ScanSpeechProposalPreviewView: DViewProtocol {
@@ -191,6 +217,16 @@
         @StateObject var viewModel: ScanSpeechViewModel
         @State private var isPresented = true
         let layout: ScanSpeechProposalPreviewLayout
+
+        init(
+            viewModel: @autoclosure @escaping () -> ScanSpeechViewModel,
+            layout: ScanSpeechProposalPreviewLayout,
+        ) {
+            _viewModel = StateObject(
+                wrappedValue: viewModel(),
+            )
+            self.layout = layout
+        }
 
         var body: some View {
             Group {
@@ -266,6 +302,14 @@
         @EnvironmentObject var theme: DTheme
         @StateObject var viewModel: ScanSpeechViewModel
         @State private var isPresented = true
+
+        init(
+            viewModel: @autoclosure @escaping () -> ScanSpeechViewModel,
+        ) {
+            _viewModel = StateObject(
+                wrappedValue: viewModel(),
+            )
+        }
 
         var body: some View {
             DCardBackground(

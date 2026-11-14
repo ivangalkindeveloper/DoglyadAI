@@ -4,6 +4,8 @@ import SwiftUI
 struct ReadyMadeTemplateListLoadingCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
+    init() {}
+
     var body: some View {
         VStack(
             alignment: .leading,

@@ -4,6 +4,12 @@ struct DBadgeItemView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let badge: DBadgeItem
 
+    init(
+        badge: DBadgeItem,
+    ) {
+        self.badge = badge
+    }
+
     var body: some View {
         Text(
             badge.title,

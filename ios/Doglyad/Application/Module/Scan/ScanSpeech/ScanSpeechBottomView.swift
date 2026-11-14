@@ -5,6 +5,8 @@ struct ScanSpeechBottomView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
 
+    init() {}
+
     var body: some View {
         switch viewModel.state {
         case _ as ScanSpeechModelPreparationErrorState:

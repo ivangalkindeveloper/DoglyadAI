@@ -7,6 +7,12 @@ struct SelectDateOfBirthBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: SelectDateOfBirthArguments?
 
+    init(
+        arguments: SelectDateOfBirthArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         SelectDateOfBirthBottomSheetView(
             viewModel: SelectDateOfBirthViewModel(

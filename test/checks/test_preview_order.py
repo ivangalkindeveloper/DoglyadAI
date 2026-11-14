@@ -46,7 +46,7 @@ class PreviewOrderTests(unittest.TestCase):
         cases = [
             case
             for case in atlas
-            if case["screen"] == "SubscriptionRecovery" and "SubscriptionRecoveryErrorState" in case["title"] and not case["title"].endswith(" ScrollEnd")
+            if case["screen"] == "Paywall" and "ErrorState" in case["title"] and not case["title"].endswith(" ScrollEnd")
         ]
         self.assertEqual(len(cases), 2)
         for case in cases:
@@ -80,10 +80,23 @@ class PreviewOrderTests(unittest.TestCase):
             for command in commands
         ))
 
+    def test_subscription_success_previews_wait_for_the_real_message(self):
+        output = generated()
+        cases = [case for case in json.loads(output["catalog.json"])["atlas"]
+                 if (case["screen"] == "SubscriptionManage" and "Success" in case["title"])
+                 or (case["screen"] == "Paywall" and "PurchaseCompletedMessage" in case["title"])]
+        self.assertEqual(len(cases), 8)
+        for case in cases:
+            commands = list(yaml.safe_load_all(output[case["flow"]]))[1]
+            waits = [command for command in commands if isinstance(command, dict)
+                     and command.get("extendedWaitUntil", {}).get("visible", {}).get("id") == "message.success"]
+            self.assertEqual(len(waits), 1)
+            self.assertLess(commands.index(waits[0]), len(commands) - 1)
+
     def test_management_previews_wait_for_the_final_layout(self):
         output = generated()
         atlas = json.loads(output["catalog.json"])["atlas"]
-        cases = [case for case in atlas if case["screen"] == "ManageSubscription"]
+        cases = [case for case in atlas if case["screen"] == "SubscriptionManage"]
         self.assertGreater(len(cases), 0)
         for case in cases:
             commands = list(yaml.safe_load_all(output[case["flow"]]))[1]

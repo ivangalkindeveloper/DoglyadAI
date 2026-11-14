@@ -6,6 +6,8 @@ import Testing
 
 @MainActor
 struct LocalBillingResetInitializationTests {
+    init() {}
+
     @Test(
         arguments: ["com.medical.doglyad.local", "com.medical.doglyad.development", "com.medical.doglyad"],
     )
@@ -110,5 +112,21 @@ private actor LocalResetTestSecurityDatabase: DSecurityDatabaseProtocol {
 
     func removeBillingIdentity() async throws {
         removalCount += 1
+    }
+
+    func setBillingRecoveryKey(
+        ownerId: UUID,
+        value: String,
+    ) async throws {
+        guard let current = try await fetchBillingIdentity(), current.ownerId == ownerId else {
+            throw CancellationError()
+        }
+        try await setBillingIdentity(
+            value: BillingIdentityDB(
+                ownerId: ownerId,
+                accessToken: current.accessToken,
+                recoveryKey: value,
+            ),
+        )
     }
 }

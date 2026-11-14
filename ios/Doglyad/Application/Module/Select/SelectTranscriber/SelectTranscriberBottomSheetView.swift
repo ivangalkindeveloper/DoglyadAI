@@ -6,6 +6,14 @@ struct SelectTranscriberBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: SelectTranscriberViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> SelectTranscriberViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DBottomSheet(
             title: l10n[

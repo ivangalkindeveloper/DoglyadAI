@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: e2e-managesubscription-subscription
+tags:
+- e2e
+- SubscriptionManage
+---
+- runFlow: ../../../maestro/support/menu.yaml
+- scrollUntilVisible:
+    element:
+      text: ^Управление\ подпиской$
+    direction: DOWN
+    timeout: 15000
+- tapOn:
+    text: ^Управление\ подпиской$
+- assertVisible:
+    text: ^Моя\ подписка$
+- assertVisible:
+    text: ^Активна$
+- takeScreenshot: 060-SubscriptionManage-active

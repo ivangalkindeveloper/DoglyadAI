@@ -8,6 +8,12 @@ struct PhotoLibraryPickerBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: PhotoLibraryPickerArguments
 
+    init(
+        arguments: PhotoLibraryPickerArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         PhotoLibraryPickerBottomSheetView(
             viewModel: PhotoLibraryPickerViewModel(

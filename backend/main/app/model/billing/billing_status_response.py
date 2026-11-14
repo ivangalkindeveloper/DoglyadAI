@@ -19,6 +19,7 @@ class BillingStatusResponse(BaseModel):
     planId: NonBlankString
     expiresAt: datetime | None = None
     isAutoRenewing: bool = False
+    recoveryKey: NonBlankString | None = None
     availableCountPerDay: int = Field(
         ge=0,
     )

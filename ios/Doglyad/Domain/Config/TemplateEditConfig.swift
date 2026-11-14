@@ -3,6 +3,14 @@ import Foundation
 struct TemplateEditConfig: Codable, Equatable {
     let nameMaxLength: Int
     let contentMaxLength: Int
+
+    init(
+        nameMaxLength: Int,
+        contentMaxLength: Int,
+    ) {
+        self.nameMaxLength = nameMaxLength
+        self.contentMaxLength = contentMaxLength
+    }
 }
 
 extension TemplateEditConfig {

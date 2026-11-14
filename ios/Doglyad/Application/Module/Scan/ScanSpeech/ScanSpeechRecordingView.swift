@@ -8,6 +8,14 @@ struct ScanSpeechRecordingView: DViewProtocol {
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
 
+    init(
+        toolbarHeight: CGFloat,
+        bottomHeight: CGFloat,
+    ) {
+        self.toolbarHeight = toolbarHeight
+        self.bottomHeight = bottomHeight
+    }
+
     var body: some View {
         let (description, isInstructionVisible): (LocalizedStringResource?, Bool) = switch viewModel.state {
         case _ as ScanSpeechRecordingPreparationLoadingState:

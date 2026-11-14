@@ -7,6 +7,8 @@ import Testing
 
 @MainActor
 struct SelectUSExaminationTypeTests {
+    init() {}
+
     @Test
     func selectedTypeAppearsInRecentSectionAfterReopening() async throws {
         let repository = StateReportRepository()

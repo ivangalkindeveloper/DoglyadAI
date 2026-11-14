@@ -7,6 +7,14 @@ struct WorkSettingsScreenView: DViewProtocol {
     @StateObject var viewModel: WorkSettingsViewModel
     @FocusState private var focus: WorkSettingsFocus?
 
+    init(
+        viewModel: @autoclosure @escaping () -> WorkSettingsViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[

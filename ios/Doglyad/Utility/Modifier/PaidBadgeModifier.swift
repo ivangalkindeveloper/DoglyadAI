@@ -5,6 +5,12 @@ struct PaidBadgeModifier: ViewModifier {
     @EnvironmentObject private var l10n: L10N
     let availability: SubscriptionFeatureAvailability
 
+    init(
+        availability: SubscriptionFeatureAvailability,
+    ) {
+        self.availability = availability
+    }
+
     @ViewBuilder
     func body(
         content: Content,

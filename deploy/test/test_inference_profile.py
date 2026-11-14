@@ -43,7 +43,7 @@ class InferenceProfileTests(unittest.TestCase):
             return render.main()
 
     def test_each_profile_exposes_only_its_own_models_and_private_engines(self) -> None:
-        for name, count in [("dgx-spark", 3), ("medgemma-4b-amd64", 1)]:
+        for name, count in [("dgx-spark", 5), ("medgemma-4b-amd64", 1)]:
             profile = HostProfile.load(DIRECTORY / f"profiles/{name}.json")
             document = compose_document(profile)
             backend = document["services"]["backend_inference"]
@@ -56,7 +56,14 @@ class InferenceProfileTests(unittest.TestCase):
                 engine = document["services"][service]
                 self.assertNotIn("ports", engine)
                 self.assertNotIn("network_mode", engine)
-                self.assertEqual(engine["command"][0], model)
+                settings = next(
+                    item for item in profile.data["models"] if item["modelId"] == model
+                )
+                self.assertEqual(
+                    engine["command"][0],
+                    "/model" if "weightsDirectory" in settings else model,
+                )
+                self.assertEqual(engine["command"][2], model)
                 self.assertEqual(engine["platform"], f"linux/{profile.architecture}")
                 self.assertIn("--no-enable-log-requests", engine["command"])
             self.assertNotIn("HF_TOKEN", json.dumps(document))
@@ -72,6 +79,11 @@ class InferenceProfileTests(unittest.TestCase):
             lambda p: p["models"][0].update(tensorParallelSize=2),
             lambda p: p["models"][0].update(gpuDeviceIds=["0", "0"]),
             lambda p: p["models"][0].update(isEager="true"),
+            lambda p: p["models"][0].update(isRemoteCodeTrusted="true"),
+            lambda p: p["models"][0].update(image="hulu-med:latest"),
+            lambda p: p["models"][0].update(chatTemplateKwargs=[]),
+            lambda p: p["models"][0].update(chatTemplateKwargs={"": 1}),
+            lambda p: p["models"][0].update(chatTemplateKwargs={"value": float("nan")}),
             lambda p: p["models"][0].update(unknownSetting=1),
             lambda p: p.update(vllmImage="vllm/vllm-openai:latest"),
             lambda p: p.update(models=[]),
@@ -89,10 +101,61 @@ class InferenceProfileTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Duplicate"):
             HostProfile.load(path)
 
+    def test_local_checkpoint_is_read_only_and_preserves_served_model_id(self) -> None:
+        model = self.profile.data["models"][0]
+        engine = compose_document(self.profile)["services"][model["service"]]
+        self.assertEqual(
+            engine["command"][:3], ["/model", "--served-model-name", model["modelId"]]
+        )
+        self.assertNotIn("--revision", engine["command"])
+        self.assertIn(
+            {
+                "type": "bind",
+                "source": model["weightsDirectory"],
+                "target": "/model",
+                "read_only": True,
+                "bind": {"create_host_path": False},
+            },
+            engine["volumes"],
+        )
+        remote = copy.deepcopy(self.profile.data)
+        del remote["models"][0]["weightsDirectory"]
+        remote["models"][0]["revision"] = "2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f"
+        previous = compose_document(HostProfile(remote, self.profile.server_config))
+        current = compose_document(self.profile)
+        for service in ("vllm_medgemma_4b", "vllm_medgemma_15_4b", "backend_inference"):
+            self.assertEqual(
+                current["services"][service], previous["services"][service]
+            )
+
+    def test_local_checkpoint_rejects_unsafe_paths_and_remote_revision(self) -> None:
+        for path in (
+            "relative/model",
+            "/",
+            "/models/../model",
+            "/models//model",
+            "/models/${MODEL}",
+            "/models/a:ro",
+            "/models/a\n",
+        ):
+            with self.subTest(path=path):
+                data = copy.deepcopy(self.profile.data)
+                data["models"][0]["weightsDirectory"] = path
+                with self.assertRaises(ValueError):
+                    HostProfile(data, self.profile.server_config)
+        data = copy.deepcopy(self.profile.data)
+        data["models"][0]["revision"] = "a" * 40
+        with self.assertRaises(ValueError):
+            HostProfile(data, self.profile.server_config)
+
     def test_ngram_configuration_is_serialized_as_one_cli_argument(self) -> None:
         document = compose_document(self.profile)
-        for service in self.profile.models.values():
+        for settings in self.profile.data["models"]:
+            service = settings["service"]
             command = document["services"][service]["command"]
+            if "speculativeConfig" not in settings:
+                self.assertNotIn("--speculative-config", command)
+                continue
             self.assertEqual(command.count("--speculative-config"), 1)
             config = json.loads(command[command.index("--speculative-config") + 1])
             self.assertEqual(
@@ -110,6 +173,40 @@ class InferenceProfileTests(unittest.TestCase):
                 "--speculative-config",
                 compose_document(other)["services"][service]["command"],
             )
+
+    def test_custom_runtime_is_pinned_and_trust_is_opt_in(self) -> None:
+        document = compose_document(self.profile)
+        hulu_services = {"vllm_hulu_med_32b", "vllm_hulu_med_7b"}
+        for service in hulu_services:
+            hulu = document["services"][service]
+            self.assertRegex(hulu["image"], r"^sha256:[0-9a-f]{64}$")
+            self.assertIn("--trust-remote-code", hulu["command"])
+            self.assertIn("--enforce-eager", hulu["command"])
+            self.assertNotIn("--speculative-config", hulu["command"])
+            kwargs = hulu["command"][
+                hulu["command"].index("--default-chat-template-kwargs") + 1
+            ]
+            self.assertEqual(json.loads(kwargs), {"image_token": "<image>"})
+        for settings in self.profile.data["models"]:
+            if settings["service"] not in hulu_services:
+                self.assertNotIn(
+                    "--trust-remote-code",
+                    document["services"][settings["service"]]["command"],
+                )
+                self.assertNotIn(
+                    "--default-chat-template-kwargs",
+                    document["services"][settings["service"]]["command"],
+                )
+        data = copy.deepcopy(self.profile.data)
+        next(
+            model for model in data["models"] if model["service"] == "vllm_hulu_med_32b"
+        )["isRemoteCodeTrusted"] = False
+        self.assertNotIn(
+            "--trust-remote-code",
+            compose_document(HostProfile(data, self.profile.server_config))["services"][
+                "vllm_hulu_med_32b"
+            ]["command"],
+        )
 
     def test_invalid_ngram_configuration_is_rejected(self) -> None:
         valid = {
@@ -273,7 +370,7 @@ class InferenceProfileTests(unittest.TestCase):
         self.assertTrue(all("--wait" in call for call in starts[:-1]))
         stop = next(call for call in calls if "stop" in call)
         self.assertEqual(
-            stop[-4:],
+            stop[-(len(self.profile.models) + 1) :],
             ["backend_inference", *reversed(list(self.profile.models.values()))],
         )
 

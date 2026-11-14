@@ -6,6 +6,14 @@ struct NeuralModelValueRowView: DViewProtocol {
     let title: LocalizedStringResource
     let value: String
 
+    init(
+        title: LocalizedStringResource,
+        value: String,
+    ) {
+        self.title = title
+        self.value = value
+    }
+
     var body: some View {
         HStack(
             alignment: .bottom,

@@ -6,7 +6,7 @@ from app.core.application.main_container import MainContainer
 from app.core.configuration.configuration import Configuration
 from app.error.billing_unavailable_error import BillingUnavailableError
 from app.error.report_generation_unavailable_error import ReportGenerationUnavailableError
-from app.service.billing.sdk_payment_service import SDKPaymentService
+from app.service.billing.checkout_payment_service import CheckoutPaymentService
 from app.service.billing.subscription_service import SubscriptionService
 from app.service.configuration.configuration_response_service import ConfigurationResponseService
 from app.service.dictation.dictation_parsing_service import DictationParsingService
@@ -16,6 +16,11 @@ from app.service.report.report_generation_jobs import ReportGenerationJobs
 
 class ServiceDependencies:
     """Typed FastAPI dependencies for already-created application services."""
+
+    def __init__(
+        self,
+    ) -> None:
+        pass
 
     @staticmethod
     async def configuration(
@@ -55,13 +60,13 @@ class ServiceDependencies:
         return container.subscriptions
 
     @staticmethod
-    async def sdk_payments(
+    async def checkout_payments(
         request: Request,
-    ) -> SDKPaymentService:
+    ) -> CheckoutPaymentService:
         container: MainContainer = request.app.state.container
-        if container.sdk_payments is None:
+        if container.checkout_payments is None:
             raise BillingUnavailableError()
-        return container.sdk_payments
+        return container.checkout_payments
 
     @staticmethod
     async def report_jobs(

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 
-from sqlalchemy import DateTime, String
+from sqlalchemy import DateTime, LargeBinary, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.database.billing_base import BillingBase
@@ -22,6 +22,9 @@ class BillingOwnerDB(BillingBase):
             64,
         ),
         unique=True,
+    )
+    recovery_ciphertext: Mapped[bytes | None] = mapped_column(
+        LargeBinary,
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(

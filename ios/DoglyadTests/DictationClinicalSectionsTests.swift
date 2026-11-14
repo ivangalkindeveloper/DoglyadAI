@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct DictationClinicalSectionsTests {
+    init() {}
+
     @Test(
         "Identity and absence of complaints cannot supply an ultrasound description",
     )

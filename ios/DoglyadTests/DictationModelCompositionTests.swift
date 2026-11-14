@@ -4,6 +4,8 @@ import Testing
 
 @MainActor
 struct DictationModelCompositionTests {
+    init() {}
+
     @Test(
         "Available Foundation Models wins and performs one generation",
     )
@@ -561,6 +563,8 @@ private final class GeneratorStub: DNeuralUltrasoundProposalGeneratorProtocol {
     private(set) var prewarms = 0
     private(set) var calls = 0
     private(set) var request: DNeuralUltrasoundDictationParseRequest?
+
+    init() {}
 
     func prewarm() {
         prewarms += 1

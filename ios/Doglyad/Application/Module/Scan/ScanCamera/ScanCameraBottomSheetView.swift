@@ -6,6 +6,14 @@ struct ScanCameraBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: ScanCameraViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> ScanCameraViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         let isCapturing = switch viewModel.state {
         case _ as ScanCameraCaptureLoadingState: true

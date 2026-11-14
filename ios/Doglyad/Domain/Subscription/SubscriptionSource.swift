@@ -1,4 +1,4 @@
 enum SubscriptionSource: String, Decodable, Equatable {
     case apple
-    case yookassa
+    case robokassa
 }

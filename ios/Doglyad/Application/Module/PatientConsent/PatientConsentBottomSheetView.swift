@@ -6,6 +6,14 @@ struct PatientConsentBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: PatientConsentViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> PatientConsentViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DInfoBottomSheet(
             fraction: 0.6,

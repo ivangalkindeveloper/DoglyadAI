@@ -5,6 +5,12 @@ struct PaywallFeaturesView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let state: PaywallContentState
 
+    init(
+        state: PaywallContentState,
+    ) {
+        self.state = state
+    }
+
     var body: some View {
         let features = state.selectedTier?.features ?? []
 
@@ -40,6 +46,10 @@ struct PaywallFeaturesView: DViewProtocol {
                 }
             }
         }
+        .padding(
+            .bottom,
+            size.s8,
+        )
         .frame(
             maxWidth: .infinity,
             alignment: .leading,

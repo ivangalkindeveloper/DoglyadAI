@@ -7,3 +7,8 @@ class UnknownNeuralModelError(ApiError):
     code = "unknownNeuralModel"
     description = "Unknown neural model"
     status_code = 400
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

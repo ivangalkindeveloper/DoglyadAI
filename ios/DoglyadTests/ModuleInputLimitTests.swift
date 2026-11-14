@@ -8,6 +8,8 @@ import Testing
 
 @MainActor
 struct ModuleInputLimitTests {
+    init() {}
+
     @Test(
         arguments: [false, true],
     )

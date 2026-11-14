@@ -10,10 +10,12 @@
             router: DRouter,
             isFailure: Bool = false,
             state: (any SubscriptionRecoveryStateProtocol)? = nil,
+            input: String = "",
             onRecover: ((String) -> Void)? = nil,
+            messager: DMessager? = nil,
         ) -> SubscriptionRecoveryViewModel {
             let model = SubscriptionRecoveryViewModel(
-                messager: DMessager(),
+                messager: messager ?? DMessager(),
                 container: container,
                 router: router,
                 getSubscriptionStatus: {
@@ -28,14 +30,6 @@
                 },
                 onRefreshSubscriptionStatus: {},
                 arguments: nil,
-                createRecoveryKey: {
-                    if isFailure {
-                        throw URLError(
-                            .notConnectedToInternet,
-                        )
-                    }
-                    return "Preview-MixedCase-Recovery-Key"
-                },
                 recover: { key in
                     if isFailure {
                         throw URLError(
@@ -45,10 +39,13 @@
                     onRecover?(
                         key,
                     )
-                    return ManageSubscriptionPreviewFactory.makeStatus(
-                        source: .yookassa,
+                    return SubscriptionManagePreviewFactory.makeStatus(
+                        source: .robokassa,
                     )
                 },
+            )
+            model.recoveryTextController.setText(
+                input,
             )
             if let state {
                 model.preparePreview(

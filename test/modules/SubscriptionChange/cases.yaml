@@ -1,0 +1,26 @@
+schemaVersion: 1
+module: SubscriptionChange
+source: ios/Doglyad/Application/Module/Subscription/SubscriptionChange
+cases:
+- id: SubscriptionChange.confirmation
+  title: Подтверждение смены подписки
+  profiles:
+  - pro
+  preconditions:
+  - Активная подписка; внешняя оплата не выполняется нативными проверками.
+  steps:
+  - action: Открыть смену плана в SubscriptionManage
+    expect: Показана шторка с предупреждением; для Apple текст описывает правила App Store.
+  - action: Закрыть шторку без подтверждения
+    expect: Paywall не открывается, текущая подписка не меняется.
+  - action: Повторно открыть шторку и нажать «Сменить план»
+    expect: Шторка закрывается, Paywall открывается один раз.
+  covers:
+  - onTapConfirm
+  automation:
+    kind: mixed
+    flows:
+    - e2e-paywall-select-pro_weekly
+    nativeTests:
+    - SubscriptionConfirmationTests/changingPlanRequiresConfirmationAndUsesProviderText(source:)
+    - SubscriptionConfirmationTests/dismissingChangeConfirmationKeepsTheCurrentScreen()

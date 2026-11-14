@@ -5,6 +5,14 @@ import UIKit
 struct USExaminationDraft {
     let form: USExaminationDraftForm
     let photos: [USExaminationScanPhoto]
+
+    init(
+        form: USExaminationDraftForm,
+        photos: [USExaminationScanPhoto],
+    ) {
+        self.form = form
+        self.photos = photos
+    }
 }
 
 struct USExaminationDraftForm: Equatable, Sendable {
@@ -17,6 +25,28 @@ struct USExaminationDraftForm: Equatable, Sendable {
     let patientComplaints: String
     let examinationDescription: String
     let isPatientPreparedForExamination: Bool
+
+    init(
+        examinationNumber: String,
+        patientName: String,
+        patientGender: PatientGender,
+        patientDateOfBirth: Date,
+        patientHeightCM: String,
+        patientWeightKG: String,
+        patientComplaints: String,
+        examinationDescription: String,
+        isPatientPreparedForExamination: Bool,
+    ) {
+        self.examinationNumber = examinationNumber
+        self.patientName = patientName
+        self.patientGender = patientGender
+        self.patientDateOfBirth = patientDateOfBirth
+        self.patientHeightCM = patientHeightCM
+        self.patientWeightKG = patientWeightKG
+        self.patientComplaints = patientComplaints
+        self.examinationDescription = examinationDescription
+        self.isPatientPreparedForExamination = isPatientPreparedForExamination
+    }
 }
 
 extension USExaminationDraft {

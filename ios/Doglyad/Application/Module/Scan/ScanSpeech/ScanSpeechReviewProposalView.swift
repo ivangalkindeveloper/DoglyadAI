@@ -9,6 +9,16 @@ struct ScanSpeechReviewProposalView: DViewProtocol {
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
 
+    init(
+        state: ScanSpeechReviewProposalState,
+        toolbarHeight: CGFloat,
+        bottomHeight: CGFloat,
+    ) {
+        self.state = state
+        self.toolbarHeight = toolbarHeight
+        self.bottomHeight = bottomHeight
+    }
+
     var body: some View {
         DScrollVStack(
             spacing: size.s4,

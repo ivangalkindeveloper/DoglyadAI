@@ -18,7 +18,8 @@ final class DependencyContainer: ObservableObject {
     let ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol
     let templateRepository: TemplateRepositoryProtocol
     let subscriptionBackendRepository: SubscriptionBackendRepositoryProtocol
-    let subscriptionRepositoryFactory: SubscriptionRepositoryFactory
+    let subscriptionStoreKitRepository: SubscriptionRepositoryProtocol
+    let subscriptionRepositoryFactory: SubscriptionRepositoryFactoryProtocol
     let applicationConfig: ApplicationConfig
     let language: Language
     let l10n: L10N
@@ -48,7 +49,8 @@ final class DependencyContainer: ObservableObject {
         ultrasoundDraftRepository: UltrasoundDraftRepositoryProtocol,
         templateRepository: TemplateRepositoryProtocol,
         subscriptionBackendRepository: SubscriptionBackendRepositoryProtocol,
-        subscriptionRepositoryFactory: SubscriptionRepositoryFactory,
+        subscriptionStoreKitRepository: SubscriptionRepositoryProtocol,
+        subscriptionRepositoryFactory: SubscriptionRepositoryFactoryProtocol,
         applicationConfig: ApplicationConfig,
         language: Language,
         l10n: L10N,
@@ -77,6 +79,7 @@ final class DependencyContainer: ObservableObject {
         self.ultrasoundDraftRepository = ultrasoundDraftRepository
         self.templateRepository = templateRepository
         self.subscriptionBackendRepository = subscriptionBackendRepository
+        self.subscriptionStoreKitRepository = subscriptionStoreKitRepository
         self.subscriptionRepositoryFactory = subscriptionRepositoryFactory
         self.applicationConfig = applicationConfig
         self.language = language
@@ -134,7 +137,7 @@ extension DependencyContainer {
     @MainActor
     static func makePreviewable(
         l10n: L10N? = nil,
-        subscriptionRepositoryFactory: SubscriptionRepositoryFactory? = nil,
+        subscriptionRepositoryFactory: SubscriptionRepositoryFactoryProtocol? = nil,
         usExaminationTypesById: [String: USExaminationType]? = nil,
         usExaminationTypeGroups: [USExaminationTypeGroup]? = nil,
         usExaminationNeuralModels: [USExaminationNeuralModel]? = nil,
@@ -200,13 +203,14 @@ extension DependencyContainer {
             httpClient: httpClient,
             securityDatabase: DSecurityDatabase(),
         )
+        let subscriptionStoreKitRepository = SubscriptionStoreKitRepository(
+            backend: subscriptionBackendRepository,
+        )
         let subscriptionRepositoryFactory = subscriptionRepositoryFactory ?? SubscriptionRepositoryFactory(
-            storeKit: SubscriptionStoreKitRepository(
-                backend: subscriptionBackendRepository,
-            ),
-            yooKassa: SubscriptionYooKassaRepository(
-                backend: subscriptionBackendRepository,
-            ),
+            backend: subscriptionBackendRepository,
+            getStorefrontCountryCode: {
+                nil
+            },
         )
         let language = Language(
             localeConfig: applicationConfig.locale,
@@ -228,6 +232,7 @@ extension DependencyContainer {
             ultrasoundDraftRepository: ultrasoundDraftRepository,
             templateRepository: templateRepository,
             subscriptionBackendRepository: subscriptionBackendRepository,
+            subscriptionStoreKitRepository: subscriptionStoreKitRepository,
             subscriptionRepositoryFactory: subscriptionRepositoryFactory,
             applicationConfig: applicationConfig,
             language: language,
@@ -258,6 +263,7 @@ extension DependencyContainer {
             usExaminationNeuralModelDefault: usExaminationNeuralModels.first ?? .init(
                 id: "",
                 title: "",
+                format: "BF16",
                 entitlement: .base,
                 accessibility: .available,
                 contextLength: 0,

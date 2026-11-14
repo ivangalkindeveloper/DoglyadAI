@@ -148,6 +148,7 @@ def test_route_builds_complete_report_with_the_prompt_factory_contract(
     model = USExaminationNeuralModel(
         id="google/medgemma-4b-it",
         title="MedGemma 4B",
+        format="BF16",
         entitlement="base",
         accessibility=USExaminationNeuralModelAccessibility.AVAILABLE,
         contextLength=128000,

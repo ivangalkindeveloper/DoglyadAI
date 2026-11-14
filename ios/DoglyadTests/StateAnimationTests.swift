@@ -8,6 +8,8 @@ import UIKit
     .serialized,
 )
 struct StateAnimationTests {
+    init() {}
+
     @Test
     func initialStateIsNotAnimatedAndEmitUsesDefaultAnimation() async throws {
         let scene = try #require(

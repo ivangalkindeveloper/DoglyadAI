@@ -37,52 +37,60 @@ and returns `title` and `priceTemplate` for the requested language. The protecte
 The catalog also declares `tiers` with `id`, `titleLocaleKey` and
 `featureLocaleKeys`. The response resolves them into `id`, `title` and `features`.
 Segment labels and benefits come from these entities for both providers. IDs are shared by
-Apple and YooKassa. Apple prices and periods come from StoreKit; the catalog's
-RUB price applies to YooKassa. YooKassa supports weekly, monthly, six-month and annual
+Apple and Robokassa. Apple prices and periods come from StoreKit; the catalog's
+RUB price applies to Robokassa. Robokassa supports weekly, monthly, six-month and annual
 periods; orders and renewals retain their agreed price and month/day intervals.
 Client plans use `SubscriptionPeriod` and the `period` field for those four periods.
-Subscription sources are only `apple` and `yookassa`; keep Apple's verified
+Subscriptions use only `apple` or `robokassa`. Keep Apple's verified
 Production/Sandbox environment in the ledger's separate `apple_environment` field.
 Every listed billing product is available for new purchases; do not add availability
-flags to this catalog. Removing a product stops offering it. Existing YooKassa
+flags to this catalog. Removing a product stops offering it. Existing Robokassa
 renewals retain their snapshots; previously recorded Apple products retain their
 tier for verified restoration and reconciliation even after catalog removal.
 Purchase completion must match the selected product and confirmed provider evidence.
-YooKassa responses include `planId`; match it and the exact payment ID before accepting
+Backend payment responses include `planId`; match it and the exact payment ID before accepting
 success. Pending StoreKit purchases require a new verified transaction for the selected
 product, distinct from the transaction snapshot taken before purchase. An existing
 active subscription alone must never close a pending purchase.
 
-Russian iOS storefronts use `YooKassaPaymentController` and the official native
-YooKassa SDK; other storefronts use StoreKit 2. SDK tokens are processed by the
-App Check/bearer-protected prepare/tokenize/check payment routes. Only a canonical
-provider result grants access. Payment tokens are never persisted in plaintext.
-The backend uses pinned `yookassa` through `YooKassaSDKAdapter` and a per-call
-`YooKassaSDKClient`. SDK processing runs in a worker thread; its transport bridges
-to the lifespan-owned asynchronous HTTP client. Preserve absolute deadlines,
-cancellation, isolated credentials and persisted idempotency keys. Never configure
-SDK global credentials, enable raw payment-body logging or rely on the SDK retry
-backoff setting as a network timeout.
+Russian iOS storefronts use `SubscriptionRobokassaRepository`; other storefronts
+use StoreKit 2. App Check/bearer-protected prepare/check routes create an owner-bound
+payment and verify its exact identity. Paywall owns an immutable automatic-renewal
+choice, enabled by default. Prepare validates the displayed price, saves that choice
+and calls Invoice API. `RobokassaPaymentController` opens Robokassa directly using
+a system browser session. Robokassa collects email; ResultURL supplies `EMail`
+for renewal contact storage. Technical passwords remain server-only;
+no payment SDK or raw card tokens enter the client.
+
+`RobokassaPaymentProvider` uses the lifespan-owned `httpx.AsyncClient`, bounded
+responses and absolute deadlines. Persist a unique numeric invoice and merchant/mode
+snapshot before dispatch. A lost CreateInvoice response is reconciled by the same
+invoice; recurring charges and non-idempotent refunds are never blindly replayed.
+Development success requires ResultURL signed with the test password #2. Production
+also requires canonical `OpStateExt` state 100, exact amount, merchant and invoice.
+`SuccessURL` and mobile callbacks never grant access. Known refund request IDs are
+polled separately; lost refund request IDs and cabinet-only refunds need staff review.
 
 Persist dispatch evidence and renewal method snapshots before provider I/O. An
 unknown outcome keeps its operation identity even after renewal cancellation.
-New purchases may replace only unsent expired renewals under the owner lock.
+New purchases may replace only unsent expired renewals under the owner lock. Active Robokassa plan changes charge the full new price and start immediately after verified payment, replacing prior access and renewal schedules without carrying over unused time. Renewal can only be disabled on an existing subscription; enabling requires a new purchase.
 Reconcile completed payments as well as pending orders. Store refund IDs, states
 and amounts separately from access, including partial refunds; callbacks and
 worker retries must not duplicate money or paid periods.
 
-Derive the YooKassa mode from `ENVIRONMENT`: development accepts only test
-shops/payments, production accepts only live shops/payments. Verify the mode
-before charging through `/me` and again in canonical payment processing. Keep
-the temporary `IS_YOOKASSA_LIVE_ENABLED=false` launch gate until the real-payment
+Derive the Robokassa mode from `ENVIRONMENT`: development accepts only test
+shops/payments, production accepts only live shops/payments. The server sets
+`IsTest=1` before development invoice creation and uses the matching environment
+passwords. Never infer test success from a production status query. Keep
+the temporary `IS_ROBOKASSA_LIVE_ENABLED=false` launch gate until the real-payment
 prerequisites below are implemented; environment selection alone cannot enable
 real charges. Do not restore a separate test-mode environment flag.
 
-`app.payment_main:app` is a separate browser/provider ingress: CSRF-protected `/pay`
-forms and verified callbacks, with per-route body/rate policies from the shared
-`server.json.endpoints` map. It is not a
-client API bypass. YooKassa notifications must be checked against a canonical API
-response; Apple transactions/notifications require verified signatures and current
+`app.payment_main:app` serves verified provider callbacks and `/payments/return`,
+a plain HTTP redirect to the app with no HTML. Per-route body/rate policies come
+from `server.json.endpoints`. There are no merchant-hosted payment forms, browser
+cookies, checkout codes or checkout tables. Robokassa notifications require signature verification and production canonical API
+verification; Apple transactions/notifications require verified signatures and current
 server state. Keep real charges disabled until receipts and Apple external-purchase
 reporting are implemented and all merchant/signing prerequisites are met. See
 [`backend/main/BILLING.md`](../../backend/main/BILLING.md) and
@@ -109,14 +117,14 @@ reporting are implemented and all merchant/signing prerequisites are met. See
 | `backend/main/app/core/app_check/app_check.py` | `AppCheck.initialize()` and `AppCheck.verify()` initialize Firebase and protect every `/v1` route. `AppCheck.HEADER` names the forwarded header. HTTP startup cannot omit Firebase credentials or disable verification. |
 | `backend/main/app/core/application/application_factory.py`, `service_factory.py`, `service_dependencies.py` | `ApplicationFactory` creates main/payment HTTP applications and selects each application's policies from the shared `server.json.endpoints` map; `ServiceFactory` composes startup services in `MainContainer`; `ServiceDependencies` returns the existing services to routes. |
 | `backend/main/app/database/` | `BillingDatabase` owns the SQLAlchemy engine, session creation and owner locks. Concrete mapped entities end in `DB`; `BillingBase` remains the abstract declarative base. SQL table/column names are independent of Python type names. |
-| `backend/main/migrations/versions/0001_initial.py` | Explicit initial snapshot of the complete billing schema. Pre-release revisions were consolidated; future released changes require new migrations. Initial downgrade refuses to drop a populated ledger. |
+| `backend/main/migrations/versions/` | `0001_initial` creates the complete Apple/Robokassa ledger and report storage. Pre-release schemas are not supported. Downgrade refuses a populated ledger. |
 | `backend/main/app/billing_worker.py`, `app/service/billing/billing_worker.py` | CLI entry point and `BillingWorker`: a separate process with its own HTTP client and database pool, using only billing services. It creates no FastAPI application, generation service or App Check initializer. |
 | `backend/main/app/core/configuration/` | Environment variables, loading and validation of a per-application `Configuration` snapshot, and configuration dependencies. `ConfigurationResponseService` assembles localized responses; route dependencies access the container without module-global catalogs. |
 | `backend/main/app/core/localization/application_localization_validator.py`, `backend/main/app/core/localization/prompt_localization_validator.py` | Validate application and prompt catalog key parity, placeholders, and voice catalog structure across languages |
 | `backend/main/app/error/`, `app/core/http/api_error_handler.py`, `app/core/http/api_error_middleware.py` | Typed expected API failures own codes, descriptions and statuses. One handler formats HTTP, validation and body-limit errors; the outer ASGI boundary sanitizes unexpected failures. `ApiErrorResponse` contains `code`, `detail`, `requestId` and optional validation fields. See `backend/main/ERRORS.md`. |
 | `backend/main/app/core/http/request_id_middleware.py`, `backend/main/app/core/logging/request_id_log_filter.py` | Request-ID middleware and log context; forwards the request ID to the inference service through `HttpHeader.REQUEST_ID` |
 | `backend/main/app/service/neural_model/` | Generation abstraction: `NeuralModelService`, `InferenceService`, `MockNeuralModelService` and `NeuralModelServiceFactory.create()`. The factory selects the implementation once during lifespan and injects it into the application services in `app.state.container`; routes receive those services through FastAPI dependencies. The internal `NeuralModelServiceRequest` lives in `app/model/neural_model/`; GPU transport uses the separate `InferenceGenerationRequest`. |
-| `backend/main/app/service/billing/`, `backend/main/app/core/billing/` | Subscription ledger, provider verification, SDK payment processing and browser gateway; protected owner/service dependencies and persisted usage accounting. Billing stays within the main backend. |
+| `backend/main/app/service/billing/`, `backend/main/app/core/billing/` | Subscription ledger, provider verification, checkout payment processing and browser gateway; protected owner/service dependencies and persisted usage accounting. Billing stays within the main backend. |
 | `backend/main/app/service/report/`, `dictation/`, `email/`, `configuration/`, `validation/`, `http/` | Feature services, shared input validation and request limiting. `ServiceDependencies` supplies services; `BillingDependencies` enforces owner/feature access. Localization, HTTP policy and logging helpers belong to their named infrastructure classes. |
 | `backend/main/mock/` | Local RU/EN report and voice-generation fixtures, validated at mock-service startup. Report points bind to uploaded photo IDs and optional sections follow the requested schema. Voice proposals require matching evidence in the actual transcript and pass the normal source validator. |
 | `backend/main/app/model/` | Pydantic configuration and API models: localization responses, report emails and attachments, neural model settings, `neural_model/` internal service requests and operations, `inference/` transport models, and `ultrasound/` requests, responses, internal reports, voice fields, examination types, templates, and model availability |
@@ -160,8 +168,8 @@ This service runs once per GPU host and routes configured model IDs to local vLL
 | `ios/Doglyad/Application/Application/Analytics/` | Analytics manager, screen and bottom-sheet destinations, event names, and structured parameters |
 | `ios/Doglyad/Application/Module/Scan/ScanSpeech/` | Voice recording, automatic parsing of finished transcripts, speech confidence and review policies, and automatic/uncertain field review plans |
 | `ios/Doglyad/Application/Module/Permission/` | One `PermissionBottomSheet` module with `PermissionArguments.Kind` for camera, speech, or photo-library access; the `Library/` submodule adapts the system photo picker. |
-| `ios/Doglyad/Application/Module/Subscription/` | `Paywall`, `ManageSubscription` and `SubscriptionRecovery` screens with backend UI strings. Management displays the current plan, expiry, server-owned benefits and provider renewal actions; recovery keys have a separate screen. Settings opens `ManageSubscription` directly; its change-plan action pushes `Paywall` and returns to management afterward. Paywall fetches its catalog through the repository factory. Immutable loaded states own plans, tier metadata and selection; purchase and pending states retain those data. Initial load failures and operation failures use separate states. Root closures expose shared subscription state and operations that change it; `SubscriptionRootViewModel` owns status, pending payment ID and transaction/purchase tasks, without storefront state or observation. |
-| `ios/Doglyad/Repository/Subscription/` | Immutable `SubscriptionStoreKitRepository` and `SubscriptionYooKassaRepository` implement provider operations. `SubscriptionRepositoryFactory` reads the current storefront on demand for new purchases and validates the selected plan's provider; existing purchases are managed by their source. Initialization retains only the factory, without a selected provider or storefront snapshot. `SubscriptionBackendRepository` owns shared HTTP/Keychain access. StoreKit supplies Apple prices and periods. |
+| `ios/Doglyad/Application/Module/Subscription/` | `Paywall`, `SubscriptionManage` and `SubscriptionRecovery` screens with backend UI strings. Management displays the current plan, expiry, server-owned benefits and provider renewal actions; management copies the permanent recovery key; the recovery screen only accepts a key and restores access. Settings opens `SubscriptionManage` directly; its change-plan action pushes `Paywall` and returns to management afterward. Paywall fetches its catalog through the repository factory. Immutable loaded states own plans, tier metadata and selection; purchase and pending states retain those data. Initial load failures and operation failures use separate states. `SubscriptionRestoreStrategy` is shared by repositories, the root and modules. The root refreshes and publishes subscription status before returning `.completed`; modules use that shared status to distinguish restored access from no purchases, and `.recoveryKeyRequired` opens the recovery form. Root closures expose shared subscription state and operations that change it; `SubscriptionRootViewModel` owns status, the pending purchase context and generic result, and transaction/purchase tasks, without storefront state or observation. |
+| `ios/Doglyad/Repository/Subscription/` | Immutable `SubscriptionStoreKitRepository` and `SubscriptionRobokassaRepository` implement provider operations. `SubscriptionRepositoryFactory.make()` reads the current storefront through an explicitly injected getter and constructs the repository for catalogs and purchases. Provider repositories validate the selected plan's source. Before presenting payment UI they pass an immutable `SubscriptionPurchaseContextProtocol` to the root. The Robokassa context checks the exact payment and plan IDs; the StoreKit context matches already verified transaction events against the prior transaction snapshot. The root caches generic results and refreshes access after confirmation, without inspecting provider references. A separate injected StoreKit repository observes, synchronizes, restores and manages Apple purchases independently of storefront. Initialization retains the factory and the StoreKit dependency without a storefront snapshot. `SubscriptionBackendRepository` owns shared HTTP/Keychain access. StoreKit supplies Apple prices and periods. |
 | `ios/Doglyad/Application/Module/Report/` | `ReportDetail` and `ReportReceived`: saved and newly generated reports, previous model responses, photos, copying, and delivery to work email |
 | `ios/Doglyad/Application/Module/PhotoView/`, `ios/Doglyad/Application/Module/PhotoRemark/` | Zoomable photos with normalized remark points, persisted visibility, and a Blur bottom sheet for the selected image remark |
 | `ios/Doglyad/Application/Module/Template/ReadyMadeTemplateList/` | Downloading, searching, and selecting localized templates supplied by the backend |
@@ -170,7 +178,7 @@ This service runs once per GPU host and routes configured model IDs to local vLL
 | `ios/Doglyad/Core/Environment/` | `EnvironmentProtocol` and `EnvironmentType` for development and production configuration |
 | `ios/Doglyad/Domain/` | Domain models: `Ultrasound/`, `Config/`, `Localization/`, `Subscription/`, `Billing/`, `SettingsAI`, `TranscriberType`, `TranscriptParserType`, and `PatientGender` |
 | `ios/Doglyad/Domain/Subscription/` | Subscription models, including `SubscriptionPaidFeature`, `SubscriptionPeriod`, entitlements and access status. |
-| `ios/Doglyad/Domain/Billing/` | All application-owned `Billing*` models: backend request/response models and payment state shared by repositories and the YooKassa adapter. This folder is a sibling of `Subscription/`; application models have no `DTO` suffix. |
+| `ios/Doglyad/Domain/Billing/` | All application-owned `Billing*` models: backend request/response models and payment state shared by repositories and the browser checkout adapter. This folder is a sibling of `Subscription/`; application models have no `DTO` suffix. |
 | `ios/Doglyad/Domain/Config/*Config.swift`, `backend/main/app/model/*_config.py` | Independent module settings for Scan, ScanSpeech, template creation/editing/list, WorkSettings and SettingsAI. Input maxima come from the matching public `application.json` section. `ApplicationModuleConfig` validates the backend subset; client decoding requires each module section. |
 | `ios/Doglyad/Repository/` | Repository protocols and implementations for reports, drafts and draft photos, AI settings, shared data, StoreKit/backend subscriptions, ready-made and saved templates, and user settings. `Report/` also contains the application HTTP transport for server voice parsing. |
 | `ios/Doglyad/Utility/` | Framework and package extensions in `Extension/`, mock data and factories in `Mock/`, view modifiers in `Modifier/`, and integration classes tightly coupled to external packages, such as `AppCheckProviderFactory` and `AppCheckHttpInterceptor` in `AppCheck/` |
@@ -185,7 +193,7 @@ This service runs once per GPU host and routes configured model IDs to local vLL
 | `ios/DoglyadNeuralModel/` | Foundation Models extraction, domain contracts, and validation for ultrasound text |
 | `ios/DoglyadCamera/` | Camera implementation: `DCameraControllerProtocol` and `DCameraView` |
 | `ios/DoglyadSpeech/` | Speech recognition: `DSpeechController` implementations and lexicon correction |
-| `ios/Config/` | Build configuration. `.xcconfig` files define `ENVIRONMENT` and `BASE_URL`. RevenueCat keys are removed. Public YooKassa SDK parameters arrive from the protected backend checkout response; merchant secrets never enter client configuration. Xcode schemes select the matching configuration; files are never copied or swapped. |
+| `ios/Config/` | Build configuration. `.xcconfig` files define `ENVIRONMENT` and `BASE_URL`. RevenueCat keys are removed. Checkout URLs arrive from the protected backend response; merchant secrets never enter client configuration. Xcode schemes select the matching configuration; files are never copied or swapped. |
 | `ios/Firebase/` | Environment-specific Firebase configuration. A Run Script phase places the matching `GoogleService-Info.plist` in the bundle according to `$CONFIGURATION`; files are not committed. |
 
 ### Supporting code

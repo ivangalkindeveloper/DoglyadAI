@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any ReadyMadeTemplateListStateProtocol
 
+        init(
+            state: any ReadyMadeTemplateListStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as ReadyMadeTemplateListErrorState: true

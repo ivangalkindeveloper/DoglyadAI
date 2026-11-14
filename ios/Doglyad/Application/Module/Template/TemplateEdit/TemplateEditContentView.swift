@@ -10,6 +10,18 @@ struct TemplateEditContentView: DViewProtocol {
     let bottomInset: CGFloat
     let isProcessing: Bool
 
+    init(
+        focus: FocusState<TemplateEditFocus?>.Binding,
+        toolbarInset: CGFloat,
+        bottomInset: CGFloat,
+        isProcessing: Bool,
+    ) {
+        self.focus = focus
+        self.toolbarInset = toolbarInset
+        self.bottomInset = bottomInset
+        self.isProcessing = isProcessing
+    }
+
     var body: some View {
         DFocusScrollView(
             focus: focus.wrappedValue,

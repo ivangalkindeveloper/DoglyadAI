@@ -24,6 +24,8 @@ final class StateReportRepository: UltrasoundReportRepositoryProtocol {
     private(set) var recentExaminationTypeIds: [String] = []
     private(set) var reports: [USExaminationReport] = []
 
+    init() {}
+
     func prepareGeneration(
         request: USReportGenerationRequest,
         photoOptions _: ScanPhotoEncodingOptions,

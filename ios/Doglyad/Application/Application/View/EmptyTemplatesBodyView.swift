@@ -5,6 +5,12 @@ struct EmptyTemplatesBodyView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let description: LocalizedStringResource
 
+    init(
+        description: LocalizedStringResource,
+    ) {
+        self.description = description
+    }
+
     var body: some View {
         VStack(
             spacing: size.s24,

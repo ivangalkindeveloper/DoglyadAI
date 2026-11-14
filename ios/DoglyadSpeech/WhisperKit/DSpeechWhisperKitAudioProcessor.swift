@@ -12,6 +12,8 @@ final class DSpeechWhisperKitAudioProcessor: AudioProcessing, @unchecked Sendabl
     private var recordedSamples: ContiguousArray<Float> = []
     private var recordedEnergy: [Float] = []
 
+    init() {}
+
     var isRecording: Bool {
         engineLock.withLock {
             processor.audioEngine?.isRunning == true

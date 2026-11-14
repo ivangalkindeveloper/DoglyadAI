@@ -9,6 +9,16 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
 
+    init(
+        transcriptFocus: FocusState<Bool?>.Binding,
+        toolbarHeight: CGFloat,
+        bottomHeight: CGFloat,
+    ) {
+        self.transcriptFocus = transcriptFocus
+        self.toolbarHeight = toolbarHeight
+        self.bottomHeight = bottomHeight
+    }
+
     var body: some View {
         let isProcessing = switch viewModel.state {
         case _ as ScanSpeechReviewParsingLoadingState: true

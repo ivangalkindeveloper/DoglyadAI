@@ -7,6 +7,12 @@ struct ScanSpeechReviewProposalBottomView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let state: ScanSpeechReviewProposalState
 
+    init(
+        state: ScanSpeechReviewProposalState,
+    ) {
+        self.state = state
+    }
+
     var body: some View {
         VStack(
             spacing: size.s16,

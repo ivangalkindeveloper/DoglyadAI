@@ -5,6 +5,8 @@ struct DSpeechSessionGate {
     private(set) var activeID: UUID?
     private(set) var isFinalizing = false
 
+    init() {}
+
     mutating func start() -> UUID? {
         guard activeID == nil else {
             return nil

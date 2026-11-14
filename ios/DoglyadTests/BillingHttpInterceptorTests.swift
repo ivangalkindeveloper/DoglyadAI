@@ -5,6 +5,8 @@ import Foundation
 import Testing
 
 struct BillingHttpInterceptorTests {
+    init() {}
+
     @Test
     func independentInterceptorsPreserveHeadersInOrder() async throws {
         let storage = InterceptorTestSecurityDatabase()
@@ -175,6 +177,12 @@ struct BillingHttpInterceptorTests {
 private struct InterceptorTestAppCheck: DHttpInterceptorProtocol {
     var isFailure = false
 
+    init(
+        isFailure: Bool = false,
+    ) {
+        self.isFailure = isFailure
+    }
+
     func adapt(
         _ urlRequest: URLRequest,
     ) async throws -> URLRequest {
@@ -208,4 +216,20 @@ private actor InterceptorTestSecurityDatabase: DSecurityDatabaseProtocol {
     ) async throws {}
 
     func removeBillingIdentity() async throws {}
+
+    func setBillingRecoveryKey(
+        ownerId: UUID,
+        value: String,
+    ) async throws {
+        guard let current = try await fetchBillingIdentity(), current.ownerId == ownerId else {
+            throw CancellationError()
+        }
+        try await setBillingIdentity(
+            value: BillingIdentityDB(
+                ownerId: ownerId,
+                accessToken: current.accessToken,
+                recoveryKey: value,
+            ),
+        )
+    }
 }

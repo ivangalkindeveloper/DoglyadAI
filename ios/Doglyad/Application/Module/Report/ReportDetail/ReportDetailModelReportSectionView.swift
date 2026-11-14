@@ -8,6 +8,18 @@ struct ReportDetailModelReportSectionView: DViewProtocol {
     let collapsedLineLimit: Int
     var isDisabled: Bool = false
 
+    init(
+        title: LocalizedStringResource,
+        text: String,
+        collapsedLineLimit: Int,
+        isDisabled: Bool = false,
+    ) {
+        self.title = title
+        self.text = text
+        self.collapsedLineLimit = collapsedLineLimit
+        self.isDisabled = isDisabled
+    }
+
     var body: some View {
         VStack(
             alignment: .leading,

@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct DInteractivePopGestureView: UIViewControllerRepresentable {
+    init() {}
+
     func makeUIViewController(
         context _: Context,
     ) -> DInteractivePopGestureController {

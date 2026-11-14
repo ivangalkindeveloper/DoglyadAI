@@ -4,22 +4,155 @@ import Testing
 
 @MainActor
 struct SubscriptionPurchaseVerificationTests {
+    init() {}
+
+    @Test
+    func verifiedRobokassaPurchaseFetchesAccessWithoutRepeatingPaymentVerification() async throws {
+        let backend = SubscriptionTestBackendRepository()
+        let provider = SubscriptionTestRepository(
+            backend: backend,
+            source: .robokassa,
+        )
+        provider.preparedPaymentID = UUID()
+        provider.purchaseResult = .completed
+        let root = makeRoot(
+            backend: backend,
+            provider: provider,
+        )
+        guard case let .completed(
+            status,
+        ) = try await root.purchase(
+            plan: provider.plan,
+        ) else {
+            Issue.record(
+                "The verified provider result must complete the purchase",
+            )
+            return
+        }
+        #expect(
+            status?.planId == provider.plan.id,
+        )
+        #expect(
+            backend.checkedPayments.isEmpty,
+        )
+        #expect(
+            backend.statusRequestCount == 1,
+        )
+    }
+
+    @Test
+    func pendingRobokassaPurchaseChecksOnlyThePaymentUntilItSucceeds() async throws {
+        let backend = SubscriptionTestBackendRepository()
+        let provider = SubscriptionTestRepository(
+            backend: backend,
+            source: .robokassa,
+        )
+        let id = UUID()
+        provider.preparedPaymentID = id
+        provider.purchaseResult = .pending
+        backend.payments[
+            id,
+        ] = BillingPaymentResponse(
+            id: id,
+            planId: provider.plan.id,
+            status: .pending,
+            confirmationUrl: nil,
+            paymentMethodType: nil,
+        )
+        let root = makeRoot(
+            backend: backend,
+            provider: provider,
+        )
+        try await assertPending(
+            root.purchase(
+                plan: provider.plan,
+            ),
+        )
+        #expect(
+            backend.checkedPayments.isEmpty,
+        )
+        #expect(
+            backend.statusRequestCount == 0,
+        )
+        try await assertPending(
+            root.checkPurchase(),
+        )
+        #expect(
+            backend.checkedPayments == [id],
+        )
+        #expect(
+            backend.statusRequestCount == 0,
+        )
+        backend.payments[
+            id,
+        ] = BillingPaymentResponse(
+            id: id,
+            planId: provider.plan.id,
+            status: .succeeded,
+            confirmationUrl: nil,
+            paymentMethodType: nil,
+        )
+        backend.isAccessAvailable = true
+        backend.status.source = .robokassa
+        guard case .completed = try await root.checkPurchase() else {
+            Issue.record(
+                "Confirmed payment and access must complete the purchase",
+            )
+            return
+        }
+        #expect(
+            backend.checkedPayments == [id, id],
+        )
+        #expect(
+            backend.statusRequestCount == 1,
+        )
+    }
+
+    @Test
+    func canceledPurchaseDoesNotFetchPaymentOrSubscriptionAgain() async throws {
+        let backend = SubscriptionTestBackendRepository()
+        let provider = SubscriptionTestRepository(
+            backend: backend,
+            source: .robokassa,
+        )
+        provider.preparedPaymentID = UUID()
+        provider.purchaseResult = .cancelled
+        let root = makeRoot(
+            backend: backend,
+            provider: provider,
+        )
+        guard case .cancelled = try await root.purchase(
+            plan: provider.plan,
+        ) else {
+            Issue.record(
+                "The provider cancellation must return to plan selection",
+            )
+            return
+        }
+        #expect(
+            backend.checkedPayments.isEmpty,
+        )
+        #expect(
+            backend.statusRequestCount == 0,
+        )
+    }
+
     @Test(
-        arguments: [BillingPaymentState.pending, .needsReview, .created, .awaitingToken],
+        arguments: [BillingPaymentState.pending, .needsReview, .created],
     )
-    func existingAccessCannotCompleteUnconfirmedYooKassaPayment(
+    func existingAccessCannotCompleteUnconfirmedRobokassaPayment(
         paymentState: BillingPaymentState,
     ) async throws {
         let backend = SubscriptionTestBackendRepository()
         let provider = SubscriptionTestRepository(
             backend: backend,
-            source: .yookassa,
+            source: .robokassa,
         )
         let id = UUID()
         provider.preparedPaymentID = id
         provider.purchaseResult = .pending
         backend.isAccessAvailable = true
-        backend.status.source = .yookassa
+        backend.status.source = .robokassa
         backend.payments[
             id,
         ] = BillingPaymentResponse(
@@ -32,6 +165,9 @@ struct SubscriptionPurchaseVerificationTests {
         let root = makeRoot(
             backend: backend,
             provider: provider,
+        )
+        root.update(
+            status: backend.status,
         )
         try await assertPending(
             root.purchase(
@@ -73,7 +209,7 @@ struct SubscriptionPurchaseVerificationTests {
         let backend = SubscriptionTestBackendRepository()
         let provider = SubscriptionTestRepository(
             backend: backend,
-            source: .yookassa,
+            source: .robokassa,
         )
         let id = UUID()
         provider.preparedPaymentID = id
@@ -97,7 +233,7 @@ struct SubscriptionPurchaseVerificationTests {
             ),
         )
         backend.isAccessAvailable = true
-        backend.status.source = .yookassa
+        backend.status.source = .robokassa
         backend.payments[
             id,
         ] = BillingPaymentResponse(
@@ -119,7 +255,7 @@ struct SubscriptionPurchaseVerificationTests {
         let backend = SubscriptionTestBackendRepository()
         let provider = SubscriptionTestRepository(
             backend: backend,
-            source: .yookassa,
+            source: .robokassa,
         )
         let id = UUID()
         provider.preparedPaymentID = id
@@ -148,7 +284,7 @@ struct SubscriptionPurchaseVerificationTests {
             type: .pro,
             entitlement: backend.status.entitlement,
             availableCountPerDay: 20,
-            source: .yookassa,
+            source: .robokassa,
         )
         backend.payments[
             id,
@@ -265,6 +401,221 @@ struct SubscriptionPurchaseVerificationTests {
         }
     }
 
+    @Test
+    func firstApplePurchaseAcceptsAVerifiedTransactionWithoutAPreviousSnapshot() throws {
+        let context: SubscriptionPurchaseContextProtocol = SubscriptionStoreKitPurchaseContext(
+            planID: "monthly",
+            previousTransactionID: nil,
+            previousPurchaseDate: nil,
+        )
+        let result = try #require(
+            context.check(
+                transaction: SubscriptionTransactionUpdate(
+                    transactionId: 1,
+                    planId: "monthly",
+                    purchaseDate: Date(),
+                    isActive: true,
+                    isOwnerChanged: false,
+                ),
+            ),
+        )
+        guard case .completed = result else {
+            Issue.record(
+                "A verified first purchase must be accepted without a previous transaction",
+            )
+            return
+        }
+    }
+
+    @Test(
+        arguments: [false, true],
+    )
+    func latePaymentCheckCannotRestoreThePreviousOwnersPurchase(
+        isCheckFailing: Bool,
+    ) async throws {
+        let backend = SubscriptionTestBackendRepository()
+        let provider = SubscriptionTestRepository(
+            backend: backend,
+            source: .robokassa,
+        )
+        let paymentID = UUID()
+        provider.preparedPaymentID = paymentID
+        provider.purchaseResult = .pending
+        backend.payments[
+            paymentID,
+        ] = BillingPaymentResponse(
+            id: paymentID,
+            planId: provider.plan.id,
+            status: .succeeded,
+            confirmationUrl: nil,
+            paymentMethodType: nil,
+        )
+        let root = makeRoot(
+            backend: backend,
+            provider: provider,
+        )
+        try await assertPending(
+            root.purchase(
+                plan: provider.plan,
+            ),
+        )
+        let (stream, continuation) = AsyncStream<Void>.makeStream()
+        defer {
+            continuation.finish()
+        }
+        backend.onCheckPayment = {
+            for await _ in stream {}
+            if isCheckFailing {
+                throw SubscriptionError.offeringsUnavailable
+            }
+        }
+        let checking = Task {
+            try await root.checkPurchase()
+        }
+        for _ in 0 ..< 1000 {
+            if !backend.checkedPayments.isEmpty {
+                break
+            }
+            await Task.yield()
+        }
+        #expect(
+            backend.checkedPayments == [paymentID],
+        )
+        backend.status = SubscriptionStatus(
+            planId: "recovered-plan",
+            type: .base,
+            entitlement: backend.status.entitlement,
+            availableCountPerDay: 5,
+            source: .robokassa,
+        )
+        let recovered = try await root.recover(
+            key: "another-owner",
+        )
+        continuation.finish()
+        await #expect(
+            throws: CancellationError.self,
+        ) {
+            try await checking.value
+        }
+        #expect(
+            root.status == recovered,
+        )
+        #expect(
+            backend.statusRequestCount == 0,
+        )
+        try await assertPending(
+            root.checkPurchase(),
+        )
+        #expect(
+            backend.checkedPayments == [paymentID],
+        )
+    }
+
+    @Test
+    func appleUpdatesCannotConfirmAPendingRobokassaPayment() async throws {
+        let backend = SubscriptionTestBackendRepository()
+        let apple = SubscriptionTestRepository(
+            backend: backend,
+        )
+        let robokassa = SubscriptionTestRepository(
+            backend: backend,
+            source: .robokassa,
+        )
+        let paymentID = UUID()
+        robokassa.preparedPaymentID = paymentID
+        robokassa.purchaseResult = .pending
+        backend.payments[
+            paymentID,
+        ] = BillingPaymentResponse(
+            id: paymentID,
+            planId: robokassa.plan.id,
+            status: .pending,
+            confirmationUrl: nil,
+            paymentMethodType: nil,
+        )
+        let root = SubscriptionRootViewModel(
+            container: makeSubscriptionTestContainer(
+                backend: backend,
+                storeKit: apple,
+                robokassa: robokassa,
+                getStorefrontCountryCode: {
+                    "RUS"
+                },
+            ),
+        )
+        root.onInit()
+        for _ in 0 ..< 1000 {
+            if apple.observationCount == 1 {
+                break
+            }
+            await Task.yield()
+        }
+        try await assertPending(
+            root.purchase(
+                plan: robokassa.plan,
+            ),
+        )
+        await deliver(
+            SubscriptionTransactionUpdate(
+                transactionId: 2,
+                planId: robokassa.plan.id,
+                purchaseDate: Date(),
+                isActive: true,
+                isOwnerChanged: false,
+            ),
+            provider: apple,
+            root: root,
+        )
+        try await assertPending(
+            root.checkPurchase(),
+        )
+    }
+
+    @Test(
+        arguments: [SubscriptionSource.apple, .robokassa],
+    )
+    func retryingAPendingPurchaseUsesItsContextsContinuationRule(
+        source: SubscriptionSource,
+    ) async throws {
+        let backend = SubscriptionTestBackendRepository()
+        let provider = SubscriptionTestRepository(
+            backend: backend,
+            source: source,
+        )
+        let paymentID = UUID()
+        provider.preparedPaymentID = paymentID
+        provider.purchaseResult = .pending
+        backend.payments[
+            paymentID,
+        ] = BillingPaymentResponse(
+            id: paymentID,
+            planId: provider.plan.id,
+            status: .pending,
+            confirmationUrl: nil,
+            paymentMethodType: nil,
+        )
+        let root = makeRoot(
+            backend: backend,
+            provider: provider,
+        )
+        try await assertPending(
+            root.purchase(
+                plan: provider.plan,
+            ),
+        )
+        try await assertPending(
+            root.purchase(
+                plan: provider.plan,
+            ),
+        )
+        #expect(
+            provider.purchaseCount == (source == .apple ? 2 : 1),
+        )
+        #expect(
+            backend.checkedPayments.count == (source == .robokassa ? 1 : 0),
+        )
+    }
+
     private func makeRoot(
         backend: SubscriptionTestBackendRepository,
         provider: SubscriptionTestRepository,
@@ -273,7 +624,7 @@ struct SubscriptionPurchaseVerificationTests {
             container: makeSubscriptionTestContainer(
                 backend: backend,
                 storeKit: provider,
-                yooKassa: provider,
+                robokassa: provider,
                 getStorefrontCountryCode: {
                     "USA"
                 },

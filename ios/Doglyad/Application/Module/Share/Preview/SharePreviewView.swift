@@ -10,6 +10,12 @@
         @EnvironmentObject private var messager: DMessager
         let state: any ShareStateProtocol
 
+        init(
+            state: any ShareStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as ShareErrorState: true

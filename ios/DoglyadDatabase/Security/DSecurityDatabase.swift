@@ -55,6 +55,22 @@ public actor DSecurityDatabase: DSecurityDatabaseProtocol {
         }
     }
 
+    public func setBillingRecoveryKey(
+        ownerId: UUID,
+        value: String,
+    ) throws {
+        guard let identity = try fetchBillingIdentity(), identity.ownerId == ownerId else {
+            throw CancellationError()
+        }
+        try setBillingIdentity(
+            value: BillingIdentityDB(
+                ownerId: identity.ownerId,
+                accessToken: identity.accessToken,
+                recoveryKey: value,
+            ),
+        )
+    }
+
     // MARK: - Keychain
 
     private func baseQuery(

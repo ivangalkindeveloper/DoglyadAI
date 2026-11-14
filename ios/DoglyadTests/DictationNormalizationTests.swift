@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct DictationNormalizationTests {
+    init() {}
+
     @Test(
         arguments: ["23 0 8 2014 год", "23 08 2014"],
     )

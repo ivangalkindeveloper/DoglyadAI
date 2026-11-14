@@ -8,6 +8,12 @@
         @EnvironmentObject private var container: DependencyContainer
         @EnvironmentObject private var router: DRouter
 
+        init(
+            scenario: HistoryPreviewFactory.Scenario,
+        ) {
+            self.scenario = scenario
+        }
+
         var body: some View {
             let isErrorPresented = switch scenario {
             case .failed, .nextPageFailed: true

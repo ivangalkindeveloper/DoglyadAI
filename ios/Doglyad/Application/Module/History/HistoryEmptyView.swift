@@ -5,6 +5,8 @@ struct HistoryEmptyView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
 
+    init() {}
+
     var body: some View {
         VStack(
             spacing: .zero,

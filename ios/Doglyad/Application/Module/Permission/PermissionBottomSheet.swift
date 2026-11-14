@@ -6,6 +6,12 @@ struct PermissionBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: PermissionArguments
 
+    init(
+        arguments: PermissionArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         PermissionBottomSheetView(
             viewModel: PermissionViewModel(

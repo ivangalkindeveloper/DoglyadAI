@@ -3,6 +3,14 @@ import Foundation
 struct LocaleConfig: Codable {
     let defaultCode: String
     let codes: [String]
+
+    init(
+        defaultCode: String,
+        codes: [String],
+    ) {
+        self.defaultCode = defaultCode
+        self.codes = codes
+    }
 }
 
 extension LocaleConfig {

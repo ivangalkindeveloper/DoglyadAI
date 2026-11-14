@@ -7,6 +7,14 @@ struct ScanScreenView: DViewProtocol {
     @StateObject var viewModel: ScanViewModel
     @FocusState private var focus: ScanFocus?
 
+    init(
+        viewModel: @autoclosure @escaping () -> ScanViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         let (isProcessing, isMediaSelectionDisabled): (Bool, Bool) = switch viewModel.state {
         case _ as ScanGenerationLoadingState: (true, true)

@@ -1,3 +1,5 @@
 import Router
 
-final class StorageArguments: RouteArgumentsProtocol {}
+final class StorageArguments: RouteArgumentsProtocol {
+    init() {}
+}

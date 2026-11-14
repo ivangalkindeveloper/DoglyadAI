@@ -8,6 +8,8 @@ import Testing
 
 @MainActor
 struct PatientReadinessTests {
+    init() {}
+
     @Test(
         arguments: [false, true],
     )

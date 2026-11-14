@@ -1,0 +1,14 @@
+appId: ${APP_ID}
+name: atlas-subscriptionautorenewaldisabling-55c81b225f
+tags:
+- atlas
+- SubscriptionAutoRenewalDisabling
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-subscriptionautorenewaldisabling-55c81b225f
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-subscriptionautorenewaldisabling-55c81b225f
+    timeout: 15000
+- takeScreenshot: 02-SubscriptionAutoRenewalDisabling-55c81b225f

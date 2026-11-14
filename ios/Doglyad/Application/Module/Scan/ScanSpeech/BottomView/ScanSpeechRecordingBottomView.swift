@@ -6,6 +6,8 @@ struct ScanSpeechRecordingBottomView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     @EnvironmentObject var theme: DTheme
 
+    init() {}
+
     var body: some View {
         let (icon, title, isProcessing): (ImageResource, LocalizedStringResource, Bool) = switch viewModel.state {
         case _ as ScanSpeechReadyState:

@@ -25,6 +25,7 @@ func makeStateTestContainer(
         ultrasoundDraftRepository: draftRepository,
         templateRepository: templateRepository ?? base.templateRepository,
         subscriptionBackendRepository: subscriptionBackendRepository ?? base.subscriptionBackendRepository,
+        subscriptionStoreKitRepository: base.subscriptionStoreKitRepository,
         subscriptionRepositoryFactory: base.subscriptionRepositoryFactory,
         applicationConfig: applicationConfig ?? base.applicationConfig,
         language: base.language,

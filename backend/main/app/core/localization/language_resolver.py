@@ -9,6 +9,11 @@ class LanguageResolver:
         LanguageCode,
     )
 
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @classmethod
     def resolve(
         cls,

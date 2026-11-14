@@ -7,6 +7,12 @@ struct StorageClearProtocolsBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: StorageClearProtocolsArguments?
 
+    init(
+        arguments: StorageClearProtocolsArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         StorageClearProtocolsBottomSheetView(
             viewModel: StorageClearProtocolsViewModel(

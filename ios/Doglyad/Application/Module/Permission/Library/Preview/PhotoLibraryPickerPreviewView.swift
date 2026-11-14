@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any PhotoLibraryPickerStateProtocol
 
+        init(
+            state: any PhotoLibraryPickerStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = PhotoLibraryPickerViewModel(
                 messager: DMessager(),

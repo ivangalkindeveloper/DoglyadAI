@@ -22,7 +22,7 @@ For a clean billing test, use `Backend: Local Mock (Cold)` or
 `Doglyad-Debug-Local-Clean` scheme. Stop the existing local backend before starting
 this profile. See [BILLING_LOCAL.md](BILLING_LOCAL.md#чистый-локальный-запуск).
 
-`ENVIRONMENT` selects configuration documents and the YooKassa payment mode: `development` accepts only test shops/payments, `production` accepts only live shops/payments. The temporary `IS_YOOKASSA_LIVE_ENABLED=false` launch gate still blocks real charges. `MODEL_SERVICE_TYPE` independently selects `inference` or `mock`; the default is `inference`. The launch profiles set this value explicitly so switching back to Development or Production restores real inference.
+`ENVIRONMENT` selects configuration documents and the Robokassa payment mode: `development` accepts only test shops/payments, `production` accepts only live shops/payments. The temporary `IS_ROBOKASSA_LIVE_ENABLED=false` launch gate still blocks real charges. `MODEL_SERVICE_TYPE` independently selects `inference` or `mock`; the default is `inference`. The launch profiles set this value explicitly so switching back to Development or Production restores real inference.
 
 For a local main backend connected to DGX, select `Backend: Local Inference`
 instead. This profile prepares the same local PostgreSQL database as Local Mock,
@@ -144,8 +144,8 @@ See [ERRORS.md](ERRORS.md). Expected failures are classes in `app/error/`, with 
 
 ## Billing
 
-StoreKit 2, YooKassa, anonymous identities, PostgreSQL migrations and launch prerequisites: [BILLING.md](BILLING.md).
-Deferred NPD receipts and Apple external-purchase reporting work: [BILLING_RELEASE_PLAN.md](BILLING_RELEASE_PLAN.md).
+StoreKit 2, Robokassa, anonymous identities, PostgreSQL migrations and launch prerequisites: [BILLING.md](BILLING.md).
+Merchant activation, NPD receipt verification and Apple external-purchase reporting prerequisites: [BILLING_RELEASE_PLAN.md](BILLING_RELEASE_PLAN.md).
 Backup and restoration templates: [deploy/billing/README.md](../../deploy/billing/README.md).
 
 ## Потоковая генерация

@@ -14,4 +14,4 @@ tags:
 - assertVisible:
     id: paywall.continue
     enabled: true
-- takeScreenshot: 06-Paywall-f9567bf334
+- takeScreenshot: 08-Paywall-f9567bf334

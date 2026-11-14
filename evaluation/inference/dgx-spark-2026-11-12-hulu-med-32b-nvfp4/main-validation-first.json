@@ -1,0 +1,10 @@
+[
+  {
+    "case": "report_ru",
+    "is_main_validation_passed": true
+  },
+  {
+    "case": "report_en",
+    "is_main_validation_passed": true
+  }
+]

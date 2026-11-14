@@ -15,7 +15,6 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     private let messager: DMessager
     private let arguments: ScanSpeechArguments
     private var speechCancellable: AnyCancellable?
-    private var isPresentationActive = true
 
     init(
         container: DependencyContainer,
@@ -179,7 +178,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 lexiconLocalization: self.l10n.voice.speech,
             )
         } onMainSuccess: { controller in
-            guard !Task.isCancelled, self.isPresentationActive else {
+            guard !Task.isCancelled else {
                 return
             }
             self.speechController = controller
@@ -187,7 +186,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             controller.prepareModel()
             self.refreshSpeechState()
         } onMainUnknownError: { _ in
-            guard !Task.isCancelled, self.isPresentationActive else {
+            guard !Task.isCancelled else {
                 return
             }
             self.emit(
@@ -201,9 +200,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
 
     override func onDisappear() {
         super.onDisappear()
-        isPresentationActive = false
-        cancelLastTask()
-        speechController?.cancel()
+        cancelSpeech()
     }
 
     func onTapBack() {
@@ -215,14 +212,11 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 .voiceFlowCancelled,
             )
         }
-        isPresentationActive = false
+        cancelSpeech()
         coordinator.dismissSheet()
     }
 
     func onTapRetryModelPreparation() {
-        guard isPresentationActive else {
-            return
-        }
         guard let speechController else {
             onInit()
             return
@@ -232,7 +226,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     func onTapSpeech() {
-        guard isPresentationActive, let speechController else {
+        guard let speechController else {
             return
         }
         switch state {
@@ -261,9 +255,6 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     func onTapRecordAgain() {
-        guard isPresentationActive else {
-            return
-        }
         switch state {
         case _ as ScanSpeechReviewTranscriptState: break
         default: return
@@ -287,9 +278,6 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     func onTapContinue() {
-        guard isPresentationActive else {
-            return
-        }
         switch state {
         case _ as ScanSpeechReviewTranscriptState:
             guard transcriptTextController.validate() else {
@@ -320,9 +308,6 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     func onTapProposal(
         _ id: DNeuralUltrasoundVoiceFieldId,
     ) {
-        guard isPresentationActive else {
-            return
-        }
         switch state {
         case let state as ScanSpeechReviewProposalState:
             emit(
@@ -339,9 +324,6 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     func onTapBackToTranscript() {
-        guard isPresentationActive else {
-            return
-        }
         switch state {
         case _ as ScanSpeechReviewProposalState:
             showTranscriptReview()
@@ -350,9 +332,6 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     func onTapApplySelected() {
-        guard isPresentationActive else {
-            return
-        }
         switch state {
         case let state as ScanSpeechReviewProposalState:
             guard !state.selectedFieldIds.isEmpty else {
@@ -378,7 +357,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                     source: .reviewed,
                 ),
             )
-            isPresentationActive = false
+            cancelSpeech()
             coordinator.dismissSheet()
         default: break
         }
@@ -522,6 +501,14 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         }
     }
 
+    private func cancelSpeech() {
+        cancelOperationTask()
+        cancelLastTask()
+        speechCancellable?.cancel()
+        speechCancellable = nil
+        speechController?.cancel()
+    }
+
     private func observeSpeechController() {
         speechCancellable?.cancel()
         guard let speechController else {
@@ -529,7 +516,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         }
         speechCancellable = speechController.objectWillChange.sink { [weak self] _ in
             Task { @MainActor [weak self] in
-                guard let self, isPresentationActive else {
+                guard let self, !Task.isCancelled, speechCancellable != nil else {
                     return
                 }
                 objectWillChange.send()
@@ -539,7 +526,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     }
 
     private func refreshSpeechState() {
-        guard isPresentationActive else {
+        guard speechCancellable != nil else {
             return
         }
         switch state {
@@ -593,9 +580,9 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         emit(
             ScanSpeechTranscriptionLoadingState(),
         )
-        Task { [weak self] in
+        operationTask = Task { [weak self] in
             let transcript = await speechController.stop()
-            guard let self, isPresentationActive else {
+            guard let self, !Task.isCancelled, speechCancellable != nil else {
                 return
             }
             switch state {
@@ -681,7 +668,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
                 request: request,
             )
         } onMainSuccess: { proposal in
-            guard self.isPresentationActive, self.state === parsing else {
+            guard !Task.isCancelled, self.state === parsing else {
                 return
             }
             let plan = ScanSpeechConfidencePolicy.plan(
@@ -724,7 +711,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
             )
             switch plan.decision {
             case .complete:
-                self.isPresentationActive = false
+                self.cancelSpeech()
                 self.coordinator.dismissSheet()
             case .reviewTranscript:
                 self.showTranscriptReview()
@@ -760,7 +747,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         _: Error,
         parsing: any ScanSpeechStateProtocol,
     ) {
-        guard isPresentationActive, state === parsing else {
+        guard !Task.isCancelled, state === parsing else {
             return
         }
         showTranscriptReview()

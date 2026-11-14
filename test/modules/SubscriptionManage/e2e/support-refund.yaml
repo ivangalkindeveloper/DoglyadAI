@@ -1,0 +1,36 @@
+appId: ${APP_ID}
+name: e2e-managesubscription-support-refund
+tags: [e2e, SubscriptionManage]
+---
+- launchApp:
+    arguments:
+      regressionPreview: ''
+      regressionExternalApps: 'true'
+      regressionVersionPolicy: ''
+      regressionFault: ''
+      regressionNewBillingOwner: 'false'
+- extendedWaitUntil:
+    visible: {id: scan.settings}
+    timeout: 60000
+- tapOn: {id: scan.settings}
+- scrollUntilVisible:
+    element: {text: '^Управление подпиской$'}
+    direction: DOWN
+- tapOn: ^Управление подпиской$
+- scrollUntilVisible:
+    element: {text: '^Связаться с поддержкой$'}
+    direction: DOWN
+- tapOn: ^Связаться с поддержкой$
+- assertVisible: ^Почтовый клиент$
+- tapOn: ^Отмена$
+- scrollUntilVisible:
+    element: {text: '^Запросить возврат$'}
+    direction: DOWN
+- tapOn: ^Запросить возврат$
+- assertVisible: ^Почтовый клиент$
+- tapOn: ^Отмена$
+- assertVisible: ^Моя подписка$
+- takeScreenshot: SubscriptionManage-support-refund-canceled
+- tapOn: {id: navigation.back}
+- tapOn: {id: navigation.back}
+- assertVisible: {id: scan.settings}

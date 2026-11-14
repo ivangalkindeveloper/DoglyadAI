@@ -1,4 +1,4 @@
-"""Verify recovery and renewal against a real YooKassa test purchase.
+"""Verify recovery and renewal against a real Robokassa test purchase.
 
 Receipts contain hashes and ledger facts, never access or recovery secrets.
 Maestro diagnostic text is scrubbed before the owned environment is removed.
@@ -16,9 +16,9 @@ from payment_evidence import owner_ids, verify_payment
 
 ACTIONS = (
     "cancel-renewal",
-    "create-key",
-    "rotate-key",
-    "reject-old-key",
+    "copy-key",
+    "copy-key-again",
+    "reject-invalid-key",
     "restore-key",
 )
 
@@ -114,9 +114,9 @@ class SubscriptionEvidence:
             self.baseline = self.snapshot()
             if not self.baseline["is_auto_renewing"]:
                 raise ValueError("The test purchase must initially support renewal")
-        if action == "reject-old-key":
+        if action == "reject-invalid-key":
             self.owners_before_reset = owner_ids(self.project)
-            self.copy(device, self.original_key)
+            self.copy(device, "F" * 48 if self.current_key != "F" * 48 else "E" * 48)
         elif action == "restore-key":
             self.copy(device, self.current_key)
         else:
@@ -151,21 +151,22 @@ class SubscriptionEvidence:
             active=True,
             autoRenewing=False,
         )
-        if action in {"create-key", "rotate-key"}:
+        if action in {"copy-key", "copy-key-again"}:
             key = subprocess.check_output(
                 ["xcrun", "simctl", "pbpaste", device], text=True
             ).strip()
             if not re.fullmatch(r"[A-F0-9]{48}", key):
                 raise ValueError("Copy did not produce a complete recovery key")
             digest = hashlib.sha256(key.encode()).hexdigest()
-            if state["recovery_hash"] != digest or key == self.original_key:
-                raise ValueError("Copied key does not match the rotated backend key")
-            if action == "create-key":
+            if state["recovery_hash"] != digest or self.baseline["recovery_hash"] != digest:
+                raise ValueError("Copied key does not match the permanent backend key")
+            if action == "copy-key-again" and key != self.original_key:
+                raise ValueError("Repeated copying changed the recovery key")
+            if action == "copy-key":
                 self.original_key = key
-            else:
-                self.current_key = key
-            proof.update(copiedKeyVerified=True, keySha256=digest)
-        elif action in {"reject-old-key", "restore-key"}:
+            self.current_key = key
+            proof.update(copiedKeyVerified=True, keyStable=True, keySha256=digest)
+        elif action in {"reject-invalid-key", "restore-key"}:
             new_owners = owner_ids(self.project) - self.owners_before_reset
             if len(new_owners) != 1:
                 raise ValueError("Recovery requires a new clean client identity")
@@ -187,7 +188,7 @@ class SubscriptionEvidence:
                 cleanClient=True,
                 originalOwnerRetained=True,
                 credentialsAdded=int(action == "restore-key"),
-                replacedKeyRejected=action == "reject-old-key",
+                invalidKeyRejected=action == "reject-invalid-key",
             )
         elif state["credentials"] != self.baseline["credentials"]:
             raise ValueError("Renewal cancellation unexpectedly created credentials")

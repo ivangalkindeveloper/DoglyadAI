@@ -1,14 +1,16 @@
-# DGX Spark: один inference-сервис и три MedGemma
+# DGX Spark: один inference-сервис, MedGemma и Hulu-Med
 
-Один Compose project в `/opt/doglyad/inference` содержит четыре контейнера:
-общий `backend_inference` и три vLLM. Backend проверяет App Check и выбирает
+Один Compose project в `/opt/doglyad/inference` содержит шесть контейнеров:
+общий `backend_inference` и пять vLLM. Backend проверяет App Check и выбирает
 движок по `modelId`. Все модели используют один приватный API.
 
 ```text
 main backend → DGX Tailscale :8100 → App Check → modelId
                                                ├─ vllm_medgemma_4b:8000
                                                ├─ vllm_medgemma_15_4b:8000
-                                               └─ vllm_medgemma_27b:8000
+                                               ├─ vllm_medgemma_27b:8000
+                                               ├─ vllm_hulu_med_32b:8000
+                                               └─ vllm_hulu_med_7b:8000
 ```
 
 У vLLM нет опубликованных портов. Профиль
@@ -16,7 +18,7 @@ main backend → DGX Tailscale :8100 → App Check → modelId
 моделей. Генератор формирует Compose и `VLLM_ENDPOINTS` из этого профиля.
 Неизвестный ID возвращает `400`.
 Каждая модель имеет отдельную очередь: восемь выполняемых и один ожидающий запрос.
-Всего сервис допускает до 24 генераций одновременно. Ожидание ограничено двумя
+Всего сервис допускает до 40 генераций одновременно. Ожидание ограничено двумя
 секундами; заполненная очередь возвращает `503` с `Retry-After: 5`.
 Сбой или занятая очередь одной модели не занимают очередь другой. Перезапуск
 общего backend временно прерывает доступ ко всем моделям.
@@ -110,23 +112,32 @@ docker volume create doglyad-dgx-huggingface
 
 ## Параметры и запуск
 
-| Модель | Сервис | KV-кэш | Доля для стартовой проверки памяти |
-|---|---|---:|---:|
-| MedGemma 4B | `vllm_medgemma_4b` | 4 GiB | 0.15 |
-| MedGemma 1.5 4B | `vllm_medgemma_15_4b` | 4 GiB | 0.15 |
-| MedGemma 27B | `vllm_medgemma_27b` | 8 GiB | 0.55 |
+| Модель | Формат весов | Сервис | KV-кэш | Доля для стартовой проверки памяти |
+|---|---|---|---:|---:|
+| MedGemma 4B | BF16 | `vllm_medgemma_4b` | 4 GiB | 0.15 |
+| MedGemma 1.5 4B | BF16 | `vllm_medgemma_15_4b` | 4 GiB | 0.15 |
+| MedGemma 27B | NVFP4 | `vllm_medgemma_27b` | 8 GiB | 0.55 |
+| Hulu-Med 32B | NVFP4 | `vllm_hulu_med_32b` | 4 GiB | 0.30 |
+| Hulu-Med 7B | BF16 | `vllm_hulu_med_7b` | 2 GiB | 0.15 |
 
-Общие параметры: BF16, рабочий контекст 16384, максимум шесть изображений,
+Параметры MedGemma: неквантованные тензоры и KV-кэш BF16, рабочий контекст 16384, максимум шесть изображений,
 до восьми одновременных запросов на модель, компиляция и CUDA Graphs, prefix caching.
-В профиле заданы `maxNumSeqs: 8` и `isEager: false` для каждого движка.
+В профиле заданы `maxNumSeqs: 8` и `isEager: false` для каждого движка MedGemma.
 Для всех трёх моделей профиль включает N-gram speculative decoding:
 `numSpeculativeTokens: 8`, `promptLookupMin: 2`, `promptLookupMax: 5`.
-Основная модель проверяет предлагаемые токены; веса остаются BF16.
+Основная модель проверяет предлагаемые токены; N-gram не меняет формат весов.
 vLLM 0.28.0 при этом использует Model Runner V1 и отключает async scheduling.
 Результаты проверки полного ответа при нагрузке 4/4/4 и 8/8/8:
 [`evaluation/inference/dgx-spark-2026-11-05-ngram-capacity`](../../evaluation/inference/dgx-spark-2026-11-05-ngram-capacity/README.md).
 В `config/server.json` лимит `max_concurrent_requests: 8` применяется отдельно
-к каждой модели. Ревизии весов закреплены на версиях, использованных в тестах.
+к каждой модели. Ревизии обеих 4B закреплены на версиях, использованных в тестах.
+27B загружается из `/opt/doglyad/models/medgemma-27b-it-nvfp4-20261110`: это
+проверенный preserved-экспорт NVFP4 с исходными BF16 RMSNorm. Квантуются
+линейные слои языковой модели (W4A4); vision tower, projector, lm_head,
+embeddings и KV-кэш остаются BF16. Не подменяйте каталог сырым экспортом.
+Перед переносом сверяйте SHA256 всех файлов с утверждённым manifest.
+Том HF с исходной 27B BF16 сохраняется для отката.
+Поле `format` в обоих каталогах main описывает действующий формат весов.
 Кэш ограничен явно; `gpu-memory-utilization` используется отдельно при старте.
 При длинных входах доступный KV-кеш может уменьшить число одновременно
 выполняемых запросов. Восемь слотов не гарантируют восемь активных последовательностей
@@ -153,16 +164,16 @@ DOWNLOAD_MODEL_ID=google/medgemma-27b-it docker compose --profile download run -
 bash start.sh
 ```
 
-Скрипт запускает 27B, дожидается healthy, затем добавляет 4B и 1.5 4B.
+Скрипт запускает 27B, дожидается healthy, затем добавляет 4B, 1.5 4B, Hulu-Med 32B и Hulu-Med 7B.
 Этот порядок использован в проверке 8/8/8. Первый запуск с компиляцией занимает
 несколько минут на модель; готовность проверяется после компиляции и захвата графов.
-Общий backend создаётся после готовности движков. Для перезапуска всех четырёх:
+Общий backend создаётся после готовности движков. Для перезапуска всех шести контейнеров:
 
 ```bash
 bash start.sh --restart
 ```
 
-Не используйте обычный `docker compose up -d` для холодного старта трёх движков:
+Не используйте обычный `docker compose up -d` для холодного старта пяти движков:
 он запускает их одновременно. Для просмотра состояния используйте
 `docker compose ps`; технические логи не должны содержать тексты запросов.
 
@@ -188,19 +199,21 @@ ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
 Без alias укажите `USER@DGX_LAN_IP`, `-i PATH_TO_EXISTING_KEY` и
 `-o IdentitiesOnly=yes`. Порт 18100 доступен только самому Mac.
 
-Все три записи локального `backend/main/secrets/inference_endpoints.json`
+Все пять записей локального `backend/main/secrets/inference_endpoints.json`
 указывают на один API:
 
 ```json
 {
   "google/medgemma-4b-it": "http://127.0.0.1:18100",
   "google/medgemma-1.5-4b-it": "http://127.0.0.1:18100",
-  "google/medgemma-27b-it": "http://127.0.0.1:18100"
+  "google/medgemma-27b-it": "http://127.0.0.1:18100",
+  "ZJU-AI4H/Hulu-Med-7B": "http://127.0.0.1:18100",
+  "ZJU-AI4H/Hulu-Med-32B": "http://127.0.0.1:18100"
 }
 ```
 
 Для облачного main вместо loopback нужен один адрес
-`http://DGX_TAILSCALE_IP:8100` во всех трёх записях. Не доставляйте локальный
+`http://DGX_TAILSCALE_IP:8100` во всех пяти записях. Не доставляйте локальный
 loopback map на VM. Существующие модели и лимиты доступа сохраняются.
 После изменения map или каталога перезапустите main.
 
@@ -255,14 +268,98 @@ Docker может запустить backend раньше появления а�
 При нестабильном Wi-Fi предпочтителен Ethernet. Изменение энергосбережения
 адаптера — отдельное действие администратора.
 
+## Hulu-Med 32B NVFP4
+
+Логический ID в приложении и inference API: `ZJU-AI4H/Hulu-Med-32B`.
+Веса: [ivangalkindeveloper/Hulu-Med-32B-NVFP4](https://huggingface.co/ivangalkindeveloper/Hulu-Med-32B-NVFP4),
+закреплённый commit `5ed563b024f1511837b26830fcb2846cb1fdc501`.
+Каталог на DGX: `/opt/doglyad/models/hulu-med-32b-nvfp4-20261112`.
+Перед запуском сверяйте файлы с `SHA256SUMS` опубликованного чекпойнта.
+После сверки замените только `preprocessor_config.json` в отдельной рабочей
+копии чекпойнта файлом [`config/hulu-med-32b-preprocessor.json`](config/hulu-med-32b-preprocessor.json).
+Он ограничивает визуальный бюджет процессора до 2048 токенов вместо исходных
+16384. Штатный resize уменьшает большие кадры перед обработкой; веса и
+публичный чекпойнт не меняются. Это соответствует encoder cache при
+`maxNumBatchedTokens: 2048` и оставляет часть рабочего контекста для текста и ответа.
+Без этой настройки кадр 1024×768 даёт 4015 визуальных токенов и получает `400`.
+`SHA256SUMS` источника после этой замены намеренно отличается только для
+`preprocessor_config.json`; храните исходный manifest для проверки остальных файлов.
+
+```bash
+cp deploy/dgx-spark/config/hulu-med-32b-preprocessor.json \
+  /opt/doglyad/models/hulu-med-32b-nvfp4-20261112/preprocessor_config.json
+```
+
+Команда выше выполняется на DGX из копии репозитория. На Mac можно доставить
+этот файл по SSH в указанный каталог. Не изменяйте каталог исходной публикации.
+Языковые проекции используют NVFP4 W4A4; vision encoder, projector,
+embeddings и lm_head сохранены в BF16. KV-кэш также BF16.
+
+Для Hulu-Med требуется адаптер собственной архитектуры. Он опубликован вместе
+с весами в `vllm_adapter/`, с Dockerfile на закреплённой базе vLLM 0.28.0.
+Сборка на ARM64 DGX из проверенного каталога:
+
+```bash
+docker build -t doglyad-hulu32-vllm:20261112-verified \
+  /opt/doglyad/models/hulu-med-32b-nvfp4-20261112/vllm_adapter
+docker image inspect --format '{{.Id}} {{.Architecture}}' \
+  doglyad-hulu32-vllm:20261112-verified
+```
+
+Профиль закрепляет проверенный локальный image ID, а не изменяемый tag.
+После новой сборки сверьте image ID с профилем перед генерацией Compose.
+У Hulu-Med включены `isRemoteCodeTrusted: true`, eager execution и prefix caching.
+Шаблон чата получает `image_token: "<image>"` через `chatTemplateKwargs`,
+как в исходном процессоре Hulu-Med. N-gram и CUDA Graphs для неё не включены. Рабочий контекст — 16384,
+до восьми последовательностей, до шести изображений, KV-кэш — 4 GiB.
+Поле `contextLength: 32768` в каталоге приложения описывает архитектурное окно
+исходной модели; рабочий лимит DGX задаётся отдельно профилем.
+
+В обоих каталогах main модель доступна по Pro и имеет `format: NVFP4`.
+В `backend/main/secrets/inference_endpoints.json` её логический ID указывает
+на тот же inference API, что и MedGemma. Перезапустите локальный main backend
+после изменения каталога и карты endpoint. Каталог клиента обновляется при
+следующей загрузке конфигурации приложения.
+
+## Hulu-Med 7B BF16
+
+ID приложения и inference API: `ZJU-AI4H/Hulu-Med-7B`.
+Источник: [Hulu-Med-7B](https://huggingface.co/ZJU-AI4H/Hulu-Med-7B),
+revision `258594714a0d3835eb2c9e4cc165a4242e606d71`.
+Используются четыре safetensors-шарда, около 14,98 GiB, в исходном BF16.
+Квантование не выполняется. Каталог DGX:
+`/opt/doglyad/models/hulu-med-7b-bf16-20261112`.
+Исходный checkpoint хранится отдельно; все шарды сверяются с LFS SHA256.
+
+7B использует тот же проверенный адаптер vLLM и локальный image ID, что 32B.
+Её исходный `processing_hulumed.py` имеет тот же SHA256, поэтому применены
+те же изменения совместимости с Transformers 5 и optional Decord.
+Остальной код модели и веса сохраняются. В рабочей копии процессор получает
+[`config/hulu-med-7b-preprocessor.json`](config/hulu-med-7b-preprocessor.json)
+с бюджетом 2048 визуальных токенов. Нормализация изображений не меняется.
+`--default-chat-template-kwargs` передаёт `image_token: "<image>"`.
+
+Рабочий контекст — 16384, KV-кэш BF16 — 2 GiB, до восьми последовательностей
+и шести изображений. Включены eager execution и prefix caching; N-gram и
+CUDA Graphs не включены. `gpuMemoryUtilization: 0.15` используется для стартовой
+проверки; фактический размер KV-кэша задан отдельно.
+Каталог приложения показывает архитектурное окно 32768 и формат BF16.
+Модель относится к Pro и использует тот же endpoint общего backend.
+
+Перед добавлением нового движка проверяется свободная RAM. Загрузка идёт
+в отдельном CPU-контейнере с лимитом 4 GiB, без GPU и дополнительного swap.
+При старте движка защита памяти останавливает только новый контейнер, если
+MemAvailable остаётся ниже 8 GiB в трёх последовательных замерах.
+Параметры и контейнеры четырёх существующих движков должны сохраниться.
+
 ## Последующие обновления
 
-Обновление общего backend затрагивает все модели. Веса и три vLLM при
+Обновление общего backend затрагивает все модели. Веса и пять vLLM при
 обновлении только backend можно сохранить работающими.
 После перехода на сгенерированный стек добавьте DGX в общий inventory одной
 записью с `profile: "../inference/profiles/dgx-spark.json"` и
-`directory: "/opt/doglyad/inference"`. Скрипт обновления проверяет все три
-движка и сохраняет их при обновлении backend. Подробности и порядок отката
+`directory: "/opt/doglyad/inference"`. Скрипт обновления проверяет все пять
+движков и сохраняет их при обновлении backend. Подробности и порядок отката
 описаны в [руководстве профилей](../inference/README.md).
 
 ## Источники

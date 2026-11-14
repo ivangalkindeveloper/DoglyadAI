@@ -16,4 +16,4 @@ tags:
       id: message.error
     timeout: 15000
 - assertNotVisible: ^Не удалось завершить оплату$
-- takeScreenshot: 08-Paywall-6d8eea91ef
+- takeScreenshot: 10-Paywall-6d8eea91ef

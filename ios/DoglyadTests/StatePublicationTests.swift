@@ -7,6 +7,8 @@ import Testing
 
 @MainActor
 struct StatePublicationTests {
+    init() {}
+
     @Test
     func synchronousRenderingDoesNotRetainThePreviousPhase() {
         let model = DStateViewModel<any ScanStateProtocol>(

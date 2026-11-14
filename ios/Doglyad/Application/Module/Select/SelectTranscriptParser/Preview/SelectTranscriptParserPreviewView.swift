@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any SelectTranscriptParserStateProtocol
 
+        init(
+            state: any SelectTranscriptParserStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = SelectTranscriptParserViewModel(
                 container: container,

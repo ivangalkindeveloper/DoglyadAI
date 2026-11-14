@@ -9,6 +9,14 @@ struct LegalUpdateScreenView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: LegalUpdateViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> LegalUpdateViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[

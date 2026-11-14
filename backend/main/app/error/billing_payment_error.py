@@ -7,3 +7,8 @@ class BillingPaymentError(ApiError):
     code = "billingPaymentError"
     description = "The payment provider could not complete the operation"
     status_code = 502
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

@@ -9,6 +9,12 @@ struct SelectUSExaminationTypeBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: SelectUSExaminationTypeArguments?
 
+    init(
+        arguments: SelectUSExaminationTypeArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         SelectUSExaminationTypeBottomSheetView(
             viewModel: SelectUSExaminationTypeViewModel(

@@ -53,7 +53,12 @@ python3 deploy/inference/render.py \
 `maxNumSeqs`, `maxNumBatchedTokens`, `gpuMemoryUtilization`, `gpuDeviceIds`,
 `tensorParallelSize`, `isEager` и `isPrefixCachingEnabled`. Дополнительно можно
 задать `maxImages`, `kvCacheMemoryBytes`, закреплённую `revision` и собственный
-`image`. `tensorParallelSize` должен совпадать с числом выбранных GPU.
+`image` или абсолютный `weightsDirectory` для локального чекпойнта.
+`weightsDirectory` исключает `revision`: каталог монтируется read-only в `/model`,
+vLLM загружает его вместо HF repo, а `--served-model-name` сохраняет `modelId`.
+Каталог должен существовать до запуска. Генератор не скачивает и не квантует веса.
+`dtype` задаёт тип неквантованных тензоров; формат квантования vLLM читает
+из `config.json` чекпойнта. `tensorParallelSize` должен совпадать с числом выбранных GPU.
 Несколько движков могут использовать один GPU, как на DGX.
 
 Для N-gram speculative decoding можно задать `speculativeConfig`:
@@ -76,7 +81,18 @@ N-gram предлагает продолжения по уже встречав�
 основная модель проверяет предложенные токены. Отдельная draft-модель не нужна.
 Это настройка декодирования, а не квантование весов.
 
-`vllmImage` и индивидуальные образы требуют digest. `weightsVolume` сохраняет
+`vllmImage` и индивидуальные образы требуют registry digest или проверенный
+локальный image ID `sha256:...`. Локальный ID доступен только на хостах,
+куда доставлен соответствующий образ. Для кастомной архитектуры можно явно
+включить `isRemoteCodeTrusted: true`; по умолчанию `--trust-remote-code`
+не передаётся. Такое разрешение нужно процессору Hulu-Med из проверенного
+локального чекпойнта; само по себе оно не устанавливает адаптер vLLM.
+`chatTemplateKwargs` передаёт именованные JSON-параметры шаблону чата через
+`--default-chat-template-kwargs`. Для Hulu-Med задаётся `{"image_token":"<image>"}`,
+как при вызове её исходного процессора. Без этого параметра HTTP-запрос
+с изображением завершается ошибкой шаблона.
+Подготовка образа описана в [руководстве DGX](../dgx-spark/README.md#hulu-med-32b-nvfp4).
+`weightsVolume` сохраняет
 имя тома между генерациями; `isExternal: true` требует заранее созданного тома.
 `serverConfig` — путь относительно исходного профиля. Генератор переносит этот
 файл в каталог развёртывания. Профили содержат только несекретные параметры.

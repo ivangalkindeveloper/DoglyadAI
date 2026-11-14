@@ -6,6 +6,8 @@ struct ScanSpeechButtonView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: ScanViewModel
 
+    init() {}
+
     var body: some View {
         switch viewModel.subscriptionAvailability(
             of: .formCompletionViaMicrophone,

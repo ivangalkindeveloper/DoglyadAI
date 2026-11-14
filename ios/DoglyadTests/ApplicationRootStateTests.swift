@@ -4,6 +4,8 @@ import Testing
 
 @MainActor
 struct ApplicationRootStateTests {
+    init() {}
+
     @Test
     func startingInitializationKeepsSplashIdentity() {
         let initial = ApplicationRootInitialState()

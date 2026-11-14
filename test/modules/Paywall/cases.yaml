@@ -14,12 +14,15 @@ cases:
   - action: Выбрать каждый период из каталога
     expect: Выделен ровно один план; цена и период соответствуют этому продукту; продолжение относится к выбранному
       planId.
+  - action: Проверить выбор автопродления на ViewModel и передачу в подготовку платежа
+    expect: По умолчанию включено; выключение сохраняется после отмены покупки и передаётся на backend.
   covers:
   - onInit
   - onSelectType
   - onTapPlan
+  - onToggleAutoRenewal
   automation:
-    kind: maestro
+    kind: mixed
     flows:
     - e2e-paywall-select-base_annual
     - e2e-paywall-select-base_six_months
@@ -29,6 +32,8 @@ cases:
     - e2e-paywall-select-pro_six_months
     - e2e-paywall-select-pro_monthly
     - e2e-paywall-select-pro_weekly
+    nativeTests:
+    - PaywallTests/autoRenewalDefaultsToEnabledAndPreservesTheChoiceThroughPurchaseCancellation()
   variants:
   - Base × week/month/sixMonth/year
   - Pro × week/month/sixMonth/year
@@ -37,21 +42,23 @@ cases:
   profiles:
   - none
   preconditions:
-  - Отдельные чистые владельцы для Base и Pro; тестовый магазин YooKassa. Apple Sandbox временно исключён по запросу
+  - Отдельные чистые владельцы для Base и Pro; тестовый магазин Робокассы. Apple Sandbox временно исключён по запросу
     пользователя.
   steps:
   - action: Выбрать план и подтвердить тестовую покупку
-    expect: Доступ появляется только после подтверждения именно выбранного продукта/платежа backend.
+    expect: Доступ появляется только после подтверждения именно выбранного продукта/платежа backend. Показано сообщение
+      «Подписка оформлена» с описанием «Подписка успешно оформлена, начните использовать новые возможности!».
   - action: Перезапустить приложение
     expect: Подписка сохранена; интерфейс и ограничения соответствуют Base или Pro.
   covers:
   - onTapContinue
   - onSubscriptionChanged
   automation:
-    kind: maestro
-    flows:
-    - e2e-paywall-yookassa-base
-    - e2e-paywall-yookassa-pro
+    kind: manual
+    flows: []
+    requires:
+    - Тестовый магазин Робокассы, доступный HTTPS ResultURL и проверенные селекторы браузерной страницы/банковского
+      подтверждения; старые сценарии SDK удалены
   variants:
   - Base
   - Pro
@@ -61,41 +68,67 @@ cases:
   - none
   - base
   preconditions:
-  - Настоящий SDK тестового магазина YooKassa. Новый владелец без подписки для 3-D Secure; отдельно подтверждённая
-    Base для проверки запрета новой покупки. Защита от постороннего активного доступа при pending проверяется на
-    ViewModel.
+  - Тестовый магазин Robokassa, публичный ResultURL и проверенные селекторы браузера; отдельно активная Base для
+    немедленной смены тарифа.
   steps:
-  - action: Попробовать купить Pro при активной Base
-    expect: Текущий backend отклоняет новую покупку; Base остаётся активной, новый платёж не создаётся.
+  - action: Оплатить Pro при активной Base
+    expect: После подтверждения оплаты Pro действует сразу на полный выбранный период. Старая Base больше не даёт
+      доступ и не продлевается. До оплаты Base остаётся активной.
   - action: Новым владельцем начать покупку Pro с 3-D Secure и закрыть подтверждение
-    expect: Каталог и выбранный тариф остаются видны; primary показывает загрузку всего оформления. Отдельного экрана
-      статуса и кнопки проверки нет. Канонический pending не выдаёт доступ.
+    expect: После закрытия браузера каталог и выбор доступны; показано сообщение об ожидании подтверждения. Блокирующей
+      бесконечной загрузки нет; pending не выдаёт доступ.
   - action: Дождаться автоматической проверки, перезапустить клиент и продолжить тот же продукт
-    expect: До подтверждения доступа нет; новый заказ не создаётся; снова открывается подтверждение прежнего платежа.
+    expect: Сначала сверяется прежний счёт. Обрабатываемый платёж сохраняет ID; новый счёт возможен после подтверждённой
+      отмены или истечения старого.
   - action: Подтвердить 3-D Secure
-    expect: Доступ появляется после подтверждения именно выбранного продукта и прежнего ID платежа.
-  - action: Отменить ввод карты; закрыть доступный Paywall
-    expect: Без отправленного платежа доступ не выдаётся. В отдельной проверке ViewModel посторонняя активная подписка
-      не завершает pending-покупку.
+    expect: Доступ появляется после подтверждения именно выбранного продукта и прежнего ID платежа. Сообщение
+      «Подписка оформлена» появляется только после этого подтверждения.
+  - action: Закрыть страницу Робокассы без оплаты; закрыть доступный Paywall
+    expect: Созданный счёт без подтверждённой оплаты не выдаёт доступ. В отдельной проверке ViewModel посторонняя
+      активная подписка не завершает pending-покупку.
+  - action: Проверить последовательность запросов подготовки, браузера и ожидания на репозитории и root ViewModel
+    expect: До открытия браузера есть только prepare_payment; после браузера платёж проверяется один раз. При pending
+      опрашивается только платёж; общий статус подписки загружается после подтверждения. Отмена не вызывает повторных
+      запросов.
+  - action: В обязательных native-тестах сменить storefront во время ожидания и восстановить доступ другого владельца
+    expect: Контекст продолжает проверять исходный платеж после смены storefront. Ответ или ошибка старой проверки
+      после смены владельца отклоняется и не меняет восстановленную подписку.
+  - action: Передать контексту проверенную транзакцию Apple с прежним ID, другой датой или другим продуктом
+    expect: Старая или посторонняя транзакция не завершает покупку. Проверенная новая транзакция выбранного продукта
+      принимается; события Apple не подтверждают платеж Robokassa.
   covers:
   - onTapClose
   - onDisappear
   automation:
-    kind: mixed
-    flows:
-    - e2e-paywall-yookassa-active-rejected
-    - e2e-paywall-yookassa-pending
-    - e2e-paywall-yookassa-confirmed
-    - e2e-paywall-yookassa-cancel
+    kind: manual
+    flows: []
     nativeTests:
     - PaywallTests/pendingPurchaseDoesNotCompleteFromUnrelatedBaseAccess()
+    - PaywallTests/pendingRobokassaPaymentClosesOnlyAfterItsExactConfirmation()
+    - PaywallTests/retryingTheSamePendingPaymentCannotPurchaseAnotherPeriod()
+    - RobokassaPaymentTests/paymentIsCheckedOnlyAfterTheBrowserCloses(isReturned:)
+    - SubscriptionPurchaseVerificationTests/verifiedRobokassaPurchaseFetchesAccessWithoutRepeatingPaymentVerification()
+    - SubscriptionPurchaseVerificationTests/pendingRobokassaPurchaseChecksOnlyThePaymentUntilItSucceeds()
+    - SubscriptionPurchaseVerificationTests/canceledPurchaseDoesNotFetchPaymentOrSubscriptionAgain()
+    - SubscriptionPurchaseVerificationTests/existingAccessCannotCompleteUnconfirmedRobokassaPayment(paymentState:)
+    - SubscriptionPurchaseVerificationTests/paymentIdentityAndPlanMustMatchThePreparedPurchase(isWrongPlan:)
+    - SubscriptionPurchaseVerificationTests/pendingApplePurchaseRequiresANewVerifiedTransactionForTheSelectedPlan()
+    - SubscriptionPurchaseVerificationTests/firstApplePurchaseAcceptsAVerifiedTransactionWithoutAPreviousSnapshot()
+    - SubscriptionPurchaseVerificationTests/latePaymentCheckCannotRestoreThePreviousOwnersPurchase(isCheckFailing:)
+    - SubscriptionPurchaseVerificationTests/appleUpdatesCannotConfirmAPendingRobokassaPayment()
+    - SubscriptionPurchaseVerificationTests/retryingAPendingPurchaseUsesItsContextsContinuationRule(source:)
+    - SubscriptionRepositoryFactoryTests/pendingExternalPaymentSurvivesSwitchToAppleStorefront()
+    - SubscriptionRepositoryFactoryTests/recoveryStopsCheckingThePreviousOwnersPendingPayment()
+    requires:
+    - Тестовый магазин Робокассы, доступный HTTPS ResultURL и проверенные селекторы браузерной страницы/банковского
+      подтверждения; старые сценарии SDK удалены
 - id: Paywall.errors-restore-documents
   title: Загрузка, ошибка покупки, восстановление и документы
   profiles:
   - none
   preconditions:
-  - Настоящий SDK тестового магазина YooKassa; отказ провайдера и повтор выбранного продукта. Ошибка каталога, повтор
-    и поздние ответы проверяются на ViewModel в обязательных XCTest. Apple Sandbox исключён по запросу пользователя.
+  - Браузерная страница тестового магазина Робокассы; отказ провайдера и повтор выбранного продукта. Ошибка каталога,
+    повтор и поздние ответы проверяются на ViewModel в обязательных XCTest. Apple Sandbox исключён по запросу пользователя.
   steps:
   - action: Вызвать ошибку каталога и повторить
     expect: Во время загрузки видны шиммеры без primary-кнопки; при ошибке ErrorBodyView, primary Повторить и DMessager.
@@ -103,24 +136,68 @@ cases:
   - action: Вызвать ошибку покупки и повторить
     expect: Выбранный план сохранён; семантическая ошибка только в DMessager без красного дублирования в контенте.
       Повтор не меняет продукт и не создаёт двойную оплату.
-  - action: Оформить или восстановить покупку после загрузки каталога
+  - action: Оформить подписку или восстановить доступ после загрузки каталога
     expect: Тарифы остаются видны и блокируются; нижняя primary-кнопка показывает загрузку. Обе операции используют
       один вид загрузки, но выполняют разные действия.
+  - action: Проверить футер при загрузке и ошибке каталога, затем открыть восстановление после загрузки тарифов
+    expect: При загрузке футер заменён шиммерами, при ошибке доступны ошибка и повтор. После загрузки Robokassa
+      открывает SubscriptionRecovery, Apple запускает восстановление App Store. Повторного выбора провайдера нет.
+  - action: Открыть восстановление во время оформления оплаты
+    expect: Для Robokassa кнопка открывает SubscriptionRecovery; для Apple заблокирована до завершения операции.
   - action: Открыть оба юридических документа
     expect: Документы открывают соответствующие страницы; восстановление требует проверенной покупки.
+  - action: Открыть ссылки Политики конфиденциальности и Условий использования в описании автопродления
+    expect: Обе ссылки оформлены как на онбординге и открывают соответствующий WebDocument. Ниже находится текстовая
+      кнопка «Восстановить доступ».
   covers:
   - onTapRetry
   - onTapRestore
   - onTapPrivacyPolicy
   - onTapTerms
+  - onLegalAttributedEnvironment
   automation:
-    kind: mixed
+    kind: partial
     flows:
-    - e2e-paywall-yookassa-declined
-    - e2e-paywall-yookassa-declined-retry
-    - e2e-subscriptionrecovery-restore-key
     - e2e-paywall-documents
     nativeTests:
+    - PaywallTests/recoveryWaitsForTheCatalogAndUsesItsProvider(source:)
+    - PaywallTests/copyingSelectionPreservesItsConcretePhaseAndOriginalSnapshot(isPending:)
+    - PaywallTests/recoveryAvailabilityDuringPurchaseDependsOnTheProvider(source:)
+    - PaywallTests/catalogFailureDoesNotRouteRecoveryOrQueryStorefrontAgain()
     - PaywallTests/loadingRetriesAndRestorationUpdatesSharedState(isSubscriptionActive:)
     - PaywallTests/cancelledCatalogDiscardsLateSuccessAndFailure(isFailure:)
     - PaywallTests/closeIgnoresALateCatalogResponse()
+    - PaywallTests/closeIgnoresSubscriptionUpdatesBeforeTheDisappearEvent()
+    - SubscriptionFlowTests/footerContainsBothDocumentLinksAndOpensTheMatchingSheet(code:)
+    requires:
+    - Тестовый магазин Робокассы, доступный HTTPS ResultURL и проверенные селекторы браузерной страницы/банковского
+      подтверждения; старые сценарии SDK удалены
+- id: Paywall.return-navigation
+  title: Возврат после оплаты и восстановления
+  profiles:
+  - none
+  - base
+  - pro
+  preconditions:
+  - Нативные проверки используют подтверждённый результат операции; реальная оплата в браузере остаётся отдельным
+    сценарием.
+  steps:
+  - action: Купить или восстановить подписку в Paywall после онбординга
+    expect: Показан Scan.
+  - action: Купить или восстановить подписку из Paywall, открытого со Scan, SubscriptionManage или ReportDetail
+    expect: Оба экрана Paywall и SubscriptionRecovery закрыты; исходный экран и его данные сохранены. Общий статус
+      не вызывает двойного возврата.
+  - action: Проверить сообщение после успешной оплаты
+    expect: На исходном экране показано сообщение «Подписка оформлена» с описанием «Подписка успешно оформлена,
+      начните использовать новые возможности!».
+  covers:
+  - onSubscriptionChanged
+  - onTapRestore
+  - onTapContinue
+  automation:
+    kind: mixed
+    flows:
+    - e2e-paywall-documents
+    nativeTests:
+    - PaywallTests/confirmedPurchaseReturnsToItsOrigin(origin:)
+    - SubscriptionFlowTests/recoveryReturnsThroughPaywallWithoutPoppingItsOrigin(origin:)

@@ -7,6 +7,14 @@ struct SelectNeuralModelBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: SelectNeuralModelViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> SelectNeuralModelViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DBottomSheet(
             title: l10n[
@@ -57,6 +65,7 @@ struct SelectNeuralModelBottomSheetView: DViewProtocol {
                                     .neuralModelDetailsDescription,
                                     values: [
                                         .id: model.id,
+                                        .format: model.format,
                                         .contextLabel: l10n.text(
                                             .neuralModelContextLengthDescription,
                                         ),

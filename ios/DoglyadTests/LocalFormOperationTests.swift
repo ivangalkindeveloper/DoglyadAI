@@ -7,6 +7,8 @@ import Testing
 
 @MainActor
 struct LocalFormOperationTests {
+    init() {}
+
     @Test(
         arguments: [false, true],
     )

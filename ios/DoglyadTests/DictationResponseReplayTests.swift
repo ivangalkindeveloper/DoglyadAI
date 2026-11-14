@@ -275,6 +275,12 @@ final class DictationResponseReplayTests: XCTestCase {
 private struct ReplayTransport {
     let response: DNeuralUltrasoundVoiceFormParseResponseDTO
 
+    init(
+        response: DNeuralUltrasoundVoiceFormParseResponseDTO,
+    ) {
+        self.response = response
+    }
+
     func parseDictation(
         selectedNeuralModelId _: String?,
         examinationTypeId _: String,

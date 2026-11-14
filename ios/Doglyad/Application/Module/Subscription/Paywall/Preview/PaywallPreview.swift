@@ -28,7 +28,7 @@
         PaywallPreviewView(
             state: PaywallCatalogErrorState(
                 errorDescription: ModulePreviewFactory.makeContainer().l10n.text(
-                    .subscriptionOfferingsUnavailableDescription,
+                    .errorUnknownDescription,
                 ),
             ),
         ).previewable(
@@ -58,7 +58,32 @@
     }
 
     #Preview(
-        "06 PaywallPurchaseLoadingState PurchasingOrRestoring",
+        "06 PaywallSuccessState AutoRenewalOff",
+    ) {
+        PaywallPreviewView(
+            state: ModulePreviewFactory.paywallContent.copyWith(
+                isAutoRenewing: false,
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "07 PaywallSuccessState AutoRenewalOff ScrollEnd",
+    ) {
+        PaywallPreviewView(
+            state: ModulePreviewFactory.paywallContent.copyWith(
+                isAutoRenewing: false,
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "08 PaywallPurchaseLoadingState PurchasingOrRestoring",
     ) {
         PaywallPreviewView(
             state: PaywallPurchaseLoadingState(
@@ -71,7 +96,7 @@
     }
 
     #Preview(
-        "07 PaywallPurchaseLoadingState PurchasingOrRestoring ScrollEnd",
+        "09 PaywallPurchaseLoadingState PurchasingOrRestoring ScrollEnd",
     ) {
         PaywallPreviewView(
             state: PaywallPurchaseLoadingState(
@@ -85,7 +110,7 @@
     }
 
     #Preview(
-        "08 PaywallOperationErrorState PaymentOperationFailed",
+        "10 PaywallOperationErrorState PaymentOperationFailed",
     ) {
         PaywallPreviewView(
             state: PaywallOperationErrorState(
@@ -100,7 +125,7 @@
     }
 
     #Preview(
-        "09 PaywallOperationErrorState PaymentOperationFailed ScrollEnd",
+        "11 PaywallOperationErrorState PaymentOperationFailed ScrollEnd",
     ) {
         PaywallPreviewView(
             state: PaywallOperationErrorState(
@@ -115,4 +140,49 @@
         .previewScrollToEnd()
     }
 
+    #Preview(
+        "12 PaywallPaymentPendingState UnconfirmedPayment",
+    ) {
+        PaywallPreviewView(
+            state: PaywallPaymentPendingState(
+                copying: ModulePreviewFactory.paywallContent,
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+    #Preview(
+        "13 PaywallPaymentPendingState UnconfirmedPayment ScrollEnd",
+    ) {
+        PaywallPreviewView(
+            state: PaywallPaymentPendingState(
+                copying: ModulePreviewFactory.paywallContent,
+            ),
+        ).previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        ).previewScrollToEnd()
+    }
+    #Preview(
+        "14 PaywallSuccessState PurchaseCompletedMessage",
+    ) {
+        PaywallPreviewView(
+            state: ModulePreviewFactory.paywallContent,
+            isPurchaseSuccessPresented: true,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+    #Preview(
+        "15 PaywallSuccessState PurchaseCompletedMessage ScrollEnd",
+    ) {
+        PaywallPreviewView(
+            state: ModulePreviewFactory.paywallContent,
+            isPurchaseSuccessPresented: true,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
 #endif

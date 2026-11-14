@@ -6,6 +6,16 @@ struct DStreamingMarkdownBlockView: DViewProtocol {
     let date: Date
     let textColor: Color?
 
+    init(
+        block: DStreamingMarkdownBlock,
+        date: Date,
+        textColor: Color?,
+    ) {
+        self.block = block
+        self.date = date
+        self.textColor = textColor
+    }
+
     var body: some View {
         HStack(
             alignment: .firstTextBaseline,

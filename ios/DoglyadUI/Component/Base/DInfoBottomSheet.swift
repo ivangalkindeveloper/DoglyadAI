@@ -9,6 +9,7 @@ public struct DInfoBottomSheet<Content: View>: DViewProtocol {
     private let content: Content
     private let buttonTitle: LocalizedStringResource
     private let action: () -> Void
+    private let isLoading: Bool
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
 
@@ -20,6 +21,7 @@ public struct DInfoBottomSheet<Content: View>: DViewProtocol {
         @ViewBuilder content: () -> Content,
         buttonTitle: LocalizedStringResource,
         action: @escaping () -> Void,
+        isLoading: Bool = false,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
     ) {
@@ -31,6 +33,7 @@ public struct DInfoBottomSheet<Content: View>: DViewProtocol {
         self.buttonTitle = buttonTitle
 
         self.action = action
+        self.isLoading = isLoading
         self.accessibilityElement = accessibilityElement
         self.accessibilityIdentifier = accessibilityIdentifier
     }
@@ -42,6 +45,7 @@ public struct DInfoBottomSheet<Content: View>: DViewProtocol {
         description: LocalizedStringResource,
         buttonTitle: LocalizedStringResource,
         action: @escaping () -> Void,
+        isLoading: Bool = false,
         accessibilityElement: AccessibilityChildBehavior? = nil,
         accessibilityIdentifier: String? = nil,
     ) where Content == EmptyView {
@@ -55,6 +59,7 @@ public struct DInfoBottomSheet<Content: View>: DViewProtocol {
             },
             buttonTitle: buttonTitle,
             action: action,
+            isLoading: isLoading,
             accessibilityElement: accessibilityElement,
             accessibilityIdentifier: accessibilityIdentifier,
         )
@@ -114,6 +119,7 @@ public struct DInfoBottomSheet<Content: View>: DViewProtocol {
                     DButton(
                         title: buttonTitle,
                         action: action,
+                        isLoading: isLoading,
                     )
                     .dStyle(
                         .primaryButton,

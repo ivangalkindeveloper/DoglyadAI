@@ -28,6 +28,7 @@ _STRUCTURED_OUTPUT = '{"type":"object"}'
 _MODEL = USExaminationNeuralModel(
     id="google/medgemma-4b-it",
     title="MedGemma 4B",
+    format="BF16",
     entitlement="base",
     accessibility=USExaminationNeuralModelAccessibility.AVAILABLE,
     contextLength=128000,
@@ -348,6 +349,7 @@ def test_model_without_a_vm_is_not_sent_anywhere() -> None:
     other = USExaminationNeuralModel(
         id="google/unsupported-model",
         title="Unsupported",
+        format="BF16",
         entitlement="base",
         accessibility=USExaminationNeuralModelAccessibility.AVAILABLE,
         contextLength=128000,

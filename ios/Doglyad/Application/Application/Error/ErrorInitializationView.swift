@@ -6,6 +6,14 @@ struct ErrorInitializationView<Description: View>: DViewProtocol {
     let title: LocalizedStringResource
     let description: () -> Description
 
+    init(
+        title: LocalizedStringResource,
+        description: @escaping () -> Description,
+    ) {
+        self.title = title
+        self.description = description
+    }
+
     var body: some View {
         VStack(
             alignment: .center,

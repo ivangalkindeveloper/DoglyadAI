@@ -11,6 +11,13 @@ struct DStreamingMarkdownBlock: Identifiable {
         struct Inline: Equatable {
             struct Style: OptionSet {
                 let rawValue: Int
+
+                init(
+                    rawValue: Int,
+                ) {
+                    self.rawValue = rawValue
+                }
+
                 static let strong = Self(
                     rawValue: 1,
                 )
@@ -28,6 +35,16 @@ struct DStreamingMarkdownBlock: Identifiable {
             let text: String
             let style: Style
             let link: URL?
+
+            init(
+                text: String,
+                style: Style,
+                link: URL?,
+            ) {
+                self.text = text
+                self.style = style
+                self.link = link
+            }
         }
 
         let kind: Kind
@@ -37,6 +54,24 @@ struct DStreamingMarkdownBlock: Identifiable {
         var marker: String?
         var topMargin: Double = 0
         var bottomMargin: Double = 16
+
+        init(
+            kind: Kind,
+            markdown: String,
+            inlines: [Inline],
+            indent: Int = 0,
+            marker: String? = nil,
+            topMargin: Double = 0,
+            bottomMargin: Double = 16,
+        ) {
+            self.kind = kind
+            self.markdown = markdown
+            self.inlines = inlines
+            self.indent = indent
+            self.marker = marker
+            self.topMargin = topMargin
+            self.bottomMargin = bottomMargin
+        }
 
         var text: String {
             inlines.map(
@@ -48,6 +83,15 @@ struct DStreamingMarkdownBlock: Identifiable {
     struct Reveal: Equatable {
         let range: Range<Int>
         let date: Date
+
+        init(
+            range: Range<Int>,
+            date: Date,
+        ) {
+            self.range = range
+            self.date = date
+        }
+
         static let duration: TimeInterval = 0.15
 
         func opacity(
@@ -68,4 +112,14 @@ struct DStreamingMarkdownBlock: Identifiable {
     let id: UUID
     let content: Content
     let reveals: [Reveal]
+
+    init(
+        id: UUID,
+        content: Content,
+        reveals: [Reveal],
+    ) {
+        self.id = id
+        self.content = content
+        self.reveals = reveals
+    }
 }

@@ -11,6 +11,11 @@ from app.service.billing.subscription_service import SubscriptionService
 
 
 class BillingDependencies:
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @staticmethod
     async def owner(
         request: Request,

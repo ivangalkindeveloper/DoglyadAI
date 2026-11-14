@@ -38,7 +38,7 @@ def migration_database(
     return path, config
 
 
-def test_initial_migration_has_one_base_and_matches_current_models(
+def test_migration_chain_has_one_base_and_matches_current_models(
     migration_database: tuple[Path, Config],
 ) -> None:
     path, config = migration_database
@@ -117,7 +117,7 @@ def test_initial_schema_enforces_provider_identity_and_keeps_data_on_repeated_up
         for values in [
             ("production", "apple", "Production"),
             ("sandbox", "apple", "Sandbox"),
-            ("yookassa", "yookassa", None),
+            ("robokassa", "robokassa", None),
         ]:
             connection.execute(
                 insert_subscription,
@@ -126,11 +126,11 @@ def test_initial_schema_enforces_provider_identity_and_keeps_data_on_repeated_up
         for values in [
             ("duplicate-production", "apple", "Production"),
             ("duplicate-sandbox", "apple", "Sandbox"),
-            ("duplicate-yookassa", "yookassa", None),
+            ("duplicate-robokassa", "robokassa", None),
             ("missing-environment", "apple", None),
             ("invalid-environment", "apple", "Unknown"),
-            ("unexpected-environment", "yookassa", "Sandbox"),
-            ("legacy-provider", "appleSandbox", "Sandbox"),
+            ("unexpected-environment", "robokassa", "Sandbox"),
+            ("unknown-provider", "unsupported", None),
         ]:
             with pytest.raises(
                 sqlite3.IntegrityError,
@@ -141,9 +141,10 @@ def test_initial_schema_enforces_provider_identity_and_keeps_data_on_repeated_up
                 )
         connection.execute(
             "INSERT INTO billing_payments "
-            "(id, owner_id, plan_id, entitlement, amount_minor, interval_months, "
-            "currency, status, created_at, is_receipt_pending) "
-            "VALUES ('payment', 'owner', 'monthly', 'pro', 10000, 1, 'RUB', 'succeeded', '2026-11-01 00:00:00', 1)",
+            "(id, invoice_id, owner_id, plan_id, entitlement, amount_minor, interval_months, "
+            "currency, status, created_at, is_receipt_pending, is_auto_renewing) "
+            "VALUES ('payment', '123', 'owner', 'monthly', 'pro', 10000, 1, 'RUB', 'succeeded', "
+            "'2026-11-01 00:00:00', 1, 1)",
         )
         assert connection.execute(
             "SELECT channel, interval_days, refunded_amount_minor FROM billing_payments",

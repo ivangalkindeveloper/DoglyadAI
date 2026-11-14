@@ -8,6 +8,16 @@ struct ScanSpeechContentStateView: DViewProtocol {
     let bottomHeight: CGFloat
     let transcriptFocus: FocusState<Bool?>.Binding
 
+    init(
+        toolbarHeight: CGFloat,
+        bottomHeight: CGFloat,
+        transcriptFocus: FocusState<Bool?>.Binding,
+    ) {
+        self.toolbarHeight = toolbarHeight
+        self.bottomHeight = bottomHeight
+        self.transcriptFocus = transcriptFocus
+    }
+
     var body: some View {
         switch viewModel.state {
         case _ as ScanSpeechModelLoadingState, _ as ScanSpeechModelPreparationErrorState:

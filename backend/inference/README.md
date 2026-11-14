@@ -91,8 +91,8 @@ Client-IP rate limits live in main. This service applies separate body, image an
 ## Deployment on managed VMs
 
 For a DGX Spark, use [the ARM64 deployment guide](../../deploy/dgx-spark/README.md).
-One Compose project contains a shared inference service and three private vLLM
-engines. App Check remains mandatory.
+One Compose project contains a shared inference service and five private vLLM
+engines: three MedGemma models, Hulu-Med 32B NVFP4 and Hulu-Med 7B BF16. App Check remains mandatory.
 New host deployments can use [host profiles and the Compose generator](../../deploy/inference/README.md).
 Each profile generates its own engine definitions and `VLLM_ENDPOINTS`; profiles
 can contain one or several models. Generation does not start or update containers.
@@ -165,13 +165,14 @@ The two services have almost identical `init_app_check.py` and `verify_app_check
 - `generation`: maximum body size (48 MiB, allowing transport/prompt overhead above main's 40 MiB input), image count (six), decoded image size (4 MiB), concurrent operations (16), waiting requests (16), queue wait (2 seconds), and `Retry-After` (5 seconds).
 - `default_max_body_bytes`: body limit for unrecognized paths.
 
-Capacity checks are per model and per service process. Run one worker per GPU host, as the supplied Uvicorn command does. The default 16 concurrent slots apply separately to each model; DGX overrides this to eight running and one waiting request per model (up to 24 running requests across its three models). Each DGX engine also sets `maxNumSeqs: 8`; its profile enables compilation and CUDA Graphs with `isEager: false`. Actual throughput depends on the model and GPU. A full queue or an expired queue wait returns `503`. Queue slots are released after completion, errors and cancellation. These limits are separate from client subscription quotas. An HTTP deadline bounds this service's wait; engine-side cancellation of a generation is controlled by vLLM.
+Capacity checks are per model and per service process. Run one worker per GPU host, as the supplied Uvicorn command does. The default 16 concurrent slots apply separately to each model; DGX overrides this to eight running and one waiting request per model (up to 40 running requests across its five models). Each DGX engine also sets `maxNumSeqs: 8`. MedGemma enables compilation and CUDA Graphs with `isEager: false`. Both Hulu-Med models use their tested custom runtime in eager mode. Actual throughput depends on the model and GPU. A full queue or an expired queue wait returns `503`. Queue slots are released after completion, errors and cancellation. These limits are separate from client subscription quotas. An HTTP deadline bounds this service's wait; engine-side cancellation of a generation is controlled by vLLM.
 
 `VLLM_REQUEST_TIMEOUT_SECONDS` no longer controls the Python service; edit `vllm` in `server.json`. Engine routes and Firebase credentials still come from environment settings.
 
-The DGX host profile also enables N-gram speculative decoding with eight draft
+The DGX host profile also enables N-gram speculative decoding for MedGemma with eight draft
 tokens and a prompt lookup range of 2–5. The target model verifies these tokens;
-weights remain BF16. On vLLM 0.28.0 this selects Model Runner V1 and disables
+this does not change weight precision. Both 4B models use BF16; 27B uses the
+validated NVFP4 checkpoint described in the DGX guide. On vLLM 0.28.0 this selects Model Runner V1 and disables
 async scheduling, while allowing eight concurrent sequences per model. Long
 inputs can reduce actual concurrency because KV cache capacity is finite. See the
 [capacity evaluation](../../evaluation/inference/dgx-spark-2026-11-05-ngram-capacity/README.md)

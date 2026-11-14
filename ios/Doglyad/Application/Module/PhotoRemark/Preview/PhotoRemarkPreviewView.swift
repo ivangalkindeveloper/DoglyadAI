@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any PhotoRemarkStateProtocol
 
+        init(
+            state: any PhotoRemarkStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = PhotoRemarkViewModel(
                 container: container,

@@ -6,6 +6,14 @@ struct TemplateDeleteBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: TemplateDeleteViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> TemplateDeleteViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DInfoBottomSheet(
             fraction: 0.5,

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import base64
 import json
 import os
 from contextlib import AbstractAsyncContextManager
@@ -7,6 +8,7 @@ from pathlib import Path
 from types import TracebackType
 from typing import Any, Literal
 from unittest.mock import Mock
+from urllib.parse import parse_qs
 from uuid import uuid4
 
 import httpx
@@ -18,9 +20,9 @@ from app.core.configuration.variables import Variables
 from app.database.billing_base import BillingBase
 from app.database.billing_database import BillingDatabase
 from app.service.billing.apple_subscription_verifier import AppleSubscriptionVerifier
-from app.service.billing.sdk_payment_service import SDKPaymentService
+from app.service.billing.checkout_payment_service import CheckoutPaymentService
 from app.service.billing.subscription_service import SubscriptionService
-from app.service.billing.yookassa_payment_provider import YooKassaPaymentProvider
+from tests.support.billing.billing_test_robokassa_provider import BillingTestRobokassaProvider
 
 
 class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
@@ -68,12 +70,17 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
         )
         self.variables = Variables(
             environment=environment,
+            report_generation_encryption_key=base64.urlsafe_b64encode(
+                bytes(
+                    32,
+                ),
+            ).decode(),
             config_dir=directory,
-            yookassa_shop_id="123",
-            yookassa_secret_key="test_secret",
-            yookassa_client_application_key="test_public_key",
-            billing_public_url="https://pay.example/pay",
-            is_yookassa_live_enabled=is_live_enabled,
+            robokassa_merchant_login="123",
+            robokassa_password1="test_password1",
+            robokassa_password2="test_password2",
+            robokassa_password3="test_password3",
+            is_robokassa_live_enabled=is_live_enabled,
             is_apple_sandbox_allowed=True,
         )
         database_url = os.environ.get(
@@ -111,7 +118,7 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
             self.database,
             configuration,
             self.variables,
-            YooKassaPaymentProvider(
+            BillingTestRobokassaProvider(
                 self.client,
                 self.variables,
                 configuration.server.billing.provider,
@@ -119,7 +126,7 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
             self.apple,
         )
 
-        self.sdk = SDKPaymentService(
+        self.checkout = CheckoutPaymentService(
             self.service,
             configuration,
             self.variables,
@@ -170,56 +177,185 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
         self.requests.append(
             request,
         )
-        if request.url.path == "/v3/me":
+        if request.url.host == "canonical.example":
+            payment = next(
+                (
+                    value
+                    for value in self.payments.values()
+                    if value["id"]
+                    == request.url.path.rsplit(
+                        "/",
+                        1,
+                    )[-1]
+                ),
+                None,
+            )
             return httpx.Response(
                 200,
-                json={"account_id": "123", "test": not self.is_live, "status": "enabled"},
+                json=payment
+                or {
+                    "id": request.url.path.rsplit(
+                        "/",
+                        1,
+                    )[-1],
+                    "status": "pending",
+                },
             )
-        if request.url.path == "/v3/refunds" and request.method == "GET":
+        if request.url.path.endswith(
+            "/GetState",
+        ):
+            item = self.refunds[request.url.params["id"]]
             return httpx.Response(
                 200,
                 json={
-                    "type": "list",
-                    "items": [
-                        item for item in self.refunds.values() if item["payment_id"] == request.url.params["payment_id"]
-                    ],
+                    "requestId": item["id"],
+                    "amount": item["amount"]["value"],
+                    "label": {"succeeded": "finished", "pending": "processing", "canceled": "canceled"}[item["status"]],
                 },
             )
-        if request.method == "POST":
-            payload = json.loads(
-                request.content,
+        if request.url.path.endswith(
+            "/Create",
+        ):
+            payload = self.decode_payload(
+                request,
             )
-            key = request.headers["Idempotence-Key"]
-            if key not in self.payments:
-                self.payments[key] = {
-                    "id": str(
-                        uuid4(),
+            identifier = str(
+                uuid4(),
+            )
+            self.refunds[identifier] = {
+                "id": identifier,
+                "amount": {
+                    "value": str(
+                        payload["RefundSum"],
                     ),
-                    "status": "pending",
-                    "paid": False,
-                    "test": not self.is_live,
-                    "amount": payload["amount"],
-                    "metadata": payload["metadata"],
-                    "recipient": {"account_id": "123"},
-                    "payment_method": {"id": "saved-method", "saved": True, "type": "bank_card"},
-                    "confirmation": {"confirmation_url": "https://yoomoney.ru/checkout/test"},
-                }
+                    "currency": "RUB",
+                },
+                "status": "pending",
+            }
             return httpx.Response(
                 200,
-                json=self.payments[key],
+                json={"success": True, "requestId": identifier},
             )
-        payment = next(
-            (
-                value
-                for value in self.payments.values()
-                if value["id"]
-                == request.url.path.rsplit(
-                    "/",
-                    1,
-                )[-1]
-            ),
-        )
+        if request.url.path.endswith(
+            "/Recurring",
+        ):
+            fields = {
+                key: value[0]
+                for key, value in parse_qs(
+                    request.content.decode(),
+                ).items()
+            }
+            key, invoice, amount = fields["Shp_order_id"], fields["InvoiceID"], fields["OutSum"]
+        else:
+            payload = self.decode_payload(
+                request,
+            )
+            if request.url.path.endswith(
+                "/DeactivateInvoice",
+            ):
+                payment = next(
+                    (
+                        value
+                        for value in self.payments.values()
+                        if value["id"]
+                        == str(
+                            payload["InvId"],
+                        )
+                    ),
+                )
+                payment["invoice_status"] = "Expired"
+                return httpx.Response(
+                    200,
+                    json={"isSuccess": True},
+                )
+            if request.url.path.endswith(
+                "/GetInvoiceInformation",
+            ):
+                payment = next(
+                    (
+                        value
+                        for value in self.payments.values()
+                        if value["id"]
+                        == str(
+                            payload["InvId"],
+                        )
+                    ),
+                    None,
+                )
+                return httpx.Response(
+                    200,
+                    json={
+                        "isSuccess": True,
+                        "invoiceInformation": {
+                            "invId": payload["InvId"],
+                            "invoiceStatus": payment.get(
+                                "invoice_status",
+                                "Paid" if payment["status"] == "succeeded" else "NotPaid",
+                            ),
+                            "payments": [{"state": "processing"}]
+                            if payment.get(
+                                "is_processing",
+                            )
+                            else [],
+                            "invoicePaymentUrl": "https://auth.robokassa.ru/merchant/Invoice/test",
+                        },
+                    }
+                    if payment
+                    else {"isSuccess": False},
+                )
+            key, invoice, amount = (
+                payload["UserFields"]["Shp_order_id"],
+                str(
+                    payload["InvId"],
+                ),
+                payload["OutSum"],
+            )
+        if key not in self.payments:
+            self.payments[key] = {
+                "id": invoice,
+                "status": "pending",
+                "paid": False,
+                "test": not self.is_live,
+                "amount": {"value": amount, "currency": "RUB"},
+                "metadata": {"order_id": key},
+                "recipient": {"account_id": "123"},
+                "payment_method": {"id": invoice, "saved": True, "type": "bank_card"},
+                "op_key": "operation-" + invoice,
+                "confirmation": {"confirmation_url": "https://auth.robokassa.ru/merchant/Invoice/test"},
+            }
+        if request.url.path.endswith(
+            "/Recurring",
+        ):
+            return httpx.Response(
+                200,
+                text="OK",
+            )
         return httpx.Response(
             200,
-            json=payment,
+            json={
+                "isSuccess": True,
+                "id": str(
+                    uuid4(),
+                ),
+                "invId": int(
+                    invoice,
+                ),
+                "url": "https://auth.robokassa.ru/merchant/Invoice/test",
+            },
+        )
+
+    @staticmethod
+    def decode_payload(
+        request: httpx.Request,
+    ) -> dict[str, Any]:
+        token = json.loads(
+            request.content,
+        )
+        return json.loads(
+            base64.urlsafe_b64decode(
+                token.split(
+                    ".",
+                )[1]
+                + "==",
+            ),
         )

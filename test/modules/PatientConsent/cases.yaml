@@ -36,7 +36,7 @@ cases:
     expect: Шторка и выбор остаются; DMessager показывает ошибку; onConfirm не вызывается. Повтор после устранения ошибки сохраняет настройку и продолжает сценарий.
   - action: Подтвердить при задержке записи и закрыть шторку
     expect: Поздний результат не запускает генерацию; повторные нажатия не дублируют запись.
-  covers: [onDisappear]
+  covers: [onTapConfirm]
   automation:
     kind: mixed
     flows: [e2e-reportreceived-generation]

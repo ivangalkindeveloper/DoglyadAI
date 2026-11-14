@@ -14,7 +14,7 @@ def _logging() -> dict[str, Any]:
 
 def _engine(profile: HostProfile, model: dict[str, Any]) -> dict[str, Any]:
     command = [
-        model["modelId"],
+        "/model" if "weightsDirectory" in model else model["modelId"],
         "--served-model-name",
         model["modelId"],
         "--host",
@@ -57,6 +57,15 @@ def _engine(profile: HostProfile, model: dict[str, Any]) -> dict[str, Any]:
         )
     if model["isEager"]:
         command.append("--enforce-eager")
+    if model.get("isRemoteCodeTrusted", False):
+        command.append("--trust-remote-code")
+    if "chatTemplateKwargs" in model:
+        command.extend(
+            [
+                "--default-chat-template-kwargs",
+                json.dumps(model["chatTemplateKwargs"], separators=(",", ":")),
+            ]
+        )
     command.append(
         "--enable-prefix-caching"
         if model["isPrefixCachingEnabled"]
@@ -70,12 +79,23 @@ def _engine(profile: HostProfile, model: dict[str, Any]) -> dict[str, Any]:
             '{"backend":"xgrammar","disable_any_whitespace":true}',
         ]
     )
+    volumes: list[Any] = ["huggingface:/root/.cache/huggingface"]
+    if "weightsDirectory" in model:
+        volumes.append(
+            {
+                "type": "bind",
+                "source": model["weightsDirectory"],
+                "target": "/model",
+                "read_only": True,
+                "bind": {"create_host_path": False},
+            }
+        )
     return {
         "image": model.get("image", profile.data["vllmImage"]),
         "platform": f"linux/{profile.architecture}",
         "command": command,
         "env_file": ["secrets/.env"],
-        "volumes": ["huggingface:/root/.cache/huggingface"],
+        "volumes": volumes,
         "shm_size": "4gb",
         "deploy": {
             "resources": {

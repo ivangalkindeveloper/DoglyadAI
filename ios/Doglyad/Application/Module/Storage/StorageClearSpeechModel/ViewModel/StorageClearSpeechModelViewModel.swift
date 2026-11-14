@@ -3,7 +3,6 @@ import Combine
 @MainActor
 final class StorageClearSpeechModelViewModel: DModuleViewModel<any StorageClearSpeechModelStateProtocol> {
     private let arguments: StorageClearSpeechModelArguments
-    private var isDismissalRequested = false
 
     init(
         container: DependencyContainer,
@@ -31,16 +30,7 @@ final class StorageClearSpeechModelViewModel: DModuleViewModel<any StorageClearS
         )
     }
 
-    override func onDisappear() {
-        super.onDisappear()
-        isDismissalRequested = true
-    }
-
     func onTapConfirm() {
-        guard !isDismissalRequested else {
-            return
-        }
-        isDismissalRequested = true
         analytics.buttonTapped(
             .storageClearSpeechModelConfirm,
         )

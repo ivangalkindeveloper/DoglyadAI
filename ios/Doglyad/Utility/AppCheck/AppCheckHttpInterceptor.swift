@@ -6,6 +6,8 @@ import Foundation
 /// the request comes from a genuine app instance (App Attest under the hood).
 /// The token is then verified on the backend.
 struct AppCheckHttpInterceptor: DHttpInterceptorProtocol {
+    init() {}
+
     func adapt(
         _ urlRequest: URLRequest,
     ) async throws -> URLRequest {

@@ -5,6 +5,8 @@ final class OnBoardingExaminationTypeState: OnBoardingStateProtocol, @MainActor 
     let index = 3
     let primaryButtonTitleKey = L10NKey.buttonSelectType
 
+    init() {}
+
     static func == (
         lhs: OnBoardingExaminationTypeState,
         rhs: OnBoardingExaminationTypeState,

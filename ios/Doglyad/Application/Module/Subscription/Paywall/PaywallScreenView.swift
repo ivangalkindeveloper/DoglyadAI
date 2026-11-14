@@ -6,6 +6,14 @@ struct PaywallScreenView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: PaywallViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> PaywallViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             content: { _, bottomInset in

@@ -7,6 +7,14 @@ struct TemplateEditScreenView: DViewProtocol {
     @StateObject var viewModel: TemplateEditViewModel
     @FocusState private var focus: TemplateEditFocus?
 
+    init(
+        viewModel: @autoclosure @escaping () -> TemplateEditViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         let (title, action, isDeleteDisabled): (L10NKey, () -> Void, Bool) = switch viewModel.state {
         case _ as TemplateEditInitializationErrorState: (.buttonUpdate, viewModel.onTapRetryInitialization, true)

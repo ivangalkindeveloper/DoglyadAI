@@ -104,9 +104,9 @@ private extension DMessageCard {
     var backgroundColor: LinearGradient {
         switch message.type {
         case .success:
-            color.gradientPrimaryWeak
+            color.gradientSuccess
         case .error:
-            color.gradientAccent
+            color.gradientDanger
         }
     }
 }

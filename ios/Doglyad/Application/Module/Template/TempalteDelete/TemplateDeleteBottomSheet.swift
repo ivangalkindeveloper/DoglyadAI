@@ -7,6 +7,12 @@ struct TemplateDeleteBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: TemplateDeleteArguments?
 
+    init(
+        arguments: TemplateDeleteArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         TemplateDeleteBottomSheetView(
             viewModel: TemplateDeleteViewModel(

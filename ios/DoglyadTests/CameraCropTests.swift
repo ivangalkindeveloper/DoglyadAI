@@ -3,6 +3,8 @@ import CoreImage
 import Testing
 
 struct CameraCropTests {
+    init() {}
+
     @Test func mapsHorizontalAspectFillOverflow() throws {
         let region = DCameraCropRegion(
             rect: CGRect(

@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any SelectTranscriberStateProtocol
 
+        init(
+            state: any SelectTranscriberStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = SelectTranscriberViewModel(
                 container: container,

@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any StorageClearAllStateProtocol
 
+        init(
+            state: any StorageClearAllStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = StorageClearAllViewModel(
                 container: container,

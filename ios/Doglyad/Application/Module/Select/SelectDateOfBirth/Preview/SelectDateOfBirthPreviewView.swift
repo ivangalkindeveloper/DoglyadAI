@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any SelectDateOfBirthStateProtocol
 
+        init(
+            state: any SelectDateOfBirthStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = SelectDateOfBirthViewModel(
                 container: container,

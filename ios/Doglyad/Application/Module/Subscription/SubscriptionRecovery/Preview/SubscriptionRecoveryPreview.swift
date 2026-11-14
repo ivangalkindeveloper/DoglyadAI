@@ -2,175 +2,86 @@
     import SwiftUI
 
     #Preview(
-        "01 SubscriptionRecoveryInitialState NoRecoveryKey",
+        "01 SubscriptionRecoveryInitialState EnterRecoveryKey",
     ) {
         SubscriptionRecoveryPreviewView(
             state: SubscriptionRecoveryInitialState(),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
+        ).previewable(
+            container: SubscriptionManagePreviewFactory.makeContainer(),
         )
     }
-
     #Preview(
-        "02 SubscriptionRecoveryInitialState NoRecoveryKey ScrollEnd",
+        "02 SubscriptionRecoveryInitialState EnterRecoveryKey ScrollEnd",
     ) {
         SubscriptionRecoveryPreviewView(
             state: SubscriptionRecoveryInitialState(),
+        ).previewable(
+            container: SubscriptionManagePreviewFactory.makeContainer(),
+        ).previewScrollToEnd()
+    }
+    #Preview(
+        "03 SubscriptionRecoveryRestoreLoadingState RestoringAccess",
+    ) {
+        SubscriptionRecoveryPreviewView(
+            state: SubscriptionRecoveryRestoreLoadingState(),
+        ).previewable(
+            container: SubscriptionManagePreviewFactory.makeContainer(),
         )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
+    }
+    #Preview(
+        "04 SubscriptionRecoveryRestoreLoadingState RestoringAccess ScrollEnd",
+    ) {
+        SubscriptionRecoveryPreviewView(
+            state: SubscriptionRecoveryRestoreLoadingState(),
+        ).previewable(
+            container: SubscriptionManagePreviewFactory.makeContainer(),
+        ).previewScrollToEnd()
+    }
+    #Preview(
+        "05 SubscriptionRecoveryInitialState InvalidKeyRetained",
+    ) {
+        SubscriptionRecoveryPreviewView(
+            state: SubscriptionRecoveryInitialState(),
+            isErrorPresented: true,
+            input: "DEMO-KEY",
+        ).previewable(
+            container: SubscriptionManagePreviewFactory.makeContainer(),
         )
-        .previewScrollToEnd()
+    }
+    #Preview(
+        "06 SubscriptionRecoveryInitialState InvalidKeyRetained ScrollEnd",
+    ) {
+        SubscriptionRecoveryPreviewView(
+            state: SubscriptionRecoveryInitialState(),
+            isErrorPresented: true,
+            input: "DEMO-KEY",
+        ).previewable(
+            container: SubscriptionManagePreviewFactory.makeContainer(),
+        ).previewScrollToEnd()
     }
 
     #Preview(
-        "03 SubscriptionRecoveryKeyCreationLoadingState CreatingRecoveryKey",
+        "07 SubscriptionRecoveryInitialState NoActiveSubscription",
     ) {
         SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryKeyCreationLoadingState(
-                previousState: SubscriptionRecoveryInitialState(),
-            ),
+            state: SubscriptionRecoveryInitialState(),
+            isNoActivePresented: true,
+            input: "INACTIVE-DEMO-KEY",
         )
         .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
+            container: SubscriptionManagePreviewFactory.makeContainer(),
         )
     }
-
     #Preview(
-        "04 SubscriptionRecoveryKeyCreationLoadingState CreatingRecoveryKey ScrollEnd",
+        "08 SubscriptionRecoveryInitialState NoActiveSubscription ScrollEnd",
     ) {
         SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryKeyCreationLoadingState(
-                previousState: SubscriptionRecoveryInitialState(),
-            ),
+            state: SubscriptionRecoveryInitialState(),
+            isNoActivePresented: true,
+            input: "INACTIVE-DEMO-KEY",
         )
         .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
-        )
-        .previewScrollToEnd()
-    }
-
-    #Preview(
-        "05 SubscriptionRecoverySuccessState RecoveryKeyCreated",
-    ) {
-        SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoverySuccessState(
-                key: "Preview-MixedCase-Recovery-Key",
-            ),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "06 SubscriptionRecoverySuccessState RecoveryKeyCreated ScrollEnd",
-    ) {
-        SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoverySuccessState(
-                key: "Preview-MixedCase-Recovery-Key",
-            ),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
-        )
-        .previewScrollToEnd()
-    }
-
-    #Preview(
-        "07 SubscriptionRecoveryRestoreLoadingState RestoringWithKey",
-    ) {
-        SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryRestoreLoadingState(
-                previousState: SubscriptionRecoverySuccessState(
-                    key: "Preview-MixedCase-Recovery-Key",
-                ),
-            ),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "08 SubscriptionRecoveryRestoreLoadingState RestoringWithKey ScrollEnd",
-    ) {
-        SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryRestoreLoadingState(
-                previousState: SubscriptionRecoverySuccessState(
-                    key: "Preview-MixedCase-Recovery-Key",
-                ),
-            ),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
-        )
-        .previewScrollToEnd()
-    }
-
-    #Preview(
-        "09 SubscriptionRecoveryErrorState RecoveryFailedWithoutKey",
-    ) {
-        SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryErrorState(
-                previousState: SubscriptionRecoveryInitialState(),
-                errorDescription: L10NPreviewFactory.make().text(
-                    .subscriptionRecoveryFailedDescription,
-                ),
-            ),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "10 SubscriptionRecoveryErrorState RecoveryFailedWithoutKey ScrollEnd",
-    ) {
-        SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryErrorState(
-                previousState: SubscriptionRecoveryInitialState(),
-                errorDescription: L10NPreviewFactory.make().text(
-                    .subscriptionRecoveryFailedDescription,
-                ),
-            ),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
-        )
-        .previewScrollToEnd()
-    }
-
-    #Preview(
-        "11 SubscriptionRecoveryErrorState RecoveryFailedWithRetainedKey",
-    ) {
-        SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryErrorState(
-                previousState: SubscriptionRecoverySuccessState(
-                    key: "Preview-MixedCase-Recovery-Key",
-                ),
-                errorDescription: "Не удалось восстановить подписку.",
-            ),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
-        )
-    }
-
-    #Preview(
-        "12 SubscriptionRecoveryErrorState RecoveryFailedWithRetainedKey ScrollEnd",
-    ) {
-        SubscriptionRecoveryPreviewView(
-            state: SubscriptionRecoveryErrorState(
-                previousState: SubscriptionRecoverySuccessState(
-                    key: "Preview-MixedCase-Recovery-Key",
-                ),
-                errorDescription: "Не удалось восстановить подписку.",
-            ),
-        )
-        .previewable(
-            container: ManageSubscriptionPreviewFactory.makeContainer(),
+            container: SubscriptionManagePreviewFactory.makeContainer(),
         )
         .previewScrollToEnd()
     }

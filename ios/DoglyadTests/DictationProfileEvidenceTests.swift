@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct DictationProfileEvidenceTests {
+    init() {}
+
     @Test(
         "Patient profile alone cannot supply an ultrasound description",
         arguments: [

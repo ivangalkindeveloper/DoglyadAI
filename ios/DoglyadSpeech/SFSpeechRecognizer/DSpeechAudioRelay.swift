@@ -26,6 +26,8 @@ final class DSpeechAudioRelay: @unchecked Sendable {
     private var ringWriteIndex = 0
     private var ringFilled = 0
 
+    init() {}
+
     /// Allocates the ring for the microphone format. Call before installing the tap.
     func prepare(
         format: AVAudioFormat,

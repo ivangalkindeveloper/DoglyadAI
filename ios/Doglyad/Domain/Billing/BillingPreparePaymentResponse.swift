@@ -2,10 +2,13 @@ import Foundation
 
 struct BillingPreparePaymentResponse: Decodable, Sendable {
     let payment: BillingPaymentResponse
-    let shopId: String
-    let clientApplicationKey: String
-    let shopName: String
-    let description: String
-    let termsVersion: String
-    let price: BillingPrice
+    let checkoutUrl: String?
+
+    init(
+        payment: BillingPaymentResponse,
+        checkoutUrl: String?,
+    ) {
+        self.payment = payment
+        self.checkoutUrl = checkoutUrl
+    }
 }

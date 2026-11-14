@@ -5,6 +5,12 @@ struct PaywallStateView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let state: any PaywallStateProtocol
 
+    init(
+        state: any PaywallStateProtocol,
+    ) {
+        self.state = state
+    }
+
     var body: some View {
         switch state {
         case _ as PaywallCatalogLoadingState:

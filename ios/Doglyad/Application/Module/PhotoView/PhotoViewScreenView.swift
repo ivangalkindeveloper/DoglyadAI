@@ -7,6 +7,14 @@ struct PhotoViewScreenView: DViewProtocol {
     @StateObject var viewModel: PhotoViewViewModel
     @State private var controlsHeight: CGFloat = 0
 
+    init(
+        viewModel: @autoclosure @escaping () -> PhotoViewViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[

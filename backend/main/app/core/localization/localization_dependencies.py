@@ -11,6 +11,11 @@ from app.core.localization.language_code import LanguageCode
 
 
 class LocalizationDependencies:
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @staticmethod
     async def language(
         request: Request,

@@ -6,6 +6,8 @@ struct ScanSpeechReviewTranscriptBottomView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     @EnvironmentObject var theme: DTheme
 
+    init() {}
+
     var body: some View {
         let isProcessing = switch viewModel.state {
         case _ as ScanSpeechReviewParsingLoadingState: true

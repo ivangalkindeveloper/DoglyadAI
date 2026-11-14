@@ -5,6 +5,16 @@ struct DShimmerPreviewSurface: View {
     let cornerRadius: CGFloat
     var height: CGFloat = 56
 
+    init(
+        label: String,
+        cornerRadius: CGFloat,
+        height: CGFloat = 56,
+    ) {
+        self.label = label
+        self.cornerRadius = cornerRadius
+        self.height = height
+    }
+
     var body: some View {
         RoundedRectangle(
             cornerRadius: cornerRadius,

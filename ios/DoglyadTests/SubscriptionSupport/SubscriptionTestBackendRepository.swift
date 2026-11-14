@@ -17,8 +17,12 @@ final class SubscriptionTestBackendRepository: SubscriptionBackendRepositoryProt
         source: .apple,
     )
     var payments: [UUID: BillingPaymentResponse] = [:]
+    var onCheckPayment: (() async throws -> Void)?
     private(set) var checkedPayments: [UUID] = []
+    private(set) var statusRequestCount = 0
     private(set) var isRenewalCanceled = false
+
+    init() {}
 
     func configureIdentity() async throws {}
 
@@ -36,7 +40,8 @@ final class SubscriptionTestBackendRepository: SubscriptionBackendRepositoryProt
     func fetchStatus(
         configEntitlements _: [SubscriptionType: SubscriptionEntitlement],
     ) async throws -> SubscriptionStatus? {
-        isAccessAvailable ? status : nil
+        statusRequestCount += 1
+        return isAccessAvailable ? status : nil
     }
 
     func synchronizeAppleTransaction(
@@ -45,29 +50,32 @@ final class SubscriptionTestBackendRepository: SubscriptionBackendRepositoryProt
         false
     }
 
-    func cancelRenewal() async throws {
-        isRenewalCanceled = true
+    func setAutoRenewal(
+        isAutoRenewing: Bool,
+        configEntitlements _: [SubscriptionType: SubscriptionEntitlement],
+    ) async throws -> SubscriptionStatus? {
+        isRenewalCanceled = !isAutoRenewing
+        status.isAutoRenewing = isAutoRenewing
+        return isAccessAvailable ? status : nil
     }
 
-    func createRecoveryKey() async throws -> String {
+    func fetchRecoveryKey() async throws -> String {
         "test-recovery-key"
     }
 
     func recover(
         key _: String,
-    ) async throws {
+        configEntitlements _: [SubscriptionType: SubscriptionEntitlement],
+    ) async throws -> SubscriptionStatus? {
         isAccessAvailable = true
+        return status
     }
 
     func preparePayment(
         planID _: String,
+        price _: BillingPrice,
+        isAutoRenewing _: Bool,
     ) async throws -> BillingPreparePaymentResponse {
-        throw SubscriptionError.offeringsUnavailable
-    }
-
-    func tokenizePayment(
-        request _: BillingTokenizePaymentRequest,
-    ) async throws -> BillingPaymentResponse {
         throw SubscriptionError.offeringsUnavailable
     }
 
@@ -78,6 +86,7 @@ final class SubscriptionTestBackendRepository: SubscriptionBackendRepositoryProt
         checkedPayments.append(
             id,
         )
+        try await onCheckPayment?()
         guard let payment = payments[
             id,
         ] else {

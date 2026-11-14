@@ -7,6 +7,14 @@ struct ReportDetailScreenView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: ReportDetailViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> ReportDetailViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     private var report: USExaminationReport {
         viewModel.report
     }

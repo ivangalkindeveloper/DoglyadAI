@@ -15,7 +15,7 @@ class BillingSubscriptionDB(BillingBase):
         CheckConstraint(
             "(source = 'apple' AND apple_environment IS NOT NULL "
             "AND apple_environment IN ('Production', 'Sandbox')) "
-            "OR (source = 'yookassa' AND apple_environment IS NULL)",
+            "OR (source = 'robokassa' AND apple_environment IS NULL)",
             name="ck_billing_subscriptions_apple_environment",
         ),
         Index(
@@ -31,14 +31,14 @@ class BillingSubscriptionDB(BillingBase):
             ),
         ),
         Index(
-            "uq_billing_subscriptions_yookassa_transaction",
+            "uq_billing_subscriptions_robokassa_transaction",
             "external_id",
             unique=True,
             postgresql_where=text(
-                "source = 'yookassa'",
+                "source = 'robokassa'",
             ),
             sqlite_where=text(
-                "source = 'yookassa'",
+                "source = 'robokassa'",
             ),
         ),
     )
@@ -80,6 +80,12 @@ class BillingSubscriptionDB(BillingBase):
             16,
         ),
     )
+    starts_at: Mapped[datetime] = mapped_column(
+        DateTime(
+            timezone=True,
+        ),
+        server_default="1970-01-01 00:00:00+00:00",
+    )
     paid_until: Mapped[datetime] = mapped_column(
         DateTime(
             timezone=True,
@@ -94,6 +100,12 @@ class BillingSubscriptionDB(BillingBase):
         Boolean,
         default=False,
     )
+    receipt_email: Mapped[str | None] = mapped_column(
+        String(
+            254,
+        ),
+    )
+    # Robokassa parent invoice for recurring operations, never a card token.
     payment_method_id: Mapped[str | None] = mapped_column(
         String(
             128,

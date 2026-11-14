@@ -74,6 +74,9 @@ struct MainRootView: View {
                     true,
                 )
             case .active:
+                Task {
+                    await subscriptionViewModel.refreshStatus()
+                }
                 ultrasoundViewModel.reportGenerations.setInBackground(
                     false,
                 )

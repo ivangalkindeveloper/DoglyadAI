@@ -145,8 +145,7 @@ class DModuleViewModel<State>: DStateViewModel<State> {
 
     func onDisappear() {
         cancelOperationTask()
-        subscriptionObservation?.cancel()
-        subscriptionObservation = nil
+        cancelSubscriptionObservation()
     }
 
     /// Local persistence keeps the current presentation. The task owns duplicate/stale guards.
@@ -195,6 +194,11 @@ class DModuleViewModel<State>: DStateViewModel<State> {
         localOperationID = nil
         operationTask?.cancel()
         operationTask = nil
+    }
+
+    final func cancelSubscriptionObservation() {
+        subscriptionObservation?.cancel()
+        subscriptionObservation = nil
     }
 
     func onSubscriptionChanged(

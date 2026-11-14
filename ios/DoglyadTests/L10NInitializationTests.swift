@@ -6,6 +6,8 @@ import Testing
 
 @MainActor
 struct L10NInitializationTests {
+    init() {}
+
     @Test
     func failedLocalizationDoesNotPublishCatalogOrStartNextTier() async {
         let client = FailingLocalizationHttpClient()
@@ -82,6 +84,8 @@ private final class FailingLocalizationHttpClient: DHttpClientProtocol, @uncheck
     let baseVersionPrefix = "/v1"
     private let lock = NSLock()
     private var paths: [String] = []
+
+    init() {}
 
     var requestedPaths: [String] {
         lock.withLock {

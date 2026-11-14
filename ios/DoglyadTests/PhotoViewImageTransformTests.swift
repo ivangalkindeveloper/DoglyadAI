@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct PhotoViewImageTransformTests {
+    init() {}
+
     @Test func annotationCoordinatesFollowImageScaleAndOffset() {
         let center = CGPoint(
             x: 200,

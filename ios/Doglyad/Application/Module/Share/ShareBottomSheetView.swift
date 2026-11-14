@@ -6,6 +6,14 @@ struct ShareBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @StateObject var viewModel: ShareViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> ShareViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         let fraction: CGFloat = switch (viewModel.userEmail, viewModel.subscriptionAvailability(
             of: .sendingReportByEmail,

@@ -289,6 +289,8 @@ struct ScanSpeechConfidencePolicyTests {
 
     private let text = "номер исследования: 123; пол: мужчина; дата рождения: 28.03.1994; вес: 72 кг; жалобы: нет"
 
+    init() {}
+
     @Test(
         "Only literal structured fields with strong recognition evidence bypass review",
     )

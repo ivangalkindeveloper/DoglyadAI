@@ -32,6 +32,24 @@ final class DNeuralUltrasoundLegacyModelFoundationModels {
         let patientComplaints: String?
         let examinationDescription: String?
 
+        init(
+            patientName: String?,
+            patientGender: DNeuralUltrasoundGender?,
+            patientDateOfBirth: String?,
+            patientHeightCM: Double?,
+            patientWeightKG: Double?,
+            patientComplaints: String?,
+            examinationDescription: String?,
+        ) {
+            self.patientName = patientName
+            self.patientGender = patientGender
+            self.patientDateOfBirth = patientDateOfBirth
+            self.patientHeightCM = patientHeightCM
+            self.patientWeightKG = patientWeightKG
+            self.patientComplaints = patientComplaints
+            self.examinationDescription = examinationDescription
+        }
+
         static func schema(
             localization: DNeuralUltrasoundSchemaLocalization,
         ) -> GenerationSchema {

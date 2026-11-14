@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct DictationExplicitFactsExtractorTests {
+    init() {}
+
     @Test(
         "A finding stops before patient labels with ASR commas, periods, or dashes",
     )

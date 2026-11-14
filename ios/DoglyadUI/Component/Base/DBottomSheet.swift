@@ -271,6 +271,8 @@ public struct DBottomSheet<Content, Bottom>: DViewProtocol where Content: View, 
 }
 
 private struct BottomSheetToolbarHeightPreferenceKey: PreferenceKey {
+    init() {}
+
     static var defaultValue: CGFloat = 0
 
     static func reduce(
@@ -282,6 +284,8 @@ private struct BottomSheetToolbarHeightPreferenceKey: PreferenceKey {
 }
 
 private struct BottomSheetBottomHeightPreferenceKey: PreferenceKey {
+    init() {}
+
     static var defaultValue: CGFloat = 0
 
     static func reduce(

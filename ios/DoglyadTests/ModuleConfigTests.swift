@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct ModuleConfigTests {
+    init() {}
+
     @Test(
         arguments: ["scan", "scanSpeech", "templateAdd", "templateEdit", "readyMadeTemplateList", "workSettings", "settingsAI"],
     )

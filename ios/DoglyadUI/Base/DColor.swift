@@ -36,8 +36,86 @@ public struct DColor {
     public let dangerBackground: Color
     public let gradientPrimary: LinearGradient
     public let gradientPrimaryWeak: LinearGradient
-    public let gradientSecondary: LinearGradient
-    public let gradientAccent: LinearGradient
+    public let gradientSuccess: LinearGradient
+    public let gradientDanger: LinearGradient
+
+    init(
+        primaryDefault: Color,
+        primaryDefaultStrong: Color,
+        primaryDefaultWeak: Color,
+        primaryBackgroundStrong: Color,
+        grayscaleHeader: Color,
+        grayscaleHeaderWeak: Color,
+        grayscaleBody: Color,
+        grayscaleLabel: Color,
+        grayscalePlacehold: Color,
+        grayscaleLine: Color,
+        grayscaleInput: Color,
+        grayscaleBackgroundWeak: Color,
+        grayscaleBackground: Color,
+        secondaryDefault: Color,
+        secondaryDefaultStrong: Color,
+        secondaryDefaultWeak: Color,
+        secondaryBackgroundStrong: Color,
+        secondaryBackground: Color,
+        successDefault: Color,
+        successDefaultStrong: Color,
+        successDefaultWeak: Color,
+        successBackgroundStrong: Color,
+        successBackground: Color,
+        warningDefault: Color,
+        warningDefaultStrong: Color,
+        warningDefaultWeak: Color,
+        warningBackgroundStrong: Color,
+        warningBackground: Color,
+        dangerDefault: Color,
+        dangerDefaultStrong: Color,
+        dangerDefaultWeak: Color,
+        dangerBackgroundStrong: Color,
+        dangerBackground: Color,
+        gradientPrimary: LinearGradient,
+        gradientPrimaryWeak: LinearGradient,
+        gradientSuccess: LinearGradient,
+        gradientDanger: LinearGradient,
+    ) {
+        self.primaryDefault = primaryDefault
+        self.primaryDefaultStrong = primaryDefaultStrong
+        self.primaryDefaultWeak = primaryDefaultWeak
+        self.primaryBackgroundStrong = primaryBackgroundStrong
+        self.grayscaleHeader = grayscaleHeader
+        self.grayscaleHeaderWeak = grayscaleHeaderWeak
+        self.grayscaleBody = grayscaleBody
+        self.grayscaleLabel = grayscaleLabel
+        self.grayscalePlacehold = grayscalePlacehold
+        self.grayscaleLine = grayscaleLine
+        self.grayscaleInput = grayscaleInput
+        self.grayscaleBackgroundWeak = grayscaleBackgroundWeak
+        self.grayscaleBackground = grayscaleBackground
+        self.secondaryDefault = secondaryDefault
+        self.secondaryDefaultStrong = secondaryDefaultStrong
+        self.secondaryDefaultWeak = secondaryDefaultWeak
+        self.secondaryBackgroundStrong = secondaryBackgroundStrong
+        self.secondaryBackground = secondaryBackground
+        self.successDefault = successDefault
+        self.successDefaultStrong = successDefaultStrong
+        self.successDefaultWeak = successDefaultWeak
+        self.successBackgroundStrong = successBackgroundStrong
+        self.successBackground = successBackground
+        self.warningDefault = warningDefault
+        self.warningDefaultStrong = warningDefaultStrong
+        self.warningDefaultWeak = warningDefaultWeak
+        self.warningBackgroundStrong = warningBackgroundStrong
+        self.warningBackground = warningBackground
+        self.dangerDefault = dangerDefault
+        self.dangerDefaultStrong = dangerDefaultStrong
+        self.dangerDefaultWeak = dangerDefaultWeak
+        self.dangerBackgroundStrong = dangerBackgroundStrong
+        self.dangerBackground = dangerBackground
+        self.gradientPrimary = gradientPrimary
+        self.gradientPrimaryWeak = gradientPrimaryWeak
+        self.gradientSuccess = gradientSuccess
+        self.gradientDanger = gradientDanger
+    }
 }
 
 public extension DColor {
@@ -171,25 +249,25 @@ public extension DColor {
             startPoint: .topLeading,
             endPoint: .bottomTrailing,
         ),
-        gradientSecondary: LinearGradient(
+        gradientSuccess: LinearGradient(
             colors: [
                 Color(
-                    hex: 0x624AF2,
+                    hex: 0x008A00,
                 ),
                 Color(
-                    hex: 0x50DDC3,
+                    hex: 0xA6F787,
                 ),
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing,
         ),
-        gradientAccent: LinearGradient(
+        gradientDanger: LinearGradient(
             colors: [
                 Color(
                     hex: 0xEB0055,
                 ),
                 Color(
-                    hex: 0xFFFA80,
+                    hex: 0xFF8D28,
                 ),
             ],
             startPoint: .topLeading,

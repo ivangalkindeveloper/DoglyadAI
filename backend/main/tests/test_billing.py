@@ -18,10 +18,10 @@ from app.core.application.application_factory import ApplicationFactory
 from app.core.application.service_dependencies import ServiceDependencies
 from app.core.configuration.configuration import Configuration
 from app.core.configuration.variables import Variables
+from app.core.localization.language_code import LanguageCode
 from app.database.billing_credential_db import BillingCredentialDB
 from app.database.billing_subscription_db import BillingSubscriptionDB
 from app.database.billing_usage_db import BillingUsageDB
-from app.error.billing_access_denied_error import BillingAccessDeniedError
 from app.error.billing_conflict_error import BillingConflictError
 from app.error.billing_limit_error import BillingLimitError
 from app.error.billing_purchase_error import BillingPurchaseError
@@ -29,7 +29,7 @@ from app.error.billing_unavailable_error import BillingUnavailableError
 from tests.support.billing.billing_test_context import BillingTestContext
 
 
-def test_identity_recovery_and_rotation(
+def test_identity_recovery_key_is_stable_across_devices(
     tmp_path: Path,
     configuration: Configuration,
 ) -> None:
@@ -62,15 +62,28 @@ def test_identity_recovery_and_rotation(
                 )
                 == owner
             )
-            await ctx.service.recovery_key(
-                owner,
-            )
-            with pytest.raises(
-                BillingAccessDeniedError,
-            ):
-                await ctx.service.recover(
-                    key,
+            assert (
+                await ctx.service.recovery_key(
+                    owner,
                 )
+                == key
+            )
+            second_device = await ctx.service.recover(
+                key,
+            )
+            assert second_device.ownerId == identity.ownerId
+            assert (
+                await ctx.service.authenticate(
+                    identity.accessToken,
+                )
+                == owner
+            )
+            assert (
+                await ctx.service.authenticate(
+                    restored.accessToken,
+                )
+                == owner
+            )
             async with ctx.database.session() as session:
                 credentials = list(
                     await session.scalars(
@@ -83,7 +96,7 @@ def test_identity_recovery_and_rotation(
                     len(
                         credentials,
                     )
-                    == 2
+                    == 3
                 )
                 assert all(
                     (row.token_hash not in (identity.accessToken, restored.accessToken) for row in credentials),
@@ -122,7 +135,7 @@ def test_quota_refunds_failures_and_blocks_replays(
                             uuid4(),
                         ),
                         owner_id=owner,
-                        source="yookassa",
+                        source="robokassa",
                         external_id="quota-fixture",
                         plan_id="monthly",
                         entitlement="base",
@@ -237,7 +250,7 @@ def test_report_jobs_count_each_completed_generation_once(
                             uuid4(),
                         ),
                         owner_id=owner,
-                        source="yookassa",
+                        source="robokassa",
                         external_id="quota-http-fixture",
                         plan_id="monthly",
                         entitlement="pro",
@@ -387,67 +400,33 @@ def test_checkout_webhook_renewal_and_refund(
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            checkout = await ctx.service.create_checkout(
+            prepared = await ctx.checkout.prepare(
                 owner,
                 "monthly",
+                LanguageCode.RU,
             )
-            browser, _ = await ctx.service.bind_checkout(
-                checkout.code,
-                "apple-attribution-only",
+            resumed = await ctx.checkout.prepare(
+                owner,
+                "monthly",
+                LanguageCode.RU,
             )
-            with pytest.raises(
-                BillingAccessDeniedError,
-            ):
-                await ctx.service.bind_checkout(
-                    checkout.code,
-                    None,
-                )
-            with pytest.raises(
-                BillingPurchaseError,
-            ):
-                await ctx.service.start_checkout_payment(
-                    browser,
-                    is_auto_renewal_accepted=False,
-                )
-            url = await ctx.service.start_checkout_payment(
-                browser,
-                is_auto_renewal_accepted=True,
-            )
-            assert url == "https://yoomoney.ru/checkout/test"
+            assert prepared.payment.id == resumed.payment.id
+            assert prepared.checkoutUrl == "https://auth.robokassa.ru/merchant/Invoice/test"
             assert (
                 await ctx.service.status(
                     owner,
                 )
                 is None
             )
-            await ctx.service.start_checkout_payment(
-                browser,
-                is_auto_renewal_accepted=True,
+            assert (
+                len(
+                    ctx.payments,
+                )
+                == 1
             )
             assert (
                 sum(
                     (request.method == "POST" for request in ctx.requests),
-                )
-                == 1
-            )
-            resumed = await ctx.service.create_checkout(
-                owner,
-                "monthly",
-            )
-            resumed_browser, _ = await ctx.service.bind_checkout(
-                resumed.code,
-                None,
-            )
-            assert (
-                await ctx.service.start_checkout_payment(
-                    resumed_browser,
-                    is_auto_renewal_accepted=True,
-                )
-                == url
-            )
-            assert (
-                len(
-                    ctx.payments,
                 )
                 == 1
             )
@@ -479,13 +458,6 @@ def test_checkout_webhook_renewal_and_refund(
                 owner,
                 "sendingReportByEmail",
             )
-            with pytest.raises(
-                BillingConflictError,
-            ):
-                await ctx.service.create_checkout(
-                    owner,
-                    "monthly",
-                )
             async with ctx.database.session() as session, session.begin():
                 sub = await session.scalar(
                     select(
@@ -564,17 +536,10 @@ def test_payment_validation(
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            checkout = await ctx.service.create_checkout(
+            await ctx.checkout.prepare(
                 owner,
                 "monthly",
-            )
-            browser, _ = await ctx.service.bind_checkout(
-                checkout.code,
-                None,
-            )
-            await ctx.service.start_checkout_payment(
-                browser,
-                is_auto_renewal_accepted=True,
+                LanguageCode.RU,
             )
             payment = next(
                 iter(
@@ -629,17 +594,10 @@ def test_canonical_payment_mode_must_match_environment(
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            checkout = await ctx.service.create_checkout(
+            await ctx.checkout.prepare(
                 owner,
                 "monthly",
-            )
-            browser, _ = await ctx.service.bind_checkout(
-                checkout.code,
-                None,
-            )
-            await ctx.service.start_checkout_payment(
-                browser,
-                is_auto_renewal_accepted=True,
+                LanguageCode.RU,
             )
             payment = next(
                 iter(
@@ -680,7 +638,7 @@ def test_canonical_payment_mode_must_match_environment(
     )
 
 
-def test_live_shop_is_rejected_before_charge(
+def test_production_launch_gate_rejects_before_dispatch(
     tmp_path: Path,
     configuration: Configuration,
 ) -> None:
@@ -688,30 +646,20 @@ def test_live_shop_is_rejected_before_charge(
         async with BillingTestContext(
             tmp_path,
             configuration,
-            is_live=True,
+            environment="production",
         ) as ctx:
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            checkout = await ctx.service.create_checkout(
-                owner,
-                "monthly",
-            )
-            browser, _ = await ctx.service.bind_checkout(
-                checkout.code,
-                None,
-            )
             with pytest.raises(
                 BillingUnavailableError,
             ):
-                await ctx.service.start_checkout_payment(
-                    browser,
-                    is_auto_renewal_accepted=True,
+                await ctx.checkout.prepare(
+                    owner,
+                    "monthly",
+                    LanguageCode.RU,
                 )
-            assert not ctx.payments
-            assert not any(
-                (request.method == "POST" for request in ctx.requests),
-            )
+            assert not ctx.payments and not ctx.requests
 
     asyncio.run(
         run(),
@@ -730,17 +678,10 @@ def test_cancellation_keeps_paid_period(
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            checkout = await ctx.service.create_checkout(
+            await ctx.checkout.prepare(
                 owner,
                 "monthly",
-            )
-            browser, _ = await ctx.service.bind_checkout(
-                checkout.code,
-                None,
-            )
-            await ctx.service.start_checkout_payment(
-                browser,
-                is_auto_renewal_accepted=True,
+                LanguageCode.RU,
             )
             payment = next(
                 iter(
@@ -909,7 +850,6 @@ def test_application_billing_requires_app_check(
                 "recover",
                 "sync_apple",
                 "prepare_payment",
-                "tokenize_payment",
                 "check_payment",
             ):
                 response = await client.request(
@@ -923,7 +863,7 @@ def test_application_billing_requires_app_check(
     )
 
 
-def test_gateway_csrf_and_callback_not_trusted(
+def test_gateway_redirect_and_callback_not_trusted(
     tmp_path: Path,
     configuration: Configuration,
     variables: Variables,
@@ -948,15 +888,12 @@ def test_gateway_csrf_and_callback_not_trusted(
                 ),
                 base_url="https://pay.example",
             ) as client:
-                response = await client.post(
-                    "/pay/bind",
-                    data={"csrf": "forged", "code": "00000000"},
-                )
-                assert response.status_code == 401
                 response = await client.get(
-                    "/pay/complete",
+                    "/payments/return",
                 )
-                assert response.status_code == 200 and "no-store" in response.headers["cache-control"]
+                assert response.status_code == 303
+                assert response.headers["location"] == "doglyad://subscription/complete"
+                assert "no-store" in response.headers["cache-control"]
                 assert not ctx.payments
                 ctx.apple.notification.side_effect = BillingPurchaseError()
                 response = await client.post(
@@ -987,6 +924,7 @@ def test_billing_api_requires_owner_secret(
             )
             app.state.container = SimpleNamespace(
                 subscriptions=ctx.service,
+                checkout_payments=ctx.checkout,
                 configuration=configuration,
             )
             app.dependency_overrides[AppCheck.verify] = lambda: None
@@ -1019,17 +957,16 @@ def test_billing_api_requires_owner_secret(
                     )
                 ).status_code == 401
                 checkout = await client.post(
-                    "/v1/subscriptions/checkout",
+                    "/v1/subscriptions/prepare_payment",
                     headers=headers,
-                    json={"planId": "monthly"},
+                    json={
+                        "planId": "monthly",
+                        "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"},
+                        "isAutoRenewing": False,
+                    },
                 )
-                assert (
-                    checkout.status_code == 200
-                    and len(
-                        checkout.json()["code"],
-                    )
-                    == 8
-                )
+                assert checkout.status_code == 200
+                assert checkout.json()["checkoutUrl"] == "https://auth.robokassa.ru/merchant/Invoice/test"
                 key = (
                     await client.post(
                         "/v1/subscriptions/recovery_key",
@@ -1042,89 +979,12 @@ def test_billing_api_requires_owner_secret(
                         json={"recoveryKey": key},
                     )
                 ).json()
-                assert restored["ownerId"] == identity["ownerId"] and restored["accessToken"] != identity["accessToken"]
-
-    asyncio.run(
-        run(),
-    )
-
-
-def test_gateway_fetches_provider_before_granting(
-    tmp_path: Path,
-    configuration: Configuration,
-    variables: Variables,
-) -> None:
-    async def run() -> None:
-        async with BillingTestContext(
-            tmp_path,
-            configuration,
-        ) as ctx:
-            owner = str(
-                (await ctx.service.register()).ownerId,
-            )
-            checkout = await ctx.service.create_checkout(
-                owner,
-                "monthly",
-            )
-            browser, _ = await ctx.service.bind_checkout(
-                checkout.code,
-                None,
-            )
-            await ctx.service.start_checkout_payment(
-                browser,
-                is_auto_renewal_accepted=True,
-            )
-            payment = next(
-                iter(
-                    ctx.payments.values(),
-                ),
-            )
-            gateway = ApplicationFactory.create_payment(
-                variables,
-            )
-            gateway.state.container = SimpleNamespace(
-                subscriptions=ctx.service,
-                configuration=configuration,
-            )
-            async with httpx.AsyncClient(
-                transport=httpx.ASGITransport(
-                    gateway,
-                ),
-                base_url="https://pay.example",
-            ) as client:
-                response = await client.post(
-                    "/webhooks/yookassa",
-                    json={
-                        "event": "payment.succeeded",
-                        "object": {"id": payment["id"], "status": "succeeded", "paid": True},
-                    },
-                )
-                assert response.status_code == 200
                 assert (
-                    await ctx.service.status(
-                        owner,
-                    )
-                    is None
+                    restored["identity"]["ownerId"] == identity["ownerId"]
+                    and restored["identity"]["accessToken"] != identity["accessToken"]
                 )
-                payment.update(
-                    status="succeeded",
-                    paid=True,
-                )
-                response = await client.post(
-                    "/webhooks/yookassa",
-                    json={"event": "payment.succeeded", "object": {"id": payment["id"]}},
-                )
-                assert response.status_code == 200
-                assert (
-                    await ctx.service.status(
-                        owner,
-                    )
-                ).type == "pro"
-                malformed = await client.post(
-                    "/webhooks/yookassa",
-                    content="{invalid",
-                )
-                assert malformed.status_code == 400
+                assert restored["subscription"] is None
+                assert restored["identity"]["recoveryKey"] == key
 
     asyncio.run(
         run(),

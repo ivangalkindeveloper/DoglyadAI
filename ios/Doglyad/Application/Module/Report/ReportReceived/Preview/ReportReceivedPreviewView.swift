@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let scenario: ReportReceivedPreviewFactory.Scenario
 
+        init(
+            scenario: ReportReceivedPreviewFactory.Scenario,
+        ) {
+            self.scenario = scenario
+        }
+
         var body: some View {
             ModuleBottomSheetPreviewView {
                 ReportReceivedBottomSheetView(

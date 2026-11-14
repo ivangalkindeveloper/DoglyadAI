@@ -16,21 +16,23 @@ protocol SubscriptionBackendRepositoryProtocol: AnyObject {
         signedTransaction: String,
     ) async throws -> Bool
 
-    func cancelRenewal() async throws
+    func setAutoRenewal(
+        isAutoRenewing: Bool,
+        configEntitlements: [SubscriptionType: SubscriptionEntitlement],
+    ) async throws -> SubscriptionStatus?
 
-    func createRecoveryKey() async throws -> String
+    func fetchRecoveryKey() async throws -> String
 
     func recover(
         key: String,
-    ) async throws
+        configEntitlements: [SubscriptionType: SubscriptionEntitlement],
+    ) async throws -> SubscriptionStatus?
 
     func preparePayment(
         planID: String,
+        price: BillingPrice,
+        isAutoRenewing: Bool,
     ) async throws -> BillingPreparePaymentResponse
-
-    func tokenizePayment(
-        request: BillingTokenizePaymentRequest,
-    ) async throws -> BillingPaymentResponse
 
     func checkPayment(
         id: UUID,

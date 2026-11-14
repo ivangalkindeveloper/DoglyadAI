@@ -4,6 +4,8 @@ import AVFoundation
 final class DSpeechBufferConverter: @unchecked Sendable {
     private var converter: AVAudioConverter?
 
+    init() {}
+
     func convert(
         _ buffer: AVAudioPCMBuffer,
         to format: AVAudioFormat,

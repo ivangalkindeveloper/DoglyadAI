@@ -6,6 +6,14 @@ struct SelectTemplateBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: SelectTemplateViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> SelectTemplateViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DBottomSheet(
             title: l10n[

@@ -9,7 +9,7 @@ INSERT INTO billing_subscriptions
   (id, owner_id, source, apple_environment, external_id, plan_id, entitlement,
    paid_until, is_revoked, is_auto_renewing, amount_minor, interval_months,
    interval_days, currency, updated_at)
-SELECT '00000000-0000-4000-8000-000000000001', id, 'yookassa', NULL,
+SELECT '00000000-0000-4000-8000-000000000001', id, 'robokassa', NULL,
        'regression-synthetic-subscription', 'base_monthly', 'base',
        now() + interval '30 days', false, false, 0, 1, 0, 'RUB', now()
 FROM billing_owners

@@ -1,0 +1,955 @@
+{
+  "is_complete": true,
+  "is_memory_aborted": false,
+  "checks": [
+    {
+      "scenario": "isolated_7b",
+      "model_id": "ZJU-AI4H/Hulu-Med-7B",
+      "seconds": 7.436481191005441,
+      "first_delta_seconds": 0.08679769300215412,
+      "delta_count": 97,
+      "response_chars": 362,
+      "response_sha256": "b33c05765a542fca9e64a1360f92dca6b348ea62b0cf03a424fe67a625293d44",
+      "is_passed": true
+    },
+    {
+      "scenario": "isolated_32b",
+      "model_id": "ZJU-AI4H/Hulu-Med-32B",
+      "seconds": 8.901854793002713,
+      "first_delta_seconds": 0.8572323889966356,
+      "delta_count": 89,
+      "response_chars": 313,
+      "response_sha256": "b7ed95bf28447a25f28943a7cbe809610c5dba8d7981a4ad8ca63bed76846a7f",
+      "is_passed": true
+    },
+    {
+      "scenario": "all_five",
+      "model_id": "google/medgemma-4b-it",
+      "seconds": 10.345666355002322,
+      "first_delta_seconds": 3.341123192003579,
+      "delta_count": 33,
+      "response_chars": 280,
+      "response_sha256": "b45f9de65ed639f23e264da52d1bbf6b018b2d96e9c989dadbfacf708bd96dee",
+      "is_passed": true
+    },
+    {
+      "scenario": "all_five",
+      "model_id": "google/medgemma-1.5-4b-it",
+      "seconds": 10.3458597100107,
+      "first_delta_seconds": 3.2213112140016165,
+      "delta_count": 33,
+      "response_chars": 271,
+      "response_sha256": "310248decfff486621e7cd00789b224084c4fc6e917ce4adb8e5b88521d8c656",
+      "is_passed": true
+    },
+    {
+      "scenario": "all_five",
+      "model_id": "ZJU-AI4H/Hulu-Med-7B",
+      "seconds": 25.297758718006662,
+      "first_delta_seconds": 0.08927753700118046,
+      "delta_count": 97,
+      "response_chars": 362,
+      "response_sha256": "b33c05765a542fca9e64a1360f92dca6b348ea62b0cf03a424fe67a625293d44",
+      "is_passed": true
+    },
+    {
+      "scenario": "all_five",
+      "model_id": "google/medgemma-27b-it",
+      "seconds": 26.166176612008712,
+      "first_delta_seconds": 4.829748012998607,
+      "delta_count": 64,
+      "response_chars": 335,
+      "response_sha256": "ee498e97d745e8ece48dbb77de85d93b4d2dc49bbe5898951fab34140538af59",
+      "is_passed": true
+    },
+    {
+      "scenario": "all_five",
+      "model_id": "ZJU-AI4H/Hulu-Med-32B",
+      "seconds": 27.20383515600406,
+      "first_delta_seconds": 0.532221171000856,
+      "delta_count": 89,
+      "response_chars": 313,
+      "response_sha256": "b7ed95bf28447a25f28943a7cbe809610c5dba8d7981a4ad8ca63bed76846a7f",
+      "is_passed": true
+    }
+  ],
+  "memory_samples": [
+    {
+      "unix": 1794513729.2181058,
+      "available_kib": 11358788,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513729.4699495,
+      "available_kib": 11352976,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513729.720617,
+      "available_kib": 11352976,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513729.9738352,
+      "available_kib": 11354304,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513730.2241118,
+      "available_kib": 11354340,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513730.475034,
+      "available_kib": 11352464,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513730.7262442,
+      "available_kib": 11352464,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513730.9770381,
+      "available_kib": 11352952,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513731.2280304,
+      "available_kib": 11352808,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513731.4795468,
+      "available_kib": 11352560,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513731.7300298,
+      "available_kib": 11352312,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513731.9816265,
+      "available_kib": 11354840,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513732.233578,
+      "available_kib": 11354840,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513732.4844193,
+      "available_kib": 11354840,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513732.73605,
+      "available_kib": 11354592,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513732.9874575,
+      "available_kib": 11355668,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513733.2380328,
+      "available_kib": 11355668,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513733.4888597,
+      "available_kib": 11355668,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513733.7401404,
+      "available_kib": 11356784,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513733.990745,
+      "available_kib": 11359700,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513734.2429924,
+      "available_kib": 11367228,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513734.4938765,
+      "available_kib": 11366728,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513734.7442448,
+      "available_kib": 11366728,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513734.9952857,
+      "available_kib": 11366252,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513735.2462883,
+      "available_kib": 11366252,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513735.4975739,
+      "available_kib": 11366252,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513735.749711,
+      "available_kib": 11366252,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513736.0009644,
+      "available_kib": 11365632,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513736.252198,
+      "available_kib": 11365240,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513736.5026388,
+      "available_kib": 11365000,
+      "scenario": "isolated_7b"
+    },
+    {
+      "unix": 1794513736.75467,
+      "available_kib": 11366472,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513737.005714,
+      "available_kib": 11366592,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513737.2561698,
+      "available_kib": 11360948,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513737.507708,
+      "available_kib": 11357544,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513737.758642,
+      "available_kib": 11355528,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513738.0104551,
+      "available_kib": 11355232,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513738.2628732,
+      "available_kib": 11355108,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513738.5142655,
+      "available_kib": 11354664,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513738.76537,
+      "available_kib": 11354664,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513739.0169015,
+      "available_kib": 11354368,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513739.2681057,
+      "available_kib": 11354368,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513739.5197961,
+      "available_kib": 11354744,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513739.770821,
+      "available_kib": 11354748,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513740.0222385,
+      "available_kib": 11355000,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513740.2729328,
+      "available_kib": 11355560,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513740.5242743,
+      "available_kib": 11355560,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513740.7766197,
+      "available_kib": 11355560,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513741.0275698,
+      "available_kib": 11358192,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513741.278672,
+      "available_kib": 11358192,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513741.529822,
+      "available_kib": 11358192,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513741.7821229,
+      "available_kib": 11358192,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513742.0340195,
+      "available_kib": 11359172,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513742.2849402,
+      "available_kib": 11359172,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513742.5360167,
+      "available_kib": 11359172,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513742.7868316,
+      "available_kib": 11352840,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513743.0375826,
+      "available_kib": 11361168,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513743.2888975,
+      "available_kib": 11361168,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513743.540158,
+      "available_kib": 11359920,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513743.791302,
+      "available_kib": 11358348,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513744.042503,
+      "available_kib": 11364344,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513744.2937953,
+      "available_kib": 11364344,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513744.5454566,
+      "available_kib": 11363348,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513744.7962327,
+      "available_kib": 11363348,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513745.0469139,
+      "available_kib": 11364320,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513745.29982,
+      "available_kib": 11364320,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513745.5515687,
+      "available_kib": 11363212,
+      "scenario": "isolated_32b"
+    },
+    {
+      "unix": 1794513745.803914,
+      "available_kib": 11362996,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513746.0544803,
+      "available_kib": 11358556,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513746.3050685,
+      "available_kib": 11348032,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513746.555643,
+      "available_kib": 11329252,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513746.8069773,
+      "available_kib": 11313928,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513747.0582206,
+      "available_kib": 11299588,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513747.3089972,
+      "available_kib": 11251580,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513747.560042,
+      "available_kib": 11223456,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513747.8114731,
+      "available_kib": 11197696,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513748.0632343,
+      "available_kib": 11180604,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513748.3139932,
+      "available_kib": 11104560,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513748.565249,
+      "available_kib": 11051280,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513748.8168976,
+      "available_kib": 10390684,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513749.0680394,
+      "available_kib": 10363496,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513749.319269,
+      "available_kib": 10355180,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513749.5698905,
+      "available_kib": 10312916,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513749.8211765,
+      "available_kib": 10310872,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513750.072742,
+      "available_kib": 10310096,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513750.3240874,
+      "available_kib": 10307888,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513750.5750217,
+      "available_kib": 10295792,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513750.8260808,
+      "available_kib": 10292900,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513751.076701,
+      "available_kib": 10293008,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513751.3276181,
+      "available_kib": 10292756,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513751.5785139,
+      "available_kib": 10292512,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513751.8291748,
+      "available_kib": 10292512,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513752.0802624,
+      "available_kib": 10292356,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513752.3309634,
+      "available_kib": 10289424,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513752.5821238,
+      "available_kib": 10289424,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513752.8328898,
+      "available_kib": 10288668,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513753.0837543,
+      "available_kib": 10288752,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513753.3348722,
+      "available_kib": 10272652,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513753.5874012,
+      "available_kib": 10272652,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513753.8384595,
+      "available_kib": 10272652,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513754.0898643,
+      "available_kib": 10272724,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513754.3408663,
+      "available_kib": 10272352,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513754.591887,
+      "available_kib": 10271596,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513754.843849,
+      "available_kib": 10271720,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513755.0960596,
+      "available_kib": 10271384,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513755.3474703,
+      "available_kib": 10271012,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513755.5987422,
+      "available_kib": 10270512,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513755.850087,
+      "available_kib": 10261808,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513756.100987,
+      "available_kib": 10251024,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513756.352031,
+      "available_kib": 10249192,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513756.6033797,
+      "available_kib": 10249200,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513756.8550625,
+      "available_kib": 10249200,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513757.1060252,
+      "available_kib": 10250448,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513757.3567073,
+      "available_kib": 10250448,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513757.6084895,
+      "available_kib": 10250208,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513757.8600981,
+      "available_kib": 10239000,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513758.111732,
+      "available_kib": 10237564,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513758.3623393,
+      "available_kib": 10237564,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513758.6133523,
+      "available_kib": 10237312,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513758.8650455,
+      "available_kib": 10236804,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513759.1164966,
+      "available_kib": 10231756,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513759.367688,
+      "available_kib": 10231812,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513759.6182823,
+      "available_kib": 10231572,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513759.8694222,
+      "available_kib": 10231572,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513760.1207075,
+      "available_kib": 10232192,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513760.3719676,
+      "available_kib": 10232332,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513760.6232538,
+      "available_kib": 10232668,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513760.8744183,
+      "available_kib": 10232668,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513761.125677,
+      "available_kib": 10233492,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513761.376402,
+      "available_kib": 10233492,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513761.6272333,
+      "available_kib": 10233492,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513761.8781297,
+      "available_kib": 10233492,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513762.12885,
+      "available_kib": 10233684,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513762.3801188,
+      "available_kib": 10235120,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513762.631036,
+      "available_kib": 10235120,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513762.8821776,
+      "available_kib": 10234956,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513763.132819,
+      "available_kib": 10235028,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513763.3835871,
+      "available_kib": 10235520,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513763.6340907,
+      "available_kib": 10234572,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513763.8852286,
+      "available_kib": 10234572,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513764.1363645,
+      "available_kib": 10235832,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513764.3877378,
+      "available_kib": 10231696,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513764.6388268,
+      "available_kib": 10231696,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513764.88972,
+      "available_kib": 10231696,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513765.1404645,
+      "available_kib": 10232512,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513765.3920171,
+      "available_kib": 10232512,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513765.6437378,
+      "available_kib": 10232512,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513765.8943467,
+      "available_kib": 10232512,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513766.1456194,
+      "available_kib": 10233540,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513766.3962097,
+      "available_kib": 10234868,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513766.647986,
+      "available_kib": 10234616,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513766.8996668,
+      "available_kib": 10234124,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513767.151103,
+      "available_kib": 10235448,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513767.4020104,
+      "available_kib": 10235972,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513767.6525784,
+      "available_kib": 10251124,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513767.904548,
+      "available_kib": 10251124,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513768.1555648,
+      "available_kib": 10251160,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513768.4075449,
+      "available_kib": 10251160,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513768.6598237,
+      "available_kib": 10250412,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513768.9111285,
+      "available_kib": 10250412,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513769.163889,
+      "available_kib": 10250668,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513769.4150267,
+      "available_kib": 10250668,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513769.6656263,
+      "available_kib": 10250668,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513769.9162598,
+      "available_kib": 10250808,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513770.167075,
+      "available_kib": 10250568,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513770.4190645,
+      "available_kib": 10250568,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513770.6700642,
+      "available_kib": 10247404,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513770.9210587,
+      "available_kib": 10247404,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513771.1733222,
+      "available_kib": 10244496,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513771.4241614,
+      "available_kib": 10242696,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513771.6764119,
+      "available_kib": 10242304,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513771.9274642,
+      "available_kib": 10242304,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513772.1789427,
+      "available_kib": 10241912,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513772.430122,
+      "available_kib": 10241912,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513772.6813998,
+      "available_kib": 10241028,
+      "scenario": "all_five"
+    },
+    {
+      "unix": 1794513772.9327116,
+      "available_kib": 10237124,
+      "scenario": "all_five"
+    }
+  ],
+  "scope": "One matched English synthetic report; warm single-model samples and one report per each of five models together",
+  "minimum_available_gib": 9.757587432861328
+}

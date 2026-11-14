@@ -298,7 +298,7 @@ def test_body_at_exact_limit_is_delivered_unchanged() -> None:
 
 @pytest.mark.parametrize(
     "path",
-    ["/v1/application_config", "/pay/complete"],
+    ["/v1/application_config", "/payments/return"],
 )
 def test_endpoint_rate_is_loaded_from_json_and_counters_are_per_application(
     configuration: Configuration,
@@ -344,29 +344,32 @@ def test_endpoint_rate_is_loaded_from_json_and_counters_are_per_application(
         clients.append(
             TestClient(
                 application,
+                follow_redirects=False,
             ),
         )
     try:
-        assert (
-            clients[0]
-            .get(
-                path,
+        assert clients[0].get(
+            path,
+        ).status_code == (
+            200
+            if path.startswith(
+                "/v1/",
             )
-            .status_code
-            == 200
+            else 303
         )
         response = clients[0].get(
             path,
         )
         assert response.status_code == 429
         assert response.headers["Retry-After"] == "60"
-        assert (
-            clients[1]
-            .get(
-                path,
+        assert clients[1].get(
+            path,
+        ).status_code == (
+            200
+            if path.startswith(
+                "/v1/",
             )
-            .status_code
-            == 200
+            else 303
         )
     finally:
         for client in clients:

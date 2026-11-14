@@ -2,14 +2,13 @@ import Combine
 import DoglyadUI
 import Foundation
 import NestedObservableObject
-import UIKit
 
 @MainActor
 final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionRecoveryStateProtocol> {
     private let messager: DMessager
     @Published var focus: SubscriptionRecoveryFocus?
     @NestedObservableObject var recoveryTextController = DTextFieldController()
-    private let createRecoveryKey: () async throws -> String
+    private let arguments: SubscriptionRecoveryArguments?
     private let recover: (String) async throws -> SubscriptionStatus?
     private var isDismissalRequested = false
 
@@ -22,12 +21,11 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
         onSubscriptionStatusUpdated: @escaping (SubscriptionStatus?) -> Void,
         getSettingsAI: @escaping () -> SettingsAI,
         onRefreshSubscriptionStatus: @escaping () async -> Void,
-        arguments _: SubscriptionRecoveryArguments?,
-        createRecoveryKey: @escaping () async throws -> String,
+        arguments: SubscriptionRecoveryArguments?,
         recover: @escaping (String) async throws -> SubscriptionStatus?,
     ) {
         self.messager = messager
-        self.createRecoveryKey = createRecoveryKey
+        self.arguments = arguments
         self.recover = recover
         super.init(
             state: SubscriptionRecoveryInitialState(),
@@ -46,34 +44,16 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
 
     var isProcessing: Bool {
         switch state {
-        case _ as SubscriptionRecoveryLoadingState: true
+        case _ as SubscriptionRecoveryRestoreLoadingState: true
         default: false
-        }
-    }
-
-    var isRestoreEnabled: Bool {
-        !isProcessing && !isDismissalRequested && !recoveryTextController.text.trimmingCharacters(
-            in: .whitespacesAndNewlines,
-        ).isEmpty
-    }
-
-    private var stableState: any SubscriptionRecoveryStateProtocol {
-        switch state {
-        case let loading as SubscriptionRecoveryLoadingState: loading.previousState
-        case let failed as SubscriptionRecoveryErrorState: failed.previousState
-        default: state
         }
     }
 
     override func onDisappear() {
         super.onDisappear()
-        switch state {
-        case let loading as SubscriptionRecoveryLoadingState:
-            emit(
-                loading.previousState,
-            )
-        default: break
-        }
+        emit(
+            SubscriptionRecoveryInitialState(),
+        )
     }
 
     func onTapBack() {
@@ -95,70 +75,15 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
         focus = nil
     }
 
-    func onTapCreateKey() {
-        guard !isProcessing, !isDismissalRequested else {
-            return
-        }
-        unfocus()
-        let previous = stableState
-        let loading = SubscriptionRecoveryKeyCreationLoadingState(
-            previousState: previous,
-        )
-        emit(
-            loading,
-        )
-        operationTask = Task {
-            guard !Task.isCancelled, !isDismissalRequested, state === loading else {
-                return
-            }
-            do {
-                let key = try await createRecoveryKey()
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
-                    return
-                }
-                emit(
-                    SubscriptionRecoverySuccessState(
-                        key: key,
-                    ),
-                )
-            } catch {
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
-                    return
-                }
-                emit(
-                    SubscriptionRecoveryErrorState(
-                        previousState: previous,
-                        errorDescription: l10n.text(
-                            .errorUnknownDescription,
-                        ),
-                    ),
-                )
-                messager.showUnknownError(
-                    l10n: l10n,
-                )
-            }
-        }
-    }
-
-    func onTapCopyKey() {
-        switch stableState {
-        case let key as SubscriptionRecoverySuccessState: UIPasteboard.general.string = key.key
-        default: break
-        }
-    }
-
     func onTapRestore() {
-        guard isRestoreEnabled else {
+        guard !isProcessing, !isDismissalRequested else {
             return
         }
         unfocus()
         let key = recoveryTextController.text.trimmingCharacters(
             in: .whitespacesAndNewlines,
         )
-        let previous = stableState
-        let loading = SubscriptionRecoveryRestoreLoadingState(
-            previousState: previous,
-        )
+        let loading = SubscriptionRecoveryRestoreLoadingState()
         emit(
             loading,
         )
@@ -176,19 +101,39 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
                 updateSubscriptionStatus(
                     status,
                 )
+                guard status != nil else {
+                    emit(
+                        SubscriptionRecoveryInitialState(),
+                    )
+                    messager.show(
+                        type: .error,
+                        title: l10n[
+                            .subscriptionRecoveryNoActiveTitle,
+                        ],
+                        description: l10n[
+                            .subscriptionRecoveryNoActiveDescription,
+                        ],
+                    )
+                    return
+                }
                 isDismissalRequested = true
+                messager.show(
+                    type: .success,
+                    title: l10n[
+                        .subscriptionRecoverySuccessTitle,
+                    ],
+                    description: l10n[
+                        .subscriptionRecoverySuccessDescription,
+                    ],
+                )
                 coordinator.pop()
+                arguments?.onRecovered?()
             } catch {
                 guard !Task.isCancelled, !isDismissalRequested, state === loading else {
                     return
                 }
                 emit(
-                    SubscriptionRecoveryErrorState(
-                        previousState: previous,
-                        errorDescription: l10n.text(
-                            .subscriptionRecoveryFailedDescription,
-                        ),
-                    ),
+                    SubscriptionRecoveryInitialState(),
                 )
                 messager.showUnknownError(
                     l10n: l10n,

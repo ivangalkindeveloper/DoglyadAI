@@ -7,3 +7,8 @@ class TooManyAttachmentsError(ApiError):
     code = "tooManyAttachments"
     description = "Too many attachments"
     status_code = 422
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

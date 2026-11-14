@@ -7,6 +7,22 @@ struct UltrasoundConfig: Codable {
     let scanPhotoResizeMaxDimension: Double
     let scanPhotoCompressionQuality: Double
     let defaultPatientDateOfBirthGap: Int
+
+    init(
+        neuralModel: UltrasoundNeuralModelConfig,
+        examinationNeuralModel: UltrasoundExaminationNeuralModelConfig,
+        scanPhotoMaxNumber: Int,
+        scanPhotoResizeMaxDimension: Double,
+        scanPhotoCompressionQuality: Double,
+        defaultPatientDateOfBirthGap: Int,
+    ) {
+        self.neuralModel = neuralModel
+        self.examinationNeuralModel = examinationNeuralModel
+        self.scanPhotoMaxNumber = scanPhotoMaxNumber
+        self.scanPhotoResizeMaxDimension = scanPhotoResizeMaxDimension
+        self.scanPhotoCompressionQuality = scanPhotoCompressionQuality
+        self.defaultPatientDateOfBirthGap = defaultPatientDateOfBirthGap
+    }
 }
 
 extension UltrasoundConfig {

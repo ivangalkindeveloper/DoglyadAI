@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct DictationSessionTests {
+    init() {}
+
     @Test(
         "A late result from a cancelled session cannot enter a new session",
     )

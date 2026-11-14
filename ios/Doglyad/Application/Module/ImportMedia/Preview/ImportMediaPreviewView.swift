@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any ImportMediaStateProtocol
 
+        init(
+            state: any ImportMediaStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = ImportMediaViewModel(
                 container: container,

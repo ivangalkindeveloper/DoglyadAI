@@ -10,6 +10,12 @@ struct ScanScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: ScanArguments?
 
+    init(
+        arguments: ScanArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         ScanScreenView(
             viewModel: ScanViewModel(

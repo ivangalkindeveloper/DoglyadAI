@@ -6,6 +6,8 @@ import FoundationModels
 import Testing
 
 struct VoiceLocalizationTests {
+    init() {}
+
     @Test(
         "Backend catalogs are complete and selected explicitly, including regional locales",
         arguments: ["en", "en_US", "ru", "ru_RU"],

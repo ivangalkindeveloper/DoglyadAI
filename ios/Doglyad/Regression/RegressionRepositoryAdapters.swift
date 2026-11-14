@@ -91,6 +91,8 @@
         private var delayConsumed = false
         private var consumed = false
 
+        init() {}
+
         func check(
             _ name: String,
         ) async throws {

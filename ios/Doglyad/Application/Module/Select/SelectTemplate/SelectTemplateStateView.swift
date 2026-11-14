@@ -5,6 +5,8 @@ struct SelectTemplateStateView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: SelectTemplateViewModel
 
+    init() {}
+
     var body: some View {
         ForEach(
             viewModel.templates,

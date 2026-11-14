@@ -10,6 +10,7 @@ import pytest
 from sqlalchemy import func, select
 
 from app.core.configuration.configuration import Configuration
+from app.core.localization.language_code import LanguageCode
 from app.database.billing_event_db import BillingEventDB
 from app.database.billing_subscription_db import BillingSubscriptionDB
 from app.error.billing_limit_error import BillingLimitError
@@ -43,7 +44,7 @@ def test_parallel_quota_reservations_cannot_exceed_paid_limit(
                             uuid4(),
                         ),
                         owner_id=owner,
-                        source="yookassa",
+                        source="robokassa",
                         external_id="parallel-quota",
                         plan_id="monthly",
                         entitlement="base",
@@ -113,33 +114,24 @@ def test_parallel_checkouts_and_callbacks_grant_one_period(
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            first = await ctx.service.create_checkout(
-                owner,
-                "monthly",
-            )
-            second = await ctx.service.create_checkout(
-                owner,
-                "monthly",
-            )
-            browser_first, _ = await ctx.service.bind_checkout(
-                first.code,
-                None,
-            )
-            browser_second, _ = await ctx.service.bind_checkout(
-                second.code,
-                None,
-            )
-            urls = await asyncio.gather(
-                ctx.service.start_checkout_payment(
-                    browser_first,
-                    is_auto_renewal_accepted=True,
-                ),
-                ctx.service.start_checkout_payment(
-                    browser_second,
-                    is_auto_renewal_accepted=True,
+            prepared = await asyncio.gather(
+                *(
+                    ctx.checkout.prepare(
+                        owner,
+                        "monthly",
+                        LanguageCode.RU,
+                    )
+                    for _ in range(
+                        8,
+                    )
                 ),
             )
-            assert urls[0] == urls[1]
+            assert (
+                len(
+                    {item.payment.id for item in prepared},
+                )
+                == 1
+            )
             assert (
                 len(
                     ctx.payments,
@@ -148,7 +140,12 @@ def test_parallel_checkouts_and_callbacks_grant_one_period(
             )
             assert (
                 sum(
-                    (request.method == "POST" for request in ctx.requests),
+                    (
+                        request.url.path.endswith(
+                            "/CreateInvoice",
+                        )
+                        for request in ctx.requests
+                    ),
                 )
                 == 1
             )
@@ -206,13 +203,10 @@ def test_parallel_checkouts_and_callbacks_grant_one_period(
     )
 
 
-def test_parallel_sdk_requests_use_one_tokenized_payment(
+def test_parallel_checkouts_dispatch_one_invoice(
     tmp_path: Path,
     configuration: Configuration,
 ) -> None:
-    from app.core.localization.language_code import LanguageCode
-    from app.model.billing.billing_tokenize_payment_request import BillingTokenizePaymentRequest
-
     async def run() -> None:
         async with BillingTestContext(
             tmp_path,
@@ -223,7 +217,7 @@ def test_parallel_sdk_requests_use_one_tokenized_payment(
             )
             prepared = await asyncio.gather(
                 *(
-                    ctx.sdk.prepare(
+                    ctx.checkout.prepare(
                         owner,
                         "monthly",
                         LanguageCode.RU,
@@ -238,26 +232,6 @@ def test_parallel_sdk_requests_use_one_tokenized_payment(
                     {result.payment.id for result in prepared},
                 )
                 == 1
-            )
-            request = BillingTokenizePaymentRequest(
-                paymentId=prepared[0].payment.id,
-                paymentToken="parallel-sdk-token",
-                termsVersion=prepared[0].termsVersion,
-                isAutoRenewalAccepted=True,
-            )
-            responses = await asyncio.gather(
-                *(
-                    ctx.sdk.tokenize(
-                        owner,
-                        request,
-                    )
-                    for _ in range(
-                        8,
-                    )
-                ),
-            )
-            assert all(
-                (response.status == "pending" for response in responses),
             )
             assert (
                 len(

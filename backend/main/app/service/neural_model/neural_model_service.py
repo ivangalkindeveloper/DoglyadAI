@@ -7,6 +7,11 @@ from app.model.neural_model.neural_model_service_request import NeuralModelServi
 
 
 class NeuralModelService(ABC):
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()
+
     @abstractmethod
     async def call(
         self,

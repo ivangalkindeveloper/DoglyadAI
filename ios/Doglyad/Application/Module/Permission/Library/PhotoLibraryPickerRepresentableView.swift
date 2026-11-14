@@ -5,6 +5,14 @@ struct PhotoLibraryPickerRepresentableView: UIViewControllerRepresentable {
     let selectionLimit: Int
     let onComplete: ([UIImage], Bool) -> Void
 
+    init(
+        selectionLimit: Int,
+        onComplete: @escaping ([UIImage], Bool) -> Void,
+    ) {
+        self.selectionLimit = selectionLimit
+        self.onComplete = onComplete
+    }
+
     func makeUIViewController(
         context: Context,
     ) -> PHPickerViewController {

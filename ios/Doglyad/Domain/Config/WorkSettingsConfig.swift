@@ -2,6 +2,12 @@ import Foundation
 
 struct WorkSettingsConfig: Codable, Equatable {
     let emailMaxLength: Int
+
+    init(
+        emailMaxLength: Int,
+    ) {
+        self.emailMaxLength = emailMaxLength
+    }
 }
 
 extension WorkSettingsConfig {

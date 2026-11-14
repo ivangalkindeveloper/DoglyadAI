@@ -1,0 +1,149 @@
+{
+  "is_complete": true,
+  "model_id": "ZJU-AI4H/Hulu-Med-32B",
+  "checks": [
+    {
+      "name": "plain_text",
+      "seconds": 0.37655421199451666,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 1,
+      "response_sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+      "is_passed": true
+    },
+    {
+      "name": "structured_json",
+      "seconds": 0.9452197679929668,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 13,
+      "response_sha256": "fb48cb3f38e591ec3d43ee511fdce65c11dfb32efab94883ce3d9c9d8dc23a81",
+      "is_passed": true
+    },
+    {
+      "name": "report_ru",
+      "seconds": 44.64879399299389,
+      "first_delta_seconds": 32.121955512993736,
+      "delta_count": 132,
+      "response_chars": 350,
+      "response_sha256": "6f0d6099015ae67d17fd537224b9a73549e09dc054eadbc70bb2f6efd9d41a09",
+      "is_passed": true
+    },
+    {
+      "name": "report_en",
+      "seconds": 8.654879079011152,
+      "first_delta_seconds": 0.46186833300453145,
+      "delta_count": 89,
+      "response_chars": 313,
+      "response_sha256": "b7ed95bf28447a25f28943a7cbe809610c5dba8d7981a4ad8ca63bed76846a7f",
+      "is_passed": true
+    },
+    {
+      "name": "image",
+      "seconds": 0.9143373619881459,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 16,
+      "response_sha256": "c917de2e8d420d0d22645e4cc66c7fd6c425a75bffdf931b6db774324f8e74c3",
+      "is_passed": true
+    },
+    {
+      "name": "image_1024x768",
+      "seconds": 1.720889874995919,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 16,
+      "response_sha256": "c917de2e8d420d0d22645e4cc66c7fd6c425a75bffdf931b6db774324f8e74c3",
+      "is_passed": true
+    },
+    {
+      "name": "six_images",
+      "seconds": 2.805490304992418,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 60,
+      "response_sha256": "4ec58f1e8576f5a437cf24b5401c77c837f19ef491c4b1ed0c4f8ec802e2c1ed",
+      "is_passed": true
+    },
+    {
+      "name": "parallel_1",
+      "seconds": 0.4037918130052276,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 1,
+      "response_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+      "is_passed": true
+    },
+    {
+      "name": "parallel_3",
+      "seconds": 0.40458039499935694,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 1,
+      "response_sha256": "4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce",
+      "is_passed": true
+    },
+    {
+      "name": "parallel_4",
+      "seconds": 0.4141729600087274,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 1,
+      "response_sha256": "4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a",
+      "is_passed": true
+    },
+    {
+      "name": "parallel_8",
+      "seconds": 0.41438379300234374,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 1,
+      "response_sha256": "2c624232cdd221771294dfbb310aca000a0df6ac8b66b696d90ef06fdefb64a3",
+      "is_passed": true
+    },
+    {
+      "name": "parallel_6",
+      "seconds": 0.41465358799905516,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 1,
+      "response_sha256": "e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683",
+      "is_passed": true
+    },
+    {
+      "name": "parallel_2",
+      "seconds": 0.41526250400056597,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 1,
+      "response_sha256": "d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35",
+      "is_passed": true
+    },
+    {
+      "name": "parallel_5",
+      "seconds": 0.41552757799217943,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 1,
+      "response_sha256": "ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d",
+      "is_passed": true
+    },
+    {
+      "name": "parallel_7",
+      "seconds": 0.41621969400148373,
+      "first_delta_seconds": null,
+      "delta_count": 0,
+      "response_chars": 1,
+      "response_sha256": "7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451",
+      "is_passed": true
+    }
+  ],
+  "scope": "VLLMService transport inside the deployed backend; public App Check checked separately",
+  "configured_model_ids": [
+    "google/medgemma-27b-it",
+    "google/medgemma-4b-it",
+    "google/medgemma-1.5-4b-it",
+    "ZJU-AI4H/Hulu-Med-32B"
+  ],
+  "parallel_batch_seconds": 0.417240677998052
+}

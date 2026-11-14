@@ -2,6 +2,8 @@ import DoglyadUI
 import Testing
 
 struct DTextFieldValidatorTests {
+    init() {}
+
     @Test
     func regexValidatorRequiresFullMatch() {
         let validator = DTextFieldRegexValidator(

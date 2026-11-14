@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct DictationLabeledFormParserTests {
+    init() {}
+
     @Test(
         "Reordered Russian labels separated by dashes retain all five dictated fields",
     )

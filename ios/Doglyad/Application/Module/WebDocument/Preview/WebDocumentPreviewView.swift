@@ -10,6 +10,14 @@
         let state: any WebDocumentStateProtocol
         var document: WebDocumentPreviewDocument = .privacyPolicy
 
+        init(
+            state: any WebDocumentStateProtocol,
+            document: WebDocumentPreviewDocument = .privacyPolicy,
+        ) {
+            self.state = state
+            self.document = document
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as WebDocumentErrorState: true

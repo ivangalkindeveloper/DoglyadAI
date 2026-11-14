@@ -7,3 +7,8 @@ class BillingPurchaseError(ApiError):
     code = "billingPurchaseInvalid"
     description = "The purchase could not be verified"
     status_code = 400
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

@@ -6,6 +6,14 @@ enum DNeuralUltrasoundDictationExplicitFactsExtractor {
     private struct DNeuralUltrasoundFactMatch {
         let quote: String
         let value: String
+
+        init(
+            quote: String,
+            value: String,
+        ) {
+            self.quote = quote
+            self.value = value
+        }
     }
 
     static func extract(

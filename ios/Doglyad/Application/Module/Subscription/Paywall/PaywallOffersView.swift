@@ -5,6 +5,12 @@ struct PaywallOffersView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let state: PaywallContentState
 
+    init(
+        state: PaywallContentState,
+    ) {
+        self.state = state
+    }
+
     var body: some View {
         PaywallSegmentTypeView(
             state: state,
@@ -17,5 +23,11 @@ struct PaywallOffersView: DViewProtocol {
         PaywallPlansView(
             state: state,
         )
+
+        PaywallAutoRenewalView(
+            state: state,
+        )
+
+        PaywallFooterLinksView()
     }
 }

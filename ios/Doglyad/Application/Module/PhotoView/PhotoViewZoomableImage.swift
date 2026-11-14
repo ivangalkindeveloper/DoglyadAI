@@ -11,6 +11,18 @@ struct PhotoViewZoomableImage: DViewProtocol {
     @State private var transform = PhotoViewImageTransform()
     @GestureState private var gestureValue: SimultaneousGesture<MagnifyGesture, DragGesture>.Value?
 
+    init(
+        photoId: UUID,
+        image: UIImage,
+        isSelected: Bool,
+        contentInsets: EdgeInsets,
+    ) {
+        self.photoId = photoId
+        self.image = image
+        self.isSelected = isSelected
+        self.contentInsets = contentInsets
+    }
+
     var body: some View {
         GeometryReader { proxy in
             let imageSize = viewModel.fittedImageSize(

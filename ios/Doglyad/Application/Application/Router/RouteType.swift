@@ -15,7 +15,7 @@ enum ScreenType: Hashable {
     case storage
     case workSettings
     case subscriptionRecovery
-    case manageSubscription
+    case subscriptionManage
     case paywall
 }
 
@@ -38,6 +38,8 @@ enum SheetType: Hashable {
     case patientConsent
     case reportReceived
     case webDocument
+    case subscriptionAutoRenewalDisabling
+    case subscriptionChange
     case storageClearProtocols
     case storageClearSpeechModel
     case storageClearAll

@@ -2,9 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 from typing import Literal
-from urllib.parse import urlsplit
 
-from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 from app.core.configuration.neural_model_service_type import NeuralModelServiceType
@@ -15,7 +13,7 @@ class Variables(BaseSettings):
         extra="ignore",
     )
 
-    # Selects configuration documents and the matching YooKassa test/live mode.
+    # Selects configuration documents and the matching Robokassa test/live mode.
     # Generation routing and App Check remain identical in both environments.
     environment: Literal["development", "production"]
 
@@ -46,10 +44,11 @@ class Variables(BaseSettings):
 
     # Billing credentials never belong in the public application configuration.
     billing_database_url: str | None = None
-    billing_public_url: str | None = None
-    yookassa_shop_id: str | None = None
-    yookassa_secret_key: str | None = None
-    yookassa_client_application_key: str | None = None
+    robokassa_merchant_login: str | None = None
+    robokassa_password1: str | None = None
+    robokassa_password2: str | None = None
+    robokassa_password3: str | None = None
+    robokassa_hash_algorithm: Literal["md5", "sha256", "sha384", "sha512"] = "sha256"
     apple_bundle_id: str = "com.medical.doglyad"
     apple_app_id: int | None = None
     apple_root_certificates_path: Path | None = None
@@ -58,10 +57,10 @@ class Variables(BaseSettings):
     apple_private_key_path: Path | None = None
     is_apple_sandbox_allowed: bool = False
     # Temporary launch gate: production alone must not enable real charges.
-    is_yookassa_live_enabled: bool = False
+    is_robokassa_live_enabled: bool = False
 
     @property
-    def is_yookassa_test(
+    def is_robokassa_test(
         self,
     ) -> bool:
         return self.environment == "development"
@@ -79,33 +78,3 @@ class Variables(BaseSettings):
             .parents[3]
             / "config"
         ) / self.environment
-
-    @field_validator(
-        "billing_public_url",
-    )
-    @classmethod
-    def validate_billing_public_url(
-        cls,
-        value: str | None,
-    ) -> str | None:
-        if value is None:
-            return None
-        value = value.strip().rstrip(
-            "/",
-        )
-        url = urlsplit(
-            value,
-        )
-        if (
-            url.scheme != "https"
-            or not url.netloc
-            or url.path != "/pay"
-            or url.query
-            or url.fragment
-            or url.username
-            or url.password
-        ):
-            raise ValueError(
-                "BILLING_PUBLIC_URL must be an HTTPS /pay URL without query or credentials",
-            )
-        return value

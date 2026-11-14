@@ -6,6 +6,14 @@ struct SelectTranscriptParserBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: SelectTranscriptParserViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> SelectTranscriptParserViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DBottomSheet(
             title: l10n[

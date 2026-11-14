@@ -9,6 +9,12 @@ struct SubscriptionRecoveryScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: SubscriptionRecoveryArguments?
 
+    init(
+        arguments: SubscriptionRecoveryArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         SubscriptionRecoveryScreenView(
             viewModel: SubscriptionRecoveryViewModel(
@@ -35,9 +41,6 @@ struct SubscriptionRecoveryScreen: View {
                     await subscriptionViewModel.refreshStatus()
                 },
                 arguments: arguments,
-                createRecoveryKey: { [subscriptionViewModel] in
-                    try await subscriptionViewModel.createRecoveryKey()
-                },
                 recover: { [subscriptionViewModel] in
                     try await subscriptionViewModel.recover(
                         key: $0,

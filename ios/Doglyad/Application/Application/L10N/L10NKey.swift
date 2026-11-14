@@ -17,10 +17,8 @@ enum L10NKey: String, CaseIterable, Sendable {
     case buttonGallery
     case buttonGenerate
     case buttonGenerateProtocol
-    case buttonManageSubscription
     case buttonNext
     case buttonOpenSettings
-    case buttonPrivacyPolicy
     case buttonRepeatGenerate
     case buttonRetry
     case buttonSave
@@ -31,7 +29,7 @@ enum L10NKey: String, CaseIterable, Sendable {
     case buttonShareEmail
     case buttonSpeech
     case buttonStart
-    case buttonTermsAndConditions
+    case buttonSubscriptionManage
     case buttonUpdate
     case dateTodayLabel
     case dateYesterdayLabel
@@ -50,32 +48,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case importMediaTitle
     case legalUpdateDescription
     case legalUpdateTitle
-    case manageSubscriptionActiveLabel
-    case manageSubscriptionAppleManageDescription
-    case manageSubscriptionAppleRefundDescription
-    case manageSubscriptionAutoRenewOffDescription
-    case manageSubscriptionAutoRenewOnDescription
-    case manageSubscriptionCancelRenewalButton
-    case manageSubscriptionCancelRenewalDescription
-    case manageSubscriptionChangeTypeButton
-    case manageSubscriptionChangeTypeDescription
-    case manageSubscriptionEmptyDescription
-    case manageSubscriptionEmptyTitle
-    case manageSubscriptionLoadFailedDescription
-    case manageSubscriptionManageButton
-    case manageSubscriptionNoPurchasesDescription
-    case manageSubscriptionPaidUntilDescription
-    case manageSubscriptionRecoveryButton
-    case manageSubscriptionRecoveryDescription
-    case manageSubscriptionRefundButton
-    case manageSubscriptionRenewalStoppedDescription
-    case manageSubscriptionRestoreButton
-    case manageSubscriptionRestoreDescription
-    case manageSubscriptionSupportButton
-    case manageSubscriptionSupportDescription
-    case manageSubscriptionTitle
-    case manageSubscriptionUpdatingDescription
-    case manageSubscriptionYooKassaRefundDescription
     case menuAboutAppButton
     case menuHistoryDescription
     case menuHistoryEmptyDescription
@@ -121,17 +93,17 @@ enum L10NKey: String, CaseIterable, Sendable {
     case patientConsentDescription
     case patientConsentDoNotAskAgainLabel
     case patientConsentTitle
-    case paywallAnnualLabel
-    case paywallCancelDescription
+    case paywallAutoRenewalDescription
+    case paywallAutoRenewalLabel
     case paywallContinueButton
     case paywallDescription
-    case paywallMonthlyLabel
-    case paywallPlanTitle
+    case paywallPrivacyPolicyLabel
+    case paywallPurchaseSuccessDescription
+    case paywallPurchaseSuccessTitle
     case paywallRestoreButton
     case paywallRetryButton
-    case paywallSixMonthLabel
+    case paywallTermsLabel
     case paywallTitle
-    case paywallWeeklyLabel
     case permissionCameraDescription
     case permissionCameraTitle
     case permissionPhotoLibraryDescription
@@ -145,7 +117,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case privacyPolicyTitle
     case readyMadeTemplateListEmptyDescription
     case readyMadeTemplateListErrorDescription
-    case readyMadeTemplateListErrorTitle
     case readyMadeTemplateListRetryButton
     case readyMadeTemplateListSearchEmptyDescription
     case readyMadeTemplateListSearchLabel
@@ -157,8 +128,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case reportDescriptionTitle
     case reportDetailModelCopyMessageDescription
     case reportDetailModelCopyMessageTitle
-    case reportDetailModelResponseUpdatedMessageDescription
-    case reportDetailModelResponseUpdatedMessageTitle
     case reportGenerationIncompleteLabel
     case reportGenerationInterruptedLabel
     case reportGenerationRetryButton
@@ -307,33 +276,51 @@ enum L10NKey: String, CaseIterable, Sendable {
     case storageDeleteSpeechModelSuccessMessageDescription
     case storageDeleteSpeechModelSuccessMessageTitle
     case storageTitle
-    case subscriptionBaseLabel
-    case subscriptionOfferingsUnavailableDescription
-    case subscriptionPaymentCheckErrorDescription
-    case subscriptionPaymentCodeLabel
-    case subscriptionPaymentCompleteDescription
-    case subscriptionPaymentConsentDescription
-    case subscriptionPaymentContinueButton
-    case subscriptionPaymentPayButton
-    case subscriptionPaymentRefreshButton
-    case subscriptionPaymentReturnButton
-    case subscriptionPaymentTitle
-    case subscriptionPendingDescription
+    case subscriptionAutoRenewalDisablingConfirmButton
+    case subscriptionAutoRenewalDisablingDescription
+    case subscriptionAutoRenewalDisablingSuccessDescription
+    case subscriptionAutoRenewalDisablingSuccessTitle
+    case subscriptionAutoRenewalDisablingTitle
+    case subscriptionChangeAppleDescription
+    case subscriptionChangeConfirmButton
+    case subscriptionChangeDescription
+    case subscriptionChangeTitle
+    case subscriptionManageActiveLabel
+    case subscriptionManageAppleManageDescription
+    case subscriptionManageAppleRefundDescription
+    case subscriptionManageAutoRenewOffDescription
+    case subscriptionManageAutoRenewOnDescription
+    case subscriptionManageChangeTypeButton
+    case subscriptionManageChangeTypeDescription
+    case subscriptionManageCopyRecoveryKeyButton
+    case subscriptionManageDisableAutoRenewalButton
+    case subscriptionManageEmptyDescription
+    case subscriptionManageEmptyTitle
+    case subscriptionManageManageButton
+    case subscriptionManageNoPurchasesDescription
+    case subscriptionManagePaidUntilDescription
+    case subscriptionManageRecoveryCopiedDescription
+    case subscriptionManageRecoveryDescription
+    case subscriptionManageRefundButton
+    case subscriptionManageRenewalAuthorizationDescription
+    case subscriptionManageRestoreButton
+    case subscriptionManageRestoreDescription
+    case subscriptionManageRobokassaRefundDescription
+    case subscriptionManageSupportButton
+    case subscriptionManageSupportDescription
+    case subscriptionManageTitle
+    case subscriptionPaymentPendingDescription
     case subscriptionProLabel
     case subscriptionPurchaseErrorDescription
-    case subscriptionRecoveryCopyButton
-    case subscriptionRecoveryCreateButton
-    case subscriptionRecoveryCreateDescription
-    case subscriptionRecoveryDescription
-    case subscriptionRecoveryFailedDescription
     case subscriptionRecoveryKeyLabel
     case subscriptionRecoveryKeyPlaceholder
+    case subscriptionRecoveryNoActiveDescription
+    case subscriptionRecoveryNoActiveTitle
     case subscriptionRecoveryRestoreButton
     case subscriptionRecoveryRestoreDescription
-    case subscriptionRecoveryRestoreTitle
-    case subscriptionRecoverySaveTitle
+    case subscriptionRecoverySuccessDescription
+    case subscriptionRecoverySuccessTitle
     case subscriptionRecoveryTitle
-    case subscriptionRestoreErrorDescription
     case templateAddReadyMadeTemplatesButton
     case templateAddTitle
     case templateContentDescription

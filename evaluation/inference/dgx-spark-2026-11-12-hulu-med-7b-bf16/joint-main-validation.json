@@ -1,0 +1,37 @@
+[
+  {
+    "scenario": "isolated_7b",
+    "model_id": "ZJU-AI4H/Hulu-Med-7B",
+    "is_main_validation_passed": true
+  },
+  {
+    "scenario": "isolated_32b",
+    "model_id": "ZJU-AI4H/Hulu-Med-32B",
+    "is_main_validation_passed": true
+  },
+  {
+    "scenario": "all_five",
+    "model_id": "google/medgemma-4b-it",
+    "is_main_validation_passed": true
+  },
+  {
+    "scenario": "all_five",
+    "model_id": "google/medgemma-1.5-4b-it",
+    "is_main_validation_passed": true
+  },
+  {
+    "scenario": "all_five",
+    "model_id": "ZJU-AI4H/Hulu-Med-7B",
+    "is_main_validation_passed": true
+  },
+  {
+    "scenario": "all_five",
+    "model_id": "google/medgemma-27b-it",
+    "is_main_validation_passed": true
+  },
+  {
+    "scenario": "all_five",
+    "model_id": "ZJU-AI4H/Hulu-Med-32B",
+    "is_main_validation_passed": true
+  }
+]

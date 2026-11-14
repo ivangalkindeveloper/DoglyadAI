@@ -22,7 +22,6 @@ from app.database.billing_payment_db import BillingPaymentDB
 from app.error.billing_purchase_error import BillingPurchaseError
 from app.model.billing.billing_catalog import BillingCatalog
 from app.model.billing.billing_period import BillingPeriod
-from app.model.billing.billing_tokenize_payment_request import BillingTokenizePaymentRequest
 from app.service.billing.subscription_service import SubscriptionService
 from tests.support.billing.billing_test_context import BillingTestContext
 
@@ -37,7 +36,7 @@ def catalog_for(
         ],
         "products": [
             {
-                "id": "test-yoo",
+                "id": "test-robokassa",
                 "period": period.value,
                 "entitlement": "pro",
                 "titleLocaleKey": "subscriptionProMonthlyLabel",
@@ -79,7 +78,7 @@ def test_missing_product_translation_prevents_billing_startup(
                     ctx.database,
                     configuration,
                     ctx.variables,
-                    ctx.service._yookassa,
+                    ctx.service._robokassa,
                     ctx.apple,
                 )
 
@@ -118,7 +117,7 @@ def test_invalid_localized_price_template_prevents_billing_startup(
                     ctx.database,
                     invalid,
                     ctx.variables,
-                    ctx.service._yookassa,
+                    ctx.service._robokassa,
                     ctx.apple,
                 )
 
@@ -271,17 +270,18 @@ def test_removing_product_stops_new_purchases(
             with pytest.raises(
                 BillingPurchaseError,
             ):
-                await ctx.sdk.prepare(
+                await ctx.checkout.prepare(
                     owner,
-                    "test-yoo",
+                    "test-robokassa",
                     LanguageCode.EN,
                 )
             with pytest.raises(
                 BillingPurchaseError,
             ):
-                await ctx.service.create_checkout(
+                await ctx.checkout.prepare(
                     owner,
-                    "test-yoo",
+                    "test-robokassa",
+                    LanguageCode.RU,
                 )
             assert ctx.requests == []
 
@@ -347,7 +347,7 @@ def test_missing_tier_translation_prevents_billing_startup(
                     ctx.database,
                     configuration,
                     ctx.variables,
-                    ctx.service._yookassa,
+                    ctx.service._robokassa,
                     ctx.apple,
                 )
 
@@ -469,7 +469,7 @@ def test_catalog_rejects_invalid_or_legacy_price(
         ),
     ],
 )
-def test_sdk_and_renewal_keep_paid_period_and_price_snapshot(
+def test_checkout_and_renewal_keep_paid_period_and_price_snapshot(
     tmp_path: Path,
     configuration: Configuration,
     monkeypatch: pytest.MonkeyPatch,
@@ -498,28 +498,17 @@ def test_sdk_and_renewal_keep_paid_period_and_price_snapshot(
                 lambda: now,
             )
             monkeypatch.setattr(
-                ctx.sdk,
+                ctx.checkout,
                 "_now",
                 lambda: now,
             )
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            prepared = await ctx.sdk.prepare(
+            await ctx.checkout.prepare(
                 owner,
-                "test-yoo",
+                "test-robokassa",
                 LanguageCode.EN,
-            )
-            label = configuration.application_localizations[LanguageCode.EN].strings[period.locale_key]
-            assert label in prepared.description
-            await ctx.sdk.tokenize(
-                owner,
-                BillingTokenizePaymentRequest(
-                    paymentId=prepared.payment.id,
-                    paymentToken="test-token",
-                    termsVersion=prepared.termsVersion,
-                    isAutoRenewalAccepted=True,
-                ),
             )
             payment = next(
                 iter(
@@ -612,17 +601,10 @@ def test_browser_checkout_snapshots_each_period(
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            checkout = await ctx.service.create_checkout(
+            await ctx.checkout.prepare(
                 owner,
-                "test-yoo",
-            )
-            browser, _ = await ctx.service.bind_checkout(
-                checkout.code,
-                None,
-            )
-            await ctx.service.start_checkout_payment(
-                browser,
-                is_auto_renewal_accepted=True,
+                "test-robokassa",
+                LanguageCode.RU,
             )
             async with ctx.database.session() as session:
                 order = await session.scalar(

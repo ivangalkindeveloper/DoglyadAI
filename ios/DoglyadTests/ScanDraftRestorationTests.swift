@@ -7,6 +7,8 @@ import Testing
 
 @MainActor
 struct ScanDraftRestorationTests {
+    init() {}
+
     @Test
     func delayedDraftMergesOnlyUntouchedValuesAndPersistsEarlyEdits() async throws {
         let repository = StateDraftRepository()

@@ -5,6 +5,8 @@ import SwiftData
 import Testing
 
 struct HistoryTests {
+    init() {}
+
     @Test
     func recentExaminationTypesKeepThreeUniqueSelectionsNewestFirst() {
         var ids: [String] = []

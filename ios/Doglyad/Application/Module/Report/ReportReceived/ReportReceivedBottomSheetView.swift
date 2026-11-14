@@ -7,6 +7,14 @@ struct ReportReceivedBottomSheetView: DViewProtocol {
     @StateObject var viewModel: ReportReceivedViewModel
     @State private var generationFailureCardHeight: CGFloat = 0
 
+    init(
+        viewModel: @autoclosure @escaping () -> ReportReceivedViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         let isSending = switch viewModel.state {
         case _ as ReportReceivedLoadingState: true

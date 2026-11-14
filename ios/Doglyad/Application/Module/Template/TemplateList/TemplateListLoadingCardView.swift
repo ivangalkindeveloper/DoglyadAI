@@ -4,6 +4,8 @@ import SwiftUI
 struct TemplateListLoadingCardView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
+    init() {}
+
     var body: some View {
         DCard(
             action: {},

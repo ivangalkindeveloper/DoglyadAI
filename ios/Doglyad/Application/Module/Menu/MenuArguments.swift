@@ -1,3 +1,5 @@
 import Router
 
-final class MenuArguments: RouteArgumentsProtocol {}
+final class MenuArguments: RouteArgumentsProtocol {
+    init() {}
+}

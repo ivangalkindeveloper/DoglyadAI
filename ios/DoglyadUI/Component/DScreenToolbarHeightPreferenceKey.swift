@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct DScreenToolbarHeightPreferenceKey: PreferenceKey {
+    init() {}
+
     static var defaultValue: CGFloat = 0
 
     static func reduce(

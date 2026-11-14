@@ -8,6 +8,8 @@ import Testing
 
 @MainActor
 struct PatientConsentTests {
+    init() {}
+
     @Test
     func preferenceDefaultsToTrueAndSurvivesRepositoryReload() async throws {
         let suite = "PatientConsentTests.\(UUID())"
@@ -118,7 +120,6 @@ struct PatientConsentTests {
         )
         resume?.resume()
         await task?.value
-        model.onTapConfirm()
         #expect(
             router.sheet == nil && confirmations == 1 && writes == [!isDoNotAskAgain],
         )
@@ -218,7 +219,6 @@ struct PatientConsentTests {
         model.onDisappear()
         resume?.resume()
         await task?.value
-        model.onTapConfirm()
         #expect(
             confirmations == 0 && model.operationTask == nil,
         )

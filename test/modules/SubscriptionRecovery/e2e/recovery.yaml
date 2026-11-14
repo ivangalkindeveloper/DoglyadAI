@@ -14,15 +14,15 @@ tags:
     text: ^Управление\ подпиской$
 - scrollUntilVisible:
     element:
-      text: ^Ключ\ восстановления$
+      text: ^Восстановить\ доступ$
     direction: DOWN
     timeout: 15000
 - tapOn:
-    text: ^Ключ\ восстановления$
+    text: ^Восстановить\ доступ$
 - assertVisible:
     text: ^Восстановление\ доступа$
-- tapOn:
-    text: ^Создать\ ключ\ восстановления$
 - assertVisible:
-    text: ^Скопировать\ ключ$
-- takeScreenshot: 061-SubscriptionRecovery-key
+    id: subscriptionRecovery.input
+- assertVisible:
+    text: ^Восстановить\ доступ$
+- takeScreenshot: 061-SubscriptionRecovery-form

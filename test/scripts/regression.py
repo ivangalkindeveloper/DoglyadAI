@@ -181,7 +181,7 @@ def doctor(config: dict) -> None:
             "Source catalog is stale. Use $test-regress-update before running."
         )
     suite = validate_suite()
-    if any(case.get("provider") == "yookassa" for case in suite):
+    if any(case.get("provider") == "robokassa" for case in suite):
         verify_test_merchant(payment_environment(ROOT, config))
 
 
@@ -365,7 +365,7 @@ def execute(config: dict, publish: bool) -> int:
         REGRESSION_ENCRYPTION_KEY=base64.urlsafe_b64encode(os.urandom(32)).decode(),
         REGRESSION_BACKEND_EVIDENCE_DIR=str(backend_evidence.resolve()),
     )
-    if any(case.get("provider") == "yookassa" for case in suite):
+    if any(case.get("provider") == "robokassa" for case in suite):
         env.update(payment_environment(ROOT, config))
         verify_test_merchant(env)
     device = None

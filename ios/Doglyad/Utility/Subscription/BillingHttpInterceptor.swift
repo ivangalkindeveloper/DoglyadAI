@@ -7,6 +7,16 @@ struct BillingHttpInterceptor: DHttpInterceptorProtocol {
     let baseVersionPrefix: String
     let securityDatabase: DSecurityDatabaseProtocol
 
+    init(
+        baseUrl: URL,
+        baseVersionPrefix: String,
+        securityDatabase: DSecurityDatabaseProtocol,
+    ) {
+        self.baseUrl = baseUrl
+        self.baseVersionPrefix = baseVersionPrefix
+        self.securityDatabase = securityDatabase
+    }
+
     func adapt(
         _ urlRequest: URLRequest,
     ) async throws -> URLRequest {

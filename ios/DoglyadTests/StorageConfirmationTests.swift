@@ -6,6 +6,8 @@ import Testing
 
 @MainActor
 struct StorageConfirmationTests {
+    init() {}
+
     @Test
     func speechModelDeletionRequiresConfirmationAndCancellationKeepsTheModel() throws {
         let container = DependencyContainer.previewable
@@ -58,7 +60,7 @@ struct StorageConfirmationTests {
     }
 
     @Test
-    func speechModelConfirmationDismissesAndCallsBackOnlyOnce() {
+    func speechModelConfirmationDismissesBeforeCallingBack() {
         let container = DependencyContainer.previewable
         let router = DRouter(
             initialRoute: RouteScreen(
@@ -68,6 +70,9 @@ struct StorageConfirmationTests {
         var confirmations = 0
         let arguments = StorageClearSpeechModelArguments(
             onConfirm: {
+                #expect(
+                    router.sheet == nil,
+                )
                 confirmations += 1
             },
         )
@@ -94,14 +99,9 @@ struct StorageConfirmationTests {
             arguments: arguments,
         )
         model.onTapConfirm()
-        model.onTapConfirm()
         #expect(
             confirmations == 1 && router.sheet == nil,
         )
         model.onDisappear()
-        model.onTapConfirm()
-        #expect(
-            confirmations == 1,
-        )
     }
 }

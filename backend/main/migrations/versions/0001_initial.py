@@ -56,6 +56,11 @@ def upgrade() -> None:
             nullable=True,
         ),
         sa.Column(
+            "recovery_ciphertext",
+            sa.LargeBinary(),
+            nullable=True,
+        ),
+        sa.Column(
             "created_at",
             sa.DateTime(
                 timezone=True,
@@ -153,6 +158,14 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.Column(
+            "starts_at",
+            sa.DateTime(
+                timezone=True,
+            ),
+            server_default="1970-01-01 00:00:00+00:00",
+            nullable=False,
+        ),
+        sa.Column(
             "paid_until",
             sa.DateTime(
                 timezone=True,
@@ -168,6 +181,13 @@ def upgrade() -> None:
             "is_auto_renewing",
             sa.Boolean(),
             nullable=False,
+        ),
+        sa.Column(
+            "receipt_email",
+            sa.String(
+                length=254,
+            ),
+            nullable=True,
         ),
         sa.Column(
             "payment_method_id",
@@ -216,7 +236,7 @@ def upgrade() -> None:
         sa.CheckConstraint(
             "(source = 'apple' AND apple_environment IS NOT NULL "
             "AND apple_environment IN ('Production', 'Sandbox')) "
-            "OR (source = 'yookassa' AND apple_environment IS NULL)",
+            "OR (source = 'robokassa' AND apple_environment IS NULL)",
             name="ck_billing_subscriptions_apple_environment",
         ),
         sa.ForeignKeyConstraint(
@@ -264,15 +284,15 @@ def upgrade() -> None:
         ),
     )
     op.create_index(
-        "uq_billing_subscriptions_yookassa_transaction",
+        "uq_billing_subscriptions_robokassa_transaction",
         "billing_subscriptions",
         ["external_id"],
         unique=True,
         postgresql_where=sa.text(
-            "source = 'yookassa'",
+            "source = 'robokassa'",
         ),
         sqlite_where=sa.text(
-            "source = 'yookassa'",
+            "source = 'robokassa'",
         ),
     )
     op.create_table(
@@ -337,7 +357,7 @@ def upgrade() -> None:
         unique=False,
     )
     op.create_table(
-        "billing_payments",
+        "report_generations",
         sa.Column(
             "id",
             sa.String(
@@ -353,7 +373,200 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.Column(
+            "request_id",
+            sa.String(
+                length=36,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "request_digest",
+            sa.String(
+                length=64,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "status",
+            sa.String(
+                length=16,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "model_id",
+            sa.String(
+                length=256,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "sequence",
+            sa.Integer(),
+            nullable=False,
+        ),
+        sa.Column(
+            "payload",
+            sa.LargeBinary(),
+            nullable=True,
+        ),
+        sa.Column(
+            "snapshot",
+            sa.LargeBinary(),
+            nullable=False,
+        ),
+        sa.Column(
+            "error_code",
+            sa.String(
+                length=80,
+            ),
+            nullable=True,
+        ),
+        sa.Column(
+            "created_at",
+            sa.DateTime(
+                timezone=True,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "expires_at",
+            sa.DateTime(
+                timezone=True,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "deadline_at",
+            sa.DateTime(
+                timezone=True,
+            ),
+            nullable=False,
+        ),
+        sa.ForeignKeyConstraint(
+            ["owner_id"],
+            ["billing_owners.id"],
+        ),
+        sa.PrimaryKeyConstraint(
+            "id",
+        ),
+        sa.UniqueConstraint(
+            "owner_id",
+            "request_id",
+        ),
+    )
+    op.create_index(
+        op.f(
+            "ix_report_generations_deadline_at",
+        ),
+        "report_generations",
+        ["deadline_at"],
+        unique=False,
+    )
+    op.create_index(
+        op.f(
+            "ix_report_generations_expires_at",
+        ),
+        "report_generations",
+        ["expires_at"],
+        unique=False,
+    )
+    op.create_index(
+        op.f(
+            "ix_report_generations_owner_id",
+        ),
+        "report_generations",
+        ["owner_id"],
+        unique=False,
+    )
+    op.create_index(
+        op.f(
+            "ix_report_generations_status",
+        ),
+        "report_generations",
+        ["status"],
+        unique=False,
+    )
+    op.create_table(
+        "billing_payments",
+        sa.Column(
+            "id",
+            sa.String(
+                length=36,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "source",
+            sa.String(
+                length=16,
+            ),
+            server_default="robokassa",
+            nullable=False,
+        ),
+        sa.Column(
+            "invoice_id",
+            sa.String(
+                length=19,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
+            "merchant_login",
+            sa.String(
+                length=128,
+            ),
+            nullable=True,
+        ),
+        sa.Column(
+            "is_test",
+            sa.Boolean(),
+            nullable=True,
+        ),
+        sa.Column(
+            "receipt_description",
+            sa.String(
+                length=128,
+            ),
+            nullable=True,
+        ),
+        sa.Column(
+            "receipt_email",
+            sa.String(
+                length=254,
+            ),
+            nullable=True,
+        ),
+        sa.Column(
+            "provider_invoice_uuid",
+            sa.String(
+                length=36,
+            ),
+            nullable=True,
+        ),
+        sa.Column(
+            "provider_operation_key",
+            sa.String(
+                length=128,
+            ),
+            nullable=True,
+        ),
+        sa.Column(
+            "owner_id",
+            sa.String(
+                length=36,
+            ),
+            nullable=False,
+        ),
+        sa.Column(
             "subscription_id",
+            sa.String(
+                length=36,
+            ),
+            nullable=True,
+        ),
+        sa.Column(
+            "previous_subscription_id",
             sa.String(
                 length=36,
             ),
@@ -419,13 +632,6 @@ def upgrade() -> None:
             nullable=False,
         ),
         sa.Column(
-            "payment_token_hash",
-            sa.String(
-                length=64,
-            ),
-            nullable=True,
-        ),
-        sa.Column(
             "payment_method_type",
             sa.String(
                 length=32,
@@ -445,6 +651,11 @@ def upgrade() -> None:
                 timezone=True,
             ),
             nullable=True,
+        ),
+        sa.Column(
+            "is_auto_renewing",
+            sa.Boolean(),
+            nullable=False,
         ),
         sa.Column(
             "provider_id",
@@ -516,11 +727,18 @@ def upgrade() -> None:
             ["billing_owners.id"],
         ),
         sa.ForeignKeyConstraint(
+            ["previous_subscription_id"],
+            ["billing_subscriptions.id"],
+        ),
+        sa.ForeignKeyConstraint(
             ["subscription_id"],
             ["billing_subscriptions.id"],
         ),
         sa.PrimaryKeyConstraint(
             "id",
+        ),
+        sa.UniqueConstraint(
+            "invoice_id",
         ),
         sa.UniqueConstraint(
             "provider_id",
@@ -555,100 +773,6 @@ def upgrade() -> None:
         unique=False,
     )
     op.create_table(
-        "billing_checkouts",
-        sa.Column(
-            "id",
-            sa.String(
-                length=36,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "owner_id",
-            sa.String(
-                length=36,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "plan_id",
-            sa.String(
-                length=128,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "code_hash",
-            sa.String(
-                length=64,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "browser_hash",
-            sa.String(
-                length=64,
-            ),
-            nullable=True,
-        ),
-        sa.Column(
-            "expires_at",
-            sa.DateTime(
-                timezone=True,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "payment_id",
-            sa.String(
-                length=36,
-            ),
-            nullable=True,
-        ),
-        sa.Column(
-            "apple_token",
-            sa.Text(),
-            nullable=True,
-        ),
-        sa.Column(
-            "is_auto_renewal_accepted",
-            sa.Boolean(),
-            nullable=False,
-        ),
-        sa.Column(
-            "terms_version",
-            sa.String(
-                length=64,
-            ),
-            nullable=True,
-        ),
-        sa.ForeignKeyConstraint(
-            ["owner_id"],
-            ["billing_owners.id"],
-        ),
-        sa.ForeignKeyConstraint(
-            ["payment_id"],
-            ["billing_payments.id"],
-        ),
-        sa.PrimaryKeyConstraint(
-            "id",
-        ),
-        sa.UniqueConstraint(
-            "browser_hash",
-        ),
-        sa.UniqueConstraint(
-            "code_hash",
-        ),
-    )
-    op.create_index(
-        op.f(
-            "ix_billing_checkouts_owner_id",
-        ),
-        "billing_checkouts",
-        ["owner_id"],
-        unique=False,
-    )
-    op.create_table(
         "billing_refunds",
         sa.Column(
             "id",
@@ -656,6 +780,13 @@ def upgrade() -> None:
                 length=128,
             ),
             nullable=False,
+        ),
+        sa.Column(
+            "provider_request_id",
+            sa.String(
+                length=128,
+            ),
+            nullable=True,
         ),
         sa.Column(
             "payment_id",
@@ -704,6 +835,9 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint(
             "id",
         ),
+        sa.UniqueConstraint(
+            "provider_request_id",
+        ),
     )
     op.create_index(
         op.f(
@@ -714,108 +848,6 @@ def upgrade() -> None:
         unique=False,
     )
 
-    op.create_table(
-        "report_generations",
-        sa.Column(
-            "id",
-            sa.String(
-                36,
-            ),
-            primary_key=True,
-        ),
-        sa.Column(
-            "owner_id",
-            sa.String(
-                36,
-            ),
-            sa.ForeignKey(
-                "billing_owners.id",
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "request_id",
-            sa.String(
-                36,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "request_digest",
-            sa.String(
-                64,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "status",
-            sa.String(
-                16,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "model_id",
-            sa.String(
-                256,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "sequence",
-            sa.Integer(),
-            nullable=False,
-        ),
-        sa.Column(
-            "payload",
-            sa.LargeBinary(),
-            nullable=True,
-        ),
-        sa.Column(
-            "snapshot",
-            sa.LargeBinary(),
-            nullable=False,
-        ),
-        sa.Column(
-            "error_code",
-            sa.String(
-                80,
-            ),
-            nullable=True,
-        ),
-        sa.Column(
-            "created_at",
-            sa.DateTime(
-                timezone=True,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "expires_at",
-            sa.DateTime(
-                timezone=True,
-            ),
-            nullable=False,
-        ),
-        sa.Column(
-            "deadline_at",
-            sa.DateTime(
-                timezone=True,
-            ),
-            nullable=False,
-        ),
-        sa.UniqueConstraint(
-            "owner_id",
-            "request_id",
-        ),
-    )
-    for name in ("owner_id", "status", "expires_at", "deadline_at"):
-        op.create_index(
-            f"ix_report_generations_{name}",
-            "report_generations",
-            [name],
-        )
-
 
 def downgrade() -> None:
     if context.is_offline_mode():
@@ -825,7 +857,6 @@ def downgrade() -> None:
     connection = op.get_bind()
     for table in (
         "report_generations",
-        "billing_checkouts",
         "billing_refunds",
         "billing_payments",
         "billing_usage",
@@ -845,9 +876,6 @@ def downgrade() -> None:
             raise RuntimeError(
                 "Cannot drop a populated billing ledger",
             )
-    op.drop_table(
-        "report_generations",
-    )
     op.drop_index(
         op.f(
             "ix_billing_refunds_payment_id",
@@ -856,15 +884,6 @@ def downgrade() -> None:
     )
     op.drop_table(
         "billing_refunds",
-    )
-    op.drop_index(
-        op.f(
-            "ix_billing_checkouts_owner_id",
-        ),
-        table_name="billing_checkouts",
-    )
-    op.drop_table(
-        "billing_checkouts",
     )
     op.drop_index(
         op.f(
@@ -889,6 +908,33 @@ def downgrade() -> None:
     )
     op.drop_index(
         op.f(
+            "ix_report_generations_status",
+        ),
+        table_name="report_generations",
+    )
+    op.drop_index(
+        op.f(
+            "ix_report_generations_owner_id",
+        ),
+        table_name="report_generations",
+    )
+    op.drop_index(
+        op.f(
+            "ix_report_generations_expires_at",
+        ),
+        table_name="report_generations",
+    )
+    op.drop_index(
+        op.f(
+            "ix_report_generations_deadline_at",
+        ),
+        table_name="report_generations",
+    )
+    op.drop_table(
+        "report_generations",
+    )
+    op.drop_index(
+        op.f(
             "ix_billing_usage_owner_id",
         ),
         table_name="billing_usage",
@@ -903,13 +949,13 @@ def downgrade() -> None:
         "billing_usage",
     )
     op.drop_index(
-        "uq_billing_subscriptions_yookassa_transaction",
+        "uq_billing_subscriptions_robokassa_transaction",
         table_name="billing_subscriptions",
         postgresql_where=sa.text(
-            "source = 'yookassa'",
+            "source = 'robokassa'",
         ),
         sqlite_where=sa.text(
-            "source = 'yookassa'",
+            "source = 'robokassa'",
         ),
     )
     op.drop_index(

@@ -77,10 +77,10 @@ tags: [e2e, Menu]
 - assertVisible: ^Настройки$
 - scrollUntilVisible:
     element:
-      text: ^Условия и Положения$
+      text: ^Условия использования$
     direction: DOWN
     centerElement: true
-- tapOn: ^Условия и Положения$
+- tapOn: ^Условия использования$
 - extendedWaitUntil:
     visible: .*Сведения о Разработчике.*
     timeout: 30000

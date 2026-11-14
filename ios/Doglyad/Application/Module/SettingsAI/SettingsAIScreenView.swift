@@ -7,6 +7,14 @@ struct SettingsAIScreenView: DViewProtocol {
     @StateObject var viewModel: SettingsAIViewModel
     @FocusState private var focus: SettingsAIFocus?
 
+    init(
+        viewModel: @autoclosure @escaping () -> SettingsAIViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[

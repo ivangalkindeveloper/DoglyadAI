@@ -6,6 +6,8 @@ import Testing
 
 @MainActor
 struct RepositoryOperationTests {
+    init() {}
+
     @Test
     func failedSelectionKeepsSheetOpenAndRetryDismissesOnlyAfterSaving() async {
         let container = DependencyContainer.previewable

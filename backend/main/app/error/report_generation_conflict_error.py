@@ -7,3 +7,8 @@ class ReportGenerationConflictError(ApiError):
     code = "reportGenerationConflict"
     description = "Generation request conflicts with an existing operation"
     status_code = 409
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

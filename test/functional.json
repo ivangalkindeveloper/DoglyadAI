@@ -1332,15 +1332,15 @@
       "id": "e2e-managesubscription-subscription",
       "title": "Проверить подготовленную тестовую подписку",
       "kind": "functional",
-      "flow": "modules/ManageSubscription/e2e/subscription.yaml",
+      "flow": "modules/SubscriptionManage/e2e/subscription.yaml",
       "sources": [
-        "ManageSubscription"
+        "SubscriptionManage"
       ],
       "screenshots": [
-        "060-ManageSubscription-active"
+        "060-SubscriptionManage-active"
       ],
-      "screen": "ManageSubscription",
-      "module": "ManageSubscription",
+      "screen": "SubscriptionManage",
+      "module": "SubscriptionManage",
       "subscriptionProfile": "pro",
       "dependsOn": []
     },
@@ -1348,41 +1348,41 @@
       "id": "e2e-managesubscription-profile-base",
       "title": "Активная подписка base",
       "kind": "functional",
-      "module": "ManageSubscription",
-      "screen": "ManageSubscription",
-      "flow": "modules/ManageSubscription/e2e/profile-base.yaml",
+      "module": "SubscriptionManage",
+      "screen": "SubscriptionManage",
+      "flow": "modules/SubscriptionManage/e2e/profile-base.yaml",
       "sources": [
-        "ManageSubscription"
+        "SubscriptionManage"
       ],
       "subscriptionProfile": "base",
       "screenshots": [
-        "ManageSubscription-base"
+        "SubscriptionManage-base"
       ]
     },
     {
       "id": "e2e-managesubscription-profile-pro",
       "title": "Активная подписка pro",
       "kind": "functional",
-      "module": "ManageSubscription",
-      "screen": "ManageSubscription",
-      "flow": "modules/ManageSubscription/e2e/profile-pro.yaml",
+      "module": "SubscriptionManage",
+      "screen": "SubscriptionManage",
+      "flow": "modules/SubscriptionManage/e2e/profile-pro.yaml",
       "sources": [
-        "ManageSubscription"
+        "SubscriptionManage"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "ManageSubscription-pro"
+        "SubscriptionManage-pro"
       ]
     },
     {
       "id": "e2e-managesubscription-support-refund",
       "title": "Поддержка и запрос возврата не меняют подписку",
       "kind": "functional",
-      "module": "ManageSubscription",
-      "screen": "ManageSubscription",
-      "flow": "modules/ManageSubscription/e2e/support-refund.yaml",
+      "module": "SubscriptionManage",
+      "screen": "SubscriptionManage",
+      "flow": "modules/SubscriptionManage/e2e/support-refund.yaml",
       "screenshots": [
-        "ManageSubscription-support-refund-canceled"
+        "SubscriptionManage-support-refund-canceled"
       ],
       "subscriptionProfile": "pro",
       "externalActions": [
@@ -1446,24 +1446,24 @@
       "id": "e2e-managesubscription-background-before-revocation",
       "title": "Активная Pro перед отзывом доступа в фоне",
       "kind": "functional",
-      "module": "ManageSubscription",
-      "screen": "ManageSubscription",
-      "flow": "modules/ManageSubscription/e2e/background-before-revocation.yaml",
+      "module": "SubscriptionManage",
+      "screen": "SubscriptionManage",
+      "flow": "modules/SubscriptionManage/e2e/background-before-revocation.yaml",
       "screenshots": [
-        "ManageSubscription-before-revocation"
+        "SubscriptionManage-before-revocation"
       ],
       "subscriptionProfile": "pro",
       "dependsOn": []
     },
     {
       "id": "e2e-managesubscription-revoked",
-      "module": "ManageSubscription",
-      "screen": "ManageSubscription",
+      "module": "SubscriptionManage",
+      "screen": "SubscriptionManage",
       "title": "Проверить серверное ограничение: revoked",
       "kind": "functional",
-      "flow": "modules/ManageSubscription/e2e/revoked.yaml",
+      "flow": "modules/SubscriptionManage/e2e/revoked.yaml",
       "screenshots": [
-        "ManageSubscription-revoked",
+        "SubscriptionManage-revoked",
         "Paywall-revoked"
       ],
       "subscriptionProfile": "revoked",
@@ -1628,14 +1628,14 @@
     },
     {
       "id": "e2e-subscriptionrecovery-recovery",
-      "title": "Создать ключ восстановления тестовой подписки",
+      "title": "Открыть форму восстановления доступа",
       "kind": "functional",
       "flow": "modules/SubscriptionRecovery/e2e/recovery.yaml",
       "sources": [
         "SubscriptionRecovery"
       ],
       "screenshots": [
-        "061-SubscriptionRecovery-key"
+        "061-SubscriptionRecovery-form"
       ],
       "screen": "SubscriptionRecovery",
       "module": "SubscriptionRecovery",
@@ -1811,7 +1811,7 @@
     },
     {
       "id": "e2e-webdocument-terms",
-      "title": "Открыть документ Условия и Положения",
+      "title": "Открыть документ Условия использования",
       "kind": "functional",
       "module": "WebDocument",
       "screen": "WebDocument",
@@ -2436,264 +2436,6 @@
         "draftPhotoAspects": []
       },
       "dependsOn": []
-    },
-    {
-      "id": "e2e-paywall-yookassa-cancel",
-      "title": "Отмена оплаты в настоящем SDK ЮКассы не выдаёт доступ",
-      "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/yookassa-cancel.yaml",
-      "screenshots": [
-        "Paywall-yookassa-cancel-selected",
-        "Paywall-yookassa-cancel-sdk",
-        "Paywall-yookassa-cancel-returned"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "base_weekly",
-      "paymentOutcome": "canceled",
-      "dependsOn": []
-    },
-    {
-      "id": "e2e-paywall-yookassa-declined",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "title": "YooKassa: реальный отказ тестовой карты без выдачи доступа",
-      "kind": "functional",
-      "flow": "modules/Paywall/e2e/yookassa-declined.yaml",
-      "screenshots": [
-        "Paywall-yookassa-declined-selected",
-        "Paywall-yookassa-declined-sdk",
-        "Paywall-yookassa-declined-returned"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "base_weekly",
-      "paymentOutcome": "declined",
-      "dependsOn": []
-    },
-    {
-      "id": "e2e-paywall-yookassa-declined-retry",
-      "title": "Повтор после отказа YooKassa: тот же продукт, отмена без второго платежа",
-      "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/yookassa-declined-retry.yaml",
-      "screenshots": [
-        "Paywall-yookassa-retry-same-product",
-        "Paywall-yookassa-retry-canceled"
-      ],
-      "provider": "yookassa",
-      "paymentPlan": "base_weekly",
-      "paymentOutcome": "declined-retry",
-      "dependsOn": [
-        "e2e-paywall-yookassa-declined"
-      ],
-      "subscriptionProfile": "provider"
-    },
-    {
-      "id": "e2e-paywall-yookassa-base",
-      "title": "Покупка Base через SDK тестового магазина YooKassa",
-      "kind": "functional",
-      "flow": "modules/Paywall/e2e/yookassa-base.yaml",
-      "sources": [
-        "Paywall",
-        "ManageSubscription"
-      ],
-      "screen": "Paywall",
-      "module": "Paywall",
-      "screenshots": [
-        "Paywall-yookassa-base-selected",
-        "Paywall-yookassa-base-sdk",
-        "ManageSubscription-yookassa-base-purchased"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "base_weekly",
-      "dependsOn": [
-        "e2e-about-about"
-      ]
-    },
-    {
-      "id": "e2e-paywall-yookassa-active-rejected",
-      "title": "Активная Base блокирует новую покупку без дополнительного платежа",
-      "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/yookassa-active-rejected.yaml",
-      "screenshots": [
-        "Paywall-yookassa-active-pro-selected",
-        "Paywall-yookassa-active-purchase-rejected",
-        "ManageSubscription-base-preserved-after-rejection"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "base_weekly",
-      "paymentOutcome": "active-rejected",
-      "dependsOn": [
-        "e2e-paywall-yookassa-base"
-      ]
-    },
-    {
-      "id": "e2e-paywall-yookassa-pending",
-      "title": "Платёж с 3-D Secure остаётся pending без выдачи доступа",
-      "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/yookassa-pending.yaml",
-      "screenshots": [
-        "Paywall-yookassa-pending-selected",
-        "Paywall-yookassa-pending-sdk",
-        "Paywall-yookassa-3ds-challenge",
-        "Paywall-yookassa-pending",
-        "Paywall-yookassa-still-pending"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "pro_weekly",
-      "paymentOutcome": "pending",
-      "dependsOn": [
-        "e2e-paywall-yookassa-active-rejected"
-      ]
-    },
-    {
-      "id": "e2e-paywall-yookassa-confirmed",
-      "title": "Подтвердить прежний платёж после перезапуска без второго заказа",
-      "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/yookassa-confirmed.yaml",
-      "screenshots": [
-        "Paywall-yookassa-3ds-resumed",
-        "Paywall-yookassa-3ds-provider-success",
-        "ManageSubscription-yookassa-3ds-confirmed"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "pro_weekly",
-      "paymentOutcome": "confirmed",
-      "dependsOn": [
-        "e2e-paywall-yookassa-pending"
-      ]
-    },
-    {
-      "id": "e2e-paywall-yookassa-pro",
-      "title": "Покупка Pro через SDK тестового магазина YooKassa",
-      "kind": "functional",
-      "flow": "modules/Paywall/e2e/yookassa-pro.yaml",
-      "sources": [
-        "Paywall",
-        "ManageSubscription"
-      ],
-      "screen": "Paywall",
-      "module": "Paywall",
-      "screenshots": [
-        "Paywall-yookassa-pro-selected",
-        "Paywall-yookassa-pro-sdk",
-        "ManageSubscription-yookassa-pro-purchased"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "pro_weekly",
-      "dependsOn": [
-        "e2e-paywall-yookassa-base"
-      ]
-    },
-    {
-      "id": "e2e-managesubscription-cancel-renewal",
-      "title": "Отмена продления сохраняет оплаченный доступ YooKassa",
-      "kind": "functional",
-      "module": "ManageSubscription",
-      "screen": "ManageSubscription",
-      "flow": "modules/ManageSubscription/e2e/cancel-renewal.yaml",
-      "screenshots": [
-        "ManageSubscription-renewal-disabled"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "pro_weekly",
-      "paymentOutcome": "action-passed",
-      "providerAction": "cancel-renewal",
-      "dependsOn": [
-        "e2e-paywall-yookassa-pro"
-      ]
-    },
-    {
-      "id": "e2e-subscriptionrecovery-create-key",
-      "title": "Копирование ключа настоящей тестовой подписки",
-      "kind": "functional",
-      "module": "SubscriptionRecovery",
-      "screen": "SubscriptionRecovery",
-      "flow": "modules/SubscriptionRecovery/e2e/create-key.yaml",
-      "screenshots": [
-        "SubscriptionRecovery-original-key"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "pro_weekly",
-      "paymentOutcome": "action-passed",
-      "providerAction": "create-key",
-      "dependsOn": [
-        "e2e-managesubscription-cancel-renewal"
-      ]
-    },
-    {
-      "id": "e2e-subscriptionrecovery-rotate-key",
-      "title": "Замена ключа восстановления",
-      "kind": "functional",
-      "module": "SubscriptionRecovery",
-      "screen": "SubscriptionRecovery",
-      "flow": "modules/SubscriptionRecovery/e2e/rotate-key.yaml",
-      "screenshots": [
-        "SubscriptionRecovery-key-rotated"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "pro_weekly",
-      "paymentOutcome": "action-passed",
-      "providerAction": "rotate-key",
-      "dependsOn": [
-        "e2e-subscriptionrecovery-create-key"
-      ]
-    },
-    {
-      "id": "e2e-subscriptionrecovery-reject-old-key",
-      "title": "Старый ключ не даёт доступ чистому клиенту",
-      "kind": "functional",
-      "module": "SubscriptionRecovery",
-      "screen": "SubscriptionRecovery",
-      "flow": "modules/SubscriptionRecovery/e2e/reject-old-key.yaml",
-      "screenshots": [
-        "SubscriptionRecovery-replaced-key-rejected"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "pro_weekly",
-      "paymentOutcome": "action-passed",
-      "providerAction": "reject-old-key",
-      "dependsOn": [
-        "e2e-subscriptionrecovery-rotate-key"
-      ]
-    },
-    {
-      "id": "e2e-subscriptionrecovery-restore-key",
-      "title": "Новый ключ восстанавливает прежний оплаченный период",
-      "kind": "functional",
-      "module": "SubscriptionRecovery",
-      "screen": "SubscriptionRecovery",
-      "flow": "modules/SubscriptionRecovery/e2e/restore-key.yaml",
-      "screenshots": [
-        "SubscriptionRecovery-restored-clean-client"
-      ],
-      "subscriptionProfile": "provider",
-      "provider": "yookassa",
-      "paymentPlan": "pro_weekly",
-      "paymentOutcome": "action-passed",
-      "providerAction": "restore-key",
-      "dependsOn": [
-        "e2e-subscriptionrecovery-reject-old-key"
-      ]
     }
   ],
   "moduleOrder": [
@@ -2718,7 +2460,9 @@
     "SelectTranscriber",
     "SelectTranscriptParser",
     "SelectNeuralModel",
-    "ManageSubscription",
+    "SubscriptionManage",
+    "SubscriptionAutoRenewalDisabling",
+    "SubscriptionChange",
     "SubscriptionRecovery",
     "Storage",
     "StorageClearProtocols",

@@ -4,40 +4,93 @@ import Testing
 
 @MainActor
 struct SubscriptionRepositoryFactoryTests {
+    init() {}
+
     @Test(
         arguments: [String?.none, "USA", "RUS"],
     )
     func factorySelectsPurchasesByStorefront(
         countryCode: String?,
     ) async {
+        var reads = 0
+        let factory = SubscriptionRepositoryFactory(
+            backend: SubscriptionTestBackendRepository(),
+            getStorefrontCountryCode: {
+                reads += 1
+                return countryCode
+            },
+        )
+        #expect(
+            reads == 0,
+        )
+        let repository = await factory.make()
+        #expect(
+            (repository is SubscriptionRobokassaRepository) == (countryCode == "RUS"),
+        )
+        #expect(
+            (repository is SubscriptionStoreKitRepository) == (countryCode != "RUS"),
+        )
+        #expect(
+            await factory.make() !== repository,
+        )
+        #expect(
+            reads == 2,
+        )
+    }
+
+    @Test(
+        arguments: [SubscriptionSource.apple, .robokassa],
+        [false, true],
+    )
+    func restorationReturnsAccessOrRequestsARecoveryKey(
+        source: SubscriptionSource,
+        isRestorable: Bool,
+    ) async throws {
         let backend = SubscriptionTestBackendRepository()
         let apple = SubscriptionTestRepository(
             backend: backend,
         )
-        let yooKassa = SubscriptionTestRepository(
+        apple.isRestorableSubscriptionAvailable = isRestorable
+        let robokassa = SubscriptionTestRepository(
             backend: backend,
-            source: .yookassa,
+            source: .robokassa,
         )
-        let factory = SubscriptionRepositoryFactory(
-            storeKit: apple,
-            yooKassa: yooKassa,
-            getStorefrontCountryCode: {
-                countryCode
-            },
+        let root = SubscriptionRootViewModel(
+            container: makeSubscriptionTestContainer(
+                backend: backend,
+                storeKit: apple,
+                robokassa: robokassa,
+                getStorefrontCountryCode: {
+                    source == .robokassa ? "RUS" : "USA"
+                },
+            ),
         )
-        let expected = countryCode == "RUS" ? yooKassa : apple
+        switch try await root.restorePurchases() {
+        case .completed:
+            #expect(
+                source == .apple,
+            )
+            #expect(
+                (root.status != nil) == isRestorable,
+            )
+            if let status = root.status {
+                #expect(
+                    status == backend.status,
+                )
+            }
+        case .recoveryKeyRequired:
+            #expect(
+                source == .robokassa,
+            )
+            #expect(
+                root.status == nil,
+            )
+        }
         #expect(
-            await factory.make() === expected,
+            apple.restoreCount == (source == .apple ? 1 : 0),
         )
         #expect(
-            factory.make(
-                source: .apple,
-            ) === apple,
-        )
-        #expect(
-            factory.make(
-                source: .yookassa,
-            ) === yooKassa,
+            robokassa.restoreCount == (source == .robokassa ? 1 : 0),
         )
     }
 
@@ -47,16 +100,16 @@ struct SubscriptionRepositoryFactoryTests {
         let apple = SubscriptionTestRepository(
             backend: backend,
         )
-        let yooKassa = SubscriptionTestRepository(
+        let robokassa = SubscriptionTestRepository(
             backend: backend,
-            source: .yookassa,
+            source: .robokassa,
         )
         var countryCode = "USA"
         var reads = 0
         let container = makeSubscriptionTestContainer(
             backend: backend,
             storeKit: apple,
-            yooKassa: yooKassa,
+            robokassa: robokassa,
             getStorefrontCountryCode: {
                 reads += 1
                 return countryCode
@@ -75,7 +128,7 @@ struct SubscriptionRepositoryFactoryTests {
         countryCode = "RUS"
         let second = await container.subscriptionRepositoryFactory.make()
         #expect(
-            try await second.fetchCatalog().plans == [yooKassa.plan],
+            try await second.fetchCatalog().plans == [robokassa.plan],
         )
         #expect(
             reads == 2,
@@ -96,7 +149,7 @@ struct SubscriptionRepositoryFactoryTests {
             apple.manageCount == 1 && apple.refundCount == 1 && apple.restoreCount == 1,
         )
         #expect(
-            yooKassa.manageCount == 0 && yooKassa.refundCount == 0 && yooKassa.restoreCount == 0,
+            robokassa.manageCount == 0 && robokassa.refundCount == 0 && robokassa.restoreCount == 0,
         )
         #expect(
             reads == 2,
@@ -109,13 +162,13 @@ struct SubscriptionRepositoryFactoryTests {
         let apple = SubscriptionTestRepository(
             backend: backend,
         )
-        let yooKassa = SubscriptionTestRepository(
+        let robokassa = SubscriptionTestRepository(
             backend: backend,
-            source: .yookassa,
+            source: .robokassa,
         )
         let id = UUID()
-        yooKassa.preparedPaymentID = id
-        yooKassa.purchaseResult = .pending
+        robokassa.preparedPaymentID = id
+        robokassa.purchaseResult = .pending
         backend.payments[
             id,
         ] = BillingPaymentResponse(
@@ -129,7 +182,7 @@ struct SubscriptionRepositoryFactoryTests {
         let container = makeSubscriptionTestContainer(
             backend: backend,
             storeKit: apple,
-            yooKassa: yooKassa,
+            robokassa: robokassa,
             getStorefrontCountryCode: {
                 countryCode
             },
@@ -138,7 +191,7 @@ struct SubscriptionRepositoryFactoryTests {
             container: container,
         )
         let outcome = try await root.purchase(
-            plan: yooKassa.plan,
+            plan: robokassa.plan,
         )
         switch outcome {
         case .pending: break
@@ -166,7 +219,7 @@ struct SubscriptionRepositoryFactoryTests {
             type: .pro,
             entitlement: backend.status.entitlement,
             availableCountPerDay: 20,
-            source: .yookassa,
+            source: .robokassa,
         )
         await root.refreshStatus()
         #expect(
@@ -177,9 +230,13 @@ struct SubscriptionRepositoryFactoryTests {
         #expect(
             backend.checkedPayments.count == checkedCount,
         )
-        try await root.manageSubscription()
+        await #expect(
+            throws: SubscriptionError.self,
+        ) {
+            try await root.manageSubscription()
+        }
         #expect(
-            yooKassa.manageCount == 1 && apple.manageCount == 0,
+            robokassa.manageCount == 0 && apple.manageCount == 0,
         )
     }
 
@@ -188,7 +245,7 @@ struct SubscriptionRepositoryFactoryTests {
         let backend = SubscriptionTestBackendRepository()
         let provider = SubscriptionTestRepository(
             backend: backend,
-            source: .yookassa,
+            source: .robokassa,
         )
         let id = UUID()
         provider.preparedPaymentID = id
@@ -206,7 +263,7 @@ struct SubscriptionRepositoryFactoryTests {
             container: makeSubscriptionTestContainer(
                 backend: backend,
                 storeKit: provider,
-                yooKassa: provider,
+                robokassa: provider,
                 getStorefrontCountryCode: {
                     "RUS"
                 },
@@ -239,7 +296,7 @@ struct SubscriptionRepositoryFactoryTests {
             container: makeSubscriptionTestContainer(
                 backend: backend,
                 storeKit: provider,
-                yooKassa: provider,
+                robokassa: provider,
                 getStorefrontCountryCode: {
                     "USA"
                 },
@@ -291,7 +348,7 @@ struct SubscriptionRepositoryFactoryTests {
         let backend = SubscriptionTestBackendRepository()
         let provider = SubscriptionTestRepository(
             backend: backend,
-            source: .yookassa,
+            source: .robokassa,
         )
         let id = UUID()
         provider.preparedPaymentID = id
@@ -309,7 +366,7 @@ struct SubscriptionRepositoryFactoryTests {
             container: makeSubscriptionTestContainer(
                 backend: backend,
                 storeKit: provider,
-                yooKassa: provider,
+                robokassa: provider,
                 getStorefrontCountryCode: {
                     "RUS"
                 },
@@ -345,15 +402,15 @@ struct SubscriptionRepositoryFactoryTests {
         let apple = SubscriptionTestRepository(
             backend: backend,
         )
-        let yooKassa = SubscriptionTestRepository(
+        let robokassa = SubscriptionTestRepository(
             backend: backend,
-            source: .yookassa,
+            source: .robokassa,
         )
         var countryCode = "USA"
         let container = makeSubscriptionTestContainer(
             backend: backend,
             storeKit: apple,
-            yooKassa: yooKassa,
+            robokassa: robokassa,
             getStorefrontCountryCode: {
                 countryCode
             },
@@ -383,7 +440,7 @@ struct SubscriptionRepositoryFactoryTests {
             }
         }
         #expect(
-            apple.purchaseCount == 0 && yooKassa.purchaseCount == 0,
+            apple.purchaseCount == 0 && robokassa.purchaseCount == 0,
         )
     }
 
@@ -399,7 +456,7 @@ struct SubscriptionRepositoryFactoryTests {
             container: makeSubscriptionTestContainer(
                 backend: backend,
                 storeKit: provider,
-                yooKassa: provider,
+                robokassa: provider,
                 getStorefrontCountryCode: {
                     "USA"
                 },

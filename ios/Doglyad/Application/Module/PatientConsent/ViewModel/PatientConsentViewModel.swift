@@ -7,7 +7,6 @@ final class PatientConsentViewModel: DModuleViewModel<any PatientConsentStatePro
     private let messager: DMessager
     private let arguments: PatientConsentArguments
     private let onSaved: (Bool) async throws -> Void
-    private var isDismissalRequested = false
 
     init(
         messager: DMessager,
@@ -39,31 +38,20 @@ final class PatientConsentViewModel: DModuleViewModel<any PatientConsentStatePro
         )
     }
 
-    override func onDisappear() {
-        super.onDisappear()
-        isDismissalRequested = true
-    }
-
     func onDoNotAskAgainChanged(
         _ isDoNotAskAgain: Bool,
     ) {
-        guard !isDismissalRequested else {
-            return
-        }
         analytics.buttonTapped(
             .patientConsentPreference,
         )
         emit(
-            PatientConsentInitialState(
+            state.copyWith(
                 isDoNotAskAgain: isDoNotAskAgain,
             ),
         )
     }
 
     func onTapConfirm() {
-        guard !isDismissalRequested else {
-            return
-        }
         analytics.buttonTapped(
             .patientConsentConfirm,
         )
@@ -76,7 +64,6 @@ final class PatientConsentViewModel: DModuleViewModel<any PatientConsentStatePro
             guard self.state.isDoNotAskAgain == isDoNotAskAgain else {
                 return
             }
-            self.isDismissalRequested = true
             self.coordinator.dismissSheet()
             self.arguments.onConfirm()
         } onFailure: { _ in

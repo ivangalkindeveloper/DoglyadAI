@@ -6,6 +6,8 @@ struct ScanSpeechStateButtonView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanViewModel
     @EnvironmentObject private var l10n: L10N
 
+    init() {}
+
     var body: some View {
         switch viewModel.state {
         case _ as ScanGenerationLoadingState: EmptyView()

@@ -6,6 +6,12 @@ struct ReportDetailPhotosView: DViewProtocol {
     @EnvironmentObject private var viewModel: ReportDetailViewModel
     var isDisabled: Bool = false
 
+    init(
+        isDisabled: Bool = false,
+    ) {
+        self.isDisabled = isDisabled
+    }
+
     var body: some View {
         ScrollView(
             .horizontal,

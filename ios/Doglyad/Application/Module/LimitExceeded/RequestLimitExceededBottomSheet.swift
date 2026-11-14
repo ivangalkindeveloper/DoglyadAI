@@ -7,6 +7,12 @@ struct RequestLimitExceededBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: RequestLimitExceededArguments?
 
+    init(
+        arguments: RequestLimitExceededArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         RequestLimitExceededBottomSheetView(
             viewModel: RequestLimitExceededViewModel(

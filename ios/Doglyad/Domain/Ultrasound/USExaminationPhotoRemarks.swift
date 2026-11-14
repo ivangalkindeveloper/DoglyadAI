@@ -4,6 +4,14 @@ import Foundation
 struct USExaminationPhotoRemarks: Codable, Equatable, Sendable {
     let photoId: UUID
     let points: [USExaminationPhotoRemarkPoint]
+
+    init(
+        photoId: UUID,
+        points: [USExaminationPhotoRemarkPoint],
+    ) {
+        self.photoId = photoId
+        self.points = points
+    }
 }
 
 extension USExaminationPhotoRemarks {

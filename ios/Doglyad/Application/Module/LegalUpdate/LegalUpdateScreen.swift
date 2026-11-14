@@ -9,6 +9,12 @@ struct LegalUpdateScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: LegalUpdateArguments?
 
+    init(
+        arguments: LegalUpdateArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         LegalUpdateScreenView(
             viewModel: LegalUpdateViewModel(

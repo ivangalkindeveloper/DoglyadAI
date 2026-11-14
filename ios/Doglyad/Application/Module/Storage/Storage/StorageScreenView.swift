@@ -6,6 +6,14 @@ struct StorageScreenView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: StorageViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> StorageViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[

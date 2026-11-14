@@ -4,6 +4,8 @@ import Foundation
 import Testing
 
 struct ScanFormPatchTests {
+    init() {}
+
     @Test(
         "Only confirmed fields replace existing form values",
     )

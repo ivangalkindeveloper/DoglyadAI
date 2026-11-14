@@ -4,6 +4,8 @@ import Security
 import Testing
 
 struct SecurityDatabaseTests {
+    init() {}
+
     @Test
     func billingIdentityDistinguishesMissingDataAndUpdatesExistingRecord() async throws {
         let service = "doglyad.tests.\(UUID())"

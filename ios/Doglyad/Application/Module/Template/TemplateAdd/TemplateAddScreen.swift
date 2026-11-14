@@ -10,6 +10,12 @@ struct TemplateAddScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: TemplateAddArguments?
 
+    init(
+        arguments: TemplateAddArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         TemplateAddScreenView(
             viewModel: TemplateAddViewModel(

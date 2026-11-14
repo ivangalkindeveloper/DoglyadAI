@@ -177,7 +177,7 @@ test('historical English previews are validated but omitted from the Russian col
   e.manifest.images = [
     { id: 'ru', caseId: 'atlas-paywall', kind: 'render', module: 'Paywall', state: '04 Русский', width: 390, height: 844 },
     { id: 'en', caseId: 'atlas-paywall', kind: 'render', module: 'Paywall', state: '05 English', width: 390, height: 844 },
-    { id: 'en-management', caseId: 'atlas-manage', kind: 'render', module: 'ManageSubscription', state: '08 Pro · English', width: 390, height: 844 },
+    { id: 'en-management', caseId: 'atlas-manage', kind: 'render', module: 'SubscriptionManage', state: '08 Pro · English', width: 390, height: 844 },
     { id: 'functional', caseId: 'e2e', kind: 'functional', module: 'Paywall', state: '05 English', width: 390, height: 844 },
   ];
   e.manifest.expectedScreenshots = 4;

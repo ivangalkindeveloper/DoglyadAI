@@ -72,6 +72,8 @@ cases:
     - e2e-scanspeech-parsing-retry
     - e2e-scanspeech-cancel
     nativeTests:
+    - ScanSpeechObservationTests/closingCancelsPendingTranscriptionBeforeTheDisappearEvent()
+    - ScanSpeechObservationTests/dismissedPresentationIgnoresLateControllerChanges()
     - ScanSpeechRegressionTests/testRecordingRejectsDuplicateActionsAndLateTranscript()
 - id: ScanSpeech.failures
   title: Ошибка подготовки модели и парсинга

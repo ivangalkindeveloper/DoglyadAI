@@ -1,3 +1,5 @@
 import Router
 
-final class TemplateListArguments: RouteArgumentsProtocol {}
+final class TemplateListArguments: RouteArgumentsProtocol {
+    init() {}
+}

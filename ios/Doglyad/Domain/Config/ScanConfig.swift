@@ -7,6 +7,22 @@ struct ScanConfig: Codable, Equatable {
     let patientWeightKGMaxLength: Int
     let patientComplaintsMaxLength: Int
     let examinationDescriptionMaxLength: Int
+
+    init(
+        examinationNumberMaxLength: Int,
+        patientNameMaxLength: Int,
+        patientHeightCMMaxLength: Int,
+        patientWeightKGMaxLength: Int,
+        patientComplaintsMaxLength: Int,
+        examinationDescriptionMaxLength: Int,
+    ) {
+        self.examinationNumberMaxLength = examinationNumberMaxLength
+        self.patientNameMaxLength = patientNameMaxLength
+        self.patientHeightCMMaxLength = patientHeightCMMaxLength
+        self.patientWeightKGMaxLength = patientWeightKGMaxLength
+        self.patientComplaintsMaxLength = patientComplaintsMaxLength
+        self.examinationDescriptionMaxLength = examinationDescriptionMaxLength
+    }
 }
 
 extension ScanConfig {

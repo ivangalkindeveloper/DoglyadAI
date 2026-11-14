@@ -4,6 +4,8 @@ import UIKit
 
 @MainActor
 struct DInteractivePopGestureControllerTests {
+    init() {}
+
     @Test
     func enablesGestureOnlyWhenNavigationCanPop() throws {
         let rootController = UIViewController()

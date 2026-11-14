@@ -10,6 +10,12 @@ struct ReportDetailScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: ReportDetailArguments
 
+    init(
+        arguments: ReportDetailArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         ReportDetailScreenView(
             viewModel: ReportDetailViewModel(

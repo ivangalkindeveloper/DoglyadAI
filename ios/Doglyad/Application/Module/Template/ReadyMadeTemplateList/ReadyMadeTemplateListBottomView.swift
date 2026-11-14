@@ -6,6 +6,8 @@ struct ReadyMadeTemplateListBottomView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: ReadyMadeTemplateListViewModel
 
+    init() {}
+
     var body: some View {
         switch viewModel.state {
         case _ as ReadyMadeTemplateListErrorState:

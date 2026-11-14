@@ -8,6 +8,8 @@ import UIKit
 
 @MainActor
 struct ContentDesignTests {
+    init() {}
+
     @Test
     func unavailableHistoryCountKeepsSettingsNavigationWithoutAnError() async {
         let repository = StateReportRepository()

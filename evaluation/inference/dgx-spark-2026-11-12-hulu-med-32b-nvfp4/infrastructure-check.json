@@ -1,0 +1,28 @@
+{
+  "image": "sha256:a792e0ead52145ea6860d962b37c194eb30da00a22cd127df4c20193d84129c9",
+  "container": "10ea3ff277934c1ebcbe6807d7d57eaa37a8b854b3e5476ec0884a7a10256161",
+  "companion": {
+    "vllm_medgemma_27b": {
+      "id": "dd7eb4fa009be45e807ca83f9d6557981d40b84facac7233cdf4c2871d5ff273",
+      "image": "sha256:89154ef00dd15368d2b293c167e5cc7dbb521fcfb2fbb77510e0d4df2b820e8f",
+      "restarts": 0
+    },
+    "vllm_medgemma_4b": {
+      "id": "ab8025226a96657733436c2cbb47c92c6ac9304d337e7697767ea6f983a06b28",
+      "image": "sha256:89154ef00dd15368d2b293c167e5cc7dbb521fcfb2fbb77510e0d4df2b820e8f",
+      "restarts": 0
+    },
+    "vllm_medgemma_15_4b": {
+      "id": "082b6ca969cd2d01a43132fabce7795d72d3794a854abf5125e46c5dafca86ea",
+      "image": "sha256:89154ef00dd15368d2b293c167e5cc7dbb521fcfb2fbb77510e0d4df2b820e8f",
+      "restarts": 0
+    },
+    "vllm_hulu_med_32b": {
+      "id": "adbd0da5b1fad7d9515de72aca2fd8120699de7c065fd3ca8c559abd925150df",
+      "image": "sha256:a43025e228727bfac14ea75aeed1cdc086b25c778584fc7593421383de2f724d",
+      "restarts": 0
+    }
+  },
+  "restarts": 0,
+  "report_worker": null
+}

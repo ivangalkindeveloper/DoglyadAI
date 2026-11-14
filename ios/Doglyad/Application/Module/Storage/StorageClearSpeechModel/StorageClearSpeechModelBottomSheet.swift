@@ -7,6 +7,12 @@ struct StorageClearSpeechModelBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: StorageClearSpeechModelArguments
 
+    init(
+        arguments: StorageClearSpeechModelArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         StorageClearSpeechModelBottomSheetView(
             viewModel: StorageClearSpeechModelViewModel(

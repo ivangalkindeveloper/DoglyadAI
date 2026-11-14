@@ -11,6 +11,14 @@
         let state: any StorageStateProtocol
         var isSpeechModelAvailable = true
 
+        init(
+            state: any StorageStateProtocol,
+            isSpeechModelAvailable: Bool = true,
+        ) {
+            self.state = state
+            self.isSpeechModelAvailable = isSpeechModelAvailable
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as StorageErrorState: true

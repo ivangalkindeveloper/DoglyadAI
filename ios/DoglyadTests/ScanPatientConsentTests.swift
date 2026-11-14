@@ -7,6 +7,8 @@ import Testing
 
 @MainActor
 struct ScanPatientConsentTests {
+    init() {}
+
     @Test(
         arguments: [false, true],
     )

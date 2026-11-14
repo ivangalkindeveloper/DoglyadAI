@@ -2,6 +2,7 @@
     {
         "id": "google/medgemma-4b-it",
         "title": "Google MedGemma 4B",
+        "format": "BF16",
         "entitlement": "base",
         "accessibility": "available",
         "contextLength": 128000,
@@ -10,6 +11,7 @@
     {
         "id": "google/medgemma-1.5-4b-it",
         "title": "Google MedGemma 1.5 4B",
+        "format": "BF16",
         "entitlement": "pro",
         "accessibility": "available",
         "contextLength": 128000,
@@ -18,9 +20,28 @@
     {
         "id": "google/medgemma-27b-it",
         "title": "Google MedGemma 27B",
+        "format": "NVFP4",
         "entitlement": "pro",
         "accessibility": "available",
         "contextLength": 128000,
         "descriptionLocaleKey": "googleMedGemma27BDescription"
+    },
+    {
+        "id": "ZJU-AI4H/Hulu-Med-7B",
+        "title": "Hulu-Med 7B",
+        "format": "BF16",
+        "entitlement": "base",
+        "accessibility": "available",
+        "contextLength": 32768,
+        "descriptionLocaleKey": "huluMed7BDescription"
+    },
+    {
+        "id": "ZJU-AI4H/Hulu-Med-32B",
+        "title": "Hulu-Med 32B",
+        "format": "NVFP4",
+        "entitlement": "pro",
+        "accessibility": "available",
+        "contextLength": 32768,
+        "descriptionLocaleKey": "huluMed32BDescription"
     }
 ]

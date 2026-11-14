@@ -18,6 +18,8 @@ class DNeuralUltrasoundLegacyGenerationConfig {
         return formatter
     }()
 
+    init() {}
+
     static func userPrompt(
         for dictation: String,
     ) -> String {

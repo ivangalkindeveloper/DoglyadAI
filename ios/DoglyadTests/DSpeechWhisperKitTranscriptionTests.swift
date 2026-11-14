@@ -4,6 +4,8 @@ import Testing
 import WhisperKit
 
 struct DSpeechWhisperKitTranscriptionTests {
+    init() {}
+
     @Test
     func previewJoinsConfirmedAndDraftSegmentsWithoutDecoderTokens() {
         let text = DSpeechWhisperKitTranscription.previewText(

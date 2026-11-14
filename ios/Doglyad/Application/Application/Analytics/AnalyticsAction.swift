@@ -4,7 +4,7 @@ enum AnalyticsAction: String {
     case voiceProposalsGenerated = "voice_proposals_generated"
     case voiceProposalApplied = "voice_proposal_applied"
     case voiceFlowCancelled = "voice_flow_cancelled"
-    case manageSubscriptionRestoreCompleted = "manage_subscription_restore_completed"
+    case subscriptionManageRestoreCompleted = "subscription_manage_restore_completed"
     case subscriptionPurchaseCompleted = "subscription_purchase_completed"
     case subscriptionRestoreCompleted = "subscription_restore_completed"
 }

@@ -5,6 +5,16 @@ struct DAccessibilityModifier: ViewModifier {
     let identifier: String?
     var traits: AccessibilityTraits?
 
+    init(
+        element: AccessibilityChildBehavior?,
+        identifier: String?,
+        traits: AccessibilityTraits? = nil,
+    ) {
+        self.element = element
+        self.identifier = identifier
+        self.traits = traits
+    }
+
     func body(
         content: Content,
     ) -> some View {

@@ -7,16 +7,13 @@ import SwiftUI
 struct Application: App {
     @StateObject private var viewModel = ApplicationRootViewModel()
 
+    init() {}
+
     var body: some Scene {
         WindowGroup {
             ApplicationRootView()
                 .onAppear {
                     viewModel.initialize()
-                }
-                .onOpenURL { url in
-                    viewModel.onOpenURL(
-                        url,
-                    )
                 }
                 .dThemeWrapper()
                 .environmentObject(

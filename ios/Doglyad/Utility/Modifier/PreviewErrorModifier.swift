@@ -8,6 +8,14 @@
         let isPresented: Bool
         let description: String?
 
+        init(
+            isPresented: Bool,
+            description: String?,
+        ) {
+            self.isPresented = isPresented
+            self.description = description
+        }
+
         func body(
             content: Content,
         ) -> some View {

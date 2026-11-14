@@ -116,9 +116,10 @@ jobs:
       - run: python -m alembic upgrade head
       - run: python -m alembic check
       - run: >-
-          python -m pytest tests/test_billing.py tests/test_sdk_payments.py
+          python -m pytest tests/test_billing.py tests/test_checkout_payments.py
           tests/test_billing_catalog.py tests/test_billing_worker.py
-          tests/test_yookassa_sdk_adapter.py tests/test_billing_postgres.py
+          tests/test_robokassa_payment_provider.py tests/test_robokassa_refunds.py
+          tests/test_billing_migrations.py tests/test_billing_postgres.py
           tests/test_billing_reconciliation.py
 
   build:

@@ -7,7 +7,7 @@ import Handler
 final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootStateProtocol> {
     private let container: DependencyContainer
     private let getStoredSettingsAI: () -> SettingsAI
-    private let repositoryFactory: SubscriptionRepositoryFactory
+    private let repositoryFactory: SubscriptionRepositoryFactoryProtocol
     private var transactionUpdates: Task<Void, Never>?
     private var reconciliationTask: Task<Void, Never>?
     private var purchaseTask: Task<SubscriptionPurchaseOutcome, Error>?
@@ -15,9 +15,8 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     private var identityOperationID: UUID?
     private var pendingPurchaseID: UUID?
     private var pendingPlan: SubscriptionPlan?
-    private var pendingReference: SubscriptionPurchaseReference?
-    private var pendingPayment: BillingPaymentResponse?
-    private var isPendingApplePurchaseVerified = false
+    private var pendingContext: SubscriptionPurchaseContextProtocol?
+    private var pendingOutcome: SubscriptionPurchaseOutcome = .pending
     private var identityRevision = UUID()
     private var isInitialized = false
 
@@ -60,12 +59,9 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
             return
         }
         isInitialized = true
-        let factory = repositoryFactory
+        let storeKit = container.subscriptionStoreKitRepository
         transactionUpdates = Task { [weak self] in
             do {
-                let storeKit = factory.make(
-                    source: .apple,
-                )
                 try await storeKit.observeChanges { [weak self] result in
                     self?.handle {
                         let update = try result.get()
@@ -85,9 +81,6 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
             }
         }
         reconciliationTask = handle { [weak self] in
-            let storeKit = factory.make(
-                source: .apple,
-            )
             let isOwnerChanged = try await storeKit.synchronizeCurrentEntitlements()
             if isOwnerChanged {
                 self?.invalidateIdentity()
@@ -104,14 +97,29 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
 
     func purchase(
         plan: SubscriptionPlan,
+        isAutoRenewing: Bool = true,
     ) async throws -> SubscriptionPurchaseOutcome {
         guard purchaseID == nil, identityOperationID == nil else {
             throw SubscriptionError.purchasePending
         }
+        if pendingPlan?.id == plan.id, pendingPlan?.source == plan.source,
+           let outcome = try await checkPendingPurchase(
+               {
+                   try await $0.resume()
+               },
+           )
+        {
+            switch outcome {
+            case .completed:
+                return try await checkPurchase()
+            case .pending:
+                return .pending
+            case .cancelled:
+                clearPendingPurchase()
+            }
+        }
         try Task.checkCancellation()
-        let selected = try await repositoryFactory.make(
-            plan: plan,
-        )
+        let selected = await repositoryFactory.make()
         try Task.checkCancellation()
         guard purchaseID == nil, identityOperationID == nil else {
             throw SubscriptionError.purchasePending
@@ -121,17 +129,17 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         purchaseID = id
         pendingPurchaseID = id
         pendingPlan = plan
-        pendingReference = nil
-        pendingPayment = nil
-        isPendingApplePurchaseVerified = false
+        pendingContext = nil
+        pendingOutcome = .pending
         let task = Task { [weak self] () throws -> SubscriptionPurchaseOutcome in
             let result = try await selected.purchase(
                 plan: plan,
-            ) { [weak self] reference in
+                isAutoRenewing: isAutoRenewing,
+            ) { [weak self] context in
                 guard let self, purchaseID == id, identityRevision == revision, !Task.isCancelled else {
                     return
                 }
-                pendingReference = reference
+                pendingContext = context
             }
             try Task.checkCancellation()
             guard let self, identityRevision == revision else {
@@ -142,18 +150,13 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
             }
             switch result {
             case .completed:
-                switch pendingReference {
-                case .apple: isPendingApplePurchaseVerified = true
-                case .yookassa, .none: break
-                }
-            case .pending, .cancelled: break
-            }
-            let status = try await fetchStatus()
-            switch result {
-            case .completed, .pending:
+                pendingOutcome = result
+                let status = try await fetchStatus()
                 return resolvePendingPurchase(
                     status: status,
                 )
+            case .pending:
+                return .pending
             case .cancelled:
                 clearPendingPurchase()
                 return .cancelled
@@ -173,7 +176,7 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         }
     }
 
-    func restorePurchases() async throws -> SubscriptionStatus? {
+    func restorePurchases() async throws -> SubscriptionRestoreStrategy {
         guard purchaseID == nil, identityOperationID == nil else {
             throw SubscriptionError.purchasePending
         }
@@ -181,34 +184,70 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         defer {
             identityOperationID = nil
         }
-        // Existing Apple purchases remain restorable after changing the storefront.
-        let selected = repositoryFactory.make(
-            source: .apple,
-        )
-        if try await selected.restorePurchases() {
-            invalidateIdentity()
+        let repository: SubscriptionRepositoryProtocol
+        switch status?.source {
+        case .apple:
+            repository = container.subscriptionStoreKitRepository
+        case .robokassa:
+            return .recoveryKeyRequired
+        case .none:
+            repository = await repositoryFactory.make()
         }
-        return try await fetchStatus()
+        try Task.checkCancellation()
+        let strategy = try await repository.restorePurchases()
+        switch strategy {
+        case let .completed(
+            isOwnerChanged,
+        ):
+            if isOwnerChanged {
+                invalidateIdentity()
+            }
+            _ = try await fetchStatus()
+        case .recoveryKeyRequired:
+            break
+        }
+        return strategy
     }
 
     func manageSubscription() async throws {
-        let selected = repositoryFactory.make(
-            source: status?.source,
-        )
+        guard status?.source != .robokassa else {
+            throw SubscriptionError.offeringsUnavailable
+        }
+        let selected = container.subscriptionStoreKitRepository
         try await selected.manageSubscription()
         _ = try await fetchStatus()
     }
 
     func requestRefund() async throws {
-        let subscriptionRepository = repositoryFactory.make(
-            source: status?.source,
-        )
+        guard status?.source != .robokassa else {
+            throw SubscriptionError.offeringsUnavailable
+        }
+        let subscriptionRepository = container.subscriptionStoreKitRepository
         try await subscriptionRepository.requestRefund()
         _ = try await fetchStatus()
     }
 
-    func createRecoveryKey() async throws -> String {
-        try await container.subscriptionBackendRepository.createRecoveryKey()
+    func setAutoRenewal(
+        isAutoRenewing: Bool,
+    ) async throws {
+        guard purchaseID == nil, identityOperationID == nil else {
+            throw SubscriptionError.purchasePending
+        }
+        identityOperationID = UUID()
+        defer {
+            identityOperationID = nil
+        }
+        let revision = identityRevision
+        let status = try await container.subscriptionBackendRepository.setAutoRenewal(
+            isAutoRenewing: isAutoRenewing,
+            configEntitlements: container.applicationConfig.entitlements,
+        )
+        guard identityRevision == revision else {
+            throw CancellationError()
+        }
+        update(
+            status: status,
+        )
     }
 
     func recover(
@@ -221,36 +260,23 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
         defer {
             identityOperationID = nil
         }
-        try await container.subscriptionBackendRepository.recover(
+        let status = try await container.subscriptionBackendRepository.recover(
             key: key,
+            configEntitlements: container.applicationConfig.entitlements,
         )
         invalidateIdentity()
-        return try await fetchStatus()
+        update(
+            status: status,
+        )
+        return status
     }
 
     func fetchStatus() async throws -> SubscriptionStatus? {
         let revision = identityRevision
-        let pendingID = pendingPurchaseID
-        switch pendingReference {
-        case let .yookassa(
-            paymentID,
-        ):
-            switch pendingPayment?.status {
-            case .succeeded, .canceled, .refunded: break
-            case .awaitingToken, .created, .pending, .needsReview, .none:
-                let payment = try await container.subscriptionBackendRepository.checkPayment(
-                    id: paymentID,
-                    isAbandoned: false,
-                )
-                guard identityRevision == revision, pendingPurchaseID == pendingID else {
-                    throw CancellationError()
-                }
-                guard payment.id == paymentID, payment.planId == pendingPlan?.id else {
-                    throw SubscriptionError.unverifiedTransaction
-                }
-                pendingPayment = payment
+        if pendingContext != nil {
+            _ = try await checkPendingPurchase {
+                try await $0.check()
             }
-        case .apple, .none: break
         }
         let status = try await container.subscriptionBackendRepository.fetchStatus(
             configEntitlements: container.applicationConfig.entitlements,
@@ -266,17 +292,31 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
 
     func checkPurchase() async throws -> SubscriptionPurchaseOutcome {
         let pendingID = pendingPurchaseID
-        switch pendingReference {
-        case .yookassa: pendingPayment = nil
-        case .apple, .none: break
+        switch try await checkPendingPurchase(
+            {
+                try await $0.check()
+            },
+        ) {
+        case .some(
+            .pending,
+        ), .none:
+            return .pending
+        case .some(
+            .cancelled,
+        ):
+            clearPendingPurchase()
+            return .cancelled
+        case .some(
+            .completed,
+        ):
+            let status = try await fetchStatus()
+            guard pendingPurchaseID == pendingID else {
+                return .pending
+            }
+            return resolvePendingPurchase(
+                status: status,
+            )
         }
-        let status = try await fetchStatus()
-        guard pendingPurchaseID == pendingID else {
-            throw CancellationError()
-        }
-        return resolvePendingPurchase(
-            status: status,
-        )
     }
 
     func observeStatus(
@@ -354,68 +394,80 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     private func acceptTransaction(
         _ update: SubscriptionTransactionUpdate,
     ) {
-        guard let plan = pendingPlan else {
+        guard let result = pendingContext?.check(
+            transaction: update,
+        ) else {
             return
         }
-        switch pendingReference {
-        case let .apple(
-            previousID,
-            previousDate,
-        ):
-            guard update.planId == plan.id, update.transactionId != previousID,
-                  previousDate.map(
-                      {
-                          update.purchaseDate > $0
-                      },
-                  ) ?? true
-            else {
-                return
-            }
-            isPendingApplePurchaseVerified = update.isActive
-        case .yookassa, .none: break
-        }
+        pendingOutcome = result
     }
 
     private func resolvePendingPurchase(
         status: SubscriptionStatus?,
     ) -> SubscriptionPurchaseOutcome {
-        guard let plan = pendingPlan else {
+        guard pendingContext != nil else {
             return .pending
         }
-        switch pendingReference {
-        case .apple:
-            guard isPendingApplePurchaseVerified else {
-                return .pending
-            }
-        case let .yookassa(
-            paymentID,
-        ):
-            guard let payment = pendingPayment, payment.id == paymentID, payment.planId == plan.id else {
-                return .pending
-            }
-            switch payment.status {
-            case .succeeded: break
-            case .canceled, .refunded:
-                clearPendingPurchase()
-                return .cancelled
-            case .awaitingToken, .created, .pending, .needsReview: return .pending
-            }
-        case .none: return .pending
-        }
-        guard let status else {
+        switch pendingOutcome {
+        case .pending:
             return .pending
+        case .cancelled:
+            clearPendingPurchase()
+            return .cancelled
+        case .completed:
+            guard let status else {
+                return .pending
+            }
+            clearPendingPurchase()
+            return .completed(
+                status,
+            )
         }
-        clearPendingPurchase()
-        return .completed(
-            status,
-        )
     }
 
     private func clearPendingPurchase() {
         pendingPurchaseID = nil
         pendingPlan = nil
-        pendingReference = nil
-        pendingPayment = nil
-        isPendingApplePurchaseVerified = false
+        pendingContext = nil
+        pendingOutcome = .pending
+    }
+
+    private func checkPendingPurchase(
+        _ operation: (SubscriptionPurchaseContextProtocol) async throws -> SubscriptionPurchaseOutcome?,
+    ) async throws -> SubscriptionPurchaseOutcome? {
+        guard let context = pendingContext else {
+            return nil
+        }
+        switch pendingOutcome {
+        case .completed, .cancelled:
+            return pendingOutcome
+        case .pending:
+            break
+        }
+        let revision = identityRevision
+        let pendingID = pendingPurchaseID
+        let result: SubscriptionPurchaseOutcome?
+        do {
+            result = try await operation(
+                context,
+            )
+        } catch {
+            guard identityRevision == revision, pendingPurchaseID == pendingID else {
+                throw CancellationError()
+            }
+            throw error
+        }
+        guard identityRevision == revision, pendingPurchaseID == pendingID else {
+            throw CancellationError()
+        }
+        switch pendingOutcome {
+        case .completed, .cancelled:
+            return pendingOutcome
+        case .pending:
+            if let result {
+                pendingOutcome = result
+            }
+            return result
+        }
     }
 }

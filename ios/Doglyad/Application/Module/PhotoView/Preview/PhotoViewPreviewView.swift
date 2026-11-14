@@ -11,6 +11,16 @@
         var remarks: [USExaminationPhotoRemarks] = []
         var isDeletionAvailable: Bool = true
 
+        init(
+            photos: [USExaminationScanPhoto],
+            remarks: [USExaminationPhotoRemarks] = [],
+            isDeletionAvailable: Bool = true,
+        ) {
+            self.photos = photos
+            self.remarks = remarks
+            self.isDeletionAvailable = isDeletionAvailable
+        }
+
         var body: some View {
             let model = PhotoViewViewModel(
                 container: container,

@@ -7,6 +7,14 @@ struct TemplateAddScreenView: DViewProtocol {
     @StateObject var viewModel: TemplateAddViewModel
     @FocusState private var focus: TemplateAddFocus?
 
+    init(
+        viewModel: @autoclosure @escaping () -> TemplateAddViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[

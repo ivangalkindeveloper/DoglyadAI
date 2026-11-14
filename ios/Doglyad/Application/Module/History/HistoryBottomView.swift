@@ -6,6 +6,8 @@ struct HistoryBottomView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: HistoryViewModel
 
+    init() {}
+
     var body: some View {
         let (title, action): (L10NKey?, () -> Void) = switch viewModel.state {
         case _ as HistoryErrorState: (viewModel.sections.isEmpty ? .buttonUpdate : nil, viewModel.onTapRetry)

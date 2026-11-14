@@ -10,6 +10,12 @@ struct TemplateEditScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: TemplateEditArguments
 
+    init(
+        arguments: TemplateEditArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         TemplateEditScreenView(
             viewModel: TemplateEditViewModel(

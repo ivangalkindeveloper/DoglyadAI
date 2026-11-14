@@ -12,6 +12,16 @@
         var isDraftPresent = true
         var isPatientPreparedForExamination = true
 
+        init(
+            state: any ScanStateProtocol,
+            isDraftPresent: Bool = true,
+            isPatientPreparedForExamination: Bool = true,
+        ) {
+            self.state = state
+            self.isDraftPresent = isDraftPresent
+            self.isPatientPreparedForExamination = isPatientPreparedForExamination
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as ScanInitializationErrorState, _ as ScanErrorState: true

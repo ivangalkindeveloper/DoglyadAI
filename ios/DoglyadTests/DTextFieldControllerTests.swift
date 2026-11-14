@@ -2,6 +2,8 @@
 import Testing
 
 struct DTextFieldControllerTests {
+    init() {}
+
     @Test
     func returnsNilForEmptyText() {
         let inputTextController = DTextFieldController()

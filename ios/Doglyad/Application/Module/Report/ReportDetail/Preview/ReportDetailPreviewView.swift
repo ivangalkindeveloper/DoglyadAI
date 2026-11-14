@@ -10,6 +10,12 @@
         @EnvironmentObject private var messager: DMessager
         let state: any ReportDetailStateProtocol
 
+        init(
+            state: any ReportDetailStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as ReportDetailErrorState: true

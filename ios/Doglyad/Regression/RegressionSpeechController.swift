@@ -146,5 +146,11 @@
 
     private struct RegressionSpeechFixture: Decodable {
         let transcript: String
+
+        init(
+            transcript: String,
+        ) {
+            self.transcript = transcript
+        }
     }
 #endif

@@ -46,9 +46,9 @@ The catalog is evidence of the reviewed code, not proof of test execution.
   It refreshes offline Development responses using the backend response builders,
   and generates one-shot repository fault adapters from the actual protocols.
   Keep payment repositories real; Apple Sandbox is excluded until configured.
-  Exercise YooKassa 3-D Secure with a new owner: the current backend rejects purchases
-  while another subscription is active. Preserve this rejection case and bind pending
-  and confirmation receipts to one order. Cover the unrelated-old-access guard in
+  Exercise initial Robokassa checkout with a new owner and plan changes with an active Robokassa subscription. Verify the immediate start after full-price payment, replacement of prior access without carrying over unused time, and one renewal schedule. Bind pending and confirmation receipts to one order. Robokassa test success requires a verified signed
+  ResultURL; OpStateExt is production-only. Keep browser/bank E2E cases manual until
+  their selectors, test merchant and public callback are verified. Cover the unrelated-old-access guard in
   the mandatory Paywall ViewModel test without calling it a provider purchase.
   Keep recovery keys out of YAML, command arguments and published screenshots of active keys.
   Bind renewal/recovery checks to an actual test purchase and unchanged paid-period evidence.

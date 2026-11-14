@@ -1,0 +1,109 @@
+{
+  "is_passed": true,
+  "tensor_dtypes": {
+    "BF16": 779
+  },
+  "is_quantization_config_absent": true,
+  "checks": [
+    {
+      "file": "MODIFICATIONS.md",
+      "is_hash_matched": true
+    },
+    {
+      "file": "README.md",
+      "is_hash_matched": true
+    },
+    {
+      "file": "added_tokens.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "chat_template.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "config.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "configuration.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "configuration_hulumed_encoder.py",
+      "is_hash_matched": true
+    },
+    {
+      "file": "configuration_hulumed_qwen2.py",
+      "is_hash_matched": true
+    },
+    {
+      "file": "doglyad-runtime-override.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "generation_config.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "image_processing_hulumed.py",
+      "is_hash_matched": true
+    },
+    {
+      "file": "merges.txt",
+      "is_hash_matched": true
+    },
+    {
+      "file": "model-00001-of-00004.safetensors",
+      "is_hash_matched": true
+    },
+    {
+      "file": "model-00002-of-00004.safetensors",
+      "is_hash_matched": true
+    },
+    {
+      "file": "model-00003-of-00004.safetensors",
+      "is_hash_matched": true
+    },
+    {
+      "file": "model-00004-of-00004.safetensors",
+      "is_hash_matched": true
+    },
+    {
+      "file": "model.safetensors.index.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "modeling_hulumed_encoder.py",
+      "is_hash_matched": true
+    },
+    {
+      "file": "modeling_hulumed_qwen2.py",
+      "is_hash_matched": true
+    },
+    {
+      "file": "preprocessor_config.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "processing_hulumed.py",
+      "is_hash_matched": true
+    },
+    {
+      "file": "processor_config.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "special_tokens_map.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "tokenizer_config.json",
+      "is_hash_matched": true
+    },
+    {
+      "file": "vocab.json",
+      "is_hash_matched": true
+    }
+  ]
+}

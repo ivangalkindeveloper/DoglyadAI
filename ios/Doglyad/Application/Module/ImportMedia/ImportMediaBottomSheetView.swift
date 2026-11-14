@@ -6,6 +6,14 @@ struct ImportMediaBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: ImportMediaViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> ImportMediaViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DBottomSheet(
             title: l10n[

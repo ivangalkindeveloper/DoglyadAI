@@ -6,6 +6,8 @@ struct TemplateListBottomView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: TemplateListViewModel
 
+    init() {}
+
     var body: some View {
         let (title, action): (L10NKey?, () -> Void) = switch viewModel.state {
         case _ as TemplateListErrorState: (.buttonUpdate, viewModel.onTapRetry)

@@ -1,0 +1,12 @@
+{
+  "source_model": "ZJU-AI4H/Hulu-Med-7B",
+  "revision": "258594714a0d3835eb2c9e4cc165a4242e606d71",
+  "format": "BF16",
+  "is_weights_changed": false,
+  "processing_hulumed_source_sha256": "dcc9ff436193203fed727b522be097ffade14d063f724592f5aa589a71456b11",
+  "processing_hulumed_runtime_sha256": "1f1867f0c6f6bf75e3263e160be502c9790a88a1eafd1dd77f7d4f1bcd83cb0f",
+  "image_processor_max_tokens": {
+    "source": 16384,
+    "runtime": 2048
+  }
+}

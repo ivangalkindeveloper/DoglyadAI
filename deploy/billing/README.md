@@ -14,7 +14,7 @@ billing HTTP API.
 
 On each main VM, billing adds a private PostgreSQL 17 container, a one-shot Alembic
 migration, the payment gateway and a reconciliation worker. Main, gateway and worker
-use the same image/configuration and PostgreSQL. Caddy routes only `/pay`, `/pay/*`
+use the same image/configuration and PostgreSQL. Caddy routes only `/payments/return`
 and the two provider callbacks to the gateway. `/v1` remains protected by App Check.
 The database and gateway publish no host ports. Payment gateway access logging is
 disabled so Apple token query strings are not written to HTTP logs.
@@ -38,7 +38,7 @@ Set secret Compose interpolation variables `BILLING_DATABASE_PASSWORD` and
 `BILLING_DATABASE_URL=postgresql+asyncpg://doglyad:URL_ENCODED_PASSWORD@billing_database/billing`
 in the VM's `.env`, in addition to existing `TAG`, `ENV_FILE`, `DOMAIN`. Set the
 billing provider/Apple variables in the selected environment secret file, using
-`BILLING_PUBLIC_URL=https://DOMAIN/pay`. Never commit these files. Use a distinct
+ResultURL `https://DOMAIN/webhooks/robokassa` and SuccessURL/FailURL `https://DOMAIN/payments/return`. Never commit these files. Use a distinct
 password, database volume, bucket/prefix and provider credentials per environment.
 The current initial DB role also runs migrations; restrict DB networking to this
 VM and separate migration/runtime roles before expanding operational access.

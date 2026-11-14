@@ -9,6 +9,12 @@ struct StorageScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: StorageArguments?
 
+    init(
+        arguments: StorageArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         StorageScreenView(
             viewModel: StorageViewModel(

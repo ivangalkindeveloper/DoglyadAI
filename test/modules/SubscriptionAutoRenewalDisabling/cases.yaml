@@ -1,0 +1,37 @@
+schemaVersion: 1
+module: SubscriptionAutoRenewalDisabling
+source: ios/Doglyad/Application/Module/Subscription/SubscriptionAutoRenewalDisabling
+cases:
+- id: SubscriptionAutoRenewalDisabling.confirmation
+  title: Подтверждение отключения автопродления
+  profiles:
+  - pro
+  preconditions:
+  - Активная подписка; внешняя оплата не выполняется нативными проверками.
+  steps:
+  - action: Открыть шторку отключения автопродления
+    expect: До подтверждения запрос не отправлен; закрытие шторки сохраняет автопродление.
+  - action: Подтвердить отключение дважды
+    expect: Отправлен один запрос. Кнопка показывает загрузку. После успеха шторка закрывается, статус управления
+      обновляется и кнопка отключения исчезает. Callback onDisableSuccess вызывается только после успешного отключения
+      и запускает отдельный GET состояния. На время GET SubscriptionManage показывает полный экран загрузки.
+      Показано сообщение «Автопродление отключено».
+  - action: Вызвать ошибку запроса и повторить
+    expect: При ошибке отключения шторка остаётся открытой, DMessager показывает ошибку, повтор доступен. GET не запускается.
+      Если после успешного отключения не удался GET, SubscriptionManage показывает полноэкранную ошибку с «Повторить».
+  - action: Закрыть шторку до начала запроса или во время него
+    expect: Не начатый запрос не отправляется; поздний ответ не закрывает другую шторку.
+  covers:
+  - onTapConfirm
+  automation:
+    kind: manual
+    flows: []
+    nativeTests:
+    - SubscriptionConfirmationTests/renewalDisablingWaitsForConfirmationAndSuccessfulServerResponse()
+    - SubscriptionConfirmationTests/failedDisablingKeepsTheSheetOpenAndAllowsRetry()
+    - SubscriptionConfirmationTests/dismissedDisablingIgnoresLateSuccessAndFailure(isFailure:)
+    - SubscriptionConfirmationTests/dismissingBeforeDisablingStartsDoesNotSendARequest()
+    - SubscriptionFlowTests/successfulDisablingRefreshesStatusWithScreenLoadingAndHandlesReadFailure(isFailure:)
+    requires:
+    - Тестовый магазин Robokassa и подтверждённая подписка для полного браузерного E2E отключения; нативные проверки
+      используют управляемый ответ операции.

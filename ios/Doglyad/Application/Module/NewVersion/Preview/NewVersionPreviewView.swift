@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any NewVersionStateProtocol
 
+        init(
+            state: any NewVersionStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = NewVersionViewModel(
                 container: container,

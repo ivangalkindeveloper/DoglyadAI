@@ -8,6 +8,16 @@ struct WebDocumentContentView: DViewProtocol {
     let topInset: CGFloat
     let bottomInset: CGFloat
 
+    init(
+        state: any WebDocumentStateProtocol,
+        topInset: CGFloat,
+        bottomInset: CGFloat,
+    ) {
+        self.state = state
+        self.topInset = topInset
+        self.bottomInset = bottomInset
+    }
+
     var body: some View {
         #if DEBUG
             let html = viewModel.previewHTML

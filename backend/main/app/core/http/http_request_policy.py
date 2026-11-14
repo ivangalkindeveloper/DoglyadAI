@@ -6,6 +6,11 @@ from app.service.http.request_limiter import RequestLimiter
 
 
 class HttpRequestPolicy:
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @staticmethod
     async def enforce_limit(
         request: Request,

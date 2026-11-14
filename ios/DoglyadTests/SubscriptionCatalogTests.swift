@@ -5,21 +5,23 @@ import Testing
 
 @MainActor
 struct SubscriptionCatalogTests {
+    init() {}
+
     @Test(
         arguments: [SubscriptionPeriod.weekly, .monthly, .sixMonth, .annual],
     )
-    func yooKassaUsesTheServerPeriodWithoutFallingBackToMonthly(
+    func robokassaUsesTheServerPeriodWithoutFallingBackToMonthly(
         period: SubscriptionPeriod,
     ) async throws {
         let json = """
-        {"tiers":[{"id":"pro","title":"Server tier","features":["Server feature"]}],"products":[{"id":"yoo-plan","title":"Custom server title","priceTemplate":"Pay {price} for this offer","entitlement":"pro","period":"\(period.rawValue)","price":{"amountMinor":32135,"currencyIso2Code":"RUB"}}]}
+        {"tiers":[{"id":"pro","title":"Server tier","features":["Server feature"]}],"products":[{"id":"robo-plan","title":"Custom server title","priceTemplate":"Pay {price} for this offer","entitlement":"pro","period":"\(period.rawValue)","price":{"amountMinor":32135,"currencyIso2Code":"RUB"}}]}
         """
-        let http = YooKassaTestHttpClient(
+        let http = RobokassaTestHttpClient(
             responses: ["/subscriptions/plans": Data(
                 json.utf8,
             )],
         )
-        let repository = SubscriptionYooKassaRepository(
+        let repository = SubscriptionRobokassaRepository(
             backend: SubscriptionBackendRepository(
                 httpClient: http,
                 securityDatabase: DSecurityDatabase(),
@@ -38,7 +40,7 @@ struct SubscriptionCatalogTests {
             plans.count == 1,
         )
         #expect(
-            plans.first?.id == "yoo-plan",
+            plans.first?.id == "robo-plan",
         )
         #expect(
             plans.first?.period == period,
@@ -68,7 +70,7 @@ struct SubscriptionCatalogTests {
         let json = """
         {"tiers":[{"id":"pro","title":"Server tier","features":["Server feature"]}],"products":[]}
         """
-        let http = YooKassaTestHttpClient(
+        let http = RobokassaTestHttpClient(
             responses: ["/subscriptions/plans": Data(
                 json.utf8,
             )],
@@ -82,7 +84,7 @@ struct SubscriptionCatalogTests {
             catalog.products.isEmpty,
         )
         #expect(
-            try await SubscriptionYooKassaRepository(
+            try await SubscriptionRobokassaRepository(
                 backend: backend,
             ).fetchCatalog().plans.isEmpty,
         )

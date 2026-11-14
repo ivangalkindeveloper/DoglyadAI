@@ -6,6 +6,8 @@
 
     @MainActor
     struct PaywallPreviewTests {
+        init() {}
+
         @Test(
             arguments: ["ru", "en"],
         )

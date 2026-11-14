@@ -123,7 +123,7 @@ final class MenuViewModel: DModuleViewModel<any MenuStateProtocol> {
             ),
         )
         coordinator.screen(
-            .manageSubscription,
+            .subscriptionManage,
         )
     }
 

@@ -1,51 +1,57 @@
 #if DEBUG
     @testable import Doglyad
+    @testable import DoglyadUI
     import Foundation
     import Router
     import Testing
 
     @MainActor
     struct SubscriptionRecoveryTests {
+        init() {}
+
         @Test
-        func generatedKeyIsRetainedWhenAnOperationFails() async throws {
-            let container = ManageSubscriptionPreviewFactory.makeContainer()
+        func enteredKeyIsRetainedWhenAnOperationFails() async throws {
+            let container = SubscriptionManagePreviewFactory.makeContainer()
+            let messager = DMessager()
             let model = SubscriptionRecoveryPreviewFactory.makeViewModel(
                 container: container,
                 router: DRouter(
                     initialRoute: RouteScreen(
-                        type: .manageSubscription,
+                        type: .subscriptionManage,
                     ),
                 ),
                 isFailure: true,
-            )
-            model.emit(
-                SubscriptionRecoverySuccessState(
-                    key: "Saved-MixedCase-Key",
-                ),
+                messager: messager,
             )
             model.recoveryTextController.setText(
                 "Wrong-Key",
             )
             model.onTapRestore()
             await model.operationTask?.value
-            let failed = try #require(
-                model.state as? SubscriptionRecoveryErrorState,
-            )
             #expect(
-                (failed.previousState as? SubscriptionRecoverySuccessState)?.key == "Saved-MixedCase-Key",
+                model.state is SubscriptionRecoveryInitialState,
             )
             #expect(
                 model.recoveryTextController.text == "Wrong-Key",
+            )
+            #expect(
+                messager.message?.description.map {
+                    String(
+                        localized: $0,
+                    )
+                } == container.l10n.text(
+                    .errorUnknownDescription,
+                ),
             )
             model.onDisappear()
         }
 
         @Test
-        func creatingAKeyAndRestoringHaveSeparateActions() async throws {
-            let container = ManageSubscriptionPreviewFactory.makeContainer()
+        func restoringTrimsInputAndReturnsToManagement() async throws {
+            let container = SubscriptionManagePreviewFactory.makeContainer()
             let router = DRouter(
                 initialRoute: RouteScreen(
-                    type: .manageSubscription,
+                    type: .subscriptionManage,
                 ),
             )
             router.push(
@@ -61,22 +67,8 @@
                     recoveredKey = $0
                 },
             )
-            #expect(
-                !model.isRestoreEnabled,
-            )
-            model.onTapCreateKey()
-            await model.operationTask?.value
-            let key = try #require(
-                model.state as? SubscriptionRecoverySuccessState,
-            )
-            #expect(
-                key.key == "Preview-MixedCase-Recovery-Key" && router.path.count == 1,
-            )
             model.recoveryTextController.setText(
                 "  Saved-MixedCase-Key  ",
-            )
-            #expect(
-                model.isRestoreEnabled,
             )
             model.onTapRestore()
             await model.operationTask?.value

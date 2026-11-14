@@ -7,6 +7,8 @@ import Testing
 
 @MainActor
 struct StatePersistenceTests {
+    init() {}
+
     @Test
     func failedHistoryUpdateRetainsResultAndRetriesWithoutNewGeneration() async throws {
         let repository = StateReportRepository()

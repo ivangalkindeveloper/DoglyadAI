@@ -9,6 +9,12 @@ struct PaywallScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: PaywallArguments?
 
+    init(
+        arguments: PaywallArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         PaywallScreenView(
             viewModel: PaywallViewModel(
@@ -35,9 +41,10 @@ struct PaywallScreen: View {
                     await subscriptionViewModel.refreshStatus()
                 },
                 arguments: arguments,
-                purchase: { [subscriptionViewModel] plan in
+                purchase: { [subscriptionViewModel] plan, isAutoRenewing in
                     try await subscriptionViewModel.purchase(
                         plan: plan,
+                        isAutoRenewing: isAutoRenewing,
                     )
                 },
                 restorePurchases: { [subscriptionViewModel] in

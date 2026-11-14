@@ -8,6 +8,22 @@ struct USExaminationReport: Identifiable, Codable, Equatable {
     let examinationData: USExaminationData
     let actualModelReport: USExaminationModelReport
     let previousModelReports: [USExaminationModelReport]
+
+    init(
+        id: UUID = .init(),
+        date: Date,
+        settingsAI: SettingsAI,
+        examinationData: USExaminationData,
+        actualModelReport: USExaminationModelReport,
+        previousModelReports: [USExaminationModelReport],
+    ) {
+        self.id = id
+        self.date = date
+        self.settingsAI = settingsAI
+        self.examinationData = examinationData
+        self.actualModelReport = actualModelReport
+        self.previousModelReports = previousModelReports
+    }
 }
 
 private extension USExaminationReport {

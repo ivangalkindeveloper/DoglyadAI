@@ -8,4 +8,9 @@ public protocol DSecurityDatabaseProtocol: Sendable {
     ) async throws
 
     func removeBillingIdentity() async throws
+
+    func setBillingRecoveryKey(
+        ownerId: UUID,
+        value: String,
+    ) async throws
 }

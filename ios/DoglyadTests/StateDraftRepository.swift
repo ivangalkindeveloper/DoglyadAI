@@ -11,6 +11,8 @@ final class StateDraftRepository: UltrasoundDraftRepositoryProtocol {
     private(set) var savedPhotos: [[USExaminationScanPhoto]] = []
     private(set) var clearCount = 0
 
+    init() {}
+
     func getDraft() async throws -> USExaminationDraft? {
         if let onRead {
             return try await onRead()

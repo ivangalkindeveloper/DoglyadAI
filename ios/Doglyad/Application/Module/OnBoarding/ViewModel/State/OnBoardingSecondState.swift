@@ -5,6 +5,8 @@ final class OnBoardingSecondState: OnBoardingStateProtocol, @MainActor Equatable
     let index = 1
     let primaryButtonTitleKey = L10NKey.buttonNext
 
+    init() {}
+
     static func == (
         lhs: OnBoardingSecondState,
         rhs: OnBoardingSecondState,

@@ -6,6 +6,14 @@ struct StorageClearAllBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: StorageClearAllViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> StorageClearAllViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DInfoBottomSheet(
             fraction: 0.5,

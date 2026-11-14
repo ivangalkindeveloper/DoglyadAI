@@ -9,6 +9,14 @@ struct AboutBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: AboutViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> AboutViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DBottomSheet(
             title: l10n[

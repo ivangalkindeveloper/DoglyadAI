@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct L10NTests {
+    init() {}
+
     @Test(
         arguments: ["en", "ru"],
     )

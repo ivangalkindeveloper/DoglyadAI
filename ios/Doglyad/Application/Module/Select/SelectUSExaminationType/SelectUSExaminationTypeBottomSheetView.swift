@@ -7,6 +7,14 @@ struct SelectUSExaminationTypeBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: SelectUSExaminationTypeViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> SelectUSExaminationTypeViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DBottomSheet(
             title: l10n[

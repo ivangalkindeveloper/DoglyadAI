@@ -8,6 +8,12 @@ struct NewVersionScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: NewVersionArguments?
 
+    init(
+        arguments: NewVersionArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         NewVersionScreenView(
             viewModel: NewVersionViewModel(

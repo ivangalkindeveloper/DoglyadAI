@@ -7,6 +7,14 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
     @StateObject var viewModel: SubscriptionRecoveryViewModel
     @FocusState private var focus: SubscriptionRecoveryFocus?
 
+    init(
+        viewModel: @autoclosure @escaping () -> SubscriptionRecoveryViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[
@@ -20,81 +28,40 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
                 ) {
                     VStack(
                         alignment: .leading,
-                        spacing: size.s24,
+                        spacing: size.s16,
                     ) {
+                        DTextField(
+                            inputTextController: viewModel.recoveryTextController,
+                            focus: DTextFieldFocus(
+                                value: .key,
+                                state: $focus,
+                            ),
+                            title: l10n[
+                                .subscriptionRecoveryKeyLabel,
+                            ],
+                            placeholder: l10n[
+                                .subscriptionRecoveryKeyPlaceholder,
+                            ],
+                            keyboardType: .asciiCapable,
+                            autocapitalization: .never,
+                            accessibilityIdentifier: "subscriptionRecovery.input",
+                        )
+                        .privacySensitive().id(
+                            SubscriptionRecoveryFocus.key,
+                        )
+
                         DText(
                             l10n[
-                                .subscriptionRecoveryDescription,
+                                .subscriptionRecoveryRestoreDescription,
                             ],
                         ).dStyle(
                             font: typography.textSmall,
                             color: color.grayscaleLabel,
                         )
-                        VStack(
-                            alignment: .leading,
-                            spacing: size.s12,
-                        ) {
-                            SectionHeaderView(
-                                title: l10n[
-                                    .subscriptionRecoverySaveTitle,
-                                ],
-                            )
-                            DListButtonCard(
-                                image: .iconGuard,
-                                title: l10n[
-                                    .subscriptionRecoveryCreateButton,
-                                ],
-                                description: l10n[
-                                    .subscriptionRecoveryCreateDescription,
-                                ],
-                                action: viewModel.onTapCreateKey,
-                                isDisabled:
-                                viewModel.isProcessing,
-                            )
-                            SubscriptionRecoveryStateView(
-                                state: viewModel.state,
-                            )
-                        }
-                        VStack(
-                            alignment: .leading,
-                            spacing: size.s12,
-                        ) {
-                            SectionHeaderView(
-                                title: l10n[
-                                    .subscriptionRecoveryRestoreTitle,
-                                ],
-                            )
-                            DText(
-                                l10n[
-                                    .subscriptionRecoveryRestoreDescription,
-                                ],
-                            ).dStyle(
-                                font: typography.textSmall,
-                                color: color.grayscaleLabel,
-                            )
-                            DTextField(
-                                inputTextController: viewModel.recoveryTextController,
-                                focus: DTextFieldFocus(
-                                    value: .key,
-                                    state: $focus,
-                                ),
-                                title: l10n[
-                                    .subscriptionRecoveryKeyLabel,
-                                ],
-                                placeholder: l10n[
-                                    .subscriptionRecoveryKeyPlaceholder,
-                                ],
-                                keyboardType: .asciiCapable,
-                                autocapitalization: .never,
-                                isDisabled:
-                                viewModel.isProcessing,
-                                accessibilityIdentifier: "subscriptionRecovery.input",
-                            )
-
-                            .privacySensitive().id(
-                                SubscriptionRecoveryFocus.key,
-                            )
-                        }
+                        .padding(
+                            .horizontal,
+                            size.s8,
+                        )
                     }
                     .padding(
                         .horizontal,
@@ -117,7 +84,6 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
                     ],
                     action: viewModel.onTapRestore,
                     isLoading: viewModel.isProcessing,
-                    isDisabled: !viewModel.isProcessing && !viewModel.isRestoreEnabled,
                 )
                 .dStyle(
                     .primaryButton,
@@ -137,11 +103,7 @@ struct SubscriptionRecoveryScreenView: DViewProtocol {
                                 ],
                             ),
                             action: viewModel.onTapRestore,
-                            isDisabled:
-                            viewModel.isProcessing,
                         )],
-                        isDisabled:
-                        viewModel.isProcessing,
                     )
                 }
             },

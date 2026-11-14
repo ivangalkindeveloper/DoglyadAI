@@ -1,0 +1,161 @@
+{
+  "is_passed": true,
+  "checks": [
+    {
+      "file": "LICENSE",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "MODIFICATIONS.md",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "NOTICE",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "README.md",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "added_tokens.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "calibration-manifest.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "chat_template.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "config.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "configuration.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "configuration_hulumed_encoder.py",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "configuration_hulumed_qwen2.py",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "generation_config.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "image_processing_hulumed.py",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "merges.txt",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "model-00001-of-00005.safetensors",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "model-00002-of-00005.safetensors",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "model-00003-of-00005.safetensors",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "model-00004-of-00005.safetensors",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "model-00005-of-00005.safetensors",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "model.safetensors.index.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "modeling_hulumed_encoder.py",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "modeling_hulumed_qwen2.py",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "preprocessor_config.json",
+      "is_runtime_override_verified": true
+    },
+    {
+      "file": "processing_hulumed.py",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "processor_config.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "quantization.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "recipe.yaml",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "source-modifications.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "special_tokens_map.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "tensor-audit.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "tokenizer_config.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "validation.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "vision-adapter-equivalence.json",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "vllm_adapter/Dockerfile",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "vllm_adapter/hulu_vllm/__init__.py",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "vllm_adapter/hulu_vllm/hulumed_encoder.py",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "vllm_adapter/hulu_vllm/model.py",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "vllm_adapter/pyproject.toml",
+      "is_source_hash_matched": true
+    },
+    {
+      "file": "vocab.json",
+      "is_source_hash_matched": true
+    }
+  ]
+}

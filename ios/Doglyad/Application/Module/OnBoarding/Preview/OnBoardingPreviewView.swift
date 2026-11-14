@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any OnBoardingStateProtocol
 
+        init(
+            state: any OnBoardingStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as OnBoardingErrorState: true

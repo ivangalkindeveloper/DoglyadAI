@@ -11,6 +11,14 @@
         let state: any WorkSettingsStateProtocol
         var isNeedPatientConsent: Bool = true
 
+        init(
+            state: any WorkSettingsStateProtocol,
+            isNeedPatientConsent: Bool = true,
+        ) {
+            self.state = state
+            self.isNeedPatientConsent = isNeedPatientConsent
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as WorkSettingsErrorState: true

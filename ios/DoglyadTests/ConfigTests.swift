@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct ConfigTests {
+    init() {}
+
     @Test
     func defaultApplicationConfigRoundTrips() throws {
         let data = try JSONEncoder().encode(
@@ -198,7 +200,7 @@ struct ConfigTests {
             from: Data(
                 """
                 {"id":"model","title":"Model","entitlement":"base","accessibility":"available",
-                 "contextLength":128000,"description":"Описание модели"}
+                 "format":"NVFP4","contextLength":128000,"description":"Описание модели"}
                 """.utf8,
             ),
         )
@@ -219,6 +221,9 @@ struct ConfigTests {
             ),
         )
 
+        #expect(
+            model.format == "NVFP4",
+        )
         #expect(
             model.description == "Описание модели",
         )

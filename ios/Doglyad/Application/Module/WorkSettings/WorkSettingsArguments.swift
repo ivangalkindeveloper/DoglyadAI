@@ -1,3 +1,5 @@
 import Router
 
-final class WorkSettingsArguments: RouteArgumentsProtocol {}
+final class WorkSettingsArguments: RouteArgumentsProtocol {
+    init() {}
+}

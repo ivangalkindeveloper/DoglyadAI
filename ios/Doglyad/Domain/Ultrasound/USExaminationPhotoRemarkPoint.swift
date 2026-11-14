@@ -8,6 +8,20 @@ struct USExaminationPhotoRemarkPoint: Identifiable, Codable, Equatable, Sendable
     let title: String
     let description: String
 
+    init(
+        id: UUID = .init(),
+        x: Double,
+        y: Double,
+        title: String,
+        description: String,
+    ) {
+        self.id = id
+        self.x = x
+        self.y = y
+        self.title = title
+        self.description = description
+    }
+
     private enum CodingKeys: String, CodingKey {
         case x, y, title, description
     }

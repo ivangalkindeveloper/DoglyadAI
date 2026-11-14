@@ -4,6 +4,8 @@
 
     /// Moves real scroll containers, including WebKit documents, after their layout settles.
     struct PreviewScrollEndView: UIViewRepresentable {
+        init() {}
+
         func makeUIView(
             context: Context,
         ) -> UIView {

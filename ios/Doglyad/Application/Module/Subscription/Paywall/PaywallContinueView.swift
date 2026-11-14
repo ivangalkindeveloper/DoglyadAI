@@ -7,6 +7,12 @@ struct PaywallContinueView: DViewProtocol {
     @EnvironmentObject private var viewModel: PaywallViewModel
     let state: any PaywallStateProtocol
 
+    init(
+        state: any PaywallStateProtocol,
+    ) {
+        self.state = state
+    }
+
     var body: some View {
         switch state {
         case _ as PaywallCatalogLoadingState:

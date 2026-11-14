@@ -5,6 +5,8 @@ import Foundation
 import Testing
 
 struct VoiceServerResponseTests {
+    init() {}
+
     @Test(
         "Natural patient introductions and spoken weight retain server values",
     )

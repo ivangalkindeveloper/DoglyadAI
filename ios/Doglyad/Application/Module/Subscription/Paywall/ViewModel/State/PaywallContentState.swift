@@ -7,17 +7,20 @@ class PaywallContentState: PaywallStateProtocol, @MainActor Equatable {
     let plans: [SubscriptionPlan]
     let selectedType: SubscriptionType
     let selectedPlanID: String?
+    let isAutoRenewing: Bool
 
     init(
         tiers: [SubscriptionTier],
         plans: [SubscriptionPlan],
         selectedType: SubscriptionType,
         selectedPlanID: String?,
+        isAutoRenewing: Bool = true,
     ) {
         self.tiers = tiers
         self.plans = plans
         self.selectedType = selectedType
         self.selectedPlanID = selectedPlanID
+        self.isAutoRenewing = isAutoRenewing
     }
 
     init(
@@ -27,6 +30,7 @@ class PaywallContentState: PaywallStateProtocol, @MainActor Equatable {
         plans = content.plans
         selectedType = content.selectedType
         selectedPlanID = content.selectedPlanID
+        isAutoRenewing = content.isAutoRenewing
     }
 
     var selectedTier: SubscriptionTier? {
@@ -54,7 +58,7 @@ class PaywallContentState: PaywallStateProtocol, @MainActor Equatable {
             of: self,
         ) == type(
             of: other,
-        ) && tiers == other.tiers && plans == other.plans && selectedType == other.selectedType && selectedPlanID == other.selectedPlanID
+        ) && tiers == other.tiers && plans == other.plans && selectedType == other.selectedType && selectedPlanID == other.selectedPlanID && isAutoRenewing == other.isAutoRenewing
     }
 
     static func == (

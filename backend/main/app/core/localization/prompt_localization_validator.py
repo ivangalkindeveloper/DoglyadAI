@@ -50,6 +50,11 @@ class PromptLocalizationValidator:
         r"\{([A-Za-z][A-Za-z0-9]*)\}",
     )
 
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @classmethod
     def validate(
         cls,

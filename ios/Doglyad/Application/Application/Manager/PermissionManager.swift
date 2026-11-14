@@ -13,7 +13,9 @@ protocol PermissionManagerProtocol: AnyObject {
     ) async -> Bool
 }
 
-final class PermissionManager {}
+final class PermissionManager {
+    init() {}
+}
 
 extension PermissionManager: PermissionManagerProtocol {
     func isGranted(

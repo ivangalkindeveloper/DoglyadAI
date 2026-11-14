@@ -7,6 +7,14 @@ struct PaywallPlanCardView: DViewProtocol {
     let state: PaywallContentState
     let plan: SubscriptionPlan
 
+    init(
+        state: PaywallContentState,
+        plan: SubscriptionPlan,
+    ) {
+        self.state = state
+        self.plan = plan
+    }
+
     var body: some View {
         let isSelected = state.selectedPlanID == plan.id
 

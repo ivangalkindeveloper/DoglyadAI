@@ -7,3 +7,8 @@ class ResourceNotFoundError(ApiError):
     code = "resourceNotFound"
     description = "Resource not found"
     status_code = 404
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

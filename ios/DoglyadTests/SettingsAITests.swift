@@ -9,6 +9,8 @@ import Testing
 
 @MainActor
 struct SettingsAITests {
+    init() {}
+
     @Test(
         arguments: TranscriberType.allCases,
     )
@@ -857,6 +859,8 @@ struct SettingsAITests {
 private final class SettingsAITestDatabase: DDatabaseSettingsAIProtocol {
     var data: Data?
 
+    init() {}
+
     func getSettingsAIData() -> Data? {
         data
     }
@@ -872,6 +876,8 @@ private final class SettingsAITestRepository: SettingsAIRepositoryProtocol {
     var settings: SettingsAI?
     var isSaveFailing = false
     var saveCount = 0
+
+    init() {}
 
     func getSettings() async throws -> SettingsAI? {
         settings

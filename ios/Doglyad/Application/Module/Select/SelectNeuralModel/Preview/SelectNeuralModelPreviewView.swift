@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any SelectNeuralModelStateProtocol
 
+        init(
+            state: any SelectNeuralModelStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = SelectNeuralModelViewModel(
                 container: container,

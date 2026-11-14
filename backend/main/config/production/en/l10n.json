@@ -24,6 +24,8 @@
   "headAndNeckTitle": "Head and neck",
   "hipJointsInNewbornsTitle": "Hip joints in newborns",
   "hollowOrgansStomachAndIntestinesTitle": "Hollow organs (stomach and intestines)",
+  "huluMed32BDescription": "A medical multimodal model for working with images and clinical text together. The Hulu-Med family was trained on medical data, including ultrasound. The 32B version helps prepare a detailed draft report from examination images and notes. Our server runs this model in NVFP4.",
+  "huluMed7BDescription": "A medical multimodal model in the Hulu-Med family for working with images and clinical text. Trained on medical data, including ultrasound. The 7B version helps prepare a draft report from examination materials and uses less memory than Hulu-Med 32B.",
   "intracanialArteriesTitle": "Intracranial arteries",
   "jointsTitle": "Joints",
   "kidneysAdrenalGlandsAndRetroperitonealSpaceTitle": "Kidneys, adrenal glands, and retroperitoneal space",

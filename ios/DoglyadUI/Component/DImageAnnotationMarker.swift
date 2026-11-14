@@ -99,6 +99,12 @@ public struct DImageAnnotationMarker: DViewProtocol {
 private struct DImageAnnotationMarkerTitleLayout: Layout {
     let maximumWidth: CGFloat
 
+    init(
+        maximumWidth: CGFloat,
+    ) {
+        self.maximumWidth = maximumWidth
+    }
+
     func sizeThatFits(
         proposal _: ProposedViewSize,
         subviews: Subviews,

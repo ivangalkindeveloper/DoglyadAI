@@ -12,6 +12,8 @@ import UIKit
     .serialized,
 )
 struct ReportRemarksTests {
+    init() {}
+
     @Test
     func requestPreservesPhotoIdentityAndNormalizedOrientation() throws {
         let original = UIGraphicsImageRenderer(

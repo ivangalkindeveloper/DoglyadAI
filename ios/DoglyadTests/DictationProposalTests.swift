@@ -4,6 +4,8 @@ import FoundationModels
 import Testing
 
 struct DictationProposalTests {
+    init() {}
+
     @Test(
         "A short weight quote uses only its immediately adjacent label",
     )
@@ -148,10 +150,10 @@ struct DictationProposalTests {
     }
 
     @Test(
-        "All eight form fields use typed proposals with exact quotes",
+        "All form fields use typed proposals with exact quotes",
     )
     func coversAllFields() throws {
-        let text = "Номер исследования 007. Пациент Иван. Пол мужчина. Дата рождения 1990-01-02. Рост 174 см. Вес 72 кг. Жалобы боль. Описание правая почка 12 мм."
+        let text = "Номер исследования 007. Пациент Иван. Пол мужчина. Дата рождения 1990-01-02. Рост 174 см. Вес 72 кг. Жалобы боль. Описание правая почка 12 мм. Пациент подготовлен."
         let values: [(DNeuralUltrasoundVoiceFieldId, String, String)] = [
             (.examinationNumber, "007", "Номер исследования 007"),
             (.patientName, "Иван", "Пациент Иван"),
@@ -161,6 +163,7 @@ struct DictationProposalTests {
             (.patientWeightKG, "72", "Вес 72 кг"),
             (.patientComplaints, "боль", "Жалобы боль"),
             (.examinationDescription, "правая почка 12 мм", "Описание правая почка 12 мм"),
+            (.isPatientPreparedForExamination, "true", "Пациент подготовлен"),
         ]
         let request = DNeuralUltrasoundDictationParseRequest(
             text: text,
@@ -228,6 +231,13 @@ struct DictationProposalTests {
                 7,
             ].value == .text(
                 "правая почка 12 мм",
+            ),
+        )
+        #expect(
+            proposal.proposals[
+                8,
+            ].value == .boolean(
+                true,
             ),
         )
     }

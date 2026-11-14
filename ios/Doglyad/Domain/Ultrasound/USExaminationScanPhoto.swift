@@ -4,6 +4,14 @@ import UIKit
 struct ScanPhotoEncodingOptions {
     let resizeMaxDimension: Double
     let compressionQuality: Double
+
+    init(
+        resizeMaxDimension: Double,
+        compressionQuality: Double,
+    ) {
+        self.resizeMaxDimension = resizeMaxDimension
+        self.compressionQuality = compressionQuality
+    }
 }
 
 struct USExaminationScanPhoto: Identifiable, Equatable, Codable {

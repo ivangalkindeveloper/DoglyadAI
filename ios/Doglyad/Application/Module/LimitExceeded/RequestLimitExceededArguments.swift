@@ -1,3 +1,5 @@
 import Router
 
-final class RequestLimitExceededArguments: RouteArgumentsProtocol {}
+final class RequestLimitExceededArguments: RouteArgumentsProtocol {
+    init() {}
+}

@@ -32,7 +32,7 @@ class SubscriptionEvidenceTests(unittest.TestCase):
             id="subscription",
             owner_id="owner",
             plan_id="pro_weekly",
-            source="yookassa",
+            source="robokassa",
             entitlement="pro",
             paid_until="future",
             is_auto_renewing=True,
@@ -43,7 +43,7 @@ class SubscriptionEvidenceTests(unittest.TestCase):
             recovery_hash=None,
         )
         session.purchase = dict(
-            provider="yookassa", test=True, status="succeeded", planId="pro_weekly"
+            provider="robokassa", test=True, status="succeeded", planId="pro_weekly"
         )
         return session
 
@@ -71,7 +71,7 @@ class SubscriptionEvidenceTests(unittest.TestCase):
             ):
                 session.after("cancel-renewal", "sim")
 
-    def test_key_copy_is_bound_to_backend_hash_and_rotation(self):
+    def test_key_copy_is_bound_to_the_permanent_backend_hash(self):
         session = self.session()
         key = "A" * 48
         state = dict(
@@ -79,16 +79,18 @@ class SubscriptionEvidenceTests(unittest.TestCase):
             is_auto_renewing=False,
             recovery_hash=hashlib.sha256(key.encode()).hexdigest(),
         )
+        session.baseline["recovery_hash"] = state["recovery_hash"]
         with (
             patch.object(session, "copy"),
             patch.object(session, "snapshot", return_value=state),
             patch("subscription_evidence.subprocess.check_output", return_value=key),
         ):
-            proof = session.after("create-key", "sim")
+            proof = session.after("copy-key", "sim")
             self.assertTrue(proof["copiedKeyVerified"])
             self.assertNotIn(key, str(proof))
-            with self.assertRaises(ValueError):
-                session.after("rotate-key", "sim")
+            self.assertTrue(session.after("copy-key-again", "sim")["keyStable"])
+            with patch("subscription_evidence.subprocess.check_output", return_value="B" * 48), self.assertRaises(ValueError):
+                session.after("copy-key-again", "sim")
 
     def test_recovery_requires_new_identity_one_credential_and_no_new_period(self):
         session = self.session()
@@ -104,7 +106,7 @@ class SubscriptionEvidenceTests(unittest.TestCase):
         ):
             with patch.object(session, "snapshot", return_value=state):
                 self.assertTrue(
-                    session.after("reject-old-key", "sim")["replacedKeyRejected"]
+                    session.after("reject-invalid-key", "sim")["invalidKeyRejected"]
                 )
                 with self.assertRaises(ValueError):
                     session.after("restore-key", "sim")
@@ -115,7 +117,7 @@ class SubscriptionEvidenceTests(unittest.TestCase):
                     session.after("restore-key", "sim")["credentialsAdded"], 1
                 )
                 with self.assertRaises(ValueError):
-                    session.after("reject-old-key", "sim")
+                    session.after("reject-invalid-key", "sim")
 
     def test_out_of_order_actions_are_rejected_before_ui(self):
         session = self.session()

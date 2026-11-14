@@ -1,3 +1,5 @@
 import Router
 
-final class LegalUpdateArguments: RouteArgumentsProtocol {}
+final class LegalUpdateArguments: RouteArgumentsProtocol {
+    init() {}
+}

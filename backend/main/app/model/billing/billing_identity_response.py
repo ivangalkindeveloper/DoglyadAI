@@ -18,3 +18,4 @@ class BillingIdentityResponse(BaseModel):
     accessToken: NonBlankString = Field(
         min_length=32,
     )
+    recoveryKey: NonBlankString | None = None

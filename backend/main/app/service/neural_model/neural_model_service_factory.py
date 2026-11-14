@@ -27,6 +27,11 @@ logger = logging.getLogger(
 class NeuralModelServiceFactory:
     GENERATION_PATH = "/v1/generation"
 
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @classmethod
     def _load_vm_urls(
         cls,

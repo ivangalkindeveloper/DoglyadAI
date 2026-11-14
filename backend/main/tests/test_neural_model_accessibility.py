@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pytest
+from pydantic import ValidationError
 
 from app.core.configuration.configuration import Configuration
 from app.error import ApiError
@@ -16,6 +17,7 @@ def _model(
     return USExaminationNeuralModel(
         id=f"test/{accessibility.value}",
         title="Test model",
+        format="BF16",
         entitlement="base",
         accessibility=accessibility,
         contextLength=128000,
@@ -42,6 +44,25 @@ def test_available_model_can_be_resolved(
         )
         is model
     )
+
+
+@pytest.mark.parametrize(
+    "value",
+    (None, "", "   "),
+)
+def test_model_format_must_be_nonblank(
+    value: str | None,
+) -> None:
+    data = _model(
+        USExaminationNeuralModelAccessibility.AVAILABLE,
+    ).model_dump()
+    data["format"] = value
+    with pytest.raises(
+        ValidationError,
+    ):
+        USExaminationNeuralModel.model_validate(
+            data,
+        )
 
 
 @pytest.mark.parametrize(

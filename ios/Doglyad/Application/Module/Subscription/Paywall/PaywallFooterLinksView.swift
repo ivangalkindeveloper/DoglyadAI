@@ -6,32 +6,41 @@ struct PaywallFooterLinksView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: PaywallViewModel
 
+    init() {}
+
     var body: some View {
-        HStack(
-            alignment: .top,
-            spacing: size.s8,
+        VStack(
+            alignment: .leading,
+            spacing: size.s12,
         ) {
-            PaywallFooterLinkButton(
+            DText(
+                viewModel.legalAttributedText(
+                    theme: theme,
+                    locale: l10n.locale,
+                ),
+            )
+            .padding(
+                .horizontal,
+                size.s8,
+            )
+            .environment(
+                \.openURL,
+                OpenURLAction { url in
+                    viewModel.onLegalAttributedEnvironment(
+                        url: url,
+                    )
+                },
+            )
+
+            DButton(
                 title: l10n[
                     .paywallRestoreButton,
                 ],
                 action: viewModel.onTapRestore,
-                isDisabled:
-                viewModel.isProcessing,
-            )
-
-            PaywallFooterLinkButton(
-                title: l10n[
-                    .buttonTermsAndConditions,
-                ],
-                action: viewModel.onTapTerms,
-            )
-
-            PaywallFooterLinkButton(
-                title: l10n[
-                    .buttonPrivacyPolicy,
-                ],
-                action: viewModel.onTapPrivacyPolicy,
+                isDisabled: viewModel.isRestoreDisabled,
+                accessibilityIdentifier: "paywall.restore",
+            ).dStyle(
+                .primaryText,
             )
         }
     }

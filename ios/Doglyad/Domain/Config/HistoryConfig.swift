@@ -2,6 +2,12 @@ import Foundation
 
 struct HistoryConfig: Codable {
     let pageSize: Int
+
+    init(
+        pageSize: Int,
+    ) {
+        self.pageSize = pageSize
+    }
 }
 
 extension HistoryConfig {

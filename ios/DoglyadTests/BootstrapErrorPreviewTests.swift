@@ -4,6 +4,8 @@ import Testing
 
 @MainActor
 struct BootstrapErrorPreviewTests {
+    init() {}
+
     @Test
     func bootstrapErrorsSelectTheirRealPresentationWithoutInitializedServices() {
         #expect(

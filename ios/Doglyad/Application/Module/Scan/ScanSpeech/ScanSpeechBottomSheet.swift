@@ -9,6 +9,12 @@ struct ScanSpeechBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: ScanSpeechArguments
 
+    init(
+        arguments: ScanSpeechArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         ScanSpeechBottomSheetView(
             viewModel: ScanSpeechViewModel(

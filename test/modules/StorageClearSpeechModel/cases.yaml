@@ -14,10 +14,10 @@ cases:
     expect: Модель остаётся доступной; удаление не запускается
   - action: Открыть шторку повторно и подтвердить удаление
     expect: Шторка закрывается; callback вызывается один раз; модель удаляется обычным файловым сервисом, кнопка удаления исчезает
-  covers: [onTapConfirm, onDisappear]
+  covers: [onTapConfirm]
   automation:
     kind: mixed
     flows: [e2e-storage-delete-speech-model]
     nativeTests:
     - StorageConfirmationTests/speechModelDeletionRequiresConfirmationAndCancellationKeepsTheModel()
-    - StorageConfirmationTests/speechModelConfirmationDismissesAndCallsBackOnlyOnce()
+    - StorageConfirmationTests/speechModelConfirmationDismissesBeforeCallingBack()

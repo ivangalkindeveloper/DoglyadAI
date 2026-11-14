@@ -6,6 +6,12 @@ struct AboutBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: AboutArguments
 
+    init(
+        arguments: AboutArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         AboutBottomSheetView(
             viewModel: AboutViewModel(

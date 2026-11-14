@@ -32,6 +32,20 @@ public struct DSpeechLexiconCorrector: Sendable {
         let wordEndings: [String]
         let isNegated: Bool
         let sides: Set<DSpeechLexiconSide>
+
+        init(
+            text: String,
+            normalized: [Character],
+            wordEndings: [String],
+            isNegated: Bool,
+            sides: Set<DSpeechLexiconSide>,
+        ) {
+            self.text = text
+            self.normalized = normalized
+            self.wordEndings = wordEndings
+            self.isNegated = isNegated
+            self.sides = sides
+        }
     }
 
     private enum DSpeechLexiconSide: Hashable, Sendable {

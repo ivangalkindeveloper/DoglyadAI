@@ -21,6 +21,7 @@ from app.service.neural_model.neural_model_service_factory import NeuralModelSer
 _MODEL = USExaminationNeuralModel(
     id="google/medgemma-4b-it",
     title="MedGemma 4B",
+    format="BF16",
     entitlement="base",
     accessibility=USExaminationNeuralModelAccessibility.AVAILABLE,
     contextLength=128000,

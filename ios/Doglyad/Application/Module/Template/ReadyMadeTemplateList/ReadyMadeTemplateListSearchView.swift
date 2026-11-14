@@ -7,6 +7,12 @@ struct ReadyMadeTemplateListSearchView: DViewProtocol {
     @EnvironmentObject private var viewModel: ReadyMadeTemplateListViewModel
     let focus: FocusState<ReadyMadeTemplateListFocus?>.Binding
 
+    init(
+        focus: FocusState<ReadyMadeTemplateListFocus?>.Binding,
+    ) {
+        self.focus = focus
+    }
+
     var body: some View {
         switch viewModel.state {
         case _ as ReadyMadeTemplateListSuccessState:

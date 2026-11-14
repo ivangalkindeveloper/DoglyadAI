@@ -4,7 +4,7 @@
 
 `maestro` — весь сценарий связан с flows; `mixed` — flows и обязательные проверки XCTest; `partial` — автоматизирована часть; `manual` — нужна ручная проверка или подготовка стенда.
 
-Описанных сценариев: 100. Функциональных Maestro-кейсов: 129. Preview учитываются отдельно и не закрывают функциональные пробелы.
+Описанных сценариев: 103. Функциональных Maestro-кейсов: 116. Preview учитываются отдельно и не закрывают функциональные пробелы.
 
 | Модуль | Сценариев | Maestro | Maestro + XCTest | Частично | Вручную / нужен стенд |
 |---|---:|---:|---:|---:|---:|
@@ -14,7 +14,7 @@
 | [OnBoarding](modules/OnBoarding/README.md) | 3 | 3 | 0 | 0 | 0 |
 | [WebDocument](modules/WebDocument/README.md) | 2 | 1 | 1 | 0 | 0 |
 | [SelectUSExaminationType](modules/SelectUSExaminationType/README.md) | 2 | 1 | 1 | 0 | 0 |
-| [Paywall](modules/Paywall/README.md) | 4 | 2 | 2 | 0 | 0 |
+| [Paywall](modules/Paywall/README.md) | 5 | 0 | 2 | 1 | 2 |
 | [Scan](modules/Scan/README.md) | 10 | 5 | 5 | 0 | 0 |
 | [Menu](modules/Menu/README.md) | 2 | 2 | 0 | 0 | 0 |
 | [History](modules/History/README.md) | 4 | 3 | 1 | 0 | 0 |
@@ -29,8 +29,10 @@
 | [SelectTranscriber](modules/SelectTranscriber/README.md) | 1 | 0 | 1 | 0 | 0 |
 | [SelectTranscriptParser](modules/SelectTranscriptParser/README.md) | 2 | 1 | 1 | 0 | 0 |
 | [SelectNeuralModel](modules/SelectNeuralModel/README.md) | 1 | 0 | 1 | 0 | 0 |
-| [ManageSubscription](modules/ManageSubscription/README.md) | 4 | 3 | 1 | 0 | 0 |
-| [SubscriptionRecovery](modules/SubscriptionRecovery/README.md) | 3 | 2 | 1 | 0 | 0 |
+| [SubscriptionManage](modules/SubscriptionManage/README.md) | 5 | 2 | 0 | 1 | 2 |
+| [SubscriptionAutoRenewalDisabling](modules/SubscriptionAutoRenewalDisabling/README.md) | 1 | 0 | 0 | 0 | 1 |
+| [SubscriptionChange](modules/SubscriptionChange/README.md) | 1 | 0 | 1 | 0 | 0 |
+| [SubscriptionRecovery](modules/SubscriptionRecovery/README.md) | 2 | 0 | 0 | 0 | 2 |
 | [Storage](modules/Storage/README.md) | 3 | 3 | 0 | 0 | 0 |
 | [StorageClearProtocols](modules/StorageClearProtocols/README.md) | 2 | 1 | 1 | 0 | 0 |
 | [StorageClearSpeechModel](modules/StorageClearSpeechModel/README.md) | 1 | 0 | 1 | 0 | 0 |

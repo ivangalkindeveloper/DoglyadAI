@@ -6,6 +6,14 @@ struct WebDocumentBottomSheetView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: WebDocumentViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> WebDocumentViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DBottomSheet(
             title: viewModel.title,

@@ -9,6 +9,12 @@
         @EnvironmentObject private var router: DRouter
         let state: any TemplateDeleteStateProtocol
 
+        init(
+            state: any TemplateDeleteStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let model = TemplateDeleteViewModel(
                 container: container,

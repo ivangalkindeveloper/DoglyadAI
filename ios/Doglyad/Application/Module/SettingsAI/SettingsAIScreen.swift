@@ -10,6 +10,12 @@ struct SettingsAIScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: SettingsAIArguments?
 
+    init(
+        arguments: SettingsAIArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         SettingsAIScreenView(
             viewModel: SettingsAIViewModel(

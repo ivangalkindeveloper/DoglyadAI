@@ -1,0 +1,32 @@
+{
+  "modelId": "ZJU-AI4H/Hulu-Med-32B",
+  "format": "NVFP4",
+  "checkpoint": "ivangalkindeveloper/Hulu-Med-32B-NVFP4",
+  "checkpointRevision": "5ed563b024f1511837b26830fcb2846cb1fdc501",
+  "runtimeImage": "sha256:a43025e228727bfac14ea75aeed1cdc086b25c778584fc7593421383de2f724d",
+  "architecture": "arm64",
+  "localChecks": {
+    "deployUnitTests": 54,
+    "mainConfigurationTests": 39,
+    "ruff": "passed",
+    "generatedCompose": "passed",
+    "architectureCheck": {
+      "isPassed": false,
+      "scope": "pre-existing iOS view fragments outside this change"
+    }
+  },
+  "scope": "Add one vLLM engine and its route on DGX; no main VM rollout, no backend image replacement, no iOS build",
+  "stage": "complete",
+  "verificationUnix": 1794510116.416973,
+  "runtimeChecks": {
+    "passed": 16,
+    "isMainValidatorPassed": true,
+    "isInfrastructureCheckPassed": true,
+    "isRuntimeFileAuditPassed": true,
+    "isMedGemmaPreserved": true,
+    "isLocalTunnelAvailable": true,
+    "generationWithoutTokenHttpStatus": 401,
+    "streamWithoutTokenHttpStatus": 401
+  },
+  "availableMemoryGiB": 32.71
+}

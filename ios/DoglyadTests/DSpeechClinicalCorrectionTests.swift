@@ -13,6 +13,8 @@ struct DSpeechClinicalCorrectionTests {
         ),
     )
 
+    init() {}
+
     @Test
     func medicalCorrectionsPreserveMeasurementsAndNegations() {
         let raw = "Стенка 2,7 мм. Содержимое анофагенное с гиперэфагенной взвесью. Эфопризнаки взвеси. Объём мучего пузыря 180 мл. Камней нет."

@@ -19,6 +19,11 @@ class ApplicationLocalizationValidator:
         },
     )
 
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @classmethod
     def _structure(
         cls,

@@ -1,0 +1,2 @@
+@MainActor
+protocol SubscriptionChangeStateProtocol: AnyObject {}

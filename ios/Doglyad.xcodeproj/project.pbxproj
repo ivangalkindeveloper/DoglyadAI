@@ -40,7 +40,6 @@
 		77CB95292EB90C8500489F3E /* DoglyadNeuralModel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 77CB95232EB90C8500489F3E /* DoglyadNeuralModel.framework */; };
 		77CB952A2EB90C8500489F3E /* DoglyadNeuralModel.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 77CB95232EB90C8500489F3E /* DoglyadNeuralModel.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		77D9E0C62F2C143D00FB522A /* Router in Frameworks */ = {isa = PBXBuildFile; productRef = 77D9E0C52F2C143D00FB522A /* Router */; };
-		77DA10010000000000000001 /* YooKassaPaymentsBinary in Frameworks */ = {isa = PBXBuildFile; productRef = 77DA10010000000000000002 /* YooKassaPaymentsBinary */; };
 		77E745C030030621008B204A /* Shimmer in Frameworks */ = {isa = PBXBuildFile; productRef = 77E745BF30030621008B204A /* Shimmer */; };
 /* End PBXBuildFile section */
 
@@ -526,7 +525,6 @@
 				77CB95292EB90C8500489F3E /* DoglyadNeuralModel.framework in Frameworks */,
 				770AEB5E2F1DA67D00C09C76 /* FirebaseAnalytics in Frameworks */,
 				777D765C3014D00C004E81FE /* FirebaseCrashlytics in Frameworks */,
-				77DA10010000000000000001 /* YooKassaPaymentsBinary in Frameworks */,
 				77CB94F82EB8FED100489F3E /* DoglyadCamera.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -772,7 +770,6 @@
 			);
 			name = Doglyad;
 			packageProductDependencies = (
-				77DA10010000000000000002 /* YooKassaPaymentsBinary */,
 				77BB12232E92A87700B9FFC5 /* DependencyInitializer */,
 				77759AFA2E932B78007CC90C /* DependencyInitializer */,
 				777B8DE42EB0020D007F5678 /* BottomSheet */,
@@ -959,7 +956,6 @@
 			mainGroup = 77AC58A92E929E7E0028250A;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				77DA10010000000000000003 /* XCRemoteSwiftPackageReference "yookassa-payments-swift" */,
 				7700BBBB000000000000A001 /* XCRemoteSwiftPackageReference "argmax-oss-swift" */,
 				7700CCCC000000000000A001 /* XCRemoteSwiftPackageReference "FluidAudio" */,
 				77759AF92E932B78007CC90C /* XCRemoteSwiftPackageReference "DependencyInitializer" */,
@@ -3110,14 +3106,6 @@
 				version = 0.7.1;
 			};
 		};
-		77DA10010000000000000003 /* XCRemoteSwiftPackageReference "yookassa-payments-swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://git.yoomoney.ru/scm/sdk/yookassa-payments-swift.git";
-			requirement = {
-				kind = exactVersion;
-				version = 12.0.2;
-			};
-		};
 		77E7F0AC2EA843F000E49A4E /* XCRemoteSwiftPackageReference "Router" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ivangalkindeveloper/Router";
@@ -3222,11 +3210,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 77E7F0AC2EA843F000E49A4E /* XCRemoteSwiftPackageReference "Router" */;
 			productName = Router;
-		};
-		77DA10010000000000000002 /* YooKassaPaymentsBinary */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 77DA10010000000000000003 /* XCRemoteSwiftPackageReference "yookassa-payments-swift" */;
-			productName = YooKassaPaymentsBinary;
 		};
 		77E745BF30030621008B204A /* Shimmer */ = {
 			isa = XCSwiftPackageProductDependency;

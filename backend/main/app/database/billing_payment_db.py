@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import secrets
 from datetime import datetime
 
 from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, Text, UniqueConstraint
@@ -24,6 +25,53 @@ class BillingPaymentDB(BillingBase):
         ),
         primary_key=True,
     )
+    source: Mapped[str] = mapped_column(
+        String(
+            16,
+        ),
+        default="robokassa",
+        server_default="robokassa",
+    )
+    invoice_id: Mapped[str] = mapped_column(
+        String(
+            19,
+        ),
+        unique=True,
+        default=lambda: str(
+            secrets.randbelow(
+                2**63 - 1,
+            )
+            + 1,
+        ),
+    )
+    merchant_login: Mapped[str | None] = mapped_column(
+        String(
+            128,
+        ),
+    )
+    is_test: Mapped[bool | None] = mapped_column(
+        Boolean,
+    )
+    receipt_description: Mapped[str | None] = mapped_column(
+        String(
+            128,
+        ),
+    )
+    receipt_email: Mapped[str | None] = mapped_column(
+        String(
+            254,
+        ),
+    )
+    provider_invoice_uuid: Mapped[str | None] = mapped_column(
+        String(
+            36,
+        ),
+    )
+    provider_operation_key: Mapped[str | None] = mapped_column(
+        String(
+            128,
+        ),
+    )
     owner_id: Mapped[str] = mapped_column(
         ForeignKey(
             "billing_owners.id",
@@ -31,6 +79,11 @@ class BillingPaymentDB(BillingBase):
         index=True,
     )
     subscription_id: Mapped[str | None] = mapped_column(
+        ForeignKey(
+            "billing_subscriptions.id",
+        ),
+    )
+    previous_subscription_id: Mapped[str | None] = mapped_column(
         ForeignKey(
             "billing_subscriptions.id",
         ),
@@ -80,11 +133,6 @@ class BillingPaymentDB(BillingBase):
         default="redirect",
         server_default="redirect",
     )
-    payment_token_hash: Mapped[str | None] = mapped_column(
-        String(
-            64,
-        ),
-    )
     payment_method_type: Mapped[str | None] = mapped_column(
         String(
             32,
@@ -99,6 +147,10 @@ class BillingPaymentDB(BillingBase):
         DateTime(
             timezone=True,
         ),
+    )
+    is_auto_renewing: Mapped[bool] = mapped_column(
+        Boolean,
+        default=True,
     )
     provider_id: Mapped[str | None] = mapped_column(
         String(

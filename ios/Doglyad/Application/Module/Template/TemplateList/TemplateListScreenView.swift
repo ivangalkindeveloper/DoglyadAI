@@ -6,6 +6,14 @@ struct TemplateListScreenView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: TemplateListViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> TemplateListViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[

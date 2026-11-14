@@ -69,8 +69,8 @@
                 ],
             )
         }
-        static let subscription = ManageSubscriptionPreviewFactory.makeStatus(
-            source: .yookassa,
+        static let subscription = SubscriptionManagePreviewFactory.makeStatus(
+            source: .robokassa,
         )
         static let draft = USExaminationDraftForm(
             examinationNumber: "PREVIEW-001",
@@ -88,7 +88,7 @@
         static let paywallPlans = development.products.products.map { product in
             SubscriptionPlan(
                 id: product.id,
-                source: .yookassa,
+                source: .robokassa,
                 type: product.entitlement,
                 period: product.period,
                 title: product.title,

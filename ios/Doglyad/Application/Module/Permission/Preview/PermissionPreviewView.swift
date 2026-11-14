@@ -10,6 +10,14 @@
         let state: any PermissionStateProtocol
         let kind: PermissionArguments.Kind
 
+        init(
+            state: any PermissionStateProtocol,
+            kind: PermissionArguments.Kind,
+        ) {
+            self.state = state
+            self.kind = kind
+        }
+
         var body: some View {
             let model = PermissionViewModel(
                 container: container,

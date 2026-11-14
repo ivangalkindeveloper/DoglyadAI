@@ -7,6 +7,14 @@ struct ErrorPaginationView: DViewProtocol {
     let description: String
     let onRetry: () -> Void
 
+    init(
+        description: String,
+        onRetry: @escaping () -> Void,
+    ) {
+        self.description = description
+        self.onRetry = onRetry
+    }
+
     var body: some View {
         VStack(
             spacing: size.s20,

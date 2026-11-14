@@ -67,8 +67,12 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
 
     func purchase(
         plan: SubscriptionPlan,
-        onPurchasePrepared: @escaping (SubscriptionPurchaseReference) -> Void,
+        isAutoRenewing _: Bool,
+        onPurchasePrepared: @escaping (SubscriptionPurchaseContextProtocol) -> Void,
     ) async throws -> SubscriptionPurchaseOutcome {
+        guard plan.source == .apple else {
+            throw SubscriptionError.offeringsUnavailable
+        }
         try Task.checkCancellation()
         let productID = plan.id
         guard let product = try await Product.products(
@@ -93,8 +97,9 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
         }
         try Task.checkCancellation()
         onPurchasePrepared(
-            .apple(
-                previousTransactionId: previousTransactionId,
+            SubscriptionStoreKitPurchaseContext(
+                planID: productID,
+                previousTransactionID: previousTransactionId,
                 previousPurchaseDate: previousPurchaseDate,
             ),
         )
@@ -121,9 +126,12 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
         }
     }
 
-    func restorePurchases() async throws -> Bool {
+    func restorePurchases() async throws -> SubscriptionRestoreStrategy {
         try await AppStore.sync()
-        return try await synchronizeCurrentEntitlements()
+        let isOwnerChanged = try await synchronizeCurrentEntitlements()
+        return .completed(
+            isOwnerChanged: isOwnerChanged,
+        )
     }
 
     func synchronizeCurrentEntitlements() async throws -> Bool {

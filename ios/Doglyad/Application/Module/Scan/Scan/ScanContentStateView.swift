@@ -10,6 +10,18 @@ struct ScanContentStateView: DViewProtocol {
     let isProcessing: Bool
     let isMediaSelectionDisabled: Bool
 
+    init(
+        focus: FocusState<ScanFocus?>.Binding,
+        toolbarHeight: CGFloat,
+        isProcessing: Bool,
+        isMediaSelectionDisabled: Bool,
+    ) {
+        self.focus = focus
+        self.toolbarHeight = toolbarHeight
+        self.isProcessing = isProcessing
+        self.isMediaSelectionDisabled = isMediaSelectionDisabled
+    }
+
     var body: some View {
         DFocusScrollView(
             focus: focus.wrappedValue,

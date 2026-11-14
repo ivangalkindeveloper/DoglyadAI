@@ -1,2 +1,0 @@
-@MainActor
-final class SubscriptionRecoveryKeyCreationLoadingState: SubscriptionRecoveryLoadingState {}

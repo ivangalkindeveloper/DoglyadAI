@@ -6,6 +6,16 @@ struct DMessageModifier: ViewModifier {
     @StateObject var messager = DMessager()
     var isPersistent = false
 
+    init(
+        messager: @autoclosure @escaping () -> DMessager = DMessager(),
+        isPersistent: Bool = false,
+    ) {
+        _messager = StateObject(
+            wrappedValue: messager(),
+        )
+        self.isPersistent = isPersistent
+    }
+
     func body(
         content: Content,
     ) -> some View {

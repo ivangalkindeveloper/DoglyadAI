@@ -1,3 +1,5 @@
 import Router
 
-final class SettingsAIArguments: RouteArgumentsProtocol {}
+final class SettingsAIArguments: RouteArgumentsProtocol {
+    init() {}
+}

@@ -5,7 +5,7 @@
   "simulatorRuntime": "",
   "scheme": "Doglyad-Debug-Local",
   "appId": "com.medical.doglyad.local",
-  "yookassaCredentialsFile": "backend/main/secrets/.env.development",
+  "robokassaCredentialsFile": "backend/main/secrets/.env.development",
   "figmaFileKey": "",
   "figmaPageName": "Doglyad Regression"
 }

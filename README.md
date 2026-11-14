@@ -106,7 +106,7 @@ See [DoglyadNeuralModel](ios/DoglyadNeuralModel/README.md) and [DoglyadSpeech](i
 
 | Area | Languages and frameworks | Main libraries and services |
 |---|---|---|
-| iOS | Swift 5, SwiftUI, MVVM, Swift Concurrency, SwiftData, iOS 18.6+ | Alamofire, Firebase, StoreKit 2, YooKassa SDK, Foundation Models, Speech, AVFoundation, MarkdownUI, BottomSheet, SwiftMessages, SwiftUI-Shimmer |
+| iOS | Swift 5, SwiftUI, MVVM, Swift Concurrency, SwiftData, iOS 18.6+ | Alamofire, Firebase, StoreKit 2, AuthenticationServices, Foundation Models, Speech, AVFoundation, MarkdownUI, BottomSheet, SwiftMessages, SwiftUI-Shimmer |
 | iOS AI | Apple Foundation Models, Core ML | WhisperKit Turbo for ASR; Foundation Models for local text extraction |
 | Backend Main  | Python 3.11, FastAPI, Pydantic v2, async/await | httpx, pydantic-settings, Firebase Admin SDK, SlowAPI, Uvicorn, SMTP |
 | Backend Inference | Python 3.11, FastAPI, Pydantic v2 | httpx, Firebase Admin SDK, Uvicorn, vLLM OpenAI-compatible API |
@@ -143,7 +143,7 @@ The backend is deliberately split into two independently deployable services:
 - `backend/main` runs on a non-GPU VM. It exposes the public API, validates App Check, loads environment-specific product configuration, builds prompts, applies rate limits, routes requests to the selected model VM, and sends reports by email.
 - `backend/inference` runs beside vLLM on a GPU VM. A VM serves exactly one model, validates App Check, checks that the requested `modelId` matches `SERVED_MODEL_ID`, and performs generation. It does not contain prompts, localization, templates, or product-domain decisions.
 
-`ENVIRONMENT` selects either `backend/main/config/development` or `backend/main/config/production` and the matching YooKassa payment mode (test or live). Real charges remain blocked by the temporary `IS_YOOKASSA_LIVE_ENABLED=false` launch gate. The application downloads the same configuration documents from the deployed main backend so the app and backend cannot disagree about newly published models or examination types.
+`ENVIRONMENT` selects either `backend/main/config/development` or `backend/main/config/production` and the matching Robokassa payment mode (test or live). Real charges remain blocked by the temporary `IS_ROBOKASSA_LIVE_ENABLED=false` launch gate. The application downloads the same configuration documents from the deployed main backend so the app and backend cannot disagree about newly published models or examination types.
 
 For local testing without GPU inference, select VS Code's `Backend: Local Mock` profile. It uses development configuration and returns RU/EN fixtures for report generation and server-side dictation parsing, while App Check and the rest of the main backend remain active. See the [local backend guide](backend/main/README.md).
 
@@ -151,7 +151,7 @@ For local testing without GPU inference, select VS Code's `Backend: Local Mock` 
 
 - **Firebase App Check** authenticates the iOS client at both backend boundaries.
 - **Firebase Analytics and Crashlytics** provide product telemetry and crash diagnostics.
-- **Billing** uses StoreKit 2, a PostgreSQL ledger, and native YooKassa SDK payments backed by a server payment gateway. See [setup and launch requirements](backend/main/BILLING.md).
+- **Billing** uses StoreKit 2, a PostgreSQL ledger, and Robokassa browser payments backed by a server payment gateway. See [setup and launch requirements](backend/main/BILLING.md).
 - **Apple Speech** provides `SpeechAnalyzer`/`DictationTranscriber` on supported systems and `SFSpeechRecognizer` as the compatibility path.
 - **Apple Foundation Models** parse dictated text into structured fields on device.
 - **Hugging Face** supplies the MedGemma weights used by vLLM and the WhisperKit weights downloaded by the app.

@@ -41,20 +41,12 @@
       "requests_per_minute": 30,
       "max_body_bytes": 65536
     },
-    "/v1/subscriptions/checkout": {
-      "requests_per_minute": 30,
-      "max_body_bytes": 65536
-    },
     "/v1/subscriptions/recovery_key": {
       "requests_per_minute": 5,
       "max_body_bytes": 65536
     },
     "/v1/subscriptions/recover": {
       "requests_per_minute": 5,
-      "max_body_bytes": 65536
-    },
-    "/v1/subscriptions/cancel": {
-      "requests_per_minute": 30,
       "max_body_bytes": 65536
     },
     "/v1/subscriptions/sync_apple": {
@@ -65,31 +57,11 @@
       "requests_per_minute": 30,
       "max_body_bytes": 65536
     },
-    "/v1/subscriptions/tokenize_payment": {
-      "requests_per_minute": 30,
-      "max_body_bytes": 65536
-    },
     "/v1/subscriptions/check_payment": {
       "requests_per_minute": 30,
       "max_body_bytes": 65536
     },
-    "/pay": {
-      "requests_per_minute": 30,
-      "max_body_bytes": 65536
-    },
-    "/pay/bind": {
-      "requests_per_minute": 10,
-      "max_body_bytes": 65536
-    },
-    "/pay/confirm": {
-      "requests_per_minute": 10,
-      "max_body_bytes": 65536
-    },
-    "/pay/complete": {
-      "requests_per_minute": 30,
-      "max_body_bytes": 65536
-    },
-    "/webhooks/yookassa": {
+    "/webhooks/robokassa": {
       "requests_per_minute": 120,
       "max_body_bytes": 65536
     },
@@ -110,6 +82,14 @@
       "max_body_bytes": 65536
     },
     "/v1/ultrasound/report_generations/{generation_id}/cancel": {
+      "requests_per_minute": 30,
+      "max_body_bytes": 65536
+    },
+    "/payments/return": {
+      "requests_per_minute": 30,
+      "max_body_bytes": 65536
+    },
+    "/v1/subscriptions/auto_renewal": {
       "requests_per_minute": 30,
       "max_body_bytes": 65536
     }

@@ -78,14 +78,6 @@ final class ApplicationRootViewModel: DStateViewModel<any ApplicationRootStatePr
         }
     }
 
-    func onOpenURL(
-        _ url: URL,
-    ) {
-        YooKassaPaymentController.handleOpen(
-            url: url,
-        )
-    }
-
     func retryInitialization() {
         initialize()
     }

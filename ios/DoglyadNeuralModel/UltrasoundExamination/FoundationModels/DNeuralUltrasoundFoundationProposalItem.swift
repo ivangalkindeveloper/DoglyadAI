@@ -8,6 +8,18 @@ struct DNeuralUltrasoundFoundationProposalItem {
     let evidence: String
     let accuracy: String
 
+    init(
+        field_id: String,
+        value: String,
+        evidence: String,
+        accuracy: String,
+    ) {
+        self.field_id = field_id
+        self.value = value
+        self.evidence = evidence
+        self.accuracy = accuracy
+    }
+
     static func arraySchema(
         localization: DNeuralUltrasoundSchemaLocalization,
     ) throws -> GenerationSchema {

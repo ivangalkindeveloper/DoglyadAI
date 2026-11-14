@@ -1,0 +1,28 @@
+{
+  "model": "ZJU-AI4H/Hulu-Med-7B",
+  "revision": "258594714a0d3835eb2c9e4cc165a4242e606d71",
+  "is_source_verified": true,
+  "files": [
+    {
+      "file": "model-00001-of-00004.safetensors",
+      "bytes": 5343777696,
+      "sha256": "360c4f7335d9cf1edd72f3f4eb0f95dcccbadcfb2bf964ac2c60e7aae39a93b8"
+    },
+    {
+      "file": "model-00002-of-00004.safetensors",
+      "bytes": 5263077248,
+      "sha256": "6af174d7d5af3d13b926f8112871892b68e6a44710b74c94b4fa799227219e6f"
+    },
+    {
+      "file": "model-00003-of-00004.safetensors",
+      "bytes": 4392737312,
+      "sha256": "f8d08aa83687fc5365c09223d42a1cb4059977aecb4d373a62852688652806b9"
+    },
+    {
+      "file": "model-00004-of-00004.safetensors",
+      "bytes": 1089994848,
+      "sha256": "95316e809197f95a3543696ae49a8ab3894c9d7eae20d8c0168406a10edbb63e"
+    }
+  ],
+  "bytes": 16089587104
+}

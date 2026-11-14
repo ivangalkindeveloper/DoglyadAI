@@ -10,6 +10,12 @@
         @EnvironmentObject private var messager: DMessager
         let state: any SettingsAIStateProtocol
 
+        init(
+            state: any SettingsAIStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as SettingsAIErrorState: true

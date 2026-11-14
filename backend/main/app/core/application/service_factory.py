@@ -7,9 +7,9 @@ from app.core.configuration.configuration import Configuration
 from app.core.configuration.variables import Variables
 from app.database.billing_database import BillingDatabase
 from app.service.billing.apple_subscription_verifier import AppleSubscriptionVerifier
-from app.service.billing.sdk_payment_service import SDKPaymentService
+from app.service.billing.checkout_payment_service import CheckoutPaymentService
+from app.service.billing.robokassa_payment_provider import RobokassaPaymentProvider
 from app.service.billing.subscription_service import SubscriptionService
-from app.service.billing.yookassa_payment_provider import YooKassaPaymentProvider
 from app.service.configuration.configuration_response_service import ConfigurationResponseService
 from app.service.dictation.dictation_parsing_service import DictationParsingService
 from app.service.email.report_email_service import ReportEmailService
@@ -42,7 +42,7 @@ class ServiceFactory:
             database,
             self._configuration,
             self._variables,
-            YooKassaPaymentProvider(
+            RobokassaPaymentProvider(
                 self._http_client,
                 self._variables,
                 config,
@@ -101,7 +101,7 @@ class ServiceFactory:
                 configuration.modules.workSettings,
             ),
             subscriptions=subscriptions,
-            sdk_payments=SDKPaymentService(
+            checkout_payments=CheckoutPaymentService(
                 subscriptions,
                 configuration,
                 variables,

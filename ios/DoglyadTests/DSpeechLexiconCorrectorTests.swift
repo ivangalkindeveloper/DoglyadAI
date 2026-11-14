@@ -41,6 +41,8 @@ struct DSpeechLexiconCorrectorTests {
         ),
     )
 
+    init() {}
+
     @Test(
         "Type-specific medical phrases repair spelling without touching measurements",
     )

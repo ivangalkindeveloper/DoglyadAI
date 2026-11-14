@@ -14,6 +14,7 @@ import update_remote as remote
 
 class InferenceRolloutTests(unittest.TestCase):
     def setUp(self) -> None:
+        self.local_weights = {}
         self.target = {
             "role": "inference",
             "architecture": "arm64",
@@ -52,7 +53,11 @@ class InferenceRolloutTests(unittest.TestCase):
             if remote.PROFILE_CHECK in args:
                 return json.dumps(
                     {
-                        name: {"command": [name], "image": "vllm-image"}
+                        name: {
+                            "command": [name],
+                            "image": "vllm-image",
+                            "weightsDirectory": self.local_weights.get(name),
+                        }
                         for name in self.engines
                     }
                 )
@@ -130,6 +135,25 @@ class InferenceRolloutTests(unittest.TestCase):
             self.assertRaises(RuntimeError),
         ):
             remote.wait_ready(self.target, state["image"], state["companion"])
+
+    def test_local_checkpoint_requires_the_expected_read_only_mount(self) -> None:
+        self.local_weights["engine_a"] = "/models/approved"
+        valid = {
+            "Type": "bind",
+            "Source": "/models/approved",
+            "Destination": "/model",
+            "RW": False,
+        }
+        self.engines["engine_a"]["Mounts"] = [valid]
+        self.check()
+        for mounts in (
+            [],
+            [dict(valid, Source="/models/other")],
+            [dict(valid, RW=True)],
+        ):
+            self.engines["engine_a"]["Mounts"] = mounts
+            with self.assertRaisesRegex(RuntimeError, "weights mount"):
+                self.check()
 
     def test_old_single_engine_snapshot_remains_recoverable(self) -> None:
         current = {"vllm": {"id": "original", "image": "image", "restarts": 0}}

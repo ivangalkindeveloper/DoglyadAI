@@ -1,0 +1,82 @@
+[
+  {
+    "name": "report_ru",
+    "body": {
+      "settingsAI": {
+        "transcriberType": "whisperKit",
+        "transcriptParserType": "server",
+        "selectedNeuralModelId": "ZJU-AI4H/Hulu-Med-32B",
+        "isMarkdown": false,
+        "temperature": 0.0,
+        "maxTokens": 2048
+      },
+      "examinationData": {
+        "usExaminationTypeId": "thyroidGland",
+        "photos": [],
+        "examinationNumber": "SYNTHETIC-HULU-DEPLOY",
+        "patientName": "Synthetic Patient",
+        "patientGender": "female",
+        "patientDateOfBirth": "1990-01-01T00:00:00Z",
+        "patientHeight": null,
+        "patientWeight": null,
+        "patientComplaints": null,
+        "examinationDescription": "Правая доля щитовидной железы 12 x 14 x 40 мм. Левая доля 11 x 13 x 38 мм. Перешеек 3 мм. Контуры ровные, эхогенность обычная, структура однородная. Узловые образования не выявлены.",
+        "isPatientPreparedForExamination": true,
+        "isPatientConsent": true
+      },
+      "template": null,
+      "isRecommendationsIncluded": true,
+      "isPhotoRemarks": true,
+      "isDescriptionRemarks": true
+    },
+    "request": {
+      "modelId": "ZJU-AI4H/Hulu-Med-32B",
+      "systemPrompt": "Ты — AI-ассистент, специализирующийся на создании протоколов ультразвуковых исследований.\nСформируй description с находками исследования и conclusion с кратким заключением. Явно продиктованное врачом заключение используй как отдельный источник для conclusion; его заголовок и целый блок не копируй в description. Сами находки могут упоминаться в обоих разделах. Жалобы не включай в описание находок.\nОсновывайся только на предоставленных данных и изображениях. Сохраняй все явно указанные измерения, единицы, стороны, отрицания и находки. Не заменяй измерение без явного исправления врача; противоречия с изображением выноси в замечания при их запросе.\nИспользуй медицинскую терминологию официального протокола УЗИ. Шаблон задаёт структуру и стиль, но его примеры и утверждения о норме не являются данными пациента. Не добавляй форму органа, состояние контуров, отсутствие патологии или другие признаки без источника. Отсутствие сведений не означает плохую визуализацию: не утверждай, что структура не визуализирована, если это не указано во входных данных.\nТакже сформируй recommendations — обоснованные рекомендации по лечению или дальнейшим действиям. Не предлагай действия, не подтверждённые предоставленными данными.\nВ поле descriptionRemarks укажи обнаруженные противоречия или неоднозначности в исходном описании врача и ограничения оценки из-за явно указанного отсутствия необходимой подготовки пациента. Сопоставь утверждения об одной и той же структуре: одновременное наличие и отсутствие признака является противоречием. Более поздняя фраза заменяет раннюю только при явно указанном исправлении. При противоречии кратко назови оба несовместимых утверждения и попроси врача уточнить, какое верно. Не переноси в замечания свои выводы или рекомендации. Если исходное описание согласовано и однозначно, а подготовка не ограничивает выбранное исследование, верни null. Замечания должны занимать одно или два законченных предложения. Каждую проблему назови один раз. Учитывай указанный признак подготовки пациента в контексте выбранного исследования. Если пациент не подготовлен и для этого исследования нужна подготовка, кратко отметь возможное ограничение оценки в descriptionRemarks; уточняй конкретную проблему только по исходным данным. Не объявляй исследование недостоверным и не выдумывай находки или недостаточное наполнение органа только из этого флага. При выполненной подготовке не добавляй замечание о её отсутствии. Сохраняй ограничение в одно или два предложения.\nЗаполняй строковые поля обычным текстом без Markdown-тегов\nУложи ответ максимум в 2048 токенов и заверши протокол до достижения этого лимита, чтобы он не оборвался\nВерни ровно один JSON-объект по следующей JSON Schema. Используй только указанные поля в указанном порядке и заполни каждое обязательное поле. Не добавляй Markdown-обёртку или текст вне JSON. Описания полей задают их смысл. null означает отсутствие обоснованного содержимого в допускающем null поле. Пиши кратко, не повторяй уже изложенные сведения. После последнего поля закрой объект и закончи ответ.\nJSON Schema:\n{\"additionalProperties\":false,\"properties\":{\"description\":{\"minLength\":1,\"title\":\"Description\",\"type\":\"string\",\"description\":\"Подробное описание результатов исследования\"},\"conclusion\":{\"minLength\":1,\"title\":\"Conclusion\",\"type\":\"string\",\"description\":\"Краткое клиническое заключение по результатам исследования\"},\"recommendations\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"default\":null,\"title\":\"Recommendations\",\"description\":\"Обоснованные рекомендации по лечению или дальнейшим действиям, если запрошены; null, если рекомендаций нет\"},\"descriptionRemarks\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"default\":null,\"title\":\"Descriptionremarks\",\"description\":\"Только конкретная проблема исходного описания или ограничение оценки выбранного исследования из-за явно указанного отсутствия необходимой подготовки пациента; не более двух коротких предложений. Если проблем и ограничений нет, null.\"}},\"required\":[\"description\",\"conclusion\",\"recommendations\",\"descriptionRemarks\"],\"title\":\"USExaminationReport\",\"type\":\"object\"}\n",
+      "prompt": "Тип ультразвукового исследования: Щитовидная железа\nНомер исследования: SYNTHETIC-HULU-DEPLOY\nИмя пациента: Synthetic Patient\nПол пациента: female\nДата рождения пациента: 1990-01-01\nПациент подготовлен к исследованию\nОписание ультразвукового исследования: Правая доля щитовидной железы 12 x 14 x 40 мм. Левая доля 11 x 13 x 38 мм. Перешеек 3 мм. Контуры ровные, эхогенность обычная, структура однородная. Узловые образования не выявлены.\n",
+      "structuredOutput": "{\"additionalProperties\":false,\"properties\":{\"description\":{\"minLength\":1,\"title\":\"Description\",\"type\":\"string\",\"description\":\"Подробное описание результатов исследования\"},\"conclusion\":{\"minLength\":1,\"title\":\"Conclusion\",\"type\":\"string\",\"description\":\"Краткое клиническое заключение по результатам исследования\"},\"recommendations\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"default\":null,\"title\":\"Recommendations\",\"description\":\"Обоснованные рекомендации по лечению или дальнейшим действиям, если запрошены; null, если рекомендаций нет\"},\"descriptionRemarks\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"default\":null,\"title\":\"Descriptionremarks\",\"description\":\"Только конкретная проблема исходного описания или ограничение оценки выбранного исследования из-за явно указанного отсутствия необходимой подготовки пациента; не более двух коротких предложений. Если проблем и ограничений нет, null.\"}},\"required\":[\"description\",\"conclusion\",\"recommendations\",\"descriptionRemarks\"],\"title\":\"USExaminationReport\",\"type\":\"object\"}",
+      "temperature": 0.0,
+      "maxTokens": 2048,
+      "repetitionPenalty": 1.05
+    }
+  },
+  {
+    "name": "report_en",
+    "body": {
+      "settingsAI": {
+        "transcriberType": "whisperKit",
+        "transcriptParserType": "server",
+        "selectedNeuralModelId": "ZJU-AI4H/Hulu-Med-32B",
+        "isMarkdown": false,
+        "temperature": 0.0,
+        "maxTokens": 2048
+      },
+      "examinationData": {
+        "usExaminationTypeId": "thyroidGland",
+        "photos": [],
+        "examinationNumber": "SYNTHETIC-HULU-DEPLOY",
+        "patientName": "Synthetic Patient",
+        "patientGender": "female",
+        "patientDateOfBirth": "1990-01-01T00:00:00Z",
+        "patientHeight": null,
+        "patientWeight": null,
+        "patientComplaints": null,
+        "examinationDescription": "Right thyroid lobe 12 x 14 x 40 mm. Left lobe 11 x 13 x 38 mm. Isthmus 3 mm. Smooth contours, normal echogenicity, homogeneous structure. No nodules identified.",
+        "isPatientPreparedForExamination": true,
+        "isPatientConsent": true
+      },
+      "template": null,
+      "isRecommendationsIncluded": true,
+      "isPhotoRemarks": true,
+      "isDescriptionRemarks": true
+    },
+    "request": {
+      "modelId": "ZJU-AI4H/Hulu-Med-32B",
+      "systemPrompt": "You are an AI assistant creating ultrasound examination reports.\nUse description for examination findings and conclusion for a concise impression. Use an explicitly dictated conclusion as a separate source for conclusion; do not copy its heading or entire section into description. Findings themselves can appear in both sections. Keep patient complaints outside the findings description.\nUse only provided examination data and images. Preserve every explicit measurement, unit, side, negation and finding. Do not replace a measurement without an explicit clinician correction; put image conflicts in remarks when requested.\nUse terminology appropriate for a formal ultrasound report. A template supplies structure and style, not patient facts or evidence of normality. Do not add organ shape, normal contours, absent pathology or other unsupported findings. Missing information does not imply inadequate visualization: do not claim a structure was not visualized unless the input says so.\nAlso generate recommendations with justified treatment or follow-up actions. Do not propose actions that are not supported by the provided data.\nThe descriptionRemarks field is for specific contradictions or ambiguities in the clinician-provided ultrasound description and assessment limitations caused by explicitly absent required patient preparation. If neither description issues nor relevant preparation limitations exist, return descriptionRemarks: null. A normal or complete description does not otherwise need remarks. If a problem exists, identify the specific contradiction or preparation limitation and what needs clarification. Use at most two short, complete sentences. Do not repeat patient complaints or normal findings. Do not list absent diseases, unnecessary tests or specialist consultations. Do not add treatment advice or new clinical facts. Mention each problem once. Finish the JSON after completing all requested fields. Consider the stated patient preparation for the selected examination. If the patient was not prepared and this examination requires preparation, briefly note the possible assessment limitation in descriptionRemarks; describe a specific issue only when supported by the supplied data. Do not declare the examination unreliable or invent findings or insufficient organ filling from this flag alone. When preparation was completed, do not add a remark claiming it was absent. Keep remarks within one or two sentences.\nFill the string fields with plain text and without Markdown tags\nKeep the answer within 2048 tokens and finish the report before reaching this limit so that it is not truncated\nReturn exactly one JSON object matching the following JSON Schema. Use only the listed fields in the listed order and populate every required field. Do not add Markdown fences or text outside JSON. Field descriptions define their meaning. null means there is no supported content for a nullable field. Be concise and do not repeat information. Close the object after the last field and end the response.\nJSON Schema:\n{\"additionalProperties\":false,\"properties\":{\"description\":{\"minLength\":1,\"title\":\"Description\",\"type\":\"string\",\"description\":\"Detailed examination findings\"},\"conclusion\":{\"minLength\":1,\"title\":\"Conclusion\",\"type\":\"string\",\"description\":\"Concise interpretation of the findings\"},\"recommendations\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"default\":null,\"title\":\"Recommendations\",\"description\":\"Recommended treatment or follow-up actions when requested; null if there are no justified recommendations\"},\"descriptionRemarks\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"default\":null,\"title\":\"Descriptionremarks\",\"description\":\"Only a specific issue in the supplied description or an assessment limitation from explicitly absent preparation required for the selected examination; at most two short sentences. If there are no issues or limitations, null.\"}},\"required\":[\"description\",\"conclusion\",\"recommendations\",\"descriptionRemarks\"],\"title\":\"USExaminationReport\",\"type\":\"object\"}\n",
+      "prompt": "Ultrasound examination type: Thyroid gland\nExamination number: SYNTHETIC-HULU-DEPLOY\nPatient name: Synthetic Patient\nPatient gender: female\nPatient date of birth: 1990-01-01\nThe patient was prepared for the examination\nUltrasound examination description: Right thyroid lobe 12 x 14 x 40 mm. Left lobe 11 x 13 x 38 mm. Isthmus 3 mm. Smooth contours, normal echogenicity, homogeneous structure. No nodules identified.\n",
+      "structuredOutput": "{\"additionalProperties\":false,\"properties\":{\"description\":{\"minLength\":1,\"title\":\"Description\",\"type\":\"string\",\"description\":\"Detailed examination findings\"},\"conclusion\":{\"minLength\":1,\"title\":\"Conclusion\",\"type\":\"string\",\"description\":\"Concise interpretation of the findings\"},\"recommendations\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"default\":null,\"title\":\"Recommendations\",\"description\":\"Recommended treatment or follow-up actions when requested; null if there are no justified recommendations\"},\"descriptionRemarks\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"default\":null,\"title\":\"Descriptionremarks\",\"description\":\"Only a specific issue in the supplied description or an assessment limitation from explicitly absent preparation required for the selected examination; at most two short sentences. If there are no issues or limitations, null.\"}},\"required\":[\"description\",\"conclusion\",\"recommendations\",\"descriptionRemarks\"],\"title\":\"USExaminationReport\",\"type\":\"object\"}",
+      "temperature": 0.0,
+      "maxTokens": 2048,
+      "repetitionPenalty": 1.05
+    }
+  }
+]

@@ -7,6 +7,8 @@ import UIKit
 )
 @MainActor
 struct PreviewScrollEndTests {
+    init() {}
+
     @Test
     func scrollsToTheRealBottomIncludingContentInsets() async throws {
         let window = UIWindow(
@@ -88,13 +90,8 @@ struct PreviewScrollEndTests {
         controller.start(
             probe: probe,
         )
-        try await Task.sleep(
-            for: .seconds(
-                1.2,
-            ),
-        )
-        #expect(
-            probe.accessibilityIdentifier == "preview.scrollEnd.ready",
+        try await waitForScrollEnd(
+            probe,
         )
         #expect(
             abs(
@@ -152,16 +149,31 @@ struct PreviewScrollEndTests {
         controller.start(
             probe: probe,
         )
-        try await Task.sleep(
-            for: .seconds(
-                1,
-            ),
-        )
-        #expect(
-            probe.accessibilityIdentifier == "preview.scrollEnd.ready",
+        try await waitForScrollEnd(
+            probe,
         )
         #expect(
             scroll.contentOffset.y == 0,
+        )
+    }
+
+    private func waitForScrollEnd(
+        _ probe: UIView,
+    ) async throws {
+        let deadline = ContinuousClock.now.advanced(
+            by: .seconds(
+                20,
+            ),
+        )
+        while probe.accessibilityIdentifier != "preview.scrollEnd.ready", ContinuousClock.now < deadline {
+            try await Task.sleep(
+                for: .milliseconds(
+                    50,
+                ),
+            )
+        }
+        try #require(
+            probe.accessibilityIdentifier == "preview.scrollEnd.ready",
         )
     }
 }

@@ -15,6 +15,24 @@ struct WebDocumentBottomSheetWebView: UIViewRepresentable, DViewProtocol {
     var stateIdentifier = "webDocument.loading"
     var html: String?
 
+    init(
+        url: URL,
+        topInset: CGFloat,
+        bottomInset: CGFloat,
+        onLoaded: @escaping () -> Void,
+        onFailed: @escaping (Error) -> Void,
+        stateIdentifier: String = "webDocument.loading",
+        html: String? = nil,
+    ) {
+        self.url = url
+        self.topInset = topInset
+        self.bottomInset = bottomInset
+        self.onLoaded = onLoaded
+        self.onFailed = onFailed
+        self.stateIdentifier = stateIdentifier
+        self.html = html
+    }
+
     func makeCoordinator() -> Coordinator {
         Coordinator(
             parent: self,

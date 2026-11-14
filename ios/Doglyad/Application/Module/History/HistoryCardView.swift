@@ -7,6 +7,14 @@ struct HistoryCardView: DViewProtocol {
     let report: USExaminationReport
     let onTap: () -> Void
 
+    init(
+        report: USExaminationReport,
+        onTap: @escaping () -> Void,
+    ) {
+        self.report = report
+        self.onTap = onTap
+    }
+
     private var examinationData: USExaminationData {
         report.examinationData
     }

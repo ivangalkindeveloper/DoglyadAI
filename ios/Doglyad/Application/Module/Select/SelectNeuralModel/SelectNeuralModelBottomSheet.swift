@@ -9,6 +9,12 @@ struct SelectNeuralModelBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: SelectNeuralModelArguments?
 
+    init(
+        arguments: SelectNeuralModelArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         SelectNeuralModelBottomSheetView(
             viewModel: SelectNeuralModelViewModel(

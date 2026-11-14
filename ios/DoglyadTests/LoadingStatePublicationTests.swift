@@ -5,37 +5,30 @@
 
     @MainActor
     struct LoadingStatePublicationTests {
+        init() {}
+
         @Test
         func changingLoadingScenarioPublishesEvenWithTheSameRetainedData() {
-            let subscription = ManageSubscriptionInactiveState(
+            let subscription = SubscriptionManageInactiveState(
                 catalog: ModulePreviewFactory.development.products,
             )
-            let recovery = SubscriptionRecoveryInitialState()
             let paywall = ModulePreviewFactory.paywallContent
             let scenarios: [[Any]] = [
                 [
-                    ManageSubscriptionCatalogLoadingState(
+                    SubscriptionManageCatalogLoadingState(
                         previousState: subscription,
                     ),
-                    ManageSubscriptionRestoreLoadingState(
+                    SubscriptionManageRestoreLoadingState(
                         previousState: subscription,
                     ),
-                    ManageSubscriptionManagementLoadingState(
+                    SubscriptionManageManagementLoadingState(
                         previousState: subscription,
                     ),
-                    ManageSubscriptionRefundLoadingState(
+                    SubscriptionManageRefundLoadingState(
                         previousState: subscription,
                     ),
-                    ManageSubscriptionRefreshLoadingState(
+                    SubscriptionManageRefreshLoadingState(
                         previousState: subscription,
-                    ),
-                ],
-                [
-                    SubscriptionRecoveryKeyCreationLoadingState(
-                        previousState: recovery,
-                    ),
-                    SubscriptionRecoveryRestoreLoadingState(
-                        previousState: recovery,
                     ),
                 ],
                 [PaywallRestoreLoadingState(

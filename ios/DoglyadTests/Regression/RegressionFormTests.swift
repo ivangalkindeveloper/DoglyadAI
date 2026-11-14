@@ -36,12 +36,6 @@
                     },
                     onRefreshSubscriptionStatus: {},
                     arguments: nil,
-                    createRecoveryKey: {
-                        XCTFail(
-                            "Restoration cannot create a new key",
-                        )
-                        return ""
-                    },
                     recover: { _ in
                         try await withCheckedThrowingContinuation {
                             completion = $0
@@ -101,7 +95,7 @@
             }
         }
 
-        func testYooKassaRestorationOpensRecoveryWithoutStartingAppleOrPaymentOperations() async {
+        func testRobokassaRestorationOpensRecoveryWithoutStartingAppleOrPaymentOperations() async {
             let container = DependencyContainer.previewable
             let navigation = DRouter(
                 initialRoute: RouteScreen(
@@ -126,13 +120,15 @@
                 },
                 onRefreshSubscriptionStatus: {},
                 arguments: nil,
-                purchase: { _ in
+                purchase: { _, _ in
                     purchaseCalls += 1
                     return .cancelled
                 },
                 restorePurchases: {
                     restoreCalls += 1
-                    return nil
+                    return .completed(
+                        isOwnerChanged: false,
+                    )
                 },
                 checkPurchase: {
                     .pending
@@ -179,8 +175,8 @@
             ]
             for tier in [nil, .base, .pro] as [SubscriptionType?] {
                 let status = tier.map {
-                    ManageSubscriptionPreviewFactory.makeStatus(
-                        source: .yookassa,
+                    SubscriptionManagePreviewFactory.makeStatus(
+                        source: .robokassa,
                         type: $0,
                     )
                 }
@@ -189,6 +185,7 @@
                         let candidate = USExaminationNeuralModel(
                             id: original.id,
                             title: original.title,
+                            format: original.format,
                             entitlement: entitlement,
                             accessibility: availability,
                             contextLength: original.contextLength,

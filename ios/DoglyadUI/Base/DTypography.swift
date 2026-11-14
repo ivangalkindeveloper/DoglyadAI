@@ -17,6 +17,42 @@ public struct DTypography {
     public let linkMedium: Font
     public let linkSmall: Font
     public let linkXSmall: Font
+
+    init(
+        displayHuge: Font,
+        displayLarge: Font,
+        displayMedium: Font,
+        displaySmall: Font,
+        displayHugeBold: Font,
+        displayLargeBold: Font,
+        displayMediumBold: Font,
+        displaySmallBold: Font,
+        textLarge: Font,
+        textMedium: Font,
+        textSmall: Font,
+        textXSmall: Font,
+        linkLarge: Font,
+        linkMedium: Font,
+        linkSmall: Font,
+        linkXSmall: Font,
+    ) {
+        self.displayHuge = displayHuge
+        self.displayLarge = displayLarge
+        self.displayMedium = displayMedium
+        self.displaySmall = displaySmall
+        self.displayHugeBold = displayHugeBold
+        self.displayLargeBold = displayLargeBold
+        self.displayMediumBold = displayMediumBold
+        self.displaySmallBold = displaySmallBold
+        self.textLarge = textLarge
+        self.textMedium = textMedium
+        self.textSmall = textSmall
+        self.textXSmall = textXSmall
+        self.linkLarge = linkLarge
+        self.linkMedium = linkMedium
+        self.linkSmall = linkSmall
+        self.linkXSmall = linkXSmall
+    }
 }
 
 public extension DTypography {

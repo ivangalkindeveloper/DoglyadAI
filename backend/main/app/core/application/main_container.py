@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 from app.core.configuration.configuration import Configuration
-from app.service.billing.sdk_payment_service import SDKPaymentService
+from app.service.billing.checkout_payment_service import CheckoutPaymentService
 from app.service.billing.subscription_service import SubscriptionService
 from app.service.configuration.configuration_response_service import ConfigurationResponseService
 from app.service.dictation.dictation_parsing_service import DictationParsingService
@@ -25,4 +25,4 @@ class MainContainer:
     report_email: ReportEmailService
     report_jobs: ReportGenerationJobs | None = None
     subscriptions: SubscriptionService | None = None
-    sdk_payments: SDKPaymentService | None = None
+    checkout_payments: CheckoutPaymentService | None = None

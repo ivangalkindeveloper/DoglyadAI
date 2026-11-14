@@ -6,6 +6,14 @@ struct HistoryScreenView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: HistoryViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> HistoryViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[

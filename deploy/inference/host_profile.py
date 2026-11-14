@@ -80,9 +80,9 @@ class HostProfile:
     @staticmethod
     def _image(value: Any) -> None:
         if not isinstance(value, str) or not re.fullmatch(
-            r"[A-Za-z0-9][A-Za-z0-9./:_-]*@sha256:[0-9a-f]{64}", value
+            r"(?:[A-Za-z0-9][A-Za-z0-9./:_-]*@)?sha256:[0-9a-f]{64}", value
         ):
-            raise ValueError("vLLM images must be pinned by digest")
+            raise ValueError("vLLM images require a digest or verified local image ID")
 
     def _validate(self) -> None:
         self._keys(
@@ -136,7 +136,10 @@ class HostProfile:
                     "maxImages",
                     "kvCacheMemoryBytes",
                     "revision",
+                    "weightsDirectory",
                     "speculativeConfig",
+                    "isRemoteCodeTrusted",
+                    "chatTemplateKwargs",
                 },
             )
             model_id = model["modelId"]
@@ -176,6 +179,11 @@ class HostProfile:
             for key in ("isEager", "isPrefixCachingEnabled"):
                 if type(model[key]) is not bool:
                     raise ValueError("Model flags must be boolean")
+            if (
+                "isRemoteCodeTrusted" in model
+                and type(model["isRemoteCodeTrusted"]) is not bool
+            ):
+                raise ValueError("isRemoteCodeTrusted must be boolean")
             devices = model["gpuDeviceIds"]
             if (
                 not isinstance(devices, list)
@@ -194,8 +202,27 @@ class HostProfile:
                 or not re.fullmatch(r"[0-9a-f]{40}", model["revision"])
             ):
                 raise ValueError("Model revision must be a full commit SHA")
+            if "weightsDirectory" in model:
+                directory = model["weightsDirectory"]
+                if (
+                    not isinstance(directory, str)
+                    or not re.fullmatch(r"/[A-Za-z0-9_./-]+", directory)
+                    or ".." in Path(directory).parts
+                    or str(Path(directory)) != directory
+                    or "revision" in model
+                ):
+                    raise ValueError(
+                        "weightsDirectory requires an absolute local path without revision"
+                    )
             if "speculativeConfig" in model:
                 self._validate_speculation(model["speculativeConfig"])
+            if "chatTemplateKwargs" in model:
+                kwargs = model["chatTemplateKwargs"]
+                if not isinstance(kwargs, dict) or any(
+                    not isinstance(key, str) or not key.strip() for key in kwargs
+                ):
+                    raise ValueError("chatTemplateKwargs requires named JSON values")
+                json.dumps(kwargs, allow_nan=False)
 
     def _validate_speculation(self, config: Any) -> None:
         self._keys(

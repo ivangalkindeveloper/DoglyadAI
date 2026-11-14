@@ -8,6 +8,12 @@ struct ScanSpeechModelRetryButtonView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     let preparation: DSpeechModelPreparationStatus
 
+    init(
+        preparation: DSpeechModelPreparationStatus,
+    ) {
+        self.preparation = preparation
+    }
+
     var body: some View {
         switch preparation {
         case .failed:

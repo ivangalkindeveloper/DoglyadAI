@@ -3,6 +3,8 @@ import Foundation
 import Testing
 
 struct DictationProposalValidatorTests {
+    init() {}
+
     @Test(
         "A changed side is flagged in Russian",
     )

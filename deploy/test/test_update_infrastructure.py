@@ -38,7 +38,7 @@ class DeploymentTests(unittest.TestCase):
             targets = update.inventory(Path("inventory-fixture.json"))
         self.assertEqual(len(targets), 3)
         self.assertEqual(targets[0]["architecture"], "arm64")
-        self.assertEqual(len(targets[0]["models"]), 3)
+        self.assertEqual(len(targets[0]["models"]), 5)
         self.assertEqual(len(targets[0]["profile_fingerprint"]), 64)
         calls = []
         with (

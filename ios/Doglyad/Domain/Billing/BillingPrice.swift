@@ -1,6 +1,14 @@
 import Foundation
 
-struct BillingPrice: Decodable, Equatable, Sendable {
+struct BillingPrice: Codable, Equatable, Sendable {
     let amountMinor: Int
     let currencyIso2Code: String
+
+    init(
+        amountMinor: Int,
+        currencyIso2Code: String,
+    ) {
+        self.amountMinor = amountMinor
+        self.currencyIso2Code = currencyIso2Code
+    }
 }

@@ -6,6 +6,14 @@ struct MenuScreenView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: MenuViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> MenuViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DScreen(
             title: l10n[
@@ -67,7 +75,7 @@ struct MenuScreenView: DViewProtocol {
                     DListButtonCard(
                         image: .iconMail,
                         title: l10n[
-                            .buttonManageSubscription,
+                            .buttonSubscriptionManage,
                         ],
                         description: l10n[
                             .menuSubscriptionManageDescription,

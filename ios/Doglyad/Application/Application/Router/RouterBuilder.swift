@@ -2,6 +2,8 @@ import Router
 import SwiftUI
 
 final class RouterBuilder: RouterBuilderProtocol {
+    init() {}
+
     typealias Screen = ScreenType
     typealias Sheet = SheetType
     typealias FullScreenCover = FullScreenCoverType
@@ -107,10 +109,10 @@ final class RouterBuilder: RouterBuilderProtocol {
                     arguments: route.arguments as? SubscriptionRecoveryArguments,
                 ),
             )
-        case .manageSubscription:
+        case .subscriptionManage:
             AnyView(
-                ManageSubscriptionScreen(
-                    arguments: route.arguments as? ManageSubscriptionArguments,
+                SubscriptionManageScreen(
+                    arguments: route.arguments as? SubscriptionManageArguments,
                 ),
             )
         case .paywall:
@@ -232,6 +234,18 @@ final class RouterBuilder: RouterBuilderProtocol {
             AnyView(
                 WebDocumentBottomSheet(
                     arguments: route.arguments as! WebDocumentArguments,
+                ),
+            )
+        case .subscriptionAutoRenewalDisabling:
+            AnyView(
+                SubscriptionAutoRenewalDisablingBottomSheet(
+                    arguments: route.arguments as? SubscriptionAutoRenewalDisablingArguments,
+                ),
+            )
+        case .subscriptionChange:
+            AnyView(
+                SubscriptionChangeBottomSheet(
+                    arguments: route.arguments as! SubscriptionChangeArguments,
                 ),
             )
         case .storageClearProtocols:

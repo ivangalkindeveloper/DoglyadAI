@@ -18,6 +18,8 @@ enum AnalyticsBottomSheet: String {
     case selectTemplate = "select_template"
     case selectUSExaminationType = "select_us_examination_type"
     case share
+    case subscriptionAutoRenewalDisabling = "subscription_auto_renewal_disabling"
+    case subscriptionChange = "subscription_change"
     case storageClearAll = "storage_clear_all"
     case storageClearSpeechModel = "storage_clear_speech_model"
     case storageClearProtocols = "storage_clear_protocols"

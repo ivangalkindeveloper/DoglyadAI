@@ -8,6 +8,8 @@
 
     @MainActor
     struct WebDocumentTests {
+        init() {}
+
         @Test
         func retryIgnoresCallbacksFromThePreviousDocumentLoad() {
             let container = ModulePreviewFactory.makeContainer()

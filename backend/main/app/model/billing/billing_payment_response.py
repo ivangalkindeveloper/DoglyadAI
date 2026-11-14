@@ -16,6 +16,7 @@ class BillingPaymentResponse(BaseModel):
 
     id: UUID
     planId: NonBlankString
-    status: Literal["awaitingToken", "created", "pending", "succeeded", "canceled", "refunded", "needsReview"]
+    status: Literal["created", "pending", "succeeded", "canceled", "refunded", "needsReview"]
     confirmationUrl: NonBlankString | None = None
     paymentMethodType: NonBlankString | None = None
+    recoveryKey: NonBlankString | None = None

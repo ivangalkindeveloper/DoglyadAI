@@ -1,6 +1,6 @@
 {$DOMAIN} {
     # Browser forms and provider callbacks use their own verified ingress.
-    @billing path /pay /pay/* /webhooks/apple /webhooks/yookassa
+    @billing path /payments/return /webhooks/apple /webhooks/robokassa
     handle @billing {
         reverse_proxy billing_gateway:8000
     }

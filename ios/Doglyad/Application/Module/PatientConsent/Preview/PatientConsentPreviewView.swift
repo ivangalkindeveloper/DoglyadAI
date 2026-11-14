@@ -11,6 +11,14 @@
         let state: PatientConsentInitialState
         var isErrorPresented = false
 
+        init(
+            state: PatientConsentInitialState,
+            isErrorPresented: Bool = false,
+        ) {
+            self.state = state
+            self.isErrorPresented = isErrorPresented
+        }
+
         var body: some View {
             let model = PatientConsentViewModel(
                 messager: messager,

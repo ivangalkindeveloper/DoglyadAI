@@ -6,6 +6,8 @@ struct HistoryPaginationView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: HistoryViewModel
 
+    init() {}
+
     var body: some View {
         switch viewModel.state {
         case _ as HistoryErrorState:

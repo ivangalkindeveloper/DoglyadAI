@@ -6,6 +6,14 @@ struct PhotoRemarkBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @StateObject var viewModel: PhotoRemarkViewModel
 
+    init(
+        viewModel: @autoclosure @escaping () -> PhotoRemarkViewModel,
+    ) {
+        _viewModel = StateObject(
+            wrappedValue: viewModel(),
+        )
+    }
+
     var body: some View {
         DBottomSheet(
             type: .blur,

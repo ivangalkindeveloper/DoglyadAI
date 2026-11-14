@@ -9,6 +9,18 @@ struct NeuralModelCardView: DViewProtocol {
     let onTap: () -> Void
     var isDisabled: Bool = false
 
+    init(
+        modelTitle: String,
+        availableRequestCount: Int,
+        onTap: @escaping () -> Void,
+        isDisabled: Bool = false,
+    ) {
+        self.modelTitle = modelTitle
+        self.availableRequestCount = availableRequestCount
+        self.onTap = onTap
+        self.isDisabled = isDisabled
+    }
+
     var body: some View {
         VStack(
             alignment: .leading,

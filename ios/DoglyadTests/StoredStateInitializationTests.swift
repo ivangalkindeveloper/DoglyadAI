@@ -5,6 +5,8 @@ import Testing
 
 @MainActor
 struct StoredStateInitializationTests {
+    init() {}
+
     @Test(
         arguments: [false, true],
     )

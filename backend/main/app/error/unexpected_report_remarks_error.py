@@ -6,3 +6,8 @@ from app.error.invalid_report_response_error import InvalidReportResponseError
 class UnexpectedReportRemarksError(InvalidReportResponseError):
     code = "unexpectedReportRemarks"
     description = "Report contains remarks that were not requested"
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

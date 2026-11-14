@@ -9,6 +9,14 @@ struct ScanSpeechProposalCardView: DViewProtocol {
     let state: ScanSpeechReviewProposalState
     let proposal: DNeuralUltrasoundVoiceFieldProposal
 
+    init(
+        state: ScanSpeechReviewProposalState,
+        proposal: DNeuralUltrasoundVoiceFieldProposal,
+    ) {
+        self.state = state
+        self.proposal = proposal
+    }
+
     var body: some View {
         let isSelected = state.selectedFieldIds.contains(
             proposal.id,

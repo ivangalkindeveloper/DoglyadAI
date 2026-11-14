@@ -8,6 +8,12 @@ struct ImportMediaBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: ImportMediaArguments
 
+    init(
+        arguments: ImportMediaArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         ImportMediaBottomSheetView(
             viewModel: ImportMediaViewModel(

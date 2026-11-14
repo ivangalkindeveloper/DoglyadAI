@@ -10,6 +10,12 @@ struct PatientConsentBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: PatientConsentArguments
 
+    init(
+        arguments: PatientConsentArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         PatientConsentBottomSheetView(
             viewModel: PatientConsentViewModel(

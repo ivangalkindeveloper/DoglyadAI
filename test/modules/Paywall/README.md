@@ -6,9 +6,10 @@
 
 | ID | Сценарий | Автоматизация |
 |---|---|---|
-| `Paywall.catalog` | Тарифы, периоды и выбор | maestro |
-| `Paywall.purchase` | Успешная покупка выбранного плана | maestro |
-| `Paywall.pending-cancel` | Ожидание, отмена и проверка платежа | mixed |
-| `Paywall.errors-restore-documents` | Загрузка, ошибка покупки, восстановление и документы | mixed |
+| `Paywall.catalog` | Тарифы, периоды и выбор | mixed |
+| `Paywall.purchase` | Успешная покупка выбранного плана | manual |
+| `Paywall.pending-cancel` | Ожидание, отмена и проверка платежа | manual |
+| `Paywall.errors-restore-documents` | Загрузка, ошибка покупки, восстановление и документы | partial |
+| `Paywall.return-navigation` | Возврат после оплаты и восстановления | mixed |
 
 Сначала выполните предусловия сценария. Каждый шаг содержит действие и наблюдаемый результат. Не считайте наличие YAML или Preview успешным прохождением.

@@ -8,6 +8,8 @@ import Testing
 
 @MainActor
 struct ScanSpeechObservationTests {
+    init() {}
+
     @Test
     func liveTextAndMeterChangesReachTheViewWithoutRepublishingTheRecordingState() async {
         let speechController = makeController()
@@ -78,6 +80,49 @@ struct ScanSpeechObservationTests {
         #expect(
             changes == 0,
         )
+    }
+
+    @Test
+    func closingCancelsPendingTranscriptionBeforeTheDisappearEvent() async {
+        let controller = makeController()
+        controller.recordingStatus = .recording
+        var response: CheckedContinuation<DSpeechTranscript?, Never>?
+        controller.onStop = {
+            await withCheckedContinuation {
+                response = $0
+            }
+        }
+        let model = makeModel(
+            speechController: controller,
+        )
+        model.emit(
+            ScanSpeechRecordingState(),
+        )
+        model.onTapSpeech()
+        while response == nil {
+            await Task.yield()
+        }
+        let task = model.operationTask
+        model.onTapBack()
+        var changes = 0
+        let observation = model.$state.dropFirst().sink { _ in
+            changes += 1
+        }
+        defer {
+            observation.cancel()
+        }
+        response?.resume(
+            returning: nil,
+        )
+        await task?.value
+        controller.text = "Late result"
+        for _ in 0 ..< 30 {
+            await Task.yield()
+        }
+        #expect(
+            changes == 0 && task?.isCancelled == true && model.operationTask == nil,
+        )
+        model.onDisappear()
     }
 
     private func makeController() -> ScanSpeechTestController {

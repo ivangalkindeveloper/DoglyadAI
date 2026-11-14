@@ -4,6 +4,8 @@ import SwiftUI
 struct ApplicationRootView: View {
     @EnvironmentObject private var viewModel: ApplicationRootViewModel
 
+    init() {}
+
     var body: some View {
         ZStack {
             Group {

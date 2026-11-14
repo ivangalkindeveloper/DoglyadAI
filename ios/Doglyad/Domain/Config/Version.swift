@@ -4,6 +4,16 @@ struct Version: Codable {
     let major: Int
     let minor: Int
     let patch: Int
+
+    init(
+        major: Int,
+        minor: Int,
+        patch: Int,
+    ) {
+        self.major = major
+        self.minor = minor
+        self.patch = patch
+    }
 }
 
 extension Version {

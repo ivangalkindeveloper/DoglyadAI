@@ -9,6 +9,12 @@ struct MenuScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: MenuArguments?
 
+    init(
+        arguments: MenuArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         MenuScreenView(
             viewModel: MenuViewModel(

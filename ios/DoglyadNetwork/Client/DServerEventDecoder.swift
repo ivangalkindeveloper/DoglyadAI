@@ -8,6 +8,8 @@ struct DServerEventDecoder {
     private var eventBytes = 0
     private let maximumBytes = 4194304
 
+    init() {}
+
     mutating func append(
         _ data: Data,
     ) throws -> [DServerEvent] {

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from app.core.configuration.configuration import Configuration
 from app.core.localization.language_code import LanguageCode
 from app.model.billing.billing_catalog import BillingCatalog
@@ -7,6 +9,11 @@ from app.model.billing.billing_tier_response import BillingTierResponse
 
 
 class BillingCatalogResponseService:
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @staticmethod
     def make(
         catalog: BillingCatalog,

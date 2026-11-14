@@ -5,6 +5,8 @@ struct OnBoardingBackButtonView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: OnBoardingViewModel
 
+    init() {}
+
     var body: some View {
         switch viewModel.state {
         case _ as OnBoardingInitialState: EmptyView()

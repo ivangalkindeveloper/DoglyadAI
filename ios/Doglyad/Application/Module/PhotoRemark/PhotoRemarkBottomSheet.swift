@@ -6,6 +6,12 @@ struct PhotoRemarkBottomSheet: View {
     @EnvironmentObject private var subscription: SubscriptionRootViewModel
     let arguments: PhotoRemarkArguments
 
+    init(
+        arguments: PhotoRemarkArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         PhotoRemarkBottomSheetView(
             viewModel: PhotoRemarkViewModel(

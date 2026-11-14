@@ -1,3 +1,5 @@
 import Router
 
-final class ScanArguments: RouteArgumentsProtocol {}
+final class ScanArguments: RouteArgumentsProtocol {
+    init() {}
+}

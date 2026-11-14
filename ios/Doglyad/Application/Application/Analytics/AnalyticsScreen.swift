@@ -12,7 +12,7 @@ enum AnalyticsScreen: String {
     case menu
     case storage
     case subscriptionRecovery = "subscription_recovery"
-    case manageSubscription = "manage_subscription"
+    case subscriptionManage = "subscription_manage"
     case paywall = "subscription_paywall"
     case templateAdd = "template_add"
     case templateEdit = "template_edit"

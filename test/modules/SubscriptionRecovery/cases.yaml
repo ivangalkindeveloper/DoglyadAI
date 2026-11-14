@@ -2,67 +2,58 @@ schemaVersion: 1
 module: SubscriptionRecovery
 source: ios/Doglyad/Application/Module/Subscription/SubscriptionRecovery
 cases:
-- id: SubscriptionRecovery.create-copy
-  title: Создание и копирование ключа
-  profiles:
-  - pro
-  preconditions:
-  - Активна тестовая ЮКасса-подписка
-  steps:
-  - action: Создать ключ и скопировать
-    expect: Показан непустой ключ; скопирован именно показанный текст.
-  - action: Создать новый ключ
-    expect: Новый ключ заменяет прежний; старая строка больше не восстанавливает доступ.
-  covers:
-  - onTapCreateKey
-  - onTapCopyKey
-  automation:
-    kind: maestro
-    flows:
-    - e2e-subscriptionrecovery-create-key
-    - e2e-subscriptionrecovery-rotate-key
-    - e2e-subscriptionrecovery-reject-old-key
 - id: SubscriptionRecovery.restore
   title: Восстановление на другом клиенте
   profiles:
   - pro
   preconditions:
-  - Подтверждённая подписка тестового магазина YooKassa; ключ заменён; данные приложения очищены, создан
-    новый владелец. Исходный и новый bearer различаются.
+  - Подтверждённая подписка тестового магазина Robokassa; постоянный ключ скопирован в управлении подпиской. На
+    втором телефоне создан новый владелец.
   steps:
-  - action: Ввести ключ и восстановить
-    expect: Второй клиент получает подтверждённый доступ того же владельца без дублирования оплаченного
-      периода.
-  - action: Повторить с неверным и заменённым ключом
-    expect: Доступ не предоставляется; показана ошибка без утечки чужих данных.
+  - action: Ввести ключ и восстановить доступ
+    expect: Один запрос возвращает текущую подписку того же владельца без новой оплаты. Исходный телефон сохраняет
+      доступ. После успеха показано сообщение. Из SubscriptionManage возврат ведёт в управление. Из Paywall после
+      онбординга — на Scan; из остальных Paywall — на исходный экран.
+  - action: Отправить пустой или неверный ключ
+    expect: Кнопка остаётся доступной; ошибка через DMessager; поле и введённый текст сохранены.
+  - action: Ввести ключ без активной подписки
+    expect: Форма и ключ сохраняются. Показано сообщение «Подписка не найдена» с описанием «Активная подписка по данному
+      ключу восстановления не найдена». Перехода на Scan нет.
   covers:
   - onTapRestore
   - onFocusChanged
   automation:
-    kind: maestro
-    flows:
-    - e2e-subscriptionrecovery-reject-old-key
-    - e2e-subscriptionrecovery-restore-key
+    kind: manual
+    flows: []
+    requires:
+    - Тестовый магазин Робокассы, доступный HTTPS ResultURL и проверенные селекторы браузерной страницы/банковского
+      подтверждения; старые сценарии SDK удалены
+    nativeTests:
+    - SubscriptionRecoveryTests/restoringTrimsInputAndReturnsToManagement()
+    - SubscriptionFlowTests/recoveryReturnsThroughPaywallWithoutPoppingItsOrigin(origin:)
+    - SubscriptionFlowTests/inactiveRecoveryKeepsTheFormAndDoesNotCompletePaywall()
 - id: SubscriptionRecovery.failure-back
   title: Ошибка сети и выход
   profiles:
   - pro
   preconditions:
-  - Отказ восстановления проверяется через реальный backend. Ошибка сети и поздний ответ после закрытия
-    проверяются отдельно в XCTest на настоящей ViewModel; они не подтверждают оплату.
+  - Отказ восстановления проверяется через реальный backend. Ошибка сети и поздний ответ после закрытия проверяются
+    отдельно в XCTest на настоящей ViewModel; они не подтверждают оплату.
   steps:
   - action: Отправить ключ при сбое
-    expect: Ошибка показана только через DMessager; ввод и ранее созданный ключ остаются в форме. Нет ложного успеха.
+    expect: Показана общая ошибка через showUnknownError(). Поле и введённый текст сохранены. Кнопка восстановления
+      доступна.
   - action: Закрыть экран во время операции
     expect: Операция отменяется/завершается без изменения закрытого UI; возврат ведёт в управление.
   covers:
   - onTapBack
   - onDisappear
   automation:
-    kind: mixed
-    flows:
-    - e2e-subscriptionrecovery-reject-old-key
-    - e2e-subscriptionrecovery-restore-key
+    kind: manual
+    flows: []
     nativeTests:
     - RegressionFormTests/testRecoveryIgnoresLateResponseAfterLeavingAndRetainsFailedInput()
-    - SubscriptionRecoveryTests/generatedKeyIsRetainedWhenAnOperationFails()
+    - SubscriptionRecoveryTests/enteredKeyIsRetainedWhenAnOperationFails()
+    requires:
+    - Тестовый магазин Робокассы, доступный HTTPS ResultURL и проверенные селекторы браузерной страницы/банковского
+      подтверждения; старые сценарии SDK удалены

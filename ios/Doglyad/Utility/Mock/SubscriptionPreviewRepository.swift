@@ -22,7 +22,7 @@
             let plans = catalog.products.map { plan in
                 SubscriptionPlan(
                     id: plan.id,
-                    source: .yookassa,
+                    source: .robokassa,
                     type: plan.entitlement,
                     period: plan.period,
                     title: plan.title,
@@ -42,13 +42,14 @@
 
         func purchase(
             plan _: SubscriptionPlan,
-            onPurchasePrepared _: @escaping (SubscriptionPurchaseReference) -> Void,
+            isAutoRenewing _: Bool,
+            onPurchasePrepared _: @escaping (SubscriptionPurchaseContextProtocol) -> Void,
         ) async throws -> SubscriptionPurchaseOutcome {
             .cancelled
         }
 
-        func restorePurchases() async throws -> Bool {
-            false
+        func restorePurchases() async throws -> SubscriptionRestoreStrategy {
+            .recoveryKeyRequired
         }
 
         func synchronizeCurrentEntitlements() async throws -> Bool {

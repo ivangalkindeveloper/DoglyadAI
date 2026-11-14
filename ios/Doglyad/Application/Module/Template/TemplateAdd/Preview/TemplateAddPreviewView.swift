@@ -10,6 +10,12 @@
         @EnvironmentObject private var messager: DMessager
         let state: any TemplateAddStateProtocol
 
+        init(
+            state: any TemplateAddStateProtocol,
+        ) {
+            self.state = state
+        }
+
         var body: some View {
             let isErrorPresented = switch state {
             case _ as TemplateAddErrorState: true

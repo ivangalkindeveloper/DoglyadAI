@@ -10,6 +10,12 @@ struct WebDocumentBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: WebDocumentArguments
 
+    init(
+        arguments: WebDocumentArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         WebDocumentBottomSheetView(
             viewModel: WebDocumentViewModel(

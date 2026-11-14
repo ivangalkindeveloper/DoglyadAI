@@ -1,0 +1,9 @@
+{
+  "field": "preprocessor_config.json.max_tokens",
+  "source_value": 16384,
+  "runtime_value": 2048,
+  "source_sha256": "e5e20bffb0ddf96749cbb8e86042573e5210facdd08806d915be126ae8156a77",
+  "runtime_sha256": "d20baa9cb432bd3528cbe310d4a79efb7956dbc46abedf075075c35140b315a2",
+  "is_weights_changed": false,
+  "reason": "Bound real image tokens by the profiled encoder cache; preserve the six-image application contract"
+}

@@ -8,6 +8,11 @@ from app.error.text_too_long_error import TextTooLongError
 class TextLengthValidator:
     """Count extended grapheme clusters, as Swift String.count does, without copying input."""
 
+    def __init__(
+        self,
+    ) -> None:
+        pass
+
     @staticmethod
     def is_within_limit(
         value: str,

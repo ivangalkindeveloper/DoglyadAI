@@ -4,6 +4,8 @@ import SwiftUI
 struct PaywallLoadingView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
 
+    init() {}
+
     var body: some View {
         HStack(
             spacing: size.s8,
@@ -112,5 +114,7 @@ struct PaywallLoadingView: DViewProtocol {
             .bottom,
             size.s8,
         )
+
+        PaywallFooterLoadingView()
     }
 }

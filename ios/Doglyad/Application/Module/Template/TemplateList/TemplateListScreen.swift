@@ -9,6 +9,12 @@ struct TemplateListScreen: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: TemplateListArguments?
 
+    init(
+        arguments: TemplateListArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         TemplateListScreenView(
             viewModel: TemplateListViewModel(

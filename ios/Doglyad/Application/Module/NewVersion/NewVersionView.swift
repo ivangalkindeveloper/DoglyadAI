@@ -5,6 +5,12 @@ struct NewVersionView: DViewProtocol {
     @EnvironmentObject var theme: DTheme
     let onTapUpdate: () -> Void
 
+    init(
+        onTapUpdate: @escaping () -> Void,
+    ) {
+        self.onTapUpdate = onTapUpdate
+    }
+
     var body: some View {
         DScreen(
             title: .newVersionTitle,

@@ -18,6 +18,8 @@ struct DictationProposalReconcilerTests {
         ),
     )
 
+    init() {}
+
     @Test(
         "A field absent from labeled dictation can come from an explicit fact",
     )

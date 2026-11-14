@@ -2,6 +2,12 @@ import Foundation
 
 struct ReadyMadeTemplateListConfig: Codable, Equatable {
     let searchMaxLength: Int
+
+    init(
+        searchMaxLength: Int,
+    ) {
+        self.searchMaxLength = searchMaxLength
+    }
 }
 
 extension ReadyMadeTemplateListConfig {

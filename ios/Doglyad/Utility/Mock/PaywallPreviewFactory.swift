@@ -17,12 +17,8 @@
             )
             return DependencyContainer.makePreviewable(
                 l10n: l10n,
-                subscriptionRepositoryFactory: SubscriptionRepositoryFactory(
-                    storeKit: repository,
-                    yooKassa: repository,
-                    getStorefrontCountryCode: {
-                        "RUS"
-                    },
+                subscriptionRepositoryFactory: SubscriptionPreviewRepositoryFactory(
+                    repository: repository,
                 ),
             )
         }
@@ -47,11 +43,13 @@
                 },
                 onRefreshSubscriptionStatus: {},
                 arguments: nil,
-                purchase: { _ in
+                purchase: { _, _ in
                     .cancelled
                 },
                 restorePurchases: {
-                    nil
+                    .completed(
+                        isOwnerChanged: false,
+                    )
                 },
                 checkPurchase: {
                     .pending

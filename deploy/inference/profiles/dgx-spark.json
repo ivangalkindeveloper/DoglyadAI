@@ -25,7 +25,7 @@
       "isPrefixCachingEnabled": true,
       "gpuMemoryUtilization": 0.55,
       "kvCacheMemoryBytes": 8589934592,
-      "revision": "2d3e00ea38b50018bf5dd3aa1009457cd2d5a48f",
+      "weightsDirectory": "/opt/doglyad/models/medgemma-27b-it-nvfp4-20261110",
       "speculativeConfig": {
         "method": "ngram",
         "numSpeculativeTokens": 8,
@@ -79,6 +79,52 @@
         "numSpeculativeTokens": 8,
         "promptLookupMin": 2,
         "promptLookupMax": 5
+      }
+    },
+    {
+      "modelId": "ZJU-AI4H/Hulu-Med-32B",
+      "service": "vllm_hulu_med_32b",
+      "image": "sha256:a43025e228727bfac14ea75aeed1cdc086b25c778584fc7593421383de2f724d",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 8,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": true,
+      "isPrefixCachingEnabled": true,
+      "isRemoteCodeTrusted": true,
+      "gpuMemoryUtilization": 0.3,
+      "kvCacheMemoryBytes": 4294967296,
+      "weightsDirectory": "/opt/doglyad/models/hulu-med-32b-nvfp4-20261112",
+      "chatTemplateKwargs": {
+        "image_token": "<image>"
+      }
+    },
+    {
+      "modelId": "ZJU-AI4H/Hulu-Med-7B",
+      "service": "vllm_hulu_med_7b",
+      "image": "sha256:a43025e228727bfac14ea75aeed1cdc086b25c778584fc7593421383de2f724d",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 8,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": true,
+      "isPrefixCachingEnabled": true,
+      "isRemoteCodeTrusted": true,
+      "gpuMemoryUtilization": 0.15,
+      "kvCacheMemoryBytes": 2147483648,
+      "weightsDirectory": "/opt/doglyad/models/hulu-med-7b-bf16-20261112",
+      "chatTemplateKwargs": {
+        "image_token": "<image>"
       }
     }
   ]

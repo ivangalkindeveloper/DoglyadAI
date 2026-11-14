@@ -42,6 +42,11 @@ class InvalidRequestError(ApiError):
         "value_error": "Invalid field value",
     }
 
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()
+
     @classmethod
     def field_description(
         cls,

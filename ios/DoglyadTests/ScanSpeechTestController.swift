@@ -8,6 +8,7 @@ final class ScanSpeechTestController: DSpeechControllerProtocol {
     @Published var text: String?
     @Published var audioMeter: Float = 0
     var lastTranscript: DSpeechTranscript?
+    var onStop: (() async -> DSpeechTranscript?)?
 
     init(
         locale _: Locale,
@@ -20,6 +21,9 @@ final class ScanSpeechTestController: DSpeechControllerProtocol {
     }
 
     func stop() async -> DSpeechTranscript? {
+        if let onStop {
+            return await onStop()
+        }
         recordingStatus = .stopped
         return lastTranscript
     }

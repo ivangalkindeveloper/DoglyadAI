@@ -7,3 +7,8 @@ class ServiceNotConfiguredError(ApiError):
     code = "serviceNotConfigured"
     description = "Service is not configured"
     status_code = 500
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

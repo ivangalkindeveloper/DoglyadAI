@@ -8,6 +8,12 @@ struct PhotoViewScreen: View {
     @EnvironmentObject private var subscription: SubscriptionRootViewModel
     let arguments: PhotoViewArguments
 
+    init(
+        arguments: PhotoViewArguments,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         PhotoViewScreenView(
             viewModel: PhotoViewViewModel(

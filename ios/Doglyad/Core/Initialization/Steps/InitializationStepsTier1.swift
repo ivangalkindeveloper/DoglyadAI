@@ -4,6 +4,7 @@ import DoglyadNetwork
 import FirebaseAppCheck
 import FirebaseCore
 import Foundation
+import StoreKit
 
 extension InitializationProcess {
     static func stepsTier1(
@@ -130,13 +131,18 @@ extension InitializationProcess {
                             securityDatabase: process.securityDatabase!,
                         )
                         process.subscriptionBackendRepository = backend
+                        process.subscriptionStoreKitRepository = SubscriptionStoreKitRepository(
+                            backend: backend,
+                        )
                         process.subscriptionRepositoryFactory = SubscriptionRepositoryFactory(
-                            storeKit: SubscriptionStoreKitRepository(
-                                backend: backend,
-                            ),
-                            yooKassa: SubscriptionYooKassaRepository(
-                                backend: backend,
-                            ),
+                            backend: backend,
+                            getStorefrontCountryCode: {
+                                #if DEBUG && DOGLYAD_REGRESSION
+                                    "RUS"
+                                #else
+                                    await Storefront.current?.countryCode
+                                #endif
+                            },
                         )
                     },
                 ),

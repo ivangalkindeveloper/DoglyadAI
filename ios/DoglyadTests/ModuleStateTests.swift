@@ -9,6 +9,8 @@ import UIKit
 
 @MainActor
 struct ModuleStateTests {
+    init() {}
+
     @Test
     func disappearanceCancelsTheOperationAndRestoresOneSubscriptionObservationOnReturn() {
         let container = DependencyContainer.previewable
@@ -117,7 +119,7 @@ struct ModuleStateTests {
         }
         var subscriptionRefreshCount = 0
         var observationCancelled = false
-        var model: ManageSubscriptionViewModel? = ManageSubscriptionViewModel(
+        var model: SubscriptionManageViewModel? = SubscriptionManageViewModel(
             messager: DMessager(),
             container: container,
             router: DRouter(
@@ -149,6 +151,9 @@ struct ModuleStateTests {
                 subscriptionRefreshCount += 1
             },
             arguments: nil,
+            fetchSubscriptionStatus: {
+                root.status
+            },
             fetchProducts: {
                 BillingProductsResponse(
                     products: [],
@@ -161,7 +166,9 @@ struct ModuleStateTests {
             },
             manageSubscription: {},
             restorePurchases: {
-                nil
+                .completed(
+                    isOwnerChanged: false,
+                )
             },
             requestRefund: {},
         )
@@ -211,7 +218,7 @@ struct ModuleStateTests {
 
         await model?.refreshStatus()
         #expect(
-            subscriptionRefreshCount == 2,
+            subscriptionRefreshCount == 1,
         )
         model?.updateSubscriptionStatus(
             nil,
@@ -297,6 +304,7 @@ struct ModuleStateTests {
         selectedModel = USExaminationNeuralModel(
             id: "updated-model",
             title: "Updated model",
+            format: initialModel.format,
             entitlement: initialModel.entitlement,
             accessibility: initialModel.accessibility,
             contextLength: initialModel.contextLength,

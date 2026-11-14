@@ -7,6 +7,12 @@ struct ShareActionsView: DViewProtocol {
     @EnvironmentObject private var viewModel: ShareViewModel
     let toolbarHeight: CGFloat
 
+    init(
+        toolbarHeight: CGFloat,
+    ) {
+        self.toolbarHeight = toolbarHeight
+    }
+
     var body: some View {
         let isProcessing = switch viewModel.state {
         case _ as ShareLoadingState: true

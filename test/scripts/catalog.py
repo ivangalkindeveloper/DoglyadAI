@@ -318,19 +318,18 @@ def generated() -> dict[str, str]:
             "WebDocumentErrorState",
             "PaywallCatalogErrorState",
             "PaywallOperationErrorState",
-            "SubscriptionRecoveryErrorState",
             "ScanSpeechModelPreparationErrorState",
         }
         if (
             preview["previewName"] in banner_states
-            or re.search(r"\bisErrorPresented:\s*true", preview["body"])
+            or re.search(r"\b(?:isErrorPresented|isNoActivePresented):\s*true", preview["body"])
             or any(
                 re.search(r"\bstate:\s*" + re.escape(state) + r"\s*\(", preview["body"])
                 for state in banner_states
             )
             or "scenario: .deliveryFailed" in preview["body"]
             or (
-                feature in {"History", "ManageSubscription", "ScanSpeech"}
+                feature in {"History", "SubscriptionManage", "ScanSpeech"}
                 and any(
                     f"scenario: .{scenario}" in preview["body"]
                     for scenario in ("failed", "nextPageFailed", "operationFailed")
@@ -389,10 +388,12 @@ def generated() -> dict[str, str]:
                 else "assertNotVisible"
             )
             commands.append({assertion: {"id": "webDocument.retry"}})
+        if (feature == "SubscriptionManage" and any(label in preview["title"] for label in ["AutoRenewalDisabledSuccess", "AccessRecoveredSuccess", "PurchaseCompletedSuccess"])) or (feature == "Paywall" and re.search(r"\bisPurchaseSuccessPresented:\s*true", preview["body"])):
+            commands.append({"extendedWaitUntil": {"visible": {"id": "message.success"}, "timeout": 15000}})
         if is_scroll_end:
             commands.append({"extendedWaitUntil": {"visible": {"id": "preview.scrollEnd.ready"}, "timeout": 30000}})
             commands.append("waitForAnimationToEnd")
-        elif feature == "ManageSubscription":
+        elif feature == "SubscriptionManage":
             commands.append("waitForAnimationToEnd")
         commands.append({"takeScreenshot": screen})
         output[flow] = documents(
@@ -401,6 +402,8 @@ def generated() -> dict[str, str]:
         )
         swift += [
             f"struct RegressionCase{number}: View {{",
+            "    init() {}",
+            "",
             "    var body: some View {",
             preview["body"],
             "    }",
@@ -414,6 +417,11 @@ def generated() -> dict[str, str]:
     swift += [
         "struct RegressionScreens: View {",
         "    let identity: String",
+        "",
+        "    init(identity: String) {",
+        "        self.identity = identity",
+        "    }",
+        "",
         "    var body: some View {",
         "        switch identity {",
     ]

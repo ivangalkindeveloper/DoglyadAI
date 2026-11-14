@@ -27,6 +27,8 @@ public struct DSize {
     public let s116: CGFloat = 116
     public let s128: CGFloat = 128
     public let s136: CGFloat = 136
+
+    init() {}
 }
 
 public extension DSize {
@@ -43,7 +45,7 @@ public extension DSize {
     }
 
     var cardCornerRadius: CGFloat {
-        s16
+        s20
     }
 
     var adaptiveCornerRadius: CGFloat {

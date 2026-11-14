@@ -1,0 +1,136 @@
+schemaVersion: 1
+module: SubscriptionManage
+source: ios/Doglyad/Application/Module/Subscription/SubscriptionManage
+cases:
+- id: SubscriptionManage.tiers
+  title: Нет подписки, Base и Pro
+  profiles:
+  - none
+  - base
+  - pro
+  - expired
+  - revoked
+  preconditions:
+  - Отдельные тестовые профили none/Base/Pro/expired/revoked
+  steps:
+  - action: Открыть управление и обновить статус
+    expect: Активный план, источник, срок и преимущества совпадают с сервером; истёкшая/отозванная подписка не даёт
+      активный доступ.
+  - action: Сменить профиль на сервере и вернуться в приложение
+    expect: Статус обновлён; устаревшие преимущества не показываются.
+  covers:
+  - onInit
+  - onRefresh
+  - onSubscriptionChanged
+  automation:
+    kind: maestro
+    flows:
+    - e2e-managesubscription-subscription
+    - e2e-managesubscription-profile-base
+    - e2e-managesubscription-profile-pro
+    - e2e-paywall-none
+    - e2e-paywall-expired
+    - e2e-managesubscription-background-before-revocation
+    - e2e-managesubscription-revoked
+- id: SubscriptionManage.navigation
+  title: Смена плана, ключ, поддержка и возврат
+  profiles:
+  - pro
+  preconditions:
+  - Активная подписка известного источника
+  - Внешний почтовый клиент заменён тестовым адаптером; точный mailto проверяется по отдельному отчёту, после отмены
+    локальные данные не меняются.
+  steps:
+  - action: Открыть смену плана, подтвердить и вернуться
+    expect: Сначала показана SubscriptionChange. После подтверждения открыт Paywall; возврат ведёт в SubscriptionManage.
+  - action: Скопировать ключ восстановления, открыть восстановление доступа, поддержку и возврат средств
+    expect: Копируется постоянный ключ и появляется сообщение. Robokassa открывает SubscriptionRecovery; Apple открывает
+      восстановление App Store. Подписка не меняется до подтверждения сервера.
+  - action: Вернуться в Scan
+    expect: Черновик сохранён.
+  covers:
+  - onTapChangeType
+  - onTapSupport
+  - onTapRefund
+  - onTapBack
+  - onTapCopyRecoveryKey
+  automation:
+    kind: maestro
+    flows:
+    - e2e-managesubscription-support-refund
+    - e2e-subscriptionrecovery-recovery
+    - e2e-paywall-select-base_weekly
+    - e2e-paywall-select-pro_weekly
+- id: SubscriptionManage.provider-actions
+  title: Управление продлением и восстановление
+  profiles:
+  - pro
+  preconditions:
+  - Подтверждённая подписка тестового магазина Robokassa. Apple Sandbox исключён по запросу пользователя.
+  steps:
+  - action: Нажать «Отключить автопродление»
+    expect: Показана SubscriptionAutoRenewalDisabling; запрос пока не отправлен. После успешного подтверждения кнопка
+      исчезает. Повторное включение доступно только при следующей покупке.
+  - action: Восстановить подтверждённую покупку
+    expect: Активируется только подтверждённая провайдером подписка; неверный источник не подменяет покупку.
+  covers:
+  - onTapSubscriptionManage
+  - onTapRestore
+  - onTapDisableAutoRenewal
+  automation:
+    kind: manual
+    flows: []
+    requires:
+    - Тестовый магазин Робокассы, доступный HTTPS ResultURL и проверенные селекторы браузерной страницы/банковского
+      подтверждения; старые сценарии SDK удалены
+- id: SubscriptionManage.failure-cancel
+  title: Ошибка загрузки и отмена задач
+  profiles:
+  - pro
+  preconditions:
+  - Маршрут проверяется в Maestro с подпиской Робокассы. Сетевой сбой, повтор и поздние ответы проверяются на настоящей
+    ViewModel в обязательных XCTest; эти проверки не подтверждают оплату.
+  steps:
+  - action: Открыть управление и повторить после восстановления
+    expect: При любой ошибке загрузки или операции показаны ErrorBodyView на весь экран, кнопка «Повторить» и сообщение.
+      Старые карточки и отдельная красная карточка не показаны. Повтор запрашивает актуальную подписку.
+  - action: Закрыть экран во время запроса
+    expect: Поздний ответ не открывает закрытый экран и не запускает действие повторно.
+  - action: Обновить подписку или восстановить доступ через App Store
+    expect: Показан полный экран с шиммерами, без старых карточек и надписи «Обновляем подписку». После ответа показан
+      актуальный статус.
+  covers:
+  - onTapRetry
+  - onDisappear
+  automation:
+    kind: partial
+    flows:
+    - e2e-managesubscription-support-refund
+    nativeTests:
+    - SubscriptionManageTests/aCatalogFailureIsDistinctFromAnUnsubscribedOwner()
+    - SubscriptionManageTests/catalogRetryLoadsTheSameActiveSubscription()
+    - SubscriptionManageTests/failedManagementRetainsTheCurrentSubscriptionSnapshot()
+    - SubscriptionManageTests/leavingBeforeManagementStartsDoesNotSendTheOperation()
+    - SubscriptionManageTests/leavingDiscardsLateManagementSuccessAndFailure(isFailure:)
+    - SubscriptionFlowTests/statusReadFailureCannotReuseAnOldActiveSubscriptionAsSuccess()
+    requires:
+    - Тестовый магазин Робокассы, доступный HTTPS ResultURL и проверенные селекторы браузерной страницы/банковского
+      подтверждения; старые сценарии SDK удалены
+- id: SubscriptionManage.recovery-copy
+  title: Постоянный ключ восстановления
+  profiles:
+  - pro
+  preconditions:
+  - Подписка Robokassa подтверждена; ключ получен с ответом оплаты и сохранён в Keychain
+  steps:
+  - action: Дважды нажать «Копировать ключ восстановления»
+    expect: Оба раза копируется тот же ключ; показано сообщение. Нет изменения ключа на сервере.
+  - action: Восстановить доступ на другом телефоне
+    expect: Текущий оплаченный срок сохранён, прежний телефон продолжает работать.
+  covers:
+  - onTapCopyRecoveryKey
+  automation:
+    kind: manual
+    flows: []
+    requires:
+    - Два клиента и подписанная ResultURL тестового магазина Robokassa

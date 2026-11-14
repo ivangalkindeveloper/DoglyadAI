@@ -6,10 +6,12 @@ struct PaywallContentView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject private var viewModel: PaywallViewModel
 
+    init() {}
+
     var body: some View {
         VStack(
             alignment: .leading,
-            spacing: size.s16,
+            spacing: size.s8,
         ) {
             VStack(
                 alignment: .leading,
@@ -27,6 +29,10 @@ struct PaywallContentView: DViewProtocol {
                     maxWidth: .infinity,
                     alignment: .leading,
                 )
+                .padding(
+                    .bottom,
+                    size.s8,
+                )
 
                 DText(
                     l10n[
@@ -41,26 +47,14 @@ struct PaywallContentView: DViewProtocol {
                     maxWidth: .infinity,
                     alignment: .leading,
                 )
+                .padding(
+                    .bottom,
+                    size.s8,
+                )
             }
 
             PaywallStateView(
                 state: viewModel.state,
-            )
-
-            PaywallFooterLinksView()
-
-            DText(
-                l10n[
-                    .paywallCancelDescription,
-                ],
-            )
-            .dStyle(
-                font: typography.textXSmall,
-                color: color.grayscalePlacehold,
-                alignment: .center,
-            )
-            .frame(
-                maxWidth: .infinity,
             )
         }
     }

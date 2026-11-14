@@ -1,2 +1,11 @@
 @MainActor
-final class SubscriptionRecoveryRestoreLoadingState: SubscriptionRecoveryLoadingState {}
+final class SubscriptionRecoveryRestoreLoadingState: SubscriptionRecoveryStateProtocol, @MainActor Equatable {
+    init() {}
+
+    static func == (
+        _: SubscriptionRecoveryRestoreLoadingState,
+        _: SubscriptionRecoveryRestoreLoadingState,
+    ) -> Bool {
+        true
+    }
+}

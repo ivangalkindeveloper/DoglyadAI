@@ -7,6 +7,12 @@ struct ScanTemplateCardView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanViewModel
     var isDisabled: Bool = false
 
+    init(
+        isDisabled: Bool = false,
+    ) {
+        self.isDisabled = isDisabled
+    }
+
     var body: some View {
         let trailingInset: CGFloat = viewModel.template == nil ? .zero : size.s32
 

@@ -4,6 +4,8 @@ import Testing
 import UIKit
 
 struct ReportEmailTests {
+    init() {}
+
     @MainActor
     @Test
     func reportEmailContainsCompressedScanPhotos() throws {

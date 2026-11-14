@@ -407,6 +407,8 @@ public struct DScreen<
 }
 
 private struct BottomHeightPreferenceKey: PreferenceKey {
+    init() {}
+
     static var defaultValue: CGFloat = 0
 
     static func reduce(

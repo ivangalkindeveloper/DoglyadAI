@@ -7,3 +7,8 @@ class AppCheckAccessDeniedError(ApiError):
     code = "appCheckAccessDenied"
     description = "App Check verification failed"
     status_code = 403
+
+    def __init__(
+        self,
+    ) -> None:
+        super().__init__()

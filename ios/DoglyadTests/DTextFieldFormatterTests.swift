@@ -2,6 +2,8 @@ import DoglyadUI
 import Testing
 
 struct DTextFieldFormatterTests {
+    init() {}
+
     @Test
     func regexFormatterReplacesMatchingText() {
         let formatter = DTextFieldRegexReplacingFormatter(

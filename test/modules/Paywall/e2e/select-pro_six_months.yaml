@@ -19,6 +19,9 @@ tags:
     timeout: 20000
 - tapOn:
     text: ^Сменить\ план$
+- assertVisible: ^Смена\ подписки$
+- tapOn:
+    text: ^Сменить\ план$
 - tapOn:
     text: ^Подписка\ Pro$
 - assertVisible: ^Доступ\ к\ продвинутым\ медицинским\ нейронным\ моделям$

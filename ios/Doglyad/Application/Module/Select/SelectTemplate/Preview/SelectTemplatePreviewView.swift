@@ -10,6 +10,14 @@
         let state: any SelectTemplateStateProtocol
         let templates: [USExaminationTemplate]
 
+        init(
+            state: any SelectTemplateStateProtocol,
+            templates: [USExaminationTemplate],
+        ) {
+            self.state = state
+            self.templates = templates
+        }
+
         var body: some View {
             let model = SelectTemplateViewModel(
                 container: container,

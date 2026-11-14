@@ -7,6 +7,12 @@ struct ScanPhotoListView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanViewModel
     var isDisabled: Bool = false
 
+    init(
+        isDisabled: Bool = false,
+    ) {
+        self.isDisabled = isDisabled
+    }
+
     var body: some View {
         let isMediaSelectionDisabled = switch (viewModel.state, viewModel.isPhotoLimitReached) {
         case (_ as ScanGenerationLoadingState, _), (_, true): true

@@ -7,6 +7,12 @@ struct StorageClearAllBottomSheet: View {
     @EnvironmentObject private var subscriptionViewModel: SubscriptionRootViewModel
     let arguments: StorageClearAllArguments?
 
+    init(
+        arguments: StorageClearAllArguments?,
+    ) {
+        self.arguments = arguments
+    }
+
     var body: some View {
         StorageClearAllBottomSheetView(
             viewModel: StorageClearAllViewModel(

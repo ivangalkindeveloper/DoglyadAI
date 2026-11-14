@@ -1,0 +1,131 @@
+{
+  "version": 1,
+  "projectName": "doglyad-dgx",
+  "architecture": "arm64",
+  "vllmImage": "vllm/vllm-openai:v0.28.0@sha256:2a7cde230b59f3ce6cab33dd245ba6bee41aa87b38c9fe84f966ff24016813ce",
+  "weightsVolume": {
+    "name": "doglyad-dgx-huggingface",
+    "isExternal": true
+  },
+  "serverConfig": "../../dgx-spark/config/server.json",
+  "models": [
+    {
+      "modelId": "google/medgemma-27b-it",
+      "service": "vllm_medgemma_27b",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 8,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": false,
+      "isPrefixCachingEnabled": true,
+      "gpuMemoryUtilization": 0.55,
+      "kvCacheMemoryBytes": 8589934592,
+      "weightsDirectory": "/opt/doglyad/models/medgemma-27b-it-nvfp4-20261110",
+      "speculativeConfig": {
+        "method": "ngram",
+        "numSpeculativeTokens": 8,
+        "promptLookupMin": 2,
+        "promptLookupMax": 5
+      }
+    },
+    {
+      "modelId": "google/medgemma-4b-it",
+      "service": "vllm_medgemma_4b",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 8,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": false,
+      "isPrefixCachingEnabled": true,
+      "gpuMemoryUtilization": 0.15,
+      "kvCacheMemoryBytes": 4294967296,
+      "revision": "290cda5eeccbee130f987c4ad74a59ae6f196408",
+      "speculativeConfig": {
+        "method": "ngram",
+        "numSpeculativeTokens": 8,
+        "promptLookupMin": 2,
+        "promptLookupMax": 5
+      }
+    },
+    {
+      "modelId": "google/medgemma-1.5-4b-it",
+      "service": "vllm_medgemma_15_4b",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 8,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": false,
+      "isPrefixCachingEnabled": true,
+      "gpuMemoryUtilization": 0.15,
+      "kvCacheMemoryBytes": 4294967296,
+      "revision": "91850547d9f0b2fdd21aa7c5f4f3d1a8a52c243b",
+      "speculativeConfig": {
+        "method": "ngram",
+        "numSpeculativeTokens": 8,
+        "promptLookupMin": 2,
+        "promptLookupMax": 5
+      }
+    },
+    {
+      "modelId": "ZJU-AI4H/Hulu-Med-32B",
+      "service": "vllm_hulu_med_32b",
+      "image": "sha256:a43025e228727bfac14ea75aeed1cdc086b25c778584fc7593421383de2f724d",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 8,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": true,
+      "isPrefixCachingEnabled": true,
+      "isRemoteCodeTrusted": true,
+      "gpuMemoryUtilization": 0.3,
+      "kvCacheMemoryBytes": 4294967296,
+      "weightsDirectory": "/opt/doglyad/models/hulu-med-32b-nvfp4-20261112",
+      "chatTemplateKwargs": {
+        "image_token": "<image>"
+      }
+    },
+    {
+      "modelId": "ZJU-AI4H/Hulu-Med-7B",
+      "service": "vllm_hulu_med_7b",
+      "image": "sha256:a43025e228727bfac14ea75aeed1cdc086b25c778584fc7593421383de2f724d",
+      "dtype": "bfloat16",
+      "maxModelLen": 16384,
+      "maxNumSeqs": 8,
+      "maxNumBatchedTokens": 2048,
+      "maxImages": 6,
+      "gpuDeviceIds": [
+        "0"
+      ],
+      "tensorParallelSize": 1,
+      "isEager": true,
+      "isPrefixCachingEnabled": true,
+      "isRemoteCodeTrusted": true,
+      "gpuMemoryUtilization": 0.15,
+      "kvCacheMemoryBytes": 2147483648,
+      "weightsDirectory": "/opt/doglyad/models/hulu-med-7b-bf16-20261112",
+      "chatTemplateKwargs": {
+        "image_token": "<image>"
+      }
+    }
+  ]
+}

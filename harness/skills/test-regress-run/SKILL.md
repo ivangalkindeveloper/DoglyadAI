@@ -38,13 +38,12 @@ with `make previews-publish RUN=build/previews/runs/<run-id>` if transfer needs 
 2. For a new run, execute `make regression-figma`. It creates its own Compose project, PostgreSQL
    volume and iOS simulator. Do not substitute the developer's database, simulator
    or a production backend. App Check remains enabled. Inference uses existing
-   mock generation. Ordinary UI cases use synthetic ledger profiles. The final YooKassa
-   cases use fresh owners, the actual SDK and a verified test merchant. Require
-   canonical provider evidence for the selected product; never replace it with SQL
-   access. The 3-D Secure cases must keep the same local and provider payment IDs
-   across pending, application restart and confirmation. The current backend rejects
-   another purchase while a subscription is active; do not remove this guard to make
-   a test pass. Apple Sandbox is currently excluded. When asked
+   mock generation. Ordinary UI cases use synthetic ledger profiles. Robokassa
+   browser cases require fresh owners, a verified test merchant and a public ResultURL.
+   Test payments require verified signed ResultURL evidence for the selected product;
+   OpStateExt is production-only. Never replace payment evidence with SQL access.
+   Keep browser/bank cases manual until their selectors and callbacks are verified.
+   Pending, application restart and confirmation retain the same payment identity until provider-confirmed cancellation or expiry. Plan changes create a paid successor that starts after the current paid period, with one future renewal schedule. Apple Sandbox is currently excluded. When asked
    to upload an existing successful run, reuse it with
    `make regression-publish RUN=build/regression/runs/<run-id>` instead of rerunning tests.
 3. Follow the process log. The runner fails closed on an unsuccessful or skipped
@@ -57,7 +56,7 @@ with `make previews-publish RUN=build/previews/runs/<run-id>` if transfer needs 
    Worker-fault cases must bind the one-shot control receipt to the observed job;
    retries need distinct request IDs and the specified local report count change.
    Subscription action receipts must preserve the paid period and payment count;
-   recovery must reject a rotated key and authorize the clean client through the real backend.
+   recovery must reject an invalid key and authorize the clean client with the same permanent key through the real backend.
    External application adapters require exact URL evidence and observed cancellation.
    They never replace payment providers or SMTP delivery.
    Saved response cases require immutable `report-evidence.json`: exact clipboard/version
@@ -86,8 +85,8 @@ with `make previews-publish RUN=build/previews/runs/<run-id>` if transfer needs 
    `make regression-publish RUN=build/regression/runs/<run-id>` for this same successful run.
 
 The atlas checks rendering of named preview states. Functional flows check real
-navigation, persistence and local-backend behavior. Dedicated YooKassa flows also
-verify test-provider purchases against canonical API responses. Neither proves
+navigation, persistence and local-backend behavior. Robokassa browser cases need
+verified signed test ResultURL evidence before they can count as provider coverage. Neither proves
 Apple Sandbox, live payments, physical camera/microphone operation or model quality;
 those boundaries are listed in `test/README.md`. Do not run the long voice/model
 evaluations as part of this skill. Do not commit or push unless requested.

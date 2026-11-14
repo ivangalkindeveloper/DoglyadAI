@@ -7,6 +7,12 @@ struct ScanKeyboardToolbarView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanViewModel
     let isProcessing: Bool
 
+    init(
+        isProcessing: Bool,
+    ) {
+        self.isProcessing = isProcessing
+    }
+
     var body: some View {
         let speechToolbarButton: DToolbarButton? = switch viewModel.subscriptionAvailability(
             of: .formCompletionViaMicrophone,
