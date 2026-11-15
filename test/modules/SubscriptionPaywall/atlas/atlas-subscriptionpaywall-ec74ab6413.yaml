@@ -16,4 +16,4 @@ tags:
       id: message.error
     timeout: 15000
 - assertNotVisible: ^Не удалось завершить оплату$
-- takeScreenshot: 10-SubscriptionPaywall-ec74ab6413
+- takeScreenshot: 12-SubscriptionPaywall-ec74ab6413

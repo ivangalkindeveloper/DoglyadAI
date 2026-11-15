@@ -2561,6 +2561,7 @@
         "entitlement": "base",
         "price": {
           "amountMinor": 429900,
+          "oldAmountMinor": 559900,
           "currencyIso2Code": "RUB"
         },
         "title": "Base - Annual access",
@@ -2572,6 +2573,7 @@
         "entitlement": "base",
         "price": {
           "amountMinor": 224900,
+          "oldAmountMinor": 289900,
           "currencyIso2Code": "RUB"
         },
         "title": "Base - Six months access",
@@ -2583,6 +2585,7 @@
         "entitlement": "base",
         "price": {
           "amountMinor": 39900,
+          "oldAmountMinor": 49900,
           "currencyIso2Code": "RUB"
         },
         "title": "Base - Monthly access",
@@ -2594,6 +2597,7 @@
         "entitlement": "base",
         "price": {
           "amountMinor": 14900,
+          "oldAmountMinor": 19900,
           "currencyIso2Code": "RUB"
         },
         "title": "Base - Weekly access",
@@ -2605,6 +2609,7 @@
         "entitlement": "pro",
         "price": {
           "amountMinor": 859900,
+          "oldAmountMinor": 1119900,
           "currencyIso2Code": "RUB"
         },
         "title": "Pro - Annual access",
@@ -2616,6 +2621,7 @@
         "entitlement": "pro",
         "price": {
           "amountMinor": 454900,
+          "oldAmountMinor": 589900,
           "currencyIso2Code": "RUB"
         },
         "title": "Pro - Six months access",
@@ -2627,6 +2633,7 @@
         "entitlement": "pro",
         "price": {
           "amountMinor": 79900,
+          "oldAmountMinor": 104900,
           "currencyIso2Code": "RUB"
         },
         "title": "Pro - Monthly access",
@@ -2638,6 +2645,7 @@
         "entitlement": "pro",
         "price": {
           "amountMinor": 24900,
+          "oldAmountMinor": 29900,
           "currencyIso2Code": "RUB"
         },
         "title": "Pro - Weekly access",

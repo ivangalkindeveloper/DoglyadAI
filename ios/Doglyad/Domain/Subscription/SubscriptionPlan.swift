@@ -7,6 +7,7 @@ struct SubscriptionPlan: Identifiable, Equatable {
     let period: SubscriptionPeriod
     let title: String
     let price: String
+    let oldPrice: String?
     let billingPrice: BillingPrice?
 
     init(
@@ -16,6 +17,7 @@ struct SubscriptionPlan: Identifiable, Equatable {
         period: SubscriptionPeriod,
         title: String,
         price: String,
+        oldPrice: String? = nil,
         billingPrice: BillingPrice? = nil,
     ) {
         self.id = id
@@ -24,6 +26,7 @@ struct SubscriptionPlan: Identifiable, Equatable {
         self.period = period
         self.title = title
         self.price = price
+        self.oldPrice = oldPrice
         self.billingPrice = billingPrice
     }
 }

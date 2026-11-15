@@ -6,6 +6,29 @@
 
     @MainActor
     enum SubscriptionPaywallPreviewFactory {
+        static let storeKitContent = SubscriptionPaywallSuccessState(
+            tiers: ModulePreviewFactory.development.products.tiers,
+            plans: ModulePreviewFactory.development.products.products.map { product in
+                SubscriptionPlan(
+                    id: product.id,
+                    source: .apple,
+                    type: product.entitlement,
+                    period: product.period,
+                    title: product.title,
+                    price: product.formattedPrice(
+                        999.formattedCurrencyFromMinorUnits(
+                            code: "USD",
+                            locale: Locale(
+                                identifier: "ru",
+                            ),
+                        ),
+                    ),
+                )
+            },
+            selectedType: .pro,
+            selectedPlanID: ModulePreviewFactory.subscriptionPaywallPlan.id,
+        )
+
         static func makeContainer(
             code: String = "ru",
         ) -> DependencyContainer {

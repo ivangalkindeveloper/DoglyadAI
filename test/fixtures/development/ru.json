@@ -2581,6 +2581,7 @@
         "entitlement": "base",
         "price": {
           "amountMinor": 429900,
+          "oldAmountMinor": 559900,
           "currencyIso2Code": "RUB"
         },
         "title": "Base - Годовой доступ",
@@ -2592,6 +2593,7 @@
         "entitlement": "base",
         "price": {
           "amountMinor": 224900,
+          "oldAmountMinor": 289900,
           "currencyIso2Code": "RUB"
         },
         "title": "Base - Полугодовой доступ",
@@ -2603,6 +2605,7 @@
         "entitlement": "base",
         "price": {
           "amountMinor": 39900,
+          "oldAmountMinor": 49900,
           "currencyIso2Code": "RUB"
         },
         "title": "Base - Месячный доступ",
@@ -2614,6 +2617,7 @@
         "entitlement": "base",
         "price": {
           "amountMinor": 14900,
+          "oldAmountMinor": 19900,
           "currencyIso2Code": "RUB"
         },
         "title": "Base - Недельный доступ",
@@ -2625,6 +2629,7 @@
         "entitlement": "pro",
         "price": {
           "amountMinor": 859900,
+          "oldAmountMinor": 1119900,
           "currencyIso2Code": "RUB"
         },
         "title": "Pro - Годовой доступ",
@@ -2636,6 +2641,7 @@
         "entitlement": "pro",
         "price": {
           "amountMinor": 454900,
+          "oldAmountMinor": 589900,
           "currencyIso2Code": "RUB"
         },
         "title": "Pro - Полугодовой доступ",
@@ -2647,6 +2653,7 @@
         "entitlement": "pro",
         "price": {
           "amountMinor": 79900,
+          "oldAmountMinor": 104900,
           "currencyIso2Code": "RUB"
         },
         "title": "Pro - Месячный доступ",
@@ -2658,6 +2665,7 @@
         "entitlement": "pro",
         "price": {
           "amountMinor": 24900,
+          "oldAmountMinor": 29900,
           "currencyIso2Code": "RUB"
         },
         "title": "Pro - Недельный доступ",

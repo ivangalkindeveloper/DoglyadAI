@@ -132,7 +132,7 @@ postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/doglyad_dat
        {"id":"local-pro-monthly","period":"monthly",
         "titleLocaleKey":"subscriptionProMonthlyLabel",
         "priceTemplateLocaleKey":"subscriptionMonthlyPriceDescription",
-        "price":{"amountMinor":10000,"currencyIso2Code":"RUB"}}
+        "price":{"amountMinor":10000,"oldAmountMinor":13000,"currencyIso2Code":"RUB"}}
      ]
    }]
    ```

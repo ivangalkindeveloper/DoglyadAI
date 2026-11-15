@@ -68,7 +68,11 @@ def test_paid_plan_change_starts_immediately_and_replaces_previous_access(
                         "period": period,
                         "titleLocaleKey": f"subscription{tier.title()}{period.title()}Label",
                         "priceTemplateLocaleKey": f"subscription{period.title()}PriceDescription",
-                        "price": {"amountMinor": amount, "currencyIso2Code": "RUB"},
+                        "price": {
+                            "amountMinor": amount,
+                            "oldAmountMinor": amount * 13 // 10,
+                            "currencyIso2Code": "RUB",
+                        },
                     }
                     for identifier, period, product_tier, amount in [
                         ("base.monthly", "monthly", "base", 30000),

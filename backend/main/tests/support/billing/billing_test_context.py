@@ -55,7 +55,7 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
                                 "period": "monthly",
                                 "titleLocaleKey": "subscriptionProMonthlyLabel",
                                 "priceTemplateLocaleKey": "subscriptionMonthlyPriceDescription",
-                                "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"},
+                                "price": {"amountMinor": 10000, "oldAmountMinor": 13000, "currencyIso2Code": "RUB"},
                             }
                             for identifier in ("monthly", "test.monthly")
                         ],

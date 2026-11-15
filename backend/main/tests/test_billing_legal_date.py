@@ -351,7 +351,11 @@ def test_late_payment_confirmation_keeps_paid_access_without_renewal(
 def test_purchase_requires_an_explicit_timezone_aware_legal_date(
     value: str | None,
 ) -> None:
-    data = {"planId": "monthly", "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"}, "isAutoRenewing": True}
+    data = {
+        "planId": "monthly",
+        "price": {"amountMinor": 10000, "oldAmountMinor": 13000, "currencyIso2Code": "RUB"},
+        "isAutoRenewing": True,
+    }
     if value is not None:
         data["legalDate"] = value
     with pytest.raises(

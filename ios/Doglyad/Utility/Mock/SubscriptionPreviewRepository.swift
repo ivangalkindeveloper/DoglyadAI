@@ -32,6 +32,10 @@
                             locale: locale,
                         ),
                     ),
+                    oldPrice: plan.price.oldAmountMinor.formattedCurrencyFromMinorUnits(
+                        code: plan.price.currencyIso2Code,
+                        locale: locale,
+                    ),
                 )
             }
             return SubscriptionCatalog(

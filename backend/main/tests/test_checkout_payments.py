@@ -56,6 +56,8 @@ def test_direct_checkout_preserves_paywall_choice_and_signed_callback_contact(
                 )
                 == "true"
             ) is is_auto_renewing
+            assert payload["OutSum"] == "100.00"
+            assert "oldAmountMinor" not in payload
             assert "Email" not in payload["AdditionalParameters"]
             async with ctx.database.session() as session:
                 order = await session.get(
@@ -65,6 +67,7 @@ def test_direct_checkout_preserves_paywall_choice_and_signed_callback_contact(
                     ),
                 )
                 assert order is not None and order.consent_at and order.is_auto_renewing is is_auto_renewing
+                assert order.amount_minor == 10000
                 assert (
                     order.receipt_email is None
                     and ctx.service._utc(
@@ -268,6 +271,7 @@ def test_changed_paywall_price_cannot_start_an_invoice(
                     LanguageCode.RU,
                     expected_price=BillingPrice(
                         amountMinor=1,
+                        oldAmountMinor=2,
                         currencyIso2Code="RUB",
                     ),
                     legal_date=ctx.service.legal_date,

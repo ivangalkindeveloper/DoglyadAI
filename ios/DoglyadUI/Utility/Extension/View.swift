@@ -63,6 +63,16 @@ public extension View {
         )
     }
 
+    func dDiagonalStrikethrough(
+        color: Color,
+    ) -> some View {
+        modifier(
+            DDiagonalStrikethroughModifier(
+                color: color,
+            ),
+        )
+    }
+
     func dShimmer(
         isShimmering: Bool = true,
         cornerRadius: CGFloat = .infinity,

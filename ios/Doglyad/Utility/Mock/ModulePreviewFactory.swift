@@ -100,6 +100,12 @@
                         ),
                     ),
                 ),
+                oldPrice: product.price.oldAmountMinor.formattedCurrencyFromMinorUnits(
+                    code: product.price.currencyIso2Code,
+                    locale: Locale(
+                        identifier: "ru",
+                    ),
+                ),
             )
         }
         static let subscriptionPaywallPlan = subscriptionPaywallPlans.first {

@@ -987,7 +987,7 @@ def test_billing_api_requires_owner_secret(
                     headers=headers,
                     json={
                         "planId": "monthly",
-                        "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"},
+                        "price": {"amountMinor": 10000, "oldAmountMinor": 13000, "currencyIso2Code": "RUB"},
                         "isAutoRenewing": False,
                         "legalDate": configuration.legal_date.isoformat(),
                     },

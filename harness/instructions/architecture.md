@@ -40,8 +40,12 @@ and Pro are paid tiers. UUIDs and browser redirects never prove access.
 
 `billing.json` is a root array of tiers with `id`, `titleLocaleKey`,
 `featureLocaleKeys` and nested `products`. Each product declares `id`, `period`,
-`price` (`amountMinor`, `currencyIso2Code`), `titleLocaleKey` and
+`price` (`amountMinor`, `oldAmountMinor`, `currencyIso2Code`), `titleLocaleKey` and
 `priceTemplateLocaleKey`; its entitlement comes from the parent tier ID.
+`oldAmountMinor` is required and greater than `amountMinor`; it is a reference amount
+shown struck through before the current price on Robokassa plan cards. Charge and
+renewal amounts use only `amountMinor`. StoreKit plans show their SDK price without
+a reference amount from the RUB catalog.
 Product IDs remain globally unique across tiers. The backend resolves localization
 keys through `l10n.json`. The protected `/v1/subscriptions/plans` response retains
 flat `tiers` and `products` arrays with localized strings and derived entitlements.

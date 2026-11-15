@@ -14,7 +14,7 @@ struct SubscriptionCatalogTests {
         period: SubscriptionPeriod,
     ) async throws {
         let json = """
-        {"tiers":[{"id":"pro","title":"Server tier","features":["Server feature"]}],"products":[{"id":"robo-plan","title":"Custom server title","priceTemplate":"Pay {price} for this offer","entitlement":"pro","period":"\(period.rawValue)","price":{"amountMinor":32135,"currencyIso2Code":"RUB"}}]}
+        {"tiers":[{"id":"pro","title":"Server tier","features":["Server feature"]}],"products":[{"id":"robo-plan","title":"Custom server title","priceTemplate":"Pay {price} for this offer","entitlement":"pro","period":"\(period.rawValue)","price":{"amountMinor":32135,"oldAmountMinor":50000,"currencyIso2Code":"RUB"}}]}
         """
         let http = RobokassaTestHttpClient(
             responses: ["/subscriptions/plans": Data(
@@ -62,6 +62,17 @@ struct SubscriptionCatalogTests {
             ) == true && plans.first?.price.hasSuffix(
                 " for this offer",
             ) == true,
+        )
+        #expect(
+            plans.first?.oldPrice == 50000.formattedCurrencyFromMinorUnits(
+                code: "RUB",
+            ),
+        )
+        #expect(
+            plans.first?.billingPrice?.amountMinor == 32135,
+        )
+        #expect(
+            plans.first?.billingPrice?.oldAmountMinor == 50000,
         )
         #expect(
             plans.first?.price.contains(

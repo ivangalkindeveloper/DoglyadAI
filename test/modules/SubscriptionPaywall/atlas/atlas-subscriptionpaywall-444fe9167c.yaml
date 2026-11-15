@@ -14,4 +14,4 @@ tags:
 - assertVisible:
     id: paywall.continue
     enabled: true
-- takeScreenshot: 08-SubscriptionPaywall-444fe9167c
+- takeScreenshot: 10-SubscriptionPaywall-444fe9167c

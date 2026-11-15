@@ -43,13 +43,31 @@ struct SubscriptionPaywallPlanCardView: DViewProtocol {
                             font: typography.linkSmall,
                         )
 
-                        DText(
-                            plan.price,
-                        )
-                        .dStyle(
-                            font: typography.textXSmall,
-                            color: color.grayscaleLabel,
-                        )
+                        HStack(
+                            alignment: .firstTextBaseline,
+                            spacing: size.s4,
+                        ) {
+                            if let oldPrice = plan.oldPrice {
+                                DText(
+                                    oldPrice,
+                                )
+                                .dStyle(
+                                    font: typography.textXSmall,
+                                    color: color.grayscaleLabel,
+                                )
+                                .dDiagonalStrikethrough(
+                                    color: color.dangerDefault,
+                                )
+                            }
+
+                            DText(
+                                plan.price,
+                            )
+                            .dStyle(
+                                font: typography.textXSmall,
+                                color: color.grayscaleLabel,
+                            )
+                        }
                     }
                     .frame(
                         maxWidth: .infinity,

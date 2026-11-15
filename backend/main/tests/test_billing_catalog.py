@@ -40,7 +40,7 @@ def catalog_for(
                     "period": period.value,
                     "titleLocaleKey": "subscriptionProMonthlyLabel",
                     "priceTemplateLocaleKey": "subscriptionMonthlyPriceDescription",
-                    "price": {"amountMinor": 10000, "currencyIso2Code": "RUB"},
+                    "price": {"amountMinor": 10000, "oldAmountMinor": 13000, "currencyIso2Code": "RUB"},
                 }
             ],
         }
@@ -220,6 +220,8 @@ def test_shared_catalog_and_endpoint_remains_protected(
                         product,
                     ) == {"id", "entitlement", "period", "price", "title", "priceTemplate"}
                     assert product["price"]["amountMinor"] > 0
+                    assert product["price"]["oldAmountMinor"] == configured["price"]["oldAmountMinor"]
+                    assert product["price"]["oldAmountMinor"] > product["price"]["amountMinor"]
                     assert product["price"]["currencyIso2Code"] == "RUB"
                     assert (
                         product["entitlement"]
@@ -376,9 +378,9 @@ def test_duplicate_product_identifiers_are_rejected() -> None:
 @pytest.mark.parametrize(
     "price",
     [
-        {"amountMinor": 0, "currencyIso2Code": "RUB"},
-        {"amountMinor": 100.5, "currencyIso2Code": "RUB"},
-        {"amountMinor": 100, "currencyIso2Code": "USD"},
+        {"amountMinor": 0, "oldAmountMinor": 130, "currencyIso2Code": "RUB"},
+        {"amountMinor": 100.5, "oldAmountMinor": 130, "currencyIso2Code": "RUB"},
+        {"amountMinor": 100, "oldAmountMinor": 130, "currencyIso2Code": "USD"},
         {"amountMinor": 100},
         {"amountMinor": 100, "currency": "RUB"},
     ],
@@ -534,6 +536,7 @@ def test_checkout_and_renewal_keep_paid_period_and_price_snapshot(
                 BillingPeriod.ANNUAL,
             )
             changed_catalog[0]["products"][0]["price"]["amountMinor"] = 999999
+            changed_catalog[0]["products"][0]["price"]["oldAmountMinor"] = 1299999
             changed_catalog[0]["products"][0]["id"] = "new-plan"
             ctx.service._catalog = BillingCatalog.model_validate(
                 changed_catalog,
@@ -742,6 +745,25 @@ def test_product_identifiers_are_unique_across_tiers() -> None:
     with pytest.raises(
         ValidationError,
         match="product identifiers must be unique",
+    ):
+        BillingCatalog.model_validate(
+            catalog,
+        )
+
+
+@pytest.mark.parametrize(
+    "old_amount",
+    [-1, 0, 9999, 10000, 13000.5, None],
+)
+def test_old_amount_must_be_an_integer_above_the_current_amount(
+    old_amount: int | float | None,
+) -> None:
+    catalog = catalog_for(
+        BillingPeriod.MONTHLY,
+    )
+    catalog[0]["products"][0]["price"]["oldAmountMinor"] = old_amount
+    with pytest.raises(
+        ValidationError,
     ):
         BillingCatalog.model_validate(
             catalog,

@@ -55,6 +55,7 @@ struct RobokassaPaymentTests {
             price: "100 ₽",
             billingPrice: BillingPrice(
                 amountMinor: 10000,
+                oldAmountMinor: 13000,
                 currencyIso2Code: "RUB",
             ),
         )
@@ -111,6 +112,7 @@ struct RobokassaPaymentTests {
                 planID: "monthly",
                 price: BillingPrice(
                     amountMinor: 10000,
+                    oldAmountMinor: 13000,
                     currencyIso2Code: "RUB",
                 ),
                 isAutoRenewing: true,
@@ -201,6 +203,7 @@ struct RobokassaPaymentTests {
             price: "100 ₽",
             billingPrice: BillingPrice(
                 amountMinor: 10000,
+                oldAmountMinor: 13000,
                 currencyIso2Code: "RUB",
             ),
         )
@@ -284,6 +287,7 @@ struct RobokassaPaymentTests {
             price: "100 ₽",
             billingPrice: BillingPrice(
                 amountMinor: 10000,
+                oldAmountMinor: 13000,
                 currencyIso2Code: "RUB",
             ),
         )

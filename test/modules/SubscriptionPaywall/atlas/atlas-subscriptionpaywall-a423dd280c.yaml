@@ -21,4 +21,4 @@ tags:
       id: preview.scrollEnd.ready
     timeout: 30000
 - waitForAnimationToEnd
-- takeScreenshot: 11-SubscriptionPaywall-a423dd280c
+- takeScreenshot: 13-SubscriptionPaywall-a423dd280c

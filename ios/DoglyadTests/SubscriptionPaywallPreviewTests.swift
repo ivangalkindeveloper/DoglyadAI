@@ -66,6 +66,19 @@
                     "{price}",
                 ),
             )
+            for plan in content.plans {
+                let product = try #require(
+                    ModulePreviewFactory.development.products.products.first {
+                        $0.id == plan.id
+                    },
+                )
+                #expect(
+                    plan.oldPrice == product.price.oldAmountMinor.formattedCurrencyFromMinorUnits(
+                        code: product.price.currencyIso2Code,
+                        locale: container.l10n.locale,
+                    ),
+                )
+            }
             model.onSelectType(
                 .base,
             )

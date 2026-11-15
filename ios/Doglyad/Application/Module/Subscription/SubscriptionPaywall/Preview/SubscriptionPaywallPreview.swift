@@ -58,7 +58,30 @@
     }
 
     #Preview(
-        "06 SubscriptionPaywallSuccessState AutoRenewalOff",
+        "06 SubscriptionPaywallSuccessState StoreKitPrices",
+    ) {
+        SubscriptionPaywallPreviewView(
+            state: SubscriptionPaywallPreviewFactory.storeKitContent,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+    }
+
+    #Preview(
+        "07 SubscriptionPaywallSuccessState StoreKitPrices ScrollEnd",
+    ) {
+        SubscriptionPaywallPreviewView(
+            state: SubscriptionPaywallPreviewFactory.storeKitContent,
+        )
+        .previewable(
+            container: ModulePreviewFactory.makeContainer(),
+        )
+        .previewScrollToEnd()
+    }
+
+    #Preview(
+        "08 SubscriptionPaywallSuccessState AutoRenewalOff",
     ) {
         SubscriptionPaywallPreviewView(
             state: ModulePreviewFactory.subscriptionPaywallContent.copyWith(
@@ -70,7 +93,7 @@
     }
 
     #Preview(
-        "07 SubscriptionPaywallSuccessState AutoRenewalOff ScrollEnd",
+        "09 SubscriptionPaywallSuccessState AutoRenewalOff ScrollEnd",
     ) {
         SubscriptionPaywallPreviewView(
             state: ModulePreviewFactory.subscriptionPaywallContent.copyWith(
@@ -83,7 +106,7 @@
     }
 
     #Preview(
-        "08 SubscriptionPaywallPurchaseLoadingState PurchasingOrRestoring",
+        "10 SubscriptionPaywallPurchaseLoadingState PurchasingOrRestoring",
     ) {
         SubscriptionPaywallPreviewView(
             state: SubscriptionPaywallPurchaseLoadingState(
@@ -96,7 +119,7 @@
     }
 
     #Preview(
-        "09 SubscriptionPaywallPurchaseLoadingState PurchasingOrRestoring ScrollEnd",
+        "11 SubscriptionPaywallPurchaseLoadingState PurchasingOrRestoring ScrollEnd",
     ) {
         SubscriptionPaywallPreviewView(
             state: SubscriptionPaywallPurchaseLoadingState(
@@ -110,7 +133,7 @@
     }
 
     #Preview(
-        "10 SubscriptionPaywallOperationErrorState PaymentOperationFailed",
+        "12 SubscriptionPaywallOperationErrorState PaymentOperationFailed",
     ) {
         SubscriptionPaywallPreviewView(
             state: SubscriptionPaywallOperationErrorState(
@@ -125,7 +148,7 @@
     }
 
     #Preview(
-        "11 SubscriptionPaywallOperationErrorState PaymentOperationFailed ScrollEnd",
+        "13 SubscriptionPaywallOperationErrorState PaymentOperationFailed ScrollEnd",
     ) {
         SubscriptionPaywallPreviewView(
             state: SubscriptionPaywallOperationErrorState(
@@ -141,7 +164,7 @@
     }
 
     #Preview(
-        "12 SubscriptionPaywallPaymentPendingState UnconfirmedPayment",
+        "14 SubscriptionPaywallPaymentPendingState UnconfirmedPayment",
     ) {
         SubscriptionPaywallPreviewView(
             state: SubscriptionPaywallPaymentPendingState(
@@ -152,7 +175,7 @@
         )
     }
     #Preview(
-        "13 SubscriptionPaywallPaymentPendingState UnconfirmedPayment ScrollEnd",
+        "15 SubscriptionPaywallPaymentPendingState UnconfirmedPayment ScrollEnd",
     ) {
         SubscriptionPaywallPreviewView(
             state: SubscriptionPaywallPaymentPendingState(
@@ -163,7 +186,7 @@
         ).previewScrollToEnd()
     }
     #Preview(
-        "14 SubscriptionPaywallSuccessState PurchaseCompletedMessage",
+        "16 SubscriptionPaywallSuccessState PurchaseCompletedMessage",
     ) {
         SubscriptionPaywallPreviewView(
             state: ModulePreviewFactory.subscriptionPaywallContent,
@@ -174,7 +197,7 @@
         )
     }
     #Preview(
-        "15 SubscriptionPaywallSuccessState PurchaseCompletedMessage ScrollEnd",
+        "17 SubscriptionPaywallSuccessState PurchaseCompletedMessage ScrollEnd",
     ) {
         SubscriptionPaywallPreviewView(
             state: ModulePreviewFactory.subscriptionPaywallContent,
