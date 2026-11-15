@@ -124,21 +124,21 @@ struct SettingsAITests {
         switch appleTranscriber {
         case .speechAnalyzer:
             #expect(
-                model.options == [.speechAnalyzer, .whisperKit],
+                model.state.options == [.speechAnalyzer, .whisperKit],
             )
             model.onSelect(
                 .sfSpeechRecognizer,
             )
         case .sfSpeechRecognizer:
             #expect(
-                model.options == [.sfSpeechRecognizer, .whisperKit],
+                model.state.options == [.sfSpeechRecognizer, .whisperKit],
             )
             model.onSelect(
                 .speechAnalyzer,
             )
         case .none, .whisperKit:
             #expect(
-                model.options == [.whisperKit],
+                model.state.options == [.whisperKit],
             )
             model.onSelect(
                 .speechAnalyzer,
@@ -822,7 +822,7 @@ struct SettingsAITests {
                 for: .server,
             ),
         )
-        if !model.isFoundationModelsAvailable {
+        if !model.state.isFoundationModelsAvailable {
             model.onSelect(
                 .foundationModels,
             )

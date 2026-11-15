@@ -17,8 +17,8 @@ from sqlalchemy.schema import CreateSchema, DropSchema
 
 from app.core.configuration.configuration import Configuration
 from app.core.configuration.variables import Variables
-from app.database.billing_base import BillingBase
-from app.database.billing_database import BillingDatabase
+from app.database.application_base import ApplicationBase
+from app.database.application_database import ApplicationDatabase
 from app.service.billing.apple_subscription_verifier import AppleSubscriptionVerifier
 from app.service.billing.checkout_payment_service import CheckoutPaymentService
 from app.service.billing.subscription_service import SubscriptionService
@@ -33,7 +33,6 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
         *,
         is_live: bool = False,
         environment: Literal["development", "production"] = "development",
-        is_live_enabled: bool = False,
         catalog: dict[str, Any] | None = None,
     ) -> None:
         catalog_dir = directory / environment
@@ -80,14 +79,13 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
             robokassa_password1="test_password1",
             robokassa_password2="test_password2",
             robokassa_password3="test_password3",
-            is_robokassa_live_enabled=is_live_enabled,
             is_apple_sandbox_allowed=True,
         )
         database_url = os.environ.get(
             "DOGLYAD_TEST_POSTGRES_URL",
             "sqlite+aiosqlite://",
         )
-        self.database = BillingDatabase(
+        self.database = ApplicationDatabase(
             database_url,
         )
         self._schema = (
@@ -129,7 +127,6 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
         self.checkout = CheckoutPaymentService(
             self.service,
             configuration,
-            self.variables,
         )
 
     async def __aenter__(
@@ -149,7 +146,7 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
                     ),
                 )
             await connection.run_sync(
-                BillingBase.metadata.create_all,
+                ApplicationBase.metadata.create_all,
             )
         return self
 

@@ -50,7 +50,7 @@
             )
 
             model.preparePreview(
-                state: PhotoViewInitialState(),
+                state: model.state,
             )
             return PhotoViewScreenView(
                 viewModel: model,

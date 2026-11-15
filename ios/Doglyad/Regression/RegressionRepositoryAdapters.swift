@@ -88,23 +88,23 @@
                 ),
             ),
         )
-        private var delayConsumed = false
-        private var consumed = false
+        private var isDelayConsumed = false
+        private var isConsumed = false
 
         init() {}
 
         func check(
             _ name: String,
         ) async throws {
-            if !delayConsumed, name == delayedOperation {
-                delayConsumed = true
+            if !isDelayConsumed, name == delayedOperation {
+                isDelayConsumed = true
                 try await Task.sleep(
                     for: .seconds(
                         delaySeconds,
                     ),
                 )
             }
-            guard !consumed, name == operation else {
+            guard !isConsumed, name == operation else {
                 return
             }
             guard targetModule.isEmpty || Self.module == targetModule else {
@@ -114,7 +114,7 @@
                 skip -= 1
                 return
             }
-            consumed = true
+            isConsumed = true
             throw CocoaError(
                 .fileWriteUnknown,
             )

@@ -5,10 +5,10 @@ from datetime import datetime
 from sqlalchemy import DateTime, ForeignKey, Integer, LargeBinary, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.database.billing_base import BillingBase
+from app.database.application_base import ApplicationBase
 
 
-class ReportGenerationDB(BillingBase):
+class ReportGenerationDB(ApplicationBase):
     __tablename__ = "report_generations"
     __table_args__ = (
         UniqueConstraint(

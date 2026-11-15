@@ -14,15 +14,20 @@ struct SubscriptionManageAutoRenewalView: DViewProtocol {
     }
 
     var body: some View {
-        if let status, status.source == .robokassa, status.isAutoRenewing {
-            DListButtonCard(
-                title: l10n[
-                    .subscriptionManageDisableAutoRenewalButton,
-                ],
-                action: viewModel.onTapDisableAutoRenewal,
-                isDisabled: viewModel.isProcessing,
-                accessibilityIdentifier: "subscriptionManage.disableAutoRenewal",
-            )
+        switch status?.source {
+        case .robokassa:
+            if let status, status.isAutoRenewing {
+                DListButtonCard(
+                    title: l10n[
+                        .subscriptionManageDisableAutoRenewalButton,
+                    ],
+                    action: viewModel.onTapDisableAutoRenewal,
+                    isDisabled: viewModel.isProcessing,
+                    accessibilityIdentifier: "subscriptionManage.disableAutoRenewal",
+                )
+            }
+        case .apple, .none:
+            EmptyView()
         }
     }
 }

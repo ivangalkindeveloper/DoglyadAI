@@ -17,8 +17,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.configuration.configuration import Configuration
 from app.core.configuration.variables import Variables
 from app.core.localization.language_code import LanguageCode
+from app.database.application_database import ApplicationDatabase
 from app.database.billing_credential_db import BillingCredentialDB
-from app.database.billing_database import BillingDatabase
 from app.database.billing_event_db import BillingEventDB
 from app.database.billing_owner_db import BillingOwnerDB
 from app.database.billing_payment_db import BillingPaymentDB
@@ -47,7 +47,7 @@ from app.service.billing.robokassa_payment_provider import RobokassaPaymentProvi
 class SubscriptionService:
     def __init__(
         self,
-        database: BillingDatabase,
+        database: ApplicationDatabase,
         configuration: Configuration,
         variables: Variables,
         robokassa: RobokassaPaymentProvider,

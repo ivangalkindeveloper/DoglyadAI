@@ -2,9 +2,22 @@
 
 from pathlib import Path
 import json
+import re
 import subprocess
 
+
+def validate_preview_references(atlas: list[dict], source_root: Path) -> None:
+    known = {case["id"] for case in atlas}
+    for source in source_root.rglob("*.swift"):
+        for identity in re.findall(r'"(atlas-[A-Za-z0-9_-]+)"', source.read_text()):
+            if identity not in known:
+                raise ValueError(
+                    f"Native UI test {source.name} references an unknown Preview: {identity}"
+                )
+
+
 REQUIRED_TESTS = [
+    "ReportReceivedObservationTests/reportUpdatesReuseTheContentPhaseAndStopAfterLeaving()",
     "ScanSpeechObservationTests/closingCancelsPendingTranscriptionBeforeTheDisappearEvent()",
     "ScanSpeechObservationTests/dismissedPresentationIgnoresLateControllerChanges()",
     "SubscriptionRecoveryTests/restoringTrimsInputAndReturnsToManagement()",
@@ -14,43 +27,38 @@ REQUIRED_TESTS = [
     "SubscriptionFlowTests/statusReadFailureCannotReuseAnOldActiveSubscriptionAsSuccess()",
     "SubscriptionFlowTests/successfulDisablingRefreshesStatusWithScreenLoadingAndHandlesReadFailure(isFailure:)",
     "PaywallTests/confirmedPurchaseReturnsToItsOrigin(origin:)",
-
     "SubscriptionConfirmationTests/changingPlanRequiresConfirmationAndUsesProviderText(source:)",
     "SubscriptionConfirmationTests/dismissingChangeConfirmationKeepsTheCurrentScreen()",
     "SubscriptionConfirmationTests/renewalDisablingWaitsForConfirmationAndSuccessfulServerResponse()",
     "SubscriptionConfirmationTests/failedDisablingKeepsTheSheetOpenAndAllowsRetry()",
     "SubscriptionConfirmationTests/dismissedDisablingIgnoresLateSuccessAndFailure(isFailure:)",
     "SubscriptionConfirmationTests/dismissingBeforeDisablingStartsDoesNotSendARequest()",
-
     "PatientReadinessTests/readinessRespectsSpeechConfidence(isReliable:)",
     "PatientReadinessTests/readinessSurvivesReportAndDraftStorage(isPrepared:)",
     "PatientReadinessTests/voiceReadinessRequiresOneExplicitStatement(scenario:)",
     "PatientReadinessTests/generatedReadinessCannotInvertNegation()",
     "ScanDraftRestorationTests/restoredReadinessRemainsFalseUntilFormClear()",
-    'StorageConfirmationTests/speechModelDeletionRequiresConfirmationAndCancellationKeepsTheModel()',
-    'StorageConfirmationTests/speechModelConfirmationDismissesBeforeCallingBack()',
-    'PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)',
-    'PatientConsentTests/preferenceDefaultsToTrueAndSurvivesRepositoryReload()',
-    'PatientConsentTests/confirmationPersistsChoiceBeforeDismissalAndCallsBackOnce(isDoNotAskAgain:)',
-    'PatientConsentTests/failedPreferenceSaveRetainsChoiceAndAllowsRetry()',
-    'PatientConsentTests/dismissalRejectsLateConfirmation()',
-    'PatientConsentTests/sharedPreferenceUpdatesOnlyAfterSuccessfulPersistence()',
-    'PatientConsentTests/settingsCanDisableAndReenableThePersistedPrompt()',
-    'ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)',
-    'ScanPatientConsentTests/failedPreferenceReadPreservesFormAndDoesNotGenerate()',
-    'ScanPatientConsentTests/leavingScanDiscardsLatePreferenceRead()',
-
-    'LocalOperationTests/leavingBeforeLocalWriteStartsDoesNotSendIt()',
-    'ScanDraftRestorationTests/backgroundSaveWaitsForAnInteractiveLocalClear()',
-    'LocalFormOperationTests/closingTemplateEditorRejectsLateReadResults(isFailure:)',
-    'LocalFormOperationTests/settingsSaveRetainsEditsMadeDuringTheWrite()',
-    'ScanDraftRestorationTests/localClearKeepsNewEditsAndClearsUntouchedFieldsWithoutLoading()',
-
+    "StorageConfirmationTests/speechModelDeletionRequiresConfirmationAndCancellationKeepsTheModel()",
+    "StorageConfirmationTests/speechModelConfirmationDismissesBeforeCallingBack()",
+    "PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)",
+    "PatientConsentTests/preferenceDefaultsToTrueAndSurvivesRepositoryReload()",
+    "PatientConsentTests/confirmationPersistsChoiceBeforeDismissalAndCallsBackOnce(isDoNotAskAgain:)",
+    "PatientConsentTests/failedPreferenceSaveRetainsChoiceAndAllowsRetry()",
+    "PatientConsentTests/dismissalRejectsLateConfirmation()",
+    "PatientConsentTests/sharedPreferenceUpdatesOnlyAfterSuccessfulPersistence()",
+    "PatientConsentTests/settingsCanDisableAndReenableThePersistedPrompt()",
+    "ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)",
+    "ScanPatientConsentTests/failedPreferenceReadPreservesFormAndDoesNotGenerate()",
+    "ScanPatientConsentTests/leavingScanDiscardsLatePreferenceRead()",
+    "LocalOperationTests/leavingBeforeLocalWriteStartsDoesNotSendIt()",
+    "ScanDraftRestorationTests/backgroundSaveWaitsForAnInteractiveLocalClear()",
+    "LocalFormOperationTests/closingTemplateEditorRejectsLateReadResults(isFailure:)",
+    "LocalFormOperationTests/settingsSaveRetainsEditsMadeDuringTheWrite()",
+    "ScanDraftRestorationTests/localClearKeepsNewEditsAndClearsUntouchedFieldsWithoutLoading()",
     "RepositoryOperationTests/failedSelectionKeepsSheetOpenAndRetryDismissesOnlyAfterSaving()",
-    'LocalOperationTests/localWriteKeepsPresentationAndRejectsDuplicateActions()',
-    'LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)',
-    'LocalOperationTests/failureIsReportedWithoutInventingALoadingPresentation()',
-
+    "LocalOperationTests/localWriteKeepsPresentationAndRejectsDuplicateActions()",
+    "LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)",
+    "LocalOperationTests/failureIsReportedWithoutInventingALoadingPresentation()",
     "SelectUSExaminationTypeTests/dismissedSelectionIgnoresLateResults(isFailure:)",
     "ScanDraftRestorationTests/selectedTypeReadFailureKeepsTheStoredDraftIntactUntilRetry()",
     "ScanDraftRestorationTests/backgroundSaveWaitsForRestorationAndPersistsEarlyInput()",
@@ -71,12 +79,14 @@ REQUIRED_TESTS = [
     "HistoryTests/historyClearRemovesOwnedAndLegacyOrphanRecordsButKeepsTemplates()",
     "SubscriptionManageTests/catalogRetryLoadsTheSameActiveSubscription()",
     "SubscriptionManageTests/leavingDiscardsLateManagementSuccessAndFailure(isFailure:)",
+    "SubscriptionManageTests/leavingDiscardsLateCatalogSuccessAndFailure(isFailure:isDisappearance:)",
     "PaywallTests/loadingRetriesAndRestorationUpdatesSharedState(isSubscriptionActive:)",
     "PaywallTests/cancelledCatalogDiscardsLateSuccessAndFailure(isFailure:)",
     "PaywallTests/closeIgnoresALateCatalogResponse()",
     "PaywallTests/closeIgnoresSubscriptionUpdatesBeforeTheDisappearEvent()",
     "RegressionFormTests/testRecoveryIgnoresLateResponseAfterLeavingAndRetainsFailedInput()",
     "SubscriptionRecoveryTests/enteredKeyIsRetainedWhenAnOperationFails()",
+    "SubscriptionRecoveryTests/leavingDiscardsLateRecoverySuccessAndFailure(isFailure:isDisappearance:)",
     "SubscriptionManageTests/aCatalogFailureIsDistinctFromAnUnsubscribedOwner()",
     "SubscriptionManageTests/failedManagementRetainsTheCurrentSubscriptionSnapshot()",
     "SubscriptionManageTests/leavingBeforeManagementStartsDoesNotSendTheOperation()",
@@ -113,6 +123,7 @@ REQUIRED_TESTS = [
     "PhotoViewGestureTests/testSquareDoubleTapAndPinch()",
     "ScanCameraRegressionTests/testCaptureRejectsDuplicatesLateCallbacksAndLimitOverflow()",
     "ModuleStateTests/photoViewerTracksSourceChangesAndDeletesThroughArguments()",
+    "ModuleStateTests/photoViewerRejectsLatePreferenceReadAfterEditingOrLeaving(isLeaving:)",
     "ModuleStateTests/photoRemarksFollowTheNewReportWhenPhotosHaveNotChanged()",
     "ScanSpeechRegressionTests/testRecordingRejectsDuplicateActionsAndLateTranscript()",
     "ScanSpeechRegressionTests/testEmptyAndOversizedTranscriptCannotStartParsing()",
@@ -167,6 +178,10 @@ TEST_FILTERS = [
 ]
 
 ARGUMENT_COUNTS = {
+    "RobokassaPaymentTests/paymentIsCheckedOnlyAfterTheBrowserCloses(isReturned:)": 2,
+    "ModuleStateTests/photoViewerRejectsLatePreferenceReadAfterEditingOrLeaving(isLeaving:)": 2,
+    "SubscriptionManageTests/leavingDiscardsLateCatalogSuccessAndFailure(isFailure:isDisappearance:)": 4,
+    "SubscriptionRecoveryTests/leavingDiscardsLateRecoverySuccessAndFailure(isFailure:isDisappearance:)": 4,
     "SubscriptionPurchaseVerificationTests/retryingAPendingPurchaseUsesItsContextsContinuationRule(source:)": 2,
     "SubscriptionPurchaseVerificationTests/existingAccessCannotCompleteUnconfirmedRobokassaPayment(paymentState:)": 3,
     "SubscriptionPurchaseVerificationTests/paymentIdentityAndPlanMustMatchThePreparedPurchase(isWrongPlan:)": 2,
@@ -175,17 +190,16 @@ ARGUMENT_COUNTS = {
     "SubscriptionFlowTests/footerContainsBothDocumentLinksAndOpensTheMatchingSheet(code:)": 2,
     "SubscriptionFlowTests/successfulDisablingRefreshesStatusWithScreenLoadingAndHandlesReadFailure(isFailure:)": 2,
     "PaywallTests/confirmedPurchaseReturnsToItsOrigin(origin:)": 4,
-
     "SubscriptionConfirmationTests/changingPlanRequiresConfirmationAndUsesProviderText(source:)": 2,
     "SubscriptionConfirmationTests/dismissedDisablingIgnoresLateSuccessAndFailure(isFailure:)": 2,
     "PatientReadinessTests/readinessRespectsSpeechConfidence(isReliable:)": 2,
     "PatientReadinessTests/readinessSurvivesReportAndDraftStorage(isPrepared:)": 2,
     "PatientReadinessTests/voiceReadinessRequiresOneExplicitStatement(scenario:)": 15,
-    'PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)': 2,
-    'PatientConsentTests/confirmationPersistsChoiceBeforeDismissalAndCallsBackOnce(isDoNotAskAgain:)': 2,
-    'ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)': 2,
-    'LocalFormOperationTests/closingTemplateEditorRejectsLateReadResults(isFailure:)': 2,
-    'LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)': 2,
+    "PatientConsentPersistenceTests/consentSurvivesDatabaseAndRequestRoundTrips(isPatientConsent:)": 2,
+    "PatientConsentTests/confirmationPersistsChoiceBeforeDismissalAndCallsBackOnce(isDoNotAskAgain:)": 2,
+    "ScanPatientConsentTests/generationChecksPreferenceAndContinuesOnlyAfterConfirmation(isNeedPatientConsent:)": 2,
+    "LocalFormOperationTests/closingTemplateEditorRejectsLateReadResults(isFailure:)": 2,
+    "LocalOperationTests/cancelledLocalWriteIgnoresLateResultAndCannotReplaceNewOperation(isFailure:)": 2,
     "SelectUSExaminationTypeTests/dismissedSelectionIgnoresLateResults(isFailure:)": 2,
     "ContentDesignTests/photoImportPreservesAvailableImagesAndReportsOnlyFailures(isSomeImagesUnavailable:)": 2,
     "SubscriptionManageTests/leavingDiscardsLateManagementSuccessAndFailure(isFailure:)": 2,
@@ -215,7 +229,9 @@ def validate_results(summary: dict, tree: dict) -> dict:
                 if len(arguments) != ARGUMENT_COUNTS.get(
                     node["nodeIdentifier"], 0
                 ) or any(child.get("result") != "Passed" for child in arguments):
-                    raise ValueError("Required native test variants did not all pass")
+                    raise ValueError(
+                        f"Required native test variants did not all pass: {node['nodeIdentifier']}"
+                    )
                 results.append({"id": node["nodeIdentifier"], "result": node["result"]})
             walk(node.get("children", []))
 

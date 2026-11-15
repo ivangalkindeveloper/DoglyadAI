@@ -21,5 +21,8 @@ struct NewVersionScreenView: View {
         .onAppear(
             perform: viewModel.onAppear,
         )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

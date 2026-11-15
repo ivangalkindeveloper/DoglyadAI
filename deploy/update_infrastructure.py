@@ -124,7 +124,7 @@ def remote(target: dict, action: str, release: str, **values: object) -> dict:
             invocation,
         ],
         input_text=(DIRECTORY / "update_remote.py").read_text(),
-        timeout=900,
+        timeout=10800 if action == "update" else 900,
     )
     return json.loads(output)
 
@@ -199,9 +199,11 @@ def build(ref: str, timeout: int) -> tuple[str, str]:
             if (
                 status["conclusion"] != "success"
                 or status["headSha"] != sha
-                or not {"publish (main)", "publish (inference)"}.issubset(
-                    {job["name"] for job in status["jobs"]}
-                )
+                or not {
+                    "publish (main)",
+                    "publish (inference)",
+                    "publish (database)",
+                }.issubset({job["name"] for job in status["jobs"]})
                 or any(j["conclusion"] != "success" for j in status["jobs"])
             ):
                 raise RuntimeError(

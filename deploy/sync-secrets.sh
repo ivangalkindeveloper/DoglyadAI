@@ -79,36 +79,69 @@ if [ -n "${DOGLYAD_SSH_KEY:-}" ]; then
     SSH_COMMAND+=(-i "$DOGLYAD_SSH_KEY")
 fi
 
+if [ "$ROLE" = main ]; then
+    echo "==> installing the public main deployment files"
+    "${SSH_COMMAND[@]}" "$TARGET" "test ! -d '$REMOTE_DIR/.infrastructure-update-lock'" || { echo 'Inspect the existing deployment lock before synchronizing main secrets' >&2; exit 1; }
+    python3 "$REPO_ROOT/deploy/package_main.py" |
+        "${SSH_COMMAND[@]}" "$TARGET" "set -e; umask 077; mkdir -p '$REMOTE_DIR'; tar --no-same-owner --no-same-permissions -C '$REMOTE_DIR' -xzf -"
+    SELECTED_PROFILE="$("${SSH_COMMAND[@]}" "$TARGET" "cd '$REMOTE_DIR' && python3 -c 'from pathlib import Path; from shlex import split; print(next(split(line.partition(\"=\")[2])[0] for line in Path(\".env\").read_text().splitlines() if line.startswith(\"ENV_FILE=\")))'")"
+    case "$SELECTED_PROFILE" in
+    secrets/.env.development) MAIN_ENVIRONMENT=development ;;
+    secrets/.env.production) MAIN_ENVIRONMENT=production ;;
+    *) echo "Select the main VM environment before synchronizing secrets" >&2; exit 1 ;;
+    esac
+fi
+
 echo "==> $ROLE: $LOCAL_SECRETS  ->  $TARGET:$REMOTE_DIR/secrets"
-ls -A "$LOCAL_SECRETS" | sed 's/^/      /'
+for secret_file in "$LOCAL_SECRETS"/.[!.]* "$LOCAL_SECRETS"/*; do
+    [[ -e "$secret_file" ]] && printf '      %s\n' "${secret_file##*/}"
+done
 
 # tar over ssh rather than `scp -r`: scp switched to the SFTP protocol in OpenSSH 9
 # and now nests the directory when the target already exists, so repeat runs would
 # quietly produce /opt/doglyad/secrets/secrets. tar also carries dotfiles, which is
 # most of what is being copied here.
-tar -C "$(dirname "$LOCAL_SECRETS")" -czf - "$(basename "$LOCAL_SECRETS")" |
+package_secrets() {
+    if [ "$ROLE" = main ]; then
+        python3 "$REPO_ROOT/deploy/package_main_secrets.py" "$LOCAL_SECRETS" "$MAIN_ENVIRONMENT"
+    else
+        tar -C "$(dirname "$LOCAL_SECRETS")" --exclude=secrets/.env.running -czf - "$(basename "$LOCAL_SECRETS")"
+    fi
+}
+package_secrets |
     "${SSH_COMMAND[@]}" "$TARGET" "
         set -e
         umask 077
         mkdir -p '$REMOTE_DIR/secrets'
         chmod 700 '$REMOTE_DIR/secrets'
+        if [ '$ROLE' = main ]; then mkdir -p '$REMOTE_DIR/backup-source'; chmod 700 '$REMOTE_DIR/backup-source'; fi
         tar --no-same-permissions -C '$REMOTE_DIR' -xzf -
         chmod -R go-rwx '$REMOTE_DIR/secrets'
     "
 
 echo "==> applying on the VM"
+COMPOSE="docker compose"
+if [ "$ROLE" = main ]; then
+    COMPOSE="bash main-compose.sh"
+    "${SSH_COMMAND[@]}" "$TARGET" "cd '$REMOTE_DIR' && python3 configure_main.py --check-config"
+fi
 # The application runs as UID/GID 10001. A short-lived root helper adjusts the
 # mounted directories; the backend itself never starts with root privileges.
+if [ "$ROLE" = inference ]; then
 "${SSH_COMMAND[@]}" "$TARGET" "
     set -e
     cd '$REMOTE_DIR'
     mkdir -p logs
-    docker compose run --rm --no-deps --user 0:0 \\
+    $COMPOSE run --rm --no-deps --user 0:0 \\
         --volume '$REMOTE_DIR/secrets:/storage/secrets:rw' \\
         --volume '$REMOTE_DIR/logs:/storage/logs:rw' \\
         --entrypoint python '$SERVICE' -
 " < "$REPO_ROOT/deploy/prepare_backend_storage.py"
+fi
 
+if [ "$ROLE" = main ]; then
+    "${SSH_COMMAND[@]}" "$TARGET" "cd '$REMOTE_DIR' && if [ \"\$(id -u)\" -eq 0 ]; then python3 configure_main.py; else sudo -n python3 configure_main.py; fi"
+else
 "${SSH_COMMAND[@]}" "$TARGET" "
     set -e
     cd '$REMOTE_DIR'
@@ -123,15 +156,21 @@ echo "==> applying on the VM"
 
     docker compose ps
 "
+fi
 
 if [ "$HAS_PUBLIC_ENDPOINT" = yes ]; then
     echo "==> checking"
-    HOST="${TARGET#*@}"
-    printf '      GET /v1/application_config without a token -> '
-    curl -s -o /dev/null -w '%{http_code}\n' --max-time 20 "https://$HOST/v1/application_config" || echo "unreachable"
-    printf '      POST /v1 without a token -> '
-    curl -s -o /dev/null -w '%{http_code}\n' --max-time 20 \
-        -X POST "https://$HOST/v1/ultrasound/report_generations" -d '{}' || echo "unreachable"
+    HOST="$("${SSH_COMMAND[@]}" "$TARGET" "cd '$REMOTE_DIR' && python3 -c 'from pathlib import Path; from shlex import split; print(next(split(line.partition(\"=\")[2])[0] for line in Path(\".env\").read_text().splitlines() if line.startswith(\"DOMAIN=\")))'")"
+    for _ in {1..12}; do
+        CONFIG_STATUS="$(curl --silent --output /dev/null --write-out '%{http_code}' --connect-timeout 5 --max-time 10 "https://$HOST/v1/application_config" || true)"
+        REPORT_STATUS="$(curl --silent --output /dev/null --write-out '%{http_code}' --connect-timeout 5 --max-time 10 -X POST "https://$HOST/v1/ultrasound/report_generations" -d '{}' || true)"
+        if [[ "$CONFIG_STATUS" == 401 && "$REPORT_STATUS" == 401 ]]; then
+            break
+        fi
+        sleep 2
+    done
+    printf '      Protected configuration/report routes -> %s/%s\n' "$CONFIG_STATUS" "$REPORT_STATUS"
+    [[ "$CONFIG_STATUS" == 401 && "$REPORT_STATUS" == 401 ]] || { echo 'Main HTTPS verification failed' >&2; exit 1; }
     echo "      (401 responses mean the chain is healthy and App Check is enforced)"
 else
     echo "==> $ROLE has no public endpoint; check the logs:"

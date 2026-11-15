@@ -5,16 +5,16 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
-    let transcriptFocus: FocusState<Bool?>.Binding
+    let isTranscriptFocused: FocusState<Bool?>.Binding
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
 
     init(
-        transcriptFocus: FocusState<Bool?>.Binding,
+        isTranscriptFocused: FocusState<Bool?>.Binding,
         toolbarHeight: CGFloat,
         bottomHeight: CGFloat,
     ) {
-        self.transcriptFocus = transcriptFocus
+        self.isTranscriptFocused = isTranscriptFocused
         self.toolbarHeight = toolbarHeight
         self.bottomHeight = bottomHeight
     }
@@ -44,7 +44,7 @@ struct ScanSpeechReviewTranscriptView: DViewProtocol {
                 inputTextController: viewModel.transcriptTextController,
                 focus: DTextFieldFocus(
                     value: true,
-                    state: transcriptFocus,
+                    state: isTranscriptFocused,
                 ),
                 title: l10n[
                     .scanSpeechReviewFieldTitle,

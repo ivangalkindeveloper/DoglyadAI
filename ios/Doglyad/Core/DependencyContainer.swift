@@ -102,9 +102,16 @@ final class DependencyContainer: ObservableObject {
         self.initialRoute = initialRoute
         self.version = version
     }
-}
 
-extension DependencyContainer {
+    #if DEBUG
+        @MainActor
+        static var previewable: DependencyContainer {
+            makePreviewable(
+                l10n: L10NPreviewFactory.make(),
+            )
+        }
+    #endif
+
     func getUSExaminationTypeById(
         id: String,
     ) -> USExaminationType? {
@@ -120,29 +127,16 @@ extension DependencyContainer {
             id,
         ]
     }
-}
 
-extension DependencyContainer {
-    @MainActor
-    static var previewable: DependencyContainer {
-        #if DEBUG
-            makePreviewable(
-                l10n: L10NPreviewFactory.make(),
-            )
-        #else
-            makePreviewable()
-        #endif
-    }
-
-    @MainActor
-    static func makePreviewable(
-        l10n: L10N? = nil,
-        subscriptionRepositoryFactory: SubscriptionRepositoryFactoryProtocol? = nil,
-        usExaminationTypesById: [String: USExaminationType]? = nil,
-        usExaminationTypeGroups: [USExaminationTypeGroup]? = nil,
-        usExaminationNeuralModels: [USExaminationNeuralModel]? = nil,
-    ) -> DependencyContainer {
-        #if DEBUG
+    #if DEBUG
+        @MainActor
+        static func makePreviewable(
+            l10n: L10N? = nil,
+            subscriptionRepositoryFactory: SubscriptionRepositoryFactoryProtocol? = nil,
+            usExaminationTypesById: [String: USExaminationType]? = nil,
+            usExaminationTypeGroups: [USExaminationTypeGroup]? = nil,
+            usExaminationNeuralModels: [USExaminationNeuralModel]? = nil,
+        ) -> DependencyContainer {
             let fixtures = DevelopmentPreviewFactory.make(
                 code: l10n?.locale.language.languageCode?.identifier ?? "ru",
             )
@@ -152,128 +146,122 @@ extension DependencyContainer {
             ))
             let usExaminationTypeGroups = usExaminationTypeGroups ?? fixtures.examinationTypes
             let usExaminationNeuralModels = usExaminationNeuralModels ?? fixtures.neuralModels
-        #else
-            let applicationConfig = ApplicationConfig.default
-            let l10n = l10n ?? L10N.previewable(
-                code: "ru",
-            )
-            let usExaminationTypeGroups = usExaminationTypeGroups ?? []
-            let usExaminationNeuralModels = usExaminationNeuralModels ?? []
-        #endif
-        let usExaminationTypesById = usExaminationTypesById ?? Dictionary(
-            uniqueKeysWithValues: usExaminationTypeGroups.flatMap(
-                \.examinationTypes,
-            ).map {
-                ($0.id, $0)
-            },
-        )
-        let environment = EnvironmentBase(
-            type: .development,
-            baseUrl: URL(
-                filePath: "",
-            )!,
-        )
-        let database = try! DDatabase()
-        let httpClient = DHttpClient(
-            baseUrl: environment.baseUrl.absoluteString,
-            baseVersionPrefix: environment.baseVersionPrefix,
-        )
-        let sharedRepository = SharedRepository(
-            database: database,
-        )
-        let userSettingsRepository = UserSettingsRepository(
-            database: database,
-            httpClient: httpClient,
-        )
-        let settingsAIRepository = SettingsAIRepository(
-            database: database,
-        )
-        let ultrasoundReportRepository = UltrasoundReportRepository(
-            database: database,
-            httpClient: httpClient,
-        )
-        let ultrasoundDraftRepository = UltrasoundDraftRepository(
-            database: database,
-        )
-        let templateRepository = TemplateRepository(
-            database: database,
-            httpClient: httpClient,
-        )
-        let subscriptionBackendRepository = SubscriptionBackendRepository(
-            httpClient: httpClient,
-            securityDatabase: DSecurityDatabase(),
-        )
-        let subscriptionStoreKitRepository = SubscriptionStoreKitRepository(
-            backend: subscriptionBackendRepository,
-        )
-        let subscriptionRepositoryFactory = subscriptionRepositoryFactory ?? SubscriptionRepositoryFactory(
-            backend: subscriptionBackendRepository,
-            getStorefrontCountryCode: {
-                nil
-            },
-        )
-        let language = Language(
-            localeConfig: applicationConfig.locale,
-            preferredLanguageIdentifiers: [l10n.locale.identifier],
-        )
 
-        return DependencyContainer(
-            analytics: AnalyticsManager(
-                isEnabled: false,
-            ),
-            environment: environment,
-            connectionManager: ConnectionManager(),
-            permissionManager: PermissionManager(),
-            mockFactory: DefaultMockFactory(),
-            sharedRepository: sharedRepository,
-            userSettingsRepository: userSettingsRepository,
-            settingsAIRepository: settingsAIRepository,
-            ultrasoundReportRepository: ultrasoundReportRepository,
-            ultrasoundDraftRepository: ultrasoundDraftRepository,
-            templateRepository: templateRepository,
-            subscriptionBackendRepository: subscriptionBackendRepository,
-            subscriptionStoreKitRepository: subscriptionStoreKitRepository,
-            subscriptionRepositoryFactory: subscriptionRepositoryFactory,
-            applicationConfig: applicationConfig,
-            language: language,
-            l10n: l10n,
-            examinationNeuralModelFactory: DNeuralUltrasoundModelFactory(
-                locale: language.currentLocale,
-                proposalPrompt: applicationConfig.ultrasound.examinationNeuralModel.proposalPrompt,
-                parameters: DNeuralGenerationParameters(
-                    temperature: applicationConfig.ultrasound.examinationNeuralModel.temperature,
-                    maxTokens: applicationConfig.ultrasound.examinationNeuralModel.maxTokens,
-                    maxContextTokens: applicationConfig.ultrasound.examinationNeuralModel.maxContextTokens,
-                ),
-                parseDictation: ultrasoundReportRepository.parseDictation,
-            ),
-            usExaminationTypeGroups: usExaminationTypeGroups,
-            usExaminationTypesById: usExaminationTypesById,
-            usExaminationTypeDefault: usExaminationTypeGroups.first?.examinationTypes.first ?? .init(
-                id: "",
-                title: "",
-                contextualStrings: [],
-            ),
-            usExaminationNeuralModels: usExaminationNeuralModels,
-            usExaminationNeuralModelsById: Dictionary(
-                uniqueKeysWithValues: usExaminationNeuralModels.map {
+            let usExaminationTypesById = usExaminationTypesById ?? Dictionary(
+                uniqueKeysWithValues: usExaminationTypeGroups.flatMap(
+                    \.examinationTypes,
+                ).map {
                     ($0.id, $0)
                 },
-            ),
-            usExaminationNeuralModelDefault: usExaminationNeuralModels.first ?? .init(
-                id: "",
-                title: "",
-                format: "BF16",
-                entitlement: .base,
-                accessibility: .available,
-                contextLength: 0,
-                description: "",
-            ),
-            initialSubscriptionStatus: nil,
-            initialRoute: RouteScreen(
-                type: .onBoarding,
-            ),
-            version: "1.0.0",
-        )
-    }
+            )
+            let environment = EnvironmentBase(
+                type: .development,
+                baseUrl: URL(
+                    filePath: "",
+                )!,
+            )
+            let database = try! DDatabase()
+            let httpClient = DHttpClient(
+                baseUrl: environment.baseUrl.absoluteString,
+                baseVersionPrefix: environment.baseVersionPrefix,
+            )
+            let sharedRepository = SharedRepository(
+                database: database,
+            )
+            let userSettingsRepository = UserSettingsRepository(
+                database: database,
+                httpClient: httpClient,
+            )
+            let settingsAIRepository = SettingsAIRepository(
+                database: database,
+            )
+            let ultrasoundReportRepository = UltrasoundReportRepository(
+                database: database,
+                httpClient: httpClient,
+            )
+            let ultrasoundDraftRepository = UltrasoundDraftRepository(
+                database: database,
+            )
+            let templateRepository = TemplateRepository(
+                database: database,
+                httpClient: httpClient,
+            )
+            let subscriptionBackendRepository = SubscriptionBackendRepository(
+                httpClient: httpClient,
+                securityDatabase: DSecurityDatabase(),
+            )
+            let subscriptionStoreKitRepository = SubscriptionStoreKitRepository(
+                backend: subscriptionBackendRepository,
+            )
+            let subscriptionRepositoryFactory = subscriptionRepositoryFactory ?? SubscriptionRepositoryFactory(
+                backend: subscriptionBackendRepository,
+                getStorefrontCountryCode: {
+                    nil
+                },
+            )
+            let language = Language(
+                localeConfig: applicationConfig.locale,
+                preferredLanguageIdentifiers: [l10n.locale.identifier],
+            )
+
+            return DependencyContainer(
+                analytics: AnalyticsManager(
+                    isEnabled: false,
+                ),
+                environment: environment,
+                connectionManager: ConnectionManager(),
+                permissionManager: PermissionManager(),
+                mockFactory: DefaultMockFactory(),
+                sharedRepository: sharedRepository,
+                userSettingsRepository: userSettingsRepository,
+                settingsAIRepository: settingsAIRepository,
+                ultrasoundReportRepository: ultrasoundReportRepository,
+                ultrasoundDraftRepository: ultrasoundDraftRepository,
+                templateRepository: templateRepository,
+                subscriptionBackendRepository: subscriptionBackendRepository,
+                subscriptionStoreKitRepository: subscriptionStoreKitRepository,
+                subscriptionRepositoryFactory: subscriptionRepositoryFactory,
+                applicationConfig: applicationConfig,
+                language: language,
+                l10n: l10n,
+                examinationNeuralModelFactory: DNeuralUltrasoundModelFactory(
+                    locale: language.currentLocale,
+                    proposalPrompt: applicationConfig.ultrasound.examinationNeuralModel.proposalPrompt,
+                    parameters: DNeuralGenerationParameters(
+                        temperature: applicationConfig.ultrasound.examinationNeuralModel.temperature,
+                        maxTokens: applicationConfig.ultrasound.examinationNeuralModel.maxTokens,
+                        maxContextTokens: applicationConfig.ultrasound.examinationNeuralModel.maxContextTokens,
+                    ),
+                    parseDictation: ultrasoundReportRepository.parseDictation,
+                ),
+                usExaminationTypeGroups: usExaminationTypeGroups,
+                usExaminationTypesById: usExaminationTypesById,
+                usExaminationTypeDefault: usExaminationTypeGroups.first?.examinationTypes.first ?? .init(
+                    id: "",
+                    title: "",
+                    contextualStrings: [],
+                ),
+                usExaminationNeuralModels: usExaminationNeuralModels,
+                usExaminationNeuralModelsById: Dictionary(
+                    uniqueKeysWithValues: usExaminationNeuralModels.map {
+                        ($0.id, $0)
+                    },
+                ),
+                usExaminationNeuralModelDefault: usExaminationNeuralModels.first ?? .init(
+                    id: "",
+                    title: "",
+                    format: "BF16",
+                    entitlement: .base,
+                    accessibility: .available,
+                    contextLength: 0,
+                    description: "",
+                ),
+                initialSubscriptionStatus: nil,
+                initialRoute: RouteScreen(
+                    type: .onBoarding,
+                ),
+                version: "1.0.0",
+            )
+        }
+    #endif
 }

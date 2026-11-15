@@ -65,6 +65,35 @@ class BackendEvidenceTests(unittest.TestCase):
                 "doglyad-regression-unit",
             )
 
+    def test_examination_assertions_check_each_named_field_in_the_full_request(self):
+        self.event["request"]["examinationData"] = {
+            "patientName": "Regression Patient",
+            "usExaminationTypeId": "thyroidGland",
+            "isPatientPreparedForExamination": True,
+        }
+        expected = {"examinationData": {"isPatientPreparedForExamination": True}}
+        with patch(
+            "backend_evidence.subprocess.check_output",
+            return_value=json.dumps(self.job),
+        ):
+            self.assertEqual(
+                verify_requests([self.event], expected, "doglyad-regression-unit")[
+                    "status"
+                ],
+                "passed",
+            )
+            for actual in (False, None):
+                with (
+                    self.subTest(actual=actual),
+                    self.assertRaisesRegex(ValueError, "examinationData"),
+                ):
+                    fields = self.event["request"]["examinationData"]
+                    if actual is None:
+                        del fields["isPatientPreparedForExamination"]
+                    else:
+                        fields["isPatientPreparedForExamination"] = actual
+                    verify_requests([self.event], expected, "doglyad-regression-unit")
+
     def test_restricted_email_cannot_reach_the_delivery_endpoint(self):
         expected = dict(absent=True, emailAbsent=True)
         self.assertEqual(

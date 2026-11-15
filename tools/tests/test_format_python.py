@@ -232,6 +232,22 @@ class PythonFormattingTests(unittest.TestCase):
             result,
         )
 
+    def test_adjacent_model_fields_preserve_comments_and_framework_metadata(self) -> None:
+        source = (
+            "class Example:\n"
+            "    model_config = {}\n\n"
+            "    # First field.\n"
+            "    first: int = 1\n\n"
+            "    # Second field.\n"
+            "    second: str = 'text'\n"
+        )
+        result = self.format(source)
+        self.assertIn("model_config = {}\n\n    # First field.", result)
+        self.assertIn("first: int = 1\n    # Second field.", result)
+        self.assertEqual(result.count("# First field."), 1)
+        self.assertEqual(result.count("# Second field."), 1)
+        self.assertEqual(self.format(result), result)
+
     def test_pipeline_is_idempotent(
         self,
     ) -> None:

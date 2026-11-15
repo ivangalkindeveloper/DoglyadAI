@@ -1,0 +1,6 @@
+# Copy on the isolated restore host to database-secrets/restore-monitor.env, mode 600.
+DATABASE_RESTORE_CONFIG_PATH=/opt/doglyad/database-secrets/pgbackrest-readonly.conf
+DATABASE_RESTORE_DISK_CONFIG_PATH=/opt/doglyad/database-secrets/yandex-disk-readonly.conf
+# Copy DATABASE_IMAGE from the source VM's machine .env.
+DATABASE_RESTORE_IMAGE=ghcr.io/ivangalkindeveloper/doglyad-database@sha256:REPLACE_WITH_SOURCE_IMAGE_DIGEST
+DATABASE_RESTORE_SUCCESS_URL=https://REPLACE_WITH_MONTHLY_HEARTBEAT_URL

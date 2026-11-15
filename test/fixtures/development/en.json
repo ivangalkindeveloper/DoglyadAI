@@ -17,7 +17,7 @@
     },
     "contactEmail": "support@doglyad.ru",
     "appleUpdateUrl": "https://apps.apple.com/app/id",
-    "legalDate": "2026-08-01T00:00:00Z",
+    "legalDate": "2026-11-15T00:00:00Z",
     "privacyPolicyUrl": "https://ivangalkindeveloper.github.io/DoglyadAI/legal/privacy-policy",
     "termsAndConditionsUrl": "https://ivangalkindeveloper.github.io/DoglyadAI/legal/terms-and-conditions",
     "network": {
@@ -2506,7 +2506,7 @@
       "id": "ZJU-AI4H/Hulu-Med-7B",
       "title": "Hulu-Med 7B",
       "format": "BF16",
-      "entitlement": "pro",
+      "entitlement": "base",
       "accessibility": "available",
       "contextLength": 32768,
       "description": "A medical multimodal model in the Hulu-Med family for working with images and clinical text. Trained on medical data, including ultrasound. The 7B version helps prepare a draft report from examination materials and uses less memory than Hulu-Med 32B."

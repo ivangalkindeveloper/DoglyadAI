@@ -18,7 +18,9 @@ cases:
   - action: Вернуть приложение из фона после изменения доступности
     expect: Список обновляется без повторяющихся пунктов.
   covers:
+  - onDisappear
   - onInit
+  - onReappear
   - onSelect
   automation:
     kind: mixed

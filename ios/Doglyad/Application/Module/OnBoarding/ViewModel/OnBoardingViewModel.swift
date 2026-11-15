@@ -48,9 +48,9 @@ final class OnBoardingViewModel: DModuleViewModel<any OnBoardingStateProtocol> {
             ),
         )
         switch state {
-        case _ as OnBoardingLegalState:
+        case let state as OnBoardingLegalState:
             emit(
-                OnBoardingLegalState(
+                state.copyWith(
                     isLegalAccepted: isAccepted,
                 ),
             )
@@ -201,9 +201,7 @@ final class OnBoardingViewModel: DModuleViewModel<any OnBoardingStateProtocol> {
             )
         }
     }
-}
 
-extension OnBoardingViewModel {
     enum AttributedLinks: String {
         case privacy, terms
     }
@@ -257,10 +255,8 @@ extension OnBoardingViewModel {
             )
         }
     }
-}
 
-private extension OnBoardingViewModel {
-    func completeOnBoarding() {
+    fileprivate func completeOnBoarding() {
         let loading = OnBoardingLoadingState()
         emit(
             loading,
@@ -293,7 +289,7 @@ private extension OnBoardingViewModel {
         }
     }
 
-    func localizedResource(
+    fileprivate func localizedResource(
         _ resource: LocalizedStringResource,
         locale: Locale,
     ) -> String {

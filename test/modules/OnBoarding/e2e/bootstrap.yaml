@@ -75,7 +75,7 @@ tags:
 - tapOn:
     id: examinationType.thyroidGland
 - assertVisible:
-    text: ^Начинайте\ генерировать!$
+    text: ^Начните\ генерировать\ протоколы!$
 - tapOn:
     text: ^Давайте\ начнем!$
 - extendedWaitUntil:

@@ -35,5 +35,8 @@ struct TemplateDeleteBottomSheetView: DViewProtocol {
         .onAppear(
             perform: viewModel.onAppear,
         )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

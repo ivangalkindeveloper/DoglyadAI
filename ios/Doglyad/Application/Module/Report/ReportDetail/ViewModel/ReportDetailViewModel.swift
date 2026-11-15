@@ -157,12 +157,13 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
                 getPhotoRemarks: { [weak self] in
                     self?.report.actualModelReport.photoRemarks ?? []
                 },
-                observePhotos: { [weak self] observer in
-                    self?.$report.map(
-                        \.examinationData.photos,
-                    ).sink(
-                        receiveValue: observer,
-                    ) ?? AnyCancellable {}
+                observePhotoChanges: { [weak self] observer in
+                    self?.$report.sink { report in
+                        observer(
+                            report.examinationData.photos,
+                            report.actualModelReport.photoRemarks,
+                        )
+                    } ?? AnyCancellable {}
                 },
                 initialPhotoID: photo.id,
                 subTitle: subTitle,
@@ -212,7 +213,8 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         default: break
         }
 
-        if report.actualModelReport.generation.status == .generating {
+        switch report.actualModelReport.generation.status {
+        case .generating:
             coordinator.sheet(
                 .reportReceived,
                 arguments: ReportReceivedArguments(
@@ -221,6 +223,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
                 ),
             )
             return
+        case .completed, .interrupted, .failed, .cancelled: break
         }
 
         analytics.buttonTapped(
@@ -281,7 +284,8 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
         case _ as ReportDetailGenerationLoadingState: return
         default: break
         }
-        if report.actualModelReport.generation.status == .generating {
+        switch report.actualModelReport.generation.status {
+        case .generating:
             coordinator.sheet(
                 .reportReceived,
                 arguments: ReportReceivedArguments(
@@ -290,6 +294,7 @@ final class ReportDetailViewModel: DModuleViewModel<any ReportDetailStateProtoco
                 ),
             )
             return
+        case .completed, .interrupted, .failed, .cancelled: break
         }
         let original = report
         emit(

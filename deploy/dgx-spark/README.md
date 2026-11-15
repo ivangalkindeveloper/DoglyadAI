@@ -47,7 +47,8 @@ sudo bash prepare-host.sh YOUR_LOGIN_USER
 
 Для SSH используйте вывод `whoami` и локальный адрес из `hostname -I`.
 Проверьте `systemctl is-active ssh`. На Mac настройте SSH-ключ и, при желании,
-alias `doglyad-spark`. Пароли и приватные ключи не отправляйте в чат или Git.
+alias `doglyad-inference`. SSH-алиас обозначает назначение сервера и сейчас
+указывает на DGX. Пароли и приватные ключи не отправляйте в чат или Git.
 
 ## Файлы и образы
 
@@ -193,7 +194,7 @@ bash start.sh --restart
 ```bash
 ssh -N -o ExitOnForwardFailure=yes -o ServerAliveInterval=30 \
   -o ServerAliveCountMax=3 \
-  -L 127.0.0.1:18100:DGX_TAILSCALE_IP:8100 doglyad-spark
+  -L 127.0.0.1:18100:DGX_TAILSCALE_IP:8100 doglyad-inference
 ```
 
 Без alias укажите `USER@DGX_LAN_IP`, `-i PATH_TO_EXISTING_KEY` и

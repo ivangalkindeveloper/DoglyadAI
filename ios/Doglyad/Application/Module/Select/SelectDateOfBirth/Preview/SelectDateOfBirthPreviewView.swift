@@ -39,7 +39,9 @@
             )
 
             model.preparePreview(
-                state: state,
+                state: state.copyWith(
+                    date: model.state.date,
+                ),
             )
             return ModuleBottomSheetPreviewView {
                 SelectDateOfBirthBottomSheetView(

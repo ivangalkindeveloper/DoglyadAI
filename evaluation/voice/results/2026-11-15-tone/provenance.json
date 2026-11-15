@@ -1,0 +1,174 @@
+{
+  "runId": "2026-11-15-tone",
+  "hardware": {
+    "processor": "Apple M2 Pro",
+    "memoryBytes": 17179869184
+  },
+  "scope": "Russian ASR only; no extraction, prompts, hotwords or transcript correction",
+  "sourceManifest": "evaluation/voice/results/2026-10-25-asr-extraction/corpus-final.json",
+  "selection": "case['locale'] == 'ru'; all original case contents retained",
+  "cases": 758,
+  "sourceManifestSha256": "2c02f372ab58450718de738d53b41eae15a87bd17dc482dd22fda1ce04402125",
+  "historicalBaseline": "evaluation/voice/results/2026-10-25-asr-extraction/baseline.json",
+  "historicalBaselineSha256": "ed9d37fdef974d4b165523677f1a83b5f23953c236ffcc02cb90f469958b73c0",
+  "historicalMeasurementDates": [
+    "2026-10-24",
+    "2026-10-25"
+  ],
+  "nativeASR": {
+    "device": "physical iPhone 17",
+    "os": "iOS 27.0.1",
+    "whisperKitModel": "production Turbo, 626 MB",
+    "isSingleBuildSpeedComparison": false,
+    "whisperKitPrimaryBuilds": {
+      "Debug": 168,
+      "Release-Development": 1226
+    }
+  },
+  "serverASR": [
+    {
+      "model": "gigaam",
+      "modelId": "ai-sage/GigaAM-v3",
+      "manifestSha256": "947f321630a7dd03a13df4f7172ffc75f6f6707180276fb6cccaefad09637152",
+      "sourceSha256": "a9dca1e300c2a6026e2f9e4c8aedc52b60de6c7d67c9d61970a9580f6c65d520",
+      "device": "cpu",
+      "threads": 4,
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "packages": {
+        "torch": "2.8.0",
+        "transformers": "4.57.1",
+        "numpy": "2.3.5",
+        "soundfile": "0.13.1"
+      },
+      "revision": "7655ad717f8122257385bb4b2f373db3697e8680",
+      "startedAt": "2026-10-24T16:08:58.655205+00:00"
+    },
+    {
+      "model": "nemotron",
+      "modelId": "nvidia/nemotron-3.5-asr-streaming-0.6b",
+      "manifestSha256": "947f321630a7dd03a13df4f7172ffc75f6f6707180276fb6cccaefad09637152",
+      "sourceSha256": "a9dca1e300c2a6026e2f9e4c8aedc52b60de6c7d67c9d61970a9580f6c65d520",
+      "device": "cpu",
+      "threads": 4,
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "packages": {
+        "torch": "2.10.0",
+        "transformers": "5.20.2",
+        "numpy": "2.4.6",
+        "soundfile": "0.13.1"
+      },
+      "revision": "ea30d66debe3740a08b573244286791d423d6b3e",
+      "startedAt": "2026-10-24T15:50:45.527019+00:00"
+    },
+    {
+      "model": "canary",
+      "modelId": "nvidia/canary-1b-v2",
+      "manifestSha256": "947f321630a7dd03a13df4f7172ffc75f6f6707180276fb6cccaefad09637152",
+      "sourceSha256": "a9dca1e300c2a6026e2f9e4c8aedc52b60de6c7d67c9d61970a9580f6c65d520",
+      "device": "mps",
+      "threads": 4,
+      "platform": "macOS-27.0.1-arm64-arm-64bit",
+      "packages": {
+        "torch": "2.10.0",
+        "transformers": "5.20.2",
+        "numpy": "2.4.6",
+        "soundfile": "0.13.1"
+      },
+      "revision": "d455706339a6b32e1aa40f82c713a482a0c938e2",
+      "startedAt": "2026-10-24T16:08:56.639358+00:00"
+    }
+  ],
+  "historicalRawInputs": [
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/whisperKit/results.jsonl",
+      "sha256": "f47d66d939b1baef6731ce0e28213dec1565f283ff09e0f6a8510b528d0b365d",
+      "bytes": 7061705
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/sfSpeechRecognizer/results.jsonl",
+      "sha256": "5fee48db71b7dd8e028c18750a50360483ea6f2739f9373e05d7bf199c88f254",
+      "bytes": 5181470
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/speechAnalyzer/results.jsonl",
+      "sha256": "8eef2c00ce9c1fa5f13635e2e770d3f2133c66fac9dc354f74505c068aa470dc",
+      "bytes": 7407596
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/gigaam.jsonl",
+      "sha256": "df22faac2c70022b104d908e45b8af719697cfbd57104e1146bc73793cf99b83",
+      "bytes": 1190616
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/nemotron.jsonl",
+      "sha256": "8ea5b701c9e4a26b3b0d242daadfb8582cb0283549c9118dab001d3e42890a37",
+      "bytes": 1306191
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/canary.jsonl",
+      "sha256": "ab28e34bcda0099ae6dd8e982bcbeb6c6072f72d74c11d099c3c31e3abad5bae",
+      "bytes": 1233246
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/whisperKit/results.jsonl",
+      "sha256": "291f0839995ba88d5ea9fa27fa8f7ff1ba13225743ad6c54d6f09a9fc983a2ff",
+      "bytes": 700921
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/sfSpeechRecognizer/results.jsonl",
+      "sha256": "8cefec530589c8212dbbee0c93a878bee5d1f40bf286118992784e6055e7c224",
+      "bytes": 459139
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/speechAnalyzer/results.jsonl",
+      "sha256": "7ea3381465b8d3c4888102e887117d7a71f813ae25cbd41f1212d413b1341e63",
+      "bytes": 863832
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/gigaam.jsonl",
+      "sha256": "844f90ed6db91d41f6005e758257427a83309b7caed4ca28d42f98f192c8f59b",
+      "bytes": 123446
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/nemotron.jsonl",
+      "sha256": "47d69282b77f44a3c5d6e77103536cd1f156a303132225e00f1dbd280f99a099",
+      "bytes": 150048
+    },
+    {
+      "path": "build/voice-eval/asr-matrix-2026-10-24/asr/natural/canary.jsonl",
+      "sha256": "bd89ae70412b0ac2a32454d7e469b0099270c841f2feef9260eedcadc0a72c67",
+      "bytes": 129576
+    }
+  ],
+  "historicalRussianSliceHashes": {
+    "whisperKit": "dcc9c0d79d5e0f0b901c53a3a138ae612195006b331c9908372bf591fe3e26de",
+    "speechAnalyzer": "b844a48c886ad302f0cfefe944a3fa03e32b8ea78d15c502b75cb7b759750702",
+    "sfSpeechRecognizer": "79d0db14e135b888b0655fc20b10499495c9f4882d4abde0dfd7cb201c85b203",
+    "gigaam": "9b774e8b2042991cb654877c920100c5b0c4c17200a827dedf9e79c3dd68f0c9",
+    "canary": "8adca6f538a2dc76f0a1f64fa06f6ec7c44fd3633f088c93ff10cd42390fd15d",
+    "nemotron": "1b96375c4ecf90bff23c5f0a446078d21ef95c7193cf8d4e0f02dafba703d906"
+  },
+  "historicalVerification": "baseline-verification.json; all 72 Russian groups reproduce 10 stored WER/count metrics exactly",
+  "checks": {
+    "focusedTestsPassed": 48,
+    "evaluationSuitePassed": 242,
+    "evaluationSuiteFailed": 1,
+    "existingFailure": "test_guided_pack_follows_the_labels_and_order_shown_in_the_recording_sheet: expected label list omits current patient preparation field",
+    "ruff": "passed",
+    "architectureFilesChecked": 1423
+  },
+  "limitations": [
+    "Synthetic audio, intended text rather than human-verified audible reference",
+    "Historical recognizers were not rerun; exact recordings and same scorer used",
+    "ASR WER does not measure field extraction or clinical correctness",
+    "Timing on this Mac cannot be compared directly with historical iPhone/server timings"
+  ],
+  "sources": {
+    "evaluation/voice/runners/tone_asr_benchmark.py": "ffb7fd04c0939c118c7fa7ec5600ab0be32dac3438d5a49a9d254ef4c3246cba",
+    "evaluation/voice/scoring/score_asr_matrix.py": "d6fcc94558c6c5e4d5bb60c1d77ee0a0e52c20efa417a68da4e17ddb1fa74dcb",
+    "evaluation/voice/scoring/normalize_asr_text.py": "35eb613cbe96b8bbdcc48b1b2820ab8c474e847de95c44679a278affe5aedf2b",
+    "evaluation/voice/scoring/normalize_evaluation_text.py": "b3f7abca4e7d667af4240d54ab2869ef31ef9159a563122890effb150cc92635",
+    "evaluation/voice/scoring/word_error_counts.py": "d64057cd6e136f44884ec087d5645933dbf0a80c91a701d85406ab4ceb9f82d1",
+    "evaluation/voice/scoring/spoken_wer.py": "0ca9f1ab600cb605f99ae2e2ad59d35adfea40da99620be3da5ddf174e7d4df2"
+  }
+}

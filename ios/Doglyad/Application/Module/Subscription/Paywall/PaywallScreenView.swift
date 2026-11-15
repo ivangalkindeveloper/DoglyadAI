@@ -43,9 +43,10 @@ struct PaywallScreenView: DViewProtocol {
                             DStretchyHeader(
                                 height: 240,
                             ) {
-                                DImage(
+                                Image(
                                     .paywallHeader,
                                 )
+                                .resizable()
                                 .scaledToFill()
                             }
                             PaywallContentView()

@@ -19,7 +19,7 @@ tags: [e2e, Permission]
     timeout: 60000
 - waitForAnimationToEnd
 - tapOn: {id: scan.speech}
-- assertVisible: ^Предоставьте приложению разрешение на использование микрофона для записи вашего голоса и распознование речи$
+- assertVisible: ^Предоставьте приложению разрешение на использование микрофона для записи вашего голоса и распознавания речи$
 - takeScreenshot: Permission-speech-denied
 - tapOn: ^В настройки$
 # iOS 26.5 Simulator routes UIApplication.openSettingsURLString to Menu' root.

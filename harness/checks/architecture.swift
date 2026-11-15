@@ -14,6 +14,14 @@ func typeName(_ type: TypeSyntax) -> String {
     return type.trimmedDescription
 }
 
+func sourceModule(_ path: String) -> String {
+    let parts = URL(fileURLWithPath: path).pathComponents
+    if let index = parts.lastIndex(of: "ios"), index + 1 < parts.count {
+        return parts[index + 1]
+    }
+    return URL(fileURLWithPath: path).deletingLastPathComponent().path
+}
+
 func storedPropertyNames(_ members: MemberBlockItemListSyntax) -> [String] {
     members.flatMap { member -> [String] in
         guard let property = member.decl.as(VariableDeclSyntax.self),
@@ -36,6 +44,8 @@ func storedPropertyNames(_ members: MemberBlockItemListSyntax) -> [String] {
 final class Conformances: SyntaxVisitor {
     var parents: [String: Set<String>] = [:]
     var properties: [String: [String]] = [:]
+    var classModules: [String: Set<String>] = [:]
+    var module = ""
 
     init() { super.init(viewMode: .sourceAccurate) }
 
@@ -50,6 +60,7 @@ final class Conformances: SyntaxVisitor {
     }
 
     override func visit(_ node: ClassDeclSyntax) -> SyntaxVisitorContinueKind {
+        classModules[node.name.text, default: []].insert(module)
         record(node.name.text, node.inheritanceClause)
         properties[node.name.text] = storedPropertyNames(node.memberBlock.members)
         return .visitChildren
@@ -120,6 +131,60 @@ final class ArchitectureChecks: SyntaxVisitor {
         if let first = fields.firstIndex(where: isAccessibilityMetadata),
            fields.dropFirst(first).contains(where: { !isAccessibilityMetadata($0) }) {
             report(node, "swift.accessibility-field-order", "Place accessibility fields after all other stored fields.")
+        }
+        return .visitChildren
+    }
+
+    func isApplicationSource() -> Bool {
+        path.contains("/ios/Doglyad/") || path.hasPrefix("ios/Doglyad/")
+    }
+
+    func hasSinglePresentationState(_ name: String) -> Bool {
+        guard name.hasSuffix("ViewModel"), !name.hasSuffix("RootViewModel"), conformances.has(name, "DModuleViewModel") else { return false }
+        let stateProtocol = String(name.dropLast("ViewModel".count)) + "StateProtocol"
+        return conformances.classModules.keys.filter {
+            conformances.classModules[$0, default: []].contains(sourceModule(path)) && conformances.has($0, stateProtocol)
+        }.count == 1
+    }
+
+    func isDebugOnly(_ node: some SyntaxProtocol) -> Bool {
+        var parent = node.parent
+        while let current = parent {
+            if let clause = current.as(IfConfigClauseSyntax.self), let condition = clause.condition?.trimmedDescription {
+                let compact = condition.filter { !$0.isWhitespace }
+                if compact == "DEBUG" || ((compact.hasPrefix("DEBUG&&") || compact.hasSuffix("&&DEBUG")) && !compact.contains("||")) {
+                    return true
+                }
+            }
+            parent = current.parent
+        }
+        return false
+    }
+
+    override func visit(_ node: ExtensionDeclSyntax) -> SyntaxVisitorContinueKind {
+        let name = typeName(node.extendedType)
+        let isStepBuilder = name == "InitializationProcess" && path.contains("/Core/Initialization/Steps/")
+        if conformances.classModules[name, default: []].contains(sourceModule(path)), !isStepBuilder {
+            report(node, "swift.class-extension", "Keep this target's class implementation and conformances in the class declaration; only initialization step builders and adapters of other targets are exempt.")
+        }
+        return .visitChildren
+    }
+
+    func isPreviewType(_ name: String) -> Bool {
+        (name.contains("Preview") && name.hasSuffix("View"))
+            || name.hasSuffix("PreviewFactory") || name == "PreviewableModifier"
+    }
+
+    override func visit(_ node: StructDeclSyntax) -> SyntaxVisitorContinueKind {
+        if isApplicationSource(), isPreviewType(node.name.text), !isDebugOnly(node) {
+            report(node, "swift.preview-debug", "Compile preview types and fixtures only under DEBUG.")
+        }
+        return .visitChildren
+    }
+
+    override func visit(_ node: ClassDeclSyntax) -> SyntaxVisitorContinueKind {
+        if isApplicationSource(), isPreviewType(node.name.text), !isDebugOnly(node) {
+            report(node, "swift.preview-debug", "Compile preview types and fixtures only under DEBUG.")
         }
         return .visitChildren
     }
@@ -265,6 +330,9 @@ final class ArchitectureChecks: SyntaxVisitor {
     }
 
     override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
+        if isApplicationSource(), ["previewable", "makePreviewable"].contains(node.name.text), !isDebugOnly(node) {
+            report(node, "swift.preview-debug", "Compile preview factories only under DEBUG; a conditional function body is insufficient.")
+        }
         if let name = owner(node), isView(name),
            !isAdapterEntry(node, owner: name), !isModifierAPI(node, owner: name) {
             report(node, "swift.view-method", "Move behavior to the view model or adapter; compose views in body.")
@@ -273,6 +341,23 @@ final class ArchitectureChecks: SyntaxVisitor {
     }
 
     override func visit(_ node: VariableDeclSyntax) -> SyntaxVisitorContinueKind {
+        let isPublished = node.attributes.contains {
+            $0.as(AttributeSyntax.self).map { typeName($0.attributeName) == "Published" } ?? false
+        }
+        for binding in node.bindings {
+            let property = binding.pattern.as(IdentifierPatternSyntax.self)?.identifier.text
+            if isPublished, let name = owner(node), hasSinglePresentationState(name), property != "focus",
+               property?.hasSuffix("Controller") != true,
+               binding.typeAnnotation.map({ typeName($0.type).contains("Controller") }) != true {
+                report(binding, "swift.single-state-data", "Keep presentation data used by this module's only state in that immutable state; focus and owned controllers remain on the view model.")
+            }
+            if ["isDismissalRequested", "isClosing"].contains(property ?? ""), owner(node)?.hasSuffix("ViewModel") == true {
+                report(binding, "swift.dismissal-flag", "Use cancellation and operation/resource identity rather than a separate dismissal flag.")
+            }
+            if isApplicationSource(), property == "previewable", !isDebugOnly(node) {
+                report(binding, "swift.preview-debug", "Compile preview factories only under DEBUG.")
+            }
+        }
         guard let name = owner(node), isView(name) else { return .visitChildren }
         let hasBuilder = node.attributes.contains {
             $0.as(AttributeSyntax.self).map { typeName($0.attributeName) == "ViewBuilder" } ?? false
@@ -311,7 +396,10 @@ do {
     let paths = Set(input.context).union(input.files).sorted()
     let trees = try paths.map { ($0, Parser.parse(source: try String(contentsOfFile: $0, encoding: .utf8))) }
     let conformances = Conformances()
-    for (_, tree) in trees { conformances.walk(tree) }
+    for (path, tree) in trees {
+        conformances.module = sourceModule(path)
+        conformances.walk(tree)
+    }
     let selected = Set(input.files)
     var failures = 0
     for (path, tree) in trees where selected.contains(path) {

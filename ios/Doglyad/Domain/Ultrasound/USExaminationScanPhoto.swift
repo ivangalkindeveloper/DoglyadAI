@@ -33,23 +33,6 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
         )
     }
 
-    static func make(
-        image: UIImage,
-    ) async -> USExaminationScanPhoto {
-        let thumbnail = await Task.detached(
-            priority: .userInitiated,
-        ) {
-            image.thumbnail(
-                maxDimension: Self.thumbnailMaxDimension,
-            )
-        }.value
-
-        return USExaminationScanPhoto(
-            image: image,
-            thumbnail: thumbnail,
-        )
-    }
-
     init(
         from decoder: Decoder,
     ) throws {
@@ -70,6 +53,23 @@ struct USExaminationScanPhoto: Identifiable, Equatable, Codable {
         self.image = image.uprightImage()
         thumbnail = self.image.thumbnail(
             maxDimension: Self.thumbnailMaxDimension,
+        )
+    }
+
+    static func make(
+        image: UIImage,
+    ) async -> USExaminationScanPhoto {
+        let thumbnail = await Task.detached(
+            priority: .userInitiated,
+        ) {
+            image.thumbnail(
+                maxDimension: Self.thumbnailMaxDimension,
+            )
+        }.value
+
+        return USExaminationScanPhoto(
+            image: image,
+            thumbnail: thumbnail,
         )
     }
 

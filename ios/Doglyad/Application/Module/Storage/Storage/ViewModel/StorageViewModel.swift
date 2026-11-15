@@ -12,7 +12,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
     @Published private(set) var isSpeechModelAvailable = false
     private let messager: DMessager
     private var speechModelObservation: AnyCancellable?
-    private var presentationID: UUID? = UUID()
+    private let presentationPath: NavigationPath
 
     init(
         container: DependencyContainer,
@@ -25,6 +25,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
         onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         self.messager = messager
+        presentationPath = router.path
         super.init(
             state: StorageInitialState(),
             container: container,
@@ -54,12 +55,8 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
         }
     #endif
 
-    override func onDisappear() {
-        super.onDisappear()
-        presentationID = nil
-    }
-
     func onTapBack() {
+        cancelOperationTask()
         analytics.buttonTapped(
             .storageBack,
         )
@@ -74,15 +71,12 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             .storageClearProtocols,
             arguments: StorageClearProtocolsArguments(
                 onConfirm: { [weak self] in
-                    guard let self, let id = presentationID else {
+                    guard let self, router.path == self.presentationPath else {
                         return
                     }
                     performLocalOperation {
                         try await self.container.ultrasoundReportRepository.clearAllReports()
                     } onSuccess: { _ in
-                        guard self.presentationID == id else {
-                            return
-                        }
                         self.emit(
                             StorageInitialState(),
                         )
@@ -97,9 +91,6 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                         )
                         self.coordinator.pop()
                     } onFailure: { error in
-                        guard self.presentationID == id else {
-                            return
-                        }
                         self.emit(
                             StorageErrorState(
                                 error: error,
@@ -115,7 +106,7 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
     }
 
     func onTapDeleteSpeechModel() {
-        guard isSpeechModelAvailable, presentationID != nil else {
+        guard isSpeechModelAvailable, router.path == presentationPath else {
             return
         }
         analytics.buttonTapped(
@@ -139,15 +130,12 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             .storageClearAll,
             arguments: StorageClearAllArguments(
                 onConfirm: { [weak self] in
-                    guard let self, let id = presentationID else {
+                    guard let self, router.path == self.presentationPath else {
                         return
                     }
                     performLocalOperation {
                         try await self.container.ultrasoundReportRepository.clearAll()
                     } onSuccess: { _ in
-                        guard self.presentationID == id else {
-                            return
-                        }
                         self.emit(
                             StorageInitialState(),
                         )
@@ -162,9 +150,6 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
                         )
                         self.coordinator.resetToOnBoarding()
                     } onFailure: { error in
-                        guard self.presentationID == id else {
-                            return
-                        }
                         self.emit(
                             StorageErrorState(
                                 error: error,
@@ -180,15 +165,12 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
     }
 
     private func deleteSpeechModel() {
-        guard isSpeechModelAvailable, let id = presentationID else {
+        guard isSpeechModelAvailable, router.path == presentationPath else {
             return
         }
         performLocalOperation {
             try await DSpeechWhisperKitModel.shared.deleteDownloadedModel()
         } onSuccess: { _ in
-            guard self.presentationID == id else {
-                return
-            }
             self.emit(
                 StorageInitialState(),
             )
@@ -203,9 +185,6 @@ final class StorageViewModel: DModuleViewModel<any StorageStateProtocol> {
             )
             self.coordinator.pop()
         } onFailure: { error in
-            guard self.presentationID == id else {
-                return
-            }
             self.emit(
                 StorageErrorState(
                     error: error,

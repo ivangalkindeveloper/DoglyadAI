@@ -195,5 +195,8 @@ struct ReadyMadeTemplateListScreenView: DViewProtocol {
         .environmentObject(
             viewModel,
         )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

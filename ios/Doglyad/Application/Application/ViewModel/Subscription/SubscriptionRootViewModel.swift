@@ -210,8 +210,9 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     }
 
     func manageSubscription() async throws {
-        guard status?.source != .robokassa else {
-            throw SubscriptionError.offeringsUnavailable
+        switch status?.source {
+        case .robokassa: throw SubscriptionError.offeringsUnavailable
+        case .apple, .none: break
         }
         let selected = container.subscriptionStoreKitRepository
         try await selected.manageSubscription()
@@ -219,8 +220,9 @@ final class SubscriptionRootViewModel: DStateViewModel<any SubscriptionRootState
     }
 
     func requestRefund() async throws {
-        guard status?.source != .robokassa else {
-            throw SubscriptionError.offeringsUnavailable
+        switch status?.source {
+        case .robokassa: throw SubscriptionError.offeringsUnavailable
+        case .apple, .none: break
         }
         let subscriptionRepository = container.subscriptionStoreKitRepository
         try await subscriptionRepository.requestRefund()

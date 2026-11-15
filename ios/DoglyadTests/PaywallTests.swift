@@ -321,7 +321,7 @@ struct PaywallTests {
             model,
         )
         #expect(
-            repository.purchasedIsAutoRenewing == false,
+            repository.isPurchasedAutoRenewing == false,
         )
         #expect(
             (model.state as? PaywallContentState)?.isAutoRenewing == false,

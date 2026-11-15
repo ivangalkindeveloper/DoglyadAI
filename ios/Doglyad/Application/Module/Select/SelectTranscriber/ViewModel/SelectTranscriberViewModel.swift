@@ -6,7 +6,6 @@ import UIKit
 
 @MainActor
 final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberStateProtocol> {
-    @Published private(set) var options: [TranscriberType] = [.whisperKit]
     let currentValue: TranscriberType
     private let arguments: SelectTranscriberArguments
     private let getAvailableAppleEngine: @MainActor (Locale) async -> DSpeechEngine?
@@ -45,29 +44,27 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
         )
     }
 
-    #if DEBUG
-        func setPreviewOptions(
-            _ options: [TranscriberType],
-        ) {
-            self.options = options
-        }
-    #endif
-
     override func onInit() {
-        availabilityObservation = NotificationCenter.default.publisher(
-            for: UIApplication.didBecomeActiveNotification,
-        ).sink { [weak self] _ in
-            Task { @MainActor [weak self] in
-                self?.refreshAvailability()
-            }
+        observeAvailability()
+    }
+
+    override func onReappear() {
+        guard availabilityObservation == nil else {
+            return
         }
-        refreshAvailability()
+        observeAvailability()
+    }
+
+    override func onDisappear() {
+        super.onDisappear()
+        availabilityObservation?.cancel()
+        availabilityObservation = nil
     }
 
     func onSelect(
         _ type: TranscriberType,
     ) {
-        guard options.contains(
+        guard state.options.contains(
             type,
         ) else {
             return
@@ -78,7 +75,24 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
         arguments.onSelected(
             type,
         )
+        cancelOperationTask()
+        availabilityObservation?.cancel()
+        availabilityObservation = nil
         coordinator.dismissSheet()
+    }
+
+    private func observeAvailability() {
+        availabilityObservation = NotificationCenter.default.publisher(
+            for: UIApplication.didBecomeActiveNotification,
+        ).sink { [weak self] _ in
+            Task { @MainActor [weak self] in
+                guard let self, availabilityObservation != nil else {
+                    return
+                }
+                refreshAvailability()
+            }
+        }
+        refreshAvailability()
     }
 
     private func refreshAvailability() {
@@ -91,11 +105,16 @@ final class SelectTranscriberViewModel: DModuleViewModel<any SelectTranscriberSt
             guard !Task.isCancelled else {
                 return
             }
-            self.options = engine.map {
+            let options = engine.map {
                 [TranscriberType(
                     engine: $0,
                 ), .whisperKit]
             } ?? [.whisperKit]
+            self.emit(
+                self.state.copyWith(
+                    options: options,
+                ),
+            )
         }
     }
 }

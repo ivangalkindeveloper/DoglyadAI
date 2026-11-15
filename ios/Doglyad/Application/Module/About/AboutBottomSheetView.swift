@@ -27,14 +27,9 @@ struct AboutBottomSheetView: DViewProtocol {
             VStack(
                 spacing: .zero,
             ) {
-                DImage(
-                    .doglyadAbout,
-                )
-                .scaledToFit()
-                .frame(
-                    width: size.screenWidth / 3,
-                    height: size.screenWidth / 3,
-                    alignment: .center,
+                DAssetScaleImage(
+                    .doglyadStars,
+                    widthScale: .regular,
                 )
 
                 DText(
@@ -107,6 +102,9 @@ struct AboutBottomSheetView: DViewProtocol {
         )
         .onAppear(
             perform: viewModel.onAppear,
+        )
+        .onDisappear(
+            perform: viewModel.onDisappear,
         )
     }
 }

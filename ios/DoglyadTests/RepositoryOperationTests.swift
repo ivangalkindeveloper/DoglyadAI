@@ -52,7 +52,9 @@ struct RepositoryOperationTests {
             arguments: arguments,
         )
         model.emit(
-            SelectTemplateContentState(),
+            SelectTemplateContentState(
+                templates: [template],
+            ),
         )
         model.coordinator.sheet(
             .selectTemplate,

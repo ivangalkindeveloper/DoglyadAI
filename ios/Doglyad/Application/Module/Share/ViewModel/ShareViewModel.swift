@@ -127,10 +127,8 @@ final class ShareViewModel: DModuleViewModel<any ShareStateProtocol> {
             ],
         )
     }
-}
 
-private extension ShareViewModel {
-    func sendReportEmail(
+    fileprivate func sendReportEmail(
         to userEmail: String,
     ) {
         switch state {

@@ -16,11 +16,15 @@ cases:
       обновляет трансформацию.
   - action: Вернуться
     expect: Исходная коллекция фото не изменена.
+  - action: Дождаться повторного уведомления об опустевшем списке фото
+    expect: PhotoView закрывается один раз; предыдущий экран остаётся в стеке навигации.
   covers:
   - onInit
+  - onReappear
   - onPhotoSelected
   - onDoubleTapPhoto
   - onTapBack
+  - onDisappear
   automation:
     kind: mixed
     flows:
@@ -61,6 +65,10 @@ cases:
     expect: Точки соответствуют нужным фото и координатам; PhotoRemark содержит текст выбранного замечания.
   - action: Скрыть точки и перезапустить приложение
     expect: Настройка видимости сохраняется; сами замечания не удалены.
+  - action: Изменить видимость замечаний или выйти до завершения чтения настройки
+    expect: Поздний ответ не перезаписывает выбор и не меняет закрытый экран; новый снимок состояния сохраняет фотографии и выбранный ID.
+  - action: Обновить замечания отчёта, сохранив прежние фотографии
+    expect: Публикуется новый снимок с новыми замечаниями; фотографии и выбранный ID сохраняются, предыдущий снимок состояния не изменяется.
   covers:
   - onTapRemark
   - setRemarksVisibility
@@ -71,3 +79,4 @@ cases:
     nativeTests:
     - PhotoViewGestureTests/testDoubleTapAndPinch()
     - ModuleStateTests/photoRemarksFollowTheNewReportWhenPhotosHaveNotChanged()
+    - ModuleStateTests/photoViewerRejectsLatePreferenceReadAfterEditingOrLeaving(isLeaving:)

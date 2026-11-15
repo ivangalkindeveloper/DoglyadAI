@@ -2,12 +2,26 @@ import Foundation
 
 @MainActor
 final class SelectNeuralModelInitialState: SelectNeuralModelStateProtocol, @MainActor Equatable {
-    init() {}
+    let currentValue: USExaminationNeuralModel?
+
+    init(
+        currentValue: USExaminationNeuralModel? = nil,
+    ) {
+        self.currentValue = currentValue
+    }
+
+    func copyWith(
+        currentValue: USExaminationNeuralModel?? = nil,
+    ) -> SelectNeuralModelInitialState {
+        SelectNeuralModelInitialState(
+            currentValue: currentValue ?? self.currentValue,
+        )
+    }
 
     static func == (
-        _: SelectNeuralModelInitialState,
-        _: SelectNeuralModelInitialState,
+        lhs: SelectNeuralModelInitialState,
+        rhs: SelectNeuralModelInitialState,
     ) -> Bool {
-        true
+        lhs.currentValue == rhs.currentValue
     }
 }

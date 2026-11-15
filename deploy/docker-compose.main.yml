@@ -1,84 +1,77 @@
-# Deploys the main backend on a VM. The same file serves main-development and
-# main-production: the machines are told apart only by the `.env` beside it.
-#
-# Not used locally — development builds from source through
-# backend/main/docker-compose.yml.
-#
-# A `.env` with three lines is required alongside (Compose reads it itself):
-#
-#   TAG=<image tag>          which image to run
-#   ENV_FILE=<profile path>  which environment profile to mix in
-#   DOMAIN=<host>            the domain Caddy gets a certificate for
+# Main application processes and public ingress. Used together with the required
+# docker-compose.database.yml overlay through main-compose.sh on both main VMs.
+# The machine .env selects TAG, ENV_FILE, DOMAIN and the pinned DATABASE_IMAGE.
+x-main-app: &main-app
+  image: ghcr.io/ivangalkindeveloper/doglyad-main:${TAG:-latest}
+  volumes:
+    - ./secrets:/app/secrets:ro
+    - ./logs:/app/logs
+  env_file:
+    - secrets/.env
+    - ${ENV_FILE:?ENV_FILE is required}
+  environment: &main-environment
+    DATABASE_URL: ${DATABASE_URL:?DATABASE_URL is required}
+    LOG_DIR: /app/logs
+  depends_on:
+    database_migrate:
+      condition: service_completed_successfully
+  restart: unless-stopped
+  logging:
+    driver: json-file
+    options:
+      max-size: 20m
+      max-file: "5"
 
 services:
   backend_main:
-    image: ghcr.io/ivangalkindeveloper/doglyad-main:${TAG:-latest}
-    # The port is NOT published. The only thing that reaches the backend is Caddy,
-    # over the internal Compose network. That is what makes the image's
-    # `--forwarded-allow-ips *` safe: spoofing X-Forwarded-For to slip past the
-    # rate limiter would need direct access to the port, and there is none.
-    expose:
-      - "8000"
-    volumes:
-      # Configs are baked into the image; only secrets and logs come from the machine.
-      - ./secrets:/app/secrets:ro
-      - ./logs:/app/logs
-    env_file:
-      - secrets/.env
-      # No default on purpose: an unset ENV_FILE fails the start instead of quietly
-      # bringing a production machine up on development configs.
-      - ${ENV_FILE:?ENV_FILE is not set — put it in the .env next to this file}
+    <<: *main-app
+    # Only Caddy reaches the API. No host API port is published.
+    expose: ["8000"]
     environment:
-      # Logs are written to ./logs with daily rotation and kept for a year. They hold
-      # no patient data — only technical metadata.
-      LOG_DIR: /app/logs
+      <<: *main-environment
       LOG_RETENTION_DAYS: 365
-    restart: unless-stopped
-    logging:
-      driver: json-file
-      options:
-        max-size: "20m"
-        max-file: "5"
 
   report_worker:
-    image: ghcr.io/ivangalkindeveloper/doglyad-main:${TAG:-latest}
+    <<: *main-app
     command: [python, -m, app.report_worker]
-    volumes:
-      - ./secrets:/app/secrets:ro
-      - ./logs:/app/logs
-    env_file:
-      - secrets/.env
-      - ${ENV_FILE:?ENV_FILE is required}
     environment:
+      <<: *main-environment
       LOG_DIR: /app/logs/report-worker
-    restart: unless-stopped
-    logging:
-      driver: json-file
-      options:
-        max-size: "20m"
-        max-file: "5"
+
+  billing_gateway:
+    <<: *main-app
+    command: [uvicorn, app.payment_main:app, --host, 0.0.0.0, --port, "8000", --proxy-headers, --forwarded-allow-ips, "*", --no-access-log]
+    environment:
+      <<: *main-environment
+      LOG_DIR: /app/logs/billing-gateway
+    expose: ["8000"]
+
+  billing_worker:
+    <<: *main-app
+    command: [python, -m, app.billing_worker]
+    environment:
+      <<: *main-environment
+      LOG_DIR: /app/logs/billing-worker
 
   caddy:
     image: caddy:2
-    # The only thing facing the internet.
     ports:
       - "80:80"
       - "443:443"
     environment:
-      DOMAIN: ${DOMAIN:?DOMAIN is not set — put it in the .env next to this file}
+      DOMAIN: ${DOMAIN:?DOMAIN is required}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      # Issued certificates survive a restart: without this volume Caddy would ask
-      # for a new one on every start and run into Let's Encrypt's rate limits.
       - caddy_data:/data
       - caddy_config:/config
     depends_on:
       - backend_main
+      - billing_gateway
     restart: unless-stopped
     logging:
       driver: json-file
       options:
-        max-size: "20m"
+        max-size: 20m
         max-file: "5"
 
 volumes:

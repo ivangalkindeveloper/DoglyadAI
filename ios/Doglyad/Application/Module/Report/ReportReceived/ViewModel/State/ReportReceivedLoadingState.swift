@@ -8,6 +8,14 @@ final class ReportReceivedLoadingState: ReportReceivedStateProtocol, @MainActor 
         self.report = report
     }
 
+    func copyWith(
+        report: USExaminationReport? = nil,
+    ) -> ReportReceivedLoadingState {
+        ReportReceivedLoadingState(
+            report: report ?? self.report,
+        )
+    }
+
     static func == (
         lhs: ReportReceivedLoadingState,
         rhs: ReportReceivedLoadingState,

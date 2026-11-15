@@ -17,7 +17,7 @@
     },
     "contactEmail": "support@doglyad.ru",
     "appleUpdateUrl": "https://apps.apple.com/app/id",
-    "legalDate": "2026-08-01T00:00:00Z",
+    "legalDate": "2026-11-15T00:00:00Z",
     "privacyPolicyUrl": "https://ivangalkindeveloper.github.io/DoglyadAI/legal/privacy-policy",
     "termsAndConditionsUrl": "https://ivangalkindeveloper.github.io/DoglyadAI/legal/terms-and-conditions",
     "network": {
@@ -2526,7 +2526,7 @@
       "id": "ZJU-AI4H/Hulu-Med-7B",
       "title": "Hulu-Med 7B",
       "format": "BF16",
-      "entitlement": "pro",
+      "entitlement": "base",
       "accessibility": "available",
       "contextLength": 32768,
       "description": "Медицинская мультимодальная модель семейства Hulu-Med для работы со снимками и клиническим текстом. Обучена на медицинских данных, включая УЗИ. Версия 7B помогает подготовить черновик протокола по материалам исследования и использует меньше памяти, чем Hulu-Med 32B."

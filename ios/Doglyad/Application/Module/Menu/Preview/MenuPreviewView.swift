@@ -36,10 +36,12 @@
                 onRefreshSubscriptionStatus: {},
             )
 
-            model.reportsCount = reportsCount
-
             model.preparePreview(
-                state: state,
+                state: state.copyWith(
+                    reportsCount: .some(
+                        reportsCount,
+                    ),
+                ),
             )
             return MenuScreenView(
                 viewModel: model,

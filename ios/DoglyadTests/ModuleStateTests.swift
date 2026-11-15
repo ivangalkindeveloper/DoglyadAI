@@ -118,7 +118,7 @@ struct ModuleStateTests {
             )
         }
         var subscriptionRefreshCount = 0
-        var observationCancelled = false
+        var isObservationCancelled = false
         var model: SubscriptionManageViewModel? = SubscriptionManageViewModel(
             messager: DMessager(),
             container: container,
@@ -135,7 +135,7 @@ struct ModuleStateTests {
                     observer,
                 )
                 return AnyCancellable {
-                    observationCancelled = true
+                    isObservationCancelled = true
                     observation.cancel()
                 }
             },
@@ -236,7 +236,7 @@ struct ModuleStateTests {
             weakModel == nil,
         )
         #expect(
-            observationCancelled,
+            isObservationCancelled,
         )
         #expect(
             observedRequestCounts == [nil, 17, nil],
@@ -251,7 +251,7 @@ struct ModuleStateTests {
         var selectedModel = initialModel
         var selectedTemplate: USExaminationTemplate?
         let changes = PassthroughSubject<Void, Never>()
-        var observationCancelled = false
+        var isObservationCancelled = false
         var model: ScanViewModel? = ScanViewModel(
             container: container,
             messager: DMessager(),
@@ -276,7 +276,7 @@ struct ModuleStateTests {
                     observer()
                 }
                 return AnyCancellable {
-                    observationCancelled = true
+                    isObservationCancelled = true
                     observation.cancel()
                 }
             },
@@ -334,7 +334,7 @@ struct ModuleStateTests {
             weakModel == nil,
         )
         #expect(
-            observationCancelled,
+            isObservationCancelled,
         )
     }
 
@@ -363,10 +363,13 @@ struct ModuleStateTests {
             getPhotos: {
                 source.value
             },
-            observePhotos: {
-                source.sink(
-                    receiveValue: $0,
-                )
+            observePhotoChanges: { observer in
+                source.sink { photos in
+                    observer(
+                        photos,
+                        [],
+                    )
+                }
             },
             initialPhotoID: first.id,
             onDelete: { photo in
@@ -380,6 +383,11 @@ struct ModuleStateTests {
         let router = DRouter(
             initialRoute: RouteScreen(
                 type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .menu,
             ),
         )
         router.push(
@@ -410,6 +418,7 @@ struct ModuleStateTests {
             onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )
+        model.onAppear()
         model.onTapDelete()
         #expect(
             source.value.map(
@@ -417,33 +426,158 @@ struct ModuleStateTests {
             ) == [second.id],
         )
         #expect(
-            model.photos.map(
+            model.state.photos.map(
                 \.id,
             ) == [second.id],
         )
         #expect(
-            model.selectedPhotoID == second.id,
+            model.state.selectedPhotoID == second.id,
         )
         source.send(
             [second, third],
         )
         #expect(
-            model.photos.map(
+            model.state.photos.map(
                 \.id,
             ) == [second.id, third.id],
         )
         #expect(
-            model.currentPage == 1,
+            model.state.currentPage == 1,
+        )
+        model.onDisappear()
+        source.send(
+            [third],
+        )
+        #expect(
+            model.state.photos.map(
+                \.id,
+            ) == [second.id, third.id],
+        )
+        model.onAppear()
+        #expect(
+            model.state.photos.map(
+                \.id,
+            ) == [third.id],
+        )
+        #expect(
+            model.state.selectedPhotoID == third.id,
+        )
+        source.send(
+            [second, third],
+        )
+        #expect(
+            model.state.photos.map(
+                \.id,
+            ) == [second.id, third.id],
         )
         source.send(
             [],
         )
         #expect(
-            model.photos.isEmpty,
+            model.state.photos.isEmpty,
         )
         #expect(
-            router.path.isEmpty,
+            router.path.count == 1,
         )
+        model.synchronizePhotos(
+            [],
+        )
+        #expect(
+            router.path.count == 1,
+        )
+        model.onDisappear()
+    }
+
+    @Test(
+        arguments: [false, true],
+    )
+    func photoViewerRejectsLatePreferenceReadAfterEditingOrLeaving(
+        isLeaving: Bool,
+    ) async {
+        let repository = PhotoViewSettingsRepository(
+            wrapped: DependencyContainer.previewable.userSettingsRepository,
+        )
+        var response: CheckedContinuation<Bool, Never>?
+        repository.onRead = {
+            await withCheckedContinuation {
+                response = $0
+            }
+        }
+        let container = makeStateTestContainer(
+            reportRepository: StateReportRepository(),
+            draftRepository: StateDraftRepository(),
+            userSettingsRepository: repository,
+        )
+        let photo = USExaminationScanPhoto(
+            image: UIImage(),
+            thumbnail: UIImage(),
+        )
+        let router = DRouter(
+            initialRoute: RouteScreen(
+                type: .scan,
+            ),
+        )
+        router.push(
+            route: RouteScreen(
+                type: .photoView,
+            ),
+        )
+        let model = PhotoViewViewModel(
+            container: container,
+            router: router,
+            getSubscriptionStatus: {
+                nil
+            },
+            observeSubscriptionStatus: { _ in
+                AnyCancellable {}
+            },
+            onSubscriptionStatusUpdated: { _ in },
+            getSettingsAI: {
+                container.initialSettingsAI
+            },
+            onRefreshSubscriptionStatus: {},
+            arguments: PhotoViewArguments(
+                getPhotos: {
+                    [photo]
+                },
+                initialPhotoID: photo.id,
+            ),
+        )
+        model.onAppear()
+        while response == nil {
+            await Task.yield()
+        }
+        let read = model.lastTask
+        let original = model.state
+        if isLeaving {
+            model.onTapBack()
+            model.onDisappear()
+        } else {
+            model.setRemarksVisibility(
+                !original.isRemarksVisible,
+            )
+            await model.lastTask?.value
+            #expect(
+                model.state !== original,
+            )
+            #expect(
+                model.state.isRemarksVisible == !original.isRemarksVisible,
+            )
+            #expect(
+                model.state.photos == original.photos && model.state.selectedPhotoID == photo.id,
+            )
+        }
+        let expected = model.state
+        response?.resume(
+            returning: isLeaving ? !original.isRemarksVisible : original.isRemarksVisible,
+        )
+        await read?.value
+        #expect(
+            model.state === expected,
+        )
+        if !isLeaving {
+            model.onDisappear()
+        }
     }
 
     @Test
@@ -484,9 +618,9 @@ struct ModuleStateTests {
         let fromDate = model.fromDate
         let toDate = model.toDate
         var publishedDates: [Date] = []
-        let observation = model.$date.sink {
+        let observation = model.$state.sink {
             publishedDates.append(
-                $0,
+                $0.date,
             )
         }
 
@@ -871,12 +1005,13 @@ struct ModuleStateTests {
             getPhotoRemarks: {
                 source.report.actualModelReport.photoRemarks
             },
-            observePhotos: { observer in
-                source.$report.map(
-                    \.examinationData.photos,
-                ).sink(
-                    receiveValue: observer,
-                )
+            observePhotoChanges: { observer in
+                source.$report.sink { report in
+                    observer(
+                        report.examinationData.photos,
+                        report.actualModelReport.photoRemarks,
+                    )
+                }
             },
             initialPhotoID: photo.id,
         )
@@ -901,6 +1036,12 @@ struct ModuleStateTests {
             onRefreshSubscriptionStatus: {},
             arguments: arguments,
         )
+        model.onAppear()
+        let previousState = model.state
+        var publications = 0
+        let observation = model.$state.dropFirst().sink { _ in
+            publications += 1
+        }
         source.report = USExaminationReport(
             id: report.id,
             date: report.date,
@@ -927,5 +1068,16 @@ struct ModuleStateTests {
                 \.id,
             ) == [updatedPoint.id],
         )
+        #expect(
+            publications == 1,
+        )
+        #expect(
+            previousState.photoRemarks.first?.points == [originalPoint],
+        )
+        #expect(
+            model.state !== previousState,
+        )
+        observation.cancel()
+        model.onDisappear()
     }
 }

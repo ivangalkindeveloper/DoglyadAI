@@ -1,0 +1,5 @@
+# Create independent checks outside the main VM. Keep URLs private.
+# Daily schedule, alert when a heartbeat is missing for 26 hours.
+DATABASE_BACKUP_SUCCESS_URL=https://REPLACE_WITH_DAILY_HEARTBEAT_URL
+# Five-minute schedule, alert when a heartbeat is missing for 10 minutes.
+DATABASE_BACKUP_STATUS_URL=https://REPLACE_WITH_FIVE_MINUTE_HEARTBEAT_URL

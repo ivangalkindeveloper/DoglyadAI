@@ -11,6 +11,24 @@ public struct DSpeechTranscript: Sendable {
     public let confidenceSpans: [DSpeechConfidenceSpan]
     public let decodingSpans: [DSpeechDecodingSpan]
 
+    public init(
+        rawText: String,
+        correctedText: String,
+        locale: Locale,
+        engine: DSpeechEngine,
+        completion: DSpeechCompletion,
+        confidenceSpans: [DSpeechConfidenceSpan] = [],
+        decodingSpans: [DSpeechDecodingSpan] = [],
+    ) {
+        self.rawText = rawText
+        self.correctedText = correctedText
+        self.locale = locale
+        self.engine = engine
+        self.completion = completion
+        self.confidenceSpans = confidenceSpans
+        self.decodingSpans = decodingSpans
+    }
+
     public var isFinal: Bool {
         switch completion {
         case .finished:
@@ -29,23 +47,5 @@ public struct DSpeechTranscript: Sendable {
                 in: .whitespacesAndNewlines,
             ).isEmpty
         }
-    }
-
-    public init(
-        rawText: String,
-        correctedText: String,
-        locale: Locale,
-        engine: DSpeechEngine,
-        completion: DSpeechCompletion,
-        confidenceSpans: [DSpeechConfidenceSpan] = [],
-        decodingSpans: [DSpeechDecodingSpan] = [],
-    ) {
-        self.rawText = rawText
-        self.correctedText = correctedText
-        self.locale = locale
-        self.engine = engine
-        self.completion = completion
-        self.confidenceSpans = confidenceSpans
-        self.decodingSpans = decodingSpans
     }
 }

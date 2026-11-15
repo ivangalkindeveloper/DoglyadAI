@@ -17,10 +17,6 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
     private let accessibilityElement: AccessibilityChildBehavior?
     private let accessibilityIdentifier: String?
 
-    private var isFocused: Bool {
-        focus?.isFocused ?? isInternallyFocused
-    }
-
     public init(
         inputTextController: DTextFieldController,
         focus: DTextFieldFocus<Focus>? = nil,
@@ -88,6 +84,10 @@ public struct DTextField<Focus: Hashable, Leading: View, Trailing: View>: DViewP
             accessibilityElement: accessibilityElement,
             accessibilityIdentifier: accessibilityIdentifier,
         )
+    }
+
+    private var isFocused: Bool {
+        focus?.isFocused ?? isInternallyFocused
     }
 
     public var body: some View {

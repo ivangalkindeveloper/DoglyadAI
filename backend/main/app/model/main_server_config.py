@@ -19,7 +19,6 @@ class MainServerConfig(BaseModel):
     report_generation: USReportGenerationConfig = Field(
         default_factory=USReportGenerationConfig,
     )
-
     endpoints: dict[str, EndpointConfig]
     billing: BillingServiceConfig
     inference: HttpClientConfig

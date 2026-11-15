@@ -147,7 +147,8 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
         let value = currentReport(
             value,
         )
-        if value.actualModelReport.generation.status == .generating {
+        switch value.actualModelReport.generation.status {
+        case .generating:
             coordinator.sheet(
                 .reportReceived,
                 arguments: ReportReceivedArguments(
@@ -155,6 +156,7 @@ final class HistoryViewModel: DModuleViewModel<any HistoryStateProtocol> {
                 ),
             )
             return
+        case .completed, .interrupted, .failed, .cancelled: break
         }
         coordinator.screen(
             .reportDetail,

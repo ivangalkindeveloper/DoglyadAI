@@ -54,6 +54,7 @@ cases:
     nativeTests:
     - RegressionFormTests/testRecoveryIgnoresLateResponseAfterLeavingAndRetainsFailedInput()
     - SubscriptionRecoveryTests/enteredKeyIsRetainedWhenAnOperationFails()
+    - SubscriptionRecoveryTests/leavingDiscardsLateRecoverySuccessAndFailure(isFailure:isDisappearance:)
     requires:
     - Тестовый магазин Робокассы, доступный HTTPS ResultURL и проверенные селекторы браузерной страницы/банковского
       подтверждения; старые сценарии SDK удалены

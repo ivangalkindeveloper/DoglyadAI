@@ -9,8 +9,6 @@ import SwiftUI
 
 @MainActor
 final class MenuViewModel: DModuleViewModel<any MenuStateProtocol> {
-    @Published var reportsCount: Int?
-
     init(
         messager _: DMessager,
         container: DependencyContainer,
@@ -37,7 +35,7 @@ final class MenuViewModel: DModuleViewModel<any MenuStateProtocol> {
     }
 
     var historyDescription: LocalizedStringResource {
-        guard let reportsCount else {
+        guard let reportsCount = state.reportsCount else {
             return l10n[
                 .menuHistoryPurposeDescription,
             ]
@@ -53,19 +51,20 @@ final class MenuViewModel: DModuleViewModel<any MenuStateProtocol> {
     }
 
     override func onInit() {
-        handle {
-            try await self.container.ultrasoundReportRepository.getReportsCount()
-        } onMainSuccess: { count in
-            guard !Task.isCancelled else {
-                return
-            }
-            self.reportsCount = count
-        } onMainUnknownError: { _ in
-            // The summary is optional; all Settings destinations remain available.
-        }
+        loadHistoryCount()
+    }
+
+    override func onReappear() {
+        loadHistoryCount()
+    }
+
+    override func onDisappear() {
+        super.onDisappear()
+        lastTask?.cancel()
     }
 
     func onTapBack() {
+        lastTask?.cancel()
         analytics.buttonTapped(
             .menuBack,
         )
@@ -78,7 +77,7 @@ final class MenuViewModel: DModuleViewModel<any MenuStateProtocol> {
             parameters: AnalyticsParameters(
                 [
                     .itemCount: .int(
-                        reportsCount ?? 0,
+                        state.reportsCount ?? 0,
                     ),
                 ],
             ),
@@ -173,5 +172,25 @@ final class MenuViewModel: DModuleViewModel<any MenuStateProtocol> {
         coordinator.sheet(
             .about,
         )
+    }
+
+    private func loadHistoryCount() {
+        lastTask?.cancel()
+        handle {
+            try await self.container.ultrasoundReportRepository.getReportsCount()
+        } onMainSuccess: { count in
+            guard !Task.isCancelled else {
+                return
+            }
+            self.emit(
+                self.state.copyWith(
+                    reportsCount: .some(
+                        count,
+                    ),
+                ),
+            )
+        } onMainUnknownError: { _ in
+            // The summary is optional; all Settings destinations remain available.
+        }
     }
 }

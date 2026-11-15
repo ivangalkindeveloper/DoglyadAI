@@ -22,7 +22,7 @@ tags: [e2e, ReadyMadeTemplateList, TemplateAdd]
     centerElement: true
 - tapOn: ^Готовые шаблоны$
 - assertVisible: ^Готовых шаблонов пока нет$
-- assertNotVisible: ^Не удалось загрузить шаблоны$
+- assertNotVisible: ^Проверьте подключение к интернету и попробуйте снова$
 - takeScreenshot: ReadyMadeTemplateList-empty-catalog
 - tapOn: {id: navigation.back}
 - assertVisible: ^Retained unsaved template$
@@ -46,7 +46,7 @@ tags: [e2e, ReadyMadeTemplateList, TemplateAdd]
     direction: DOWN
     centerElement: true
 - tapOn: ^Готовые шаблоны$
-- assertVisible: ^Не удалось загрузить шаблоны$
+- assertVisible: ^Проверьте подключение к интернету и попробуйте снова$
 - assertNotVisible: ^Готовых шаблонов пока нет$
 - assertVisible: {id: message.error}
 - takeScreenshot: ReadyMadeTemplateList-catalog-failed

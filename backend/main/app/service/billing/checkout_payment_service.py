@@ -6,7 +6,6 @@ from uuid import UUID, uuid4
 from sqlalchemy import select
 
 from app.core.configuration.configuration import Configuration
-from app.core.configuration.variables import Variables
 from app.core.localization.language_code import LanguageCode
 from app.database.billing_payment_db import BillingPaymentDB
 from app.database.billing_subscription_db import BillingSubscriptionDB
@@ -26,12 +25,10 @@ class CheckoutPaymentService:
         self,
         subscriptions: SubscriptionService,
         configuration: Configuration,
-        variables: Variables,
     ) -> None:
         self._subscriptions = subscriptions
         self._database = subscriptions.database
         self._configuration = configuration
-        self._variables = variables
 
     async def prepare(
         self,
@@ -42,9 +39,7 @@ class CheckoutPaymentService:
         is_auto_renewing: bool = True,
         expected_price: BillingPrice | None = None,
     ) -> BillingPreparePaymentResponse:
-        if not self._subscriptions.is_payment_available or (
-            not self._variables.is_robokassa_test and not self._variables.is_robokassa_live_enabled
-        ):
+        if not self._subscriptions.is_payment_available:
             raise BillingUnavailableError()
         plan = next(
             (

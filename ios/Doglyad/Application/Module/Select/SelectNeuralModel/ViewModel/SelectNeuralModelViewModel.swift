@@ -7,7 +7,6 @@ import Router
 @MainActor
 final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelStateProtocol> {
     let models: [USExaminationNeuralModel]
-    @Published var currentValue: USExaminationNeuralModel?
     private let messager: DMessager?
     private let arguments: SelectNeuralModelArguments?
 
@@ -23,12 +22,13 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
         onRefreshSubscriptionStatus: @escaping () async -> Void,
     ) {
         models = (container.usExaminationNeuralModels)
-        currentValue = (arguments?.currentValue)
         self.messager = messager
         self.arguments = arguments
 
         super.init(
-            state: SelectNeuralModelInitialState(),
+            state: SelectNeuralModelInitialState(
+                currentValue: arguments?.currentValue,
+            ),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -48,7 +48,7 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
     func isSelected(
         _ model: USExaminationNeuralModel,
     ) -> Bool {
-        currentValue == model
+        state.currentValue == model
     }
 
     func isProBadgeVisible(
@@ -113,7 +113,16 @@ final class SelectNeuralModelViewModel: DModuleViewModel<any SelectNeuralModelSt
                 try await self?.arguments?.onSelected(
                     model,
                 )
-                self?.currentValue = model
+                guard let self, !Task.isCancelled else {
+                    return
+                }
+                emit(
+                    state.copyWith(
+                        currentValue: .some(
+                            model,
+                        ),
+                    ),
+                )
             }
         } onSuccess: { _ in
         } onFailure: { _ in

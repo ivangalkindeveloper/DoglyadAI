@@ -27,10 +27,33 @@ class RemoteTransactionTests(unittest.TestCase):
             "TAG=old\nENV_FILE=secrets/.env.production\nDOMAIN=example.com\n"
         )
         (self.root / "docker-compose.yml").write_text("services: {}\n")
+        for name in (
+            "docker-compose.database.yml",
+            "main-compose.sh",
+            "Caddyfile",
+            "database/backup.sh",
+            "database/backup-status.sh",
+            "database/backup-status.py",
+            "database/disk_backup.py",
+            "database/yandex_disk.py",
+        ):
+            path = self.root / name
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("fixture")
         os.chdir(self.root)
         self.release = "a" * 32
         self.target = {"role": "production", "ssh": "main"}
-        self.state = {"image": "sha256:" + "b" * 64, "companion": "caddy-id"}
+        self.state = {
+            "image": "sha256:" + "b" * 64,
+            "companion": "caddy-id",
+            "database_revision": "0001_initial",
+            "billing_processes": {},
+        }
+        self.revision_patch = patch.object(
+            remote, "database_revision", return_value="0001_initial"
+        )
+        self.revision_patch.start()
+        self.addCleanup(self.revision_patch.stop)
 
     def action(self, action: str, **kwargs: object) -> dict:
         return remote.main(
@@ -59,19 +82,32 @@ class RemoteTransactionTests(unittest.TestCase):
         )
 
     def test_report_worker_updates_and_rolls_back_with_api(self) -> None:
-        self.state["report_worker"] = {"container": "worker", "image": self.state["image"], "restarts": 0}
+        self.state["report_worker"] = {
+            "container": "worker",
+            "image": self.state["image"],
+            "restarts": 0,
+        }
+        self.state["billing_processes"]["report_worker"] = self.state["report_worker"]
         with patch.object(remote, "check", return_value=self.state):
             self.action("prepare")
         image = "ghcr.io/ivangalkindeveloper/doglyad-main@sha256:" + "c" * 64
-        with (patch.object(remote, "run", return_value=json.dumps([{"Id": "new-image"}])) as run,
-              patch.object(remote, "compose") as compose,
-              patch.object(remote, "wait_ready", return_value={})):
+        with (
+            patch.object(
+                remote, "run", return_value=json.dumps([{"Id": "new-image"}])
+            ) as run,
+            patch.object(remote, "compose") as compose,
+            patch.object(remote, "wait_ready", return_value={}),
+        ):
             self.action("update", image=image, sha="d" * 40)
             self.assertIn("report_worker", compose.call_args_list[-1].args)
             self.action("rollback")
             self.assertIn("report_worker", run.call_args_list[-1].args)
-        override = json.loads((self.root / f".deploy-{self.release}/rollback.json").read_text())
-        self.assertEqual(override["services"]["report_worker"]["image"], self.state["image"])
+        override = json.loads(
+            (self.root / f".deploy-{self.release}/rollback.json").read_text()
+        )
+        self.assertEqual(
+            override["services"]["report_worker"]["image"], self.state["image"]
+        )
 
     def test_foreign_release_cannot_unlock(self) -> None:
         with patch.object(remote, "check", return_value=self.state):
@@ -273,6 +309,116 @@ class RemoteTransactionTests(unittest.TestCase):
                 state,
             )
         run.assert_called_once_with("docker", "exec", "backend", "id", "-u")
+
+    def test_main_writers_stop_before_backup_and_migration_and_all_restart(
+        self,
+    ) -> None:
+        with patch.object(remote, "check", return_value=self.state):
+            self.action("prepare")
+        image = "ghcr.io/ivangalkindeveloper/doglyad-main@sha256:" + "c" * 64
+        events = []
+
+        def execute(*args, **kwargs):
+            events.append(args)
+            return json.dumps([{"Id": "new-image"}])
+
+        with (
+            patch.object(remote, "run", side_effect=execute),
+            patch.object(
+                remote, "compose", side_effect=lambda *args: events.append(args) or ""
+            ),
+            patch.object(remote, "wait_ready", return_value={}),
+        ):
+            self.action("update", image=image, sha="d" * 40)
+        stop = next(i for i, event in enumerate(events) if "stop" in event)
+        backup = next(
+            i for i, event in enumerate(events) if "database/backup.sh" in event
+        )
+        migrate = next(
+            i for i, event in enumerate(events) if "database_migrate" in event
+        )
+        start = next(i for i, event in enumerate(events) if event[0] == "up")
+        self.assertLess(stop, backup)
+        self.assertLess(backup, migrate)
+        self.assertLess(migrate, start)
+        self.assertEqual(events[start][-4:], remote.MAIN_SERVICES)
+
+    def test_failed_backup_never_runs_migration_and_old_release_can_restart(
+        self,
+    ) -> None:
+        with patch.object(remote, "check", return_value=self.state):
+            self.action("prepare")
+        calls = []
+
+        def execute(*args, **kwargs):
+            calls.append(args)
+            if "database/backup.sh" in args:
+                raise RuntimeError("backup failed")
+            return json.dumps([{"Id": "new-image"}])
+
+        with (
+            patch.object(remote, "run", side_effect=execute),
+            patch.object(remote, "compose"),
+            patch.object(remote, "wait_ready", return_value={}),
+        ):
+            with self.assertRaisesRegex(RuntimeError, "backup failed"):
+                self.action(
+                    "update",
+                    image="ghcr.io/ivangalkindeveloper/doglyad-main@sha256:" + "c" * 64,
+                    sha="d" * 40,
+                )
+            self.action("rollback")
+        self.assertFalse(any("database_migrate" in call for call in calls))
+        self.assertEqual(calls[-1][-4:], remote.MAIN_SERVICES)
+
+    def test_unknown_migration_result_blocks_automatic_image_rollback(self) -> None:
+        with patch.object(remote, "check", return_value=self.state):
+            self.action("prepare")
+
+        def execute(*args, **kwargs):
+            if "database_migrate" in args:
+                raise RuntimeError("migration failed")
+            return json.dumps([{"Id": "new-image"}])
+
+        with (
+            patch.object(remote, "run", side_effect=execute) as run,
+            patch.object(remote, "compose"),
+        ):
+            with self.assertRaisesRegex(RuntimeError, "migration failed"):
+                self.action(
+                    "update",
+                    image="ghcr.io/ivangalkindeveloper/doglyad-main@sha256:" + "c" * 64,
+                    sha="d" * 40,
+                )
+            with self.assertRaisesRegex(RuntimeError, "writers remain stopped"):
+                self.action("rollback")
+        self.assertIn("stop", run.call_args.args)
+        self.assertFalse((self.root / f".deploy-{self.release}/rollback.json").exists())
+
+    def test_applied_new_revision_blocks_automatic_image_rollback(self) -> None:
+        with patch.object(remote, "check", return_value=self.state):
+            self.action("prepare")
+        with (
+            patch.object(
+                remote,
+                "database_revision",
+                side_effect=["0001_initial", "0002_users", "0002_users"],
+            ),
+            patch.object(
+                remote, "run", return_value=json.dumps([{"Id": "new-image"}])
+            ) as run,
+            patch.object(remote, "compose"),
+            patch.object(remote, "wait_ready", return_value={}),
+        ):
+            self.action(
+                "update",
+                image="ghcr.io/ivangalkindeveloper/doglyad-main@sha256:" + "c" * 64,
+                sha="d" * 40,
+            )
+            with self.assertRaisesRegex(RuntimeError, "writers remain stopped"):
+                self.action("rollback")
+        self.assertIn("stop", run.call_args.args)
+        self.assertFalse((self.root / f".deploy-{self.release}/rollback.json").exists())
 
 
 if __name__ == "__main__":

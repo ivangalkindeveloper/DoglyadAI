@@ -8,7 +8,7 @@ import httpx
 from app.core.application.service_factory import ServiceFactory
 from app.core.configuration.configuration_loader import ConfigurationLoader
 from app.core.configuration.variables import Variables
-from app.database.billing_database import BillingDatabase
+from app.database.application_database import ApplicationDatabase
 from app.error.billing_unavailable_error import BillingUnavailableError
 
 logger = logging.getLogger(
@@ -26,7 +26,7 @@ class BillingWorker:
     async def run(
         self,
     ) -> None:
-        if not self._variables.billing_database_url:
+        if not self._variables.database_url:
             raise BillingUnavailableError()
         configuration = ConfigurationLoader(
             self._variables.configuration_directory,
@@ -34,8 +34,8 @@ class BillingWorker:
         async with httpx.AsyncClient(
             timeout=configuration.server.billing.provider.timeout(),
         ) as client:
-            database = BillingDatabase(
-                self._variables.billing_database_url,
+            database = ApplicationDatabase(
+                self._variables.database_url,
             )
             try:
                 await database.check()

@@ -12,7 +12,7 @@ from alembic.script import ScriptDirectory
 from sqlalchemy import create_engine, inspect
 
 import app.database  # noqa: F401 - register the complete billing metadata
-from app.database.billing_base import BillingBase
+from app.database.application_base import ApplicationBase
 
 
 @pytest.fixture
@@ -22,7 +22,7 @@ def migration_database(
 ) -> tuple[Path, Config]:
     path = tmp_path / "billing.sqlite"
     monkeypatch.setenv(
-        "BILLING_DATABASE_URL",
+        "DATABASE_URL",
         f"sqlite+aiosqlite:///{path}",
     )
     config = Config(
@@ -68,7 +68,7 @@ def test_migration_chain_has_one_base_and_matches_current_models(
                 inspect(
                     connection,
                 ).get_table_names(),
-            ) == {*BillingBase.metadata.tables, "alembic_version"}
+            ) == {*ApplicationBase.metadata.tables, "alembic_version"}
             context = MigrationContext.configure(
                 connection,
                 opts={"compare_type": True, "compare_server_default": True},
@@ -76,7 +76,7 @@ def test_migration_chain_has_one_base_and_matches_current_models(
             assert (
                 compare_metadata(
                     context,
-                    BillingBase.metadata,
+                    ApplicationBase.metadata,
                 )
                 == []
             )

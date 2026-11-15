@@ -433,7 +433,7 @@ def generated() -> dict[str, str]:
             f'                .accessibilityIdentifier("regression.{case["id"]}")',
         ]
     swift += [
-        '        default: Text("Unknown regression preview")',
+        '        default: DText("Unknown regression preview")',
         "        }",
         "    }",
         "}",

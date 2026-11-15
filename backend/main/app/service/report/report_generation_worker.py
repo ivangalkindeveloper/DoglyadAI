@@ -12,7 +12,7 @@ from app.core.configuration.configuration_loader import ConfigurationLoader
 from app.core.configuration.variables import Variables
 from app.core.localization.language_code import LanguageCode
 from app.core.logging.request_id_log_filter import current_request_id
-from app.database.billing_database import BillingDatabase
+from app.database.application_database import ApplicationDatabase
 from app.database.report_generation_db import ReportGenerationDB
 from app.error.api_error import ApiError
 from app.error.report_generation_unavailable_error import ReportGenerationUnavailableError
@@ -39,7 +39,7 @@ class ReportGenerationWorker:
     async def run(
         self,
     ) -> None:
-        if not self._variables.billing_database_url or not self._variables.report_generation_encryption_key:
+        if not self._variables.database_url or not self._variables.report_generation_encryption_key:
             raise ReportGenerationUnavailableError()
         configuration = ConfigurationLoader(
             self._variables.configuration_directory,
@@ -47,8 +47,8 @@ class ReportGenerationWorker:
         async with httpx.AsyncClient(
             timeout=configuration.server.inference.timeout(),
         ) as client:
-            database = BillingDatabase(
-                self._variables.billing_database_url,
+            database = ApplicationDatabase(
+                self._variables.database_url,
             )
             tasks: set[asyncio.Task[None]] = set()
             try:

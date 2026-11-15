@@ -10,7 +10,6 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
     @NestedObservableObject var recoveryTextController = DTextFieldController()
     private let arguments: SubscriptionRecoveryArguments?
     private let recover: (String) async throws -> SubscriptionStatus?
-    private var isDismissalRequested = false
 
     init(
         messager: DMessager,
@@ -60,7 +59,6 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
         guard !router.path.isEmpty else {
             return
         }
-        isDismissalRequested = true
         cancelOperationTask()
         coordinator.pop()
     }
@@ -76,7 +74,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
     }
 
     func onTapRestore() {
-        guard !isProcessing, !isDismissalRequested else {
+        guard !isProcessing else {
             return
         }
         unfocus()
@@ -88,14 +86,14 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
             loading,
         )
         operationTask = Task {
-            guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+            guard !Task.isCancelled, state === loading else {
                 return
             }
             do {
                 let status = try await recover(
                     key,
                 )
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                guard !Task.isCancelled, state === loading else {
                     return
                 }
                 updateSubscriptionStatus(
@@ -116,7 +114,6 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
                     )
                     return
                 }
-                isDismissalRequested = true
                 messager.show(
                     type: .success,
                     title: l10n[
@@ -129,7 +126,7 @@ final class SubscriptionRecoveryViewModel: DModuleViewModel<any SubscriptionReco
                 coordinator.pop()
                 arguments?.onRecovered?()
             } catch {
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                guard !Task.isCancelled, state === loading else {
                     return
                 }
                 emit(

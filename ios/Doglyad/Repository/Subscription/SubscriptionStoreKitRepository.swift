@@ -70,7 +70,9 @@ final class SubscriptionStoreKitRepository: SubscriptionRepositoryProtocol {
         isAutoRenewing _: Bool,
         onPurchasePrepared: @escaping (SubscriptionPurchaseContextProtocol) -> Void,
     ) async throws -> SubscriptionPurchaseOutcome {
-        guard plan.source == .apple else {
+        switch plan.source {
+        case .apple: break
+        case .robokassa:
             throw SubscriptionError.offeringsUnavailable
         }
         try Task.checkCancellation()

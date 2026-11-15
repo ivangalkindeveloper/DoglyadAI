@@ -8,6 +8,14 @@ struct AnalyticsParameters {
         self.values = values
     }
 
+    var firebaseParameters: [String: Any] {
+        Dictionary(
+            uniqueKeysWithValues: values.map { key, value in
+                (key.rawValue, value.firebaseValue)
+            },
+        )
+    }
+
     func merging(
         _ other: AnalyticsParameters,
     ) -> AnalyticsParameters {
@@ -16,14 +24,6 @@ struct AnalyticsParameters {
                 other.values,
             ) { _, new in
                 new
-            },
-        )
-    }
-
-    var firebaseParameters: [String: Any] {
-        Dictionary(
-            uniqueKeysWithValues: values.map { key, value in
-                (key.rawValue, value.firebaseValue)
             },
         )
     }

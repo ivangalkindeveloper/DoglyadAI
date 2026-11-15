@@ -39,7 +39,7 @@
                 ),
             )
 
-            model.recentTypeIds = isRecentSectionVisible
+            let recentTypeIds: [String] = isRecentSectionVisible
                 ? [ModulePreviewFactory.examinationType.id] + Array(
                     container.usExaminationTypesById.keys.sorted().filter {
                         $0 != ModulePreviewFactory.examinationType.id
@@ -50,7 +50,12 @@
                 : []
 
             model.preparePreview(
-                state: state,
+                state: state.copyWith(
+                    recentTypeIds: recentTypeIds,
+                    currentValue: .some(
+                        model.state.currentValue,
+                    ),
+                ),
             )
             return ModuleBottomSheetPreviewView {
                 SelectUSExaminationTypeBottomSheetView(

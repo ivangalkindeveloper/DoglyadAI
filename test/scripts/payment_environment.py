@@ -16,7 +16,6 @@ def payment_environment(root: Path, config: dict) -> dict[str, str]:
         if not value:
             raise ValueError(f'Missing regression {key}; configure robokassaCredentialsFile')
         result['REGRESSION_' + key] = value
-    result['REGRESSION_IS_ROBOKASSA_LIVE_ENABLED'] = 'false'
     return result
 
 
@@ -25,5 +24,3 @@ def verify_test_merchant(environment: dict[str, str]) -> None:
     # This is configuration validation, not evidence that the merchant accepted a payment.
     if any(not environment.get('REGRESSION_' + key) for key in KEYS):
         raise ValueError('Robokassa test credentials are required')
-    if environment.get('REGRESSION_IS_ROBOKASSA_LIVE_ENABLED', 'false').lower() != 'false':
-        raise ValueError('Real payments are forbidden in regression')

@@ -1,52 +1,21 @@
 import Foundation
 
 struct DStreamingMarkdownBlock: Identifiable {
+    let id: UUID
+    let content: Content
+    let reveals: [Reveal]
+
+    init(
+        id: UUID,
+        content: Content,
+        reveals: [Reveal],
+    ) {
+        self.id = id
+        self.content = content
+        self.reveals = reveals
+    }
+
     struct Content: Equatable {
-        enum Kind: Equatable {
-            case paragraph
-            case heading(Int)
-            case fallback
-        }
-
-        struct Inline: Equatable {
-            struct Style: OptionSet {
-                let rawValue: Int
-
-                init(
-                    rawValue: Int,
-                ) {
-                    self.rawValue = rawValue
-                }
-
-                static let strong = Self(
-                    rawValue: 1,
-                )
-                static let emphasis = Self(
-                    rawValue: 2,
-                )
-                static let code = Self(
-                    rawValue: 4,
-                )
-                static let strikethrough = Self(
-                    rawValue: 8,
-                )
-            }
-
-            let text: String
-            let style: Style
-            let link: URL?
-
-            init(
-                text: String,
-                style: Style,
-                link: URL?,
-            ) {
-                self.text = text
-                self.style = style
-                self.link = link
-            }
-        }
-
         let kind: Kind
         let markdown: String
         let inlines: [Inline]
@@ -78,11 +47,56 @@ struct DStreamingMarkdownBlock: Identifiable {
                 \.text,
             ).joined()
         }
+
+        enum Kind: Equatable {
+            case paragraph
+            case heading(Int)
+            case fallback
+        }
+
+        struct Inline: Equatable {
+            let text: String
+            let style: Style
+            let link: URL?
+
+            init(
+                text: String,
+                style: Style,
+                link: URL?,
+            ) {
+                self.text = text
+                self.style = style
+                self.link = link
+            }
+
+            struct Style: OptionSet {
+                let rawValue: Int
+                static let strong = Self(
+                    rawValue: 1,
+                )
+                static let emphasis = Self(
+                    rawValue: 2,
+                )
+                static let code = Self(
+                    rawValue: 4,
+                )
+                static let strikethrough = Self(
+                    rawValue: 8,
+                )
+
+                init(
+                    rawValue: Int,
+                ) {
+                    self.rawValue = rawValue
+                }
+            }
+        }
     }
 
     struct Reveal: Equatable {
         let range: Range<Int>
         let date: Date
+        static let duration: TimeInterval = 0.15
 
         init(
             range: Range<Int>,
@@ -91,8 +105,6 @@ struct DStreamingMarkdownBlock: Identifiable {
             self.range = range
             self.date = date
         }
-
-        static let duration: TimeInterval = 0.15
 
         func opacity(
             at date: Date,
@@ -107,19 +119,5 @@ struct DStreamingMarkdownBlock: Identifiable {
                 ),
             )
         }
-    }
-
-    let id: UUID
-    let content: Content
-    let reveals: [Reveal]
-
-    init(
-        id: UUID,
-        content: Content,
-        reveals: [Reveal],
-    ) {
-        self.id = id
-        self.content = content
-        self.reveals = reveals
     }
 }

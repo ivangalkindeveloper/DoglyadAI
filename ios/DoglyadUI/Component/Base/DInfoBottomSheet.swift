@@ -67,68 +67,62 @@ public struct DInfoBottomSheet<Content: View>: DViewProtocol {
 
     public var body: some View {
         Group {
-            GeometryReader { proxy in
-                DBottomSheet(
-                    title: title,
-                    fraction: fraction,
-                ) { toolbarHeight, bottomHeight in
-                    VStack(
-                        spacing: size.s24,
-                    ) {
-                        DImage(
-                            image,
-                        )
-                        .scaledToFit()
-                        .frame(
-                            width: proxy.size.width / 3,
-                            height: proxy.size.width / 3,
-                        )
+            DBottomSheet(
+                title: title,
+                fraction: fraction,
+            ) { toolbarHeight, bottomHeight in
+                VStack(
+                    spacing: size.s24,
+                ) {
+                    DAssetScaleImage(
+                        image,
+                        widthScale: .compact,
+                    )
 
-                        DText(
-                            description,
-                        )
-                        .dStyle(
-                            font: typography.textSmall,
-                            color: color.grayscalePlacehold,
-                            alignment: .center,
-                        )
-                        .fixedSize(
-                            horizontal: false,
-                            vertical: true,
-                        )
-
-                        content
-                    }
-                    .frame(
-                        maxWidth: .infinity,
-                        maxHeight: .infinity,
-                    )
-                    .padding(
-                        .top,
-                        toolbarHeight + size.s24,
-                    )
-                    .padding(
-                        .bottom,
-                        bottomHeight + size.s24,
-                    )
-                    .padding(
-                        .horizontal,
-                        size.s16,
-                    )
-                } bottom: {
-                    DButton(
-                        title: buttonTitle,
-                        action: action,
-                        isLoading: isLoading,
+                    DText(
+                        description,
                     )
                     .dStyle(
-                        .primaryButton,
+                        font: typography.textSmall,
+                        color: color.grayscalePlacehold,
+                        alignment: .center,
                     )
-                    .padding(
-                        .horizontal,
-                        size.s16,
+                    .fixedSize(
+                        horizontal: false,
+                        vertical: true,
                     )
+
+                    content
                 }
+                .frame(
+                    maxWidth: .infinity,
+                    maxHeight: .infinity,
+                )
+                .padding(
+                    .top,
+                    toolbarHeight + size.s24,
+                )
+                .padding(
+                    .bottom,
+                    bottomHeight + size.s24,
+                )
+                .padding(
+                    .horizontal,
+                    size.s16,
+                )
+            } bottom: {
+                DButton(
+                    title: buttonTitle,
+                    action: action,
+                    isLoading: isLoading,
+                )
+                .dStyle(
+                    .primaryButton,
+                )
+                .padding(
+                    .horizontal,
+                    size.s16,
+                )
             }
         }
         .modifier(

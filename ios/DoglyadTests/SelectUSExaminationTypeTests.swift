@@ -182,7 +182,7 @@ struct SelectUSExaminationTypeTests {
         )
         await model.lastTask?.value
         #expect(
-            model.currentValue == initial && model.state is SelectUSExaminationTypeContentState,
+            model.state.currentValue == initial && model.state is SelectUSExaminationTypeContentState,
         )
         #expect(
             repository.selectionSaveCount == 1 && repository.recentExaminationTypeIds.isEmpty && errors == 1,
@@ -194,7 +194,7 @@ struct SelectUSExaminationTypeTests {
         await model.lastTask?.value
         await model.recentTypeRecordTask?.value
         #expect(
-            model.currentValue == other && repository.selectedExaminationTypeId == other.id,
+            model.state.currentValue == other && repository.selectedExaminationTypeId == other.id,
         )
         #expect(
             repository.recentExaminationTypeIds == [other.id] && errors == 1,
@@ -236,7 +236,7 @@ struct SelectUSExaminationTypeTests {
         await model.lastTask?.value
         await model.recentTypeRecordTask?.value
         #expect(
-            model.currentValue == type && repository.selectedExaminationTypeId == type.id,
+            model.state.currentValue == type && repository.selectedExaminationTypeId == type.id,
         )
         #expect(
             repository.recentExaminationTypeIds.isEmpty && errors == 0,
@@ -270,7 +270,7 @@ struct SelectUSExaminationTypeTests {
         }
         model.onDisappear()
         #expect(
-            model.currentValue == type,
+            model.state.currentValue == type,
         )
         response?.resume()
         await model.recentTypeRecordTask?.value
@@ -336,7 +336,7 @@ struct SelectUSExaminationTypeTests {
         }
         await operation?.value
         #expect(
-            model.currentValue == initial && messages == 0,
+            model.state.currentValue == initial && messages == 0,
         )
         #expect(
             repository.recentExaminationTypeIds.isEmpty,

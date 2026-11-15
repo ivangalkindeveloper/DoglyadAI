@@ -5,7 +5,7 @@ import httpx
 from app.core.application.main_container import MainContainer
 from app.core.configuration.configuration import Configuration
 from app.core.configuration.variables import Variables
-from app.database.billing_database import BillingDatabase
+from app.database.application_database import ApplicationDatabase
 from app.service.billing.apple_subscription_verifier import AppleSubscriptionVerifier
 from app.service.billing.checkout_payment_service import CheckoutPaymentService
 from app.service.billing.robokassa_payment_provider import RobokassaPaymentProvider
@@ -35,7 +35,7 @@ class ServiceFactory:
 
     def create_subscriptions(
         self,
-        database: BillingDatabase,
+        database: ApplicationDatabase,
     ) -> SubscriptionService:
         config = self._configuration.server.billing.provider
         return SubscriptionService(
@@ -104,7 +104,6 @@ class ServiceFactory:
             checkout_payments=CheckoutPaymentService(
                 subscriptions,
                 configuration,
-                variables,
             )
             if subscriptions is not None
             else None,

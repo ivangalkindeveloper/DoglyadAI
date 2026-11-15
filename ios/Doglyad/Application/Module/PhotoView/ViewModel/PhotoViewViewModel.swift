@@ -5,16 +5,11 @@ import SwiftUI
 
 @MainActor
 final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
-    @Published var photos: [USExaminationScanPhoto]
-    @Published var selectedPhotoID: UUID
-    @Published private(set) var isRemarksVisible: Bool
-    private let getPhotoRemarks: () -> [USExaminationPhotoRemarks]
     private let subtitle: String?
-    private let getSourcePhotos: () -> [USExaminationScanPhoto]
     private let messager: DMessager?
     private let arguments: PhotoViewArguments
     private var photoObservation: AnyCancellable?
-    private var isClosing = false
+    private var remarksReadTask: Task<Void, Never>?
 
     init(
         container: DependencyContainer,
@@ -28,22 +23,23 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         arguments: PhotoViewArguments,
     ) {
         let initialPhotos = arguments.getPhotos()
-        photos = initialPhotos
-        selectedPhotoID = initialPhotos.contains(
+        let selectedPhotoID = initialPhotos.contains(
             where: {
                 $0.id == arguments.initialPhotoID
             },
         )
             ? arguments.initialPhotoID : (initialPhotos.first?.id ?? arguments.initialPhotoID)
-        isRemarksVisible = container.initialUserSettings.isRemarksVisible
-        getPhotoRemarks = arguments.getPhotoRemarks
         subtitle = arguments.subTitle
-        getSourcePhotos = arguments.getPhotos
         self.messager = messager
         self.arguments = arguments
 
         super.init(
-            state: PhotoViewInitialState(),
+            state: PhotoViewInitialState(
+                photos: initialPhotos,
+                photoRemarks: arguments.getPhotoRemarks(),
+                selectedPhotoID: selectedPhotoID,
+                isRemarksVisible: container.initialUserSettings.isRemarksVisible,
+            ),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -55,77 +51,73 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
                 .photoView,
             ),
         )
-        photoObservation = arguments.observePhotos? { [weak self] updatedPhotos in
-            self?.synchronizePhotos(
-                updatedPhotos,
-            )
-        }
     }
 
     var isDeletionAvailable: Bool {
         arguments.onDelete != nil
     }
 
-    var currentPage: Int {
-        photos.firstIndex(
-            where: {
-                $0.id == selectedPhotoID
-            },
-        ).map {
-            $0 + 1
-        } ?? 0
-    }
-
     var subTitle: String? {
         subtitle
-    }
-
-    var sourcePhotos: [USExaminationScanPhoto] {
-        getSourcePhotos()
     }
 
     func remarkPoints(
         for photoId: UUID,
     ) -> [USExaminationPhotoRemarkPoint] {
-        getPhotoRemarks().first {
+        state.photoRemarks.first {
             $0.photoId == photoId
         }?.points ?? []
     }
 
     override func onInit() {
-        synchronizePhotos(
-            arguments.getPhotos(),
-        )
-        handle {
-            try await self.container.userSettingsRepository.getIsRemarksVisible()
-        } onMainSuccess: {
-            self.isRemarksVisible = $0
-        } onMainUnknownError: { _ in
-            self.messager?.showUnknownError(
-                l10n: self.container.l10n,
-            )
+        observeCurrentPhotos()
+    }
+
+    override func onReappear() {
+        guard photoObservation == nil, remarksReadTask == nil, operationTask == nil else {
+            return
         }
+        observeCurrentPhotos()
+    }
+
+    override func onDisappear() {
+        super.onDisappear()
+        remarksReadTask?.cancel()
+        remarksReadTask = nil
+        photoObservation?.cancel()
+        photoObservation = nil
     }
 
     func onTapBack() {
-        guard !isClosing else {
+        guard !router.path.isEmpty else {
             return
         }
-        isClosing = true
+        cancelOperationTask()
+        remarksReadTask?.cancel()
+        remarksReadTask = nil
+        photoObservation?.cancel()
+        photoObservation = nil
         coordinator.pop()
     }
 
     func onPhotoSelected(
         _ photoID: UUID,
     ) {
-        guard photos.contains(
+        guard state.photos.contains(
             where: {
                 $0.id == photoID
             },
         ) else {
             return
         }
-        selectedPhotoID = photoID
+        emit(
+            state.copyWith(
+                photos: nil,
+                photoRemarks: nil,
+                selectedPhotoID: photoID,
+                isRemarksVisible: nil,
+            ),
+        )
     }
 
     func onTapDelete() {
@@ -135,7 +127,7 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
         let current = arguments.getPhotos()
         guard let photo = current.first(
             where: {
-                $0.id == self.selectedPhotoID
+                $0.id == self.state.selectedPhotoID
             },
         ) else {
             return
@@ -151,15 +143,24 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
     func setRemarksVisibility(
         _ isVisible: Bool,
     ) {
-        handle {
+        remarksReadTask?.cancel()
+        remarksReadTask = nil
+        performLocalOperation {
             try await self.container.userSettingsRepository.setIsRemarksVisible(
                 isVisible,
             )
-        } onMainSuccess: {
-            self.isRemarksVisible = isVisible
-        } onMainUnknownError: { _ in
+        } onSuccess: { _ in
+            self.emit(
+                self.state.copyWith(
+                    photos: nil,
+                    photoRemarks: nil,
+                    selectedPhotoID: nil,
+                    isRemarksVisible: isVisible,
+                ),
+            )
+        } onFailure: { _ in
             self.messager?.showUnknownError(
-                l10n: self.container.l10n,
+                l10n: self.l10n,
             )
         }
     }
@@ -178,27 +179,37 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
 
     func synchronizePhotos(
         _ updated: [USExaminationScanPhoto],
+        photoRemarks: [USExaminationPhotoRemarks]? = nil,
     ) {
+        let isCleared = !state.photos.isEmpty && updated.isEmpty
         let oldIndex = max(
-            currentPage - 1,
+            state.currentPage - 1,
             0,
         )
-        photos = updated
-        guard !photos.isEmpty else {
-            onTapBack()
-            return
-        }
-        if !photos.contains(
+        let selectedPhotoID: UUID = if updated.isEmpty || updated.contains(
             where: {
-                $0.id == self.selectedPhotoID
+                $0.id == state.selectedPhotoID
             },
         ) {
-            selectedPhotoID = photos[
+            state.selectedPhotoID
+        } else {
+            updated[
                 min(
                     oldIndex,
-                    photos.count - 1,
+                    updated.count - 1,
                 ),
             ].id
+        }
+        emit(
+            state.copyWith(
+                photos: updated,
+                photoRemarks: photoRemarks,
+                selectedPhotoID: selectedPhotoID,
+                isRemarksVisible: nil,
+            ),
+        )
+        if isCleared {
+            onTapBack()
         }
     }
 
@@ -275,5 +286,57 @@ final class PhotoViewViewModel: DModuleViewModel<any PhotoViewStateProtocol> {
                 viewport: viewport,
                 center: center,
             )
+    }
+
+    private func observeCurrentPhotos() {
+        let sourcePhotos = arguments.getPhotos()
+        guard !sourcePhotos.isEmpty else {
+            emit(
+                state.copyWith(
+                    photos: sourcePhotos,
+                    photoRemarks: [],
+                    selectedPhotoID: nil,
+                    isRemarksVisible: nil,
+                ),
+            )
+            onTapBack()
+            return
+        }
+        synchronizePhotos(
+            sourcePhotos,
+            photoRemarks: arguments.getPhotoRemarks(),
+        )
+        photoObservation?.cancel()
+        photoObservation = arguments.observePhotoChanges? { [weak self] updatedPhotos, photoRemarks in
+            self?.synchronizePhotos(
+                updatedPhotos,
+                photoRemarks: photoRemarks,
+            )
+        }
+        remarksReadTask?.cancel()
+        remarksReadTask = Task {
+            do {
+                let isVisible = try await container.userSettingsRepository.getIsRemarksVisible()
+                guard !Task.isCancelled else {
+                    return
+                }
+                emit(
+                    state.copyWith(
+                        photos: nil,
+                        photoRemarks: nil,
+                        selectedPhotoID: nil,
+                        isRemarksVisible: isVisible,
+                    ),
+                )
+            } catch {
+                guard !Task.isCancelled else {
+                    return
+                }
+                messager?.showUnknownError(
+                    l10n: l10n,
+                )
+            }
+        }
+        lastTask = remarksReadTask
     }
 }

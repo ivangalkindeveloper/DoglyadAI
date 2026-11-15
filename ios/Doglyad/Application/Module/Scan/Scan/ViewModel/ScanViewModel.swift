@@ -513,10 +513,13 @@ final class ScanViewModel: DModuleViewModel<any ScanStateProtocol>, DTextFieldFo
                 getPhotos: { [weak self] in
                     self?.photos ?? []
                 },
-                observePhotos: { [weak self] observer in
-                    self?.$photos.sink(
-                        receiveValue: observer,
-                    ) ?? AnyCancellable {}
+                observePhotoChanges: { [weak self] observer in
+                    self?.$photos.sink { photos in
+                        observer(
+                            photos,
+                            [],
+                        )
+                    } ?? AnyCancellable {}
                 },
                 initialPhotoID: photo.id,
                 onDelete: { [weak self] photo in

@@ -6,9 +6,9 @@ from alembic import context
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.pool import NullPool
 
-import app.database  # noqa: F401 - register ledger metadata
+import app.database  # noqa: F401 - register application metadata
 from app.core.configuration.variables import Variables
-from app.database.billing_base import BillingBase
+from app.database.application_base import ApplicationBase
 
 
 def _configure(
@@ -16,7 +16,7 @@ def _configure(
 ) -> None:
     context.configure(
         connection=connection,
-        target_metadata=BillingBase.metadata,
+        target_metadata=ApplicationBase.metadata,
         compare_type=True,
     )
     with context.begin_transaction():
@@ -24,15 +24,15 @@ def _configure(
 
 
 async def _run() -> None:
-    url = Variables().billing_database_url
+    url = Variables().database_url
     if not url:
         raise RuntimeError(
-            "BILLING_DATABASE_URL is required for migrations",
+            "DATABASE_URL is required for migrations",
         )
     if context.is_offline_mode():
         context.configure(
             url=url,
-            target_metadata=BillingBase.metadata,
+            target_metadata=ApplicationBase.metadata,
             literal_binds=True,
         )
         with context.begin_transaction():

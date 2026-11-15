@@ -15,7 +15,6 @@ class HttpClientConfig(BaseModel):
         default=4194304,
         gt=0,
     )
-
     connect_timeout_seconds: float = Field(
         gt=0,
     )

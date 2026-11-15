@@ -9,7 +9,7 @@ import pytest
 from app.core.app_check.app_check import AppCheck
 from app.core.application.service_factory import ServiceFactory
 from app.core.configuration.variables import Variables
-from app.database.billing_database import BillingDatabase
+from app.database.application_database import ApplicationDatabase
 from app.error.billing_unavailable_error import BillingUnavailableError
 from app.service.billing import billing_worker
 from app.service.billing.billing_worker import BillingWorker
@@ -20,7 +20,7 @@ def test_worker_requires_database_before_creating_resources() -> None:
     async def run() -> None:
         variables = Variables(
             environment="development",
-            billing_database_url=None,
+            database_url=None,
         )
         with patch.object(
             billing_worker.httpx,
@@ -46,12 +46,12 @@ def test_worker_retries_safely_and_cancellation_closes_resources(
         # No Firebase credentials or GPU route map: neither is needed by this process.
         variables = Variables(
             environment="development",
-            billing_database_url="postgresql+asyncpg://unused",
+            database_url="postgresql+asyncpg://unused",
             firebase_credentials_path=None,
             inference_endpoints_path=None,
         )
         database = Mock(
-            spec=BillingDatabase,
+            spec=ApplicationDatabase,
         )
         database.check = AsyncMock()
         database.close = AsyncMock()
@@ -73,7 +73,7 @@ def test_worker_retries_safely_and_cancellation_closes_resources(
             ),
             patch.object(
                 billing_worker,
-                "BillingDatabase",
+                "ApplicationDatabase",
                 return_value=database,
             ),
             patch.object(
@@ -122,10 +122,10 @@ def test_failed_worker_startup_closes_database_and_http_client() -> None:
     async def run() -> None:
         variables = Variables(
             environment="development",
-            billing_database_url="postgresql+asyncpg://unused",
+            database_url="postgresql+asyncpg://unused",
         )
         database = Mock(
-            spec=BillingDatabase,
+            spec=ApplicationDatabase,
         )
         database.check = AsyncMock(
             side_effect=RuntimeError(
@@ -142,7 +142,7 @@ def test_failed_worker_startup_closes_database_and_http_client() -> None:
             ),
             patch.object(
                 billing_worker,
-                "BillingDatabase",
+                "ApplicationDatabase",
                 return_value=database,
             ),
             patch.object(

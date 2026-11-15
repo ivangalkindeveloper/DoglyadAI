@@ -37,7 +37,11 @@
             )
 
             model.preparePreview(
-                state: state,
+                state: state.copyWith(
+                    currentValue: .some(
+                        model.state.currentValue,
+                    ),
+                ),
             )
             return ModuleBottomSheetPreviewView {
                 SelectNeuralModelBottomSheetView(

@@ -1,2 +1,12 @@
+import Foundation
+
 @MainActor
-protocol MenuStateProtocol: AnyObject {}
+protocol MenuStateProtocol: AnyObject {
+    var reportsCount: Int? {
+        get
+    }
+
+    func copyWith(
+        reportsCount: Int??,
+    ) -> MenuContentState
+}

@@ -393,7 +393,7 @@ class DeploymentTests(unittest.TestCase):
             ],
         )
 
-    def test_build_requires_both_publications_and_all_checks(self) -> None:
+    def test_build_requires_all_publications_and_checks(self) -> None:
         for jobs, succeeds in (
             (
                 [
@@ -407,6 +407,7 @@ class DeploymentTests(unittest.TestCase):
                         "build (inference, arm64)",
                         "publish (main)",
                         "publish (inference)",
+                        "publish (database)",
                     )
                 ],
                 True,

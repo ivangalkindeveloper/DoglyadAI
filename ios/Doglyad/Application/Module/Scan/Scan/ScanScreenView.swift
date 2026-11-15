@@ -106,5 +106,8 @@ struct ScanScreenView: DViewProtocol {
         .environmentObject(
             viewModel,
         )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

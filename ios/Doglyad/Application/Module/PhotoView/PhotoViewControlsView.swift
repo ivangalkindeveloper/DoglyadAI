@@ -17,10 +17,10 @@ struct PhotoViewControlsView: DViewProtocol {
                     .photoViewPageLabel,
                     values: [
                         .current: String(
-                            viewModel.currentPage,
+                            viewModel.state.currentPage,
                         ),
                         .total: String(
-                            viewModel.photos.count,
+                            viewModel.state.photos.count,
                         ),
                     ],
                 ),
@@ -31,7 +31,7 @@ struct PhotoViewControlsView: DViewProtocol {
             )
 
             switch viewModel.remarkPoints(
-                for: viewModel.selectedPhotoID,
+                for: viewModel.state.selectedPhotoID,
             ).isEmpty {
             case false:
                 HStack(
@@ -51,7 +51,7 @@ struct PhotoViewControlsView: DViewProtocol {
                         ],
                         isOn: Binding(
                             get: {
-                                viewModel.isRemarksVisible
+                                viewModel.state.isRemarksVisible
                             },
                             set: viewModel.setRemarksVisibility,
                         ),

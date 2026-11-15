@@ -36,12 +36,10 @@
                 onRefreshSubscriptionStatus: {},
             )
 
-            model.setPreviewOptions(
-                [.speechAnalyzer, .whisperKit],
-            )
-
             model.preparePreview(
-                state: state,
+                state: state.copyWith(
+                    options: [.speechAnalyzer, .whisperKit],
+                ),
             )
             return ModuleBottomSheetPreviewView {
                 SelectTranscriberBottomSheetView(

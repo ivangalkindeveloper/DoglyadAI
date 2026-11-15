@@ -268,9 +268,18 @@ public struct DScreen<
                         if isShowsToolbar {
                             DScreenToolbarView(
                                 safeAreaInsetTop: safeAreaInsetTop,
-                                leadingView: leadingView,
-                                titleView: titleView,
-                                trailingView: trailingView,
+                                leadingView: DScreenLeadingView(
+                                    onTapBack: onTapBack,
+                                    content: leading,
+                                ),
+                                titleView: DScreenTitleView(
+                                    title: title,
+                                    subTitle: subTitle,
+                                    content: titleContent,
+                                ),
+                                trailingView: DScreenTrailingView(
+                                    content: trailing,
+                                ),
                                 toolbarContent: toolbarContent,
                             )
                             .onPreferenceChange(
@@ -337,8 +346,22 @@ public struct DScreen<
             || !(trailing is EmptyView)
             || !(toolbarContent is EmptyView)
     }
+}
 
-    private var leadingView: some View {
+private struct DScreenLeadingView<Content: View>: DViewProtocol {
+    @EnvironmentObject var theme: DTheme
+    private let onTapBack: (() -> Void)?
+    private let content: Content
+
+    init(
+        onTapBack: (() -> Void)?,
+        content: Content,
+    ) {
+        self.onTapBack = onTapBack
+        self.content = content
+    }
+
+    var body: some View {
         HStack(
             spacing: size.s8,
         ) {
@@ -352,8 +375,8 @@ public struct DScreen<
                     .circle,
                 )
             }
-            if !(leading is EmptyView) {
-                leading
+            if !(content is EmptyView) {
+                content
             }
         }
         .frame(
@@ -361,13 +384,30 @@ public struct DScreen<
             height: size.s56,
         )
     }
+}
 
-    private var titleView: some View {
+private struct DScreenTitleView<Content: View>: DViewProtocol {
+    @EnvironmentObject var theme: DTheme
+    private let title: LocalizedStringResource?
+    private let subTitle: String?
+    private let content: Content
+
+    init(
+        title: LocalizedStringResource?,
+        subTitle: String?,
+        content: Content,
+    ) {
+        self.title = title
+        self.subTitle = subTitle
+        self.content = content
+    }
+
+    var body: some View {
         VStack(
             spacing: .zero,
         ) {
-            if !(titleContent is EmptyView) {
-                titleContent
+            if !(content is EmptyView) {
+                content
             }
             if let title {
                 DText(
@@ -390,13 +430,24 @@ public struct DScreen<
             }
         }
     }
+}
 
-    private var trailingView: some View {
+private struct DScreenTrailingView<Content: View>: DViewProtocol {
+    @EnvironmentObject var theme: DTheme
+    private let content: Content
+
+    init(
+        content: Content,
+    ) {
+        self.content = content
+    }
+
+    var body: some View {
         HStack(
             spacing: size.s8,
         ) {
-            if !(trailing is EmptyView) {
-                trailing
+            if !(content is EmptyView) {
+                content
             }
         }
         .frame(
@@ -407,9 +458,9 @@ public struct DScreen<
 }
 
 private struct BottomHeightPreferenceKey: PreferenceKey {
-    init() {}
-
     static var defaultValue: CGFloat = 0
+
+    init() {}
 
     static func reduce(
         value: inout CGFloat,

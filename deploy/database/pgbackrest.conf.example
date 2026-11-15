@@ -1,0 +1,23 @@
+# Copy to backend/main/secrets/pgbackrest.<environment>.conf.
+# Setup installs the private database-secrets/pgbackrest.conf on the VM.
+# Use a different encryption key in each environment; Disk credentials are separate.
+[global]
+repo1-type=posix
+repo1-path=/var/lib/pgbackrest/repository
+repo1-cipher-type=aes-256-cbc
+repo1-cipher-pass=REPLACE_WITH_SEPARATELY_STORED_RANDOM_KEY
+# Expire the previous full copy only after a replacement completes successfully.
+repo1-retention-full-type=count
+repo1-retention-full=1
+repo1-retention-history=0
+archive-async=n
+compress-type=zst
+process-max=2
+start-fast=y
+log-level-console=info
+
+[doglyad_database]
+pg1-path=/var/lib/postgresql/data
+pg1-socket-path=/var/run/postgresql
+pg1-user=doglyad
+pg1-database=doglyad_database

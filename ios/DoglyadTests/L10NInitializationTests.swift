@@ -31,9 +31,9 @@ struct L10NInitializationTests {
             )
             return
         }
-        var failed = false
-        var succeeded = false
-        var nextTierStarted = false
+        var isFailed = false
+        var isSucceeded = false
+        var isNextTierStarted = false
         await DependencyInitializer<InitializationProcess, DependencyContainer>(
             createProcess: {
                 process
@@ -45,30 +45,30 @@ struct L10NInitializationTests {
                         SyncInitializationStep<InitializationProcess>(
                             title: "Next tier",
                             run: { _ in
-                                nextTierStarted = true
+                                isNextTierStarted = true
                             },
                         ),
                     ],
                 ),
             ],
             onSuccess: { _, _ in
-                succeeded = true
+                isSucceeded = true
             },
             onError: { _, _, step, _ in
-                failed = true
+                isFailed = true
                 #expect(
                     step.title == "L10N",
                 )
             },
         ).run()
         #expect(
-            failed,
+            isFailed,
         )
         #expect(
-            !succeeded,
+            !isSucceeded,
         )
         #expect(
-            !nextTierStarted,
+            !isNextTierStarted,
         )
         #expect(
             client.requestedPaths == ["/l10n"],

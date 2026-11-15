@@ -29,7 +29,6 @@ def test_refund_dispatch_is_never_replayed_and_worker_tracks_known_request(
             configuration,
             environment="production",
             is_live=True,
-            is_live_enabled=True,
         ) as ctx:
             owner = str(
                 (await ctx.service.register()).ownerId,

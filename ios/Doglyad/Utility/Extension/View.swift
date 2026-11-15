@@ -51,6 +51,18 @@ extension View {
                 ),
             )
         }
+
+        func previewable(
+            container: DependencyContainer? = nil,
+            router: DRouter? = nil,
+        ) -> some View {
+            modifier(
+                PreviewableModifier(
+                    container: container,
+                    router: router,
+                ),
+            )
+        }
     #endif
 
     /// Supplies the catalog and the matching locale to the whole view hierarchy.
@@ -72,18 +84,6 @@ extension View {
         modifier(
             PaidBadgeModifier(
                 availability: availability,
-            ),
-        )
-    }
-
-    func previewable(
-        container: DependencyContainer? = nil,
-        router: DRouter? = nil,
-    ) -> some View {
-        modifier(
-            PreviewableModifier(
-                container: container,
-                router: router,
             ),
         )
     }

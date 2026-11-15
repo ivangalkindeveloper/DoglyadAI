@@ -122,6 +122,7 @@ class DModuleViewModel<State>: DStateViewModel<State> {
             }
         }
         guard !isInitialized else {
+            onReappear()
             return
         }
         isInitialized = true
@@ -142,6 +143,8 @@ class DModuleViewModel<State>: DStateViewModel<State> {
     }
 
     func onInit() {}
+
+    func onReappear() {}
 
     func onDisappear() {
         cancelOperationTask()

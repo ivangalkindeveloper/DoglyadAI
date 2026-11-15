@@ -48,13 +48,13 @@ struct ContentDesignTests {
             onRefreshSubscriptionStatus: {},
         )
         #expect(
-            model.state is MenuContentState && model.reportsCount == nil,
+            model.state is MenuContentState && model.state.reportsCount == nil,
         )
         model.onAppear()
         model.onTapHistory()
         await model.lastTask?.value
         #expect(
-            model.state is MenuContentState && model.reportsCount == nil && errors == 0,
+            model.state is MenuContentState && model.state.reportsCount == nil && errors == 0,
         )
         #expect(
             model.historyDescription == container.l10n[

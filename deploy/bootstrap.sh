@@ -147,7 +147,19 @@ log "laying out $TARGET_DIR"
 mkdir -p "$TARGET_DIR/logs"
 download "$RAW/docker-compose.$ROLE.yml" "$TARGET_DIR/docker-compose.yml"
 if [ "$ROLE" = main ]; then
-    download "$RAW/Caddyfile" "$TARGET_DIR/Caddyfile"
+    download "$RAW/main-assets.json" "$TARGET_DIR/main-assets.json"
+    while IFS=$'\t' read -r source destination; do
+        mkdir -p "$(dirname "$TARGET_DIR/$destination")"
+        download "$RAW/$source" "$TARGET_DIR/$destination"
+    done < <(python3 - "$TARGET_DIR/main-assets.json" <<'PY'
+import json, sys
+from pathlib import Path
+for source, destination in json.loads(Path(sys.argv[1]).read_text()).items():
+    if any(Path(p).is_absolute() or '..' in Path(p).parts for p in (source, destination)):
+        raise SystemExit('Invalid deployment asset path')
+    print(source + '\t' + destination)
+PY
+    )
 fi
 
 # --- GPU stack ---------------------------------------------------------------

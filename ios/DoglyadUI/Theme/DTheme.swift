@@ -10,6 +10,11 @@ public class DTheme: ObservableObject {
         dampingFraction: 0.75,
         blendDuration: 1,
     )
+    public static let light = DTheme(
+        color: DColor.light,
+        size: DSize.shared,
+        typography: DTypography.shared,
+    )
 
     public init(
         color: DColor,
@@ -20,16 +25,8 @@ public class DTheme: ObservableObject {
         self.size = size
         self.typography = typography
     }
-}
 
-public extension DTheme {
-    static let light = DTheme(
-        color: DColor.light,
-        size: DSize.shared,
-        typography: DTypography.shared,
-    )
-
-    func changeColor(
+    public func changeColor(
         color: DColor,
     ) {
         self.color = color

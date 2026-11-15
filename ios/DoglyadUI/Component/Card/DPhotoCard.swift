@@ -26,10 +26,15 @@ public struct DPhotoCard: DViewProtocol {
     }
 
     public var body: some View {
-        DImage(
+        Image(
             uiImage: image,
-            accessibilityElement: accessibilityElement,
-            accessibilityIdentifier: accessibilityIdentifier,
+        )
+        .resizable()
+        .modifier(
+            DAccessibilityModifier(
+                element: accessibilityElement,
+                identifier: accessibilityIdentifier,
+            ),
         )
         .aspectRatio(
             contentMode: .fill,

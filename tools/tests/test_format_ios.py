@@ -250,6 +250,24 @@ print(text, raw, pattern)
         self.assertEqual(positions, sorted(positions))
         self.assertEqual(self.format(result), result)
 
+    def test_struct_member_order_preserves_fields_initializers_and_accessors(self) -> None:
+        result = self.format(
+            "struct Example {\n"
+            "func first() {}\n"
+            "var doubled: Int { value * 2 }\n"
+            "/// Stored input.\n"
+            "let value: Int\n"
+            "let second = 2\n"
+            "init(value: Int) { self.value = value }\n"
+            "func secondMethod() {}\n"
+            "}\n"
+        )
+        declarations = ["let value:", "let second", "init(", "var doubled:", "func first()", "func secondMethod()"]
+        positions = [result.index(declaration) for declaration in declarations]
+        self.assertEqual(positions, sorted(positions))
+        self.assertIn("/// Stored input.\n    let value:", result)
+        self.assertEqual(self.format(result), result)
+
     def test_extensions_follow_member_order_without_merging_blocks(self) -> None:
         result = self.format(
             "class Example {}\n"

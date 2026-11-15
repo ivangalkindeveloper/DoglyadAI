@@ -20,7 +20,7 @@ struct ReportReceivedMarkdownView: DViewProtocol {
             .dShimmer(
                 isShimmering: viewModel.isGenerating,
                 cornerRadius: 0,
-                masksContent: true,
+                isContentMasked: true,
             )
         }
     }

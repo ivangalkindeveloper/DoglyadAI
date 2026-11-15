@@ -243,7 +243,7 @@
                             allowed ? [candidate] : [],
                         )
                         XCTAssertEqual(
-                            model.currentValue,
+                            model.state.currentValue,
                             allowed ? candidate : nil,
                         )
                     }
@@ -253,53 +253,52 @@
 
         func testParserAvailabilityRefreshesOnForegroundAndBlocksUnavailableSelection() async {
             let container = DependencyContainer.previewable
-            var available = true
+            var isControlAvailable = true
             var selected: TranscriptParserType?
-            let model = SelectTranscriptParserViewModel(
-                container: container,
-                router: router(),
-                arguments: SelectTranscriptParserArguments(
-                    currentValue: .server,
-                    onSelected: {
-                        selected = $0
+            let makeModel = {
+                SelectTranscriptParserViewModel(
+                    container: container,
+                    router: DRouter(
+                        initialRoute: RouteScreen(
+                            type: .scan,
+                        ),
+                    ),
+                    arguments: SelectTranscriptParserArguments(
+                        currentValue: .server,
+                        onSelected: {
+                            selected = $0
+                        },
+                    ),
+                    getSubscriptionStatus: {
+                        ModulePreviewFactory.subscription
                     },
-                ),
-                getSubscriptionStatus: {
-                    ModulePreviewFactory.subscription
-                },
-                observeSubscriptionStatus: { _ in
-                    AnyCancellable {}
-                },
-                onSubscriptionStatusUpdated: { _ in },
-                getSettingsAI: {
-                    container.initialSettingsAI
-                },
-                onRefreshSubscriptionStatus: {},
-                getFoundationModelsAvailability: {
-                    available
-                },
-            )
+                    observeSubscriptionStatus: { _ in
+                        AnyCancellable {}
+                    },
+                    onSubscriptionStatusUpdated: { _ in },
+                    getSettingsAI: {
+                        container.initialSettingsAI
+                    },
+                    onRefreshSubscriptionStatus: {},
+                    getFoundationModelsAvailability: {
+                        isControlAvailable
+                    },
+                )
+            }
+            let model = makeModel()
             model.onInit()
             XCTAssertTrue(
                 model.isSelectionEnabled(
                     for: .foundationModels,
                 ),
             )
-            model.onSelect(
-                .foundationModels,
-            )
-            XCTAssertEqual(
-                selected,
-                .foundationModels,
-            )
-            selected = nil
-            available = false
+            isControlAvailable = false
             NotificationCenter.default.post(
                 name: UIApplication.didBecomeActiveNotification,
                 object: nil,
             )
             for _ in 0 ..< 100 {
-                if !model.isFoundationModelsAvailable {
+                if !model.state.isFoundationModelsAvailable {
                     break
                 }
                 try? await Task.sleep(
@@ -309,7 +308,7 @@
                 )
             }
             XCTAssertFalse(
-                model.isFoundationModelsAvailable,
+                model.state.isFoundationModelsAvailable,
             )
             model.onSelect(
                 .foundationModels,
@@ -317,20 +316,13 @@
             XCTAssertNil(
                 selected,
             )
-            model.onSelect(
-                .server,
-            )
-            XCTAssertEqual(
-                selected,
-                .server,
-            )
-            available = true
+            isControlAvailable = true
             NotificationCenter.default.post(
                 name: UIApplication.didBecomeActiveNotification,
                 object: nil,
             )
             for _ in 0 ..< 100 {
-                if model.isFoundationModelsAvailable {
+                if model.state.isFoundationModelsAvailable {
                     break
                 }
                 try? await Task.sleep(
@@ -340,8 +332,49 @@
                 )
             }
             XCTAssertTrue(
-                model.isFoundationModelsAvailable,
+                model.state.isFoundationModelsAvailable,
             )
+            model.onSelect(
+                .foundationModels,
+            )
+            XCTAssertEqual(
+                selected,
+                .foundationModels,
+            )
+            model.onDisappear()
+
+            isControlAvailable = false
+            NotificationCenter.default.post(
+                name: UIApplication.didBecomeActiveNotification,
+                object: nil,
+            )
+            for _ in 0 ..< 10 {
+                await Task.yield()
+            }
+            XCTAssertTrue(
+                model.state.isFoundationModelsAvailable,
+                "The closed presentation must stop observing capability changes",
+            )
+            selected = nil
+            let reopened = makeModel()
+            reopened.onInit()
+            XCTAssertFalse(
+                reopened.state.isFoundationModelsAvailable,
+            )
+            reopened.onSelect(
+                .foundationModels,
+            )
+            XCTAssertNil(
+                selected,
+            )
+            reopened.onSelect(
+                .server,
+            )
+            XCTAssertEqual(
+                selected,
+                .server,
+            )
+            reopened.onDisappear()
         }
 
         func testTranscriberAvailabilityRefreshesOnForegroundWithoutDuplicates() async {
@@ -375,7 +408,7 @@
             model.onInit()
             await model.lastTask?.value
             XCTAssertEqual(
-                model.options,
+                model.state.options,
                 [.speechAnalyzer, .whisperKit],
             )
             let changes: [(DSpeechEngine?, [TranscriberType])] = [(.sfSpeechRecognizer, [.sfSpeechRecognizer, .whisperKit]), (nil, [.whisperKit])]
@@ -386,7 +419,7 @@
                     object: nil,
                 )
                 for _ in 0 ..< 100 {
-                    if model.options == expected {
+                    if model.state.options == expected {
                         break
                     }
                     try? await Task.sleep(
@@ -396,7 +429,7 @@
                     )
                 }
                 XCTAssertEqual(
-                    model.options,
+                    model.state.options,
                     expected,
                 )
                 model.onSelect(
@@ -1137,7 +1170,7 @@
                 ),
             )
             XCTAssertEqual(
-                model.date,
+                model.state.date,
                 initial,
             )
             XCTAssertLessThanOrEqual(

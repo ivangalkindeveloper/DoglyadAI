@@ -3,7 +3,6 @@ import SwiftUI
 import UIKit
 
 struct ExpandableContentView<Content: View>: DViewProtocol {
-    @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     private let text: String
     private let backgroundColor: Color
@@ -67,51 +66,63 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
             alignment: .leading,
             spacing: size.s4,
         ) {
-            tappableContent
-                .fixedSize(
-                    horizontal: false,
-                    vertical: true,
-                )
-                .onGeometryChange(
-                    for: CGFloat.self,
-                    of: {
-                        $0.size.height
-                    },
-                    action: {
-                        contentHeight = $0
-                    },
+            ExpandableContentTapView(
+                content: content,
+                onTapContent: onTapContent,
+                isDisabled: isDisabled,
+            )
+            .fixedSize(
+                horizontal: false,
+                vertical: true,
+            )
+            .onGeometryChange(
+                for: CGFloat.self,
+                of: {
+                    $0.size.height
+                },
+                action: {
+                    contentHeight = $0
+                },
+            )
+            .frame(
+                maxWidth: .infinity,
+                maxHeight: isExpandable && !isShowingExpandedContent ? collapsedHeight : nil,
+                alignment: .topLeading,
+            )
+            .clipped()
+            .overlay(
+                alignment: .bottomTrailing,
+            ) {
+                if isExpandable, !isShowingExpandedContent {
+                    HStack(
+                        spacing: .zero,
+                    ) {
+                        DTextFade(
+                            backgroundColor: backgroundColor,
+                        )
+
+                        ExpandableContentButtonView(
+                            isExpanded: $isExpanded,
+                            isShowingExpandedContent: isShowingExpandedContent,
+                            isDisabled: isDisabled,
+                        )
+                        .background(
+                            backgroundColor,
+                        )
+                    }
+                }
+            }
+
+            if isShowingExpandedContent {
+                ExpandableContentButtonView(
+                    isExpanded: $isExpanded,
+                    isShowingExpandedContent: isShowingExpandedContent,
+                    isDisabled: isDisabled,
                 )
                 .frame(
                     maxWidth: .infinity,
-                    maxHeight: isExpandable && !isShowingExpandedContent ? collapsedHeight : nil,
-                    alignment: .topLeading,
+                    alignment: .trailing,
                 )
-                .clipped()
-                .overlay(
-                    alignment: .bottomTrailing,
-                ) {
-                    if isExpandable, !isShowingExpandedContent {
-                        HStack(
-                            spacing: .zero,
-                        ) {
-                            DTextFade(
-                                backgroundColor: backgroundColor,
-                            )
-
-                            expandButton
-                                .background(
-                                    backgroundColor,
-                                )
-                        }
-                    }
-                }
-
-            if isShowingExpandedContent {
-                expandButton
-                    .frame(
-                        maxWidth: .infinity,
-                        alignment: .trailing,
-                    )
             }
         }
         .onChange(
@@ -120,8 +131,26 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
             isExpanded = false
         }
     }
+}
 
-    private var expandButton: some View {
+private struct ExpandableContentButtonView: DViewProtocol {
+    @EnvironmentObject private var l10n: L10N
+    @EnvironmentObject var theme: DTheme
+    @Binding private var isExpanded: Bool
+    private let isShowingExpandedContent: Bool
+    private let isDisabled: Bool
+
+    init(
+        isExpanded: Binding<Bool>,
+        isShowingExpandedContent: Bool,
+        isDisabled: Bool,
+    ) {
+        _isExpanded = isExpanded
+        self.isShowingExpandedContent = isShowingExpandedContent
+        self.isDisabled = isDisabled
+    }
+
+    var body: some View {
         DTextButton(
             action: {
                 withAnimation(
@@ -144,23 +173,52 @@ struct ExpandableContentView<Content: View>: DViewProtocol {
             isDisabled: isDisabled,
         )
     }
+}
 
-    @ViewBuilder
-    private var tappableContent: some View {
+private struct ExpandableContentTapView<Content: View>: View {
+    private let content: Content
+    private let onTapContent: (() -> Void)?
+    private let isDisabled: Bool
+
+    init(
+        content: Content,
+        onTapContent: (() -> Void)?,
+        isDisabled: Bool,
+    ) {
+        self.content = content
+        self.onTapContent = onTapContent
+        self.isDisabled = isDisabled
+    }
+
+    var body: some View {
         if let onTapContent {
             DTextButton(
                 action: onTapContent,
                 content: {
-                    alignedContent
+                    ExpandableContentAlignedView(
+                        content: content,
+                    )
                 },
                 isDisabled: isDisabled,
             )
         } else {
-            alignedContent
+            ExpandableContentAlignedView(
+                content: content,
+            )
         }
     }
+}
 
-    private var alignedContent: some View {
+private struct ExpandableContentAlignedView<Content: View>: View {
+    private let content: Content
+
+    init(
+        content: Content,
+    ) {
+        self.content = content
+    }
+
+    var body: some View {
         content
             .frame(
                 maxWidth: .infinity,

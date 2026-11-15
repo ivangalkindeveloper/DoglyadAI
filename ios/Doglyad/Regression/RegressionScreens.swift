@@ -5100,7 +5100,7 @@
                         "regression.atlas-requestlimitexceeded-741f51e813",
                     )
             default:
-                Text(
+                DText(
                     "Unknown regression preview",
                 )
             }

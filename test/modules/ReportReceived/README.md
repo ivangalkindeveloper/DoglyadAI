@@ -6,7 +6,7 @@
 
 | ID | Сценарий | Автоматизация |
 |---|---|---|
-| `ReportReceived.completed` | Получить и открыть готовый протокол | maestro |
+| `ReportReceived.completed` | Получить и открыть готовый протокол | mixed |
 | `ReportReceived.copy-email` | Копирование и рабочая почта | maestro |
 | `ReportReceived.retry` | Ошибка, обрыв и повтор генерации | maestro |
 

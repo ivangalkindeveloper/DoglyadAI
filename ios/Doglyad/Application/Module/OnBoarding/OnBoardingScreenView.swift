@@ -90,5 +90,8 @@ struct OnBoardingScreenView: DViewProtocol {
         .onAppear(
             perform: viewModel.onAppear,
         )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

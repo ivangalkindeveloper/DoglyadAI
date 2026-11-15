@@ -23,7 +23,7 @@ struct LocalBillingResetInitializationTests {
                 string: "http://127.0.0.1:8000",
             )!,
         )
-        var failed = false
+        var isFailed = false
         await DependencyInitializer<InitializationProcess, DependencyContainer>(
             createProcess: {
                 process
@@ -33,11 +33,11 @@ struct LocalBillingResetInitializationTests {
                 bundleIdentifier: bundleIdentifier,
             )],
             onError: { _, _, _, _ in
-                failed = true
+                isFailed = true
             },
         ).run()
         #expect(
-            !failed,
+            !isFailed,
         )
         #expect(
             await store.removalCount == (bundleIdentifier == "com.medical.doglyad.local" ? 1 : 0),

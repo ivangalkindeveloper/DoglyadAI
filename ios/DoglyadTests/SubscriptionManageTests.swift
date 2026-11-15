@@ -471,6 +471,68 @@
             )
         }
 
+        @Test(
+            arguments: [false, true],
+            [false, true],
+        )
+        func leavingDiscardsLateCatalogSuccessAndFailure(
+            isFailure: Bool,
+            isDisappearance: Bool,
+        ) async throws {
+            let container = SubscriptionManagePreviewFactory.makeContainer()
+            let products = try await SubscriptionPreviewRepository(
+                locale: container.l10n.locale,
+            ).fetchProducts()
+            let router = DRouter(
+                initialRoute: RouteScreen(
+                    type: .menu,
+                ),
+            )
+            router.push(
+                route: RouteScreen(
+                    type: .subscriptionManage,
+                ),
+            )
+            var response: CheckedContinuation<Void, Never>?
+            let model = SubscriptionManagePreviewFactory.makeViewModel(
+                container: container,
+                router: router,
+                status: SubscriptionManagePreviewFactory.makeStatus(
+                    source: .apple,
+                ),
+                fetchProducts: {
+                    await withCheckedContinuation {
+                        response = $0
+                    }
+                    if isFailure {
+                        throw URLError(
+                            .notConnectedToInternet,
+                        )
+                    }
+                    return products
+                },
+            )
+            model.onAppear()
+            while response == nil {
+                await Task.yield()
+            }
+            let task = model.lastTask
+            if isDisappearance {
+                model.onDisappear()
+            } else {
+                model.onTapBack()
+            }
+            let closedState = model.state
+            response?.resume()
+            await task?.value
+            #expect(
+                model.state === closedState,
+            )
+            if !isDisappearance {
+                model.onDisappear()
+            }
+        }
+
         @Test
         func leavingBeforeManagementStartsDoesNotSendTheOperation() async {
             var calls = 0

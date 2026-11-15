@@ -6,17 +6,16 @@ struct ScanDateOfBirthCardView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @EnvironmentObject private var viewModel: ScanViewModel
-
-    private var date: Date {
-        viewModel.patientDateOfBirth
-    }
-
     var isDisabled: Bool = false
 
     init(
         isDisabled: Bool = false,
     ) {
         self.isDisabled = isDisabled
+    }
+
+    private var date: Date {
+        viewModel.patientDateOfBirth
     }
 
     var body: some View {

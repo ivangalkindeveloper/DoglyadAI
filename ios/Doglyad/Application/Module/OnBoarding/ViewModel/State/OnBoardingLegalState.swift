@@ -10,6 +10,14 @@ final class OnBoardingLegalState: OnBoardingStateProtocol, @MainActor Equatable 
         self.isLegalAccepted = isLegalAccepted
     }
 
+    func copyWith(
+        isLegalAccepted: Bool? = nil,
+    ) -> OnBoardingLegalState {
+        OnBoardingLegalState(
+            isLegalAccepted: isLegalAccepted ?? self.isLegalAccepted,
+        )
+    }
+
     static func == (
         lhs: OnBoardingLegalState,
         rhs: OnBoardingLegalState,

@@ -48,10 +48,18 @@ public struct DButton: DViewProtocol {
                         isVisible: badge.isVisible,
                         isShimmering: badge.isShimmering,
                     ) {
-                        label
+                        DButtonLabelView(
+                            image: image,
+                            title: title,
+                            truncatingTitleSuffix: truncatingTitleSuffix,
+                        )
                     }
                 } else {
-                    label
+                    DButtonLabelView(
+                        image: image,
+                        title: title,
+                        truncatingTitleSuffix: truncatingTitleSuffix,
+                    )
                 }
             }
             .disabled(
@@ -69,8 +77,25 @@ public struct DButton: DViewProtocol {
             ),
         )
     }
+}
 
-    private var label: some View {
+private struct DButtonLabelView: DViewProtocol {
+    @EnvironmentObject var theme: DTheme
+    private let image: ImageResource?
+    private let title: LocalizedStringResource?
+    private let truncatingTitleSuffix: String?
+
+    init(
+        image: ImageResource?,
+        title: LocalizedStringResource?,
+        truncatingTitleSuffix: String?,
+    ) {
+        self.image = image
+        self.title = title
+        self.truncatingTitleSuffix = truncatingTitleSuffix
+    }
+
+    var body: some View {
         HStack(
             spacing: .zero,
         ) {

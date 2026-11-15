@@ -74,12 +74,13 @@ def verify_requests(events: list[dict], expected: dict, project: str) -> dict:
     for key, value in expected.items():
         if key in {"reportSections", "jobStatus"}:
             continue
-        elif key == "settingsAI":
+        elif key in {"settingsAI", "examinationData"}:
             if any(
-                request[key].get(field) != setting for field, setting in value.items()
+                field not in request[key] or request[key][field] != setting
+                for field, setting in value.items()
             ):
                 raise ValueError(
-                    "Actual generation settings differ from the saved UI settings"
+                    f"Actual generation fields differ from the expected UI values: {key}"
                 )
         elif key == "templateId":
             fixtures = json.loads(

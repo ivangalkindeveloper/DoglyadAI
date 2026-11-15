@@ -156,7 +156,7 @@ bash start.sh
 ```json
 {
   "role": "inference",
-  "ssh": "doglyad-spark",
+  "ssh": "doglyad-inference",
   "directory": "/opt/doglyad/inference",
   "profile": "../inference/profiles/dgx-spark.json"
 }

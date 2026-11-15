@@ -1,10 +1,6 @@
 public struct DNeuralUltrasoundVoiceFormParseResponseDTO: Decodable, Sendable {
     public let proposals: [DNeuralUltrasoundVoiceFieldProposalDTO]
 
-    private enum DNeuralUltrasoundCodingKeys: String, CodingKey {
-        case proposals
-    }
-
     public init(
         from decoder: Decoder,
     ) throws {
@@ -15,5 +11,9 @@ public struct DNeuralUltrasoundVoiceFormParseResponseDTO: Decodable, Sendable {
             [DNeuralUltrasoundVoiceFieldProposalDTO].self,
             forKey: .proposals,
         )
+    }
+
+    private enum DNeuralUltrasoundCodingKeys: String, CodingKey {
+        case proposals
     }
 }

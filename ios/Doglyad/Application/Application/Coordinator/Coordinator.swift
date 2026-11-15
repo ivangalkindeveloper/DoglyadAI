@@ -81,9 +81,7 @@ final class Coordinator {
     func dismissSheet() {
         router.dismissSheet()
     }
-}
 
-extension Coordinator {
     func navigateAfterOnBoarding() async throws {
         let status = try await refreshSubscriptionStatus()
         try Task.checkCancellation()

@@ -2,13 +2,8 @@ import DoglyadUI
 import SwiftUI
 
 struct SectionHeaderView: DViewProtocol {
-    private enum Title {
-        case localized(LocalizedStringResource)
-        case verbatim(String)
-    }
-
     @EnvironmentObject var theme: DTheme
-    private let title: Title
+    private let title: SectionHeaderTitle
 
     init(
         title: LocalizedStringResource,
@@ -30,24 +25,26 @@ struct SectionHeaderView: DViewProtocol {
         HStack(
             spacing: .zero,
         ) {
-            titleView
-                .padding(
-                    .horizontal,
-                    size.s12,
-                )
-                .padding(
-                    .vertical,
-                    size.s8,
-                )
-                .background(
-                    DCardBackground(
-                        cornerRadius: size.s48,
-                        color: color.grayscaleBackgroundWeak.opacity(
-                            0.5,
-                        ),
-                        material: .ultraThinMaterial,
+            SectionHeaderTitleView(
+                title: title,
+            )
+            .padding(
+                .horizontal,
+                size.s12,
+            )
+            .padding(
+                .vertical,
+                size.s8,
+            )
+            .background(
+                DCardBackground(
+                    cornerRadius: size.s48,
+                    color: color.grayscaleBackgroundWeak.opacity(
+                        0.5,
                     ),
-                )
+                    material: .ultraThinMaterial,
+                ),
+            )
 
             Spacer(
                 minLength: .zero,
@@ -65,9 +62,24 @@ struct SectionHeaderView: DViewProtocol {
             maxWidth: .infinity,
         )
     }
+}
 
-    @ViewBuilder
-    private var titleView: some View {
+private enum SectionHeaderTitle {
+    case localized(LocalizedStringResource)
+    case verbatim(String)
+}
+
+private struct SectionHeaderTitleView: DViewProtocol {
+    @EnvironmentObject var theme: DTheme
+    private let title: SectionHeaderTitle
+
+    init(
+        title: SectionHeaderTitle,
+    ) {
+        self.title = title
+    }
+
+    var body: some View {
         switch title {
         case let .localized(
             value,

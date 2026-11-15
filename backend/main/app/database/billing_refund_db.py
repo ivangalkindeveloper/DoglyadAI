@@ -5,10 +5,10 @@ from datetime import datetime
 from sqlalchemy import DateTime, ForeignKey, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.database.billing_base import BillingBase
+from app.database.application_base import ApplicationBase
 
 
-class BillingRefundDB(BillingBase):
+class BillingRefundDB(ApplicationBase):
     __tablename__ = "billing_refunds"
 
     id: Mapped[str] = mapped_column(

@@ -31,7 +31,7 @@ struct SelectTranscriberBottomSheetView: DViewProtocol {
                 ),
             ) {
                 ForEach(
-                    viewModel.options,
+                    viewModel.state.options,
                     id: \.self,
                 ) { option in
                     DListButtonCard(
@@ -56,6 +56,9 @@ struct SelectTranscriberBottomSheetView: DViewProtocol {
         )
         .onAppear(
             perform: viewModel.onAppear,
+        )
+        .onDisappear(
+            perform: viewModel.onDisappear,
         )
     }
 }

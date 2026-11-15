@@ -25,7 +25,6 @@ from app.database.billing_usage_db import BillingUsageDB
 from app.error.billing_conflict_error import BillingConflictError
 from app.error.billing_limit_error import BillingLimitError
 from app.error.billing_purchase_error import BillingPurchaseError
-from app.error.billing_unavailable_error import BillingUnavailableError
 from tests.support.billing.billing_test_context import BillingTestContext
 
 
@@ -589,7 +588,6 @@ def test_canonical_payment_mode_must_match_environment(
             configuration,
             environment=environment,
             is_live=environment == "production",
-            is_live_enabled=True,
         ) as ctx:
             owner = str(
                 (await ctx.service.register()).ownerId,
@@ -638,7 +636,7 @@ def test_canonical_payment_mode_must_match_environment(
     )
 
 
-def test_production_launch_gate_rejects_before_dispatch(
+def test_production_prepares_live_invoice_without_granting_access(
     tmp_path: Path,
     configuration: Configuration,
 ) -> None:
@@ -647,19 +645,41 @@ def test_production_launch_gate_rejects_before_dispatch(
             tmp_path,
             configuration,
             environment="production",
+            is_live=True,
         ) as ctx:
             owner = str(
                 (await ctx.service.register()).ownerId,
             )
-            with pytest.raises(
-                BillingUnavailableError,
-            ):
-                await ctx.checkout.prepare(
-                    owner,
-                    "monthly",
-                    LanguageCode.RU,
+            prepared = await ctx.checkout.prepare(
+                owner,
+                "monthly",
+                LanguageCode.RU,
+            )
+            assert prepared.payment.planId == "monthly"
+            assert (
+                len(
+                    ctx.payments,
                 )
-            assert not ctx.payments and not ctx.requests
+                == 1
+            )
+            assert (
+                next(
+                    iter(
+                        ctx.payments.values(),
+                    ),
+                )["test"]
+                is False
+            )
+            payload = ctx.decode_payload(
+                ctx.requests[0],
+            )
+            assert "IsTest" not in payload["AdditionalParameters"]
+            assert (
+                await ctx.service.status(
+                    owner,
+                )
+                is None
+            )
 
     asyncio.run(
         run(),

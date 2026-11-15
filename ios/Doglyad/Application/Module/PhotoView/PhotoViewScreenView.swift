@@ -41,18 +41,18 @@ struct PhotoViewScreenView: DViewProtocol {
                 TabView(
                     selection: Binding(
                         get: {
-                            viewModel.selectedPhotoID
+                            viewModel.state.selectedPhotoID
                         },
                         set: viewModel.onPhotoSelected,
                     ),
                 ) {
                     ForEach(
-                        viewModel.photos,
+                        viewModel.state.photos,
                     ) { photo in
                         PhotoViewZoomableImage(
                             photoId: photo.id,
                             image: photo.image,
-                            isSelected: photo.id == viewModel.selectedPhotoID,
+                            isSelected: photo.id == viewModel.state.selectedPhotoID,
                             contentInsets: EdgeInsets(
                                 top: toolbarInset + size.s16,
                                 leading: size.s16,
@@ -72,7 +72,7 @@ struct PhotoViewScreenView: DViewProtocol {
                 )
                 .ignoresSafeArea()
 
-                if !viewModel.photos.isEmpty {
+                if !viewModel.state.photos.isEmpty {
                     PhotoViewControlsView()
                         .padding(
                             size.s16,
@@ -94,12 +94,8 @@ struct PhotoViewScreenView: DViewProtocol {
         .onAppear(
             perform: viewModel.onAppear,
         )
-        .onChange(
-            of: viewModel.sourcePhotos,
-        ) { _, updated in
-            viewModel.synchronizePhotos(
-                updated,
-            )
-        }
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

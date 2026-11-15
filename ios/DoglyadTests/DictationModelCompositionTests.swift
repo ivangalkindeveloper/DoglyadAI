@@ -293,7 +293,7 @@ struct DictationModelCompositionTests {
     )
     func cancellationAfterResponse() async throws {
         let generator = GeneratorStub()
-        generator.cancelBeforeReturning = true
+        generator.isCancellationBeforeReturnEnabled = true
         let local = DNeuralUltrasoundModelFoundationModels(
             generator: generator,
         )
@@ -308,7 +308,7 @@ struct DictationModelCompositionTests {
             try await localTask.value
         }
         let transport = try TransportStub()
-        transport.cancelBeforeReturning = true
+        transport.isCancellationBeforeReturnEnabled = true
         let server = DNeuralUltrasoundModelServer(
             parseDictation: transport.parseDictation,
         )
@@ -559,7 +559,7 @@ private final class ProviderStub: DNeuralUltrasoundFoundationModelProviderProtoc
 
 private final class GeneratorStub: DNeuralUltrasoundProposalGeneratorProtocol {
     var error: (any Error)?
-    var cancelBeforeReturning = false
+    var isCancellationBeforeReturnEnabled = false
     private(set) var prewarms = 0
     private(set) var calls = 0
     private(set) var request: DNeuralUltrasoundDictationParseRequest?
@@ -578,7 +578,7 @@ private final class GeneratorStub: DNeuralUltrasoundProposalGeneratorProtocol {
         if let error {
             throw error
         }
-        if cancelBeforeReturning {
+        if isCancellationBeforeReturnEnabled {
             withUnsafeCurrentTask {
                 $0?.cancel()
             }
@@ -597,7 +597,7 @@ private final class GeneratorStub: DNeuralUltrasoundProposalGeneratorProtocol {
 private final class TransportStub {
     private let response: DNeuralUltrasoundVoiceFormParseResponseDTO
     var error: (any Error)?
-    var cancelBeforeReturning = false
+    var isCancellationBeforeReturnEnabled = false
     private(set) var calls = 0
     private(set) var selectedNeuralModelId: String?
     private(set) var typeID: String?
@@ -626,7 +626,7 @@ private final class TransportStub {
         if let error {
             throw error
         }
-        if cancelBeforeReturning {
+        if isCancellationBeforeReturnEnabled {
             withUnsafeCurrentTask {
                 $0?.cancel()
             }

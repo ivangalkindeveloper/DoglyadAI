@@ -11,10 +11,10 @@ struct HistoryEmptyView: DViewProtocol {
         VStack(
             spacing: .zero,
         ) {
-            DImage(
+            DAssetScaleImage(
                 .doglyadMagnifier,
+                widthScale: .regular,
             )
-            .scaledToFit()
             .frame(
                 maxWidth: .infinity,
                 maxHeight: .infinity,

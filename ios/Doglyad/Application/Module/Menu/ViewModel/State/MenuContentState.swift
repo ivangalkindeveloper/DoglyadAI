@@ -2,12 +2,26 @@ import Foundation
 
 @MainActor
 final class MenuContentState: MenuStateProtocol, @MainActor Equatable {
-    init() {}
+    let reportsCount: Int?
+
+    init(
+        reportsCount: Int? = nil,
+    ) {
+        self.reportsCount = reportsCount
+    }
+
+    func copyWith(
+        reportsCount: Int?? = nil,
+    ) -> MenuContentState {
+        MenuContentState(
+            reportsCount: reportsCount ?? self.reportsCount,
+        )
+    }
 
     static func == (
-        _: MenuContentState,
-        _: MenuContentState,
+        lhs: MenuContentState,
+        rhs: MenuContentState,
     ) -> Bool {
-        true
+        lhs.reportsCount == rhs.reportsCount
     }
 }

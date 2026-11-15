@@ -18,13 +18,6 @@ struct DNeuralUltrasoundProposalGenerationItem: Codable, Sendable {
         self.accuracy = accuracy
     }
 
-    private enum DNeuralUltrasoundCodingKeys: String, CodingKey {
-        case fieldId = "field_id"
-        case value
-        case sourceQuote = "evidence"
-        case accuracy
-    }
-
     init(
         from decoder: Decoder,
     ) throws {
@@ -75,6 +68,13 @@ struct DNeuralUltrasoundProposalGenerationItem: Codable, Sendable {
             DNeuralVoiceFieldAccuracy.self,
             forKey: .accuracy,
         )
+    }
+
+    private enum DNeuralUltrasoundCodingKeys: String, CodingKey {
+        case fieldId = "field_id"
+        case value
+        case sourceQuote = "evidence"
+        case accuracy
     }
 
     func encode(

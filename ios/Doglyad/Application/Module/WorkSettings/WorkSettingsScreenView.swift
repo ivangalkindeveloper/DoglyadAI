@@ -220,5 +220,8 @@ struct WorkSettingsScreenView: DViewProtocol {
             }
             focus = newValue
         }
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

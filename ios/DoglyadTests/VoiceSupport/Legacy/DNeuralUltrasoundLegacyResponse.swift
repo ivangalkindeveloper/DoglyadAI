@@ -1,25 +1,6 @@
 import Foundation
 
 public struct DNeuralUltrasoundLegacyResponse: Codable {
-    public enum DNeuralUltrasoundGender: String, Codable {
-        case male
-        case female
-
-        @available(iOS 26.0, *)
-        static func fromFoudationModels(
-            _ response: DNeuralUltrasoundLegacyModelFoundationModels.DNeuralUltrasoundGender?,
-        ) -> Self? {
-            switch response {
-            case .male:
-                .male
-            case .female:
-                .female
-            case nil:
-                nil
-            }
-        }
-    }
-
     public let patientName: String?
     public let patientGender: DNeuralUltrasoundGender?
     public let patientDateOfBirth: Date?
@@ -83,6 +64,25 @@ public struct DNeuralUltrasoundLegacyResponse: Codable {
         self.patientWeightKG = patientWeightKG
         self.patientComplaints = patientComplaints
         self.examinationDescription = examinationDescription
+    }
+
+    public enum DNeuralUltrasoundGender: String, Codable {
+        case male
+        case female
+
+        @available(iOS 26.0, *)
+        static func fromFoudationModels(
+            _ response: DNeuralUltrasoundLegacyModelFoundationModels.DNeuralUltrasoundGender?,
+        ) -> Self? {
+            switch response {
+            case .male:
+                .male
+            case .female:
+                .female
+            case nil:
+                nil
+            }
+        }
     }
 
     @available(iOS 26.0, *)

@@ -1,0 +1,11 @@
+[Unit]
+Description=Doglyad application database full backup and WAL validation
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/doglyad
+EnvironmentFile=/opt/doglyad/database-secrets/backup-monitor.env
+ExecStart=/bin/bash /opt/doglyad/database/backup.sh
+TimeoutStartSec=7200

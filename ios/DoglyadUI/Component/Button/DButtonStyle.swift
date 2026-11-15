@@ -16,15 +16,6 @@ public struct DButtonStyle: ButtonStyle {
     @Environment(
         \.isEnabled,
     ) private var isEnabled
-
-    private var color: DColor {
-        theme.color
-    }
-
-    private var size: DSize {
-        theme.size
-    }
-
     let type: DButtonStyleType
     let customBackgroundColor: Color?
 
@@ -34,6 +25,14 @@ public struct DButtonStyle: ButtonStyle {
     ) {
         self.type = type
         customBackgroundColor = backgroundColor
+    }
+
+    private var color: DColor {
+        theme.color
+    }
+
+    private var size: DSize {
+        theme.size
     }
 
     public func makeBody(

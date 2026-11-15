@@ -14,6 +14,7 @@ cases:
   - action: Перезапустить приложение
     expect: Выбор сохранён.
   covers:
+  - onDisappear
   - onSelect
   automation:
     kind: maestro
@@ -37,6 +38,7 @@ cases:
     expect: Доступность обновлена; неподдерживаемый выбор не сохраняется.
   covers:
   - onInit
+  - onReappear
   automation:
     kind: mixed
     flows:

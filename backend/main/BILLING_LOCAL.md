@@ -3,10 +3,11 @@
 ## Коротко
 
 - `Backend: Local Mock` в VS Code запускает PostgreSQL в Docker, ожидает готовности и применяет миграции до старта API.
-- `BILLING_DATABASE_URL` — строка подключения: адрес PostgreSQL, порт, имя БД, пользователь и пароль. Локальный профиль задает ее автоматически.
+- `DATABASE_URL` — строка подключения: адрес PostgreSQL, порт, имя БД, пользователь и пароль. Локальный профиль задает ее автоматически.
 - Без URL backend работает без подписок. При заданном URL он проверяет доступность таблиц.
-- Локальная БД доступна на `127.0.0.1:5433`. Данные лежат в Docker-томе `doglyad-local-billing-data` и сохраняются между запусками.
-- В отдельном billing Compose данные PostgreSQL лежат в томе `billing_database`, внутри контейнера — `/var/lib/postgresql/data`.
+- Локальная БД доступна на `127.0.0.1:5433`. Данные лежат в Docker-томе `doglyad-local-database-data` и сохраняются между запусками.
+- `Backend: Local Mock` и `Backend: Local Inference` используют `app.local_main`. Если `REPORT_GENERATION_ENCRYPTION_KEY` не задан, launcher создаёт и повторно использует ключ `~/.local/share/doglyad/report-generation.key`; вручную задавать ключ для этих профилей не нужно.
+- В отдельном billing Compose данные PostgreSQL лежат в томе `doglyad_database`, внутри контейнера — `/var/lib/postgresql/data`.
 - После подготовки БД примените миграции. Для оплаты запустите API и worker; для уведомлений нужен gateway с HTTPS.
 - Миграции меняют структуру БД. Они не заменяют резервную копию и не восстанавливают удаленные платежи.
 
@@ -14,15 +15,15 @@
 
 Запустите Docker Desktop. Выберите профиль `Backend: Local Mock` в VS Code.
 Его подготовка загружает обычное development-окружение, затем запускает
-`tools/local_billing_database.py` через Make. Скрипт поднимает PostgreSQL 17,
+`tools/local_application_database.py` через Make. Скрипт поднимает PostgreSQL 17,
 ждет успешной проверки готовности и выполняет `alembic upgrade head`.
 Ошибка подготовки останавливает запуск API. App Check остается обязательным.
 
 БД можно подготовить отдельно из корня проекта:
 
 ```sh
-make start-local-billing
-make stop-local-billing
+make start-local-database
+make stop-local-database
 ```
 
 Остановка сохраняет контейнер и том. Автоматического удаления данных нет.
@@ -32,8 +33,8 @@ make stop-local-billing
 Останови локальный API, billing worker и payment ingress, если они запущены.
 Выбери в VS Code `Backend: Local Mock (Cold)` или `Backend: Local Inference (Cold)`.
 Эти профили стоят первыми в списке. Их подготовка удалит локальный
-том `doglyad-local-billing-data`, создаст PostgreSQL заново и применит миграции.
-Подписки, платежи, владельцы и остальные записи billing будут удалены при каждом
+том `doglyad-local-database-data`, создаст PostgreSQL заново и применит миграции.
+Подписки, платежи, задания генерации и остальные записи БД будут удалены при каждом
 запуске Cold-профиля. Сброс отклоняется, если порт API `8000` занят или Docker
 использует удалённый контекст.
 
@@ -46,7 +47,7 @@ make stop-local-billing
 Сброс можно выполнить отдельно из корня проекта:
 
 ```sh
-make reset-local-billing
+make reset-local-database
 ```
 
 Обычные профили `Backend: Local Mock` и `Backend: Local Inference` сохраняют БД.
@@ -54,13 +55,13 @@ Development и Production не используют эту задачу. В iOS 
 для debug-сборки локального bundle ID в development-окружении с явным аргументом
 `--reset-local-billing-identity`.
 Локальная БД использует опубликованные тестовые реквизиты из
-`docker-compose.local-billing.yml` и слушает только loopback-интерфейс.
+`docker-compose.local-database.yml` и слушает только loopback-интерфейс.
 Скрипт миграций всегда выбирает development и эту локальную БД.
 
 Локальный URL:
 
 ```text
-postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/billing
+postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/doglyad_database
 ```
 
 Для ручного запуска API, worker и gateway передайте этот URL в их окружение.
@@ -68,7 +69,7 @@ postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/billing
 
 ## Миграции
 
-`migrations/env.py` берет подключение из `BILLING_DATABASE_URL` и загружает модели БД.
+`migrations/env.py` берет подключение из `DATABASE_URL` и загружает модели БД.
 `alembic.ini` задает пути миграций и Python-импортов. `script.py.mako` служит шаблоном
 для новых файлов в `versions/`. В каждом файле есть `upgrade()` и `downgrade()`.
 Таблица `alembic_version` хранит текущую версию схемы.
@@ -105,7 +106,7 @@ postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/billing
 
 Проект ещё не выпущен, поэтому начальная миграция содержит актуальную схему
 без переходов с прежних вариантов. Старую локальную БД без нужных данных
-пересоздайте через `make reset-local-billing`. Сначала сохраните нужные данные.
+пересоздайте через `make reset-local-database`. Сначала сохраните нужные данные.
 Обычный локальный запуск не пересоздаёт БД. `stamp` меняет только метку Alembic
 и не приводит старые таблицы к текущей схеме.
 
@@ -118,8 +119,8 @@ postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/billing
 
 ## Что подготовить
 
-1. Локальную PostgreSQL через `make start-local-billing` либо собственный сервер
-   PostgreSQL с отдельным `BILLING_DATABASE_URL`.
+1. Локальную PostgreSQL через `make start-local-database` либо собственный сервер
+   PostgreSQL с отдельным `DATABASE_URL`.
 2. В `config/development/billing.json` уже настроены тарифы в общем списке `products`.
    Apple использует их ID, а Робокасса — также период и рублевую `price`. При необходимости
    для отдельного локального окружения можно использовать минимальный каталог:
@@ -142,7 +143,6 @@ postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/billing
    Задайте `ROBOKASSA_HASH_ALGORITHM=sha256` и такой же алгоритм в кабинете.
    В development используйте тестовую пару паролей; в production — боевую.
    `ENVIRONMENT` определяет `IsTest`; отдельного переключателя тестового режима нет.
-   Оставьте `IS_ROBOKASSA_LIVE_ENABLED=false` до выполнения условий выпуска.
 4. Обычные Firebase/SMTP настройки и `MODEL_SERVICE_TYPE=mock`, если GPU не нужен.
    App Check и авторизация владельца остаются обязательными.
 

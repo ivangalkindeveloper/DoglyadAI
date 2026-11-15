@@ -112,6 +112,7 @@ cases:
     - SubscriptionManageTests/failedManagementRetainsTheCurrentSubscriptionSnapshot()
     - SubscriptionManageTests/leavingBeforeManagementStartsDoesNotSendTheOperation()
     - SubscriptionManageTests/leavingDiscardsLateManagementSuccessAndFailure(isFailure:)
+    - SubscriptionManageTests/leavingDiscardsLateCatalogSuccessAndFailure(isFailure:isDisappearance:)
     - SubscriptionFlowTests/statusReadFailureCannotReuseAnOldActiveSubscriptionAsSuccess()
     requires:
     - Тестовый магазин Робокассы, доступный HTTPS ResultURL и проверенные селекторы браузерной страницы/банковского

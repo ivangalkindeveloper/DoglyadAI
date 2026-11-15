@@ -5,16 +5,25 @@
 The backend is split into two independently deployable services: `backend/main` and `backend/inference`.
 
 - **Main backend** (`backend/main/`) — Python, FastAPI, Docker. Runs on a **non-GPU VM** and never performs inference itself: it builds the prompt, selects the model, and routes the request. It also sends reports by email through SMTP.
-- **Inference service** (`backend/inference/`) — Python, FastAPI, Docker. Runs once per GPU host beside one or more local vLLM engines. It validates App Check, selects the configured engine by `modelId`, and performs model-agnostic structured generation. Existing single-model VMs remain supported; DGX Spark uses one backend and three vLLM containers.
+- **Inference service** (`backend/inference/`) — Python, FastAPI, Docker. Runs once per GPU host beside one or more local vLLM engines. It validates App Check, selects the configured engine by `modelId`, and performs model-agnostic structured generation. Existing single-model VMs remain supported; DGX Spark uses one backend and the vLLM engines declared in its versioned host profile.
 - **iOS application** — SwiftUI, MVVM, SwiftData, Alamofire, Apple Foundation Models for on-device inference, Firebase, StoreKit 2, and backend-owned subscriptions.
 
 Module and root view models use `InitialState`, scenario-specific `LoadingState`, backend-data `SuccessState`, synchronous-screen `DefaultState`, scenario-specific `ErrorState`, and meaningful screen-specific states. Keep the feature prefix. Follow the complete state composition and naming rules in [the iOS instructions](ios.md#swift-ios), including single-state modules and equality between loading scenarios.
 
-A report-generation request follows this path:
+Report generation uses an owner-scoped persistent job and a separate worker:
 
 ```text
-iOS ──► backend/main (non-GPU) ──► backend/inference + vLLM (model GPU VM)
+iOS ──► main API ──► PostgreSQL job ──► report worker ──► inference + vLLM
+ ▲          │
+ └── SSE / job snapshots
 ```
+
+The app saves its examination locally before starting the job. Main encrypts the
+persisted request and snapshots; the source request/token is cleared on completion.
+Jobs expire after the configured retention period (currently 12 hours). Client
+history remains local. The API and all workers share `ApplicationDatabase` and the
+same environment keys; the main VM does not run model inference. See
+[`REPORT_STREAMING.md`](../../backend/main/REPORT_STREAMING.md).
 
 App Check is validated **twice**: at the system entry point (`backend/main`) and again on the model machine (`backend/inference`). The `X-Firebase-AppCheck` header is forwarded unchanged, so both services validate the same token.
 
@@ -81,20 +90,19 @@ worker retries must not duplicate money or paid periods.
 Derive the Robokassa mode from `ENVIRONMENT`: development accepts only test
 shops/payments, production accepts only live shops/payments. The server sets
 `IsTest=1` before development invoice creation and uses the matching environment
-passwords. Never infer test success from a production status query. Keep
-the temporary `IS_ROBOKASSA_LIVE_ENABLED=false` launch gate until the real-payment
-prerequisites below are implemented; environment selection alone cannot enable
-real charges. Do not restore a separate test-mode environment flag.
+passwords. Production uses live merchant credentials and permits live invoice
+creation. Never infer test success from a production status query. Do not add a
+separate live-payment or test-mode switch.
 
 `app.payment_main:app` serves verified provider callbacks and `/payments/return`,
 a plain HTTP redirect to the app with no HTML. Per-route body/rate policies come
 from `server.json.endpoints`. There are no merchant-hosted payment forms, browser
 cookies, checkout codes or checkout tables. Robokassa notifications require signature verification and production canonical API
 verification; Apple transactions/notifications require verified signatures and current
-server state. Keep real charges disabled until receipts and Apple external-purchase
-reporting are implemented and all merchant/signing prerequisites are met. See
+server state. Provider configuration, receipts and Apple external-purchase
+reporting requirements are tracked separately from environment selection. See
 [`backend/main/BILLING.md`](../../backend/main/BILLING.md) and
-[`deploy/billing/README.md`](../../deploy/billing/README.md).
+[`deploy/database/README.md`](../../deploy/database/README.md).
 
 ## Code map
 
@@ -116,7 +124,7 @@ reporting are implemented and all merchant/signing prerequisites are met. See
 | `backend/main/app/core/configuration/variables.py` | Environment variables through `pydantic_settings` (`Variables`): `ENVIRONMENT`, `MODEL_SERVICE_TYPE`, `FIREBASE_CREDENTIALS_PATH`, `EMAIL_*`, and `INFERENCE_ENDPOINTS_PATH`. Operational timeouts and request policies live in server-only `server.json`. Compose supplies values from `backend/main/secrets/.env` and the selected environment profile; `Variables` itself reads the process environment. |
 | `backend/main/app/core/app_check/app_check.py` | `AppCheck.initialize()` and `AppCheck.verify()` initialize Firebase and protect every `/v1` route. `AppCheck.HEADER` names the forwarded header. HTTP startup cannot omit Firebase credentials or disable verification. |
 | `backend/main/app/core/application/application_factory.py`, `service_factory.py`, `service_dependencies.py` | `ApplicationFactory` creates main/payment HTTP applications and selects each application's policies from the shared `server.json.endpoints` map; `ServiceFactory` composes startup services in `MainContainer`; `ServiceDependencies` returns the existing services to routes. |
-| `backend/main/app/database/` | `BillingDatabase` owns the SQLAlchemy engine, session creation and owner locks. Concrete mapped entities end in `DB`; `BillingBase` remains the abstract declarative base. SQL table/column names are independent of Python type names. |
+| `backend/main/app/database/` | `ApplicationDatabase` owns the shared PostgreSQL connection for subscriptions, payments, usage and report-generation jobs: the SQLAlchemy engine, sessions and owner locks. `DATABASE_URL` configures this connection. The PostgreSQL database and Docker service are named `doglyad_database`; `DATABASE_PASSWORD` supplies the PostgreSQL password to Compose. Main deployment includes a backup-before-migration step and all four application processes; rollback is blocked after a changed or uncertain migration result. Concrete mapped entities end in `DB`; `ApplicationBase` is their shared abstract declarative base. Billing-specific entities retain their `Billing` prefix. SQL table/column names and Docker volumes are independent of these Python names. |
 | `backend/main/migrations/versions/` | `0001_initial` creates the complete Apple/Robokassa ledger and report storage. Pre-release schemas are not supported. Downgrade refuses a populated ledger. |
 | `backend/main/app/billing_worker.py`, `app/service/billing/billing_worker.py` | CLI entry point and `BillingWorker`: a separate process with its own HTTP client and database pool, using only billing services. It creates no FastAPI application, generation service or App Check initializer. |
 | `backend/main/app/core/configuration/` | Environment variables, loading and validation of a per-application `Configuration` snapshot, and configuration dependencies. `ConfigurationResponseService` assembles localized responses; route dependencies access the container without module-global catalogs. |
@@ -138,7 +146,7 @@ reporting are implemented and all merchant/signing prerequisites are met. See
 
 ### `backend/inference/` — inference service
 
-This service runs once per GPU host and routes configured model IDs to local vLLM engines. See [`backend/inference/README.md`](../../backend/inference/README.md) for the full deployment guide.
+This service runs once per GPU host and routes configured model IDs to local vLLM engines. Its engine set comes from the versioned host profile. See [`backend/inference/README.md`](../../backend/inference/README.md) for the full deployment guide.
 
 | Path | Description |
 |---|---|
@@ -146,7 +154,7 @@ This service runs once per GPU host and routes configured model IDs to local vLL
 | `backend/inference/app/core/inference_lifespan.py` | `InferenceLifespan`: shared `httpx.AsyncClient`, unconditional App Check initialization, vLLM service setup, and client cleanup |
 | `backend/inference/app/error/`, `app/core/api_error_handler.py`, `app/core/api_error_middleware.py` | Independent implementation of the same API error contract, including safe validation responses, preserved request IDs and retry metadata. Shared schema/metadata contract tests run from main. |
 | `backend/inference/app/core/request_id_middleware.py`, `backend/inference/app/core/request_id_log_filter.py` | Request-ID middleware and log context, preserving the ID forwarded by the main backend |
-| `backend/inference/app/route/generation.py` | `POST /v1/generation`: accepts ready prompts, images, and a JSON Schema string and returns structured generated content |
+| `backend/inference/app/route/generation.py` | `POST /v1/generation`: accepts ready prompts, images, and a JSON Schema string and returns structured generated content; `generation_stream.py` supplies `POST /v1/generation/stream` for the report worker |
 | `backend/inference/app/service/vllm_service.py` | `VLLMService`: selects a configured private vLLM URL by `modelId`, rejects unknown IDs, and maintains a separate bounded queue per model; lifespan creates its instance and `get_vllm_service` injects it into the route |
 | `backend/inference/app/core/init_app_check.py`, `backend/inference/app/core/verify_app_check.py` | Second App Check initialization and validation on the model machine, protecting `/v1`. Validation is **unconditional**: the service cannot start without Firebase credentials, and there is no bypass. |
 | `backend/inference/app/core/variables.py` | `FIREBASE_CREDENTIALS_PATH`, the `VLLM_ENDPOINTS` JSON map or the existing `SERVED_MODEL_ID` / `VLLM_BASE_URL` pair. Startup rejects missing, empty, ambiguous or invalid routes. This service has no `ENVIRONMENT`. |
@@ -161,7 +169,7 @@ This service runs once per GPU host and routes configured model IDs to local vLL
 | `ios/Doglyad/Application/Application/View/` | Application views reused across multiple feature modules, composed exclusively from `DoglyadUI` components. Views used by only one module belong in that module and use its name as their type-name prefix. |
 | `ios/Doglyad/Application/Module/` | Screen and bottom-sheet features follow the required `FeatureScreen` / `FeatureBottomSheet`, `FeatureScreenView` / `FeatureBottomSheetView`, `FeatureViewModel`, and `FeatureArguments` structure. Every module also contains a `Preview/` folder with `FeaturePreview.swift` for named previews of all states and `FeaturePreviewView.swift` for the module preview wrapper. Current feature groups: `About`, `History`, `ImportMedia`, `LegalUpdate`, `LimitExceeded`, `NewVersion`, `OnBoarding`, `Permission`, `PhotoView`, `Report`, `Scan`, `Select`, `Menu`, `SettingsAI`, `Share`, `Storage`, `Subscription`, `Template`, `WorkSettings`, and `WebDocument`. |
 | `ios/Doglyad/Application/Module/Menu/`, `SettingsAI/`, `WorkSettings/` | Independent modules for application navigation, AI configuration and work settings. |
-| `ios/Doglyad/Application/Application/ViewModel/` | `DStateViewModel<State>` publishes immutable lifecycle states through `emit`. `DModuleViewModel<State>` adds module lifecycle, analytics, coordination, and a shared subscription snapshot. Shared screen data and controllers belong to the owning view model; controllers are observed with `NestedObservableObject`. |
+| `ios/Doglyad/Application/Application/ViewModel/` | `DStateViewModel<State>` publishes immutable lifecycle states through `emit`. `DModuleViewModel<State>` adds module lifecycle, analytics, coordination, and a shared subscription snapshot. Mutable data shared by different concrete states and independently owned controllers belong to the view model; data meaningful in only one state belong to that immutable state and change through `copyWith` and `emit`. Controllers are observed with `NestedObservableObject`. |
 | `ios/Doglyad/Application/Application/ViewModel/Subscription/`, `ios/Doglyad/Application/Application/ViewModel/Ultrasound/` | `SubscriptionRootViewModel` and `UltrasoundRootViewModel` own shared state. Each root view model lives beside its `State/` composition in the corresponding feature folder; modules receive getter, update, and observation closures instead of root instances. |
 | `ios/Doglyad/Application/Module/**/ViewModel/` | Every module's view model, focus/input types, and `State/` composition: a module-specific class-bound state protocol and concrete state classes. Root features also keep their view models and state compositions in their owning application area. |
 | `ios/Doglyad/Application/Application/Coordinator/` | Navigation and flow orchestration, including initial routing, onboarding, model selection, and subscription gating; subscription state is accessed through closures |
@@ -187,7 +195,7 @@ This service runs once per GPU host and routes configured model IDs to local vLL
 | `ios/Doglyad/Application/Application/L10N/L10N.swift` | Immutable server catalog in `DependencyContainer`, enum `L10NKey`, UI resources and literal template substitution. Downloaded first in Tier 4 from protected `/v1/l10n`. |
 | `ios/Doglyad/Resources/Localizable.xcstrings` | Bootstrap strings for initialization errors and mandatory major-version updates only. System permission/display-name strings remain in `InfoPlist.xcstrings` because iOS reads the installed bundle. |
 | `ios/Doglyad.xcodeproj/project.pbxproj` | DoglyadUI currently uses synchronized-folder membership exceptions for both app and framework targets. New DoglyadUI files must be listed in both exception sets to compile only in the design-system framework. `LM_SKIP_METADATA_EXTRACTION` skips the unused App Intents metadata stage in all configurations; remove it when introducing App Intents or App Shortcuts. |
-| `ios/DoglyadUI/` | Required design system for client UI: `DTheme`, Montserrat fonts, reusable controls such as `DSegment`, `DToggle`, `DDatePicker`, `DShareLink`, `DCloseButton`, and `DCard`, presentation primitives such as `DImage`, `DProgress`, `DAudioMeter`, `DPageIndicator`, `DCardBackground`, `DCaptureFrame`, and `DTextFade`, and `DMessage`, visual resources, and loading placeholders through `DShimmerPlaceholder` and shimmer through `DShimmerModifier` / `dShimmer` |
+| `ios/DoglyadUI/` | Required design system for client UI: `DTheme`, Montserrat fonts, reusable controls such as `DSegment`, `DToggle`, `DDatePicker`, `DShareLink`, `DCloseButton`, and `DCard`, presentation primitives such as `DAssetScaleImage` with required `DAssetImageWidthScale`, `DProgress`, `DAudioMeter`, `DPageIndicator`, `DCardBackground`, `DCaptureFrame`, and `DTextFade`, and `DMessage`, visual resources, and loading placeholders through `DShimmerPlaceholder` and shimmer through `DShimmerModifier` / `dShimmer` |
 | `ios/DoglyadDatabase/` | `DDatabase`, SwiftData `Entity/*DB.swift` entities, actor stores in `Store/` for reports, drafts, and templates, UserDefaults wrappers, and keychain billing identity persistence in `Security/` |
 | `ios/DoglyadNetwork/` | Alamofire clients in `Client/`, interceptor contracts and `DLocaleInterceptor` in `Interceptor/`, `DHttpHeader`, and `DHttpErrorProtocol` |
 | `ios/DoglyadNeuralModel/` | Foundation Models extraction, domain contracts, and validation for ultrasound text |

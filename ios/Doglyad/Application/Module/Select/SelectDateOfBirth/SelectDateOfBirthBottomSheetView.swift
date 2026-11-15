@@ -31,7 +31,7 @@ struct SelectDateOfBirthBottomSheetView: DViewProtocol {
                     in: viewModel.fromDate ... viewModel.toDate,
                     selection: Binding(
                         get: {
-                            viewModel.date
+                            viewModel.state.date
                         },
                         set: viewModel.onDateChanged,
                     ),
@@ -77,6 +77,9 @@ struct SelectDateOfBirthBottomSheetView: DViewProtocol {
         )
         .onAppear(
             perform: viewModel.onAppear,
+        )
+        .onDisappear(
+            perform: viewModel.onDisappear,
         )
     }
 }

@@ -42,6 +42,91 @@ def test_unmeasured_asr_is_distinguished_from_a_failed_attempt() -> None:
     assert result["failed"] == 0
 
 
+def test_custom_asr_scope_preserves_failures_without_claiming_extraction(tmp_path: Path) -> None:
+    base = {**_case(), "audioSha256": "audio", "mode": "guided-format", "variant": "clean"}
+    cases = [{**base, "id": key} for key in ("ok", "failed", "missing")]
+    manifest, asr = tmp_path / "manifest.json", tmp_path / "asr.jsonl"
+    manifest.write_text(json.dumps({"cases": cases}))
+    asr.write_text(
+        "\n".join(
+            json.dumps(
+                {
+                    "id": status,
+                    "model": "tone",
+                    "locale": "en",
+                    "audioSha256": "audio",
+                    "status": status,
+                    "rawText": "Left kidney" if status == "ok" else "",
+                }
+            )
+            for status in ("ok", "failed")
+        )
+    )
+    result = score_asr_matrix(
+        manifest_path=manifest,
+        asr_paths=[asr],
+        extraction_paths=[],
+        output=tmp_path / "score",
+        methods=(),
+        recognizers=("tone",),
+    )
+    group = result["asr"]["tone/en/clinical/both"]
+    assert group["cases"] == 3
+    assert group["completed"] == group["failed"] == group["missing"] == 1
+    assert group["meanNormalizedWER"] == pytest.approx(2 / 3)
+    assert not result["isASRComplete"] and not result["isExtractionComplete"]
+    assert result["extraction"] == {} and result["recognizers"] == ["tone"]
+    assert {
+        row["stage"] for row in map(json.loads, (tmp_path / "score/case-scores.jsonl").read_text().splitlines())
+    } == {"asr"}
+    with pytest.raises(ValueError, match="Unknown ASR"):
+        score_asr_matrix(
+            manifest_path=manifest,
+            asr_paths=[asr],
+            extraction_paths=[],
+            output=tmp_path / "wrong-scope",
+            methods=(),
+            recognizers=("other",),
+        )
+
+
+def test_custom_asr_rejects_mismatched_audio_and_completes_only_requested_scope(tmp_path: Path) -> None:
+    case = {**_case(), "audioSha256": "audio", "mode": "guided-format", "variant": "clean"}
+    manifest, asr = tmp_path / "manifest.json", tmp_path / "asr.jsonl"
+    manifest.write_text(json.dumps({"cases": [case]}))
+    row = {
+        "id": "case",
+        "model": "tone",
+        "locale": "en",
+        "audioSha256": "changed",
+        "status": "ok",
+        "rawText": "Left kidney",
+    }
+    asr.write_text(json.dumps(row))
+    with pytest.raises(ValueError, match="frozen audio"):
+        score_asr_matrix(
+            manifest_path=manifest,
+            asr_paths=[asr],
+            extraction_paths=[],
+            output=tmp_path / "tampered",
+            methods=(),
+            recognizers=("tone",),
+        )
+    row["audioSha256"] = "audio"
+    asr.write_text(json.dumps(row))
+    result = score_asr_matrix(
+        manifest_path=manifest,
+        asr_paths=[asr],
+        extraction_paths=[],
+        output=tmp_path / "complete",
+        methods=(),
+        recognizers=("tone",),
+    )
+    assert result["isASRComplete"]
+    assert not result["isExtractionComplete"]
+    assert result["asr"]["tone/en/clinical/both"]["meanNormalizedWER"] == 0
+
+
 def test_wrong_warned_description_and_invented_name_do_not_become_a_correct_form() -> None:
     rows = {
         "case": {

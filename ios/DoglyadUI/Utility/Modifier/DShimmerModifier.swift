@@ -4,16 +4,16 @@ import SwiftUI
 public struct DShimmerModifier: ViewModifier {
     let isShimmering: Bool
     let cornerRadius: CGFloat
-    let masksContent: Bool
+    let isContentMasked: Bool
 
     public init(
         isShimmering: Bool = true,
         cornerRadius: CGFloat = .infinity,
-        masksContent: Bool = false,
+        isContentMasked: Bool = false,
     ) {
         self.isShimmering = isShimmering
         self.cornerRadius = cornerRadius
-        self.masksContent = masksContent
+        self.isContentMasked = isContentMasked
     }
 
     public func body(
@@ -29,7 +29,7 @@ public struct DShimmerModifier: ViewModifier {
             autoreverses: false,
         )
 
-        if masksContent {
+        if isContentMasked {
             content
                 .shimmering(
                     active: isShimmering,

@@ -20,18 +20,15 @@ class Variables(BaseSettings):
 
     log_dir: Path | None = None
     log_retention_days: int = 365
-
     # App Check is verified here, on the inference service itself: it is the component that
     # actually holds the model, and it must not trust callers just because they can
     # reach it over the network. Verification is unconditional — there is no flag to
     # turn it off, so the credentials are required for the service to start.
     firebase_credentials_path: Path | None = None
-
     # Existing single-model hosts retain their scalar configuration. Multi-model
     # hosts supply VLLM_ENDPOINTS as a JSON map and clear SERVED_MODEL_ID.
     served_model_id: NonBlankString | None = None
     vllm_endpoints: dict[NonBlankString, AnyHttpUrl] | None = None
-
     # Local vLLM OpenAI-compatible server, reachable only from inside the VM's
     # Docker network — it is never exposed publicly.
     vllm_base_url: AnyHttpUrl = AnyHttpUrl(

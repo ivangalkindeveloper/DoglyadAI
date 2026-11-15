@@ -4,10 +4,8 @@ import Foundation
 
 @MainActor
 final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExaminationTypeStateProtocol> {
-    @Published var recentTypeIds: [String] = []
     private let typesById: [String: USExaminationType]
     private let groups: [USExaminationTypeGroup]
-    @Published var currentValue: USExaminationType?
     private let messager: DMessager?
     private let arguments: SelectUSExaminationTypeArguments?
     private var selectionOperation: UUID?
@@ -28,12 +26,13 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
         typesById = container.usExaminationTypesById
         groups = container.usExaminationTypeGroups
 
-        currentValue = (arguments?.currentValue)
         self.messager = messager
         self.arguments = arguments
 
         super.init(
-            state: SelectUSExaminationTypeContentState(),
+            state: SelectUSExaminationTypeContentState(
+                currentValue: arguments?.currentValue,
+            ),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -55,7 +54,7 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
     }
 
     var sections: [SelectUSExaminationTypeSection] {
-        let recentTypes = recentTypeIds.compactMap {
+        let recentTypes = state.recentTypeIds.compactMap {
             typesById[
                 $0,
             ]
@@ -87,7 +86,7 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
     func isSelected(
         _ type: USExaminationType,
     ) -> Bool {
-        currentValue == type
+        state.currentValue == type
     }
 
     override func onInit() {
@@ -100,7 +99,12 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
                 guard !Task.isCancelled else {
                     return
                 }
-                recentTypeIds = ids
+                emit(
+                    state.copyWith(
+                        recentTypeIds: ids,
+                        currentValue: nil,
+                    ),
+                )
             } catch {
                 // Recent types are optional; the configured catalog stays available.
             }
@@ -150,7 +154,14 @@ final class SelectUSExaminationTypeViewModel: DModuleViewModel<any SelectUSExami
                     // Optional metadata does not change the result of the required selection.
                 }
             }
-            self.currentValue = type
+            self.emit(
+                self.state.copyWith(
+                    recentTypeIds: nil,
+                    currentValue: .some(
+                        type,
+                    ),
+                ),
+            )
             self.selectionOperation = nil
             self.coordinator.dismissSheet()
         } onMainUnknownError: { _ in

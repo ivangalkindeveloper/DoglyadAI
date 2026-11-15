@@ -301,11 +301,20 @@ def score_asr_matrix(
     extraction_paths: list[Path],
     output: Path,
     methods: tuple[str, ...] = METHODS,
+    recognizers: tuple[str, ...] = RECOGNIZERS,
 ) -> dict[str, Any]:
     if output.exists():
         raise FileExistsError(f"Refusing to overwrite evaluation evidence: {output}")
-    if not methods or len(set(methods)) != len(methods) or not set(methods).issubset(METHODS):
+    if len(set(methods)) != len(methods) or not set(methods).issubset(METHODS):
         raise ValueError("Select distinct known extraction methods")
+    if (
+        not recognizers
+        or len(set(recognizers)) != len(recognizers)
+        or any(not isinstance(name, str) or not name.strip() or "/" in name for name in recognizers)
+    ):
+        raise ValueError("Select distinct nonempty recognizer IDs without slashes")
+    if not methods and extraction_paths:
+        raise ValueError("ASR-only scoring cannot include extraction results")
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if not isinstance(manifest.get("cases"), list) or not manifest["cases"]:
         raise ValueError("A nonempty corpus is required")
@@ -353,7 +362,7 @@ def score_asr_matrix(
         for row in _jsonl(path):
             recognizer = row.get("recognizer", row.get("model"))
             key = row["id"]
-            if recognizer not in RECOGNIZERS or key not in originals:
+            if recognizer not in recognizers or key not in originals:
                 raise ValueError(f"Unknown ASR result: {recognizer}/{key}")
             if key in asr[recognizer]:
                 raise ValueError(f"Duplicate ASR result: {recognizer}/{key}")
@@ -370,7 +379,7 @@ def score_asr_matrix(
         for row in _jsonl(path):
             recognizer = row["recognizer"]
             key = row["matrixCaseId"]
-            if key not in originals or recognizer not in RECOGNIZERS:
+            if key not in originals or recognizer not in recognizers:
                 raise ValueError("Unknown extraction input")
             original = originals[key]
             recognition = asr[recognizer].get(key)
@@ -403,7 +412,7 @@ def score_asr_matrix(
             asr[recognizer][key]["parserInputText"] = row["text"]
     asr_groups: dict[str, Any] = {}
     extraction_groups: dict[str, Any] = {}
-    for recognizer in RECOGNIZERS:
+    for recognizer in recognizers:
         for locale in ("ru", "en"):
             for dataset in ("dictation", "natural", "clinical", "terminology"):
                 for variant in ("clean", "noisy", "both"):
@@ -455,6 +464,7 @@ def score_asr_matrix(
             )
         },
         "methods": list(methods),
+        "recognizers": list(recognizers),
         "corpusEvidence": corpus_evidence,
         "note": "Failures/missing count as empty output. Exact/equivalent are textual metrics, not clinical correctness. Clinical equivalence requires independently adjudicated annotations; unknown is never correct. No bag-of-words critical-retention metric. Terminology is a separate diagnostic. Missing automatic policy is null. Legacy TTS reference is intended speech, not a human-verified audible transcript. Timing across hardware/build/cache conditions is not comparable.",
         "confidenceIntervals": {
@@ -464,9 +474,9 @@ def score_asr_matrix(
         "asr": asr_groups,
         "extraction": extraction_groups,
     }
-    result["isASRComplete"] = all(set(asr[name]) == set(originals) for name in RECOGNIZERS)
+    result["isASRComplete"] = all(set(asr[name]) == set(originals) for name in recognizers)
     missing_paths = []
-    for name in RECOGNIZERS:
+    for name in recognizers:
         for case_id, recognition in asr[name].items():
             if recognition["status"] != "ok":
                 continue
@@ -477,7 +487,7 @@ def score_asr_matrix(
                     allowed.add("unavailable")
                 if measured.get(method, {}).get("status") not in allowed:
                     missing_paths.append(f"{name}/{case_id}/{method}")
-    result["isExtractionComplete"] = result["isASRComplete"] and not missing_paths
+    result["isExtractionComplete"] = bool(methods) and result["isASRComplete"] and not missing_paths
     result["unmeasuredExtractionPaths"] = missing_paths
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".voice-score-", dir=output.parent) as temporary:
@@ -486,13 +496,13 @@ def score_asr_matrix(
         (staging / "summary.json").write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
         for name, groups in (("asr", asr_groups), ("extraction", extraction_groups)):
             with (staging / f"{name}.csv").open("w", encoding="utf-8", newline="") as destination:
-                keys = list(next(iter(groups.values())))
+                keys = list(next(iter(groups.values()))) if groups else []
                 writer = csv.DictWriter(destination, fieldnames=["group", *keys])
                 writer.writeheader()
                 for group, data in groups.items():
                     writer.writerow({"group": group, **data})
         with (staging / "case-scores.jsonl").open("w", encoding="utf-8") as destination:
-            for recognizer in RECOGNIZERS:
+            for recognizer in recognizers:
                 for case in manifest["cases"]:
                     base = {
                         "id": case["id"],
@@ -543,16 +553,21 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--require-complete", action="store_true")
     parser.add_argument("--methods", choices=METHODS, nargs="+")
+    parser.add_argument("--recognizers", nargs="+")
+    parser.add_argument("--asr-only", dest="is_asr_only", action="store_true")
     args = parser.parse_args()
+    if args.is_asr_only and args.methods:
+        parser.error("--asr-only cannot be combined with --methods")
     result = score_asr_matrix(
         manifest_path=args.manifest,
         asr_paths=args.asr,
         extraction_paths=args.extraction,
         output=args.output,
-        methods=tuple(args.methods) if args.methods else METHODS,
+        methods=() if args.is_asr_only else tuple(args.methods) if args.methods else METHODS,
+        recognizers=tuple(args.recognizers) if args.recognizers else RECOGNIZERS,
     )
-    if args.require_complete and not result["isExtractionComplete"]:
-        raise SystemExit("The final comparison still contains unmeasured ASR/extraction paths")
+    if args.require_complete and not result["isASRComplete" if args.is_asr_only else "isExtractionComplete"]:
+        raise SystemExit("The requested comparison still contains unmeasured paths")
     print(args.output / "summary.json")
 
 

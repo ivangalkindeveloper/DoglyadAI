@@ -5,21 +5,21 @@
         @MainActor
         func testDoubleTapAndPinch() {
             assertGestures(
-                preview: "atlas-photoview-23a69732c2",
+                preview: "atlas-photoview-cb83f9199a",
             )
         }
 
         @MainActor
         func testPortraitDoubleTapAndPinch() {
             assertGestures(
-                preview: "atlas-photoview-a3683bb854",
+                preview: "atlas-photoview-dbe28d404c",
             )
         }
 
         @MainActor
         func testSquareDoubleTapAndPinch() {
             assertGestures(
-                preview: "atlas-photoview-dd0eb85c9e",
+                preview: "atlas-photoview-93d5132ed4",
             )
         }
 

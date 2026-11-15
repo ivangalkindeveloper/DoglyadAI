@@ -353,5 +353,8 @@ struct SettingsAIScreenView: DViewProtocol {
         .scrollDismissesKeyboard(
             .interactively,
         )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

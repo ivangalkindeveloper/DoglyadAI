@@ -13,7 +13,6 @@ class GenerationConfig(BaseModel):
         default=4194304,
         gt=0,
     )
-
     max_body_bytes: int = Field(
         gt=0,
     )

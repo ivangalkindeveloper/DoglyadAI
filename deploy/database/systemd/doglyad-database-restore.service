@@ -1,0 +1,11 @@
+[Unit]
+Description=Test Doglyad database recovery on an isolated host
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/doglyad
+EnvironmentFile=/opt/doglyad/database-secrets/restore-monitor.env
+ExecStart=/bin/bash /opt/doglyad/database/restore-monthly.sh
+TimeoutStartSec=7200

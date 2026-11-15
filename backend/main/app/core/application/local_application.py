@@ -29,7 +29,7 @@ class LocalApplication:
         self,
     ) -> Variables:
         database = urlsplit(
-            self._variables.billing_database_url or "",
+            self._variables.database_url or "",
         )
         if self._variables.environment != "development" or database.hostname not in {"127.0.0.1", "localhost", "::1"}:
             raise ValueError(

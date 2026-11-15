@@ -20,7 +20,7 @@ struct RequestLimitExceededBottomSheetView: DViewProtocol {
             title: l10n[
                 .requestLimitExceededTitle,
             ],
-            image: .doglyadAbout,
+            image: .stars,
             description: l10n[
                 .requestLimitExceededDescription,
             ],
@@ -34,6 +34,9 @@ struct RequestLimitExceededBottomSheetView: DViewProtocol {
         )
         .onAppear(
             perform: viewModel.onAppear,
+        )
+        .onDisappear(
+            perform: viewModel.onDisappear,
         )
     }
 }

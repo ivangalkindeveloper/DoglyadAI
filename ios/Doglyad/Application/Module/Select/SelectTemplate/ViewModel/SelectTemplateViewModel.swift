@@ -4,8 +4,6 @@ import Foundation
 
 @MainActor
 final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStateProtocol> {
-    @Published private(set) var templates: [USExaminationTemplate] = []
-    @Published private(set) var currentTemplateID: UUID?
     private let messager: DMessager?
     private let arguments: SelectTemplateArguments
 
@@ -20,12 +18,13 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         onRefreshSubscriptionStatus: @escaping () async -> Void,
         arguments: SelectTemplateArguments,
     ) {
-        templates = arguments.templates
-        currentTemplateID = arguments.currentValue?.id
         self.messager = messager
         self.arguments = arguments
         super.init(
-            state: SelectTemplateContentState(),
+            state: SelectTemplateContentState(
+                templates: arguments.templates,
+                currentTemplateID: arguments.currentValue?.id,
+            ),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -46,14 +45,6 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
         )
     }
 
-    #if DEBUG
-        func setPreviewTemplates(
-            _ templates: [USExaminationTemplate],
-        ) {
-            self.templates = templates
-        }
-    #endif
-
     func onTemplateTap(
         _ template: USExaminationTemplate,
     ) {
@@ -66,15 +57,16 @@ final class SelectTemplateViewModel: DModuleViewModel<any SelectTemplateStatePro
             )
         }
         onSuccess: { _ in
-            self.currentTemplateID = template.id
             self.emit(
-                SelectTemplateContentState(),
+                self.state.copyWith(
+                    templates: nil,
+                    currentTemplateID: .some(
+                        template.id,
+                    ),
+                ),
             )
             self.coordinator.dismissSheet()
         } onFailure: { _ in
-            self.emit(
-                SelectTemplateContentState(),
-            )
             self.messager?.showUnknownError(
                 l10n: self.container.l10n,
             )

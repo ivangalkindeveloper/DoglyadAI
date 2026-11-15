@@ -1,0 +1,24 @@
+{
+  "algorithm": "sha256",
+  "files": {
+    "README.md": "6133216ade574c26cb6b3f09c7239043f7c034d3940d16311aa9994407333dce",
+    "analysis.json": "4c4fbdf2742d5e04744250d8701691ea1946472e4b4a42862a2abfe8444729f0",
+    "analyze_run.py.txt": "ed600c6bb6f703dd23aaf814d568a18b0cbae3183074bee1fc4fc4954457ca16",
+    "asr.csv": "91fd989e238594157338256cd68c80a35e4a1f1a224ff9a3869adb6fbfad97bb",
+    "baseline-verification.json": "08f6ec6a67cf19c328f3ee9107ed5f7a2951bf6ba14156c66c4f9b9cdf65aa5f",
+    "case-scores.jsonl": "cd4d8886908a9701c528eace4ff5a46ccb1b854c179ecdb93f7c8a66f28e25c0",
+    "corpus-ru.json": "28036ea943fb6ee6aceeec4efee6cd36ef70156754cfa233c812a4886a184556",
+    "execution.json": "2077de6a25f33f8d597b66c347888440056d594b557638a85512a8461e0b026a",
+    "provenance.json": "a66195c5f11701abdf44d133631e348972a036f8e3a1acaaf646ba73235f03e5",
+    "requirements-freeze.txt": "eb23310909e33f369967388441d3a2f83a476fb53c42a92a1274b90c4c56d142",
+    "settings.json": "fb84cebfecefeb8bd04f11297f5b55fbde197709074c67cb2ece9bc30985402f",
+    "source/normalize_asr_text.py.txt": "35eb613cbe96b8bbdcc48b1b2820ab8c474e847de95c44679a278affe5aedf2b",
+    "source/normalize_evaluation_text.py.txt": "b3f7abca4e7d667af4240d54ab2869ef31ef9159a563122890effb150cc92635",
+    "source/score_asr_matrix.py.txt": "d6fcc94558c6c5e4d5bb60c1d77ee0a0e52c20efa417a68da4e17ddb1fa74dcb",
+    "source/spoken_wer.py.txt": "0ca9f1ab600cb605f99ae2e2ad59d35adfea40da99620be3da5ddf174e7d4df2",
+    "source/tone_asr_benchmark.py.txt": "ffb7fd04c0939c118c7fa7ec5600ab0be32dac3438d5a49a9d254ef4c3246cba",
+    "source/word_error_counts.py.txt": "d64057cd6e136f44884ec087d5645933dbf0a80c91a701d85406ab4ceb9f82d1",
+    "summary.json": "25f15694ac4452055f0bf4ed49e784142d40f8a74f76c0738104e10e4c262cbe",
+    "tone.jsonl": "086d09a2743b5431cf7e535845bdfaacc6c9961596199caad302373e8888285c"
+  }
+}

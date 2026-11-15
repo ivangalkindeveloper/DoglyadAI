@@ -59,7 +59,40 @@ def run(*args: str, timeout: int = 120, input_text: str | None = None) -> str:
 
 
 def compose(*args: str) -> str:
-    return run("docker", "compose", "-f", "docker-compose.yml", *args)
+    return run(*compose_command(), *args)
+
+
+def compose_command() -> list[str]:
+    if values().get("ENV_FILE"):
+        return ["bash", "main-compose.sh"]
+    return ["docker", "compose", "-f", "docker-compose.yml"]
+
+
+MAIN_SERVICES = ("backend_main", "report_worker", "billing_gateway", "billing_worker")
+
+
+def database_revision() -> str:
+    revision = compose(
+        "exec",
+        "-T",
+        "doglyad_database",
+        "psql",
+        "-U",
+        "doglyad",
+        "-d",
+        "doglyad_database",
+        "-Atc",
+        "SELECT version_num FROM alembic_version",
+    )
+    if not re.fullmatch(r"[A-Za-z0-9_]+", revision):
+        raise RuntimeError("Expected one application database migration head")
+    return revision
+
+
+def record_maintenance(snapshot: Path, **fields: object) -> None:
+    path = snapshot / "database-maintenance.json"
+    path.write_text(json.dumps(fields))
+    path.chmod(0o600)
 
 
 def container(service: str) -> dict:
@@ -240,18 +273,71 @@ def check(target: dict) -> dict:
             raise RuntimeError("Caddy is not running")
         if cfg.get("ENV_FILE") != f"secrets/.env.{target['role']}":
             raise RuntimeError("Main environment does not match inventory")
+        database = container("doglyad_database")
+        database_image = cfg.get("DATABASE_IMAGE", "")
+        if not re.fullmatch(
+            r"ghcr.io/ivangalkindeveloper/doglyad-database@sha256:[0-9a-f]{64}",
+            database_image,
+        ):
+            raise RuntimeError(
+                "Main setup must pin the published database image digest"
+            )
+        if database["Image"] != run(
+            "docker", "image", "inspect", database_image, "--format", "{{.Id}}"
+        ):
+            raise RuntimeError("Running database image differs from DATABASE_IMAGE")
+        if (
+            not database["State"]["Running"]
+            or database["State"].get("Health", {}).get("Status") != "healthy"
+            or database["HostConfig"].get("PortBindings")
+            or database["HostConfig"].get("NetworkMode") == "host"
+        ):
+            raise RuntimeError("Application database must be healthy and private")
+        billing_processes = {}
+        for name in ("report_worker", "billing_gateway", "billing_worker"):
+            process = container(name)
+            if not process["State"]["Running"] or process["Image"] != backend["Image"]:
+                raise RuntimeError("All main processes must run the same release")
+            billing_processes[name] = {
+                "container": process["Id"],
+                "image": process["Image"],
+                "restarts": process["RestartCount"],
+            }
+        for timer in ("doglyad-database-backup.timer", "doglyad-database-status.timer"):
+            run("systemctl", "is-enabled", "--quiet", timer)
+            run("systemctl", "is-active", "--quiet", timer)
+        run("bash", "database/backup-status.sh")
         domain = cfg.get("DOMAIN", "")
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9.-]*", domain):
             raise RuntimeError("Invalid public domain")
         http(f"https://{domain}/v1/application_config")
         http(f"https://{domain}/v1/ultrasound/report_generations", True)
-        companions = companion["Id"]
+        companions = {
+            "caddy": {
+                "id": companion["Id"],
+                "image": companion["Image"],
+                "restarts": companion["RestartCount"],
+            },
+            "database": {
+                "id": database["Id"],
+                "image": database["Image"],
+                "restarts": database["RestartCount"],
+            },
+        }
     return {
         "image": backend["Image"],
         "container": backend["Id"],
         "companion": companions,
         "restarts": backend["RestartCount"],
         "report_worker": report_worker,
+        **(
+            {
+                "billing_processes": billing_processes,
+                "database_revision": database_revision(),
+            }
+            if not inference
+            else {}
+        ),
     }
 
 
@@ -305,6 +391,8 @@ def wait_ready(
                 and _companions_match(second["companion"], companion)
                 and first["restarts"] == second["restarts"]
                 and first.get("report_worker") == second.get("report_worker")
+                and first.get("billing_processes") == second.get("billing_processes")
+                and first.get("database_revision") == second.get("database_revision")
             ):
                 if (
                     is_non_root_required
@@ -361,6 +449,20 @@ def main(payload: dict) -> dict:
             snapshot.mkdir(mode=0o700)
             shutil.copy2(".env", snapshot / "env")
             shutil.copy2("docker-compose.yml", snapshot / "compose")
+            if service == "backend_main":
+                for name in (
+                    "docker-compose.database.yml",
+                    "main-compose.sh",
+                    "Caddyfile",
+                    "database/backup.sh",
+                    "database/backup-status.sh",
+                    "database/backup-status.py",
+                    "database/disk_backup.py",
+                    "database/yandex_disk.py",
+                ):
+                    destination = snapshot / "main-files" / name
+                    destination.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(name, destination)
             if "profile_fingerprint" in target:
                 shutil.copy2("profile.json", snapshot / "profile.json")
                 shutil.copy2("config/server.json", snapshot / "server.json")
@@ -376,6 +478,14 @@ def main(payload: dict) -> dict:
             lock.rmdir()
             return {"lock": "released"}
         state = json.loads((snapshot / "state.json").read_text())
+        if service == "backend_main" and action in {"update", "rollback"}:
+            for saved in (snapshot / "main-files").rglob("*"):
+                if (
+                    saved.is_file()
+                    and Path(saved.relative_to(snapshot / "main-files")).read_bytes()
+                    != saved.read_bytes()
+                ):
+                    raise RuntimeError("Main stack files changed during rollout")
         if (snapshot / "target.json").exists():
             recorded = json.loads((snapshot / "target.json").read_text())
             if recorded["role"] != target["role"] or recorded.get(
@@ -482,6 +592,33 @@ visit(models)
             os.chmod(temporary, 0o600)
             os.replace(temporary, ".env")
             compose("config", "--quiet")
+            if service == "backend_main":
+                before = database_revision()
+                if before != state["database_revision"]:
+                    raise RuntimeError("Database changed after the deployment snapshot")
+                record_maintenance(snapshot, phase="stopping", before=before)
+                run(
+                    *compose_command(),
+                    "stop",
+                    "--timeout",
+                    "60",
+                    *MAIN_SERVICES,
+                    timeout=300,
+                )
+                run("bash", "database/backup.sh", timeout=7200)
+                record_maintenance(snapshot, phase="migrating", before=before)
+                run(
+                    *compose_command(),
+                    "run",
+                    "--rm",
+                    "--no-deps",
+                    "database_migrate",
+                    timeout=900,
+                )
+                after = database_revision()
+                record_maintenance(
+                    snapshot, phase="migrated", before=before, after=after
+                )
             compose(
                 "up",
                 "-d",
@@ -489,13 +626,34 @@ visit(models)
                 "--pull",
                 "never",
                 "--force-recreate",
-                service,
-                *(["report_worker"] if state.get("report_worker") else []),
+                *(MAIN_SERVICES if service == "backend_main" else (service,)),
             )
             return wait_ready(
                 target, image_id, state["companion"], is_non_root_required=True
             )
         if action == "rollback":
+            if (
+                service == "backend_main"
+                and (snapshot / "database-maintenance.json").exists()
+            ):
+                maintenance = json.loads(
+                    (snapshot / "database-maintenance.json").read_text()
+                )
+                if (
+                    maintenance["phase"] == "migrating"
+                    or database_revision() != maintenance["before"]
+                ):
+                    run(
+                        *compose_command(),
+                        "stop",
+                        "--timeout",
+                        "60",
+                        *MAIN_SERVICES,
+                        timeout=300,
+                    )
+                    raise RuntimeError(
+                        "Database migration changed the schema or its result is unknown; writers remain stopped. Inspect the snapshot and recover explicitly"
+                    )
             shutil.copy2(snapshot / "env", ".env")
             # Use the recorded local image ID, even if the old tag has moved.
             override = snapshot / "rollback.json"
@@ -504,24 +662,18 @@ visit(models)
                     {
                         "services": {
                             service: {"image": state["image"]},
-                            **(
-                                {
-                                    "report_worker": {
-                                        "image": state["report_worker"]["image"]
-                                    }
-                                }
-                                if state.get("report_worker")
-                                else {}
-                            ),
+                            **{
+                                name: {"image": process["image"]}
+                                for name, process in state.get(
+                                    "billing_processes", {}
+                                ).items()
+                            },
                         }
                     }
                 )
             )
             run(
-                "docker",
-                "compose",
-                "-f",
-                "docker-compose.yml",
+                *compose_command(),
                 "-f",
                 str(override),
                 "up",
@@ -530,8 +682,7 @@ visit(models)
                 "--pull",
                 "never",
                 "--force-recreate",
-                service,
-                *(["report_worker"] if state.get("report_worker") else []),
+                *(MAIN_SERVICES if service == "backend_main" else (service,)),
             )
             return wait_ready(target, state["image"], state["companion"])
         raise ValueError("Unknown remote action")

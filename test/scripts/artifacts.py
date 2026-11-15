@@ -12,6 +12,7 @@ import struct
 import xml.etree.ElementTree as ET
 
 import yaml
+from native_checks import validate_preview_references
 
 TEST = Path(__file__).resolve().parents[1]
 
@@ -92,6 +93,10 @@ def flow_commands(path: Path, ancestors: tuple[Path, ...] = ()) -> list[dict | s
 
 def validate_suite() -> list[dict]:
     suite = cases()
+    validate_preview_references(
+        [case for case in suite if case.get("kind") == "render"],
+        TEST.parent / "ios/DoglyadUITests",
+    )
     ids = [c["id"] for c in suite]
     if not suite or len(set(ids)) != len(ids):
         raise ValueError("Suite is empty or has duplicate case IDs")

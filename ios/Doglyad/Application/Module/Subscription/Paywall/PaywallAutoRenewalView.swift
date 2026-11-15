@@ -14,7 +14,8 @@ struct PaywallAutoRenewalView: DViewProtocol {
     }
 
     var body: some View {
-        if state.selectedPlan?.source == .robokassa {
+        switch state.selectedPlan?.source {
+        case .robokassa:
             DToggleCard(
                 title: l10n[
                     .paywallAutoRenewalLabel,
@@ -26,6 +27,8 @@ struct PaywallAutoRenewalView: DViewProtocol {
                 isDisabled: viewModel.isProcessing,
                 accessibilityIdentifier: "paywall.autoRenewal",
             )
+        case .apple, .none:
+            EmptyView()
         }
     }
 }

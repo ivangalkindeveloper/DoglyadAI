@@ -89,7 +89,7 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         }
     }
 
-    var canRetry: Bool {
+    var isRetryAvailable: Bool {
         switch actualModelReport.generation.status {
         case .generating, .completed: false
         case .interrupted, .failed, .cancelled: true
@@ -131,42 +131,29 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
     }
 
     override func onInit() {
-        reportObservation = observeReports { [weak self] updated in
-            guard let self, updated.id == self.report.id else {
-                return
-            }
-            let previousStatus = actualModelReport.generation.status
-            if previousStatus != updated.actualModelReport.generation.status {
-                switch updated.actualModelReport.generation.status {
-                case .failed, .interrupted:
-                    messager.showUnknownError(
-                        l10n: l10n,
-                    )
-                case .generating, .completed, .cancelled: break
-                }
-            }
-            switch state {
-            case _ as ReportReceivedLoadingState:
-                emit(
-                    ReportReceivedLoadingState(
-                        report: updated,
-                    ),
-                )
-            default:
-                emit(
-                    ReportReceivedContentState(
-                        report: updated,
-                    ),
-                )
-            }
-        }
-        emit(
-            ReportReceivedContentState(
-                report: currentReport(
-                    report,
+        observeCurrentReport()
+    }
+
+    override func onReappear() {
+        switch state {
+        case let state as ReportReceivedLoadingState where lastTask?.isCancelled == true:
+            emit(
+                ReportReceivedContentState(
+                    report: state.report,
                 ),
-            ),
-        )
+            )
+        default: break
+        }
+        observeCurrentReport()
+    }
+
+    override func onDisappear() {
+        super.onDisappear()
+        retryTask?.cancel()
+        retryTask = nil
+        lastTask?.cancel()
+        reportObservation?.cancel()
+        reportObservation = nil
     }
 
     func onTapRetryGeneration() {
@@ -184,12 +171,16 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
                 let updated = try await retryGeneration(
                     report,
                 )
-                emit(
-                    ReportReceivedContentState(
-                        report: updated,
-                    ),
+                guard !Task.isCancelled else {
+                    return
+                }
+                publishReport(
+                    updated,
                 )
             } catch {
+                guard !Task.isCancelled else {
+                    return
+                }
                 messager.showUnknownError(
                     l10n: l10n,
                 )
@@ -261,6 +252,59 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         )
     }
 
+    private func observeCurrentReport() {
+        if reportObservation == nil {
+            reportObservation = observeReports { [weak self] updated in
+                guard let self, updated.id == self.report.id else {
+                    return
+                }
+                let previousStatus = actualModelReport.generation.status
+                if previousStatus != updated.actualModelReport.generation.status {
+                    switch updated.actualModelReport.generation.status {
+                    case .failed, .interrupted:
+                        messager.showUnknownError(
+                            l10n: l10n,
+                        )
+                    case .generating, .completed, .cancelled: break
+                    }
+                }
+                publishReport(
+                    updated,
+                )
+            }
+        }
+        publishReport(
+            currentReport(
+                report,
+            ),
+        )
+    }
+
+    private func publishReport(
+        _ updated: USExaminationReport,
+    ) {
+        switch state {
+        case let state as ReportReceivedContentState:
+            emit(
+                state.copyWith(
+                    report: updated,
+                ),
+            )
+        case let state as ReportReceivedLoadingState:
+            emit(
+                state.copyWith(
+                    report: updated,
+                ),
+            )
+        default:
+            emit(
+                ReportReceivedContentState(
+                    report: updated,
+                ),
+            )
+        }
+    }
+
     private func sendReportEmail(
         to userEmail: String,
     ) {
@@ -288,6 +332,9 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
                 ),
             )
         } onDefer: {
+            guard !Task.isCancelled else {
+                return
+            }
             switch self.state {
             case _ as ReportReceivedLoadingState:
                 self.emit(
@@ -298,6 +345,9 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
             default: break
             }
         } onMainSuccess: { _ in
+            guard !Task.isCancelled else {
+                return
+            }
             self.messager.show(
                 type: .success,
                 title: self.container.l10n[
@@ -308,6 +358,9 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
                 ],
             )
         } onMainUnknownError: { error in
+            guard !Task.isCancelled else {
+                return
+            }
             self.emit(
                 ReportReceivedDeliveryErrorState(
                     report: self.report,

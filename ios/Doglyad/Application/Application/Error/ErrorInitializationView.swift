@@ -21,10 +21,10 @@ struct ErrorInitializationView<Description: View>: DViewProtocol {
         ) {
             Spacer()
 
-            DImage(
+            DAssetScaleImage(
                 .doglyadQuestion,
+                widthScale: .regular,
             )
-            .scaledToFit()
             .frame(
                 maxWidth: .infinity,
                 alignment: .center,

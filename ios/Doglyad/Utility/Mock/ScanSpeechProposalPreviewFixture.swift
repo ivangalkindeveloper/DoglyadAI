@@ -5,16 +5,6 @@
 
     @MainActor
     struct ScanSpeechProposalPreviewFixture {
-        enum Scenario: Hashable {
-            case patientNotPrepared
-            case patientName
-            case measurement
-            case clinicalText
-            case multipleFields
-            case partialResult
-            case empty
-        }
-
         let state: ScanSpeechReviewProposalState
         let automaticFieldIds: Set<DNeuralUltrasoundVoiceFieldId>
 
@@ -104,6 +94,16 @@
                     \.id,
                 ),
             )
+        }
+
+        enum Scenario: Hashable {
+            case patientNotPrepared
+            case patientName
+            case measurement
+            case clinicalText
+            case multipleFields
+            case partialResult
+            case empty
         }
 
         func makeViewModel(

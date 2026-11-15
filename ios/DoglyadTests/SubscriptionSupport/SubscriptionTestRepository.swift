@@ -32,7 +32,7 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
     var isLoadingFailed = false
     var isRestorableSubscriptionAvailable = true
     var onPurchase: (() async throws -> Void)?
-    private(set) var purchasedIsAutoRenewing: Bool?
+    private(set) var isPurchasedAutoRenewing: Bool?
     var preparedPaymentID: UUID?
     var observedUpdate: SubscriptionTransactionUpdate?
     private(set) var deliveredUpdateCount = 0
@@ -124,7 +124,7 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
         }
         purchaseCount += 1
         purchasedPlan = plan
-        purchasedIsAutoRenewing = isAutoRenewing
+        isPurchasedAutoRenewing = isAutoRenewing
         try await onPurchase?()
         switch plan.source {
         case .apple:

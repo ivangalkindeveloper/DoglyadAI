@@ -2,7 +2,8 @@
 
 For a physical ARM64 NVIDIA DGX Spark, use [the DGX Spark guide](dgx-spark/README.md).
 Do not run the amd64 VM bootstrap on DGX OS. The Spark deployment uses one Compose
-directory, one inference API, and three private vLLM engines sharing one GPU.
+directory, one inference API, and the private vLLM engines listed in its host
+profile, sharing one GPU.
 
 `deploy/` prepares a clean Ubuntu `amd64` VM for one of two services:
 
@@ -13,7 +14,7 @@ Bootstrap installs system dependencies but deliberately does not start the servi
 
 ## Image checks and non-root runtime
 
-The image workflow runs Ruff lint/format checks, mypy and pytest independently for both services. The main check also runs deployment-tool tests and shell syntax checks. These run for backend/deployment pull requests and pushes to `master`, and for manual image builds. Publishing remains manual; neither image can be published unless both services pass.
+The image workflow runs Ruff lint/format checks, mypy and pytest independently for both services. The main check also runs deployment-tool tests and shell syntax checks. Main backups use an encrypted local pgBackRest repository with full copies and WAL uploaded to private Yandex Disk environment folders. A separate database image includes PostgreSQL 17 and pgBackRest and passes a full-backup/point-in-time recovery test before publication. These run for backend/deployment pull requests and pushes to `master`, and for manual image builds. Publishing remains manual; neither image can be published unless both services pass.
 
 Before publishing each image, `deploy/verify_backend_image.py` starts it without network access using synthetic Firebase credentials and temporary storage. It checks UID/GID `10001:10001`, credential reads, rejection of credential writes, log writes and the unauthenticated `401` boundary. It uses main's local mock generation implementation and does not load a GPU model or contact Firebase. This is a runtime-permission check, not an authorized generation test.
 
@@ -109,11 +110,25 @@ For production, use the environment-specific target:
 make sync-secrets-main-production TARGET=USER@MAIN_PRODUCTION_HOST
 ```
 
-The endpoint map is loaded when the main backend starts, so `sync-secrets.sh` recreates `backend_main`. A `401` response from both `/v1/application_config` and `/v1/ultrasound/report_generations` without a token confirms that the public stack is reachable and App Check is enforced after the update.
+For main, first fill the environment-specific pgBackRest, Yandex Disk OAuth and monitoring files described in [the database guide](database/README.md). `sync-secrets.sh` delivers the public main stack and only the selected environment credentials, then initializes PostgreSQL, a pre-migration backup, Alembic, all four main processes and the backup timers. The endpoint map is loaded when these processes start. A `401` response from both `/v1/application_config` and `/v1/ultrasound/report_generations` without a token confirms that the public stack is reachable and App Check is enforced after the update.
 
 ## Update all backend services
 
-The local, Git-ignored `deploy/secrets/infrastructure.json` is the single fleet inventory. Do not commit or publish it. It lists both main environments and every inference host. New hosts reference a [host profile](inference/README.md) containing their model/engine list; existing single-model targets retain their `model` field. Keep its targets current; SSH aliases must exist on the machine running deployment, and direct SSH targets must support non-interactive authentication. Private keys and passwords belong outside this file. Check the inventory with `make check-infrastructure` before rollout.
+The local, Git-ignored `deploy/secrets/infrastructure.json` is the single fleet inventory.
+It is private deployment configuration, not a credential store: SSH aliases, host
+addresses, deployment directories and model assignments describe the fleet.
+Passwords, tokens and private keys belong in separate secret files or the SSH agent.
+The updater reads this inventory to decide which machines and model routes to check,
+update and roll back. It does not discover missing hosts automatically.
+
+The public [inventory template](infrastructure.example.json) shows two main targets
+and a multi-model ARM64 DGX target. Its relative profile path is written for the
+final location `deploy/secrets/infrastructure.json`; use actual SSH aliases and the
+actual deployment directory. A single-model amd64 host uses its own `model` entry
+instead. A file can be valid JSON and still describe an outdated fleet. Compare its
+model/profile coverage with the main endpoint map before invoking the updater.
+
+Keep the inventory out of Git. It must list both main environments and every inference host. New hosts reference a [host profile](inference/README.md) containing their model/engine list; existing single-model targets retain their `model` field. Keep its targets current; SSH aliases must exist on the machine running deployment, and direct SSH targets must support non-interactive authentication. Private keys and passwords belong outside this file. Check the inventory with `make check-infrastructure` before rollout.
 
 ```bash
 make check-infrastructure
@@ -122,7 +137,7 @@ make update-infrastructure
 
 These commands invoke `bash deploy/update-infrastructure.sh`. Requires local Python 3.10+, authenticated GitHub CLI with workflow-dispatch access, Docker CLI with GHCR access, and non-interactive SSH. VMs need Python 3, Docker Compose, curl, and write access to `/opt/doglyad`; inference also needs Tailscale. `--check` performs read-only readiness and private-route checks without starting a build.
 
-Commit and push the intended code first. The script does not publish local changes. The updated `build.yml` with its `deployment_id` input must exist on GitHub before the first launch. It correlates a fresh build using a unique run title, requires all checks and both image publication jobs to succeed, verifies each target architecture, and deploys the resulting digests. A branch change before dispatch aborts deployment. Build wait defaults to one hour (`--build-timeout` in seconds).
+Commit and push the intended code first. The script does not publish local changes. The updated `build.yml` with its `deployment_id` input must exist on GitHub before the first launch. It correlates a fresh build using a unique run title, requires all checks and main, inference and database publication jobs to succeed, verifies each target architecture, and deploys the resulting digests. A branch change before dispatch aborts deployment. Build wait defaults to one hour (`--build-timeout` in seconds).
 
 Inventory targets default to `architecture: amd64` and `directory: /opt/doglyad`.
 Profile-based targets derive architecture and all model IDs from `profile`, whose
@@ -150,9 +165,9 @@ make check-infrastructure INFRASTRUCTURE_SCOPE=main
 make update-infrastructure INFRASTRUCTURE_SCOPE=main
 ```
 
-This selects the explicit `--scope main` mode. The full inventory is still validated and its model IDs are used to check the new main image against existing endpoint mappings. Only the two main VMs are contacted, locked, staged, updated and, if necessary, rolled back. Main container, environment, image and App Check checks remain enabled; inference availability and private-route checks are skipped and reported as unverified. Both image jobs still build, but only the main image is deployed. The default scope is `all`.
+This selects the explicit `--scope main` mode. The full inventory is still validated and its model IDs are used to check the new main image against existing endpoint mappings. Only the two main VMs are contacted, locked, staged, updated and, if necessary, rolled back. Main container, environment, image and App Check checks remain enabled; inference availability and private-route checks are skipped and reported as unverified. All image checks/publications still run, including the database recovery check, but only the main application images are updated. The default scope is `all`.
 
-All targets are preflighted, locked and snapshotted; all images are staged before container replacement. The order is inference backends, development main, production main. Only backend containers are recreated. Caddy, all configured vLLM engines, weights, secrets, OS packages, and deployed Compose files are preserved. Inference preflight checks actual backend routes, every engine's served model ID, health and private ports. Profile targets also verify the generated files against the inventory profile. The new machine `TAG` contains `<commit-sha>@sha256:<digest>`, supported by the existing Compose image references. Generated stacks use the updated `INFERENCE_BACKEND_IMAGE` instead.
+All targets are preflighted, locked and snapshotted; all images are staged before container replacement. The order is inference backends, development main, production main. For main, the updater stops all four application processes, takes a full backup and runs the new image’s Alembic migrations before recreating the API, report worker, payment gateway and subscription worker. PostgreSQL, Caddy, all configured vLLM engines, weights, secrets, OS packages, and deployed Compose files are preserved. Initial main setup must already be complete; see [database operations](database/README.md). Inference preflight checks actual backend routes, every engine's served model ID, health and private ports. Profile targets also verify the generated files against the inventory profile. The new machine `TAG` contains `<commit-sha>@sha256:<digest>`, supported by the existing Compose image references. Generated stacks use the updated `INFERENCE_BACKEND_IMAGE` instead.
 
 The single update path is `make update-infrastructure` → `deploy/update-infrastructure.sh` → `deploy/update_infrastructure.py` → `deploy/update_remote.py` over SSH. The local Python module coordinates Actions and rollout; the remote helper owns container changes and rollback for both roles. Use the `update-infrastructure` skill for updates, and `configure-vm` for provisioning/readiness. `sync-secrets.sh` is only for delivering changed secrets or initial startup.
 
@@ -160,7 +175,7 @@ Review API compatibility and required migrations before launch. Shared inference
 
 ### Recovery
 
-On rollout failure, further updates stop and all attempted targets are rolled back in reverse order, including the target whose SSH response was lost. Rollback restores the machine `.env` and recreates the backend from its saved local image ID. Snapshots remain in `/opt/doglyad/.deploy-<release-id>/`; keep them private. Images/volumes are not pruned.
+On rollout failure, further updates stop and all attempted targets are rolled back in reverse order, including the target whose SSH response was lost. Rollback restores the machine `.env` and recreates all applicable application processes from their saved local image IDs only when the database revision is unchanged and migration execution has a known result. After an applied or interrupted migration, writers remain stopped and the lock/snapshot are retained for explicit recovery. No automatic database downgrade or restore is attempted. Snapshots remain in `/opt/doglyad/.deploy-<release-id>/`; keep them private. Images/volumes are not pruned.
 
 After a rollout failure, persistent locks are retained even if rollback reports success. Inspect every affected VM and verify images against `state.json`, configuration, containers, and routes. Ensure no remote operation is still running. The lock directory is `.infrastructure-update-lock`, with the release ID in `owner`; `.infrastructure-operation-lock` is a separate advisory-lock file and must not be deleted.
 
@@ -179,7 +194,7 @@ Changing generated Compose, profile or server configuration during rollout
 blocks update/rollback before replacement. Restore the intended files deliberately
 before retrying; the helper does not overwrite another configuration change.
 
-The entry point supports the full inventory and the two-main scope above. Other partial rollouts, explicit historical-SHA releases, incompatible migrations, and platform upgrades require a separate plan; there are no flags for these operations.
+The entry point supports the full inventory and the two-main scope above. Other partial rollouts, explicit historical-SHA releases, database recovery after schema changes, and platform upgrades require a separate plan; there are no flags for these operations.
 
 Local tests, without GitHub/VM access:
 

@@ -9,7 +9,6 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
     let currentValue: TranscriptParserType
     private let arguments: SelectTranscriptParserArguments
     private let getFoundationModelsAvailability: () -> Bool
-    @Published private(set) var isFoundationModelsAvailable: Bool
     private var availabilityObservation: AnyCancellable?
 
     init(
@@ -29,9 +28,10 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
             container.examinationNeuralModelFactory.isFoundationModelsAvailable
         }
         self.getFoundationModelsAvailability = availability
-        isFoundationModelsAvailable = availability()
         super.init(
-            state: SelectTranscriptParserDefaultState(),
+            state: SelectTranscriptParserDefaultState(
+                isFoundationModelsAvailable: availability(),
+            ),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -46,14 +46,14 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
     }
 
     override func onInit() {
-        availabilityObservation = NotificationCenter.default.publisher(
-            for: UIApplication.didBecomeActiveNotification,
-        ).sink { [weak self] _ in
-            Task { @MainActor [weak self] in
-                self?.refreshAvailability()
-            }
+        observeAvailability()
+    }
+
+    override func onReappear() {
+        guard availabilityObservation == nil else {
+            return
         }
-        refreshAvailability()
+        observeAvailability()
     }
 
     func isSelectionEnabled(
@@ -61,10 +61,16 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
     ) -> Bool {
         switch type {
         case .foundationModels:
-            isFoundationModelsAvailable
+            state.isFoundationModelsAvailable
         case .server:
             true
         }
+    }
+
+    override func onDisappear() {
+        super.onDisappear()
+        availabilityObservation?.cancel()
+        availabilityObservation = nil
     }
 
     func onSelect(
@@ -82,10 +88,31 @@ final class SelectTranscriptParserViewModel: DModuleViewModel<any SelectTranscri
         arguments.onSelected(
             type,
         )
+        cancelOperationTask()
+        availabilityObservation?.cancel()
+        availabilityObservation = nil
         coordinator.dismissSheet()
     }
 
+    private func observeAvailability() {
+        availabilityObservation = NotificationCenter.default.publisher(
+            for: UIApplication.didBecomeActiveNotification,
+        ).sink { [weak self] _ in
+            Task { @MainActor [weak self] in
+                guard let self, availabilityObservation != nil else {
+                    return
+                }
+                refreshAvailability()
+            }
+        }
+        refreshAvailability()
+    }
+
     private func refreshAvailability() {
-        isFoundationModelsAvailable = getFoundationModelsAvailability()
+        emit(
+            state.copyWith(
+                isFoundationModelsAvailable: getFoundationModelsAvailability(),
+            ),
+        )
     }
 }

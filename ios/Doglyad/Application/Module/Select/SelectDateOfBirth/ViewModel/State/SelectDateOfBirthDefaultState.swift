@@ -1,11 +1,27 @@
+import Foundation
+
 @MainActor
 final class SelectDateOfBirthDefaultState: SelectDateOfBirthStateProtocol, @MainActor Equatable {
-    init() {}
+    let date: Date
+
+    init(
+        date: Date = Date(),
+    ) {
+        self.date = date
+    }
+
+    func copyWith(
+        date: Date? = nil,
+    ) -> SelectDateOfBirthDefaultState {
+        SelectDateOfBirthDefaultState(
+            date: date ?? self.date,
+        )
+    }
 
     static func == (
-        _: SelectDateOfBirthDefaultState,
-        _: SelectDateOfBirthDefaultState,
+        lhs: SelectDateOfBirthDefaultState,
+        rhs: SelectDateOfBirthDefaultState,
     ) -> Bool {
-        true
+        lhs.date == rhs.date
     }
 }

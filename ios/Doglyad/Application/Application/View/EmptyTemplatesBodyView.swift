@@ -15,13 +15,9 @@ struct EmptyTemplatesBodyView: DViewProtocol {
         VStack(
             spacing: size.s24,
         ) {
-            DImage(
+            DAssetScaleImage(
                 .doglyadFile,
-            )
-            .scaledToFit()
-            .frame(
-                width: size.screenWidth / 2,
-                height: size.screenWidth / 2,
+                widthScale: .regular,
             )
 
             DText(

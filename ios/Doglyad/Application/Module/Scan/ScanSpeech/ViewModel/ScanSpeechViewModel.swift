@@ -311,9 +311,7 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
         switch state {
         case let state as ScanSpeechReviewProposalState:
             emit(
-                ScanSpeechReviewProposalState(
-                    proposal: state.proposal,
-                    reviewProposals: state.reviewProposals,
+                state.copyWith(
                     selectedFieldIds: state.selectedFieldIds.symmetricDifference(
                         [id],
                     ),
@@ -605,10 +603,13 @@ final class ScanSpeechViewModel: DModuleViewModel<any ScanSpeechStateProtocol> {
     private func processTranscript(
         _ original: DSpeechTranscript,
     ) {
-        if original.completion == .failed {
+        switch original.completion {
+        case .failed:
             messager.showUnknownError(
                 l10n: l10n,
             )
+        case .finished, .timedOut, .interrupted, .cancelled:
+            break
         }
         originalTranscript = original
         transcriptTextController.restoreText(

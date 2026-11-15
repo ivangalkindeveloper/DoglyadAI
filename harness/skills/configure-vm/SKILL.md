@@ -31,7 +31,7 @@ Read these files before acting because they are the source of truth and may have
 - `deploy/docker-compose.<role>.yml`
 - `deploy/cloud-init/<role>.yaml` when cloud-init is involved
 
-For `main`, also inspect the selected environment's neural-model config. For `inference`, inspect `backend/inference/README.md`.
+For `main`, also inspect `deploy/database/README.md`, `main-assets.json`, `main-compose.sh`, `configure_main.py`, and the selected environment's neural-model config. For `inference`, inspect `backend/inference/README.md`.
 
 ## Enforce safety boundaries
 
@@ -57,7 +57,7 @@ For `main`, also inspect the selected environment's neural-model config. For `in
 
 Required local secret files are:
 
-- `main`: `.env`, `.env.<environment>`, `firebase_credentials.json`, `inference_endpoints.json`
+- `main`: `.env`, `.env.<environment>`, `firebase_credentials.json`, `inference_endpoints.json`, `pgbackrest.<environment>.conf`, `yandex-disk.<environment>.conf`, `backup-monitor.<environment>.env`, and the configured Apple files
 - `inference`: follow `backend/inference/README.md` and the current variables model; do not assume the list from memory
 
 ## Audit the base VM
@@ -115,15 +115,15 @@ DOMAIN=<hostname without scheme or path>
 
 3. Validate that `ENV_FILE` matches the resolved environment. Refuse to continue on mismatch.
 4. Verify all inference routes from this VM before starting the public backend.
-5. From the repository root on the local machine, synchronize the existing local secrets and start the stack:
+5. Fill the private per-environment backup configuration, Yandex Disk OAuth configuration and two external monitoring heartbeats using `deploy/database/README.md`. Use a clean, committed deployment checkout matching the published `TAG`. The database image is published by the same workflow and is pinned during setup. From the repository root on the local machine, synchronize the selected secrets and initialize the complete stack:
 
 ```bash
 deploy/sync-secrets.sh main <ssh-target>
 ```
 
-`sync-secrets.sh` derives its public health-check host from the target string. If the target is an SSH alias rather than the public domain, its final curl may say `unreachable` even though synchronization succeeded. Always repeat health checks against `DOMAIN` from the machine `.env`; do not mistake the alias check for service failure.
+`sync-secrets.sh` uses the machine `DOMAIN` for public checks. For main it delivers public stack files, prepares non-root application storage, initializes the database/repository, stops writers, takes and verifies a full backup plus WAL on Yandex Disk, applies migrations and starts all four application processes. It installs the daily backup and five-minute WAL/backup-status timers. Setup needs root or noninteractive sudo. Never run it concurrently with an infrastructure update. The monthly restore timer belongs only on a separate restore host.
 
-6. Verify `backend_main` and `caddy` are running. Check recent logs without request bodies.
+6. Verify `backend_main`, `report_worker`, `billing_gateway`, `billing_worker`, `doglyad_database` and `caddy`; all four application processes must run the same release. Verify both backup timers are enabled/active and `database/backup-status.sh` succeeds. Keep the pinned `DATABASE_IMAGE` for recovery. Check recent logs without request bodies.
 7. Verify the public chain:
 
 - `GET https://<domain>/v1/application_config` with no App Check token returns `401`

@@ -9,7 +9,7 @@ from uuid import UUID
 from sqlalchemy import delete, func, select
 from sqlalchemy.exc import IntegrityError
 
-from app.database.billing_database import BillingDatabase
+from app.database.application_database import ApplicationDatabase
 from app.database.billing_usage_db import BillingUsageDB
 from app.database.report_generation_db import ReportGenerationDB
 from app.error.report_generation_conflict_error import ReportGenerationConflictError
@@ -26,7 +26,7 @@ from app.service.report.report_generation_cipher import ReportGenerationCipher
 class ReportGenerationStore:
     def __init__(
         self,
-        database: BillingDatabase,
+        database: ApplicationDatabase,
         cipher: ReportGenerationCipher,
         config: USReportGenerationConfig,
     ) -> None:

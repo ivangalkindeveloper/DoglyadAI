@@ -144,10 +144,8 @@ public final class DeviceCameraController: DCameraControllerProtocol {
         capturePhotoCompletion = nil
         captureDelegate = nil
     }
-}
 
-private extension DeviceCameraController {
-    func configureSession() {
+    fileprivate func configureSession() {
         sessionQueue.async { [weak self] in
             guard let self else {
                 return
@@ -164,7 +162,7 @@ private extension DeviceCameraController {
         }
     }
 
-    nonisolated static func configure(
+    fileprivate nonisolated static func configure(
         session: AVCaptureSession,
         output: AVCapturePhotoOutput,
     ) {
@@ -224,7 +222,7 @@ private extension DeviceCameraController {
         }
     }
 
-    nonisolated static func makeSettings(
+    fileprivate nonisolated static func makeSettings(
         output: AVCapturePhotoOutput,
     ) -> AVCapturePhotoSettings {
         let settings

@@ -17,10 +17,14 @@ cases:
   - action: Открыть протокол
     expect: Данные пациента и ответ соответствуют запросу; запись доступна в истории.
   covers:
+  - onDisappear
   - onInit
+  - onReappear
   - onTapReport
   automation:
-    kind: maestro
+    kind: mixed
+    nativeTests:
+    - ReportReceivedObservationTests/reportUpdatesReuseTheContentPhaseAndStopAfterLeaving()
     flows:
     - e2e-reportreceived-generation
     - e2e-reportreceived-failure-retry

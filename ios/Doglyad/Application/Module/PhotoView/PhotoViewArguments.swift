@@ -5,7 +5,7 @@ import SwiftUI
 final class PhotoViewArguments: RouteArgumentsProtocol {
     let getPhotos: () -> [USExaminationScanPhoto]
     let getPhotoRemarks: () -> [USExaminationPhotoRemarks]
-    let observePhotos: ((@escaping ([USExaminationScanPhoto]) -> Void) -> AnyCancellable)?
+    let observePhotoChanges: ((@escaping ([USExaminationScanPhoto], [USExaminationPhotoRemarks]) -> Void) -> AnyCancellable)?
     let initialPhotoID: UUID
     let subTitle: String?
     let onDelete: ((USExaminationScanPhoto) -> Void)?
@@ -15,14 +15,14 @@ final class PhotoViewArguments: RouteArgumentsProtocol {
         getPhotoRemarks: @escaping () -> [USExaminationPhotoRemarks] = {
             []
         },
-        observePhotos: ((@escaping ([USExaminationScanPhoto]) -> Void) -> AnyCancellable)? = nil,
+        observePhotoChanges: ((@escaping ([USExaminationScanPhoto], [USExaminationPhotoRemarks]) -> Void) -> AnyCancellable)? = nil,
         initialPhotoID: UUID,
         subTitle: String? = nil,
         onDelete: ((USExaminationScanPhoto) -> Void)? = nil,
     ) {
         self.getPhotos = getPhotos
         self.getPhotoRemarks = getPhotoRemarks
-        self.observePhotos = observePhotos
+        self.observePhotoChanges = observePhotoChanges
         self.initialPhotoID = initialPhotoID
         self.subTitle = subTitle
         self.onDelete = onDelete

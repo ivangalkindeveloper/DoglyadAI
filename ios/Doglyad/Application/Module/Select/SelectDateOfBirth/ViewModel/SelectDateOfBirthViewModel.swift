@@ -3,7 +3,6 @@ import Foundation
 
 @MainActor
 final class SelectDateOfBirthViewModel: DModuleViewModel<any SelectDateOfBirthStateProtocol> {
-    @Published private(set) var date: Date
     let fromDate: Date
     let toDate: Date
     private let arguments: SelectDateOfBirthArguments?
@@ -19,7 +18,6 @@ final class SelectDateOfBirthViewModel: DModuleViewModel<any SelectDateOfBirthSt
         arguments: SelectDateOfBirthArguments?,
     ) {
         let toDate = Date()
-        date = arguments?.currentValue ?? toDate
         fromDate = Calendar.current.date(
             byAdding: .year,
             value: -100,
@@ -28,7 +26,9 @@ final class SelectDateOfBirthViewModel: DModuleViewModel<any SelectDateOfBirthSt
         self.toDate = toDate
         self.arguments = arguments
         super.init(
-            state: SelectDateOfBirthDefaultState(),
+            state: SelectDateOfBirthDefaultState(
+                date: arguments?.currentValue ?? toDate,
+            ),
             container: container,
             router: router,
             getSubscriptionStatus: getSubscriptionStatus,
@@ -52,7 +52,11 @@ final class SelectDateOfBirthViewModel: DModuleViewModel<any SelectDateOfBirthSt
     func onDateChanged(
         _ newDate: Date,
     ) {
-        date = newDate
+        emit(
+            state.copyWith(
+                date: newDate,
+            ),
+        )
     }
 
     func onTapSelect() {
@@ -61,7 +65,7 @@ final class SelectDateOfBirthViewModel: DModuleViewModel<any SelectDateOfBirthSt
         )
         coordinator.dismissSheet()
         arguments?.onSelected(
-            date,
+            state.date,
         )
     }
 }

@@ -13,6 +13,31 @@ class PythonArgumentTransformer(cst.CSTTransformer):
         # Python 3.11 cannot freely wrap expressions inside f-string literals.
         return False
 
+    def leave_ClassDef(
+        self,
+        original_node: cst.ClassDef,
+        updated_node: cst.ClassDef,
+    ) -> cst.ClassDef:
+        if not isinstance(updated_node.body, cst.IndentedBlock):
+            return updated_node
+        members: list[cst.BaseStatement] = []
+        is_previous_field = False
+        for member in updated_node.body.body:
+            is_field = (
+                isinstance(member, cst.SimpleStatementLine)
+                and len(member.body) == 1
+                and isinstance(member.body[0], cst.AnnAssign)
+            )
+            if is_field and is_previous_field:
+                member = member.with_changes(
+                    leading_lines=tuple(line for line in member.leading_lines if line.comment is not None),
+                )
+            members.append(member)
+            is_previous_field = is_field
+        return updated_node.with_changes(
+            body=updated_node.body.with_changes(body=members),
+        )
+
     def leave_Call(
         self,
         original_node: cst.Call,

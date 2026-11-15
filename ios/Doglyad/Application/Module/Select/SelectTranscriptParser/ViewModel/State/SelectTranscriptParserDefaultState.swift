@@ -1,11 +1,27 @@
+import Foundation
+
 @MainActor
 final class SelectTranscriptParserDefaultState: SelectTranscriptParserStateProtocol, @MainActor Equatable {
-    init() {}
+    let isFoundationModelsAvailable: Bool
+
+    init(
+        isFoundationModelsAvailable: Bool = false,
+    ) {
+        self.isFoundationModelsAvailable = isFoundationModelsAvailable
+    }
+
+    func copyWith(
+        isFoundationModelsAvailable: Bool? = nil,
+    ) -> SelectTranscriptParserDefaultState {
+        SelectTranscriptParserDefaultState(
+            isFoundationModelsAvailable: isFoundationModelsAvailable ?? self.isFoundationModelsAvailable,
+        )
+    }
 
     static func == (
-        _: SelectTranscriptParserDefaultState,
-        _: SelectTranscriptParserDefaultState,
+        lhs: SelectTranscriptParserDefaultState,
+        rhs: SelectTranscriptParserDefaultState,
     ) -> Bool {
-        true
+        lhs.isFoundationModelsAvailable == rhs.isFoundationModelsAvailable
     }
 }

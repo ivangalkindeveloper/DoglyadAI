@@ -10,7 +10,7 @@ from app.core.app_check.app_check import AppCheck
 from app.core.application.service_factory import ServiceFactory
 from app.core.configuration.configuration_loader import ConfigurationLoader
 from app.core.configuration.variables import Variables
-from app.database.billing_database import BillingDatabase
+from app.database.application_database import ApplicationDatabase
 
 
 class MainLifespan(AbstractAsyncContextManager[None]):
@@ -22,7 +22,7 @@ class MainLifespan(AbstractAsyncContextManager[None]):
         self._http_client = httpx.AsyncClient(
             timeout=app.state.server_config.inference.timeout(),
         )
-        self._billing_database: BillingDatabase | None = None
+        self._database: ApplicationDatabase | None = None
 
     async def __aenter__(
         self,
@@ -43,21 +43,21 @@ class MainLifespan(AbstractAsyncContextManager[None]):
                 variables,
             )
             subscriptions = None
-            if variables.billing_database_url:
-                self._billing_database = BillingDatabase(
-                    variables.billing_database_url,
+            if variables.database_url:
+                self._database = ApplicationDatabase(
+                    variables.database_url,
                 )
-                await self._billing_database.check()
+                await self._database.check()
                 subscriptions = factory.create_subscriptions(
-                    self._billing_database,
+                    self._database,
                 )
             self._app.state.container = factory.create_main_container(
                 subscriptions,
             )
         except BaseException:
             try:
-                if self._billing_database is not None:
-                    await self._billing_database.close()
+                if self._database is not None:
+                    await self._database.close()
             finally:
                 await self._http_client.aclose()
             raise
@@ -69,7 +69,7 @@ class MainLifespan(AbstractAsyncContextManager[None]):
         traceback: TracebackType | None,
     ) -> None:
         try:
-            if self._billing_database is not None:
-                await self._billing_database.close()
+            if self._database is not None:
+                await self._database.close()
         finally:
             await self._http_client.aclose()

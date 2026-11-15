@@ -57,7 +57,7 @@ cases:
   - action: Закрыть во время операции
     expect: Поздний результат не открывает экран заново и не запускает повторное удаление.
   covers:
-  - onDisappear
+  - onTapBack
   automation:
     kind: maestro
     flows:

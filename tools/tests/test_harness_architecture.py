@@ -299,6 +299,59 @@ struct Value {
 """)
         self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
 
+    def test_own_class_extensions_are_rejected_but_external_adapters_are_allowed(self) -> None:
+        result = self.run_source("class Owned {}\nextension Owned { func helper() {} }")
+        self.assertIn("swift.class-extension", result.stdout)
+        foreign = self.run_source(
+            "extension Foreign { func helper() {} }",
+            "class Foreign {}",
+            relative_path="ios/Doglyad/Adapter.swift",
+        )
+        self.assertEqual(foreign.returncode, 0, foreign.stdout + foreign.stderr)
+
+    def test_initialization_step_exception_is_restricted_to_its_folder(self) -> None:
+        source = "class InitializationProcess {}\nextension InitializationProcess { func build() {} }"
+        allowed = self.run_source(source, relative_path="ios/Doglyad/Core/Initialization/Steps/Step.swift")
+        self.assertEqual(allowed.returncode, 0, allowed.stdout + allowed.stderr)
+        rejected = self.run_source(source, relative_path="ios/Doglyad/Other.swift")
+        self.assertIn("swift.class-extension", rejected.stdout)
+
+    def test_preview_declarations_require_debug_not_only_a_debug_body(self) -> None:
+        source = "struct ExamplePreviewView {}\nfunc previewable() {\n#if DEBUG\nprint(1)\n#endif\n}"
+        rejected = self.run_source(source, relative_path="ios/Doglyad/Preview.swift")
+        self.assertEqual(rejected.stdout.count("swift.preview-debug"), 2)
+        allowed = self.run_source("#if DEBUG\n" + source + "\n#endif", relative_path="ios/Doglyad/Preview.swift")
+        self.assertEqual(allowed.returncode, 0, allowed.stdout + allowed.stderr)
+        release = self.run_source("#if DEBUG\n#else\nstruct ExamplePreviewView {}\n#endif", relative_path="ios/Doglyad/Preview.swift")
+        self.assertIn("swift.preview-debug", release.stdout)
+
+    def test_production_preview_payload_is_not_a_ui_preview_fixture(self) -> None:
+        result = self.run_source("struct USReportPreviewResponse {}", relative_path="ios/Doglyad/Domain/Payload.swift")
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        guarded = self.run_source("#if DEBUG_TOOLS && ENABLED\nstruct ExamplePreviewView {}\n#endif", relative_path="ios/Doglyad/Preview.swift")
+        self.assertIn("swift.preview-debug", guarded.stdout)
+
+    def test_view_model_dismissal_flag_is_rejected(self) -> None:
+        for name in ("isDismissalRequested", "isClosing"):
+            with self.subTest(name=name):
+                result = self.run_source(f"class ExampleViewModel {{ var {name} = false }}")
+                self.assertIn("swift.dismissal-flag", result.stdout)
+
+    def test_single_state_data_is_owned_by_state_but_shared_data_is_allowed(self) -> None:
+        source = """
+protocol ExampleStateProtocol {}
+class ExampleInitialState: ExampleStateProtocol {}
+class ExampleViewModel: DModuleViewModel {
+    @Published var photos: [Int] = []
+    @Published var focus: String?
+    @Published var speechController: SomeController?
+}
+"""
+        result = self.run_source(source)
+        self.assertEqual(result.stdout.count("swift.single-state-data"), 1)
+        shared = self.run_source(source + "\nclass ExampleErrorState: ExampleStateProtocol {}")
+        self.assertNotIn("swift.single-state-data", shared.stdout)
+
     def test_invalid_swift_is_not_silently_skipped(self) -> None:
         result = self.run_source("struct Broken: View { var body: some View {")
         self.assertEqual(result.returncode, 1)

@@ -2,16 +2,6 @@
     import Foundation
 
     struct ExpandableContentPreviewFixture {
-        enum Scenario: Hashable {
-            case short
-            case threeLines
-            case fourLines
-            case long
-            case narrow
-            case singleLineLimit
-            case markdown
-        }
-
         let text: String
         let width: CGFloat
         let collapsedLineLimit: Int
@@ -67,6 +57,16 @@
             case .markdown: true
             case .short, .threeLines, .fourLines, .long, .narrow, .singleLineLimit: false
             }
+        }
+
+        enum Scenario: Hashable {
+            case short
+            case threeLines
+            case fourLines
+            case long
+            case narrow
+            case singleLineLimit
+            case markdown
         }
     }
 #endif

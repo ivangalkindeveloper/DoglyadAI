@@ -17,6 +17,7 @@ cases:
   - action: Нажать назад
     expect: Открывается Scan с прежним черновиком.
   covers:
+  - onDisappear
   - onTapHistory
   - onTapTemplates
   - onTapWorkSettings
@@ -46,6 +47,7 @@ cases:
     expect: Описание истории снова содержит исходное число записей; переход открывает непустую историю.
   covers:
   - onInit
+  - onReappear
   automation:
     kind: maestro
     flows:

@@ -11,11 +11,11 @@ from payment_evidence import verify_payment
 class PaymentEnvironmentTests(unittest.TestCase):
     environment = {'REGRESSION_ROBOKASSA_MERCHANT_LOGIN': 'test', 'REGRESSION_ROBOKASSA_PASSWORD1': 'first', 'REGRESSION_ROBOKASSA_PASSWORD2': 'second'}
 
-    def test_live_gate_and_missing_credentials_are_rejected(self):
+    def test_missing_credentials_are_rejected(self):
         verify_test_merchant(self.environment)
-        for change in [{'REGRESSION_ROBOKASSA_PASSWORD2': ''}, {'REGRESSION_IS_ROBOKASSA_LIVE_ENABLED': 'true'}]:
+        for key in self.environment:
             with self.assertRaises(ValueError):
-                verify_test_merchant({**self.environment, **change})
+                verify_test_merchant({**self.environment, key: ''})
 
     def test_closing_the_browser_cannot_prove_a_canceled_invoice(self):
         with self.assertRaisesRegex(ValueError, 'manually'):

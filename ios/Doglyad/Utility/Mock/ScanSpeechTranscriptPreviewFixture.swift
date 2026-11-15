@@ -6,13 +6,6 @@
 
     @MainActor
     struct ScanSpeechTranscriptPreviewFixture {
-        enum Scenario: Hashable {
-            case finished
-            case interrupted
-            case failed
-            case parsing
-        }
-
         let text: String
         let completion: DSpeechCompletion
         let state: any ScanSpeechStateProtocol
@@ -51,6 +44,13 @@
                     parsedText: text,
                 )
             }
+        }
+
+        enum Scenario: Hashable {
+            case finished
+            case interrupted
+            case failed
+            case parsing
         }
 
         func makeViewModel(

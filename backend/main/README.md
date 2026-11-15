@@ -22,7 +22,7 @@ For a clean billing test, use `Backend: Local Mock (Cold)` or
 `Doglyad-Debug-Local-Clean` scheme. Stop the existing local backend before starting
 this profile. See [BILLING_LOCAL.md](BILLING_LOCAL.md#чистый-локальный-запуск).
 
-`ENVIRONMENT` selects configuration documents and the Robokassa payment mode: `development` accepts only test shops/payments, `production` accepts only live shops/payments. The temporary `IS_ROBOKASSA_LIVE_ENABLED=false` launch gate still blocks real charges. `MODEL_SERVICE_TYPE` independently selects `inference` or `mock`; the default is `inference`. The launch profiles set this value explicitly so switching back to Development or Production restores real inference.
+`ENVIRONMENT` selects configuration documents and the Robokassa payment mode: `development` accepts only test shops/payments, `production` accepts only live shops/payments. The selected profile supplies the matching merchant credentials; there is no separate payment-mode switch. `MODEL_SERVICE_TYPE` independently selects `inference` or `mock`; the default is `inference`. The launch profiles set this value explicitly so switching back to Development or Production restores real inference.
 
 For a local main backend connected to DGX, select `Backend: Local Inference`
 instead. This profile prepares the same local PostgreSQL database as Local Mock,
@@ -86,6 +86,12 @@ The SettingsAI screen and its entry cards are available independently of Pro. In
 
 ## Application composition and dependencies
 
+`DATABASE_URL` connects the main API and workers to one application PostgreSQL
+database per environment. It stores subscriptions, payments, usage and encrypted
+report-generation jobs. `ApplicationDatabase` owns the connection and sessions;
+`ApplicationBase` holds the shared ORM metadata. The PostgreSQL database and Docker
+service are named `doglyad_database`. Billing-specific tables retain their domain names.
+
 `app.main` creates its HTTP application through `ApplicationFactory.create_main()`;
 `app.payment_main` uses `create_payment()`. Every application gets independent settings,
 request policies and rate limits. `MainLifespan` owns its HTTP client/database resources,
@@ -95,7 +101,7 @@ to `ServiceFactory`. `ServiceDependencies` retrieves these ready instances from
 and startup failure.
 
 `python -m app.billing_worker` starts the independent `BillingWorker`. It uses its own
-HTTP client and `BillingDatabase` with the same configured PostgreSQL ledger. It creates
+HTTP client and `ApplicationDatabase` with the same configured PostgreSQL ledger. It creates
 only billing services through `ServiceFactory`; it does not build FastAPI routes,
 initialize Firebase, select a model or construct SMTP services. Cancellation closes
 both its connection pool and HTTP client. See [BILLING.md](BILLING.md).
@@ -146,7 +152,7 @@ See [ERRORS.md](ERRORS.md). Expected failures are classes in `app/error/`, with 
 
 StoreKit 2, Robokassa, anonymous identities, PostgreSQL migrations and launch prerequisites: [BILLING.md](BILLING.md).
 Merchant activation, NPD receipt verification and Apple external-purchase reporting prerequisites: [BILLING_RELEASE_PLAN.md](BILLING_RELEASE_PLAN.md).
-Backup and restoration templates: [deploy/billing/README.md](../../deploy/billing/README.md).
+Backup and restoration templates: [deploy/database/README.md](../../deploy/database/README.md).
 
 ## Потоковая генерация
 

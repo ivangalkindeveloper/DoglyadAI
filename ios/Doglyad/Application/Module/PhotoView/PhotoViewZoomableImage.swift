@@ -44,9 +44,12 @@ struct PhotoViewZoomableImage: DViewProtocol {
 
             ZStack {
                 Color.clear
-                DImage(
+                Image(
                     uiImage: image,
-                    accessibilityIdentifier: "photoView.image.\(photoId).offset.\(Int(displayed.offset.width)).\(Int(displayed.offset.height)).scale.\(Int(displayed.scale * 100))",
+                )
+                .resizable()
+                .accessibilityIdentifier(
+                    "photoView.image.\(photoId).offset.\(Int(displayed.offset.width)).\(Int(displayed.offset.height)).scale.\(Int(displayed.scale * 100))",
                 )
                 .scaledToFit()
                 .frame(
@@ -63,7 +66,7 @@ struct PhotoViewZoomableImage: DViewProtocol {
                     y: center.y + displayed.offset.height,
                 )
 
-                switch viewModel.isRemarksVisible {
+                switch viewModel.state.isRemarksVisible {
                 case true:
                     ForEach(
                         viewModel.remarkPoints(

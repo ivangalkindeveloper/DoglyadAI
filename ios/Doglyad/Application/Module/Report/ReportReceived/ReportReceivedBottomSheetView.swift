@@ -80,11 +80,11 @@ struct ReportReceivedBottomSheetView: DViewProtocol {
                 }
             },
             bottom: {
-                if viewModel.canRetry || viewModel.isCompleted {
+                if viewModel.isRetryAvailable || viewModel.isCompleted {
                     VStack(
                         spacing: size.s8,
                     ) {
-                        if viewModel.canRetry {
+                        if viewModel.isRetryAvailable {
                             DButton(
                                 image: .refresh,
                                 title: l10n[
@@ -145,8 +145,11 @@ struct ReportReceivedBottomSheetView: DViewProtocol {
         .environmentObject(
             viewModel,
         )
-        .onAppear {
-            viewModel.onAppear()
-        }
+        .onAppear(
+            perform: viewModel.onAppear,
+        )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

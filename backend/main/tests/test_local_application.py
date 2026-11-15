@@ -22,7 +22,7 @@ def test_local_key_survives_restart_and_is_private(
     )
     variables = Variables(
         environment="development",
-        billing_database_url="postgresql+asyncpg://local@127.0.0.1:5433/billing",
+        database_url="postgresql+asyncpg://local@127.0.0.1:5433/doglyad_database",
     )
     path = tmp_path / "private" / "report.key"
     first = LocalApplication(
@@ -53,8 +53,8 @@ def test_local_key_survives_restart_and_is_private(
 @pytest.mark.parametrize(
     "environment,url",
     [
-        ("production", "postgresql://localhost/billing"),
-        ("development", "postgresql://remote.example/billing"),
+        ("production", "postgresql://localhost/doglyad_database"),
+        ("development", "postgresql://remote.example/doglyad_database"),
         ("development", ""),
     ],
 )
@@ -64,7 +64,7 @@ def test_local_launcher_rejects_nonlocal_configuration(
     url: str,
 ) -> None:
     variables = Variables.model_validate(
-        {"environment": environment, "billing_database_url": url},
+        {"environment": environment, "database_url": url},
     )
     path = tmp_path / "report.key"
     with pytest.raises(
@@ -88,7 +88,7 @@ def test_stopping_api_stops_local_worker(
     )
     variables = Variables(
         environment="development",
-        billing_database_url="postgresql+asyncpg://local@127.0.0.1:5433/billing",
+        database_url="postgresql+asyncpg://local@127.0.0.1:5433/doglyad_database",
     )
 
     async def run() -> None:

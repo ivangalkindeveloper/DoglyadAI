@@ -112,7 +112,7 @@ python -m app.report_worker
 При остановленном worker физическая очистка возобновится после его запуска.
 Резерв и состояние задачи завершаются в одной транзакции.
 
-Main API и worker должны получать одинаковые `BILLING_DATABASE_URL` и
+Main API и worker должны получать одинаковые `DATABASE_URL` и
 `REPORT_GENERATION_ENCRYPTION_KEY`. Создайте ключ один раз в защищённом окружении:
 
 ```bash
@@ -127,10 +127,11 @@ python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().d
 Без ключа новые маршруты возвращают `503`; worker не запускается.
 Файлы секретов не изменены этой реализацией.
 
-Compose main содержит `report_worker`. Billing overlay задаёт ему зависимость от
-миграции. API и worker используют один образ. Обновление и откат через центральный
-скрипт охватывают оба процесса, если worker уже добавлен в Compose машины.
-Первое развёртывание требует установки нового Compose, ключа и миграции.
+Compose main содержит `report_worker` и задаёт ему зависимость от общей
+`database_migrate` из database Compose-файла. API и worker используют один образ. Центральный обновлятор останавливает
+все четыре процесса main, создаёт резервную копию, применяет миграции и запускает
+новую версию. После изменения схемы автоматический откат старого кода блокируется.
+Первое развёртывание устанавливает полный Compose, ключ и миграцию через настройку main.
 Сначала обновите inference, затем main с worker, затем клиент iOS.
 Прокси должен пропускать SSE без буферизации; ответ содержит `X-Accel-Buffering: no`.
 
@@ -172,7 +173,7 @@ Mock использует тот же жизненный цикл задачи, 
 | Состояние iOS | `ios/Doglyad/Application/Application/Controller/ReportGenerationController.swift`, `Domain/Ultrasound/USReportGeneration*.swift` |
 | Экраны | `ScanViewModel.swift`, `ReportReceivedViewModel.swift`, `ReportReceivedBottomSheetView.swift`, `ReportDetailViewModel.swift`, `HistoryViewModel.swift` |
 | Сеть и БД iOS | `DHttpClient.swift`, `DServerEventDecoder.swift`, `UltrasoundReportRepository.swift`, `DExaminationReportsStore.swift`, `USExaminationModelReportDB.swift` |
-| Запуск | `docker-compose.yml`, `deploy/docker-compose.main.yml`, `deploy/docker-compose.billing.yml`, `.vscode/launch.json` |
+| Запуск | `docker-compose.yml`, `deploy/docker-compose.main.yml`, `deploy/docker-compose.database.yml`, `.vscode/launch.json` |
 
 Пути iOS, deploy и .vscode в таблице отсчитываются от корня репозитория.
 

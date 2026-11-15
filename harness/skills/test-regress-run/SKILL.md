@@ -43,7 +43,7 @@ with `make previews-publish RUN=build/previews/runs/<run-id>` if transfer needs 
    Test payments require verified signed ResultURL evidence for the selected product;
    OpStateExt is production-only. Never replace payment evidence with SQL access.
    Keep browser/bank cases manual until their selectors and callbacks are verified.
-   Pending, application restart and confirmation retain the same payment identity until provider-confirmed cancellation or expiry. Plan changes create a paid successor that starts after the current paid period, with one future renewal schedule. Apple Sandbox is currently excluded. When asked
+   Pending, application restart and confirmation retain the same payment identity until provider-confirmed cancellation or expiry. Robokassa plan changes charge the full new price and start immediately after verified payment, replacing prior access without carrying over unused time and retaining only the new renewal schedule. Apple plan changes follow App Store rules. Apple Sandbox is currently excluded. When asked
    to upload an existing successful run, reuse it with
    `make regression-publish RUN=build/regression/runs/<run-id>` instead of rerunning tests.
 3. Follow the process log. The runner fails closed on an unsuccessful or skipped

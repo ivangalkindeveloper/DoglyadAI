@@ -2,7 +2,7 @@ import Foundation
 import SwiftParser
 import SwiftSyntax
 
-enum ClassMemberGroup: Int, CaseIterable {
+enum TypeMemberGroup: Int, CaseIterable {
     case field
     case initializer
     case accessor
@@ -35,14 +35,20 @@ enum ClassMemberGroup: Int, CaseIterable {
     }
 }
 
-/// Move whole class/extension members, preserving field initialization and method order.
-final class ClassMemberOrder: SyntaxRewriter {
+/// Move whole class/struct/extension members, preserving field initialization and method order.
+final class TypeMemberOrder: SyntaxRewriter {
     override func visit(_ node: StringLiteralExprSyntax) -> ExprSyntax {
         ExprSyntax(node)
     }
 
     override func visit(_ node: ClassDeclSyntax) -> DeclSyntax {
         var result = super.visit(node).cast(ClassDeclSyntax.self)
+        result.memberBlock.members = ordered(result.memberBlock.members)
+        return DeclSyntax(result)
+    }
+
+    override func visit(_ node: StructDeclSyntax) -> DeclSyntax {
+        var result = super.visit(node).cast(StructDeclSyntax.self)
         result.memberBlock.members = ordered(result.memberBlock.members)
         return DeclSyntax(result)
     }
@@ -59,8 +65,8 @@ final class ClassMemberOrder: SyntaxRewriter {
             return members
         }
         return MemberBlockItemListSyntax(
-            ClassMemberGroup.allCases.flatMap { group in
-                members.filter { ClassMemberGroup($0.decl) == group }
+            TypeMemberGroup.allCases.flatMap { group in
+                members.filter { TypeMemberGroup($0.decl) == group }
             }
         )
     }
@@ -75,11 +81,11 @@ final class ArgumentLineBreaks: SyntaxRewriter {
             var result = member
             if index > 0 {
                 let previous = members[members.index(members.startIndex, offsetBy: index - 1)]
-                let isGroupBoundary = ClassMemberGroup(previous.decl) != ClassMemberGroup(result.decl)
+                let isGroupBoundary = TypeMemberGroup(previous.decl) != TypeMemberGroup(result.decl)
                 if isGroupBoundary || isCallable(previous.decl) || isCallable(result.decl) {
                     result.leadingTrivia = startingAfterBlankLine(result.leadingTrivia)
-                } else if ClassMemberGroup(previous.decl) == .field,
-                          ClassMemberGroup(result.decl) == .field {
+                } else if TypeMemberGroup(previous.decl) == .field,
+                          TypeMemberGroup(result.decl) == .field {
                     result.leadingTrivia = Trivia(pieces: result.leadingTrivia.map { piece in
                         switch piece {
                         case .newlines: .newlines(1)
@@ -384,7 +390,7 @@ func significantContent(_ tree: SourceFileSyntax) -> [String] {
 func formatted(_ source: String, path: String) throws -> String {
     let before = Parser.parse(source: source)
     guard !before.hasError else { throw FormatError.invalidSyntax(path) }
-    let ordered = ClassMemberOrder().rewrite(before)
+    let ordered = TypeMemberOrder().rewrite(before)
     guard significantContent(before).sorted() == significantContent(ordered.cast(SourceFileSyntax.self)).sorted() else {
         throw FormatError.changedTokens(path)
     }

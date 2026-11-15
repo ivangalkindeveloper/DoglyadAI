@@ -195,7 +195,7 @@ struct ReportDetailModelReportCardView: DViewProtocol {
             .dShimmer(
                 isShimmering: report.generation.status == .generating,
                 cornerRadius: 0,
-                masksContent: true,
+                isContentMasked: true,
             )
         }
         .padding(

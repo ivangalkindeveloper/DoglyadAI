@@ -1,6 +1,5 @@
 import Foundation
 
-/// Language data for conservative spelling correction, supplied by the app.
 public struct DSpeechLexiconLocalization: Decodable, Sendable {
     public let negationPattern: String
     public let leftSidePattern: String
@@ -10,12 +9,6 @@ public struct DSpeechLexiconLocalization: Decodable, Sendable {
     public let ignoredPhoneticCharacters: String
     public let medicalTermCorrections: [String: String]
     public let nonClinicalSuffixPattern: String
-
-    private enum DSpeechLexiconCodingKeys: String, CodingKey {
-        case negationPattern, leftSidePattern, rightSidePattern
-        case literalCharacterReplacements, phoneticCharacterReplacements, ignoredPhoneticCharacters
-        case medicalTermCorrections, nonClinicalSuffixPattern
-    }
 
     public init(
         from decoder: Decoder,
@@ -79,5 +72,11 @@ public struct DSpeechLexiconLocalization: Decodable, Sendable {
                 debugDescription: "Character mappings must contain single characters",
             )
         }
+    }
+
+    private enum DSpeechLexiconCodingKeys: String, CodingKey {
+        case negationPattern, leftSidePattern, rightSidePattern
+        case literalCharacterReplacements, phoneticCharacterReplacements, ignoredPhoneticCharacters
+        case medicalTermCorrections, nonClinicalSuffixPattern
     }
 }

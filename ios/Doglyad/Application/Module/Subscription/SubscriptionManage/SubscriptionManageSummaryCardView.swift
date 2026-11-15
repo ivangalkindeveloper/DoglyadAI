@@ -31,7 +31,7 @@ struct SubscriptionManageSummaryCardView: DViewProtocol {
                     isShimmering: viewModel.summaryTitleShimmering(
                         state.tier.id,
                     ),
-                    masksContent: true,
+                    isContentMasked: true,
                 )
 
                 Spacer(

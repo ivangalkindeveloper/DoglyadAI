@@ -16,6 +16,16 @@ final class ScanSpeechReviewProposalState: ScanSpeechStateProtocol, @MainActor E
         self.selectedFieldIds = selectedFieldIds
     }
 
+    func copyWith(
+        selectedFieldIds: Set<DNeuralUltrasoundVoiceFieldId>? = nil,
+    ) -> ScanSpeechReviewProposalState {
+        ScanSpeechReviewProposalState(
+            proposal: proposal,
+            reviewProposals: reviewProposals,
+            selectedFieldIds: selectedFieldIds ?? self.selectedFieldIds,
+        )
+    }
+
     static func == (
         lhs: ScanSpeechReviewProposalState,
         rhs: ScanSpeechReviewProposalState,

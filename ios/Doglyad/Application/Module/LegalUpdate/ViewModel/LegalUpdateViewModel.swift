@@ -146,9 +146,7 @@ final class LegalUpdateViewModel: DModuleViewModel<any LegalUpdateStateProtocol>
             ),
         )
     }
-}
 
-extension LegalUpdateViewModel {
     enum AttributedLinks: String {
         case privacy, terms
     }
@@ -196,10 +194,8 @@ extension LegalUpdateViewModel {
             )
         }
     }
-}
 
-private extension LegalUpdateViewModel {
-    func localizedResource(
+    fileprivate func localizedResource(
         _ resource: LocalizedStringResource,
         locale: Locale,
     ) -> String {

@@ -14,13 +14,18 @@ tags: [e2e, SelectUSExaminationType]
     timeout: 60000
 - tapOn: {id: scan.type}
 - extendedWaitUntil:
-    visible: {id: examinationType.thyroidGland, enabled: true}
+    visible: {id: examinationType.echocardiography, enabled: true}
     timeout: 15000
 - assertNotVisible: {id: message.error}
 - assertNotVisible: ^Недавние$
 - takeScreenshot: SelectUSExaminationType-recent-types-unavailable
 - assertNotVisible: ^Обновить$
-- assertVisible: {id: examinationType.thyroidGland}
+- scrollUntilVisible:
+    element: {id: examinationType.thyroidGland}
+    direction: DOWN
+    timeout: 20000
+    centerElement: true
+- assertVisible: {id: examinationType.thyroidGland, enabled: true}
 - tapOn: {id: bottomSheet.close}
 - assertVisible: {id: scan.type, text: '^Щитовидная железа$'}
 - launchApp:

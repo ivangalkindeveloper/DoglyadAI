@@ -76,5 +76,8 @@ struct HistoryScreenView: DViewProtocol {
         .environmentObject(
             viewModel,
         )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

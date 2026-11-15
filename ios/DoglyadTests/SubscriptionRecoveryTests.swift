@@ -1,4 +1,5 @@
 #if DEBUG
+    import Combine
     @testable import Doglyad
     @testable import DoglyadUI
     import Foundation
@@ -76,6 +77,96 @@
                 recoveredKey == "Saved-MixedCase-Key" && router.path.isEmpty,
             )
             model.onDisappear()
+        }
+
+        @Test(
+            arguments: [false, true],
+            [false, true],
+        )
+        func leavingDiscardsLateRecoverySuccessAndFailure(
+            isFailure: Bool,
+            isDisappearance: Bool,
+        ) async {
+            let container = SubscriptionManagePreviewFactory.makeContainer()
+            let router = DRouter(
+                initialRoute: RouteScreen(
+                    type: .subscriptionManage,
+                ),
+            )
+            router.push(
+                route: RouteScreen(
+                    type: .subscriptionRecovery,
+                ),
+            )
+            let messager = DMessager()
+            var response: CheckedContinuation<Void, Never>?
+            var updates = 0
+            var completions = 0
+            let model = SubscriptionRecoveryViewModel(
+                messager: messager,
+                container: container,
+                router: router,
+                getSubscriptionStatus: {
+                    nil
+                },
+                observeSubscriptionStatus: { _ in
+                    AnyCancellable {}
+                },
+                onSubscriptionStatusUpdated: { _ in
+                    updates += 1
+                },
+                getSettingsAI: {
+                    container.initialSettingsAI
+                },
+                onRefreshSubscriptionStatus: {},
+                arguments: SubscriptionRecoveryArguments(
+                    onRecovered: {
+                        completions += 1
+                    },
+                ),
+                recover: { _ in
+                    await withCheckedContinuation {
+                        response = $0
+                    }
+                    if isFailure {
+                        throw URLError(
+                            .notConnectedToInternet,
+                        )
+                    }
+                    return SubscriptionManagePreviewFactory.makeStatus(
+                        source: .robokassa,
+                    )
+                },
+            )
+            model.recoveryTextController.setText(
+                "Recovery-Key",
+            )
+            model.onTapRestore()
+            while response == nil {
+                await Task.yield()
+            }
+            let task = model.operationTask
+            if isDisappearance {
+                model.onDisappear()
+            } else {
+                model.onTapBack()
+            }
+            let closedState = model.state
+            let routeCount = router.path.count
+            response?.resume()
+            await task?.value
+            #expect(
+                model.state === closedState,
+            )
+            #expect(
+                updates == 0 && completions == 0 && messager.message == nil,
+            )
+            #expect(
+                router.path.count == routeCount,
+            )
+            if !isDisappearance {
+                model.onDisappear()
+            }
         }
     }
 #endif

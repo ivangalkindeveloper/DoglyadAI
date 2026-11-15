@@ -1,11 +1,6 @@
 import SwiftUI
 
 public struct DCloseButton: DViewProtocol {
-    public enum Style {
-        case regular
-        case destructive
-    }
-
     @EnvironmentObject public var theme: DTheme
     let style: Style
     let action: () -> Void
@@ -77,6 +72,11 @@ public struct DCloseButton: DViewProtocol {
                 identifier: accessibilityIdentifier,
             ),
         )
+    }
+
+    public enum Style {
+        case regular
+        case destructive
     }
 }
 

@@ -14,11 +14,6 @@ public struct DNeuralUltrasoundDictationLocalization: Decodable, Sendable {
     public let shortUnits: DNeuralDictationShortUnitLocalization
     public let schema: DNeuralUltrasoundSchemaLocalization
 
-    private enum DNeuralUltrasoundCodingKeys: String, CodingKey {
-        case patterns, namePatterns, genderPatterns, numbers, negativeCorrectionWord
-        case isDayFirstNumericDates, isBirthEvidenceValueUsed, dateFormats, shortUnits, schema
-    }
-
     public init(
         from decoder: Decoder,
     ) throws {
@@ -103,6 +98,11 @@ public struct DNeuralUltrasoundDictationLocalization: Decodable, Sendable {
                 options: .caseInsensitive,
             )
         }
+    }
+
+    private enum DNeuralUltrasoundCodingKeys: String, CodingKey {
+        case patterns, namePatterns, genderPatterns, numbers, negativeCorrectionWord
+        case isDayFirstNumericDates, isBirthEvidenceValueUsed, dateFormats, shortUnits, schema
     }
 
     public func pattern(

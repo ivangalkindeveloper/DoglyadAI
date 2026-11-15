@@ -108,9 +108,7 @@ class RobokassaPaymentProvider:
         order_id: str,
         payload: dict[str, Any],
     ) -> dict[str, Any]:
-        if not self.is_available or (
-            not self._settings.is_robokassa_test and not self._settings.is_robokassa_live_enabled
-        ):
+        if not self.is_available:
             raise BillingUnavailableError()
         invoice = payload["invoice_id"]
         amount = payload["amount"]["value"]

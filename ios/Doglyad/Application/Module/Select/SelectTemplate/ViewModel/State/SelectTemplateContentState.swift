@@ -1,11 +1,32 @@
+import Foundation
+
 @MainActor
 final class SelectTemplateContentState: SelectTemplateStateProtocol, @MainActor Equatable {
-    init() {}
+    let templates: [USExaminationTemplate]
+    let currentTemplateID: UUID?
+
+    init(
+        templates: [USExaminationTemplate] = [],
+        currentTemplateID: UUID? = nil,
+    ) {
+        self.templates = templates
+        self.currentTemplateID = currentTemplateID
+    }
+
+    func copyWith(
+        templates: [USExaminationTemplate]? = nil,
+        currentTemplateID: UUID?? = nil,
+    ) -> SelectTemplateContentState {
+        SelectTemplateContentState(
+            templates: templates ?? self.templates,
+            currentTemplateID: currentTemplateID ?? self.currentTemplateID,
+        )
+    }
 
     static func == (
-        _: SelectTemplateContentState,
-        _: SelectTemplateContentState,
+        lhs: SelectTemplateContentState,
+        rhs: SelectTemplateContentState,
     ) -> Bool {
-        true
+        lhs.templates == rhs.templates && lhs.currentTemplateID == rhs.currentTemplateID
     }
 }

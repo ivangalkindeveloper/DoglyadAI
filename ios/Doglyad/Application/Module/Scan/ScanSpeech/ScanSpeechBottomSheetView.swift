@@ -5,7 +5,7 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
     @EnvironmentObject private var l10n: L10N
     @EnvironmentObject var theme: DTheme
     @StateObject var viewModel: ScanSpeechViewModel
-    @FocusState private var transcriptFocus: Bool?
+    @FocusState private var isTranscriptFocused: Bool?
 
     init(
         viewModel: @autoclosure @escaping () -> ScanSpeechViewModel,
@@ -34,16 +34,16 @@ struct ScanSpeechBottomSheetView: DViewProtocol {
                 ScanSpeechContentStateView(
                     toolbarHeight: toolbarHeight,
                     bottomHeight: bottomHeight,
-                    transcriptFocus: $transcriptFocus,
+                    isTranscriptFocused: $isTranscriptFocused,
                 )
             } bottom: {
                 ScanSpeechBottomView()
             }
 
-            if transcriptFocus != nil {
+            if isTranscriptFocused != nil {
                 DToolbar(
                     onTapDone: {
-                        transcriptFocus = nil
+                        isTranscriptFocused = nil
                     },
                 )
             }

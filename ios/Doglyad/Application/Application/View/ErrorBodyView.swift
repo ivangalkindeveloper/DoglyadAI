@@ -15,13 +15,9 @@ struct ErrorBodyView: DViewProtocol {
         VStack(
             spacing: size.s24,
         ) {
-            DImage(
+            DAssetScaleImage(
                 .doglyadQuestion,
-            )
-            .scaledToFit()
-            .frame(
-                width: size.screenWidth / 2,
-                height: size.screenWidth / 2,
+                widthScale: .regular,
             )
 
             DText(

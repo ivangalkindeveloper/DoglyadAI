@@ -21,10 +21,10 @@ struct NewVersionView: DViewProtocol {
                 ) {
                     Spacer()
 
-                    DImage(
-                        .doglyadAbout,
+                    DAssetScaleImage(
+                        .doglyadStars,
+                        widthScale: .regular,
                     )
-                    .scaledToFit()
 
                     DText(
                         .newVersionUpdateDescription,

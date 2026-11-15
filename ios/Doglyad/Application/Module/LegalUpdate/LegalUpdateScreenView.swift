@@ -29,10 +29,10 @@ struct LegalUpdateScreenView: DViewProtocol {
                 ) {
                     Spacer()
 
-                    DImage(
+                    DAssetScaleImage(
                         .doglyadQuiet,
+                        widthScale: .regular,
                     )
-                    .scaledToFit()
                     .frame(
                         maxWidth: .infinity,
                         maxHeight: .infinity,
@@ -100,6 +100,10 @@ struct LegalUpdateScreenView: DViewProtocol {
                         .top,
                         size.s8,
                     )
+                    .padding(
+                        .horizontal,
+                        size.s16,
+                    )
                 }
                 .padding(
                     .top,
@@ -136,6 +140,9 @@ struct LegalUpdateScreenView: DViewProtocol {
         )
         .onAppear(
             perform: viewModel.onAppear,
+        )
+        .onDisappear(
+            perform: viewModel.onDisappear,
         )
     }
 }

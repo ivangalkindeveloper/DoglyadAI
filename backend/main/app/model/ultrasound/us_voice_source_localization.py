@@ -34,6 +34,23 @@ class USVoiceSourceLocalization(BaseModel):
         default="",
     )
 
+    @property
+    def number_phrase(
+        self,
+    ) -> str:
+        return self._number_phrase
+
+    @property
+    def numbers(
+        self,
+    ) -> dict[str, int]:
+        return {
+            self.normalize(
+                key,
+            ): value
+            for key, value in {**self.numberWords, **self.additionalNumberWords}.items()
+        }
+
     @model_validator(
         mode="after",
     )
@@ -178,23 +195,6 @@ class USVoiceSourceLocalization(BaseModel):
                 "Invalid voice source parsing pattern",
             ) from error
         return self
-
-    @property
-    def number_phrase(
-        self,
-    ) -> str:
-        return self._number_phrase
-
-    @property
-    def numbers(
-        self,
-    ) -> dict[str, int]:
-        return {
-            self.normalize(
-                key,
-            ): value
-            for key, value in {**self.numberWords, **self.additionalNumberWords}.items()
-        }
 
     def normalize(
         self,

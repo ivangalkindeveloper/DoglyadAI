@@ -36,5 +36,8 @@ struct ShareBottomSheetView: DViewProtocol {
         ).onAppear(
             perform: viewModel.onAppear,
         )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

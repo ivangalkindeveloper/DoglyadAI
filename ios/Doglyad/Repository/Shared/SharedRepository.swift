@@ -9,11 +9,9 @@ final class SharedRepository: SharedRepositoryProtocol {
     ) {
         self.database = database
     }
-}
 
-// MARK: OnBoarding -
+    // MARK: OnBoarding -
 
-extension SharedRepository {
     func isOnBoardingCompleted() async throws -> Bool {
         database.getOnBoardingCompleted()
     }
@@ -25,11 +23,9 @@ extension SharedRepository {
             isCompleted: isCompleted,
         )
     }
-}
 
-// MARK: Legal -
+    // MARK: Legal -
 
-extension SharedRepository {
     func getAcceptedLegalDocumentDate() async throws -> Date? {
         database.getAcceptedLegalDocumentDate()
     }

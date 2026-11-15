@@ -40,12 +40,13 @@
                 ),
             )
 
-            model.setPreviewTemplates(
-                templates,
-            )
-
             model.preparePreview(
-                state: state,
+                state: state.copyWith(
+                    templates: templates,
+                    currentTemplateID: .some(
+                        model.state.currentTemplateID,
+                    ),
+                ),
             )
             return ModuleBottomSheetPreviewView {
                 SelectTemplateBottomSheetView(

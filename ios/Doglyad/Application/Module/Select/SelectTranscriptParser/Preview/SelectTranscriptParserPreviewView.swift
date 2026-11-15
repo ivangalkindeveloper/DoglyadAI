@@ -37,7 +37,9 @@
             )
 
             model.preparePreview(
-                state: state,
+                state: state.copyWith(
+                    isFoundationModelsAvailable: model.state.isFoundationModelsAvailable,
+                ),
             )
             return ModuleBottomSheetPreviewView {
                 SelectTranscriptParserBottomSheetView(

@@ -6,16 +6,16 @@ struct ScanSpeechContentStateView: DViewProtocol {
     @EnvironmentObject private var viewModel: ScanSpeechViewModel
     let toolbarHeight: CGFloat
     let bottomHeight: CGFloat
-    let transcriptFocus: FocusState<Bool?>.Binding
+    let isTranscriptFocused: FocusState<Bool?>.Binding
 
     init(
         toolbarHeight: CGFloat,
         bottomHeight: CGFloat,
-        transcriptFocus: FocusState<Bool?>.Binding,
+        isTranscriptFocused: FocusState<Bool?>.Binding,
     ) {
         self.toolbarHeight = toolbarHeight
         self.bottomHeight = bottomHeight
-        self.transcriptFocus = transcriptFocus
+        self.isTranscriptFocused = isTranscriptFocused
     }
 
     var body: some View {
@@ -32,7 +32,7 @@ struct ScanSpeechContentStateView: DViewProtocol {
             )
         case _ as ScanSpeechReviewTranscriptState, _ as ScanSpeechReviewParsingLoadingState:
             ScanSpeechReviewTranscriptView(
-                transcriptFocus: transcriptFocus,
+                isTranscriptFocused: isTranscriptFocused,
                 toolbarHeight: toolbarHeight,
                 bottomHeight: bottomHeight,
             )

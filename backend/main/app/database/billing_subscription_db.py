@@ -5,10 +5,10 @@ from datetime import datetime
 from sqlalchemy import Boolean, CheckConstraint, DateTime, ForeignKey, Index, Integer, String, text
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.database.billing_base import BillingBase
+from app.database.application_base import ApplicationBase
 
 
-class BillingSubscriptionDB(BillingBase):
+class BillingSubscriptionDB(ApplicationBase):
     __tablename__ = "billing_subscriptions"
 
     __table_args__ = (

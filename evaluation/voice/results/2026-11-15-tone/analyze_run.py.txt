@@ -1,0 +1,74 @@
+from __future__ import annotations
+
+import json
+import re
+import statistics
+from collections import Counter
+from datetime import datetime
+from pathlib import Path
+
+from evaluation.voice.scoring.normalize_asr_text import normalize_asr_text
+
+root = Path('build/voice-eval/tone-2026-11-15')
+cases = {c['id']: c for c in json.loads((root / 'corpus-ru.json').read_text())['cases']}
+models = ('tone', 'whisperKit', 'speechAnalyzer', 'sfSpeechRecognizer', 'gigaam', 'canary', 'nemotron')
+rows = {}
+for model in models:
+    path = root / ('run/results.jsonl' if model == 'tone' else f'history/{model}.jsonl')
+    rows[model] = {r['id']: r for r in map(json.loads, path.read_text().splitlines())}
+    assert set(rows[model]) == set(cases), model
+
+score = json.loads((root / 'score/summary.json').read_text())
+assert score['isASRComplete']
+assert not score['isExtractionComplete']
+case_scores = {}
+for row in map(json.loads, (root / 'score/case-scores.jsonl').read_text().splitlines()):
+    case_scores[(row['recognizer'], row['id'])] = row
+
+clinical = [c for c in cases.values() if c['mode'] != 'terminology']
+diagnostics = {}
+for model in models:
+    changes = []
+    for case in clinical:
+        row = rows[model][case['id']]
+        reference = [t for t in normalize_asr_text(case['referenceText'], 'ru') if re.search(r'\d', t)]
+        actual = [t for t in normalize_asr_text(row.get('rawText', ''), 'ru') if re.search(r'\d', t)]
+        if reference != actual:
+            changes.append({'id': case['id'], 'reference': reference, 'actual': actual})
+    diagnostics[model] = {'cases': len(clinical), 'mismatchedNumericSequences': len(changes), 'examples': changes}
+
+pairs = {}
+for model in models[1:]:
+    differences = []
+    wins = losses = ties = 0
+    for case in clinical:
+        key = case['id']
+        difference = case_scores['tone', key]['normalized']['wer'] - case_scores[model, key]['normalized']['wer']
+        wins += difference < 0
+        losses += difference > 0
+        ties += difference == 0
+        differences.append({'id': key, 'toneMinusOtherWER': difference})
+    pairs[model] = {'toneBetterCases': wins, 'toneWorseCases': losses, 'equalCases': ties,
+                    'meanToneMinusOtherWER': statistics.mean(d['toneMinusOtherWER'] for d in differences),
+                    'largestImprovements': sorted(differences, key=lambda d: d['toneMinusOtherWER'])[:5],
+                    'largestRegressions': sorted(differences, key=lambda d: d['toneMinusOtherWER'], reverse=True)[:5]}
+
+tone = list(rows['tone'].values())
+timing = {'cases': len(tone), 'audioSeconds': sum(r['durationSeconds'] for r in tone),
+          'processingSeconds': sum(r['seconds'] for r in tone),
+          'medianSeconds': statistics.median(r['seconds'] for r in tone),
+          'medianRealTimeFactor': statistics.median(r['seconds'] / r['durationSeconds'] for r in tone),
+          'totalRealTimeFactor': sum(r['seconds'] for r in tone) / sum(r['durationSeconds'] for r in tone),
+          'maximumObservedRSSBytes': max(r['processRSSBytes'] for r in tone),
+          'statuses': dict(Counter(r['status'] for r in tone))}
+timing['secondsFromSettingsToFinish'] = (datetime.fromisoformat(json.loads((root / 'run/execution.json').read_text())['finishedAt']) - datetime.fromisoformat(json.loads((root / 'run/settings.json').read_text())['startedAt'])).total_seconds()
+result = {'timing': timing, 'pairedComparisons': pairs, 'numericSequenceDiagnostic': diagnostics,
+          'note': 'Numeric sequences are textual diagnostics after existing WER normalization. They include identifiers, dates and measurements, do not align numbers to clinical fields and do not measure clinical correctness. Inflection differences such as шесть versus шести can produce normalization mismatches without a changed numeric value.'}
+(root / 'analysis.json').write_text(json.dumps(result, ensure_ascii=False, indent=2) + '\n')
+print(json.dumps(timing, indent=2))
+print('model, dictation mean normalized WER %, clean %, noisy %, micro %, terminology %')
+for model in models:
+    groups = score['asr']
+    values = [groups[f'{model}/ru/clinical/{v}']['meanNormalizedWER'] for v in ('both', 'clean', 'noisy')]
+    values += [groups[f'{model}/ru/clinical/both']['normalizedMicroWER'], groups[f'{model}/ru/terminology/both']['meanNormalizedWER']]
+    print(model, [round(v * 100, 4) for v in values], 'numeric mismatches', diagnostics[model]['mismatchedNumericSequences'])

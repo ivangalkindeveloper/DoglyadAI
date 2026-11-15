@@ -115,5 +115,8 @@ struct TemplateEditScreenView: DViewProtocol {
         .environmentObject(
             viewModel,
         )
+        .onDisappear(
+            perform: viewModel.onDisappear,
+        )
     }
 }

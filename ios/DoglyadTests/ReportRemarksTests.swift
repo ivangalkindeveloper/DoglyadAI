@@ -345,7 +345,7 @@ struct ReportRemarksTests {
         )
         model.onInit()
         await model.lastTask?.value
-        switch model.isRemarksVisible {
+        switch model.state.isRemarksVisible {
         case false: break
         default:
             Issue.record(
@@ -354,7 +354,7 @@ struct ReportRemarksTests {
         }
         #expect(
             !model.remarkPoints(
-                for: model.selectedPhotoID,
+                for: model.state.selectedPhotoID,
             ).isEmpty,
         )
         #expect(
@@ -378,7 +378,7 @@ struct ReportRemarksTests {
             false,
         )
         await model.lastTask?.value
-        switch model.isRemarksVisible {
+        switch model.state.isRemarksVisible {
         case false: break
         default:
             Issue.record(
@@ -397,10 +397,10 @@ struct ReportRemarksTests {
         )
         #expect(
             model.remarkPoints(
-                for: model.selectedPhotoID,
+                for: model.state.selectedPhotoID,
             ).isEmpty,
         )
-        switch model.isRemarksVisible {
+        switch model.state.isRemarksVisible {
         case true: break
         default:
             Issue.record(
@@ -414,7 +414,7 @@ struct ReportRemarksTests {
         )
         reopened.onInit()
         await reopened.lastTask?.value
-        switch reopened.isRemarksVisible {
+        switch reopened.state.isRemarksVisible {
         case true: break
         default:
             Issue.record(

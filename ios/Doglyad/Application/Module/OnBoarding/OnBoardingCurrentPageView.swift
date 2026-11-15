@@ -19,7 +19,7 @@ struct OnBoardingCurrentPageView: DViewProtocol {
                 title: l10n[
                     .onBoardingFirstTitle,
                 ],
-                image: .doglyad,
+                image: .doglyadStars,
                 description: l10n[
                     .onBoardingFirstDescription,
                 ],

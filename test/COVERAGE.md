@@ -48,7 +48,7 @@
 | [PhotoRemark](modules/PhotoRemark/README.md) | 1 | 1 | 0 | 0 | 0 |
 | [ScanSpeech](modules/ScanSpeech/README.md) | 4 | 1 | 3 | 0 | 0 |
 | [PatientConsent](modules/PatientConsent/README.md) | 2 | 0 | 2 | 0 | 0 |
-| [ReportReceived](modules/ReportReceived/README.md) | 3 | 3 | 0 | 0 | 0 |
+| [ReportReceived](modules/ReportReceived/README.md) | 3 | 2 | 1 | 0 | 0 |
 | [Share](modules/Share/README.md) | 2 | 2 | 0 | 0 | 0 |
 | [RequestLimitExceeded](modules/RequestLimitExceeded/README.md) | 1 | 1 | 0 | 0 | 0 |
 

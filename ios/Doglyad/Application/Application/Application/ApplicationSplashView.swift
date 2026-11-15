@@ -8,9 +8,11 @@ struct ApplicationSplashView: DViewProtocol {
 
     var body: some View {
         color.grayscaleBackground.overlay {
-            DImage(
+            Image(
                 .splash,
-            ).scaledToFill()
+            )
+            .resizable()
+            .scaledToFill()
         }.ignoresSafeArea()
             .accessibilityElement(
                 children: .ignore,

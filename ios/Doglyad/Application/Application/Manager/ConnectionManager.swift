@@ -10,7 +10,7 @@ protocol ConnectionManagerProtocol: AnyObject {
     func stop()
 }
 
-final class ConnectionManager {
+final class ConnectionManager: ConnectionManagerProtocol {
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue.global(
         qos: .utility,
@@ -21,9 +21,7 @@ final class ConnectionManager {
             _ = path.status
         }
     }
-}
 
-extension ConnectionManager: ConnectionManagerProtocol {
     var isConnected: Bool {
         switch monitor.currentPath.status {
         case .satisfied: true

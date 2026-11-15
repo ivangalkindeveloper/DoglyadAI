@@ -9,7 +9,7 @@ struct SelectTemplateStateView: DViewProtocol {
 
     var body: some View {
         ForEach(
-            viewModel.templates,
+            viewModel.state.templates,
         ) { template in
             TemplateListItemCardView(
                 template: template,
@@ -18,7 +18,7 @@ struct SelectTemplateStateView: DViewProtocol {
                         template,
                     )
                 },
-                isSelected: viewModel.currentTemplateID == template.id,
+                isSelected: viewModel.state.currentTemplateID == template.id,
             )
         }
     }

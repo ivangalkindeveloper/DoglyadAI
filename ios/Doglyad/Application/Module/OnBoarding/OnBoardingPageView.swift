@@ -43,10 +43,10 @@ struct OnBoardingPageView<BottomContent: View>: DViewProtocol {
 
             Spacer()
 
-            DImage(
+            DAssetScaleImage(
                 image,
+                widthScale: .regular,
             )
-            .scaledToFit()
             .frame(
                 maxWidth: .infinity,
                 maxHeight: .infinity,

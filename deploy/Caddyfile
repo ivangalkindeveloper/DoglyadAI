@@ -1,10 +1,10 @@
-# The domain arrives in DOMAIN, so this file is shared by both main VMs.
-#
-# Caddy obtains and renews the certificate itself: from Let's Encrypt for a real
-# domain, from its own internal CA for `localhost` — which is what lets the whole
-# chain be exercised locally, before any VM exists.
 {$DOMAIN} {
-	# backend_main is the service name from docker-compose.yml; Compose resolves it
-	# on the internal network. Port 8000 is never published.
-	reverse_proxy backend_main:8000
+    # Payment returns and provider callbacks use their own verified ingress.
+    @billing path /payments/return /webhooks/apple /webhooks/robokassa
+    handle @billing {
+        reverse_proxy billing_gateway:8000
+    }
+    handle {
+        reverse_proxy backend_main:8000
+    }
 }

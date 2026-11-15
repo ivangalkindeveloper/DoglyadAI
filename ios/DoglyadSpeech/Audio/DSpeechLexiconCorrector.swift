@@ -1,60 +1,8 @@
 import Foundation
 
-/// Normalizes recognized text to the canonical examination vocabulary.
-///
-/// The recognizer can confuse similar-sounding medical words. The parsing model can
-/// use the same examination vocabulary for a second correction pass. Before
-/// parsing, the text is compared with a dictionary of canonical terms.
-///
-/// Comparison uses a phonetic skeleton rather than raw spelling because recognition
-/// errors usually follow sound instead of orthography.
-///
-/// Clinical facts are immutable: the algorithm never adds or removes a negation or
-/// a side, and never touches phrases with numbers. Small edit distances can otherwise
-/// connect statements with opposite meanings or different measurement values.
 public struct DSpeechLexiconCorrector: Sendable {
-    /// The allowed share of edits relative to the term length. Chosen conservatively:
-    /// missing a fix is cheaper than replacing what the physician actually said.
     private static let maximumDistanceRatio = 0.16
-    /// How far ahead of the runner-up the best candidate must be for a substitution
-    /// to happen.
-    ///
-    /// The examination vocabulary contains many semantic opposites that differ by only
-    /// a few letters. These pairs fall within the distance threshold, so refusing ties alone is
-    /// not enough — a margin is needed. On a run over the whole dictionary with synthetic
-    /// recognition errors, a margin of two edits removes substitution of one term by
-    /// another entirely, at the cost of about one percent of the fixes.
     private static let minimumMargin = 2
-
-    private struct DSpeechLexiconTerm: Sendable {
-        let text: String
-        let normalized: [Character]
-        let wordEndings: [String]
-        let isNegated: Bool
-        let sides: Set<DSpeechLexiconSide>
-
-        init(
-            text: String,
-            normalized: [Character],
-            wordEndings: [String],
-            isNegated: Bool,
-            sides: Set<DSpeechLexiconSide>,
-        ) {
-            self.text = text
-            self.normalized = normalized
-            self.wordEndings = wordEndings
-            self.isNegated = isNegated
-            self.sides = sides
-        }
-    }
-
-    private enum DSpeechLexiconSide: Hashable, Sendable {
-        case left
-        case right
-    }
-
-    /// Terms are bucketed by word count: a window of text is compared only with
-    /// terms of the same length.
     private let termsByWordCount: [Int: [DSpeechLexiconTerm]]
     private let maximumWordCount: Int
     private let localization: DSpeechLexiconLocalization
@@ -154,6 +102,33 @@ public struct DSpeechLexiconCorrector: Sendable {
         maximumWordCount = grouped.keys.max() ?? 0
         self.localization = localization
         self.medicalTermCorrections = medicalTermCorrections
+    }
+
+    private struct DSpeechLexiconTerm: Sendable {
+        let text: String
+        let normalized: [Character]
+        let wordEndings: [String]
+        let isNegated: Bool
+        let sides: Set<DSpeechLexiconSide>
+
+        init(
+            text: String,
+            normalized: [Character],
+            wordEndings: [String],
+            isNegated: Bool,
+            sides: Set<DSpeechLexiconSide>,
+        ) {
+            self.text = text
+            self.normalized = normalized
+            self.wordEndings = wordEndings
+            self.isNegated = isNegated
+            self.sides = sides
+        }
+    }
+
+    private enum DSpeechLexiconSide: Hashable, Sendable {
+        case left
+        case right
     }
 
     public func correct(
@@ -404,7 +379,6 @@ public struct DSpeechLexiconCorrector: Sendable {
         )
     }
 
-    /// The nearest term, if it is close enough and noticeably closer than the rest.
     private func bestMatch(
         for window: String,
         among candidates: [DSpeechLexiconTerm],
@@ -486,12 +460,9 @@ public struct DSpeechLexiconCorrector: Sendable {
         guard let best else {
             return nil
         }
-        // The nearest term must lead the next one noticeably — otherwise this is a
-        // choice between semantic opposites, and we are not going to guess.
         guard runnerUpDistance - bestDistance >= Self.minimumMargin else {
             return nil
         }
-        // A spelling already equivalent apart from ё and case needs no repair.
         guard Self.literalWords(
             in: best.text,
             localization: localization,
@@ -541,8 +512,6 @@ public struct DSpeechLexiconCorrector: Sendable {
         )
     }
 
-    /// Collapse homophones by removing selected vowel distinctions, consonant voicing,
-    /// soft and hard signs, repeated letters, and spaces.
     private static func normalize(
         _ text: String,
         localization: DSpeechLexiconLocalization,
@@ -625,8 +594,6 @@ public struct DSpeechLexiconCorrector: Sendable {
         return found
     }
 
-    /// Levenshtein distance with an early exit: once the entire row has gone past the
-    /// threshold, computing the rest is pointless.
     private static func distance(
         _ lhs: [Character],
         _ rhs: [Character],
@@ -697,8 +664,6 @@ public struct DSpeechLexiconCorrector: Sendable {
         ]
     }
 
-    /// Terms in the dictionary are written in lower case, while in the text the phrase
-    /// may have started a sentence — preserve the case of the first letter.
     private static func matchingCase(
         of window: String,
         for replacement: String,

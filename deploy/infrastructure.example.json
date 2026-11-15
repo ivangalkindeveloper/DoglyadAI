@@ -1,0 +1,19 @@
+{
+  "targets": [
+    {
+      "role": "inference",
+      "ssh": "doglyad-inference",
+      "directory": "/opt/doglyad/inference",
+      "architecture": "arm64",
+      "profile": "../inference/profiles/dgx-spark.json"
+    },
+    {
+      "role": "development",
+      "ssh": "MAIN_DEVELOPMENT_SSH_ALIAS"
+    },
+    {
+      "role": "production",
+      "ssh": "MAIN_PRODUCTION_SSH_ALIAS"
+    }
+  ]
+}

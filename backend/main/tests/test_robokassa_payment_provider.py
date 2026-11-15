@@ -5,6 +5,7 @@ import base64
 import hashlib
 import hmac
 import json
+from typing import Literal
 from unittest.mock import patch
 
 import httpx
@@ -18,8 +19,15 @@ from app.error.billing_unavailable_error import BillingUnavailableError
 from app.service.billing.robokassa_payment_provider import RobokassaPaymentProvider
 
 
+@pytest.mark.parametrize(
+    "environment,password1,password2",
+    [("development", "test-first", "test-second"), ("production", "first", "second")],
+)
 def test_invoice_uses_server_signature_and_environment_credentials(
     configuration: Configuration,
+    environment: Literal["development", "production"],
+    password1: str,
+    password2: str,
 ) -> None:
     async def run() -> None:
         requests: list[httpx.Request] = []
@@ -42,7 +50,7 @@ def test_invoice_uses_server_signature_and_environment_credentials(
             assert hmac.compare_digest(
                 actual,
                 hmac.new(
-                    b"shop:test-first",
+                    f"shop:{password1}".encode(),
                     (header + "." + body).encode(),
                     "sha256",
                 ).digest(),
@@ -53,7 +61,10 @@ def test_invoice_uses_server_signature_and_environment_credentials(
                 ),
             )
             assert payload["InvId"] == 123 and payload["OutSum"] == "100.25"
-            assert payload["AdditionalParameters"] == {"IsTest": "1", "Recurring": "true", "Email": "buyer@example.com"}
+            additional = {"Recurring": "true", "Email": "buyer@example.com"}
+            if environment == "development":
+                additional["IsTest"] = "1"
+            assert payload["AdditionalParameters"] == additional
             assert payload["Aliases"] == ["BankCard"]
             assert payload["InvoiceItems"][0]["Name"] == "Doglyad Pro monthly"
             return httpx.Response(
@@ -74,10 +85,10 @@ def test_invoice_uses_server_signature_and_environment_credentials(
             provider = RobokassaPaymentProvider(
                 client,
                 Variables(
-                    environment="development",
+                    environment=environment,
                     robokassa_merchant_login="shop",
-                    robokassa_password1="test-first",
-                    robokassa_password2="test-second",
+                    robokassa_password1=password1,
+                    robokassa_password2=password2,
                 ),
                 configuration.server.billing.provider,
             )
@@ -98,11 +109,12 @@ def test_invoice_uses_server_signature_and_environment_credentials(
                 )
                 == 1
             )
-            assert await provider.payment(
-                "123",
-            ) == provider._pending(
-                "123",
-            )
+            if environment == "development":
+                assert await provider.payment(
+                    "123",
+                ) == provider._pending(
+                    "123",
+                )
             assert (
                 len(
                     requests,
@@ -326,7 +338,7 @@ def test_malformed_or_unauthenticated_xml_cannot_complete_payment(
     )
 
 
-def test_production_create_is_disabled_without_launch_gate(
+def test_create_requires_configured_merchant_credentials(
     configuration: Configuration,
 ) -> None:
     async def run() -> None:
@@ -334,7 +346,7 @@ def test_production_create_is_disabled_without_launch_gate(
             _: httpx.Request,
         ) -> httpx.Response:
             pytest.fail(
-                "Real payment creation must be blocked before network I/O",
+                "Missing merchant credentials must be rejected before network I/O",
             )
 
         async with httpx.AsyncClient(
@@ -346,9 +358,9 @@ def test_production_create_is_disabled_without_launch_gate(
                 client,
                 Variables(
                     environment="production",
-                    robokassa_merchant_login="shop",
-                    robokassa_password1="first",
-                    robokassa_password2="second",
+                    robokassa_merchant_login=None,
+                    robokassa_password1=None,
+                    robokassa_password2=None,
                 ),
                 configuration.server.billing.provider,
             )

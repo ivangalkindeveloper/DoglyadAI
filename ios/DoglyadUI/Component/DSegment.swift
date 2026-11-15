@@ -85,6 +85,13 @@ public struct DSegment<T: Equatable>: DViewProtocol {
 
 public struct DSegmentButtonStyle: ButtonStyle {
     @EnvironmentObject private var theme: DTheme
+    let isConditionSatisfied: Bool
+
+    public init(
+        _ isConditionSatisfied: Bool,
+    ) {
+        self.isConditionSatisfied = isConditionSatisfied
+    }
 
     private var color: DColor {
         theme.color
@@ -98,12 +105,23 @@ public struct DSegmentButtonStyle: ButtonStyle {
         theme.typography
     }
 
-    let isConditionSatisfied: Bool
+    @ViewBuilder
+    var background: some View {
+        if isConditionSatisfied {
+            Capsule()
+                .fill(
+                    color.gradientPrimaryWeak,
+                )
+        } else {
+            Capsule()
+                .fill(
+                    color.grayscaleBackground,
+                )
+        }
+    }
 
-    public init(
-        _ isConditionSatisfied: Bool,
-    ) {
-        self.isConditionSatisfied = isConditionSatisfied
+    var foregroundColor: Color {
+        isConditionSatisfied ? color.grayscaleBackground : color.grayscaleHeader
     }
 
     public func makeBody(
@@ -134,25 +152,6 @@ public struct DSegmentButtonStyle: ButtonStyle {
                 ),
                 value: configuration.isPressed,
             )
-    }
-
-    @ViewBuilder
-    var background: some View {
-        if isConditionSatisfied {
-            Capsule()
-                .fill(
-                    color.gradientPrimaryWeak,
-                )
-        } else {
-            Capsule()
-                .fill(
-                    color.grayscaleBackground,
-                )
-        }
-    }
-
-    var foregroundColor: Color {
-        isConditionSatisfied ? color.grayscaleBackground : color.grayscaleHeader
     }
 }
 

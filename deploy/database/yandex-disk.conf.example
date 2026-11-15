@@ -1,0 +1,5 @@
+# Copy to backend/main/secrets/yandex-disk.<environment>.conf. Never commit the filled file.
+[disk]
+environment=production
+folder=/DoglyadAIDB/production
+token=REPLACE_WITH_YANDEX_DISK_OAUTH_TOKEN

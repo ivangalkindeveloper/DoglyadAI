@@ -45,7 +45,12 @@ final class SubscriptionRobokassaRepository: SubscriptionRepositoryProtocol {
         isAutoRenewing: Bool,
         onPurchasePrepared: @escaping (SubscriptionPurchaseContextProtocol) -> Void,
     ) async throws -> SubscriptionPurchaseOutcome {
-        guard plan.source == .robokassa, let price = plan.billingPrice else {
+        switch plan.source {
+        case .robokassa: break
+        case .apple:
+            throw SubscriptionError.offeringsUnavailable
+        }
+        guard let price = plan.billingPrice else {
             throw SubscriptionError.offeringsUnavailable
         }
         try Task.checkCancellation()

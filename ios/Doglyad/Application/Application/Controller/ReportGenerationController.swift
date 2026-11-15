@@ -500,8 +500,9 @@ final class ReportGenerationController: ObservableObject {
     private func releaseSavedReport(
         _ report: USExaminationReport,
     ) {
-        guard report.actualModelReport.generation.status != .generating else {
-            return
+        switch report.actualModelReport.generation.status {
+        case .generating: return
+        case .completed, .interrupted, .failed, .cancelled: break
         }
         var model = report.actualModelReport
         // Keep recent presentation results without retaining photographs or upload bodies.

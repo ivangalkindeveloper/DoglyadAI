@@ -1,17 +1,6 @@
 import SwiftUI
 
 public struct DToolbarButton: DViewProtocol {
-    public enum Style {
-        case grayscaleHeader
-        case primaryDefault
-    }
-
-    public enum Content {
-        case icon(ImageResource)
-
-        case text(LocalizedStringResource)
-    }
-
     @EnvironmentObject public var theme: DTheme
     private let style: Style
     private let badge: DButtonBadge?
@@ -45,7 +34,23 @@ public struct DToolbarButton: DViewProtocol {
             Button(
                 action: action,
             ) {
-                buttonContent
+                if let badge {
+                    DBadge(
+                        badge.title,
+                        isVisible: badge.isVisible,
+                        isShimmering: badge.isShimmering,
+                    ) {
+                        DToolbarButtonLabelView(
+                            style: style,
+                            content: content,
+                        )
+                    }
+                } else {
+                    DToolbarButtonLabelView(
+                        style: style,
+                        content: content,
+                    )
+                }
             }
             .buttonStyle(
                 .plain,
@@ -62,67 +67,29 @@ public struct DToolbarButton: DViewProtocol {
         )
     }
 
-    @ViewBuilder
-    private var buttonContent: some View {
-        if let badge {
-            DBadge(
-                badge.title,
-                isVisible: badge.isVisible,
-                isShimmering: badge.isShimmering,
-            ) {
-                styledLabel
-            }
-        } else {
-            styledLabel
-        }
+    public enum Style {
+        case grayscaleHeader
+        case primaryDefault
     }
 
-    private var styledLabel: some View {
-        label
-            .frame(
-                minWidth: size.s40,
-                minHeight: size.s40,
-            )
-            .background {
-                background
-            }
-            .frame(
-                minWidth: size.s48,
-                minHeight: size.s48,
-            )
-            .contentShape(
-                Rectangle(),
-            )
-    }
+    public enum Content {
+        case icon(ImageResource)
 
-    @ViewBuilder
-    private var label: some View {
-        switch content {
-        case let .icon(
-            icon,
-        ):
-            DIcon(
-                icon,
-                color: foregroundColor,
-            )
-        case let .text(
-            text,
-        ):
-            DText(
-                text,
-            )
-            .dStyle(
-                font: typography.linkSmall,
-                color: foregroundColor,
-            )
-            .lineLimit(
-                1,
-            )
-            .padding(
-                .horizontal,
-                size.s12,
-            )
-        }
+        case text(LocalizedStringResource)
+    }
+}
+
+private struct DToolbarButtonLabelView: DViewProtocol {
+    @EnvironmentObject var theme: DTheme
+    private let style: DToolbarButton.Style
+    private let content: DToolbarButton.Content
+
+    init(
+        style: DToolbarButton.Style,
+        content: DToolbarButton.Content,
+    ) {
+        self.style = style
+        self.content = content
     }
 
     private var foregroundColor: Color {
@@ -134,8 +101,65 @@ public struct DToolbarButton: DViewProtocol {
         }
     }
 
-    @ViewBuilder
-    private var background: some View {
+    var body: some View {
+        Group {
+            switch content {
+            case let .icon(
+                icon,
+            ):
+                DIcon(
+                    icon,
+                    color: foregroundColor,
+                )
+            case let .text(
+                text,
+            ):
+                DText(
+                    text,
+                )
+                .dStyle(
+                    font: typography.linkSmall,
+                    color: foregroundColor,
+                )
+                .lineLimit(
+                    1,
+                )
+                .padding(
+                    .horizontal,
+                    size.s12,
+                )
+            }
+        }
+        .frame(
+            minWidth: size.s40,
+            minHeight: size.s40,
+        )
+        .background {
+            DToolbarButtonBackgroundView(
+                style: style,
+            )
+        }
+        .frame(
+            minWidth: size.s48,
+            minHeight: size.s48,
+        )
+        .contentShape(
+            Rectangle(),
+        )
+    }
+}
+
+private struct DToolbarButtonBackgroundView: DViewProtocol {
+    @EnvironmentObject var theme: DTheme
+    private let style: DToolbarButton.Style
+
+    init(
+        style: DToolbarButton.Style,
+    ) {
+        self.style = style
+    }
+
+    var body: some View {
         switch style {
         case .grayscaleHeader:
             Capsule()

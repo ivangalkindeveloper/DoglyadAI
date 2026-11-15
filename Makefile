@@ -26,9 +26,9 @@
 	upload-ios-release-development \
 	upload-ios-release-production \
 	start-backend-main-development \
-	start-local-billing \
-	stop-local-billing \
-	reset-local-billing \
+	start-local-database \
+	stop-local-database \
+	reset-local-database \
 	start-backend-main-production \
 	start-backend-main-logs \
 	stop-backend-main \
@@ -189,14 +189,14 @@ upload-ios-release-production:
 		-exportOptionsPlist "$(IOS_EXPORT_OPTIONS_PLIST)" \
 		-allowProvisioningUpdates
 
-start-local-billing:
-	"$(BACKEND_FORMAT_PYTHON)" tools/local_billing_database.py
+start-local-database:
+	"$(BACKEND_FORMAT_PYTHON)" tools/local_application_database.py
 
-stop-local-billing:
-	"$(BACKEND_FORMAT_PYTHON)" tools/local_billing_database.py --stop
+stop-local-database:
+	"$(BACKEND_FORMAT_PYTHON)" tools/local_application_database.py --stop
 
-reset-local-billing:
-	"$(BACKEND_FORMAT_PYTHON)" tools/local_billing_database.py --reset
+reset-local-database:
+	"$(BACKEND_FORMAT_PYTHON)" tools/local_application_database.py --reset
 
 start-backend-main-development:
 	ENV_FILE=secrets/.env.development bash deploy/start-backend.sh main

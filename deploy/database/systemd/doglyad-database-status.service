@@ -1,0 +1,11 @@
+[Unit]
+Description=Check Doglyad backup freshness and WAL archive
+Requires=docker.service
+After=docker.service network-online.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/doglyad
+EnvironmentFile=/opt/doglyad/database-secrets/backup-monitor.env
+ExecStart=/bin/bash /opt/doglyad/database/backup-status.sh --check-archive
+TimeoutStartSec=240

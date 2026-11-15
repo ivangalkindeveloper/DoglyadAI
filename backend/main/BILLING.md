@@ -107,18 +107,54 @@ StoreKit восстанавливает Apple-покупки после пров
 Секретное окружение задаёт владелец; код и документация не содержат реквизитов:
 
 ```dotenv
-BILLING_DATABASE_URL=postgresql+asyncpg://...
+DATABASE_URL=postgresql+asyncpg://...
+REPORT_GENERATION_ENCRYPTION_KEY=...
 ROBOKASSA_MERCHANT_LOGIN=...
 ROBOKASSA_PASSWORD1=...
 ROBOKASSA_PASSWORD2=...
 ROBOKASSA_PASSWORD3=...
 ROBOKASSA_HASH_ALGORITHM=sha256
-IS_ROBOKASSA_LIVE_ENABLED=false
 ```
 
 `ENVIRONMENT=development` принудительно использует `IsTest=1` и тестовые пароли.
 Production использует боевые пароли. Выбранный алгоритм должен совпадать с
 техническими настройками магазина. Пароль №3 нужен для возвратов.
+
+`DATABASE_URL` — строка подключения к PostgreSQL, не путь к файлу.
+`REPORT_GENERATION_ENCRYPTION_KEY` — постоянный Fernet-ключ для данных генерации
+и ключей восстановления подписки. API, gateway и workers одной среды используют
+одинаковое значение. Локальные профили VS Code задают подключение автоматически;
+`app.local_main` создаёт и повторно использует ключ из
+`~/.local/share/doglyad/report-generation.key`, если ключ не задан в окружении.
+
+Для первоначальной настройки отдельного production-окружения ключ можно получить
+из корня репозитория:
+
+```bash
+.venv311/bin/python -c 'from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())'
+```
+
+Сохраните результат в секретном профиле. Существующий используемый ключ не
+заменяйте без переноса зашифрованных данных.
+
+Для подписок App Store нужны отдельные серверные настройки:
+
+```dotenv
+APPLE_BUNDLE_ID=...
+APPLE_APP_ID=...
+APPLE_ROOT_CERTIFICATES_PATH=/app/secrets/apple-roots
+APPLE_ISSUER_ID=...
+APPLE_KEY_ID=...
+APPLE_PRIVATE_KEY_PATH=/app/secrets/apple-private-key.p8
+IS_APPLE_SANDBOX_ALLOWED=false
+```
+
+Это окружение backend: `Variables` передаёт значения в `AppleSubscriptionVerifier`.
+Bundle ID и числовой App ID идентифицируют приложение, каталог сертификатов `.cer`
+нужен для проверки подписей. Issuer ID, Key ID и приватный ключ используются для
+авторизации запросов к App Store Server API. Разрешение Sandbox включают для
+приёма тестовых покупок Apple. Для одной Робокассы эти настройки не требуются.
+Пути в примере относятся к Docker; при запуске на Mac указывают пути на Mac.
 
 Кабинет Робокассы:
 
@@ -132,15 +168,14 @@ Production использует боевые пароли. Выбранный а
 
 ## Выпуск и проверка
 
-`IS_ROBOKASSA_LIVE_ENABLED=false` остаётся обязательным до подтверждения магазина,
-Recurring, чеков НПД и требований Apple. Текущий браузерный адаптер сам по себе
+Текущий браузерный адаптер сам по себе
 не реализует `ExternalPurchaseLink` и отчётность внешних покупок Apple.
 До выпуска в российском App Store нужны применимые entitlement, разрешённый
 переход по ссылке и передача внешних покупок. StoreKit для остальных витрин
 сохраняется. Подробный список: [BILLING_RELEASE_PLAN.md](BILLING_RELEASE_PLAN.md).
 
 Локальный запуск: [BILLING_LOCAL.md](BILLING_LOCAL.md).
-Развёртывание и восстановление БД: [deploy/billing](../../deploy/billing/README.md).
+Развёртывание и восстановление БД: [deploy/database](../../deploy/database/README.md).
 Модульные тесты проверяют реестр, подписанные уведомления, отсутствие списания
 до согласия, подписи API, состояние test/production и неизвестный результат.
 Сборка и эти проверки не заменяют E2E с подключённым магазином и физическим iPhone.

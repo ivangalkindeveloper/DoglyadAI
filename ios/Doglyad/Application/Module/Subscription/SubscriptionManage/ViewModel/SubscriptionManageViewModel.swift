@@ -12,7 +12,6 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
     private let manageSubscription: () async throws -> Void
     private let restorePurchases: () async throws -> SubscriptionRestoreStrategy
     private let requestRefund: () async throws -> Void
-    private var isDismissalRequested = false
 
     init(
         messager: DMessager,
@@ -135,6 +134,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
 
     override func onDisappear() {
         super.onDisappear()
+        lastTask?.cancel()
         switch state {
         case let loading as SubscriptionManageLoadingState:
             guard let previous = loading.previousState else {
@@ -152,7 +152,6 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
         guard !router.path.isEmpty else {
             return
         }
-        isDismissalRequested = true
         cancelOperationTask()
         lastTask?.cancel()
         analytics.buttonTapped(
@@ -162,7 +161,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
     }
 
     func onTapChangeType() {
-        guard isChangePlanAvailable, !isDismissalRequested else {
+        guard isChangePlanAvailable else {
             return
         }
         analytics.buttonTapped(
@@ -186,7 +185,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
     }
 
     func onTapRestore() {
-        guard !isProcessing, !isDismissalRequested else {
+        guard !isProcessing else {
             return
         }
         restoreAccess()
@@ -204,7 +203,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
     }
 
     func onTapDisableAutoRenewal() {
-        guard !isProcessing, !isDismissalRequested, let status = subscriptionStatus,
+        guard !isProcessing, let status = subscriptionStatus,
               status.source == .robokassa, status.isAutoRenewing
         else {
             return
@@ -220,15 +219,12 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
     }
 
     func onTapCopyRecoveryKey() {
-        guard !isProcessing, !isDismissalRequested else {
+        guard !isProcessing else {
             return
         }
         performLocalOperation {
             try await self.container.subscriptionBackendRepository.fetchRecoveryKey()
         } onSuccess: { key in
-            guard !self.isDismissalRequested else {
-                return
-            }
             UIPasteboard.general.string = key
             self.messager.show(
                 type: .success,
@@ -253,7 +249,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
     }
 
     func onTapSupport() {
-        guard !isProcessing, !isDismissalRequested else {
+        guard !isProcessing else {
             return
         }
         UIApplication.openMail(
@@ -278,14 +274,14 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
     }
 
     func onTapRetry() {
-        guard !isProcessing, !isDismissalRequested else {
+        guard !isProcessing else {
             return
         }
         load()
     }
 
     func onRefresh() {
-        guard !isProcessing, content != nil, !isDismissalRequested else {
+        guard !isProcessing, content != nil else {
             return
         }
         perform(
@@ -477,7 +473,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
             let catalog = try await self.fetchProducts()
             return (status, catalog)
         } onMainSuccess: { status, catalog in
-            guard !Task.isCancelled, !self.isDismissalRequested, self.state === loading else {
+            guard !Task.isCancelled, self.state === loading else {
                 return
             }
             self.updateSubscriptionStatus(
@@ -507,7 +503,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
     private func failLoading(
         _ loading: any SubscriptionManageStateProtocol,
     ) {
-        guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+        guard !Task.isCancelled, state === loading else {
             return
         }
         emit(
@@ -528,7 +524,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
         _ operation: @escaping () async throws -> Void,
         noSubscriptionNotice: (() -> String?)? = nil,
     ) {
-        guard !isProcessing, !isDismissalRequested, let previous = content else {
+        guard !isProcessing, let previous = content else {
             return
         }
         let loading = loadingType.init(
@@ -538,12 +534,12 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
             loading,
         )
         operationTask = Task {
-            guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+            guard !Task.isCancelled, state === loading else {
                 return
             }
             do {
                 try await operation()
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                guard !Task.isCancelled, state === loading else {
                     return
                 }
                 showContent(
@@ -552,7 +548,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
                     notice: noSubscriptionNotice?(),
                 )
             } catch {
-                guard !Task.isCancelled, !isDismissalRequested, state === loading else {
+                guard !Task.isCancelled, state === loading else {
                     return
                 }
                 emit(
