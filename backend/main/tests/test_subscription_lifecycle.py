@@ -61,8 +61,8 @@ def test_paid_plan_change_starts_immediately_and_replaces_previous_access(
             "tiers": [
                 {
                     "id": tier,
-                    "titleLocaleKey": f"paywall{tier.title()}Label",
-                    "featureLocaleKeys": [f"paywall{tier.title()}ModelsDescription"],
+                    "titleLocaleKey": f"subscriptionPaywall{tier.title()}Label",
+                    "featureLocaleKeys": [f"subscriptionPaywall{tier.title()}ModelsDescription"],
                 }
                 for tier in ("base", "pro")
             ],

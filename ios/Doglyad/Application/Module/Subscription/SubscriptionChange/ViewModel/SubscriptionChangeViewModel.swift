@@ -40,7 +40,7 @@ final class SubscriptionChangeViewModel: DModuleViewModel<any SubscriptionChange
     func onTapConfirm() {
         coordinator.dismissSheet()
         coordinator.screen(
-            .paywall,
+            .subscriptionPaywall,
         )
     }
 }

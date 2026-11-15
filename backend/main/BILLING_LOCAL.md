@@ -126,8 +126,8 @@ postgresql+asyncpg://doglyad_local:doglyad_local_only@127.0.0.1:5433/doglyad_dat
    для отдельного локального окружения можно использовать минимальный каталог:
 
    ```json
-   {"termsVersion":"local-test-v1","tiers":[{"id":"pro","titleLocaleKey":"paywallProLabel",
-      "featureLocaleKeys":["paywallProModelsDescription"]}],
+   {"termsVersion":"local-test-v1","tiers":[{"id":"pro","titleLocaleKey":"subscriptionPaywallProLabel",
+      "featureLocaleKeys":["subscriptionPaywallProModelsDescription"]}],
     "products":[
      {"id":"local-pro-monthly","period":"monthly",
       "titleLocaleKey":"subscriptionProMonthlyLabel",
@@ -170,7 +170,7 @@ API и worker должны использовать один каталог и �
 - Алгоритм подписи должен совпадать с `ROBOKASSA_HASH_ALGORITHM`.
 
 В приложении выбирается план. Подготовка создаёт заказ и счёт Робокассы; списания до оплаты нет.
-Сервер сохраняет выбор автопродления из Paywall и создаёт счёт.
+Сервер сохраняет выбор автопродления из SubscriptionPaywall и создаёт счёт.
 Браузер открывает страницу Робокассы; покупатель указывает email там.
 Возврат в приложение выполняется по `doglyad://subscription/complete`.
 

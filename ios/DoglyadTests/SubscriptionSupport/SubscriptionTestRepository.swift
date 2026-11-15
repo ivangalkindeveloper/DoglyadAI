@@ -7,7 +7,7 @@ final class SubscriptionTestRepository: SubscriptionRepositoryProtocol {
     let changes = PassthroughSubject<Result<Void, Error>, Never>()
     let backend: SubscriptionTestBackendRepository
     let plan: SubscriptionPlan
-    var purchaseResult = PaywallTests.PurchaseResult.cancelled
+    var purchaseResult = SubscriptionPaywallTests.PurchaseResult.cancelled
     var observationCount = 0
     var purchaseCount = 0
     var restoreCount = 0

@@ -40,14 +40,14 @@ struct CoordinatorTests {
             legalUpdateRoute.type == .legalUpdate,
         )
 
-        let paywallRoute = Coordinator.initialRoute(
+        let subscriptionPaywallRoute = Coordinator.initialRoute(
             for: context(
                 conclusionsCount: 0,
                 subscriptionStatus: nil,
             ),
         )
         #expect(
-            paywallRoute.type == .paywall,
+            subscriptionPaywallRoute.type == .subscriptionPaywall,
         )
 
         let scanRoute = Coordinator.initialRoute(

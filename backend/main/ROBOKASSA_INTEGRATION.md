@@ -5,7 +5,7 @@
 публичный iOS API требует пароли магазина в клиенте.
 
 ```text
-Paywall: план + автопродление -> prepare_payment -> PostgreSQL + CreateInvoice
+SubscriptionPaywall: план + автопродление -> prepare_payment -> PostgreSQL + CreateInvoice
   -> Робокасса: email и оплата
   -> подписанный ResultURL -> проверка -> оплаченный период
 Возврат в приложение -> check_payment -> точный UUID и planId -> статус

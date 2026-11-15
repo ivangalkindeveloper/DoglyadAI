@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: atlas-subscriptionpaywall-cdd24c14c1
+tags:
+- atlas
+- SubscriptionPaywall
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-subscriptionpaywall-cdd24c14c1
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-subscriptionpaywall-cdd24c14c1
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: preview.scrollEnd.ready
+    timeout: 30000
+- waitForAnimationToEnd
+- takeScreenshot: 13-SubscriptionPaywall-cdd24c14c1

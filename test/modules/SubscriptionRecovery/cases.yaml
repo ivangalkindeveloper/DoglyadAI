@@ -12,8 +12,8 @@ cases:
   steps:
   - action: Ввести ключ и восстановить доступ
     expect: Один запрос возвращает текущую подписку того же владельца без новой оплаты. Исходный телефон сохраняет
-      доступ. После успеха показано сообщение. Из SubscriptionManage возврат ведёт в управление. Из Paywall после
-      онбординга — на Scan; из остальных Paywall — на исходный экран.
+      доступ. После успеха показано сообщение. Из SubscriptionManage возврат ведёт в управление. Из SubscriptionPaywall после
+      онбординга — на Scan; из остальных SubscriptionPaywall — на исходный экран.
   - action: Отправить пустой или неверный ключ
     expect: Кнопка остаётся доступной; ошибка через DMessager; поле и введённый текст сохранены.
   - action: Ввести ключ без активной подписки
@@ -30,8 +30,8 @@ cases:
       подтверждения; старые сценарии SDK удалены
     nativeTests:
     - SubscriptionRecoveryTests/restoringTrimsInputAndReturnsToManagement()
-    - SubscriptionFlowTests/recoveryReturnsThroughPaywallWithoutPoppingItsOrigin(origin:)
-    - SubscriptionFlowTests/inactiveRecoveryKeepsTheFormAndDoesNotCompletePaywall()
+    - SubscriptionFlowTests/recoveryReturnsThroughSubscriptionPaywallWithoutPoppingItsOrigin(origin:)
+    - SubscriptionFlowTests/inactiveRecoveryKeepsTheFormAndDoesNotCompleteSubscriptionPaywall()
 - id: SubscriptionRecovery.failure-back
   title: Ошибка сети и выход
   profiles:

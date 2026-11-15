@@ -90,7 +90,7 @@ tags:
       text: ^Начните\ работать\ уже\ сегодня!$
     timeout: 60000
 - runFlow: ../../../maestro/support/paywall-ready.yaml
-- takeScreenshot: 003-Paywall-initial
+- takeScreenshot: 003-SubscriptionPaywall-initial
 - launchApp:
     arguments:
       regressionPreview: ''

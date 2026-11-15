@@ -12,7 +12,7 @@
             let subscription = SubscriptionManageInactiveState(
                 catalog: ModulePreviewFactory.development.products,
             )
-            let paywall = ModulePreviewFactory.paywallContent
+            let subscriptionPaywall = ModulePreviewFactory.subscriptionPaywallContent
             let scenarios: [[Any]] = [
                 [
                     SubscriptionManageCatalogLoadingState(
@@ -31,11 +31,11 @@
                         previousState: subscription,
                     ),
                 ],
-                [PaywallRestoreLoadingState(
-                    previousState: paywall,
-                ), PaywallPurchaseLoadingState(
-                    content: paywall,
-                    plan: paywall.selectedPlan!,
+                [SubscriptionPaywallRestoreLoadingState(
+                    previousState: subscriptionPaywall,
+                ), SubscriptionPaywallPurchaseLoadingState(
+                    content: subscriptionPaywall,
+                    plan: subscriptionPaywall.selectedPlan!,
                 )],
             ]
             for states in scenarios {
@@ -63,15 +63,15 @@
 
         @Test
         func repeatingTheSameLoadingSnapshotDoesNotPublish() {
-            let model = DStateViewModel<any PaywallStateProtocol>(
-                state: PaywallCatalogLoadingState(),
+            let model = DStateViewModel<any SubscriptionPaywallStateProtocol>(
+                state: SubscriptionPaywallCatalogLoadingState(),
             )
             var publications = 0
             let observation = model.$state.dropFirst().sink { _ in
                 publications += 1
             }
             model.emit(
-                PaywallCatalogLoadingState(),
+                SubscriptionPaywallCatalogLoadingState(),
                 animation: nil,
             )
             #expect(

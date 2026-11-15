@@ -3,18 +3,18 @@
     "tiers": [
         {
             "id": "base",
-            "titleLocaleKey": "paywallBaseLabel",
+            "titleLocaleKey": "subscriptionPaywallBaseLabel",
             "featureLocaleKeys": [
-                "paywallBaseModelsDescription"
+                "subscriptionPaywallBaseModelsDescription"
             ]
         },
         {
             "id": "pro",
-            "titleLocaleKey": "paywallProLabel",
+            "titleLocaleKey": "subscriptionPaywallProLabel",
             "featureLocaleKeys": [
-                "paywallProModelsDescription",
-                "paywallProVoiceDescription",
-                "paywallProWorkEmailDescription"
+                "subscriptionPaywallProModelsDescription",
+                "subscriptionPaywallProVoiceDescription",
+                "subscriptionPaywallProWorkEmailDescription"
             ]
         }
     ],

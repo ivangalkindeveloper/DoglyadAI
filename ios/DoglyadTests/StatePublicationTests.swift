@@ -261,11 +261,11 @@ struct StatePublicationTests {
 
     @Test
     func preservedStatesCompareTheirContentsThroughTheFeatureProtocol() {
-        let model = DStateViewModel<any PaywallStateProtocol>(
-            state: PaywallRestoreLoadingState(
-                previousState: PaywallOperationErrorState(
+        let model = DStateViewModel<any SubscriptionPaywallStateProtocol>(
+            state: SubscriptionPaywallRestoreLoadingState(
+                previousState: SubscriptionPaywallOperationErrorState(
                     errorDescription: "First failure",
-                    previousState: ModulePreviewFactory.paywallContent,
+                    previousState: ModulePreviewFactory.subscriptionPaywallContent,
                 ),
             ),
         )
@@ -278,18 +278,18 @@ struct StatePublicationTests {
         }
 
         model.emit(
-            PaywallRestoreLoadingState(
-                previousState: PaywallOperationErrorState(
+            SubscriptionPaywallRestoreLoadingState(
+                previousState: SubscriptionPaywallOperationErrorState(
                     errorDescription: "First failure",
-                    previousState: ModulePreviewFactory.paywallContent,
+                    previousState: ModulePreviewFactory.subscriptionPaywallContent,
                 ),
             ),
         )
         model.emit(
-            PaywallRestoreLoadingState(
-                previousState: PaywallOperationErrorState(
+            SubscriptionPaywallRestoreLoadingState(
+                previousState: SubscriptionPaywallOperationErrorState(
                     errorDescription: "Second failure",
-                    previousState: ModulePreviewFactory.paywallContent,
+                    previousState: ModulePreviewFactory.subscriptionPaywallContent,
                 ),
             ),
         )
@@ -299,7 +299,7 @@ struct StatePublicationTests {
     }
 
     @Test
-    func paywallPublishesSelectionPhaseAndFailureDataThroughItsBaseState() {
+    func subscriptionPaywallPublishesSelectionPhaseAndFailureDataThroughItsBaseState() {
         let tier = SubscriptionTier(
             id: .pro,
             title: "Server title",
@@ -321,13 +321,13 @@ struct StatePublicationTests {
             title: "Year",
             price: "$99",
         )
-        let content = PaywallSuccessState(
+        let content = SubscriptionPaywallSuccessState(
             tiers: [tier],
             plans: [first, second],
             selectedType: .pro,
             selectedPlanID: first.id,
         )
-        let model = DStateViewModel<any PaywallStateProtocol>(
+        let model = DStateViewModel<any SubscriptionPaywallStateProtocol>(
             state: content,
         )
         var publications = 0
@@ -338,14 +338,14 @@ struct StatePublicationTests {
             observation.cancel()
         }
         model.emit(
-            PaywallSuccessState(
+            SubscriptionPaywallSuccessState(
                 copying: content,
             ),
         )
         #expect(
             publications == 0,
         )
-        let selected = PaywallSuccessState(
+        let selected = SubscriptionPaywallSuccessState(
             tiers: [tier],
             plans: [first, second],
             selectedType: .pro,
@@ -355,43 +355,43 @@ struct StatePublicationTests {
             selected,
         )
         model.emit(
-            PaywallPurchaseLoadingState(
+            SubscriptionPaywallPurchaseLoadingState(
                 content: selected,
                 plan: second,
             ),
         )
         model.emit(
-            PaywallPurchaseLoadingState(
+            SubscriptionPaywallPurchaseLoadingState(
                 content: selected,
                 plan: second,
             ),
         )
         model.emit(
-            PaywallPurchaseLoadingState(
+            SubscriptionPaywallPurchaseLoadingState(
                 content: selected,
                 plan: second,
             ),
         )
         model.emit(
-            PaywallPurchaseLoadingState(
+            SubscriptionPaywallPurchaseLoadingState(
                 content: selected,
                 plan: first,
             ),
         )
         model.emit(
-            PaywallOperationErrorState(
+            SubscriptionPaywallOperationErrorState(
                 errorDescription: "First",
                 previousState: selected,
             ),
         )
         model.emit(
-            PaywallOperationErrorState(
+            SubscriptionPaywallOperationErrorState(
                 errorDescription: "First",
                 previousState: selected,
             ),
         )
         model.emit(
-            PaywallOperationErrorState(
+            SubscriptionPaywallOperationErrorState(
                 errorDescription: "Second",
                 previousState: selected,
             ),

@@ -316,8 +316,8 @@ def generated() -> dict[str, str]:
             "TemplateListErrorState",
             "ReadyMadeTemplateListErrorState",
             "WebDocumentErrorState",
-            "PaywallCatalogErrorState",
-            "PaywallOperationErrorState",
+            "SubscriptionPaywallCatalogErrorState",
+            "SubscriptionPaywallOperationErrorState",
             "ScanSpeechModelPreparationErrorState",
         }
         if (
@@ -350,13 +350,13 @@ def generated() -> dict[str, str]:
             r"\bisRecentSectionVisible:\s*false", preview["body"]
         ):
             commands.append({"assertNotVisible": "^Недавние$"})
-        if feature == "Paywall":
-            if "PaywallCatalogLoadingState" in preview["body"]:
+        if feature == "SubscriptionPaywall":
+            if "SubscriptionPaywallCatalogLoadingState" in preview["body"]:
                 commands.append({"assertNotVisible": {"id": "paywall.continue"}})
                 commands.append({"assertNotVisible": {"id": "paywall.retry"}})
-            if "PaywallPurchaseLoadingState" in preview["body"] or "PaywallRestoreLoadingState" in preview["body"]:
+            if "SubscriptionPaywallPurchaseLoadingState" in preview["body"] or "SubscriptionPaywallRestoreLoadingState" in preview["body"]:
                 commands.append({"assertVisible": {"id": "paywall.continue", "enabled": True}})
-            if "PaywallOperationErrorState" in preview["body"]:
+            if "SubscriptionPaywallOperationErrorState" in preview["body"]:
                 commands.append({"assertNotVisible": "^Не удалось завершить оплату$"})
         if feature == "Scan" and not is_scroll_end and (
             "state: ScanInitialState(" in re.sub(r"\s+", " ", preview["body"])
@@ -388,7 +388,7 @@ def generated() -> dict[str, str]:
                 else "assertNotVisible"
             )
             commands.append({assertion: {"id": "webDocument.retry"}})
-        if (feature == "SubscriptionManage" and any(label in preview["title"] for label in ["AutoRenewalDisabledSuccess", "AccessRecoveredSuccess", "PurchaseCompletedSuccess"])) or (feature == "Paywall" and re.search(r"\bisPurchaseSuccessPresented:\s*true", preview["body"])):
+        if (feature == "SubscriptionManage" and any(label in preview["title"] for label in ["AutoRenewalDisabledSuccess", "AccessRecoveredSuccess", "PurchaseCompletedSuccess"])) or (feature == "SubscriptionPaywall" and re.search(r"\bisPurchaseSuccessPresented:\s*true", preview["body"])):
             commands.append({"extendedWaitUntil": {"visible": {"id": "message.success"}, "timeout": 15000}})
         if is_scroll_end:
             commands.append({"extendedWaitUntil": {"visible": {"id": "preview.scrollEnd.ready"}, "timeout": 30000}})

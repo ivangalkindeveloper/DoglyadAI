@@ -22,5 +22,5 @@ class LocalPresentationTests(unittest.TestCase):
         )
 
     def test_provider_status_and_automatic_parsing_do_not_become_separate_screens(self):
-        for state in ['PaywallPendingState', 'PaywallPaymentCheckLoadingState', 'ScanSpeechAutomaticParsingLoadingState']:
+        for state in ['SubscriptionPaywallPendingState', 'SubscriptionPaywallPaymentCheckLoadingState', 'ScanSpeechAutomaticParsingLoadingState']:
             self.assertEqual(list(MODULES.rglob(state + '.swift')), [])

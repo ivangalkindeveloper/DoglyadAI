@@ -18,7 +18,7 @@
             case .failed, .operationFailed: (true, nil, nil)
             case .autoRenewalDisabledSuccess: (false, .subscriptionAutoRenewalDisablingSuccessTitle, .subscriptionAutoRenewalDisablingSuccessDescription)
             case .recoveredAccess: (false, .subscriptionRecoverySuccessTitle, .subscriptionRecoverySuccessDescription)
-            case .purchaseCompletedSuccess: (false, .paywallPurchaseSuccessTitle, .paywallPurchaseSuccessDescription)
+            case .purchaseCompletedSuccess: (false, .subscriptionPaywallPurchaseSuccessTitle, .subscriptionPaywallPurchaseSuccessDescription)
             default: (false, nil, nil)
             }
 

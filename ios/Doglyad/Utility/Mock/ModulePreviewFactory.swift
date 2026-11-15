@@ -85,7 +85,7 @@
             examinationDescription: USExaminationReportPreviewFactory.description,
             isPatientPreparedForExamination: true,
         )
-        static let paywallPlans = development.products.products.map { product in
+        static let subscriptionPaywallPlans = development.products.products.map { product in
             SubscriptionPlan(
                 id: product.id,
                 source: .robokassa,
@@ -102,14 +102,14 @@
                 ),
             )
         }
-        static let paywallPlan = paywallPlans.first {
+        static let subscriptionPaywallPlan = subscriptionPaywallPlans.first {
             $0.type == .pro && $0.period == .monthly
         }!
-        static let paywallContent = PaywallSuccessState(
+        static let subscriptionPaywallContent = SubscriptionPaywallSuccessState(
             tiers: development.products.tiers,
-            plans: paywallPlans,
+            plans: subscriptionPaywallPlans,
             selectedType: .pro,
-            selectedPlanID: paywallPlan.id,
+            selectedPlanID: subscriptionPaywallPlan.id,
         )
 
         static func makeContainer() -> DependencyContainer {

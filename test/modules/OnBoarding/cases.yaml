@@ -16,7 +16,7 @@ cases:
   - action: Включить согласие и перейти к выбору исследования
     expect: Открывается список типов; выбранный тип отображается на странице onboarding.
   - action: Завершить onboarding и перезапустить приложение
-    expect: Появляется Paywall; вступительные страницы не повторяются.
+    expect: Появляется SubscriptionPaywall; вступительные страницы не повторяются.
   covers:
   - onPressedNext
   - onPressedBack
@@ -54,7 +54,7 @@ cases:
   - action: Завершить onboarding во время сбоя
     expect: Показана ошибка; приложение не считает onboarding завершённым.
   - action: Устранить сбой и повторить
-    expect: Согласие и выбранный тип сохранены; после перезапуска открывается Paywall.
+    expect: Согласие и выбранный тип сохранены; после перезапуска открывается SubscriptionPaywall.
   covers: []
   automation:
     kind: maestro

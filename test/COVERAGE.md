@@ -14,7 +14,7 @@
 | [OnBoarding](modules/OnBoarding/README.md) | 3 | 3 | 0 | 0 | 0 |
 | [WebDocument](modules/WebDocument/README.md) | 2 | 1 | 1 | 0 | 0 |
 | [SelectUSExaminationType](modules/SelectUSExaminationType/README.md) | 2 | 1 | 1 | 0 | 0 |
-| [Paywall](modules/Paywall/README.md) | 5 | 0 | 2 | 1 | 2 |
+| [SubscriptionPaywall](modules/SubscriptionPaywall/README.md) | 5 | 0 | 2 | 1 | 2 |
 | [Scan](modules/Scan/README.md) | 10 | 5 | 5 | 0 | 0 |
 | [Menu](modules/Menu/README.md) | 2 | 2 | 0 | 0 | 0 |
 | [History](modules/History/README.md) | 4 | 3 | 1 | 0 | 0 |

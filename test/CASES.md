@@ -82,20 +82,20 @@
 | [e2e-managesubscription-profile-base](modules/SubscriptionManage/e2e/profile-base.yaml) | Активная подписка base | 1 |
 | [e2e-managesubscription-profile-pro](modules/SubscriptionManage/e2e/profile-pro.yaml) | Активная подписка pro | 1 |
 | [e2e-managesubscription-support-refund](modules/SubscriptionManage/e2e/support-refund.yaml) | Поддержка и запрос возврата не меняют подписку | 1 |
-| [e2e-paywall-none](modules/Paywall/e2e/none.yaml) | Paywall при профиле none | 1 |
+| [e2e-paywall-none](modules/SubscriptionPaywall/e2e/none.yaml) | SubscriptionPaywall при профиле none | 1 |
 | [e2e-requestlimitexceeded-limit](modules/RequestLimitExceeded/e2e/limit.yaml) | Проверить серверное ограничение: exhausted | 2 |
 | [e2e-managesubscription-background-before-revocation](modules/SubscriptionManage/e2e/background-before-revocation.yaml) | Активная Pro перед отзывом доступа в фоне | 1 |
 | [e2e-managesubscription-revoked](modules/SubscriptionManage/e2e/revoked.yaml) | Проверить серверное ограничение: revoked | 2 |
-| [e2e-paywall-expired](modules/Paywall/e2e/expired.yaml) | Paywall при профиле expired | 1 |
-| [e2e-paywall-select-base_annual](modules/Paywall/e2e/select-base_annual.yaml) | Выбор base_annual без покупки | 1 |
-| [e2e-paywall-select-base_six_months](modules/Paywall/e2e/select-base_six_months.yaml) | Выбор base_six_months без покупки | 1 |
-| [e2e-paywall-select-base_monthly](modules/Paywall/e2e/select-base_monthly.yaml) | Выбор base_monthly без покупки | 1 |
-| [e2e-paywall-select-base_weekly](modules/Paywall/e2e/select-base_weekly.yaml) | Выбор base_weekly без покупки | 1 |
-| [e2e-paywall-select-pro_annual](modules/Paywall/e2e/select-pro_annual.yaml) | Выбор pro_annual без покупки | 1 |
-| [e2e-paywall-select-pro_six_months](modules/Paywall/e2e/select-pro_six_months.yaml) | Выбор pro_six_months без покупки | 1 |
-| [e2e-paywall-select-pro_monthly](modules/Paywall/e2e/select-pro_monthly.yaml) | Выбор pro_monthly без покупки | 1 |
-| [e2e-paywall-select-pro_weekly](modules/Paywall/e2e/select-pro_weekly.yaml) | Выбор pro_weekly без покупки | 1 |
-| [e2e-paywall-documents](modules/Paywall/e2e/documents.yaml) | Документы из Paywall сохраняют выбор плана | 2 |
+| [e2e-paywall-expired](modules/SubscriptionPaywall/e2e/expired.yaml) | SubscriptionPaywall при профиле expired | 1 |
+| [e2e-paywall-select-base_annual](modules/SubscriptionPaywall/e2e/select-base_annual.yaml) | Выбор base_annual без покупки | 1 |
+| [e2e-paywall-select-base_six_months](modules/SubscriptionPaywall/e2e/select-base_six_months.yaml) | Выбор base_six_months без покупки | 1 |
+| [e2e-paywall-select-base_monthly](modules/SubscriptionPaywall/e2e/select-base_monthly.yaml) | Выбор base_monthly без покупки | 1 |
+| [e2e-paywall-select-base_weekly](modules/SubscriptionPaywall/e2e/select-base_weekly.yaml) | Выбор base_weekly без покупки | 1 |
+| [e2e-paywall-select-pro_annual](modules/SubscriptionPaywall/e2e/select-pro_annual.yaml) | Выбор pro_annual без покупки | 1 |
+| [e2e-paywall-select-pro_six_months](modules/SubscriptionPaywall/e2e/select-pro_six_months.yaml) | Выбор pro_six_months без покупки | 1 |
+| [e2e-paywall-select-pro_monthly](modules/SubscriptionPaywall/e2e/select-pro_monthly.yaml) | Выбор pro_monthly без покупки | 1 |
+| [e2e-paywall-select-pro_weekly](modules/SubscriptionPaywall/e2e/select-pro_weekly.yaml) | Выбор pro_weekly без покупки | 1 |
+| [e2e-paywall-documents](modules/SubscriptionPaywall/e2e/documents.yaml) | Документы из SubscriptionPaywall сохраняют выбор плана | 2 |
 | [e2e-subscriptionrecovery-recovery](modules/SubscriptionRecovery/e2e/recovery.yaml) | Открыть форму восстановления доступа | 1 |
 | [e2e-storageclearprotocols-cancel](modules/StorageClearProtocols/e2e/cancel.yaml) | Отмена очистки сохраняет историю | 2 |
 | [e2e-storageclearall-cancel](modules/StorageClearAll/e2e/cancel.yaml) | Отмена очистки сохраняет историю | 2 |
@@ -164,21 +164,21 @@
 | SelectUSExaminationType | [02 SelectUSExaminationTypeContentState FirstUse ScrollEnd](modules/SelectUSExaminationType/atlas/atlas-selectusexaminationtype-ce13f10ec9.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectUSExaminationType/Preview/SelectUSExaminationTypePreview.swift) |
 | SelectUSExaminationType | [03 SelectUSExaminationTypeContentState MaximumRecentTypes](modules/SelectUSExaminationType/atlas/atlas-selectusexaminationtype-4f50e5f632.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectUSExaminationType/Preview/SelectUSExaminationTypePreview.swift) |
 | SelectUSExaminationType | [04 SelectUSExaminationTypeContentState MaximumRecentTypes ScrollEnd](modules/SelectUSExaminationType/atlas/atlas-selectusexaminationtype-ce2f1e240c.yaml) | [Preview](../ios/Doglyad/Application/Module/Select/SelectUSExaminationType/Preview/SelectUSExaminationTypePreview.swift) |
-| Paywall | [01 PaywallCatalogLoadingState LoadingPlans](modules/Paywall/atlas/atlas-paywall-df58973130.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [02 PaywallCatalogLoadingState LoadingPlans ScrollEnd](modules/Paywall/atlas/atlas-paywall-6c47a7360b.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [03 PaywallCatalogErrorState PlansRequestFailed](modules/Paywall/atlas/atlas-paywall-80c9975ec0.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [04 PaywallSuccessState AvailablePlans](modules/Paywall/atlas/atlas-paywall-612fc205f2.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [05 PaywallSuccessState AvailablePlans ScrollEnd](modules/Paywall/atlas/atlas-paywall-a73174a54e.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [06 PaywallSuccessState AutoRenewalOff](modules/Paywall/atlas/atlas-paywall-26539ca33f.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [07 PaywallSuccessState AutoRenewalOff ScrollEnd](modules/Paywall/atlas/atlas-paywall-a9d8f9821f.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [08 PaywallPurchaseLoadingState PurchasingOrRestoring](modules/Paywall/atlas/atlas-paywall-f9567bf334.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [09 PaywallPurchaseLoadingState PurchasingOrRestoring ScrollEnd](modules/Paywall/atlas/atlas-paywall-041133ab7f.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [10 PaywallOperationErrorState PaymentOperationFailed](modules/Paywall/atlas/atlas-paywall-6d8eea91ef.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [11 PaywallOperationErrorState PaymentOperationFailed ScrollEnd](modules/Paywall/atlas/atlas-paywall-7a1d597e59.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [12 PaywallPaymentPendingState UnconfirmedPayment](modules/Paywall/atlas/atlas-paywall-cc4ad6efad.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [13 PaywallPaymentPendingState UnconfirmedPayment ScrollEnd](modules/Paywall/atlas/atlas-paywall-fcd2d538a5.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [14 PaywallSuccessState PurchaseCompletedMessage](modules/Paywall/atlas/atlas-paywall-6b4353ac37.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
-| Paywall | [15 PaywallSuccessState PurchaseCompletedMessage ScrollEnd](modules/Paywall/atlas/atlas-paywall-9db49ad861.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/Paywall/Preview/PaywallPreview.swift) |
+| SubscriptionPaywall | [01 SubscriptionPaywallCatalogLoadingState LoadingPlans](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-835279012c.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [02 SubscriptionPaywallCatalogLoadingState LoadingPlans ScrollEnd](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-d66557f3cf.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [03 SubscriptionPaywallCatalogErrorState PlansRequestFailed](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-ced5da4a10.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [04 SubscriptionPaywallSuccessState AvailablePlans](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-3a228b41ec.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [05 SubscriptionPaywallSuccessState AvailablePlans ScrollEnd](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-1f49d1ba19.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [06 SubscriptionPaywallSuccessState AutoRenewalOff](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-04d9d85ad2.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [07 SubscriptionPaywallSuccessState AutoRenewalOff ScrollEnd](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-a33d3ecf51.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [08 SubscriptionPaywallPurchaseLoadingState PurchasingOrRestoring](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-444fe9167c.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [09 SubscriptionPaywallPurchaseLoadingState PurchasingOrRestoring ScrollEnd](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-478b058875.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [10 SubscriptionPaywallOperationErrorState PaymentOperationFailed](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-ec74ab6413.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [11 SubscriptionPaywallOperationErrorState PaymentOperationFailed ScrollEnd](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-a423dd280c.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [12 SubscriptionPaywallPaymentPendingState UnconfirmedPayment](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-995eb968da.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [13 SubscriptionPaywallPaymentPendingState UnconfirmedPayment ScrollEnd](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-cdd24c14c1.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [14 SubscriptionPaywallSuccessState PurchaseCompletedMessage](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-87d45e5d81.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
+| SubscriptionPaywall | [15 SubscriptionPaywallSuccessState PurchaseCompletedMessage ScrollEnd](modules/SubscriptionPaywall/atlas/atlas-subscriptionpaywall-1cebc51502.yaml) | [Preview](../ios/Doglyad/Application/Module/Subscription/SubscriptionPaywall/Preview/SubscriptionPaywallPreview.swift) |
 | Scan | [01 ScanInitialState BeforeDraftRestoration](modules/Scan/atlas/atlas-scan-74dd88ee5a.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Scan | [02 ScanInitialState BeforeDraftRestoration ScrollEnd](modules/Scan/atlas/atlas-scan-b4d5307ca8.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |
 | Scan | [03 ScanInitializationErrorState DraftReadFailed](modules/Scan/atlas/atlas-scan-6d3b1d4aa3.yaml) | [Preview](../ios/Doglyad/Application/Module/Scan/Scan/Preview/ScanPreview.swift) |

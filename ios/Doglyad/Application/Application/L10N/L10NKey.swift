@@ -93,17 +93,6 @@ enum L10NKey: String, CaseIterable, Sendable {
     case patientConsentDescription
     case patientConsentDoNotAskAgainLabel
     case patientConsentTitle
-    case paywallAutoRenewalDescription
-    case paywallAutoRenewalLabel
-    case paywallContinueButton
-    case paywallDescription
-    case paywallPrivacyPolicyLabel
-    case paywallPurchaseSuccessDescription
-    case paywallPurchaseSuccessTitle
-    case paywallRestoreButton
-    case paywallRetryButton
-    case paywallTermsLabel
-    case paywallTitle
     case permissionCameraDescription
     case permissionCameraTitle
     case permissionPhotoLibraryDescription
@@ -310,6 +299,17 @@ enum L10NKey: String, CaseIterable, Sendable {
     case subscriptionManageSupportDescription
     case subscriptionManageTitle
     case subscriptionPaymentPendingDescription
+    case subscriptionPaywallAutoRenewalDescription
+    case subscriptionPaywallAutoRenewalLabel
+    case subscriptionPaywallContinueButton
+    case subscriptionPaywallDescription
+    case subscriptionPaywallPrivacyPolicyLabel
+    case subscriptionPaywallPurchaseSuccessDescription
+    case subscriptionPaywallPurchaseSuccessTitle
+    case subscriptionPaywallRestoreButton
+    case subscriptionPaywallRetryButton
+    case subscriptionPaywallTermsLabel
+    case subscriptionPaywallTitle
     case subscriptionProLabel
     case subscriptionPurchaseErrorDescription
     case subscriptionRecoveryKeyLabel

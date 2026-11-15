@@ -172,7 +172,7 @@ final class SubscriptionManageViewModel: DModuleViewModel<any SubscriptionManage
         )
         guard subscriptionStatus != nil else {
             coordinator.screen(
-                .paywall,
+                .subscriptionPaywall,
             )
             return
         }

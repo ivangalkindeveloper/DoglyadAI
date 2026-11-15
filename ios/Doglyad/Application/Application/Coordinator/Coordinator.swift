@@ -93,7 +93,7 @@ final class Coordinator {
             )
         case .none:
             root(
-                .paywall,
+                .subscriptionPaywall,
                 isAnimated: true,
             )
         }
@@ -111,7 +111,7 @@ final class Coordinator {
         let status = try await refreshSubscriptionStatus()
         guard let status else {
             screen(
-                .paywall,
+                .subscriptionPaywall,
             )
             return .routed
         }
@@ -129,7 +129,7 @@ final class Coordinator {
 
     func run(
         _ feature: SubscriptionPaidFeature,
-        isSheetDismissedOnPaywall: Bool = false,
+        isSheetDismissedOnSubscriptionPaywall: Bool = false,
         onAvailable: () -> Void,
     ) {
         switch getSubscriptionStatus()?.availability(
@@ -138,26 +138,26 @@ final class Coordinator {
         case .available:
             onAvailable()
         case .offered:
-            showPaywall(
-                isSheetDismissalRequired: isSheetDismissedOnPaywall,
+            showSubscriptionPaywall(
+                isSheetDismissalRequired: isSheetDismissedOnSubscriptionPaywall,
             )
         case .unavailable:
             break
         }
     }
 
-    func showPaywall(
+    func showSubscriptionPaywall(
         isSheetDismissalRequired: Bool = false,
     ) {
         if isSheetDismissalRequired {
             dismissSheet()
         }
         screen(
-            .paywall,
+            .subscriptionPaywall,
         )
     }
 
-    func dismissPaywall() {
+    func dismissSubscriptionPaywall() {
         if router.path.isEmpty {
             root(
                 .scan,
@@ -206,7 +206,7 @@ final class Coordinator {
             case .some(
                 .base,
             ), .none:
-                showPaywall(
+                showSubscriptionPaywall(
                     isSheetDismissalRequired: true,
                 )
             }
@@ -237,7 +237,7 @@ final class Coordinator {
            context.subscriptionStatus == nil
         {
             return RouteScreen(
-                type: .paywall,
+                type: .subscriptionPaywall,
             )
         }
 

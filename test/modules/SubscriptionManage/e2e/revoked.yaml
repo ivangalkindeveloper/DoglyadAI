@@ -1,6 +1,6 @@
 appId: ${APP_ID}
 name: e2e-managesubscription-revoked
-tags: [e2e, SubscriptionManage, Paywall]
+tags: [e2e, SubscriptionManage, SubscriptionPaywall]
 ---
 - launchApp:
     stopApp: false
@@ -11,4 +11,4 @@ tags: [e2e, SubscriptionManage, Paywall]
 - takeScreenshot: SubscriptionManage-revoked
 - tapOn: ^Сменить план$
 - runFlow: ../../../maestro/support/paywall-ready.yaml
-- takeScreenshot: Paywall-revoked
+- takeScreenshot: SubscriptionPaywall-revoked

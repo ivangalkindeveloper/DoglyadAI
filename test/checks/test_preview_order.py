@@ -46,7 +46,7 @@ class PreviewOrderTests(unittest.TestCase):
         cases = [
             case
             for case in atlas
-            if case["screen"] == "Paywall" and "ErrorState" in case["title"] and not case["title"].endswith(" ScrollEnd")
+            if case["screen"] == "SubscriptionPaywall" and "ErrorState" in case["title"] and not case["title"].endswith(" ScrollEnd")
         ]
         self.assertEqual(len(cases), 2)
         for case in cases:
@@ -84,7 +84,7 @@ class PreviewOrderTests(unittest.TestCase):
         output = generated()
         cases = [case for case in json.loads(output["catalog.json"])["atlas"]
                  if (case["screen"] == "SubscriptionManage" and "Success" in case["title"])
-                 or (case["screen"] == "Paywall" and "PurchaseCompletedMessage" in case["title"])]
+                 or (case["screen"] == "SubscriptionPaywall" and "PurchaseCompletedMessage" in case["title"])]
         self.assertEqual(len(cases), 8)
         for case in cases:
             commands = list(yaml.safe_load_all(output[case["flow"]]))[1]

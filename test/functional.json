@@ -9,7 +9,7 @@
       "WebDocument-onboarding-privacy",
       "WebDocument-onboarding-terms",
       "OnBoarding-completion-failed",
-      "003-Paywall-initial"
+      "003-SubscriptionPaywall-initial"
     ],
     "screen": "OnBoarding",
     "kind": "functional",
@@ -1409,17 +1409,17 @@
     },
     {
       "id": "e2e-paywall-none",
-      "title": "Paywall при профиле none",
+      "title": "SubscriptionPaywall при профиле none",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/none.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/none.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "none",
       "screenshots": [
-        "Paywall-none"
+        "SubscriptionPaywall-none"
       ],
       "dependsOn": [
         "e2e-history-saved-report"
@@ -1464,7 +1464,7 @@
       "flow": "modules/SubscriptionManage/e2e/revoked.yaml",
       "screenshots": [
         "SubscriptionManage-revoked",
-        "Paywall-revoked"
+        "SubscriptionPaywall-revoked"
       ],
       "subscriptionProfile": "revoked",
       "backendAssertions": {
@@ -1476,17 +1476,17 @@
     },
     {
       "id": "e2e-paywall-expired",
-      "title": "Paywall при профиле expired",
+      "title": "SubscriptionPaywall при профиле expired",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/expired.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/expired.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "expired",
       "screenshots": [
-        "Paywall-expired"
+        "SubscriptionPaywall-expired"
       ],
       "dependsOn": [
         "e2e-history-saved-report"
@@ -1496,129 +1496,129 @@
       "id": "e2e-paywall-select-base_annual",
       "title": "Выбор base_annual без покупки",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/select-base_annual.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/select-base_annual.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "Paywall-selected-base_annual"
+        "SubscriptionPaywall-selected-base_annual"
       ]
     },
     {
       "id": "e2e-paywall-select-base_six_months",
       "title": "Выбор base_six_months без покупки",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/select-base_six_months.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/select-base_six_months.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "Paywall-selected-base_six_months"
+        "SubscriptionPaywall-selected-base_six_months"
       ]
     },
     {
       "id": "e2e-paywall-select-base_monthly",
       "title": "Выбор base_monthly без покупки",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/select-base_monthly.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/select-base_monthly.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "Paywall-selected-base_monthly"
+        "SubscriptionPaywall-selected-base_monthly"
       ]
     },
     {
       "id": "e2e-paywall-select-base_weekly",
       "title": "Выбор base_weekly без покупки",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/select-base_weekly.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/select-base_weekly.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "Paywall-selected-base_weekly"
+        "SubscriptionPaywall-selected-base_weekly"
       ]
     },
     {
       "id": "e2e-paywall-select-pro_annual",
       "title": "Выбор pro_annual без покупки",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/select-pro_annual.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/select-pro_annual.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "Paywall-selected-pro_annual"
+        "SubscriptionPaywall-selected-pro_annual"
       ]
     },
     {
       "id": "e2e-paywall-select-pro_six_months",
       "title": "Выбор pro_six_months без покупки",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/select-pro_six_months.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/select-pro_six_months.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "Paywall-selected-pro_six_months"
+        "SubscriptionPaywall-selected-pro_six_months"
       ]
     },
     {
       "id": "e2e-paywall-select-pro_monthly",
       "title": "Выбор pro_monthly без покупки",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/select-pro_monthly.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/select-pro_monthly.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "Paywall-selected-pro_monthly"
+        "SubscriptionPaywall-selected-pro_monthly"
       ]
     },
     {
       "id": "e2e-paywall-select-pro_weekly",
       "title": "Выбор pro_weekly без покупки",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/select-pro_weekly.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/select-pro_weekly.yaml",
       "sources": [
-        "Paywall"
+        "SubscriptionPaywall"
       ],
       "subscriptionProfile": "pro",
       "screenshots": [
-        "Paywall-selected-pro_weekly"
+        "SubscriptionPaywall-selected-pro_weekly"
       ]
     },
     {
       "id": "e2e-paywall-documents",
-      "title": "Документы из Paywall сохраняют выбор плана",
+      "title": "Документы из SubscriptionPaywall сохраняют выбор плана",
       "kind": "functional",
-      "module": "Paywall",
-      "screen": "Paywall",
-      "flow": "modules/Paywall/e2e/documents.yaml",
+      "module": "SubscriptionPaywall",
+      "screen": "SubscriptionPaywall",
+      "flow": "modules/SubscriptionPaywall/e2e/documents.yaml",
       "screenshots": [
         "WebDocument-paywall-privacy",
         "WebDocument-paywall-terms"
@@ -2445,7 +2445,7 @@
     "OnBoarding",
     "WebDocument",
     "SelectUSExaminationType",
-    "Paywall",
+    "SubscriptionPaywall",
     "Scan",
     "Menu",
     "History",

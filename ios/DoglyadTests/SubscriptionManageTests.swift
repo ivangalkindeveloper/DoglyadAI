@@ -84,7 +84,7 @@
                 router.path.count == 2 && router.sheet == nil,
             )
             model.onDisappear()
-            model.coordinator.dismissPaywall()
+            model.coordinator.dismissSubscriptionPaywall()
             model.onAppear()
             #expect(
                 router.path.count == 1,

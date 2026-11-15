@@ -1,2 +1,0 @@
-@MainActor
-protocol PaywallStateProtocol: AnyObject {}

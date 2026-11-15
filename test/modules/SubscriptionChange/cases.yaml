@@ -12,9 +12,9 @@ cases:
   - action: Открыть смену плана в SubscriptionManage
     expect: Показана шторка с предупреждением; для Apple текст описывает правила App Store.
   - action: Закрыть шторку без подтверждения
-    expect: Paywall не открывается, текущая подписка не меняется.
+    expect: SubscriptionPaywall не открывается, текущая подписка не меняется.
   - action: Повторно открыть шторку и нажать «Сменить план»
-    expect: Шторка закрывается, Paywall открывается один раз.
+    expect: Шторка закрывается, SubscriptionPaywall открывается один раз.
   covers:
   - onTapConfirm
   automation:

@@ -92,15 +92,15 @@ test('Preview precedes regression with quadrupled gap, transparent frames, white
   e.manifest.runId = '20261107T104711Z-8c97df65';
   const samples = [
     ['bootstrap--001-OnBoarding-welcome', 'bootstrap', 'OnBoarding'],
-    ['bootstrap--003-Paywall-initial', 'bootstrap', 'OnBoarding'],
-    ['atlas-paywall--003-Paywall-pro', 'atlas-paywall', 'Paywall'],
+    ['bootstrap--003-SubscriptionPaywall-initial', 'bootstrap', 'OnBoarding'],
+    ['atlas-paywall--003-SubscriptionPaywall-pro', 'atlas-paywall', 'SubscriptionPaywall'],
     ['atlas-onboarding--001-OnBoarding-welcome', 'atlas-onboarding', 'OnBoarding'],
     ['atlas-onboarding--002-OnBoarding-legal', 'atlas-onboarding', 'OnBoarding'],
     ['bootstrap--000-ApplicationSplash-initial', 'bootstrap', 'OnBoarding'],
   ];
   e.manifest.images = samples.map(([id, caseId, screen]) => ({ id, caseId, screen, state: id, width: 390, height: 844 }));
   e.manifest.expectedScreenshots = samples.length;
-  e.manifest.coverage = { modules: [{ module: 'OnBoarding' }, { module: 'Paywall' }] };
+  e.manifest.coverage = { modules: [{ module: 'OnBoarding' }, { module: 'SubscriptionPaywall' }] };
   await e.figma.ui.onmessage({ type: 'begin', manifest: e.manifest });
   for (const [id] of samples) await e.figma.ui.onmessage({ type: 'image', id, bytes: [1] });
   await e.figma.ui.onmessage({ type: 'commit' });
@@ -113,8 +113,8 @@ test('Preview precedes regression with quadrupled gap, transparent frames, white
   const [previews, regression] = collection.children;
   assert.equal(previews.itemSpacing, 40);
   assert.equal(regression.itemSpacing, 40);
-  assert.deepEqual(previews.children.slice(1).map(n => n.name), ['OnBoarding', 'Paywall']);
-  assert.deepEqual(regression.children.slice(1).map(n => n.name), ['Регресс / ApplicationSplash', 'Регресс / OnBoarding', 'Регресс / Paywall']);
+  assert.deepEqual(previews.children.slice(1).map(n => n.name), ['OnBoarding', 'SubscriptionPaywall']);
+  assert.deepEqual(regression.children.slice(1).map(n => n.name), ['Регресс / ApplicationSplash', 'Регресс / OnBoarding', 'Регресс / SubscriptionPaywall']);
   const row = previews.children[1].children[1];
   assert.equal(row.layoutMode, 'HORIZONTAL');
   assert.equal(row.itemSpacing, 20);
@@ -175,10 +175,10 @@ test('same run is rebuilt after a layout upgrade, then reused on acknowledgment 
 test('historical English previews are validated but omitted from the Russian collection', async () => {
   const e = environment();
   e.manifest.images = [
-    { id: 'ru', caseId: 'atlas-paywall', kind: 'render', module: 'Paywall', state: '04 Русский', width: 390, height: 844 },
-    { id: 'en', caseId: 'atlas-paywall', kind: 'render', module: 'Paywall', state: '05 English', width: 390, height: 844 },
+    { id: 'ru', caseId: 'atlas-paywall', kind: 'render', module: 'SubscriptionPaywall', state: '04 Русский', width: 390, height: 844 },
+    { id: 'en', caseId: 'atlas-paywall', kind: 'render', module: 'SubscriptionPaywall', state: '05 English', width: 390, height: 844 },
     { id: 'en-management', caseId: 'atlas-manage', kind: 'render', module: 'SubscriptionManage', state: '08 Pro · English', width: 390, height: 844 },
-    { id: 'functional', caseId: 'e2e', kind: 'functional', module: 'Paywall', state: '05 English', width: 390, height: 844 },
+    { id: 'functional', caseId: 'e2e', kind: 'functional', module: 'SubscriptionPaywall', state: '05 English', width: 390, height: 844 },
   ];
   e.manifest.expectedScreenshots = 4;
   await e.figma.ui.onmessage({ type: 'begin', manifest: e.manifest });

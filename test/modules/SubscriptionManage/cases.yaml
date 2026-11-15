@@ -42,7 +42,7 @@ cases:
     локальные данные не меняются.
   steps:
   - action: Открыть смену плана, подтвердить и вернуться
-    expect: Сначала показана SubscriptionChange. После подтверждения открыт Paywall; возврат ведёт в SubscriptionManage.
+    expect: Сначала показана SubscriptionChange. После подтверждения открыт SubscriptionPaywall; возврат ведёт в SubscriptionManage.
   - action: Скопировать ключ восстановления, открыть восстановление доступа, поддержку и возврат средств
     expect: Копируется постоянный ключ и появляется сообщение. Robokassa открывает SubscriptionRecovery; Apple открывает
       восстановление App Store. Подписка не меняется до подтверждения сервера.

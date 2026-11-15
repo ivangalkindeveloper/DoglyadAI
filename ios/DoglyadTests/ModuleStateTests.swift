@@ -50,7 +50,7 @@ struct ModuleStateTests {
                 )
             },
             analyticsDestination: .screen(
-                .paywall,
+                .subscriptionPaywall,
             ),
         )
         model.onAppear()

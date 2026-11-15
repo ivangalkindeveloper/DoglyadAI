@@ -49,8 +49,8 @@ class BillingTestContext(AbstractAsyncContextManager["BillingTestContext"]):
                     "tiers": [
                         {
                             "id": "pro",
-                            "titleLocaleKey": "paywallProLabel",
-                            "featureLocaleKeys": ["paywallProModelsDescription"],
+                            "titleLocaleKey": "subscriptionPaywallProLabel",
+                            "featureLocaleKeys": ["subscriptionPaywallProModelsDescription"],
                         }
                     ],
                     "products": [

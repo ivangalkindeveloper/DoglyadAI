@@ -223,7 +223,7 @@ final class ReportReceivedViewModel: DModuleViewModel<any ReportReceivedStatePro
         }
         coordinator.run(
             .sendingReportByEmail,
-            isSheetDismissedOnPaywall: true,
+            isSheetDismissedOnSubscriptionPaywall: true,
         ) {
             self.sendReportEmail(
                 to: userEmail,

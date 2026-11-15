@@ -32,7 +32,11 @@ def catalog_for(
     return {
         "termsVersion": "test-v1",
         "tiers": [
-            {"id": "pro", "titleLocaleKey": "paywallProLabel", "featureLocaleKeys": ["paywallProModelsDescription"]}
+            {
+                "id": "pro",
+                "titleLocaleKey": "subscriptionPaywallProLabel",
+                "featureLocaleKeys": ["subscriptionPaywallProModelsDescription"],
+            }
         ],
         "products": [
             {

@@ -367,8 +367,8 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: PaywallCatalogLoadingState(),
+            SubscriptionPaywallPreviewView(
+                state: SubscriptionPaywallCatalogLoadingState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -379,8 +379,8 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: PaywallCatalogLoadingState(),
+            SubscriptionPaywallPreviewView(
+                state: SubscriptionPaywallCatalogLoadingState(),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -392,8 +392,8 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: PaywallCatalogErrorState(
+            SubscriptionPaywallPreviewView(
+                state: SubscriptionPaywallCatalogErrorState(
                     errorDescription: ModulePreviewFactory.makeContainer().l10n.text(
                         .errorUnknownDescription,
                     ),
@@ -408,8 +408,8 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: ModulePreviewFactory.paywallContent,
+            SubscriptionPaywallPreviewView(
+                state: ModulePreviewFactory.subscriptionPaywallContent,
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -420,8 +420,8 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: ModulePreviewFactory.paywallContent,
+            SubscriptionPaywallPreviewView(
+                state: ModulePreviewFactory.subscriptionPaywallContent,
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
             )
@@ -433,8 +433,8 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: ModulePreviewFactory.paywallContent.copyWith(
+            SubscriptionPaywallPreviewView(
+                state: ModulePreviewFactory.subscriptionPaywallContent.copyWith(
                     isAutoRenewing: false,
                 ),
             ).previewable(
@@ -447,8 +447,8 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: ModulePreviewFactory.paywallContent.copyWith(
+            SubscriptionPaywallPreviewView(
+                state: ModulePreviewFactory.subscriptionPaywallContent.copyWith(
                     isAutoRenewing: false,
                 ),
             ).previewable(
@@ -462,10 +462,10 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: PaywallPurchaseLoadingState(
-                    content: ModulePreviewFactory.paywallContent,
-                    plan: ModulePreviewFactory.paywallPlan,
+            SubscriptionPaywallPreviewView(
+                state: SubscriptionPaywallPurchaseLoadingState(
+                    content: ModulePreviewFactory.subscriptionPaywallContent,
+                    plan: ModulePreviewFactory.subscriptionPaywallPlan,
                 ),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -477,10 +477,10 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: PaywallPurchaseLoadingState(
-                    content: ModulePreviewFactory.paywallContent,
-                    plan: ModulePreviewFactory.paywallPlan,
+            SubscriptionPaywallPreviewView(
+                state: SubscriptionPaywallPurchaseLoadingState(
+                    content: ModulePreviewFactory.subscriptionPaywallContent,
+                    plan: ModulePreviewFactory.subscriptionPaywallPlan,
                 ),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -493,12 +493,12 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: PaywallOperationErrorState(
+            SubscriptionPaywallPreviewView(
+                state: SubscriptionPaywallOperationErrorState(
                     errorDescription: ModulePreviewFactory.makeContainer().l10n.text(
                         .subscriptionPurchaseErrorDescription,
                     ),
-                    previousState: ModulePreviewFactory.paywallContent,
+                    previousState: ModulePreviewFactory.subscriptionPaywallContent,
                 ),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -510,12 +510,12 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: PaywallOperationErrorState(
+            SubscriptionPaywallPreviewView(
+                state: SubscriptionPaywallOperationErrorState(
                     errorDescription: ModulePreviewFactory.makeContainer().l10n.text(
                         .subscriptionPurchaseErrorDescription,
                     ),
-                    previousState: ModulePreviewFactory.paywallContent,
+                    previousState: ModulePreviewFactory.subscriptionPaywallContent,
                 ),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -528,9 +528,9 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: PaywallPaymentPendingState(
-                    copying: ModulePreviewFactory.paywallContent,
+            SubscriptionPaywallPreviewView(
+                state: SubscriptionPaywallPaymentPendingState(
+                    copying: ModulePreviewFactory.subscriptionPaywallContent,
                 ),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -542,9 +542,9 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: PaywallPaymentPendingState(
-                    copying: ModulePreviewFactory.paywallContent,
+            SubscriptionPaywallPreviewView(
+                state: SubscriptionPaywallPaymentPendingState(
+                    copying: ModulePreviewFactory.subscriptionPaywallContent,
                 ),
             ).previewable(
                 container: ModulePreviewFactory.makeContainer(),
@@ -556,8 +556,8 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: ModulePreviewFactory.paywallContent,
+            SubscriptionPaywallPreviewView(
+                state: ModulePreviewFactory.subscriptionPaywallContent,
                 isPurchaseSuccessPresented: true,
             )
             .previewable(
@@ -570,8 +570,8 @@
         init() {}
 
         var body: some View {
-            PaywallPreviewView(
-                state: ModulePreviewFactory.paywallContent,
+            SubscriptionPaywallPreviewView(
+                state: ModulePreviewFactory.subscriptionPaywallContent,
                 isPurchaseSuccessPresented: true,
             )
             .previewable(
@@ -3427,125 +3427,125 @@
                     .accessibilityIdentifier(
                         "regression.atlas-selectusexaminationtype-ce2f1e240c",
                     )
-            case "atlas-paywall-df58973130":
+            case "atlas-subscriptionpaywall-835279012c":
                 RegressionCase29()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-df58973130",
+                        "regression.atlas-subscriptionpaywall-835279012c",
                     )
-            case "atlas-paywall-6c47a7360b":
+            case "atlas-subscriptionpaywall-d66557f3cf":
                 RegressionCase30()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-6c47a7360b",
+                        "regression.atlas-subscriptionpaywall-d66557f3cf",
                     )
-            case "atlas-paywall-80c9975ec0":
+            case "atlas-subscriptionpaywall-ced5da4a10":
                 RegressionCase31()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-80c9975ec0",
+                        "regression.atlas-subscriptionpaywall-ced5da4a10",
                     )
-            case "atlas-paywall-612fc205f2":
+            case "atlas-subscriptionpaywall-3a228b41ec":
                 RegressionCase32()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-612fc205f2",
+                        "regression.atlas-subscriptionpaywall-3a228b41ec",
                     )
-            case "atlas-paywall-a73174a54e":
+            case "atlas-subscriptionpaywall-1f49d1ba19":
                 RegressionCase33()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-a73174a54e",
+                        "regression.atlas-subscriptionpaywall-1f49d1ba19",
                     )
-            case "atlas-paywall-26539ca33f":
+            case "atlas-subscriptionpaywall-04d9d85ad2":
                 RegressionCase34()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-26539ca33f",
+                        "regression.atlas-subscriptionpaywall-04d9d85ad2",
                     )
-            case "atlas-paywall-a9d8f9821f":
+            case "atlas-subscriptionpaywall-a33d3ecf51":
                 RegressionCase35()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-a9d8f9821f",
+                        "regression.atlas-subscriptionpaywall-a33d3ecf51",
                     )
-            case "atlas-paywall-f9567bf334":
+            case "atlas-subscriptionpaywall-444fe9167c":
                 RegressionCase36()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-f9567bf334",
+                        "regression.atlas-subscriptionpaywall-444fe9167c",
                     )
-            case "atlas-paywall-041133ab7f":
+            case "atlas-subscriptionpaywall-478b058875":
                 RegressionCase37()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-041133ab7f",
+                        "regression.atlas-subscriptionpaywall-478b058875",
                     )
-            case "atlas-paywall-6d8eea91ef":
+            case "atlas-subscriptionpaywall-ec74ab6413":
                 RegressionCase38()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-6d8eea91ef",
+                        "regression.atlas-subscriptionpaywall-ec74ab6413",
                     )
-            case "atlas-paywall-7a1d597e59":
+            case "atlas-subscriptionpaywall-a423dd280c":
                 RegressionCase39()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-7a1d597e59",
+                        "regression.atlas-subscriptionpaywall-a423dd280c",
                     )
-            case "atlas-paywall-cc4ad6efad":
+            case "atlas-subscriptionpaywall-995eb968da":
                 RegressionCase40()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-cc4ad6efad",
+                        "regression.atlas-subscriptionpaywall-995eb968da",
                     )
-            case "atlas-paywall-fcd2d538a5":
+            case "atlas-subscriptionpaywall-cdd24c14c1":
                 RegressionCase41()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-fcd2d538a5",
+                        "regression.atlas-subscriptionpaywall-cdd24c14c1",
                     )
-            case "atlas-paywall-6b4353ac37":
+            case "atlas-subscriptionpaywall-87d45e5d81":
                 RegressionCase42()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-6b4353ac37",
+                        "regression.atlas-subscriptionpaywall-87d45e5d81",
                     )
-            case "atlas-paywall-9db49ad861":
+            case "atlas-subscriptionpaywall-1cebc51502":
                 RegressionCase43()
                     .accessibilityElement(
                         children: .contain,
                     )
                     .accessibilityIdentifier(
-                        "regression.atlas-paywall-9db49ad861",
+                        "regression.atlas-subscriptionpaywall-1cebc51502",
                     )
             case "atlas-scan-74dd88ee5a":
                 RegressionCase44()

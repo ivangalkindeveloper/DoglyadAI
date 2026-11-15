@@ -16,7 +16,7 @@ enum ScreenType: Hashable {
     case workSettings
     case subscriptionRecovery
     case subscriptionManage
-    case paywall
+    case subscriptionPaywall
 }
 
 enum SheetType: Hashable {

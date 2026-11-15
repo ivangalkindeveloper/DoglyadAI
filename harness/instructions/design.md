@@ -75,7 +75,7 @@ whether a failure should block the user. Local database I/O does not introduce a
   explicitly supported long camera and speech operations, including model download,
   loading into memory, microphone preparation and transcription. Ordinary database
   I/O has no such exception.
-- Paywall displays the subscription catalog throughout purchase/restoration and
+- SubscriptionPaywall displays the subscription catalog throughout purchase/restoration and
   verification, with one checkout loading presentation. After the browser closes with an unresolved payment, keep the catalog usable and show a notice; bounded background checks never block the screen. Provider pending/checking
   details remain internal. Verify the exact purchase before granting access; do
   not expose separate provider-status screens or a manual payment-check action.

@@ -1,0 +1,19 @@
+appId: ${APP_ID}
+name: atlas-subscriptionpaywall-ec74ab6413
+tags:
+- atlas
+- SubscriptionPaywall
+---
+- launchApp:
+    arguments:
+      regressionPreview: atlas-subscriptionpaywall-ec74ab6413
+- extendedWaitUntil:
+    visible:
+      id: regression.atlas-subscriptionpaywall-ec74ab6413
+    timeout: 15000
+- extendedWaitUntil:
+    visible:
+      id: message.error
+    timeout: 15000
+- assertNotVisible: ^Не удалось завершить оплату$
+- takeScreenshot: 10-SubscriptionPaywall-ec74ab6413

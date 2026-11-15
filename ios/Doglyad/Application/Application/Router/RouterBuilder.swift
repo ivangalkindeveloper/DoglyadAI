@@ -115,10 +115,10 @@ final class RouterBuilder: RouterBuilderProtocol {
                     arguments: route.arguments as? SubscriptionManageArguments,
                 ),
             )
-        case .paywall:
+        case .subscriptionPaywall:
             AnyView(
-                PaywallScreen(
-                    arguments: route.arguments as? PaywallArguments,
+                SubscriptionPaywallScreen(
+                    arguments: route.arguments as? SubscriptionPaywallArguments,
                 ),
             )
         }

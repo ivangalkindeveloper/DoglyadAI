@@ -99,12 +99,12 @@
             let container = DependencyContainer.previewable
             let navigation = DRouter(
                 initialRoute: RouteScreen(
-                    type: .paywall,
+                    type: .subscriptionPaywall,
                 ),
             )
             var restoreCalls = 0
             var purchaseCalls = 0
-            let model = PaywallViewModel(
+            let model = SubscriptionPaywallViewModel(
                 messager: DMessager(),
                 container: container,
                 router: navigation,
@@ -135,7 +135,7 @@
                 },
             )
             model.preparePreview(
-                state: ModulePreviewFactory.paywallContent,
+                state: ModulePreviewFactory.subscriptionPaywallContent,
             )
             XCTAssertEqual(
                 navigation.path.count,
@@ -147,7 +147,7 @@
                 1,
             )
             XCTAssertTrue(
-                model.state === ModulePreviewFactory.paywallContent,
+                model.state === ModulePreviewFactory.subscriptionPaywallContent,
             )
             await Task.yield()
             XCTAssertEqual(

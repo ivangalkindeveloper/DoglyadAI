@@ -31,7 +31,7 @@ final class RequestLimitExceededViewModel: DModuleViewModel<any RequestLimitExce
         analytics.buttonTapped(
             .requestLimitUpgrade,
         )
-        coordinator.showPaywall(
+        coordinator.showSubscriptionPaywall(
             isSheetDismissalRequired: true,
         )
     }

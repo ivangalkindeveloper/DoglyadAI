@@ -14,16 +14,16 @@
         @Test(
             arguments: [ScreenType.onBoarding, .scan, .subscriptionManage, .reportDetail],
         )
-        func recoveryReturnsThroughPaywallWithoutPoppingItsOrigin(
+        func recoveryReturnsThroughSubscriptionPaywallWithoutPoppingItsOrigin(
             origin: ScreenType,
         ) async throws {
-            let container = PaywallPreviewFactory.makeContainer()
+            let container = SubscriptionPaywallPreviewFactory.makeContainer()
             let status = CurrentValueSubject<SubscriptionStatus?, Never>(
                 nil,
             )
             let router = DRouter(
                 initialRoute: RouteScreen(
-                    type: origin == .onBoarding ? .paywall : .scan,
+                    type: origin == .onBoarding ? .subscriptionPaywall : .scan,
                 ),
             )
             if origin == .subscriptionManage || origin == .reportDetail {
@@ -42,23 +42,23 @@
             if origin != .onBoarding {
                 router.push(
                     route: RouteScreen(
-                        type: .paywall,
+                        type: .subscriptionPaywall,
                     ),
                 )
             }
-            let paywall = makePaywall(
+            let subscriptionPaywall = makeSubscriptionPaywall(
                 container: container,
                 router: router,
                 statuses: status,
             )
-            paywall.onAppear()
-            await paywall.lastTask?.value
+            subscriptionPaywall.onAppear()
+            await subscriptionPaywall.lastTask?.value
             let recoveryDepth = router.path.count + 1
-            paywall.onTapRestore()
+            subscriptionPaywall.onTapRestore()
             #expect(
                 router.path.count == recoveryDepth,
             )
-            paywall.onTapClose()
+            subscriptionPaywall.onTapClose()
             #expect(
                 router.path.count == recoveryDepth,
             )
@@ -89,7 +89,7 @@
                 onRefreshSubscriptionStatus: {},
                 arguments: SubscriptionRecoveryArguments(
                     onRecovered: {
-                        paywall.onTapClose()
+                        subscriptionPaywall.onTapClose()
                     },
                 ),
                 recover: { _ in
@@ -117,15 +117,15 @@
                 status.value == recovered,
             )
             recovery.onDisappear()
-            paywall.onDisappear()
+            subscriptionPaywall.onDisappear()
         }
 
         @Test
-        func inactiveRecoveryKeepsTheFormAndDoesNotCompletePaywall() async {
+        func inactiveRecoveryKeepsTheFormAndDoesNotCompleteSubscriptionPaywall() async {
             let container = SubscriptionManagePreviewFactory.makeContainer()
             let router = DRouter(
                 initialRoute: RouteScreen(
-                    type: .paywall,
+                    type: .subscriptionPaywall,
                 ),
             )
             router.push(
@@ -205,10 +205,10 @@
             )
             let router = DRouter(
                 initialRoute: RouteScreen(
-                    type: .paywall,
+                    type: .subscriptionPaywall,
                 ),
             )
-            let model = makePaywall(
+            let model = makeSubscriptionPaywall(
                 container: container,
                 router: router,
                 statuses: CurrentValueSubject(
@@ -223,7 +223,7 @@
                 String(
                     text.characters,
                 ) == container.l10n.text(
-                    .paywallAutoRenewalDescription,
+                    .subscriptionPaywallAutoRenewalDescription,
                 ),
             )
             let links = Set(
@@ -405,12 +405,12 @@
             parent.onDisappear()
         }
 
-        private func makePaywall(
+        private func makeSubscriptionPaywall(
             container: DependencyContainer,
             router: DRouter,
             statuses: CurrentValueSubject<SubscriptionStatus?, Never>,
-        ) -> PaywallViewModel {
-            PaywallViewModel(
+        ) -> SubscriptionPaywallViewModel {
+            SubscriptionPaywallViewModel(
                 messager: DMessager(),
                 container: container,
                 router: router,
